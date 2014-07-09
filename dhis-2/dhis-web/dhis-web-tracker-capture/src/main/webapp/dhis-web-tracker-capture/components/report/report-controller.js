@@ -56,6 +56,7 @@ trackerCapture.controller('ReportController',
                 angular.forEach(eventList, function(ev){
                     if(ev.trackedEntityInstance){
                         ev.name = $scope.programStages[ev.programStage].name;
+                        ev.programName = $scope.selectedProgram.name
                         ev.statusColor = EventUtils.getEventStatusColor(ev); 
                         ev.eventDate = DateUtils.format(ev.eventDate);
                         
@@ -89,6 +90,9 @@ trackerCapture.controller('ReportController',
                 },
                 entityName: function(){
                     return $scope.selectedProgram.trackedEntity.name;
+                },
+                reportMode: function(){
+                    return 'PROGRAM';
                 }
             }
         });
@@ -107,18 +111,20 @@ trackerCapture.controller('ReportController',
             dhis2Event,
             selectedTei,
             gridColumns,
-            entityName){
+            entityName,
+            reportMode){
     
     $scope.selectedTei = selectedTei;
     $scope.gridColumns = gridColumns;
     $scope.entityName = entityName;
+    $scope.reportMode = reportMode;
     $scope.currentEvent = dhis2Event;
     $scope.currentEvent.providedElsewhere = [];
     
     if(!angular.isUndefined( $scope.currentEvent.notes)){
         $scope.currentEvent.notes = orderByFilter($scope.currentEvent.notes, '-storedDate');            
         angular.forEach($scope.currentEvent.notes, function(note){
-            note.storedDate = moment(note.storedDate).format('DD.MM.YYYY @ hh:mm A');
+            note.storedDate = moment(note.storedDate).format('YYYY-MM-DD @ hh:mm A');
         });
     }
     
@@ -147,51 +153,114 @@ trackerCapture.controller('ReportController',
     });
     
     $scope.close = function () {
-      $modalInstance.close();
+        $modalInstance.close();
     };
 })
 
 //conroller for tei report
 .controller('TeiReportController',
         function($scope,
+                $modal,
                 CurrentSelection,
                 storage,
                 DateUtils,
                 EventUtils,
                 TranslationService,
+                ProgramFactory,
                 DHIS2EventFactory) {
 
-    TranslationService.translate();
+    TranslationService.translate();    
+    
+    $scope.programs = [];  
+    $scope.programNames = [];  
+    $scope.programStageNames = [];
+    ProgramFactory.getAll().then(function(programs){
+        
+        angular.forEach(programs, function(pr){
+            $scope.programs.push({id: pr.id, name: pr.name});
+            $scope.programNames[pr.id] = {id: pr.id, name: pr.name};
+            angular.forEach(pr.programStages, function(stage){
+                $scope.programStageNames[stage.id] = stage;
+            });
+        });
+    });
     
     $scope.$on('dashboard', function(event, args) {
         var selections = CurrentSelection.get();
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');
-        $scope.selectedEntity = selections.tei;      
+        $scope.selectedTei = selections.tei;  
+        $scope.selectedEntity = selections.te;
         $scope.selectedProgram = selections.pr;        
         $scope.selectedEnrollment = selections.enrollment; 
         
-        if($scope.selectedOrgUnit && 
-                $scope.selectedProgram && 
-                $scope.selectedEntity && 
-                $scope.selectedEnrollment){
-            
+        if($scope.selectedTei){            
             $scope.getEvents();
         }       
     });
     
     $scope.getEvents = function(){
         
-        $scope.dhis2Events = '';
+        $scope.dataFetched = false;
         $scope.dataExists = false;
-        DHIS2EventFactory.getEventsByProgram($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id).then(function(data){
-            $scope.dhis2Events = data;     
-            if(!angular.isUndefined($scope.dhis2Events) ){                
-                for(var i=0; i<$scope.dhis2Events.length && !$scope.dataExists; i++){
-                    if(!angular.isUndefined($scope.dhis2Events[i].dataValues)){
-                        $scope.dataExists = true;
-                    }                    
-                }                    
+        var programId = null, orgUnitId = null;
+        
+        if($scope.selectedProgram){
+            programId = $scope.selectedProgram.id;
+        }
+        
+        /*if($scope.selectedOrgUnit){
+            orgUnitId = $scope.selectedOrgUnit.id;
+        }*/
+        
+        $scope.report = [];
+        angular.forEach($scope.programs, function(pr){
+            $scope.report[pr.id] = {events: []};
+        });
+        
+        DHIS2EventFactory.getEventsByProgram($scope.selectedTei.trackedEntityInstance, orgUnitId, programId).then(function(eventList){
+
+            angular.forEach(eventList, function(ev){
+                if(ev.program){                    
+                    ev.name = $scope.programStageNames[ev.programStage].name;
+                    ev.programName = $scope.programNames[ev.program].name;
+                    ev.statusColor = EventUtils.getEventStatusColor(ev); 
+                    ev.eventDate = DateUtils.format(ev.eventDate);                    
+                    $scope.report[ev.program].events.push(ev);
+                    ev = EventUtils.setEventOrgUnitName(ev);
+                }                
+            });
+            if(eventList){
+                $scope.dataExists = true;
             }
-        });          
+            $scope.dataFetched = true;
+        });
     };
+    
+    $scope.showEventDetails = function(dhis2Event){
+        
+        var modalInstance = $modal.open({
+            templateUrl: 'components/report/eventDetails.html',
+            controller: 'EventDetailsController',
+            resolve: {
+                dhis2Event: function () {
+                    return dhis2Event;
+                },
+                gridColumns: function(){
+                    return $scope.gridColumns;
+                },
+                selectedTei: function(){
+                    return $scope.selectedTei;
+                },
+                entityName: function(){
+                    return $scope.selectedEntity.name;
+                },
+                reportMode: function(){
+                    return 'TEI';
+                }
+            }
+        });
+
+        modalInstance.result.then({
+        });
+    };    
 });

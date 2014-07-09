@@ -9,10 +9,39 @@
             <a class="small-horizonal-spacing" href ng-click="removeWidget(reportWidget)" title="{{'remove'| translate}}"><i class="fa fa-times-circle"></i></a>            
         </span>        
     </div>
-    <div ng-show="reportWidget.expand" class="panel-body dashboard-widget-container">            
-        
-        <div ng-if="!dataExists && selectedEnrollment" class="alert alert-warning">{{'no_data_report'| translate}}</div>
-        <div ng-if="!selectedEnrollment" class="alert alert-warning">{{'not_yet_enrolled_report'| translate}}</div>
+    <div ng-show="reportWidget.expand" class="panel-body dashboard-widget-container">        
+        <div ng-if="!dataExists" class="alert alert-warning">{{'no_data_report'| translate}}</div>
+        <div ng-if="dataExists" class="remove-default-padding">
+            <table class="table table-compact table-striped">                
+                <tr ng-repeat="pr in programs" ng-if="report[pr.id].events">
+                    <td>
+                        <div class="bold inline-block vertical-center">{{pr.name}}</div>
+                    </td>
+                    <td>    
+                        <div class='bold vertical-center' ng-if='report[pr.id].events.length < 1'>{{'no_visit_made'| translate}}</div>
+                        <div class="inline-block vertical-center" ng-repeat="ev in report[pr.id].events | orderBy: 'eventDate'">                                    
+                            <div class="block align-center">{{ev.orgUnitName}}</div>                   
+                            <div class="empty-stage-container" 
+                                 title="{{ev.dataValues ? 'details' : 'no_data_registerd'| translate}}"
+                                 ng-class="{'{{ev.statusColor}}': true}"
+                                 ng-if='!ev.dataValues'>
+                                {{ev.name}}<br/>
+                                {{ev.eventDate}}         
+                            </div>
+                            <div class="stage-container" 
+                                 title="{{ev.dataValues ? 'details' : 'no_data_registerd'| translate}}"
+                                 ng-class="{'{{ev.statusColor}}': true}"
+                                 ng-if='ev.dataValues'
+                                 ng-click="showEventDetails(ev)">
+                                {{ev.name}}<br/>
+                                {{ev.eventDate}}         
+                            </div>
 
+                            <i class="fa fa-arrow-right" ng-show="$index < report[pr.id].events.length - 1"></i>
+                        </div>                                         
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>

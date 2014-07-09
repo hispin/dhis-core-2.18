@@ -2,7 +2,7 @@
     <h2>{{'details'| translate}}</h2>
 </div>
 <div class="modal-body">
-    <div class='row'>
+    <div class='row' ng-if="reportMode === 'PROGRAM'">
         <table class="table-borderless table-striped">
             <tr>
                 <th colspan="2">
@@ -20,9 +20,9 @@
         </table>
     </div>
     <div class='row' ng-if='currentEvent'>      
-        <hr>
+        <hr ng-if="reportMode === 'PROGRAM'">
         <span class="bold">
-            {{currentEvent.name}}  |  {{currentEvent.orgUnitName}}  |  {{currentEvent.eventDate}}
+            <span ng-if="reportMode === 'TEI'">{{currentEvent.programName}}  |  </span>{{currentEvent.name}}  |  {{currentEvent.orgUnitName}}  |  {{currentEvent.eventDate}}
         </span>
         <table class="table-borderless table-striped">
             <thead>
