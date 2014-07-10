@@ -28,21 +28,9 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.csvreader.CsvWriter;
-import org.amplecode.staxwax.factory.XMLFactory;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dxf2.datavalue.DataValue;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.StreamUtils;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.io.OutputStream;
 import java.io.Writer;
@@ -50,9 +38,20 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
-import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
-import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+import org.amplecode.staxwax.factory.XMLFactory;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dxf2.datavalue.DataValue;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.StreamUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+
+import com.csvreader.CsvWriter;
 
 /**
  * @author Lars Helge Overland
@@ -107,7 +106,6 @@ public class SpringDataValueSetStore
         Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, DataValueSet dataValueSet )
     {
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( getDataValueSql( dataElements, periods, orgUnits ) );
-        DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
 
         dataValueSet.setDataSet( dataSet != null ? dataSet.getUid() : null );
         dataValueSet.setCompleteDate( getMediumDateString( completeDate ) );
@@ -128,15 +126,8 @@ public class SpringDataValueSetStore
             dataValue.setCategoryOptionCombo( rowSet.getString( "cocuid" ) );
             dataValue.setValue( rowSet.getString( "value" ) );
             dataValue.setStoredBy( rowSet.getString( "storedby" ) );
-
-            java.sql.Date lastUpdated = rowSet.getDate( "lastupdated" );
-
-            if ( lastUpdated != null )
-            {
-                DateTime dt = new DateTime( lastUpdated );
-                dataValue.setLastUpdated( fmt.print( dt ) );
-            }
-
+            dataValue.setCreated( DateUtils.getLongDateString( rowSet.getDate( "created" ) ) );
+            dataValue.setLastUpdated( DateUtils.getLongDateString( rowSet.getDate( "lastupdated" ) ) );
             dataValue.setComment( rowSet.getString( "comment" ) );
             dataValue.setFollowup( rowSet.getBoolean( "followup" ) );
             dataValue.close();
@@ -148,7 +139,7 @@ public class SpringDataValueSetStore
     private String getDataValueSql( Collection<DataElement> dataElements, Collection<Period> periods, Collection<OrganisationUnit> orgUnits )
     {
         return
-            "select de.uid as deuid, pe.startdate, pt.name, ou.uid as ouuid, coc.uid as cocuid, dv.value, dv.storedby, dv.lastupdated, dv.comment, dv.followup " +
+            "select de.uid as deuid, pe.startdate, pt.name, ou.uid as ouuid, coc.uid as cocuid, dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
             "from datavalue dv " +
             "join dataelement de on (dv.dataelementid=de.dataelementid) " +
             "join period pe on (dv.periodid=pe.periodid) " +

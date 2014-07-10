@@ -91,6 +91,12 @@ public class StreamingJsonDataValue extends DataValue
     }
 
     @Override
+    public void setCreated( String created )
+    {
+        writeObjectField( "created", created );
+    }
+
+    @Override
     public void setLastUpdated( String lastUpdated )
     {
         writeObjectField( "lastUpdated", lastUpdated );
