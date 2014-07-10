@@ -98,7 +98,7 @@ public class Events
     }
 
     @JsonProperty
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Map<Object, Object> getMetaData()
     {
         return metaData;
@@ -110,7 +110,7 @@ public class Events
     }
 
     @JsonProperty
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Pager getPager()
     {
         return pager;
