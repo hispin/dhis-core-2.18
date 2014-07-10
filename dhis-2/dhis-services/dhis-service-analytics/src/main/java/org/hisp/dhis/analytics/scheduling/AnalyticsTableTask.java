@@ -142,7 +142,7 @@ public class AnalyticsTableTask
             
             notifier.notify( taskId, INFO, "Analytics tables updated", true );
         }
-        catch ( Exception ex )
+        catch ( RuntimeException ex )
         {
             notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
             
