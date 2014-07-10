@@ -17,10 +17,7 @@
 					<a href='javascript:markForFollowup($programStageInstance.programInstance.id, false)' #if( $programStageInstance.programInstance.followup == 'false') class='hidden' #end name='imgMarkFollowup' title='$i18n.getString("imgMarkFollowup")' ><img src='images/risk_small.png'></a>
 					<a href='javascript:markForFollowup($programStageInstance.programInstance.id, true)' #if( $programStageInstance.programInstance.followup == 'true') class='hidden' #end name='imgUnmarkFollowup' title='$i18n.getString("imgMarkFollowup")' ><img src='images/unrisk_small.png'></a>			
 				</td>
-				<td class='coordinates1'>
-					<span class='bold' id="entityInstanceName">$i18n.getString( "attributes" ): </span>
-				</td>
-				<td>$id</td>
+				<td rowspan='2'>$id</td>
 			</tr>
 			<tr><td class='bold coordinates1' style="vertical-align:top">$i18n.getString('program_stage'):</td>
 				<td class='coordinates2'>$programStageInstance.programStage.displayName</td>
