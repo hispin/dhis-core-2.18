@@ -407,6 +407,7 @@ public class DefaultDataValueSetService
 
     private ImportSummary saveDataValueSet( ImportOptions importOptions, TaskId id, DataValueSet dataValueSet )
     {
+        log.debug( "Import options: " + importOptions );
         notifier.clear( id ).notify( id, "Process started" );
 
         ImportSummary summary = new ImportSummary();
