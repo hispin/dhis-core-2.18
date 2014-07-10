@@ -276,8 +276,7 @@ public class TableAlteror
         
         executeSql( "UPDATE trackedentityaudit SET accessedmodule='tracked_entity_instance_dashboard' WHERE accessedmodule='instance_dashboard' or accessedmodule='patient_dashboard'" );
         
-        executeSql( "UPDATE program_attributes SET allowDateInFuture='false' WHERE allowDateInFuture is null" );
-
+        
         executeSql( "UPDATE programstageinstance SET status=1 WHERE completed=true" );
         executeSql( "ALTER TABLE programstageinstance DROP COLUMN completed" );
         
@@ -291,6 +290,11 @@ public class TableAlteror
         executeSql( "update programstage_dataelements set allowfuturedate = allowdateinfuture where allowfuturedate is null" );
         executeSql( "update programstage_dataelements set allowfuturedate = false where allowfuturedate is null" );
         executeSql( "ALTER TABLE programstage_dataelements DROP COLUMN allowdateinfuture" );
+        
+        executeSql( "update program_attributes set allowfuturedate = allowdateinfuture where allowfuturedate is null" );
+        executeSql( "update program_attributes set allowfuturedate = false where allowfuturedate is null" );
+        executeSql( "ALTER TABLE program_attributes DROP COLUMN allowdateinfuture" );
+        executeSql( "UPDATE program_attributes SET allowFutureDate='false' WHERE allowFutureDate is null" );
     }
 
     // -------------------------------------------------------------------------
