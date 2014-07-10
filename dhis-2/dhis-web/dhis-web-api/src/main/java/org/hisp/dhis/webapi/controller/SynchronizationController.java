@@ -28,8 +28,16 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_JSON;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.synch.AvailabilityStatus;
 import org.hisp.dhis.dxf2.synch.SynchronizationManager;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,9 +60,19 @@ public class SynchronizationController
     @Autowired
     private SynchronizationManager synchronizationManager;
 
+    @RequestMapping( method = RequestMethod.POST )
+    public void execute( HttpServletResponse response )
+        throws IOException
+    {
+        ImportSummary summary = synchronizationManager.executeDataSynch();
+
+        response.setContentType( CONTENT_TYPE_JSON );
+        JacksonUtils.toJson( response.getOutputStream(), summary );
+    }
+    
     @RequestMapping( value = "/availability", method = RequestMethod.GET, produces = "application/json" )
     public @ResponseBody AvailabilityStatus isRemoteServerAvailable()
     {
         return synchronizationManager.isRemoteServerAvailable();
-    }    
+    }
 }

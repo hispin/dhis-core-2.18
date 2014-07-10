@@ -217,6 +217,12 @@ public class DefaultDataValueSetService
     {
         dataValueSetStore.writeDataValueSetJson( null, null, null, null, getDataElements( dataSets ), getPeriods( startDate, endDate ), getOrgUnits( orgUnits ), outputStream );
     }
+    
+    @Override
+    public void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream )
+    {
+        dataValueSetStore.writeDataValueSetJson( lastUpdated, outputStream );
+    }
 
     @Override
     public void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, Writer writer )

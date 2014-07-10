@@ -30,6 +30,7 @@ package org.hisp.dhis.dxf2.synch;
 
 import static org.apache.commons.lang.StringUtils.trimToNull;
 
+import java.io.IOException;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -38,6 +39,9 @@ import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
+import org.hisp.dhis.dxf2.importsummary.ImportStatus;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.utils.ImportSummaryResponseExtractor;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +49,16 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -168,31 +176,62 @@ public class DefaultSynchronizationManager
         return false;
     }
     
-    public boolean executeDataSynch()
+    public ImportSummary executeDataSynch()
     {
         AvailabilityStatus availability = isRemoteServerAvailable();
         
         if ( !availability.isAvailable() )
         {
             log.info( "Aborting synch, server not available" );
-            return false;
+            return null;
         }
 
-        Date date = getLastSynchSuccess();
+        // ---------------------------------------------------------------------
+        // Set time for last success to start of process to make data saved
+        // subsequently part of next synch process without being ignored
+        // ---------------------------------------------------------------------
+
+        final Date time = getLastSynchSuccess();
         
-        int lastUpdatedCount = dataValueService.getDataValueCountLastUpdatedAfter( date );
+        int lastUpdatedCount = dataValueService.getDataValueCountLastUpdatedAfter( time );
         
         if ( lastUpdatedCount == 0 )
         {
             log.info( "Aborting synch, no new or updated data values" );
-            return false;
+            return null;
         }
+
+        final Configuration config = configurationService.getConfiguration();
         
-        // Synch
+        String url = config.getRemoteServerUrl() + "/api/dataValueSets";
         
-        setLastSynchSuccess();
+        log.info( "Remote server POST URL: " + url );
         
-        return true;
+        final RequestCallback requestCallback = new RequestCallback() {
+            
+            public void doWithRequest( ClientHttpRequest request ) throws IOException
+            {
+                request.getHeaders().setContentType( MediaType.APPLICATION_JSON );
+                request.getHeaders().add( HEADER_AUTHORIZATION, CodecUtils.getBasicAuthString( config.getRemoteServerUsername(), config.getRemoteServerPassword() ) );
+                dataValueSetService.writeDataValueSetJson( time, request.getBody() );
+            }            
+        };
+        
+        ResponseExtractor<ImportSummary> responseExtractor = new ImportSummaryResponseExtractor();
+        
+        ImportSummary summary = restTemplate.execute( url, HttpMethod.POST, requestCallback, responseExtractor );
+        
+        log.info( summary );
+        
+        if ( summary != null && ImportStatus.SUCCESS.equals( summary.getStatus() ) )
+        {
+            setLastSynchSuccess( time );            
+            log.info( "Synch successful, setting last success time: " + time );            
+        }   
+        
+        return summary;
+        
+        //TODO paging of data values
     }
     
     // -------------------------------------------------------------------------
@@ -213,9 +252,9 @@ public class DefaultSynchronizationManager
     /**
      * Sets the time of the last successful synchronization operation.
      */
-    private void setLastSynchSuccess()
+    private void setLastSynchSuccess( Date time )
     {
-        systemSettingManager.saveSystemSetting( KEY_LAST_SUCCESSFUL_SYNC, new Date() );
+        systemSettingManager.saveSystemSetting( KEY_LAST_SUCCESSFUL_SYNC, time );
     }
 
     /**

@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.datavalueset;
+package org.hisp.dhis.dxf2.utils;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,29 +28,37 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.OutputStream;
-import java.io.Writer;
-import java.util.Date;
-import java.util.Set;
+import java.io.IOException;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResponseExtractor;
 
 /**
+ * Converts a response into an ImportSummary instance.
+ * 
+ * @throws HttpServerErrorException if the response status code is different
+ *         from 200 OK or 201 Created.
+ * @throws IOException if converting the response into an ImportSummary failed.
+ * 
  * @author Lars Helge Overland
  */
-public interface DataValueSetStore
+public class ImportSummaryResponseExtractor
+    implements ResponseExtractor<ImportSummary>
 {
-    public void writeDataValueSetXml( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, 
-        Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out );
-
-    public void writeDataValueSetCsv( Set<DataElement> dataElements, Set<Period> periods, 
-        Set<OrganisationUnit> orgUnits, Writer writer );
-    
-    void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream );
-
-    public void writeDataValueSetJson( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit,
-        Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out );
+    public ImportSummary extractData( ClientHttpResponse response ) throws IOException
+    {
+        ImportSummary summary = JacksonUtils.fromJson( response.getBody(), ImportSummary.class );
+        
+        HttpStatus status = response.getStatusCode();
+        
+        if ( !( HttpStatus.CREATED.equals( status ) || HttpStatus.OK.equals( status ) ) )
+        {
+            throw new HttpServerErrorException( status, "Data synch failed on remote server" );
+        }
+        
+        return summary;
+    }
 }

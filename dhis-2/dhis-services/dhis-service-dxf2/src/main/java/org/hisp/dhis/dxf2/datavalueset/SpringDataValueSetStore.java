@@ -73,8 +73,10 @@ public class SpringDataValueSetStore
         Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out )
     {
         DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLWriter( out ) );
-
-        writeDataValueSet( dataSet, completeDate, period, orgUnit, dataElements, periods, orgUnits, dataValueSet );
+        
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( getDataValueSql( dataElements, periods, orgUnits ) );
+        
+        writeDataValueSet( rowSet, dataSet, completeDate, period, orgUnit, dataValueSet );
 
         StreamUtils.closeOutputStream( out );
     }
@@ -84,29 +86,50 @@ public class SpringDataValueSetStore
         Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream outputStream )
     {
         DataValueSet dataValueSet = new StreamingJsonDataValueSet( outputStream );
-
-        writeDataValueSet( dataSet, completeDate, period, orgUnit, dataElements, periods, orgUnits, dataValueSet );
+        
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( getDataValueSql( dataElements, periods, orgUnits ) );
+        
+        writeDataValueSet( rowSet, dataSet, completeDate, period, orgUnit, dataValueSet );
 
         StreamUtils.closeOutputStream( outputStream );
     }
 
     @Override
+    public void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream )
+    {
+        DataValueSet dataValueSet = new StreamingJsonDataValueSet( outputStream );
+        
+        final String sql =
+            "select de.uid as deuid, pe.startdate, pt.name, ou.uid as ouuid, coc.uid as cocuid, dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
+            "from datavalue dv " +
+            "join dataelement de on (dv.dataelementid=de.dataelementid) " +
+            "join period pe on (dv.periodid=pe.periodid) " +
+            "join periodtype pt on (pe.periodtypeid=pt.periodtypeid) " +
+            "join organisationunit ou on (dv.sourceid=ou.organisationunitid) " +
+            "join categoryoptioncombo coc on (dv.categoryoptioncomboid=coc.categoryoptioncomboid) " +
+            "where dv.lastupdated >= '" + DateUtils.getLongDateString( lastUpdated ) + "'";
+        
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+
+        writeDataValueSet( rowSet, null, null, null, null, dataValueSet );
+    }
+    
+    @Override
     public void writeDataValueSetCsv( Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer )
     {
         DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CsvWriter( writer, CSV_DELIM ) );
-
-        writeDataValueSet( null, null, null, null, dataElements, periods, orgUnits, dataValueSet );
+        
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( getDataValueSql( dataElements, periods, orgUnits ) );
+        
+        writeDataValueSet( rowSet, null, null, null, null, dataValueSet );
     }
-
+    
     //--------------------------------------------------------------------------
     // Supportive methods
     //--------------------------------------------------------------------------
 
-    private void writeDataValueSet( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit,
-        Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, DataValueSet dataValueSet )
+    private void writeDataValueSet( SqlRowSet rowSet, DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, DataValueSet dataValueSet )
     {
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( getDataValueSql( dataElements, periods, orgUnits ) );
-
         dataValueSet.setDataSet( dataSet != null ? dataSet.getUid() : null );
         dataValueSet.setCompleteDate( getMediumDateString( completeDate ) );
         dataValueSet.setPeriod( period != null ? period.getIsoDate() : null );

@@ -40,6 +40,10 @@ public class ImportConflict
 
     private String value;
 
+    public ImportConflict()
+    {
+    }
+    
     public ImportConflict( String object, String value )
     {
         this.object = object;
