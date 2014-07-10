@@ -12,7 +12,8 @@
         factorDeviation: getFieldValue('factorDeviation'),
         phoneNumberAreaCode: getFieldValue('phoneNumberAreaCode'),
         googleAnalyticsUA: getFieldValue('googleAnalyticsUA'),
-        multiOrganisationUnitForms: jQuery('#multiOrganisationUnitForms').is(':checked')
+        multiOrganisationUnitForms: jQuery('#multiOrganisationUnitForms').is(':checked'),
+        analyticsMaintenanceMode: jQuery('#analyticsMaintenanceMode').is(':checked')
       }, function( json ) {
         if( json.response == "success" ) {
           setHeaderDelayMessage(json.message);
@@ -114,6 +115,11 @@
 <div class="setting">
     <input type="checkbox" id="omitIndicatorsZeroNumeratorDataMart" name="omitIndicatorsZeroNumeratorDataMart" #if( $omitIndicatorsZeroNumeratorDataMart )checked="checked"#end>
     <label for="omitIndicatorsZeroNumeratorDataMart">$i18n.getString( "omit_indicators_zero_numerator_data_mart" )</label>
+</div>
+
+<div class="setting">
+    <input type="checkbox" id="analyticsMaintenanceMode" name="analyticsMaintenanceMode" #if( $keyAnalyticsMaintenanceMode )checked="checked"#end>
+    <label for="analyticsMaintenanceMode">$i18n.getString( "put_analytics_in_maintenance_mode" ) <span class="tipText">($i18n.getString( "returns" ) 503)</span></label>
 </div>
 
 <div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>

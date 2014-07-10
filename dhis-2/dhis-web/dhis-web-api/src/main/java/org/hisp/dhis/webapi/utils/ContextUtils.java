@@ -191,7 +191,7 @@ public class ContextUtils
     {
         setResponse( response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message );
     }
-
+    
     private static void setResponse( HttpServletResponse response, int statusCode, String message )
     {
         response.setStatus( statusCode );

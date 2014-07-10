@@ -1,4 +1,4 @@
-package org.hisp.dhis.analytics.event;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,30 +28,14 @@ package org.hisp.dhis.analytics.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
-import org.hisp.dhis.common.IllegalQueryException;
-import org.hisp.dhis.common.MaintenanceModeException;
-
 /**
  * @author Lars Helge Overland
  */
-public interface EventQueryPlanner
-{    
-    void validate( EventQueryParams params )
-        throws IllegalQueryException, MaintenanceModeException;
-        
-    /**
-     * Plans the given params and returns a list of params.
-     * 
-     * @param params the query params.
-     */
-    List<EventQueryParams> planAggregateQuery( EventQueryParams params );
-
-    /**
-     * Plans the given params and returns a list of params.
-     * 
-     * @param params the query params.
-     */
-    EventQueryParams planEventQuery( EventQueryParams params );
+public class MaintenanceModeException
+    extends RuntimeException
+{
+    public MaintenanceModeException( String message )
+    {
+        super( message );
+    }
 }

@@ -175,6 +175,13 @@ public class SetGeneralSettingsAction
         this.multiOrganisationUnitForms = multiOrganisationUnitForms;
     }
 
+    private boolean analyticsMaintenanceMode;
+    
+    public void setAnalyticsMaintenanceMode( boolean analyticsMaintenanceMode )
+    {
+        this.analyticsMaintenanceMode = analyticsMaintenanceMode;
+    }
+    
     private String calendar;
 
     public void setCalendar( String calendar )
@@ -218,6 +225,7 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_GOOGLE_ANALYTICS_UA, googleAnalyticsUA );
         systemSettingManager.saveSystemSetting( KEY_CALENDAR, calendar );
         systemSettingManager.saveSystemSetting( KEY_DATE_FORMAT, dateFormat );
+        systemSettingManager.saveSystemSetting( KEY_ANALYTICS_MAINTENANCE_MODE, analyticsMaintenanceMode );
 
         Configuration configuration = configurationService.getConfiguration();
 

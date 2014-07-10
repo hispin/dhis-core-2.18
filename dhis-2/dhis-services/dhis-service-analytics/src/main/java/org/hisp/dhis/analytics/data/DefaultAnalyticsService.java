@@ -640,6 +640,8 @@ public class DefaultAnalyticsService
      */
     private Map<String, Double> getAggregatedValueMap( DataQueryParams params, String tableName )        
     {
+        queryPlanner.validateMaintenanceMode();
+        
         int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, MAX_QUERIES );
         
         Timer t = new Timer().start();
