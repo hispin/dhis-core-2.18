@@ -31,6 +31,7 @@ pg_dump $1 | psql $2
 psql -c "reassign owned by $1 to $2" $2
 # disable midnight scheduled tasks on the clone
 psql -c "delete from systemsetting where name = 'keyScheduledTasks';" $2
+psql -c "delete from systemsetting where name = 'keySchedTasks';" $2
 
 # make sure clone runs the same war file as master
 dhis2-deploy-war -f /var/lib/dhis2/$1/webapps/$1.war $2
