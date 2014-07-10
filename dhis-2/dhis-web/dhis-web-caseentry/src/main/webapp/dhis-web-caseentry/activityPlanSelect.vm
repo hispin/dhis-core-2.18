@@ -108,7 +108,7 @@
 				<td>
 					<input type="radio" id='ouMode1' name="ouMode" value="SELECTED" checked> $i18n.getString('selected')
 					<input type="radio" id='ouMode2' name="ouMode" value="CHILDREN"> $i18n.getString('children_only')
-					<input type="radio" id='ouMode3' name="ouMode" value="CHILDREN"> $i18n.getString('all')
+					<input type="radio" id='ouMode3' name="ouMode" value="DESCENDANTS"> $i18n.getString('all')
 				</td>
 			</tr>
 			<tr>
