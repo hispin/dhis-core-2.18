@@ -61,6 +61,10 @@ public class DateUtils
         new SimpleDateFormat( "yyyy" )
     };
     
+    public static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" );
+    public static final SimpleDateFormat ACCESS_DATE_FORMAT = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss" );
+    public static final SimpleDateFormat HTTP_DATE_FORMAT = new SimpleDateFormat( "EEE, dd MMM yyyy HH:mm:ss" );
+    
     public static final double DAYS_IN_YEAR = 365.0;
 
     private static final long MS_PER_DAY = 86400000;
@@ -74,9 +78,7 @@ public class DateUtils
      */
     public static String getAccessDateString( Date date )
     {
-        final SimpleDateFormat format = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss" );
-
-        return date != null ? format.format( date ) : null;
+        return date != null ? ACCESS_DATE_FORMAT.format( date ) : null;
     }
 
     /**
@@ -87,9 +89,7 @@ public class DateUtils
      */
     public static String getLongDateString( Date date )
     {
-        final SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-
-        return date != null ? format.format( date ) : null;
+        return date != null ? LONG_DATE_FORMAT.format( date ) : null;
     }
 
     /**
@@ -148,9 +148,7 @@ public class DateUtils
      */
     public static String getHttpDateString( Date date )
     {
-        final SimpleDateFormat format = new SimpleDateFormat( "EEE, dd MMM yyyy HH:mm:ss" );
-
-        return format.format( date ) + " GMT";
+        return HTTP_DATE_FORMAT.format( date ) + " GMT";
     }
 
     /**

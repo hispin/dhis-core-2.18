@@ -212,6 +212,7 @@ public class JacksonUtils
         return (T) xmlMapper.readValue( input, clazz );
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T fromJson( InputStream inputStream, TypeReference<?> typeReference ) throws IOException
     {
         return (T) jsonMapper.readValue( inputStream, typeReference );
