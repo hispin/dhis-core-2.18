@@ -121,6 +121,7 @@ public class JdbcEventStore
                 event.setStatus( EventStatus.valueOf( rowSet.getString( "psi_status" ) ) );
                 event.setProgram( rowSet.getString( "p_uid" ) );
                 event.setProgramStage( rowSet.getString( "ps_uid" ) );
+                event.setEnrollment( rowSet.getString( "pi_uid" ) );
                 event.setStoredBy( rowSet.getString( "psi_completeduser" ) );
                 event.setOrgUnit( rowSet.getString( "ou_uid" ) );
                 event.setDueDate( StringUtils.defaultIfEmpty( 
@@ -202,7 +203,7 @@ public class JdbcEventStore
         SqlHelper hlp = new SqlHelper();
 
         String sql = 
-            "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, " + 
+            "select pi.uid as pi_uid, p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, " +
             "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude, " +
             "psinote.trackedentitycommentid as psinote_id, psinote.commenttext as psinote_value, psinote.createddate as psinote_soreddate, psinote.creator as psinote_storedby, " +
             "pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid " +
