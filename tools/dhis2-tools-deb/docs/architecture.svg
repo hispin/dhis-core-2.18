@@ -15,7 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="architecture.svg">
+   sodipodi:docname="architecture.svg"
+   inkscape:export-filename="/home/bobj/src/dhis/test/dhis2/tools/dhis2-tools-deb/docs/architecture.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4">
     <marker
@@ -637,8 +640,8 @@
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="776"
+     inkscape:window-width="1680"
+     inkscape:window-height="1026"
      inkscape:window-x="0"
      inkscape:window-y="24"
      inkscape:window-maximized="1" />
@@ -650,7 +653,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1088,22 +1091,6 @@
        id="path5173"
        inkscape:connector-curvature="0"
        transform="translate(0,308.2677)" />
-    <text
-       xml:space="preserve"
-       style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="905.71429"
-       y="51.237339"
-       id="text5179"
-       sodipodi:linespacing="125%"
-       transform="translate(0,308.2677)"><tspan
-         sodipodi:role="line"
-         id="tspan5181"
-         x="905.71429"
-         y="51.237339">MOHCC</tspan><tspan
-         sodipodi:role="line"
-         x="905.71429"
-         y="78.737335"
-         id="tspan5183">Premises</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 844.28571,271.23734 C 818.57143,422.66591 818.57143,422.66591 818.57143,422.66591"
@@ -1216,33 +1203,7 @@
            height="127.14286"
            x="67.14286"
            y="552.66589" /></flowRegion><flowPara
-         id="flowPara5505" /></flowRoot>    <g
-       transform="translate(782.85715,-272.14285)"
-       id="g5507-3">
-      <path
-         transform="translate(0,308.2677)"
-         d="m 285.71428,613.38019 c 0,28.00873 -44.13193,50.71428 -98.57143,50.71428 -54.43949,0 -98.571424,-22.70555 -98.571424,-50.71428 0,-28.00873 44.131934,-50.71429 98.571424,-50.71429 54.4395,0 98.57143,22.70556 98.57143,50.71429 z"
-         sodipodi:ry="50.714287"
-         sodipodi:rx="98.571426"
-         sodipodi:cy="613.38019"
-         sodipodi:cx="187.14285"
-         id="path5493-7"
-         style="opacity:0.22633745;fill:#aff1dc;fill-opacity:1;stroke:#00fff9;stroke-width:0.00670627;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         sodipodi:type="arc" />
-      <text
-         transform="translate(0,308.2677)"
-         sodipodi:linespacing="125%"
-         id="text5495-3"
-         y="619.80878"
-         x="135.71429"
-         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><tspan
-           y="619.80878"
-           x="135.71429"
-           id="tspan5497-5"
-           sodipodi:role="line">Users</tspan></text>
-    </g>
-    <path
+         id="flowPara5505" /></flowRoot>    <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 278.57143,609.80877 c 78.57143,-2.85714 80,-2.85714 80,-2.85714"
        id="path5539"
@@ -1346,5 +1307,5 @@
            height="40"
            x="-227.14285"
            y="394.09448" /></flowRegion><flowPara
-         id="flowPara4295"></flowPara></flowRoot>  </g>
+         id="flowPara4295" /></flowRoot>  </g>
 </svg>

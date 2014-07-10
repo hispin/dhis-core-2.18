@@ -33,15 +33,15 @@
         </para>
       </listitem>
       <listitem>
-        <para>to provide a set of scripts to assist the administrator with tasks related to managing their
-        dhis2 system, beyond the one-off process of installation.</para>
+        <para>to provide a set of scripts to assist the administrator with tasks related to managing
+            their dhis2 system, beyond the one off process of installation.</para>
       </listitem>
     </orderedlist>
     The package remains a work in progress and there are a number of areas where it could and should
     (and hopefully will be improved).  For example,
       <orderedlist>
-        <listitem><para>currently the tuning of the postgresql database is not covered.  There are ways in which 
-          this could be at least semi-automated;</para></listitem>
+        <listitem><para>currently the tuning of the postgresql database is not covered. There are ways in which this
+            could be at least semi automated;</para></listitem>
         <listitem><para>nginx configuration is assisted by means of providing a sample configuration file.
         This configuration could be made more dynamic;</para></listitem>
         <listitem><para>the format of what is currently packaged is an Ubuntu linux deb package. There is 
@@ -50,43 +50,92 @@
         </para></listitem>
       </orderedlist>
     </para>
-    
+  </chapter> 
+   
+   <chapter>
+     <title>Architecture</title>
     <para>
+      The figure below shows the main components involved in a DHIS2 system.
       <figure>
         <title>Single machine all-in-one installation</title>
-        <graphic fileref="architecture.svg" align="center" width="80%"/>
+        <graphic fileref="architecture.png" align="center" width="80%" format="PNG"/>
       </figure>
+      The dhis2-tools are primarily concerned with the creation and managing of the tomcat instances
+      which deliver the web application. As you can see in the diagram there may be one or more of these.
+      In addition the system requires a postgresql database server and an nginx web proxy server.  There
+      are many possible configurations where these can be running on a different server than the dhis2
+      instances.  These tools for the most part assume that they are all installed together on the one machine.
+      Some customisation is required to separate them.
+    </para>
+    <para>
+      When an instance is created with the dhis2-create-instance command, a new user is created with the name 
+      of the instance (lets say its called hmis). The home directory of that user is located at /var/lib/dhis2/hmis.
+      A database role is created also called hmis together with a database with the name of hmis.  The DHIS2_HOME
+      environment variable for the instance is set to the same home directory of the user.
+    </para>
+    <para>The essential components of a standalone tomcat instance are also created within the same directory 
+      (modelled after the ubuntu tomcat7-user package).  The web.xml file of that tomcat instance has been customized
+      to allow an upstream web proxy server (such as nginx) to cache the static content of the dhis2 application.
+    </para>
+    <para>
+      The user will also have a crontab configuration automatically setup to manage daily backups, start on computer restart
+      and log file rotation.
+    </para>
+    <para>
+      Note that postgresql optimization, as described in the dhis2 user documentation, is not managed by this package and
+      needs to be done as a post-installation step.
     </para>
   </chapter>
   <chapter>
     <title>Installation</title>
-    <para> This manual assumes that you have installed a minimal distribution of ubuntu server 12.04 LTS.
-      By minimal we mean that only the base operating system is installed together with an openssh server.  
-      During the installation you shouls avoid to install ANY other packages (like java, postgres, nginx etc).  
-      The dhis2-tools package and install.sh script will ensure that these required packages are installed
-      as dependencies.</para>
+    <para> This manual assumes that you have installed a minimal distribution of ubuntu server 12.04
+      LTS or 14.04 LTS. By minimal we mean that only the base operating system is installed together
+      with an openssh server. During the installation you should avoid to install ANY other packages
+      The dhis2-tools package will ensure that the required packages are installed as dependencies.</para>
     <para>
       It is recommended as a general guideline that before proceeding any further you should strengthen the
-      security of the system at this point by securing your ssh service properly and installing a host based
+      security of the system at this point by improving the security of your ssh service and installing a host based
       firewall like ufw.  This process is described eleswhere(?).
     </para>
-    <para> Once your base system is properly installed and secured you can proceed to install the
-      dhis2-tools package. To do so you need to copy the two file dhis2-tools-xxx.deb and install.sh
-      to the server. Place them together in a directory under your user's home directory. To do this
-      you will need to use a tool like scp (on linux) or winscp on windows. 
+    <para> 
+      Once your base system is properly installed and secured you can proceed to install the
+      dhis2-tools package from the apt repository at http://apt.dhis2.org. The easiest way to do so is to 
+      run the install.sh script available at ...
     </para>
     <para>
-      Once the files are in place you can install the tools by typing the following:
-      </para>
-    <para><code>sudo ./install.sh</code></para>
-    <para>there must be at least
-      one user who has full sudo rights (usermod -G sudo bobj). That user can run the
-      dhis-create-admin command and create new dhis administrators. These dhis admins do not need to
-      have root access at all, but they have full rights to the database and all (other) dhis
-      commands. The idea being that as you work with fledgling dhis admin users you can give them
-      rights without making them all root. Maybe it is too fanciful .. all the magic is happening in
-      /etc/sudoers.d/dhis2 (though looking at that again I suspect I actually have something wrong
-      there) </para>
+      The simplified set of steps to get a dhis2 instance up and running from here are:
+      <orderedlist>
+        <listitem>
+          <para>turn your user (eg bobj) into a dhis2-admin user by running:</para>
+          <para>sudo dhis2-create-admin bobj </para>
+        </listitem>
+        <listitem>
+          <para>create an instance named eg dhis with:</para>
+          <para>dhis2-instance-create dhis</para>
+        </listitem>
+        <listitem>
+          <para>deploy the latest stable war file with:</para>
+          <para>dhis2-deploy-war dhis</para>
+        </listitem>
+        <listitem>
+          <para>setup a basic nginx template with:</para>
+          <para>dhis2-nginx</para>
+          <para>
+            Note that nginx configuration is not done automatically.  Though running the command dhis2-nginx will 
+            create a simple site configuration file under /etc/nginx/sites-enabled/dhis2.  You may need to edit this file
+            to ensure that instance names and port numbers are correct.            
+          </para>
+        </listitem>
+        <listitem>
+          <para>start your dhis instance with:</para>
+          <para>dhis2-startup dhis</para>
+        </listitem>
+      </orderedlist>
+    </para>
+    <para>
+      A full description of these commands and others used for managing your instance is included in the
+      command reference section below.
+    </para>    
   </chapter>
 
   <chapter>
@@ -150,6 +199,14 @@
               <para>http port</para>
             </listitem>
           </varlistentry>
+          <varlistentry>
+            <term>-n</term>
+            <listitem>
+              <para>DO NOT create the database when creating the instance. Note if you use this
+                option you will have to manually edit the properties file at
+                /var/lib/dhis2/&lt;instance&gt;/hibernate.properties.</para>
+            </listitem>
+          </varlistentry>
         </variablelist>
       </refsect1>
       <refsect1>
@@ -178,7 +235,7 @@
       <refsynopsisdiv>
         <cmdsynopsis>
           <command>/usr/bin/dhis2-startup</command>
-          <arg choice="opt">instance name</arg>
+          <arg choice="req">instance name</arg>
         </cmdsynopsis>
       </refsynopsisdiv>
 
@@ -189,6 +246,10 @@
       <refsect1>
         <title>Examples</title>
         <para>dhis2-startup myInstance</para>
+      </refsect1>
+      <refsect1>
+        <title>See also</title>
+        <para>dhis2-shutdown (1), dhis2-deploy-war (1) and dhis2-instance-create (1).</para>
       </refsect1>
     </refentry>
 
@@ -206,7 +267,7 @@
       <refsynopsisdiv>
         <cmdsynopsis>
           <command>/usr/bin/dhis2-shutdown</command>
-          <arg choice="opt">instance name</arg>
+          <arg choice="req">instance name</arg>
         </cmdsynopsis>
       </refsynopsisdiv>
 
@@ -218,8 +279,50 @@
         <title>Examples</title>
         <para>dhis2-shutdown myInstance</para>
       </refsect1>
+      <refsect1>
+        <title>See also</title>
+        <para>dhis2-startup (1)</para>
+      </refsect1>
     </refentry>
 
+    <!-- ============================================================================== -->
+    <refentry>
+      <refmeta>
+        <refentrytitle>dhis2-clone</refentrytitle>
+        <manvolnum>1</manvolnum>
+      </refmeta>
+      <refnamediv>
+        <refname>dhis2-clone</refname>
+        <refpurpose>Clones the database of one instance to another instance</refpurpose>
+      </refnamediv>
+      
+      <refsynopsisdiv>
+        <cmdsynopsis>
+          <command>/usr/bin/dhis2-clone</command>
+          <arg choice="req">master</arg>
+          <arg choice="req">copy</arg>
+        </cmdsynopsis>
+      </refsynopsisdiv>
+      
+      <refsect1>
+        <title>Description</title>
+        <para>This command creates a copy of the database and war file of one instance into another
+          instance. The main use case for this is where you want to setup an instance for training
+          purposes. Trainees can be "let loose" on the training instance without fear of disturbing
+          the data or configuration of the production instance. They will however be working with the 
+          same usernames, forms and reports which exist in the master. The command should be executed with
+          care as it will completely replace the existing database of the target instance</para>
+        <para>Scheduled datamart and analytics generation jobs are disabled in the target instance.</para>
+        <para>The command could conceivably be scheduled to run in the early morning to ensure that the database is
+        restored to a pristine state for the start of each day's training.  Or it can be run on demand.</para>
+      </refsect1>
+      <refsect1>
+        <title>Examples</title>
+        <para>dhis2-clone hmis training</para>
+        <para>Creates a new instance called training from an existing instance called hmis.</para>
+      </refsect1>
+    </refentry>
+    
     <!-- ============================================================================== -->
     <refentry>
       <refmeta>
@@ -295,24 +398,62 @@
         <refname>dhis2-logview</refname>
         <refpurpose>Shows log file</refpurpose>
       </refnamediv>
-
+      
       <refsynopsisdiv>
         <cmdsynopsis>
           <command>/usr/bin/dhis2-logview</command>
-          <arg choice="opt">instance name</arg>
+          <arg choice="req">instance name</arg>
         </cmdsynopsis>
       </refsynopsisdiv>
-
+      
       <refsect1>
         <title>Description</title>
-        <para>Use this tool to view log of dhis2 instance using less.</para>
+        <para>Use this tool to view log of dhis2 instance using less.  Type ":q" to exit.
+        See the man page for less for tips in navigating and searching the file.</para>
       </refsect1>
       <refsect1>
         <title>Examples</title>
         <para>dhis2-logview myInstance</para>
       </refsect1>
+      <refsect1>
+        <title>See also</title>
+        <para>dhis2-logtail (1).</para>
+      </refsect1>
+      
     </refentry>
-
+    
+    <!-- ============================================================================== -->
+    <refentry>
+      <refmeta>
+        <refentrytitle>dhis2-logtail</refentrytitle>
+        <manvolnum>1</manvolnum>
+      </refmeta>
+      <refnamediv>
+        <refname>dhis2-logtail</refname>
+        <refpurpose>Shows the bottom log file in real time.  Type Ctrl-C to exit.</refpurpose>
+      </refnamediv>
+      
+      <refsynopsisdiv>
+        <cmdsynopsis>
+          <command>/usr/bin/dhis2-logtail</command>
+          <arg choice="req">instance name</arg>
+        </cmdsynopsis>
+      </refsynopsisdiv>
+      
+      <refsect1>
+        <title>Description</title>
+        <para>Use this tool to show the log of dhis2 instance in real time.</para>
+      </refsect1>
+      <refsect1>
+        <title>Examples</title>
+        <para>dhis2-logtail myInstance</para>
+      </refsect1>
+      <refsect1>
+        <title>See also</title>
+        <para>dhis2-logview (1).</para>
+      </refsect1>
+    </refentry>
+    
     <!-- ============================================================================== -->
     <refentry>
       <refmeta>
@@ -327,7 +468,7 @@
       <refsynopsisdiv>
         <cmdsynopsis>
           <command>/usr/bin/dhis2-create-admin</command>
-          <arg choice="opt">username</arg>
+          <arg choice="req">username</arg>
         </cmdsynopsis>
       </refsynopsisdiv>
 
@@ -342,5 +483,76 @@
         <para>Create it like this</para>
       </refsect1>
     </refentry>
+  </chapter>
+  
+  <chapter>
+    <title>Troubleshooting guide</title>
+    <para>The following table shows some common problems which occur and likely remedies:</para>
+    <para>
+      <table>
+        <title>Troubleshooting guide</title>
+        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1" colwidth="1*"/>
+          <colspec colname="c2" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Problem</entry>
+              <entry>Solution</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para> When you attempt to access the site with your browser it does not connect.
+                </para>
+              </entry>
+              <entry>
+                <para> Either there is a network problem or nginx is not running. Check first to see
+                  if you can ping the host. If not you have a network problem. If you can ping the
+                  site, the most likely problem is that nginx is not installed or is not running.
+                  Verify that nginx is up and running and listening on ports 443 and 80 by typing: </para>
+                <para><code>sudo netstat -ntlp</code>
+                </para>
+                <para>You should see the nginx process listening on those 2 ports</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> You can access the site but you see a 502 gateway error in your browser.
+                </para>
+              </entry>
+              <entry>
+                <para> This means that nginx is unable to connect to your backend dhis2 instance.
+                  Either the instance is not running or your nginx location configuration has an
+                  error. Running the same netstat command above should show your instance listening
+                  on 127.0.0.1 with a port number typically 8080 or whatever you have configured it
+                  as. </para>
+                <para> If its not running, try to start it with <code>dhis2-startup [instance
+                  name]</code>
+                </para>
+                <para>If it is still not running, check the log file with <code>dhis2-logview
+                  [instance name]</code> to see if there is any information indicating why it has
+                  failed to start.</para>
+                <para>If it is running and you can see it with netstat then you need to check your
+                  nginx configuration file to ensure that the locatio is correctly mapped.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>You can access the site but you see a blank page in your browser.
+                </para>
+              </entry>
+              <entry>
+                <para>
+                  This usually means that the dhis2 instance is running, but you have forgotten
+                  to deploy a war file to it.  You need to run dhis2-deploy-war on that instance.
+                  See the reference section above for details of options.
+                </para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
   </chapter>
 </book>
