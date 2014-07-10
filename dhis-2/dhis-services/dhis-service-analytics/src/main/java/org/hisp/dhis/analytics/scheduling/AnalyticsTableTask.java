@@ -37,6 +37,7 @@ import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.system.util.DebugUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -141,11 +142,16 @@ public class AnalyticsTableTask
             
             notifier.notify( taskId, INFO, "Analytics tables updated", true );
         }
-        catch ( RuntimeException ex )
+        catch ( Exception ex )
         {
             notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
             
-            messageService.sendFeedback( "Analytics table process failed", "Analytics table process failed, please check the logs.", null );
+            messageService.sendFeedback( 
+                "Analytics table process failed", 
+                "Analytics table process failed, please check the logs. " +
+                "Message: " + ex.getMessage() + " " +
+                "Cause: " + DebugUtils.getStackTrace( ex.getCause() ), 
+                null );
             
             throw ex;
         }
