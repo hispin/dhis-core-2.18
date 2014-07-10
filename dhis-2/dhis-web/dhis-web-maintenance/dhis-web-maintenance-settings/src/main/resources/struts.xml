@@ -156,7 +156,7 @@
     
     <!-- Synchronization -->
 
-	<action name="synchronizationSettings" class="org.hisp.dhis.settings.action.system.GetSynchronizationSettingsAction">
+	<action name="systemSynchronizationSettings" class="org.hisp.dhis.settings.action.system.GetSynchronizationSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/systemSynchronizationSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
