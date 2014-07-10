@@ -28,6 +28,8 @@ package org.hisp.dhis.dxf2.synch;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+
 /**
  * @author Lars Helge Overland
  */
@@ -35,7 +37,7 @@ public interface SynchronizationManager
 {
     AvailabilityStatus isRemoteServerAvailable();
     
-    boolean executeDataSynch();
+    ImportSummary executeDataSynch();
     
     void enableDataSynch();
     

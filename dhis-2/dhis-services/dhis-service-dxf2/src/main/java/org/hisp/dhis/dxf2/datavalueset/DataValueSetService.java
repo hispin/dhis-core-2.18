@@ -52,6 +52,8 @@ public interface DataValueSetService
 
     void writeDataValueSetJson( Set<String> dataSet, Date startDate, Date endDate, Set<String> ous, OutputStream outputStream );
 
+    void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream );
+    
     void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, Writer writer );
 
     RootNode getDataValueSetTemplate( DataSet dataSet, Period period, List<String> orgUnits,
