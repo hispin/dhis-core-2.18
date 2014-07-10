@@ -140,6 +140,13 @@
 
   <chapter>
     <title>DHIS2 tools reference</title>
+    <para>The reference documentation for the commands contained in the package is listed in the
+      pages below. This documentation should also be included as man pages when the package is
+      installed. So for example you should be able to type </para>
+    <para><code>man dhis2-instance-create</code></para>
+    <para> to read the documentation for that command on the system. Typing</para>
+    <para><code>apropos dhis2</code></para>
+    <para> will show you all the dhis2 related man pages.</para>
 
     <!-- ============================================================================== -->
     <refentry>
@@ -295,7 +302,7 @@
         <refname>dhis2-clone</refname>
         <refpurpose>Clones the database of one instance to another instance</refpurpose>
       </refnamediv>
-      
+
       <refsynopsisdiv>
         <cmdsynopsis>
           <command>/usr/bin/dhis2-clone</command>
@@ -303,18 +310,21 @@
           <arg choice="req">copy</arg>
         </cmdsynopsis>
       </refsynopsisdiv>
-      
+
       <refsect1>
         <title>Description</title>
         <para>This command creates a copy of the database and war file of one instance into another
           instance. The main use case for this is where you want to setup an instance for training
           purposes. Trainees can be "let loose" on the training instance without fear of disturbing
-          the data or configuration of the production instance. They will however be working with the 
-          same usernames, forms and reports which exist in the master. The command should be executed with
-          care as it will completely replace the existing database of the target instance</para>
-        <para>Scheduled datamart and analytics generation jobs are disabled in the target instance.</para>
-        <para>The command could conceivably be scheduled to run in the early morning to ensure that the database is
-        restored to a pristine state for the start of each day's training.  Or it can be run on demand.</para>
+          the data or configuration of the production instance. They will however be working with
+          the same usernames, forms and reports which exist in the master. The command should be
+          executed with care as it will completely replace the existing database of the target
+          instance</para>
+        <para>Scheduled datamart and analytics generation jobs are disabled in the target
+          instance.</para>
+        <para>The command could conceivably be scheduled to run in the early morning to ensure that
+          the database is restored to a pristine state for the start of each day's training. Or it
+          can be run on demand.</para>
       </refsect1>
       <refsect1>
         <title>Examples</title>
@@ -322,7 +332,7 @@
         <para>Creates a new instance called training from an existing instance called hmis.</para>
       </refsect1>
     </refentry>
-    
+
     <!-- ============================================================================== -->
     <refentry>
       <refmeta>
@@ -398,18 +408,18 @@
         <refname>dhis2-logview</refname>
         <refpurpose>Shows log file</refpurpose>
       </refnamediv>
-      
+
       <refsynopsisdiv>
         <cmdsynopsis>
           <command>/usr/bin/dhis2-logview</command>
           <arg choice="req">instance name</arg>
         </cmdsynopsis>
       </refsynopsisdiv>
-      
+
       <refsect1>
         <title>Description</title>
-        <para>Use this tool to view log of dhis2 instance using less.  Type ":q" to exit.
-        See the man page for less for tips in navigating and searching the file.</para>
+        <para>Use this tool to view log of dhis2 instance using less. Type ":q" to exit. See the man
+          page for less for tips in navigating and searching the file.</para>
       </refsect1>
       <refsect1>
         <title>Examples</title>
@@ -419,9 +429,9 @@
         <title>See also</title>
         <para>dhis2-logtail (1).</para>
       </refsect1>
-      
+
     </refentry>
-    
+
     <!-- ============================================================================== -->
     <refentry>
       <refmeta>
@@ -430,16 +440,16 @@
       </refmeta>
       <refnamediv>
         <refname>dhis2-logtail</refname>
-        <refpurpose>Shows the bottom log file in real time.  Type Ctrl-C to exit.</refpurpose>
+        <refpurpose>Shows the bottom log file in real time. Type Ctrl-C to exit.</refpurpose>
       </refnamediv>
-      
+
       <refsynopsisdiv>
         <cmdsynopsis>
           <command>/usr/bin/dhis2-logtail</command>
           <arg choice="req">instance name</arg>
         </cmdsynopsis>
       </refsynopsisdiv>
-      
+
       <refsect1>
         <title>Description</title>
         <para>Use this tool to show the log of dhis2 instance in real time.</para>
@@ -453,7 +463,7 @@
         <para>dhis2-logview (1).</para>
       </refsect1>
     </refentry>
-    
+
     <!-- ============================================================================== -->
     <refentry>
       <refmeta>
