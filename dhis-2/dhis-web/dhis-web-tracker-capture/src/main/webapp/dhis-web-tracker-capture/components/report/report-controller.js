@@ -56,7 +56,7 @@ trackerCapture.controller('ReportController',
                 angular.forEach(eventList, function(ev){
                     if(ev.trackedEntityInstance){
                         ev.name = $scope.programStages[ev.programStage].name;
-                        ev.programName = $scope.selectedProgram.name
+                        ev.programName = $scope.selectedProgram.name;
                         ev.statusColor = EventUtils.getEventStatusColor(ev); 
                         ev.eventDate = DateUtils.format(ev.eventDate);
                         
@@ -99,7 +99,8 @@ trackerCapture.controller('ReportController',
 
         modalInstance.result.then({
         });
-    };    
+    };   
+    
 })
 
 //Controller for event details
@@ -208,10 +209,6 @@ trackerCapture.controller('ReportController',
             programId = $scope.selectedProgram.id;
         }
         
-        /*if($scope.selectedOrgUnit){
-            orgUnitId = $scope.selectedOrgUnit.id;
-        }*/
-        
         $scope.report = [];
         angular.forEach($scope.programs, function(pr){
             $scope.report[pr.id] = {events: []};
@@ -262,5 +259,9 @@ trackerCapture.controller('ReportController',
 
         modalInstance.result.then({
         });
-    };    
+    };   
+    
+    $scope.showProgramReportDetails = function(prId){
+        console.log('I need to display details for:  ', prId, '-',$scope.report[prId].events);
+    };
 });

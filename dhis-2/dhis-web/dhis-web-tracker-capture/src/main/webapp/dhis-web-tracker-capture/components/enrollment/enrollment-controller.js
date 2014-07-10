@@ -33,7 +33,7 @@ trackerCapture.controller('EnrollmentController',
         if($scope.selectedProgram){ 
             EnrollmentService.getByEntityAndProgram($scope.selectedTei.trackedEntityInstance, $scope.selectedProgram.id).then(function(data){
                 $scope.enrollments = data.enrollmentList;
-                $scope.loadEvents();                
+                $scope.loadEnrollmentDetails();                
             });
         }
         else{
@@ -41,7 +41,7 @@ trackerCapture.controller('EnrollmentController',
         }
     }); 
     
-    $scope.loadEvents = function() {
+    $scope.loadEnrollmentDetails = function() {
         
         if($scope.selectedProgram){
           
