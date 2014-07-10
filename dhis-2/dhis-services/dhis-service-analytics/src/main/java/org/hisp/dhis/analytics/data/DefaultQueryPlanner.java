@@ -69,6 +69,7 @@ import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.common.MaintenanceModeException;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -202,6 +203,17 @@ public class DefaultQueryPlanner
             log.warn( "Validation failed: " + violation );
             
             throw new IllegalQueryException( violation );
+        }
+    }
+    
+    public void validateMaintenanceMode()
+        throws MaintenanceModeException
+    {
+        boolean maintenance = (Boolean) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_ANALYTICS_MAINTENANCE_MODE, false );
+        
+        if ( maintenance )
+        {
+            throw new MaintenanceModeException( "Analytics engine is in maintenanec mode, try again later" );
         }
     }
     

@@ -44,6 +44,7 @@ import org.hisp.dhis.analytics.partition.PartitionManager;
 import org.hisp.dhis.analytics.table.PartitionUtils;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IllegalQueryException;
+import org.hisp.dhis.common.MaintenanceModeException;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -78,7 +79,7 @@ public class DefaultEventQueryPlanner
 
     @Override
     public void validate( EventQueryParams params )
-        throws IllegalQueryException
+        throws IllegalQueryException, MaintenanceModeException
     {
         String violation = null;
 
@@ -86,6 +87,8 @@ public class DefaultEventQueryPlanner
         {
             throw new IllegalQueryException( "Params cannot be null" );
         }
+        
+        queryPlanner.validateMaintenanceMode();
         
         if ( !params.hasOrganisationUnits() )
         {
@@ -184,6 +187,12 @@ public class DefaultEventQueryPlanner
         //TODO periods, convert to start/end dates
         
         return params;
+    }
+    
+    public void validateMaintenanceMode()
+        throws MaintenanceModeException
+    {
+        queryPlanner.validateMaintenanceMode();
     }
     
     // -------------------------------------------------------------------------

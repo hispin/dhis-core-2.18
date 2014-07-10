@@ -97,6 +97,7 @@ public interface SystemSettingManager
     final String KEY_ANALYTICS_MAX_LIMIT = "keyAnalyticsMaxLimit";
     final String KEY_CUSTOM_LOGIN_PAGE_LOGO = "keyCustomLoginPageLogo";
     final String KEY_CUSTOM_TOP_MENU_LOGO = "keyCustomTopMenuLogo";
+    final String KEY_ANALYTICS_MAINTENANCE_MODE = "keyAnalyticsMaintenanceMode";
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";
