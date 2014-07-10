@@ -213,7 +213,7 @@ public class DefaultQueryPlanner
         
         if ( maintenance )
         {
-            throw new MaintenanceModeException( "Analytics engine is in maintenanec mode, try again later" );
+            throw new MaintenanceModeException( "Analytics engine is in maintenance mode, try again later" );
         }
     }
     
