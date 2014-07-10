@@ -18,7 +18,7 @@
         
         <div ng-show="selectedTei" class="remove-default-padding">
             <table class="table table-striped dhis2-table-hover">
-                <tr ng-click="showDashboard(rel)" ng-repeat="rel in selectedTei.relationships">
+                <tr ng-click="showDashboard(rel)" ng-repeat="rel in selectedTei.relationships" title="{{'go_to_dashboard'| translate}}">
                     <td>
                         <span ng-if="selectedTei.trackedEntityInstance === rel.trackedEntityInstanceA">{{relationships[rel.relationship].bIsToA}}</span>
                         <span ng-if="selectedTei.trackedEntityInstance === rel.trackedEntityInstanceB">{{relationships[rel.relationship].aIsToB}}</span>                        
