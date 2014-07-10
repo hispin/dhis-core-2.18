@@ -6495,7 +6495,7 @@ Ext.onReady( function() {
         });
 
         label = Ext.create('Ext.panel.Panel', {
-			title: '<div class="ns-panel-title-data">' + GIS.i18n.labels + '</div>',
+			title: '<div class="ns-panel-title-data">Options</div>',
 			hideCollapseTool: true,
             items: labelPanel,
 			listeners: {
@@ -7997,7 +7997,7 @@ Ext.onReady( function() {
         labelPanel = Ext.create('Ext.ux.panel.LabelPanel');
 
         label = Ext.create('Ext.panel.Panel', {
-			title: '<div class="ns-panel-title-data">' + GIS.i18n.labels + '</div>',
+			title: '<div class="ns-panel-title-data">Options</div>',
 			hideCollapseTool: true,
             items: labelPanel,
 			listeners: {
