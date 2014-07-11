@@ -312,7 +312,7 @@ public class DataValue
     {
         if( !auditValueIsSet )
         {
-            this.auditValue = valueIsSet ? this.auditValue : value;
+            this.auditValue = valueIsSet ? this.value : value;
             auditValueIsSet = true;
         }
 
