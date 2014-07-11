@@ -53,7 +53,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RequestCallback;
@@ -70,8 +69,6 @@ public class DefaultSynchronizationManager
     private static final Log log = LogFactory.getLog( DefaultSynchronizationManager.class );
     
     private static final String KEY_LAST_SUCCESSFUL_SYNC = "keyLastSuccessfulSynch";
-    
-    private static CronTrigger CRON = new CronTrigger( "5 * * * * *" ); // Every 5 minutes
     
     private static final String PING_PATH = "/api/system/ping";
     private static final String HEADER_AUTHORIZATION = "Authorization";
@@ -163,20 +160,8 @@ public class DefaultSynchronizationManager
         return status;        
     }
     
-    public void enableDataSynch()
-    {        
-    }
-    
-    public void disableDataSynch()
-    {        
-    }
-    
-    public boolean isDataSynchEnabled()
-    {
-        return false;
-    }
-    
     public ImportSummary executeDataSynch()
+        throws HttpServerErrorException
     {
         AvailabilityStatus availability = isRemoteServerAvailable();
         
@@ -227,11 +212,9 @@ public class DefaultSynchronizationManager
         {
             setLastSynchSuccess( time );            
             log.info( "Synch successful, setting last success time: " + time );            
-        }   
+        }
         
         return summary;
-        
-        //TODO paging of data values
     }
     
     // -------------------------------------------------------------------------

@@ -28,14 +28,45 @@ package org.hisp.dhis.dxf2.synch;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.system.notification.Notifier;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  */
-public interface SynchronizationManager
+public class DataSynchronizationTask
+    implements Runnable
 {
-    AvailabilityStatus isRemoteServerAvailable();
-    
-    ImportSummary executeDataSynch();
+    @Autowired
+    private SynchronizationManager synchronizationManager;
+
+    @Autowired
+    private Notifier notifier;
+
+    private TaskId taskId;
+
+    public void setTaskId( TaskId taskId )
+    {
+        this.taskId = taskId;
+    }
+
+    // -------------------------------------------------------------------------
+    // Runnable implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void run()
+    {
+        try
+        {
+            synchronizationManager.executeDataSynch();
+        }
+        catch ( RuntimeException ex )
+        {
+            notifier.notify( taskId, "Data synch failed: " + ex.getMessage() );
+        }
+        
+        notifier.notify( taskId, "Data synch successful" );
+    }
 }
