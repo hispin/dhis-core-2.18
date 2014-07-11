@@ -4,6 +4,10 @@ var currentOptionComboId = '$!{optionComboId}';
 
 $( document ).ready( function() {
     dhis2.de.insertCommentOptionSet( '$!{commentOptionSet.uid}' );
+
+    $( function() {
+        $("#historyTabs").tabs();
+    });
 } );
 </script>
 
@@ -75,32 +79,65 @@ $( document ).ready( function() {
                 </tr>
             </table>
         </td>
-	</tr>
-	<tr>
-		<!-- History chart -->
-		<td colspan="2">
-			#if( $historyInvalid )
-			<div class="historyHeader">$encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )</div>	
-			#else
-			<div class="historyHeader">$encoder.htmlEncode( $i18n.getString( "dataelement_history" ) )</div>
-			<img id="historyChart" 
-			src="../api/charts/history/data.png?de=${dataElementHistory.dataElement.uid}&co=${dataElementHistory.optionCombo.uid}&ou=${dataElementHistory.organisationUnit.uid}&pe=${periodId}"/>
-			#end
+    </tr>
+    <tr>    <!-- History chart and audit -->
+        <td colspan="2">
+            <div id="historyTabs">
+                <ul>
+                    <li><a href="#historyTabs-chart">$i18n.getString( "dataelement_history" )</a></li>
+                    <li><a href="#historyTabs-audit">$i18n.getString( "audit_trail" )</a></li>
+                </ul>
+                <div id="historyTabs-chart">
+                    #if( $historyInvalid )
+                        $encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )
+                    #else
+                        <img id="historyChart"
+                             src="../api/charts/history/data.png?de=${dataElementHistory.dataElement.uid}&co=${dataElementHistory.optionCombo.uid}&ou=${dataElementHistory.organisationUnit.uid}&pe=${periodId}"/>
+                    #end
+                </div>
+                <div id="historyTabs-audit">
+                    #if( $dataValueAuditSize > 0 )
+                        <table id="historyAuditTable">
+                            <thead>
+                                <tr>
+                                    <th>$encoder.htmlEncode( $i18n.getString( "on" ) )</th>
+                                    <th>$encoder.htmlEncode( $i18n.getString( "modified_by" ) )</th>
+                                    <th>$encoder.htmlEncode( $i18n.getString( "value" ) )</th>
+                                    <th>$encoder.htmlEncode( $i18n.getString( "modification" ) )</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            #foreach( $dataValueAudit in $dataValueAudits )
+                                <tr>
+                                    <td>
+                                        $format.formatDateTime( $dataValueAudit.timestamp )
+                                    </td>
+                                    <td>
+                                        #if( $dataValueAudit.modifiedBy )
+                                            $dataValueAudit.modifiedBy
+                                        #else
+                                            <i>$encoder.htmlEncode( $i18n.getString( "no_value" ) )</i>
+                                        #end
+                                    </td>
+                                    <td>
+                                        #if( $dataValueAudit.value )
+                                            $dataValueAudit.value
+                                        #else
+                                            <i>$encoder.htmlEncode( $i18n.getString( "no_value" ) )</i>
+                                        #end
+                                    </td>
+                                    <td>
+                                        <i>$i18n.getString( $dataValueAudit.auditType.getValue() )</i>
+                                    </td>
+                                </tr>
+                            #end
+                            </tbody>
+                        </table>
+                    #else
+                        <i>$encoder.htmlEncode( $i18n.getString( "there_is_no_audit_trail_for_this_value" ) )</i>
+                    #end
+                </div>
+            </div>
         </td>
     </tr>
-    #if( $dataValueAuditSize > 0 )
-	<tr>
-		<!-- Data Value History -->
-		<td colspan="2">
-			<<div class="historyHeader">>$encoder.htmlEncode( $i18n.getString( "datavalue_history" ) )</div>
-			#foreach( $eachDataValueAudit in $dataValueAudits )
-				<p>
-					$encoder.htmlEncode( $i18n.getString( "on" ) ) $eachDataValueAudit.timeStamp,
-					$eachDataValueAudit.storedBy 
-					$encoder.htmlEncode( $i18n.getString( "change_from" ) ) $eachDataValueAudit.value
-				</p>
-			#end					
-        </td>
-    </tr>
-    #end
 </table>

@@ -34,9 +34,11 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Quang Nguyen
+ * @author Halvdan Hoem Grelland
  */
 public class DefaultDataValueAuditService
     implements DataValueAuditService
@@ -56,48 +58,57 @@ public class DefaultDataValueAuditService
     // DataValueAuditService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void addDataValueAudit( DataValueAudit dataValueAudit )
     {
         dataValueAuditStore.addDataValueAudit( dataValueAudit );
     }
 
+    @Override
+    @Transactional
     public void deleteDataValueAudit( DataValueAudit dataValueAudit )
     {
         dataValueAuditStore.deleteDataValueAudit( dataValueAudit );
     }
 
-    public int deleteDataValueAuditByDataValue( DataValue dataValue )
+    @Override
+    public Collection<DataValueAudit> getDataValueAudits( DataValue dataValue )
     {
-        return dataValueAuditStore.deleteDataValueAuditByDataValue( dataValue );
+        return dataValueAuditStore.getDataValueAudits( dataValue );
     }
 
-    public Collection<DataValueAudit> getDataValueAuditByDataValue( DataValue dataValue )
+    @Override
+    public Collection<DataValueAudit> getDataValueAudits( DataElement dataElement, Period period,
+        OrganisationUnit organisationUnit, DataElementCategoryOptionCombo categoryOptionCombo )
     {
-        return dataValueAuditStore.getDataValueAuditByDataValue( dataValue );
+        return dataValueAuditStore.getDataValueAudits( dataElement, period, organisationUnit, categoryOptionCombo );
     }
 
-    public Collection<DataValueAudit> getAll()
+    @Override
+    @Transactional
+    public int deleteDataValueAuditByDataElement( DataElement dataElement )
     {
-        return dataValueAuditStore.getAll();
+        return dataValueAuditStore.deleteDataValueAuditByDataElement( dataElement );
     }
 
-    public void deleteDataValueAuditBySource( OrganisationUnit unit )
+    @Override
+    @Transactional
+    public int deleteDataValueAuditByPeriod( Period period )
     {
-        dataValueAuditStore.deleteDataValueAuditBySource( unit );
+        return dataValueAuditStore.deleteDataValueAuditByPeriod( period );
     }
 
-    public void deleteDataValueAuditByDataElement( DataElement dataElement )
+    @Override
+    @Transactional
+    public int deleteDataValueAuditByOrganisationUnit( OrganisationUnit organisationUnit )
     {
-        dataValueAuditStore.deleteDataValueAuditByDataElement( dataElement );
-        
+        return dataValueAuditStore.deleteDataValueAuditByOrganisationUnit( organisationUnit );
     }
-    public void deleteByDataElementCategoryOptionCombo( DataElementCategoryOptionCombo optionCombo )
+
+    @Override
+    @Transactional
+    public int deleteDataValueAuditByCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
     {
-    	dataValueAuditStore.deleteByDataElementCategoryOptionCombo( optionCombo );
-    }
-    
-    public void deleteByPeriod( Period period )
-    {
-    	dataValueAuditStore.deleteByPeriod( period );
+        return dataValueAuditStore.deleteDataValueAuditByCategoryOptionCombo( categoryOptionCombo );
     }
 }

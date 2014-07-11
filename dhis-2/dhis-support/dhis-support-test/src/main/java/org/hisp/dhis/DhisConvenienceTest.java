@@ -79,6 +79,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueAuditService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
@@ -197,6 +198,8 @@ public abstract class DhisConvenienceTest
     protected ExpressionService expressionService;
 
     protected DataValueService dataValueService;
+
+    protected DataValueAuditService dataValueAuditService;
 
     protected ResourceTableService resourceTableService;
 

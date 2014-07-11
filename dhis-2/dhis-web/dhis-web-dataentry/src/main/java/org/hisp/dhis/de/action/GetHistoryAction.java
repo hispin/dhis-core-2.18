@@ -55,6 +55,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
+ * @author Halvdan Hoem Grelland
  */
 public class GetHistoryAction
     implements Action
@@ -257,7 +258,9 @@ public class GetHistoryAction
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( ServletActionContext.getResponse(), cc, cp );
-        
+
+        dataValueAudits = dataValueAuditService.getDataValueAudits( dataElement, period, organisationUnit, categoryOptionCombo );
+
         dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, categoryOptionCombo, attributeOptionCombo );
 
         if ( dataValue != null )
@@ -271,8 +274,6 @@ public class GetHistoryAction
         historyInvalid = dataElementHistory == null;
 
         minMaxInvalid = !DataElement.VALUE_TYPE_INT.equals( dataElement.getType() );
-
-        dataValueAudits = dataValueAuditService.getDataValueAuditByDataValue( dataValue );
 
         commentOptionSet = dataElement.getCommentOptionSet();
         
