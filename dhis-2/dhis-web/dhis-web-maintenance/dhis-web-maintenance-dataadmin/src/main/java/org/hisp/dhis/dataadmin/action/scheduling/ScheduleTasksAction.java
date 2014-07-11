@@ -30,17 +30,14 @@ package org.hisp.dhis.dataadmin.action.scheduling;
 
 import static org.hisp.dhis.scheduling.SchedulingManager.TASK_ANALYTICS_ALL;
 import static org.hisp.dhis.scheduling.SchedulingManager.TASK_ANALYTICS_LAST_3_YEARS;
-import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATAMART_FROM_6_TO_12_MONTS;
-import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATAMART_LAST_12_MONTHS;
-import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATAMART_LAST_6_MONTHS;
+import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATAMART_LAST_YEAR;
 import static org.hisp.dhis.scheduling.SchedulingManager.TASK_RESOURCE_TABLE;
 import static org.hisp.dhis.scheduling.SchedulingManager.TASK_MONITORING_LAST_DAY;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_PERIOD_TYPES;
-import static org.hisp.dhis.system.scheduling.Scheduler.CRON_DAILY_0AM_EXCEPT_SUNDAY;
-import static org.hisp.dhis.system.scheduling.Scheduler.CRON_WEEKLY_SUNDAY_0AM;
+import static org.hisp.dhis.system.scheduling.Scheduler.CRON_DAILY_0AM;
 import static org.hisp.dhis.system.scheduling.Scheduler.STATUS_RUNNING;
 import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
 
@@ -66,8 +63,6 @@ import com.opensymphony.xwork2.Action;
 public class ScheduleTasksAction
     implements Action
 {
-    private static final String STRATEGY_LAST_12_DAILY = "last12Daily";
-    private static final String STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY = "last6Daily6To12Weekly";
     private static final String STRATEGY_ALL_DAILY = "allDaily";
     private static final String STRATEGY_LAST_3_YEARS_DAILY = "last3YearsDaily";
     
@@ -232,8 +227,7 @@ public class ScheduleTasksAction
 
                 if ( STRATEGY_ALL_DAILY.equals( resourceTableStrategy ) )
                 {
-                    cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_RESOURCE_TABLE );
-                    cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_RESOURCE_TABLE );
+                    cronKeyMap.putValue( CRON_DAILY_0AM, TASK_RESOURCE_TABLE );
                 }
                 
                 // -------------------------------------------------------------
@@ -242,28 +236,20 @@ public class ScheduleTasksAction
 
                 if ( STRATEGY_ALL_DAILY.equals( analyticsStrategy ) )
                 {
-                    cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_ANALYTICS_ALL );
-                    cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_ANALYTICS_ALL );
+                    cronKeyMap.putValue( CRON_DAILY_0AM, TASK_ANALYTICS_ALL );
                 }
                 else if ( STRATEGY_LAST_3_YEARS_DAILY.equals( analyticsStrategy ) )
                 {
-                    cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_ANALYTICS_LAST_3_YEARS );
-                    cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_ANALYTICS_LAST_3_YEARS );
+                    cronKeyMap.putValue( CRON_DAILY_0AM, TASK_ANALYTICS_LAST_3_YEARS );
                 }
                 
                 // -------------------------------------------------------------
                 // Data mart
                 // -------------------------------------------------------------
                 
-                if ( STRATEGY_LAST_12_DAILY.equals( dataMartStrategy ) )
+                if ( STRATEGY_ALL_DAILY.equals( dataMartStrategy ) )
                 {
-                    cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_DATAMART_LAST_12_MONTHS );
-                    cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_DATAMART_LAST_12_MONTHS );
-                }
-                else if ( STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY.equals( dataMartStrategy ) )
-                {
-                    cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_DATAMART_LAST_6_MONTHS );
-                    cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_DATAMART_FROM_6_TO_12_MONTS );
+                    cronKeyMap.putValue( CRON_DAILY_0AM, TASK_DATAMART_LAST_YEAR );
                 }
 
                 // -------------------------------------------------------------
@@ -272,8 +258,7 @@ public class ScheduleTasksAction
                 
                 if ( STRATEGY_ALL_DAILY.equals( monitoringStrategy ) )
                 {
-                    cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_MONITORING_LAST_DAY );
-                    cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_MONITORING_LAST_DAY );
+                    cronKeyMap.putValue( CRON_DAILY_0AM, TASK_MONITORING_LAST_DAY );
                 }
                 
                 schedulingManager.scheduleTasks( cronKeyMap );
@@ -281,7 +266,7 @@ public class ScheduleTasksAction
         }
         else
         {
-            Collection<String> keys = emptyIfNull( schedulingManager.getCronKeyMap().get( CRON_DAILY_0AM_EXCEPT_SUNDAY ) );
+            Collection<String> keys = emptyIfNull( schedulingManager.getCronKeyMap().get( CRON_DAILY_0AM ) );
             
             // -----------------------------------------------------------------
             // Resource tables
@@ -309,13 +294,9 @@ public class ScheduleTasksAction
             // Data mart
             // -----------------------------------------------------------------
 
-            if ( keys.contains( TASK_DATAMART_LAST_12_MONTHS ) )
+            if ( keys.contains( TASK_DATAMART_LAST_YEAR ) )
             {
-                dataMartStrategy = STRATEGY_LAST_12_DAILY;
-            }
-            else if ( keys.contains( TASK_DATAMART_LAST_6_MONTHS ) )
-            {
-                dataMartStrategy = STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY;
+                dataMartStrategy = STRATEGY_ALL_DAILY;
             }
 
             // -------------------------------------------------------------

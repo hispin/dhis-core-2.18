@@ -314,22 +314,7 @@ public class RelativePeriodTest
         periodTypes.add( YearlyPeriodType.NAME );
         periodTypes.add( FinancialJulyPeriodType.NAME );
 
-        List<Period> periods = new RelativePeriods().getLast6Months( periodTypes );
-
-        assertEquals( 14, periods.size() );
-
-        periods = new RelativePeriods().getLast6To12Months( periodTypes );
-
-        assertEquals( 14, periods.size() );
-
-        periodTypes.clear();
-        periodTypes.add( WeeklyPeriodType.NAME );
-
-        periods = new RelativePeriods().getLast6Months( periodTypes );
-
-        assertEquals( 26, periods.size() );
-
-        periods = new RelativePeriods().getLast6To12Months( periodTypes );
+        List<Period> periods = new RelativePeriods().getLast12Months( periodTypes );
 
         assertEquals( 26, periods.size() );
     }

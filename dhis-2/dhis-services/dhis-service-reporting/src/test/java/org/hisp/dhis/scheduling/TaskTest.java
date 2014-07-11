@@ -61,28 +61,9 @@ public class TaskTest
         
         DataMartTask dataMartTask = new DataMartTask();
 
-        dataMartTask.setLast6Months( true );
-        dataMartTask.setLast6To12Months( true );
-
         List<Period> periods = dataMartTask.getPeriods( periodTypes );
         
         assertNotNull( periods );
-        assertEquals( 28, periods.size() ); // 12 + 6 + 4 + 2 + 1 + 1 
-        
-        dataMartTask.setLast6Months( true );
-        dataMartTask.setLast6To12Months( false );
-        
-        periods = dataMartTask.getPeriods( periodTypes );
-
-        assertNotNull( periods );
-        assertEquals( 14, periods.size() ); // 6 + 3 + 2 + 1 + 1 + 1
-        
-        dataMartTask.setLast6Months( false );
-        dataMartTask.setLast6To12Months( true );
-
-        periods = dataMartTask.getPeriods( periodTypes );
-        
-        assertNotNull( periods );
-        assertEquals( 14, periods.size() ); // 6 + 3 + 2 + 1 + 1 + 1
+        assertEquals( 26, periods.size() ); // 12 + 6 + 4 + 2 + 1 + 1 
     }
 }

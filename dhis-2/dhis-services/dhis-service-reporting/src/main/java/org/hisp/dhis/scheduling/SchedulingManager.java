@@ -36,9 +36,7 @@ import org.hisp.dhis.common.ListMap;
 public interface SchedulingManager
 {
     final String TASK_RESOURCE_TABLE = "resourceTableTask";
-    final String TASK_DATAMART_LAST_12_MONTHS = "dataMartLast12MonthsTask";
-    final String TASK_DATAMART_LAST_6_MONTHS = "dataMartLast6MonthsTask";
-    final String TASK_DATAMART_FROM_6_TO_12_MONTS = "dataMartFrom6To12MonthsTask";
+    final String TASK_DATAMART_LAST_YEAR = "dataMartLastYearTask";
     final String TASK_ANALYTICS_ALL = "analyticsAllTask";
     final String TASK_ANALYTICS_LAST_3_YEARS = "analyticsLast3YearsTask";
     final String TASK_MONITORING_LAST_DAY = "monitoringLastDayTask";

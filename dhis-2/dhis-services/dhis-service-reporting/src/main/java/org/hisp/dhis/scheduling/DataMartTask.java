@@ -32,7 +32,6 @@ import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIO
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_PERIOD_TYPES;
 import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -83,20 +82,6 @@ public class DataMartTask
         this.periods = periods;
     }
     
-    private boolean last6Months;
-
-    public void setLast6Months( boolean last6Months )
-    {
-        this.last6Months = last6Months;
-    }
-
-    private boolean last6To12Months;
-
-    public void setLast6To12Months( boolean last6To12Months )
-    {
-        this.last6To12Months = last6To12Months;
-    }
-
     private TaskId taskId;
 
     public void setTaskId( TaskId taskId )
@@ -146,18 +131,6 @@ public class DataMartTask
             return periods;
         }
         
-        List<Period> relatives =  new ArrayList<Period>();
-        
-        if  ( last6Months )
-        {
-            relatives.addAll( new RelativePeriods().getLast6Months( periodTypes ) );
-        }
-        
-        if ( last6To12Months )
-        {
-            relatives.addAll( new RelativePeriods().getLast6To12Months( periodTypes ) );
-        }
-        
-        return relatives;
+        return new RelativePeriods().getLast12Months( periodTypes );
     }
 }
