@@ -10,7 +10,7 @@ $( document ).ready( function()
 		$( '.scheduling' ).removeAttr( 'disabled' );
 	}
 	
-	if ( $( '#dataMartStrategy' ).val() == 'never' )
+	if ( $( '#dataMartStrategy' ).val() == 'disabled' )
 	{
 		$( '.dataMart' ).attr( 'disabled', 'disabled' );
 	}

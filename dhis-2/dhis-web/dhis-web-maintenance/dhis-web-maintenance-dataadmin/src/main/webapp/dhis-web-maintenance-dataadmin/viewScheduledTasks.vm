@@ -45,6 +45,19 @@
 </select>
 </div>
 
+<!-- Data value synch -->
+
+<div class="settingHeader">$i18n.getString( "data_synchronization" )</div>
+
+<div class="settingLabel settingIndent">$i18n.getString( "data_synchronization_strategy" )</div>
+
+<div class="setting settingIndent">
+<select id="dataSynchStrategy" name="dataSynchStrategy" class="scheduling">
+    <option value="disabled">$i18n.getString( "disabled" )</option>
+    <option value="enabled"#if( $dataSynchStrategy && $dataSynchStrategy == "enabled" ) selected="selected"#end>$i18n.getString( "enabled" )</option>
+</select>
+</div>
+
 <div id="moreOptionsLink" style="margin-bottom:10px"><a href="javascript:toggleMoreOptions()">$i18n.getString( "show_more_options" )</a></div>
 
 <div style="display:none" id="moreOptionsDiv">
