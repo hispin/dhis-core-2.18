@@ -3321,7 +3321,7 @@ Ext.onReady( function() {
 				},
                 extendDim = function(dim) {
                     dim.id = dim.id || dim.dimension;
-                    dim.name = dim.name || ns.app.response.metaData.names[dim.dimension] || "Nissa";
+                    dim.name = dim.name || ns.app.response.metaData.names[dim.dimension];
 
                     return dim;
                 };
@@ -4628,7 +4628,7 @@ Ext.onReady( function() {
                 var win = ns.app.viewport.getLayoutWindow();
 
                 if (selectedStore.getRange().length) {
-                    win.addDimension({id: dimension.id, name: dimension.name});
+                    win.addDimension({id: dimension.id, name: dimension.name}, win.rowStore);
                 }
                 else if (!selectedStore.getRange().length && win.hasDimension(dimension.id)) {
                     win.removeDimension(dimension.id);
