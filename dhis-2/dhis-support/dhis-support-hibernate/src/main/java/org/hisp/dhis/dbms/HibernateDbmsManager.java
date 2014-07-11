@@ -82,6 +82,7 @@ public class HibernateDbmsManager
         emptyTable( "sqlview" );
 
         emptyTable( "datavalue_audit" );
+        emptyTable( "datavalueaudit" );
         emptyTable( "datavalue" );
         emptyTable( "completedatasetregistration" );
 

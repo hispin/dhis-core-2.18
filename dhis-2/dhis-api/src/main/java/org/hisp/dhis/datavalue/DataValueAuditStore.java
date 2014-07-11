@@ -28,36 +28,90 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
+import java.util.Collection;
+
 /**
  * @author Quang Nguyen
- * @version Mar 30, 2010 10:32:19 PM
+ * @author Halvdan Hoem Grelland
  */
 public interface DataValueAuditStore
 {
     String ID = DataValueAuditStore.class.getName();
 
+    /**
+     * Adds a DataValueAudit.
+     *
+     * @param dataValueAudit the DataValueAudit to add.
+     */
     void addDataValueAudit( DataValueAudit dataValueAudit );
 
+    /**
+     * Returns all DataValueAudits which match the DataElement, Period, OrganisationUnit
+     * and DataElementCategoryOptionCombo of the given DataValue.
+     *
+     * @param dataValue the DataValue to get DataValueAudits for.
+     * @return a collection of DataValueAudits which match the DataElement Period,
+     *         OrganisationUnit and DataElementCategoryOptionCombo of the given DataValue,
+     *         or an empty collection if no DataValueAudits match.
+     */
+    Collection<DataValueAudit> getDataValueAudits( DataValue dataValue );
+
+    /**
+     * Returns all DataValueAudits which match the given DataElement, Period,
+     * OrganisationUnit and DataElementCategoryOptionCombo.
+     *
+     * @param dataElement the DataElement of the DataValueAudits.
+     * @param period the Period of the DataValueAudits.
+     * @param organisationUnit the OrganisationUnit of the DataValueAudits.
+     * @param categoryOptionCombo the DataElementCategoryOptionCombo of the DataValueAudits.
+     * @return a collection of DataValueAudits which match the given DataElement, Period,
+     *         OrganisationUnit and DataElementCategoryOptionCombo, or an empty collection
+     *         if no DataValueAudits match.
+     */
+    Collection<DataValueAudit> getDataValueAudits( DataElement dataElement,
+        Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo categoryOptionCombo );
+
+    /**
+     * Deletes a DataValueAudit.
+     *
+     * @param dataValueAudit the DataValueAudit to delete.
+     */
     void deleteDataValueAudit( DataValueAudit dataValueAudit );
 
-    int deleteDataValueAuditByDataValue( DataValue dataValue );
+    /**
+     * Deletes all DataValueAudits for the given DataElement.
+     *
+     * @param dataElement the DataElement for which the DataValueAudits should be deleted.
+     * @return the number of deleted DataValueAudits.
+     */
+    int deleteDataValueAuditByDataElement( DataElement dataElement );
 
-    void deleteDataValueAuditBySource( OrganisationUnit source );
+    /**
+     * Deletes all DataValueAudits for the given Period.
+     *
+     * @param period the Period for which the DataValueAudits should be deleted.
+     * @return the number of deleted DataValueAudits.
+     */
+    int deleteDataValueAuditByPeriod( Period period );
 
-    void deleteDataValueAuditByDataElement( DataElement dataElement );
+    /**
+     * Deletes all DataValues for the given OrganisationUnit.
+     *
+     * @param organisationUnit the OrganisationUnit for which the DataValueAudits should be deleted.
+     * @return the number of deleted DataValueAudits.
+     */
+    int deleteDataValueAuditByOrganisationUnit( OrganisationUnit organisationUnit );
 
-    Collection<DataValueAudit> getDataValueAuditByDataValue( DataValue dataValue );
-
-    Collection<DataValueAudit> getAll();
-    
-    int deleteByPeriod( Period period );
-    
-    int deleteByDataElementCategoryOptionCombo( DataElementCategoryOptionCombo optionCombo );
+    /**
+     * Deletes all DataValues for the given DataElementCategoryOptionCombo.
+     *
+     * @param categoryOptionCombo the DataElementCategoryOptionCombo for which the DataValueAudits should be deleted.
+     * @return the number of deleted DataValueAudits.
+     */
+    int deleteDataValueAuditByCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo );
 }

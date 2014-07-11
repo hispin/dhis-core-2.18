@@ -4,27 +4,31 @@
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.datavalue.DataValueAudit" table="datavalue_audit">
+  <class name="org.hisp.dhis.datavalue.DataValueAudit" table="datavalueaudit">
 
-    <id name="id">
-      <generator class="native" />
+    <id name="id" column="datavalueauditid">
+      <generator class="native"/>
     </id>
 
-    <many-to-one name="dataValue" class="org.hisp.dhis.datavalue.DataValue" foreign-key="fk_datavalueaudit_datavalue">
-      <column name="dataelementid" />
-      <column name="periodid" />
-      <column name="sourceid" />
-      <column name="categoryoptioncomboid" />
-      <column name="attributeoptioncomboid" />
-    </many-to-one>
+    <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
+                     foreign-key="fk_datavalueaudit_dataelementid" not-null="true"/>
 
-    <property name="value" />
+    <many-to-one name="period" class="org.hisp.dhis.period.Period" column="periodid"
+                     foreign-key="fk_datavalueaudit_periodid" not-null="true"/>
 
-    <property name="storedBy" column="storedby" length="31" />
+    <many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
+                     foreign-key="fk_datavalueaudit_organisationunitid" not-null="true"/>
 
-    <property name="timestamp" column="lastupdated" type="timestamp" />
+    <many-to-one name="categoryOptionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
+                     column="categoryoptioncomboid" foreign-key="fk_datavalueaudit_categoryoptioncomboid" not-null="true"/>
 
-    <property name="comment" length="360" />
+    <property name="value" length="255" />
+
+    <property name="timestamp" column="timestamp" type="timestamp" not-null="true" index="id_datavalueaudit_timestamp"/>
+
+    <property name="modifiedBy" column="modifiedby" length="100"/>
+
+    <property name="auditType" column="audittype" type="org.hisp.dhis.common.AuditTypeUserType" not-null="true" />
 
   </class>
 </hibernate-mapping>

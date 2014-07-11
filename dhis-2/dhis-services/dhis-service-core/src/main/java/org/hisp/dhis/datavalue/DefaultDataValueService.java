@@ -38,6 +38,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.AuditType;
 import org.hisp.dhis.common.MapMap;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
@@ -48,10 +49,12 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kristian Nordal
+ * @author Halvdan Hoem Grelland
  */
 @Transactional
 public class DefaultDataValueService
@@ -68,6 +71,20 @@ public class DefaultDataValueService
     public void setDataValueStore( DataValueStore dataValueStore )
     {
         this.dataValueStore = dataValueStore;
+    }
+
+    private DataValueAuditService dataValueAuditService;
+
+    public void setDataValueAuditService( DataValueAuditService dataValueAuditService )
+    {
+        this.dataValueAuditService = dataValueAuditService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     private DataElementCategoryService categoryService;
@@ -130,6 +147,7 @@ public class DefaultDataValueService
         return true;
     }
 
+    @Transactional
     public void updateDataValue( DataValue dataValue )
     {
         if ( dataValue.isNullValue() || dataValueIsZeroAndInsignificant( dataValue.getValue(), dataValue.getDataElement() ) )
@@ -138,6 +156,10 @@ public class DefaultDataValueService
         }
         else if ( dataValueIsValid( dataValue.getValue(), dataValue.getDataElement() ) == null )
         {
+            DataValueAudit dataValueAudit = new DataValueAudit( dataValue, dataValue.getAuditValue(),
+                dataValue.getStoredBy(), new Date(), AuditType.UPDATE );
+
+            dataValueAuditService.addDataValueAudit( dataValueAudit );
             dataValueStore.updateDataValue( dataValue );
         }
     }
@@ -145,6 +167,11 @@ public class DefaultDataValueService
     @Transactional
     public void deleteDataValue( DataValue dataValue )
     {
+        DataValueAudit dataValueAudit = new DataValueAudit( dataValue, dataValue.getAuditValue(),
+            currentUserService.getCurrentUsername(), new Date(), AuditType.DELETE );
+
+        dataValueAuditService.addDataValueAudit( dataValueAudit );
+
         dataValueStore.deleteDataValue( dataValue );
     }
 

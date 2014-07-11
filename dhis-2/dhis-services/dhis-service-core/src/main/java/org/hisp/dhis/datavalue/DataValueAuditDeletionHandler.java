@@ -66,24 +66,24 @@ public class DataValueAuditDeletionHandler
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
-    	dataValueAuditService.deleteDataValueAuditBySource( unit );
+        dataValueAuditService.deleteDataValueAuditByOrganisationUnit( unit );
     }
 
     @Override
     public void deleteDataElement( DataElement dataElement )
     {
-    	dataValueAuditService.deleteDataValueAuditByDataElement( dataElement );
+        dataValueAuditService.deleteDataValueAuditByDataElement( dataElement );
     }
 
     @Override
     public void deletePeriod( Period period )
     {
-    	dataValueAuditService.deleteByPeriod( period );
+        dataValueAuditService.deleteDataValueAuditByPeriod( period );
     }
     
     @Override
     public void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo)
     {
-    	dataValueAuditService.deleteByDataElementCategoryOptionCombo( categoryOptionCombo );
+        dataValueAuditService.deleteDataValueAuditByCategoryOptionCombo( categoryOptionCombo );
     }
 }

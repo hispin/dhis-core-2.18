@@ -55,6 +55,10 @@ public class DataValue
     public static final String TRUE = "true";
     public static final String FALSE = "false";
 
+    // -------------------------------------------------------------------------
+    // Persistent properties
+    // -------------------------------------------------------------------------
+
     private DataElement dataElement;
 
     private Period period;
@@ -76,6 +80,16 @@ public class DataValue
     private String comment;
 
     private Boolean followup;
+
+    // -------------------------------------------------------------------------
+    // Transient properties
+    // -------------------------------------------------------------------------
+
+    private transient boolean auditValueIsSet = false;
+
+    private transient boolean valueIsSet = false;
+
+    private transient String auditValue;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -296,6 +310,14 @@ public class DataValue
 
     public void setValue( String value )
     {
+        if( !auditValueIsSet )
+        {
+            this.auditValue = valueIsSet ? this.auditValue : value;
+            auditValueIsSet = true;
+        }
+
+        valueIsSet = true;
+
         this.value = value;
     }
 
@@ -347,5 +369,10 @@ public class DataValue
     public void setFollowup( Boolean followup )
     {
         this.followup = followup;
+    }
+
+    public String getAuditValue()
+    {
+        return auditValue;
     }
 }
