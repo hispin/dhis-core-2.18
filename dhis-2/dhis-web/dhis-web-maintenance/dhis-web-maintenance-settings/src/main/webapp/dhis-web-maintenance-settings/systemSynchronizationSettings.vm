@@ -28,7 +28,10 @@ jQuery( document ).ready( function() {
 
 <div class="settingLabel">$i18n.getString( "remote_server_password" )</div>
 <div class="setting">
-	<input type="password" id="remoteServerPassword" name="remoteServerPassword">
+	<input type="password" id="remoteServerPassword" name="remoteServerPassword" placeholder="$i18n.getString( 'hidden' )">
 </div>
 
-<div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>
+<div class="setting">
+	<input type="button" value="$i18n.getString( 'save' )" style="width:10em"/>
+	<span style="margin-left: 1em;"><a href="javascript:checkRemoteServerAvailability()">$i18n.getString( "test_settings" )</a></span>
+</div>
