@@ -58,8 +58,8 @@ public class ResourceTableController
     
     @Resource(name="analyticsAllTask")
     private AnalyticsTableTask analyticsTableTask;
-    
-    @Resource(name="dataMartLast12MonthsTask")
+
+    @Autowired
     private DataMartTask dataMartTask;
     
     @Autowired

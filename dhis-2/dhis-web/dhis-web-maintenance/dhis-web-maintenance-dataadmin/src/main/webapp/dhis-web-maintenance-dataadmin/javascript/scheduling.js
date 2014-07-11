@@ -33,3 +33,9 @@ function toggleDataMart()
 		$( '.dataMart' ).removeAttr( 'disabled' );
 	}
 }
+
+function toggleMoreOptions()
+{
+	$( "#moreOptionsLink" ).toggle();
+	$( "#moreOptionsDiv" ).toggle();
+}
