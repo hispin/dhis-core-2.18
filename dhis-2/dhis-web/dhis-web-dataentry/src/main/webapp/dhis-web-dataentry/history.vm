@@ -5,9 +5,7 @@ var currentOptionComboId = '$!{optionComboId}';
 $( document ).ready( function() {
     dhis2.de.insertCommentOptionSet( '$!{commentOptionSet.uid}' );
 
-    $( function() {
-        $("#historyTabs").tabs();
-    });
+    $( "#historyTabs" ).tabs();
 } );
 </script>
 
