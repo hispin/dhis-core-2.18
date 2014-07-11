@@ -13,7 +13,7 @@
 
 <div class="setting settingIndent">
 <select id="resourceTableStrategy" name="resourceTableStrategy" class="scheduling">
-	<option value="never">$i18n.getString( "never" )</option>
+	<option value="disabled">$i18n.getString( "disabled" )</option>
 	<option value="allDaily"#if( $resourceTableStrategy && $resourceTableStrategy == "allDaily" ) selected="selected"#end>$i18n.getString( "all_daily" )</option>
 </select>
 </div>
@@ -26,7 +26,7 @@
 
 <div class="setting settingIndent">
 <select id="analyticsStrategy" name="analyticsStrategy" class="scheduling">
-    <option value="never">$i18n.getString( "never" )</option>
+    <option value="disabled">$i18n.getString( "disabled" )</option>
     <option value="allDaily"#if( $analyticsStrategy && $analyticsStrategy == "allDaily" ) selected="selected"#end>$i18n.getString( "all_daily" )</option>
     <option value="last3YearsDaily"#if( $analyticsStrategy && $analyticsStrategy == "last3YearsDaily" ) selected="selected"#end>$i18n.getString( "last_3_years_daily" )</option>
 </select>
@@ -40,7 +40,7 @@
 
 <div class="setting settingIndent">
 <select id="monitoringStrategy" name="monitoringStrategy" class="scheduling">
-    <option value="never">$i18n.getString( "never" )</option>
+    <option value="disabled">$i18n.getString( "disabled" )</option>
     <option value="allDaily"#if( $monitoringStrategy && $monitoringStrategy == "allDaily" ) selected="selected"#end>$i18n.getString( "all_daily" )</option>
 </select>
 </div>
@@ -57,7 +57,7 @@
 
 <div class="setting settingIndent">
 <select id="dataMartStrategy" name="dataMartStrategy" class="scheduling" onchange="toggleDataMart()">
-    <option value="never">$i18n.getString( "never" )</option>
+    <option value="disabled">$i18n.getString( "disabled" )</option>
     <option value="allDaily"#if( $dataMartStrategy && $dataMartStrategy == "allDaily" ) selected="selected"#end>$i18n.getString( "last_year_daily" )</option>
 </select>
 </div>
