@@ -508,15 +508,16 @@ function doComplete( isCreateEvent ) {
 		});
 
 		$("#loading-bar").siblings(".ui-dialog-titlebar").hide();
-
+		
 		$.get( 'validateProgram.action', 
 			{
 				programStageInstanceId: jQuery('.stage-object-selected').attr('id').split('_')[1]
 			}).done(function(html){
             $("#loading-bar").dialog("close");
             $('#validateProgramDiv').html(html);
+ 
             if( getFieldValue('violateValidation') == 'true' ) {
-                $('#validateProgramDiv').dialog({
+				$('#validateProgramDiv').dialog({
                     title: i18n_violate_validation,
                     maximize: true,
                     closable: true,
@@ -537,7 +538,8 @@ function doComplete( isCreateEvent ) {
         });
     }
     else {
-        runCompleteEvent(isCreateEvent);
+		$("#loading-bar").dialog("close");
+		runCompleteEvent(isCreateEvent);
     }
 }
 
