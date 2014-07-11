@@ -40,7 +40,11 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-eventreporting</artifactId>
-    </dependency> 
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-dxf2</artifactId>
+    </dependency>
 	
     <!-- JasperReports -->
 

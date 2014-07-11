@@ -33,11 +33,13 @@ import static org.hisp.dhis.scheduling.SchedulingManager.TASK_ANALYTICS_LAST_3_Y
 import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATAMART_LAST_YEAR;
 import static org.hisp.dhis.scheduling.SchedulingManager.TASK_RESOURCE_TABLE;
 import static org.hisp.dhis.scheduling.SchedulingManager.TASK_MONITORING_LAST_DAY;
+import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATA_SYNCH;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_PERIOD_TYPES;
 import static org.hisp.dhis.system.scheduling.Scheduler.CRON_DAILY_0AM;
+import static org.hisp.dhis.system.scheduling.Scheduler.CRON_EVERY_MIN;
 import static org.hisp.dhis.system.scheduling.Scheduler.STATUS_RUNNING;
 import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
 
@@ -65,6 +67,7 @@ public class ScheduleTasksAction
 {
     private static final String STRATEGY_ALL_DAILY = "allDaily";
     private static final String STRATEGY_LAST_3_YEARS_DAILY = "last3YearsDaily";
+    private static final String STRATEGY_ENABLED = "enabled";
     
     private static final Log log = LogFactory.getLog( ScheduleTasksAction.class );
     
@@ -176,6 +179,18 @@ public class ScheduleTasksAction
         this.monitoringStrategy = monitoringStrategy;
     }
 
+    private String dataSynchStrategy;
+
+    public String getDataSynchStrategy()
+    {
+        return dataSynchStrategy;
+    }
+    
+    public void setDataSynchStrategy( String dataSynchStrategy )
+    {
+        this.dataSynchStrategy = dataSynchStrategy;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -260,13 +275,22 @@ public class ScheduleTasksAction
                 {
                     cronKeyMap.putValue( CRON_DAILY_0AM, TASK_MONITORING_LAST_DAY );
                 }
+
+                // -------------------------------------------------------------
+                // Data synch
+                // -------------------------------------------------------------
+                
+                if ( STRATEGY_ENABLED.equals( dataSynchStrategy ) )
+                {
+                    cronKeyMap.putValue( CRON_EVERY_MIN, TASK_DATA_SYNCH );
+                }
                 
                 schedulingManager.scheduleTasks( cronKeyMap );
             }
         }
         else
         {
-            Collection<String> keys = emptyIfNull( schedulingManager.getCronKeyMap().get( CRON_DAILY_0AM ) );
+            Collection<String> keys = emptyIfNull( schedulingManager.getScheduledKeys() );
             
             // -----------------------------------------------------------------
             // Resource tables
@@ -307,6 +331,15 @@ public class ScheduleTasksAction
             {
                 monitoringStrategy = STRATEGY_ALL_DAILY;
             }
+            
+            // -------------------------------------------------------------
+            // Data synch
+            // -------------------------------------------------------------
+            
+            if ( keys.contains( TASK_DATA_SYNCH ) )
+            {
+                dataSynchStrategy = STRATEGY_ENABLED;
+            }            
         }
         
         scheduledPeriodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );

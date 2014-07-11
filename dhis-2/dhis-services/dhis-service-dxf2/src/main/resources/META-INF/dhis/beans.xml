@@ -39,7 +39,7 @@
 
   <bean id="org.hisp.dhis.dxf2.synch.SynchronizationManager" class="org.hisp.dhis.dxf2.synch.DefaultSynchronizationManager" />
 
-  <bean id="dataSynchronizationTask" class="org.hisp.dhis.dxf2.synch.DataSynchronizationTask" />
+  <bean id="dataSynchTask" class="org.hisp.dhis.dxf2.synch.DataSynchronizationTask" />
 
   <!-- register idObject handlers -->
 

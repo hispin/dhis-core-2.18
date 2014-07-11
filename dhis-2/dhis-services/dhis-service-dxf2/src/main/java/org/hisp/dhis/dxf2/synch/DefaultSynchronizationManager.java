@@ -112,6 +112,7 @@ public class DefaultSynchronizationManager
         
         ResponseEntity<String> response = null;
         HttpStatus sc = null;
+        String st = null;
         AvailabilityStatus status = null;
         
         try
@@ -122,10 +123,12 @@ public class DefaultSynchronizationManager
         catch ( HttpClientErrorException ex )
         {
             sc = ex.getStatusCode();
+            st = ex.getStatusText();
         }
         catch ( HttpServerErrorException ex )
         {
             sc = ex.getStatusCode();
+            st = ex.getStatusText();
         }
         catch( ResourceAccessException ex )
         {
@@ -136,15 +139,15 @@ public class DefaultSynchronizationManager
         
         if ( HttpStatus.FOUND.equals( sc ) )
         {
-            status = new AvailabilityStatus( false, "Server is available but no authentication was provided" );
+            status = new AvailabilityStatus( false, "Server is available but no authentication was provided, status code: " + sc );
         }
         else if ( HttpStatus.UNAUTHORIZED.equals( sc ) )
         {
-            status = new AvailabilityStatus( false, "Server is available but authentication failed" );
+            status = new AvailabilityStatus( false, "Server is available but authentication failed, status code: " + sc );
         }
         else if ( HttpStatus.INTERNAL_SERVER_ERROR.equals( sc ) )
         {
-            status = new AvailabilityStatus( false, "Server is available but experienced an internal error" );
+            status = new AvailabilityStatus( false, "Server is available but experienced an internal error, status code: " + sc );
         }        
         else if ( HttpStatus.OK.equals( sc ) )
         {
@@ -152,7 +155,7 @@ public class DefaultSynchronizationManager
         }
         else
         {
-            status = new AvailabilityStatus( false, "Server is not available for unknown reason: " + sc );
+            status = new AvailabilityStatus( false, "Server is not available, status code: " + sc + ", text: " + st );
         }
         
         log.info( status );
@@ -176,13 +179,14 @@ public class DefaultSynchronizationManager
         // subsequently part of next synch process without being ignored
         // ---------------------------------------------------------------------
 
-        final Date time = getLastSynchSuccess();
+        final Date startTime = new Date();
+        final Date lastSuccessTime = getLastSynchSuccess();
         
-        int lastUpdatedCount = dataValueService.getDataValueCountLastUpdatedAfter( time );
+        int lastUpdatedCount = dataValueService.getDataValueCountLastUpdatedAfter( lastSuccessTime );
         
         if ( lastUpdatedCount == 0 )
         {
-            log.info( "Aborting synch, no new or updated data values" );
+            log.info( "Skipping synch, no new or updated data values" );
             return null;
         }
 
@@ -198,7 +202,7 @@ public class DefaultSynchronizationManager
             {
                 request.getHeaders().setContentType( MediaType.APPLICATION_JSON );
                 request.getHeaders().add( HEADER_AUTHORIZATION, CodecUtils.getBasicAuthString( config.getRemoteServerUsername(), config.getRemoteServerPassword() ) );
-                dataValueSetService.writeDataValueSetJson( time, request.getBody() );
+                dataValueSetService.writeDataValueSetJson( lastSuccessTime, request.getBody() );
             }            
         };
         
@@ -210,8 +214,8 @@ public class DefaultSynchronizationManager
         
         if ( summary != null && ImportStatus.SUCCESS.equals( summary.getStatus() ) )
         {
-            setLastSynchSuccess( time );            
-            log.info( "Synch successful, setting last success time: " + time );            
+            setLastSynchSuccess( startTime );            
+            log.info( "Synch successful, setting last success time: " + startTime );            
         }
         
         return summary;
@@ -227,9 +231,7 @@ public class DefaultSynchronizationManager
      */
     private Date getLastSynchSuccess()
     {
-        Date date = (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_SYNC );
-        
-        return date != null ? date : new Date();
+        return (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_SYNC, new Date() );
     }
 
     /**

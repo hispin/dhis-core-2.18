@@ -28,6 +28,8 @@ package org.hisp.dhis.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Set;
+
 import org.hisp.dhis.common.ListMap;
 
 /**
@@ -40,29 +42,35 @@ public interface SchedulingManager
     final String TASK_ANALYTICS_ALL = "analyticsAllTask";
     final String TASK_ANALYTICS_LAST_3_YEARS = "analyticsLast3YearsTask";
     final String TASK_MONITORING_LAST_DAY = "monitoringLastDayTask";
-        
+    final String TASK_DATA_SYNCH = "dataSynchTask";
+    
     /**
-     * Schedule all tasks.
+     * Schedules all tasks.
      */
     void scheduleTasks();
     
     /**
-     * Schedule the given tasks.
+     * Schedules the given tasks.
      * 
      * @param cronKeyMap a mapping of cron expressions and task keys.
      */
     void scheduleTasks( ListMap<String, String> cronKeyMap );
     
     /**
-     * Stop all tasks.
+     * Stops all tasks.
      */
     void stopTasks();
     
     /**
-     * Get a mapping of cron expressions and list of task keys for all scheduled
+     * Gets a mapping of cron expressions and list of task keys for all scheduled
      * tasks.
      */
     ListMap<String, String> getCronKeyMap();
+    
+    /**
+     * Gets all keys currenty scheduled for any task.
+     */
+    Set<String> getScheduledKeys();
     
     /**
      * Gets the task status. Can be STATUS_RUNNING, STATUS_DONE, STATUS_STOPPED,
