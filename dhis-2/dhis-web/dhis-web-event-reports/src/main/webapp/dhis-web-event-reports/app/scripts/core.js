@@ -2784,6 +2784,7 @@ Ext.onReady( function() {
 			web.report.query.getHtml = function(layout, xResponse) {
 				var dimensionHeaders = xResponse.dimensionHeaders,
 					rows = xResponse.rows,
+                    names = xResponse.metaData.names,
 					tableCls = 'pivot',
 					html = '';
 
@@ -2817,6 +2818,7 @@ Ext.onReady( function() {
 					for (var j = 0, str, header, name; j < dimensionHeaders.length; j++) {
 						header = dimensionHeaders[j];
 						str = row[header.index];
+                        str = names.hasOwnProperty(str) ? names[str] : str;
 						name = web.report.query.format(str);
 
 						//if (header.name === 'ouname' && layout.showHierarchy) {
