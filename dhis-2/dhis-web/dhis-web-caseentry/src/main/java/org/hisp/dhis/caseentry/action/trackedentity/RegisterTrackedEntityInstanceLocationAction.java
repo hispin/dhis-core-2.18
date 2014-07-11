@@ -38,7 +38,8 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version $RegisterTrackedEntityInstanceLocationAction.java Mar 27, 2012 04:52:51 PM$
+ * @version $RegisterTrackedEntityInstanceLocationAction.java Mar 27, 2012
+ *          04:52:51 PM$
  */
 public class RegisterTrackedEntityInstanceLocationAction
     implements Action
@@ -46,7 +47,7 @@ public class RegisterTrackedEntityInstanceLocationAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private SelectionTreeManager selectionTreeManager;
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
@@ -81,13 +82,15 @@ public class RegisterTrackedEntityInstanceLocationAction
     {
         OrganisationUnit orgunit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
 
-        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
+        if ( orgunit != null )
+        {
+            TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
+            entityInstance.setOrganisationUnit( orgunit );
+            entityInstanceService.updateTrackedEntityInstance( entityInstance );
+            return SUCCESS;
+        }
 
-        entityInstance.setOrganisationUnit( orgunit );
-        
-        entityInstanceService.addTrackedEntityInstance( entityInstance );
-
-        return SUCCESS;
+        return INPUT;
     }
 
 }

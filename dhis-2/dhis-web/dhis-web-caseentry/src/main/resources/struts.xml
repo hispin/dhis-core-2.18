@@ -543,6 +543,8 @@
 
 		<action name="registerTrackedEntityInstanceLocation"
 			class="org.hisp.dhis.caseentry.action.trackedentity.RegisterTrackedEntityInstanceLocationAction">
+			<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm
+			</result>
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_CHANGE_LOCATION</param>
