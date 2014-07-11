@@ -1,6 +1,7 @@
 <script>
 	hideById('mainLinkLbl');
 	jQuery('[name=mainPagelink]').html(i18n_main_form_link);
+	var i18n_please_select_an_orgunit = '$encoder.jsEscape( $i18n.getString( "please_select_an_orgunit" ) , "'" )';
 </script>
 
 <h3>
@@ -27,4 +28,5 @@
 			<td></td>
 		</tr>
 	</table>
+	<span id='message'></span>
 </form>

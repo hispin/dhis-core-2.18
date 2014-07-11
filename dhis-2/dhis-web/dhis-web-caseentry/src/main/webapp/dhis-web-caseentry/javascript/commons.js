@@ -1339,8 +1339,13 @@ function registerTrackedEntityInstanceLocation(entityInstanceId) {
 	$.getJSON('registerTrackedEntityInstanceLocation.action', {
 		entityInstanceId : entityInstanceId
 	}, function(json) {
-		showTrackedEntityInstanceDashboardForm(entityInstanceId);
-		showSuccessMessage(i18n_save_success);
+		if(json.response=='input'){
+			setMessage( i18n_please_select_an_orgunit );
+		}
+		else{
+			showTrackedEntityInstanceDashboardForm(entityInstanceId);
+			showSuccessMessage(i18n_save_success);
+		}
 	});
 }
 
@@ -1767,8 +1772,7 @@ function saveCoordinatesEvent() {
 		isValid = false;
 	}
 	if (isValid) {
-		$
-				.ajax({
+		$.ajax({
 					url : 'saveCoordinatesEvent.action',
 					data : {
 						programStageInstanceId : programStageInstanceId,
