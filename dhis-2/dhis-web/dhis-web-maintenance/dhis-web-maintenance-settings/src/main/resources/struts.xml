@@ -160,6 +160,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/systemSynchronizationSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
+      <param name="javascripts">javascripts/systemSynchronizationSettings.js</param>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action> 
     
