@@ -71,6 +71,7 @@ import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.QueryOperator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.eventchart.EventChart;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -230,7 +231,8 @@ public class DefaultEventAnalyticsService
         for ( List<Object> row : grid.getRows() )
         {
             String key = StringUtils.join( ListUtils.getAtIndexes( row, metaIndexes ), DIMENSION_SEP );
-            Double value = (Double) row.get( valueIndex );                        
+            Object val = row.get( valueIndex );
+            Double value = val != null ? ((Integer) val).doubleValue() : null;             
             map.put( key, value );
         }
         
@@ -239,7 +241,7 @@ public class DefaultEventAnalyticsService
     
     public Map<String, Double> getAggregatedEventDataMappping( BaseAnalyticalObject object, I18nFormat format )
     {
-        EventQueryParams params = getFromAnalyticalObject( object, format );
+        EventQueryParams params = getFromAnalyticalObject( (EventChart) object, format );
         
         return getAggregatedEventDataMappping( params );
     }
@@ -342,50 +344,6 @@ public class DefaultEventAnalyticsService
         return params;
     }
 
-    public EventQueryParams getFromAnalyticalObject( BaseAnalyticalObject object, I18nFormat format )
-    {
-        EventQueryParams params = new EventQueryParams();
-
-        if ( object != null )
-        {
-            Date date = object.getRelativePeriodDate();
-            
-            object.populateAnalyticalProperties();
-
-            for ( DimensionalObject dimension : ListUtils.union( object.getColumns(), object.getRows() ) )
-            {
-                List<DimensionalObject> dimObj = analyticsService.
-                    getDimension( toDimension( dimension.getDimension() ), getUids( dimension.getItems() ), date, format, true );
-                
-                if ( dimObj != null )
-                {
-                    params.getDimensions().addAll( dimObj );
-                }
-                else
-                {
-                    params.getItems().add( getQueryItem( dimension.getDimension() ) );
-                }
-            }
-            
-            for ( DimensionalObject filter : object.getFilters() )
-            {
-                List<DimensionalObject> dimObj = analyticsService.
-                    getDimension( toDimension( filter.getDimension() ), getUids( filter.getItems() ), date, format, true );
-                
-                if ( dimObj != null )
-                {
-                    params.getFilters().addAll( dimObj );
-                }
-                else
-                {
-                    params.getItemFilters().add( getQueryItem( filter.getDimension() ) );
-                }
-            }
-        }
-        
-        return params;
-    }
-    
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate,
         Set<String> dimension, Set<String> filter, String ouMode, Set<String> asc, Set<String> desc,
         boolean skipMeta, boolean hierarchyMeta, boolean coordinatesOnly, Integer page, Integer pageSize, I18nFormat format )
@@ -498,6 +456,60 @@ public class DefaultEventAnalyticsService
         params.setPage( page );
         params.setPageSize( pageSize );
         params.setAggregate( false );
+        
+        return params;
+    }
+
+    /**
+     * TODO Generalize and change from EventChart to EventAnayticalObject.
+     */
+    public EventQueryParams getFromAnalyticalObject( BaseAnalyticalObject object_, I18nFormat format )
+    {
+        EventChart object = (EventChart) object_; //TODO temporary
+        
+        EventQueryParams params = new EventQueryParams();
+
+        if ( object != null )
+        {
+            Date date = object.getRelativePeriodDate();
+            
+            object.populateAnalyticalProperties();
+
+            for ( DimensionalObject dimension : ListUtils.union( object.getColumns(), object.getRows() ) )
+            {
+                List<DimensionalObject> dimObj = analyticsService.
+                    getDimension( toDimension( dimension.getDimension() ), getUids( dimension.getItems() ), date, format, true );
+                
+                if ( dimObj != null )
+                {
+                    params.getDimensions().addAll( dimObj );
+                }
+                else
+                {
+                    params.getItems().add( getQueryItem( dimension.getDimension() ) );
+                }
+            }
+            
+            for ( DimensionalObject filter : object.getFilters() )
+            {
+                List<DimensionalObject> dimObj = analyticsService.
+                    getDimension( toDimension( filter.getDimension() ), getUids( filter.getItems() ), date, format, true );
+                
+                if ( dimObj != null )
+                {
+                    params.getFilters().addAll( dimObj );
+                }
+                else
+                {
+                    params.getItemFilters().add( getQueryItem( filter.getDimension() ) );
+                }
+            }
+        }
+
+        params.setProgram( object.getProgram() );
+        params.setProgramStage( object.getProgramStage() );
+        params.setStartDate( object.getStartDate() );
+        params.setEndDate( object.getEndDate() );
         
         return params;
     }

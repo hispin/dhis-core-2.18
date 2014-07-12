@@ -31,6 +31,7 @@ package org.hisp.dhis.chart;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.AnalyticsType;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DimensionalObject;
@@ -177,7 +178,7 @@ public abstract class BaseChart
 
     public String generateTitle()
     {
-        return IdentifiableObjectUtils.join( getFilterItems() );
+        return StringUtils.defaultIfBlank( IdentifiableObjectUtils.join( getFilterItems() ), StringUtils.EMPTY );
     }
     
     public boolean isAnalyticsType( AnalyticsType type )
