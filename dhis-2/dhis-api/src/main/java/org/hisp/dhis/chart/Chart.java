@@ -35,7 +35,6 @@ import java.util.List;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
@@ -114,29 +113,6 @@ public class Chart
             organisationUnitsAtLevel, organisationUnitsInGroups, format );
 
         return object != null ? object.getItems() : null;
-    }
-
-    public List<NameableObject> filters()
-    {
-        List<NameableObject> filterItems = new ArrayList<NameableObject>();
-
-        for ( String filter : filterDimensions )
-        {
-            DimensionalObject object = getDimensionalObject( filter, relativePeriodDate, user, true,
-                organisationUnitsAtLevel, organisationUnitsInGroups, format );
-
-            if ( object != null )
-            {
-                filterItems.addAll( object.getItems() );
-            }
-        }
-
-        return filterItems;
-    }
-
-    public String generateTitle()
-    {
-        return IdentifiableObjectUtils.join( filters() );
     }
 
     @Override
