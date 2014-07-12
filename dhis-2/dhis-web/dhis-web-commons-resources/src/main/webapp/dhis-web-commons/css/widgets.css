@@ -477,10 +477,11 @@ div.inputCriteria
   border: 1px solid #a4d2a3;
   background-color: #d0eBd0;
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 11px;
   padding-left: 20px;
   margin-bottom: 15px;
   border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.11) 0 1px 1px;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,6 +509,7 @@ div.inputCriteria
   border:1px solid #c0c0c0; 
   padding:10px;
   border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.09) 0 1px 1px;
 }
 
 .formInputField
