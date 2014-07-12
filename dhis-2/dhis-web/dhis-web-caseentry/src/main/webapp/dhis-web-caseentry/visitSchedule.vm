@@ -298,7 +298,7 @@
 		
 		jQuery("#incompleteProgram").attr('disabled', true);
 	#else
-		jQuery(":input").attr('disabled', true);
+		jQuery("[id=tab-3] :input").attr('disabled', true);
 		jQuery("#incompleteProgram").attr('disabled', false);
 		$('[id=tab-3]').find('img').parent().removeAttr("href");
 	#end
