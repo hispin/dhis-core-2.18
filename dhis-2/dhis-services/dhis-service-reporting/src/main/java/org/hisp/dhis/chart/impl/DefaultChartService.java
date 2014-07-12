@@ -28,14 +28,14 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.chart.Chart.TYPE_AREA;
-import static org.hisp.dhis.chart.Chart.TYPE_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_COLUMN;
-import static org.hisp.dhis.chart.Chart.TYPE_LINE;
-import static org.hisp.dhis.chart.Chart.TYPE_PIE;
-import static org.hisp.dhis.chart.Chart.TYPE_RADAR;
-import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_STACKED_COLUMN;
+import static org.hisp.dhis.chart.BaseChart.TYPE_AREA;
+import static org.hisp.dhis.chart.BaseChart.TYPE_BAR;
+import static org.hisp.dhis.chart.BaseChart.TYPE_COLUMN;
+import static org.hisp.dhis.chart.BaseChart.TYPE_LINE;
+import static org.hisp.dhis.chart.BaseChart.TYPE_PIE;
+import static org.hisp.dhis.chart.BaseChart.TYPE_RADAR;
+import static org.hisp.dhis.chart.BaseChart.TYPE_STACKED_BAR;
+import static org.hisp.dhis.chart.BaseChart.TYPE_STACKED_COLUMN;
 import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
@@ -55,6 +55,7 @@ import org.apache.commons.math.analysis.UnivariateRealFunction;
 import org.apache.commons.math.analysis.UnivariateRealInterpolator;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.chart.BaseChart;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
@@ -181,13 +182,9 @@ public class DefaultChartService
     {
         this.analyticsService = analyticsService;
     }
-
+    
     // -------------------------------------------------------------------------
     // ChartService implementation
-    // -------------------------------------------------------------------------
-
-    // -------------------------------------------------------------------------
-    // Logic
     // -------------------------------------------------------------------------
 
     public JFreeChart getJFreeChart( int id, I18nFormat format )
@@ -197,12 +194,12 @@ public class DefaultChartService
         return chart != null ? getJFreeChart( chart, format ) : null;
     }
 
-    public JFreeChart getJFreeChart( Chart chart, I18nFormat format )
+    public JFreeChart getJFreeChart( BaseChart chart, I18nFormat format )
     {
         return getJFreeChart( chart, null, null, format );
     }
 
-    public JFreeChart getJFreeChart( Chart chart, Date date, OrganisationUnit organisationUnit, I18nFormat format )
+    public JFreeChart getJFreeChart( BaseChart chart, Date date, OrganisationUnit organisationUnit, I18nFormat format )
     {
         User user = currentUserService.getCurrentUser();
 
@@ -228,6 +225,10 @@ public class DefaultChartService
 
         return getJFreeChart( chart );
     }
+
+    // -------------------------------------------------------------------------
+    // Specific chart methods
+    // -------------------------------------------------------------------------
 
     public JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format )
     {
@@ -512,7 +513,7 @@ public class DefaultChartService
     /**
      * Returns a JFreeChart of type defined in the chart argument.
      */
-    private JFreeChart getJFreeChart( Chart chart )
+    private JFreeChart getJFreeChart( BaseChart chart )
     {
         final BarRenderer barRenderer = getBarRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
@@ -712,7 +713,7 @@ public class DefaultChartService
         return title;
     }
 
-    private CategoryDataset[] getCategoryDataSet( Chart chart )
+    private CategoryDataset[] getCategoryDataSet( BaseChart chart )
     {
         Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( chart, chart.getFormat() );
 

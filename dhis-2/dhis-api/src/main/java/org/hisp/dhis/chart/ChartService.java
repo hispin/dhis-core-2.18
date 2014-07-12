@@ -58,7 +58,7 @@ public interface ChartService
 
     JFreeChart getJFreeChart( int id, I18nFormat format );
 
-    JFreeChart getJFreeChart( Chart chart, I18nFormat format );
+    JFreeChart getJFreeChart( BaseChart chart, I18nFormat format );
 
     /**
      * Generates a JFreeChart.
@@ -70,7 +70,7 @@ public interface ChartService
      * @param format the i18n format.
      * @return a JFreeChart object.
      */
-    JFreeChart getJFreeChart( Chart chart, Date date, OrganisationUnit organisationUnit, I18nFormat format );
+    JFreeChart getJFreeChart( BaseChart chart, Date date, OrganisationUnit organisationUnit, I18nFormat format );
     
     JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit organisationUnit, boolean title, I18nFormat format );
 
