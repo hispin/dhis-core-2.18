@@ -170,7 +170,7 @@ public class EventAnalyticsServiceTest
         chart.getOrganisationUnits().add( ouA );
         chart.getOrganisationUnits().add( ouB );
         
-        EventQueryParams params = analyticsService.getFromAnalyticalObject( chart, prA, null );
+        EventQueryParams params = analyticsService.getFromAnalyticalObject( chart, null );
         
         assertNotNull( params );
         assertEquals( 1, params.getItems().size() );
@@ -196,7 +196,7 @@ public class EventAnalyticsServiceTest
         chart.getOrganisationUnits().add( ouA );
         chart.getOrganisationUnits().add( ouB );
         
-        EventQueryParams params = analyticsService.getFromAnalyticalObject( chart, prA, null );
+        EventQueryParams params = analyticsService.getFromAnalyticalObject( chart, null );
         
         assertNotNull( params );
         assertEquals( 2, params.getItems().size() );

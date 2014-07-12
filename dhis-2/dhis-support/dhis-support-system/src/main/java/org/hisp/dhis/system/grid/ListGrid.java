@@ -656,7 +656,24 @@ public class ListGrid
         
         return this;
     }
-
+    
+    public List<Integer> getMetaColumnIndexes()
+    {
+        List<Integer> indexes = new ArrayList<>();
+        
+        for ( int i = 0; i < headers.size(); i++ )
+        {
+            GridHeader header = headers.get( i );
+            
+            if ( header != null && header.isMeta() )
+            {
+                indexes.add( i );
+            }
+        }
+        
+        return indexes;
+    }
+            
     // -------------------------------------------------------------------------
     // JRDataSource implementation
     // -------------------------------------------------------------------------

@@ -28,13 +28,13 @@ package org.hisp.dhis.analytics.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.program.Program;
 
 /**
  * @author Lars Helge Overland
@@ -44,6 +44,10 @@ public interface EventAnalyticsService
     final int MAX_ROWS_LIMIT = 10000;
     
     Grid getAggregatedEventData( EventQueryParams params );
+    
+    Map<String, Double> getAggregatedEventDataMappping( EventQueryParams params );
+    
+    Map<String, Double> getAggregatedEventDataMappping( BaseAnalyticalObject object, I18nFormat format );
     
     Grid getEvents( EventQueryParams params );
 
@@ -60,5 +64,5 @@ public interface EventAnalyticsService
     EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, Set<String> dimension, Set<String> filter, 
         String ouMode, Set<String> asc, Set<String> desc, boolean skipMeta, boolean hierarchyMeta, boolean coordinatesOnly, Integer page, Integer pageSize, I18nFormat format );
     
-    EventQueryParams getFromAnalyticalObject( BaseAnalyticalObject object, Program program, I18nFormat format );
+    EventQueryParams getFromAnalyticalObject( BaseAnalyticalObject object, I18nFormat format );
 }

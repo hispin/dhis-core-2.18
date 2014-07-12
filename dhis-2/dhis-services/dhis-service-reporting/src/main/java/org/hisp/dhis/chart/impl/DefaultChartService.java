@@ -45,6 +45,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -55,10 +56,12 @@ import org.apache.commons.math.analysis.UnivariateRealFunction;
 import org.apache.commons.math.analysis.UnivariateRealInterpolator;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.chart.BaseChart;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.AnalyticalObjectStore;
+import org.hisp.dhis.common.AnalyticsType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
@@ -180,6 +183,13 @@ public class DefaultChartService
     public void setAnalyticsService( AnalyticsService analyticsService )
     {
         this.analyticsService = analyticsService;
+    }
+    
+    private EventAnalyticsService eventAnalyticsService;
+    
+    public void setEventAnalyticsService( EventAnalyticsService eventAnalyticsService )
+    {
+        this.eventAnalyticsService = eventAnalyticsService;
     }
     
     // -------------------------------------------------------------------------
@@ -714,7 +724,16 @@ public class DefaultChartService
 
     private CategoryDataset[] getCategoryDataSet( BaseChart chart )
     {
-        Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( chart, chart.getFormat() );
+        Map<String, Double> valueMap = new HashMap<>();
+        
+        if ( chart.isAnalyticsType( AnalyticsType.AGGREGATE ) )
+        {
+            valueMap = analyticsService.getAggregatedDataValueMapping( chart, chart.getFormat() );
+        }
+        else if ( chart.isAnalyticsType( AnalyticsType.EVENT ) )
+        {
+            valueMap = eventAnalyticsService.getAggregatedEventDataMappping( chart, chart.getFormat() );
+        }
 
         DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();

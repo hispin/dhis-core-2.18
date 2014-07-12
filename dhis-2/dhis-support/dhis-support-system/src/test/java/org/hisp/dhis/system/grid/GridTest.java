@@ -560,6 +560,16 @@ public class GridTest
     }
 
     @Test
+    public void testGetMetaColumnIndexes()
+    {
+        List<Integer> expected = new ArrayList<>();
+        expected.add( 0 );
+        expected.add( 1 );
+        
+        assertEquals( expected, gridA.getMetaColumnIndexes() );
+    }
+    
+    @Test
     public void testJRDataSource() throws Exception
     {
         assertTrue( gridA.next() );
