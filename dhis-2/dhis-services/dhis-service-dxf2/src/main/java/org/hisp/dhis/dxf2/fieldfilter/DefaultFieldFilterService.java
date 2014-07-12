@@ -28,12 +28,14 @@ package org.hisp.dhis.dxf2.fieldfilter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.annotation.PostConstruct;
+
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.PresetProvider;
 import org.hisp.dhis.dxf2.parser.ParserService;
@@ -50,20 +52,16 @@ import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class DefaultFieldFilterService implements FieldFilterService
 {
-    private static final Log log = LogFactory.getLog( DefaultFieldFilterService.class );
-
     @Autowired
     private ParserService parserService;
 
@@ -154,7 +152,6 @@ public class DefaultFieldFilterService implements FieldFilterService
         return collectionNode;
     }
 
-    @SuppressWarnings("unchecked")
     private AbstractNode buildNode( FieldMap fieldMap, Class<?> klass, Object object )
     {
         Schema schema = schemaService.getDynamicSchema( klass );
