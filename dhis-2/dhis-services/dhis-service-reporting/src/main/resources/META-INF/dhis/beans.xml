@@ -53,6 +53,7 @@
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="analyticsService" ref="org.hisp.dhis.analytics.AnalyticsService" />
+    <property name="eventAnalyticsService" ref="org.hisp.dhis.analytics.event.EventAnalyticsService" />
   </bean>
 
   <!-- Document -->

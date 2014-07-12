@@ -299,6 +299,13 @@ public interface Grid
     Grid substituteMetaData( int columnIndex, Map<Object, Object> metaDataMap );
     
     /**
+     * Returns indexes of the meta grid headers.
+     * 
+     * @return List of indexes of meta headers.
+     */
+    List<Integer> getMetaColumnIndexes();
+    
+    /**
      * Adds a set of headers based on the column names of the given SQL result set.
      * 
      * @param rs the result set.
