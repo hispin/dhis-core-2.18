@@ -1337,7 +1337,7 @@ function registerTrackedEntityInstanceLocation(entityInstanceId) {
 		entityInstanceId : entityInstanceId
 	}, function(json) {
 		if(json.response=='input'){
-			setMessage( i18n_please_select_an_orgunit );
+			showWarningMessage( i18n_please_select_an_orgunit );
 		}
 		else{
 			showTrackedEntityInstanceDashboardForm(entityInstanceId);
