@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.chart.BaseChart;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -54,30 +54,11 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 /**
  * @author Jan Henrik Overland
  */
-
 public class EventChart
-    extends BaseAnalyticalObject
+    extends BaseChart
 {
-
     public static final String COUNT_TYPE_EVENTS = "events";
-
     public static final String COUNT_TYPE_TRACKED_ENTITY_INSTANCES = "tracked_entity_instances";
-
-    public static final String TYPE_COLUMN = "column";
-
-    public static final String TYPE_STACKED_COLUMN = "stackedcolumn";
-
-    public static final String TYPE_BAR = "bar";
-
-    public static final String TYPE_STACKED_BAR = "stackedbar";
-
-    public static final String TYPE_LINE = "line";
-
-    public static final String TYPE_AREA = "area";
-
-    public static final String TYPE_PIE = "pie";
-
-    public static final String TYPE_RADAR = "radar"; // Spider web
 
     private Program program;
 
@@ -87,49 +68,13 @@ public class EventChart
 
     private Date endDate;
 
-    private String type;
-
     private List<String> columnDimensions = new ArrayList<String>();
 
     private List<String> rowDimensions = new ArrayList<String>();
 
     private List<String> filterDimensions = new ArrayList<String>();
 
-    private boolean hideEmptyRows;
-
     private String countType;
-
-    private String domainAxisLabel;
-
-    private String rangeAxisLabel;
-
-    private boolean hideLegend;
-
-    private boolean regression;
-
-    private boolean hideTitle;
-
-    private boolean hideSubtitle;
-
-    private String title;
-
-    private Double targetLineValue;
-
-    private String targetLineLabel;
-
-    private Double baseLineValue;
-
-    private String baseLineLabel;
-
-    private boolean showData;
-
-    private Double rangeAxisMaxValue;
-
-    private Double rangeAxisMinValue;
-
-    private Integer rangeAxisSteps; // min 1
-
-    private Integer rangeAxisDecimals;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -233,19 +178,6 @@ public class EventChart
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getType()
-    {
-        return type;
-    }
-
-    public void setType( String type )
-    {
-        this.type = type;
-    }
-
-    @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "columnDimensions", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "column", namespace = DxfNamespaces.DXF_2_0 )
@@ -290,19 +222,6 @@ public class EventChart
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isHideEmptyRows()
-    {
-        return hideEmptyRows;
-    }
-
-    public void setHideEmptyRows( boolean hideEmptyRows )
-    {
-        this.hideEmptyRows = hideEmptyRows;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getCountType()
     {
         return countType;
@@ -311,214 +230,6 @@ public class EventChart
     public void setCountType( String countType )
     {
         this.countType = countType;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getDomainAxisLabel()
-    {
-        return domainAxisLabel;
-    }
-
-    public void setDomainAxisLabel( String domainAxisLabel )
-    {
-        this.domainAxisLabel = domainAxisLabel;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getRangeAxisLabel()
-    {
-        return rangeAxisLabel;
-    }
-
-    public void setRangeAxisLabel( String rangeAxisLabel )
-    {
-        this.rangeAxisLabel = rangeAxisLabel;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isHideLegend()
-    {
-        return hideLegend;
-    }
-
-    public void setHideLegend( boolean hideLegend )
-    {
-        this.hideLegend = hideLegend;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isRegression()
-    {
-        return regression;
-    }
-
-    public void setRegression( boolean regression )
-    {
-        this.regression = regression;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isHideTitle()
-    {
-        return hideTitle;
-    }
-
-    public void setHideTitle( boolean hideTitle )
-    {
-        this.hideTitle = hideTitle;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isHideSubtitle()
-    {
-        return hideSubtitle;
-    }
-
-    public void setHideSubtitle( Boolean hideSubtitle )
-    {
-        this.hideSubtitle = hideSubtitle;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getTitle()
-    {
-        return this.title;
-    }
-
-    public void setTitle( String title )
-    {
-        this.title = title;
-    }    
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Double getTargetLineValue()
-    {
-        return targetLineValue;
-    }
-
-    public void setTargetLineValue( Double targetLineValue )
-    {
-        this.targetLineValue = targetLineValue;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getTargetLineLabel()
-    {
-        return targetLineLabel;
-    }
-
-    public void setTargetLineLabel( String targetLineLabel )
-    {
-        this.targetLineLabel = targetLineLabel;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Double getBaseLineValue()
-    {
-        return baseLineValue;
-    }
-
-    public void setBaseLineValue( Double baseLineValue )
-    {
-        this.baseLineValue = baseLineValue;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getBaseLineLabel()
-    {
-        return baseLineLabel;
-    }
-
-    public void setBaseLineLabel( String baseLineLabel )
-    {
-        this.baseLineLabel = baseLineLabel;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isShowData()
-    {
-        return showData;
-    }
-
-    public void setShowData( boolean showData )
-    {
-        this.showData = showData;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Double getRangeAxisMaxValue()
-    {
-        return rangeAxisMaxValue;
-    }
-
-    public void setRangeAxisMaxValue( Double rangeAxisMaxValue )
-    {
-        this.rangeAxisMaxValue = rangeAxisMaxValue;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Double getRangeAxisMinValue()
-    {
-        return rangeAxisMinValue;
-    }
-
-    public void setRangeAxisMinValue( Double rangeAxisMinValue )
-    {
-        this.rangeAxisMinValue = rangeAxisMinValue;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Integer getRangeAxisSteps()
-    {
-        return rangeAxisSteps;
-    }
-
-    public void setRangeAxisSteps( Integer rangeAxisSteps )
-    {
-        this.rangeAxisSteps = rangeAxisSteps;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Integer getRangeAxisDecimals()
-    {
-        return rangeAxisDecimals;
-    }
-
-    public void setRangeAxisDecimals( Integer rangeAxisDecimals )
-    {
-        this.rangeAxisDecimals = rangeAxisDecimals;
     }
 
     // -------------------------------------------------------------------------
@@ -538,7 +249,6 @@ public class EventChart
             programStage = eventChart.getProgramStage();
             startDate = eventChart.getStartDate();
             endDate = eventChart.getEndDate();
-            type = eventChart.getType();
 
             columnDimensions.clear();
             columnDimensions.addAll( eventChart.getColumnDimensions() );
@@ -549,24 +259,7 @@ public class EventChart
             filterDimensions.clear();
             filterDimensions.addAll( eventChart.getFilterDimensions() );
 
-            hideEmptyRows = eventChart.isHideEmptyRows();
             countType = eventChart.getCountType();
-            domainAxisLabel = eventChart.getDomainAxisLabel();
-            rangeAxisLabel = eventChart.getRangeAxisLabel();            
-            hideLegend = eventChart.isHideLegend();
-            regression = eventChart.isRegression();            
-            hideTitle = eventChart.isHideTitle();
-            hideSubtitle = eventChart.isHideSubtitle();
-            title = eventChart.getTitle();            
-            targetLineValue = eventChart.getTargetLineValue();
-            targetLineLabel = eventChart.getTargetLineLabel();
-            baseLineValue = eventChart.getBaseLineValue();
-            baseLineLabel = eventChart.getBaseLineLabel();            
-            showData = eventChart.isShowData();
-            rangeAxisMaxValue = eventChart.getRangeAxisMaxValue();
-            rangeAxisMinValue = eventChart.getRangeAxisMinValue();
-            rangeAxisSteps = eventChart.getRangeAxisSteps();
-            rangeAxisDecimals = eventChart.getRangeAxisDecimals();
         }
     }
 }
