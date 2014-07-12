@@ -304,6 +304,7 @@ public class AddProgramAction
             RelationshipType relationshipType = relationshipTypeService.getRelationshipType( relationshipTypeId );
             program.setRelationshipType( relationshipType );
         }
+        
         program.setRelationshipFromA( relationshipFromA );
         program.setRelationshipText( relationshipText );
 
@@ -312,6 +313,7 @@ public class AddProgramAction
             TrackedEntity trackedEntity = trackedEntityService.getTrackedEntity( trackedEntityId );
             program.setTrackedEntity( trackedEntity );
         }
+        
         programService.addProgram( program );
 
         int index = 0;
