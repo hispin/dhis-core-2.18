@@ -48,7 +48,6 @@ import org.hisp.dhis.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -64,22 +63,6 @@ public class Chart
     private String series;
 
     private String category;
-
-    private List<String> filterDimensions = new ArrayList<String>();
-
-    // -------------------------------------------------------------------------
-    // Transient properties
-    // -------------------------------------------------------------------------
-
-    private transient I18nFormat format;
-
-    private transient List<Period> relativePeriods = new ArrayList<Period>();
-
-    private transient User user;
-
-    private transient List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>();
-
-    private transient List<OrganisationUnit> organisationUnitsInGroups = new ArrayList<OrganisationUnit>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -259,20 +242,6 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "filterDimension", namespace = DxfNamespaces.DXF_2_0 )
-    public List<String> getFilterDimensions()
-    {
-        return filterDimensions;
-    }
-
-    public void setFilterDimensions( List<String> filterDimensions )
-    {
-        this.filterDimensions = filterDimensions;
-    }
-
-    @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isRewindRelativePeriods()
@@ -329,9 +298,6 @@ public class Chart
             series = chart.getSeries();
             category = chart.getCategory();
             rewindRelativePeriods = chart.isRewindRelativePeriods();
-
-            filterDimensions.clear();
-            filterDimensions.addAll( chart.getFilterDimensions() );
         }
     }
 }

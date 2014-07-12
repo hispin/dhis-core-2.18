@@ -28,15 +28,23 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.user.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -59,41 +67,61 @@ public abstract class BaseChart
     public static final String TYPE_PIE = "pie";
     public static final String TYPE_RADAR = "radar";
 
-    private String domainAxisLabel;
+    protected String domainAxisLabel;
 
-    private String rangeAxisLabel;
+    protected String rangeAxisLabel;
 
-    private String type;
+    protected String type;
 
-    private boolean hideLegend;
+    protected boolean hideLegend;
 
-    private boolean regression;
+    protected boolean regression;
 
-    private boolean hideTitle;
+    protected boolean hideTitle;
 
-    private boolean hideSubtitle;
+    protected boolean hideSubtitle;
 
-    private String title;
+    protected String title;
 
-    private Double targetLineValue;
+    protected Double targetLineValue;
 
-    private String targetLineLabel;
+    protected String targetLineLabel;
 
-    private Double baseLineValue;
+    protected Double baseLineValue;
 
-    private String baseLineLabel;
+    protected String baseLineLabel;
 
-    private boolean showData;
+    protected boolean showData;
 
-    private boolean hideEmptyRows;
+    protected boolean hideEmptyRows;
 
-    private Double rangeAxisMaxValue;
+    protected Double rangeAxisMaxValue;
 
-    private Double rangeAxisMinValue;
+    protected Double rangeAxisMinValue;
 
-    private Integer rangeAxisSteps; // Minimum 1
+    protected Integer rangeAxisSteps; // Minimum 1
 
-    private Integer rangeAxisDecimals;
+    protected Integer rangeAxisDecimals;
+
+    // -------------------------------------------------------------------------
+    // Dimensional properties
+    // -------------------------------------------------------------------------
+
+    protected List<String> filterDimensions = new ArrayList<String>();
+
+    // -------------------------------------------------------------------------
+    // Transient properties
+    // -------------------------------------------------------------------------
+
+    protected transient I18nFormat format;
+
+    protected transient List<Period> relativePeriods = new ArrayList<Period>();
+
+    protected transient User user;
+
+    protected transient List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>();
+
+    protected transient List<OrganisationUnit> organisationUnitsInGroups = new ArrayList<OrganisationUnit>();
 
     // -------------------------------------------------------------------------
     // Logic
@@ -352,6 +380,20 @@ public abstract class BaseChart
         this.rangeAxisDecimals = rangeAxisDecimals;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "filterDimension", namespace = DxfNamespaces.DXF_2_0 )
+    public List<String> getFilterDimensions()
+    {
+        return filterDimensions;
+    }
+
+    public void setFilterDimensions( List<String> filterDimensions )
+    {
+        this.filterDimensions = filterDimensions;
+    }
+
     // -------------------------------------------------------------------------
     // Merge with
     // -------------------------------------------------------------------------
@@ -382,7 +424,10 @@ public abstract class BaseChart
             rangeAxisMaxValue = chart.getRangeAxisMaxValue();
             rangeAxisMinValue = chart.getRangeAxisMinValue();
             rangeAxisSteps = chart.getRangeAxisSteps();
-            rangeAxisDecimals = chart.getRangeAxisDecimals();            
+            rangeAxisDecimals = chart.getRangeAxisDecimals();
+
+            filterDimensions.clear();
+            filterDimensions.addAll( chart.getFilterDimensions() );
         }
     }
 }

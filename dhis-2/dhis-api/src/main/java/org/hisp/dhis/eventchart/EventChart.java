@@ -72,8 +72,6 @@ public class EventChart
 
     private List<String> rowDimensions = new ArrayList<String>();
 
-    private List<String> filterDimensions = new ArrayList<String>();
-
     private String countType;
 
     // -------------------------------------------------------------------------
@@ -206,20 +204,6 @@ public class EventChart
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "filter", namespace = DxfNamespaces.DXF_2_0 )
-    public List<String> getFilterDimensions()
-    {
-        return filterDimensions;
-    }
-
-    public void setFilterDimensions( List<String> filterDimensions )
-    {
-        this.filterDimensions = filterDimensions;
-    }
-
-    @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getCountType()
@@ -255,9 +239,6 @@ public class EventChart
 
             rowDimensions.clear();
             rowDimensions.addAll( eventChart.getRowDimensions() );
-
-            filterDimensions.clear();
-            filterDimensions.addAll( eventChart.getFilterDimensions() );
 
             countType = eventChart.getCountType();
         }

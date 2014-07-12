@@ -28,12 +28,13 @@ package org.hisp.dhis.dxf2.parser;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dxf2.fieldfilter.FieldMap;
 import org.hisp.dhis.dxf2.objectfilter.Filters;
 
-import java.util.List;
+import com.google.common.collect.Lists;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -125,7 +126,6 @@ public class DefaultParserService implements ParserService
         return prefixes;
     }
 
-    @SuppressWarnings("unchecked")
     private void putInMap( FieldMap fieldMap, String path )
     {
         if ( StringUtils.isEmpty( path ) )
