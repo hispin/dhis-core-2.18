@@ -229,4 +229,23 @@ public class ListUtils
         
         return list.subList( Math.max( 0, start ), Math.min( list.size(), end ) );
     }
+    
+    /**
+     * Unions the given array of lists into a single list.
+     * 
+     * @param lists the array of lists.
+     * @return a union of the given lists.
+     */
+    @SafeVarargs
+    public static <T> List<T> union( final List<T>... lists )
+    {
+        final List<T> union = new ArrayList<>();
+        
+        for ( List<T> list : lists )
+        {
+            union.addAll( list );
+        }
+        
+        return union;
+    }
 }

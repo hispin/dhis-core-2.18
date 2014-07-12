@@ -32,6 +32,9 @@ import static org.hisp.dhis.analytics.AnalyticsService.NAMES_META_KEY;
 import static org.hisp.dhis.analytics.AnalyticsService.OU_HIERARCHY_KEY;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensionFromParam;
+import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensionItemsFromParam;
+import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
@@ -50,6 +53,7 @@ import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
+import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionalObjectUtils;
@@ -74,6 +78,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
@@ -309,6 +314,50 @@ public class DefaultEventAnalyticsService
         return params;
     }
 
+    public EventQueryParams getFromAnalyticalObject( BaseAnalyticalObject object, Program program, I18nFormat format )
+    {
+        EventQueryParams params = new EventQueryParams();
+
+        if ( object != null )
+        {
+            Date date = object.getRelativePeriodDate();
+            
+            object.populateAnalyticalProperties();
+
+            for ( DimensionalObject dimension : ListUtils.union( object.getColumns(), object.getRows() ) )
+            {
+                List<DimensionalObject> dimObj = analyticsService.
+                    getDimension( toDimension( dimension.getDimension() ), getUids( dimension.getItems() ), date, format, true );
+                
+                if ( dimObj != null )
+                {
+                    params.getDimensions().addAll( dimObj );
+                }
+                else
+                {
+                    params.getItems().add( getQueryItem( dimension.getDimension(), program ) );
+                }
+            }
+            
+            for ( DimensionalObject filter : object.getFilters() )
+            {
+                List<DimensionalObject> dimObj = analyticsService.
+                    getDimension( toDimension( filter.getDimension() ), getUids( filter.getItems() ), date, format, true );
+                
+                if ( dimObj != null )
+                {
+                    params.getFilters().addAll( dimObj );
+                }
+                else
+                {
+                    params.getItemFilters().add( getQueryItem( filter.getDimension(), program ) );
+                }
+            }
+        }
+        
+        return params;
+    }
+    
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate,
         Set<String> dimension, Set<String> filter, String ouMode, Set<String> asc, Set<String> desc,
         boolean skipMeta, boolean hierarchyMeta, boolean coordinatesOnly, Integer page, Integer pageSize, I18nFormat format )
@@ -351,8 +400,8 @@ public class DefaultEventAnalyticsService
         {
             for ( String dim : dimension )
             {
-                String dimensionId = DimensionalObjectUtils.getDimensionFromParam( dim );
-                List<String> items = DimensionalObjectUtils.getDimensionItemsFromParam( dim );                
+                String dimensionId = getDimensionFromParam( dim );
+                List<String> items = getDimensionItemsFromParam( dim );                
                 List<DimensionalObject> dimObj = analyticsService.getDimension( dimensionId, items, date, format, true );
                 
                 if ( dimObj != null )
@@ -370,8 +419,8 @@ public class DefaultEventAnalyticsService
         {
             for ( String dim : filter )
             {
-                String dimensionId = DimensionalObjectUtils.getDimensionFromParam( dim );
-                List<String> items = DimensionalObjectUtils.getDimensionItemsFromParam( dim );                
+                String dimensionId = getDimensionFromParam( dim );
+                List<String> items = getDimensionItemsFromParam( dim );                
                 List<DimensionalObject> dimObj = analyticsService.getDimension( dimensionId, items, date, format, true );
                 
                 if ( dimObj != null )
@@ -424,7 +473,7 @@ public class DefaultEventAnalyticsService
         
         return params;
     }
-
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
