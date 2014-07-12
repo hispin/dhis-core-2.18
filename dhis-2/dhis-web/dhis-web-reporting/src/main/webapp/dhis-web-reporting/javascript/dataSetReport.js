@@ -186,17 +186,17 @@ dhis2.dsr.displayDataSetReport = function( dataSetReport )
 {	
     if ( !dataSetReport.ds )
     {
-        setHeaderMessage( i18n_select_data_set );
+    	setHeaderDelayMessage( i18n_select_data_set );
         return false;
     }
     if ( !dataSetReport.pe )
     {
-        setHeaderMessage( i18n_select_period );
+    	setHeaderDelayMessage( i18n_select_period );
         return false;
     }
     if ( !selectionTreeSelection.isSelected() )
     {
-        setHeaderMessage( i18n_select_organisation_unit );
+    	setHeaderDelayMessage( i18n_select_organisation_unit );
         return false;
     }
     
