@@ -55,6 +55,7 @@ import org.apache.commons.math.analysis.UnivariateRealFunction;
 import org.apache.commons.math.analysis.UnivariateRealInterpolator;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.chart.BaseChart;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.AnalyticalObjectStore;
@@ -605,7 +606,7 @@ public class DefaultChartService
         return jFreeChart;
     }
 
-    private JFreeChart getAreaChart( Chart chart, CategoryDataset dataSet )
+    private JFreeChart getAreaChart( BaseChart chart, CategoryDataset dataSet )
     {
         JFreeChart areaChart = ChartFactory.createAreaChart( chart.getName(), chart.getDomainAxisLabel(),
             chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
@@ -623,7 +624,7 @@ public class DefaultChartService
         return areaChart;
     }
 
-    private JFreeChart getRadarChart( Chart chart, CategoryDataset dataSet )
+    private JFreeChart getRadarChart( BaseChart chart, CategoryDataset dataSet )
     {
         SpiderWebPlot plot = new SpiderWebPlot( dataSet, TableOrder.BY_ROW );
         plot.setLabelFont( LABEL_FONT );
@@ -635,7 +636,7 @@ public class DefaultChartService
         return radarChart;
     }
 
-    private JFreeChart getStackedBarChart( Chart chart, CategoryDataset dataSet, boolean horizontal )
+    private JFreeChart getStackedBarChart( BaseChart chart, CategoryDataset dataSet, boolean horizontal )
     {
         JFreeChart stackedBarChart = ChartFactory.createStackedBarChart( chart.getName(), chart.getDomainAxisLabel(),
             chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
@@ -652,7 +653,7 @@ public class DefaultChartService
         return stackedBarChart;
     }
     
-    private JFreeChart getMultiplePieChart( Chart chart, CategoryDataset[] dataSets )
+    private JFreeChart getMultiplePieChart( BaseChart chart, CategoryDataset[] dataSets )
     {
         JFreeChart multiplePieChart = ChartFactory.createMultiplePieChart( chart.getName(), dataSets[0], TableOrder.BY_ROW,
             !chart.isHideLegend(), false, false );
@@ -689,7 +690,7 @@ public class DefaultChartService
      * Sets basic configuration including title font, subtitle, background paint and
      * anti-alias on the given JFreeChart.
      */
-    private void setBasicConfig( JFreeChart jFreeChart, Chart chart)
+    private void setBasicConfig( JFreeChart jFreeChart, BaseChart chart)
     {
         jFreeChart.getTitle().setFont( TITLE_FONT );
         jFreeChart.addSubtitle( getSubTitle( chart ) );
@@ -700,7 +701,17 @@ public class DefaultChartService
         plot.setBackgroundPaint( COLOR_TRANSPARENT );
         plot.setOutlinePaint( COLOR_TRANSPARENT );
     }
-    
+
+    private TextTitle getSubTitle( BaseChart chart )
+    {
+        TextTitle title = new TextTitle();
+
+        title.setFont( SUB_TITLE_FONT );
+        title.setText( chart.generateTitle() );
+
+        return title;
+    }
+
     private CategoryDataset[] getCategoryDataSet( Chart chart )
     {
         Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( chart, chart.getFormat() );
@@ -753,16 +764,6 @@ public class DefaultChartService
         }
 
         return new CategoryDataset[]{ regularDataSet, regressionDataSet };
-    }
-
-    private TextTitle getSubTitle( Chart chart )
-    {
-        TextTitle title = new TextTitle();
-
-        title.setFont( SUB_TITLE_FONT );
-        title.setText( chart.generateTitle() );
-
-        return title;
     }
 
     // -------------------------------------------------------------------------
