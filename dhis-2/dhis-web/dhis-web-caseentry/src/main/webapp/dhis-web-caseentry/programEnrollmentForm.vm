@@ -169,9 +169,9 @@
 		#if( $programInstance.status==1)
 			jQuery("[id=tab-2] :input").prop('disabled', true);
 			jQuery("[id=tab-3] :input").prop('disabled', true);
+			jQuery("[id=tab-3] :input").datepicker("destroy");
 			jQuery("[id=tab-4] :input").prop('disabled', true);
 			jQuery("[id=tab-5] :input").prop('disabled', true);
-			jQuery("[id=tab-3] :input").datepicker("destroy");
 			jQuery("#completeProgram").attr('disabled', true);
 			jQuery("#incompleteProgram").attr('disabled', false);
 			$('[id=tab-3]').find('img').parent().removeAttr("href");
@@ -181,8 +181,6 @@
 			jQuery("#incompleteProgram").attr('disabled', true);
 		#end
 	});
-
-	$('#tabs').tabs();
 	
 	$("#tabs").tabs().on('tabsactivate', function (event, ui) {
 		if( ui.newPanel.selector == '#tab-3' ){
