@@ -28,15 +28,21 @@ package org.hisp.dhis.analytics.event.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.CollectionUtils.asSet;
+import static org.junit.Assert.assertEquals;
+
 import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
+import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.junit.Test;
@@ -48,6 +54,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class EventAnalyticsServiceTest
     extends DhisSpringTest
 {
+    private Program prA;
+
+    private OrganisationUnit ouA;
+    private OrganisationUnit ouB;
+    
+    private DataElement deA;
+    private DataElement deB;
+    
+    private TrackedEntityAttribute atA;
+    private TrackedEntityAttribute atB;
+
     @Autowired
     private EventAnalyticsService analyticsService;
 
@@ -58,24 +75,51 @@ public class EventAnalyticsServiceTest
     private DataElementService dataElementService;
 
     @Autowired
+    private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
     private TrackedEntityAttributeService attributeService;
-
-    private Program prA;
-    private DataElement deA;
-    private DataElement deB;
-    private TrackedEntityAttribute atA;
-    private TrackedEntityAttribute atB;
 
     @Override
     public void setUpTest()
     {
-        prA = createProgram( 'A', new HashSet<ProgramStage>(), null );
+        ouA = createOrganisationUnit( 'A' );
+        ouB = createOrganisationUnit( 'B' );
 
+        organisationUnitService.addOrganisationUnit( ouA );
+        organisationUnitService.addOrganisationUnit( ouB );
+        
+        deA = createDataElement( 'A' );
+        deB = createDataElement( 'B' );
+
+        dataElementService.addDataElement( deA );
+        dataElementService.addDataElement( deB );
+        
+        atA = createTrackedEntityAttribute( 'A' );
+        atB = createTrackedEntityAttribute( 'B' );
+        
+        attributeService.addTrackedEntityAttribute( atA );
+        attributeService.addTrackedEntityAttribute( atB );
+
+        prA = createProgram( 'A', null, asSet( atA, atB ), asSet( ouA, ouB ) );
+        programService.addProgram( prA );        
     }
 
     @Test
-    public void testGetFromUrl()
+    public void testGetFromUrlA()
     {
-
+        Set<String> dimensionParams = new HashSet<String>();
+        dimensionParams.add( "ou:" + ouA.getUid() + ";" + ouB.getId() );
+        dimensionParams.add( atA.getUid() + ":LE:5" );
+        
+        Set<String> filterParams = new HashSet<String>();
+        filterParams.add( "pe:201401;201402" );
+        
+        EventQueryParams params = analyticsService.getFromUrl( prA.getUid(), null, 
+            null, null, dimensionParams, filterParams, false, false, null, null, false, null );
+        
+        assertEquals( prA, params.getProgram() );
+        assertEquals( 1, params.getOrganisationUnits().size() );
+        assertEquals( 2, params.getFilterPeriods().size() );
     }
 }

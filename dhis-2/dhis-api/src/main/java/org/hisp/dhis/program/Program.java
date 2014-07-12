@@ -65,34 +65,24 @@ public class Program
 {
     public static final List<String> TYPE_LOOKUP = Arrays.asList( "", "MULTIPLE_EVENTS_WITH_REGISTRATION",
         "SINGLE_EVENT_WITH_REGISTRATION", "SINGLE_EVENT_WITHOUT_REGISTRATION" );
+    
     public static final int MULTIPLE_EVENTS_WITH_REGISTRATION = 1;
     public static final int SINGLE_EVENT_WITH_REGISTRATION = 2;
     public static final int SINGLE_EVENT_WITHOUT_REGISTRATION = 3;
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -2581751965520009382L;
+    
     private String description;
 
     private Integer version;
 
-    /**
-     * Description of Date of Enrollment This description is differ from each
-     * program
-     */
     private String dateOfEnrollmentDescription;
 
-    /**
-     * Description of Date of Incident This description is differ from each
-     * program
-     */
     private String dateOfIncidentDescription;
 
     @Scanned
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
     
     @Scanned
-    private Set<ProgramStage> programStages = new HashSet<ProgramStage>();
+    private Set<ProgramStage> programStages = new HashSet<ProgramStage>(); //TODO use List?
 
     @Scanned
     private Set<ValidationCriteria> validationCriteria = new HashSet<ValidationCriteria>();
@@ -103,7 +93,7 @@ public class Program
 
     private Boolean ignoreOverdueEvents = false;
 
-    private Set<ProgramTrackedEntityAttribute> attributes = new HashSet<ProgramTrackedEntityAttribute>();
+    private Set<ProgramTrackedEntityAttribute> attributes = new HashSet<ProgramTrackedEntityAttribute>(); //TODO use List?
 
     @Scanned
     private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
@@ -114,8 +104,8 @@ public class Program
     private Set<TrackedEntityInstanceReminder> instanceReminders = new HashSet<TrackedEntityInstanceReminder>();
 
     /**
-     * Allow enrolling trackedEntity to all orgunit no matter what the program
-     * is assigned for the orgunit or not
+     * Allow enrolling tracked entity to all org units disregarding whether the 
+     * program is assigned for the org unit or not.
      */
     private Boolean displayOnAllOrgunit = true;
 
@@ -146,7 +136,7 @@ public class Program
 
     public Program( String name, String description )
     {
-        this();
+        setAutoFields();
         this.name = name;
         this.description = description;
     }
@@ -191,7 +181,8 @@ public class Program
     }
 
     /**
-     * Returns TrackedEntityAttributes from ProgramTrackedEntityAttributes.
+     * Returns TrackedEntityAttributes from ProgramTrackedEntityAttributes. Use
+     * getAttributes() to access the persisted attribute list.
      */
     public List<TrackedEntityAttribute> getTrackedEntityAttributes()
     {

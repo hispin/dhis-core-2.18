@@ -76,7 +76,7 @@ public class AnalyticsServiceTest
     private OrganisationUnitGroup ouGroupC;
     
     private OrganisationUnitGroupSet ouGroupSetA;
-            
+    
     @Autowired
     private AnalyticsService analyticsService;
     
