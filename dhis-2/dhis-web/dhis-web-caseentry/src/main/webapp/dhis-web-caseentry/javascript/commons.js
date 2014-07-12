@@ -118,18 +118,15 @@ function getKeyCode(e) {
 function validateAdvancedSearch( page ) {
 	hideById('listEntityInstanceDiv');
 	var flag = true;
-	if (getFieldValue('startDate') == ''
-			&& getFieldValue('endDate') == '') {
-		if (getFieldValue('searchByProgramStage') == "false"
-				|| (getFieldValue('searchByProgramStage') == "true" && jQuery('#advancedSearchTB tr').length > 1)) {
-			jQuery("#searchDiv :input").each(function(i, item) {
-				var elementName = $(this).attr('name');
-				if (elementName == 'searchText' && jQuery(item).val() == '') {
-					showWarningMessage(i18n_specify_search_criteria);
-					flag = false;
-				}
-			});
-		}
+	if (getFieldValue('searchByProgramStage') == "false"
+			|| (getFieldValue('searchByProgramStage') == "true" && jQuery('#advancedSearchTB tr').length > 1)) {
+		jQuery("#searchDiv :input").each(function(i, item) {
+			var elementName = $(this).attr('name');
+			if (elementName == 'searchText' && jQuery(item).val() == '') {
+				showWarningMessage(i18n_specify_search_criteria);
+				flag = false;
+			}
+		});
 	}
 
 	if (flag) {

@@ -181,6 +181,8 @@
 			jQuery("#incompleteProgram").attr('disabled', true);
 		#end
 	});
+
+	$('#tabs').tabs();
 	
 	$("#tabs").tabs().on('tabsactivate', function (event, ui) {
 		if( ui.newPanel.selector == '#tab-3' ){
