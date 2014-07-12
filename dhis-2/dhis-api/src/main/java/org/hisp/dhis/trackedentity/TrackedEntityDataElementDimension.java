@@ -55,6 +55,12 @@ public class TrackedEntityDataElementDimension
     public TrackedEntityDataElementDimension()
     {
     }
+
+    public TrackedEntityDataElementDimension( DataElement dataElement, String filter )
+    {
+        this.dataElement = dataElement;
+        this.filter = filter;
+    }
     
     // -------------------------------------------------------------------------
     // Logic

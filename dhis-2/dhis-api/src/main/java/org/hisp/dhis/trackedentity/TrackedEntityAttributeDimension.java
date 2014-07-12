@@ -54,6 +54,12 @@ public class TrackedEntityAttributeDimension
     public TrackedEntityAttributeDimension()
     {
     }
+    
+    public TrackedEntityAttributeDimension( TrackedEntityAttribute attribute, String filter )
+    {
+        this.attribute = attribute;
+        this.filter = filter;
+    }
 
     // -------------------------------------------------------------------------
     // Logic
