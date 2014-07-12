@@ -128,17 +128,17 @@ dhis2.appr.generateDataReport = function()
 	
 	if ( !dataReport.ds )
     {
-        setHeaderMessage( i18n_select_data_set );
+		setHeaderDelayMessage( i18n_select_data_set );
         return false;
     }
     if ( !dataReport.pe )
     {
-        setHeaderMessage( i18n_select_period );
+    	setHeaderDelayMessage( i18n_select_period );
         return false;
     }
     if ( !selection.isSelected() )
     {
-        setHeaderMessage( i18n_select_organisation_unit );
+    	setHeaderDelayMessage( i18n_select_organisation_unit );
         return false;
     }
 

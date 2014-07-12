@@ -231,7 +231,7 @@ function getListValue( listId )
  */
 function hideById( id )
 {
-  jQuery("#" + id).hide();
+    jQuery("#" + id).hide();
 }
 
 /**
@@ -241,7 +241,7 @@ function hideById( id )
  */
 function showById( id )
 {
-  jQuery("#" + id).show();
+    jQuery("#" + id).show();
 }
 
 /**
@@ -611,8 +611,8 @@ function setMessage( message )
 {
 	if ( message && message != '' )
 	{
-		byId( 'message' ).innerHTML = message;
-		byId( 'message' ).style.display = 'block';
+		$( '#message' ).html( message );
+		$( '#message' ).show();
 	}
 }
 
@@ -632,7 +632,7 @@ function setWaitMessage( message )
  */
 function hideMessage()
 {
-	byId( 'message' ).style.display = 'none';
+	$( '#message' ).hide();
 }
 
 /**
@@ -644,11 +644,11 @@ function setHeaderMessage( message )
 {
 	window.clearTimeout( headerMessageTimeout );
 	
-    $( 'div#headerMessage' ).html( message );
+    $( '#headerMessage' ).html( message );
     
     if ( isHeaderMessageHidden() )
     {
-    	$( 'div#headerMessage' ).slideDown( 'fast' );
+    	$( '#headerMessage' ).fadeIn( 'fast' );
     }
 }
 
@@ -666,7 +666,7 @@ function setHeaderWaitMessage( message )
 	
 	if ( isHeaderMessageHidden() )
 	{
-    	$( 'div#headerMessage' ).slideDown( 'fast' );
+    	$( 'div#headerMessage' ).fadeIn( 'fast' );
 	}
 }
 
@@ -699,7 +699,7 @@ function setHeaderWaitDelayMessage( message )
  */
 function hideHeaderMessage()
 {
-    $( 'div#headerMessage' ).slideUp( 'fast' );
+    $( '#headerMessage' ).fadeOut( 'fast' );
 }   
 
 /**
@@ -707,7 +707,7 @@ function hideHeaderMessage()
  */
 function isHeaderMessageVisible()
 {
-    return $( 'div#headerMessage' ).is(":visible");
+    return $( '#headerMessage' ).is( ":visible" );
 }
 
 /**
@@ -726,7 +726,7 @@ function isHeaderMessageHidden()
 function setInfo( message )
 {
     $( '#info' ).html( message );
-    $( '#info' ).slideDown( 'fast' );
+    $( '#info' ).fadeIn( 'fast' );
 }
 
 /**
@@ -734,7 +734,7 @@ function setInfo( message )
  */
 function hideInfo()
 {
-    $( '#info' ).slideUp( 'fast' );
+    $( '#info' ).fadeOut( 'fast' );
 }
 
 /**
@@ -760,7 +760,7 @@ function hideDetails()
  */
 function showWarning()
 {
-    $( '#warningArea' ).show( "fast" );
+    $( '#warningArea' ).show();
 }
 
 /**
@@ -768,7 +768,7 @@ function showWarning()
  */
 function hideWarning()
 {
-    $( '#warningArea' ).hide( "fast" );
+    $( '#warningArea' ).hide();
 }
 
 /**
@@ -778,8 +778,12 @@ function hideWarning()
  */
 function byId( elementId )
 {
-  return document.getElementById( elementId );
+    return document.getElementById( elementId );
 }
+
+// -----------------------------------------------------------------------------
+// Supportive functions
+// -----------------------------------------------------------------------------
 
 /**
  * Toggles visibility for an element.
@@ -1324,7 +1328,8 @@ function validation2( formId, submitHandler, kwargs )
  * 
  * @return Validation rules for a given form
  */
-function getValidationRules( form ) {
+function getValidationRules( form ) 
+{
 	if ( form !== undefined ) {
 		return validationRules[form];
 	}

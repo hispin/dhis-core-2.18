@@ -360,9 +360,9 @@ span#info
   border-radius: 3px;
 }
 
-div#headerMessage
+#headerMessage
 {
-  top: 0px;
+  top: 3px;
   left: 155px;
   position: fixed;
   display: none;
