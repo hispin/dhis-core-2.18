@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.common.AnalyticsType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -44,7 +45,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.user.User;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -177,6 +177,11 @@ public class Chart
         this.filterDimensions.add( filter );
     }
 
+    public AnalyticsType getAnalyticsType()
+    {
+        return AnalyticsType.AGGREGATE;
+    }
+
     public int getWidth()
     {
         return 700;
@@ -228,34 +233,6 @@ public class Chart
     public void setRewindRelativePeriods( boolean rewindRelativePeriods )
     {
         this.rewindRelativePeriods = rewindRelativePeriods;
-    }
-
-    // -------------------------------------------------------------------------
-    // Getters and setters for transient properties
-    // -------------------------------------------------------------------------
-
-    @JsonIgnore
-    public I18nFormat getFormat()
-    {
-        return format;
-    }
-
-    @JsonIgnore
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
-    @JsonIgnore
-    public List<Period> getRelativePeriods()
-    {
-        return relativePeriods;
-    }
-
-    @JsonIgnore
-    public void setRelativePeriods( List<Period> relativePeriods )
-    {
-        this.relativePeriods = relativePeriods;
     }
 
     // -------------------------------------------------------------------------

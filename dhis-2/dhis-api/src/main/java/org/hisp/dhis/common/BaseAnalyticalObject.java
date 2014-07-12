@@ -409,7 +409,7 @@ public abstract class BaseAnalyticalObject
             // Tracked entity data element
 
             Map<String, TrackedEntityDataElementDimension> dataElements = new HashMap<String, TrackedEntityDataElementDimension>();
-
+            
             for ( TrackedEntityDataElementDimension dataElement : dataElementDimensions )
             {
                 dataElements.put( dataElement.getUid(), dataElement );

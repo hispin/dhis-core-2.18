@@ -29,12 +29,16 @@ package org.hisp.dhis.webapi.controller.event;
  */
 
 import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensions;
+import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.eventchart.EventChart;
@@ -42,18 +46,25 @@ import org.hisp.dhis.eventchart.EventChartService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.schema.descriptors.EventChartSchemaDescriptor;
+import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -66,6 +77,9 @@ public class EventChartController
 {
     @Autowired
     private EventChartService eventChartService;
+    
+    @Autowired
+    private ChartService chartService;
 
     @Autowired
     private DimensionService dimensionService;
@@ -75,10 +89,16 @@ public class EventChartController
 
     @Autowired
     private ProgramStageService programStageService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     @Autowired
     private I18nManager i18nManager;
 
+    @Autowired
+    private ContextUtils contextUtils;
+    
     //--------------------------------------------------------------------------
     // CRUD
     //--------------------------------------------------------------------------
@@ -134,6 +154,38 @@ public class EventChartController
         eventChartService.deleteEventChart( eventChart );
     }
 
+    //--------------------------------------------------------------------------
+    // Get data
+    //--------------------------------------------------------------------------
+
+    @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
+    public void getChart(
+        @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        @RequestParam( value = "ou", required = false ) String ou,
+        @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
+        @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
+        HttpServletResponse response ) throws IOException
+    {
+        EventChart chart = eventChartService.getEventChart( uid ); // TODO no acl?
+
+        if ( chart == null )
+        {
+            ContextUtils.notFoundResponse( response, "Chart does not exist: " + uid );
+            return;
+        }
+
+        OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
+
+        JFreeChart jFreeChart = chartService.getJFreeChart( chart, date, unit, i18nManager.getI18nFormat() );
+
+        String filename = CodecUtils.filenameEncode( chart.getName() ) + ".png";
+
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
+
+        ChartUtilities.writeChartAsPNG( response.getOutputStream(), jFreeChart, width, height );
+    }
+    
     //--------------------------------------------------------------------------
     // Hooks
     //--------------------------------------------------------------------------

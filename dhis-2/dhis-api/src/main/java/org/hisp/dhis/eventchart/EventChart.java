@@ -33,9 +33,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.chart.BaseChart;
+import org.hisp.dhis.common.AnalyticsType;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
@@ -115,6 +118,31 @@ public class EventChart
         {
             filters.addAll( getDimensionalObjectList( filter ) );
         }
+    }
+
+    public List<NameableObject> series()
+    {
+        String seriesDim = columnDimensions.get( 0 );
+        
+        DimensionalObject object = getDimensionalObject( seriesDim, relativePeriodDate, user, true,
+            organisationUnitsAtLevel, organisationUnitsInGroups, format );
+
+        return object != null ? object.getItems() : null;
+    }
+
+    public List<NameableObject> category()
+    {
+        String categoryDim = rowDimensions.get( 0 );
+        
+        DimensionalObject object = getDimensionalObject( categoryDim, relativePeriodDate, user, true,
+            organisationUnitsAtLevel, organisationUnitsInGroups, format );
+
+        return object != null ? object.getItems() : null;
+    }
+    
+    public AnalyticsType getAnalyticsType()
+    {
+        return AnalyticsType.EVENT;
     }
 
     // -------------------------------------------------------------------------

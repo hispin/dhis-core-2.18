@@ -136,6 +136,8 @@ import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.hisp.dhis.system.util.UniqueArrayList;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,6 +183,9 @@ public class DefaultAnalyticsService
     
     @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    @Autowired
+    private TrackedEntityAttributeService attributeService;
     
     @Autowired
     private ExpressionService expressionService;
@@ -1037,6 +1042,28 @@ public class DefaultAnalyticsService
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.CATEGORY, null, dec.getDisplayName(), decos );
             
             return ListUtils.getList( object );
+        }
+        
+        TrackedEntityAttribute tea = attributeService.getTrackedEntityAttribute( dimension );
+        
+        if ( tea != null )
+        {
+            List<NameableObject> options = new ArrayList<NameableObject>(); //TODO
+
+            DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_ATTRIBUTE, null, tea.getDisplayName(), options );
+            
+            return ListUtils.getList( object );
+        }
+        
+        DataElement ted = dataElementService.getDataElement( dimension );
+        
+        if ( ted != null )
+        {
+            List<NameableObject> options = new ArrayList<NameableObject>(); //TODO
+
+            DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_DATAELEMENT, null, ted.getDisplayName(), options );
+            
+            return ListUtils.getList( object );            
         }
         
         if ( allowNull )
