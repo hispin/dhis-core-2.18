@@ -106,10 +106,8 @@
 						</tr>
 						#if($programInstance.program.type==1 && $programStageInstance)
 							<tr>
-								<td id='tr2_$programInstance.id' 
-									onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")'
-									style='cursor:pointer;'>
-									<a>&#8226; $programStageInstance.programStage.displayName ($format.formatDate($programStageInstance.dueDate))</a>
+								<td id='tr2_$programInstance.id' style='cursor:pointer;'>
+									&#8226; $programStageInstance.programStage.displayName ($format.formatDate($programStageInstance.dueDate))
 								</td>
 							</tr>
 						#end
