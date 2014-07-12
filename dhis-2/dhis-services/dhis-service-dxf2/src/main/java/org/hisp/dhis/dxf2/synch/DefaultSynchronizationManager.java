@@ -184,6 +184,8 @@ public class DefaultSynchronizationManager
         
         int lastUpdatedCount = dataValueService.getDataValueCountLastUpdatedAfter( lastSuccessTime );
         
+        log.info( "Values: " + lastUpdatedCount + " since last synch success: " + lastSuccessTime );
+        
         if ( lastUpdatedCount == 0 )
         {
             log.info( "Skipping synch, no new or updated data values" );
