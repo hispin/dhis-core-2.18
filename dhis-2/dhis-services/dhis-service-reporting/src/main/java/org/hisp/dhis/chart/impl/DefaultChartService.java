@@ -62,6 +62,7 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.AnalyticalObjectStore;
 import org.hisp.dhis.common.AnalyticsType;
+import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.NameableObject;
@@ -746,6 +747,8 @@ public class DefaultChartService
 
         SimpleRegression regression = new SimpleRegression();
 
+        BaseAnalyticalObject.sortKeys( valueMap );
+
         for ( NameableObject series : chart.series() )
         {
             double categoryIndex = 0;
@@ -759,6 +762,10 @@ public class DefaultChartService
                 // Replace potential operand separator with dimension separator
 
                 key = key.replace( DataElementOperand.SEPARATOR, DIMENSION_SEP );
+                
+                // Sort key on components to remove significance of column order
+                
+                key = BaseAnalyticalObject.sortKey( key );
 
                 Double value = valueMap.get( key );
 

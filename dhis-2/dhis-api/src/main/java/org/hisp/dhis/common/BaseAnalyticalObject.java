@@ -670,9 +670,8 @@ public abstract class BaseAnalyticalObject
     }
     
     /**
-     * Splits the keys of the given map on the dimension identifier separator,
-     * sorts the identifiers, writes them out as a key and puts the key back into
-     * the map.
+     * Sorts the keys in the given map by splitting on the '-' character and 
+     * sorting the components alphabetically.
      * 
      * @param valueMap the mapping of keys and values.
      */
@@ -682,20 +681,36 @@ public abstract class BaseAnalyticalObject
 
         for ( String key : valueMap.keySet() )
         {
-            if ( key != null )
+            String sortKey = sortKey( key );
+            
+            if ( sortKey != null )
             {
-                String[] ids = key.split( DIMENSION_SEP );
-
-                Collections.sort( Arrays.asList( ids ) );
-
-                String sortedKey = StringUtils.join( ids, DIMENSION_SEP );
-
-                map.put( sortedKey, valueMap.get( key ) );
+                map.put( sortKey, valueMap.get( key ) );
             }
         }
 
         valueMap.clear();
         valueMap.putAll( map );
+    }
+
+    /**
+     * Sorts the given key by splitting on the '-' character and sorting the 
+     * components alphabetically.
+     * 
+     * @param valueMap the mapping of keys and values.
+     */
+    public static String sortKey( String key )
+    {
+        if ( key != null )
+        {
+            String[] ids = key.split( DIMENSION_SEP );
+
+            Collections.sort( Arrays.asList( ids ) );
+
+            key = StringUtils.join( ids, DIMENSION_SEP );
+        }
+        
+        return key;
     }
 
     /**
