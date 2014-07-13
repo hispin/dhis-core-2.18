@@ -77,7 +77,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
-import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.ListUtils;
@@ -218,18 +217,11 @@ public class DefaultEventAnalyticsService
         return grid;
     }
     
-    public Map<String, Double> getAggregatedEventDataMappping( EventQueryParams params )
-    {        
-        Grid grid = getAggregatedEventData( params );
-        int valueIndex = grid.getWidth() - 1;
-        return GridUtils.getMetaValueMapping( grid, valueIndex );
-    }
-    
-    public Map<String, Double> getAggregatedEventDataMappping( BaseAnalyticalObject object, I18nFormat format )
+    public Grid getAggregatedEventData( BaseAnalyticalObject object, I18nFormat format )
     {
         EventQueryParams params = getFromAnalyticalObject( object, format );
         
-        return getAggregatedEventDataMappping( params );
+        return getAggregatedEventData( params );
     }
 
     public Grid getEvents( EventQueryParams params )

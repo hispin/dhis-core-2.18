@@ -37,8 +37,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
@@ -219,7 +221,12 @@ public class ListGrid
 
         return tempHeaders;
     }
-
+    
+    public int getIndexOfHeader( String name )
+    {
+        return headers.indexOf( new GridHeader( name, null ) );
+    }
+    
     @JsonProperty
     @JsonView( { DetailedView.class } )
     public int getHeight()
@@ -672,6 +679,21 @@ public class ListGrid
         }
         
         return indexes;
+    }
+    
+    public Set<Object> getUniqueValues( String columnName )
+    {
+        int columnIndex = getIndexOfHeader( columnName );
+                
+        Set<Object> values = new HashSet<>();
+        
+        if ( columnIndex != -1 )
+        {
+            List<Object> column = getColumn( columnIndex );
+            values.addAll( column );            
+        }
+        
+        return values;
     }
             
     // -------------------------------------------------------------------------

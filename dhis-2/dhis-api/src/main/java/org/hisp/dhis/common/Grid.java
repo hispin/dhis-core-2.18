@@ -31,6 +31,7 @@ package org.hisp.dhis.common;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -96,6 +97,13 @@ public interface Grid
      * Returns all visible headers, ie. headers which are not hidden.
      */
     List<GridHeader> getVisibleHeaders();
+    
+    /**
+     * Returns the index of the header with the given name.
+     * 
+     * @param name the name of the grid header.
+     */
+    int getIndexOfHeader( String name );
     
     /**
      * Adds a header value.
@@ -300,10 +308,16 @@ public interface Grid
     
     /**
      * Returns indexes of the meta grid headers.
-     * 
-     * @return List of indexes of meta headers.
      */
     List<Integer> getMetaColumnIndexes();
+    
+    /**
+     * Returns the unique set of values from the grid column with the given name.
+     * The name refers to the name of the grid header of the column.
+     * 
+     * @param columnName name of the column grid header.
+     */
+    Set<Object> getUniqueValues( String columnName );
     
     /**
      * Adds a set of headers based on the column names of the given SQL result set.

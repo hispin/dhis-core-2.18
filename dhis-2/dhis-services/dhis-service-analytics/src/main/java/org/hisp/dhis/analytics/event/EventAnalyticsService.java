@@ -28,7 +28,6 @@ package org.hisp.dhis.analytics.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.analytics.SortOrder;
@@ -45,9 +44,7 @@ public interface EventAnalyticsService
     
     Grid getAggregatedEventData( EventQueryParams params );
     
-    Map<String, Double> getAggregatedEventDataMappping( EventQueryParams params );
-    
-    Map<String, Double> getAggregatedEventDataMappping( BaseAnalyticalObject object, I18nFormat format );
+    Grid getAggregatedEventData( BaseAnalyticalObject object, I18nFormat format );
     
     Grid getEvents( EventQueryParams params );
 
