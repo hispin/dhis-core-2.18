@@ -1196,7 +1196,8 @@ Ext.onReady( function() {
 			service.layout.getSyncronizedXLayout = function(xLayout, xResponse) {
 				var removeDimensionFromXLayout,
 					getHeaderNames,
-					dimensions = Ext.Array.clean([].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || []));
+					dimensions = Ext.Array.clean([].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || [])),
+                    getSeriesValidatedLayout;
 
 				removeDimensionFromXLayout = function(objectName) {
 					var getUpdatedAxis;
@@ -1239,6 +1240,19 @@ Ext.onReady( function() {
 					return headerNames;
 				};
 
+                getSeriesValidatedLayout = function(xLayout) {
+                    var nSeries = xLayout.columns[0].ids.length * xLayout.rows[0].ids.length,
+                        message = 'This chart is potentially very large due to the high number of series and category items. Create the chart anyway?';
+
+                    if (nSeries > 200) {
+                        if (!confirm(message))  {
+                            return null;
+                        }
+                    }
+
+                    return xLayout;
+                };
+
 				return function() {
 
 					// items
@@ -1262,11 +1276,20 @@ Ext.onReady( function() {
 					// Re-layout
 					layout = api.layout.Layout(xLayout);
 
-					if (layout) {
-						return service.layout.getExtendedLayout(layout);
-					}
+                    if (!layout) {
+                        return null;
+                    }
 
-					return null;
+                    xLayout = service.layout.getExtendedLayout(layout);
+
+                    // validate number of series
+                    xLayout = getSeriesValidatedLayout(xLayout);
+
+                    if (!xLayout) {
+                        return null;
+                    }
+
+                    return xLayout;
 				}();
 			};
 

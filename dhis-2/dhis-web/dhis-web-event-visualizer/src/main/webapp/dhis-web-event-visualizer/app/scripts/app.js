@@ -5783,8 +5783,6 @@ Ext.onReady( function() {
 							return;
 						}
 
-                        web.mask.show(ns.app.centerRegion, 'Error while creating table..');
-
                         ns.app.paramString = paramString;
 
                         web.report.createReport(layout, response, isUpdateGui);
@@ -5806,6 +5804,11 @@ Ext.onReady( function() {
                 xLayout = getXLayout(layout);
                 xResponse = service.response.aggregate.getExtendedResponse(xLayout, response);
                 xLayout = getSXLayout(xLayout, xResponse);
+
+                if (!xLayout) {
+                    web.mask.hide(ns.app.centerRegion);
+                    return;
+                }
 
                 web.mask.show(ns.app.centerRegion, 'Error while rendering chart..');
                 
