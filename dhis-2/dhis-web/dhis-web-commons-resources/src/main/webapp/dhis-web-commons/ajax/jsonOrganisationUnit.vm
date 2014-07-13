@@ -1,6 +1,6 @@
 { "organisationUnit": 
   {
-  "id": $!{organisationUnit.id},
+  "id": "$!{organisationUnit.id}",
   "uid": "$!encoder.jsonEncode( ${organisationUnit.uid} )",
   "name": "$!encoder.jsonEncode( ${organisationUnit.name} )",
   "shortName": "$!encoder.jsonEncode( ${organisationUnit.shortName} )",

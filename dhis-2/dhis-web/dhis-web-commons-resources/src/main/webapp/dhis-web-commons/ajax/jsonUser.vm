@@ -1,7 +1,7 @@
 { "user":
   {
-    "id": ${user.id},
-    "uid": "${user.uid}",
+    "id": "$!{user.id}",
+    "uid": "$!{user.uid}",
     "surname": "$!encoder.jsonEncode( ${user.surname} )",
     "firstName": "$!encoder.jsonEncode( ${user.firstName} )",
     "username": "$!encoder.jsonEncode( ${user.userCredentials.username} )",
@@ -9,7 +9,7 @@
     "phoneNumber": "$!encoder.jsonEncode( ${user.phoneNumber} )",
     "lastLogin": "$!format.formatDate( ${user.userCredentials.lastLogin} )",	
     "created": "$!format.formatDate( ${user.userCredentials.created} )",
-    "disabled": ${user.userCredentials.disabled},
+    "disabled": "$!{user.userCredentials.disabled}",
     #set( $size = ${user.organisationUnits.size()} )
     "organisationUnits": [
     #foreach( $unit in $user.organisationUnits )
