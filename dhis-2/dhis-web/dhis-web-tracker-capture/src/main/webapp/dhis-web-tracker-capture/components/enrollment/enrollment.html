@@ -21,7 +21,7 @@
                     </td>
                 </tr>
             </table>
-            <hr>
+            <div class='row'><hr></div>
             <table class="table-borderless table-striped">
                 <thead>
                     <tr class="col-md-12">
@@ -42,7 +42,6 @@
                     </td>
                 </tr>
             </table>
-
             <div class="vertical-spacing small-horizonal-spacing">
                 <button type="button" 
                         class="btn btn-primary"
@@ -86,7 +85,7 @@
                         </td>
                     </tr>
                 </table>
-                <hr>
+                <hr ng-if='attributesForEnrollment'>
                 <table class="table-borderless table-striped">
                     <tr class="col-md-12" ng-repeat="attribute in attributesForEnrollment">
                         <td class="col-md-6">
@@ -135,7 +134,7 @@
                     </tr>                        
                 </table>
 
-                <div class="vertical-spacing small-horizonal-spacing">            
+                <div class="vertical-spacing col-md-12">            
                     <button type="button" 
                             class="btn btn-primary"
                             ng-click="enroll()">

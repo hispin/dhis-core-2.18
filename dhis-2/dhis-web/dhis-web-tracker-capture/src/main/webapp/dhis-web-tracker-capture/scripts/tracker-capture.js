@@ -58,6 +58,7 @@ $(document).ready(function()
         
         promise = promise.then( dhis2.tc.store.open );
         promise = promise.then( getUserProfile );
+        promise = promise.then( getLoginDetails );
         promise = promise.then( getRelationships );
         promise = promise.then( getAttributes );
         promise = promise.then( getOptionSetsForAttributes );
@@ -187,6 +188,20 @@ function getUserProfile()
     return def.promise();
 }
 
+function getLoginDetails()
+{
+    var def = $.Deferred();
+
+    $.ajax({
+        url: '../api/me',
+        type: 'GET'
+    }).done( function(response) {            
+        localStorage['LOGIN_DETAILS'] = JSON.stringify(response);           
+        def.resolve();
+    });
+    
+    return def.promise(); 
+}
 
 function getRelationships()
 {
@@ -434,7 +449,7 @@ function getProgramStage( id )
         return $.ajax( {
             url: '../api/programStages.json',
             type: 'GET',
-            data: 'filter=id:eq:' + id +'&fields=id,name,dataEntryForm,reportDateDescription,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,formName,type,optionSet[id]]]'
+            data: 'filter=id:eq:' + id +'&fields=id,name,version,dataEntryForm,captureCoordinates,reportDateDescription,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,formName,type,optionSet[id]]]'
         }).done( function( response ){            
             _.each( _.values( response.programStages ), function( programStage ) {                
                 dhis2.tc.store.set( 'programStages', programStage );

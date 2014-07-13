@@ -3,12 +3,10 @@
 </div>
 <div class="modal-body">
     <div class='row' ng-if="reportMode === 'PROGRAM'">
+        <span class="bold">
+            {{entityName}}
+        </span>
         <table class="table-borderless table-striped">
-            <tr>
-                <th colspan="2">
-                    {{entityName}}
-                </th>
-            </tr>
             <tr class="col-md-12" ng-repeat="gridColumn in gridColumns">
                 <td class="col-md-6">
                     {{gridColumn.name}}
@@ -54,28 +52,21 @@
         </table>
     </div>
     <div class="row" ng-if='currentEvent.notes'>
-            <hr>
-            <table class="table-borderless table-striped dhis2-table-hover">  
-                <tr>
-                    <th>
-                        {{'notes' | translate}}
-                    </th>
-                </tr>
-                <tr class="col-md-12" ng-repeat="note in currentEvent.notes">
-                    <td class="over-flow-hidden">
-                        <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
-                            <div class='col-md-12'>{{note.value}}</div>
-                        </d2-pop-over>
-                        <script type="text/ng-template" id="note.html">
-                            <p>{{content.value}}</p>
-                            <hr>
-                            <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
-                            <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
-                        </script>
-                    </td> 
-                </tr>
-            </table>
-        <!--</div>  -->      
+        <hr>
+        <table class="table-borderless table-striped">  
+            <tr>
+                <th>
+                    {{'notes' | translate}}
+                </th>
+            </tr>
+            <tr class="col-md-12" ng-repeat="note in currentEvent.notes">
+                <td class="col-md-12 over-flow-hidden" style="width:100%;">
+                    <p>{{note.value}}</p>
+                    <p><strong>{{'created_by' | translate}}: </strong>{{note.storedBy}}</p>
+                    <p><strong>{{'date' | translate}}: </strong>{{note.storedDate}}</p>                    
+                </td>                    
+            </tr>
+        </table>
     </div>
 </div>
 <div class="modal-footer">

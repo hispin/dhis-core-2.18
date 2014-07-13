@@ -61,7 +61,7 @@
                         <thead>
                             <tr>
                                 <th>{{selectedProgram.trackedEntity.name}}</th>
-                                <th>{{selectedProgram.name}} {{'record' | translate}}</th>
+                                <th>{{selectedProgram.name}} {{'visit' | translate}}</th>
                             </tr>
                         </thead>
                         <tr ng-repeat="tei in teiList.rows">
@@ -70,27 +70,28 @@
                                     <span class="bold">{{gridColumn.name}}:</span> {{tei[gridColumn.id]}}<br>
                                 </span>
                             </td>
-                            <td>    
-                                <div class='bold inline-block vertical-center' ng-if='!dhis2Events[tei.id]'>{{'no_visit_made' | translate}}</div>
-                                <div class="inline-block vertical-center" ng-repeat="ev in dhis2Events[tei.id] | orderBy: 'eventDate'">                                    
+                            <td class='vertical-center'>    
+                                <div class='bold inline-block' ng-if='!dhis2Events[tei.id]'>{{'no_visit_made' | translate}}</div>
+                                <div class="inline-block" ng-repeat="ev in dhis2Events[tei.id] | orderBy: 'eventDate'">                                    
                                     <div class="block align-center">{{ev.orgUnitName}}</div>                   
                                     <div class="empty-stage-container" 
-                                         title="{{ev.dataValues ? 'details' : 'no_data_registerd' | translate}}"
+                                         title="{{'no_data' | translate}}"
                                          ng-class="{'{{ev.statusColor}}': true}"
                                          ng-if='!ev.dataValues'>
                                         {{ev.name}}<br/>
-                                        {{ev.eventDate}}         
+                                        {{ev.eventDate}}<br>
+                                        {{'no_data' | translate}}
                                     </div>
                                     <div class="stage-container" 
-                                         title="{{ev.dataValues ? 'details' : 'no_data_registerd' | translate}}"
+                                         title="{{'details' | translate}}"
                                          ng-class="{'{{ev.statusColor}}': true}"
                                          ng-if='ev.dataValues'
                                          ng-click="showEventDetails(ev, tei)">
                                         {{ev.name}}<br/>
-                                        {{ev.eventDate}}         
-                                    </div>
-                                    
-                                    <i class="fa fa-arrow-right" ng-show="$index < dhis2Events[tei.id].length - 1"></i>
+                                        {{ev.eventDate}}<br>  
+                                        {{'data_exists' | translate}}
+                                    </div>                                    
+                                    <span><i class="fa fa-arrow-right" ng-show="$index < dhis2Events[tei.id].length - 1"></i></span>
                                 </div>                                         
                             </td>
                         </tr>

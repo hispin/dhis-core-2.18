@@ -20,7 +20,7 @@ trackerCapture.controller('DashboardController',
     $rootScope.smallerDashboardWidgets = [];
     $rootScope.enrollmentWidget = {title: 'enrollment', view: "components/enrollment/enrollment.html", show: true, expand: true};
     $rootScope.dataentryWidget = {title: 'dataentry', view: "components/dataentry/dataentry.html", show: true, expand: true};
-    $rootScope.reportWidget = {title: 'report', view: "components/report/teiReport.html", show: true, expand: true};
+    $rootScope.reportWidget = {title: 'report', view: "components/report/tei-report.html", show: true, expand: true};
     $rootScope.selectedWidget = {title: 'current_selections', view: "components/selected/selected.html", show: false, expand: true};
     $rootScope.profileWidget = {title: 'profile', view: "components/profile/profile.html", show: true, expand: true};
     $rootScope.relationshipWidget = {title: 'relationships', view: "components/relationship/relationship.html", show: true, expand: true};

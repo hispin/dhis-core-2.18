@@ -86,84 +86,18 @@
                     <input type="text" name="dueDate" class="form-control" ng-date ng-model="currentEvent.dueDate" ng-disabled="true"/>
                 </div>                        
             </div>
-            <hr>
-            <form name="dataEntryOuterForm" novalidate>                
-                <table class="table-borderless table-striped" ng-if='currentEvent'>
-                    <thead>
-                        <tr class="col-md-12">
-                            <th class="col-md-5">
-                                {{'data_element'| translate}}
-                            </th>
-                            <th class="col-md-5 align-center">
-                                {{'value'| translate}}
-                            </th>
-                            <th class="col-md-2 align-center" ng-if="allowProvidedElsewhereExists">
-                                {{'provided_elsewhere'| translate}}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tr class="col-md-12" ng-repeat="prStDe in currentStage.programStageDataElements">
-                        <td class="col-md-5">
-                            {{prStDe.dataElement.formName ? prStDe.dataElement.formName : prStDe.dataElement.name}}
-                        </td>
-                        <td class="col-md-5">
-                            <ng-form name="dataEntryInnerForm">
-                                <div ng-switch="prStDe.dataElement.type">
-                                    <div ng-switch-when="int">
-                                        <input type="number"
-                                               ng-class='getClass(prStDe.dataElement.id)'
-                                               ng-model="currentEvent[prStDe.dataElement.id]" 
-                                               ng-required={{prStDe.compulsory}}
-                                               ng-blur="saveDatavalue(prStDe)" 
-                                               name="foo"/>
-                                        <span ng-show="dataEntryOuterForm.submitted && dataEntryInnerForm.foo.$invalid" class="error">{{'number_required'| translate}}</span>
-                                    </div>
-                                    <div ng-switch-when="string">    
-                                        <input type="text"
-                                               ng-class='getClass(prStDe.dataElement.id)'
-                                               ng-model="currentEvent[prStDe.dataElement.id]" 
-                                               ng-required={{prStDe.compulsory}} 
-                                               typeahead="option for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
-                                               typeahead-open-on-focus    
-                                               ng-blur="saveDatavalue(prStDe)" 
-                                               name="foo"/>
-                                    </div>
-                                    <div ng-switch-when="bool">
-                                        <select ng-class='getClass(prStDe.dataElement.id)'
-                                                ng-model="currentEvent[prStDe.dataElement.id]" 
-                                                ng-required={{prStDe.compulsory}} 
-                                                ng-change="saveDatavalue(prStDe)" 
-                                                name="foo">
-                                            <option value="">{{'please_select'| translate}}</option>                        
-                                            <option value="0">{{'no'| translate}}</option>
-                                            <option value="1">{{'yes'| translate}}</option>
-                                        </select>
+            <div class='row'><hr></div>
+            <div class='col-md-12' ng-if="customForm">
+                <a href ng-click="switchDataEntryForm()" title="{{displayCustomForm ? 'default_form' : 'custom_form'| translate}}"><span class="primary pull-right"><i class="fa fa-file-text fa-2x"></i></span></a>                
+                <!--<button type="button" class="btn btn-default pull-right" ng-click="switchDataEntryForm()">
+                    {{displayCustomForm ? 'default_form' : 'custom_form'| translate}}
+                </button>--> 
+            </div>
 
-                                    </div>
-                                    <div ng-switch-when="date">
-                                        <input type="text" 
-                                               placeholder="yyyy-mm-dd" 
-                                               ng-date 
-                                               ng-class='getClass(prStDe.dataElement.id)'
-                                               ng-model="currentEvent[prStDe.dataElement.id]"
-                                               ng-required={{prStDe.compulsory}}  
-                                               blur-or-change="saveDatavalue(dhis2Event, eventGridColumn.id)"
-                                               name="foo"/>
-                                    </div>
-                                </div>
-                            </ng-form>                            
-                        </td>
-                        <td class="col-md-2" ng-if="allowProvidedElsewhereExists">                    
-                            <div class="align-center" ng-show="prStDe.allowProvidedElsewhere">
-                                <input type="checkbox" 
-                                       ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]"
-                                       ng-change="saveDatavalueLocation(prStDe)"/>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-            <hr>
+            <div class="vertical-spacing" ng-if="displayCustomForm" ng-include="'components/dataentry/custom-form.html'"></div>  
+            <div class="vertical-spacing" ng-if="!displayCustomForm" ng-include="'components/dataentry/default-form.html'"></div>
+
+            <div class='row'><hr></div>
             <div class="row">
                 <div class="col-md-10">
                     <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_your_note_here'| translate}}"></textarea>
@@ -176,23 +110,23 @@
                     </button>
                 </div>
 
-                <table class="table table-with-fixed-layout">
+                <table class="table table-striped dhis2-table-hover">
                     <tr ng-repeat="note in currentEvent.notes">
                         <td class="over-flow-hidden">
-                    <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
-                        <div>{{note.value}}</div>
-                    </d2-pop-over>
-                    <script type="text/ng-template" id="note.html">
-                        <p>{{content.value}}</p>
-                        <hr>
-                        <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
-                        <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
-                    </script>
-                    </td> 
+                            <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
+                                <div>{{note.value}}</div>
+                            </d2-pop-over>
+                            <script type="text/ng-template" id="note.html">
+                                <p>{{content.value}}</p>
+                                <hr>
+                                <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
+                                <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
+                            </script>
+                        </td> 
                     </tr>
                 </table>
             </div>
-            <hr>
+            <div class='row'><hr></div>
             <div class="form-group">
                 <div class="btn-group btn-group-justified">
                     <a href ng-click="completeEvent()" class="btn btn-info" ng-disabled="currentEvent.status !== 'ACTIVE'">{{'complete'| translate}}</a>

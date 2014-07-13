@@ -1,12 +1,24 @@
 trackerCapture.controller('NotesController',
         function($scope,
                 $rootScope,
+                $filter,
+                storage,
                 EnrollmentService,
                 CurrentSelection,
                 orderByFilter,
                 TranslationService) {
 
     TranslationService.translate();
+    
+    var loginDetails = storage.get('LOGIN_DETAILS');
+    var storedBy = '';
+    if(loginDetails){
+        storedBy = loginDetails.userCredentials.username;
+    }
+    
+    var today = moment();
+    today = Date.parse(today);
+    today = $filter('date')(today, 'yyyy-MM-dd');
     
     $scope.$on('notesController', function(event, args) {
         $scope.selectedEnrollment = null;
@@ -38,10 +50,11 @@ trackerCapture.controller('NotesController',
             var newNote = {value: $scope.note};
 
             if(angular.isUndefined( $scope.selectedEnrollment.notes) ){
-                $scope.selectedEnrollment.notes = [newNote];
+                $scope.selectedEnrollment.notes = [{value: $scope.note, storedDate: today, storedBy: storedBy}];
+                
             }
             else{
-                $scope.selectedEnrollment.notes.splice(0,0,newNote);
+                $scope.selectedEnrollment.notes.splice(0,0,{value: $scope.note, storedDate: today, storedBy: storedBy});
             }
 
             var e = $scope.selectedEnrollment;

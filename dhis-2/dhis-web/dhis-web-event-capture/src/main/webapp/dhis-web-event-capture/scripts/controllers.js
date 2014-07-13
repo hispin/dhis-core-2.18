@@ -479,7 +479,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             updatedEvent.notes = [{value: $scope.note.value}];
             
             if($scope.currentEvent.notes){
-                $scope.currentEvent.notes.splice(0,0,{value: $scope.note.value, storedDate: today, storedBy: ''});
+                $scope.currentEvent.notes.splice(0,0,{value: $scope.note.value, storedDate: today, storedBy: storedBy});
             }
             else{
                 $scope.currentEvent.notes = [{value: $scope.note.value, storedDate: today, storedBy: storedBy}];
