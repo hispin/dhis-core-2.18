@@ -1,7 +1,7 @@
 { "program":
   {
-    "id": "$program.id",
-	"uid": "$program.uid",
+	"id": "$!program.id",
+	"uid": "$!program.uid",
 	"name": "$!encoder.jsEncode( ${program.name} )",
 	"description": "$!encoder.jsEncode( ${program.description} )",
 	"type": "$!program.type",
