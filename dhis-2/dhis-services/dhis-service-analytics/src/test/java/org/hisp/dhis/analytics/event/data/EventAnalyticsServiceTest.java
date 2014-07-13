@@ -33,12 +33,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
+import org.hisp.dhis.common.AnalyticsType;
+import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.DimensionalObjectUtils;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.eventchart.EventChart;
@@ -52,6 +59,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeDimension;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
@@ -202,5 +210,42 @@ public class EventAnalyticsServiceTest
         assertEquals( 2, params.getItems().size() );
         assertEquals( 2, params.getPeriods().size() );
         assertEquals( 2, params.getFilterOrganisationUnits().size() );
+    }
+
+    @Test
+    public void testSetItemsForDimensionFilters()
+    {
+        TrackedEntityAttribute tea = new TrackedEntityAttribute();
+
+        TrackedEntityAttributeDimension tead = new TrackedEntityAttributeDimension( tea, "EQ:2" );
+        
+        EventChart chart = new EventChart();
+        chart.getColumnDimensions().add( tea.getUid() );
+        chart.getAttributeDimensions().add( tead );
+        
+        Grid grid = new ListGrid();
+        grid.addHeader( new GridHeader( tea.getUid(), tea.getName() ) );
+        grid.addRow().addValue( "1" );
+        grid.addRow().addValue( "2" );
+        grid.addRow().addValue( "3" );
+        
+        chart.populateAnalyticalProperties();
+        
+        DimensionalObject dim = chart.getColumns().get( 0 );
+        
+        DimensionalObjectUtils.setDimensionItemsForFilters( dim, grid );
+        
+        assertNotNull( dim );
+        assertEquals( tea.getDimension(), dim.getDimension() );
+        assertEquals( DimensionType.TRACKED_ENTITY_ATTRIBUTE, dim.getDimensionType() );
+        assertEquals( AnalyticsType.EVENT, dim.getAnalyticsType() );
+        assertEquals( tead.getFilter(), dim.getFilter() );
+        
+        List<NameableObject> items = dim.getItems();
+        assertEquals( 3, items.size() );
+        assertNotNull( items.get( 0 ).getUid() );
+        assertNotNull( items.get( 0 ).getName() );
+        assertNotNull( items.get( 0 ).getCode() );
+        assertNotNull( items.get( 0 ).getShortName() );
     }
 }

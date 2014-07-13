@@ -736,6 +736,8 @@ public class DefaultChartService
         {
             Grid grid = eventAnalyticsService.getAggregatedEventData( chart, chart.getFormat() );
             
+            chart.setDataItemGrid( grid );
+                        
             valueMap = GridUtils.getMetaValueMapping( grid, ( grid.getWidth() - 1 ) );
         }
 
@@ -753,7 +755,7 @@ public class DefaultChartService
                 categoryIndex++;
 
                 String key = series.getUid() + DIMENSION_SEP + category.getUid();
-
+                
                 // Replace potential operand separator with dimension separator
 
                 key = key.replace( DataElementOperand.SEPARATOR, DIMENSION_SEP );

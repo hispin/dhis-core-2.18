@@ -36,7 +36,11 @@ import java.util.Map;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.eventchart.EventChart;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeDimension;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -90,6 +94,30 @@ public class BaseAnalyticalObjectTest
         assertEquals( 0, valueMap.size() );
     }
     
+    @Test
+    public void testPopulateAnalyticalProperties()
+    {
+        TrackedEntityAttribute tea = new TrackedEntityAttribute();
+
+        TrackedEntityAttributeDimension tead = new TrackedEntityAttributeDimension( tea, "EQ:10" );
+        
+        EventChart chart = new EventChart();
+        chart.getColumnDimensions().add( tea.getUid() );
+        chart.getAttributeDimensions().add( tead );
+        
+        chart.populateAnalyticalProperties();
+        
+        assertEquals( 1, chart.getColumns().size() );
+        
+        DimensionalObject dim = chart.getColumns().get( 0 );
+        
+        assertNotNull( dim );
+        assertEquals( tea.getDimension(), dim.getDimension() );
+        assertEquals( DimensionType.TRACKED_ENTITY_ATTRIBUTE, dim.getDimensionType() );
+        assertEquals( AnalyticsType.EVENT, dim.getAnalyticsType() );
+        assertEquals( tead.getFilter(), dim.getFilter() );
+    }
+
     @Test
     public void testGetIdentifier()
     {

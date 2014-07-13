@@ -106,4 +106,31 @@ public class NameableObjectUtils
     {
         return asTypedList( collection );
     }
+    
+    /**
+     * Returns a list of BaseNameableObjects based on the given list of values,
+     * where the name, code and short name of each BaseNameableObject is set to
+     * the value of each list item.
+     * 
+     * @param values the list of object values.
+     * @return a list of BaseNameableObejcts.
+     */
+    public static List<NameableObject> getNameableObjects( Collection<Object> values )
+    {
+        List<NameableObject> objects = new ArrayList<>();
+        
+        for ( Object value : values )
+        {
+            if ( value != null )
+            {
+                String val = String.valueOf( value );
+                
+                BaseNameableObject nameableObject = new BaseNameableObject( val, val, val );
+                nameableObject.setShortName( val );
+                objects.add( nameableObject );
+            }
+        }
+        
+        return objects;
+    }
 }

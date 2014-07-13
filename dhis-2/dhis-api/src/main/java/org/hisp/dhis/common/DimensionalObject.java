@@ -109,4 +109,9 @@ public interface DimensionalObject
      * Gets the filter. Contains operator and filter. Applicable for events.
      */
     String getFilter();
+
+    /**
+     * Indicates the analytics type of this dimensional object.
+     */
+    AnalyticsType getAnalyticsType();
 }

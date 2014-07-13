@@ -36,6 +36,7 @@ import org.hisp.dhis.common.AnalyticsType;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.NameableObject;
@@ -129,6 +130,8 @@ public abstract class BaseChart
 
     protected transient List<OrganisationUnit> organisationUnitsInGroups = new ArrayList<OrganisationUnit>();
 
+    protected transient Grid dataItemGrid = null;
+    
     // -------------------------------------------------------------------------
     // Abstract methods
     // -------------------------------------------------------------------------
@@ -214,6 +217,18 @@ public abstract class BaseChart
         this.relativePeriods = relativePeriods;
     }
 
+    @JsonIgnore
+    public Grid getDataItemGrid()
+    {
+        return dataItemGrid;
+    }
+
+    @JsonIgnore
+    public void setDataItemGrid( Grid dataItemGrid )
+    {
+        this.dataItemGrid = dataItemGrid;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
