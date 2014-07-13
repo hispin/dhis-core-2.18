@@ -30,7 +30,6 @@ package org.hisp.dhis.analytics.event.data;
 
 import static org.hisp.dhis.analytics.AnalyticsService.NAMES_META_KEY;
 import static org.hisp.dhis.analytics.AnalyticsService.OU_HIERARCHY_KEY;
-import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensionFromParam;
@@ -47,7 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.AnalyticsSecurityManager;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.SortOrder;
@@ -79,6 +77,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.ListUtils;
@@ -220,28 +219,15 @@ public class DefaultEventAnalyticsService
     }
     
     public Map<String, Double> getAggregatedEventDataMappping( EventQueryParams params )
-    {
-        Map<String, Double> map = new HashMap<>();
-        
+    {        
         Grid grid = getAggregatedEventData( params );
-        
-        List<Integer> metaIndexes = grid.getMetaColumnIndexes();
         int valueIndex = grid.getWidth() - 1;
-        
-        for ( List<Object> row : grid.getRows() )
-        {
-            String key = StringUtils.join( ListUtils.getAtIndexes( row, metaIndexes ), DIMENSION_SEP );
-            Object val = row.get( valueIndex );
-            Double value = val != null ? ((Integer) val).doubleValue() : null;             
-            map.put( key, value );
-        }
-        
-        return map;
+        return GridUtils.getMetaValueMapping( grid, valueIndex );
     }
     
     public Map<String, Double> getAggregatedEventDataMappping( BaseAnalyticalObject object, I18nFormat format )
     {
-        EventQueryParams params = getFromAnalyticalObject( (EventChart) object, format );
+        EventQueryParams params = getFromAnalyticalObject( object, format );
         
         return getAggregatedEventDataMappping( params );
     }
@@ -461,7 +447,7 @@ public class DefaultEventAnalyticsService
     }
 
     /**
-     * TODO Generalize and change from EventChart to EventAnayticalObject.
+     * TODO Generalize and change from EventChart to EventAnalyticalObject.
      */
     public EventQueryParams getFromAnalyticalObject( BaseAnalyticalObject object_, I18nFormat format )
     {

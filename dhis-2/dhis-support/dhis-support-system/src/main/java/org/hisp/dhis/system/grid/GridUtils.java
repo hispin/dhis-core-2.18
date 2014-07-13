@@ -28,6 +28,7 @@ package org.hisp.dhis.system.grid;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.system.util.CsvUtils.NEWLINE;
 import static org.hisp.dhis.system.util.CsvUtils.SEPARATOR_B;
 import static org.hisp.dhis.system.util.CsvUtils.csvEncode;
@@ -40,11 +41,13 @@ import static org.hisp.dhis.system.util.PDFUtils.getTextCell;
 import static org.hisp.dhis.system.util.PDFUtils.getTitleCell;
 import static org.hisp.dhis.system.util.PDFUtils.openDocument;
 import static org.hisp.dhis.system.util.PDFUtils.resetPaddings;
+import static org.apache.commons.lang.StringUtils.*;
 
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +76,7 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.Encoder;
 import org.hisp.dhis.system.util.ExcelUtils;
+import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.system.velocity.VelocityManager;
@@ -590,6 +594,33 @@ public class GridUtils
         }
         
         return value.trim().replaceAll( "&nbsp;", EMPTY );
+    }
+    
+    /**
+     * Returns a mapping based on the given grid where the key is a joined string
+     * of the string value of each value for meta columns. The value is the object
+     * at the given value index. The map contains at maximum one entry per row in
+     * the given grid, less if the joined key string are duplicates. The object
+     * at the value index must be numeric.
+     * 
+     * @param grid the grid.
+     * @param valueIndex the index of the column holding the value, must be numeric.
+     * @return a meta string to value object mapping.
+     */
+    public static Map<String, Double> getMetaValueMapping( Grid grid, int valueIndex )
+    {
+        Map<String, Double> map = new HashMap<>();
+        
+        List<Integer> metaIndexes = grid.getMetaColumnIndexes();
+
+        for ( List<Object> row : grid.getRows() )
+        {
+            String key = StringUtils.join( ListUtils.getAtIndexes( row, metaIndexes ), DIMENSION_SEP );
+            
+            map.put( key, Double.parseDouble( trimToEmpty( String.valueOf( row.get( valueIndex ) ) ) ) );
+        }
+        
+        return map;
     }
     
     // -------------------------------------------------------------------------
