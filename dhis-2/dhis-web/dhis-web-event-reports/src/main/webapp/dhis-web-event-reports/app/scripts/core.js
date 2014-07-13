@@ -1906,7 +1906,7 @@ Ext.onReady( function() {
 
                         paramString += '&filter=' + dim.dimension;
 
-                        if (dim.items) {
+                        if (Ext.isArray(dim.items) && dim.items.length) {
                             paramString += ':';
 
                             for (var j = 0; j < dim.items.length; j++) {
