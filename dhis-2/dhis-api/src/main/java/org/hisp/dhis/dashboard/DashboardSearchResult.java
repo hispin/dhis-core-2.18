@@ -35,6 +35,7 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.eventchart.EventChart;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -52,6 +53,8 @@ public class DashboardSearchResult
     private List<User> users = new ArrayList<User>();
     
     private List<Chart> charts = new ArrayList<Chart>();
+    
+    private List<EventChart> eventCharts = new ArrayList<EventChart>();
     
     private List<Map> maps = new ArrayList<Map>();
 
@@ -79,6 +82,7 @@ public class DashboardSearchResult
         int results = 0;
         results += users.size();
         results += charts.size();
+        results += eventCharts.size();
         results += maps.size();
         results += reportTables.size();
         results += reports.size();
@@ -96,6 +100,12 @@ public class DashboardSearchResult
     public int getChartCount()
     {
         return charts.size();
+    }
+    
+    @JsonProperty
+    private int getEventChartCount()
+    {
+        return eventCharts.size();
     }
 
     @JsonProperty
@@ -154,6 +164,20 @@ public class DashboardSearchResult
         this.charts = charts;
     }
 
+    @JsonProperty( value = "eventCharts" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JacksonXmlElementWrapper( localName = "eventCharts", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "eventChart", namespace = DxfNamespaces.DXF_2_0)
+    public List<EventChart> getEventCharts()
+    {
+        return eventCharts;
+    }
+    
+    public void setEventCharts( List<EventChart> eventCharts )
+    {
+        this.eventCharts = eventCharts;
+    }
+    
     @JsonProperty( value = "maps" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JacksonXmlElementWrapper( localName = "maps", namespace = DxfNamespaces.DXF_2_0)

@@ -30,6 +30,7 @@ package org.hisp.dhis.dashboard.impl;
 
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_CHART;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_EVENT_CHART;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_MAP;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_MESSAGES;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORTS;
@@ -51,6 +52,7 @@ import org.hisp.dhis.dashboard.DashboardItemStore;
 import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.eventchart.EventChart;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -104,6 +106,7 @@ public class DefaultDashboardService
 
         result.setUsers( objectManager.getBetweenByName( User.class, query, 0, getMax( TYPE_USERS, maxTypes ) ) );
         result.setCharts( objectManager.getBetweenByName( Chart.class, query, 0, getMax( TYPE_CHART, maxTypes ) ) );
+        result.setEventCharts( objectManager.getBetweenByName( EventChart.class, query, 0, getMax( TYPE_EVENT_CHART, maxTypes ) ) );
         result.setMaps( objectManager.getBetweenByName( Map.class, query, 0, getMax( TYPE_MAP, maxTypes ) ) );
         result.setReportTables( objectManager.getBetweenByName( ReportTable.class, query, 0, getMax( TYPE_REPORT_TABLE, maxTypes ) ) );
         result.setReports( objectManager.getBetweenByName( Report.class, query, 0, getMax( TYPE_REPORTS, maxTypes ) ) );
@@ -126,6 +129,12 @@ public class DefaultDashboardService
         {
             DashboardItem item = new DashboardItem();
             item.setChart( objectManager.get( Chart.class, contentUid ) );
+            dashboard.getItems().add( 0, item );
+        }
+        else if ( TYPE_EVENT_CHART.equals( type ) )
+        {
+            DashboardItem item = new DashboardItem();
+            item.setEventChart( objectManager.get( EventChart.class, contentUid ) );
             dashboard.getItems().add( 0, item );
         }
         else if ( TYPE_MAP.equals( type ) )
@@ -203,6 +212,11 @@ public class DefaultDashboardService
             item.setChart( objectManager.get( Chart.class, item.getChart().getUid() ) );
         }
 
+        if ( item.getEventChart() != null )
+        {
+            item.setEventChart( objectManager.get( EventChart.class, item.getEventChart().getUid() ) );
+        }
+        
         if ( item.getMap() != null )
         {
             item.setMap( objectManager.get( Map.class, item.getMap().getUid() ) );
