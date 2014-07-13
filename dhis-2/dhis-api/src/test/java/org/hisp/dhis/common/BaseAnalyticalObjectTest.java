@@ -95,6 +95,13 @@ public class BaseAnalyticalObjectTest
     }
     
     @Test
+    public void testSortKey()
+    {
+        String expected = "a-b-c";
+        assertEquals( expected, BaseAnalyticalObject.sortKey( "b-c-a" ) );
+    }
+    
+    @Test
     public void testPopulateAnalyticalProperties()
     {
         TrackedEntityAttribute tea = new TrackedEntityAttribute();
