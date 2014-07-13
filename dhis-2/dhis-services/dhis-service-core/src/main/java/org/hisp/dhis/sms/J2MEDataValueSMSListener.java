@@ -405,8 +405,6 @@ public class J2MEDataValueSMSListener
             reportBack += notInReport;
         }
         
-        System.out.println("Success message :" + command.getSuccessMessage());
-        
         if ( command.getSuccessMessage() != null && !StringUtils.isEmpty( command.getSuccessMessage() ) )
         {
             reportBack = command.getSuccessMessage();

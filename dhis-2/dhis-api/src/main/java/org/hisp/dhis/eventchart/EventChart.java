@@ -36,6 +36,7 @@ import org.hisp.dhis.chart.BaseChart;
 import org.hisp.dhis.common.AnalyticsType;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
@@ -99,6 +100,8 @@ public class EventChart
         List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups,
         I18nFormat format )
     {
+        this.user = user;
+        this.format = format;
     }
 
     @Override
@@ -122,21 +125,25 @@ public class EventChart
 
     public List<NameableObject> series()
     {
-        String seriesDim = columnDimensions.get( 0 );
+        String series = columnDimensions.get( 0 );
         
-        DimensionalObject object = getDimensionalObject( seriesDim, relativePeriodDate, user, true,
+        DimensionalObject object = getDimensionalObject( series, relativePeriodDate, user, true,
             organisationUnitsAtLevel, organisationUnitsInGroups, format );
 
+        DimensionalObjectUtils.setDimensionItemsForFilters( object, dataItemGrid );
+        
         return object != null ? object.getItems() : null;
     }
 
     public List<NameableObject> category()
     {
-        String categoryDim = rowDimensions.get( 0 );
+        String category = rowDimensions.get( 0 );
         
-        DimensionalObject object = getDimensionalObject( categoryDim, relativePeriodDate, user, true,
+        DimensionalObject object = getDimensionalObject( category, relativePeriodDate, user, true,
             organisationUnitsAtLevel, organisationUnitsInGroups, format );
 
+        DimensionalObjectUtils.setDimensionItemsForFilters( object, dataItemGrid );
+        
         return object != null ? object.getItems() : null;
     }
     

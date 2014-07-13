@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -270,5 +271,27 @@ public class DimensionalObjectUtils
         }
         
         return null;
+    }
+
+    /**
+     * Sets items on the given dimension based on the unique values of the matching 
+     * column in the given grid. Items are BaseNameableObjects where the name, 
+     * code and short name properties are set to the column value. The dimension
+     * analytics type must be equal to EVENT.
+     * 
+     * @param dimension the dimension.
+     * @param grid the grid with data values.
+     */
+    public static void setDimensionItemsForFilters( DimensionalObject dimension, Grid grid )
+    {
+        if ( dimension == null || grid == null || !AnalyticsType.EVENT.equals( dimension.getAnalyticsType() ) )
+        {
+            return;
+        }
+            
+        BaseDimensionalObject dim = (BaseDimensionalObject) dimension;
+        Set<Object> values = grid.getUniqueValues( dim.getDimension() );
+        List<NameableObject> items = NameableObjectUtils.getNameableObjects( values );
+        dim.setItems( items );
     }
 }
