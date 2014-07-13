@@ -60,7 +60,7 @@ Ext.onReady( function() {
 				})
 			],
 			displayProjection: new OpenLayers.Projection('EPSG:4326'),
-			maxExtent: new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508),
+			//maxExtent: new OpenLayers.Bounds(-1160037508, -1160037508, 1160037508, 1160037508),
 			mouseMove: {}, // Track all mouse moves
 			relocate: {} // Relocate organisation units
 		});
