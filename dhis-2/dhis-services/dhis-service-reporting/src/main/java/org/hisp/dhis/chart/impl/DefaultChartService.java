@@ -63,6 +63,7 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.AnalyticalObjectStore;
 import org.hisp.dhis.common.AnalyticsType;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -79,6 +80,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.MathUtils;
@@ -732,7 +734,9 @@ public class DefaultChartService
         }
         else if ( chart.isAnalyticsType( AnalyticsType.EVENT ) )
         {
-            valueMap = eventAnalyticsService.getAggregatedEventDataMappping( chart, chart.getFormat() );
+            Grid grid = eventAnalyticsService.getAggregatedEventData( chart, chart.getFormat() );
+            
+            valueMap = GridUtils.getMetaValueMapping( grid, ( grid.getWidth() - 1 ) );
         }
 
         DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
