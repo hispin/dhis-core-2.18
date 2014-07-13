@@ -30,7 +30,7 @@ trackerCapture.controller('RelationshipController',
         var modalInstance = $modal.open({
             templateUrl: 'components/relationship/add-relationship.html',
             controller: 'AddRelationshipController',
-            windowClass: 'relationship-modal-window',
+            windowClass: 'modal-full-window',
             resolve: {
                 relationshipTypes: function () {
                     return $scope.relationshipTypes;

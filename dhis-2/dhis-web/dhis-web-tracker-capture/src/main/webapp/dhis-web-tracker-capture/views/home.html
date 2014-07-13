@@ -14,10 +14,10 @@
     <div class="row top-bar">        
         <div class="col-sm-12">            
             <span ng-if='searchState'>
-                {{'search'| translate}} {{selectedProgram.trackedEntity.name}}
+                {{selectedProgram.trackedEntity.name}} {{'search'| translate}}
             </span>
             <span ng-if='showRegistrationDiv'>
-                {{'register'| translate}} {{selectedProgram.trackedEntity.name}}
+                {{selectedProgram.trackedEntity.name}} {{'register'| translate}}
             </span>        
             <span ng-if='showReportDiv'>
                 {{selectedProgram.name}} {{'report'| translate}}

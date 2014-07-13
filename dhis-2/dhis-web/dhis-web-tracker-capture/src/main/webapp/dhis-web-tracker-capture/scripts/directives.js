@@ -78,6 +78,23 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
     };
 })
 
+.directive('d2CustomForm', function($compile, $parse, CustomFormService) {
+    return{ 
+        restrict: 'E',
+        link: function(scope, elm, attrs){   
+            
+            var customFormType = attrs.customFormType;
+            var customFormObject = $parse(attrs.customFormObject)(scope);
+            
+            if(customFormType === 'PROGRAM_STAGE'){                
+                var customForm = CustomFormService.getForProgramStage(customFormObject);  
+                elm.html(customForm ? customForm : '');
+                $compile(elm.contents())(scope);     
+            }
+        }
+    };
+})
+
 .directive('d2PopOver', function($compile, $templateCache){
     return {        
         restrict: 'EA',

@@ -26,68 +26,14 @@ trackerCapture.controller('ProfileController',
         $scope.selectedTei = angular.copy(selections.tei);
         $scope.trackedEntity = selections.te;
         $scope.selectedProgram = selections.pr;   
-        $scope.selectedEnrollment = selections.enrollment;   
+        $scope.selectedEnrollment = selections.enrollment;  
         
-        $scope.processTeiAttributes();
+        //display only those attributes that belong the selected program
+        //if no program, display attributesInNoProgram
+        TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.selectedEnrollment).then(function(tei){
+            $scope.selectedTei = tei;            
+        });
     });
-    
-    //display only those attributes that belong the selected program
-    //if no program, display attributesInNoProgram
-    $scope.processTeiAttributes = function(){        
- 
-        if($scope.selectedTei.attributes){
-            if($scope.selectedProgram && $scope.selectedEnrollment){
-                //show attribute for selected program and enrollment
-                AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){    
-                    $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, true);
-                }); 
-            }
-            if($scope.selectedProgram && !$scope.selectedEnrollment){
-                //show attributes for selected program            
-                AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){    
-                    $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, false);
-                }); 
-            }
-            if(!$scope.selectedProgram && !$scope.selectedEnrollment){
-                //show attributes in no program            
-                AttributesFactory.getWithoutProgram().then(function(atts){                
-                    $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, false);                
-                });
-            }
-        }              
-    };
-    
-    $scope.showRequiredAttributes = function(requiredAttributes, teiAttributes, fromEnrollment){        
-       
-        //first reset teiAttributes
-        for(var j=0; j<teiAttributes.length; j++){
-            teiAttributes[j].show = false;
-            if(teiAttributes[j].type === 'number' && !isNaN(parseInt(teiAttributes[j].value))){
-                teiAttributes[j].value = parseInt(teiAttributes[j].value);
-            }
-        }
-        
-        //identify which ones to show
-        for(var i=0; i<requiredAttributes.length; i++){
-            var processed = false;
-            for(var j=0; j<teiAttributes.length && !processed; j++){
-                if(requiredAttributes[i].id === teiAttributes[j].attribute){                    
-                    processed = true;
-                    teiAttributes[j].show = true;
-                    teiAttributes[j].order = i;
-                }
-            }
-
-            if(!processed && fromEnrollment){//attribute was empty, so a chance to put some value
-                teiAttributes.push({show: true, order: i, attribute: requiredAttributes[i].id, displayName: requiredAttributes[i].name, type: requiredAttributes[i].valueType, value: ''});
-            }                   
-        }
-        
-        teiAttributes = orderByFilter(teiAttributes, '-order');
-        teiAttributes.reverse();
-        
-        return teiAttributes;
-    };
     
     $scope.enableEdit = function(){
         $scope.entityAttributes = angular.copy($scope.selectedTei.attributes);

@@ -14,6 +14,16 @@ trackerCapture.controller('DataEntryController',
 
     TranslationService.translate();
     
+    //Data entry form
+    $scope.dataEntryOuterForm = {};
+    $scope.displayCustomForm = false;
+    $scope.currentElement = {};
+    
+    var loginDetails = storage.get('LOGIN_DETAILS');
+    var storedBy = '';
+    if(loginDetails){
+        storedBy = loginDetails.userCredentials.username;
+    }
     var today = moment();
     today = Date.parse(today);
     today = $filter('date')(today, 'yyyy-MM-dd');
@@ -229,53 +239,64 @@ trackerCapture.controller('DataEntryController',
         }
     }; 
     
-    $scope.getDataEntryForm = function(){        
+    $scope.switchDataEntryForm = function(){
+        $scope.displayCustomForm = !$scope.displayCustomForm;
+    };
+    
+    $scope.getDataEntryForm = function(){ 
         
-        DHIS2EventFactory.get($scope.currentEvent.event).then(function(data){
-            $scope.currentEvent = data;
-            $scope.currentEvent.providedElsewhere = [];
-            
-            $scope.currentEvent.dueDate = DateUtils.format($scope.currentEvent.dueDate);
-            $scope.currentEvent.eventDate = DateUtils.format($scope.currentEvent.eventDate);
-            
-            if(!angular.isUndefined( $scope.currentEvent.notes)){
-                $scope.currentEvent.notes = orderByFilter($scope.currentEvent.notes, '-storedDate');            
-                angular.forEach($scope.currentEvent.notes, function(note){
-                    note.storedDate = moment(note.storedDate).format('DD.MM.YYYY @ hh:mm A');
-                });
-            }
-            
-            ProgramStageFactory.get($scope.currentEvent.programStage).then(function(stage){
-                $scope.currentStage = stage;
+        $scope.currentEvent.providedElsewhere = [];
 
-                $scope.allowProvidedElsewhereExists = false;
-                angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
-                    $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
-                    if(prStDe.allowProvidedElsewhere){
-                        $scope.allowProvidedElsewhereExists = true;
-                        $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = '';   
-                    }                
-                });
-                angular.forEach($scope.currentEvent.dataValues, function(dataValue){
-                    var val = dataValue.value;
-                    if(val){
-                        var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
-                        if( de && de.type === 'int' && val){
-                            val = parseInt(val);
-                            dataValue.value = val;
-                        }
-                        $scope.currentEvent[dataValue.dataElement] = val;
-                    }                    
-                });
+        $scope.currentEvent.dueDate = DateUtils.format($scope.currentEvent.dueDate);
+        $scope.currentEvent.eventDate = DateUtils.format($scope.currentEvent.eventDate);
 
-                $scope.currentEvent.dataValues = [];
-                $scope.currentEventOriginal = angular.copy($scope.currentEvent);
-            });            
-        });            
-        
+        if(!angular.isUndefined( $scope.currentEvent.notes)){
+            $scope.currentEvent.notes = orderByFilter($scope.currentEvent.notes, '-storedDate');            
+            angular.forEach($scope.currentEvent.notes, function(note){
+                note.storedDate = moment(note.storedDate).format('DD.MM.YYYY @ hh:mm A');
+            });
+        }
+
+        ProgramStageFactory.get($scope.currentEvent.programStage).then(function(stage){
+            $scope.currentStage = stage;
+
+            $scope.programStageDataElements = [];                  
+            angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
+                $scope.programStageDataElements[prStDe.dataElement.id] = prStDe; 
+            }); 
+
+            $scope.customForm = $scope.currentStage.dataEntryForm ? $scope.currentStage.dataEntryForm.htmlCode : null; 
+            $scope.displayCustomForm = $scope.customForm ? true:false;
+
+            $scope.allowProvidedElsewhereExists = false;
+            angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
+                $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
+                if(prStDe.allowProvidedElsewhere){
+                    $scope.allowProvidedElsewhereExists = true;
+                    $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = '';   
+                }                
+            });
+
+            angular.forEach($scope.currentEvent.dataValues, function(dataValue){
+                var val = dataValue.value;
+                if(val){
+                    var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
+                    if( de && de.type === 'int' && val){
+                        val = parseInt(val);
+                        dataValue.value = val;
+                    }
+                    $scope.currentEvent[dataValue.dataElement] = val;
+                }                    
+            });
+
+            $scope.currentEvent.dataValues = [];
+            $scope.currentEventOriginal = angular.copy($scope.currentEvent);
+        });
     };
     
     $scope.saveDatavalue = function(prStDe){
+        
+        $scope.currentElement = {};
         
         //check for input validity
         $scope.dataEntryOuterForm.submitted = true;        
@@ -321,8 +342,7 @@ trackerCapture.controller('DataEntryController',
         $scope.updateSuccess = false;
         
         if(!angular.isUndefined($scope.currentEvent.providedElsewhere[prStDe.dataElement.id])){
-            
-            console.log('the event is:  ',$scope.currentEvent.providedElsewhere[prStDe.dataElement.id]);
+
             //currentEvent.providedElsewhere[prStDe.dataElement.id];
             var value = $scope.currentEvent[prStDe.dataElement.id];
             var ev = {  event: $scope.currentEvent.event,
@@ -387,10 +407,10 @@ trackerCapture.controller('DataEntryController',
             var newNote = {value: $scope.note};
 
             if(angular.isUndefined( $scope.currentEvent.notes) ){
-                $scope.currentEvent.notes = [newNote];
+                $scope.currentEvent.notes = [{value: $scope.note, storedDate: today, storedBy: storedBy}];
             }
             else{
-                $scope.currentEvent.notes.splice(0,0,newNote);
+                $scope.currentEvent.notes.splice(0,0,{value: $scope.note, storedDate: today, storedBy: storedBy});
             }
 
             var e = {event: $scope.currentEvent.event,
@@ -401,24 +421,32 @@ trackerCapture.controller('DataEntryController',
                      notes: [newNote]
                     };
 
-            console.log('the notes before update are:  ', $scope.currentEvent);
             DHIS2EventFactory.updateForNote(e).then(function(data){
                 $scope.note = '';                
             });
         }        
     };    
     
-    $scope.getClass = function(id){
-        if($scope.currentElement){
+    $scope.getInputNotifcationClass = function(id, custom){
+        if($scope.currentElement.id){
             if($scope.currentElement.saved && ($scope.currentElement.id === id)){
+                if(custom){
+                    return 'input-success';
+                }
                 return 'form-control input-success';
             }            
             if(!$scope.currentElement.saved && ($scope.currentElement.id === id)){
+                if(custom){
+                    return 'input-error';
+                }
                 return 'form-control input-error';
             }            
-        }        
-        return 'form-control';      
-    };
+        }  
+        if(custom){
+            return '';
+        }
+        return 'form-control';
+    };  
     
     $scope.closeEventCreation = function(){
         $scope.currentDummyEvent = null;

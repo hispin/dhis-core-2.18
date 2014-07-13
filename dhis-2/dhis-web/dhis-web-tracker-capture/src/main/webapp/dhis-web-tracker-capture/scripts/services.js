@@ -272,13 +272,12 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service for getting tracked entity instances */
-.factory('TEIService', function($http, DateUtils) {
-    
-    var promise;
+.factory('TEIService', function($http, $q, AttributesFactory, DateUtils) {
+
     return {
         
         get: function(entityUid) {
-            promise = $http.get(  '../api/trackedEntityInstances/' +  entityUid ).then(function(response){     
+            var promise = $http.get(  '../api/trackedEntityInstances/' +  entityUid ).then(function(response){     
                 var tei = response.data;
                 
                 angular.forEach(tei.attributes, function(attribute){                   
@@ -291,13 +290,12 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 return tei;
             });            
             return promise;
-        },
-        
+        },        
         getByOrgUnitAndProgram: function(orgUnitUid, programUid) {
 
             var url = '../api/trackedEntityInstances.json?ou=' + orgUnitUid + '&program=' + programUid;
             
-            promise = $http.get( url ).then(function(response){               
+            var promise = $http.get( url ).then(function(response){               
                 //return EntityService.formatter(response.data);
                 return response.data;
             });            
@@ -307,7 +305,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             
             var url =  '../api/trackedEntityInstances.json?ou=' + orgUnitUid;
             
-            promise = $http.get( url ).then(function(response){                                
+            var promise = $http.get( url ).then(function(response){                                
                 //return EntityService.formatter(response.data);
                 return response.data;
             });            
@@ -336,7 +334,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 url = url + '&paging=false';
             }
             
-            promise = $http.get( url ).then(function(response){                                
+            var promise = $http.get( url ).then(function(response){                                
                 return response.data;
             });            
             return promise;
@@ -357,12 +355,39 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 return response.data;
             });
             return promise;
+        },
+        processAttributes: function(selectedTei, selectedProgram, selectedEnrollment){
+            var def = $q.defer();            
+            if(selectedTei.attributes){
+                if(selectedProgram && selectedEnrollment){
+                    //show attribute for selected program and enrollment
+                    AttributesFactory.getByProgram(selectedProgram).then(function(atts){    
+                        selectedTei.attributes = AttributesFactory.showRequiredAttributes(atts,selectedTei.attributes, true);
+                        def.resolve(selectedTei);
+                    }); 
+                }
+                if(selectedProgram && !selectedEnrollment){
+                    //show attributes for selected program            
+                    AttributesFactory.getByProgram(selectedProgram).then(function(atts){    
+                        selectedTei.attributes = AttributesFactory.showRequiredAttributes(atts,selectedTei.attributes, false);
+                        def.resolve(selectedTei);
+                    }); 
+                }
+                if(!selectedProgram && !selectedEnrollment){
+                    //show attributes in no program            
+                    AttributesFactory.getWithoutProgram().then(function(atts){                
+                        selectedTei.attributes = AttributesFactory.showRequiredAttributes(atts,selectedTei.attributes, false);     
+                        def.resolve(selectedTei);
+                    });
+                }
+            }       
+            return def.promise;
         }
     };
 })
 
 /* Factory for getting tracked entity attributes */
-.factory('AttributesFactory', function($q, $rootScope, StorageService) {      
+.factory('AttributesFactory', function($q, $rootScope, StorageService, orderByFilter) {      
 
     return {
         getAll: function(){
@@ -443,8 +468,38 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 def.resolve(missingAttributes);
             });            
             return def.promise();            
-        }
+        },
+        showRequiredAttributes: function(requiredAttributes, teiAttributes, fromEnrollment){        
 
+            //first reset teiAttributes
+            for(var j=0; j<teiAttributes.length; j++){
+                teiAttributes[j].show = false;
+                if(teiAttributes[j].type === 'number' && !isNaN(parseInt(teiAttributes[j].value))){
+                    teiAttributes[j].value = parseInt(teiAttributes[j].value);
+                }
+            }
+
+            //identify which ones to show
+            for(var i=0; i<requiredAttributes.length; i++){
+                var processed = false;
+                for(var j=0; j<teiAttributes.length && !processed; j++){
+                    if(requiredAttributes[i].id === teiAttributes[j].attribute){                    
+                        processed = true;
+                        teiAttributes[j].show = true;
+                        teiAttributes[j].order = i;
+                    }
+                }
+
+                if(!processed && fromEnrollment){//attribute was empty, so a chance to put some value
+                    teiAttributes.push({show: true, order: i, attribute: requiredAttributes[i].id, displayName: requiredAttributes[i].name, type: requiredAttributes[i].valueType, value: ''});
+                }                   
+            }
+
+            teiAttributes = orderByFilter(teiAttributes, '-order');
+            teiAttributes.reverse();
+
+            return teiAttributes;
+        }
     };
 })
 
@@ -633,57 +688,175 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };    
 })
 
+/* service for dealing with custom form */
+.service('CustomFormService', function(){
+    
+    return {
+        getForProgramStage: function(programStage){
+            
+            if(!programStage){
+                return null;
+            }
+            
+            var htmlCode = programStage.dataEntryForm ? programStage.dataEntryForm.htmlCode : null;  
+            
+            if(htmlCode){                
+            
+                var programStageDataElements = [];
+
+                angular.forEach(programStage.programStageDataElements, function(prStDe){
+                    programStageDataElements[prStDe.dataElement.id] = prStDe;
+                });
+
+                var inputRegex = /<input.*?\/>/g,
+                    match,
+                    inputFields = [];                
+
+                while (match = inputRegex.exec(htmlCode)) {                
+                    inputFields.push(match[0]);
+                }
+                
+                for(var i=0; i<inputFields.length; i++){                    
+                    var inputField = inputFields[i];                    
+                    var inputElement = $.parseHTML( inputField );
+                    var attributes = {};
+                                       
+                    $(inputElement[0].attributes).each(function() {
+                        attributes[this.nodeName] = this.nodeValue;                       
+                    });
+                    
+                    var deId = '', newInputField;     
+                    if(attributes.hasOwnProperty('id')){
+                        deId = attributes['id'].substring(4, attributes['id'].length-1).split("-")[1]; 
+                     
+                        //name needs to be unique so that it can be used for validation in angularjs
+                        if(attributes.hasOwnProperty('name')){
+                            attributes['name'] = deId;
+                        }
+                        
+                        //check data element type and generate corresponding angular input field
+                        if(programStageDataElements[deId].dataElement.type == "int"){
+                            newInputField = '<input type="number" ' +
+                                            this.getAttributesAsString(attributes) +
+                                            ' ng-model="currentEvent.' + deId + '"' +
+                                            ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
+                                            ' ng-blur="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">';
+                        }
+                        if(programStageDataElements[deId].dataElement.type == "string"){
+                            newInputField = '<input type="text" ' +
+                                            this.getAttributesAsString(attributes) +
+                                            ' ng-model="currentEvent.' + deId + '" ' +
+                                            ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory"' +
+                                            ' ng-blur="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
+                                            ' typeahead="option for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
+                                            ' typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory">';
+                        }
+                        if(programStageDataElements[deId].dataElement.type == "bool"){
+                            newInputField = '<select ' +
+                                            this.getAttributesAsString(attributes) +
+                                            ' ng-model="currentEvent.' + deId + '" ' +
+                                            ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
+                                            ' ng-change="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">' + 
+                                            '<option value="">{{\'please_select\'| translate}}</option>' +
+                                            '<option value="0">{{\'no\'| translate}}</option>' + 
+                                            '<option value="1">{{\'yes\'| translate}}</option>';
+                        }
+                        if(programStageDataElements[deId].dataElement.type == "date"){
+                            newInputField = '<input type="text" ' +
+                                            this.getAttributesAsString(attributes) +
+                                            ' ng-model="currentEvent.' + deId + '"' +
+                                            ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
+                                            ' ng-date' +
+                                            ' blur-or-change="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">';
+                        }
+                        if(programStageDataElements[deId].dataElement.type == "trueOnly"){
+                            newInputField = '<input type="checkbox" ' +
+                                            this.getAttributesAsString(attributes) +
+                                            ' ng-model="currentEvent.' + deId + '"' +
+                                            ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
+                                            ' ng-change="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">';
+                        }
+                        htmlCode = htmlCode.replace(inputField, newInputField);
+                    }
+                }
+                
+                return htmlCode;
+                
+            }
+            
+            return null;
+        },
+        getAttributesAsString: function(attributes){
+            if(attributes){
+                var attributesAsString = '';                
+                for(var prop in attributes){
+                    if(prop != 'value'){
+                        attributesAsString += prop + '="' + attributes[prop] + '" ';
+                    }
+                }
+                return attributesAsString;
+            }
+            return null;
+        }
+    };            
+})
+
 /* Modal service for user interaction */
 .service('ModalService', ['$modal', function($modal) {
 
-        var modalDefaults = {
-            backdrop: true,
-            keyboard: true,
-            modalFade: true,
-            templateUrl: 'views/modal.html'
-        };
+    var modalDefaults = {
+        backdrop: true,
+        keyboard: true,
+        modalFade: true,
+        templateUrl: 'views/modal.html'
+    };
 
-        var modalOptions = {
-            closeButtonText: 'Close',
-            actionButtonText: 'OK',
-            headerText: 'Proceed?',
-            bodyText: 'Perform this action?'
-        };
+    var modalOptions = {
+        closeButtonText: 'Close',
+        actionButtonText: 'OK',
+        headerText: 'Proceed?',
+        bodyText: 'Perform this action?'
+    };
 
-        this.showModal = function(customModalDefaults, customModalOptions) {
-            if (!customModalDefaults)
-                customModalDefaults = {};
-            customModalDefaults.backdrop = 'static';
-            return this.show(customModalDefaults, customModalOptions);
-        };
+    this.showModal = function(customModalDefaults, customModalOptions) {
+        if (!customModalDefaults)
+            customModalDefaults = {};
+        customModalDefaults.backdrop = 'static';
+        return this.show(customModalDefaults, customModalOptions);
+    };
 
-        this.show = function(customModalDefaults, customModalOptions) {
-            //Create temp objects to work with since we're in a singleton service
-            var tempModalDefaults = {};
-            var tempModalOptions = {};
+    this.show = function(customModalDefaults, customModalOptions) {
+        //Create temp objects to work with since we're in a singleton service
+        var tempModalDefaults = {};
+        var tempModalOptions = {};
 
-            //Map angular-ui modal custom defaults to modal defaults defined in service
-            angular.extend(tempModalDefaults, modalDefaults, customModalDefaults);
+        //Map angular-ui modal custom defaults to modal defaults defined in service
+        angular.extend(tempModalDefaults, modalDefaults, customModalDefaults);
 
-            //Map modal.html $scope custom properties to defaults defined in service
-            angular.extend(tempModalOptions, modalOptions, customModalOptions);
+        //Map modal.html $scope custom properties to defaults defined in service
+        angular.extend(tempModalOptions, modalOptions, customModalOptions);
 
-            if (!tempModalDefaults.controller) {
-                tempModalDefaults.controller = function($scope, $modalInstance) {
-                    $scope.modalOptions = tempModalOptions;
-                    $scope.modalOptions.ok = function(result) {
-                        $modalInstance.close(result);
-                    };
-                    $scope.modalOptions.close = function(result) {
-                        $modalInstance.dismiss('cancel');
-                    };
+        if (!tempModalDefaults.controller) {
+            tempModalDefaults.controller = function($scope, $modalInstance) {
+                $scope.modalOptions = tempModalOptions;
+                $scope.modalOptions.ok = function(result) {
+                    $modalInstance.close(result);
                 };
-            }
+                $scope.modalOptions.close = function(result) {
+                    $modalInstance.dismiss('cancel');
+                };
+            };
+        }
 
-            return $modal.open(tempModalDefaults).result;
-        };
+        return $modal.open(tempModalDefaults).result;
+    };
 
-    }])
+}])
 
 /* Dialog service for user interaction */
 .service('DialogService', ['$modal', function($modal) {
@@ -897,54 +1070,6 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });
             return {headers: attributes, rows: entityList, pager: grid.metaData.pager};                                    
         },   
-        formatForReport: function(grid){
-            if(!grid || !grid.rows){
-                return;
-            }
-            
-            //grid.headers[0-4] = Instance, Created, Last updated, Org unit, Tracked entity
-            //grid.headers[5..] = Attribute, Attribute,.... 
-            var attributes = [];
-            var entityList = [];
-            for(var i=5; i<grid.headers.length; i++){
-                attributes.push({id: grid.headers[i].name, name: grid.headers[i].column, type: grid.headers[i].type});
-            }
-
-            OrgUnitService.open().then(function(){
-
-                angular.forEach(grid.rows, function(row){
-                    var entity = {};
-                    var isEmpty = true;                   
-
-                    entity.id = row[0];
-                    var rDate = row[1];
-                    rDate = DateUtils.format(rDate);
-                    entity.created = rDate;
-                    entity.orgUnit = row[3];                              
-                    entity.type = row[4];  
-
-                    OrgUnitService.get(row[3]).then(function(ou){
-                        if(ou){
-                            entity.orgUnitName = ou.n;
-                        }                                                       
-                    });
-
-                    for(var i=5; i<row.length; i++){
-                        if(row[i] && row[i] !== ''){
-                            isEmpty = false;
-                            entity[grid.headers[i].name] = row[i];
-                        }
-                    }
-                    
-                    if(!isEmpty){                        
-                        entityList[entity.id] = entity;
-                    }        
-                });
-                var returnVal = {headers: attributes, rows: entityList};
-                console.log('the return is:  ', returnVal);
-                return returnVal;
-            });            
-        },
         generateGridColumns: function(attributes, ouMode){
             
             var columns = attributes ? angular.copy(attributes) : [];

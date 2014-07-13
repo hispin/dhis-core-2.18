@@ -1,0 +1,114 @@
+<div class="modal-header">
+    <h1>{{selectedProgram.name}} {{'report'| translate}}</h1>
+    <span class="pull-right bold">
+        {{'date'| translate}}: {{today}}
+    </span>
+</div>
+<div class="modal-body">
+    <div class='row'>
+        <div class="col-md-6">
+            <h2>{{selectedProgram.trackedEntity.name}} {{'_details'| translate}}</h2>
+            <table class="table table-bordered table-compact">
+                <tr ng-repeat="attribute in selectedTei.attributes" ng-show="attribute.show">
+                    <td class="bold">
+                        {{attribute.displayName}}
+                    </td>
+                    <td>
+                        {{attribute.value}}<!--<input type="text" class="form-control" ng-model="attribute.value" ng-disabled='true'/>                       -->
+                    </td>                
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row" ng-repeat="enrollment in enrollments">
+        <h2 class='col-sm-12'>{{'enrollment'| translate}} {{'_details'| translate}}</h2>
+        <div class="col-sm-4">
+            <span class="bold">{{selectedProgram.dateOfEnrollmentDescription}}:</span>  {{enrollment.dateOfEnrollment}}            
+        </div>
+        <div class="col-sm-4">
+            <span class="bold">{{selectedProgram.dateOfIncidentDescription}}:</span>    {{enrollment.dateOfIncident}}            
+        </div>
+        <div class="col-sm-4">
+            <span class="bold">{{'status'| translate}}:</span>  {{enrollment.status}}           
+        </div>
+        <div class='row vertical-spacing'></div>
+        <div ng-if="enrollment.notes">
+            <h3 class='col-sm-12'>{{'notes'| translate}}</h3>
+            <table class="table-borderless table-striped">
+                <tr class="col-sm-12" ng-repeat="note in enrollment.notes">
+                    <td class="col-sm-12 over-flow-hidden">
+                        <p>
+                            {{note.value}}<br>
+                            ({{note.storedBy}}, {{note.storedDate}})
+                        </p>                                  
+                    </td>                    
+                </tr>
+            </table>
+        </div>
+
+        <div class='vertical-spacing' ng-repeat='dhis2Event in report.enrollments[enrollment.enrollment]'>
+            <h3 class='col-sm-12'>{{'visits'| translate}}</h3>
+            <div class="col-sm-2">
+                <span class="bold">{{'name'| translate}}:</span>    {{dhis2Event.name}}                
+            </div>
+            <div class="col-sm-2">
+                <span class="bold">{{'org_unit'| translate}}:</span> {{dhis2Event.orgUnitName}}                
+            </div>
+            <div class="col-sm-2">
+                <span class="bold">{{'due_date'| translate}}:</span>    {{dhis2Event.dueDate}}
+            </div>
+            <div class="col-sm-2">
+                <span class="bold">{{'visit'| translate}} {{'_date'| translate}}:</span>    {{dhis2Event.eventDate}}
+            </div>
+            <div class="col-sm-2">
+                <span class="bold">{{'status'| translate}}:</span>  {{dhis2Event.status}}
+            </div>
+            <div class='row vertical-spacing'></div>
+            <div class='col-sm-6'>
+                <table class="table table-bordered table-compact">
+                    <tr class="col-sm-12">
+                        <th class="col-md-5">
+                            {{'data_element'| translate}}
+                        </th>
+                        <th class="col-sm-5">
+                            {{'value'| translate}}
+                        </th>
+                        <th class="col-sm-2" ng-if="allowProvidedElsewhereExists[dhis2Event.programStage]">
+                            {{'provided_elsewhere'| translate}}
+                        </th>
+                    </tr>
+                    <tr class="col-sm-12" ng-repeat="prStDe in programStages[dhis2Event.programStage].programStageDataElements">
+                        <td>
+                            {{prStDe.dataElement.formName ? prStDe.dataElement.formName : prStDe.dataElement.name}}
+                        </td>
+                        <td>
+                            {{dhis2Event[prStDe.dataElement.id].value}}          
+                        </td>
+                        <td ng-if="allowProvidedElsewhereExists[dhis2Event.programStage]">
+                            {{dhis2Event[prStDe.dataElement.id].providedElsewhere ? 'provided_elsewhere' : '' | translate}}
+                        </td>
+                    </tr>
+                </table>  
+            </div>
+            <div class='row vertical-spacing'></div>
+            <div ng-if="dhis2Event.notes">
+                <h3 class='col-sm-12'>{{'notes'| translate}}</h3>
+                <table class="table-borderless table-striped">
+                    <tr class="col-sm-12" ng-repeat="note in dhis2Event.notes">
+                        <td class="col-sm-12 over-flow-hidden">
+                            <p>
+                                {{note.value}}<br>
+                                ({{note.storedBy}}, {{note.storedDate}})
+                            </p>                                  
+                        </td>                    
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" data-ng-click="close()">{{'close'| translate}}</button>
+</div>
