@@ -674,8 +674,8 @@ public abstract class AbstractEventService
             {
                 dataValue.setValue( value );
                 dataValue.setTimestamp( new Date() );
-                dataValue.setProvidedElsewhere( providedElsewhere );
                 dataValue.setStoredBy( storedBy );
+                dataValue.setProvidedElsewhere( providedElsewhere );
 
                 dataValueService.updateTrackedEntityDataValue( dataValue );
             }
