@@ -86,7 +86,56 @@ public class TrackedEntityAttributeDimension
     {
         return attribute != null ? attribute.getDisplayName() : null;
     }
+
+    @Override
+    public String toString()
+    {
+        return "[Id: " + id + ", attribute: " + attribute + ", filter: " + filter + "]";
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = id;
+        result = 31 * result + (attribute != null ? attribute.hashCode() : 0);
+        result = 31 * result + (filter != null ? filter.hashCode() : 0);
+
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+
+        if ( o == null )
+        {
+            return false;
+        }
+
+        if ( !getClass().isAssignableFrom( o.getClass() ) )
+        {
+            return false;
+        }
+
+        final TrackedEntityAttributeDimension other = (TrackedEntityAttributeDimension) o;
+
+        if ( attribute != null ? !attribute.equals( other.attribute ) : other.attribute != null )
+        {
+            return false;
+        }
         
+        if ( filter != null ? !filter.equals( other.filter ) : other.filter != null )
+        {
+            return false;
+        }
+        
+        return true;
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

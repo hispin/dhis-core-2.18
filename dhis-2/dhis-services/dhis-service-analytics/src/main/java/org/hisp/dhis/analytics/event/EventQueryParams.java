@@ -270,7 +270,8 @@ public class EventQueryParams
             "End date: " + endDate + ", " +
             "Items " + items + ", " +
             "Item filters: " + itemFilters + ", " +
-            "Dimensions " + dimensions + "]";
+            "Dimensions: " + dimensions + ", " +
+            "Filters: " + filters + "]";
     }
     
     // -------------------------------------------------------------------------

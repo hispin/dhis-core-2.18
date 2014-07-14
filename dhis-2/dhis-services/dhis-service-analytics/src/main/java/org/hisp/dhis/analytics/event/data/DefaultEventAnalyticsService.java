@@ -32,6 +32,7 @@ import static org.hisp.dhis.analytics.AnalyticsService.NAMES_META_KEY;
 import static org.hisp.dhis.analytics.AnalyticsService.OU_HIERARCHY_KEY;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObjectUtils.DIMENSION_NAME_SEP;
 import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensionFromParam;
 import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensionItemsFromParam;
 import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
@@ -56,7 +57,6 @@ import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
-import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -464,7 +464,7 @@ public class DefaultEventAnalyticsService
                 }
                 else
                 {
-                    params.getItems().add( getQueryItem( dimension.getDimension() ) );
+                    params.getItems().add( getQueryItem( dimension.getDimension(), dimension.getFilter() ) );
                 }
             }
             
@@ -479,7 +479,7 @@ public class DefaultEventAnalyticsService
                 }
                 else
                 {
-                    params.getItemFilters().add( getQueryItem( filter.getDimension() ) );
+                    params.getItemFilters().add( getQueryItem( filter.getDimension(), filter.getFilter() ) );
                 }
             }
         }
@@ -496,13 +496,23 @@ public class DefaultEventAnalyticsService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private QueryItem getQueryItem( String dimension )
+    private QueryItem getQueryItem( String dimension, String filter )
     {
-        String[] split = dimension.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
-        
+        if ( filter != null )
+        {
+            dimension += DIMENSION_NAME_SEP + filter;
+        }
+                
+        return getQueryItem( dimension );
+    }
+    
+    private QueryItem getQueryItem( String dimensionString )
+    {
+        String[] split = dimensionString.split( DIMENSION_NAME_SEP );
+
         if ( split == null || ( split.length % 2 != 1 ) )
         {
-            throw new IllegalQueryException( "Query item or filter is invalid: " + dimension );
+            throw new IllegalQueryException( "Query item or filter is invalid: " + dimensionString );
         }
         
         QueryItem queryItem = getQuryItemFromUid( split[0] );
@@ -512,10 +522,11 @@ public class DefaultEventAnalyticsService
             for ( int i = 1; i < split.length; i += 2 )
             {
                 QueryOperator operator = QueryOperator.fromString( split[i] );
-                queryItem.getFilters().add( new QueryFilter( operator, split[i+1] ) );
+                QueryFilter filter = new QueryFilter( operator, split[i+1] );
+                queryItem.getFilters().add( filter );
             }
         }
-
+        
         return queryItem;
     }
 
