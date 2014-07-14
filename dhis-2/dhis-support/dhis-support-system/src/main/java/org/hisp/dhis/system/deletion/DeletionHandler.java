@@ -53,6 +53,7 @@ import org.hisp.dhis.dataset.LockException;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.eventchart.EventChart;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.i18n.locale.I18nLocale;
 import org.hisp.dhis.indicator.Indicator;
@@ -771,6 +772,16 @@ public abstract class DeletionHandler
     }
     
     public String allowDeleteTrackedEntity( TrackedEntity trackedEntity )
+    {
+        return null;
+    }
+    
+    
+    public void deleteEventChart( EventChart eventChart )
+    {
+    }
+    
+    public String allowDeleteEventChart( EventChart eventChart )
     {
         return null;
     }

@@ -498,6 +498,11 @@
 			ref="org.hisp.dhis.trackedentity.TrackedEntityFormService" />
 	</bean>
 	
+	<bean
+		id="org.hisp.dhis.eventchart.EventChartDeletionHandler"
+		class="org.hisp.dhis.eventchart.EventChartDeletionHandler">
+	</bean>
+	
 	<!-- DeletionManager -->
 
 	<bean
@@ -526,6 +531,7 @@
 					<ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramIndicatorDeletionHandler" />
 					<ref local="org.hisp.dhis.trackedentity.TrackedEntityFormDeletionHandler" />
+					<ref local="org.hisp.dhis.eventchart.EventChartDeletionHandler" />
 				</list>
 			</list>
 		</property>
@@ -594,7 +600,10 @@
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.trackedentity.TrackedEntityFormService.delete*(..) )"
 				method="intercept" />
-				
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.eventchart.EventChartService.delete*(..) )"
+				method="intercept" />
+					
 		</aop:aspect>
 
 	</aop:config>
