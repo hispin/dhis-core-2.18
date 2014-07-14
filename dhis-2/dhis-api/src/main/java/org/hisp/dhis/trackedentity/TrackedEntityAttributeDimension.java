@@ -28,9 +28,21 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 /**
 * @author Lars Helge Overland
 */
+@JacksonXmlRootElement( localName = "attributeDimension", namespace = DxfNamespaces.DXF_2_0 )
 public class TrackedEntityAttributeDimension
 {
     private int id;
@@ -89,6 +101,10 @@ public class TrackedEntityAttributeDimension
         this.id = id;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public TrackedEntityAttribute getAttribute()
     {
         return attribute;
@@ -99,6 +115,9 @@ public class TrackedEntityAttributeDimension
         this.attribute = attribute;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getFilter()
     {
         return filter;

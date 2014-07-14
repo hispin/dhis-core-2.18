@@ -54,10 +54,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Jan Henrik Overland
  */
+@JacksonXmlRootElement( localName = "eventChart", namespace = DxfNamespaces.DXF_2_0 )
 public class EventChart
     extends BaseChart
 {
