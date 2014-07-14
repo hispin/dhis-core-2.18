@@ -491,6 +491,13 @@
 		class="org.hisp.dhis.program.ProgramIndicatorDeletionHandler">
 	</bean>
 	
+	<bean
+		id="org.hisp.dhis.trackedentity.TrackedEntityFormDeletionHandler"
+		class="org.hisp.dhis.trackedentity.TrackedEntityFormDeletionHandler">
+		<property name="formService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityFormService" />
+	</bean>
+	
 	<!-- DeletionManager -->
 
 	<bean
@@ -518,6 +525,7 @@
 					<ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramIndicatorDeletionHandler" />
+					<ref local="org.hisp.dhis.trackedentity.TrackedEntityFormDeletionHandler" />
 				</list>
 			</list>
 		</property>
@@ -583,7 +591,10 @@
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.caseaggregation.CaseAggregationConditionService.delete*(..) )"
 				method="intercept" />
-		
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.trackedentity.TrackedEntityFormService.delete*(..) )"
+				method="intercept" />
+				
 		</aop:aspect>
 
 	</aop:config>
