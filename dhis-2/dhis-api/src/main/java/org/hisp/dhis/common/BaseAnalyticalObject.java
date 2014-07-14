@@ -785,6 +785,8 @@ public abstract class BaseAnalyticalObject
         dataElementGroups.clear();
         organisationUnitGroups.clear();
         categoryOptionGroups.clear();
+        attributeDimensions.clear();
+        dataElementDimensions.clear();
         userOrganisationUnit = false;
         userOrganisationUnitChildren = false;
         userOrganisationUnitGrandChildren = false;
@@ -1004,8 +1006,8 @@ public abstract class BaseAnalyticalObject
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "attributeDimensions", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "attributeDimension", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlElementWrapper( localName = "dataElementDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataElementDimension", namespace = DxfNamespaces.DXF_2_0 )
     public List<TrackedEntityDataElementDimension> getDataElementDimensions()
     {
         return dataElementDimensions;

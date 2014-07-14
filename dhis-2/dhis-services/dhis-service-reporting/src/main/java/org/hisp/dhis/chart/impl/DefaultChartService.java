@@ -527,6 +527,8 @@ public class DefaultChartService
      */
     private JFreeChart getJFreeChart( BaseChart chart )
     {
+        final CategoryDataset[] dataSets = getCategoryDataSet( chart );
+
         final BarRenderer barRenderer = getBarRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
 
@@ -535,8 +537,6 @@ public class DefaultChartService
         // ---------------------------------------------------------------------
 
         CategoryPlot plot = null;
-
-        CategoryDataset[] dataSets = getCategoryDataSet( chart );
 
         if ( chart.isType( TYPE_LINE ) )
         {
@@ -736,7 +736,7 @@ public class DefaultChartService
         else if ( chart.isAnalyticsType( AnalyticsType.EVENT ) )
         {
             Grid grid = eventAnalyticsService.getAggregatedEventData( chart, chart.getFormat() );
-            
+                        
             chart.setDataItemGrid( grid );
                         
             valueMap = GridUtils.getMetaValueMapping( grid, ( grid.getWidth() - 1 ) );
@@ -748,7 +748,7 @@ public class DefaultChartService
         SimpleRegression regression = new SimpleRegression();
 
         BaseAnalyticalObject.sortKeys( valueMap );
-
+        
         for ( NameableObject series : chart.series() )
         {
             double categoryIndex = 0;
@@ -758,10 +758,10 @@ public class DefaultChartService
                 categoryIndex++;
 
                 String key = series.getUid() + DIMENSION_SEP + category.getUid();
-                
+
                 // Replace potential operand separator with dimension separator
 
-                key = key.replace( DataElementOperand.SEPARATOR, DIMENSION_SEP );
+                key = key.replace( DataElementOperand.SEPARATOR, DIMENSION_SEP ); //TODO fix issue with keys including . and -
                 
                 // Sort key on components to remove significance of column order
                 

@@ -32,7 +32,6 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
-
 import org.hisp.dhis.dataelement.DataElement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -89,6 +88,55 @@ public class TrackedEntityDataElementDimension
         return dataElement != null ? dataElement.getDisplayName() : null;
     }
     
+    @Override
+    public String toString()
+    {
+        return "[Id: " + id + ", data element: " + dataElement + ", filter: " + filter + "]";
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = id;
+        result = 31 * result + (dataElement != null ? dataElement.hashCode() : 0);
+        result = 31 * result + (filter != null ? filter.hashCode() : 0);
+
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+
+        if ( o == null )
+        {
+            return false;
+        }
+
+        if ( !getClass().isAssignableFrom( o.getClass() ) )
+        {
+            return false;
+        }
+
+        final TrackedEntityDataElementDimension other = (TrackedEntityDataElementDimension) o;
+
+        if ( dataElement != null ? !dataElement.equals( other.dataElement ) : other.dataElement != null )
+        {
+            return false;
+        }
+        
+        if ( filter != null ? !filter.equals( other.filter ) : other.filter != null )
+        {
+            return false;
+        }
+        
+        return true;
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
