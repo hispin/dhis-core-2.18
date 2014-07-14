@@ -126,7 +126,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SchemaService schemaService;
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -416,6 +416,12 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             if ( ReflectionUtils.isCollection( "attributes", object, ProgramTrackedEntityAttribute.class ) )
             {
                 Set<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = ReflectionUtils.invokeGetterMethod( "attributes", object );
+
+                if ( programTrackedEntityAttributes == null )
+                {
+                    programTrackedEntityAttributes = Sets.newHashSet();
+                    ReflectionUtils.invokeSetterMethod( "attributes", object, programTrackedEntityAttributes );
+                }
 
                 for ( ProgramTrackedEntityAttribute trackedEntityAttribute : programTrackedEntityAttributes )
                 {
