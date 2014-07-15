@@ -102,6 +102,8 @@ public class DataElement
     public static final String AGGREGATION_OPERATOR_COUNT = "count";
     public static final String AGGREGATION_OPERATOR_STDDEV = "stddev";
     public static final String AGGREGATION_OPERATOR_VARIANCE = "variance";
+    public static final String AGGREGATION_OPERATOR_MIN = "min";
+    public static final String AGGREGATION_OPERATOR_MAX = "max";
     
     /**
      * The name to appear in forms.

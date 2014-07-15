@@ -39,7 +39,9 @@ public enum AggregationType
     AVERAGE_BOOL( "avg" ), 
     COUNT( "count" ), 
     STDDEV( "stddev" ), 
-    VARIANCE( "variance" );
+    VARIANCE( "variance" ),
+    MIN( "min" ),
+    MAX( "max" );
 
     private final String value;
 
