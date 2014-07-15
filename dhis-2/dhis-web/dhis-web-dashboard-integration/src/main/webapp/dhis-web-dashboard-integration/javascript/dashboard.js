@@ -109,8 +109,7 @@ dhis2.db.dashboardReady = function( id )
 	
 	$( ".item" ).droppable( {
 		accept: ".item",
-		over: dhis2.db.dropOver,
-		out: dhis2.db.dropOut
+		over: dhis2.db.dropOver
 	} );
 
 	$( ".dropItem" ).droppable( {
@@ -143,20 +142,15 @@ dhis2.db.dragStop = function( event, ui )
 
 dhis2.db.dropOver = function( event, ui ) 
 {
+	$( ".dropItem" ).not( "#dropLast" ).hide();
 	var itemId = $( this ).attr( "id" );
 	var dropItemId = "drop-" + itemId;
 	$( "#" + dropItemId ).show();
 }
 
-dhis2.db.dropOut = function( event, ui ) 
-{
-	var itemId = $( this ).attr( "id" );
-	var dropItemId = "drop-" + itemId;
-	$( "#" + dropItemId ).hide();
-}
-
 dhis2.db.lastDropOver = function( event, ui ) 
 {
+	$( ".dropItem" ).not( "#dropLast" ).hide();
 	$( this ).removeClass( "blankDropItem" ).css( "display", "block" );
 }
 
