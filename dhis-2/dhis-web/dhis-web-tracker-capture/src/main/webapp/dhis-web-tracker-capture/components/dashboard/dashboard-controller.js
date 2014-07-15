@@ -78,7 +78,12 @@ trackerCapture.controller('DashboardController',
     //it is possible that such could happen during enrollment.
     $scope.$on('mainDashboard', function(event, args) { 
         var selections = CurrentSelection.get();
-        $scope.selectedProgram = selections.pr;
+        $scope.selectedProgram = null;
+        angular.forEach($scope.programs, function(pr){
+            if(pr.id === selections.pr){
+                $scope.selectedProgram = pr;
+            }
+        });
         $scope.broadCastSelections(); 
     }); 
     
@@ -87,7 +92,6 @@ trackerCapture.controller('DashboardController',
         var selections = CurrentSelection.get();
         $scope.selectedTei = selections.tei;
         $scope.trackedEntity = selections.te;
-        $scope.selectedEnrollment = selections.enrollment;
         CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: null});
         $timeout(function() { 
             $rootScope.$broadcast('selectedItems', {programExists: $scope.programs.length > 0});            

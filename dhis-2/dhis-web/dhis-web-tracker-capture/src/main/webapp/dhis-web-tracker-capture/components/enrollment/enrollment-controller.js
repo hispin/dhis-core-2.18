@@ -3,6 +3,7 @@ trackerCapture.controller('EnrollmentController',
                 $scope,  
                 $filter,
                 $timeout,
+                $location,
                 storage,
                 AttributesFactory,
                 CurrentSelection,
@@ -182,8 +183,14 @@ trackerCapture.controller('EnrollmentController',
     };
     
     $scope.cancelEnrollment = function(){
-        $scope.selectedProgram = null;
-        $scope.selectedEnrollment = null;
+        
+        /*currently the only way to cancel enrollment window is by going through
+         * the main dashboard controller. Here I am mixing program and programId, 
+         * as I didn't want to refetch program from server, the main dashboard
+         * has already fetched the programs. With the ID passed to it, it will
+         * pass back the actual program than ID. 
+         */
+        $scope.selectedProgram = ($location.search()).program;
         $scope.broadCastSelections('mainDashboard'); 
     };
 });
