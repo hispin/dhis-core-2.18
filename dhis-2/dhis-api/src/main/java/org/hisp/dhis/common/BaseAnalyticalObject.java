@@ -101,7 +101,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement( localName = "analyticalObject", namespace = DxfNamespaces.DXF_2_0 )
 public abstract class BaseAnalyticalObject
-    extends BaseIdentifiableObject
+    extends BaseIdentifiableObject 
+    implements AnalyticalObject
 {
     public static final String NUMBER_FORMATTING_COMMA = "comma";
     public static final String NUMBER_FORMATTING_SPACE = "space";

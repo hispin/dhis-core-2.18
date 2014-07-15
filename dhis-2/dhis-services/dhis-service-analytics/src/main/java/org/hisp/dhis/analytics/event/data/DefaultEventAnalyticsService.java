@@ -54,7 +54,7 @@ import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
-import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.common.AnalyticalObject;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
@@ -217,7 +217,7 @@ public class DefaultEventAnalyticsService
         return grid;
     }
     
-    public Grid getAggregatedEventData( BaseAnalyticalObject object, I18nFormat format )
+    public Grid getAggregatedEventData( AnalyticalObject object, I18nFormat format )
     {
         EventQueryParams params = getFromAnalyticalObject( object, format );
         
@@ -441,7 +441,7 @@ public class DefaultEventAnalyticsService
     /**
      * TODO Generalize and change from EventChart to EventAnalyticalObject.
      */
-    public EventQueryParams getFromAnalyticalObject( BaseAnalyticalObject object_, I18nFormat format )
+    public EventQueryParams getFromAnalyticalObject( AnalyticalObject object_, I18nFormat format )
     {
         EventChart object = (EventChart) object_; //TODO temporary
         
