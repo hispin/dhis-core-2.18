@@ -87,7 +87,7 @@ import org.hisp.dhis.analytics.DataQueryGroups;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.DimensionItem;
 import org.hisp.dhis.analytics.QueryPlanner;
-import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.common.AnalyticalObject;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.CombinationGenerator;
@@ -512,7 +512,7 @@ public class DefaultAnalyticsService
     }
     
     @Override
-    public Map<String, Double> getAggregatedDataValueMapping( BaseAnalyticalObject object, I18nFormat format )
+    public Map<String, Double> getAggregatedDataValueMapping( AnalyticalObject object, I18nFormat format )
     {
         DataQueryParams params = getFromAnalyticalObject( object, format );
         
@@ -749,7 +749,7 @@ public class DefaultAnalyticsService
     }
 
     @Override
-    public DataQueryParams getFromAnalyticalObject( BaseAnalyticalObject object, I18nFormat format )
+    public DataQueryParams getFromAnalyticalObject( AnalyticalObject object, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
         

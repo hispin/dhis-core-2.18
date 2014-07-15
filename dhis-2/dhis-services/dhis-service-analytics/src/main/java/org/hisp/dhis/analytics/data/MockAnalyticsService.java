@@ -37,7 +37,7 @@ import org.apache.commons.lang.NotImplementedException;
 import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
-import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.common.AnalyticalObject;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -74,7 +74,7 @@ public class MockAnalyticsService
     }
 
     @Override
-    public Map<String, Double> getAggregatedDataValueMapping( BaseAnalyticalObject object, I18nFormat format )
+    public Map<String, Double> getAggregatedDataValueMapping( AnalyticalObject object, I18nFormat format )
     {
         return valueMap;
     }
@@ -87,7 +87,7 @@ public class MockAnalyticsService
     }
 
     @Override
-    public DataQueryParams getFromAnalyticalObject( BaseAnalyticalObject object, I18nFormat format )
+    public DataQueryParams getFromAnalyticalObject( AnalyticalObject object, I18nFormat format )
     {
         throw new NotImplementedException();
     }
