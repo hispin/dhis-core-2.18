@@ -38,6 +38,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.EventAnalyticalObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.view.DetailedView;
@@ -62,6 +63,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JacksonXmlRootElement( localName = "eventChart", namespace = DxfNamespaces.DXF_2_0 )
 public class EventChart
     extends BaseChart
+    implements EventAnalyticalObject
 {
     public static final String COUNT_TYPE_EVENTS = "events";
     public static final String COUNT_TYPE_TRACKED_ENTITY_INSTANCES = "tracked_entity_instances";
