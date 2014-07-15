@@ -503,6 +503,11 @@
 		class="org.hisp.dhis.eventchart.EventChartDeletionHandler">
 	</bean>
 	
+	<bean
+		id="org.hisp.dhis.eventreport.EventReportDeletionHandler"
+		class="org.hisp.dhis.eventreport.EventReportDeletionHandler">
+	</bean>
+	
 	<!-- DeletionManager -->
 
 	<bean
@@ -532,6 +537,7 @@
 					<ref local="org.hisp.dhis.program.ProgramIndicatorDeletionHandler" />
 					<ref local="org.hisp.dhis.trackedentity.TrackedEntityFormDeletionHandler" />
 					<ref local="org.hisp.dhis.eventchart.EventChartDeletionHandler" />
+					<ref local="org.hisp.dhis.eventreport.EventReportDeletionHandler" />
 				</list>
 			</list>
 		</property>
@@ -603,7 +609,10 @@
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.eventchart.EventChartService.delete*(..) )"
 				method="intercept" />
-					
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.eventreport.EventReportService.delete*(..) )"
+				method="intercept" />
+				
 		</aop:aspect>
 
 	</aop:config>
