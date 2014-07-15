@@ -4269,7 +4269,7 @@ Ext.onReady( function() {
                 var attributes = attributeStorage[programId],
                     data = Ext.Array.clean([].concat(attributes || [], dataElements || []));
 
-				dataElementsByStageStore.loadData(dataElements);
+				dataElementsByStageStore.loadData(data);
 
                 if (layout) {
                     var dataDimensions = gis.util.layout.getDataDimensionsFromLayout(layout),
