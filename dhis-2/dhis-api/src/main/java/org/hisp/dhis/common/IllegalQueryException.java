@@ -38,4 +38,9 @@ public class IllegalQueryException
     {
         super( message );
     }
+    
+    public IllegalQueryException( String message, Throwable throwable) 
+    {
+        super( message, throwable );
+    }
 }
