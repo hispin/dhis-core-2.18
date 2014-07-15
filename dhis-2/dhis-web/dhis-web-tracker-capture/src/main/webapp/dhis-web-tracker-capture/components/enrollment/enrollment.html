@@ -1,6 +1,9 @@
 <div class="panel panel-default" ng-controller="EnrollmentController">
     <div class="panel-heading handle bold">
         {{enrollmentWidget.title| translate}}
+        <span class="nav-pills" ng-show="selectedProgram && !selectedEnrollment">
+            | <a href ng-click="showEnrollment()" title="{{'new_enrollment'| translate}}"><span class="bold">{{'new_enrollment'| translate}}</span></a>
+        </span>
         <span class="pull-right">
             <a class="small-horizonal-spacing" href ng-click="expandCollapse(enrollmentWidget)">
                 <span ng-show="enrollmentWidget.expand"><i class="fa fa-chevron-up" title="{{'collapse'| translate}}"></i></span>
@@ -65,7 +68,7 @@
         </div>
         
         <form name="outerForm" novalidate>
-            <div ng-if="selectedProgram && !selectedEnrollment">
+            <div ng-if="showEnrollmentDiv">
                 <table class="table-borderless">
                     <tr class="col-md-12">
                         <td class="col-md-6">
@@ -149,11 +152,14 @@
             </div>
         </form>    
 
+        <div ng-if="selectedProgram && !selectedEnrollment && !showEnrollmentDiv">
+            <div class="alert alert-warning">{{'not_yet_enrolled_enrollment'| translate}}</div> 
+        </div>
         <div ng-if="!selectedProgram && programExists">
             <div class="alert alert-warning">{{'please_select_a_program_for_enrollment'| translate}}</div> 
         </div>
         <div ng-if="!programExists">
-            <div class="alert alert-warning">{{'no_program_exists'| translate}}</div> 
+            <div class="alert alert-warning">{{'no_program_exists_enrollment'| translate}}</div> 
         </div>
 
     </div>

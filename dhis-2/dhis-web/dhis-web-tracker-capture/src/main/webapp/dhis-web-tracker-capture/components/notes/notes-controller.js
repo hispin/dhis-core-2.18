@@ -39,7 +39,7 @@ trackerCapture.controller('NotesController',
     $scope.addNoteField = false;    
     
     $scope.showAddNote = function() {
-        $scope.addNoteField = true;
+        $scope.addNoteField = !$scope.addNoteField;
     };
     
     $scope.addNote = function(){
