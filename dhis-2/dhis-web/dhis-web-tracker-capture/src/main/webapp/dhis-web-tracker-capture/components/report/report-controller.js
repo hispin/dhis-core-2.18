@@ -187,7 +187,7 @@ trackerCapture.controller('ReportController',
         });
     });
         
-    $scope.$on('dashboard', function(event, args) {
+    $scope.$on('dashboardWidgets', function(event, args) {
         var selections = CurrentSelection.get();
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');
         $scope.selectedTei = selections.tei;  

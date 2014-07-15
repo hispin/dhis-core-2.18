@@ -73,6 +73,15 @@ trackerCapture.controller('DashboardController',
         });      
     }
     
+    
+    //listen for any change to program selection
+    //it is possible that such could happen during enrollment.
+    $scope.$on('mainDashboard', function(event, args) { 
+        var selections = CurrentSelection.get();
+        $scope.selectedProgram = selections.pr;
+        $scope.broadCastSelections(); 
+    }); 
+    
     $scope.broadCastSelections = function(){
         
         var selections = CurrentSelection.get();

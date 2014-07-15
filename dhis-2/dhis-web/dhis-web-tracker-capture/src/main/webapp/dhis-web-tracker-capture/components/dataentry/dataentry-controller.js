@@ -30,7 +30,7 @@ trackerCapture.controller('DataEntryController',
     $scope.invalidDate = false;
      
     //listen for the selected items
-    $scope.$on('dashboard', function(event, args) {  
+    $scope.$on('dashboardWidgets', function(event, args) {  
         $scope.showDataEntryDiv = false;
         $scope.showEventCreationDiv = false;
         $scope.showDummyEventDiv = false;        

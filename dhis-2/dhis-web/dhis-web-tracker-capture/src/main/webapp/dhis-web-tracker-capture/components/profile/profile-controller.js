@@ -1,7 +1,6 @@
 trackerCapture.controller('ProfileController',
         function($rootScope,
                 $scope,     
-                orderByFilter,
                 CurrentSelection,
                 TEIService,
                 DialogService,
@@ -21,7 +20,7 @@ trackerCapture.controller('ProfileController',
     }); 
     
     //listen for the selected entity       
-    $scope.$on('dashboard', function(event, args) { 
+    $scope.$on('dashboardWidgets', function(event, args) { 
         var selections = CurrentSelection.get();
         $scope.selectedTei = angular.copy(selections.tei);
         $scope.trackedEntity = selections.te;
