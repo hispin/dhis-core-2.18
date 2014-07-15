@@ -761,7 +761,9 @@ public class DefaultChartService
 
                 // Replace potential operand separator with dimension separator
 
-                key = key.replace( DataElementOperand.SEPARATOR, DIMENSION_SEP ); //TODO fix issue with keys including . and -
+                key = chart.isAnalyticsType( AnalyticsType.AGGREGATE ) ? key.replace( DataElementOperand.SEPARATOR, DIMENSION_SEP ) : key; 
+                
+                //TODO fix issue with keys including -
                 
                 // Sort key on components to remove significance of column order
                 
