@@ -6,7 +6,7 @@
 </div>
 <div class="modal-body">
     <div class='row'>
-        <div class="col-md-6">
+        <div class="col-sm-6">
             <h2>{{selectedProgram.trackedEntity.name}} {{'_details'| translate}}</h2>
             <table class="table table-bordered table-compact">
                 <tr ng-repeat="attribute in selectedTei.attributes" ng-show="attribute.show">
@@ -36,7 +36,7 @@
             <h3 class='col-sm-12'>{{'notes'| translate}}</h3>
             <table class="table-borderless table-striped">
                 <tr class="col-sm-12" ng-repeat="note in enrollment.notes">
-                    <td class="col-sm-12 over-flow-hidden">
+                    <td class="col-sm-12">
                         <p>
                             {{note.value}}<br>
                             ({{note.storedBy}}, {{note.storedDate}})
@@ -85,17 +85,17 @@
                             {{dhis2Event[prStDe.dataElement.id].value}}          
                         </td>
                         <td ng-if="allowProvidedElsewhereExists[dhis2Event.programStage]">
-                            {{dhis2Event[prStDe.dataElement.id].providedElsewhere ? 'provided_elsewhere' : '' | translate}}
+                            {{dhis2Event[prStDe.dataElement.id].providedElsewhere ? 'provided_elsewhere' : ''| translate}}
                         </td>
                     </tr>
                 </table>  
             </div>
             <div class='row vertical-spacing'></div>
             <div ng-if="dhis2Event.notes">
-                <h3 class='col-sm-12'>{{'notes'| translate}}</h3>
+                <h4 class='col-sm-12'>{{'notes'| translate}}</h4>
                 <table class="table-borderless table-striped">
                     <tr class="col-sm-12" ng-repeat="note in dhis2Event.notes">
-                        <td class="col-sm-12 over-flow-hidden">
+                        <td class="col-sm-12">
                             <p>
                                 {{note.value}}<br>
                                 ({{note.storedBy}}, {{note.storedDate}})
@@ -104,7 +104,7 @@
                     </tr>
                 </table>
             </div>
-            
+
         </div>
 
     </div>
