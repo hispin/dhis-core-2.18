@@ -19,7 +19,7 @@ trackerCapture.controller('RelationshipController',
     });    
     
     //listen for the selected entity       
-    $scope.$on('dashboard', function(event, args) { 
+    $scope.$on('dashboardWidgets', function(event, args) { 
         $scope.selections = CurrentSelection.get();
         $scope.selectedTei = angular.copy($scope.selections.tei);
         $scope.trackedEntity = $scope.selections.te;

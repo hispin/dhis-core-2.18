@@ -1,6 +1,5 @@
 trackerCapture.controller('NotesController',
         function($scope,
-                $rootScope,
                 $filter,
                 storage,
                 EnrollmentService,
@@ -20,7 +19,7 @@ trackerCapture.controller('NotesController',
     today = Date.parse(today);
     today = $filter('date')(today, 'yyyy-MM-dd');
     
-    $scope.$on('notesController', function(event, args) {
+    $scope.$on('dashboardWidgets', function(event, args) {
         $scope.selectedEnrollment = null;
         var selections = CurrentSelection.get();
         if(selections.enrollment){
@@ -57,14 +56,12 @@ trackerCapture.controller('NotesController',
                 $scope.selectedEnrollment.notes.splice(0,0,{value: $scope.note, storedDate: today, storedBy: storedBy});
             }
 
-            var e = $scope.selectedEnrollment;
+            var e = angular.copy($scope.selectedEnrollment);
 
             e.notes = [newNote];
             EnrollmentService.update(e).then(function(data){
                 $scope.note = '';
-                $scope.addNoteField = false; //note is added, hence no need to show note field.
-                CurrentSelection.set({enrollment: $scope.selectedEnrollment});                
-                $rootScope.$broadcast('notesController', {});
+                $scope.addNoteField = false; //note is added, hence no need to show note field.                
             });
         }        
     };
