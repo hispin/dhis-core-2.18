@@ -1,4 +1,4 @@
-package org.hisp.dhis.analytics.event;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,39 +28,22 @@ package org.hisp.dhis.analytics.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Set;
+import java.util.Date;
 
-import org.hisp.dhis.analytics.SortOrder;
-import org.hisp.dhis.common.AnalyticalObject;
-import org.hisp.dhis.common.EventAnalyticalObject;
-import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStage;
 
 /**
  * @author Lars Helge Overland
  */
-public interface EventAnalyticsService
+public interface EventAnalyticalObject
+    extends AnalyticalObject
 {
-    final int MAX_ROWS_LIMIT = 10000;
+    Program getProgram();
     
-    Grid getAggregatedEventData( EventQueryParams params );
+    ProgramStage getProgramStage();
     
-    Grid getAggregatedEventData( AnalyticalObject object, I18nFormat format );
+    Date getStartDate();
     
-    Grid getEvents( EventQueryParams params );
-
-    /**
-     * Used for aggregate query.
-     */
-    EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, boolean skipMeta, boolean hierarchyMeta, SortOrder sortOrder, 
-        Integer limit, boolean uniqueInstances, I18nFormat format );
-
-    /**
-     * Used for event query.
-     */
-    EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, Set<String> dimension, Set<String> filter, 
-        String ouMode, Set<String> asc, Set<String> desc, boolean skipMeta, boolean hierarchyMeta, boolean coordinatesOnly, Integer page, Integer pageSize, I18nFormat format );
-    
-    EventQueryParams getFromAnalyticalObject( EventAnalyticalObject object, I18nFormat format );
+    Date getEndDate();
 }
