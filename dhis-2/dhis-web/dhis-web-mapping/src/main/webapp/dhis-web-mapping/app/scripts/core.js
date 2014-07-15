@@ -738,14 +738,15 @@ Ext.onReady( function() {
 		});
 	};
 
-	GIS.core.StyleMap = function(config) {
+	GIS.core.StyleMap = function(labelConfig) {
 		var defaults = {
 				fillOpacity: 1,
 				strokeColor: '#fff',
 				strokeWidth: 1,
                 pointRadius: 5,
                 labelAlign: 'cr',
-                labelYOffset: 13
+                labelYOffset: 13,
+                fontFamily: 'arial,sans-serif,roboto,helvetica neue,helvetica,consolas'
 			},
 			select = {
 				fillOpacity: 0.9,
@@ -757,14 +758,12 @@ Ext.onReady( function() {
                 labelYOffset: 13
 			};
 
-        defaults.label = '\${label}';
-        defaults.fontFamily = 'arial,sans-serif,roboto,helvetica neue,helvetica,consolas';
-
-        if (config) {
-            defaults.fontSize = config.labelFontSize;
-            defaults.fontWeight = config.labelFontWeight;
-            defaults.fontStyle = config.labelFontStyle;
-            defaults.fontColor = config.labelFontColor;
+        if (Ext.isObject(labelConfig) && labelConfig.labels) {
+            defaults.label = '\${label}';
+            defaults.fontSize = labelConfig.labelFontSize;
+            defaults.fontWeight = labelConfig.labelFontWeight;
+            defaults.fontStyle = labelConfig.labelFontStyle;
+            defaults.fontColor = labelConfig.labelFontColor;
         }
 
 		return new OpenLayers.StyleMap({
