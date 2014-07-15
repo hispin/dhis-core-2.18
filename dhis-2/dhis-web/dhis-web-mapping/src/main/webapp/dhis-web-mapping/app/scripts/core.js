@@ -641,7 +641,7 @@ Ext.onReady( function() {
 
 		if (isEvent) {
 			options.onClickSelect = function fn(feature) {
-                var ignoreKeys = ['label', 'value', 'nameColumnMap', 'psi', 'ps', 'longitude', 'latitude', 'eventdate', 'ou', 'oucode', 'ouname'],
+                var ignoreKeys = ['label', 'value', 'nameColumnMap', 'psi', 'ps', 'longitude', 'latitude', 'eventdate', 'ou', 'oucode', 'ouname', 'popupText'],
                     attributes = feature.attributes,
                     map = attributes.nameColumnMap,
                     html = '<table class="padding1">',
@@ -1043,10 +1043,11 @@ Ext.onReady( function() {
 		};
 
 		loadData = function(view) {
-			view = view || layer.core.view;
-
             var paramString = '?',
-                features = [];
+                features = [],
+                success;
+
+			view = view || layer.core.view;
 
             // stage
             paramString += 'stage=' + view.stage.id;
@@ -1080,86 +1081,105 @@ Ext.onReady( function() {
                 //}
             }
 
-			Ext.data.JsonP.request({
-				url: gis.init.contextPath + '/api/analytics/events/query/' + view.program.id + '.jsonp' + paramString,
-				disableCaching: false,
-				scope: this,
-				success: function(r) {
-                    var events = [],
-                        features = [],
-                        rows = [],
-                        lonIndex,
-                        latIndex,
-                        map = Ext.clone(r.metaData.names);
+            success = function(r) {
+                var events = [],
+                    features = [],
+                    rows = [],
+                    lonIndex,
+                    latIndex,
+                    map = Ext.clone(r.metaData.names);
 
-                    // name-column map, lonIndex, latIndex
-                    for (var i = 0; i < r.headers.length; i++) {
-                        map[r.headers[i].name] = r.headers[i].column;
+                // name-column map, lonIndex, latIndex
+                for (var i = 0; i < r.headers.length; i++) {
+                    map[r.headers[i].name] = r.headers[i].column;
 
-                        if (r.headers[i].name === 'longitude') {
-							lonIndex = i;
-						}
-
-						if (r.headers[i].name === 'latitude') {
-							latIndex = i;
-						}
+                    if (r.headers[i].name === 'longitude') {
+                        lonIndex = i;
                     }
 
-					// get events with coordinates
-                    if (Ext.isArray(r.rows) && r.rows.length) {
-						for (var i = 0, row; i < r.rows.length; i++) {
-							row = r.rows[i];
-
-							if (row[lonIndex] && row[latIndex]) {
-								rows.push(row);
-							}
-						}
-					}
-
-                    if (!rows.length) {
-                        alert('No coordinates found');
-                        olmap.mask.hide();
-                        return;
+                    if (r.headers[i].name === 'latitude') {
+                        latIndex = i;
                     }
-
-                    // name-column map
-                    map = r.metaData.names;
-
-                    for (var i = 0; i < r.headers.length; i++) {
-                        map[r.headers[i].name] = r.headers[i].column;
-                    }
-
-                    // events
-                    for (var i = 0, row, obj; i < rows.length; i++) {
-                        row = rows[i];
-                        obj = {};
-
-                        for (var j = 0; j < row.length; j++) {
-                            obj[r.headers[j].name] = row[j];
-                        }
-
-                        obj[gis.conf.finals.widget.value] = 0;
-                        obj.label = obj.ouname;
-                        obj.nameColumnMap = map;
-
-                        events.push(obj);
-                    }
-
-                    // features
-                    for (var i = 0, event, point; i < events.length; i++) {
-                        event = events[i];
-
-                        point = gis.util.map.getTransformedPointByXY(event.longitude, event.latitude);
-
-                        features.push(new OpenLayers.Feature.Vector(point, event));
-                    }
-
-                    layer.removeFeatures(layer.features);
-                    layer.addFeatures(features);
-
-                    loadLegend(view);
                 }
-            });
+
+                // get events with coordinates
+                if (Ext.isArray(r.rows) && r.rows.length) {
+                    for (var i = 0, row; i < r.rows.length; i++) {
+                        row = r.rows[i];
+
+                        if (row[lonIndex] && row[latIndex]) {
+                            rows.push(row);
+                        }
+                    }
+                }
+
+                if (!rows.length) {
+                    alert('No event coordinates found');
+                    olmap.mask.hide();
+                    return;
+                }
+
+                // name-column map
+                map = r.metaData.names;
+
+                for (var i = 0; i < r.headers.length; i++) {
+                    map[r.headers[i].name] = r.headers[i].column;
+                }
+
+                // events
+                for (var i = 0, row, obj; i < rows.length; i++) {
+                    row = rows[i];
+                    obj = {};
+
+                    for (var j = 0; j < row.length; j++) {
+                        obj[r.headers[j].name] = row[j];
+                    }
+
+                    obj[gis.conf.finals.widget.value] = 0;
+                    obj.label = obj.ouname;
+                    obj.popupText = obj.ouname;
+                    obj.nameColumnMap = map;
+
+                    events.push(obj);
+                }
+
+                // features
+                for (var i = 0, event, point; i < events.length; i++) {
+                    event = events[i];
+
+                    point = gis.util.map.getTransformedPointByXY(event.longitude, event.latitude);
+
+                    features.push(new OpenLayers.Feature.Vector(point, event));
+                }
+
+                layer.removeFeatures(layer.features);
+                layer.addFeatures(features);
+
+                loadLegend(view);
+            };
+
+			if (Ext.isObject(GIS.app)) {
+				Ext.Ajax.request({
+					url: gis.init.contextPath + '/api/analytics/events/query/' + view.program.id + '.json' + paramString,
+					disableCaching: false,
+					failure: function(r) {
+						alert(r.responseText);
+					},
+					success: function(r) {
+						success(Ext.decode(r.responseText));
+					}
+				});
+			}
+			else if (Ext.isObject(GIS.plugin)) {
+				Ext.data.JsonP.request({
+					url: gis.init.contextPath + '/api/analytics/events/query/' + view.program.id + '.jsonp' + paramString,
+					disableCaching: false,
+					scope: this,
+					success: function(r) {
+						success(r);
+					}
+				});
+			}
 		};
 
 		loadLegend = function(view) {
@@ -3037,7 +3057,7 @@ Ext.onReady( function() {
                     layout.labelFontStyle = Ext.Array.contains(['normal', 'italic', 'oblique'], config.labelFontStyle) ? config.labelFontStyle : 'normal';
 
                     layout.labelFontColor = Ext.isString(config.labelFontColor) || Ext.isNumber(config.labelFontColor) ? config.labelFontColor : 'normal';
-                    layout.labelFontColor = Ext.isNumber(config.labelFontColor) ? config.labelFontColor.toString() : config.labelFontColor;
+                    layout.labelFontColor = Ext.isNumber(layout.labelFontColor) ? layout.labelFontColor.toString() : layout.labelFontColor;
                     layout.labelFontColor = layout.labelFontColor.charAt(0) !== '#' ? '#' + layout.labelFontColor : layout.labelFontColor;
 
                     layout.hidden = !!config.hidden;
