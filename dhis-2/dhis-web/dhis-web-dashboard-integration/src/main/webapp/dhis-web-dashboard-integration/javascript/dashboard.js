@@ -29,8 +29,6 @@ dhis2.db.maxItems = 40;
 
 // TODO support table as link and embedded
 // TODO double horizontal size
-// TODO dashboard list horizontal scroll
-// TODO report type in link
 
 //------------------------------------------------------------------------------
 // Document ready
@@ -162,11 +160,13 @@ dhis2.db.lastDropOver = function( event, ui )
 	$( this ).removeClass( "blankDropItem" ).css( "display", "block" );
 }
 
-dhis2.db.lastDropOut = function( event, ui ) {
+dhis2.db.lastDropOut = function( event, ui ) 
+{
 	$( this ).addClass( "blankDropItem" );
 }
 
-dhis2.db.dropItem = function( event, ui ) {
+dhis2.db.dropItem = function( event, ui ) 
+{
 	var destItemId = $( this ).data( "item" );
 	var position = dhis2.db.getIndex( destItemId );
 	
