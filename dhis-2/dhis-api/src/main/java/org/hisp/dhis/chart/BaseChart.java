@@ -28,13 +28,15 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.join;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.AnalyticsType;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -73,7 +75,7 @@ public abstract class BaseChart
     public static final String TYPE_AREA = "area";
     public static final String TYPE_PIE = "pie";
     public static final String TYPE_RADAR = "radar";
-
+    
     protected String domainAxisLabel;
 
     protected String rangeAxisLabel;
@@ -161,10 +163,10 @@ public abstract class BaseChart
         return baseLineValue != null;
     }
 
-    public List<NameableObject> getFilterItems()
+    public String generateTitle()
     {
-        List<NameableObject> filterItems = new ArrayList<NameableObject>();
-
+        List<String> titleItems = new ArrayList<>();
+        
         for ( String filter : filterDimensions )
         {
             DimensionalObject object = getDimensionalObject( filter, relativePeriodDate, user, true,
@@ -172,16 +174,22 @@ public abstract class BaseChart
 
             if ( object != null )
             {
-                filterItems.addAll( object.getItems() );
+                String item = IdentifiableObjectUtils.join( object.getItems() );
+                String filt = DimensionalObjectUtils.getPrettyFilter( object.getFilter() );
+                
+                if ( item != null )
+                {
+                    titleItems.add( item );
+                }
+                
+                if ( filt != null )
+                {
+                    titleItems.add( filt );
+                }
             }
         }
-
-        return filterItems;
-    }
-
-    public String generateTitle()
-    {
-        return StringUtils.defaultIfBlank( IdentifiableObjectUtils.join( getFilterItems() ), StringUtils.EMPTY );
+        
+        return join( titleItems, DimensionalObjectUtils.TITLE_ITEM_SEP );
     }
     
     public boolean isAnalyticsType( AnalyticsType type )

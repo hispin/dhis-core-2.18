@@ -40,6 +40,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author Lars Helge Overland
  */
@@ -50,6 +52,8 @@ public class DimensionalObjectUtils
     public static final String ITEM_SEP = "-";
     
     private static final Pattern INT_PATTERN = Pattern.compile( "^(0|-?[1-9]\\d*)$" );
+
+    public static final String TITLE_ITEM_SEP = ", ";
     
     /**
      * Converts a concrete dimensional class identifier to a dimension identifier.
@@ -293,5 +297,46 @@ public class DimensionalObjectUtils
         Set<Object> values = grid.getUniqueValues( dim.getDimension() );
         List<NameableObject> items = NameableObjectUtils.getNameableObjects( values );
         dim.setItems( items );
+    }
+    
+    /**
+     * Accepts filter strings on the format:
+     * </p>
+     * <code>operator:filter:operator:filter</code>
+     * </p>
+     * and returns a pretty print version on the format:
+     * </p>
+     * <code>operator filter, operator filter</code>
+     * 
+     * @param filter the filter.
+     * @return a pretty print version of the filter.
+     */
+    public static String getPrettyFilter( String filter )
+    {
+        if ( filter == null || !filter.contains( DIMENSION_NAME_SEP ) )
+        {
+            return null;
+        }
+        
+        List<String> filterItems = new ArrayList<>();
+        
+        String[] split = filter.split( DIMENSION_NAME_SEP );
+
+        for ( int i = 0; i < split.length; i += 2 )
+        {
+            QueryOperator operator = QueryOperator.fromString( split[i] );
+            String value = split[i+1];
+            
+            if ( operator != null )
+            {
+                boolean ignoreOperator = ( QueryOperator.LIKE.equals( operator ) || QueryOperator.IN.equals( operator ) );
+                
+                value = value.replaceAll( QueryFilter.OPTION_SEP, TITLE_ITEM_SEP );
+                
+                filterItems.add( ( ignoreOperator ? StringUtils.EMPTY : ( operator.getValue() + " " ) ) + value );
+            }
+        }
+        
+        return StringUtils.join( filterItems, TITLE_ITEM_SEP );
     }
 }

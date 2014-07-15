@@ -217,8 +217,6 @@ public class AccountController
 
         boolean invitedByEmail = ( inviteUsername != null && !inviteUsername.isEmpty() );
 
-        log.info( "AccountController: inviteUsername = " + inviteUsername );
-
         boolean canChooseUsername = true;
 
         if ( invitedByEmail )
