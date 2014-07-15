@@ -53,26 +53,28 @@
         {{'comments'| translate}}
     </h4>
     <textarea rows="3" ng-model="note.value" placeholder="{{'add_your_comment_here'| translate}}" style="width:50%;"></textarea>
-    <table class="listTable dhis2-table-striped-border dhis2-table-hover" style='width: 50%;'>     
-        <thead>
-            <tr>
-                <th style="width:100%;">
-                    {{'recorded_comments' | translate}}
-                </th>
+    <div ng-if="currentEvent.notes">
+        <table class="listTable dhis2-table-striped-border dhis2-table-hover" style='width: 50%;'>     
+            <thead>
+                <tr>
+                    <th style="width:100%;">
+                        {{'recorded_comments' | translate}}
+                    </th>
+                </tr>
+            </thead>
+            <tr ng-repeat="note in currentEvent.notes">
+                <td class="over-flow-hidden" style="width:100%;">
+                    <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
+                        <div>{{note.value}}</div>
+                    </d2-pop-over>
+                    <script type="text/ng-template" id="note.html">
+                        <p>{{content.value}}</p>
+                        <hr>
+                        <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
+                        <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
+                    </script>
+                </td>
             </tr>
-        </thead>
-        <tr ng-repeat="note in currentEvent.notes">
-            <td class="over-flow-hidden" style="width:100%;">
-                <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
-                    <div>{{note.value}}</div>
-                </d2-pop-over>
-                <script type="text/ng-template" id="note.html">
-                    <p>{{content.value}}</p>
-                    <hr>
-                    <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
-                    <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
-                </script>
-            </td>
-        </tr>
-    </table>
+        </table>    
+    </div>    
 </div>
