@@ -4317,7 +4317,7 @@ Ext.onReady( function() {
 
 		dataElementAvailable = Ext.create('Ext.ux.form.MultiSelect', {
 			cls: 'ns-toolbar-multiselect-left',
-			width: accBaseWidth,
+			width: accBaseWidth - 4,
             height: 118,
 			valueField: 'id',
 			displayField: 'name',
@@ -4365,7 +4365,7 @@ Ext.onReady( function() {
 		});
 
         dataElementSelected = Ext.create('Ext.panel.Panel', {
-			width: accBaseWidth,
+			width: accBaseWidth - 4,
             height: 204,
             bodyStyle: 'padding:2px 0 1px 3px; overflow-y: scroll',
             tbar: {
@@ -4531,7 +4531,7 @@ Ext.onReady( function() {
             //labelStyle: 'font-weight: bold',
 			labelSeparator: '',
 			columnWidth: 0.5,
-			style: 'margin-right: 1px',
+			//style: 'margin-right: 1px',
 			format: 'Y-m-d',
 			value: new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))
 		});
@@ -4550,7 +4550,7 @@ Ext.onReady( function() {
 
         period = Ext.create('Ext.panel.Panel', {
             title: '<div class="gis-panel-title-period">Periods</div>',
-            bodyStyle: 'padding:4px 2px 2px',
+            bodyStyle: 'padding:4px 1px 2px',
             hideCollapseTool: true,
             layout: 'column',
             width: accBaseWidth,
@@ -4563,6 +4563,7 @@ Ext.onReady( function() {
             // organisation unit
 		treePanel = Ext.create('Ext.tree.Panel', {
 			cls: 'gis-tree',
+			width: accBaseWidth - 4,
 			height: 333,
             bodyStyle: 'border:0 none',
 			style: 'border-top: 1px solid #ddd; padding-top: 1px',
@@ -4865,7 +4866,7 @@ Ext.onReady( function() {
 			cls: 'gis-combo',
 			multiSelect: true,
 			style: 'margin-bottom:0',
-			width: accBaseWidth - toolWidth - 2,
+			width: accBaseWidth - toolWidth - 1 - 4,
 			valueField: 'level',
 			displayField: 'name',
 			emptyText: GIS.i18n.select_organisation_unit_levels,
@@ -4881,7 +4882,7 @@ Ext.onReady( function() {
 			cls: 'gis-combo',
 			multiSelect: true,
 			style: 'margin-bottom:0',
-			width: accBaseWidth - toolWidth - 2,
+			width: accBaseWidth - toolWidth - 1 - 4,
 			valueField: 'id',
 			displayField: 'name',
 			emptyText: GIS.i18n.select_organisation_unit_groups,
@@ -4999,21 +5000,21 @@ Ext.onReady( function() {
 		toolPanel = Ext.create('Ext.panel.Panel', {
 			width: toolWidth,
 			bodyStyle: 'border:0 none; text-align:right',
-			style: 'margin-right:2px',
+			style: 'margin-right:1px',
 			items: tool
 		});
 
         organisationUnit = Ext.create('Ext.panel.Panel', {
             title: '<div class="gis-panel-title-organisationunit">' + GIS.i18n.organisation_units + '</div>',
             cls: 'gis-accordion-last',
-            bodyStyle: 'padding:2px',
+            bodyStyle: 'padding:1px',
             hideCollapseTool: true,
             items: [
                 {
                     layout: 'column',
                     width: accBaseWidth,
                     bodyStyle: 'border:0 none',
-                    style: 'padding-bottom:2px',
+                    style: 'padding-bottom:1px',
                     items: [
                         toolPanel,
                         organisationUnitPanel
