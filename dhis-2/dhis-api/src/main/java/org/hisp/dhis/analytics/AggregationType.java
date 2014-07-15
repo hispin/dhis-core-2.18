@@ -33,5 +33,31 @@ package org.hisp.dhis.analytics;
  */
 public enum AggregationType
 {
-    SUM, AVERAGE_INT, AVERAGE_INT_DISAGGREGATION, AVERAGE_BOOL, COUNT, STDDEV, VARIANCE
+    SUM( "sum" ), 
+    AVERAGE_INT( "avg_int" ), 
+    AVERAGE_INT_DISAGGREGATION( "avg_int_disaggregation" ), 
+    AVERAGE_BOOL( "avg" ), 
+    COUNT( "count" ), 
+    STDDEV( "stddev" ), 
+    VARIANCE( "variance" );
+
+    private final String value;
+
+    private AggregationType( String value )
+    {
+        this.value = value;
+    }
+
+    public static AggregationType fromValue( String value )
+    {
+        for ( AggregationType type : AggregationType.values() )
+        {
+            if ( type.value.equalsIgnoreCase( value ) )
+            {
+                return type;
+            }
+        }
+
+        return null;
+    }
 }
