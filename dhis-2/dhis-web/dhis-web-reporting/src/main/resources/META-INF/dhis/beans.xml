@@ -166,7 +166,7 @@
 	<property name="scheduler" ref="scheduler"/>
 	<property name="resourceTableTask" ref="resourceTableTask" />
 	<property name="analyticsTableTask" ref="analyticsAllTask" />
-	<property name="dataMartTask" ref="dataMartLast12MonthsTask"/>
+	<property name="dataMartTask" ref="dataMartLastYearTask"/>
   </bean>
 
   <!-- Export -->
