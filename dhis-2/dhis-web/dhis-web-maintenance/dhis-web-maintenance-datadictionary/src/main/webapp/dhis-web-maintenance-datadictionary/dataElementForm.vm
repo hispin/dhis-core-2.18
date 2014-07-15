@@ -130,6 +130,8 @@
                 <option value="count" #if( $!dataElement.aggregationOperator == 'count' ) selected="selected" #end>$i18n.getString( "count" )</option>
                 <option value="stddev" #if( $!dataElement.aggregationOperator == 'stddev' ) selected="selected" #end>$i18n.getString( "stddev" )</option>
                 <option value="variance" #if( $!dataElement.aggregationOperator == 'variance' ) selected="selected" #end>$i18n.getString( "variance" )</option>
+                <option value="min" #if( $!dataElement.aggregationOperator == 'min' ) selected="selected" #end>$i18n.getString( "min" )</option>
+                <option value="max" #if( $!dataElement.aggregationOperator == 'max' ) selected="selected" #end>$i18n.getString( "max" )</option>
 			</select>
 		</td>
 	</tr>
