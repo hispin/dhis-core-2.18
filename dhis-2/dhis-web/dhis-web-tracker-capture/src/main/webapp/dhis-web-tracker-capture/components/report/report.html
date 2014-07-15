@@ -36,7 +36,12 @@
             </div>
         </div>
     </form>
-    <div class="row" ng-if="!selectedProgram">
+    <div class="row" ng-if="programs.length < 1">        
+        <div class="col-md-12 vertical-spacing">
+            <div class="alert alert-warning">{{'no_program_exists_report'| translate}}</div> 
+        </div>
+    </div>
+    <div class="row" ng-if="programs.length > 0 && !selectedProgram">        
         <div class="col-md-12 vertical-spacing">
             <div class="alert alert-warning">{{'please_select_program_report'| translate}}</div> 
         </div>

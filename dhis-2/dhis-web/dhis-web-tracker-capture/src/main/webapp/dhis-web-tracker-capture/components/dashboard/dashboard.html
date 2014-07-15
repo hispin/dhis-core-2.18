@@ -6,8 +6,9 @@
         <select ng-model="selectedProgram"
                 class="form-control-program"
                 ng-options="program as program.name for program in programs | orderBy: 'name'" 
+                ng-disabled="programs.length < 1"
                 ng-change="broadCastSelections()">
-            <option value="">{{'please_select_a_program'| translate}}</option>
+            <option value="">{{programs.length > 0 ? 'please_select_a_program' : 'no_program_exists' | translate}}</option>
         </select>
 
         <div class="pull-right">
