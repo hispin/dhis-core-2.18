@@ -32,11 +32,8 @@ import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.SUM;
-import static org.hisp.dhis.analytics.AggregationType.COUNT;
-import static org.hisp.dhis.analytics.AggregationType.STDDEV;
-import static org.hisp.dhis.analytics.AggregationType.VARIANCE;
-import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
 import static org.hisp.dhis.analytics.DataQueryParams.DEFAULT_MAX_DIM_OPT_PERM;
+import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
 import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
@@ -44,10 +41,6 @@ import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_COUNT;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_STDDEV;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_VARIANCE;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 
 import java.util.ArrayList;
@@ -672,11 +665,7 @@ public class DefaultQueryPlanner
     {
         AggregationType aggregationType = null;
         
-        if ( AGGREGATION_OPERATOR_SUM.equals( aggregationOperator ) )
-        {
-            aggregationType = SUM;
-        }
-        else if ( AGGREGATION_OPERATOR_AVERAGE.equals( aggregationOperator ) )
+        if ( AGGREGATION_OPERATOR_AVERAGE.equals( aggregationOperator ) )
         {
             if ( VALUE_TYPE_BOOL.equals( valueType ) )
             {
@@ -694,17 +683,9 @@ public class DefaultQueryPlanner
                 }
             }
         }
-        else if ( AGGREGATION_OPERATOR_COUNT.equals( aggregationOperator ) )
+        else
         {
-            aggregationType = COUNT;
-        }
-        else if ( AGGREGATION_OPERATOR_STDDEV.equals( aggregationOperator ) )
-        {
-            aggregationType = STDDEV;
-        }
-        else if ( AGGREGATION_OPERATOR_VARIANCE.equals( aggregationOperator ) )
-        {
-            aggregationType = VARIANCE;
+            aggregationType = AggregationType.fromValue( aggregationOperator );
         }
         
         return aggregationType;
