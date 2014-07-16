@@ -124,6 +124,7 @@ public class ValidatorThread
                                     if ( !rightSideValues.isEmpty() || Operator.compulsory_pair.equals( rule.getOperator() ) )
                                     {
                                         Set<Integer> combos = leftSideValues.keySet();
+                                        
                                         if ( Operator.compulsory_pair.equals( rule.getOperator() ) )
                                         {
                                             combos = new HashSet<Integer>( combos );
@@ -155,7 +156,7 @@ public class ValidatorThread
                                                     roundSignificant( zeroIfNull( rightSide ) ) ) );
                                             }
 
-                                            log.trace( "-->Evaluated " + rule.getName()
+                                            log.trace( "Evaluated " + rule.getName()
                                                 + ", combo id " + combo + ": "
                                                 + (violation ? "violation" : "OK") + " " + ( leftSide == null ? "(null)" : leftSide.toString() )
                                                 + " " + rule.getOperator() + " " + ( rightSide == null ? "(null)" : rightSide.toString() )
@@ -188,7 +189,7 @@ public class ValidatorThread
 
         for ( ValidationRule rule : periodTypeX.getRules() )
         {
-            if ( (ValidationRule.RULE_TYPE_VALIDATION.equals( rule.getRuleType() )) )
+            if ( ( ValidationRule.RULE_TYPE_VALIDATION.equals( rule.getRuleType() ) ) )
             {
                 // For validation-type rules, include only rules where the
                 // organisation collects all the data elements in the rule.
@@ -232,8 +233,7 @@ public class ValidatorThread
      * @return true if the rule should be evaluated with this data, false if not
      */
     private boolean evaluateCheck( MapMap<Integer, DataElementOperand, Double> currentValueMapMap,
-                                   MapMap<Integer, DataElementOperand, Date> lastUpdatedMapMap,
-                                   ValidationRule rule )
+        MapMap<Integer, DataElementOperand, Date> lastUpdatedMapMap, ValidationRule rule )
     {
         boolean evaluate = true; // Assume true for now.
 
@@ -316,13 +316,13 @@ public class ValidatorThread
      * @param periodTypeX period type being evaluated
      * @param period period being evaluated
      * @param rule ValidationRule being evaluated
-     * @param currentValueMap2 current values already fetched
+     * @param currentValueMap current values already fetched
      * @param sourceDataElements the data elements collected by the organisation
      *        unit
      * @return the right-side values, map by attribute category combo
      */
     private Map<Integer, Double> getRightSideValue( OrganisationUnit source, PeriodTypeExtended periodTypeX, Period period,
-        ValidationRule rule, MapMap<Integer, DataElementOperand, Double> currentValueMap2,
+        ValidationRule rule, MapMap<Integer, DataElementOperand, Double> currentValueMap,
         Collection<DataElement> sourceDataElements )
     {
         Map<Integer, Double> rightSideValues;
@@ -336,7 +336,7 @@ public class ValidatorThread
         if ( ValidationRule.RULE_TYPE_VALIDATION.equals( rule.getRuleType() )
             || rule.getRightSide().getDataElementsInExpression().isEmpty() )
         {
-            rightSideValues = getExpressionValueMap( rule.getRightSide(), currentValueMap2, new SetMap<Integer, DataElementOperand>() );
+            rightSideValues = getExpressionValueMap( rule.getRightSide(), currentValueMap, new SetMap<Integer, DataElementOperand>() );
         }
         else
         // ruleType equals SURVEILLANCE, and there are some data elements in the
@@ -373,6 +373,7 @@ public class ValidatorThread
                     // Fetch the sequential periods after this prior-year
                     // period.
                     Period sequentialPeriod = new Period( yearlyPeriod );
+                    
                     for ( int sequentialCount = 0; sequentialCount < sequentialSampleCount; sequentialCount++ )
                     {
                         sequentialPeriod = calendarPeriodType.getNextPeriod( sequentialPeriod );
@@ -381,9 +382,10 @@ public class ValidatorThread
                     }
                 }
 
-                // Fetch the seqential periods before this period (both this
-                // year and past years):
+                // Fetch the sequential periods before this period (both this
+                // year and past years).
                 Period sequentialPeriod = new Period( yearlyPeriod );
+                
                 for ( int sequentialCount = 0; sequentialCount < sequentialSampleCount; sequentialCount++ )
                 {
                     sequentialPeriod = calendarPeriodType.getPreviousPeriod( sequentialPeriod );
@@ -391,11 +393,12 @@ public class ValidatorThread
                         sequentialPeriod, rule, sourceDataElements );
                 }
 
-                // Move to the previous year:
+                // Move to the previous year.
                 yearlyCalendar.set( Calendar.YEAR, yearlyCalendar.get( Calendar.YEAR ) - 1 );
             }
 
             rightSideValues = new HashMap<Integer, Double>();
+            
             for ( Map.Entry<Integer, List<Double>> e : sampleValuesMap.entrySet() )
             {
                 rightSideValues.put( e.getKey(), rightSideAverage( rule, e.getValue(), annualSampleCount, sequentialSampleCount) );
@@ -435,13 +438,13 @@ public class ValidatorThread
             Set<DataElement> dataElements = rule.getRightSide().getDataElementsInExpression();
             SetMap<Integer, DataElementOperand> incompleteValuesMap = new SetMap<Integer, DataElementOperand>();
             MapMap<Integer, DataElementOperand, Double> dataValueMapByAttributeCombo = getValueMap2( periodTypeX, dataElements,
-                    sourceDataElements, dataElements, allowedPeriodTypes, period, source, null, incompleteValuesMap );
+                sourceDataElements, dataElements, allowedPeriodTypes, period, source, null, incompleteValuesMap );
             sampleValuesMap.putValueMap( getExpressionValueMap( rule.getRightSide(), dataValueMapByAttributeCombo, incompleteValuesMap ) );
         }
     }
 
     /**
-     * Evaluates an expresssion, returning a map of values by attribute option
+     * Evaluates an expression, returning a map of values by attribute option
      * combo.
      *
      * @param expression expression to evaluate.
@@ -450,21 +453,17 @@ public class ValidatorThread
      * @return map of values.
      */
     private Map<Integer, Double> getExpressionValueMap( Expression expression,
-                                                       MapMap<Integer, DataElementOperand, Double> valueMap2,
+                                                       MapMap<Integer, DataElementOperand, Double> valueMap,
                                                        SetMap<Integer, DataElementOperand> incompleteValuesMap )
     {
         Map<Integer, Double> expressionValueMap = new HashMap<Integer, Double>();
 
-        for ( Map.Entry<Integer, Map<DataElementOperand, Double>> e : valueMap2.entrySet() )
+        for ( Map.Entry<Integer, Map<DataElementOperand, Double>> e : valueMap.entrySet() )
         {
-            expressionValueMap.put(
-                    e.getKey(),
-                    context.getExpressionService()
-                            .getExpressionValue(                                    expression,
-                                    e.getValue(),
-                                    context.getConstantMap(),
-                                    null, null, incompleteValuesMap.getSet(
-                                    e.getKey() ) ) );
+            expressionValueMap.put( e.getKey(),
+                context.getExpressionService().getExpressionValue( expression,
+                e.getValue(), context.getConstantMap(), null, null, 
+                incompleteValuesMap.getSet( e.getKey() ) ) );
         }
 
         return expressionValueMap;
@@ -512,11 +511,14 @@ public class ValidatorThread
                 sampleValues = sampleValues.subList( lowOutliers, sampleValues.size() - highOutliers );
                 log.trace( "Result: " + Arrays.toString( sampleValues.toArray() ) );
             }
+            
             Double sum = 0.0;
+            
             for ( Double sample : sampleValues )
             {
                 sum += sample;
             }
+            
             average = sum / sampleValues.size();
         }
         
@@ -550,6 +552,7 @@ public class ValidatorThread
     {
         Set<DataElement> dataElementsToGet = new HashSet<DataElement>( ruleDataElements );
         dataElementsToGet.retainAll( sourceDataElements );
+        
         log.trace( "getDataValueMapRecursive: source:" + source.getName()
             + " ruleDataElements[" + ruleDataElements.size()
             + "] sourceDataElements[" + sourceDataElements.size()
@@ -557,16 +560,16 @@ public class ValidatorThread
             + "] recursiveDataElements[" + recursiveDataElements.size()
             + "] allowedPeriodTypes[" + allowedPeriodTypes.size() + "]" );
 
-        MapMap<Integer, DataElementOperand, Double> dataValueMap2;
+        MapMap<Integer, DataElementOperand, Double> dataValueMap;
         
         if ( dataElementsToGet.isEmpty() )
         {
             // We still might get something recursively
-            dataValueMap2 = new MapMap<Integer, DataElementOperand, Double>();
+            dataValueMap = new MapMap<Integer, DataElementOperand, Double>();
         }
         else
         {
-            dataValueMap2 = context.getDataValueService().getDataValueMapByAttributeCombo( dataElementsToGet,
+            dataValueMap = context.getDataValueService().getDataValueMapByAttributeCombo( dataElementsToGet,
                 period.getStartDate(), source, allowedPeriodTypes, context.getAttributeCombo(),
                 context.getCogDimensionConstraints(), context.getCoDimensionConstraints(), lastUpdatedMap );
         }
@@ -574,6 +577,7 @@ public class ValidatorThread
         // See if there are any data elements we need to get recursively:
         Set<DataElement> recursiveDataElementsNeeded = new HashSet<DataElement>( recursiveDataElements );
         recursiveDataElementsNeeded.removeAll( dataElementsToGet );
+        
         if ( !recursiveDataElementsNeeded.isEmpty() )
         {
             int childCount = 0;
@@ -583,8 +587,8 @@ public class ValidatorThread
             {
                 Collection<DataElement> childDataElements = periodTypeX.getSourceDataElements().get( child );
                 MapMap<Integer, DataElementOperand, Double> childMap = getValueMap2( periodTypeX,
-                        recursiveDataElementsNeeded, childDataElements, recursiveDataElementsNeeded, allowedPeriodTypes,
-                        period, child, lastUpdatedMap, incompleteValuesMap );
+                    recursiveDataElementsNeeded, childDataElements, recursiveDataElementsNeeded, allowedPeriodTypes,
+                    period, child, lastUpdatedMap, incompleteValuesMap );
 
                 for ( Map.Entry<Integer, Map<DataElementOperand, Double>> entry : childMap.entrySet() )
                 {
@@ -595,8 +599,8 @@ public class ValidatorThread
                         DataElementOperand deo = e.getKey();
                         Double childValue = e.getValue();
 
-                        Double baseValue = dataValueMap2.getValue( combo, deo );
-                        dataValueMap2.putEntry( combo, deo, baseValue == null ? childValue : baseValue + childValue );
+                        Double baseValue = dataValueMap.getValue( combo, deo );
+                        dataValueMap.putEntry( combo, deo, baseValue == null ? childValue : baseValue + childValue );
 
                         Integer childValueCount = childValueCounts.getValue( combo, deo );
                         childValueCounts.putEntry( combo, deo, childValueCount == null ? 1 : childValueCount + 1 );
@@ -625,6 +629,6 @@ public class ValidatorThread
             }
         }
 
-        return dataValueMap2;
+        return dataValueMap;
     }
 }

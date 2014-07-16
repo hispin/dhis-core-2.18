@@ -228,7 +228,7 @@ public class DefaultValidationRuleService
         sources.add( source );
 
         return Validator.validate( sources, periods, rules, null, null,
-                constantService, expressionService, periodService, dataValueService, dataElementCategoryService, userService, currentUserService );
+            constantService, expressionService, periodService, dataValueService, dataElementCategoryService, userService, currentUserService );
     }
 
     @Override
@@ -237,7 +237,7 @@ public class DefaultValidationRuleService
     {
     	log.info( "Validate data set: " + dataSet.getName() + " period: " + period.getPeriodType().getName() + " "
             + period.getStartDate() + " " + period.getEndDate() + " source: " + source.getName()
-            + " attribute combo: " + ( attributeCombo == null ? "(null)" : attributeCombo.getName() ) );
+            + " attribute combo: " + ( attributeCombo == null ? "[none]" : attributeCombo.getName() ) );
 
         Collection<Period> periods = new ArrayList<Period>();
         periods.add( period );
@@ -254,12 +254,12 @@ public class DefaultValidationRuleService
         }
         
         log.info( "Using validation rules: " + rules.size() );
-
+        
         Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( source );
         
         return Validator.validate( sources, periods, rules, attributeCombo, null,
-                constantService, expressionService, periodService, dataValueService, dataElementCategoryService, userService, currentUserService );
+            constantService, expressionService, periodService, dataValueService, dataElementCategoryService, userService, currentUserService );
     }
 
     @Override
@@ -422,7 +422,7 @@ public class DefaultValidationRuleService
 
         Map<SortedSet<ValidationResult>, Set<User>> messageMap = new HashMap<SortedSet<ValidationResult>, Set<User>>();
 
-        for (Map.Entry<User, SortedSet<ValidationResult>> userResultEntry : userResults.entrySet() )
+        for ( Map.Entry<User, SortedSet<ValidationResult>> userResultEntry : userResults.entrySet() )
         {
             Set<User> users = messageMap.get( userResultEntry.getValue() );
 
@@ -432,6 +432,7 @@ public class DefaultValidationRuleService
 
                 messageMap.put( userResultEntry.getValue(), users );
             }
+            
             users.add( userResultEntry.getKey() );
         }
 
@@ -469,6 +470,7 @@ public class DefaultValidationRuleService
 
                                     userResults.put( user, resultSet );
                                 }
+                                
                                 resultSet.add( result );
                             }
                         }
@@ -496,6 +498,7 @@ public class DefaultValidationRuleService
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -534,6 +537,7 @@ public class DefaultValidationRuleService
         }
         
         log.info( "Alerting users: " + users.size() + ", subject: " + subject );
+        
         messageService.sendMessage( subject, builder.toString(), null, users );
     }
 

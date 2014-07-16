@@ -80,7 +80,7 @@ public class Validator
         DataValueService dataValueService, DataElementCategoryService dataElementCategoryService,
         UserService userService, CurrentUserService currentUserService )
     {
-        ValidationRunContext context = ValidationRunContext.getNewValidationRunContext( sources, periods,
+        ValidationRunContext context = ValidationRunContext.getNewContext( sources, periods,
             attributeCombo, rules, constantService.getConstantMap(), ValidationRunType.SCHEDULED, lastScheduledRun,
             expressionService, periodService, dataValueService, dataElementCategoryService, userService, currentUserService );
 

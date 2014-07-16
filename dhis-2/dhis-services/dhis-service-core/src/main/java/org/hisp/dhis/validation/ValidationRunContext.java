@@ -114,7 +114,7 @@ public class ValidationRunContext
     public String toString()
     {
         return new ToStringBuilder( this, ToStringStyle.SHORT_PREFIX_STYLE )
-            .append( "\n PeriodTypeExtendedMap", (Arrays.toString( periodTypeExtendedMap.entrySet().toArray() )) )
+            .append( "\n PeriodTypeExtendedMap", ( Arrays.toString( periodTypeExtendedMap.entrySet().toArray() ) ) )
             .append( "\n runType", runType )
             .append( "\n lastScheduledRun", lastScheduledRun )
             .append( "\n constantMap", "[" + constantMap.size() + "]" )
@@ -141,7 +141,7 @@ public class ValidationRunContext
      *
      * @return context object for this run
      */
-    public static ValidationRunContext getNewValidationRunContext( Collection<OrganisationUnit> sources,
+    public static ValidationRunContext getNewContext( Collection<OrganisationUnit> sources,
         Collection<Period> periods, DataElementCategoryOptionCombo attributeCombo, Collection<ValidationRule> rules,
         Map<String, Double> constantMap, ValidationRunType runType, Date lastScheduledRun,
         ExpressionService expressionService, PeriodService periodService,
@@ -166,6 +166,7 @@ public class ValidationRunContext
         context.cogDimensionConstraints = userService.getCogDimensionConstraints( currentUserCredentials );
         context.coDimensionConstraints = userService.getCoDimensionConstraints( currentUserCredentials );
         context.initialize( sources, periods, rules );
+        
         return context;
     }
 
@@ -243,6 +244,7 @@ public class ValidationRunContext
                 // Add this rule's data elements to the period extended.
                 periodTypeX.getDataElements().addAll( rule.getCurrentDataElements() );
             }
+            
             // Add the allowed period types for rule's current data elements:
             periodTypeX.getAllowedPeriodTypes().addAll(
                 getAllowedPeriodTypesForDataElements( rule.getCurrentDataElements(), rule.getPeriodType() ) );
@@ -253,6 +255,7 @@ public class ValidationRunContext
             ValidationRuleExtended ruleX = new ValidationRuleExtended( rule, allowedPastPeriodTypes );
             ruleXMap.put( rule, ruleX );
         }
+        
         return surveillanceRulesPresent;
     }
 
@@ -262,6 +265,7 @@ public class ValidationRunContext
     private void removeAnyUnneededPeriodTypes()
     {
         Set<PeriodTypeExtended> periodTypeXs = new HashSet<PeriodTypeExtended>( periodTypeExtendedMap.values() );
+        
         for ( PeriodTypeExtended periodTypeX : periodTypeXs )
         {
             if ( periodTypeX.getRules().isEmpty() )
@@ -292,10 +296,12 @@ public class ValidationRunContext
     private Set<OrganisationUnit> getAllOtherDescendants( Collection<OrganisationUnit> sources )
     {
     	Set<OrganisationUnit> allOtherDescendants = new HashSet<OrganisationUnit>();
+    	
         for ( OrganisationUnit source : sources )
         {
             getOtherDescendantsRecursive( source, sources, allOtherDescendants );
         }
+        
         return allOtherDescendants;
     }
 
@@ -339,12 +345,15 @@ public class ValidationRunContext
             sourceXs.add( sourceX );
 
             Map<PeriodType, Set<DataElement>> sourceElementsMap = source.getDataElementsInDataSetsByPeriodType();
+            
             for ( PeriodTypeExtended periodTypeX : periodTypeExtendedMap.values() )
             {
                 periodTypeX.getSourceDataElements().put( source, new HashSet<DataElement>() );
+                
                 for ( PeriodType allowedType : periodTypeX.getAllowedPeriodTypes() )
                 {
                     Collection<DataElement> sourceDataElements = sourceElementsMap.get( allowedType );
+                    
                     if ( sourceDataElements != null )
                     {
                         periodTypeX.getSourceDataElements().get( source ).addAll( sourceDataElements );
@@ -365,11 +374,13 @@ public class ValidationRunContext
     private PeriodTypeExtended getOrCreatePeriodTypeExtended( PeriodType periodType )
     {
         PeriodTypeExtended periodTypeX = periodTypeExtendedMap.get( periodType );
+        
         if ( periodTypeX == null )
         {
             periodTypeX = new PeriodTypeExtended( periodType );
             periodTypeExtendedMap.put( periodType, periodTypeX );
         }
+        
         return periodTypeX;
     }
 
@@ -385,6 +396,7 @@ public class ValidationRunContext
         PeriodType periodType )
     {
         Collection<PeriodType> allowedPeriodTypes = new HashSet<PeriodType>();
+        
         if ( dataElements != null )
         {
             for ( DataElement dataElement : dataElements )
@@ -398,6 +410,7 @@ public class ValidationRunContext
                 }
             }
         }
+        
         return allowedPeriodTypes;
     }
 
