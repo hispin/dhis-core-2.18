@@ -61,8 +61,7 @@
 						</div>
 					</td>
 					<td style="text-align:right">
-						<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortDataElementForm.action'" style="width:80px"/>
-            <input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddDataElementForm.action'" style="width:80px"/>
+						<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddDataElementForm.action'" style="width:80px"/>
 					</td>
 				</tr>
 			</table>

@@ -23,15 +23,6 @@
       <param name="javascripts">javascript/dataElement.js,javascript/dataDictionary.js</param>
     </action>
 
-    <action name="showSortDataElementForm" class="org.hisp.dhis.dd.action.dataelement.GetDataElementListSortOrderAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-datadictionary/sortDataElementForm.vm</param>
-    </action>
-
-    <action name="saveDataElementSortOrder" class="org.hisp.dhis.dd.action.dataelement.SaveDataElementSortOrderAction">
-      <result name="success" type="redirect">dataElement.action</result>
-    </action>
-
     <action name="getDataElementGroupMembers" class="org.hisp.dhis.dd.action.dataelement.GetDataElementGroupMembersAction">
       <result name="success" type="velocity-xml">/dhis-web-commons/ajax/xmlOperands.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
@@ -217,15 +208,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/indicator.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js</param>
-    </action>
-
-    <action name="showSortIndicatorForm" class="org.hisp.dhis.dd.action.indicator.GetIndicatorListSortOrderAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-datadictionary/sortIndicatorForm.vm</param>
-    </action>
-
-    <action name="saveIndicatorSortOrder" class="org.hisp.dhis.dd.action.indicator.SaveIndicatorSortOrderAction">
-      <result name="success" type="redirect">indicator.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
     </action>
 
     <action name="removeIndicator" class="org.hisp.dhis.dd.action.indicator.RemoveIndicatorAction">

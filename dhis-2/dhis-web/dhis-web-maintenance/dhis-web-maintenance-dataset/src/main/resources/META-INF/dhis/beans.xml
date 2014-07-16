@@ -85,11 +85,6 @@
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
-
-  <bean id="org.hisp.dhis.dataset.action.GetDataSetListSortOrderAction" class="org.hisp.dhis.dataset.action.GetDataSetListSortOrderAction"
-    scope="prototype">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-  </bean>
 	
   <bean id="org.hisp.dhis.dataset.action.ValidateDataSetAction" class="org.hisp.dhis.dataset.action.ValidateDataSetAction"
     scope="prototype">
@@ -97,11 +92,6 @@
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.DataSetListAction" class="org.hisp.dhis.dataset.action.DataSetListAction"
-    scope="prototype">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dataset.action.SaveDataSetSortOrderAction" class="org.hisp.dhis.dataset.action.SaveDataSetSortOrderAction"
     scope="prototype">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>

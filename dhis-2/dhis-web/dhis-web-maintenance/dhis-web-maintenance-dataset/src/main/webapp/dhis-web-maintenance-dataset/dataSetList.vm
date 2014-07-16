@@ -37,7 +37,6 @@
 			<tr>
 				<td>#filterDiv( "dataSet" )</td>
 				<td colspan="9" style="text-align:right">
-					<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortDataSetForm.action'" style="width:80px"/></a>
 					<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='addDataSetForm.action'" style="width:80px"/></a>
 				</td>
 			</tr>
