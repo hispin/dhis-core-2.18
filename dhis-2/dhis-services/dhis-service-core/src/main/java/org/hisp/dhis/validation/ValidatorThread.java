@@ -97,29 +97,30 @@ public class ValidatorThread
                 if ( !rules.isEmpty() )
                 {
                     Set<DataElement> recursiveCurrentDataElements = getRecursiveCurrentDataElements( rules );
+                    
                     for ( Period period : periodTypeX.getPeriods() )
                     {
-                        MapMap<Integer, DataElementOperand, Date> lastUpdatedMap2 = new MapMap<Integer, DataElementOperand, Date>();
-                        SetMap<Integer, DataElementOperand> incompleteValuesMap2 = new SetMap<Integer, DataElementOperand>();
-                        MapMap<Integer, DataElementOperand, Double> currentValueMap2 = getValueMap2( periodTypeX,
-                                periodTypeX.getDataElements(), sourceDataElements, recursiveCurrentDataElements,
-                                periodTypeX.getAllowedPeriodTypes(), period, sourceX.getSource(), lastUpdatedMap2, incompleteValuesMap2 );
+                        MapMap<Integer, DataElementOperand, Date> lastUpdatedMap = new MapMap<Integer, DataElementOperand, Date>();
+                        SetMap<Integer, DataElementOperand> incompleteValuesMap = new SetMap<Integer, DataElementOperand>();
+                        MapMap<Integer, DataElementOperand, Double> currentValueMap = getValueMap( periodTypeX,
+                            periodTypeX.getDataElements(), sourceDataElements, recursiveCurrentDataElements,
+                            periodTypeX.getAllowedPeriodTypes(), period, sourceX.getSource(), lastUpdatedMap, incompleteValuesMap );
                         
                         log.trace( "Source " + sourceX.getSource().getName()
                             + " [" + period.getStartDate() + " - " + period.getEndDate() + "]"
-                            + " currentValueMap2[" + currentValueMap2.size() + "]" );
+                            + " currentValueMap[" + currentValueMap.size() + "]" );
 
                         for ( ValidationRule rule : rules )
                         {
-                            if ( evaluateCheck( currentValueMap2, lastUpdatedMap2, rule ) )
+                            if ( evaluateCheck( currentValueMap, lastUpdatedMap, rule ) )
                             {
                                 Map<Integer, Double> leftSideValues = getExpressionValueMap( rule.getLeftSide(),
-                                        currentValueMap2, incompleteValuesMap2 );
+                                        currentValueMap, incompleteValuesMap );
 
                                 if ( !leftSideValues.isEmpty() || Operator.compulsory_pair.equals( rule.getOperator() ) )
                                 {
                                     Map<Integer, Double> rightSideValues = getRightSideValue( sourceX.getSource(), periodTypeX, period, rule,
-                                            currentValueMap2, sourceDataElements );
+                                            currentValueMap, sourceDataElements );
 
                                     if ( !rightSideValues.isEmpty() || Operator.compulsory_pair.equals( rule.getOperator() ) )
                                     {
@@ -437,7 +438,7 @@ public class ValidatorThread
         {
             Set<DataElement> dataElements = rule.getRightSide().getDataElementsInExpression();
             SetMap<Integer, DataElementOperand> incompleteValuesMap = new SetMap<Integer, DataElementOperand>();
-            MapMap<Integer, DataElementOperand, Double> dataValueMapByAttributeCombo = getValueMap2( periodTypeX, dataElements,
+            MapMap<Integer, DataElementOperand, Double> dataValueMapByAttributeCombo = getValueMap( periodTypeX, dataElements,
                 sourceDataElements, dataElements, allowedPeriodTypes, period, source, null, incompleteValuesMap );
             sampleValuesMap.putValueMap( getExpressionValueMap( rule.getRightSide(), dataValueMapByAttributeCombo, incompleteValuesMap ) );
         }
@@ -448,7 +449,7 @@ public class ValidatorThread
      * combo.
      *
      * @param expression expression to evaluate.
-     * @param valueMap2 Map of value maps, by attribute option combo.
+     * @param valueMap Map of value maps, by attribute option combo.
      * @param incompleteValuesMap map of values that were incomplete.
      * @return map of values.
      */
@@ -544,7 +545,7 @@ public class ValidatorThread
      *        but not from all children, mapped by attribute option combo.
      * @return map of attribute option combo to map of values found.
      */
-    private MapMap<Integer, DataElementOperand, Double> getValueMap2( PeriodTypeExtended periodTypeX,
+    private MapMap<Integer, DataElementOperand, Double> getValueMap( PeriodTypeExtended periodTypeX,
             Collection<DataElement> ruleDataElements, Collection<DataElement> sourceDataElements,
             Set<DataElement> recursiveDataElements, Collection<PeriodType> allowedPeriodTypes, Period period,
             OrganisationUnit source, MapMap<Integer, DataElementOperand, Date> lastUpdatedMap,
@@ -586,7 +587,7 @@ public class ValidatorThread
             for ( OrganisationUnit child : source.getChildren() )
             {
                 Collection<DataElement> childDataElements = periodTypeX.getSourceDataElements().get( child );
-                MapMap<Integer, DataElementOperand, Double> childMap = getValueMap2( periodTypeX,
+                MapMap<Integer, DataElementOperand, Double> childMap = getValueMap( periodTypeX,
                     recursiveDataElementsNeeded, childDataElements, recursiveDataElementsNeeded, allowedPeriodTypes,
                     period, child, lastUpdatedMap, incompleteValuesMap );
 

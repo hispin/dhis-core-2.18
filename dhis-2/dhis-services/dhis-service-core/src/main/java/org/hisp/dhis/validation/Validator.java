@@ -57,7 +57,7 @@ public class Validator
      * Evaluates validation rules for a collection of organisation units.
      * This method breaks the job down by organisation unit. It assigns the
      * evaluation for each organisation unit to a task that can be evaluated
-     * independently in a multithreaded environment.
+     * independently in a multi-threaded environment.
      * 
      * @param sources the organisation units in which to run the validation rules
      * @param periods the periods of data to check
