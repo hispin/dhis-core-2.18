@@ -92,17 +92,6 @@
       <result name="success" type="redirect">section.action</result>
     </action>
 
-    <!-- Sort order -->
-
-    <action name="showSortDataSetForm" class="org.hisp.dhis.dataset.action.GetDataSetListSortOrderAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataset/sortDataSetForm.vm</param>
-    </action>
-
-    <action name="saveDataSetSortOrder" class="org.hisp.dhis.dataset.action.SaveDataSetSortOrderAction">
-      <result name="success" type="redirect">dataSet.action</result>
-    </action>
-
     <!-- Dataset -->
 
     <action name="dataSet" class="org.hisp.dhis.dataset.action.DataSetListAction">

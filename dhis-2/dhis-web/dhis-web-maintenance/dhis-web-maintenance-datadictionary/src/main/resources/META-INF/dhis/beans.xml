@@ -11,16 +11,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dd.action.dataelement.GetDataElementListSortOrderAction" class="org.hisp.dhis.dd.action.dataelement.GetDataElementListSortOrderAction"
-    scope="prototype">
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.dataelement.SaveDataElementSortOrderAction" class="org.hisp.dhis.dd.action.dataelement.SaveDataElementSortOrderAction"
-    scope="prototype">
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-  </bean>
-
   <bean id="org.hisp.dhis.dd.action.dataelementgroup.ShowUpdateDataElementGroupFormAction" class="org.hisp.dhis.dd.action.dataelementgroup.ShowUpdateDataElementGroupFormAction"
     scope="prototype">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
@@ -307,16 +297,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction" class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction"
-    scope="prototype">
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.indicator.GetIndicatorListSortOrderAction" class="org.hisp.dhis.dd.action.indicator.GetIndicatorListSortOrderAction"
-    scope="prototype">
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.indicator.SaveIndicatorSortOrderAction" class="org.hisp.dhis.dd.action.indicator.SaveIndicatorSortOrderAction"
     scope="prototype">
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
   </bean>
