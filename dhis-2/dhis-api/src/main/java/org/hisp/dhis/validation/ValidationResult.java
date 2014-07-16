@@ -95,11 +95,11 @@ public class ValidationResult
         return result;
     }
 
-    //
-    // Note: this method is called from threads in which it may not be possible
-    // to initialize lazy Hibernate properties. So object properties to compare
-    // must be chosen accordingly.
-    //
+    /**
+     * Note: this method is called from threads in which it may not be possible
+     * to initialize lazy Hibernate properties. So object properties to compare
+     * must be chosen accordingly.
+     */
     @Override
     public boolean equals( Object object )
     {
@@ -203,11 +203,11 @@ public class ValidationResult
         return true;
     }
 
-    //
-    // Note: this method is called from threads in which it may not be possible
-    // to initialize lazy Hibernate properties. So object properties to compare
-    // must be chosen accordingly.
-    //
+    /**
+     * Note: this method is called from threads in which it may not be possible
+     * to initialize lazy Hibernate properties. So object properties to compare
+     * must be chosen accordingly.
+     */
     public int compareTo( ValidationResult other )
     {
     	int result = source.getName().compareTo( other.source.getName() );
@@ -291,7 +291,11 @@ public class ValidationResult
     @Override
     public String toString()
     {
-        return source + " - " + period + " - " + attributeOptionCombo.getName() + " - " + validationRule + " - " + leftsideValue + " - " + rightsideValue;
+        return "[Source: " + source + 
+            ", period: " + period + 
+            ", validation rule: " + validationRule + 
+            ", left side value: " + leftsideValue + 
+            ", right side value: " + rightsideValue + "]";
     }
 
     // -------------------------------------------------------------------------

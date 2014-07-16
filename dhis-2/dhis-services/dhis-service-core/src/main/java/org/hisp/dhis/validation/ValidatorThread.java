@@ -92,7 +92,8 @@ public class ValidatorThread
             for ( PeriodTypeExtended periodTypeX : context.getPeriodTypeExtendedMap().values() )
             {
                 Collection<DataElement> sourceDataElements = periodTypeX.getSourceDataElements().get( sourceX.getSource() );
-                Set<ValidationRule> rules = getRulesBySourceAndPeriodType( sourceX, periodTypeX, sourceDataElements );
+                Set<ValidationRule> rules = getRulesBySourceAndPeriodType( sourceX, periodTypeX, sourceDataElements );                
+                context.getExpressionService().explodeValidationRuleExpressions( rules );
 
                 if ( !rules.isEmpty() )
                 {
@@ -112,7 +113,7 @@ public class ValidatorThread
 
                         for ( ValidationRule rule : rules )
                         {
-                            if ( evaluateCheck( currentValueMap, lastUpdatedMap, rule ) )
+                            if ( evaluateValidationCheck( currentValueMap, lastUpdatedMap, rule ) )
                             {
                                 Map<Integer, Double> leftSideValues = getExpressionValueMap( rule.getLeftSide(),
                                         currentValueMap, incompleteValuesMap );
@@ -120,19 +121,19 @@ public class ValidatorThread
                                 if ( !leftSideValues.isEmpty() || Operator.compulsory_pair.equals( rule.getOperator() ) )
                                 {
                                     Map<Integer, Double> rightSideValues = getRightSideValue( sourceX.getSource(), periodTypeX, period, rule,
-                                            currentValueMap, sourceDataElements );
+                                        currentValueMap, sourceDataElements );
 
                                     if ( !rightSideValues.isEmpty() || Operator.compulsory_pair.equals( rule.getOperator() ) )
                                     {
-                                        Set<Integer> combos = leftSideValues.keySet();
+                                        Set<Integer> attributeOptionCombos = leftSideValues.keySet();
                                         
                                         if ( Operator.compulsory_pair.equals( rule.getOperator() ) )
                                         {
-                                            combos = new HashSet<Integer>( combos );
-                                            combos.addAll( rightSideValues.keySet() );
+                                            attributeOptionCombos = new HashSet<Integer>( attributeOptionCombos );
+                                            attributeOptionCombos.addAll( rightSideValues.keySet() );
                                         }
 
-                                        for ( int combo : combos )
+                                        for ( int combo : attributeOptionCombos )
                                         {
                                             Double leftSide = leftSideValues.get ( combo );
                                             Double rightSide = rightSideValues.get ( combo );
@@ -197,6 +198,7 @@ public class ValidatorThread
                 // But if this is some funny kind of rule with no elements
                 // (like for testing), include it also.
                 Collection<DataElement> elements = rule.getCurrentDataElements();
+                
                 if ( elements == null || elements.size() == 0 || sourceDataElements.containsAll( elements ) )
                 {
                     periodTypeRules.add( rule );
@@ -233,7 +235,7 @@ public class ValidatorThread
      * @param rule the rule that may be evaluated
      * @return true if the rule should be evaluated with this data, false if not
      */
-    private boolean evaluateCheck( MapMap<Integer, DataElementOperand, Double> currentValueMapMap,
+    private boolean evaluateValidationCheck( MapMap<Integer, DataElementOperand, Double> currentValueMapMap,
         MapMap<Integer, DataElementOperand, Date> lastUpdatedMapMap, ValidationRule rule )
     {
         boolean evaluate = true; // Assume true for now.
@@ -268,6 +270,7 @@ public class ValidatorThread
                         for ( DataElementOperand deo : deos )
                         {
                             Date lastUpdated = entry.getValue().get( deo );
+                            
                             if ( lastUpdated != null && lastUpdated.after( context.getLastScheduledRun() ) )
                             {
                                 saveThisCombo = true; // True if new/updated data.
@@ -454,17 +457,17 @@ public class ValidatorThread
      * @return map of values.
      */
     private Map<Integer, Double> getExpressionValueMap( Expression expression,
-                                                       MapMap<Integer, DataElementOperand, Double> valueMap,
-                                                       SetMap<Integer, DataElementOperand> incompleteValuesMap )
+        MapMap<Integer, DataElementOperand, Double> valueMap, 
+        SetMap<Integer, DataElementOperand> incompleteValuesMap )
     {
         Map<Integer, Double> expressionValueMap = new HashMap<Integer, Double>();
 
-        for ( Map.Entry<Integer, Map<DataElementOperand, Double>> e : valueMap.entrySet() )
+        for ( Map.Entry<Integer, Map<DataElementOperand, Double>> entry : valueMap.entrySet() )
         {
-            expressionValueMap.put( e.getKey(),
+            expressionValueMap.put( entry.getKey(),
                 context.getExpressionService().getExpressionValue( expression,
-                e.getValue(), context.getConstantMap(), null, null, 
-                incompleteValuesMap.getSet( e.getKey() ) ) );
+                entry.getValue(), context.getConstantMap(), null, null, 
+                incompleteValuesMap.getSet( entry.getKey() ) ) );
         }
 
         return expressionValueMap;
@@ -480,8 +483,8 @@ public class ValidatorThread
      * @param sequentialSampleCount number of sequential samples tried for
      * @return average right-side sample value
      */
-    private Double rightSideAverage( ValidationRule rule, List<Double> sampleValues, int annualSampleCount,
-        int sequentialSampleCount )
+    private Double rightSideAverage( ValidationRule rule, List<Double> sampleValues, 
+        int annualSampleCount, int sequentialSampleCount )
     {
         // Find the expected sample count for the last period of its type in the
         // database: sequentialSampleCount for the immediately preceding periods 
@@ -546,10 +549,10 @@ public class ValidatorThread
      * @return map of attribute option combo to map of values found.
      */
     private MapMap<Integer, DataElementOperand, Double> getValueMap( PeriodTypeExtended periodTypeX,
-            Collection<DataElement> ruleDataElements, Collection<DataElement> sourceDataElements,
-            Set<DataElement> recursiveDataElements, Collection<PeriodType> allowedPeriodTypes, Period period,
-            OrganisationUnit source, MapMap<Integer, DataElementOperand, Date> lastUpdatedMap,
-            SetMap<Integer, DataElementOperand> incompleteValuesMap )
+        Collection<DataElement> ruleDataElements, Collection<DataElement> sourceDataElements,
+        Set<DataElement> recursiveDataElements, Collection<PeriodType> allowedPeriodTypes, Period period,
+        OrganisationUnit source, MapMap<Integer, DataElementOperand, Date> lastUpdatedMap,
+        SetMap<Integer, DataElementOperand> incompleteValuesMap )
     {
         Set<DataElement> dataElementsToGet = new HashSet<DataElement>( ruleDataElements );
         dataElementsToGet.retainAll( sourceDataElements );
