@@ -41,6 +41,7 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.mapping.MapLegendSet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -68,13 +69,13 @@ public class Indicator
 
     private String numeratorDescription;
 
-    private String explodedNumerator;
+    private transient String explodedNumerator;
 
     private String denominator;
 
     private String denominatorDescription;
 
-    private String explodedDenominator;
+    private transient String explodedDenominator;
 
     private Integer sortOrder;
 
@@ -222,9 +223,7 @@ public class Indicator
         this.numeratorDescription = numeratorDescription;
     }
 
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonIgnore
     public String getExplodedNumerator()
     {
         return explodedNumerator;
@@ -261,9 +260,7 @@ public class Indicator
         this.denominatorDescription = denominatorDescription;
     }
 
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonIgnore
     public String getExplodedDenominator()
     {
         return explodedDenominator;

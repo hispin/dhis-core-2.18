@@ -73,7 +73,7 @@ function getOperandsPage()
 	var periodTypeAllowAverage = ( ruleType && ruleType == "surveillance" ) ? true : false;
 
 	dataDictionary.loadOperands( "#expression-container select[id=dataElementId]", 
-		{usePaging: true, key: key, periodType: periodType, periodTypeAllowAverage: periodTypeAllowAverage } );	
+		{usePaging: true, key: key, periodType: periodType, includeTotals: true, periodTypeAllowAverage: periodTypeAllowAverage } );	
 }
 
 function clearSearchText()

@@ -39,6 +39,7 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.validation.ValidationRule;
 
 /**
  * Expressions are mathematical formulas and can contain references to various
@@ -277,6 +278,9 @@ public interface ExpressionService
      * Populates the explodedNumerator and explodedDenominator property on all
      * indicators in the given collection. This method uses
      * explodeExpression( String ) internally to generate the exploded expressions.
+     * Replaces references to data element totals with references to all
+     * category option combos in the category combo for that data element.
+     * 
      * This method will perform better compared to calling explodeExpression( String )
      * multiple times outside a transactional context as the transactional
      * overhead is avoided.
@@ -290,10 +294,23 @@ public interface ExpressionService
      * Populates the explodedNumerator and explodedDenominator property on all
      * indicators in the given collection. This method uses
      * explodeExpression( String ) internally to generate the exploded expressions.
+     * Replaces references to data element totals with references to all
+     * category option combos in the category combo for that data element.
      * 
      * @param indicators the collection of indicators.
      */    
     void explodeExpressions( Collection<Indicator> indicators );
+    
+    /**
+     * Populates the explodedExpression property on the Expression object of all
+     * validation rules in the given collection. This method uses
+     * explodeExpression( String ) internally to generate the exploded expressions.
+     * Replaces references to data element totals with references to all
+     * category option combos in the category combo for that data element.
+     * 
+     * @param validationRules the collection of validation rules.
+     */
+    void explodeValidationRuleExpressions( Collection<ValidationRule> validationRules );
     
     /**
      * Replaces references to data element totals with references to all

@@ -28,12 +28,14 @@ package org.hisp.dhis.expression;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.apache.commons.lang.Validate;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -113,6 +115,12 @@ public class Expression
     private Set<DataElementCategoryOptionCombo> optionCombosInExpression = new HashSet<DataElementCategoryOptionCombo>();
 
     // -------------------------------------------------------------------------
+    // Transient properties
+    // -------------------------------------------------------------------------
+
+    private transient String explodedExpression;
+    
+    // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
@@ -139,6 +147,18 @@ public class Expression
         this.optionCombosInExpression = optionCombosInExpression;
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns exploded expression, if null returns expression.
+     */
+    public String getExplodedExpressionFallback()
+    {
+        return explodedExpression != null ? explodedExpression : expression;
+    }
+    
     // -------------------------------------------------------------------------
     // Equals and hashCode
     // -------------------------------------------------------------------------
@@ -195,8 +215,8 @@ public class Expression
     {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((description == null) ? 0 : description.hashCode());
-        result = PRIME * result + ((expression == null) ? 0 : expression.hashCode());
+        result = PRIME * result + ( ( description == null ) ? 0 : description.hashCode() );
+        result = PRIME * result + ( ( expression == null ) ? 0 : expression.hashCode() );
 
         return result;
     }
@@ -207,6 +227,7 @@ public class Expression
         return "Expression{" +
             "id=" + id +
             ", expression='" + expression + '\'' +
+            ", explodedExpression='" + explodedExpression + '\'' +
             ", description='" + description + '\'' +
             ", dataElementsInExpression=" + dataElementsInExpression.size() +
             ", optionCombosInExpression=" + optionCombosInExpression.size() +
@@ -296,6 +317,17 @@ public class Expression
         this.nullIfBlank = nullIfBlank;
     }
 
+    @JsonIgnore
+    public String getExplodedExpression()
+    {
+        return explodedExpression;
+    }
+    
+    public void setExplodedExpression( String explodedExpression )
+    {
+        this.explodedExpression = explodedExpression;
+    }
+    
     public void mergeWith( Expression other )
     {
         Validate.notNull( other );
