@@ -538,7 +538,6 @@ function doComplete( isCreateEvent ) {
         });
     }
     else {
-		$("#loading-bar").dialog("close");
 		runCompleteEvent(isCreateEvent);
     }
 }
