@@ -394,6 +394,15 @@ public abstract class AbstractEventService
                     i18nManager.getI18nFormat() );
             }
         }
+        else if ( event.getStatus() == EventStatus.SKIPPED )
+        {
+            programStageInstance.setStatus( EventStatus.SKIPPED );            
+        }
+        
+        else if ( event.getStatus() == EventStatus.SCHEDULE )
+        {
+            programStageInstance.setStatus( EventStatus.SCHEDULE );            
+        } 
 
         programStageInstance.setDueDate( dueDate );
         programStageInstance.setOrganisationUnit( organisationUnit );

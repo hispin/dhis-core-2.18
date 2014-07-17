@@ -227,17 +227,17 @@ trackerCapture.controller('DataEntryController',
                 $scope.showDummyEventDiv = false;
                 $scope.showEventCreationDiv = false;
                 
-                angular.forEach($scope.currentEvent.notes, function(note){
-                    note.storedDate = moment(note.storedDate).format('YYYY-MM-DD @ hh:mm A');
-                });
-                
-                if($scope.currentEvent.notes.length > 0 ){
-                    $scope.currentEvent.notes = orderByFilter($scope.currentEvent.notes, '-storedDate');
+                if($scope.currentEvent.notes){
+                    angular.forEach($scope.currentEvent.notes, function(note){
+                        note.storedDate = moment(note.storedDate).format('YYYY-MM-DD @ hh:mm A');
+                    });
+
+                    if($scope.currentEvent.notes.length > 0 ){
+                        $scope.currentEvent.notes = orderByFilter($scope.currentEvent.notes, '-storedDate');
+                    }
                 }
                 
-                if($scope.currentEvent.eventDate){
-                    $scope.getDataEntryForm();
-                }
+                $scope.getDataEntryForm();
             }               
         }
     }; 
@@ -251,7 +251,9 @@ trackerCapture.controller('DataEntryController',
         $scope.currentEvent.providedElsewhere = [];
 
         $scope.currentEvent.dueDate = DateUtils.format($scope.currentEvent.dueDate);
-        $scope.currentEvent.eventDate = DateUtils.format($scope.currentEvent.eventDate);
+        if($scope.currentEvent.eventDate){
+            $scope.currentEvent.eventDate = DateUtils.format($scope.currentEvent.eventDate);
+        }        
 
         if(!angular.isUndefined( $scope.currentEvent.notes)){
             $scope.currentEvent.notes = orderByFilter($scope.currentEvent.notes, '-storedDate');            
@@ -541,6 +543,51 @@ trackerCapture.controller('DataEntryController',
                 }
                 else{//complete event                    
                     $scope.currentEvent.status = 'COMPLETED';
+                }
+                var statusColor = EventUtils.getEventStatusColor($scope.currentEvent);  
+                var continueLoop = true;
+                for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
+                    if($scope.dhis2Events[i].event === $scope.currentEvent.event ){
+                        $scope.dhis2Events[i].statusColor = statusColor;
+                        continueLoop = false;
+                    }
+                }           
+            });
+        });
+    };
+    
+    $scope.skipUnskipEvent = function(){
+        var modalOptions;
+        var dhis2Event = EventUtils.reconstruct($scope.currentEvent, $scope.currentStage);   
+
+        if($scope.currentEvent.status === 'SKIPPED'){//unskip event
+            modalOptions = {
+                closeButtonText: 'cancel',
+                actionButtonText: 'unskip',
+                headerText: 'unskip',
+                bodyText: 'are_you_sure_to_unskip_event'
+            };
+            dhis2Event.status = 'ACTIVE';        
+        }
+        else{//skip event
+            modalOptions = {
+                closeButtonText: 'cancel',
+                actionButtonText: 'skip',
+                headerText: 'skip',
+                bodyText: 'are_you_sure_to_skip_event'
+            };
+            dhis2Event.status = 'SKIPPED';
+        }        
+
+        ModalService.showModal({}, modalOptions).then(function(result){
+            
+            DHIS2EventFactory.update(dhis2Event).then(function(data){
+                
+                if($scope.currentEvent.status === 'SKIPPED'){//activiate event                    
+                    $scope.currentEvent.status = 'SCHEDULE'; 
+                }
+                else{//complete event                    
+                    $scope.currentEvent.status = 'SKIPPED';
                 }
                 var statusColor = EventUtils.getEventStatusColor($scope.currentEvent);  
                 var continueLoop = true;
