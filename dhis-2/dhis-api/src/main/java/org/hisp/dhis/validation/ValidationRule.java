@@ -70,9 +70,6 @@ public class ValidationRule
     public static final String RULE_TYPE_VALIDATION = "validation";
     public static final String RULE_TYPE_SURVEILLANCE = "surveillance";
     
-    public static final String TYPE_STATISTICAL = "statistical";
-    public static final String TYPE_ABSOLUTE = "absolute";
-
     /**
      * A description of the ValidationRule.
      */
@@ -99,6 +96,11 @@ public class ValidationRule
     private Operator operator;
 
     /**
+     * The type of period in which this rule is evaluated.
+     */
+    private PeriodType periodType;
+    
+    /**
      * The left-side expression to be compared against the right side.
      */
     private Expression leftSide;
@@ -118,11 +120,6 @@ public class ValidationRule
      */
     private Integer organisationUnitLevel;
 
-    /**
-     * The type of period in which this rule is evaluated.
-     */
-    private PeriodType periodType;
-    
     /**
      * The number of sequential right-side periods from which to collect samples
      * to average (Monitoring-type rules only). Sequential periods are those

@@ -48,10 +48,15 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.validation.ValidationRule;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.csvreader.CsvReader;
@@ -82,31 +87,35 @@ public class DefaultCsvImportService
 
         if ( DataElement.class.equals( clazz ) )
         {
-            metaData.setDataElements( dataElementsFromCsv( reader, input ) );
+            metaData.setDataElements( dataElementsFromCsv( reader ) );
         }
         else if ( DataElementGroup.class.equals( clazz ) )
         {
-            metaData.setDataElementGroups( dataElementGroupsFromCsv( reader, input ) );
+            metaData.setDataElementGroups( dataElementGroupsFromCsv( reader ) );
         }
         else if ( DataElementCategoryOption.class.equals( clazz ) )
         {
-            metaData.setCategoryOptions( categoryOptionsFromCsv( reader, input ) );
+            metaData.setCategoryOptions( categoryOptionsFromCsv( reader ) );
         }
         else if ( CategoryOptionGroup.class.equals( clazz ) )
         {
-            metaData.setCategoryOptionGroups( categoryOptionGroupsFromCsv( reader, input ) );
+            metaData.setCategoryOptionGroups( categoryOptionGroupsFromCsv( reader ) );
         }
         else if ( OrganisationUnit.class.equals( clazz ) )
         {
-            metaData.setOrganisationUnits( organisationUnitsFromCsv( reader, input ) );
+            metaData.setOrganisationUnits( organisationUnitsFromCsv( reader ) );
         }
         else if ( OrganisationUnitGroup.class.equals( clazz ) )
         {
-            metaData.setOrganisationUnitGroups( organisationUnitGroupsFromCsv( reader, input ) );
+            metaData.setOrganisationUnitGroups( organisationUnitGroupsFromCsv( reader ) );
+        }
+        else if ( ValidationRule.class.equals( clazz ) )
+        {
+            metaData.setValidationRules( validationRulesFromCsv( reader ) );
         }
         else if ( OptionSet.class.equals( clazz ) )
         {
-            metaData.setOptionSets( getOptionSetsFromCsv( reader, input ) );
+            metaData.setOptionSets( getOptionSetsFromCsv( reader ) );
         }
 
         return metaData;
@@ -116,7 +125,7 @@ public class DefaultCsvImportService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private List<DataElementCategoryOption> categoryOptionsFromCsv( CsvReader reader, InputStream input )
+    private List<DataElementCategoryOption> categoryOptionsFromCsv( CsvReader reader )
         throws IOException
     {
         List<DataElementCategoryOption> list = new ArrayList<DataElementCategoryOption>();
@@ -136,7 +145,7 @@ public class DefaultCsvImportService
         return list;
     }
 
-    private List<CategoryOptionGroup> categoryOptionGroupsFromCsv( CsvReader reader, InputStream input )
+    private List<CategoryOptionGroup> categoryOptionGroupsFromCsv( CsvReader reader )
         throws IOException
     {
         List<CategoryOptionGroup> list = new ArrayList<CategoryOptionGroup>();
@@ -156,7 +165,7 @@ public class DefaultCsvImportService
         return list;
     }
 
-    private List<DataElement> dataElementsFromCsv( CsvReader reader, InputStream input )
+    private List<DataElement> dataElementsFromCsv( CsvReader reader )
         throws IOException
     {
         DataElementCategoryCombo categoryCombo = categoryService.getDefaultDataElementCategoryCombo();
@@ -204,7 +213,7 @@ public class DefaultCsvImportService
         return list;
     }
 
-    private List<DataElementGroup> dataElementGroupsFromCsv( CsvReader reader, InputStream input )
+    private List<DataElementGroup> dataElementGroupsFromCsv( CsvReader reader )
         throws IOException
     {
         List<DataElementGroup> list = new ArrayList<DataElementGroup>();
@@ -224,7 +233,53 @@ public class DefaultCsvImportService
         return list;
     }
     
-    private List<OrganisationUnit> organisationUnitsFromCsv( CsvReader reader, InputStream input )
+    private List<ValidationRule> validationRulesFromCsv( CsvReader reader )
+        throws IOException
+    {
+        List<ValidationRule> list = new ArrayList<ValidationRule>();
+
+        while ( reader.readRecord() )
+        {
+            String[] values = reader.getValues();
+
+            if ( values != null && values.length > 0 )
+            {
+            
+                Expression leftSide = new Expression();
+                Expression rightSide = new Expression();
+                
+                ValidationRule object = new ValidationRule();
+                setIdentifiableObject( object, values );
+                object.setDescription( getSafe( values, 3, null, 255 ) );
+                object.setInstruction( getSafe( values, 4, null, 255 ) );
+                object.setImportance( getSafe( values, 5, ValidationRule.IMPORTANCE_MEDIUM, 255 ) );
+                object.setRuleType( getSafe( values, 6, ValidationRule.RULE_TYPE_VALIDATION, 255 ) );
+                object.setOperator( Operator.safeValueOf( getSafe( values, 7, Operator.equal_to.toString(), 255 ) ) );
+                object.setPeriodType( PeriodType.getByNameIgnoreCase( getSafe( values, 8, MonthlyPeriodType.NAME, 255 ) ) );
+                
+                leftSide.setExpression( getSafe( values, 9, null, 255 ) );
+                leftSide.setDescription( getSafe( values, 10, null, 255 ) );
+                leftSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( leftSide.getExpression() ) );
+                leftSide.setOptionCombosInExpression( expressionService.getOptionCombosInExpression( leftSide.getExpression() ) );
+                leftSide.setNullIfBlank( true );
+                
+                rightSide.setExpression( getSafe( values, 11, null, 255 ) );
+                rightSide.setDescription( getSafe( values, 12, null, 255 ) );
+                rightSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSide.getExpression() ) );
+                rightSide.setOptionCombosInExpression( expressionService.getOptionCombosInExpression( rightSide.getExpression() ) );
+                rightSide.setNullIfBlank( true );
+                
+                object.setLeftSide( leftSide );
+                object.setRightSide( rightSide );
+                
+                list.add( object );
+            }
+        }
+        
+        return list;
+    }
+    
+    private List<OrganisationUnit> organisationUnitsFromCsv( CsvReader reader )
         throws IOException
     {
         List<OrganisationUnit> list = new ArrayList<OrganisationUnit>();
@@ -267,7 +322,7 @@ public class DefaultCsvImportService
         return list;
     }
 
-    private List<OrganisationUnitGroup> organisationUnitGroupsFromCsv( CsvReader reader, InputStream input )
+    private List<OrganisationUnitGroup> organisationUnitGroupsFromCsv( CsvReader reader )
         throws IOException
     {
         List<OrganisationUnitGroup> list = new ArrayList<OrganisationUnitGroup>();
@@ -287,7 +342,7 @@ public class DefaultCsvImportService
         return list;
     }
 
-    private List<OptionSet> getOptionSetsFromCsv( CsvReader reader, InputStream input )
+    private List<OptionSet> getOptionSetsFromCsv( CsvReader reader )
         throws IOException
     {
         ListMap<OptionSet, String> listMap = new ListMap<OptionSet, String>();
