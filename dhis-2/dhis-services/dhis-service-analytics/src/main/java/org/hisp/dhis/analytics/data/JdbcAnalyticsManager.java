@@ -150,7 +150,7 @@ public class JdbcAnalyticsManager
             
             return new AsyncResult<Map<String, Double>>( map );
         }
-        catch ( Exception ex )
+        catch ( RuntimeException ex )
         {
             log.error( DebugUtils.getStackTrace( ex ) );
             
