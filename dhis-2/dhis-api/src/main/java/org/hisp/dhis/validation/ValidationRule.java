@@ -94,11 +94,6 @@ public class ValidationRule
     private String ruleType;
 
     /**
-     * Whether this is a STATISTICAL or ABSOLUTE rule (only ABSOLUTE rules are currently implemented!)
-     */
-    private String type;
-
-    /**
      * The comparison operator to compare left and right expressions in the rule.
      */
     private Operator operator;
@@ -162,13 +157,12 @@ public class ValidationRule
         setAutoFields();
     }
 
-    public ValidationRule( String name, String description, String type,
+    public ValidationRule( String name, String description,
         Operator operator, Expression leftSide, Expression rightSide )
     {
         this();
         this.name = name;
         this.description = description;
-        this.type = type;
         this.operator = operator;
         this.leftSide = leftSide;
         this.rightSide = rightSide;
@@ -443,19 +437,6 @@ public class ValidationRule
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public String getType()
-    {
-        return type;
-    }
-
-    public void setType( String type )
-    {
-        this.type = type;
-    }
-
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Expression getLeftSide()
     {
         return leftSide;
@@ -504,7 +485,6 @@ public class ValidationRule
             ValidationRule validationRule = (ValidationRule) other;
 
             description = validationRule.getDescription() == null ? description : validationRule.getDescription();
-            type = validationRule.getType() == null ? type : validationRule.getType();
             operator = validationRule.getOperator() == null ? operator : validationRule.getOperator();
             periodType = validationRule.getPeriodType() == null ? periodType : validationRule.getPeriodType();
 

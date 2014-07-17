@@ -653,9 +653,6 @@ public class PDFUtils
             table.addCell( getTextCell( validationRule.getDescription() ) );
         }
 
-        table.addCell( getItalicCell( i18n.getString( "type" ) ) );
-        table.addCell( getTextCell( i18n.getString( validationRule.getType() ) ) );
-
         table.addCell( getItalicCell( i18n.getString( "operator" ) ) );
         table.addCell( getTextCell( i18n.getString( validationRule.getOperator().toString() ) ) );
 

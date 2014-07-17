@@ -76,7 +76,6 @@ public class ValidationRuleImporter
     {
         match.setName( object.getName() );
         match.setDescription( object.getDescription() );
-        match.setType( object.getType() );
         match.setOperator( object.getOperator() );
         match.getLeftSide().setExpression( object.getLeftSide().getExpression() );
         match.getLeftSide().setDescription( object.getLeftSide().getDescription() );
@@ -106,10 +105,6 @@ public class ValidationRuleImporter
             return false;
         }
         if ( !isSimiliar( object.getDescription(), existing.getDescription() ) || ( isNotNull( object.getDescription(), existing.getDescription() ) && !object.getDescription().equals( existing.getDescription() ) ) )
-        {
-            return false;
-        }
-        if ( !isSimiliar( object.getType(), existing.getType() ) || ( isNotNull( object.getType(), existing.getType() ) && !object.getType().equals( existing.getType() ) ) )
         {
             return false;
         }

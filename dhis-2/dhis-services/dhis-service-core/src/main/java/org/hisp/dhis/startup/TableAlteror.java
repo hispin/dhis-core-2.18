@@ -153,6 +153,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE orgunitgroup DROP COLUMN image" );
         executeSql( "ALTER TABLE report DROP COLUMN usingorgunitgroupsets" );
         executeSql( "ALTER TABLE eventchart DROP COLUMN datatype" );
+        executeSql( "ALTER TABLE validationrule DROP COLUMN type" );
 
         executeSql( "DROP INDEX datamart_crosstab" );
 

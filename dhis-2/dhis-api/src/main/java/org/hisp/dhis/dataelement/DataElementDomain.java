@@ -47,7 +47,7 @@ public enum DataElementDomain
     {
         for ( DataElementDomain domainType : DataElementDomain.values() )
         {
-            if ( domainType.getValue().equalsIgnoreCase( value ) )
+            if ( domainType.value.equalsIgnoreCase( value ) )
             {
                 return domainType;
             }

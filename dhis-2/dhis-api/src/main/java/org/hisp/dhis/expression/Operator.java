@@ -1,5 +1,6 @@
 package org.hisp.dhis.expression;
 
+
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -40,7 +41,7 @@ public enum Operator
 
     private final String mathematicalOperator;
 
-    Operator( String mathematicalOperator )
+    private Operator( String mathematicalOperator )
     {
         this.mathematicalOperator = mathematicalOperator;
     }
@@ -49,5 +50,22 @@ public enum Operator
     {
         return mathematicalOperator;
     }
+    
+    public static Operator fromValue( String value )
+    {
+        for ( Operator operator : Operator.values() )
+        {
+            if ( operator.mathematicalOperator.equalsIgnoreCase( value ) )
+            {
+                return operator;
+            }
+        }
 
+        return null;
+    }
+    
+    public static Operator safeValueOf( String name )
+    {
+        return name != null ? Operator.valueOf( name ) : null;
+    }
 }

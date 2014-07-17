@@ -63,7 +63,6 @@ public class ValidationRuleConverter
     private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_DESCRIPTION = "description";
-    private static final String FIELD_TYPE = "type";
     private static final String FIELD_OPERATOR = "operator";
     private static final String FIELD_LEFTSIDE_EXPRESSION = "leftSideExpression";
     private static final String FIELD_LEFTSIDE_DESCRIPTION = "leftSideDescription";
@@ -130,7 +129,6 @@ public class ValidationRuleConverter
 
                 writer.writeElement( FIELD_NAME, rule.getName() );
                 writer.writeElement( FIELD_DESCRIPTION, rule.getDescription() );
-                writer.writeElement( FIELD_TYPE, rule.getType() );
                 writer.writeElement( FIELD_OPERATOR, rule.getOperator().toString() );
                 writer.writeElement( FIELD_LEFTSIDE_EXPRESSION, rule.getLeftSide().getExpression() );
                 writer.writeElement( FIELD_LEFTSIDE_DESCRIPTION, rule.getLeftSide().getDescription() );
@@ -167,7 +165,6 @@ public class ValidationRuleConverter
 
             validationRule.setName( values.get( FIELD_NAME ) );
             validationRule.setDescription( values.get( FIELD_DESCRIPTION ) );
-            validationRule.setType( values.get( FIELD_TYPE ) );
             validationRule.setOperator( Operator.valueOf( values.get( FIELD_OPERATOR ) ) );
 
             validationRule.getLeftSide().setExpression( values.get( FIELD_LEFTSIDE_EXPRESSION ) );

@@ -139,7 +139,6 @@ public class ValidationRuleStoreTest
 
         assertEquals( validationRule.getName(), "ValidationRuleA" );
         assertEquals( validationRule.getDescription(), "DescriptionA" );
-        assertEquals( validationRule.getType(), ValidationRule.TYPE_ABSOLUTE );
         assertEquals( validationRule.getOperator(), equal_to );
         assertNotNull( validationRule.getLeftSide().getExpression() );
         assertNotNull( validationRule.getRightSide().getExpression() );
@@ -157,12 +156,10 @@ public class ValidationRuleStoreTest
 
         assertEquals( validationRule.getName(), "ValidationRuleA" );
         assertEquals( validationRule.getDescription(), "DescriptionA" );
-        assertEquals( validationRule.getType(), ValidationRule.TYPE_ABSOLUTE );
         assertEquals( validationRule.getOperator(), equal_to );
 
         validationRule.setName( "ValidationRuleB" );
         validationRule.setDescription( "DescriptionB" );
-        validationRule.setType( ValidationRule.TYPE_STATISTICAL );
         validationRule.setOperator( greater_than );
 
         validationRuleStore.update( validationRule );
@@ -171,7 +168,6 @@ public class ValidationRuleStoreTest
 
         assertEquals( validationRule.getName(), "ValidationRuleB" );
         assertEquals( validationRule.getDescription(), "DescriptionB" );
-        assertEquals( validationRule.getType(), ValidationRule.TYPE_STATISTICAL );
         assertEquals( validationRule.getOperator(), greater_than );
     }
 
