@@ -143,8 +143,8 @@
                 <div class="btn-group btn-group-justified">
                         <a href ng-click="completeIncompleteEvent()" class="btn btn-warning" ng-if="currentEvent.eventDate && currentEvent.status === 'ACTIVE'">{{'complete'| translate}}</a>
                         <a href ng-click="completeIncompleteEvent()" class="btn btn-warning" ng-if="currentEvent.eventDate && currentEvent.status === 'COMPLETED'">{{'incomplete'| translate}}</a>                       
-                        <a href ng-click="validateEvent()" class="btn btn-info" ng-disabled="true" ng-if="currentEvent.eventDate">{{'validate'| translate}}</a>
-                        <a href ng-click="skipEvent()" class="btn btn-warning" ng-if="!currentEvent.eventDate">{{'skipped'| translate}}</a>               
+                        <a href ng-click="validateEvent()" class="btn btn-info" ng-disabled="true" ng-if="currentEvent.eventDate">{{'validate'| translate}}</a>                        
+                        <a href ng-click="skipUnskipEvent()" class="btn btn-warning" ng-if="!currentEvent.eventDate">{{currentEvent.status === 'SKIPPED' ? 'unskip' : 'skip' | translate}}</a>
                     <a href ng-click="deleteEvent()" class="btn btn-danger">{{'delete'| translate}}</a>
                 </div>
             </div>

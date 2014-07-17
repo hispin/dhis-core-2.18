@@ -1198,7 +1198,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                     programStage: dhis2Event.programStage, 
                     orgUnit: dhis2Event.orgUnit, 
                     trackedEntityInstance: dhis2Event.trackedEntityInstance,
-                    status: dhis2Event.status
+                    status: dhis2Event.status,
+                    dueDate: dhis2Event.dueDate
                 };
                 
             angular.forEach(programStage.programStageDataElements, function(prStDe){
