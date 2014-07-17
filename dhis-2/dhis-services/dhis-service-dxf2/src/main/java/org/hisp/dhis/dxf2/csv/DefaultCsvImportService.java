@@ -243,8 +243,7 @@ public class DefaultCsvImportService
             String[] values = reader.getValues();
 
             if ( values != null && values.length > 0 )
-            {
-            
+            {            
                 Expression leftSide = new Expression();
                 Expression rightSide = new Expression();
                 
