@@ -33,12 +33,10 @@ import java.io.InputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dxf2.csv.CsvImportService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
-import org.hisp.dhis.dxf2.utils.CsvObjectUtils;
 import org.hisp.dhis.scheduling.TaskId;
 
 /**
@@ -50,8 +48,8 @@ public class ImportMetaDataCsvTask
     private static final Log log = LogFactory.getLog( ImportMetaDataTask.class );
 
     private ImportService importService;
-
-    private IdentifiableObjectManager identifiableObjectManager;
+    
+    private CsvImportService csvImportService;
     
     private ImportOptions importOptions;
 
@@ -64,13 +62,13 @@ public class ImportMetaDataCsvTask
     private Class<?> clazz;
 
     public ImportMetaDataCsvTask( String userUid, ImportService importService, 
-        IdentifiableObjectManager identifiableObjectManager,
+        CsvImportService csvImportService,
         ImportOptions importOptions, InputStream inputStream,
         TaskId taskId, Class<?> clazz )
     {
         this.userUid = userUid;
         this.importService = importService;
-        this.identifiableObjectManager = identifiableObjectManager;
+        this.csvImportService = csvImportService;
         this.importOptions = importOptions;
         this.inputStream = inputStream;
         this.taskId = taskId;
@@ -81,13 +79,10 @@ public class ImportMetaDataCsvTask
     public void run()
     {
         MetaData metaData = null;
-        
-        DataElementCategoryCombo categoryCombo = identifiableObjectManager.getByName( 
-            DataElementCategoryCombo.class, DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
-        
+                
         try
         {
-            metaData = CsvObjectUtils.fromCsv( inputStream, clazz, categoryCombo );
+            metaData = csvImportService.fromCsv( inputStream, clazz );
         }
         catch ( IOException ex )
         {

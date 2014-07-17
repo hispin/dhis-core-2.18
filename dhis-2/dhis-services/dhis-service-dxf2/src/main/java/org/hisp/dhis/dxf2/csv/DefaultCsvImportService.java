@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.utils;
+package org.hisp.dhis.dxf2.csv;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -44,21 +44,35 @@ import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.csvreader.CsvReader;
 
 /**
  * @author Lars Helge Overland
  */
-public class CsvObjectUtils
+public class DefaultCsvImportService
+    implements CsvImportService
 {
-    public static MetaData fromCsv( InputStream input, Class<?> clazz, DataElementCategoryCombo categoryCombo )
+    @Autowired
+    private DataElementCategoryService categoryService;
+    
+    @Autowired
+    private ExpressionService expressionService;
+
+    // -------------------------------------------------------------------------
+    // CsvImportService implementation
+    // -------------------------------------------------------------------------
+
+    public MetaData fromCsv( InputStream input, Class<?> clazz )
         throws IOException
     {
         CsvReader reader = new CsvReader( input, Charset.forName( "UTF-8" ) );
@@ -68,7 +82,7 @@ public class CsvObjectUtils
 
         if ( DataElement.class.equals( clazz ) )
         {
-            metaData.setDataElements( dataElementsFromCsv( reader, input, categoryCombo ) );
+            metaData.setDataElements( dataElementsFromCsv( reader, input ) );
         }
         else if ( DataElementGroup.class.equals( clazz ) )
         {
@@ -98,7 +112,11 @@ public class CsvObjectUtils
         return metaData;
     }
 
-    private static List<DataElementCategoryOption> categoryOptionsFromCsv( CsvReader reader, InputStream input )
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private List<DataElementCategoryOption> categoryOptionsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         List<DataElementCategoryOption> list = new ArrayList<DataElementCategoryOption>();
@@ -118,7 +136,7 @@ public class CsvObjectUtils
         return list;
     }
 
-    private static List<CategoryOptionGroup> categoryOptionGroupsFromCsv( CsvReader reader, InputStream input )
+    private List<CategoryOptionGroup> categoryOptionGroupsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         List<CategoryOptionGroup> list = new ArrayList<CategoryOptionGroup>();
@@ -138,9 +156,11 @@ public class CsvObjectUtils
         return list;
     }
 
-    private static List<DataElement> dataElementsFromCsv( CsvReader reader, InputStream input, DataElementCategoryCombo categoryCombo )
+    private List<DataElement> dataElementsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
+        DataElementCategoryCombo categoryCombo = categoryService.getDefaultDataElementCategoryCombo();
+        
         List<DataElement> list = new ArrayList<DataElement>();
 
         while ( reader.readRecord() )
@@ -184,7 +204,7 @@ public class CsvObjectUtils
         return list;
     }
 
-    private static List<DataElementGroup> dataElementGroupsFromCsv( CsvReader reader, InputStream input )
+    private List<DataElementGroup> dataElementGroupsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         List<DataElementGroup> list = new ArrayList<DataElementGroup>();
@@ -204,7 +224,7 @@ public class CsvObjectUtils
         return list;
     }
     
-    private static List<OrganisationUnit> organisationUnitsFromCsv( CsvReader reader, InputStream input )
+    private List<OrganisationUnit> organisationUnitsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         List<OrganisationUnit> list = new ArrayList<OrganisationUnit>();
@@ -247,7 +267,7 @@ public class CsvObjectUtils
         return list;
     }
 
-    private static List<OrganisationUnitGroup> organisationUnitGroupsFromCsv( CsvReader reader, InputStream input )
+    private List<OrganisationUnitGroup> organisationUnitGroupsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         List<OrganisationUnitGroup> list = new ArrayList<OrganisationUnitGroup>();
@@ -267,7 +287,7 @@ public class CsvObjectUtils
         return list;
     }
 
-    private static List<OptionSet> getOptionSetsFromCsv( CsvReader reader, InputStream input )
+    private List<OptionSet> getOptionSetsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         ListMap<OptionSet, String> listMap = new ListMap<OptionSet, String>();
