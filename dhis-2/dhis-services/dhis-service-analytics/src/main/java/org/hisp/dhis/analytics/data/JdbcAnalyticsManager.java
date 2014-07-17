@@ -70,6 +70,7 @@ import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.TextUtils;
@@ -111,41 +112,50 @@ public class JdbcAnalyticsManager
     @Async
     public Future<Map<String, Double>> getAggregatedDataValues( DataQueryParams params )
     {
-        ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
-        
-        params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
-        
-        String sql = getSelectClause( params );
-        
-        if ( params.spansMultiplePartitions() )
-        {
-            sql += getFromWhereClauseMultiplePartitionFilters( params );
-        }
-        else
-        {
-            sql += getFromWhereClause( params, params.getPartitions().getSinglePartition() );
-        }
-        
-        sql += getGroupByClause( params );
-    
-        log.debug( sql );
-
-        Map<String, Double> map = null;
-        
         try
         {
-            map = getKeyValueMap( params, sql );
-        }
-        catch ( BadSqlGrammarException ex )
-        {
-            log.info( "Query failed, likely because the requested analytics table does not exist", ex );
+            ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
             
-            return new AsyncResult<Map<String, Double>>( new HashMap<String, Double>() );
+            params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
+            
+            String sql = getSelectClause( params );
+            
+            if ( params.spansMultiplePartitions() )
+            {
+                sql += getFromWhereClauseMultiplePartitionFilters( params );
+            }
+            else
+            {
+                sql += getFromWhereClause( params, params.getPartitions().getSinglePartition() );
+            }
+            
+            sql += getGroupByClause( params );
+        
+            log.debug( sql );
+    
+            Map<String, Double> map = null;
+            
+            try
+            {
+                map = getKeyValueMap( params, sql );
+            }
+            catch ( BadSqlGrammarException ex )
+            {
+                log.info( "Query failed, likely because the requested analytics table does not exist", ex );
+                
+                return new AsyncResult<Map<String, Double>>( new HashMap<String, Double>() );
+            }
+            
+            replaceDataPeriodsWithAggregationPeriods( map, params, dataPeriodAggregationPeriodMap );
+            
+            return new AsyncResult<Map<String, Double>>( map );
         }
-        
-        replaceDataPeriodsWithAggregationPeriods( map, params, dataPeriodAggregationPeriodMap );
-        
-        return new AsyncResult<Map<String, Double>>( map );   
+        catch ( Exception ex )
+        {
+            log.error( DebugUtils.getStackTrace( ex ) );
+            
+            throw ex;
+        }
     }
     
     public void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap )
