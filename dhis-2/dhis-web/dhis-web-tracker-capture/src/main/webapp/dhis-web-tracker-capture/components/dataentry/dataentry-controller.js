@@ -28,6 +28,9 @@ trackerCapture.controller('DataEntryController',
     today = Date.parse(today);
     today = $filter('date')(today, 'yyyy-MM-dd');
     $scope.invalidDate = false;
+    
+    //note
+    $scope.note = '';
      
     //listen for the selected items
     $scope.$on('dashboardWidgets', function(event, args) {  
@@ -64,28 +67,32 @@ trackerCapture.controller('DataEntryController',
         
         $scope.dhis2Events = '';
         DHIS2EventFactory.getEventsByStatus($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id, 'ACTIVE').then(function(data){
-            $scope.dhis2Events = data;
-            
+            $scope.dhis2Events = data;            
             if(angular.isObject($scope.dhis2Events)){
                 angular.forEach($scope.dhis2Events, function(dhis2Event){
                     
-                    var eventStage = $scope.selectedProgramWithStage[dhis2Event.programStage];
-                    
-                    if(angular.isObject(eventStage)){
-                        
-                        dhis2Event.name = eventStage.name;                        
-                        dhis2Event.eventDate = DateUtils.format(dhis2Event.eventDate);
-                        if(dhis2Event.dueDate){
+                    if(dhis2Event.enrollment === $scope.selectedEnrollment.enrollment){
+                        var eventStage = $scope.selectedProgramWithStage[dhis2Event.programStage];
+
+                        if(angular.isObject(eventStage)){
+
+                            dhis2Event.name = eventStage.name; 
+                            dhis2Event.reportDateDescription = eventStage.reportDateDescription;
                             dhis2Event.dueDate = DateUtils.format(dhis2Event.dueDate);
-                        }
-                        else{
-                            dhis2Event.dueDate = EventUtils.getEventDueDate(eventStage, $scope.selectedEnrollment);
-                        }                        
-                        
-                        dhis2Event.statusColor = EventUtils.getEventStatusColor(dhis2Event);  
-                        dhis2Event = EventUtils.setEventOrgUnitName(dhis2Event);
-                    } 
-                                                                                 
+
+                            if(dhis2Event.eventDate){
+                                dhis2Event.eventDate = DateUtils.format(dhis2Event.eventDate);
+                                dhis2Event.sortingDate = DateUtils.format(dhis2Event.eventDate);
+                            }
+                            else{
+                                dhis2Event.sortingDate = dhis2Event.dueDate;
+                            }                       
+
+                            dhis2Event.statusColor = EventUtils.getEventStatusColor(dhis2Event);  
+                            dhis2Event = EventUtils.setEventOrgUnitName(dhis2Event);
+                        } 
+                    }
+
                 });
             }
             
@@ -106,7 +113,7 @@ trackerCapture.controller('DataEntryController',
                 dummyEvents = orderByFilter(dummyEvents, '-eventDate');
 
                 if(dummyEvents){
-                    $scope.showEventCreationDiv = true;
+                    $scope.allowEventCreation = true;
                 }
 
                 return dummyEvents;
@@ -167,7 +174,7 @@ trackerCapture.controller('DataEntryController',
                     orgUnit: $scope.currentDummyEvent.orgUnit,
                     eventDate: $scope.currentDummyEvent.eventDate,
                     dueDate: $scope.currentDummyEvent.dueDate,
-                    status: 'ACTIVE',
+                    status: 'SCHEDULE',
                     notes: [],
                     dataValues: []
                 };
@@ -185,6 +192,8 @@ trackerCapture.controller('DataEntryController',
                 newEvent.event = data.importSummaries[0].reference;
                 newEvent.orgUnitName = $scope.currentDummyEvent.orgUnitName;
                 newEvent.name = $scope.currentDummyEvent.name;
+                newEvent.reportDateDescription = $scope.currentDummyEvent.reportDateDescription;
+                newEvent.sortingDate = $scope.currentDummyEvent.dueDate,
                 newEvent.statusColor = $scope.currentDummyEvent.statusColor;
                 
                 if(!angular.isObject($scope.dhis2Events)){
@@ -192,33 +201,17 @@ trackerCapture.controller('DataEntryController',
                 }
                 else{
                     $scope.dhis2Events.splice(0,0,newEvent);
-                    $scope.dhis2Events = orderByFilter($scope.dhis2Events, '-eventDate');
-                    $scope.dhis2Events.reverse();
+                    /*$scope.dhis2Events = orderByFilter($scope.dhis2Events, '-sortingDate');
+                    $scope.dhis2Events.reverse();*/
                 }                
                 $scope.showDataEntry(newEvent);
             }
         });
     };   
     
-    $scope.createDummyEvent = function(programStage, orgUnit, enrollment){
-        
-        var dueDate = EventUtils.getEventDueDate(programStage, enrollment);
-        var dummyEvent = {programStage: programStage.id, 
-                          orgUnit: orgUnit.id,
-                          orgUnitName: orgUnit.name,
-                          dueDate: dueDate,
-                          name: programStage.name,
-                          status: 'ACTIVE',
-                          statusColor: 'alert alert-info'//'stage-on-time'
-                        };        
-        
-        dummyEvent.statusColor = EventUtils.getEventStatusColor(dummyEvent);
-        
-        return dummyEvent;
-    };
-    
-    $scope.showDataEntry = function(event){
-
+    $scope.showDataEntry = function(event){        
+        $scope.dueDateSaved = false;
+        $scope.eventDateSaved = false;
         if(event){
 
             if($scope.currentEvent && $scope.currentEvent.event === event.event){
@@ -233,8 +226,18 @@ trackerCapture.controller('DataEntryController',
                 $scope.showDataEntryDiv = true;   
                 $scope.showDummyEventDiv = false;
                 $scope.showEventCreationDiv = false;
-                $scope.getDataEntryForm();  
-                $scope.newEventDate = $scope.currentEvent.eventDate;
+                
+                angular.forEach($scope.currentEvent.notes, function(note){
+                    note.storedDate = moment(note.storedDate).format('YYYY-MM-DD @ hh:mm A');
+                });
+                
+                if($scope.currentEvent.notes.length > 0 ){
+                    $scope.currentEvent.notes = orderByFilter($scope.currentEvent.notes, '-storedDate');
+                }
+                
+                if($scope.currentEvent.eventDate){
+                    $scope.getDataEntryForm();
+                }
             }               
         }
     }; 
@@ -366,44 +369,98 @@ trackerCapture.controller('DataEntryController',
     };
     
     $scope.saveEventDate = function(){
-        
-        if($scope.newEventDate != $scope.currentEvent.eventDate){
-            if($scope.newEventDate == ''){
+
+        $scope.eventDateSaved = false;
+        if($scope.currentEvent.eventDate == ''){
+            $scope.invalidDate = true;
+            return false;
+        }
+        else{
+            var rawDate = $filter('date')($scope.currentEvent.eventDate, 'yyyy-MM-dd'); 
+            var convertedDate = moment($scope.currentEvent.eventDate, 'YYYY-MM-DD')._d;
+            convertedDate = $filter('date')(convertedDate, 'yyyy-MM-dd'); 
+
+            if(rawDate !== convertedDate){
                 $scope.invalidDate = true;
                 return false;
-            }
-            else{
-                var rawDate = $filter('date')($scope.newEventDate, 'yyyy-MM-dd'); 
-                var convertedDate = moment($scope.newEventDate, 'YYYY-MM-DD')._d;
-                convertedDate = $filter('date')(convertedDate, 'yyyy-MM-dd'); 
+            } 
 
-                if(rawDate !== convertedDate){
-                    $scope.invalidDate = true;
-                    return false;
-                } 
+            var e = {event: $scope.currentEvent.event,
+                 enrollment: $scope.currentEvent.enrollment,
+                 dueDate: $scope.currentEvent.dueDate,
+                 status: $scope.currentEvent.status === 'SCHEDULE' ? 'ACTIVE' : $scope.currentEvent.status,
+                 program: $scope.currentEvent.program,
+                 programStage: $scope.currentEvent.programStage,
+                 orgUnit: $scope.currentEvent.orgUnit,
+                 eventDate: $scope.currentEvent.eventDate,
+                 trackedEntityInstance: $scope.currentEvent.trackedEntityInstance
+                };
+
+            DHIS2EventFactory.updateForEventDate(e).then(function(data){
+                $scope.currentEvent.sortingDate = $scope.currentEvent.eventDate;
+                $scope.invalidDate = false;
+                $scope.eventDateSaved = true;
                 
-                var e = {event: $scope.currentEvent.event,
-                     program: $scope.currentEvent.program,
-                     programStage: $scope.currentEvent.programStage,
-                     orgUnit: $scope.currentEvent.orgUnit,
-                     eventDate: $scope.newEventDate,
-                     trackedEntityInstance: $scope.currentEvent.trackedEntityInstance
-                    };
-                    
-                DHIS2EventFactory.updateForEventDate(e).then(function(data){
-                    $scope.currentEvent.eventDate = $scope.newEventDate;
-                    $scope.newEventDate = '';
-                    $scope.invalidDate = false;
-                });
-            }
+                var statusColor = EventUtils.getEventStatusColor($scope.currentEvent);  
+                var continueLoop = true;
+                for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
+                    if($scope.dhis2Events[i].event === $scope.currentEvent.event ){
+                        $scope.dhis2Events[i].statusColor = statusColor;
+                        continueLoop = false;
+                    }
+                }
+            });
         }
         
+    };
+    
+    $scope.saveDueDate = function(){
+        $scope.dueDateSaved = false;
+
+        if($scope.currentEvent.dueDate == ''){
+            $scope.invalidDate = true;
+            return false;
+        }
+        else{
+            var rawDate = $filter('date')($scope.currentEvent.dueDate, 'yyyy-MM-dd'); 
+            var convertedDate = moment($scope.currentEvent.dueDate, 'YYYY-MM-DD')._d;
+            convertedDate = $filter('date')(convertedDate, 'yyyy-MM-dd'); 
+
+            if(rawDate !== convertedDate){
+                $scope.invalidDate = true;
+                return false;
+            } 
+
+            var e = {event: $scope.currentEvent.event,
+                 enrollment: $scope.currentEvent.enrollment,
+                 dueDate: $scope.currentEvent.dueDate,
+                 status: $scope.currentEvent.status,
+                 program: $scope.currentEvent.program,
+                 programStage: $scope.currentEvent.programStage,
+                 orgUnit: $scope.currentEvent.orgUnit,
+                 trackedEntityInstance: $scope.currentEvent.trackedEntityInstance
+                };
+
+            DHIS2EventFactory.update(e).then(function(data){            
+                $scope.invalidDate = false;
+                $scope.dueDateSaved = true;
+                $scope.currentEvent.sortingDate = $scope.currentEvent.dueDate;                
+                var statusColor = EventUtils.getEventStatusColor($scope.currentEvent);  
+                var continueLoop = true;
+                for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
+                    if($scope.dhis2Events[i].event === $scope.currentEvent.event ){
+                        $scope.dhis2Events[i].statusColor = statusColor;
+                        continueLoop = false;
+                    }
+                } 
+            });
+        }              
     };
     
     $scope.addNote = function(){
         
         if(!angular.isUndefined($scope.note) && $scope.note != ""){
-            
+
             var newNote = {value: $scope.note};
 
             if(angular.isUndefined( $scope.currentEvent.notes) ){
@@ -422,7 +479,7 @@ trackerCapture.controller('DataEntryController',
                     };
 
             DHIS2EventFactory.updateForNote(e).then(function(data){
-                $scope.note = '';                
+                $scope.note = ''; 
             });
         }        
     };    
@@ -453,54 +510,38 @@ trackerCapture.controller('DataEntryController',
         $scope.showDummyEventDiv = !$scope.showDummyEventDiv;
     };
     
-    $scope.completeEvent = function(){
-        
-        var modalOptions = {
-            closeButtonText: 'cancel',
-            actionButtonText: 'complete',
-            headerText: 'complete',
-            bodyText: 'are_you_sure_to_complete_event'
-        };
+    $scope.completeIncompleteEvent = function(){
+        var modalOptions;
+        var dhis2Event = EventUtils.reconstruct($scope.currentEvent, $scope.currentStage);        
+        if($scope.currentEvent.status === 'COMPLETED'){//activiate event
+            modalOptions = {
+                closeButtonText: 'cancel',
+                actionButtonText: 'incomplete',
+                headerText: 'incomplete',
+                bodyText: 'are_you_sure_to_incomplete_event'
+            };
+            dhis2Event.status = 'ACTIVE';        
+        }
+        else{//complete event
+            modalOptions = {
+                closeButtonText: 'cancel',
+                actionButtonText: 'complete',
+                headerText: 'complete',
+                bodyText: 'are_you_sure_to_complete_event'
+            };
+            dhis2Event.status = 'COMPLETED';
+        }        
 
         ModalService.showModal({}, modalOptions).then(function(result){
             
-            var dhis2Event = EventUtils.reconstruct($scope.currentEvent, $scope.currentStage);
-            dhis2Event.status = 'COMPLETED';            
-        
             DHIS2EventFactory.update(dhis2Event).then(function(data){
                 
-                $scope.currentEvent.status = 'COMPLETED';
-                var statusColor = EventUtils.getEventStatusColor($scope.currentEvent);  
-                var continueLoop = true;
-                for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
-                    if($scope.dhis2Events[i].event === $scope.currentEvent.event ){
-                        $scope.dhis2Events[i].statusColor = statusColor;
-                        continueLoop = false;
-                    }
-                }                
-            });
-        });
-    };
-    
-    $scope.incompleteEvent = function(){
-        
-        var modalOptions = {
-            closeButtonText: 'cancel',
-            actionButtonText: 'incomplete',
-            headerText: 'incomplete',
-            bodyText: 'are_you_sure_to_incomplete_event'
-        };
-
-        ModalService.showModal({}, modalOptions).then(function(result){
-            
-            var dhis2Event = EventUtils.reconstruct($scope.currentEvent, $scope.currentStage);
-            dhis2Event.status = 'ACTIVE';
-            $scope.currentEvent.status = 'ACTIVE';
-        
-            DHIS2EventFactory.update(dhis2Event).then(function(data){
-                
-                
-                $scope.currentEvent.status = 'ACTIVE';
+                if($scope.currentEvent.status === 'COMPLETED'){//activiate event                    
+                    $scope.currentEvent.status = 'ACTIVE'; 
+                }
+                else{//complete event                    
+                    $scope.currentEvent.status = 'COMPLETED';
+                }
                 var statusColor = EventUtils.getEventStatusColor($scope.currentEvent);  
                 var continueLoop = true;
                 for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
@@ -513,17 +554,15 @@ trackerCapture.controller('DataEntryController',
         });
     };
     
-    $scope.validateEvent = function(){
-        
-    };
+    $scope.validateEvent = function(){};    
     
-    $scope.removeEvent = function(){
+    $scope.deleteEvent = function(){
         
         var modalOptions = {
             closeButtonText: 'cancel',
-            actionButtonText: 'remove',
-            headerText: 'remove',
-            bodyText: 'are_you_sure_to_remove_event'
+            actionButtonText: 'delete',
+            headerText: 'delete',
+            bodyText: 'are_you_sure_to_delete_event'
         };
 
         ModalService.showModal({}, modalOptions).then(function(result){

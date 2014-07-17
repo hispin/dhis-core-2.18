@@ -364,6 +364,7 @@ public abstract class AbstractEventService
         if ( event.getEventDate() != null )
         {
             executionDate = DateUtils.getMediumDate( event.getEventDate() );
+            programStageInstance.setExecutionDate( executionDate );
         }
 
         Date dueDate = new Date();
@@ -395,7 +396,6 @@ public abstract class AbstractEventService
         }
 
         programStageInstance.setDueDate( dueDate );
-        programStageInstance.setExecutionDate( executionDate );
         programStageInstance.setOrganisationUnit( organisationUnit );
 
         if ( programStageInstance.getProgramStage().getCaptureCoordinates() && event.getCoordinate().isValid() )
@@ -447,7 +447,7 @@ public abstract class AbstractEventService
         }
 
     }
-    
+
     public void updateEventForNote( Event event )
     {
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
@@ -457,11 +457,10 @@ public abstract class AbstractEventService
         {
             return;
         }
-        
         saveTrackedEntityComment( programStageInstance, event, getStoredBy( event, null ) );
-        
+
     }
-    
+
     public void updateEventForEventDate( Event event )
     {
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
@@ -471,17 +470,34 @@ public abstract class AbstractEventService
         {
             return;
         }
-        
+
         Date executionDate = new Date();
 
         if ( event.getEventDate() != null )
         {
             executionDate = DateUtils.getMediumDate( event.getEventDate() );
         }
-        
+
+        if ( event.getStatus() == EventStatus.ACTIVE )
+        {
+            programStageInstance.setStatus( EventStatus.ACTIVE );
+        }
+        else if ( event.getStatus() == EventStatus.COMPLETED )
+        {
+            programStageInstance.setStatus( EventStatus.COMPLETED );
+        }
+        else if ( event.getStatus() == EventStatus.SCHEDULE )
+        {
+            programStageInstance.setStatus( EventStatus.ACTIVE );
+        }
+        else if ( event.getStatus() == EventStatus.SKIPPED )
+        {
+            programStageInstance.setStatus( EventStatus.ACTIVE );
+        }
+
         programStageInstance.setExecutionDate( executionDate );
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
-        
+
     }
 
     // -------------------------------------------------------------------------
@@ -750,10 +766,10 @@ public abstract class AbstractEventService
 
         Date eventDate = DateUtils.getMediumDate( event.getEventDate() );
 
-        if ( eventDate == null )
-        {
-            return new ImportSummary( ImportStatus.ERROR, "Event.eventDate is not in a valid format." );
-        }
+        /*
+         * if ( eventDate == null ) { return new ImportSummary(
+         * ImportStatus.ERROR, "Event.eventDate is not in a valid format." ); }
+         */
 
         Date dueDate = DateUtils.getMediumDate( event.getDueDate() );
 

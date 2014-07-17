@@ -4,11 +4,13 @@ trackerCapture.controller('RegistrationController',
                 $location,
                 $timeout,
                 AttributesFactory,
+                DHIS2EventFactory,
                 TEService,
                 TEIService,
                 EnrollmentService,
                 DialogService,
                 CurrentSelection,
+                EventUtils,
                 DateUtils,
                 storage,
                 TranslationService) {
@@ -101,6 +103,10 @@ trackerCapture.controller('RegistrationController',
                             DialogService.showDialog({}, dialogOptions);
                             return;
                         }
+                        else{
+                            enrollment.enrollment = data.reference;
+                            $scope.autoGenerateEvents(teiId,$scope.selectedProgram, $scope.selectedOrgUnit, enrollment);                          
+                        }
                     });
                 }
             }
@@ -154,4 +160,31 @@ trackerCapture.controller('RegistrationController',
             $rootScope.$broadcast('relationship', {});
         }, 100);
     };
+    
+    $scope.autoGenerateEvents = function(teiId, program, orgUnit, enrollment){            
+            
+        if(teiId && program && orgUnit && enrollment){            
+            var dhis2Events = {events: []};
+            angular.forEach(program.programStages, function(stage){
+                if(stage.autoGenerateEvent){
+                    var newEvent = {
+                            trackedEntityInstance: teiId,
+                            program: program.id,
+                            programStage: stage.id,
+                            orgUnit: orgUnit.id,                        
+                            dueDate: EventUtils.getEventDueDate(stage, enrollment),
+                            status: 'SCHEDULE'
+                        };
+                    dhis2Events.events.push(newEvent);    
+                }
+            });
+
+            if(dhis2Events.events.length > 0){
+                DHIS2EventFactory.create(dhis2Events).then(function(data){
+
+                });
+            }
+        }
+    };       
+    
 });

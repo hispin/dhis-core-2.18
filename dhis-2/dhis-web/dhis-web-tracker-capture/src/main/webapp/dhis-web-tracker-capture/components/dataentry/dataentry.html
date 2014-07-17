@@ -18,13 +18,13 @@
             <table class="table-borderless">
                 <tbody>
                     <tr>
-                        <td class="inline-block" ng-repeat="dhis2Event in dhis2Events">
+                        <td class="inline-block" ng-repeat="dhis2Event in dhis2Events | orderBy:'sortingDate':reverse">
                             <span class="block align-center">{{dhis2Event.orgUnitName}}</span>                                              
                             <span class="stage-container"                                                     
                                   ng-class="{'current-stage': currentEvent && currentEvent.event == dhis2Event.event, '{{dhis2Event.statusColor}}': true}"                                                      
                                   ng-click="showDataEntry(dhis2Event)">
                                 {{dhis2Event.name}}<br/>
-                                {{dhis2Event.eventDate}}         
+                                {{dhis2Event.sortingDate}}         
                             </span>
                             <i class="fa fa-arrow-right" ng-show="$index < dhis2Events.length - 1"></i>
                         </td>                        
@@ -39,7 +39,7 @@
             <table class="table-borderless">
                 <tbody>
                     <tr>
-                        <td class="inline-block" ng-repeat="dummyEvent in dummyEvents">
+                        <td class="inline-block" ng-repeat="dummyEvent in dummyEvents | orderBy:'sortingDate':reverse">
                             <span class="block align-center">{{dhis2Event.orgUnitName}}</span>                                              
                             <span class="stage-container"                                                     
                                   ng-class="{'current-stage': currentDummyEvent && currentDummyEvent.programStage == dummyEvent.programStage, '{{dummyEvent.statusColor}}': true}"                                                      
@@ -56,12 +56,12 @@
                 <div class="row">
                     <div class="col-md-6">
                         {{currentDummyEvent.reportDateDescription}}
-                        <input type="text" name="eventDate" class="form-control" ng-date ng-model="currentDummyEvent.eventDate" ng-required="true"/>
+                        <input type="text" name="eventDate" class="form-control" ng-date ng-model="currentDummyEvent.eventDate" ng-required="false"/>
                         <span ng-show="eventCreationForm.submitted && eventCreationForm.eventDate.$invalid" class="error">{{'required'| translate}}</span>
                     </div>
                     <div class="col-md-6">
                         {{'due_date'| translate}}
-                        <input type="text" name="dueDate" class="form-control" ng-date ng-model="currentDummyEvent.dueDate" />
+                        <input type="text" name="dueDate" class="form-control" ng-date ng-model="currentDummyEvent.dueDate" ng-required="true"/>
                         <span ng-show="eventCreationForm.submitted && eventCreationForm.dueDate.$invalid" class="error">{{'required'| translate}}</span>
                     </div>                        
                 </div>
@@ -77,27 +77,39 @@
         <div ng-show="currentEvent && !showEventCreationDiv">
             <div class="row">
                 <div class="col-md-6">
-                    {{currentStage.reportDateDescription}}
-                    <input class="form-control" ng-date ng-model="newEventDate" ng-required="true" blur-or-change="saveEventDate()"/>
+                    {{currentEvent.reportDateDescription}}
+                    <input type="text"
+                           name="eventDate" 
+                           class="form-control" 
+                           ng-class="{'input-success': eventDateSaved}"
+                           ng-date 
+                           ng-model="currentEvent.eventDate" 
+                           ng-required="true" 
+                           blur-or-change="saveEventDate()"/>
                     <span ng-show="invalidDate" class="error">{{'date_required'| translate}}</span>     
                 </div>
                 <div class="col-md-6">
                     {{'due_date'| translate}}
-                    <input type="text" name="dueDate" class="form-control" ng-date ng-model="currentEvent.dueDate" ng-disabled="true"/>
+                    <input type="text" 
+                           name="dueDate" 
+                           class="form-control"
+                           ng-class="{'input-success': dueDateSaved}"
+                           ng-date 
+                           ng-model="currentEvent.dueDate" 
+                           blur-or-change="saveDueDate()" 
+                           ng-disabled="currentEvent.eventDate"/>
                 </div>                        
             </div>
-            <div class='row'><hr></div>
-            <div class='col-md-12' ng-if="customForm">
-                <a href ng-click="switchDataEntryForm()" title="{{displayCustomForm ? 'default_form' : 'custom_form'| translate}}"><span class="primary pull-right"><i class="fa fa-file-text fa-2x"></i></span></a>                
-                <!--<button type="button" class="btn btn-default pull-right" ng-click="switchDataEntryForm()">
-                    {{displayCustomForm ? 'default_form' : 'custom_form'| translate}}
-                </button>--> 
+            <div ng-show="currentEvent.eventDate">
+            
+                <div class='row'><hr></div>
+                <div class='col-md-12' ng-if="customForm">
+                    <a href ng-click="switchDataEntryForm()" title="{{displayCustomForm ? 'default_form' : 'custom_form'| translate}}"><span class="primary pull-right"><i class="fa fa-file-text fa-2x"></i></span></a>                
+                </div>
+                <div class="vertical-spacing" ng-if="displayCustomForm" ng-include="'components/dataentry/custom-form.html'"></div>  
+                <div class="vertical-spacing" ng-if="!displayCustomForm" ng-include="'components/dataentry/default-form.html'"></div>
+                <div class='row'><hr></div>                                
             </div>
-
-            <div class="vertical-spacing" ng-if="displayCustomForm" ng-include="'components/dataentry/custom-form.html'"></div>  
-            <div class="vertical-spacing" ng-if="!displayCustomForm" ng-include="'components/dataentry/default-form.html'"></div>
-
-            <div class='row'><hr></div>
             <div class="row">
                 <div class="col-md-10">
                     <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_your_note_here'| translate}}"></textarea>
@@ -112,7 +124,7 @@
 
                 <table class="table table-striped dhis2-table-hover">
                     <tr ng-repeat="note in currentEvent.notes">
-                        <td class="over-flow-hidden">
+                        <td class="overflow-ellipsis">
                             <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
                                 <div>{{note.value}}</div>
                             </d2-pop-over>
@@ -129,12 +141,13 @@
             <div class='row'><hr></div>
             <div class="form-group">
                 <div class="btn-group btn-group-justified">
-                    <a href ng-click="completeEvent()" class="btn btn-info" ng-disabled="currentEvent.status !== 'ACTIVE'">{{'complete'| translate}}</a>
-                    <a href ng-click="incompleteEvent()" class="btn btn-warning" ng-disabled="currentEvent.status !== 'COMPLETED'">{{'incomplete'| translate}}</a>
-                    <a href ng-click="validateEvent()" class="btn btn-info" ng-disabled="true">{{'validate'| translate}}</a>
-                    <a href ng-click="removeEvent()" class="btn btn-info">{{'remove'| translate}}</a>
+                        <a href ng-click="completeIncompleteEvent()" class="btn btn-warning" ng-if="currentEvent.eventDate && currentEvent.status === 'ACTIVE'">{{'complete'| translate}}</a>
+                        <a href ng-click="completeIncompleteEvent()" class="btn btn-warning" ng-if="currentEvent.eventDate && currentEvent.status === 'COMPLETED'">{{'incomplete'| translate}}</a>                       
+                        <a href ng-click="validateEvent()" class="btn btn-info" ng-disabled="true" ng-if="currentEvent.eventDate">{{'validate'| translate}}</a>
+                        <a href ng-click="skipEvent()" class="btn btn-warning" ng-if="!currentEvent.eventDate">{{'skipped'| translate}}</a>               
+                    <a href ng-click="deleteEvent()" class="btn btn-danger">{{'delete'| translate}}</a>
                 </div>
             </div>
-        </div>        
+    </div>        
     </div>
 </div>

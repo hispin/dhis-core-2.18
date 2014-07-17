@@ -442,7 +442,7 @@ public class EventController
         Event updatedEvent = JacksonUtils.fromJson( request.getInputStream(), Event.class );
         updatedEvent.setEvent( uid );
 
-        eventService.updateEventForNote( updatedEvent );
+        eventService.updateEventForEventDate( updatedEvent );
         ContextUtils.okResponse( response, "Event updated: " + uid );
     }
 

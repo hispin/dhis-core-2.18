@@ -30,10 +30,10 @@
             </button>
         </div>
 
-        <div ng-show='selectedEnrollment' class='remove-default-padding'>
+        <div ng-show='selectedEnrollment' class='remove-default-padding overflow-ellipsis'>
             <table class="table table-striped dhis2-table-hover">
                 <tr ng-repeat="note in selectedEnrollment.notes| filter:noteSearchText">
-                    <td class="over-flow-hidden">
+                    <td>
                         <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
                             <div>{{note.value}}</div>
                         </d2-pop-over>
