@@ -201,7 +201,8 @@ public class SaveDataValueAction
                 dataValue.setCategoryOptionCombo(optionCombo);
                 
                 dataValue.setValue( value.trim() );
-                dataValue.setTimestamp( now );
+                //dataValue.setTimestamp( now );
+                dataValue.setLastUpdated( now );
                 dataValue.setStoredBy( storedBy );
                 
                 dataValueService.addDataValue( dataValue );
@@ -212,7 +213,8 @@ public class SaveDataValueAction
             if( !(value.trim().equalsIgnoreCase( dataValue.getValue() )) )
             {
                 dataValue.setValue( value.trim() );
-                dataValue.setTimestamp( now );
+                //dataValue.setTimestamp( now );
+                dataValue.setLastUpdated( now );
                 dataValue.setStoredBy( storedBy );                
                 dataValueService.updateDataValue( dataValue );
           }            

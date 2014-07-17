@@ -40,8 +40,8 @@
             <col>
             <thead>
                 <tr>
-                    <th>$i18n.getString( "name" )</th>
-					<th>$i18n.getString( "type" )</th>
+                    <th>$i18n.getString( "type" )</th>
+					<th>$i18n.getString( "name" )</th>
                 </tr>
             </thead>
             <tbody id="list">
@@ -54,8 +54,8 @@
                         data-can-manage="$security.canManage( $lookup )"
                         data-can-update="$security.canUpdate( $lookup )"
                         data-can-delete="$security.canDelete( $lookup )">
-                        <td>$encoder.htmlEncode( $!lookup.name )</td>
-						<td>$encoder.htmlEncode( $!lookup.getDescription() )</td>
+                        <td>$encoder.htmlEncode( $!lookup.getType() )</td>
+						<td>$encoder.htmlEncode( $!lookup.name )</td>
                     </tr>
                 #end
             </tbody>

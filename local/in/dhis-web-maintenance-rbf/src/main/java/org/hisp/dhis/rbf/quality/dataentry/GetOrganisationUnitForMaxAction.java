@@ -16,7 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetOrganisationUnitForMaxAction implements Action
+public class GetOrganisationUnitForMaxAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -28,36 +29,36 @@ public class GetOrganisationUnitForMaxAction implements Action
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private LookupService lookupService;
-    
+
     public void setLookupService( LookupService lookupService )
     {
         this.lookupService = lookupService;
     }
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
     @Autowired
     private OrganisationUnitGroupService orgUnitGroupService;
-    
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
     private String message;
-    
+
     public String getMessage()
     {
         return message;
     }
-    
+
     private String orgUnitId;
-    
+
     public String getOrgUnitId()
     {
         return orgUnitId;
@@ -69,14 +70,14 @@ public class GetOrganisationUnitForMaxAction implements Action
     }
 
     private String orgUnitGroupId;
-    
-    public void setOrgUnitGroupId(String orgUnitGroupId) 
-    {
-		this.orgUnitGroupId = orgUnitGroupId;
-	}
 
-	private List<DataSet> dataSets = new ArrayList<DataSet>();
-    
+    public void setOrgUnitGroupId( String orgUnitGroupId )
+    {
+        this.orgUnitGroupId = orgUnitGroupId;
+    }
+
+    private List<DataSet> dataSets = new ArrayList<DataSet>();
+
     public List<DataSet> getDataSets()
     {
         return dataSets;
@@ -86,48 +87,50 @@ public class GetOrganisationUnitForMaxAction implements Action
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );        
-        
-        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupId ) );
-        
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer
+            .parseInt( orgUnitGroupId ) );
+
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_QUALITY_TYPE ) );
-        
+
         List<DataSet> pbfDataSets = new ArrayList<DataSet>();
-        
-        for( Lookup lookup : lookups )
+
+        for ( Lookup lookup : lookups )
         {
             Integer dataSetId = Integer.parseInt( lookup.getValue() );
-            
+
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
-            if( dataSet != null )
+            if ( dataSet != null )
             {
-                pbfDataSets.add(dataSet);
-           
+                pbfDataSets.add( dataSet );
+
             }
         }
-        
+
         dataSets.addAll( orgUnitGroup.getDataSets() );
-        
+
         System.out.println( "Before : " + dataSets.size() );
-        
+
         dataSets.retainAll( pbfDataSets );
-        
-        Collections.sort(dataSets);
-        
+
+        Collections.sort( dataSets );
+
         System.out.println( "After : " + dataSets.size() );
-        
+
         if ( dataSets.size() > 0 )
         {
             message = organisationUnit.getName();
-            
+
             return SUCCESS;
         }
         else
         {
             message = organisationUnit.getName();
-            
+
             return INPUT;
         }
 
