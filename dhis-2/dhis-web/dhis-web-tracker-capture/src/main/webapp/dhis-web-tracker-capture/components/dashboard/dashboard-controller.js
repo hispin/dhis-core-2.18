@@ -117,7 +117,7 @@ trackerCapture.controller('DashboardController',
     
     $scope.showHideWidgets = function(){
         var modalInstance = $modal.open({
-            templateUrl: "views/widgets.html",
+            templateUrl: "components/dashboard/dashboard-widgets.html",
             controller: "DashboardWidgetsController"
         });
 

@@ -1,15 +1,19 @@
 trackerCapture.controller('EnrollmentController',
         function($rootScope,
                 $scope,  
-                $filter,
                 $timeout,
                 $location,
+                orderByFilter,
+                DateUtils,
+                EventUtils,
                 storage,
+                DHIS2EventFactory,
                 AttributesFactory,
                 CurrentSelection,
                 TEIService,
                 EnrollmentService,
                 TranslationService,
+                ModalService,
                 DialogService) {
     TranslationService.translate();
 
@@ -19,10 +23,12 @@ trackerCapture.controller('EnrollmentController',
         //programs for enrollment        
         $scope.enrollments = [];
         $scope.showEnrollmentDiv = false;
-        $scope.showSchedulingDiv = false;    
+        $scope.showReSchedulingDiv = false;
+        $scope.showEnrollmentHistoryDiv = false;
+        $scope.hasEnrollmentHistory = false;
         $scope.selectedEnrollment = null;
         $scope.newEnrollment = {};
-        
+        $scope.eventsForRescheduling = [];
         var selections = CurrentSelection.get();
         $scope.selectedTei = angular.copy(selections.tei); 
         $scope.selectedEntity = selections.te;
@@ -40,21 +46,39 @@ trackerCapture.controller('EnrollmentController',
         else{
             $scope.broadCastSelections('dashboardWidgets');
         }
-    }); 
+    });
     
     $scope.loadEnrollmentDetails = function() {
         
-        if($scope.selectedProgram){
+        if($scope.selectedProgram){           
+            
+            $scope.selectedProgramWithStage = [];        
+            angular.forEach($scope.selectedProgram.programStages, function(stage){
+                $scope.selectedProgramWithStage[stage.id] = stage;
+            });
           
-            //check for possible enrollment
+            //check for possible enrollment, there is only one active enrollment
+            $scope.terminatedEnrollments = [];
+            $scope.completedEnrollments = [];
             angular.forEach($scope.enrollments, function(enrollment){
                 if(enrollment.program === $scope.selectedProgram.id ){
-                    $scope.selectedEnrollment = enrollment;
+                    if(enrollment.status === 'ACTIVE'){
+                        $scope.selectedEnrollment = enrollment;
+                    }
+                    if(enrollment.status === 'CANCELLED'){//check for cancelled ones
+                        $scope.terminatedEnrollments.push(enrollment);
+                        $scope.hasEnrollmentHistory = true;
+                    }
+                    if(enrollment.status === 'COMPLETED'){//check for completed ones
+                        $scope.completedEnrollments.push(enrollment);
+                        $scope.hasEnrollmentHistory = true;
+                    }
                 }
             }); 
             
             if($scope.selectedEnrollment){//enrollment exists
-                $scope.selectedEnrollment.dateOfIncident = $filter('date')($scope.selectedEnrollment.dateOfIncident, 'yyyy-MM-dd');
+                $scope.selectedEnrollment.dateOfIncident = DateUtils.format($scope.selectedEnrollment.dateOfIncident);
+                $scope.selectedEnrollment.dateOfEnrollment = DateUtils.format($scope.selectedEnrollment.dateOfEnrollment);
                 
                 $scope.programStages = [];   
                 
@@ -63,7 +87,7 @@ trackerCapture.controller('EnrollmentController',
                 angular.forEach($scope.selectedProgram.programStages, function(stage){                
                     stage.dueDate = moment(moment(incidentDate).add('d', stage.minDaysFromStart), 'YYYY-MM-DD')._d;
                     stage.dueDate = Date.parse(stage.dueDate);
-                    stage.dueDate= $filter('date')(stage.dueDate, 'yyyy-MM-dd');
+                    stage.dueDate = DateUtils.format(stage.dueDate);//$filter('date')(stage.dueDate, 'yyyy-MM-dd');
                     $scope.programStages.push(stage);               
                 });
             }
@@ -88,12 +112,22 @@ trackerCapture.controller('EnrollmentController',
         $scope.broadCastSelections('dashboardWidgets');
     };
         
-    $scope.showEnrollment = function(){        
+    $scope.showNewEnrollment = function(){       
+        if($scope.showEnrollmentDiv){//this is hiding enrollment div
+            /*currently the only way to cancel enrollment window is by going through
+            * the main dashboard controller. Here I am mixing program and programId, 
+            * as I didn't want to refetch program from server, the main dashboard
+            * has already fetched the programs. With the ID passed to it, it will
+            * pass back the actual program than ID. 
+            */
+           $scope.selectedProgram = ($location.search()).program;
+           $scope.broadCastSelections('mainDashboard');
+        }
         $scope.showEnrollmentDiv = !$scope.showEnrollmentDiv;
     };    
        
-    $scope.showScheduling = function(){        
-        $scope.showSchedulingDiv = !$scope.showSchedulingDiv;
+    $scope.showReScheduling = function(){        
+        $scope.showReSchedulingDiv = !$scope.showReSchedulingDiv;
     };
     
     $scope.enroll = function(){    
@@ -156,8 +190,8 @@ trackerCapture.controller('EnrollmentController',
                     });
                     
                     enrollment.enrollment = enrollmentResponse.reference;
-                    $scope.selectedEnrollment = enrollment;
-                    
+                    $scope.selectedEnrollment = enrollment;                    
+                    $scope.autoGenerateEvents();                    
                     $scope.broadCastSelections('dashboardWidgets'); 
                     
                     $scope.outerForm.submitted = false;      
@@ -182,7 +216,7 @@ trackerCapture.controller('EnrollmentController',
         }, 100);
     };
     
-    $scope.cancelEnrollment = function(){
+    $scope.hideEnrollmentDiv = function(){
         
         /*currently the only way to cancel enrollment window is by going through
          * the main dashboard controller. Here I am mixing program and programId, 
@@ -192,5 +226,93 @@ trackerCapture.controller('EnrollmentController',
          */
         $scope.selectedProgram = ($location.search()).program;
         $scope.broadCastSelections('mainDashboard'); 
+    };
+    
+    $scope.terminateEnrollment = function(){        
+
+        var modalOptions = {
+            closeButtonText: 'cancel',
+            actionButtonText: 'terminate',
+            headerText: 'terminate_enrollment',
+            bodyText: 'are_you_sure_to_terminate_enrollment'
+        };
+
+        ModalService.showModal({}, modalOptions).then(function(result){
+            
+            EnrollmentService.cancelled($scope.selectedEnrollment).then(function(data){                
+                $scope.selectedEnrollment.status = 'CANCELLED';
+                $scope.loadEnrollmentDetails();                
+            });
+        });
+    };
+    
+    $scope.completeEnrollment = function(){        
+
+        var modalOptions = {
+            closeButtonText: 'cancel',
+            actionButtonText: 'complete',
+            headerText: 'complete_enrollment',
+            bodyText: 'are_you_sure_to_complete_enrollment'
+        };
+
+        ModalService.showModal({}, modalOptions).then(function(result){
+            
+            EnrollmentService.completed($scope.selectedEnrollment).then(function(data){                
+                $scope.selectedEnrollment.status = 'COMPLETED';
+                $scope.loadEnrollmentDetails();                
+            });
+        });
+    };
+    
+    $scope.showEnrollmentHistory = function(){
+        //$scope.showEnrollmentHistoryDiv = !$scope.showEnrollmentHistoryDiv;
+        console.log('need to figure out how to deal with previous enrollments'); 
+    };
+    
+    $scope.getEventsForRescheduling = function(){
+        
+        DHIS2EventFactory.getEventsByStatus($scope.selectedTei.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id, 'ACTIVE', 'SCHEDULE').then(function(data){
+            if(angular.isObject(data)){
+                angular.forEach(data, function(ev){                    
+                    if(ev.enrollment === $scope.selectedEnrollment.enrollment){                        
+                        ev.name = $scope.selectedProgramWithStage[ev.programStage].name;                        
+                        ev.dueDate = DateUtils.format(ev.dueDate);                        
+                        ev.statusColor = EventUtils.getEventStatusColor(ev);                          
+                        $scope.eventsForRescheduling.push(ev);
+                        ev = EventUtils.setEventOrgUnitName(ev);
+                    }                                                                                 
+                });
+            }  
+            
+            if($scope.eventsForRescheduling.length > 0 ){
+                $scope.eventsForRescheduling = orderByFilter($scope.eventsForRescheduling, '-eventDate');
+                $scope.eventsForRescheduling.reverse();
+            }
+        });        
+    };
+    
+    $scope.autoGenerateEvents = function(){
+        if($scope.selectedTei && $scope.selectedProgram && $scope.selectedOrgUnit && $scope.selectedEnrollment){            
+            $scope.dhis2Events = {events: []};
+            angular.forEach($scope.selectedProgram.programStages, function(stage){
+                if(stage.autoGenerateEvent){
+                    var newEvent = {
+                            trackedEntityInstance: $scope.selectedTei.trackedEntityInstance,
+                            program: $scope.selectedProgram.id,
+                            programStage: stage.id,
+                            orgUnit: $scope.selectedOrgUnit.id,                        
+                            dueDate: EventUtils.getEventDueDate(stage, $scope.selectedEnrollment),
+                            status: 'SCHEDULE'
+                        };
+                    $scope.dhis2Events.events.push(newEvent);    
+                }
+            });
+            
+            if($scope.dhis2Events.events.length > 0){
+                DHIS2EventFactory.create($scope.dhis2Events).then(function(data) {
+                    console.log('the response is:  ', data);
+                });
+            }
+        }
     };
 });

@@ -160,28 +160,21 @@ public class JdbcEventStore
                 }
 
                 events.add( event );
-            }
-
-            if ( rowSet.getString( "pdv_value" ) == null || rowSet.getString( "de_uid" ) == null )
-            {
-                continue;
-            }
-
-            DataValue dataValue = new DataValue();
-            dataValue.setValue( rowSet.getString( "pdv_value" ) );
-            dataValue.setProvidedElsewhere( rowSet.getBoolean( "pdv_providedelsewhere" ) );
-            dataValue.setDataElement( rowSet.getString( "de_uid" ) );
-            dataValue.setStoredBy( rowSet.getString( "pdv_storedby" ) );
-
-            event.getDataValues().add( dataValue );
+            }            
             
-            if ( rowSet.getString( "psinote_value" ) == null )
+            if ( rowSet.getString( "pdv_value" ) != null && rowSet.getString( "de_uid" ) != null )
             {
-                continue;
-            }
+                DataValue dataValue = new DataValue();
+                dataValue.setValue( rowSet.getString( "pdv_value" ) );
+                dataValue.setProvidedElsewhere( rowSet.getBoolean( "pdv_providedelsewhere" ) );
+                dataValue.setDataElement( rowSet.getString( "de_uid" ) );
+                dataValue.setStoredBy( rowSet.getString( "pdv_storedby" ) );
 
-            if( !notes.contains( rowSet.getString( "psinote_id" ) ) )
-            {
+                event.getDataValues().add( dataValue );
+            }            
+            
+            if ( rowSet.getString( "psinote_value" ) != null && !notes.contains( rowSet.getString( "psinote_id" ) ) )
+            {                
                 Note note = new Note();
                 note.setValue( rowSet.getString( "psinote_value" ) );
                 note.setStoredDate( StringUtils.defaultIfEmpty( 

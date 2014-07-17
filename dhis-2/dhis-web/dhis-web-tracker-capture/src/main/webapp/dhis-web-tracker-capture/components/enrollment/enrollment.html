@@ -1,8 +1,15 @@
 <div class="panel panel-default" ng-controller="EnrollmentController">
-    <div class="panel-heading handle bold">
+    <div class="panel-heading handle bold">                                            
+        <!--<span ng-class="{'text-primary': !showEnrollmentHistoryDiv}">{{enrollmentWidget.title| translate}}</span>-->
         {{enrollmentWidget.title| translate}}
         <span class="nav-pills" ng-show="selectedProgram && !selectedEnrollment">
-            | <a href ng-click="showEnrollment()" title="{{'new_enrollment'| translate}}"><span class="bold">{{'new_enrollment'| translate}}</span></a>
+            | <a href ng-click="showNewEnrollment()" title="{{'new'| translate}}"><span class="bold">{{'new'| translate}}</span></a>
+        </span>
+        <span class="nav-pills" ng-show="terminatedEnrollments.length > 0 || completedEnrollments.length > 0">
+            | <a href ng-click="showEnrollmentHistory()" title="{{'history'| translate}}"><span class="bold">{{'history'| translate}}</span></a>
+        </span>        
+        <span class="nav-pills" ng-show="eventsForRescheduling.length > 0">
+            | <a href ng-click="showReScheduling()" title="{{'rescheduling'| translate}}"><span class="bold">{{'rescheduling'| translate}}</span></a>
         </span>
         <span class="pull-right">
             <a class="small-horizonal-spacing" href ng-click="expandCollapse(enrollmentWidget)">
@@ -13,60 +20,42 @@
         </span>
     </div>
     <div ng-show="enrollmentWidget.expand" class="panel-body dashboard-widget-container">
-        <div ng-if="selectedEnrollment">
-            <table class="table-borderless">
+        <!-- operations on selected enrollment begins -->
+        <div ng-if="selectedEnrollment && !showEnrollmentHistoryDiv && !showReSchedulingDiv">
+            <table class="table-borderless table-striped">
                 <tr class="col-md-12">
+                    <td class="col-md-6">
+                        {{selectedProgram.dateOfEnrollmentDescription}}
+                    </td>
+                    <td class="col-md-6">
+                        <input type="text" class="form-control" ng-date ng-model="selectedEnrollment.dateOfEnrollment" ng-disabled="true"/>
+                    </td>
+                </tr>
+                <tr class="col-md-12">                    
                     <td class="col-md-6">
                         {{selectedProgram.dateOfIncidentDescription}}
                     </td>
                     <td class="col-md-6">
                         <input type="text" class="form-control" ng-date ng-model="selectedEnrollment.dateOfIncident" ng-disabled="true"/>
                     </td>
-                </tr>
-            </table>
-            <div class='row'><hr></div>
-            <table class="table-borderless table-striped">
-                <thead>
-                    <tr class="col-md-12">
-                        <th class="col-md-6">
-                            {{'program_stage'| translate}}
-                        </th>
-                        <th class="col-md-6">
-                            {{'scheduled_date'| translate}}
-                        </th>
-                    </tr>                
-                </thead>           
-                <tr class="col-md-12" ng-repeat="programStage in programStages">
-                    <td class="col-md-6">
-                        {{programStage.name}}
-                    </td>
-                    <td class="col-md-6">
-                        <input type="text" class="form-control" ng-date ng-model="programStage.dueDate" ng-disabled="!showSchedulingDiv"/>
-                    </td>
-                </tr>
-            </table>
+                </tr>                
+            </table>            
             <div class="vertical-spacing small-horizonal-spacing">
                 <button type="button" 
-                        class="btn btn-primary"
-                        ng-disabled="showSchedulingDiv"
-                        ng-click="showScheduling()">
-                    {{'reschedule'| translate}}
+                        class="btn btn-info"
+                        ng-click="completeEnrollment()">
+                    {{'complete'| translate}}
                 </button>
                 <button type="button" 
-                        class="btn btn-primary"
-                        ng-show="showSchedulingDiv"
-                        ng-click="showScheduling()">
-                    {{'save'| translate}}
-                </button>
-                <button type="button" 
-                        class="btn btn-default"
-                        ng-show="showSchedulingDiv"
-                        ng-click="showScheduling()">
-                    {{'cancel'| translate}}
+                        class="btn btn-warning"
+                        ng-click="terminateEnrollment()">
+                    {{'terminate'| translate}}
                 </button>
             </div>
         </div>
-        
+        <!-- operations on selected enrollment ends -->
+
+        <!-- new enrollment registration form begins -->
         <form name="outerForm" novalidate>
             <div ng-if="showEnrollmentDiv">
                 <table class="table-borderless">
@@ -136,7 +125,6 @@
                         </td>
                     </tr>                        
                 </table>
-
                 <div class="vertical-spacing col-md-12">            
                     <button type="button" 
                             class="btn btn-primary"
@@ -145,15 +133,38 @@
                     </button>  
                     <button type="button" 
                             class="btn btn-default"
-                            ng-click="cancelEnrollment()">
+                            ng-click="showNewEnrollment()">
                         {{'cancel'| translate}}
                     </button>
                 </div>
             </div>
         </form>    
+        <!-- new enrollment registration form ends -->
 
-        <div ng-if="selectedProgram && !selectedEnrollment && !showEnrollmentDiv">
+        <!-- operations on historical enrollment begins -->
+        <div ng-if="showEnrollmentHistoryDiv">
+            enrollment history here...
+        </div>
+        <!-- operations on historical enrollment ends -->
+        
+        <div ng-if="showReSchedulingDiv && eventsForRescheduling.length > 0">
+            <table class="table-borderless table-striped">
+                <tr class="col-md-12" ng-repeat="ev in eventsForRescheduling">
+                    <td class="col-md-6">
+                        {{ev.name}}
+                    </td>
+                    <td class="col-md-6">
+                        <input type="text" class="form-control" ng-date ng-model="ev.dueDate" blur-or-change="saveScheduledDate(ev)"/>
+                    </td>
+                </tr>                                
+            </table>  
+        </div>
+        
+        <div ng-if="selectedProgram && !selectedEnrollment && !showEnrollmentDiv && !hasEnrollmentHistory">
             <div class="alert alert-warning">{{'not_yet_enrolled_enrollment'| translate}}</div> 
+        </div>
+        <div ng-if="selectedProgram && !selectedEnrollment && !showEnrollmentDiv && hasEnrollmentHistory">
+            <div class="alert alert-warning">{{'not_active_enrollment_exists'| translate}}</div> 
         </div>
         <div ng-if="!selectedProgram && programExists">
             <div class="alert alert-warning">{{'please_select_a_program_for_enrollment'| translate}}</div> 

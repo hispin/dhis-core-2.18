@@ -122,6 +122,7 @@ textarea {
     white-space: normal;
     padding-top: 5px;
     text-align: center;
+    border: 2px dotted;
 }
 
 .stage-container:hover {
@@ -442,6 +443,10 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     margin-top: 5px;    
 }
 
+.small-padding {
+    padding-left: 5px;
+    padding-right: 5px;
+}
 .search-container-main {
     width: 100%;
     float: left;
@@ -487,12 +492,10 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     margin-left: -5px;
 }
 
-.over-flow-hidden {
+.overflow-ellipsis {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    -webkit-text-overflow: ellipsis;
 }
 
 .modal-full-window .modal-dialog {
@@ -722,6 +725,10 @@ a {
 
 a:hover {
     color: inherit;
+}
+
+a:active {
+    color: red;
 }
 
 .note-container {

@@ -203,7 +203,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service to deal with enrollment */
-.service('EnrollmentService', function($http) {
+.service('EnrollmentService', function($http, EventUtils, DHIS2EventFactory) {
     
     return {        
         get: function( enrollmentUid ){
@@ -235,7 +235,19 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 return response.data;
             });
             return promise;
-        }
+        },
+        cancelled: function(enrollment){
+            var promise = $http.put('../api/enrollments/' + enrollment.enrollment + '/cancelled').then(function(response){
+                return response.data;               
+            });
+            return promise;           
+        },
+        completed: function(enrollment){
+            var promise = $http.put('../api/enrollments/' + enrollment.enrollment + '/completed').then(function(response){
+                return response.data;               
+            });
+            return promise;           
+        }        
     };   
 })
 
@@ -504,12 +516,12 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* factory for handling events */
-.factory('DHIS2EventFactory', function($http) {   
+.factory('DHIS2EventFactory', function($http, $q) {   
     
-    return {
+    return {     
         
         getEventsByStatus: function(entity, orgUnit, program, programStatus){   
-            var promise = $http.get( '../api/events.json?' + 'trackedEntityInstance=' + entity + '&orgUnit=' + orgUnit + '&program=' + program + '&programStatus=' + programStatus + '&paging=false').then(function(response){
+            var promise = $http.get( '../api/events.json?' + 'trackedEntityInstance=' + entity + '&orgUnit=' + orgUnit + '&program=' + program + '&programStatus=' + programStatus  + '&paging=false').then(function(response){
                 return response.data.events;
             });            
             return promise;
@@ -1119,6 +1131,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                               orgUnit: orgUnit.id,
                               orgUnitName: orgUnit.name,
                               dueDate: dueDate,
+                              sortingDate: dueDate,
                               name: programStage.name,
                               reportDateDescription: programStage.reportDateDescription,
                               status: 'ACTIVE'};
