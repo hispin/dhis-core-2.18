@@ -93,7 +93,9 @@ public class ShowUpdateAggregationQueryFormAction implements Action
         lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.PBF_AGG_TYPE ) );
         Collections.sort( lookups, IdentifiableObjectNameComparator.INSTANCE );
         
-        dataElementList = new ArrayList<DataElement>( dataElementService.getAllActiveDataElements() );
+        //dataElementList = new ArrayList<DataElement>( dataElementService.getAllActiveDataElements() );
+        dataElementList = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        
         Collections.sort( dataElementList, IdentifiableObjectNameComparator.INSTANCE );
         
         aggregation = aggregationConditionService.getCaseAggregationCondition( id );

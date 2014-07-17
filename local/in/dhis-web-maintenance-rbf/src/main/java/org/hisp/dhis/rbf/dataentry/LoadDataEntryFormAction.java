@@ -19,6 +19,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -277,10 +279,30 @@ public class LoadDataEntryFormAction implements Action
 
         period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
 
-        dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+        //dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-        Collections.sort( dataElements );
+        //Collections.sort( dataElements );
 
+        
+        List<Section> sectionList = new ArrayList<Section>( dataSet.getSections() );
+        List<DataElement> tempDEList = new ArrayList<DataElement>();
+        
+        if( sectionList != null && sectionList.size() > 0  )
+        {
+            Collections.sort(sectionList ,new SectionOrderComparator());
+            
+            for ( Section section : sectionList )
+            {
+               tempDEList.addAll( section.getDataElements() );
+            }
+            
+            dataElements.addAll( tempDEList );
+        }
+        else
+        {
+            dataElements.addAll( dataSet.getDataElements() );
+        }
+        
         optionCombos = new ArrayList<DataElementCategoryOptionCombo>();
 
         Map<Integer, Double> tariffDataValueMap = new HashMap<Integer, Double>();

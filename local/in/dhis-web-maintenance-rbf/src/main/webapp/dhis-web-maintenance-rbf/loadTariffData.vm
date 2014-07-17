@@ -126,7 +126,7 @@ $( "#addTariff" ).dialog({
 	{
 		var dataValue = {		        		
 		        		'orgUnitGroupId' : orgUnitGroupId,
-		        		'orgUnitUid' : organisationUnitId,
+		        		'organisationUnitId' : organisationUnitId,
 						'dataElementId' : dataElementId,								
 						'dataSetId' : dataSetId,
 						'startDate' : startDate,
@@ -325,10 +325,10 @@ $( "#addTariff" ).dialog({
 				<td data-sorter="shortDate" data-date-format="yyyymmdd">$simpleDateFormat.format($!tariff.endDate)</td>
 			##if($updateAuthority == 'Yes')
 	            <td>
-					<a href="javascript:deleteTariffDataValue('$tariff.organisationUnit.id','$tariff.orgUnitGroup.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate')">
+					<a href="javascript:deleteTariffDataValue('$tariff.organisationUnit.id','$tariff.orgUnitGroup.id','$tariff.dataElement.id','$tariff.dataSet.id','$simpleDateFormat.format($!tariff.startDate)','$simpleDateFormat.format($!tariff.endDate)')">
 						<img src="images/delete.png" width="17px"/>
 					</a>
-					<a href="javascript:editTariffDataValue('$tariff.organisationUnit.id','$tariff.orgUnitGroup.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate','$tariff.value','$!tariff.target','$!tariff.targetPercentage')">
+					<a href="javascript:editTariffDataValue('$tariff.organisationUnit.id','$tariff.orgUnitGroup.id','$tariff.dataElement.id','$tariff.dataSet.id','$simpleDateFormat.format($!tariff.startDate)','$simpleDateFormat.format($!tariff.endDate)','$tariff.value','$!tariff.target','$!tariff.targetPercentage')">
 						<img src="../images/edit.png" alt="$i18n.getString( 'edit' )" width="17px"/>
 					</a>				
 				</td>

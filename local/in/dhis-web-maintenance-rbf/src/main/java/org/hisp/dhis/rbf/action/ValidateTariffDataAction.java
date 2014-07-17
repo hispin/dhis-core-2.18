@@ -178,6 +178,9 @@ public class ValidateTariffDataAction
 
         TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( organisationUnit, orgUnitGroup, dataElement, dataSet, sDate, eDate );
         
+      
+        
+        
         if ( tariffDataValue == null )
         {
             String value = tariffDataValueService.getTariffDataValue(  orgUnitGroup.getId(), organisationUnit.getId(), dataSet.getId(), dataElement.getId(), startDate );
@@ -201,13 +204,23 @@ public class ValidateTariffDataAction
                 return ERROR;
             }
         }        
+        
+        if ( tariffDataValue != null && ( pbfType == null || tariffDataValue.getDataSet().getId() != Integer.parseInt( pbfType ) ) )
+        {
+            message = "Data Already Exists, Please Specify Another Date";
+
+            return ERROR;
+        }
+        
+        
+        /*
         else
         {
             message = "Data Already Exists, Please Specify Another Date";
             
             return ERROR;
         }
-       
+        */   
         
         message = "ok";
         

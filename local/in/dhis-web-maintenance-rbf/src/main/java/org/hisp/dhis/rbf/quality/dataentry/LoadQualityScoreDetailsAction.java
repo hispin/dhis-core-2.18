@@ -17,6 +17,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -194,7 +196,9 @@ public class LoadQualityScoreDetailsAction
         SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 
         Period period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
+        
         Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+        
         int tariff_setting_authority = 0;
         if ( tariff_authority == null )
         {
@@ -213,7 +217,7 @@ public class LoadQualityScoreDetailsAction
         String orgUnitBranchIds = "-1";
         for( OrganisationUnit orgUnit : orgUnitBranch )
         {
-        	orgUnitBranchIds += "," + orgUnit.getId();
+            orgUnitBranchIds += "," + orgUnit.getId();
         }
         
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
@@ -227,7 +231,31 @@ public class LoadQualityScoreDetailsAction
         	qualityMaxValueMap.putAll( qualityMaxValueService.getQualityMaxValues( orgUnitGroup, orgUnitBranchIds, dataSet, period ) );
         }
 
-        List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
+        //List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
+        
+        List<DataElement> dataElementList = new ArrayList<DataElement>();
+        
+        
+        List<Section> sectionList = new ArrayList<Section>( dataSet.getSections() );
+        List<DataElement> tempDEList = new ArrayList<DataElement>();
+        
+        if( sectionList != null && sectionList.size() > 0  )
+        {
+            Collections.sort(sectionList ,new SectionOrderComparator());
+            
+            for ( Section section : sectionList )
+            {
+               tempDEList.addAll( section.getDataElements() );
+            }
+            
+            dataElementList.addAll( tempDEList );
+        }
+        else
+        {
+            dataElementList.addAll( dataSet.getDataElements() );
+        }
+        
+        
         for ( DataElement de : dataElementList )
         {
             Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
@@ -250,23 +278,35 @@ public class LoadQualityScoreDetailsAction
             }
         }
         
-        Collections.sort( dataElements );
+        //Collections.sort( dataElements );
         
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PAYMENT_TYPE ) );
         DataSet paymentDataSet = null;
         for ( Lookup lookup : lookups )
         {
             String[] lookupType = lookup.getValue().split( ":" );
-            System.out.println( lookup.getValue() +"  " + Integer.parseInt( lookupType[0] ) + "  " + Integer.parseInt( dataSetId ) );
+            
+            //System.out.println( lookup.getValue() +" ----- " + Integer.parseInt( lookupType[0] ) + " ---- " + Integer.parseInt( dataSetId ) );
+            
             if ( Integer.parseInt( lookupType[1] ) == Integer.parseInt( dataSetId ) )
             {
+                //System.out.println( "Inside if condition ----- " + Integer.parseInt( lookupType[1] ) + " ---- " + Integer.parseInt( dataSetId ) );
                 paymentDataSet = dataSetService.getDataSet( Integer.parseInt(  lookupType[0] ) );
                 break;
             }
         }
         
         int flag = 1;
+        
+        //System.out.println(" Payment dataSet Name ---" + paymentDataSet.getName()  );
+        
+        //System.out.println( period.getStartDate() + " -- " + period.getEndDate() );
+        
+        //System.out.println(" Payment dataSet Period Type---" + paymentDataSet.getPeriodType() );
+        
+        
         Set<Period> periods = new HashSet<Period>( periodService.getIntersectingPeriodsByPeriodType( paymentDataSet.getPeriodType(), period.getStartDate(), period.getEndDate() ) );
+        
         for( Period period1 : periods )
         {
             Double overAllAdjustedAmt = defaultPBFAggregationService.calculateOverallUnadjustedPBFAmount( period1, organisationUnit, paymentDataSet );

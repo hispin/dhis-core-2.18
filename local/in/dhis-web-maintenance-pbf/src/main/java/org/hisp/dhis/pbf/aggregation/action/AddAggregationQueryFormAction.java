@@ -55,7 +55,9 @@ public class AddAggregationQueryFormAction
     {
         lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.PBF_AGG_TYPE ) );
 
-        dataElementList = new ArrayList<DataElement>( dataElementService.getAllActiveDataElements() );
+        //dataElementList = new ArrayList<DataElement>( dataElementService.getAllActiveDataElements() );
+        dataElementList = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        
         
 /*        Lookup lookup = lookupService.getLookupByName( "IS_PBF_AGGREGATED_DE_ATTRIBUTE_ID" );
         Iterator<DataElement> iterator = dataElementList.iterator();
