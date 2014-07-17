@@ -232,7 +232,6 @@ public class AddValidationRuleAction
         validationRule.setInstruction( instruction );
         validationRule.setImportance( importance );
         validationRule.setRuleType( ruleType );
-        validationRule.setType( ValidationRule.TYPE_ABSOLUTE );
         validationRule.setOperator( Operator.valueOf(operator) );
         validationRule.setLeftSide( leftSide );
         validationRule.setRightSide( rightSide );

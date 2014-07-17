@@ -90,7 +90,6 @@ extends AbstractBatchHandler<ValidationRule>
         statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "description" );
         statementBuilder.setColumn( "operator" );
-        statementBuilder.setColumn( "type" );
     }
     
     protected void setValues( ValidationRule validationRule )
@@ -100,7 +99,6 @@ extends AbstractBatchHandler<ValidationRule>
         statementBuilder.setValue( validationRule.getCode() );
         statementBuilder.setValue( validationRule.getDescription() );
         statementBuilder.setValue( validationRule.getOperator() );
-        statementBuilder.setValue( validationRule.getType() );
     }
 
 }

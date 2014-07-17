@@ -1108,7 +1108,6 @@ public class ValidationRuleServiceTest
 
         assertEquals( "ValidationRuleA", validationRuleA.getName() );
         assertEquals( "DescriptionA", validationRuleA.getDescription() );
-        assertEquals( ValidationRule.TYPE_ABSOLUTE, validationRuleA.getType() );
         assertEquals( equal_to, validationRuleA.getOperator() );
         assertNotNull( validationRuleA.getLeftSide().getExpression() );
         assertNotNull( validationRuleA.getRightSide().getExpression() );
@@ -1123,13 +1122,11 @@ public class ValidationRuleServiceTest
 
         assertEquals( "ValidationRuleA", validationRuleA.getName() );
         assertEquals( "DescriptionA", validationRuleA.getDescription() );
-        assertEquals( ValidationRule.TYPE_ABSOLUTE, validationRuleA.getType() );
         assertEquals( equal_to, validationRuleA.getOperator() );
 
         validationRuleA.setId( id );
         validationRuleA.setName( "ValidationRuleB" );
         validationRuleA.setDescription( "DescriptionB" );
-        validationRuleA.setType( ValidationRule.TYPE_STATISTICAL );
         validationRuleA.setOperator( greater_than );
 
         validationRuleService.updateValidationRule( validationRuleA );
@@ -1137,7 +1134,6 @@ public class ValidationRuleServiceTest
 
         assertEquals( "ValidationRuleB", validationRuleA.getName() );
         assertEquals( "DescriptionB", validationRuleA.getDescription() );
-        assertEquals( ValidationRule.TYPE_STATISTICAL, validationRuleA.getType() );
         assertEquals( greater_than, validationRuleA.getOperator() );
     }
 

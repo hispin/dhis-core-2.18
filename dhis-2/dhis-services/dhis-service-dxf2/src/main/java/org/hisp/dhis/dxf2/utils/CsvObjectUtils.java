@@ -203,7 +203,7 @@ public class CsvObjectUtils
 
         return list;
     }
-
+    
     private static List<OrganisationUnit> organisationUnitsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
@@ -302,6 +302,12 @@ public class CsvObjectUtils
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Sets the name, uid and code properties on the given object.
+     * 
+     * @param object the object to set identifiable properties.
+     * @param values the array of property values.
+     */
     private static void setIdentifiableObject( BaseIdentifiableObject object, String[] values )
     {
         object.setName( getSafe( values, 0, null, 230 ) );
