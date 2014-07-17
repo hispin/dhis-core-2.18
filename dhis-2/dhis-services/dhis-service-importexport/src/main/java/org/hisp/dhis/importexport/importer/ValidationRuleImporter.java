@@ -37,7 +37,6 @@ import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: AbstractValidationRuleConverter.java 4646 2008-02-26 14:54:29Z larshelg $
  */
 public class ValidationRuleImporter
     extends AbstractImporter<ValidationRule> implements Importer<ValidationRule>
