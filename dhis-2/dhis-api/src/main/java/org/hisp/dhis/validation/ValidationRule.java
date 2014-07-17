@@ -67,6 +67,9 @@ public class ValidationRule
     public static final String IMPORTANCE_MEDIUM = "medium";
     public static final String IMPORTANCE_LOW = "low";
 
+    public static final String RULE_TYPE_VALIDATION = "validation";
+    public static final String RULE_TYPE_SURVEILLANCE = "surveillance";
+   
     /**
      * A description of the ValidationRule.
      */
