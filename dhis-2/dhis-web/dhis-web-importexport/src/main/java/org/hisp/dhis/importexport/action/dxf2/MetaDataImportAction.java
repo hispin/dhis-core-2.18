@@ -54,6 +54,7 @@ import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.validation.ValidationRule;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -71,6 +72,7 @@ public class MetaDataImportAction
        put( "categoryoptiongroup", CategoryOptionGroup.class );
        put( "organisationunit", OrganisationUnit.class );
        put( "organisationunitgroup", OrganisationUnitGroup.class );
+       put( "validationrule", ValidationRule.class );
        put( "optionset", OptionSet.class );
     }};
     
