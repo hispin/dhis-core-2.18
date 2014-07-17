@@ -31,6 +31,7 @@
         </div>
         #end
         <div id="loginField">
+        <div id="loginArea">
             <div id="bannerArea">
             #if ( $keyCustomLoginPageLogo )
             <img src="../../external-static/logo_front.png"></a>
@@ -77,6 +78,7 @@
             #if ( $keyApplicationNotification )
             <div id="notificationArea">$!{keyApplicationNotification}</div>
             #end
+        </div>
         </div>
         <div id="footerArea">
         	<span id="poweredByLabel">Powered by</span>
