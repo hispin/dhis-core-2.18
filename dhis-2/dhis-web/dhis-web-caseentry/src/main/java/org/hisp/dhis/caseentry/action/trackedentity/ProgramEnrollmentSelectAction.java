@@ -36,7 +36,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
@@ -66,13 +65,6 @@ public class ProgramEnrollmentSelectAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private ProgramInstanceService programInstanceService;
-
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
     }
 
     private OrganisationUnitSelectionManager selectionManager;
