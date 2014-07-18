@@ -148,19 +148,6 @@
         </div>
         <!-- operations on historical enrollment ends -->
         
-        <div ng-if="showReSchedulingDiv && eventsForRescheduling.length > 0">
-            <table class="table-borderless table-striped">
-                <tr class="col-md-12" ng-repeat="ev in eventsForRescheduling">
-                    <td class="col-md-6">
-                        {{ev.name}}
-                    </td>
-                    <td class="col-md-6">
-                        <input type="text" class="form-control" ng-date ng-model="ev.dueDate" blur-or-change="saveScheduledDate(ev)"/>
-                    </td>
-                </tr>                                
-            </table>  
-        </div>
-        
         <div ng-if="selectedProgram && !selectedEnrollment && !showEnrollmentDiv && !hasEnrollmentHistory">
             <div class="alert alert-warning">{{'not_yet_enrolled_enrollment'| translate}}</div> 
         </div>
