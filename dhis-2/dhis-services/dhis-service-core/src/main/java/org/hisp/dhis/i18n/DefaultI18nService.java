@@ -154,6 +154,11 @@ public class DefaultI18nService
 
     public Map<String, String> getObjectPropertyValues( Object object )
     {
+        if ( object != null )
+        {
+            return null;
+        }
+        
         List<String> properties = getObjectPropertyNames( object );
 
         Map<String, String> translations = new HashMap<String, String>();
@@ -168,6 +173,11 @@ public class DefaultI18nService
 
     public List<String> getObjectPropertyNames( Object object )
     {
+        if ( object != null )
+        {
+            return null;
+        }
+        
         if ( !(object instanceof IdentifiableObject) )
         {
             throw new IllegalArgumentException( "I18n object must be identifiable: " + object );

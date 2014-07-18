@@ -64,7 +64,7 @@
       <tbody id="list">
         #foreach( $dataElementCategory in $dataElementCategories )
         #if( $dataElementCategory.id != $defaultCategory.id )
-        <tr id="tr${dataElementCategory.id}" data-id="$!dataElementCategory.id" data-uid="$!dataElementCategory.uid" data-type="Category" data-name="$encoder.htmlEncode( $!dataElementCategory.displayName )"
+        <tr id="tr${dataElementCategory.id}" data-id="$!dataElementCategory.id" data-uid="$!dataElementCategory.uid" data-type="DataElementCategory" data-name="$encoder.htmlEncode( $!dataElementCategory.displayName )"
             data-can-manage="$security.canManage( $dataElementCategory )"
             data-can-update="$security.canUpdate( $dataElementCategory )"
             data-can-delete="$security.canDelete( $dataElementCategory )">
