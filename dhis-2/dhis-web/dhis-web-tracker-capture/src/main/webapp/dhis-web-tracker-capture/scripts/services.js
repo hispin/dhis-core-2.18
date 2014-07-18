@@ -1096,7 +1096,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                     column.show = true;    
                 }
 
-                if(column.displayInListNoProgram){
+                if(column.displayInListNoProgram || column.displayInList){
                     column.show = true;
                 }           
             });     

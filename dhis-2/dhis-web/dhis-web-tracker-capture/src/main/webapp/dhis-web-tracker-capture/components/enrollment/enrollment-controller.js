@@ -310,7 +310,6 @@ trackerCapture.controller('EnrollmentController',
             
             if($scope.dhis2Events.events.length > 0){
                 DHIS2EventFactory.create($scope.dhis2Events).then(function(data) {
-                    console.log('the response is:  ', data);
                 });
             }
         }
