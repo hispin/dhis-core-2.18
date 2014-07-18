@@ -119,35 +119,33 @@ public class AddAppAction
             return FAILURE;
         }
         
-        ZipFile zip = new ZipFile( file );
-        ZipEntry entry = zip.getEntry( "manifest.webapp" );
-
-        if ( entry == null)
+        try ( ZipFile zip = new ZipFile( file ) )
         {
-            zip.close();
-            message = i18n.getString( "appmanager_manifest_not_found" );
-            log.warn( "Manifest file could not be found in app" );
-            return FAILURE;
-        }
-        
-        try
-        {
-            appManager.installApp( file, fileName, getRootPath() );
+            ZipEntry entry = zip.getEntry( "manifest.webapp" );
+    
+            if ( entry == null)
+            {
+                zip.close();
+                message = i18n.getString( "appmanager_manifest_not_found" );
+                log.warn( "Manifest file could not be found in app" );
+                return FAILURE;
+            }
             
-            message = i18n.getString( "appmanager_install_success" );
+            try
+            {
+                appManager.installApp( file, fileName, getRootPath() );
+                
+                message = i18n.getString( "appmanager_install_success" );
+                
+                return SUCCESS;
+            }
+            catch ( JsonParseException ex )
+            {
+                message = i18n.getString( "appmanager_invalid_json" );
+                log.error( "Error parsing JSON in manifest", ex );
+                return FAILURE;
+            }
         }
-        catch ( JsonParseException ex )
-        {
-            message = i18n.getString( "appmanager_invalid_json" );
-            log.error( "Error parsing JSON in manifest", ex );
-            return FAILURE;
-        }
-        finally
-        {
-            zip.close();
-        }
-
-        return SUCCESS;
     }
     
     private String getRootPath()
