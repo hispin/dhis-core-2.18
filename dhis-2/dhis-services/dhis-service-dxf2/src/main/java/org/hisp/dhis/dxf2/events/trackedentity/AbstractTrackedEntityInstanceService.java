@@ -177,6 +177,8 @@ public abstract class AbstractTrackedEntityInstanceService
     {
         ImportSummary importSummary = new ImportSummary();
         importSummary.setDataValueCount( null );
+        
+        trackedEntityInstance.trimValuesToNull();
 
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
         importConflicts.addAll( checkTrackedEntity( trackedEntityInstance ) );
@@ -214,6 +216,8 @@ public abstract class AbstractTrackedEntityInstanceService
     {
         ImportSummary importSummary = new ImportSummary();
         importSummary.setDataValueCount( null );
+
+        trackedEntityInstance.trimValuesToNull();
 
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
         importConflicts.addAll( checkRelationships( trackedEntityInstance ) );
@@ -340,6 +344,11 @@ public abstract class AbstractTrackedEntityInstanceService
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
 
+        if ( attribute == null || value == null )
+        {
+            return importConflicts;
+        }
+            
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
         QueryItem queryItem = new QueryItem( attribute, QueryOperator.EQ, value, false );
@@ -462,6 +471,12 @@ public abstract class AbstractTrackedEntityInstanceService
     private List<ImportConflict> validateAttributeType( Attribute attribute )
     {
         List<ImportConflict> importConflicts = Lists.newArrayList();
+        
+        if ( attribute == null || attribute.getValue() == null )
+        {
+            return importConflicts;
+        }
+
         TrackedEntityAttribute teAttribute = trackedEntityAttributeService.getTrackedEntityAttribute( attribute.getAttribute() );
 
         if ( teAttribute == null )
@@ -469,7 +484,7 @@ public abstract class AbstractTrackedEntityInstanceService
             importConflicts.add( new ImportConflict( "Attribute.attribute", "Does not point to a valid attribute." ) );
             return importConflicts;
         }
-
+        
         if ( attribute.getValue().length() > 255 )
         {
             importConflicts.add( new ImportConflict( "Attribute.value", "Value length is greater than 256 chars for attribute: " + attribute ) );

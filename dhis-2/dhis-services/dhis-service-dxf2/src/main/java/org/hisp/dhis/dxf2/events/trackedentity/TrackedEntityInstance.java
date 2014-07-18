@@ -28,13 +28,15 @@ package org.hisp.dhis.dxf2.events.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.common.DxfNamespaces;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.DxfNamespaces;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -56,6 +58,20 @@ public class TrackedEntityInstance
     {
     }
 
+    /**
+     * Trims the value property of attribute values to null.
+     */
+    public void trimValuesToNull()
+    {
+        if ( attributes != null )
+        {
+            for ( Attribute attribute : attributes )
+            {
+                attribute.setValue( StringUtils.trimToNull( attribute.getValue() ) );
+            }
+        }
+    }
+    
     @JsonProperty( required = true )
     @JacksonXmlProperty( isAttribute = true )
     public String getTrackedEntity()
