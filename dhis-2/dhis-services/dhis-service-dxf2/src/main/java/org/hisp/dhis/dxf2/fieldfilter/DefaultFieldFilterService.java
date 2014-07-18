@@ -285,6 +285,13 @@ public class DefaultFieldFilterService implements FieldFilterService
             if ( child != null )
             {
                 child.setName( fieldKey );
+
+                // TODO fix ugly hack, will be replaced by custom field serializer/deserializer
+                if ( child.isSimple() && PeriodType.class.isInstance( (((SimpleNode) child).getValue()) ) )
+                {
+                    child = new SimpleNode( child.getName(), ((PeriodType) ((SimpleNode) child).getValue()).getName() );
+                }
+
                 complexNode.addChild( fieldValue.getPipeline().process( child ) );
             }
         }
