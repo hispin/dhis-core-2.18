@@ -285,6 +285,7 @@ public class DefaultFieldFilterService implements FieldFilterService
 
             if ( child != null )
             {
+                child.setName( fieldKey );
                 complexNode.addChild( fieldValue.getPipeline().process( child ) );
             }
         }
