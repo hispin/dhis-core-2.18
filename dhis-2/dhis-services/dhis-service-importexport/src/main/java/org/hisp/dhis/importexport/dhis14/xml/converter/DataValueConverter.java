@@ -37,7 +37,6 @@ import static org.hisp.dhis.system.util.CsvUtils.getCsvValue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
