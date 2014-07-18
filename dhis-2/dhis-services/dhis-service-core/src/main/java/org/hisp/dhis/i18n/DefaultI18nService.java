@@ -154,7 +154,7 @@ public class DefaultI18nService
 
     public Map<String, String> getObjectPropertyValues( Object object )
     {
-        if ( object != null )
+        if ( object == null )
         {
             return null;
         }
@@ -173,7 +173,7 @@ public class DefaultI18nService
 
     public List<String> getObjectPropertyNames( Object object )
     {
-        if ( object != null )
+        if ( object == null )
         {
             return null;
         }
