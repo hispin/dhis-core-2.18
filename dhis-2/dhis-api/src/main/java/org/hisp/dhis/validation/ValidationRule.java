@@ -28,9 +28,13 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -43,18 +47,13 @@ import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.period.PeriodType;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Kristian Nordal
  */
-@JacksonXmlRootElement( localName = "validationRule", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "validationRule", namespace = DxfNamespaces.DXF_2_0 )
 public class ValidationRule
     extends BaseIdentifiableObject
 {
@@ -69,12 +68,12 @@ public class ValidationRule
 
     public static final String RULE_TYPE_VALIDATION = "validation";
     public static final String RULE_TYPE_SURVEILLANCE = "surveillance";
-   
+
     /**
      * A description of the ValidationRule.
      */
     private String description;
-    
+
     /**
      * Instruction to display to user when validation rule is violated.
      */
@@ -84,7 +83,7 @@ public class ValidationRule
      * The user-assigned importance of this rule (e.g. high, medium or low).
      */
     private String importance;
-    
+
     /**
      * Whether this is a VALIDATION or MONITORING type rule.
      */
@@ -99,7 +98,7 @@ public class ValidationRule
      * The type of period in which this rule is evaluated.
      */
     private PeriodType periodType;
-    
+
     /**
      * The left-side expression to be compared against the right side.
      */
@@ -139,7 +138,7 @@ public class ValidationRule
      * The number of high values sampled from previous periods that are discarded before averaging.
      */
     private Integer highOutliers;
-    
+
     /**
      * The number of low values sampled from previous periods that are discarded before averaging.
      */
@@ -147,7 +146,7 @@ public class ValidationRule
 
     // -------------------------------------------------------------------------
     // Constructors
-    // ------------------------------------------------------------------------- 
+    // -------------------------------------------------------------------------
 
     public ValidationRule()
     {
@@ -164,10 +163,10 @@ public class ValidationRule
         this.leftSide = leftSide;
         this.rightSide = rightSide;
     }
-    
+
     // -------------------------------------------------------------------------
     // Logic
-    // ------------------------------------------------------------------------- 
+    // -------------------------------------------------------------------------
 
     /**
      * Clears the left-side and right-side expressions. This can be useful, for example,
@@ -182,7 +181,7 @@ public class ValidationRule
 
     /**
      * Joins a validation rule group.
-     * 
+     *
      * @param validationRuleGroup the group to join.
      */
     public void addValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
@@ -193,7 +192,7 @@ public class ValidationRule
 
     /**
      * Leaves a validation rule group.
-     * 
+     *
      * @param validationRuleGroup the group to leave.
      */
     public void removeValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
@@ -205,7 +204,7 @@ public class ValidationRule
     /**
      * Gets the validation rule description, but returns the validation rule name
      * if there is no description.
-     * 
+     *
      * @return the description (or name).
      */
     public String getDescriptionNameFallback()
@@ -217,34 +216,34 @@ public class ValidationRule
      * Gets the data elements to evaluate for the current period. For validation-type
      * rules this means all data elements. For monitoring-type rules this means just
      * the left side elements.
-     * 
+     *
      * @return the data elements to evaluate for the current period.
      */
     public Set<DataElement> getCurrentDataElements()
     {
-    	Set<DataElement> currentDataElements = leftSide.getDataElementsInExpression();
-    	
-    	if ( RULE_TYPE_VALIDATION.equals( ruleType ) )
-    	{
-    	    currentDataElements = new HashSet<DataElement>( currentDataElements );
-    	    currentDataElements.addAll( rightSide.getDataElementsInExpression() );
-    	}
-    	
-    	return currentDataElements;
+        Set<DataElement> currentDataElements = leftSide.getDataElementsInExpression();
+
+        if ( RULE_TYPE_VALIDATION.equals( ruleType ) )
+        {
+            currentDataElements = new HashSet<DataElement>( currentDataElements );
+            currentDataElements.addAll( rightSide.getDataElementsInExpression() );
+        }
+
+        return currentDataElements;
     }
 
     /**
      * Gets the data elements to compare against for past periods. For validation-type
      * rules this returns null. For monitoring-type rules this is just the
      * right side elements.
-     * 
+     *
      * @return the data elements to evaluate for past periods.
      */
     public Set<DataElement> getPastDataElements()
     {
         return RULE_TYPE_VALIDATION.equals( ruleType ) ? null : rightSide.getDataElementsInExpression();
     }
-    
+
     /**
      * Indicates whether this validation rule has user groups to alert.
      */
@@ -257,10 +256,10 @@ public class ValidationRule
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Returns the instruction if it is not null or empty, if not returns the
      * left side description, operator and right side description if not null or
@@ -284,11 +283,11 @@ public class ValidationRule
 
     // -------------------------------------------------------------------------
     // Set and get methods
-    // -------------------------------------------------------------------------  
+    // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
         return description;
@@ -300,8 +299,8 @@ public class ValidationRule
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getInstruction()
     {
         return instruction;
@@ -313,8 +312,8 @@ public class ValidationRule
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getImportance()
     {
         return importance != null && !importance.isEmpty() ? importance : IMPORTANCE_MEDIUM;
@@ -326,8 +325,8 @@ public class ValidationRule
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getOrganisationUnitLevel()
     {
         return organisationUnitLevel;
@@ -339,8 +338,8 @@ public class ValidationRule
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getRuleType()
     {
         return ruleType != null && !ruleType.isEmpty() ? ruleType : RULE_TYPE_VALIDATION;
@@ -354,8 +353,8 @@ public class ValidationRule
     @JsonProperty
     @JsonSerialize( using = JacksonPeriodTypeSerializer.class )
     @JsonDeserialize( using = JacksonPeriodTypeDeserializer.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public PeriodType getPeriodType()
     {
         return periodType;
@@ -367,8 +366,8 @@ public class ValidationRule
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getSequentialSampleCount()
     {
         return sequentialSampleCount;
@@ -380,8 +379,8 @@ public class ValidationRule
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getAnnualSampleCount()
     {
         return annualSampleCount;
@@ -393,8 +392,8 @@ public class ValidationRule
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getHighOutliers()
     {
         return highOutliers;
@@ -406,8 +405,8 @@ public class ValidationRule
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getLowOutliers()
     {
         return lowOutliers;
@@ -419,8 +418,8 @@ public class ValidationRule
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Operator getOperator()
     {
         return operator;
@@ -432,8 +431,8 @@ public class ValidationRule
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Expression getLeftSide()
     {
         return leftSide;
@@ -445,8 +444,8 @@ public class ValidationRule
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Expression getRightSide()
     {
         return rightSide;
@@ -459,9 +458,9 @@ public class ValidationRule
 
     @JsonProperty( value = "validationRuleGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class} )
-    @JacksonXmlElementWrapper( localName = "validationRuleGroups", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "validationRuleGroup", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlElementWrapper( localName = "validationRuleGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "validationRuleGroup", namespace = DxfNamespaces.DXF_2_0 )
     public Set<ValidationRuleGroup> getGroups()
     {
         return groups;
@@ -489,7 +488,7 @@ public class ValidationRule
             {
                 leftSide.mergeWith( validationRule.getLeftSide() );
             }
-            
+
             if ( rightSide != null && validationRule.getRightSide() != null )
             {
                 rightSide.mergeWith( validationRule.getRightSide() );
