@@ -1839,8 +1839,7 @@ Ext.onReady( function() {
                             key = conf.finals.data.trendLine + columnIds[i];
 
                             for (var j = 0, value; j < data.length; j++) {
-                                value = data[j][replacedColumnIds[i]];
-                                regression.addData(j, parseFloat(value));
+                            	regression.addData(j, data[j][columnIds[i]]);
                             }
 
                             for (var j = 0; j < data.length; j++) {
