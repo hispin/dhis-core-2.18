@@ -211,14 +211,16 @@ public class JdbcResourceTableStore
         {
             sql += "(" +
                 "select deg.name from dataelementgroup deg " +
-                "inner join dataelementgroupmembers degm on degm.dataelementgroupid = deg.dataelementgroupid and degm.dataelementid = d.dataelementid " +
+                "inner join dataelementgroupmembers degm on degm.dataelementgroupid = deg.dataelementgroupid " +
                 "inner join dataelementgroupsetmembers degsm on degsm.dataelementgroupid = degm.dataelementgroupid and degsm.dataelementgroupsetid = " + groupSet.getId() + " " +
+                "where degm.dataelementid = d.dataelementid " +
                 "limit 1) as " + statementBuilder.columnQuote( groupSet.getName() ) + ", ";
             
             sql += "(" +
                 "select deg.uid from dataelementgroup deg " +
-                "inner join dataelementgroupmembers degm on degm.dataelementgroupid = deg.dataelementgroupid and degm.dataelementid = d.dataelementid " +
+                "inner join dataelementgroupmembers degm on degm.dataelementgroupid = deg.dataelementgroupid " +
                 "inner join dataelementgroupsetmembers degsm on degsm.dataelementgroupid = degm.dataelementgroupid and degsm.dataelementgroupsetid = " + groupSet.getId() + " " +
+                "where degm.dataelementid = d.dataelementid " +
                 "limit 1) as " + statementBuilder.columnQuote( groupSet.getUid() ) + ", ";            
         }
 
@@ -260,14 +262,16 @@ public class JdbcResourceTableStore
         {
             sql += "(" +
                 "select ig.name from indicatorgroup ig " +
-                "inner join indicatorgroupmembers igm on igm.indicatorgroupid = ig.indicatorgroupid and igm.indicatorid = i.indicatorid " +
+                "inner join indicatorgroupmembers igm on igm.indicatorgroupid = ig.indicatorgroupid " +
                 "inner join indicatorgroupsetmembers igsm on igsm.indicatorgroupid = igm.indicatorgroupid and igsm.indicatorgroupsetid = " + groupSet.getId() + " " +
+                "where igm.indicatorid = i.indicatorid " +
                 "limit 1) as " + statementBuilder.columnQuote( groupSet.getName() ) + ", ";
 
             sql += "(" +
                 "select ig.uid from indicatorgroup ig " +
-                "inner join indicatorgroupmembers igm on igm.indicatorgroupid = ig.indicatorgroupid and igm.indicatorid = i.indicatorid " +
+                "inner join indicatorgroupmembers igm on igm.indicatorgroupid = ig.indicatorgroupid " +
                 "inner join indicatorgroupsetmembers igsm on igsm.indicatorgroupid = igm.indicatorgroupid and igsm.indicatorgroupsetid = " + groupSet.getId() + " " +
+                "where igm.indicatorid = i.indicatorid " +
                 "limit 1) as " + statementBuilder.columnQuote( groupSet.getUid() ) + ", ";            
         }
 
@@ -309,14 +313,16 @@ public class JdbcResourceTableStore
         {
             sql += "(" + 
                 "select oug.name from orgunitgroup oug " +
-                "inner join orgunitgroupmembers ougm on ougm.orgunitgroupid = oug.orgunitgroupid and ougm.organisationunitid = ou.organisationunitid " +
+                "inner join orgunitgroupmembers ougm on ougm.orgunitgroupid = oug.orgunitgroupid " +
                 "inner join orgunitgroupsetmembers ougsm on ougsm.orgunitgroupid = ougm.orgunitgroupid and ougsm.orgunitgroupsetid = " + groupSet.getId() + " " +
+                "where ougm.organisationunitid = ou.organisationunitid " +
                 "limit 1) as " + statementBuilder.columnQuote( groupSet.getName() ) + ", ";
             
             sql += "(" +
                 "select oug.uid from orgunitgroup oug " +
-                "inner join orgunitgroupmembers ougm on ougm.orgunitgroupid = oug.orgunitgroupid and ougm.organisationunitid = ou.organisationunitid " +
+                "inner join orgunitgroupmembers ougm on ougm.orgunitgroupid = oug.orgunitgroupid " +
                 "inner join orgunitgroupsetmembers ougsm on ougsm.orgunitgroupid = ougm.orgunitgroupid and ougsm.orgunitgroupsetid = " + groupSet.getId() + " " +
+                "where ougm.organisationunitid = ou.organisationunitid " +
                 "limit 1) as " + statementBuilder.columnQuote( groupSet.getUid() ) + ", ";
         }
         
