@@ -126,18 +126,19 @@ public class ProgramEnrollmentSelectAction
         Iterator<Program> iterProgram = programs.iterator();
         while ( iterProgram.hasNext() )
         {
-            if ( iterProgram.next().getOnlyEnrollOnce() )
+            Program program = iterProgram.next();
+            for ( ProgramInstance programInstance : entityInstance.getProgramInstances() )
             {
-                iterProgram.remove();
+                if ( programInstance.getProgram().equals( program ) )
+                {
+                    if (programInstance.getStatus() == ProgramInstance.STATUS_ACTIVE 
+                        || program.getOnlyEnrollOnce()
+                        || ((programInstance.getStatus() == ProgramInstance.STATUS_COMPLETED && program.isSingleEvent() )))
+                    { 
+                        iterProgram.remove();
+                    }
+                }
             }
-        }
-
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( entityInstance,
-            ProgramInstance.STATUS_ACTIVE );
-
-        for ( ProgramInstance programInstance : programInstances )
-        {
-            programs.remove( programInstance.getProgram() );
         }
 
         return SUCCESS;
