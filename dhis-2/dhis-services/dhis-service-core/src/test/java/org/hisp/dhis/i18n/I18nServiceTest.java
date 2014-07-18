@@ -108,7 +108,7 @@ public class I18nServiceTest
         String className = DataElement.class.getSimpleName();
         
         DataElement dataElementA = createDataElement( 'A' );
-        int idA = dataElementService.addDataElement( dataElementA );
+        dataElementService.addDataElement( dataElementA );
         
         Map<String, String> translationsA = new HashMap<String, String>();
         translationsA.put( "name", "frenchNameA" );
@@ -135,13 +135,13 @@ public class I18nServiceTest
         String className = DataElement.class.getSimpleName();
         
         DataElement dataElementA = createDataElement( 'A' );
-        int idA = dataElementService.addDataElement( dataElementA );
+        dataElementService.addDataElement( dataElementA );
 
         DataElement dataElementB = createDataElement( 'B' );
-        int idB = dataElementService.addDataElement( dataElementB );
+        dataElementService.addDataElement( dataElementB );
 
         DataElement dataElementC = createDataElement( 'C' );
-        int idC = dataElementService.addDataElement( dataElementC );
+        dataElementService.addDataElement( dataElementC );
         
         List<DataElement> elements = new ArrayList<DataElement>();
         elements.add( dataElementA );

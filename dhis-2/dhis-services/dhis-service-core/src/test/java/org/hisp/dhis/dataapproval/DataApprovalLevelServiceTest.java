@@ -90,12 +90,10 @@ public class DataApprovalLevelServiceTest
     private DataApprovalLevel level3A;
     private DataApprovalLevel level3B;
     private DataApprovalLevel level3C;
-    private DataApprovalLevel level3D;
 
     private DataApprovalLevel level4;
     private DataApprovalLevel level4A;
     private DataApprovalLevel level4B;
-    private DataApprovalLevel level4C;
     private DataApprovalLevel level4D;
 
     private DataApprovalLevel level5;
@@ -149,12 +147,10 @@ public class DataApprovalLevelServiceTest
         level3A = new DataApprovalLevel( "3A", 3, setA );
         level3B = new DataApprovalLevel( "3B", 3, setB );
         level3C = new DataApprovalLevel( "3C", 3, setC );
-        level3D = new DataApprovalLevel( "3D", 3, setD );
 
         level4 = new DataApprovalLevel( "04", 4, null );
         level4A = new DataApprovalLevel( "4A", 4, setA );
         level4B = new DataApprovalLevel( "4B", 4, setB );
-        level4C = new DataApprovalLevel( "4C", 4, setC );
         level4D = new DataApprovalLevel( "4D", 4, setD );
 
         level5 = new DataApprovalLevel( "05", 5, null );
