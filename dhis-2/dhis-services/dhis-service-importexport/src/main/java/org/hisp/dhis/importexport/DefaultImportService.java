@@ -182,7 +182,7 @@ public class DefaultImportService
                 dxfReader = XMLFactory.getXMLReader( dxfInStream );                
             }
 
-            log.debug( "Sending DXFv1 to converter" );
+            log.debug( "Sending DXFv1 to converter, root local name: " + rootLocalName + ", name space: " + rootNameSpace );
             converter.read( dxfReader, params, state );
         }
         catch ( IOException ex )
