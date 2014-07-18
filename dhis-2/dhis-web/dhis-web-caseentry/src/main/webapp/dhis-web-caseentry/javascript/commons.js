@@ -1035,34 +1035,29 @@ function programOnchange(programId) {
 	} else {
 		var type = $('#enrollmentDiv [name=programId] option:selected').attr(
 				'programType')
-		if (type == '2') {
-			hideById('enrollmentDateTR');
-			hideById('dateOfIncidentTR');
-			disable('enrollmentDateField');
-			disable('dateOfIncidentField');
+		
+		showById('enrollmentDateTR');
+		enable('enrollmentDateField');
+		var dateOfEnrollmentDescription = $(
+				'#enrollmentDiv [name=programId] option:selected').attr(
+				'dateOfEnrollmentDescription');
+		var dateOfIncidentDescription = $(
+				'#enrollmentDiv [name=programId] option:selected').attr(
+				'dateOfIncidentDescription');
+		setInnerHTML('enrollmentDateDescription',
+				dateOfEnrollmentDescription);
+		setInnerHTML('dateOfIncidentDescription', dateOfIncidentDescription);
+		var displayIncidentDate = $(
+				'#enrollmentDiv [name=programId] option:selected').attr(
+				'displayIncidentDate');
+		if (displayIncidentDate == 'true') {
+			showById('dateOfIncidentTR');
+			enable('dateOfIncidentField');
 		} else {
-			showById('enrollmentDateTR');
-			enable('enrollmentDateField');
-			var dateOfEnrollmentDescription = $(
-					'#enrollmentDiv [name=programId] option:selected').attr(
-					'dateOfEnrollmentDescription');
-			var dateOfIncidentDescription = $(
-					'#enrollmentDiv [name=programId] option:selected').attr(
-					'dateOfIncidentDescription');
-			setInnerHTML('enrollmentDateDescription',
-					dateOfEnrollmentDescription);
-			setInnerHTML('dateOfIncidentDescription', dateOfIncidentDescription);
-			var displayIncidentDate = $(
-					'#enrollmentDiv [name=programId] option:selected').attr(
-					'displayIncidentDate');
-			if (displayIncidentDate == 'true') {
-				showById('dateOfIncidentTR');
-				enable('dateOfIncidentField');
-			} else {
-				hideById('dateOfIncidentTR');
-				disable('dateOfIncidentField');
-			}
+			hideById('dateOfIncidentTR');
+			disable('dateOfIncidentField');
 		}
+		
 		var program = $('#programEnrollmentSelectDiv [id=programId] option:selected');
 		$('#identifierAndAttributeDiv')
 				.load("getAttribute.action", {
