@@ -87,15 +87,15 @@
                             <ng-form name="innerForm">
                                 <div ng-switch="attribute.valueType">
                                     <div ng-switch-when="date">
-                                        <input type="text" class="form-control" ng-date ng-model="attribute.value" ng-required="attribute.mandatory"/>
+                                        <input type="text" class="form-control" name="foo" ng-date ng-model="attribute.value" ng-required="attribute.mandatory"/>
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
                                     </div>
                                     <div ng-switch-when="trueOnly">
-                                        <input type="checkbox" class="form-control" ng-model="attribute.value" ng-required="attribute.mandatory"/>
+                                        <input type="checkbox" class="form-control" name="foo" ng-model="attribute.value" ng-required="attribute.mandatory"/>
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
                                     </div>
                                     <div ng-switch-when="bool">
-                                        <select ng-model="attribute.value" class="form-control" ng-required="attribute.mandatory">
+                                        <select ng-model="attribute.value" name="foo" class="form-control" ng-required="attribute.mandatory">
                                             <option value="">{{'please_select'| translate}}</option>                        
                                             <option value="0">{{'no'| translate}}</option>
                                             <option value="1">{{'yes'| translate}}</option>
@@ -104,6 +104,7 @@
                                     </div>
                                     <div ng-switch-when="optionSet">
                                         <input type="text" 
+                                               name="foo"
                                                class="form-control"
                                                ng-model="attribute.value"                                                 
                                                typeahead="option for option in attribute.optionSet.options | filter:$viewValue | limitTo:20" 
@@ -113,11 +114,11 @@
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
                                     </div>
                                     <div ng-switch-when="number">
-                                        <input type="number" class="form-control" ng-model="attribute.value" ng-required="attribute.mandatory"/>
+                                        <input type="number" class="form-control" name="foo" ng-model="attribute.value" ng-required="attribute.mandatory"/>
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
                                     </div>
                                     <div ng-switch-default>
-                                        <input type="text" class="form-control" ng-model="attribute.value" ng-required="attribute.mandatory"/>
+                                        <input type="text" class="form-control" name="foo" ng-model="attribute.value" ng-required="attribute.mandatory"/>
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
                                     </div>
                                 </div>

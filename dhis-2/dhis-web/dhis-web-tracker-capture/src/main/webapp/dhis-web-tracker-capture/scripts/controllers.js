@@ -18,9 +18,12 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 TEIGridService,
                 TEIService) {  
     
+    $scope.dashboardProgramId = ($location.search()).program; 
+            
     //Selection
     $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];         
     $scope.selectedOuMode = $scope.ouModes[0];
+    $scope.dashboardProgramId = ($location.search()).program; 
     
     //Paging
     $scope.pager = {pageSize: 50, page: 1, toolBarDisplay: 5};   
@@ -76,6 +79,24 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                     $scope.search($scope.searchMode.listAll);                
                 });  
             }                     
+        }
+    });
+    
+    //watch for program feedback (this is when coming back from dashboar)
+    $scope.$watch('dashboardProgramId', function() {           
+        
+        if( !angular.isUndefined($scope.dashboardProgramId) && $scope.dashboardProgramId){               
+            $scope.selectedOrgUnit = storage.get('SELECTED_OU');            
+            
+            ProgramFactory.get($scope.dashboardProgramId).then(function(program){
+                $scope.selectedProgram = program;
+                AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
+                    $scope.attributes = atts;   
+                    $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
+                    $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);      
+                    $scope.getProgramAttributes($scope.selectedProgram);
+                });              
+            });
         }
     });
     

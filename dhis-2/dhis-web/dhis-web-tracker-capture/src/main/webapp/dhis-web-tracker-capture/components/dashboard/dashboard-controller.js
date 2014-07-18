@@ -99,7 +99,7 @@ trackerCapture.controller('DashboardController',
     };     
     
     $scope.back = function(){
-        $location.path('/');
+        $location.path('/').search({program: $scope.selectedProgramId});                   
     };
     
     $scope.displayEnrollment = false;
