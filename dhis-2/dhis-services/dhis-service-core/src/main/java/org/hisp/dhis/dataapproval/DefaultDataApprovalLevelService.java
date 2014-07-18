@@ -37,8 +37,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -57,8 +55,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataApprovalLevelService
     implements DataApprovalLevelService
 {
-    private final static Log log = LogFactory.getLog( DefaultDataApprovalService.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

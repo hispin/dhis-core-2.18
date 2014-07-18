@@ -86,10 +86,6 @@ public class DataApprovalStoreTest
 
     private DataApprovalLevel level2;
 
-    private DataApprovalLevel level3;
-
-    private DataApprovalLevel level4;
-
     private DataSet dataSetA;
 
     private DataSet dataSetB;
@@ -125,8 +121,6 @@ public class DataApprovalStoreTest
 
         level1 = new DataApprovalLevel( "01", 1, null );
         level2 = new DataApprovalLevel( "02", 2, null );
-        level3 = new DataApprovalLevel( "03", 3, null );
-        level4 = new DataApprovalLevel( "04", 4, null );
 
         PeriodType periodType = PeriodType.getPeriodTypeByName( "Monthly" );
 

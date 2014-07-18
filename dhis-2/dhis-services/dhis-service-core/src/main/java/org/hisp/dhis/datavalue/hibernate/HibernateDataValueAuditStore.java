@@ -92,6 +92,7 @@ public class HibernateDataValueAuditStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<DataValueAudit> getDataValueAudits( DataElement dataElement, Period period,
         OrganisationUnit organisationUnit, DataElementCategoryOptionCombo categoryOptionCombo )
     {

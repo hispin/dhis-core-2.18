@@ -42,7 +42,7 @@ import static org.hisp.dhis.system.util.CollectionUtils.*;
  * @author Jim Grace
  * @version $Id$
  */
-class DataApprovalPeriodAggregator
+public class DataApprovalPeriodAggregator
 {
     /**
      * Represents the data approval state transitions from a current state
@@ -209,7 +209,7 @@ class DataApprovalPeriodAggregator
      * @param <T> type of items
      * @return the first non-null item
      */
-    private static <T> T firstNonNull(T ...values)
+    private static <T> T firstNonNull( T ...values) 
     {
         for ( T value : values )
         {
@@ -218,6 +218,7 @@ class DataApprovalPeriodAggregator
                 return value;
             }
         }
+        
         return null;
     }
 }
