@@ -83,13 +83,6 @@ public class AddAppAction
         this.fileName = fileName;
     }
 
-    private String contentType;
-
-    public void setUploadContentType( String contentType )
-    {
-        this.contentType = contentType;
-    }
-
     private I18n i18n;
 
     public void setI18n( I18n i18n )
