@@ -111,8 +111,8 @@ public class AccountController
     
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @RequestMapping( value = "/recovery", method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody String recoverAccount(
+    @RequestMapping( value = "/recovery", method = RequestMethod.POST )
+    public void recoverAccount(
         @RequestParam String username,
         HttpServletRequest request,
         HttpServletResponse response )
@@ -121,34 +121,33 @@ public class AccountController
 
         if ( !systemSettingManager.accountRecoveryEnabled() )
         {
-            response.setStatus( HttpServletResponse.SC_CONFLICT );
-            return "Account recovery is not enabled";
+            ContextUtils.conflictResponse( response, "Account recovery is not enabled" );
+            return;
         }
 
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
 
         if ( credentials == null )
         {
-            response.setStatus( HttpServletResponse.SC_CONFLICT );
-            return "User does not exist: " + username;
+            ContextUtils.conflictResponse( response, "User does not exist: " + username );
+            return;
         }
         
         boolean recover = securityService.sendRestoreMessage( credentials, rootPath, RestoreOptions.RECOVER_PASSWORD_OPTION );
 
         if ( !recover )
         {
-            response.setStatus( HttpServletResponse.SC_CONFLICT );
-            return "Account could not be recovered";
+            ContextUtils.conflictResponse( response, "Account could not be created" );
+            return;
         }
 
         log.info( "Recovery message sent for user: " + username );
 
-        response.setStatus( HttpServletResponse.SC_OK );
-        return "Recovery message sent";
+        ContextUtils.okResponse( response, "Recovery message sent" );
     }
 
-    @RequestMapping( value = "/restore", method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody String restoreAccount(
+    @RequestMapping( value = "/restore", method = RequestMethod.POST )
+    public void restoreAccount(
         @RequestParam String username,
         @RequestParam String token,
         @RequestParam String code,
@@ -158,46 +157,45 @@ public class AccountController
     {
         if ( !systemSettingManager.accountRecoveryEnabled() )
         {
-            response.setStatus( HttpServletResponse.SC_CONFLICT );
-            return "Account recovery is not enabled";
+            ContextUtils.conflictResponse( response, "Account recovery is not enabled" );
+            return;
         }
 
         if ( password == null || !ValidationUtils.passwordIsValid( password ) )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Password is not specified or invalid";
+            ContextUtils.badRequestResponse( response, "Password is not specified or invalid" );
+            return;
         }
 
         if ( password.trim().equals( username.trim() ) )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Password cannot be equal to username";
+            ContextUtils.badRequestResponse( response, "Password cannot be equal to username" );
+            return;
         }
 
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
 
         if ( credentials == null )
         {
-            response.setStatus( HttpServletResponse.SC_CONFLICT );
-            return "User does not exist: " + username;
+            ContextUtils.conflictResponse( response, "User does not exist: " + username );
+            return;
         }
         
         boolean restore = securityService.restore( credentials, token, code, password, RestoreType.RECOVER_PASSWORD );
 
         if ( !restore )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Account could not be restored";
+            ContextUtils.badRequestResponse( response, "Account could not be restored" );
+            return;
         }
 
         log.info( "Account restored for user: " + username );
 
-        response.setStatus( HttpServletResponse.SC_OK );
-        return "Account restored";
+        ContextUtils.okResponse( response, "Account restored" );
     }
 
-    @RequestMapping( method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody String createAccount(
+    @RequestMapping( method = RequestMethod.POST )
+    public void createAccount(
         @RequestParam String username,
         @RequestParam String firstName,
         @RequestParam String surname,
@@ -223,24 +221,24 @@ public class AccountController
         {
             if ( !systemSettingManager.accountInviteEnabled() )
             {
-                response.setStatus( HttpServletResponse.SC_CONFLICT );
-                return "Account invite is not enabled";
+                ContextUtils.conflictResponse( response, "Account invite is not enabled" );
+                return;
             }
 
             credentials = userService.getUserCredentialsByUsername( inviteUsername );
 
             if ( credentials == null )
             {
-                response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-                return "Invitation link not valid";
+                ContextUtils.badRequestResponse( response, "Invitation link not valid" );
+                return;
             }
 
             boolean canRestore = securityService.canRestoreNow( credentials, inviteToken, inviteCode, RestoreType.INVITE );
 
             if ( !canRestore )
             {
-                response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-                return "Invitation code not valid";
+                ContextUtils.badRequestResponse( response, "Invitation code not valid" );
+                return;
             }
 
             RestoreOptions restoreOptions = securityService.getRestoreOptions( inviteToken );
@@ -253,8 +251,8 @@ public class AccountController
 
             if ( !allowed )
             {
-                response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-                return "User self registration is not allowed";
+                ContextUtils.badRequestResponse( response, "User self registration is not allowed" );
+                return;
             }
         }
 
@@ -278,72 +276,71 @@ public class AccountController
 
         if ( username == null || username.trim().length() > MAX_LENGTH )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "User name is not specified or invalid";
+            ContextUtils.badRequestResponse( response, "User name is not specified or invalid" );
         }
 
         UserCredentials usernameAlreadyTakenCredentials = userService.getUserCredentialsByUsername( username );
 
         if ( canChooseUsername && usernameAlreadyTakenCredentials != null )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "User name is already taken";
+            ContextUtils.badRequestResponse( response, "User name is already taken" );
+            return;
         }
 
         if ( firstName == null || firstName.trim().length() > MAX_LENGTH )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "First name is not specified or invalid";
+            ContextUtils.badRequestResponse( response, "First name is not specified or invalid" );
+            return;
         }
 
         if ( surname == null || surname.trim().length() > MAX_LENGTH )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Last name is not specified or invalid";
+            ContextUtils.badRequestResponse( response, "Last name is not specified or invalid" );
+            return;
         }
 
         if ( password == null || !ValidationUtils.passwordIsValid( password ) )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Password is not specified or invalid";
+            ContextUtils.badRequestResponse( response, "Password is not specified or invalid" );
+            return;
         }
 
         if ( password.trim().equals( username.trim() ) )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Password cannot be equal to username";
+            ContextUtils.badRequestResponse( response, "Password cannot be equal to username" );
+            return;
         }
 
         if ( email == null || !ValidationUtils.emailIsValid( email ) )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Email is not specified or invalid";
+            ContextUtils.badRequestResponse( response,  "Email is not specified or invalid" );
+            return;
         }
 
         if ( phoneNumber == null || phoneNumber.trim().length() > 30 )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Phone number is not specified or invalid";
+            ContextUtils.badRequestResponse( response, "Phone number is not specified or invalid" );
+            return;
         }
 
         if ( employer == null || employer.trim().length() > MAX_LENGTH )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Employer is not specified or invalid";
+            ContextUtils.badRequestResponse( response, "Employer is not specified or invalid" );
+            return;
         }
 
         if ( !systemSettingManager.selfRegistrationNoRecaptcha() )
         {
             if ( recapChallenge == null )
             {
-                response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-                return "Recaptcha challenge must be specified";
+                ContextUtils.badRequestResponse( response, "Recaptcha challenge must be specified" );
+                return;
             }
 
             if ( recapResponse == null )
             {
-                response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-                return "Recaptcha response must be specified";
+                ContextUtils.badRequestResponse( response, "Recaptcha response must be specified" );
+                return;
             }
 
             // ---------------------------------------------------------------------
@@ -354,8 +351,8 @@ public class AccountController
 
             if ( results == null || results.length == 0 )
             {
-                response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-                return "Captcha could not be verified due to a server error";
+                ContextUtils.errorResponse( response, "Captcha could not be verified due to a server error" );
+                return;
             }
 
             // ---------------------------------------------------------------------
@@ -366,8 +363,8 @@ public class AccountController
             {
                 log.info( "Recaptcha failed with code: " + (results.length > 0 ? results[1] : "") );
 
-                response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-                return "The characters you entered did not match the word verification, try again";
+                ContextUtils.badRequestResponse( response, "The characters you entered did not match the word verification, try again" );
+                return;
             }
         }
 
@@ -383,8 +380,8 @@ public class AccountController
             {
                 log.info( "Invite restore failed for: " + inviteUsername );
 
-                response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-                return "Unable to create invited user account";
+                ContextUtils.badRequestResponse( response, "Unable to create invited user account" );
+                return;
             }
 
             User user = credentials.getUser();
@@ -442,12 +439,11 @@ public class AccountController
 
         authenticate( username, password, authorities, request );
 
-        response.setStatus( HttpServletResponse.SC_CREATED );
-        return "Account created";
+        ContextUtils.createdResponse( response, "Account created", null );
     }
 
-    @RequestMapping( method = RequestMethod.PUT, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody String updatePassword(
+    @RequestMapping( method = RequestMethod.PUT )
+    public void updatePassword(
         @RequestParam String oldPassword,
         @RequestParam String password,
         HttpServletRequest request,
@@ -461,40 +457,40 @@ public class AccountController
 
         if ( userService.credentialsNonExpired( credentials ) )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             result.put( "status", "NON_EXPIRED" );
             result.put( "message", "Account is not expired, redirecting to login." );
 
-            return objectMapper.writeValueAsString( result );
+            ContextUtils.badRequestResponse( response, objectMapper.writeValueAsString( result ) );
+            return;
         }
 
         String oldPasswordEncoded = passwordManager.encodePassword( username, oldPassword );
 
         if ( !credentials.getPassword().equals( oldPasswordEncoded ) )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             result.put( "status", "NON_MATCHING_PASSWORD" );
             result.put( "message", "Old password is wrong, please correct and try again." );
 
-            return objectMapper.writeValueAsString( result );
+            ContextUtils.badRequestResponse( response, objectMapper.writeValueAsString( result ) );
+            return;
         }
 
         if ( password == null || !ValidationUtils.passwordIsValid( password ) )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             result.put( "status", "PASSWORD_INVALID" );
             result.put( "message", "Password is not specified or invalid" );
 
-            return objectMapper.writeValueAsString( result );
+            ContextUtils.badRequestResponse( response, objectMapper.writeValueAsString( result ) );
+            return;
         }
 
         if ( password.trim().equals( username.trim() ) )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             result.put( "status", "PASSWORD_EQUAL_TO_USERNAME" );
             result.put( "message", "Password cannot be equal to username" );
 
-            return objectMapper.writeValueAsString( result );
+            ContextUtils.badRequestResponse( response, objectMapper.writeValueAsString( result ) );
+            return;
         }
 
         String passwordEncoded = passwordManager.encodePassword( username, password );
@@ -507,18 +503,22 @@ public class AccountController
 
         result.put( "message", "Account was updated." );
 
-        return objectMapper.writeValueAsString( result );
+        ContextUtils.okResponse( response, objectMapper.writeValueAsString( result ) );
     }
 
-    @RequestMapping( value = "/username", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
-    public @ResponseBody String validateUserName( @RequestParam String username )
+    @RequestMapping( value = "/username", method = RequestMethod.GET )
+    public void validateUserName( @RequestParam String username, HttpServletResponse response ) throws IOException
     {
         boolean valid = username != null && userService.getUserCredentialsByUsername( username ) == null;
 
         // Custom code required because of our hacked jQuery validation
 
-        return valid ? "{ \"response\": \"success\", \"message\": \"\" }" :
-            "{ \"response\": \"error\", \"message\": \"Username is already taken\" }";
+        Map<String, String> result = new HashMap<String, String>();
+
+        result.put( "response", valid ? "success" : "error" );
+        result.put( "message", valid ? "" : "Username is already taken" );
+
+        ContextUtils.okResponse( response, objectMapper.writeValueAsString( result ) );
     }
 
     // ---------------------------------------------------------------------
