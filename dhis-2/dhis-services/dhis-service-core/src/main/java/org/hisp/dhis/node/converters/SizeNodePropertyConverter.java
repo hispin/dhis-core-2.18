@@ -33,7 +33,6 @@ import org.hisp.dhis.node.Node;
 import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.schema.Property;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 
@@ -41,12 +40,12 @@ import java.util.Collection;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-public class IsNotEmptyNodePropertyConverter extends AbstractNodePropertyConverter
+public class SizeNodePropertyConverter extends AbstractNodePropertyConverter
 {
     @Override
     public String name()
     {
-        return "isNotEmpty";
+        return "size";
     }
 
     @Override
@@ -60,13 +59,13 @@ public class IsNotEmptyNodePropertyConverter extends AbstractNodePropertyConvert
     {
         if ( property.isCollection() )
         {
-            return new SimpleNode( property.getCollectionName(), !((Collection<?>) value).isEmpty(), property.isAttribute() );
+            return new SimpleNode( property.getCollectionName(), ((Collection<?>) value).size(), property.isAttribute() );
         }
         else if ( String.class.isInstance( value ) )
         {
-            return new SimpleNode( property.getName(), !StringUtils.isEmpty( value ), property.isAttribute() );
+            return new SimpleNode( property.getName(), ((String) value).length(), property.isAttribute() );
         }
 
-        throw new IllegalStateException( "Should never get here, this property/value is not supported by this transformer." );
+        throw new IllegalStateException( "Should never get here, this property/value is not supported by this field converter." );
     }
 }

@@ -41,12 +41,12 @@ import java.util.Collection;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-public class IsEmptyNodePropertyConverter extends AbstractNodePropertyConverter
+public class IsNotEmptyNodePropertyConverter extends AbstractNodePropertyConverter
 {
     @Override
     public String name()
     {
-        return "isEmpty";
+        return "isNotEmpty";
     }
 
     @Override
@@ -60,13 +60,13 @@ public class IsEmptyNodePropertyConverter extends AbstractNodePropertyConverter
     {
         if ( property.isCollection() )
         {
-            return new SimpleNode( property.getCollectionName(), ((Collection<?>) value).isEmpty(), property.isAttribute() );
+            return new SimpleNode( property.getCollectionName(), !((Collection<?>) value).isEmpty(), property.isAttribute() );
         }
         else if ( String.class.isInstance( value ) )
         {
-            return new SimpleNode( property.getName(), StringUtils.isEmpty( value ), property.isAttribute() );
+            return new SimpleNode( property.getName(), !StringUtils.isEmpty( value ), property.isAttribute() );
         }
 
-        throw new IllegalStateException( "Should never get here, this property/value is not supported by this transformer." );
+        throw new IllegalStateException( "Should never get here, this property/value is not supported by this field converter." );
     }
 }
