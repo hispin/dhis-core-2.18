@@ -5753,6 +5753,11 @@ Ext.onReady( function() {
 				}
 			}
 
+            // add orgunit as dimension
+            if (!ns.app.layoutWindow.hasDimension(dimConf.organisationUnit.dimensionName)) {
+                ns.app.stores.dimension.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
+            }
+
 			// Options
 			if (ns.app.optionsWindow) {
 				ns.app.optionsWindow.setOptions(layout);
