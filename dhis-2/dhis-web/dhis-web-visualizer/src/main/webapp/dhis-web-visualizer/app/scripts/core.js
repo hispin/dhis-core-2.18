@@ -796,8 +796,17 @@ Ext.onReady( function() {
 				// str
 			support.prototype.str = {};
 
-			support.prototype.str.replaceAll = function(str, find, replace) {
-				return str.replace(new RegExp(find, 'g'), replace);
+			support.prototype.str.replaceAll = function(variable, find, replace) {
+                if (Ext.isString(variable)) {
+                    variable = variable.split(find).join(replace);
+                }
+                else if (Ext.isArray(variable)) {
+                    for (var i = 0; i < variable.length; i++) {
+                        variable[i] = variable[i].split(find).join(replace);
+                    }
+                }
+
+                return variable;
 			};
 		}());
 
@@ -1755,11 +1764,12 @@ Ext.onReady( function() {
 			web.chart = {};
 
 			web.chart.createChart = function(ns) {
-				var xResponse = ns.app.xResponse,
-					xLayout = ns.app.xLayout,
-
-                    columnIds = xLayout.columns[0].ids,
-                    rowIds = xLayout.rows[0].ids,
+                var xLayout = ns.app.xLayout,
+                    xResponse = ns.app.xResponse,
+                    columnIds = xLayout.columns[0] ? xLayout.columns[0].ids : [],
+                    replacedColumnIds = support.prototype.str.replaceAll(Ext.clone(columnIds), '.', ''),
+                    rowIds = xLayout.rows[0] ? xLayout.rows[0].ids : [],
+                    replacedRowIds = support.prototype.str.replaceAll(Ext.clone(rowIds), '.', ''),
                     filterIds = function() {
                         var ids = [];
                         
@@ -1770,6 +1780,20 @@ Ext.onReady( function() {
                         }
 
                         return ids;
+                    }(),
+                    replacedFilterIds = support.prototype.str.replaceAll(Ext.clone(filterIds), '.', ''),
+
+                    replacedIdMap = function() {
+                        var map = {},
+                            names = xResponse.metaData.names,
+                            ids = Ext.clean([].concat(columnIds || [], rowIds || [], filterIds || [])),
+                            replacedIds = Ext.clean([].concat(replacedColumnIds || [], replacedRowIds || [], replacedFilterIds || []));
+
+                        for (var i = 0; i < replacedIds.length; i++) {
+                            map[replacedIds[i]] = ids[i];
+                        }
+
+                        return map;
                     }(),
 
 					getSyncronizedXLayout,
@@ -1839,7 +1863,8 @@ Ext.onReady( function() {
                             key = conf.finals.data.trendLine + columnIds[i];
 
                             for (var j = 0, value; j < data.length; j++) {
-                            	regression.addData(j, data[j][columnIds[i]]);
+                                value = data[j][replacedColumnIds[i]];
+                                regression.addData(j, parseFloat(value));
                             }
 
                             for (var j = 0; j < data.length; j++) {
