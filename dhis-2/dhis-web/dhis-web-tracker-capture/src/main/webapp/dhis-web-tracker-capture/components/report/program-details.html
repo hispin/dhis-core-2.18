@@ -58,14 +58,14 @@
                 <span class="bold">{{'due_date'| translate}}:</span>    {{dhis2Event.dueDate}}
             </div>
             <div class="col-sm-2">
-                <span class="bold">{{'visit'| translate}} {{'_date'| translate}}:</span>    {{dhis2Event.eventDate}}
+                <span class="bold">{{'visit'| translate}} {{'_date'| translate}}:</span>    {{dhis2Event.eventDate ? dhis2Event.eventDate:'no_visit_made' | translate}}
             </div>
             <div class="col-sm-2">
                 <span class="bold">{{'status'| translate}}:</span>  {{dhis2Event.status}}
             </div>
             <div class='row vertical-spacing'></div>
             <div class='col-sm-6'>
-                <table class="table table-bordered table-compact">
+                <table class="table table-bordered table-compact"  ng-if="dhis2Event.visited">
                     <tr class="col-sm-12">
                         <th class="col-md-5">
                             {{'data_element'| translate}}
@@ -88,8 +88,9 @@
                             {{dhis2Event[prStDe.dataElement.id].providedElsewhere ? 'provided_elsewhere' : ''| translate}}
                         </td>
                     </tr>
-                </table>  
+                </table>
             </div>
+            <div class="alert alert-warning visit-details col-sm-6" ng-if="!dhis2Event.visited">{{'visit_not_made'| translate}}</div>
             <div class='row vertical-spacing'></div>
             <div ng-if="dhis2Event.notes">
                 <h4 class='col-sm-12'>{{'notes'| translate}}</h4>
@@ -104,7 +105,6 @@
                     </tr>
                 </table>
             </div>
-
         </div>
 
     </div>

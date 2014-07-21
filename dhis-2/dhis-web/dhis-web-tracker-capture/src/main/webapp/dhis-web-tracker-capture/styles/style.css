@@ -487,6 +487,11 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     margin-top: 15px !important;    
 }
 
+.visit-details {
+    margin-top: -5px;
+    margin-left: 15px;    
+}
+
 .add-note {
     margin-bottom: 30px;
     margin-left: -5px;
