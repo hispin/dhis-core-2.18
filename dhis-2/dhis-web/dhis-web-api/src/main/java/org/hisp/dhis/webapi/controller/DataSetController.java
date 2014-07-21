@@ -145,37 +145,6 @@ public class DataSetController
         JacksonUtils.toJson( response.getOutputStream(), versionMap );
     }
 
-    @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = "application/json" )
-    public void getFormJson( @PathVariable( "uid" ) String uid, @RequestParam( value = "ou", required = false ) String orgUnit,
-        @RequestParam( value = "pe", required = false ) String period, HttpServletResponse response ) throws IOException
-    {
-        List<DataSet> dataSets = getEntity( uid );
-
-        if ( dataSets.isEmpty() )
-        {
-            ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
-            return;
-        }
-
-        i18nService.internationalise( dataSets.get( 0 ) );
-        i18nService.internationalise( dataSets.get( 0 ).getDataElements() );
-        i18nService.internationalise( dataSets.get( 0 ).getSections() );
-
-        Form form = FormUtils.fromDataSet( dataSets.get( 0 ) );
-
-        if ( orgUnit != null && !orgUnit.isEmpty() && period != null && !period.isEmpty() )
-        {
-            OrganisationUnit ou = manager.get( OrganisationUnit.class, orgUnit );
-            Period p = PeriodType.getPeriodFromIsoString( period );
-
-            Collection<DataValue> dataValues = dataValueService.getDataValues( ou, p, dataSets.get( 0 ).getDataElements() );
-
-            FormUtils.fillWithDataValues( form, dataValues );
-        }
-
-        JacksonUtils.toJson( response.getOutputStream(), form );
-    }
-
     @RequestMapping( value = "/{uid}/dataValueSet", method = RequestMethod.GET )
     public @ResponseBody RootNode getDvs( @PathVariable( "uid" ) String uid,
         @RequestParam( value = "orgUnitIdScheme", defaultValue = "ID", required = false ) String orgUnitIdScheme,
@@ -197,9 +166,42 @@ public class DataSetController
         return dataValueSetService.getDataValueSetTemplate( dataSets.get( 0 ), pe, orgUnits, comment, orgUnitIdScheme, dataElementIdScheme );
     }
 
+    @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = "application/json" )
+    public void getFormJson( 
+        @PathVariable( "uid" ) String uid, 
+        @RequestParam( value = "ou", required = false ) String orgUnit,
+        @RequestParam( value = "pe", required = false ) String period, 
+        HttpServletResponse response ) throws IOException
+    {
+        List<DataSet> dataSets = getEntity( uid );
+
+        if ( dataSets.isEmpty() )
+        {
+            ContextUtils.notFoundResponse( response, "Data set does not exist: " + uid );
+            return;
+        }
+        
+        OrganisationUnit ou = null;
+        
+        if ( orgUnit != null && ( ou = manager.get( OrganisationUnit.class, orgUnit ) ) == null )
+        {
+            ContextUtils.notFoundResponse( response, "Organisation unit does not exist: " + orgUnit );
+            return;
+        }
+
+        Period pe = PeriodType.getPeriodFromIsoString( period );
+
+        Form form = getForm( dataSets, ou, pe );
+
+        JacksonUtils.toJson( response.getOutputStream(), form );
+    }
+
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = { "application/xml", "text/xml" } )
-    public void getFormXml( @PathVariable( "uid" ) String uid, @RequestParam( value = "ou", required = false ) String orgUnit,
-        @RequestParam( value = "pe", required = false ) String period, HttpServletResponse response ) throws IOException
+    public void getFormXml( 
+        @PathVariable( "uid" ) String uid, 
+        @RequestParam( value = "ou", required = false ) String orgUnit,
+        @RequestParam( value = "pe", required = false ) String period, 
+        HttpServletResponse response ) throws IOException
     {
         List<DataSet> dataSets = getEntity( uid );
 
@@ -209,25 +211,39 @@ public class DataSetController
             return;
         }
 
+        OrganisationUnit ou = null;
+        
+        if ( orgUnit != null && ( ou = manager.get( OrganisationUnit.class, orgUnit ) ) == null )
+        {
+            ContextUtils.notFoundResponse( response, "Organisation unit does not exist: " + orgUnit );
+            return;
+        }
+
+        Period pe = PeriodType.getPeriodFromIsoString( period );
+
+        Form form = getForm( dataSets, ou, pe );
+
+        JacksonUtils.toXml( response.getOutputStream(), form );
+    }
+    
+    private Form getForm( List<DataSet> dataSets, OrganisationUnit ou, Period pe )
+    {
         i18nService.internationalise( dataSets.get( 0 ) );
         i18nService.internationalise( dataSets.get( 0 ).getDataElements() );
         i18nService.internationalise( dataSets.get( 0 ).getSections() );
 
         Form form = FormUtils.fromDataSet( dataSets.get( 0 ) );
 
-        if ( orgUnit != null && !orgUnit.isEmpty() && period != null && !period.isEmpty() )
+        if ( ou != null && pe != null )
         {
-            OrganisationUnit ou = manager.get( OrganisationUnit.class, orgUnit );
             i18nService.internationalise( ou );
 
-            Period p = PeriodType.getPeriodFromIsoString( period );
-
-            Collection<DataValue> dataValues = dataValueService.getDataValues( ou, p, dataSets.get( 0 ).getDataElements() );
+            Collection<DataValue> dataValues = dataValueService.getDataValues( ou, pe, dataSets.get( 0 ).getDataElements() );
 
             FormUtils.fillWithDataValues( form, dataValues );
         }
-
-        JacksonUtils.toXml( response.getOutputStream(), form );
+        
+        return form;
     }
 
     @RequestMapping( value = "/{uid}/customDataEntryForm", method = { RequestMethod.PUT, RequestMethod.POST }, consumes = "text/html" )
