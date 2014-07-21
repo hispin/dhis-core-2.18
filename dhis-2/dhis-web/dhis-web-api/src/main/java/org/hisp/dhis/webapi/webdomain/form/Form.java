@@ -28,20 +28,17 @@ package org.hisp.dhis.webapi.webdomain.form;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
-import org.hisp.dhis.common.BaseNameableObject;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.NameableObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.hisp.dhis.common.DxfNamespaces;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -57,8 +54,6 @@ public class Form
 
     private Map<String, Object> options = new HashMap<String, Object>();
     
-    private Map<String, NameableObject> metaData = new HashMap<String, NameableObject>();
-
     public Form()
     {
     }
@@ -110,20 +105,6 @@ public class Form
     public void setOptions( Map<String, Object> options )
     {
         this.options = options;
-    }
-
-    @JsonProperty
-    @JsonSerialize( contentAs = BaseNameableObject.class )
-    @JacksonXmlElementWrapper( localName = "metaData", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Map<String, NameableObject> getMetaData()
-    {
-        return metaData;
-    }
-    
-    public void setMetaData( Map<String, NameableObject> metaData )
-    {
-        this.metaData = metaData;
     }
     
     @Override

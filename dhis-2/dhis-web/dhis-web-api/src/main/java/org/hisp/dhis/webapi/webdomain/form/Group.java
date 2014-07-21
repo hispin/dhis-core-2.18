@@ -28,14 +28,19 @@ package org.hisp.dhis.webapi.webdomain.form;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.NameableObject;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.DxfNamespaces;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -50,6 +55,8 @@ public class Group
     private int dataElementCount;
 
     private List<Field> fields = new ArrayList<Field>();
+
+    private Map<String, NameableObject> metaData;
 
     public Group()
     {
@@ -102,5 +109,19 @@ public class Group
     public void setFields( List<Field> fields )
     {
         this.fields = fields;
+    }
+
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JacksonXmlElementWrapper( localName = "metaData", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Map<String, NameableObject> getMetaData()
+    {
+        return metaData;
+    }
+    
+    public void setMetaData( Map<String, NameableObject> metaData )
+    {
+        this.metaData = metaData;
     }
 }

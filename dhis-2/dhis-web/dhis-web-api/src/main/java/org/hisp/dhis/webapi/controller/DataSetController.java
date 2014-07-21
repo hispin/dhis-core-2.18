@@ -43,7 +43,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
@@ -236,7 +235,7 @@ public class DataSetController
         i18nService.internationalise( dataSet.getDataElements() );
         i18nService.internationalise( dataSet.getSections() );
 
-        Form form = FormUtils.fromDataSet( dataSets.get( 0 ) );
+        Form form = FormUtils.fromDataSet( dataSets.get( 0 ), metaData );
 
         if ( ou != null && pe != null )
         {
@@ -245,11 +244,6 @@ public class DataSetController
             Collection<DataValue> dataValues = dataValueService.getDataValues( ou, pe, dataSets.get( 0 ).getDataElements() );
 
             FormUtils.fillWithDataValues( form, dataValues );
-        }
-        
-        if ( metaData )
-        {
-            form.getMetaData().putAll( NameableObjectUtils.getUidObjectMap( dataSet.getDataElements() ) );
         }
         
         return form;
