@@ -2099,6 +2099,8 @@ function StorageManager()
     this.downloadForm = function( dataSetId, formVersion )
     {
         var def = $.Deferred();
+        
+        console.log( 'Starting download of form: ' + dataSetId );
 
         $.ajax( {
             url: 'loadForm.action',
