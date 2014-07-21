@@ -46,6 +46,8 @@ public class Group
     private String label;
     
     private String description;
+    
+    private int dataElementCount;
 
     private List<Field> fields = new ArrayList<Field>();
 
@@ -77,6 +79,18 @@ public class Group
         this.description = description;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public int getDataElementCount()
+    {
+        return dataElementCount;
+    }
+    
+    public void setDataElementCount( int dataElementCount )
+    {
+        this.dataElementCount = dataElementCount;
+    }
+    
     @JsonProperty( value = "fields" )
     @JacksonXmlElementWrapper( localName = "fields", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "field", namespace = DxfNamespaces.DXF_2_0 )
