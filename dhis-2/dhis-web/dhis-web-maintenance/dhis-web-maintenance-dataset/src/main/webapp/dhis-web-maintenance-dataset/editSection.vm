@@ -14,8 +14,8 @@
 				return option;
 			},
 			params: {
-				'dataSetId': $dataSet.id,
-				'categoryComboId': $categoryCombo.id
+				'dataSetId': '$!{dataSet.id}',
+				'categoryComboId': '$!{categoryCombo.id}'
 			}
 		});
 	});
