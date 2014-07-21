@@ -164,7 +164,7 @@ public class DataValueController
 
         if ( valid != null )
         {
-            ContextUtils.conflictResponse( response, "Invalid value: " + value + ", must match data element type: " + dataElement.getType() );
+            ContextUtils.conflictResponse( response, "Invalid value: " + value + ", must match data element type: " + dataElement.getDetailedType() );
             return;
         }
 

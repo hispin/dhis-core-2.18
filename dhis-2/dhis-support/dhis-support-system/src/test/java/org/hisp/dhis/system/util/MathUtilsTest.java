@@ -187,6 +187,20 @@ public class MathUtilsTest
     }
     
     @Test
+    public void testIsPercentage()
+    {
+        assertTrue( MathUtils.isPercentage( "0" ) );
+        assertTrue( MathUtils.isPercentage( "15" ) );
+        assertTrue( MathUtils.isPercentage( "100" ) );
+
+        assertFalse( MathUtils.isPercentage( "abc" ) );
+        assertFalse( MathUtils.isPercentage( "-1" ) );
+        assertFalse( MathUtils.isPercentage( "12.5" ) );
+        assertFalse( MathUtils.isPercentage( "17,8" ) );
+        assertFalse( MathUtils.isPercentage( "101" ) );
+    }
+    
+    @Test
     public void testIsInteger()
     {
         assertTrue( MathUtils.isInteger( "1" ) );

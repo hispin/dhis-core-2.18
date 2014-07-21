@@ -174,7 +174,7 @@ function saveVal( dataElementId, optionComboId, fieldId )
 	
     if ( value != '' )
     {
-        if ( type == 'string' || type == 'int' || type == 'number' || type == 'unitInterval' || type == 'posInt' || type == 'negInt' || type == 'zeroPositiveInt' )
+        if ( type == 'string' || type == 'int' || type == 'number' || type == 'posInt' || type == 'negInt' || type == 'zeroPositiveInt' || type == 'unitInterval' || type == 'percentage' )
         {
             if ( value.length > 255 )
             {
@@ -188,10 +188,6 @@ function saveVal( dataElementId, optionComboId, fieldId )
             {
                 return alertField( fieldId, i18n_value_must_number + '\n\n' + dataElementName );
             }
-            if ( type == 'unitInterval' && !dhis2.validation.isUnitInterval( value ) )
-            {
-            	return alertField( fieldId, i18n_value_must_unit_interval + '\n\n' + dataElementName );
-            }
             if ( type == 'posInt' && !dhis2.validation.isPositiveInt( value ) )
             {
                 return alertField( fieldId, i18n_value_must_positive_integer + '\n\n' + dataElementName );
@@ -203,6 +199,14 @@ function saveVal( dataElementId, optionComboId, fieldId )
             if ( type == 'zeroPositiveInt' && !dhis2.validation.isZeroOrPositiveInt( value ) )
             {
                 return alertField( fieldId, i18n_value_must_zero_or_positive_integer + '\n\n' + dataElementName );
+            }
+            if ( type == 'unitInterval' && !dhis2.validation.isUnitInterval( value ) )
+            {
+            	return alertField( fieldId, i18n_value_must_unit_interval + '\n\n' + dataElementName );
+            }
+            if ( type == 'percentage' && !dhis2.validation.isPercentage( value ) )
+            {
+            	return alertField( fieldId, i18n_value_must_percentage + '\n\n' + dataElementName );
             }
             if ( !existing && dhis2.validation.isValidZeroNumber( value ) )
             {
