@@ -44,6 +44,8 @@ import java.util.List;
 public class Group
 {
     private String label;
+    
+    private String description;
 
     private List<Field> fields = new ArrayList<Field>();
 
@@ -61,6 +63,18 @@ public class Group
     public void setLabel( String label )
     {
         this.label = label;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getDescription()
+    {
+        return description;
+    }
+    
+    public void setDescription( String description )
+    {
+        this.description = description;
     }
 
     @JsonProperty( value = "fields" )

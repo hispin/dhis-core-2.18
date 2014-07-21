@@ -79,6 +79,7 @@ public class FormUtils
 
                 Group s = new Group();
                 s.setLabel( section.getDisplayName() );
+                s.setDescription( section.getDescription() );
                 s.setFields( fields );
                 form.getGroups().add( s );
             }
@@ -89,6 +90,7 @@ public class FormUtils
 
             Group s = new Group();
             s.setLabel( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+            s.setDescription( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
             s.setFields( fields );
             form.getGroups().add( s );
         }
