@@ -31,7 +31,7 @@ package org.hisp.dhis.common;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -137,14 +137,15 @@ public class NameableObjectUtils
     }
 
     /**
-     * Returns a mapping between the uid and the nameable objects.
+     * Returns a mapping between the uid and the nameable objects. The order of
+     * the objects are preserved.
      *
      * @param objects the nameable objects.
-     * @return mapping between the uid and the nameable objects.
+     * @return ordered mapping between the uid and the nameable objects.
      */
-    public static Map<String, NameableObject> getUidObjectMap( Collection<? extends NameableObject> objects )
+    public static Map<String, NameableObject> getUidObjectMap( List<? extends NameableObject> objects )
     {
-        Map<String, NameableObject> map = new HashMap<String, NameableObject>();
+        Map<String, NameableObject> map = new LinkedHashMap<String, NameableObject>();
 
         if ( objects != null )
         {

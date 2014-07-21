@@ -28,10 +28,14 @@ package org.hisp.dhis.webapi.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.webapi.webdomain.form.Field;
-import org.hisp.dhis.webapi.webdomain.form.Form;
-import org.hisp.dhis.webapi.webdomain.form.Group;
-import org.hisp.dhis.webapi.webdomain.form.InputType;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -44,22 +48,19 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
+import org.hisp.dhis.webapi.webdomain.form.Field;
+import org.hisp.dhis.webapi.webdomain.form.Form;
+import org.hisp.dhis.webapi.webdomain.form.Group;
+import org.hisp.dhis.webapi.webdomain.form.InputType;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class FormUtils
 {
-    public static Form fromDataSet( DataSet dataSet )
+    public static Form fromDataSet( DataSet dataSet, boolean metaData )
     {
         Form form = new Form();
         form.setLabel( dataSet.getDisplayName() );
@@ -77,24 +78,36 @@ public class FormUtils
             {
                 List<Field> fields = inputsFromDataElements( new ArrayList<DataElement>( section.getDataElements() ), new ArrayList<DataElementOperand>( section.getGreyedFields() ) );
 
-                Group s = new Group();
-                s.setLabel( section.getDisplayName() );
-                s.setDescription( section.getDescription() );
-                s.setDataElementCount( section.getDataElements().size() );
-                s.setFields( fields );
-                form.getGroups().add( s );
+                Group group = new Group();
+                group.setLabel( section.getDisplayName() );
+                group.setDescription( section.getDescription() );
+                group.setDataElementCount( section.getDataElements().size() );
+                group.setFields( fields );
+                
+                if ( metaData )
+                {
+                    group.setMetaData( NameableObjectUtils.getUidObjectMap( section.getDataElements() ) );
+                }
+                
+                form.getGroups().add( group );
             }
         }
         else
         {
             List<Field> fields = inputsFromDataElements( new ArrayList<DataElement>( dataSet.getDataElements() ) );
 
-            Group s = new Group();
-            s.setLabel( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
-            s.setDescription( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
-            s.setDataElementCount( dataSet.getDataElements().size() );
-            s.setFields( fields );
-            form.getGroups().add( s );
+            Group group = new Group();
+            group.setLabel( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+            group.setDescription( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+            group.setDataElementCount( dataSet.getDataElements().size() );
+            group.setFields( fields );
+
+            if ( metaData )
+            {
+                group.setMetaData( NameableObjectUtils.getUidObjectMap( new ArrayList<DataElement>( dataSet.getDataElements() ) ) );
+            }
+            
+            form.getGroups().add( group );
         }
 
         return form;
@@ -148,10 +161,10 @@ public class FormUtils
             {
                 List<Field> fields = inputsFromProgramStageDataElements( section.getProgramStageDataElements() );
 
-                Group s = new Group();
-                s.setLabel( section.getDisplayName() );
-                s.setFields( fields );
-                form.getGroups().add( s );
+                Group group = new Group();
+                group.setLabel( section.getDisplayName() );
+                group.setFields( fields );
+                form.getGroups().add( group );
             }
         }
         else
@@ -159,10 +172,10 @@ public class FormUtils
             List<Field> fields = inputsFromProgramStageDataElements(
                 new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() ) );
 
-            Group s = new Group();
-            s.setLabel( "default" );
-            s.setFields( fields );
-            form.getGroups().add( s );
+            Group group = new Group();
+            group.setLabel( "default" );
+            group.setFields( fields );
+            form.getGroups().add( group );
         }
 
         return form;
@@ -240,6 +253,8 @@ public class FormUtils
 
     private static InputType inputTypeFromDataElement( DataElement dataElement )
     {
+        //TODO harmonize / use map
+        
         if ( DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() ) )
         {
             if ( DataElement.VALUE_TYPE_TEXT.equals( dataElement.getTextType() ) )
@@ -272,6 +287,14 @@ public class FormUtils
             else if ( DataElement.VALUE_TYPE_NEGATIVE_INT.equals( dataElement.getNumberType() ) )
             {
                 return InputType.INTEGER_NEGATIVE;
+            }
+            else if ( DataElement.VALUE_TYPE_UNIT_INTERVAL.equals( dataElement.getNumberType() ) )
+            {
+                return InputType.UNIT_INTERVAL;
+            }
+            else if ( DataElement.VALUE_TYPE_PERCENTAGE.equals( dataElement.getNumberType() ) )
+            {
+                return InputType.PERCENTAGE;
             }
         }
         else if ( DataElement.VALUE_TYPE_BOOL.equals( dataElement.getType() ) )
