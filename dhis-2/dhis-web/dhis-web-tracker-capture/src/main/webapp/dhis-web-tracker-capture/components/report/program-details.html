@@ -45,9 +45,10 @@
                 </tr>
             </table>
         </div>
-
-        <div class='vertical-spacing' ng-repeat='dhis2Event in report.enrollments[enrollment.enrollment]'>
-            <h3 class='col-sm-12'>{{'visits'| translate}}</h3>
+        
+        <h2 class='col-sm-12'>{{'visits'| translate}}</h2>
+        <div class='vertical-spacing' ng-repeat="dhis2Event in report.enrollments[enrollment.enrollment] | orderBy:'sortingDate':reverse">
+            <!--<h3 class='col-sm-12'>{{'visits'| translate}}</h3>-->
             <div class="col-sm-2">
                 <span class="bold">{{'name'| translate}}:</span>    {{dhis2Event.name}}                
             </div>
@@ -65,7 +66,7 @@
             </div>
             <div class='row vertical-spacing'></div>
             <div class='col-sm-6'>
-                <table class="table table-bordered table-compact"  ng-if="dhis2Event.visited">
+                <table class="table table-bordered table-compact"  ng-if="dhis2Event.visited && dhis2Event.dataValues">
                     <tr class="col-sm-12">
                         <th class="col-md-5">
                             {{'data_element'| translate}}
@@ -91,6 +92,7 @@
                 </table>
             </div>
             <div class="alert alert-warning visit-details col-sm-6" ng-if="!dhis2Event.visited">{{'visit_not_made'| translate}}</div>
+            <div class="alert alert-warning visit-details col-sm-6" ng-if="!dhis2Event.dataValues">{{'no_data'| translate}}</div>
             <div class='row vertical-spacing'></div>
             <div ng-if="dhis2Event.notes">
                 <h4 class='col-sm-12'>{{'notes'| translate}}</h4>
@@ -105,6 +107,7 @@
                     </tr>
                 </table>
             </div>
+            <hr class="visit-details" ng-show="$index < report.enrollments[enrollment.enrollment].length - 1">
         </div>
 
     </div>
