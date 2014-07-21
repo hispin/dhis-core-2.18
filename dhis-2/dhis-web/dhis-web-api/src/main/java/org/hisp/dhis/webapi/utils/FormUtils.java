@@ -33,6 +33,7 @@ import org.hisp.dhis.webapi.webdomain.form.Form;
 import org.hisp.dhis.webapi.webdomain.form.Group;
 import org.hisp.dhis.webapi.webdomain.form.InputType;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
@@ -76,26 +77,20 @@ public class FormUtils
             {
                 List<Field> fields = inputsFromDataElements( new ArrayList<DataElement>( section.getDataElements() ), new ArrayList<DataElementOperand>( section.getGreyedFields() ) );
 
-                if ( !fields.isEmpty() )
-                {
-                    Group s = new Group();
-                    s.setLabel( section.getDisplayName() );
-                    s.setFields( fields );
-                    form.getGroups().add( s );
-                }
+                Group s = new Group();
+                s.setLabel( section.getDisplayName() );
+                s.setFields( fields );
+                form.getGroups().add( s );
             }
         }
         else
         {
             List<Field> fields = inputsFromDataElements( new ArrayList<DataElement>( dataSet.getDataElements() ) );
 
-            if ( !fields.isEmpty() )
-            {
-                Group s = new Group();
-                s.setLabel( "default" );
-                s.setFields( fields );
-                form.getGroups().add( s );
-            }
+            Group s = new Group();
+            s.setLabel( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+            s.setFields( fields );
+            form.getGroups().add( s );
         }
 
         return form;
@@ -149,13 +144,10 @@ public class FormUtils
             {
                 List<Field> fields = inputsFromProgramStageDataElements( section.getProgramStageDataElements() );
 
-                if ( !fields.isEmpty() )
-                {
-                    Group s = new Group();
-                    s.setLabel( section.getDisplayName() );
-                    s.setFields( fields );
-                    form.getGroups().add( s );
-                }
+                Group s = new Group();
+                s.setLabel( section.getDisplayName() );
+                s.setFields( fields );
+                form.getGroups().add( s );
             }
         }
         else
@@ -163,13 +155,10 @@ public class FormUtils
             List<Field> fields = inputsFromProgramStageDataElements(
                 new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() ) );
 
-            if ( !fields.isEmpty() )
-            {
-                Group s = new Group();
-                s.setLabel( "default" );
-                s.setFields( fields );
-                form.getGroups().add( s );
-            }
+            Group s = new Group();
+            s.setLabel( "default" );
+            s.setFields( fields );
+            form.getGroups().add( s );
         }
 
         return form;
