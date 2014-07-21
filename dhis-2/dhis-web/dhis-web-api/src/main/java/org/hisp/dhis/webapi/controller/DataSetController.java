@@ -28,6 +28,22 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
@@ -61,20 +77,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -171,7 +173,7 @@ public class DataSetController
         @PathVariable( "uid" ) String uid, 
         @RequestParam( value = "ou", required = false ) String orgUnit,
         @RequestParam( value = "pe", required = false ) String period, 
-        HttpServletResponse response ) throws IOException
+        @RequestParam( required = false ) boolean metaData, HttpServletResponse response ) throws IOException
     {
         List<DataSet> dataSets = getEntity( uid );
 
@@ -191,7 +193,7 @@ public class DataSetController
 
         Period pe = PeriodType.getPeriodFromIsoString( period );
 
-        Form form = getForm( dataSets, ou, pe );
+        Form form = getForm( dataSets, ou, pe, metaData );
 
         JacksonUtils.toJson( response.getOutputStream(), form );
     }
@@ -201,7 +203,7 @@ public class DataSetController
         @PathVariable( "uid" ) String uid, 
         @RequestParam( value = "ou", required = false ) String orgUnit,
         @RequestParam( value = "pe", required = false ) String period, 
-        HttpServletResponse response ) throws IOException
+        @RequestParam( required = false ) boolean metaData, HttpServletResponse response ) throws IOException
     {
         List<DataSet> dataSets = getEntity( uid );
 
@@ -221,16 +223,18 @@ public class DataSetController
 
         Period pe = PeriodType.getPeriodFromIsoString( period );
 
-        Form form = getForm( dataSets, ou, pe );
+        Form form = getForm( dataSets, ou, pe, metaData );
 
         JacksonUtils.toXml( response.getOutputStream(), form );
     }
     
-    private Form getForm( List<DataSet> dataSets, OrganisationUnit ou, Period pe )
+    private Form getForm( List<DataSet> dataSets, OrganisationUnit ou, Period pe, boolean metaData )
     {
-        i18nService.internationalise( dataSets.get( 0 ) );
-        i18nService.internationalise( dataSets.get( 0 ).getDataElements() );
-        i18nService.internationalise( dataSets.get( 0 ).getSections() );
+        DataSet dataSet = dataSets.get( 0 );
+        
+        i18nService.internationalise( dataSet );
+        i18nService.internationalise( dataSet.getDataElements() );
+        i18nService.internationalise( dataSet.getSections() );
 
         Form form = FormUtils.fromDataSet( dataSets.get( 0 ) );
 
@@ -241,6 +245,11 @@ public class DataSetController
             Collection<DataValue> dataValues = dataValueService.getDataValues( ou, pe, dataSets.get( 0 ).getDataElements() );
 
             FormUtils.fillWithDataValues( form, dataValues );
+        }
+        
+        if ( metaData )
+        {
+            form.getMetaData().putAll( NameableObjectUtils.getUidObjectMap( dataSet.getDataElements() ) );
         }
         
         return form;
