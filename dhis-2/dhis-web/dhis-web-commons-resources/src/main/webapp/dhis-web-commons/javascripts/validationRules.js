@@ -152,9 +152,6 @@ var validationRules = {
         "sectionName" : {
             "required" : true,
             "rangelength" : [ 2, 160 ]
-        },
-        "selectedList" : {
-            "required" : true
         }
     },
     "dataSet" : {
