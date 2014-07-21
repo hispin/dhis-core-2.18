@@ -28,12 +28,11 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -44,10 +43,12 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 @JacksonXmlRootElement(localName = "section", namespace = DxfNamespaces.DXF_2_0)
 public class Section
@@ -58,6 +59,8 @@ public class Section
      */
     private static final long serialVersionUID = -4657657995917502852L;
 
+    private String description;
+    
     private DataSet dataSet;
 
     @Scanned
@@ -170,6 +173,19 @@ public class Section
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getDescription()
+    {
+        return description;
+    }
+    
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+    
     @JsonProperty
     @JsonSerialize(as = BaseIdentifiableObject.class)
     @JsonView({ DetailedView.class, ExportView.class })

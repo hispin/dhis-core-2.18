@@ -85,6 +85,13 @@ public class AddSectionAction
     {
         this.sectionName = sectionName;
     }
+    
+    private String description;
+    
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
 
     private List<String> selectedList = new ArrayList<String>();
 
@@ -106,6 +113,7 @@ public class AddSectionAction
 
         section.setDataSet( dataSet );
         section.setName( sectionName );
+        section.setDescription( description );
         section.setSortOrder( 0 );
 
         List<DataElement> selectedDataElements = new ArrayList<DataElement>();

@@ -88,6 +88,13 @@ public class UpdateSectionAction
         this.sectionName = sectionName;
     }
 
+    private String description;
+    
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
     private List<String> selectedList = new ArrayList<String>();
 
     public void setSelectedList( List<String> selectedList )
@@ -124,6 +131,7 @@ public class UpdateSectionAction
         
         section.setDataElements( dataElements );
         section.setName( sectionName );
+        section.setDescription( description );
 
         sectionService.updateSection( section );
         
