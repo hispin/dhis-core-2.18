@@ -2878,6 +2878,9 @@ Ext.onReady( function() {
 
             ns.app.aggregateLayoutWindow.reset();
 
+            // type
+            ns.app.viewport.chartType.setChartType(layout.type);
+
 			// data
             programStore.add(layout.program);
             program.setValue(layout.program.id);
