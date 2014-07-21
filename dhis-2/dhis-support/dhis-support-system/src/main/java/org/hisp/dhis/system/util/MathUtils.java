@@ -326,6 +326,25 @@ public class MathUtils
         
         return dbl >= 0d && dbl <= 1d;
     }
+    
+    /**
+     * Returns true if the provided string argument is an integer in the inclusive
+     * range of 0 to 100.
+     * 
+     * @param value the value.
+     * @return true if the provided string argument is a percentage.
+     */
+    public static boolean isPercentage( String value )
+    {
+        if ( !isInteger( value ) )
+        {
+            return false;
+        }
+        
+        Integer integer = Integer.valueOf( value );
+        
+        return integer >= 0 && integer <= 100;
+    }
 
     /**
      * Returns true if the provided string argument is to be considered an integer. 

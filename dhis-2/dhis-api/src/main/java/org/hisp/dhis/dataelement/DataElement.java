@@ -89,6 +89,7 @@ public class DataElement
     public static final String VALUE_TYPE_TRUE_ONLY = "trueOnly";
     public static final String VALUE_TYPE_DATE = "date";
     public static final String VALUE_TYPE_UNIT_INTERVAL = "unitInterval";
+    public static final String VALUE_TYPE_PERCENTAGE = "percentage";
 
     public static final String VALUE_TYPE_NUMBER = "number";
     public static final String VALUE_TYPE_POSITIVE_INT = "posInt";
@@ -285,6 +286,27 @@ public class DataElement
         return (type != null && type.equals( VALUE_TYPE_STRING ) && textType != null) ? textType : type;
     }
 
+    /**
+     * Returns the detailed data element type. If value type is int, the number
+     * type is returned. If value type is string, the text type is returned.
+     * Otherwise the type is returned.
+     */
+    public String getDetailedType()
+    {
+        if ( VALUE_TYPE_INT.equals( type ) )
+        {
+            return numberType;
+        }
+        else if ( VALUE_TYPE_STRING.equals( type ) )
+        {
+            return textType;
+        }
+        else
+        {
+            return type;
+        }
+    }
+    
     /**
      * Returns whether aggregation should be skipped for this data element, based
      * on the setting of the data set which this data element is a members of,

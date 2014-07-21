@@ -33,7 +33,7 @@ dhis2.util.namespace('dhis2.validation');
 /**
  * Checks if the given value is valid zero.
  */
-dhis2.validation.isValidZeroNumber = function( value ) {
+dhis2.validation.isValidZeroNumber = function(value) {
   var regex = /^0(\.0*)?$/;
   return regex.test(value);
 };
@@ -41,15 +41,22 @@ dhis2.validation.isValidZeroNumber = function( value ) {
 /**
  * Allow only integers or a single zero and no thousands separators.
  */
-dhis2.validation.isInt = function( value ) {
+dhis2.validation.isInt = function(value) {
   var regex = /^(0|-?[1-9]\d*)$/;
   return regex.test(value);
 };
 
 /**
+ * Allow only integers inclusive between 0 and 100. 
+ */
+dhis2.validation.isPercentage = function(value) {
+  return dhis2.validation.isInt(value) && parseInt(value) >= 0 && parseInt(value) <= 100;
+}
+
+/**
  * Allow only positive integers, not zero, no thousands separators.
  */
-dhis2.validation.isPositiveInt = function( value ) {
+dhis2.validation.isPositiveInt = function(value) {
   var regex = /^[1-9]\d*$/;
   return regex.test(value);
 };
@@ -57,7 +64,7 @@ dhis2.validation.isPositiveInt = function( value ) {
 /**
  * Allow only zero or positive integers, no thousands separators.
  */
-dhis2.validation.isZeroOrPositiveInt = function( value ) {
+dhis2.validation.isZeroOrPositiveInt = function(value) {
   var regex = /(^0$)|(^[1-9]\d*$)/;
   return regex.test(value);
 };
@@ -65,7 +72,7 @@ dhis2.validation.isZeroOrPositiveInt = function( value ) {
 /**
  * Allow only negative integers, not zero and no thousands separators.
  */
-dhis2.validation.isNegativeInt = function( value ) {
+dhis2.validation.isNegativeInt = function(value) {
   var regex = /^-[1-9]\d*$/;
   return regex.test(value);
 };
@@ -74,7 +81,7 @@ dhis2.validation.isNegativeInt = function( value ) {
  * Allow any real number,optionally with a sign, no thousands separators and a
  * single decimal point.
  */
-dhis2.validation.isNumber = function( value ) {
+dhis2.validation.isNumber = function(value) {
   var regex = /^(-?0|-?[1-9]\d*)(\.\d+)?(E\d+)?$/;
   return regex.test(value);
 };
@@ -82,14 +89,14 @@ dhis2.validation.isNumber = function( value ) {
 /**
  * Checks if the given value is a valid positive number.
  */
-dhis2.validation.isPositiveNumber = function( value ) {
+dhis2.validation.isPositiveNumber = function(value) {
   return dhis2.validation.isNumber(value) && parseFloat(value) > 0;
 };
 
 /**
  * Checks if the given value is a valid negative number.
  */
-dhis2.validation.isNegativeNumber = function( value ) {
+dhis2.validation.isNegativeNumber = function(value) {
   return dhis2.validation.isNumber(value) && parseFloat(value) < 0;
 };
 
@@ -98,7 +105,7 @@ dhis2.validation.isNegativeNumber = function( value ) {
  * interval, which implies that the value is numeric and inclusive between 0
  * and 1.
  */
-dhis2.validation.isUnitInterval = function( value ) {
+dhis2.validation.isUnitInterval = function(value) {
   if( !dhis2.validation.isNumber(value) ) {
     return false;
   }
