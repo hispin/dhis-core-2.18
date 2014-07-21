@@ -42,11 +42,11 @@
 
     <!--- search, registration and reporting menu begins -->
     <div class="row"> 
-        <div id="selectDropDownParent" class="input-group col-md-3">            
-            <button type="button" class="select-drop-down-button form-control" ng-show="programs.length > 0">{{selectedProgram ? selectedProgram.name : 'please_select_a_program'| translate}}</button>
-            <button type="button" class="select-drop-down-button form-control" ng-show="programs.length < 1" ng-disabled="true">{{programs.length > 0 ? 'please_select_a_program' : 'no_program_exists' | translate}}</button>
+        <div id="selectDropDownParent" class="input-group col-md-4">            
+            <button type="button" class="select-dropdown-button form-control" ng-show="programs.length > 0">{{selectedProgram ? selectedProgram.name : 'please_select_a_program'| translate}}</button>
+            <button type="button" class="select-dropdown-button form-control" ng-show="programs.length < 1" ng-disabled="true">{{programs.length > 0 ? 'please_select_a_program' : 'no_program_exists' | translate}}</button>
             <div class="input-group-btn">
-                <button class="btn btn-default trim" type="button" title="{{'list_programs'| translate}}" data-toggle="dropdown" ng-disabled="programs.length < 1"><i class="fa fa-caret-down"></i></button>
+                <button class="btn btn-default select-dropdown-caret" type="button" title="{{'list_programs'| translate}}" data-toggle="dropdown" ng-disabled="programs.length < 1"><i class="fa fa-caret-down"></i></button>
                 <ul id="selectDropDown" class="dropdown-menu dropdown-menu-right">
                     <li>
                         <a href ng-click="getProgramAttributes(null)">{{'please_select_a_program' | translate}}</a>
@@ -57,10 +57,10 @@
                 </ul>
             </div>                
         </div>
-        <div id="searchDropDownParent" class="input-group col-md-5">
+        <div id="searchDropDownParent" class="input-group col-md-4">
             <input type="text" placeholder="{{'type_here_for_simple_search'| translate}}" ng-model="searchText" class="form-control expanded" ng-class="{true: 'invalid-input'} [!searchText && emptySearchText]" ng-focus="showHideSearch()" ng-disabled="showRegistrationDiv || showReportDiv">
             <div class="input-group-btn">
-                <button class="btn btn-default without-border-radius trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-click="showHideSearch()" ng-disabled="showRegistrationDiv || showReportDiv"><i class="fa fa-caret-down"></i></button>
+                <button class="btn btn-default search-dropdown-button trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-click="showHideSearch()" ng-disabled="showRegistrationDiv || showReportDiv"><i class="fa fa-caret-down"></i></button>
                 <button class="btn btn-primary trim" type="button" title="{{'search'| translate}}" ng-disabled="showRegistrationDiv || showReportDiv" ng-click="search(searchMode.freeText)"><i class="fa fa-search"></i></button>
                 <div id="searchDropDown" class="dropdown-menu dropdown-menu-right">
                     <form ng-include="'views/search.html'">                       

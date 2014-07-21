@@ -126,17 +126,24 @@ $(document).ready(function()
         }
     });
 
-    //dhis2.availability.startAvailabilityCheck();
+    //dhis2.availability.startAvailabilityCheck();    
     
-    var selectParentWidth = $("#selectDropDownParent").width();
-    $("#selectDropDown").width(selectParentWidth);
-    $(".select-drop-down-button").on('click', function(e) {
+    $(".select-dropdown-button").on('click', function(e) {
+        $("#selectDropDown").width($("#selectDropDownParent").width());
         e.stopPropagation();
         $("#selectDropDown").dropdown('toggle');
     });  
     
-    var searchParentWidth = $("#searchDropDownParent").width();    
-    $("#searchDropDown").width(searchParentWidth);
+    $(".select-dropdown-caret").on('click', function(e) {
+        $("#selectDropDown").width($("#selectDropDownParent").width());
+        e.stopPropagation();
+        $("#selectDropDown").dropdown('toggle');
+    }); 
+    
+    $(".search-dropdown-button").on('click', function() {
+        $("#searchDropDown").width($("#searchDropDownParent").width());
+    }); 
+    
     $('#searchDropDown').on('click', "[data-stop-propagation]", function(e) {
         e.stopPropagation();
     });   
@@ -144,10 +151,8 @@ $(document).ready(function()
 });
 
 $(window).resize(function() {
-    var searchWidth = $("#searchDropDownParent").width();
-    var selectWidth = $("#selectDropDownParent").width();
-    $("#selectDropDown").width(selectWidth);
-    $("#searchDropDown").width(searchWidth);
+    $("#selectDropDown").width($("#selectDropDownParent").width());
+    $("#searchDropDown").width($("#searchDropDownParent").width());
 });
 
 function ajax_login()
