@@ -700,12 +700,16 @@ input[type=number], input[type=text], input[type=password], textarea, select {
     text-decoration: underline;
 }
 
-.select-drop-down-button{
+.select-dropdown-button{
     text-align: left;
     padding: 2px 4px;
     color: #999;
 }
 
+.select-dropdown-caret {
+    margin-bottom: 5px; 
+    margin-top: 5px;    
+}
 .dropdown-menu {
     margin: -5px 0 0 0;
 }
@@ -744,7 +748,7 @@ a:active {
     width: 30%;
 }
 
-.without-border-radius{
+.search-dropdown-button {
     border-radius: 0;
 }
 
