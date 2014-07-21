@@ -218,8 +218,10 @@ trackerCapture.controller('ReportController',
         DHIS2EventFactory.getEventsByProgram($scope.selectedTei.trackedEntityInstance, orgUnitId, programId).then(function(eventList){
 
             angular.forEach(eventList, function(ev){
-                if(ev.program){               
+                if(ev.program){       
                     ev.visited = true;
+                    ev.dueDate = DateUtils.format(ev.dueDate);  
+                    ev.sortingDate = ev.dueDate;
                     ev.name = $scope.programStageNames[ev.programStage].name;
                     ev.programName = $scope.programNames[ev.program].name;
                     if(angular.isUndefined($scope.report[ev.program].enrollments)){
@@ -229,12 +231,11 @@ trackerCapture.controller('ReportController',
                     
                     if(ev.eventDate){
                         ev.eventDate = DateUtils.format(ev.eventDate);
+                        ev.sortingDate = ev.eventDate;
                     }
                     else{
                         ev.visited = false;
-                    }
-                    
-                    ev.dueDate = DateUtils.format(ev.dueDate);                    
+                    }                 
 
                     if(ev.enrollment){
                         if($scope.report[ev.program].enrollments[ev.enrollment]){

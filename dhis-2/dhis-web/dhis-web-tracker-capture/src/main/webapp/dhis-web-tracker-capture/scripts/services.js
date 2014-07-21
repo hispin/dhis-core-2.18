@@ -533,7 +533,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             return promise;
         },
         getByOrgUnitAndProgram: function(orgUnit, ouMode, program){   
-            var promise = $http.get( '../api/events.json?' + '&orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&paging=false').then(function(response){
+            var promise = $http.get( '../api/events.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&paging=false').then(function(response){
                 return response.data.events;
             });            
             return promise;
