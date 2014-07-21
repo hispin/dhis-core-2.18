@@ -698,7 +698,7 @@ Ext.onReady( function() {
 		};
 
 		window = Ext.create('Ext.window.Window', {
-			title: NS.i18n.table_options,
+			title: NS.i18n.chart_options,
 			bodyStyle: 'background-color:#fff; padding:5px 5px 3px',
 			closeAction: 'hide',
 			autoShow: true,
