@@ -31,7 +31,9 @@ package org.hisp.dhis.common;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -132,5 +134,26 @@ public class NameableObjectUtils
         }
         
         return objects;
+    }
+
+    /**
+     * Returns a mapping between the uid and the nameable objects.
+     *
+     * @param objects the nameable objects.
+     * @return mapping between the uid and the nameable objects.
+     */
+    public static Map<String, NameableObject> getUidObjectMap( Collection<? extends NameableObject> objects )
+    {
+        Map<String, NameableObject> map = new HashMap<String, NameableObject>();
+
+        if ( objects != null )
+        {
+            for ( NameableObject object : objects )
+            {
+                map.put( object.getUid(), object );
+            }
+        }
+
+        return map;
     }
 }
