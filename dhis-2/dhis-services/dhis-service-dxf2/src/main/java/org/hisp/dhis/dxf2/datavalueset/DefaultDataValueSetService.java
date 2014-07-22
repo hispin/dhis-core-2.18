@@ -434,7 +434,7 @@ public class DefaultDataValueSetService
         DataSet dataSet = dataValueSet.getDataSet() != null ? identifiableObjectManager.getObject( DataSet.class, IdentifiableProperty.UID, dataValueSet.getDataSet() ) : null;
         Date completeDate = getDefaultDate( dataValueSet.getCompleteDate() );
 
-        Period outerPeriod = PeriodType.getPeriodFromIsoString( dataValueSet.getPeriod() );
+        Period outerPeriod = PeriodType.getPeriodFromIsoString( trimToNull( dataValueSet.getPeriod() ) );
 
         OrganisationUnit outerOrgUnit;
 
@@ -442,11 +442,11 @@ public class DefaultDataValueSetService
 
         if ( orgUnitIdScheme.equals( IdentifiableProperty.UUID ) )
         {
-            outerOrgUnit = dataValueSet.getOrgUnit() == null ? null : organisationUnitService.getOrganisationUnitByUuid( dataValueSet.getOrgUnit() );
+            outerOrgUnit = dataValueSet.getOrgUnit() == null ? null : organisationUnitService.getOrganisationUnitByUuid( trimToNull( dataValueSet.getOrgUnit() ) );
         }
         else
         {
-            outerOrgUnit = dataValueSet.getOrgUnit() != null ? identifiableObjectManager.getObject( OrganisationUnit.class, orgUnitIdScheme, dataValueSet.getOrgUnit() ) : null;
+            outerOrgUnit = dataValueSet.getOrgUnit() != null ? identifiableObjectManager.getObject( OrganisationUnit.class, orgUnitIdScheme, trimToNull( dataValueSet.getOrgUnit() ) ) : null;
         }
 
         if ( dataSet != null && completeDate != null )
