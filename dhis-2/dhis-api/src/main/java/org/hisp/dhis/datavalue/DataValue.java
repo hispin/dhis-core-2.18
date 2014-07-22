@@ -248,6 +248,16 @@ public class DataValue
 
         return result;
     }
+    
+    @Override
+    public String toString()
+    {
+        return "[Data element: " + dataElement.getUid() +
+            ", period: " + period.getUid() +
+            ", source: " + source.getUid() +
+            ", category option combo: " + categoryOptionCombo.getUid() +
+            ", attribute option combo: " + attributeOptionCombo.getUid() + "]";
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters

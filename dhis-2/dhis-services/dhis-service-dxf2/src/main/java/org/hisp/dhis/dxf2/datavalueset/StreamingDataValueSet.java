@@ -51,6 +51,7 @@ public class StreamingDataValueSet
     private static final String FIELD_COMPLETEDATE = "completeDate";
     private static final String FIELD_PERIOD = "period";
     private static final String FIELD_ORGUNIT = "orgUnit";
+    private static final String FIELD_ATTRIBUTE_OPTION_COMBO = "attributeOptionCombo";
 
     private XMLWriter writer;
 
@@ -128,6 +129,12 @@ public class StreamingDataValueSet
     }
 
     @Override
+    public String getAttributeOptionCombo()
+    {
+        return attributeOptionCombo = attributeOptionCombo == null ? reader.getAttributeValue( FIELD_ATTRIBUTE_OPTION_COMBO ) : attributeOptionCombo;
+    }
+    
+    @Override
     public boolean hasNextDataValue()
     {
         return reader.moveToStartElement( FIELD_DATAVALUE, FIELD_DATAVALUESET );
@@ -178,7 +185,7 @@ public class StreamingDataValueSet
     {
         writer.writeAttribute( FIELD_ORGUNIT, orgUnit );
     }
-
+    
     @Override
     public DataValue getDataValueInstance()
     {

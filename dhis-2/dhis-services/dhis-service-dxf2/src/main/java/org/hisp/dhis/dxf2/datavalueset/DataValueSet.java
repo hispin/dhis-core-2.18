@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -68,6 +69,8 @@ public class DataValueSet
     protected String period;
 
     protected String orgUnit;
+
+    protected String attributeOptionCombo;
 
     protected List<DataValue> dataValues = new ArrayList<DataValue>();
 
@@ -185,6 +188,19 @@ public class DataValueSet
     public void setOrgUnit( String orgUnit )
     {
         this.orgUnit = orgUnit;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public String getAttributeOptionCombo()
+    {
+        return attributeOptionCombo;
+    }
+    
+    public void setAttributeOptionCombo( String attributeOptionCombo )
+    {
+        this.attributeOptionCombo = attributeOptionCombo;
     }
 
     @JsonProperty(value = "dataValues")

@@ -100,13 +100,14 @@ public class SpringDataValueSetStore
         DataValueSet dataValueSet = new StreamingJsonDataValueSet( outputStream );
         
         final String sql =
-            "select de.uid as deuid, pe.startdate, pt.name, ou.uid as ouuid, coc.uid as cocuid, dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
+            "select de.uid as deuid, pe.startdate, pt.name, ou.uid as ouuid, coc.uid as cocuid, aoc.uid as aocuid, dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
             "from datavalue dv " +
             "join dataelement de on (dv.dataelementid=de.dataelementid) " +
             "join period pe on (dv.periodid=pe.periodid) " +
             "join periodtype pt on (pe.periodtypeid=pt.periodtypeid) " +
             "join organisationunit ou on (dv.sourceid=ou.organisationunitid) " +
             "join categoryoptioncombo coc on (dv.categoryoptioncomboid=coc.categoryoptioncomboid) " +
+            "join categoryoptioncombo aoc on (dv.attributeoptioncomboid=aoc.categoryoptioncomboid) " +
             "where dv.lastupdated >= '" + DateUtils.getLongDateString( lastUpdated ) + "'";
         
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
@@ -147,6 +148,7 @@ public class SpringDataValueSetStore
             dataValue.setPeriod( isoPeriod.getIsoDate() );
             dataValue.setOrgUnit( rowSet.getString( "ouuid" ) );
             dataValue.setCategoryOptionCombo( rowSet.getString( "cocuid" ) );
+            dataValue.setAttributeOptionCombo( rowSet.getString( "aocuid" ) );
             dataValue.setValue( rowSet.getString( "value" ) );
             dataValue.setStoredBy( rowSet.getString( "storedby" ) );
             dataValue.setCreated( DateUtils.getLongDateString( rowSet.getDate( "created" ) ) );
@@ -162,13 +164,14 @@ public class SpringDataValueSetStore
     private String getDataValueSql( Collection<DataElement> dataElements, Collection<Period> periods, Collection<OrganisationUnit> orgUnits )
     {
         return
-            "select de.uid as deuid, pe.startdate, pt.name, ou.uid as ouuid, coc.uid as cocuid, dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
+            "select de.uid as deuid, pe.startdate, pt.name, ou.uid as ouuid, coc.uid as cocuid, aoc.uid as aocuid, dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
             "from datavalue dv " +
             "join dataelement de on (dv.dataelementid=de.dataelementid) " +
             "join period pe on (dv.periodid=pe.periodid) " +
             "join periodtype pt on (pe.periodtypeid=pt.periodtypeid) " +
             "join organisationunit ou on (dv.sourceid=ou.organisationunitid) " +
             "join categoryoptioncombo coc on (dv.categoryoptioncomboid=coc.categoryoptioncomboid) " +
+            "join categoryoptioncombo aoc on (dv.attributeoptioncomboid=aoc.categoryoptioncomboid) " +
             "where dv.dataelementid in (" + getCommaDelimitedString( getIdentifiers( DataElement.class, dataElements ) ) + ") " +
             "and dv.periodid in (" + getCommaDelimitedString( getIdentifiers( Period.class, periods ) ) + ") " +
             "and dv.sourceid in (" + getCommaDelimitedString( getIdentifiers( OrganisationUnit.class, orgUnits ) ) + ")";

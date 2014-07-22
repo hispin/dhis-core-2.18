@@ -51,6 +51,8 @@ public class DataValue
     protected String orgUnit;
 
     protected String categoryOptionCombo;
+    
+    protected String attributeOptionCombo;
 
     protected String value;
 
@@ -127,6 +129,19 @@ public class DataValue
     public void setCategoryOptionCombo( String categoryOptionCombo )
     {
         this.categoryOptionCombo = categoryOptionCombo;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public String getAttributeOptionCombo()
+    {
+        return attributeOptionCombo;
+    }
+    
+    public void setAttributeOptionCombo( String attributeOptionCombo )
+    {
+        this.attributeOptionCombo = attributeOptionCombo;
     }
 
     @JsonProperty
