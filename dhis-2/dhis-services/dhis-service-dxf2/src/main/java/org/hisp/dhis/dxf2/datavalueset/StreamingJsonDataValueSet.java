@@ -29,11 +29,13 @@ package org.hisp.dhis.dxf2.datavalueset;
  */
 
 import com.fasterxml.jackson.core.JsonGenerator;
+
 import org.hisp.dhis.dxf2.datavalue.DataValue;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import org.hisp.dhis.dxf2.datavalue.StreamingJsonDataValue;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -89,6 +91,12 @@ public class StreamingJsonDataValueSet extends DataValueSet
     public void setOrgUnit( String orgUnit )
     {
         writeObjectField( "orgUnit", orgUnit );
+    }
+
+    @Override
+    public void setAttributeOptionCombo( String attributeOptionCombo )
+    {
+        writeObjectField( "attributeOptionCombo", attributeOptionCombo );
     }
 
     @Override

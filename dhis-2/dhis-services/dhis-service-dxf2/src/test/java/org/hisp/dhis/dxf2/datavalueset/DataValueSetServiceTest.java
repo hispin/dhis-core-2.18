@@ -40,6 +40,9 @@ import java.util.Collection;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -56,6 +59,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -86,16 +90,24 @@ public class DataValueSetServiceTest
     
     @Autowired
     private CompleteDataSetRegistrationService registrationService;
+
+    private DataElementCategoryOptionCombo ocDef;
+    private DataElementCategoryOption categoryOptionA;
+    private DataElementCategoryOption categoryOptionB;
+    private DataElementCategory categoryA;
+    private DataElementCategoryCombo categoryComboA;
+    private DataElementCategoryOptionCombo ocA;
+    private DataElementCategoryOptionCombo ocB;
     
     private DataElement deA;
     private DataElement deB;
     private DataElement deC;
+    private DataElement deD;
     private DataSet dsA;
     private OrganisationUnit ouA;
     private OrganisationUnit ouB;
     private Period peA;
     private Period peB;
-    private DataElementCategoryOptionCombo optionComboA;
     
     @Override
     public boolean emptyDatabaseAfterTest()
@@ -106,16 +118,26 @@ public class DataValueSetServiceTest
     @Override
     public void setUpTest()
     {
+        categoryOptionA = createCategoryOption( 'A' );
+        categoryOptionB = createCategoryOption( 'B' );
+        categoryA = createDataElementCategory( 'A', categoryOptionA, categoryOptionB );
+        categoryComboA = createCategoryCombo( 'A', categoryA );
+        ocDef = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
+        ocA = createCategoryOptionCombo( categoryComboA, categoryOptionA );
+        ocB = createCategoryOptionCombo( categoryComboA, categoryOptionB );
         deA = createDataElement( 'A' );
         deB = createDataElement( 'B' );
         deC = createDataElement( 'C' );
+        deD = createDataElement( 'D' );
         dsA = createDataSet( 'A', new MonthlyPeriodType() );
         ouA = createOrganisationUnit( 'A' );
         ouB = createOrganisationUnit( 'B' );
-        peA = createPeriod( getDate( 2012, 1, 1 ), getDate( 2012, 1, 31 ) );
-        peB = createPeriod( getDate( 2012, 2, 1 ), getDate( 2012, 2, 29 ) );
-        optionComboA = categoryService.getDefaultDataElementCategoryOptionCombo();
-        
+        peA = createPeriod( PeriodType.getByNameIgnoreCase( MonthlyPeriodType.NAME ), getDate( 2012, 1, 1 ), getDate( 2012, 1, 31 ) );
+        peB = createPeriod( PeriodType.getByNameIgnoreCase( MonthlyPeriodType.NAME ), getDate( 2012, 2, 1 ), getDate( 2012, 2, 29 ) );
+
+        ocA.setUid( "kjuiHgy67hg" );
+        ocB.setUid( "Gad33qy67g5" );
         deA.setUid( "f7n9E0hX8qk" );
         deB.setUid( "Ix2HsbDMLea" );
         deC.setUid( "eY5ehpbEsB7" );
@@ -123,21 +145,32 @@ public class DataValueSetServiceTest
         ouA.setUid( "DiszpKrYNg8" );
         ouB.setUid( "BdfsJfj87js" );
 
+        ocA.setCode( "OC_A" );
+        ocB.setCode( "OC_B" );
         deA.setCode( "DE_A" );
         deB.setCode( "DE_B" );
         deC.setCode( "DE_C" );
+        deD.setCode( "DE_D" );
         dsA.setCode( "DS_A" );
         ouA.setCode( "OU_A" );
         ouB.setCode( "OU_B" );
+
+        categoryService.addDataElementCategoryOption( categoryOptionA );
+        categoryService.addDataElementCategoryOption( categoryOptionB );
+        categoryService.addDataElementCategory( categoryA );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
+        categoryService.addDataElementCategoryOptionCombo( ocA );
+        categoryService.addDataElementCategoryOptionCombo( ocB );
         
         dataElementService.addDataElement( deA );
         dataElementService.addDataElement( deB );
         dataElementService.addDataElement( deC );
+        dataElementService.addDataElement( deD );
         dataSetService.addDataSet( dsA );
         organisationUnitService.addOrganisationUnit( ouA );
         organisationUnitService.addOrganisationUnit( ouB );
         periodService.addPeriod( peA );
-        periodService.addPeriod( peB );
+        periodService.addPeriod( peB );        
     }
     
     @Test
@@ -153,11 +186,11 @@ public class DataValueSetServiceTest
         
         assertNotNull( dataValues );
         assertEquals( 3, dataValues.size() );
-        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, ocDef, ocDef ) ) );
         
-        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dsA, peA, ouA, optionComboA );
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dsA, peA, ouA, ocDef );
         
         assertNotNull( registration );
         assertEquals( dsA, registration.getDataSet() );
@@ -204,18 +237,18 @@ public class DataValueSetServiceTest
 
         assertNotNull( dataValues );
         assertEquals( 12, dataValues.size() );
-        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deA, peA, ouB, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deA, peB, ouA, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deA, peB, ouB, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deB, peA, ouB, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deB, peB, ouA, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deB, peB, ouB, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deC, peA, ouB, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deC, peB, ouA, optionComboA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deC, peB, ouB, optionComboA, optionComboA ) ) );        
+        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deA, peA, ouB, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deA, peB, ouA, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deA, peB, ouB, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peA, ouB, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peB, ouA, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peB, ouB, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peA, ouB, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peB, ouA, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peB, ouB, ocDef, ocDef ) ) );        
     }
     
     @Test
@@ -256,5 +289,20 @@ public class DataValueSetServiceTest
         
         assertNotNull( dataValues );
         assertEquals( 3, dataValues.size() );
+    }
+    
+    @Test
+    public void testImportDataValuesWithAttributeOptionCombo()
+        throws Exception
+    {
+        dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetD.xml" ).getInputStream() );
+        
+        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+        
+        assertNotNull( dataValues );
+        assertEquals( 3, dataValues.size() );
+        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, ocDef, ocA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, ocDef, ocA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, ocDef, ocA ) ) );        
     }
 }

@@ -420,25 +420,38 @@ public class DefaultDataValueSetService
 
         importOptions = importOptions != null ? importOptions : ImportOptions.getDefaultImportOptions();
 
+        // ---------------------------------------------------------------------
+        // Options
+        // ---------------------------------------------------------------------
+
         IdentifiableProperty dataElementIdScheme = dataValueSet.getDataElementIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getDataElementIdScheme().toUpperCase() ) : importOptions.getDataElementIdScheme();
         IdentifiableProperty orgUnitIdScheme = dataValueSet.getOrgUnitIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getOrgUnitIdScheme().toUpperCase() ) : importOptions.getOrgUnitIdScheme();
         boolean dryRun = dataValueSet.getDryRun() != null ? dataValueSet.getDryRun() : importOptions.isDryRun();
         ImportStrategy strategy = dataValueSet.getStrategy() != null ? ImportStrategy.valueOf( dataValueSet.getStrategy() ) : importOptions.getImportStrategy();
         boolean skipExistingCheck = importOptions.isSkipExistingCheck();
 
+        // ---------------------------------------------------------------------
+        // Object maps
+        // ---------------------------------------------------------------------
+
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
         Map<String, OrganisationUnit> orgUnitMap = orgUnitIdScheme == UUID ? getUuidOrgUnitMap() : identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID );
         Map<String, Period> periodMap = new HashMap<String, Period>();
 
-        DataSet dataSet = dataValueSet.getDataSet() != null ? identifiableObjectManager.getObject( DataSet.class, IdentifiableProperty.UID, dataValueSet.getDataSet() ) : null;
-        Date completeDate = getDefaultDate( dataValueSet.getCompleteDate() );
+        // ---------------------------------------------------------------------
+        // Data value set
+        // ---------------------------------------------------------------------
 
+        DataElementCategoryOptionCombo fallbackCategoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+
+        DataSet dataSet = dataValueSet.getDataSet() != null ? identifiableObjectManager.getObject( DataSet.class, IdentifiableProperty.UID, dataValueSet.getDataSet() ) : null;
+        
+        Date completeDate = getDefaultDate( dataValueSet.getCompleteDate() );
+        
         Period outerPeriod = PeriodType.getPeriodFromIsoString( trimToNull( dataValueSet.getPeriod() ) );
 
         OrganisationUnit outerOrgUnit;
-
-        DataElementCategoryOptionCombo fallbackCategoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         if ( orgUnitIdScheme.equals( IdentifiableProperty.UUID ) )
         {
@@ -449,6 +462,9 @@ public class DefaultDataValueSetService
             outerOrgUnit = dataValueSet.getOrgUnit() != null ? identifiableObjectManager.getObject( OrganisationUnit.class, orgUnitIdScheme, trimToNull( dataValueSet.getOrgUnit() ) ) : null;
         }
 
+        DataElementCategoryOptionCombo outerAttrOptionCombo = dataValueSet.getAttributeOptionCombo() != null ? 
+            identifiableObjectManager.getObject( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID, trimToNull( dataValueSet.getAttributeOptionCombo() ) ) : null;
+        
         if ( dataSet != null && completeDate != null )
         {
             notifier.notify( id, "Completing data set" );
@@ -458,7 +474,7 @@ public class DefaultDataValueSetService
         {
             summary.setDataSetComplete( Boolean.FALSE.toString() );
         }
-
+        
         String currentUser = currentUserService.getCurrentUsername();
 
         BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class ).init();
@@ -466,6 +482,10 @@ public class DefaultDataValueSetService
         int importCount = 0;
         int updateCount = 0;
         int totalCount = 0;
+
+        // ---------------------------------------------------------------------
+        // Data values
+        // ---------------------------------------------------------------------
 
         notifier.notify( id, "Importing data values" );
         log.info( "importing data values" );
@@ -479,9 +499,10 @@ public class DefaultDataValueSetService
             totalCount++;
 
             DataElement dataElement = dataElementMap.get( trimToNull( dataValue.getDataElement() ) );
-            DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ) );
             Period period = outerPeriod != null ? outerPeriod : PeriodType.getPeriodFromIsoString( trimToNull( dataValue.getPeriod() ) );
             OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : orgUnitMap.get( trimToNull( dataValue.getOrgUnit() ) );
+            DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ) );
+            DataElementCategoryOptionCombo attrOptionCombo = outerAttrOptionCombo != null ? outerAttrOptionCombo : categoryOptionComboMap.get( trimToNull( dataValue.getAttributeOptionCombo() ) );
 
             if ( dataElement == null )
             {
@@ -504,6 +525,11 @@ public class DefaultDataValueSetService
             if ( categoryOptionCombo == null )
             {
                 categoryOptionCombo = fallbackCategoryOptionCombo;
+            }
+            
+            if ( attrOptionCombo == null )
+            {
+                attrOptionCombo = fallbackCategoryOptionCombo;
             }
 
             if ( dataValue.getValue() == null && dataValue.getComment() == null )
@@ -541,7 +567,7 @@ public class DefaultDataValueSetService
             internalValue.setPeriod( period );
             internalValue.setSource( orgUnit );
             internalValue.setCategoryOptionCombo( categoryOptionCombo );
-            internalValue.setAttributeOptionCombo( fallbackCategoryOptionCombo ); // TODO
+            internalValue.setAttributeOptionCombo( attrOptionCombo );
             internalValue.setValue( trimToNull( dataValue.getValue() ) );
 
             if ( dataValue.getStoredBy() == null || dataValue.getStoredBy().trim().isEmpty() )

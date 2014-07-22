@@ -39,6 +39,7 @@ public class StreamingDataValue
     private static final String FIELD_DATAVALUE = "dataValue";
     private static final String FIELD_DATAELEMENT = "dataElement";
     private static final String FIELD_CATEGORY_OPTION_COMBO = "categoryOptionCombo";
+    private static final String FIELD_ATTRIBUTE_OPTION_COMBO = "attributeOptionCombo";
     private static final String FIELD_PERIOD = "period";
     private static final String FIELD_ORGUNIT = "orgUnit";
     private static final String FIELD_VALUE = "value";
@@ -94,7 +95,13 @@ public class StreamingDataValue
     {
         return categoryOptionCombo = categoryOptionCombo == null ? reader.getAttributeValue( FIELD_CATEGORY_OPTION_COMBO ) : categoryOptionCombo;
     }
-
+    
+    @Override
+    public String getAttributeOptionCombo()
+    {
+        return attributeOptionCombo = attributeOptionCombo == null ? reader.getAttributeValue( FIELD_ATTRIBUTE_OPTION_COMBO ) : attributeOptionCombo;
+    }
+    
     @Override
     public String getValue()
     {
@@ -153,6 +160,12 @@ public class StreamingDataValue
         writer.writeAttribute( FIELD_CATEGORY_OPTION_COMBO, categoryOptionCombo );
     }
 
+    @Override
+    public void setAttributeOptionCombo( String attributeOptionCombo )
+    {
+        writer.writeAttribute( FIELD_ATTRIBUTE_OPTION_COMBO, attributeOptionCombo );
+    }
+    
     @Override
     public void setValue( String value )
     {

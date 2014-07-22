@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.datavalueset;
+package org.hisp.dhis.dxf2.datavalue;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.datavalueset;
  */
 
 import com.fasterxml.jackson.core.JsonGenerator;
+
 import org.hisp.dhis.dxf2.datavalue.DataValue;
 
 import java.io.IOException;
@@ -78,6 +79,12 @@ public class StreamingJsonDataValue extends DataValue
         writeObjectField( "categoryOptionCombo", categoryOptionCombo );
     }
 
+    @Override
+    public void setAttributeOptionCombo( String attributeOptionCombo )
+    {
+        writeObjectField( "attributeOptionCombo", attributeOptionCombo );
+    }
+    
     @Override
     public void setValue( String value )
     {

@@ -93,33 +93,39 @@ public class StreamingCsvDataValue
     }
 
     @Override
+    public String getAttributeOptionCombo()
+    {
+        return attributeOptionCombo = attributeOptionCombo == null ? getValue( 4 ) : attributeOptionCombo;
+    }
+    
+    @Override
     public String getValue()
     {
-        return value = value == null ? getValue( 4 ) : value;
+        return value = value == null ? getValue( 5 ) : value;
     }
 
     @Override
     public String getStoredBy()
     {
-        return storedBy = storedBy == null ? getValue( 5 ) : storedBy;
+        return storedBy = storedBy == null ? getValue( 6 ) : storedBy;
     }
 
     @Override
     public String getLastUpdated()
     {
-        return lastUpdated = lastUpdated == null ? getValue( 6 ) : lastUpdated;
+        return lastUpdated = lastUpdated == null ? getValue( 7 ) : lastUpdated;
     }
 
     @Override
     public String getComment()
     {
-        return comment = comment == null ? getValue( 7 ) : comment;
+        return comment = comment == null ? getValue( 8 ) : comment;
     }
 
     @Override
     public Boolean getFollowup()
     {
-        return followup = followup == null ? valueOf( getValue( 8 ) ) : followup;
+        return followup = followup == null ? valueOf( getValue( 9 ) ) : followup;
     }
 
     //--------------------------------------------------------------------------
@@ -148,6 +154,12 @@ public class StreamingCsvDataValue
     public void setCategoryOptionCombo( String categoryOptionCombo )
     {
         values.add( categoryOptionCombo );
+    }
+
+    @Override
+    public void setAttributeOptionCombo( String attributeOptionCombo )
+    {
+        values.add( attributeOptionCombo );
     }
 
     @Override
@@ -199,8 +211,8 @@ public class StreamingCsvDataValue
     {
         String[] headers = {
             "dataelement", "period", "orgunit",
-            "categoryoptioncombo", "value", "storedby",
-            "lastupdated", "comment", "followup" };
+            "categoryoptioncombo", "attributeoptioncombo", "value", 
+            "storedby", "lastupdated", "comment", "followup" };
 
         return headers;
     }
