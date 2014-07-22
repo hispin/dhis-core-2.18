@@ -60,23 +60,27 @@ import org.springframework.util.StringUtils;
  */
 public class FormUtils
 {
+    private static final String KEY_PERIOD_TYPE = "periodType";
+    private static final String KEY_ALLOW_FUTURE_PERIODS = "allowFuturePeriods";
+    private static final String KEY_DATA_ELEMENTS = "dataElements";
+    
     public static Form fromDataSet( DataSet dataSet, boolean metaData )
     {
         Form form = new Form();
         form.setLabel( dataSet.getDisplayName() );
         form.setSubtitle( dataSet.getDisplayShortName() );
 
-        form.getOptions().put( "periodType", dataSet.getPeriodType().getName() );
-        form.getOptions().put( "allowFuturePeriods", dataSet.isAllowFuturePeriods() );
+        form.getOptions().put( KEY_PERIOD_TYPE, dataSet.getPeriodType().getName() );
+        form.getOptions().put( KEY_ALLOW_FUTURE_PERIODS, dataSet.isAllowFuturePeriods() );
 
         if ( dataSet.getSections().size() > 0 )
         {
-            List<Section> sections = new ArrayList<Section>( dataSet.getSections() );
+            List<Section> sections = new ArrayList<>( dataSet.getSections() );
             Collections.sort( sections, SectionOrderComparator.INSTANCE );
             
             for ( Section section : sections )
             {
-                List<Field> fields = inputsFromDataElements( new ArrayList<DataElement>( section.getDataElements() ), new ArrayList<DataElementOperand>( section.getGreyedFields() ) );
+                List<Field> fields = inputsFromDataElements( new ArrayList<>( section.getDataElements() ), new ArrayList<>( section.getGreyedFields() ) );
 
                 Group group = new Group();
                 group.setLabel( section.getDisplayName() );
@@ -86,7 +90,7 @@ public class FormUtils
                 
                 if ( metaData )
                 {
-                    group.setMetaData( NameableObjectUtils.getUidObjectMap( section.getDataElements() ) );
+                    group.getMetaData().put( KEY_DATA_ELEMENTS, NameableObjectUtils.getAsNameableObjects( section.getDataElements() ) );
                 }
                 
                 form.getGroups().add( group );
@@ -94,7 +98,7 @@ public class FormUtils
         }
         else
         {
-            List<Field> fields = inputsFromDataElements( new ArrayList<DataElement>( dataSet.getDataElements() ) );
+            List<Field> fields = inputsFromDataElements( new ArrayList<>( dataSet.getDataElements() ) );
 
             Group group = new Group();
             group.setLabel( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
@@ -104,7 +108,7 @@ public class FormUtils
 
             if ( metaData )
             {
-                group.setMetaData( NameableObjectUtils.getUidObjectMap( new ArrayList<DataElement>( dataSet.getDataElements() ) ) );
+                group.getMetaData().put( KEY_DATA_ELEMENTS, NameableObjectUtils.getAsNameableObjects( new ArrayList<>( dataSet.getDataElements() ) ) );
             }
             
             form.getGroups().add( group );
@@ -112,7 +116,6 @@ public class FormUtils
 
         return form;
     }
-
 
     public static Form fromProgram( Program program )
     {
