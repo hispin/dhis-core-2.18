@@ -85,14 +85,26 @@ public class BaseNameableObject
         this.name = name;
     }
 
-    public BaseNameableObject( int id, String uid, String name, String shortName,
-        String code, String description )
+    public BaseNameableObject( int id, String uid, String name, String shortName, String code, String description )
     {
         super( id, uid, name );
         this.shortName = shortName;
         this.code = code;
         this.description = description;
     }
+    
+    public BaseNameableObject( NameableObject object )
+    {
+        super( object.getId(), object.getUid(), object.getName() );
+        this.shortName = object.getShortName();
+        this.code = object.getCode();
+        this.description = object.getDescription();
+    }
+
+    // -------------------------------------------------------------------------
+    // hashCode and equals
+    // -------------------------------------------------------------------------
+
 
     @Override
     public int hashCode()
@@ -143,6 +155,10 @@ public class BaseNameableObject
 
         return true;
     }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
 
     @JsonProperty
     @JsonView( { ShortNameView.class, DetailedView.class, ExportView.class } )

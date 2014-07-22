@@ -29,15 +29,13 @@ package org.hisp.dhis.webapi.webdomain.form;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.NameableObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -56,7 +54,7 @@ public class Group
 
     private List<Field> fields = new ArrayList<Field>();
 
-    private Map<String, NameableObject> metaData;
+    private Map<Object, Object> metaData = new HashMap<Object, Object>();
 
     public Group()
     {
@@ -112,15 +110,14 @@ public class Group
     }
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseNameableObject.class )
     @JacksonXmlElementWrapper( localName = "metaData", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Map<String, NameableObject> getMetaData()
+    public Map<Object, Object> getMetaData()
     {
         return metaData;
     }
     
-    public void setMetaData( Map<String, NameableObject> metaData )
+    public void setMetaData( Map<Object, Object> metaData )
     {
         this.metaData = metaData;
     }
