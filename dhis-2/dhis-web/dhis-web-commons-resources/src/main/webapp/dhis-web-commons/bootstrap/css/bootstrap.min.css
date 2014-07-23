@@ -1622,7 +1622,7 @@ textarea.input-lg {
 	padding: 6px 12px;
 	margin-bottom: 0;
 	font-size: 14px;
-	font-weight: normal;
+	font-weight: bold;
 	line-height: 1.428571429;
 	text-align: center;
 	white-space: nowrap;
@@ -1661,12 +1661,12 @@ textarea.input-lg {
 	box-shadow: none
 }
 .btn-default {
-	color: #333;
+	color: #555;
 	background-color: #fff;
 	border-color: #ccc
 }
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
-	color: #333;
+	color: #444;
 	background-color: #ebebeb;
 	border-color: #adadad
 }

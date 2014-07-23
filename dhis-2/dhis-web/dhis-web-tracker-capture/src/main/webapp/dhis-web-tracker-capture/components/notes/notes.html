@@ -18,16 +18,18 @@
         
         <div class="add-note" ng-show="addNoteField">
             <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_your_note_here'| translate}}"></textarea> 
-            <button type="button" 
-                    class="btn btn-primary"
-                    ng-click="addNote()">
-                {{'save'| translate}}
-            </button>        
-            <button type="button" 
-                    class="btn btn-default small-horizonal-spacing" 
-                    ng-click="closeAddNote()">
-                {{'cancel'| translate}}
-            </button>
+            <div class="vertical-spacing">
+	            <button type="button" 
+	                    class="btn btn-primary"
+	                    ng-click="addNote()">
+	                {{'save'| translate}}
+	            </button>        
+	            <button type="button" 
+	                    class="btn btn-default small-horizonal-spacing" 
+	                    ng-click="closeAddNote()">
+	                {{'cancel'| translate}}
+	            </button>
+	        </div>
         </div>
 
         <div ng-show='selectedEnrollment' class='remove-default-padding overflow-ellipsis'>
