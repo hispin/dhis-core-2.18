@@ -487,7 +487,9 @@ Ext.onReady( function() {
 					{id: 'count', text: NS.i18n.count},
 					{id: 'sum', text: NS.i18n.sum},
 					{id: 'stddev', text: NS.i18n.stddev},
-					{id: 'variance', text: NS.i18n.variance}
+					{id: 'variance', text: NS.i18n.variance},
+					{id: 'min', text: NS.i18n.min},
+					{id: 'max', text: NS.i18n.max}
 				]
 			})
 		});

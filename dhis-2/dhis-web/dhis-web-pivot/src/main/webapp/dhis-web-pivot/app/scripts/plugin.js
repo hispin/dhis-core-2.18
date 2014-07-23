@@ -1802,7 +1802,9 @@ Ext.onReady( function() {
                         'count': 'COUNT',
                         'sum': 'SUM',
                         'stddev': 'STDDEV',
-                        'variance': 'VARIANCE'
+                        'variance': 'VARIANCE',
+                        'min': 'MIN',
+                        'max': 'MAX'
                     };
 
 				for (var i = 0, dimName, items; i < axisDimensionNames.length; i++) {
