@@ -150,6 +150,8 @@
 "aggregation_type",
 "count",
 "sum",
+"min",
+"max",
 "by_data_element",
 "stddev",
 "variance",
