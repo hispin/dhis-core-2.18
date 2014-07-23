@@ -798,6 +798,12 @@
         </entry>
         <entry>
           <key>
+            <value>myanmar</value>
+          </key>
+          <value>myanmar/myanmar.css</value>
+        </entry>
+        <entry>
+          <key>
             <value>vietnam</value>
           </key>
           <value>vietnam/vietnam.css</value>
