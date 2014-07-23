@@ -42,6 +42,12 @@ trackerCapture.controller('ProfileController',
     
     $scope.save = function(){
         
+        //check for form validity
+        $scope.outerForm.submitted = true;        
+        if( $scope.outerForm.$invalid ){
+            return false;
+        }
+        
         var tei = angular.copy($scope.selectedTei);
         tei.attributes = [];
         //prepare to update the tei on the server side 
@@ -64,6 +70,7 @@ trackerCapture.controller('ProfileController',
             
             $scope.editProfile = !$scope.editProfile;
             CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment});   
+            $scope.outerForm.submitted = false; 
         });       
     };
     

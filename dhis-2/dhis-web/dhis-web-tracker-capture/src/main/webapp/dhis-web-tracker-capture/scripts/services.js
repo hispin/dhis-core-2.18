@@ -499,11 +499,12 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                         processed = true;
                         teiAttributes[j].show = true;
                         teiAttributes[j].order = i;
+                        teiAttributes[j].mandatory = requiredAttributes[i].mandatory ? requiredAttributes[i].mandatory : false;
                     }
                 }
 
                 if(!processed && fromEnrollment){//attribute was empty, so a chance to put some value
-                    teiAttributes.push({show: true, order: i, attribute: requiredAttributes[i].id, displayName: requiredAttributes[i].name, type: requiredAttributes[i].valueType, value: ''});
+                    teiAttributes.push({show: true, order: i, mandatory: requiredAttributes[i].mandatory ? requiredAttributes[i].mandatory : false, attribute: requiredAttributes[i].id, displayName: requiredAttributes[i].name, type: requiredAttributes[i].valueType, value: ''});
                 }                   
             }
 
