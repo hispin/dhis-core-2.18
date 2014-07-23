@@ -1468,8 +1468,8 @@ function insertDataValues( json )
 
     // Update indicator values in form
 
-    updateIndicators();
-    updateDataElementTotals();
+    dhis2.de.updateIndicators();
+    dhis2.de.updateDataElementTotals();
 
     // Set completeness button
 

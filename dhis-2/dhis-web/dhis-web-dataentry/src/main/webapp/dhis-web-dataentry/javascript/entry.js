@@ -19,7 +19,13 @@ var FORMULA_PATTERN = /#\{.+?\}/g;
 var SEPARATOR = '.';
 var EVENT_VALUE_SAVED = 'dhis-web-dataentry-value-saved';
 
-function updateDataElementTotals()
+/**
+ * Updates totals for data element total fields.
+ * 
+ * @param dataElementId the id of the data element to update total fields, if
+ *        omitted then all total fields are updated.
+ */
+dhis2.de.updateDataElementTotals = function( dataElementId )
 {
 	var currentTotals = [];
 	
@@ -27,9 +33,12 @@ function updateDataElementTotals()
 	{
 		var de = $( this ).attr( 'dataelementid' );
 		
-		var total = dhis2.de.getDataElementTotalValue( de );
-		
-		$( this ).attr( 'value', total );
+		if ( !dataElementId || dataElementId == de )
+		{		
+			var total = dhis2.de.getDataElementTotalValue( de );
+			
+			$( this ).attr( 'value', total );
+		}
 	} );
 }
 
@@ -37,7 +46,7 @@ function updateDataElementTotals()
  * Updates all indicator input fields with the calculated value based on the
  * values in the input entry fields in the form.
  */
-function updateIndicators()
+dhis2.de.updateIndicators = function()
 {
     $( 'input[name="indicator"]' ).each( function( index )
     {
@@ -247,8 +256,8 @@ function saveVal( dataElementId, optionComboId, fieldId )
     var valueSaver = new ValueSaver( dataElementId,	periodId, optionComboId, value, fieldId, color );
     valueSaver.save();
 
-    updateIndicators(); // Update indicators for custom form
-    updateDataElementTotals(); // Update data element totals for custom forms
+    dhis2.de.updateIndicators(); // Update indicators for custom form
+    dhis2.de.updateDataElementTotals( dataElementId ); // Update data element totals for custom forms
     
     if ( warning )
     {
