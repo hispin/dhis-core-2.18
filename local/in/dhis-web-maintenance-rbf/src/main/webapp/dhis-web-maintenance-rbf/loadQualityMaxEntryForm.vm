@@ -35,7 +35,7 @@
           #set( $mark1 = true )
         #end
 		<tr #if( $mark1 ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8" #end>
-			<td><label>$dataElement.getFormNameFallback()</label></td>
+			<td><label>$dataElement.getDisplayName()</label></td>
 
             #set( $qualityDataValue = "" )			
 			#set( $qualityDataValue = $!qualityMaxValueMap.get( $dataElement.id ) )

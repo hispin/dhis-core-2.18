@@ -105,19 +105,23 @@ public class PageInitAction implements Action
         if( organisationUnit == null )
         {
             System.out.println("Organisationunit is null");
+            
         }
+        
         else
         {
             System.out.println("Organisationunit is not null ---" + organisationUnit.getId() );
+            dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
         }
         
         if( organisationUnit == null && orgUnitId != null )
         {
             organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+            dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
            
         }
         
-        dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+        //dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
         
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
         
@@ -137,6 +141,7 @@ public class PageInitAction implements Action
         
         dataSets.retainAll( pbfDataSets );
         Collections.sort(dataSets);
+        
         /*
         for( DataSet dataSet : dataSets )
         {

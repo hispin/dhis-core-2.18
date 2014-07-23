@@ -15,6 +15,7 @@ import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
@@ -111,7 +112,9 @@ public class LoadQualityScoreDetailsAction
     @Autowired
     private QualityScorePaymentService qualityScorePaymentService;
 
-
+    @Autowired
+    private DataElementService dataElementService;
+    
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
@@ -233,9 +236,16 @@ public class LoadQualityScoreDetailsAction
 
         //List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
         
+        
+        
+        dataElements = new ArrayList<DataElement>();
+        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        
         List<DataElement> dataElementList = new ArrayList<DataElement>();
         
         
+        
+    
         List<Section> sectionList = new ArrayList<Section>( dataSet.getSections() );
         List<DataElement> tempDEList = new ArrayList<DataElement>();
         
@@ -255,6 +265,7 @@ public class LoadQualityScoreDetailsAction
             dataElementList.addAll( dataSet.getDataElements() );
         }
         
+        List<DataElement> tempDataElementList = new ArrayList<DataElement>();
         
         for ( DataElement de : dataElementList )
         {
@@ -263,10 +274,13 @@ public class LoadQualityScoreDetailsAction
             {
                 if ( attValue.getAttribute().getId() == qualityMaxDataElement.getValue() )
                 {
-                    dataElements.add( de );
+                    tempDataElementList.add( de );
                 }
             }
         }
+        
+        
+        dataElements.retainAll( tempDataElementList );
         
         for ( DataElement dataElement : dataElements )
         {

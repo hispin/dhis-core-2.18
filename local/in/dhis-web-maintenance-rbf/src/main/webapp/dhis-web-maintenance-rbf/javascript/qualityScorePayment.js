@@ -5,7 +5,7 @@
 
 function editQualityScorePaymentForm(context) 
 {
-	location.href = 'editQualityScorePaymentForm.action?scoreId=' + context.id;
+	location.href = 'editQualityScorePaymentForm.action?id=' + context.id;
 }
 
 //-----------------------------------------------------------------------------

@@ -245,6 +245,7 @@ public class LoadPaymentAdjustmentAction
     public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
     {
         Integer ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );
+        
         if ( tariffOULevel == ouLevel )
         {
             return organisationUnit;
