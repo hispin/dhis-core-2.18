@@ -2,8 +2,8 @@ package org.hisp.dhis.rbf.api;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 
 public interface BankDetailsStore
 {
@@ -15,7 +15,9 @@ public interface BankDetailsStore
     
     void deleteBankDetails( BankDetails bankDetails );
         
-    BankDetails getBankDetails( OrganisationUnit organisationUnit, DataSet dataSet );
+    //BankDetails getBankDetails( OrganisationUnit organisationUnit, DataSet dataSet );
+    
+    BankDetails getBankDetails( OrganisationUnit organisationUnit, OrganisationUnitGroup organisationUnitGroup );
     
     Collection<BankDetails> getAllBankDetails();
     

@@ -195,14 +195,14 @@ public class HibernateQualityMaxValueStore implements QualityMaxValueStore
                                                 " and td.datasetid=sag1.datasetid " +
                                                 " and td.organisationunitid in ("+ orgUnitBranchIds +") ";
             
-            //System.out.println("Query: " + query );
+            System.out.println("Query: " + query );
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
                 Integer dataElementId = rs.getInt( 1 );
                 Double value = rs.getDouble( 2 );
                 qualityMaxValueMap.put( dataElementId, value );
-                //System.out.println( dataElementId + " : " + value );
+                System.out.println( dataElementId + " : " + value );
             }
         }
         catch( Exception e )

@@ -1,11 +1,12 @@
 package org.hisp.dhis.rbf.action;
 
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.rbf.api.BankDetails;
 import org.hisp.dhis.rbf.api.BankDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -30,13 +31,18 @@ public class AddBankDataAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    /*
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-
+    */
+    
+    @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -48,14 +54,21 @@ public class AddBankDataAction
         this.orgUnitUid = orgUnitUid;
     }
 
-    private String dataSetId;
-
+    private String orgUnitGroupId;
+    
+    public void setOrgUnitGroupId( String orgUnitGroupId )
+    {
+        this.orgUnitGroupId = orgUnitGroupId;
+    }
+    
+    /*
     public void setDataSetId( String dataSetId )
     {
         this.dataSetId = dataSetId;
 
     }
-
+    */
+    
     private String accountNumber;
 
     public void setAccountNumber( String accountNumber )
@@ -93,14 +106,18 @@ public class AddBankDataAction
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
 
-        DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
-
-        BankDetails bankDetails = bankDetailsService.getBankDetails( organisationUnit, dataSet );
+        //DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
+        
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupId ) );
+        
+        //BankDetails bankDetails = bankDetailsService.getBankDetails( organisationUnit, dataSet );
+        BankDetails bankDetails = bankDetailsService.getBankDetails( organisationUnit, orgUnitGroup );
 
         if ( bankDetails == null )
         {
             bankDetails = new BankDetails();
-            bankDetails.setDataSet( dataSet );
+            //bankDetails.setDataSet( dataSet );
+            bankDetails.setOrganisationUnitGroup( orgUnitGroup );
             bankDetails.setOrganisationUnit( organisationUnit );
             bankDetails.setAccountName( accountName );
             bankDetails.setAccountNumber( accountNumber );

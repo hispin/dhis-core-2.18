@@ -2,8 +2,8 @@ package org.hisp.dhis.rbf.impl;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.rbf.api.BankDetails;
 import org.hisp.dhis.rbf.api.BankDetailsService;
 import org.hisp.dhis.rbf.api.BankDetailsStore;
@@ -44,13 +44,20 @@ public class DefaultBankDetailsService implements BankDetailsService
     {
         bankDetailsStore.deleteBankDetails( bankDetails );        
     }
-
+    /*
     @Override
     public BankDetails getBankDetails( OrganisationUnit organisationUnit, DataSet dataSet )
     {
         return bankDetailsStore.getBankDetails( organisationUnit, dataSet );
     }
-
+    */
+    
+    @Override
+    public BankDetails getBankDetails( OrganisationUnit organisationUnit, OrganisationUnitGroup organisationUnitGroup )
+    {
+        return bankDetailsStore.getBankDetails( organisationUnit, organisationUnitGroup );
+    }
+    
     @Override
     public Collection<BankDetails> getAllBankDetails()
     {

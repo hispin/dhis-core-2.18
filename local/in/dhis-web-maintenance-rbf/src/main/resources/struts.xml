@@ -316,6 +316,22 @@
       <param name="anyAuthorities">F_QUALITY_SCORE_PAYMENT_ADD</param>
     </action>
 
+
+   <!-- Update Quality Score Payment Form -->
+   <action name="editQualityScorePaymentForm" class="org.hisp.dhis.rbf.qualityscorepayment.action.UpdateQualityScorePaymentFormAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-rbf/updateQualityScorePaymentForm.vm</param>
+      <param name="javascripts">javascript/qualityScorePayment.js</param>
+      <param name="anyAuthorities">F_QUALITY_SCORE_PAYMENT_UPDATE</param>
+    </action>
+
+    <!-- Update Quality Score Payment -->
+    <action name="updateQualityScorePayment" class="org.hisp.dhis.rbf.qualityscorepayment.action.UpdateQualityScorePaymentAction">
+      <result name="success" type="redirect">qualityScorePaymentList.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
+      <param name="anyAuthorities">F_QUALITY_SCORE_PAYMENT_ADD</param>
+    </action>
+
+
 	<!-- Delete Quality Score Payment --> 
     <action name="delQualityScorePayment" class="org.hisp.dhis.rbf.qualityscorepayment.action.DeleteQualityScorePaymentAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
@@ -329,6 +345,11 @@
       <result name="success" type="velocity-json"> /dhis-web-maintenance-rbf/jsonQualityScorePaymentDetails.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
+
+
+
+
+
 
 
 

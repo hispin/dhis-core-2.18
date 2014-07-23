@@ -8,9 +8,8 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Mithilesh Kumar Thakur
  */
-public class GetQualityScorePaymentAction implements Action
+public class UpdateQualityScorePaymentAction implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -21,43 +20,58 @@ public class GetQualityScorePaymentAction implements Action
     {
         this.qualityScorePaymentService = qualityScorePaymentService;
     }
-    
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
 
+    // -------------------------------------------------------------------------
+    // Input & output
+    // -------------------------------------------------------------------------
+    
     private Integer id;
     
     public void setId( Integer id )
     {
         this.id = id;
     }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private QualityScorePayment qualityscorepayment; 
     
-    public QualityScorePayment getQualityscorepayment()
+    private String startRange;
+    
+    public void setStartRange( String startRange )
     {
-        return qualityscorepayment;
+        this.startRange = startRange;
+    }
+
+    private String endRange;
+    
+    public void setEndRange( String endRange )
+    {
+        this.endRange = endRange;
+    }
+
+    private String addQualityPayment;
+    
+    public void setAddQualityPayment( String addQualityPayment )
+    {
+        this.addQualityPayment = addQualityPayment;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action
     // -------------------------------------------------------------------------
-
+    
     public String execute() throws Exception
     {
-    
-        qualityscorepayment = qualityScorePaymentService.getQualityScorePayment( id );
-        /*
-        System.out.println( qualityscorepayment.getStartRange() );
-        System.out.println( qualityscorepayment.getEndRange() );
-        System.out.println( qualityscorepayment.getAddQtyPayment() );
-        */
         
+        QualityScorePayment qualityScorePayment = qualityScorePaymentService.getQualityScorePayment( id );
+        
+        if( qualityScorePayment != null )
+        {
+            qualityScorePayment.setStartRange( Double.parseDouble( startRange ) );
+            qualityScorePayment.setEndRange(  Double.parseDouble( endRange )  );
+            qualityScorePayment.setAddQtyPayment( Double.parseDouble( addQualityPayment ) );
+           
+            qualityScorePaymentService.updateQualityScorePayment( qualityScorePayment );
+        }
+        
+    
         return SUCCESS;
     }
 

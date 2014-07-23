@@ -24,7 +24,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class QualityMaxInitAction implements Action
 {
-	private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
+	private final static String TARIFF_SETTING_AUTHORITY_GROUP_SET_ID = "TARIFF_SETTING_AUTHORITY_GROUP_SET_ID";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -119,7 +119,7 @@ public class QualityMaxInitAction implements Action
     public String execute() throws Exception
     {
         //selectionManager.clearSelectedOrganisationUnits();
-    	 Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+    	 Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY_GROUP_SET_ID );
     		
          if ( tariff_authority == null )
          {
@@ -139,7 +139,8 @@ public class QualityMaxInitAction implements Action
                  levelOrgUnitIds.add( "\"" + org.getUid() + "\"" );
              }
          }
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        
+         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         
         if( organisationUnit == null )
         {

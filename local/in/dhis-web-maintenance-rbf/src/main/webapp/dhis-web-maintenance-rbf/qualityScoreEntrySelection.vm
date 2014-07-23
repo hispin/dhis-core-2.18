@@ -72,7 +72,7 @@
 <script type="text/javascript">
 
 var i18n_select_dataset = '$encoder.jsEscape( $i18n.getString( "select_dataSet" ) , "'")';
-
+var i18n_saving_value_failed_status_code = ''$encoder.jsEscape( $i18n.getString( "saving_value_failed_status_code" ) , "'")';'
 
 jQuery( document ).ready( function()
 {

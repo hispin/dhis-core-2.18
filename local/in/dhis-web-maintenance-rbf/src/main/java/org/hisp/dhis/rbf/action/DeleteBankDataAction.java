@@ -1,11 +1,12 @@
 package org.hisp.dhis.rbf.action;
 
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.rbf.api.BankDetails;
 import org.hisp.dhis.rbf.api.BankDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -30,31 +31,46 @@ public class DeleteBankDataAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    /*
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-
+    */
+    
+    @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
     private Integer organisationUnitId;
 
-    private Integer dataSetId;
-
     public void setOrganisationUnitId( Integer organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
-
+    
+    /*
+    private Integer dataSetId;
+    
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
     }
-
+    */
+    
+    private String orgUnitGroupId;
+    
+    public void setOrgUnitGroupId( String orgUnitGroupId )
+    {
+        this.orgUnitGroupId = orgUnitGroupId;
+    }
+    
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -62,10 +78,15 @@ public class DeleteBankDataAction
     public String execute()
         throws Exception
     {
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        //DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupId ) );
+        
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
-        BankDetails bankDetail = bankDetailsService.getBankDetails( organisationUnit, dataSet );
+        
+        BankDetails bankDetail = bankDetailsService.getBankDetails( organisationUnit, orgUnitGroup );
+        
+        //BankDetails bankDetail = bankDetailsService.getBankDetails( organisationUnit, dataSet );
 
         bankDetailsService.deleteBankDetails( bankDetail );
 

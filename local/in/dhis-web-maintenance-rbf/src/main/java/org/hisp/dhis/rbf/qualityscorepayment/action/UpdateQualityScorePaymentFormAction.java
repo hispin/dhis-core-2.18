@@ -8,7 +8,7 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Mithilesh Kumar Thakur
  */
-public class GetQualityScorePaymentAction implements Action
+public class UpdateQualityScorePaymentFormAction implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -52,7 +52,9 @@ public class GetQualityScorePaymentAction implements Action
     {
     
         qualityscorepayment = qualityScorePaymentService.getQualityScorePayment( id );
+        
         /*
+        System.out.println( qualityscorepayment.getId() );
         System.out.println( qualityscorepayment.getStartRange() );
         System.out.println( qualityscorepayment.getEndRange() );
         System.out.println( qualityscorepayment.getAddQtyPayment() );

@@ -14,6 +14,7 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -75,6 +76,9 @@ public class LoadQualityMaxDetailsAction
     @Autowired
     private OrganisationUnitGroupService orgUnitGroupService;
     
+    @Autowired
+    private DataElementService dataElementService;
+
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
@@ -87,13 +91,13 @@ public class LoadQualityMaxDetailsAction
     }
 
     private String orgUnitGroupId;
-    
-    public void setOrgUnitGroupId(String orgUnitGroupId) 
-    {
-		this.orgUnitGroupId = orgUnitGroupId;
-	}
 
-	private String dataSetId;
+    public void setOrgUnitGroupId( String orgUnitGroupId )
+    {
+        this.orgUnitGroupId = orgUnitGroupId;
+    }
+
+    private String dataSetId;
 
     public void setDataSetId( String dataSetId )
     {
@@ -147,15 +151,24 @@ public class LoadQualityMaxDetailsAction
         Date sDate = dateFormat.parse( startDate );
         Date eDate = dateFormat.parse( endDate );
         Constant qualityMaxDataElement = constantService.getConstantByName( QUALITY_MAX_DATAELEMENT );
-        
+
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
-        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupId ) );
-        
-        if( organisationUnit == null || dataSet == null || orgUnitGroup == null )
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer
+            .parseInt( orgUnitGroupId ) );
+
+        if ( organisationUnit == null || dataSet == null || orgUnitGroup == null )
         {
-        	return SUCCESS;
+            return SUCCESS;
         }
+
+        
+        dataElements = new ArrayList<DataElement>();
+        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        
+        List<DataElement> tempDataElementList = new ArrayList<DataElement>();
+        
+        
         
         List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
         for ( DataElement de : dataElementList )
@@ -165,21 +178,30 @@ public class LoadQualityMaxDetailsAction
             {
                 if ( attValue.getAttribute().getId() == qualityMaxDataElement.getValue() )
                 {
-                    dataElements.add( de );
+                    tempDataElementList.add( de );
                 }
             }
         }
+
+        dataElements.retainAll( tempDataElementList );
         
         for ( DataElement dataElement : dataElements )
         {
-            QualityMaxValue qualityMaxValue = qualityMaxValueService.getQualityMaxValue( orgUnitGroup, organisationUnit, dataElement, dataSet, sDate, eDate );
+            QualityMaxValue qualityMaxValue = qualityMaxValueService.getQualityMaxValue( orgUnitGroup,
+                organisationUnit, dataElement, dataSet, sDate, eDate );
             if ( qualityMaxValue != null )
             {
                 qualityMaxValueMap.put( dataElement.getId(), qualityMaxValue );
                 System.out.println( "In Quality Data Value" );
             }
         }
+        
+        
+        
+        
         Collections.sort( dataElements );
+        
+        
         return SUCCESS;
     }
 }

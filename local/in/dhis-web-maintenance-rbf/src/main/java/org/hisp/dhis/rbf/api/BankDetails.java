@@ -2,14 +2,21 @@ package org.hisp.dhis.rbf.api;
 
 import java.io.Serializable;
 
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 
 public class BankDetails implements Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4025438959939858532L;
+
     private OrganisationUnit organisationUnit;
     
-    private DataSet dataSet;
+    //private DataSet dataSet;
+    
+    private OrganisationUnitGroup organisationUnitGroup;
     
     private String bank;
     
@@ -26,11 +33,22 @@ public class BankDetails implements Serializable
     {
         
     }
-
+    /*
     public BankDetails( OrganisationUnit organisationUnit, DataSet dataSet, String bank, String branchName, String accountName, String accountNumber )
     {
         this.organisationUnit = organisationUnit;
         this.dataSet = dataSet;
+        this.bank = bank;
+        this.branchName = branchName;
+        this.accountName = accountName;
+        this.accountNumber = accountNumber;
+    }
+    */
+    
+    public BankDetails( OrganisationUnit organisationUnit, OrganisationUnitGroup organisationUnitGroup, String bank, String branchName, String accountName, String accountNumber )
+    {
+        this.organisationUnit = organisationUnit;
+        this.organisationUnitGroup = organisationUnitGroup;
         this.bank = bank;
         this.branchName = branchName;
         this.accountName = accountName;
@@ -60,7 +78,8 @@ public class BankDetails implements Serializable
 
         final BankDetails other = (BankDetails) o;
 
-        return dataSet.equals( other.getDataSet() ) && organisationUnit.equals( other.getOrganisationUnit() );
+        //return dataSet.equals( other.getDataSet() ) && organisationUnit.equals( other.getOrganisationUnit() );
+        return organisationUnitGroup.equals( other.getOrganisationUnitGroup() ) && organisationUnit.equals( other.getOrganisationUnit() );
     }
 
     @Override
@@ -69,7 +88,8 @@ public class BankDetails implements Serializable
         final int prime = 31;
         int result = 1;
 
-        result = result * prime + dataSet.hashCode();
+        //result = result * prime + dataSet.hashCode();
+        result = result * prime + organisationUnitGroup.hashCode();
         result = result * prime + organisationUnit.hashCode();
 
         return result;
@@ -88,7 +108,18 @@ public class BankDetails implements Serializable
     {
         this.organisationUnit = organisationUnit;
     }
+    
+    public OrganisationUnitGroup getOrganisationUnitGroup()
+    {
+        return organisationUnitGroup;
+    }
 
+    public void setOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
+    {
+        this.organisationUnitGroup = organisationUnitGroup;
+    }
+    
+    /*
     public DataSet getDataSet()
     {
         return dataSet;
@@ -98,7 +129,8 @@ public class BankDetails implements Serializable
     {
         this.dataSet = dataSet;
     }
-
+    */
+    
     public String getBank()
     {
         return bank;

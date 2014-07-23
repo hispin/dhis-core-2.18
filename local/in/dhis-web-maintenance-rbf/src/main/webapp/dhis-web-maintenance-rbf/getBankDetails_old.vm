@@ -78,8 +78,8 @@ $("#openAddBankDetail").button()
 			.click(function() {	
 			validateAddBank();
 			$( "#addBankDetail" ).dialog('option', 'title', 'Add Bank Detail');
-           	$('#orgUnitGroupId option[value=-1]').attr('selected','selected');
-			$("#orgUnitGroupId ").removeAttr('disabled');
+           	$('#dataSetId option[value=-1]').attr('selected','selected');
+			$("#dataSetId ").removeAttr('disabled');
 			$("#bank").val('');			
 			$("#branchName").val('');			
 			$("#accountName").val('');
@@ -99,7 +99,7 @@ $( "#addBankDetail" ).dialog({
          		id: "button-save",
          		click: function(){
               		var dataValue = {
-        		        			'orgUnitGroupId' : $("#orgUnitGroupId").val(),
+        		        			'dataSetId' : $("#dataSetId").val(),
         		        			'bank' : $("#bank").val(),
         		        			'branchName' : $("#branchName").val(),
         							'accountName' : $("#accountName").val(),
@@ -124,8 +124,8 @@ $( "#addBankDetail" ).dialog({
 		});
 		 function handleSuccess( json )
 	    {
-			$('#orgUnitGroupId option[value=-1]').attr('selected','selected');
-			$("#orgUnitGroupId ").removeAttr('disabled');
+			$('#dataSetId option[value=-1]').attr('selected','selected');
+			$("#dataSetId ").removeAttr('disabled');
 			$("#bank").val('');			
 			$("#branchName").val('');			
 			$("#accountName").val('');
@@ -136,8 +136,8 @@ $( "#addBankDetail" ).dialog({
 	    }
 	    function handleError( json )
 	    {
-			$('#orgUnitGroupId option[value=-1]').attr('selected','selected');
-			$("#orgUnitGroupId ").removeAttr('disabled');
+			$('#dataSetId option[value=-1]').attr('selected','selected');
+			$("#dataSetId ").removeAttr('disabled');
 			$("#bank").val('');			
 			$("#branchName").val('');			
 			$("#accountName").val('');
@@ -147,11 +147,11 @@ $( "#addBankDetail" ).dialog({
 	    }
 });
 
-	function deleteBankData( organisationUnitId, orgUnitGroupId)
+	function deleteBankData( organisationUnitId, dataSetId)
 	{
 		var dataValue = {
 		        		'organisationUnitId' : organisationUnitId ,														
-						'orgUnitGroupId' : orgUnitGroupId
+						'dataSetId' : dataSetId
 		    			};
 									
 		jQuery.ajax( {
@@ -171,12 +171,12 @@ $( "#addBankDetail" ).dialog({
 	    }
 	}
 
-	function editBankData( organisationUnitId, orgUnitGroupId, bank, branchName, accountName, accountNumber)
+	function editBankData( organisationUnitId, dataSetId, bank, branchName, accountName, accountNumber)
 	{
 		validateAddBank();
 		$( "#addBankDetail" ).dialog('option', 'title', 'Edit Bank Detail');
-		$('#orgUnitGroupId option[value='+orgUnitGroupId+']').attr('selected','selected');
-		$('#orgUnitGroupId').attr('disabled','disabled');
+		$('#dataSetId option[value='+dataSetId+']').attr('selected','selected');
+		$('#dataSetId').attr('disabled','disabled');
 		$('#bank').val(bank);
 		$('#branchName').val(branchName);		
 		$('#accountName').val(accountName);
@@ -205,7 +205,7 @@ function loadBankDetails()
 selection.setListenerFunction( organisationUnitSelected );
 function validateAddBank()
 	{
-		if($("#orgUnitGroupId").val() != '-1' && $("#bank").val() != '-1' && $("#branchName").val() != "" && $("#accountName").val() != "" && $("#accountNumber").val() != "")
+		if($("#dataSetId").val() != '-1' && $("#bank").val() != '-1' && $("#branchName").val() != "" && $("#accountName").val() != "" && $("#accountNumber").val() != "")
         {
         	$("#button-save").button( "option", "disabled", false ).removeClass("ui-state-disabled");
         }
@@ -242,17 +242,17 @@ function validateAddBank()
 				#set( $mark = true )
 			#end
             <tr #if( $mark ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8"  #end>
-				<td >$!bankDetails.organisationUnitGroup.name</td>
+				<td >$!bankDetails.dataSet.name</td>
 				<td >$!bankDetails.bank</td>
 				<td >$!bankDetails.branchName</td>
 				<td >$!bankDetails.accountName</td>
 				<td >$!bankDetails.accountNumber</td>
 			#if( $auth.hasAccess("dhis-web-maintenance-rbf","deleteBankData"))
 	            <td>
-					<a href="javascript:deleteBankData('$bankDetails.organisationUnit.id','$bankDetails.organisationUnitGroup.id')">
+					<a href="javascript:deleteBankData('$bankDetails.organisationUnit.id','$bankDetails.dataSet.id')">
 						<img src="images/delete.png" width="17px"/>
 					</a>
-					<a href="javascript:editBankData('$bankDetails.organisationUnit.uid','$bankDetails.organisationUnitGroup.id','$bankDetails.bank','$bankDetails.branchName','$bankDetails.accountName','$bankDetails.accountNumber')">
+					<a href="javascript:editBankData('$bankDetails.organisationUnit.uid','$bankDetails.dataSet.id','$bankDetails.bank','$bankDetails.branchName','$bankDetails.accountName','$bankDetails.accountNumber')">
 						<img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/>
 					</a>				
 				</td>
@@ -267,10 +267,10 @@ function validateAddBank()
 		<tr >
 			<td style="width:40%;">PBF Type <b class="mandatory">*</b></td>
 			<td style="width:60%;">
-				<select id="orgUnitGroupId" style="width:100%;" onchange="validateAddBank()">
+				<select id="dataSetId" style="width:100%;" onchange="validateAddBank()">
 					<option value="-1">Select PBF Type</option>
-					#foreach( $organisationUnitGroup in $organisationUnitGroups )
-						<option value="$!organisationUnitGroup.id">$!organisationUnitGroup.name</option>
+					#foreach( $dataSet in $dataSets )
+						<option value="$!dataSet.id">$!dataSet.name</option>
 					#end
                 </select>
 			</td>

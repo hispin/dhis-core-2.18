@@ -6,8 +6,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.rbf.api.BankDetails;
 import org.hisp.dhis.rbf.api.BankDetailsStore;
 
@@ -52,7 +52,7 @@ public class HibernateBankDetailsStore
 
         session.delete( bankDetails );
     }
-
+    /*
     @Override
     public BankDetails getBankDetails( OrganisationUnit organisationUnit, DataSet dataSet )
     {
@@ -64,6 +64,22 @@ public class HibernateBankDetailsStore
 
         return (BankDetails) criteria.uniqueResult();
     }
+    */
+    
+    @Override
+    public BankDetails getBankDetails( OrganisationUnit organisationUnit, OrganisationUnitGroup organisationUnitGroup )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( BankDetails.class );
+        criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
+        criteria.add( Restrictions.eq( "organisationUnitGroup", organisationUnitGroup ) );
+
+        return (BankDetails) criteria.uniqueResult();
+    }
+    
+    
+    
 
     @SuppressWarnings( "unchecked" )
     @Override

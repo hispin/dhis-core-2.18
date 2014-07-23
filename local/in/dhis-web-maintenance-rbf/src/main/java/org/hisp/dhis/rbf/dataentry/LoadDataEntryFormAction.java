@@ -130,6 +130,9 @@ public class LoadDataEntryFormAction implements Action
     
     @Autowired
     private DataElementCategoryService categoryService;
+    
+    
+    
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
@@ -283,6 +286,10 @@ public class LoadDataEntryFormAction implements Action
 
         //Collections.sort( dataElements );
 
+        dataElements = new ArrayList<DataElement>();
+        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        
+        List<DataElement> dataElementList = new ArrayList<DataElement>();
         
         List<Section> sectionList = new ArrayList<Section>( dataSet.getSections() );
         List<DataElement> tempDEList = new ArrayList<DataElement>();
@@ -296,12 +303,15 @@ public class LoadDataEntryFormAction implements Action
                tempDEList.addAll( section.getDataElements() );
             }
             
-            dataElements.addAll( tempDEList );
+            dataElementList.addAll( tempDEList );
         }
         else
         {
-            dataElements.addAll( dataSet.getDataElements() );
+            dataElementList.addAll( dataSet.getDataElements() );
         }
+        
+        
+        dataElements.retainAll( dataElementList );
         
         optionCombos = new ArrayList<DataElementCategoryOptionCombo>();
 
@@ -486,7 +496,6 @@ public class LoadDataEntryFormAction implements Action
         {
             utilizationRate = dataValue.getValue();
         }        
-        
       
         return SUCCESS;
     }
