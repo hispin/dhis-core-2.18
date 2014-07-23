@@ -5,14 +5,14 @@
 
 * 
 {
-  font-family: LiberationSans, arial, sans-serif;
+  font-family: mmrcensus, arial, sans-serif;
   line-height: 140%;
 }
 
 html,body 
 {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   background-color: white;
 }
 
@@ -23,7 +23,7 @@ img
 
 ul,ol 
 {
-  padding: 0px;
+  padding: 0;
 }
 
 a
@@ -54,13 +54,13 @@ input[type=text],input[type=password],textarea
 
 #header
 {
-  background-color: #467e4a;
+  background-color: #276696;
   height: 44px;
   position: fixed;
   z-index: 10;
-  top: 0px;
-  left: 0px;
-  right: 0px;
+  top: 0;
+  left: 0;
+  right: 0;
   box-shadow: 0 0 3px #222;
 }
 
@@ -165,11 +165,11 @@ input[type=text],input[type=password],textarea
   background-color           : #f7f7f7;
   display                    : none;
   z-index                    : 9;
-  filter                     : alpha(opacity=94);
-  opacity                    : 0.94;
+  filter                     : alpha(opacity=98);
+  opacity                    : 0.98;
   border-bottom-left-radius  : 3px;
   border-bottom-right-radius : 3px;
-  box-shadow                 : #ccc 0px 1px 1px 0px;
+  box-shadow                 : #ccc 0 1px 1px 0;
 }
 
 .contextMenuItems 
@@ -264,7 +264,7 @@ input[type=text],input[type=password],textarea
   width: 100%;
 }
 
-.page 
+.page
 {
   font-size: 9pt;
 }
@@ -331,11 +331,6 @@ input[type=text],input[type=password],textarea
 #mainPage 
 {
   margin: 65px 10px 10px 270px;
-}
-
-#popupPage 
-{
-  margin: 50px 10px 10px 10px;
 }
 
 .required 
@@ -467,23 +462,23 @@ input[type=text],input[type=password],textarea
 /*----------------------------------------------------------------------------*/
 
 @font-face {
-    font-family: 'LiberationSans';
-    src: url('../../fonts/LiberationSans-Regular-webfont.eot');
-    src: url('../../fonts/LiberationSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../../fonts/LiberationSans-Regular-webfont.woff') format('woff'),
-         url('../../fonts/LiberationSans-Regular-webfont.ttf') format('truetype'),
-         url('../../fonts/LiberationSans-Regular-webfont.svg#webfontc8rbNdBe') format('svg');
+    font-family: 'mmrcensus';
+    src: url('../../fonts/mmrcensus-webfont.eot');
+    src: url('../../fonts/mmrcensus-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../fonts/mmrcensus-webfont.woff') format('woff'),
+         url('../../fonts/mmrcensus-webfont.ttf') format('truetype'),
+         url('../../fonts/mmrcensus-webfont.svg#mmrcensus') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'LiberationSans';
-    src: url('../../fonts/LiberationSans-Bold-webfont.eot');
-    src: url('../../fonts/LiberationSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../../fonts/LiberationSans-Bold-webfont.woff') format('woff'),
-         url('../../fonts/LiberationSans-Bold-webfont.ttf') format('truetype'),
-         url('../../fonts/LiberationSans-Bold-webfont.svg#webfontHyWb8e07') format('svg');
+    font-family: 'mmrcensus';
+    src: url('../../fonts/mmrcensus-webfont.eot');
+    src: url('../../fonts/mmrcensus-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../fonts/mmrcensus-webfont.woff') format('woff'),
+         url('../../fonts/mmrcensus-webfont.ttf') format('truetype'),
+         url('../../fonts/mmrcensus-webfont.svg#mmrcensus') format('svg');
     font-weight: bold;
     font-style: normal;
 }

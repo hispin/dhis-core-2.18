@@ -106,7 +106,7 @@ dhis2.de.getFieldValue = function( de, coc )
 }
 
 /**
- * Parses the expression and substitues the operand identifiers with the value
+ * Parses the expression and substitutes the operand identifiers with the value
  * of the corresponding input entry field.
  */
 function generateExpression( expression )
