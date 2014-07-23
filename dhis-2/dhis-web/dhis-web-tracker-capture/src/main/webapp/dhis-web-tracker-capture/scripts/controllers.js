@@ -17,9 +17,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 EntityQueryFactory,
                 TEIGridService,
                 TEIService) {  
-    
-    $scope.dashboardProgramId = ($location.search()).program; 
-            
+                    
     //Selection
     $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];         
     $scope.selectedOuMode = $scope.ouModes[0];
@@ -82,23 +80,19 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }
     });
     
-    //watch for program feedback (this is when coming back from dashboar)
-    $scope.$watch('dashboardProgramId', function() {           
-        
-        if( !angular.isUndefined($scope.dashboardProgramId) && $scope.dashboardProgramId){               
-            $scope.selectedOrgUnit = storage.get('SELECTED_OU');            
-            
-            ProgramFactory.get($scope.dashboardProgramId).then(function(program){
-                $scope.selectedProgram = program;
-                AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
-                    $scope.attributes = atts;   
-                    $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
-                    $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);      
-                    $scope.getProgramAttributes($scope.selectedProgram);
-                });              
-            });
-        }
-    });
+    //watch for program feedback (this is when coming back from dashboard)
+    if($scope.dashboardProgramId && $scope.dashboardProgramId !== 'null'){
+        $scope.selectedOrgUnit = storage.get('SELECTED_OU');            
+        ProgramFactory.get($scope.dashboardProgramId).then(function(program){
+            $scope.selectedProgram = program;
+            AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
+                $scope.attributes = atts;   
+                $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
+                $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);      
+                $scope.getProgramAttributes($scope.selectedProgram);
+            });              
+        });
+    }
     
     //load programs associated with the selected org unit.
     $scope.loadPrograms = function(orgUnit) {        
