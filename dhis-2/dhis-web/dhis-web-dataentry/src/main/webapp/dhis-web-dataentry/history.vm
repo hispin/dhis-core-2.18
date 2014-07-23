@@ -44,7 +44,7 @@ $( document ).ready( function() {
                     <td>$encoder.htmlEncode( $i18n.getString( "min_limit" ) ) </td>
                     <td><input type="text" id="minLimit" style="width:10em" value="$!{dataElementHistory.minLimit}" class="{validate:{digits:true}}" 
                         #if( !$auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) || ${minMaxInvalid} ) disabled="disabled"#end />
-						<i><span id="minSpan" style="color:red"></span></i>
+						<span id="minSpan" style="color:red"></span>
 					</td>
                 </tr>
                 <tr>
@@ -52,7 +52,7 @@ $( document ).ready( function() {
                     <td>$encoder.htmlEncode( $i18n.getString( "max_limit" ) ) </td>
                     <td><input type="text" id="maxLimit" style="width:10em" value="$!{dataElementHistory.maxLimit}" class="{validate:{digits:true}}" 
                     	#if( !$auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) || ${minMaxInvalid} ) disabled="disabled"#end />
-						<i><span id="maxSpan" style="color:red"></span></i>
+						<span id="maxSpan" style="color:red"></span>
 					</td>
                 </tr>
                 <tr>
@@ -114,25 +114,25 @@ $( document ).ready( function() {
                                         #if( $dataValueAudit.modifiedBy )
                                             $dataValueAudit.modifiedBy
                                         #else
-                                            <i>$encoder.htmlEncode( $i18n.getString( "no_value" ) )</i>
+                                            $encoder.htmlEncode( $i18n.getString( "no_value" ) )
                                         #end
                                     </td>
                                     <td>
                                         #if( $dataValueAudit.value )
                                             $dataValueAudit.value
                                         #else
-                                            <i>$encoder.htmlEncode( $i18n.getString( "no_value" ) )</i>
+                                            $encoder.htmlEncode( $i18n.getString( "no_value" ) )
                                         #end
                                     </td>
                                     <td>
-                                        <i>$i18n.getString( $dataValueAudit.auditType.getValue() )</i>
+                                        $i18n.getString( $dataValueAudit.auditType.getValue() )
                                     </td>
                                 </tr>
                             #end
                             </tbody>
                         </table>
                     #else
-                        <i>$encoder.htmlEncode( $i18n.getString( "there_is_no_audit_trail_for_this_value" ) )</i>
+                        $encoder.htmlEncode( $i18n.getString( "there_is_no_audit_trail_for_this_value" ) )
                     #end
                 </div>
             </div>
