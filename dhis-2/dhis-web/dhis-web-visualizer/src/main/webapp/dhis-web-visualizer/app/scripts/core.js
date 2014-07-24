@@ -1766,9 +1766,11 @@ Ext.onReady( function() {
 			web.chart.createChart = function(ns) {
                 var xLayout = ns.app.xLayout,
                     xResponse = ns.app.xResponse,
-                    columnIds = xLayout.columns[0] ? xLayout.columns[0].ids : [],
+                    //columnIds = xLayout.columns[0] ? xLayout.columns[0].ids : [],
+                    columnIds = xLayout.columnDimensionNames[0] ? xLayout.dimensionNameIdsMap[xLayout.columnDimensionNames[0]] : [],
                     replacedColumnIds = support.prototype.str.replaceAll(Ext.clone(columnIds), '.', ''),
-                    rowIds = xLayout.rows[0] ? xLayout.rows[0].ids : [],
+                    //rowIds = xLayout.rows[0] ? xLayout.rows[0].ids : [],
+                    rowIds = xLayout.rowDimensionNames[0] ? xLayout.dimensionNameIdsMap[xLayout.rowDimensionNames[0]] : [],
                     replacedRowIds = support.prototype.str.replaceAll(Ext.clone(rowIds), '.', ''),
                     filterIds = function() {
                         var ids = [];

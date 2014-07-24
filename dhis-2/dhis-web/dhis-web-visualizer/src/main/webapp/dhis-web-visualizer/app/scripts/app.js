@@ -15,6 +15,8 @@ Ext.onReady( function() {
 		core: {},
 		app: {}
 	};
+	
+	NS.isDebug = true;
 
 	// set app config
 	(function() {
