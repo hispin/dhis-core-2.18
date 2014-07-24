@@ -371,7 +371,7 @@ public class DefaultDataEntryFormService
 
     public Set<DataElement> getDataElementsInDataEntryForm( DataSet dataSet )
     {
-        if ( dataSet == null || dataSet.getDataEntryForm() == null )
+        if ( dataSet == null || !dataSet.hasDataEntryForm() )
         {
             return null;
         }
@@ -413,7 +413,7 @@ public class DefaultDataEntryFormService
 
     public Set<DataElementOperand> getOperandsInDataEntryForm( DataSet dataSet )
     {
-        if ( dataSet == null || dataSet.getDataEntryForm() == null )
+        if ( dataSet == null || !dataSet.hasDataEntryForm() )
         {
             return null;
         }
