@@ -279,7 +279,6 @@ public class DefaultI18nService
      * Returns a map representing Translations for an object matching the given
      * id where the key is the translation property and the value is the
      * translation value.
-     * 
      *
      * @param translations Collection to search.
      * @param objectUid
@@ -289,11 +288,14 @@ public class DefaultI18nService
     {
         Collection<Translation> objectTranslations = new ArrayList<Translation>();
 
-        for ( Translation translation : translations )
+        if ( objectUid != null )
         {
-            if (translation.getObjectUid().equals( objectUid ))
+            for ( Translation translation : translations )
             {
-                objectTranslations.add( translation );
+                if ( objectUid.equals( translation.getObjectUid() ) )
+                {
+                    objectTranslations.add( translation );
+                }
             }
         }
 
