@@ -28,6 +28,8 @@ package org.hisp.dhis.i18n.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.IdentifiableObjectUtils.CLASS_ALIAS;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -165,6 +167,8 @@ public class I18nAction
     public String execute()
         throws Exception
     {
+        className = className != null && CLASS_ALIAS.containsKey( className ) ? CLASS_ALIAS.get( className ) : className;
+        
         currentLocale = i18nService.getCurrentLocale();
         
         availableLocales = i18nService.getAvailableLocales();
