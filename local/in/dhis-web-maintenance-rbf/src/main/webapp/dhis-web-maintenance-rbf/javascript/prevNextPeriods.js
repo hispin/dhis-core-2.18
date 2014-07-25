@@ -17,7 +17,7 @@ function getAvailablePeriodsTemp( availablePeriodsId, selectedPeriodsId, year )
 		function( json ) {
 			
 			for ( i in json.periods ) {
-	    		addOptionToList( selectedList, json.periods[i].isoDate, json.periods[i].name );
+	    		addOptionToList( selectedList, json.periods[i].externalId, json.periods[i].name );
 	    	}
 			
 		} );

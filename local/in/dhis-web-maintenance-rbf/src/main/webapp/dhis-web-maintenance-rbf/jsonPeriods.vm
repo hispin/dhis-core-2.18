@@ -7,7 +7,7 @@
     "startDate": "$!format.formatDate( ${period.startDate} )",
     "endDate": "$!format.formatDate( ${period.endDate} )",
     "name": "$!format.formatPeriod( ${period} )",
-    "externalId": "$!{period.externalId}",
+    "externalId": "$!{period.getStartDateString()}:$!{period.getEndDateString()}",
 	"isoDate": "$!{period.isoDate}"
   }#if( $velocityCount < $size ),#end    
 #end

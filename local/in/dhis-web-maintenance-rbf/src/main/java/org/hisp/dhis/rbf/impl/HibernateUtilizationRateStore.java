@@ -142,7 +142,7 @@ public class HibernateUtilizationRateStore implements UtilizationRateStore
                 
                 String value = startRange + ":" + endRange + ":" + tariff;
                 utilizationRatesMap.put( dataElementId, value );
-                //System.out.println( dataElementId + " : " + value );
+                System.out.println( dataElementId + " : " + value );
             }
         }
         catch( Exception e )
