@@ -220,7 +220,7 @@
     <action name="showAddIndicatorForm" class="org.hisp.dhis.dd.action.indicator.ShowAddIndicatorForm">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorForm.vm</param>
-      <param name="javascripts">javascript/shortName.js,javascript/indicator.js</param>
+      <param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/expressionBuilder.js</param>
       <param name="anyAuthorities">F_INDICATOR_PUBLIC_ADD, F_INDICATOR_PRIVATE_ADD</param>
     </action>
 
@@ -232,7 +232,7 @@
     <action name="showUpdateIndicatorForm" class="org.hisp.dhis.dd.action.indicator.ShowUpdateIndicatorFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorForm.vm</param>
-      <param name="javascripts">javascript/shortName.js,javascript/indicator.js</param>
+      <param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/expressionBuilder.js</param>
       <param name="anyAuthorities">F_INDICATOR_PUBLIC_ADD, F_INDICATOR_PRIVATE_ADD</param>
     </action>
 
