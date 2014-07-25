@@ -48,6 +48,7 @@ public class GetStringsFromLocaleAction
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
+    
     @Autowired
     private I18nManager manager;
 

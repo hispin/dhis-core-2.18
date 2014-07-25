@@ -39,6 +39,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+
 /**
  * @author Lars Helge Overland
  */
@@ -48,6 +52,12 @@ public class IdentifiableObjectUtils
     private static final String SEPARATOR = "-";
     private static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" );
 
+    public static final Map<String, String> CLASS_ALIAS = new HashMap<String, String>() {{
+        put( "CategoryOption", DataElementCategoryOption.class.getSimpleName() );
+        put( "Category", DataElementCategory.class.getSimpleName() );
+        put( "CategoryCombo", DataElementCategoryCombo.class.getSimpleName() );
+    } };
+    
     /**
      * Joins the names of the IdentifiableObjects in the given list and separates
      * them with a comma and space. Returns null if the given list is null or has
