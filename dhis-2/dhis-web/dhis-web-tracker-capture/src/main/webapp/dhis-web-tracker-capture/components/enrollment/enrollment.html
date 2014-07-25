@@ -28,7 +28,7 @@
                         {{selectedProgram.dateOfEnrollmentDescription}}
                     </td>
                     <td class="col-md-6">
-                        <input type="text" class="form-control" ng-date ng-model="selectedEnrollment.dateOfEnrollment" ng-disabled="true"/>
+                        <input type="text" placeholder="yyyy-mm-dd" class="form-control" ng-date ng-model="selectedEnrollment.dateOfEnrollment" ng-disabled="true"/>
                     </td>
                 </tr>
                 <tr class="col-md-12">                    
@@ -36,7 +36,7 @@
                         {{selectedProgram.dateOfIncidentDescription}}
                     </td>
                     <td class="col-md-6">
-                        <input type="text" class="form-control" ng-date ng-model="selectedEnrollment.dateOfIncident" ng-disabled="true"/>
+                        <input type="text" placeholder="yyyy-mm-dd" class="form-control" ng-date ng-model="selectedEnrollment.dateOfIncident" ng-disabled="true"/>
                     </td>
                 </tr>                
             </table>            
@@ -64,7 +64,7 @@
                             {{selectedProgram.dateOfEnrollmentDescription}}
                         </td>
                         <td class="col-md-6">
-                            <input type="text" name="dateOfEnrollment" class="form-control" ng-date ng-model="newEnrollment.dateOfEnrollment" ng-required="true"/>
+                            <input type="text" placeholder="yyyy-mm-dd" name="dateOfEnrollment" class="form-control" ng-date ng-model="newEnrollment.dateOfEnrollment" ng-required="true"/>
                             <span ng-show="outerForm.submitted && outerForm.dateOfEnrollment.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
                         </td>
                     </tr>     
@@ -73,7 +73,7 @@
                             {{selectedProgram.dateOfIncidentDescription}}
                         </td>
                         <td class="col-md-6">
-                            <input type="text" class="form-control" ng-date ng-model="newEnrollment.dateOfIncident" />                    
+                            <input type="text" placeholder="yyyy-mm-dd" class="form-control" ng-date ng-model="newEnrollment.dateOfIncident" />                    
                         </td>
                     </tr>
                 </table>
@@ -87,7 +87,7 @@
                             <ng-form name="innerForm">
                                 <div ng-switch="attribute.valueType">
                                     <div ng-switch-when="date">
-                                        <input type="text" class="form-control" name="foo" ng-date ng-model="attribute.value" ng-required="attribute.mandatory"/>
+                                        <input type="text" placeholder="yyyy-mm-dd" class="form-control" name="foo" ng-date ng-model="attribute.value" ng-required="attribute.mandatory"/>
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
                                     </div>
                                     <div ng-switch-when="trueOnly">
