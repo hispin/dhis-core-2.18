@@ -1,11 +1,9 @@
-This is an invitation to create a user account on the DHIS 2 system at ${object.rootPath}.
-You have been sent two emails, where this is the second one. Please read the
-first email and follow the instructions. Please use the code below to complete
-the new account form.
+## Email account invite message 2 of 2
+$object.i18n.getString( 'email_invite_2_1st_paragraph' ) ${object.rootPath}.
+$object.i18n.getString( 'email_invite_2_2nd_paragraph' )
 
 
 ${object.code}
 
 
-You must respond to this invitation within 3 months. If you take no action,
-the invitation will expire at that time.
+$object.i18n.getString( 'email_invite_2_3rd_paragraph' )

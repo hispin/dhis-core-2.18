@@ -19,5 +19,6 @@
     <property name="emailMessageSender" ref="emailMessageSender" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+    <property name="i18nManager" ref="org.hisp.dhis.i18n.I18nManager" />
   </bean>
 </beans>

@@ -68,6 +68,12 @@ public class DefaultI18nManager
     // -------------------------------------------------------------------------
 
     @Override
+    public I18n getI18n( Locale locale )
+    {
+        return new I18n( getGlobalResourceBundle( locale ), null );
+    }
+
+    @Override
     public I18n getI18n( Class<?> clazz )
     {
         return new I18n( getGlobalResourceBundle(), getSpecificResourceBundle( clazz.getName() ) );
