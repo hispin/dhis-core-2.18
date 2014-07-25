@@ -5,7 +5,7 @@
 
 * 
 {
-  font-family: mmrcensus, arial, sans-serif;
+  font-family: padauk, arial, sans-serif;
   line-height: 140%;
 }
 
@@ -462,23 +462,23 @@ input[type=text],input[type=password],textarea
 /*----------------------------------------------------------------------------*/
 
 @font-face {
-    font-family: 'mmrcensus';
-    src: url('../../fonts/mmrcensus-webfont.eot');
-    src: url('../../fonts/mmrcensus-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../../fonts/mmrcensus-webfont.woff') format('woff'),
-         url('../../fonts/mmrcensus-webfont.ttf') format('truetype'),
-         url('../../fonts/mmrcensus-webfont.svg#mmrcensus') format('svg');
+    font-family: 'padauk';
+    src: url('../../fonts/padauk-webfont.eot');
+    src: url('../../fonts/padauk-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../fonts/padauk-webfont.woff') format('woff'),
+         url('../../fonts/padauk-webfont.ttf') format('truetype'),
+         url('../../fonts/padauk-webfont.svg#padauk') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'mmrcensus';
-    src: url('../../fonts/mmrcensus-webfont.eot');
-    src: url('../../fonts/mmrcensus-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../../fonts/mmrcensus-webfont.woff') format('woff'),
-         url('../../fonts/mmrcensus-webfont.ttf') format('truetype'),
-         url('../../fonts/mmrcensus-webfont.svg#mmrcensus') format('svg');
+    font-family: 'padauk';
+    src: url('../../fonts/padauk-bold-webfont.eot');
+    src: url('../../fonts/padauk-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../fonts/padauk-bold-webfont.woff') format('woff'),
+         url('../../fonts/padauk-bold-webfont.ttf') format('truetype'),
+         url('../../fonts/padauk-bold-webfont.svg#padauk') format('svg');
     font-weight: bold;
     font-style: normal;
 }
