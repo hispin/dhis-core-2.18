@@ -195,6 +195,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
                 changeYear: true,
                 changeMonth: true,
                 dateFormat: 'yy-mm-dd',
+                yearRange: '-120:+0',
                 onSelect: function(date) {
                     //scope.date = date;
                     ctrl.$setViewValue(date);
