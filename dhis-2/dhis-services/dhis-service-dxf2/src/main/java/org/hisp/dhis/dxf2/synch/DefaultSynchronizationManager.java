@@ -162,7 +162,7 @@ public class DefaultSynchronizationManager
         
         log.info( status );
         
-        return status;        
+        return status;
     }
     
     public ImportSummary executeDataSynch()
@@ -182,7 +182,7 @@ public class DefaultSynchronizationManager
         // ---------------------------------------------------------------------
 
         final Date startTime = new Date();
-        final Date lastSuccessTime = getLastSynchSuccess();
+        final Date lastSuccessTime = getLastSynchSuccessFallback();
         
         int lastUpdatedCount = dataValueService.getDataValueCountLastUpdatedAfter( lastSuccessTime );
         
@@ -225,6 +225,11 @@ public class DefaultSynchronizationManager
         return summary;
     }
     
+    public Date getLastSynchSuccess()
+    {
+        return (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_SYNC );
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -233,7 +238,7 @@ public class DefaultSynchronizationManager
      * Gets the time of the last successful synchronization operation. If not set,
      * the current date subtracted three days is returned.
      */
-    private Date getLastSynchSuccess()
+    private Date getLastSynchSuccessFallback()
     {
         Date fallback = new Cal().subtract( Calendar.DAY_OF_YEAR, 3 ).time();
         

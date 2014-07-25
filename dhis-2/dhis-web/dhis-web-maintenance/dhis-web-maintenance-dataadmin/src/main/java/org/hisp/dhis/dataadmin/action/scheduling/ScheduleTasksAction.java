@@ -44,6 +44,7 @@ import static org.hisp.dhis.system.scheduling.Scheduler.STATUS_RUNNING;
 import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,11 +52,13 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.dxf2.synch.SynchronizationManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.scheduling.SchedulingManager;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,26 +78,17 @@ public class ScheduleTasksAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SystemSettingManager systemSettingManager;
     
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-    
+    @Autowired
     private SchedulingManager schedulingManager;
 
-    public void setSchedulingManager( SchedulingManager schedulingManager )
-    {
-        this.schedulingManager = schedulingManager;
-    }
-    
+    @Autowired
     private OrganisationUnitService organisationUnitService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
+    @Autowired
+    private SynchronizationManager synchronizationManager;
 
     // -------------------------------------------------------------------------
     // Input
@@ -214,6 +208,13 @@ public class ScheduleTasksAction
     public List<OrganisationUnitLevel> getLevels()
     {
         return levels;
+    }
+    
+    private Date lastDataSyncSuccess;
+    
+    public Date getLastDataSyncSuccess()
+    {
+        return lastDataSyncSuccess;
     }
 
     // -------------------------------------------------------------------------
@@ -349,6 +350,7 @@ public class ScheduleTasksAction
         running = STATUS_RUNNING.equals( status );
         
         levels = organisationUnitService.getOrganisationUnitLevels();
+        lastDataSyncSuccess = synchronizationManager.getLastSynchSuccess();
 
         log.info( "Status: " + status );
         log.info( "Running: " + running );
