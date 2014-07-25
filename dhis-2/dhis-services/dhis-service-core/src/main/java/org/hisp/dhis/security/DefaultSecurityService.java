@@ -33,6 +33,9 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nManager;
+import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -43,12 +46,14 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -98,6 +103,13 @@ public class DefaultSecurityService
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
         this.systemSettingManager = systemSettingManager;
+    }
+
+    private I18nManager i18nManager;
+
+    public void setI18nManager( I18nManager i18nManager )
+    {
+        this.i18nManager = i18nManager;
     }
 
     @Autowired
@@ -171,18 +183,37 @@ public class DefaultSecurityService
         Set<User> users = new HashSet<User>();
         users.add( credentials.getUser() );
 
-        Map<String, String> vars = new HashMap<String, String>();
+        Map<String, Object> vars = new HashMap<String, Object>();
         vars.put( "rootPath", rootPath );
         vars.put( "restorePath", rootPath + RESTORE_PATH + restoreType.getAction() );
         vars.put( "token", result[0] );
         vars.put( "code", result[1] );
         vars.put( "username", credentials.getUsername() );
 
-        String text1 = new VelocityManager().render( vars, restoreType.getEmailTemplate() + "1" );
-        String text2 = new VelocityManager().render( vars, restoreType.getEmailTemplate() + "2" );
+        User user = credentials.getUser();
+        Locale locale = (Locale) userService.getUserSettingValue( user, UserSettingService.KEY_UI_LOCALE, LocaleManager.DHIS_STANDARD_LOCALE );
 
-        emailMessageSender.sendMessage( restoreType.getEmailSubject() + " (message 1 of 2)", text1, null, users, true );
-        emailMessageSender.sendMessage( restoreType.getEmailSubject() + " (message 2 of 2)", text2, null, users, true );
+        I18n i18n = i18nManager.getI18n( locale );
+        vars.put( "i18n" , i18n );
+
+        // -------------------------------------------------------------------------
+        // Render emails
+        // -------------------------------------------------------------------------
+
+        VelocityManager vm = new VelocityManager();
+
+        String text1 = vm.render( vars, restoreType.getEmailTemplate() + "1" ),
+               text2 = vm.render( vars, restoreType.getEmailTemplate() + "2" );
+
+        String subject1 = i18n.getString( restoreType.getEmailSubject() ) + " (" + i18n.getString( "message" ).toLowerCase() + " 1 / 2)",
+               subject2 = i18n.getString( restoreType.getEmailSubject() ) + " (" + i18n.getString( "message" ).toLowerCase() + " 2 / 2)";
+
+        // -------------------------------------------------------------------------
+        // Send emails
+        // -------------------------------------------------------------------------
+
+        emailMessageSender.sendMessage( subject1, text1, null, users, true );
+        emailMessageSender.sendMessage( subject2, text2, null, users, true );
 
         return true;
     }

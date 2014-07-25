@@ -42,6 +42,8 @@ public interface I18nManager
 {
     String ID = I18nManager.class.getName();
 
+    I18n getI18n( Locale locale );
+
     I18n getI18n( Class<?> clazz );
 
     I18n getI18n( Class<?> clazz, Locale locale );
