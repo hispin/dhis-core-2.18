@@ -2598,7 +2598,7 @@ Ext.onReady( function() {
 
 			linkPanel = Ext.create('Ext.panel.Panel', {
 				html: function() {
-					var url = ns.core.init.contextPath + '/dhis-web-event-charts/app/index.html?id=' + ns.app.layout.id,
+					var url = ns.core.init.contextPath + '/dhis-web-event-visualizer/app/index.html?id=' + ns.app.layout.id,
 						apiUrl = ns.core.init.contextPath + '/api/eventCharts/' + ns.app.layout.id + '/data.html',
 						html = '';
 
