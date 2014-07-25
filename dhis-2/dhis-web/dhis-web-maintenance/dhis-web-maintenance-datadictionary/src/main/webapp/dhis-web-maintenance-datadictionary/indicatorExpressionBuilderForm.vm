@@ -26,10 +26,10 @@ jQuery( document ).ready( function(){
 <form id="indicator-expression-form">
 <table style="width:100%;text-align:left">
 	<colgroup>
-		<col width="250"/>
-		<col width="10"/>
-        <col width="250"/>
-		<col/>
+		<col width="45%"/>
+		<col width="2%"/>
+        <col width="20%"/>
+		<col width="33%">
 	</colgroup>
 	<tr>
 		<th colspan="2">$i18n.getString( "description" )</th>
@@ -38,15 +38,15 @@ jQuery( document ).ready( function(){
 	</tr>
 	<tr>
 		<td>
-			<input type="text" id="description" name="description" style="width:250px" class="{validate:{required:true}}"/>
+			<input type="text" id="description" name="description" class="{validate:{required:true}}" style="width:100%"/>
 			<div class="tipText" style="margin-top: 4px">$i18n.getString( "tip" ): $i18n.getString( "use" ) abs(x) sin(x) cos(x) tan(x) ln(x) log(x) sqrt(x) mod(x,y)</div>
 		</td>
 		<td></td>
 		<td>
-			<select id="constantId" name="constantId" size="3" style="width:250px" ondblclick="insertText( 'expression', this.value )"></select>
+			<select id="constantId" name="constantId" size="3" style="width:100%" ondblclick="insertText( 'expression', this.value )"></select>
 		</td>
         <td>
-            <select id="orgUnitGroupId" name="orgUnitGroupId" size="3" style="width:270px" ondblclick="insertText( 'expression', this.value )"></select>
+            <select id="orgUnitGroupId" name="orgUnitGroupId" size="3" style="width:100%" ondblclick="insertText( 'expression', this.value )"></select>
         </td>
 	</tr>
 	<tr>
@@ -54,34 +54,36 @@ jQuery( document ).ready( function(){
 	</tr>
 	<tr>
 		<th colspan="2">$i18n.getString( "formula" )</th>
-		<th colspan="2" style="width:100%">$i18n.getString( "data_elements" )</th>
+		<th colspan="2">$i18n.getString( "data_elements" )</th>
 	</tr>
 	<tr>
 		<td valign="top">
-		<textarea id="expression" name="expression" style="width:250px; height:150px" wrap="virtual" onchange="cleanExpression()" class="{validate:{required:true}}"></textarea><br/>
-		<a href="javascript:insertText( 'expression', '(' )"><img src="../images/left_parent.png" title="$i18n.getString( 'left_brackets' )"/></a>
-		<a href="javascript:insertText( 'expression', ')' )"><img src="../images/right_parent.png" title="$i18n.getString( 'right_brackets' )"/></a>
-		<a href="javascript:insertText( 'expression', '*' )"><img src="../images/multiply.png" title="$i18n.getString( 'multiply' )"/></a>
-		<a href="javascript:insertText( 'expression', '/' )"><img src="../images/divide.png" title="$i18n.getString( 'divide' )"/></a>
-		<a href="javascript:insertText( 'expression', '+' )"><img src="../images/plus.png" title="$i18n.getString( 'plus' )"/></a>
-		<a href="javascript:insertText( 'expression', '-' )"><img src="../images/minus.png" title="$i18n.getString( 'minus' )"/></a>
-		<a href="javascript:insertText( 'expression', '[days]' )"><img src="../images/no_of_days.png" title="$i18n.getString( 'no_of_days' )"/></a>
+		<textarea id="expression" name="expression" style="width:100%; height:158px; margin-top:2px;" wrap="virtual" onchange="cleanExpression()" class="{validate:{required:true}}"></textarea><br/>
+		<div style="margin-bottom:2px">
+			<a href="javascript:insertText( 'expression', '(' )"><img src="../images/left_parent.png" title="$i18n.getString( 'left_brackets' )"/></a>
+			<a href="javascript:insertText( 'expression', ')' )"><img src="../images/right_parent.png" title="$i18n.getString( 'right_brackets' )"/></a>
+			<a href="javascript:insertText( 'expression', '*' )"><img src="../images/multiply.png" title="$i18n.getString( 'multiply' )"/></a>
+			<a href="javascript:insertText( 'expression', '/' )"><img src="../images/divide.png" title="$i18n.getString( 'divide' )"/></a>
+			<a href="javascript:insertText( 'expression', '+' )"><img src="../images/plus.png" title="$i18n.getString( 'plus' )"/></a>
+			<a href="javascript:insertText( 'expression', '-' )"><img src="../images/minus.png" title="$i18n.getString( 'minus' )"/></a>
+			<a href="javascript:insertText( 'expression', '[days]' )"><img src="../images/no_of_days.png" title="$i18n.getString( 'no_of_days' )"/></a>
+		</div>
 		</td>
 		<td></td>
-		<td colspan="2" valign="top" style="width:100%">
-			<input type="text" id="filter" name="filter" style="width:370px">
+		<td colspan="2" valign="top">
+			<input type="text" id="filter" name="filter" style="width:280px">
 			<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:60px">
 			<input type="button" value="$i18n.getString( 'clear' )" onclick="clearSearchText();" style="width:60px"><br/>
 
-			<select id="dataElementId" name="dataElementId" size="8"  style="width:100%" ondblclick="insertText( 'expression', this.value )">
+			<select id="dataElementId" name="dataElementId" size="9"  style="width:100%" ondblclick="insertText( 'expression', this.value )">
 			</select>
 		</td>
 	</tr>
 	<tr>
-		<th colspan="4" style="width:100%">$i18n.getString( "description" )</th>		
+		<th colspan="4">$i18n.getString( "description" )</th>		
 	</tr>
 	<tr>
-		<td colspan="4" style="width:100%"><div id="formulaText" style="width:740px;height:100px;overflow:auto"></div></td>
+		<td colspan="4"><div id="formulaText" style="width:100%;height:100px;overflow:auto"></div></td>
 	</tr>
 	<tr>
 		<td colspan="4"></td>
