@@ -28,6 +28,8 @@ package org.hisp.dhis.dxf2.synch;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
+
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 
 /**
@@ -38,4 +40,6 @@ public interface SynchronizationManager
     AvailabilityStatus isRemoteServerAvailable();
     
     ImportSummary executeDataSynch();
+    
+    Date getLastSynchSuccess();
 }
