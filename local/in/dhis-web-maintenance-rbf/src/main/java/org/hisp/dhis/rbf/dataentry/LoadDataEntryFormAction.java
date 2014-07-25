@@ -336,7 +336,7 @@ public class LoadDataEntryFormAction implements Action
         String orgUnitBranchIds = "-1";
         for( OrganisationUnit orgUnit : orgUnitBranch )
         {
-        	orgUnitBranchIds += "," + orgUnit.getId();
+            orgUnitBranchIds += "," + orgUnit.getId();
         }
         
         if( orgUnitGroup != null )

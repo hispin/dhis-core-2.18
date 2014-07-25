@@ -131,6 +131,7 @@ public class LoadNextPrePeriodsAction implements Action
         for ( Period period : periods )
         {
             period.setName( format.formatPeriod( period ) );
+           
         }
 
         return SUCCESS;
