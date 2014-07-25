@@ -64,7 +64,7 @@ dhis2.db.tmpl = {
 	dashboardIntro: "<li><div class='dasboardIntro'>${i18n_add}</div>" +
 			        "<div class='dasboardTip'>${i18n_arrange}</div></li>",
 	
-	hitHeader: "<li class='hitHeader'>${title} &nbsp; " +
+	hitHeader: "<li class='hitHeader'><span class='bold'>${title}</span> &nbsp; " +
 	           "<a id='hitMore-${type}' href='javascript:dhis2.db.searchMore( \"${type}\" )'>${i18n_see_more_hits} &raquo;</a>" +
 	           "<a id='hitFewer-${type}' href='javascript:dhis2.db.searchFewer( \"${type}\" )' style='display:none'>&laquo; ${i18n_see_fewer_hits}</a></li>",
 	
