@@ -2,7 +2,7 @@
 
 <ul class="introList">
     #introListImgItem( "validationRule.action" "validation_rule" "validationrule" )
-    #introListImgItem( "showValidationRuleGroupForm.action" "validation_rule_group" "validationrule" )
+    #introListImgItem( "validationRuleGroup.action" "validation_rule_group" "validationrule" )
     #introListImgItem( "showRunValidationForm.action" "validation_rule_analysis" "validationanalysis" )
     #introListImgItem( "viewAnalysisForm.action?key=stddevoutlier" "stddevoutlier_analysis" "validationanalysis" )
     #introListImgItem( "viewAnalysisForm.action?key=minmaxoutlier" "minmaxoutlier_analysis" "validationanalysis" )

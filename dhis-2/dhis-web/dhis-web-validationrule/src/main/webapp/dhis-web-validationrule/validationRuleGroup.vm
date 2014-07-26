@@ -31,7 +31,7 @@
         <td style="vertical-align:top">
 			<table width="100%">
 				<tr>
-          <td>#filterDiv( "showValidationRuleGroupForm" )</td>
+          <td>#filterDiv( "validationRuleGroup" )</td>
           <td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddValidationRuleGroupForm.action'"></td>
         </tr>
 			</table>
