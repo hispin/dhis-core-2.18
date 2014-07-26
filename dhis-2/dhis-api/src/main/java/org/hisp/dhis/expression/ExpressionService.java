@@ -291,6 +291,12 @@ public interface ExpressionService
     void explodeAndSubstituteExpressions( Collection<Indicator> indicators, Integer days );
 
     /**
+     * Substitutes potential constant and days in the numerator and denominator
+     * on all indicators in the given collection.
+     */
+    void substituteExpressions( Collection<Indicator> indicators, Integer days );
+    
+    /**
      * Populates the explodedNumerator and explodedDenominator property on all
      * indicators in the given collection. This method uses
      * explodeExpression( String ) internally to generate the exploded expressions.
