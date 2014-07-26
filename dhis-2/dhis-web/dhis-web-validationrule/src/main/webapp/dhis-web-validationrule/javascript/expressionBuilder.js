@@ -9,7 +9,7 @@ jQuery(document).ready(function()
 		minWidth: 840,
 		minHeight: 560,
 		width: 840,
-		height: 560,
+		height: 630,
 		title: "Expression"
 	});
 		
