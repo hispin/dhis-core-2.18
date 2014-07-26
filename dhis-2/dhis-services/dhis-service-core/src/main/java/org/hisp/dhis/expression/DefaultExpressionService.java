@@ -595,14 +595,23 @@ public class DefaultExpressionService
     {
         if ( indicators != null && !indicators.isEmpty() )
         {
+            substituteExpressions( indicators, days );
+
+            explodeExpressions( indicators );
+        }
+    }
+
+    @Transactional
+    public void substituteExpressions( Collection<Indicator> indicators, Integer days )
+    {
+        if ( indicators != null && !indicators.isEmpty() )
+        {
             for ( Indicator indicator : indicators )
             {
                 indicator.setExplodedNumerator( substituteExpression( indicator.getNumerator(), days ) );
                 indicator.setExplodedDenominator( substituteExpression( indicator.getDenominator(), days ) );
             }
-
-            explodeExpressions( indicators );
-        }
+        }                
     }
     
     @Transactional
