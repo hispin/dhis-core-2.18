@@ -33,6 +33,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -92,10 +93,10 @@ public class TrackedEntityFormServiceTest
         OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
+        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnit );
         programService.addProgram( programA );
 
-        programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnit );
+        programB = createProgram( 'B', new ArrayList<ProgramStage>(), organisationUnit );
         programService.addProgram( programB );
 
         DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A" );

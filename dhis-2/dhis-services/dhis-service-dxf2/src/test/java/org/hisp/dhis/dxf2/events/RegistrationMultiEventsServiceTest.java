@@ -53,6 +53,7 @@ import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -154,7 +155,7 @@ public class RegistrationMultiEventsServiceTest
         identifiableObjectManager.save( programStageA );
         identifiableObjectManager.save( programStageB );
 
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
+        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnitA );
         programA.setType( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
         identifiableObjectManager.save( programA );
 

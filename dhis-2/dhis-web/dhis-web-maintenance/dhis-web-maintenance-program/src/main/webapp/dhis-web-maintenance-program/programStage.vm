@@ -39,15 +39,15 @@
 				</thead>
 		  
 				<tbody id="list">
-					#foreach( $association in $associations )
-						<tr id="tr${association.id}" data-id="$!association.id" data-uid="$!association.uid" data-type="ProgramStage" data-name="$encoder.htmlEncode( $!association.displayName )"
-						    data-can-manage="$security.canManage( $association )"
-						    data-can-update="$security.canUpdate( $association )"
-						    data-can-delete="$security.canDelete( $association )"
-							data-can-manage-template-message="#if($association.program.type!=3)true#{else}false#end"
+					#foreach( $programStage in $program.programStages )
+						<tr id="tr${programStage.id}" data-id="$!programStage.id" data-uid="$!programStage.uid" data-type="ProgramStage" data-name="$encoder.htmlEncode( $!programStage.displayName )"
+						    data-can-manage="$security.canManage( $programStage )"
+						    data-can-update="$security.canUpdate( $programStage )"
+						    data-can-delete="$security.canDelete( $programStage )"
+							data-can-manage-template-message="#if($programStage.program.type!=3)true#{else}false#end"
 						    data-can-remove="#if( $program.type=='1' )true#{else}false#end">
-						    <td>$encoder.htmlEncode( $!association.displayName )</td>
-						    <td>$encoder.htmlEncode( $!association.description )</td>
+						    <td>$encoder.htmlEncode( $!programStage.displayName )</td>
+						    <td>$encoder.htmlEncode( $!programStage.description )</td>
 						</tr>
 					#end
 				</tbody>

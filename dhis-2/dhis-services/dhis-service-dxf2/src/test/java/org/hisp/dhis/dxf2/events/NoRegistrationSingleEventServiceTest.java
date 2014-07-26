@@ -49,6 +49,7 @@ import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -93,7 +94,7 @@ public class NoRegistrationSingleEventServiceTest
         programStageA = createProgramStage( 'A', 0 );
         identifiableObjectManager.save( programStageA );
 
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
+        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnitA );
         programA.setType( Program.SINGLE_EVENT_WITHOUT_REGISTRATION );
         identifiableObjectManager.save( programA );
 

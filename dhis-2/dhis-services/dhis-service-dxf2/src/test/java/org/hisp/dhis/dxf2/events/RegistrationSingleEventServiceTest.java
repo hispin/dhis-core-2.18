@@ -32,6 +32,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.hamcrest.CoreMatchers;
@@ -131,7 +132,7 @@ public class RegistrationSingleEventServiceTest
         programStageA = createProgramStage( 'A', 0 );
         identifiableObjectManager.save( programStageA );
 
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
+        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnitA );
         programA.setType( Program.SINGLE_EVENT_WITH_REGISTRATION );
         identifiableObjectManager.save( programA );
 

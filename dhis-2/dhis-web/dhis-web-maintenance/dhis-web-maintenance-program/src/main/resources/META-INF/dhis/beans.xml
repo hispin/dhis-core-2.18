@@ -285,13 +285,6 @@
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageListAction"
-		class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageListAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean
 		id="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageAction"
 		class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageAction"
 		scope="prototype">
@@ -310,7 +303,6 @@
 		id="org.hisp.dhis.trackedentity.action.programstage.SaveProgramStageSortOrderAction"
 		class="org.hisp.dhis.trackedentity.action.programstage.SaveProgramStageSortOrderAction"
 		scope="prototype">
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 

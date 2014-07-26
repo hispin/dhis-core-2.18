@@ -30,7 +30,7 @@ package org.hisp.dhis.trackedentity;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -40,8 +40,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.trackedentity.TrackedEntityForm;
-import org.hisp.dhis.trackedentity.TrackedEntityFormStore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -88,10 +86,10 @@ public class TrackedEntityFormStoreTest
         OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
+        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnit );
         programService.addProgram( programA );
 
-        programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnit );
+        programB = createProgram( 'B', new ArrayList<ProgramStage>(), organisationUnit );
         programService.addProgram( programB );
 
         DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A" );

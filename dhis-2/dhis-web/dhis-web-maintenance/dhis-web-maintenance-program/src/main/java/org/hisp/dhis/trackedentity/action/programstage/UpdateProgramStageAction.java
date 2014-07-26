@@ -372,7 +372,7 @@ public class UpdateProgramStageAction
             reminders.add( reminder );
         }
         programStage.setReminders( reminders );
-
+        
         programStageService.updateProgramStage( programStage );
 
         Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>(

@@ -35,7 +35,6 @@ import java.util.List;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.comparator.ProgramStageMinDaysComparator;
 
 import com.opensymphony.xwork2.Action;
@@ -57,13 +56,6 @@ public class SaveProgramStageSortOrderAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private ProgramStageService programStageService;
-
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
     }
 
     // -------------------------------------------------------------------------
@@ -89,11 +81,8 @@ public class SaveProgramStageSortOrderAction
         {
             List<ProgramStage> programStages = new ArrayList<ProgramStage>( program.getProgramStages() );
             Collections.sort( programStages, new ProgramStageMinDaysComparator() );
-
-            for ( ProgramStage programStage : programStages )
-            {
-                programStageService.updateProgramStage( programStage );
-            }
+            program.setProgramStages(programStages);
+            programService.updateProgram( program );
         }
 
         return SUCCESS;

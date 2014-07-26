@@ -377,6 +377,8 @@ public class AddProgramStageAction
         }
         programStage.setReminders( reminders );
 
+        program.getProgramStages().add( programStage );
+        
         programStageService.saveProgramStage( programStage );
 
         for ( int i = 0; i < this.selectedDataElementsValidator.size(); i++ )

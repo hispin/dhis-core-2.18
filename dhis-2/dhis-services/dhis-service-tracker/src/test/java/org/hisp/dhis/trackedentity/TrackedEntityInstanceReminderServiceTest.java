@@ -31,8 +31,10 @@ package org.hisp.dhis.trackedentity;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -131,7 +133,7 @@ public class TrackedEntityInstanceReminderServiceTest
         entityInstance = createTrackedEntityInstance( 'A', organisationUnit );
         entityInstanceService.addTrackedEntityInstance( entityInstance );
 
-        Program program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
+        Program program = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnit );
         reminderA = new TrackedEntityInstanceReminder( "A", 0, "Test program message template",
             TrackedEntityInstanceReminder.ENROLLEMENT_DATE_TO_COMPARE,
             TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE,
@@ -163,7 +165,7 @@ public class TrackedEntityInstanceReminderServiceTest
         reminders.add( reminderB );
         stageB.setReminders( reminders );
 
-        Set<ProgramStage> programStages = new HashSet<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );

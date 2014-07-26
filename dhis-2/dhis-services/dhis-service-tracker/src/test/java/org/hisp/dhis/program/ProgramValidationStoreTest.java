@@ -30,8 +30,8 @@ package org.hisp.dhis.program;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -87,7 +87,7 @@ public class ProgramValidationStoreTest
         OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
-        program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
+        program = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnit );
         programService.addProgram( program );
 
         stageA = new ProgramStage( "A", program );
@@ -96,7 +96,7 @@ public class ProgramValidationStoreTest
         stageB = new ProgramStage( "B", program );
         int psIdB = programStageService.saveProgramStage( stageB );
 
-        Set<ProgramStage> programStages = new HashSet<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );
