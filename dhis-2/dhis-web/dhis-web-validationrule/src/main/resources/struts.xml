@@ -70,7 +70,7 @@
     </action>
 
     <action name="updateValidationRule" class="org.hisp.dhis.validationrule.action.UpdateValidationRuleAction">
-      <result name="success" type="redirect">validationRule.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">validationRule.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_VALIDATIONRULE_ADD</param>
     </action>
 
@@ -123,7 +123,7 @@
 
     <action name="updateValidationRuleGroup"
       class="org.hisp.dhis.validationrule.action.validationrulegroup.UpdateValidationRuleGroupAction">
-      <result name="success" type="redirect">showValidationRuleGroupForm.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">showValidationRuleGroupForm.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="anyAuthorities">F_VALIDATIONRULEGROUP_PUBLIC_ADD, F_VALIDATIONRULEGROUP_PRIVATE_ADD</param>
     </action>
 
