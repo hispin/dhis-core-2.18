@@ -33,6 +33,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -183,7 +184,7 @@ public class ProgramStageInstanceServiceTest
         /**
          * Program A
          */
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
+        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnitA );
         programService.addProgram( programA );
 
         stageA = new ProgramStage( "A", programA );
@@ -215,7 +216,7 @@ public class ProgramStageInstanceServiceTest
         stageB.setReminders( reminders );
         programStageService.saveProgramStage( stageB );
 
-        Set<ProgramStage> programStages = new HashSet<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
         programStages.add( stageA );
         programStages.add( stageB );
         programA.setProgramStages( programStages );
@@ -241,7 +242,7 @@ public class ProgramStageInstanceServiceTest
          * Program B
          */
 
-        Program programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnitB );
+        Program programB = createProgram( 'B', new ArrayList<ProgramStage>(), organisationUnitB );
         programService.addProgram( programB );
 
         stageC = new ProgramStage( "C", programB );
@@ -251,7 +252,7 @@ public class ProgramStageInstanceServiceTest
         stageC.setIrregular( true );
         programStageService.saveProgramStage( stageD );
 
-        programStages = new HashSet<ProgramStage>();
+        programStages = new ArrayList<ProgramStage>();
         programStages.add( stageC );
         programStages.add( stageD );
         programB.setProgramStages( programStages );

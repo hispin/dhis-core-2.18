@@ -33,6 +33,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -79,13 +80,13 @@ public class ProgramServiceTest
         organisationUnitB = createOrganisationUnit( 'B' );
         organisationUnitService.addOrganisationUnit( organisationUnitB );
 
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
+        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnitA );
         programA.setUid( "UID-A" );
 
-        programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnitA );
+        programB = createProgram( 'B', new ArrayList<ProgramStage>(), organisationUnitA );
         programB.setUid( "UID-B" );
 
-        programC = createProgram( 'C', new HashSet<ProgramStage>(), organisationUnitB );
+        programC = createProgram( 'C', new ArrayList<ProgramStage>(), organisationUnitB );
         programC.setUid( "UID-C" );
     }
 

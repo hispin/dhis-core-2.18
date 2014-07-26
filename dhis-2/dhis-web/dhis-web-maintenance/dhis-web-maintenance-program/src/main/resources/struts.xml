@@ -284,7 +284,7 @@
     <!-- ProgramStage -->
 
     <action name="programStage"
-      class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageListAction">
+      class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-program/programStage.vm</param>
       <param name="menu">/dhis-web-maintenance-program/menu.vm</param>

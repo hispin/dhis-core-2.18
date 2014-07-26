@@ -33,9 +33,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -234,7 +236,7 @@ public class CaseAggregationConditionServiceTest
         // Program && Program stages
         // ---------------------------------------------------------------------
 
-        program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
+        program = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnit );
         int programId = programService.addProgram( program );
 
         ProgramStage stageA = new ProgramStage( "Stage-A", program );
@@ -243,7 +245,7 @@ public class CaseAggregationConditionServiceTest
         ProgramStage stageB = new ProgramStage( "Stage-B", program );
         stageBId = programStageService.saveProgramStage( stageB );
 
-        Set<ProgramStage> programStages = new HashSet<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );

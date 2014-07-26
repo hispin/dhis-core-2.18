@@ -33,10 +33,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -127,7 +129,7 @@ public class ProgramInstanceServiceTest
         orgunitIds.add( idA );
         orgunitIds.add( idB );
 
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
+        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnitA );
 
         TrackedEntityInstanceReminder reminderA = new TrackedEntityInstanceReminder( "A", 0,
             "Test program message template", TrackedEntityInstanceReminder.ENROLLEMENT_DATE_TO_COMPARE,
@@ -151,16 +153,16 @@ public class ProgramInstanceServiceTest
         ProgramStage stageB = new ProgramStage( "StageB", programA );
         programStageService.saveProgramStage( stageB );
 
-        Set<ProgramStage> programStages = new HashSet<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
         programStages.add( stageA );
         programStages.add( stageB );
         programA.setProgramStages( programStages );
         programService.updateProgram( programA );
 
-        programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnitA );
+        programB = createProgram( 'B', new ArrayList<ProgramStage>(), organisationUnitA );
         programService.addProgram( programB );
 
-        programC = createProgram( 'C', new HashSet<ProgramStage>(), organisationUnitA );
+        programC = createProgram( 'C', new ArrayList<ProgramStage>(), organisationUnitA );
         programService.addProgram( programC );
 
         entityInstanceA = createTrackedEntityInstance( 'A', organisationUnitA );

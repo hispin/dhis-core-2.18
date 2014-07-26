@@ -32,11 +32,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -109,7 +109,7 @@ public class ProgramExpressionServiceTest
         OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
-        Program program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
+        Program program = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnit );
         programService.addProgram( program );
 
         ProgramStage stageA = new ProgramStage( "StageA", program );
@@ -118,7 +118,7 @@ public class ProgramExpressionServiceTest
         ProgramStage stageB = new ProgramStage( "StageB", program );
         programStageService.saveProgramStage( stageB );
 
-        Set<ProgramStage> programStages = new HashSet<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );

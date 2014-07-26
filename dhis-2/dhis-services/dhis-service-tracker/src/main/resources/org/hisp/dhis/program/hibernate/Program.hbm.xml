@@ -25,10 +25,11 @@
 
 	<property name="dateOfIncidentDescription" type="text" />
 
-	<set name="programStages" order-by="mindaysfromstart" cascade="all">
-		<key column="programid" />
-		<one-to-many class="org.hisp.dhis.program.ProgramStage" />
-	</set>
+	 <list name="programStages">
+      <key column="programid" />
+      <list-index column="sort_order" base="1" />
+      <one-to-many class="org.hisp.dhis.program.ProgramStage" />
+    </list>
 
 	<set name="organisationUnits" table="program_organisationunits">
 		<key column="programid" foreign-key="fk_program_organisationunits_programid" />
