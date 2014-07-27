@@ -209,7 +209,7 @@ public class DataApprovalPeriodAggregator
      * @param <T> type of items
      * @return the first non-null item
      */
-    private static <T> T firstNonNull( T ...values ) 
+    private static <T> T firstNonNull( T... values ) 
     {
         for ( T value : values )
         {
