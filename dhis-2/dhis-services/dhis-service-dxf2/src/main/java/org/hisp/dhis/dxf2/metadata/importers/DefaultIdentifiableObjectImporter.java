@@ -252,9 +252,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         private Expression extractExpression( T object, String fieldName )
         {
+            Expression expression = null;
+            
             if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
             {
-                Object expression = ReflectionUtils.invokeGetterMethod( fieldName, object );
+                expression = ReflectionUtils.invokeGetterMethod( fieldName, object );
 
                 if ( expression != null && Expression.class.isAssignableFrom( expression.getClass() ) )
                 {
@@ -262,7 +264,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
             }
 
-            return null;
+            return expression;
         }
 
         private Set<DataElementOperand> extractDataElementOperands( T object, String fieldName )
