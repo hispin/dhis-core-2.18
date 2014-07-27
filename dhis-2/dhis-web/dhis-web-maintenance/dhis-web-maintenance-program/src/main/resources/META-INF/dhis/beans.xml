@@ -300,13 +300,6 @@
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.trackedentity.action.programstage.SaveProgramStageSortOrderAction"
-		class="org.hisp.dhis.trackedentity.action.programstage.SaveProgramStageSortOrderAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean
 		id="org.hisp.dhis.trackedentity.action.programstage.UpdateProgramStageAction"
 		class="org.hisp.dhis.trackedentity.action.programstage.UpdateProgramStageAction"
 		scope="prototype">
