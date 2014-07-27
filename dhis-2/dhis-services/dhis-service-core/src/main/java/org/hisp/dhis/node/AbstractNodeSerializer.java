@@ -28,14 +28,13 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import java.io.OutputStream;
+
 import org.hisp.dhis.node.config.Config;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.node.types.SimpleNode;
-import org.hisp.dhis.period.PeriodType;
-
-import java.io.OutputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
