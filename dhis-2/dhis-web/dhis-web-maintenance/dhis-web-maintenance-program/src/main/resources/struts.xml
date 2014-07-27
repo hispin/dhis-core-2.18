@@ -362,13 +362,6 @@
       <param name="requiredAuthorities">F_PROGRAMSTAGE_DELETE</param>
     </action>
 
-    <action name="saveProgramStageSortOder"
-      class="org.hisp.dhis.trackedentity.action.programstage.SaveProgramStageSortOrderAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-    </action>
-
     <action name="programStageList"
       class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageListAction">
       <result name="success" type="velocity">/content.vm</result>
