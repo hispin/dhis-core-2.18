@@ -418,6 +418,7 @@ public class TableAlteror
     {
         int exist = jdbcTemplate.queryForObject( "SELECT count(*) FROM trackedentity where name='Person'",
             Integer.class );
+        
         if ( exist == 0 )
         {
             String id = statementBuilder.getAutoIncrementValue();
@@ -435,7 +436,8 @@ public class TableAlteror
 
     private void updateProgramStageList()
     {
-        int count = jdbcTemplate.queryForInt( "select count(*) from programstage where sort_order is null" );
+        int count = jdbcTemplate.queryForObject( "select count(*) from programstage where sort_order is null", Integer.class );
+        
         if ( count > 0 )
         {
             StatementHolder holder = statementManager.getHolder();

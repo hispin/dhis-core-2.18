@@ -35,7 +35,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -45,8 +44,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.trackedentity.TrackedEntityForm;
-import org.hisp.dhis.trackedentity.TrackedEntityFormService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
