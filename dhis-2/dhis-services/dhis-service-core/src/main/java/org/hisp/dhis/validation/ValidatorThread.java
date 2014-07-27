@@ -136,8 +136,8 @@ public class ValidatorThread
 
                                         for ( int optionCombo : attributeOptionCombos )
                                         {
-                                            Double leftSide = leftSideValues.get ( optionCombo );
-                                            Double rightSide = rightSideValues.get ( optionCombo );
+                                            Double leftSide = leftSideValues.get( optionCombo );
+                                            Double rightSide = rightSideValues.get( optionCombo );
                                             boolean violation = false;
 
                                             if ( Operator.compulsory_pair.equals( rule.getOperator() ) )

@@ -206,7 +206,8 @@ public interface ExpressionService
     
     /**
      * Returns all operands included in an expression string. The operand is on
-     * the form <data element id>.<category option combo id>.
+     * the form #{data-element-id.category-option combo-id}. Requires that the
+     * expression has been exploded in order to handle data element totals.
      * 
      * @param expression The expression string.
      * @return A Set of Operands.
@@ -357,7 +358,7 @@ public interface ExpressionService
     /**
      * Returns all Operands included in the formulas for the given collection of
      * Indicators. Requires that the explodedNumerator and explodedDenominator
-     * properties have been populated.
+     * properties have been populated in order to handle totals.
      * 
      * @param indicators the collection of Indicators.
      */
