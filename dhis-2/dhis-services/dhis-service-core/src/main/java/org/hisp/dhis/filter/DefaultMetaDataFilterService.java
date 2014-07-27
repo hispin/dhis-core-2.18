@@ -28,6 +28,7 @@ package org.hisp.dhis.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,24 +47,14 @@ public class DefaultMetaDataFilterService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MetaDataFilterStore metaDataFilterStore;
+    private GenericIdentifiableObjectStore<MetaDataFilter> metaDataFilterStore;
 
-    public MetaDataFilterStore getMetaDataFilterStore()
-    {
-        return metaDataFilterStore;
-    }
-
-    public void setMetaDataFilterStore( MetaDataFilterStore metaDataFilterStore )
+    public void setMetaDataFilterStore( GenericIdentifiableObjectStore<MetaDataFilter> metaDataFilterStore )
     {
         this.metaDataFilterStore = metaDataFilterStore;
     }
 
     private I18nService i18nService;
-
-    public I18nService getI18nService()
-    {
-        return i18nService;
-    }
 
     public void setI18nService( I18nService i18nService )
     {
