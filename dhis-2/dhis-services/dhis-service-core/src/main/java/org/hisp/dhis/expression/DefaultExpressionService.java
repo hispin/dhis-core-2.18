@@ -200,7 +200,11 @@ public class DefaultExpressionService
         final String expressionString = generateExpression( expression.getExplodedExpressionFallback(), valueMap, constantMap, 
             orgUnitCountMap, days, expression.isNullIfBlank() );
 
-        return expressionString != null ? calculateExpression( expressionString ) : null;
+        Double result = expressionString != null ? calculateExpression( expressionString ) : null;
+
+        log.debug( "Expression: " + expression.getExplodedExpressionFallback() + ", generated: " + expressionString + ", result: " + result );
+        
+        return result;
     }
 
     public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap,
@@ -209,7 +213,11 @@ public class DefaultExpressionService
         final String expressionString = generateExpression( expression.getExplodedExpressionFallback(), valueMap, constantMap, orgUnitCountMap, days,
             expression.isNullIfBlank(), incompleteValues );
 
-        return expressionString != null ? calculateExpression( expressionString ) : null;
+        Double result = expressionString != null ? calculateExpression( expressionString ) : null;
+        
+        log.debug( "Expression: " + expression.getExplodedExpressionFallback() + ", generated: " + expressionString + ", result: " + result );
+        
+        return result;
     }
 
     @Transactional
@@ -335,7 +343,12 @@ public class DefaultExpressionService
 
             while ( matcher.find() )
             {
-                operandsInExpression.add( DataElementOperand.getOperand( matcher.group() ) );
+                DataElementOperand operand = DataElementOperand.getOperand( matcher.group() );
+                
+                if ( operand.getOptionComboId() != null )
+                {
+                    operandsInExpression.add( operand );
+                }
             }
         }
 
