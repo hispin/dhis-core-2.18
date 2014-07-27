@@ -29,7 +29,6 @@ package org.hisp.dhis.trackedentity.action.dataentryform;
  */
 
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
