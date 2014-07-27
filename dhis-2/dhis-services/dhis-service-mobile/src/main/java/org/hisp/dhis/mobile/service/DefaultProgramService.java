@@ -284,7 +284,7 @@ public class DefaultProgramService
         pr.setProgramStages( prStgs );
 
         List<ProgramTrackedEntityAttribute> programPatientAttributes = new ArrayList<ProgramTrackedEntityAttribute>(
-            program.getAttributes() );
+            program.getProgramAttributes() );
 
         for ( int i = 0; i < programPatientAttributes.size(); i++ )
         {

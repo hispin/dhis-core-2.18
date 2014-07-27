@@ -55,9 +55,7 @@ public class ProgramTrackedEntityAttribute
     private int id;
 
     private TrackedEntityAttribute attribute;
-
-    private Integer sortOrder;
-
+    
     private boolean displayInList;
 
     private Boolean mandatory;
@@ -75,24 +73,21 @@ public class ProgramTrackedEntityAttribute
     public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, int sortOrder, boolean displayInList )
     {
         this.attribute = attribute;
-        this.sortOrder = sortOrder;
         this.displayInList = displayInList;
     }
 
-    public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, Integer sortOrder, boolean displayInList,
+    public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, boolean displayInList,
         Boolean mandatory )
     {
         this.attribute = attribute;
-        this.sortOrder = sortOrder;
         this.displayInList = displayInList;
         this.mandatory = mandatory;
     }
 
-    public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, Integer sortOrder, boolean displayInList,
+    public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, boolean displayInList,
         Boolean mandatory, Boolean allowFutureDate )
     {
         this.attribute = attribute;
-        this.sortOrder = sortOrder;
         this.displayInList = displayInList;
         this.mandatory = mandatory;
         this.allowFutureDate = allowFutureDate;
@@ -137,16 +132,6 @@ public class ProgramTrackedEntityAttribute
     public void setAttribute( TrackedEntityAttribute attribute )
     {
         this.attribute = attribute;
-    }
-
-    public Integer getSortOrder()
-    {
-        return sortOrder;
-    }
-
-    public void setSortOrder( Integer sortOrder )
-    {
-        this.sortOrder = sortOrder;
     }
 
     @JsonProperty

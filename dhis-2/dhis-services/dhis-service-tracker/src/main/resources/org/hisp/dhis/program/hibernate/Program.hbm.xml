@@ -25,7 +25,7 @@
 
 	<property name="dateOfIncidentDescription" type="text" />
 
-	 <list name="programStages">
+	<list name="programStages">
       <key column="programid" />
       <list-index column="sort_order" base="1" />
       <one-to-many class="org.hisp.dhis.program.ProgramStage" />
@@ -49,11 +49,12 @@
 
 	<property name="onlyEnrollOnce" />
 
-	<set name="attributes" cascade="all,delete-orphan" order-by="sort_order">
-		<key column="programid" />
-		<one-to-many class="org.hisp.dhis.program.ProgramTrackedEntityAttribute" />
-	</set>
-	
+	<list name="programAttributes" cascade="all,delete-orphan">
+      <key column="programid" />
+      <list-index column="sort_order" base="1" />
+      <one-to-many class="org.hisp.dhis.program.ProgramTrackedEntityAttribute" />
+    </list>
+    
 	<property name="ignoreOverdueEvents" />
 
 	<set name="userRoles" table="program_userroles">

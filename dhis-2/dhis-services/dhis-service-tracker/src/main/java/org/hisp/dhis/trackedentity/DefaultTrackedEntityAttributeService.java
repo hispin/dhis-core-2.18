@@ -135,7 +135,7 @@ public class DefaultTrackedEntityAttributeService
         {
             for ( Program program : programs )
             {
-                result.removeAll( program.getAttributes() );
+                result.removeAll( program.getProgramAttributes() );
             }
 
             return result;

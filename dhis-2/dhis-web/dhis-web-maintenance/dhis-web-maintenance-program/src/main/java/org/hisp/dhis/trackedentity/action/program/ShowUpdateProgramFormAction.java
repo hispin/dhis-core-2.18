@@ -199,7 +199,7 @@ public class ShowUpdateProgramFormAction
 
         availableAttributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
         
-        for ( ProgramTrackedEntityAttribute programAttribue : program.getAttributes() )
+        for ( ProgramTrackedEntityAttribute programAttribue : program.getProgramAttributes() )
         {
             availableAttributes.remove( programAttribue.getAttribute() );
         }

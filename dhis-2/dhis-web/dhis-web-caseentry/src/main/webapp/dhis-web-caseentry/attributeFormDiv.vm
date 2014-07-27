@@ -1,13 +1,13 @@
 #if($program) 
-	#set($attributes = $program.attributes)
+	#set($attributes = $program.programAttributes)
 #end
 
 <table width="100%">
-#foreach($_attribute in $attributes )
+#foreach($programAttribute in $programAttributes )
 	#if($program) 
-		#set($attribute = $_attribute.attribute)
+		#set($attribute = $programAttribute.attribute)
 	#end
-	#set($mandatory=$!_attribute.mandatory)
+	#set($mandatory=$!programAttribute.mandatory)
 	<tr name='attributesFields'>
 		<td class='text-column'><label>$attribute.displayName #if($mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 		<td class="input-column" align='right'>

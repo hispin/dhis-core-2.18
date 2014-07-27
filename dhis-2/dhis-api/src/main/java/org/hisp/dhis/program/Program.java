@@ -94,7 +94,7 @@ public class Program
 
     private Boolean ignoreOverdueEvents = false;
 
-    private Set<ProgramTrackedEntityAttribute> attributes = new HashSet<ProgramTrackedEntityAttribute>(); //TODO use List?
+    private List<ProgramTrackedEntityAttribute> programAttributes = new ArrayList<ProgramTrackedEntityAttribute>(); //TODO use List?
 
     @Scanned
     private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
@@ -152,7 +152,7 @@ public class Program
      */
     public ProgramTrackedEntityAttribute getAttribute( TrackedEntityAttribute attribute )
     {
-        for ( ProgramTrackedEntityAttribute programAttribute : attributes )
+        for ( ProgramTrackedEntityAttribute programAttribute : programAttributes )
         {
             if ( programAttribute != null && programAttribute.getAttribute().equals( attribute ) )
             {
@@ -188,10 +188,9 @@ public class Program
     public List<TrackedEntityAttribute> getTrackedEntityAttributes()
     {
         List<TrackedEntityAttribute> entityAttributes = new ArrayList<TrackedEntityAttribute>();
-
-        for ( ProgramTrackedEntityAttribute entityAttribute : attributes )
+        for ( ProgramTrackedEntityAttribute programAttribute : programAttributes )
         {
-            entityAttributes.add( entityAttribute.getAttribute() );
+        	entityAttributes.add( programAttribute.getAttribute() );
         }
 
         return entityAttributes;
@@ -525,17 +524,16 @@ public class Program
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlElementWrapper( localName = "programTrackedEntityAttributes", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "programTrackedEntityAttribute", namespace = DxfNamespaces.DXF_2_0 )
-    public Set<ProgramTrackedEntityAttribute> getAttributes()
-    {
-        return attributes;
-    }
+    public List<ProgramTrackedEntityAttribute> getProgramAttributes() {
+		return programAttributes;
+	}
 
-    public void setAttributes( Set<ProgramTrackedEntityAttribute> attributes )
-    {
-        this.attributes = attributes;
-    }
+	public void setProgramAttributes(
+			List<ProgramTrackedEntityAttribute> programAttributes) {
+		this.programAttributes = programAttributes;
+	}
 
-    @JsonProperty
+	@JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0 )
@@ -585,8 +583,8 @@ public class Program
             validationCriteria.clear();
             validationCriteria.addAll( program.getValidationCriteria() );
 
-            attributes.clear();
-            attributes.addAll( program.getAttributes() );
+            programAttributes.clear();
+            programAttributes.addAll( program.getProgramAttributes() );
 
             userRoles.clear();
             userRoles.addAll( program.getUserRoles() );

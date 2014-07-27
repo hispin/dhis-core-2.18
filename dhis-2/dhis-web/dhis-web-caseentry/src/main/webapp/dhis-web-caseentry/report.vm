@@ -25,7 +25,7 @@
 					<td>
 						#set( $value="")
 						#set( $entityInstance = $programInstance.entityInstance )
-						#foreach( $programAttribute in $program.attributes)
+						#foreach( $programAttribute in $program.programAttributes)
 							#foreach( $attributeValue in $entityInstance.attributeValues)
 								#if($attributeValue.attribute.id==$programAttribute.attribute.id 
 									&& $programAttribute.displayInList=='true' )

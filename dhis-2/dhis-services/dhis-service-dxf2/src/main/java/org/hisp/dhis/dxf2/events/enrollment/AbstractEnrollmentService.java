@@ -483,7 +483,7 @@ public abstract class AbstractEnrollmentService
         Map<TrackedEntityAttribute, Boolean> mandatoryMap = Maps.newHashMap();
         Map<String, String> attributeValueMap = Maps.newHashMap();
 
-        for ( ProgramTrackedEntityAttribute programTrackedEntityAttribute : program.getAttributes() )
+        for ( ProgramTrackedEntityAttribute programTrackedEntityAttribute : program.getProgramAttributes() )
         {
             mandatoryMap
                 .put( programTrackedEntityAttribute.getAttribute(), programTrackedEntityAttribute.isMandatory() );

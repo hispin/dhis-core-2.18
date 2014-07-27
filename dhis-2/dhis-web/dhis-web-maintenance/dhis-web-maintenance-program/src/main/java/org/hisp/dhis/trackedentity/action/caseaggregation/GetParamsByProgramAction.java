@@ -110,7 +110,7 @@ public class GetParamsByProgramAction
 
             for ( Program _program : programs )
             {
-                attributes.removeAll( _program.getAttributes() );
+                attributes.removeAll( _program.getProgramAttributes() );
             }
         }
 
