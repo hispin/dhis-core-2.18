@@ -56,6 +56,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.MathUtils;
 
 /**
  * Runs a validation task on a thread within a multi-threaded validation run.
@@ -133,16 +134,16 @@ public class ValidatorThread
                                             attributeOptionCombos.addAll( rightSideValues.keySet() );
                                         }
 
-                                        for ( int combo : attributeOptionCombos )
+                                        for ( int optionCombo : attributeOptionCombos )
                                         {
-                                            Double leftSide = leftSideValues.get ( combo );
-                                            Double rightSide = rightSideValues.get ( combo );
+                                            Double leftSide = leftSideValues.get ( optionCombo );
+                                            Double rightSide = rightSideValues.get ( optionCombo );
                                             boolean violation = false;
 
                                             if ( Operator.compulsory_pair.equals( rule.getOperator() ) )
                                             {
-                                                violation = (leftSide != null && rightSide == null)
-                                                    || (leftSide == null && rightSide != null);
+                                                violation = ( leftSide != null && rightSide == null )
+                                                    || ( leftSide == null && rightSide != null );
                                             }
                                             else if ( leftSide != null && rightSide != null )
                                             {
@@ -153,13 +154,13 @@ public class ValidatorThread
                                             {
                                                 context.getValidationResults().add( new ValidationResult(
                                                     period, sourceX.getSource(),
-                                                    context.getDataElementCategoryService().getDataElementCategoryOptionCombo( combo ), rule,
+                                                    context.getDataElementCategoryService().getDataElementCategoryOptionCombo( optionCombo ), rule,
                                                     roundSignificant( zeroIfNull( leftSide ) ),
                                                     roundSignificant( zeroIfNull( rightSide ) ) ) );
                                             }
 
                                             log.trace( "Evaluated " + rule.getName()
-                                                + ", combo id " + combo + ": "
+                                                + ", combo id " + optionCombo + ": "
                                                 + (violation ? "violation" : "OK") + " " + ( leftSide == null ? "(null)" : leftSide.toString() )
                                                 + " " + rule.getOperator() + " " + ( rightSide == null ? "(null)" : rightSide.toString() )
                                                 + " (" + context.getValidationResults().size() + " results)" );
@@ -464,10 +465,14 @@ public class ValidatorThread
 
         for ( Map.Entry<Integer, Map<DataElementOperand, Double>> entry : valueMap.entrySet() )
         {
-            expressionValueMap.put( entry.getKey(),
-                context.getExpressionService().getExpressionValue( expression,
+            Double value = context.getExpressionService().getExpressionValue( expression,
                 entry.getValue(), context.getConstantMap(), null, null, 
-                incompleteValuesMap.getSet( entry.getKey() ) ) );
+                incompleteValuesMap.getSet( entry.getKey() ) );
+            
+            if ( MathUtils.isValidDouble( value ) )
+            {
+                expressionValueMap.put( entry.getKey(), value );
+            }
         }
 
         return expressionValueMap;
