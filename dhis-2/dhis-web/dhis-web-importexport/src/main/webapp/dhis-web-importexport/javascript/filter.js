@@ -47,17 +47,11 @@ function loadFilters()
 // Show Filter details
 function showFilterDetails( context )
 {
-	var filterUid = context.uid;
-	
-    $( "#detailsArea" ).show( "fast" );
-    for ( var i = 0; i < filters.length; i++ )
-    {
-        if ( filters[i].id == filterUid )
-        {
-            setInnerHTML( 'nameField', filters[i].name );
-            setInnerHTML( 'descriptionField', filters[i].description );
-        }
-    }
+	var filter = $.getJSON( "../api/metaDataFilters/" + context.uid, function( json ) {
+		setInnerHTML( 'nameField', json.name );
+		setInnerHTML( 'idField', json.id );
+		showDetails();
+	} );
 }
 
 // -----------------------------------------------------------------------------
