@@ -120,11 +120,11 @@ public class ProgramDeletionHandler
 
         for ( Program program : programs )
         {
-            for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
+            for ( ProgramTrackedEntityAttribute programAttribute : program.getProgramAttributes() )
             {
                 if ( programAttribute.getAttribute().equals( trackedEntityAttribute ) )
                 {
-                    program.getAttributes().remove( programAttribute );
+                    program.getProgramAttributes().remove( programAttribute );
                     programService.updateProgram( program );
                     break;
                 }

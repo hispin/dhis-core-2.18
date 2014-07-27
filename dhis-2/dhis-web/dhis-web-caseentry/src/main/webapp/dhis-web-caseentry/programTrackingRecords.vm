@@ -23,7 +23,7 @@
 		<tr>
 			<th>$i18n.getString('risk')</th>
 			
-			#foreach( $programAttribute in $program.attributes )
+			#foreach( $programAttribute in $program.programAttributes )
 				#if($programAttribute.displayInList=='true')
 					<th id="attributeName">$encoder.htmlEncode($programAttribute.attribute.displayName)</th>
 				#end
@@ -51,7 +51,7 @@
 				#end
 			</td>
 			
-			#foreach( $programAttribute in $program.attributes )
+			#foreach( $programAttribute in $program.programAttributes )
 				#if($programAttribute.displayInList=='true')
 					#set($value='')
 					<td name='infor_$entityInstance.id' class='$class'><a href="javascript:isDashboard=false;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )">

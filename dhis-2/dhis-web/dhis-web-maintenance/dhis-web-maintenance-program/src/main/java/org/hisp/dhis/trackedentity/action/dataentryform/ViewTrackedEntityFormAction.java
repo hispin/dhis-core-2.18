@@ -164,13 +164,13 @@ public class ViewTrackedEntityFormAction
 
             for ( Program program : programs )
             {
-                attributes.removeAll( program.getAttributes() );
+                attributes.removeAll( program.getProgramAttributes() );
             }
         }
         else
         {
             program = programService.getProgram( programId );
-            programAttributes = program.getAttributes();
+            programAttributes = program.getProgramAttributes();
             registrationForm = formService.getFormsWithProgram( program );
         }
 

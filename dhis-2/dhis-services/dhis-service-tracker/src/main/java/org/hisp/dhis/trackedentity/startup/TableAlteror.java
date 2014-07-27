@@ -297,6 +297,7 @@ public class TableAlteror
         executeSql( "UPDATE program_attributes SET allowFutureDate='false' WHERE allowFutureDate is null" );
 
         updateProgramStageList();
+        updateProgramAttributeList();
     }
 
     // -------------------------------------------------------------------------
@@ -469,6 +470,42 @@ public class TableAlteror
             {
                 holder.close();
             }
+        }
+    }
+
+    private void updateProgramAttributeList()
+    {
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement
+                .executeQuery( "select programtrackedentityattributeid, programid from program_attributes ORDER BY programid, sort_order" );
+
+            int index = 1;
+            int programId = 0;
+            while ( resultSet.next() )
+            {
+                if ( programId != resultSet.getInt( "programid" ) )
+                {
+                    programId = resultSet.getInt( "programid" );
+                    index = 1;
+                }
+
+                executeSql( "UPDATE program_attributes SET sort_order=" + index + " WHERE programtrackedentityattributeid="
+                    + resultSet.getInt( "programtrackedentityattributeid" ) );
+                index++;
+            }
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex );
+        }
+        finally
+        {
+            holder.close();
         }
     }
 

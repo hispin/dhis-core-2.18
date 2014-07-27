@@ -27,7 +27,7 @@
 							<select id='property' name='property' style='width:120px' onChange="showDivValue();">
 								<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 								#set($attribute = '')
-								#foreach($programAttribute in $program.attributes)
+								#foreach($programAttribute in $program.programAttributes)
 									#if( $programAttribute.attribute.valueType!='trackerAssociate')
 										set($opt="")
 										#foreach($option in $programAttribute.attribute.optionSet.options)

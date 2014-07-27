@@ -15,8 +15,6 @@
 			class="org.hisp.dhis.trackedentity.TrackedEntityAttribute" column="trackedentityattributeid"
 			foreign-key="fk_program_attributeid" />
 
-		<property name="sortOrder" column="sort_order" />
-
 		<property name="displayInList" column="displayinlist" />
 
 		<property name="mandatory" column="mandatory" />

@@ -176,7 +176,7 @@ public class AddProgramAction
     {
         this.mandatory = mandatory;
     }
-    
+
     private Boolean ignoreOverdueEvents;
 
     public void setIgnoreOverdueEvents( Boolean ignoreOverdueEvents )
@@ -304,7 +304,7 @@ public class AddProgramAction
             RelationshipType relationshipType = relationshipTypeService.getRelationshipType( relationshipTypeId );
             program.setRelationshipType( relationshipType );
         }
-        
+
         program.setRelationshipFromA( relationshipFromA );
         program.setRelationshipText( relationshipText );
 
@@ -313,7 +313,7 @@ public class AddProgramAction
             TrackedEntity trackedEntity = trackedEntityService.getTrackedEntity( trackedEntityId );
             program.setTrackedEntity( trackedEntity );
         }
-        
+
         programService.addProgram( program );
 
         int index = 0;
@@ -327,9 +327,9 @@ public class AddProgramAction
                     .parseInt( ids[1] ) );
 
                 ProgramTrackedEntityAttribute programAttribute = new ProgramTrackedEntityAttribute( attribute,
-                    index + 1, personDisplayNames.get( index ), mandatory.get( index ), allowFutureDate.get( index ) );
+                    personDisplayNames.get( index ), mandatory.get( index ), allowFutureDate.get( index ) );
 
-                program.getAttributes().add( programAttribute );
+                program.getProgramAttributes().add( programAttribute );
             }
 
             index++;

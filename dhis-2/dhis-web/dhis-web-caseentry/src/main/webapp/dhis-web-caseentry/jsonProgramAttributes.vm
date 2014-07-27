@@ -5,8 +5,8 @@
 	#set( $size = $!attributes.size() ) 
 #end
 
-#if( $!program.attributes )
-	#set( $size = $size + $program.attributes.size() ) 
+#if( $!program.programAttributes )
+	#set( $size = $size + $program.programAttributes.size() ) 
 #end
 
 #if( $!size > 0 )
@@ -40,7 +40,7 @@
   #end
 #end
 
-#foreach( $programAttribute in $program.attributes )
+#foreach( $programAttribute in $program.programAttributes )
  #if($programAttribute.attribute.unique=='true')
   {
 	"id":  "${programAttribute.attribute.uid}",
@@ -53,7 +53,7 @@
 #end
 
 
-#foreach( $programAttribute in $program.attributes )
+#foreach( $programAttribute in $program.programAttributes )
  #if($programAttribute.attribute.unique!='true')
   {
 	"id":  "${programAttribute.attribute.uid}",

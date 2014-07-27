@@ -144,7 +144,7 @@ public class SaveAttributeAction
 
         String value = null;
 
-        Collection<ProgramTrackedEntityAttribute> programAttributes = program.getAttributes();
+        Collection<ProgramTrackedEntityAttribute> programAttributes = program.getProgramAttributes();
         
         TrackedEntityAttributeValue attributeValue = null;
 

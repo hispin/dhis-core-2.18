@@ -256,7 +256,7 @@
 	#end
 	
 	var attrOptions = "";
-	#foreach($programAttribute in $program.attributes)
+	#foreach($programAttribute in $program.programAttributes)
 		attrOptions+="<option value={attributeid=$programAttribute.attribute.uid}>$programAttribute.attribute.displayName</option>";
 	#end
 </script>

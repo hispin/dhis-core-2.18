@@ -27,7 +27,7 @@
 	<table class="listTable" id="entityInstanceList" width='100%'>               
           <col width="30"/>
 			#if($program)
-				#foreach( $programAttribute in $program.attributes )
+				#foreach( $programAttribute in $program.programAttributes )
 					#if($programAttribute.displayInList=='true')
 						<col/>
 					#end
@@ -47,7 +47,7 @@
 			<tr>
 				<th>#</th>
 				#if($program)
-					#foreach( $attribute in $program.attributes )
+					#foreach( $attribute in $program.programAttributes )
 						#if($attribute.displayInList=='true')
 							<th id="attributeName">$encoder.htmlEncode($attribute.attribute.displayName)</th>
 						#end
@@ -75,7 +75,7 @@
 					$nr
 				</td>
 				#if($program)
-					#foreach( $programAttribute in $program.attributes )
+					#foreach( $programAttribute in $program.programAttributes )
 						#if($programAttribute.displayInList=='true')
 							#set($value='')
 							<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )">

@@ -243,7 +243,7 @@ public class ShowEventWithRegistrationFormAction
 
                 for ( Program p : programs )
                 {
-                    attributes.removeAll( p.getAttributes() );
+                    attributes.removeAll( p.getProgramAttributes() );
                 }
 
                 for ( TrackedEntityAttribute attribute : attributes )
@@ -254,7 +254,7 @@ public class ShowEventWithRegistrationFormAction
             else
             {
                 attributes = program.getTrackedEntityAttributes();
-                for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
+                for ( ProgramTrackedEntityAttribute programAttribute : program.getProgramAttributes() )
                 {
                     mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.isMandatory() );
                 }
