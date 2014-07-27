@@ -54,6 +54,7 @@ import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.eventchart.EventChart;
+import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.i18n.locale.I18nLocale;
 import org.hisp.dhis.indicator.Indicator;
@@ -776,7 +777,15 @@ public abstract class DeletionHandler
         return null;
     }
     
+    public void deleteEventReport( EventReport eventReport )
+    {
+    }
     
+    public String allowDeleteEventReport( EventReport eventReport )
+    {
+        return null;
+    }
+        
     public void deleteEventChart( EventChart eventChart )
     {
     }
