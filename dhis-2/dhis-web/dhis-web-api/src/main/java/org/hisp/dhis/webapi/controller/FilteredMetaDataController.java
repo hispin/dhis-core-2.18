@@ -76,6 +76,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Controller
 public class FilteredMetaDataController
+    extends AbstractCrudController<MetaDataFilter>
 {
     public static final String RESOURCE_PATH = "/filteredMetaData";
 
