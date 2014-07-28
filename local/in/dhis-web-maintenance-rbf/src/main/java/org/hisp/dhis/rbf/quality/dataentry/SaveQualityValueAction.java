@@ -89,28 +89,27 @@ public class SaveQualityValueAction
     }
 
     private QualityMaxValueService qualityMaxValueService;
-    
-    public void setQualityMaxValueService(
-			QualityMaxValueService qualityMaxValueService) {
-		this.qualityMaxValueService = qualityMaxValueService;
-	}
-    
+
+    public void setQualityMaxValueService( QualityMaxValueService qualityMaxValueService )
+    {
+        this.qualityMaxValueService = qualityMaxValueService;
+    }
+
     @Autowired
     private OrganisationUnitGroupService orgUnitGroupService;
-    
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-	private String value;
+    private String value;
 
     public void setValue( String value )
     {
         this.value = value;
     }
 
-	private String dataElementId;
+    private String dataElementId;
 
     public void setDataElementId( String dataElementId )
     {
@@ -123,41 +122,40 @@ public class SaveQualityValueAction
     {
         this.organisationUnitId = organisationUnitId;
     }
-   
-    private String orgUnitGroupId;
-    
-    public void setOrgUnitGroupId(String orgUnitGroupId) 
-    {
-		this.orgUnitGroupId = orgUnitGroupId;
-	}
 
-	private String dataSetId;
-    
-	public void setDataSetId(String dataSetId) 
-	{
-		this.dataSetId = dataSetId;
-	}
-    
-	private String startDate ;
-    
-    public void setStartDate(String startDate) 
+    private String orgUnitGroupId;
+
+    public void setOrgUnitGroupId( String orgUnitGroupId )
     {
-		this.startDate = startDate;
-	}
-    
-    private String endDate ;
-    
-	public void setEndDate(String endDate) 
-	{
-		this.endDate = endDate;
-	}
-    
-	
+        this.orgUnitGroupId = orgUnitGroupId;
+    }
+
+    private String dataSetId;
+
+    public void setDataSetId( String dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
+    private String startDate;
+
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    private String endDate;
+
+    public void setEndDate( String endDate )
+    {
+        this.endDate = endDate;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-	private int statusCode = 0;
+    private int statusCode = 0;
 
     public int getStatusCode()
     {
@@ -168,35 +166,37 @@ public class SaveQualityValueAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
-    	
+
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         if ( organisationUnit == null )
         {
             return logError( "Invalid organisation unit identifier: " + organisationUnitId );
         }
-        
-        DataElement dataElement = dataElementService.getDataElement( Integer.parseInt(dataElementId) );
+
+        DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
 
         if ( dataElement == null )
         {
             return logError( "Invalid data element identifier: " + dataElementId );
         }
-       
+
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
         if ( dataSet == null )
         {
             return logError( "Invalid dataset identifier: " + dataSetId );
         }
-        
-        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupId ) );
+
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer
+            .parseInt( orgUnitGroupId ) );
         if ( orgUnitGroup == null )
         {
             return logError( "Invalid orgunitgroup identifier: " + orgUnitGroupId );
         }
-        
+
         String storedBy = currentUserService.getCurrentUsername();
 
         Date now = new Date();
@@ -221,51 +221,51 @@ public class SaveQualityValueAction
         // ---------------------------------------------------------------------
 
         String valid = ValidationUtils.dataValueIsValid( value, dataElement );
-        
+
         if ( valid != null )
         {
             return logError( valid, 3 );
         }
-        
+
         SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
         Date sDate = dateFormat.parse( startDate );
         Date eDate = dateFormat.parse( endDate );
-        
-        QualityMaxValue qualityMaxValue = qualityMaxValueService.getQualityMaxValue( orgUnitGroup, organisationUnit, dataElement, dataSet, sDate, eDate );
+
+        QualityMaxValue qualityMaxValue = qualityMaxValueService.getQualityMaxValue( orgUnitGroup, organisationUnit,
+            dataElement, dataSet, sDate, eDate );
 
         if ( qualityMaxValue == null )
         {
             if ( value != null )
             {
-            	qualityMaxValue = new QualityMaxValue( );
-            	
-            	qualityMaxValue.setDataSet(dataSet);
-            	qualityMaxValue.setDataElement(dataElement);
-            	qualityMaxValue.setOrganisationUnit(organisationUnit);
-            	qualityMaxValue.setOrgUnitGroup( orgUnitGroup );
-            	
-            	qualityMaxValue.setValue(Double.parseDouble(value));
-            	qualityMaxValue.setStartDate(sDate);
-            	qualityMaxValue.setEndDate(eDate);
-            	
-            	qualityMaxValue.setStoredBy(storedBy);
-            	qualityMaxValue.setTimestamp(now);
-            	qualityMaxValueService.addQuantityMaxValue(qualityMaxValue);
-                
-                System.out.println("Value Added");
+                qualityMaxValue = new QualityMaxValue();
+
+                qualityMaxValue.setDataSet( dataSet );
+                qualityMaxValue.setDataElement( dataElement );
+                qualityMaxValue.setOrganisationUnit( organisationUnit );
+                qualityMaxValue.setOrgUnitGroup( orgUnitGroup );
+
+                qualityMaxValue.setValue( Double.parseDouble( value ) );
+                qualityMaxValue.setStartDate( sDate );
+                qualityMaxValue.setEndDate( eDate );
+
+                qualityMaxValue.setStoredBy( storedBy );
+                qualityMaxValue.setTimestamp( now );
+                qualityMaxValueService.addQuantityMaxValue( qualityMaxValue );
+
+                System.out.println( "Value Added" );
             }
         }
         else
         {
-        	qualityMaxValue.setStoredBy(storedBy);        	
-        	qualityMaxValue.setTimestamp(now);
-        	
-        	qualityMaxValue.setValue(Double.parseDouble(value));
-        	
-        	qualityMaxValueService.updateQuantityMaxValue(qualityMaxValue);
-            System.out.println("Value Updated");
-        }
+            qualityMaxValue.setStoredBy( storedBy );
+            qualityMaxValue.setTimestamp( now );
 
+            qualityMaxValue.setValue( Double.parseDouble( value ) );
+
+            qualityMaxValueService.updateQuantityMaxValue( qualityMaxValue );
+            System.out.println( "Value Updated" );
+        }
 
         return SUCCESS;
     }

@@ -347,7 +347,7 @@ public class SaveValueAction
             	pbfDataValue.setTimestamp(now);
                 pbfDataValueService.addPBFDataValue(pbfDataValue);
                 
-                System.out.println("Value Added");
+                System.out.println(" PBF Value Added");
             }
         }
         else
@@ -372,7 +372,7 @@ public class SaveValueAction
 
             pbfDataValueService.updatePBFDataValue( pbfDataValue );
         	
-            System.out.println("Value Updated");
+            System.out.println(" PBF Value Updated");
         }
 
         return SUCCESS;

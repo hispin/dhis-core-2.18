@@ -166,6 +166,9 @@ function savePBFDataValue( dataElementId, valueType )
 	else if( valueType == 2 )
 	{
 		valueId = "pbfdv_qty_validated_"+dataElementId;
+		
+		saveDataInDataValue( dataElementId );
+		
 	}
 	
 	else
@@ -231,6 +234,153 @@ function savePBFDataValue( dataElementId, valueType )
 	    document.getElementById(valueId).style.backgroundColor = color;	   
 	}
 }
+
+// save qty validated in dataValue table
+function saveDataInDataValue( dataElementId )
+{	
+	//alert ( " Inside Save qty validated in dataValue table " );
+	
+	var period = document.getElementById("selectedPeriodId").value;
+	var valueId  = "pbfdv_qty_validated_"+dataElementId;
+
+	var fieldId = "#"+valueId;
+	var defaultValue = document.getElementById(valueId).defaultValue;
+	var value = document.getElementById(valueId).value;
+
+	if( defaultValue != value )
+	{
+       var dataValue = {
+            'dataElementId' : dataElementId,        
+            'organisationUnitId' : $("#selectedOrgunitID").val(),
+            'periodIso' : period,
+            'value' : value
+        };
+    
+       jQuery.ajax( {
+            url: 'saveValueInDataValue.action',
+            data: dataValue,
+            dataType: 'json',
+            success: handleSuccess,
+            error: handleError
+        } );
+	}
+
+	function handleSuccess( json )
+	{
+       var code = json.c;
+       if ( code == '0' || code == 0) // Value successfully saved on server
+       {
+    	  markValue( fieldId, COLOR_GREEN );
+       }
+       else if ( code == 2 )
+       {
+           markValue( fieldId, COLOR_RED );
+           window.alert( i18n_saving_value_failed_dataset_is_locked );
+       }
+       else // Server error during save
+       {
+           markValue( fieldId, COLOR_RED );
+           window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
+       }
+	}
+
+	function handleError( jqXHR, textStatus, errorThrown )
+	{       
+       markValue( fieldId, COLOR_RED );
+	}
+
+	function markValue( fieldId, color )
+	{
+       document.getElementById(valueId).style.backgroundColor = color;	   
+	}	
+}
+
+
+
+function saveTotalValueInDataValue()
+{	
+	//alert ( " Inside Save Total in dataValue table " );
+	var period = document.getElementById("selectedPeriodId").value;
+	
+	var totalDeId  = document.getElementById("totalDataElementId").value;
+	
+	//alert( totalDeId );
+	
+	var totalDeFieldId = "#"+totalDeId;
+	
+	var defaultValue = document.getElementById("all-total").defaultValue;
+	var value = document.getElementById("all-total").value;
+	//alert( value );
+	
+	if( defaultValue != value )
+	{
+       var dataValue = {
+            'dataElementId' : totalDeId,        
+            'organisationUnitId' : $("#selectedOrgunitID").val(),
+            'periodIso' : period,
+            'value' : value
+        };
+    
+       jQuery.ajax( {
+            url: 'saveValueInDataValue.action',
+            data: dataValue,
+            dataType: 'json',
+            success: handleSuccess,
+            error: handleError
+        } );
+	}
+
+	function handleSuccess( json )
+	{
+       var code = json.c;
+       if ( code == '0' || code == 0) // Value successfully saved on server
+       {
+    	  markValue( totalDeFieldId, COLOR_GREEN );
+    	  
+       }
+       else if ( code == 2 )
+       {
+           markValue( totalDeFieldId, COLOR_RED );
+           window.alert( i18n_saving_value_failed_dataset_is_locked );
+       }
+       else // Server error during save
+       {
+           markValue( totalDeFieldId, COLOR_RED );
+           window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
+       }
+	}
+
+	function handleError( jqXHR, textStatus, errorThrown )
+	{       
+       markValue( totalDeFieldId, COLOR_RED );
+	}
+
+	function markValue( totalDeFieldId, color )
+	{
+       document.getElementById("all-total").style.backgroundColor = color;	   
+	}	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // load periods
 function loadPeriods()
