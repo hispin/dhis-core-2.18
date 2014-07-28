@@ -33,7 +33,6 @@
 				<thead>
 					<tr>
 						<th>$i18n.getString( "name" )</th>
-						<th>$i18n.getString( "description" )</th>
 					</tr>
 				</thead>
 		  
@@ -46,7 +45,6 @@
 							data-can-manage-template-message="#if($programStage.program.type!=3)true#{else}false#end"
 						    data-can-remove="#if( $program.type=='1' )true#{else}false#end">
 						    <td>$encoder.htmlEncode( $!programStage.displayName )</td>
-						    <td>$encoder.htmlEncode( $!programStage.description )</td>
 						</tr>
 					#end
 				</tbody>

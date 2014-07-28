@@ -178,13 +178,13 @@ public class DefaultProgramService
     @Override
     public Integer getProgramCountByName( String name )
     {
-        return programStore.getCountLikeName( name );
+        return i18n( i18nService, programStore.getCountLikeName( name ));
     }
 
     @Override
     public Collection<Program> getProgramBetweenByName( String name, int min, int max )
     {
-        return programStore.getAllLikeNameOrderedName( name, min, max );
+        return i18n( i18nService, programStore.getAllLikeNameOrderedName( name, min, max ));
     }
 
     @Override
@@ -196,7 +196,7 @@ public class DefaultProgramService
     @Override
     public Collection<Program> getProgramsBetween( int min, int max )
     {
-        return programStore.getAllOrderedName( min, max );
+        return i18n( i18nService, programStore.getAllOrderedName( min, max ) );
     }
     
     // -------------------------------------------------------------------------
