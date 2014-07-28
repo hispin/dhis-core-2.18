@@ -41,6 +41,7 @@
     #end
 </select>
 
+<input type="hidden" id='totalDataElementId' name = 'totalDataElementId' value="$!totalDataElementId" />
 
 #set( $tabIndex = 1 )
 #if ( $dataElements.size() > 0)
@@ -337,6 +338,10 @@
 					allTotal = allTotal + total;
 					
 					$('#all-total').val(allTotal);
+					
+					saveTotalValueInDataValue();
+					
+					
                 }
 				
 				

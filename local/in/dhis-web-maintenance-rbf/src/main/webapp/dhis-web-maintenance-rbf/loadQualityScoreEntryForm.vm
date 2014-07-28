@@ -25,6 +25,9 @@
         <option value="$!qualityScorePayment.addQtyPayment">$qualityScorePayment.getStartRange()-$!qualityScorePayment.endRange</option>
     #end
 </select>
+
+<input type="hidden" id='overAllQtyDataElementId' name = 'overAllQtyDataElementId' value="$!overAllQtyDataElementId" />
+
 #set( $tabIndex = 1 )
 #if ( $dataElements.size() > 0)
 

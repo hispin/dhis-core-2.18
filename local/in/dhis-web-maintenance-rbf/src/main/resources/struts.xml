@@ -133,6 +133,18 @@
 			/dhis-web-maintenance-rbf/status.vm</result>
 		<param name="onExceptionReturn">plainTextError</param>					
 	</action>
+
+	<!-- Save Value In DataValue-->
+	<action name="saveValueInDataValue"
+		class="org.hisp.dhis.rbf.dataentry.SaveValueInDataValueAction">
+		<result name="success" type="velocity-json">
+			/dhis-web-maintenance-rbf/status.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>					
+	</action>
+
+
+
+
 	
 	<!-- Quality Max Data Entry -->
 	

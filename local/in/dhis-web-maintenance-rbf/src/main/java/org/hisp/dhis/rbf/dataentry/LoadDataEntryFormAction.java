@@ -48,6 +48,9 @@ public class LoadDataEntryFormAction implements Action
     private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
     private final static String UTILIZATION_RULE_DATAELEMENT_ATTRIBUTE = "UTILIZATION_RULE_DATAELEMENT_ATTRIBUTE";
     private final static String UTILIZATION_RATE_DATAELEMENT_ID = "UTILIZATION_RATE_DATAELEMENT_ID";
+    
+    private final static String TOTAL_PBF_DATAELEMENT_ID = "TOTAL_PBF_DATAELEMENT_ID";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -259,6 +262,14 @@ public class LoadDataEntryFormAction implements Action
         return utilizationRate;
     }
     
+    private int totalDataElementId;
+    
+    public int getTotalDataElementId()
+    {
+        return totalDataElementId;
+    }
+
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -267,7 +278,24 @@ public class LoadDataEntryFormAction implements Action
     public String execute()
     {
         dataValueMap = new HashMap<String, String>();
-
+        
+        Constant totalDetId = constantService.getConstantByName( TOTAL_PBF_DATAELEMENT_ID );
+        DataElement totalDataElement = dataElementService.getDataElement( (int) totalDetId.getValue() );
+        totalDataElementId = 0;
+        if( totalDataElement != null )
+        {
+            totalDataElementId = totalDataElement.getId();
+        }
+        
+        /*
+        String abc = null;
+        System.out.println( " Test ABC " +  abc );
+        
+        String abc1;
+        abc1 = "pppp";
+        System.out.println( " Test ABC " +  abc1 );
+        */
+        
         //Lookup lookup = lookupService.getLookupByName( Lookup.OC_TARIFF );
 
         //Lookup lookup2 = lookupService.getLookupByName( Lookup.QV_TARIFF );
@@ -475,6 +503,7 @@ public class LoadDataEntryFormAction implements Action
                 }
             }
         }
+        
         
         utilizationRatesMap = new HashMap<Integer, String>( utilizationRateService.getUtilizationRates() );
         

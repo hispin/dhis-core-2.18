@@ -103,7 +103,9 @@ function saveValue(dataElementId)
 	
 	var overAllScoreValue = document.getElementById("all-total").value;
 	
-	var overAllScoreDeId = "126";
+	//var overAllScoreDeId = "126";
+	
+	var overAllScoreDeId  = document.getElementById("overAllQtyDataElementId").value;
 	
 	var overAllScorefieldId = "#"+overAllScoreDeId;
 	
