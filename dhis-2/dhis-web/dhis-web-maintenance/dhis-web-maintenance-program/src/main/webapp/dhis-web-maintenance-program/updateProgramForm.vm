@@ -70,7 +70,7 @@
     <tbody>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $program.displayName )" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $program.name )" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
