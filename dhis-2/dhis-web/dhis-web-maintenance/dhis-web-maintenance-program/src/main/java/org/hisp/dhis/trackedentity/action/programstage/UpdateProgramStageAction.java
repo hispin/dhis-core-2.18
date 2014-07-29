@@ -37,6 +37,8 @@ import java.util.Set;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramIndicator;
+import org.hisp.dhis.program.ProgramIndicatorService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -306,7 +308,17 @@ public class UpdateProgramStageAction
     {
         this.reportDateToUse = reportDateToUse;
     }
-    
+
+    private List<Integer> selectedIndicators = new ArrayList<Integer>();
+
+    public void setSelectedIndicators( List<Integer> selectedIndicators )
+    {
+        this.selectedIndicators = selectedIndicators;
+    }
+
+    @Autowired
+    private ProgramIndicatorService programIndicatorService;
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -356,7 +368,18 @@ public class UpdateProgramStageAction
         programStage.setValidCompleteOnly( validCompleteOnly );
         programStage.setCaptureCoordinates( captureCoordinates );
 
+        // Program indicators
+        
+        List<ProgramIndicator> programIndicators = new ArrayList<ProgramIndicator>();
+        for ( Integer id : selectedIndicators )
+        {
+            ProgramIndicator indicator = programIndicatorService.getProgramIndicator( id );
+            programIndicators.add( indicator );
+        }
+        programStage.setProgramIndicators( programIndicators );
+        
         // SMS Reminder
+        
         programStage.getReminders().clear();
         Set<TrackedEntityInstanceReminder> reminders = new HashSet<TrackedEntityInstanceReminder>();
         for ( int i = 0; i < this.daysAllowedSendMessages.size(); i++ )
@@ -380,7 +403,6 @@ public class UpdateProgramStageAction
             reminders.add( reminder );
         }
         programStage.setReminders( reminders );
-        
         programStageService.updateProgramStage( programStage );
 
         Program program  = programStage.getProgram();

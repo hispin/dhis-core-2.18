@@ -28,9 +28,18 @@ package org.hisp.dhis.trackedentity.action.programstage;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.program.comparator.ProgramStageMinDaysComparator;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,6 +61,9 @@ public class RemoveProgramStageAction
     {
         this.programStageService = programStageService;
     }
+    
+    @Autowired
+    private ProgramService programService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -91,7 +103,15 @@ public class RemoveProgramStageAction
     {
         try
         {
-            programStageService.deleteProgramStage( programStageService.getProgramStage( id ) );
+            ProgramStage programStage = programStageService.getProgramStage( id );
+            Program program = programStage.getProgram(); 
+            program.getProgramStages().remove( programStage );
+            programStageService.deleteProgramStage( programStage );
+            
+            List<ProgramStage> programStages = new ArrayList<ProgramStage>( program.getProgramStages() );
+            Collections.sort( programStages, new ProgramStageMinDaysComparator() );
+            program.setProgramStages( programStages );
+            programService.updateProgram( program );
         }
         catch ( DeleteNotAllowedException ex )
         {

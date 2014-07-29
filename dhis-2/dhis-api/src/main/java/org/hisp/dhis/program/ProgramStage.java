@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -43,7 +44,9 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -72,7 +75,9 @@ public class ProgramStage
 
     private Program program;
 
-    private Set<ProgramStageDataElement> programStageDataElements = new HashSet<>();
+    private Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>();
+    
+    private List<ProgramIndicator> programIndicators = new ArrayList<ProgramIndicator>();
 
     @Scanned
     private Set<ProgramStageSection> programStageSections = new HashSet<>();
@@ -417,6 +422,20 @@ public class ProgramStage
     public void setReportDateToUse( String reportDateToUse )
     {
         this.reportDateToUse = reportDateToUse;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "programIndicators", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "programIndicator", namespace = DxfNamespaces.DXF_2_0 )
+     public List<ProgramIndicator> getProgramIndicators()
+    {
+        return programIndicators;
+    }
+
+    public void setProgramIndicators( List<ProgramIndicator> programIndicators )
+    {
+        this.programIndicators = programIndicators;
     }
 
     @Override

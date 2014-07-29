@@ -50,16 +50,16 @@
 		</tr>
 		#end
 		
-		#foreach($key in $programIndicatorsMap.keySet())
+		#foreach( $indicator in $programStage.programIndicators )
 		<tr>
-			<td colspan='3' class='bold'>$key: $programIndicatorsMap.get($key)</td>
+			<td>$indicator.displayName</td>
+			<td>$encoder.htmlEncode( $programIndicatorsMap.get($indicator.displayName) )</td>
 		</tr>
 		#end
-		
 	</table>
 
 	<br>
-
+	
 	#if( $customDataEntryFormCode )
 		#parse( "/dhis-web-caseentry/customDataEntryForm.vm" )
 	#elseif( $sections && $sections.size() > 0 )
