@@ -1,5 +1,3 @@
-package org.hisp.dhis.dataadmin.action.option;
-
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -28,16 +26,19 @@ package org.hisp.dhis.dataadmin.action.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.dataadmin.action.option;
+
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionService;
-import org.hisp.dhis.option.OptionSet;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $UpdateOptionSetAction.java Feb 3, 2012 9:28:11 PM$
+ *
+ * @version $ UpdateOptionAction.java Jul 28, 2014 8:41:52 PM $
  */
-public class UpdateOptionSetAction
+public class UpdateOptionAction
     implements Action
 {
     // -------------------------------------------------------------------------------------------------
@@ -55,11 +56,23 @@ public class UpdateOptionSetAction
     // Input
     // -------------------------------------------------------------------------------------------------
 
-    private Integer id;
+    private int optionId;
 
-    public void setId( Integer id )
+    public void setOptionId( int optionId )
     {
-        this.id = id;
+        this.optionId = optionId;
+    }
+
+    private int optionSetId;
+
+    public void setOptionSetId( int optionSetId )
+    {
+        this.optionSetId = optionSetId;
+    }
+
+    public int getOptionSetId()
+    {
+        return optionSetId;
     }
 
     private String name;
@@ -77,12 +90,10 @@ public class UpdateOptionSetAction
     public String execute()
         throws Exception
     {
-        OptionSet optionSet = optionService.getOptionSet( id );
-        optionSet.setName( name );
-
-        optionService.updateOptionSet( optionSet );
+        Option option = optionService.getOption( optionId );
+        option.setName( name );
+        optionService.updateOption( option );
 
         return SUCCESS;
     }
-
 }

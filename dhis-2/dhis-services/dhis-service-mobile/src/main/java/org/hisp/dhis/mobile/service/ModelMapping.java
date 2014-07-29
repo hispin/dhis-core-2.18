@@ -84,7 +84,7 @@ public class ModelMapping
         {
             mobileOptionSet.setId( dhisOptionSet.getId() );
             mobileOptionSet.setName( dhisOptionSet.getName() );
-            mobileOptionSet.setOptions( dhisOptionSet.getOptions() );
+//            mobileOptionSet.setOptions( dhisOptionSet.getOptions() );
         }
         else
         {

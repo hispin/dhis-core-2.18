@@ -1,5 +1,3 @@
-package org.hisp.dhis.dataadmin.action.option;
-
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -28,6 +26,10 @@ package org.hisp.dhis.dataadmin.action.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.dataadmin.action.option;
+
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 
@@ -35,9 +37,10 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $UpdateOptionSetAction.java Feb 3, 2012 9:28:11 PM$
+ *
+ * @version $ ValidateOptionAction.java Jul 28, 2014 8:41:52 PM $
  */
-public class UpdateOptionSetAction
+public class ValidateOptionAction
     implements Action
 {
     // -------------------------------------------------------------------------------------------------
@@ -51,9 +54,23 @@ public class UpdateOptionSetAction
         this.optionService = optionService;
     }
 
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------------------------------
+
+    private int optionSetId;
+
+    public void setOptionSetId( int optionSetId )
+    {
+        this.optionSetId = optionSetId;
+    }
 
     private Integer id;
 
@@ -69,6 +86,20 @@ public class UpdateOptionSetAction
         this.name = name;
     }
 
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------------------------------
@@ -77,12 +108,32 @@ public class UpdateOptionSetAction
     public String execute()
         throws Exception
     {
-        OptionSet optionSet = optionService.getOptionSet( id );
-        optionSet.setName( name );
+        if ( name != null )
+        {
+            OptionSet optionSet = optionService.getOptionSet( optionSetId );
 
-        optionService.updateOptionSet( optionSet );
+            Option match = optionService.getOptionValueByName( optionSet, name );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "name_in_use" );
+
+                return ERROR;
+            }
+        }
+
+        if ( code != null )
+        {
+            Option match = optionService.getOptionByCode( code );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "name_in_use" );
+
+                return ERROR;
+            }
+        }
 
         return SUCCESS;
     }
-
 }

@@ -28,11 +28,10 @@ package org.hisp.dhis.dataadmin.action.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
@@ -46,31 +45,20 @@ public class AddOptionSetAction
 
     private OptionService optionService;
 
+    public void setOptionService( OptionService optionService )
+    {
+        this.optionService = optionService;
+    }
+
     // -------------------------------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------------------------------
 
     private String name;
 
-    private List<String> options;
-
-    // -------------------------------------------------------------------------------------------------
-    // Setters
-    // -------------------------------------------------------------------------------------------------
-
-    public void setOptionService( OptionService optionService )
-    {
-        this.optionService = optionService;
-    }
-
     public void setName( String name )
     {
         this.name = name;
-    }
-
-    public void setOptions( List<String> options )
-    {
-        this.options = options;
     }
 
     // -------------------------------------------------------------------------------------------------
@@ -82,7 +70,6 @@ public class AddOptionSetAction
         throws Exception
     {
         OptionSet optionSet = new OptionSet( name );
-        optionSet.setOptions( options );
         optionSet.setVersion( 1 );
 
         optionService.saveOptionSet( optionSet );

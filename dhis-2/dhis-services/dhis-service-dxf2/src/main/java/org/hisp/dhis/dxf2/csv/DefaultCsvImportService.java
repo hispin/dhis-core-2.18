@@ -51,6 +51,7 @@ import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.expression.Operator;
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -367,10 +368,16 @@ public class DefaultCsvImportService
         for ( OptionSet optionSet : listMap.keySet() )
         {
             List<String> options = new ArrayList<String>( listMap.get( optionSet ) );
-            optionSet.setOptions( options );
+            List<Option> optionObj = new ArrayList<Option>();
+            for ( String opt : options )
+            {
+                Option option = new Option( opt, opt );
+                optionObj.add(option);
+            }
+            optionSet.setOptions( optionObj );
             optionSets.add( optionSet );
         }
-
+        
         return optionSets;
     }
 

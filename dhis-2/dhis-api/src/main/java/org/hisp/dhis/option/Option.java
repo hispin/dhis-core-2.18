@@ -1,5 +1,3 @@
-package org.hisp.dhis.option;
-
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -28,19 +26,31 @@ package org.hisp.dhis.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+package org.hisp.dhis.option;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Chau Thu Tran
  *
- * @version $OptionStore.java Jun 15, 2012 9:45:00 AM$
+ * @version $ Option.java Jul 28, 2014 4:28:53 PM $
  */
-public interface OptionStore extends GenericIdentifiableObjectStore<OptionSet>
+@JacksonXmlRootElement( localName = "option", namespace = DxfNamespaces.DXF_2_0 )
+public class Option
+    extends BaseIdentifiableObject
 {
-    List<Option> getOptions( int optionSetId, String key, Integer max  );
-   
-    Option getOptionValueByName( OptionSet optionSet, String name );
+    public Option()
+    {
+        setAutoFields();
+    }
+    
+    public Option( String name, String code )
+    {
+        setAutoFields();
+        this.name = name;
+        this.code = code;
+    }
 }
-
