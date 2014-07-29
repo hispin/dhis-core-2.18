@@ -29,10 +29,12 @@ package org.hisp.dhis.caseentry.action.caseentry;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.util.ContextUtils;
@@ -91,9 +93,9 @@ public class GetOptionsByDataElementAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<String> options;
+    private List<Option> options;
 
-    public List<String> getOptions()
+    public List<Option> getOptions()
     {
         return options;
     }
