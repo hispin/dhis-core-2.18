@@ -167,30 +167,30 @@ public class DefaultOrganisationUnitService
 
     public OrganisationUnit getOrganisationUnit( int id )
     {
-        return organisationUnitStore.get( id );
+        return i18n( i18nService, organisationUnitStore.get( id ) );
     }
 
     public Collection<OrganisationUnit> getAllOrganisationUnits()
     {
-        return organisationUnitStore.getAll();
+        return i18n( i18nService, organisationUnitStore.getAll() );
     }
 
     @Override
     public Collection<OrganisationUnit> getAllOrganisationUnitsByStatus( boolean status )
     {
-        return organisationUnitStore.getAllOrganisationUnitsByStatus( status );
+        return i18n( i18nService, organisationUnitStore.getAllOrganisationUnitsByStatus( status ) );
     }
 
     @Override
     public Collection<OrganisationUnit> getAllOrganisationUnitsByLastUpdated( Date lastUpdated )
     {
-        return organisationUnitStore.getAllOrganisationUnitsByLastUpdated( lastUpdated );
+        return i18n( i18nService,  organisationUnitStore.getAllOrganisationUnitsByLastUpdated( lastUpdated ) );
     }
 
     @Override
     public Collection<OrganisationUnit> getAllOrganisationUnitsByStatusLastUpdated( boolean status, Date lastUpdated )
     {
-        return organisationUnitStore.getAllOrganisationUnitsByStatusLastUpdated( status, lastUpdated );
+        return i18n( i18nService, organisationUnitStore.getAllOrganisationUnitsByStatusLastUpdated( status, lastUpdated ) );
     }
 
     public void searchOrganisationUnitByName( List<OrganisationUnit> orgUnits, String key )
@@ -221,27 +221,27 @@ public class DefaultOrganisationUnitService
 
     public List<OrganisationUnit> getOrganisationUnitsByUid( Collection<String> uids )
     {
-        return organisationUnitStore.getByUid( uids );
+        return new ArrayList<OrganisationUnit>( i18n( i18nService, organisationUnitStore.getByUid( uids ) ) );
     }
 
     public OrganisationUnit getOrganisationUnit( String uid )
     {
-        return organisationUnitStore.getByUid( uid );
+        return i18n( i18nService, organisationUnitStore.getByUid( uid ) );
     }
 
     public OrganisationUnit getOrganisationUnitByUuid( String uuid )
     {
-        return organisationUnitStore.getByUuid( uuid );
+        return i18n( i18nService, organisationUnitStore.getByUuid( uuid ) );
     }
 
     public List<OrganisationUnit> getOrganisationUnitByName( String name )
     {
-        return organisationUnitStore.getAllEqName( name );
+        return new ArrayList<OrganisationUnit>( i18n( i18nService, organisationUnitStore.getAllEqName( name ) ) );
     }
 
     public OrganisationUnit getOrganisationUnitByCode( String code )
     {
-        return organisationUnitStore.getByCode( code );
+        return i18n( i18nService, organisationUnitStore.getByCode( code ) );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitByNameIgnoreCase( String name )
@@ -251,7 +251,7 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getRootOrganisationUnits()
     {
-        return organisationUnitStore.getRootOrganisationUnits();
+        return i18n( i18nService, organisationUnitStore.getRootOrganisationUnits());
     }
 
     public int getLevelOfOrganisationUnit( int id )
@@ -518,13 +518,13 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
     {
-        return organisationUnitStore.getOrganisationUnitsWithoutGroups();
+        return i18n( i18nService, organisationUnitStore.getOrganisationUnitsWithoutGroups() );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String query,
         Collection<OrganisationUnitGroup> groups, boolean limit )
     {
-        return organisationUnitStore.getOrganisationUnitsByNameAndGroups( query, groups, limit );
+        return i18n( i18nService, organisationUnitStore.getOrganisationUnitsByNameAndGroups( query, groups, limit ) );
     }
 
     @SuppressWarnings("unchecked")
@@ -638,31 +638,31 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitsBetween( int first, int max )
     {
-        return organisationUnitStore.getAllOrderedName( first, max );
+        return i18n( i18nService,  organisationUnitStore.getAllOrderedName( first, max ) );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsBetweenByName( String name, int first, int max )
     {
-        return organisationUnitStore.getAllLikeNameOrderedName( name, first, max );
+        return i18n( i18nService, organisationUnitStore.getAllLikeNameOrderedName( name, first, max ) );
     }
 
     @Override
     public Collection<OrganisationUnit> getOrganisationUnitsBetweenByStatus( boolean status, int first, int max )
     {
-        return organisationUnitStore.getBetweenByStatus( status, first, max );
+        return i18n( i18nService, organisationUnitStore.getBetweenByStatus( status, first, max ) );
     }
 
     @Override
     public Collection<OrganisationUnit> getOrganisationUnitsBetweenByLastUpdated( Date lastUpdated, int first, int max )
     {
-        return organisationUnitStore.getBetweenByLastUpdated( lastUpdated, first, max );
+        return i18n( i18nService, organisationUnitStore.getBetweenByLastUpdated( lastUpdated, first, max ) );
     }
 
     @Override
     public Collection<OrganisationUnit> getOrganisationUnitsBetweenByStatusLastUpdated( boolean status,
         Date lastUpdated, int first, int max )
     {
-        return organisationUnitStore.getBetweenByStatusLastUpdated( status, lastUpdated, first, max );
+        return i18n( i18nService, organisationUnitStore.getBetweenByStatusLastUpdated( status, lastUpdated, first, max ));
     }
 
     @Override
