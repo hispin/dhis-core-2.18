@@ -648,5 +648,73 @@
       <result name="success" type="velocity-json">/dhis-web-maintenance-dataadmin/jsonOptionSet.vm</result>
     </action>
 
+	<!-- Option -->
+
+	<action name="option"
+		class="org.hisp.dhis.dataadmin.action.option.GetOptionSetAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-maintenance-dataadmin/option.vm</param>
+		<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+		<param name="javascripts">javascript/option.js</param>
+		<param name="requiredAuthorities">F_OPTIONSET_MANAGEMENT</param>
+	</action>
+
+	<action name="showAddOptionForm" class="org.hisp.dhis.dataadmin.action.option.GetOptionSetAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-maintenance-dataadmin/addOptionForm.vm</param>
+		<param name="javascripts">javascript/option.js</param>
+		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
+	</action>
+
+	<action name="addOption"
+		class="org.hisp.dhis.dataadmin.action.option.AddOptionAction">
+		<result name="success" type="redirect">option.action?id=${optionSetId}</result>
+		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
+	</action>
+
+	<action name="showUpdateOptionForm"
+		class="org.hisp.dhis.dataadmin.action.option.GetOptionAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-maintenance-dataadmin/updateOptionForm.vm</param>
+		<param name="javascripts">javascript/option.js</param>
+		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
+	</action>
+
+	<action name="updateOption"
+		class="org.hisp.dhis.dataadmin.action.option.UpdateOptionAction">
+		<result name="success" type="redirect">option.action?id=${optionSetId}</result>
+		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
+	</action>
+
+	<action name="removeOption"
+		class="org.hisp.dhis.dataadmin.action.option.RemoveOptionAction">
+		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
+		</result>
+		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm
+		</result>
+		<param name="requiredAuthorities">F_OPTIONSET_DELETE</param>
+	</action>
+
+	<action name="validateOption"
+		class="org.hisp.dhis.dataadmin.action.option.ValidateOptionAction">
+		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
+		</result>
+		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm
+		</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>
+    
+    <action name="sortOptionsForm" class="org.hisp.dhis.dataadmin.action.option.GetOptionSetAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-maintenance-dataadmin/sortOptionsForm.vm</param>
+		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
+	</action>
+
+	<action name="sortOptions"
+		class="org.hisp.dhis.dataadmin.action.option.SortOptionsAction">
+		<result name="success" type="redirect">option.action?id=${optionSetId}</result>
+		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
+	</action>
+	
   </package>
 </struts>

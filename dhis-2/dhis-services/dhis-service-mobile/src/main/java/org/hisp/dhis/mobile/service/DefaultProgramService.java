@@ -322,7 +322,7 @@ public class DefaultProgramService
             {
                 optionSet.setId( pa.getOptionSet().getId() );
                 optionSet.setName( pa.getOptionSet().getName() );
-                optionSet.setOptions( pa.getOptionSet().getOptions() );
+//                optionSet.setOptions( pa.getOptionSet().getOptions() );
 
                 mobileAttribute.setOptionSet( optionSet );
             }

@@ -3,44 +3,43 @@
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		tableSorter( 'listTable' );
-
-    dhis2.contextmenu.makeContextMenu({
-      menuId: 'contextMenu',
-      menuItemActiveClass: 'contextMenuItemActive'
-    });
+	
+		dhis2.contextmenu.makeContextMenu({
+		  menuId: 'contextMenu',
+		  menuItemActiveClass: 'contextMenuItemActive'
+		});
 	});
 
     var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_constant" ) , "'")';
 </script>
 
-<h3>$i18n.getString( "option_set_management" ) #openHelp( "optionSet" )</h3>
+<h3>$i18n.getString( "option_management" )</h3>
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
-    <li data-enabled="canManage"><a data-target-fn="showOptionList"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "option_management" )</a></li>
-    <li data-enabled="canManage"><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>
-    <li data-enabled="canUpdate"><a data-target-fn="showUpdateOptionSetForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
+    <li data-enabled="canUpdate"><a data-target-fn="showUpdateOptionForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
     <li data-enabled="canUpdate"><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>
     <li data-enabled="canDelete"><a data-target-fn="removeOptionSet"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
-    <li><a data-target-fn="showOptionSetDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
   </ul>
 </div>
 
 <table class="mainPageTable">
+	<input id='optionSetId' name='optionSetId' value='$optionSet.id' type='hidden'>
 	<tr>
 		<td style="vertical-align:top">
 			<table width="100%">
 				<col>          
 				<col width="120"> 
 				<tr>
-					<td>#filterDiv( "optionSet" )</td>
+					<td>#filterDiv( "option" )</td>
 					<td colspan="3" style="text-align:right">
-						<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddOptionSetForm.action'" style="width:70px">
+						<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddOptionForm.action?id=$optionSet.id'" style="width:150px"><br>
+						<input type="button" value="$i18n.getString( "sort_options" )" onclick="window.location.href='sortOptionsForm.action?id=$optionSet.id'" style="width:150px"><br>
+						<input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='optionSet.action'" style="width:150px">
 					</td>
 				</tr>		
 			</table>
-      <table class="listTable" id="listTable">
+      <table class="listTable">
       <col/>
       <thead>
       <tr>
@@ -48,13 +47,13 @@
       </tr>
       </thead>
       <tbody id="list">
-      #foreach( $optionSet in $optionSets )
-      <tr id="tr${optionSet.id}">
-        <td data-id="$!optionSet.id" data-uid="$!optionSet.uid" data-type="OptionSet" data-name="$encoder.htmlEncode( $!optionSet.displayName )"
-          data-can-manage="$security.canManage( $optionSet )"
-          data-can-update="$security.canUpdate( $optionSet )"
-          data-can-delete="$security.canDelete( $optionSet )">
-          $encoder.htmlEncode( $!optionSet.displayName )
+      #foreach( $option in $optionSet.options )
+      <tr id="tr${option.id}">
+        <td data-id="$!option.id" data-uid="$!option.uid" data-type="Option" data-name="$encoder.htmlEncode( $!option.displayName )"
+          data-can-manage="$security.canManage( $option )"
+          data-can-update="$security.canUpdate( $option )"
+          data-can-delete="$security.canDelete( $option )">
+          $encoder.htmlEncode( $!option.displayName )
         </td>
       </tr>
       #end

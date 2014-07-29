@@ -1,31 +1,18 @@
+
 // -----------------------------------------------------------------------------
-// View details
+// Update Option
 // -----------------------------------------------------------------------------
 
-function showUpdateOptionSetForm( context ) {
-  location.href = 'showUpdateOptionSetForm.action?id=' + context.id;
-}
-
-function showOptionSetDetails( context ) {
-  jQuery.post('getOptionSet.action', { id: context.id },
-    function( json ) {
-      setInnerHTML('nameField', json.optionSet.name);
-      setInnerHTML('optionCount', json.optionSet.optionCount);
-      setInnerHTML('idField', json.optionSet.uid);
-      showDetails();
-    });
-}
-
-function showOptionList( context ) {
-  location.href = 'option.action?id=' + context.id;
+function showUpdateOptionForm( context ) {
+  location.href = 'showUpdateOptionForm.action?optionId=' + context.id + '&optionSetId=' + getFieldValue('optionSetId');
 }
 
 // -----------------------------------------------------------------------------
-// Remove category constant
+// Remove Option
 // -----------------------------------------------------------------------------
 
 function removeOptionSet( context ) {
-  removeItem(context.id, context.name, i18n_confirm_delete, 'removeOptionSet.action');
+  removeItem(context.id, context.name, i18n_confirm_delete, 'removeOption.action?optionSetId=' + getFieldValue('optionSetId'));
 }
 
 // -----------------------------------------------------------------------------

@@ -42,6 +42,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.CalendarPeriodType;
@@ -448,7 +449,7 @@ public class DefaultPdfDataEntryFormService
 
                     // TODO: This gets repeated <- Create an array of the
                     // options. and apply only once.
-                    List<String> options = optionService.getOptions( optionSet.getId(), query, MAX_OPTIONS_DISPLAYED );
+                    List<Option> options = optionService.getOptions( optionSet.getId(), query, MAX_OPTIONS_DISPLAYED );
 
                     addCell_WithDropDownListField( table, rectangleDataElement, writer, PdfDataEntryFormUtil.getPdfPCell( hasBorder ), strFieldLabel, options.toArray( new String[0] ),
                         options.toArray( new String[0] ) );

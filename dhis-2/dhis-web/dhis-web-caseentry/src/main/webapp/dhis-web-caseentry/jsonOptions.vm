@@ -1,2 +1,2 @@
-{ "options": [#foreach( $option in $options ){"o":"$option"}#if( $velocityCount < $options.size() ),#end #end]
+{ "options": [#foreach( $option in $options ){"o":"$option.name"}#if( $velocityCount < $options.size() ),#end #end]
 }

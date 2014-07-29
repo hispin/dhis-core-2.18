@@ -31,7 +31,9 @@ package org.hisp.dhis.option.hibernate;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.option.OptionStore;
 
@@ -50,12 +52,12 @@ public class HibernateOptionStore
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public List<String> getOptions( int optionSetId, String key, Integer max )
+    public List<Option> getOptions( int optionSetId, String key, Integer max )
     {
-        String hql = "select option from OptionSet as optionset inner join optionset.options as option where optionset.id = :optionSetId ";
+        String hql = "select option from OptionSet as optionset join optionset.options as option where optionset.id = :optionSetId ";
         if ( key != null )
         {
-            hql += " and lower(option) like lower('%" + key + "%') ";
+            hql += " and lower(option.name) like lower('%" + key + "%') ";
         }
 
         hql += " order by index(option)";
@@ -67,5 +69,16 @@ public class HibernateOptionStore
         }
         
         return query.list();
+    }
+    
+    public Option getOptionValueByName( OptionSet optionSet, String name )
+    {
+        String hql = "select option from OptionSet as optionset join optionset.options as option where optionset = :optionSet and lower(option.name) = :name";
+        
+        Query query = getQuery( hql );
+        query.setEntity( "optionSet", optionSet );
+        query.setString( "name", name );
+        
+        return (Option) query.uniqueResult();
     }
 }

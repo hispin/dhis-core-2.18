@@ -18,12 +18,12 @@
     <property name="name" column="name" not-null="true" unique="true" length="230" />
 
     <property name="version" />
-
-    <list name="options" table="optionsetmembers">
+    
+    <list name="options" cascade="all">
       <cache usage="read-write" />
       <key column="optionsetid" foreign-key="fk_optionsetmembers_optionsetid" />
-      <list-index column="sort_order" />
-      <element type="text" column="optionvalue" />
+      <list-index column="sort_order" base="1" />
+      <one-to-many class="org.hisp.dhis.option.Option" />
     </list>
 
     <!-- Access properties -->

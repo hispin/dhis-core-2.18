@@ -41,6 +41,8 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
+import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.jdbc.batchhandler.RelativePeriodsBatchHandler;
@@ -164,7 +166,7 @@ public class TableAlteror
         // upgrade report table totals
         executeSql( "UPDATE reporttable SET rowtotals = totals, coltotals = totals" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN totals" );
-        
+
         // mapping
         executeSql( "DROP TABLE maporganisationunitrelation" );
         executeSql( "ALTER TABLE mapview DROP COLUMN mapid" );
@@ -491,7 +493,7 @@ public class TableAlteror
         executeSql( "update chart set userorganisationunitchildren = false where userorganisationunitchildren is null" );
         executeSql( "update chart set userorganisationunitgrandchildren = false where userorganisationunitgrandchildren is null" );
         executeSql( "update chart set hidetitle = false where hidetitle is null" );
-        
+
         executeSql( "update eventreport set showhierarchy = false where showhierarchy is null" );
         executeSql( "update eventreport set counttype = 'events' where counttype is null" );
 
@@ -709,7 +711,7 @@ public class TableAlteror
         executeSql( "UPDATE attribute SET userattribute=false WHERE userattribute IS NULL" );
         executeSql( "UPDATE attribute SET usergroupattribute=false WHERE usergroupattribute IS NULL" );
         executeSql( "UPDATE attribute SET datasetattribute=false WHERE datasetattribute IS NULL" );
-        
+
         executeSql( "ALTER TABLE trackedentityattributedimension DROP COLUMN operator" );
         executeSql( "ALTER TABLE trackedentitydataelementdimension DROP COLUMN operator" );
 
@@ -728,7 +730,9 @@ public class TableAlteror
         upgradeTranslations();
 
         executeSql( "ALTER TABLE dataelement DROP COLUMN active" );
-        
+
+        updateOptionTbl();
+
         log.info( "Tables updated" );
     }
 
@@ -750,7 +754,8 @@ public class TableAlteror
         executeSql( "alter table datavalue drop constraint datavalue_pkey;" );
 
         executeSql( "alter table datavalue add column attributeoptioncomboid integer;" );
-        executeSql( "update datavalue set attributeoptioncomboid = " + optionComboId + " where attributeoptioncomboid is null;" );
+        executeSql( "update datavalue set attributeoptioncomboid = " + optionComboId
+            + " where attributeoptioncomboid is null;" );
         executeSql( "alter table datavalue alter column attributeoptioncomboid set not null;" );
         executeSql( "alter table datavalue add constraint fk_datavalue_attributeoptioncomboid foreign key (attributeoptioncomboid) references categoryoptioncombo (categoryoptioncomboid) match simple;" );
         executeSql( "alter table datavalue add constraint datavalue_pkey primary key(dataelementid, periodid, sourceid, categoryoptioncomboid, attributeoptioncomboid);" );
@@ -773,17 +778,18 @@ public class TableAlteror
         }
 
         int optionComboId = getDefaultOptionCombo();
-        
+
         executeSql( "alter table completedatasetregistration drop constraint completedatasetregistration_pkey" );
         executeSql( "alter table completedatasetregistration add column attributeoptioncomboid integer;" );
-        executeSql( "update completedatasetregistration set attributeoptioncomboid = " + optionComboId + " where attributeoptioncomboid is null;" );
+        executeSql( "update completedatasetregistration set attributeoptioncomboid = " + optionComboId
+            + " where attributeoptioncomboid is null;" );
         executeSql( "alter table completedatasetregistration alter column attributeoptioncomboid set not null;" );
         executeSql( "alter table completedatasetregistration add constraint fk_completedatasetregistration_attributeoptioncomboid foreign key (attributeoptioncomboid) references categoryoptioncombo (categoryoptioncomboid) match simple;" );
         executeSql( "alter table completedatasetregistration add constraint completedatasetregistration_pkey primary key(datasetid, periodid, sourceid, attributeoptioncomboid);" );
-        
+
         log.info( "Complete data set registration table upgraded with attributeoptioncomboid column" );
     }
-    
+
     private void upgradeMapViewsToAnalyticalObject()
     {
         executeSql( "insert into mapview_dataelements ( mapviewid, sort_order, dataelementid ) select mapviewid, 0, dataelementid from mapview where dataelementid is not null" );
@@ -1017,7 +1023,7 @@ public class TableAlteror
             log.debug( ex );
         }
     }
-    
+
     private void upgradeTranslations()
     {
         final String sql = statementBuilder.getNumberOfColumnsInPrimaryKey( "translation" );
@@ -1028,7 +1034,7 @@ public class TableAlteror
         {
             return; // translationid already set as single pkey
         }
-        
+
         executeSql( statementBuilder.getDropPrimaryKey( "translation" ) );
         executeSql( statementBuilder.getAddPrimaryKeyToExistingTable( "translation", "translationid" ) );
         executeSql( statementBuilder.getDropNotNullConstraint( "translation", "objectid", "integer" ) );
@@ -1156,6 +1162,34 @@ public class TableAlteror
         String sql = "select categorycomboid from categorycombo where name = 'default'";
 
         return statementManager.getHolder().queryForInteger( sql );
+    }
+
+    private void updateOptionTbl()
+    {
+        executeSql( "INSERT INTO option( optionid, code, created, lastupdated, name, optionsetid, sort_order) "
+            + " select " + statementBuilder.getAutoIncrementValue() + ", optionvalue, now(), now() , optionvalue, optionsetid, ( sort_order + 1 ) "
+            + " from optionsetmembers " );
+
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+            ResultSet resultSet = statement.executeQuery( "select optionid from option where uid is null" );
+
+            while ( resultSet.next() )
+            {
+                int id = resultSet.getInt( "optionid" );
+                String uid = CodeGenerator.generateCode();
+                executeSql( "UPDATE option SET uid='" + uid + "'  WHERE optionid=" + id );
+            }
+            
+            executeSql( "drop table optionsetmembers" );
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
     }
 
 }

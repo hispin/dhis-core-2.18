@@ -28,15 +28,16 @@ package org.hisp.dhis.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.i18n.I18nService;
-import org.springframework.transaction.annotation.Transactional;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.i18n.I18nService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -56,6 +57,13 @@ public class DefaultOptionService
         this.optionStore = optionStore;
     }
 
+    private GenericIdentifiableObjectStore<Option> optionValueStore;
+
+    public void setOptionValueStore( GenericIdentifiableObjectStore<Option> optionValueStore )
+    {
+        this.optionValueStore = optionValueStore;
+    }
+
     private I18nService i18nService;
 
     public void setI18nService( I18nService service )
@@ -64,7 +72,7 @@ public class DefaultOptionService
     }
 
     // -------------------------------------------------------------------------
-    // Implementation methods
+    // Implementation methods -
     // -------------------------------------------------------------------------
 
     public int saveOptionSet( OptionSet optionSet )
@@ -102,16 +110,16 @@ public class DefaultOptionService
         return i18n( i18nService, optionStore.getAll() );
     }
 
-    public List<String> getOptions( String optionSetUid, String key, Integer max )
+    public List<Option> getOptions( String optionSetUid, String key, Integer max )
     {
         OptionSet optionSet = getOptionSet( optionSetUid );
-        
+
         return getOptions( optionSet.getId(), key, max );
     }
-    
-    public List<String> getOptions( int optionSetId, String key, Integer max )
+
+    public List<Option> getOptions( int optionSetId, String key, Integer max )
     {
-        List<String> options = null;
+        List<Option> options = null;
 
         if ( key != null || max != null )
         {
@@ -125,7 +133,7 @@ public class DefaultOptionService
 
             OptionSet optionSet = getOptionSet( optionSetId );
 
-            options = new ArrayList<String>( optionSet.getOptions() );
+            options = new ArrayList<Option>( optionSet.getOptions() );
         }
 
         return options;
@@ -149,5 +157,29 @@ public class DefaultOptionService
     public Integer getOptionSetCount()
     {
         return optionStore.getCount();
+    }
+
+    // -------------------------------------------------------------------------
+    // Option
+    // -------------------------------------------------------------------------
+
+    public void updateOption( Option option )
+    {
+        optionValueStore.update( option ); 
+    }
+    
+    public Option getOption( int id )
+    {
+        return i18n( i18nService, optionValueStore.get( id ) );
+    }
+
+    public Option getOptionByCode( String code )
+    {
+        return i18n( i18nService, optionValueStore.getByCode( code ) );
+    }
+
+    public Option getOptionValueByName( OptionSet optionSet, String name )
+    {
+        return i18n( i18nService, optionStore.getOptionValueByName( optionSet, name ) );
     }
 }

@@ -1,5 +1,3 @@
-package org.hisp.dhis.dataadmin.action.option;
-
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -28,6 +26,9 @@ package org.hisp.dhis.dataadmin.action.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.dataadmin.action.option;
+
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 
@@ -35,9 +36,10 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $UpdateOptionSetAction.java Feb 3, 2012 9:28:11 PM$
+ *
+ * @version $ AddOptionAction.java Jul 28, 2014 8:41:52 PM $
  */
-public class UpdateOptionSetAction
+public class AddOptionAction
     implements Action
 {
     // -------------------------------------------------------------------------------------------------
@@ -55,11 +57,16 @@ public class UpdateOptionSetAction
     // Input
     // -------------------------------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer optionSetId;
 
-    public void setId( Integer id )
+    public void setOptionSetId( Integer optionSetId )
     {
-        this.id = id;
+        this.optionSetId = optionSetId;
+    }
+
+    public Integer getOptionSetId()
+    {
+        return optionSetId;
     }
 
     private String name;
@@ -67,6 +74,13 @@ public class UpdateOptionSetAction
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
     }
 
     // -------------------------------------------------------------------------------------------------
@@ -77,12 +91,13 @@ public class UpdateOptionSetAction
     public String execute()
         throws Exception
     {
-        OptionSet optionSet = optionService.getOptionSet( id );
-        optionSet.setName( name );
+        OptionSet optionSet = optionService.getOptionSet( optionSetId );
+
+        Option option = new Option( name, code );
+        optionSet.getOptions().add( option );
 
         optionService.updateOptionSet( optionSet );
 
         return SUCCESS;
     }
-
 }

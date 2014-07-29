@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -53,7 +54,7 @@ public class OptionSet
 {
     private static final Pattern OPTION_PATTERN = Pattern.compile( "\\[(.*)\\]" );
 
-    private List<String> options = new ArrayList<>();
+    private List<Option> options = new ArrayList<Option>();
 
     /**
      * Indicating version number.
@@ -78,12 +79,12 @@ public class OptionSet
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "options", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "option", namespace = DxfNamespaces.DXF_2_0 )
-    public List<String> getOptions()
+    public List<Option> getOptions()
     {
         return options;
     }
 
-    public void setOptions( List<String> options )
+    public void setOptions( List<Option> options )
     {
         this.options = options;
     }
@@ -123,5 +124,15 @@ public class OptionSet
             removeAllOptions();
             options.addAll( optionSet.getOptions() );
         }
+    }
+    
+    public List<String> getOptionValues()
+    {
+        List<String> result = new ArrayList<String>();
+        for( Option option : options )
+        {
+            result.add( option.getName() );
+        }
+        return result;
     }
 }

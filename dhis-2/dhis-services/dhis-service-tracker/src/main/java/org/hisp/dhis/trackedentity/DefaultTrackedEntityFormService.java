@@ -35,6 +35,7 @@ import java.util.regex.Matcher;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
@@ -342,14 +343,15 @@ public class DefaultTrackedEntityFormService
         {
             inputHtml = inputHtml.replaceFirst( "input", "select" ) + ">";
             inputHtml += "<option value=\"\" selected>" + i18n.getString( "no_value" ) + "</option>";
-            for ( String option : attribute.getOptionSet().getOptions() )
+            for ( Option option : attribute.getOptionSet().getOptions() )
             {
-                inputHtml += "<option value=\"" + option + "\" ";
-                if ( option.equals( value ) )
+                String optionValue = option.getName();
+                inputHtml += "<option value=\"" + optionValue + "\" ";
+                if ( optionValue.equals( value ) )
                 {
                     inputHtml += " selected ";
                 }
-                inputHtml += ">" + option + "</option>";
+                inputHtml += ">" + optionValue + "</option>";
             }
             inputHtml += "</select>";
         }

@@ -37,7 +37,11 @@ import java.util.List;
 public interface OptionService
 {
     final String ID = OptionService.class.getName();
-
+   
+    // -------------------------------------------------------------------------
+    // OptionSet
+    // -------------------------------------------------------------------------
+  
     int saveOptionSet( OptionSet optionSet );
 
     void updateOptionSet( OptionSet optionSet );
@@ -52,9 +56,9 @@ public interface OptionService
 
     Collection<OptionSet> getAllOptionSets();
 
-    List<String> getOptions( String optionSetUid, String key, Integer max );
+    List<Option> getOptions( String optionSetUid, String key, Integer max );
     
-    List<String> getOptions( int optionSetId, String name, Integer max );
+    List<Option> getOptions( int optionSetId, String name, Integer max );
 
     Integer getOptionSetsCountByName( String name );
 
@@ -63,4 +67,16 @@ public interface OptionService
     Collection<OptionSet> getOptionSetsBetween( int first, int max );
     
     Integer getOptionSetCount();
+    
+    // -------------------------------------------------------------------------
+    // Option
+    // -------------------------------------------------------------------------
+
+    void updateOption( Option option );
+    
+    Option getOption( int id );
+    
+    Option getOptionByCode( String code );
+    
+    Option getOptionValueByName( OptionSet optionSet, String name );
 }

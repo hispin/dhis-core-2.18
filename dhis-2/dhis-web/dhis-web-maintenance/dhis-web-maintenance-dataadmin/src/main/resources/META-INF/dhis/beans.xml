@@ -383,5 +383,43 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
   </bean>
+  
+   <!-- Option -->
+
+  <bean id="org.hisp.dhis.dataadmin.action.option.AddOptionAction"
+    class="org.hisp.dhis.dataadmin.action.option.AddOptionAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.option.RemoveOptionAction"
+    class="org.hisp.dhis.dataadmin.action.option.RemoveOptionAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.option.SortOptionsAction"
+    class="org.hisp.dhis.dataadmin.action.option.SortOptionsAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.option.UpdateOptionAction"
+    class="org.hisp.dhis.dataadmin.action.option.UpdateOptionAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
+  
+   <bean id="org.hisp.dhis.dataadmin.action.option.ValidateOptionAction"
+    class="org.hisp.dhis.dataadmin.action.option.ValidateOptionAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.option.GetOptionAction"
+    class="org.hisp.dhis.dataadmin.action.option.GetOptionAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
 
 </beans>

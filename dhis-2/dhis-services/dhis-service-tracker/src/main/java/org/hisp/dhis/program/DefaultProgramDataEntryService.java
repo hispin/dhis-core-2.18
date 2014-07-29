@@ -38,6 +38,7 @@ import org.apache.commons.lang.BooleanUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
@@ -592,8 +593,9 @@ public class DefaultProgramDataEntryService
 
             int index = 1;
 
-            for ( String optionValue : dataElement.getOptionSet().getOptions() )
+            for ( Option option : dataElement.getOptionSet().getOptions() )
             {
+                String optionValue = option.getName();
                 if ( index == 4 )
                 {
                     inputHTML += "</tr><tr>";
