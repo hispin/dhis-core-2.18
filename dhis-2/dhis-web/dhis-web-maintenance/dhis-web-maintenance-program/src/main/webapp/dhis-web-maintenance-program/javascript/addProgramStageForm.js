@@ -4,6 +4,8 @@ jQuery( document ).ready( function()
 	validation( 'addProgramStageForm', function( form ){ 
 		form.submit();
 	}, function(){
+		selectAllById('selectedIndicators');
+		
 		var selectedDataElementsValidator = jQuery( "#selectedDataElementsValidator" );
 		selectedDataElementsValidator.empty();
 		

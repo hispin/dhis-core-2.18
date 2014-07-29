@@ -29,15 +29,20 @@ package org.hisp.dhis.trackedentity.action.program;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramIndicator;
+import org.hisp.dhis.program.ProgramIndicatorService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -73,6 +78,9 @@ public class GetProgramAction
         this.userGroupService = userGroupService;
     }
     
+    @Autowired
+    private ProgramIndicatorService programIndicatorService;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -129,6 +137,13 @@ public class GetProgramAction
         return userGroups;
     }
     
+    private List<ProgramIndicator> programIndicators;
+
+    public List<ProgramIndicator> getProgramIndicators()
+    {
+        return programIndicators;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -141,7 +156,11 @@ public class GetProgramAction
         selectionTreeManager.setSelectedOrganisationUnits( program.getOrganisationUnits() );
         
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
-        
+       
+        programIndicators = new ArrayList<ProgramIndicator>( programIndicatorService.getProgramIndicators( program ) );
+
+        Collections.sort( programIndicators, IdentifiableObjectNameComparator.INSTANCE );
+
         return SUCCESS;
     }
 }

@@ -70,6 +70,12 @@
     <property name="openAfterEnrollment" />
 
     <property name="reportDateToUse" />
+    
+    <list name="programIndicators" table="programstage_programindicators">
+      <key column="programStageid" />
+      <list-index column="sort_order" base="1" />
+      <many-to-many class="org.hisp.dhis.program.ProgramIndicator" column="programindicatorid" />
+    </list>
 
   </class>
 </hibernate-mapping>

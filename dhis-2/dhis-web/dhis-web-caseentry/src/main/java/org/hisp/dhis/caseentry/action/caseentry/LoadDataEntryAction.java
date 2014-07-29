@@ -310,7 +310,7 @@ public class LoadDataEntryAction
             // ---------------------------------------------------------------------
             // Get program indicators
             // ---------------------------------------------------------------------
-
+            
             programIndicatorsMap.putAll( programIndicatorService.getProgramIndicatorValues( programStageInstance
                 .getProgramInstance() ) );
 
