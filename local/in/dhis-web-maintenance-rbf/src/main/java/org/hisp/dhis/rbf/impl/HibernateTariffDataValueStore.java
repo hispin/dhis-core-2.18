@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -296,16 +298,17 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
                                             " where '" + curPeriod + "'  between date(td.startdate) and date(td.enddate) " +
                                                 " and orgunitgroupid in ( " + orgUnitGroup.getId() + ") " +
                                                 " and datasetid in ( " +dataSet.getId() + ") "+
+                                                " and organisationunitid in ("+ orgUnitBranchIds +") "+
                                                 " )asd "+
                                                 " group by asd.dataelementid,asd.orgunitgroupid,datasetid " +
                                                 " )sag1 " +
                                                 " inner join tariffdatavalue td on td.dataelementid=sag1.dataelementid " +
                                                 " where td.orgunitgroupid=sag1.orgunitgroupid " + 
                                                 " and td.datasetid=sag1.datasetid " +
-                                                " and sag1.level=td.orgunitlevelid " +
-                                                " and td.organisationunitid in ("+ orgUnitBranchIds +") ";
+                                                " and sag1.level=td.orgunitlevelid ";
+                                                //" and td.organisationunitid in ("+ orgUnitBranchIds +") ";
             
-            //System.out.println("Query: " + query );
+            System.out.println("Query: " + query );
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
@@ -323,6 +326,33 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
         return tariffDataValueMap;
     }
     
+    public Set<Integer> getOrgUnitGroupsByDataset( Integer dataSetId, String orgUnitIds )
+    {
+        Set<Integer> orgUnitGroupIds = new HashSet<Integer>();
+        
+        try
+        {
+            String query = "select orgunitgroupid from tariffdatavalue " + 
+                            " WHERE " +
+                                " datasetid = " + dataSetId + " AND " +
+                                " organisationunitid IN (" + orgUnitIds + ")";
+            
+            System.out.println( query );
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+
+            while( rs.next() )
+            {
+                orgUnitGroupIds.add( rs.getInt( 1 ) );
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("In getOrgUnitGroupsByDataset Exception :"+ e.getMessage() );            
+        }
+        
+        return orgUnitGroupIds;
+    }
     public String getTariffDataValue( Integer orgunitgroupId, Integer dataSetId, Integer dataElementId, String date )
     {
         String value = null;

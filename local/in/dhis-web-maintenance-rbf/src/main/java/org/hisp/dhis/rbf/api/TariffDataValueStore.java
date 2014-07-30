@@ -3,6 +3,7 @@ package org.hisp.dhis.rbf.api;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -49,5 +50,7 @@ public interface TariffDataValueStore
     Map<Integer, Double> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, String orgUnitBranchIds, DataSet dataSet, Period period );
     
     String getTariffDataValue( Integer orgunitgroupId, Integer organisationUnitId, Integer dataSetId, Integer dataElementId, String date );
+    
+    Set<Integer> getOrgUnitGroupsByDataset( Integer dataSetId, String orgUnitIds );
     
 }

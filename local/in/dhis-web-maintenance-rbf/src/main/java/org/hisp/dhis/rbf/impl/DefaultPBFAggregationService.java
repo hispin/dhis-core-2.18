@@ -204,7 +204,65 @@ public class DefaultPBFAggregationService
         
         return aggregationResultMap;
     }
-    
+
+    public Map<String, Double> calculateQuantityValidated( List<Period> periods, Set<OrganisationUnit> orgUnits )
+    {
+        Map<String, Double> aggregationResultMap = new HashMap<String, Double>();
+        
+        try
+        {
+            String query = "SELECT organisationunitid, dataelementid, periodid, qtyvalidated FROM pbfdatavalue " +
+                            " WHERE " + 
+                                " periodid IN ( "+ Lookup.PERIODID_BY_COMMA +" ) AND "+
+                                " organisationunitid IN ( " + Lookup.ORGUNITID_BY_COMMA + " ) ";
+            
+            //System.out.println( "Query Before Replace : --" +  orgUnits.size() + " -- "+  query  );
+            
+            if( periods != null && periods.size() > 0 )
+            {
+                Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers( Period.class, periods ) );
+                String periodsByComma = getCommaDelimitedString( periodIds );
+                query = query.replace( Lookup.PERIODID_BY_COMMA, periodsByComma );
+            }
+            else
+            {
+                query = query.replace( Lookup.PERIODID_BY_COMMA, "-1" );
+            }
+            
+            if( orgUnits != null && orgUnits.size() > 0 )
+            {
+                Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnits ) );
+                String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+                query = query.replace( Lookup.ORGUNITID_BY_COMMA, orgUnitIdsByComma );
+            }
+            else
+            {
+                query = query.replace( Lookup.ORGUNITID_BY_COMMA, "-1" );
+            }
+            
+            //System.out.println( "Query After Replace : --" +  query );
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer orgUnitId = rs.getInt( 1 );
+                Integer dataElementId = rs.getInt( 2 );
+                Integer periodId = rs.getInt( 3 );
+                Double qtyValidated = rs.getDouble( 4 );
+                if( qtyValidated != null )
+                {
+                    aggregationResultMap.put( orgUnitId+":"+dataElementId+":"+periodId, qtyValidated );
+                }
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("Exception :"+ e.getMessage() );
+        }
+        
+        return aggregationResultMap;
+    }
+
     public Double calculateOverallUnadjustedPBFAmount( Period period, OrganisationUnit orgUnit, DataSet dataSet )
     {
         Double overAllAdjustedAmt = null;

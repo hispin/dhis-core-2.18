@@ -3,6 +3,7 @@ package org.hisp.dhis.rbf.impl;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -130,5 +131,10 @@ public class DefaultTariffDataValueService implements TariffDataValueService
     public String getTariffDataValue( Integer orgunitgroupId, Integer organisationUnitId, Integer dataSetId, Integer dataElementId, String date )
     {
         return tariffDataValueStore.getTariffDataValue( orgunitgroupId, organisationUnitId, dataSetId, dataElementId, date );
+    }
+    
+    public Set<Integer> getOrgUnitGroupsByDataset( Integer dataSetId, String orgUnitIds )
+    {
+        return tariffDataValueStore.getOrgUnitGroupsByDataset( dataSetId, orgUnitIds );
     }
 }

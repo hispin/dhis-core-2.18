@@ -40,6 +40,11 @@
         <option value="$utilizationRateDataElement.id">$utilizationRateDataElement.name</option>
     #end
 </select>
+<select id="pbfDataElementLB" size="10" style="display:none" >
+    #foreach($dataElement in $dataElements )
+        <option value="$dataElement.id">$dataElement.name</option>
+    #end
+</select>
 
 <input type="hidden" id='totalDataElementId' name = 'totalDataElementId' value="$!totalDataElementId" />
 
@@ -246,10 +251,7 @@
                     }
                     
                     calVal();
-                    
-                    $('input').on('keyup', function() {
-                      calVal();
-                    });
+                                        
             	</script>
 			
 			#end
@@ -335,12 +337,18 @@
 					
 					$('#total_'+dataElementId).val(total);
 					
-					allTotal = allTotal + total;
+					var tempPBFDataElements = document.getElementById("pbfDataElementLB");			
+					var allTotal1 = 0.0;
+					for ( i=0; i < tempPBFDataElements.length; i++ )
+					{                
+						var tempDataElementId = tempPBFDataElements.options[i].value;
+						var tempTotal = parseFloat($('#total_'+tempDataElementId).val());
+						allTotal1 = allTotal1 + tempTotal;
+					}								
+			
+					$('#all-total').val(allTotal1);
 					
-					$('#all-total').val(allTotal);
-					
-					saveTotalValueInDataValue();
-					
+					saveTotalValueInDataValue();					
 					
                 }
 				
