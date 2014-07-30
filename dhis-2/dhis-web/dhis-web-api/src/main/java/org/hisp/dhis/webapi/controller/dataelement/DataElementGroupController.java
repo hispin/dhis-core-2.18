@@ -99,7 +99,7 @@ public class DataElementGroupController
 
         if ( options.hasLinks() )
         {
-            linkService.generateLinks( metaData );
+            linkService.generateLinks( metaData, false );
         }
 
         model.addAttribute( "model", metaData );
@@ -146,7 +146,7 @@ public class DataElementGroupController
 
         if ( options.hasLinks() )
         {
-            linkService.generateLinks( metaData );
+            linkService.generateLinks( metaData, false );
         }
 
         model.addAttribute( "model", metaData );

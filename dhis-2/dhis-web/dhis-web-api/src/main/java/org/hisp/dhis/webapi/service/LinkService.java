@@ -51,17 +51,19 @@ public interface LinkService
      * Uses hrefBase from ContextService.getServletPath().
      *
      * @param object Object (can be collection) to set HREFs on
+     * @param deepScan Generate links also on deeper levels (only one level down)
      * @see javax.servlet.http.HttpServletRequest
      * @see ContextService
      */
-    <T> void generateLinks( T object );
+    <T> void generateLinks( T object, boolean deepScan );
 
     /**
      * Generate HREF and set it using reflection, required a setHref(String) method in your class.
      *
      * @param object   Object (can be collection) to set HREFs on
      * @param hrefBase Used as starting point of HREF
+     * @param deepScan Generate links also on deeper levels (only one level down)
      * @see javax.servlet.http.HttpServletRequest
      */
-    <T> void generateLinks( T object, String hrefBase );
+    <T> void generateLinks( T object, String hrefBase, boolean deepScan );
 }

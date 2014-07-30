@@ -91,7 +91,7 @@ public class DimensionController
 
         if ( links )
         {
-            linkService.generateLinks( dimension );
+            linkService.generateLinks( dimension, true );
         }
 
         return "dimension";
@@ -134,7 +134,7 @@ public class DimensionController
 
         if ( links )
         {
-            linkService.generateLinks( metaData );
+            linkService.generateLinks( metaData, false );
         }
 
         return "dimensions";
@@ -152,7 +152,7 @@ public class DimensionController
 
         if ( links )
         {
-            linkService.generateLinks( metaData );
+            linkService.generateLinks( metaData, false );
         }
 
         return "dimensions";
@@ -194,7 +194,7 @@ public class DimensionController
 
         if ( links )
         {
-            linkService.generateLinks( metaData );
+            linkService.generateLinks( metaData, false );
         }
 
         return "dimensions";

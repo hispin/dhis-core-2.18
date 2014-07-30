@@ -236,13 +236,13 @@ public class DashboardController
 
                 if ( item.getEmbeddedItem() != null )
                 {
-                    linkService.generateLinks( item.getEmbeddedItem() );
+                    linkService.generateLinks( item.getEmbeddedItem(), true );
                 }
                 else if ( item.getLinkItems() != null )
                 {
                     for ( IdentifiableObject link : item.getLinkItems() )
                     {
-                        linkService.generateLinks( link );
+                        linkService.generateLinks( link, true );
                     }
                 }
             }
