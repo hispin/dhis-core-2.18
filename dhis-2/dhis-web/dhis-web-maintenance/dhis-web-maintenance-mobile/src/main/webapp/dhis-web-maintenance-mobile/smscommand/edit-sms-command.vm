@@ -4,7 +4,8 @@
 
     function prepSubmit(){
 	
-		validation( "updateSMSCommandForm" );
+		//validation( "updateSMSCommandForm" );
+		
 		var selectedDataOptions = '{"codes":[';      
 
 		for (var i=1; i<=jQuery('.trDataElementCode').length; i++ )
@@ -37,6 +38,17 @@
 		}
 		specialCharactersInfo += ']}';
 		$("#specialCharactersInfo").val(specialCharactersInfo);
+		
+		var trackedEntityAttributeCodes = '{"trackedEntityAttributeCodes":[';
+		
+		for (var i=1; i<jQuery('.trackedEntityAttribute').length; i++)
+		{ 
+			trackedEntityAttributeCodes += '{"trackedEntityAttributeId" :"'+document.getElementById("attId"+i).value+'",';
+			trackedEntityAttributeCodes += '"code" :"'+document.getElementById("attCode"+i).value+'"},';	
+		}
+		trackedEntityAttributeCodes += ']}';
+		$("#trackedEntityAttributeCodes").val(trackedEntityAttributeCodes);
+		
 		$("#updateSMSCommandForm").submit();
     };
 	
@@ -257,10 +269,34 @@
 	</tr>
 	</table>
     #end
+    
+    #if( $smsCommand.parserType == 'TRACKED_ENTITY_REGISTRATION_PARSER' )
+    	<table id="codes">
+		<col style="width:350px"/><col/>
+	    <thead>
+	      <tr>
+	        <th>$i18n.getString( "tracked_entity_attribute")</th>
+			<th>$i18n.getString( "code" )</th>
+	      </tr>
+	    </thead>
+	    #set($index = 0)
+    	#foreach($attribute in $trackedEntityAttributeList)
+    		
+	    #set ($index = $index + 1)
+	    
+    		 <tr class="trackedEntityAttribute">
+               <td>$attribute.name <input type="hidden" id="attId$index" name="attId$index" value="$attribute.id"/></td>
+               <td><input type="text" name="attCode$index" id="attCode$index" class="{validate:{required:true}}" value='$!codes["$attribute.id"]'></td>   
+            </tr>      
+	    #end
+	    </table>
+    #end
 
 	<br/>	
     <input type="hidden" name="codeDataelementOption" id="codeDataelementOption" />
 	<input type="hidden" name="specialCharactersInfo" id="specialCharactersInfo" />
+	<input type="hidden" name="trackedEntityAttributeCodes" id="trackedEntityAttributeCodes" />
+	
     <input type="button" style="width: 100px" onclick="prepSubmit()" value="$i18n.getString( 'save' )" />
     <input type="button" id="btnBack" name="btnBack" value="Back" style="width:8em" onclick="window.location.href='SMSCommands.action'"/>
 </form>

@@ -8,6 +8,8 @@ function changeParserType( value )
     	showById( "alertParser" );
     } else if (value == 'ANONYMOUS_PROGRAM_PARSER') {
     	showById( "anonymousProgramParser" );
+    } else if (value == 'TRACKED_ENTITY_REGISTRATION_PARSER') {
+    	showById( "registrationParser" );
     }
 	currentType = value;
 }

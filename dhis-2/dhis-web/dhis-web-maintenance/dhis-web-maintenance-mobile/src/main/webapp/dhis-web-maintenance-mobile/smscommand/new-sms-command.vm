@@ -70,6 +70,19 @@
 			</tr>
 		</tbody>
 		
+		<tbody id="registrationParser">
+			<tr>
+				<td>$i18n.getString( "program" )</td>
+				<td>
+					<select name="selectedProgramId" >
+					#foreach( $program in $programList )
+						<option value="$program.id">$program.name</option>
+					#end
+					</select>
+				</td>
+			</tr>
+		</tbody>
+		
 		<tr>
 			<td colspan="2">
 			     <input id="save" type="submit"  style="width: 100px" value="$i18n.getString( "save" )" />
