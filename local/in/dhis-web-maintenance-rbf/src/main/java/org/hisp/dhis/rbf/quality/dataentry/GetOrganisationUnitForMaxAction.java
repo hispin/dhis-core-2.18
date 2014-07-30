@@ -92,8 +92,7 @@ public class GetOrganisationUnitForMaxAction
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
 
-        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer
-            .parseInt( orgUnitGroupId ) );
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupId ) );
 
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_QUALITY_TYPE ) );
 

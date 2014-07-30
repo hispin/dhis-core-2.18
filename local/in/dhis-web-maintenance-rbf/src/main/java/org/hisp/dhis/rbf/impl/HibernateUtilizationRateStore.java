@@ -141,6 +141,11 @@ public class HibernateUtilizationRateStore implements UtilizationRateStore
                 Double tariff = rs.getDouble( 4 );
                 
                 String value = startRange + ":" + endRange + ":" + tariff;
+                String tempVal = utilizationRatesMap.get( dataElementId );
+                if( tempVal != null )
+                {
+                    value = tempVal +"#" + value;
+                }                    
                 utilizationRatesMap.put( dataElementId, value );
                 //System.out.println( dataElementId + " : " + value );
             }

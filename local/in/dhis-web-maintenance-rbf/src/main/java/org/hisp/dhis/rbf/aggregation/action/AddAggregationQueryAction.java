@@ -121,6 +121,14 @@ public class AddAggregationQueryAction
 
             aggregationConditionService.addCaseAggregationCondition( condition );    
         }
+        else if( aggType.equals( Lookup.PBF_AGG_TYPE_QUANTITY_VALIDATED ) )
+        {
+            String query = "NONE";            
+            
+            CaseAggregationCondition condition = new CaseAggregationCondition( dataElement.getName(), aggType, query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+
+            aggregationConditionService.addCaseAggregationCondition( condition );    
+        }
 
         /*if ( aggType.equals( Lookup.CCEI_AGG_TYPE_STORAGE_CAPACITY ) )
         {

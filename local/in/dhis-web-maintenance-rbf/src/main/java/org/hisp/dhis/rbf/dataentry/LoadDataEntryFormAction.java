@@ -358,7 +358,7 @@ public class LoadDataEntryFormAction implements Action
             tariff_setting_authority = (int) tariff_authority.getValue();
         }
 
-        OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( organisationUnit );
+        
         
         List<OrganisationUnit> orgUnitBranch = organisationUnitService.getOrganisationUnitBranch( organisationUnit.getId() );
         String orgUnitBranchIds = "-1";
@@ -367,6 +367,7 @@ public class LoadDataEntryFormAction implements Action
             orgUnitBranchIds += "," + orgUnit.getId();
         }
         
+        OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( organisationUnit, dataSet.getId(), orgUnitBranchIds );
         if( orgUnitGroup != null )
         {
             tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( orgUnitGroup, orgUnitBranchIds, dataSet, period ) );
@@ -388,7 +389,7 @@ public class LoadDataEntryFormAction implements Action
         for ( PBFDataValue pbfDataValue : pbfDataValues )
         {
             DataElement de = pbfDataValue.getDataElement();
-            if ( pbfDataValue.getTariffAmount() == null )
+            if ( pbfDataValue.getTariffAmount() == null || pbfDataValue.getTariffAmount().toString().trim().equals( "" ) )
             {
                 Double tariffAmount = tariffDataValueMap.get( de.getId() );
                 if ( tariffAmount != null )
@@ -529,13 +530,23 @@ public class LoadDataEntryFormAction implements Action
         return SUCCESS;
     }
 
-    public OrganisationUnitGroup findPBFOrgUnitGroupforTariff( OrganisationUnit organisationUnit )
+    public OrganisationUnitGroup findPBFOrgUnitGroupforTariff( OrganisationUnit organisationUnit, Integer dataSetId, String orgUnitIds )
     {
-    	Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
-    	
-    	OrganisationUnitGroupSet orgUnitGroupSet = orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() );
-    	
-    	OrganisationUnitGroup orgUnitGroup = organisationUnit.getGroupInGroupSet( orgUnitGroupSet );
+        Set<Integer> orgUnitGroupIds = tariffDataValueService.getOrgUnitGroupsByDataset( dataSetId, orgUnitIds );
+        
+        OrganisationUnitGroup orgUnitGroup = null;
+        if( orgUnitGroupIds != null && orgUnitGroupIds.size() > 0 )
+        {
+             orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupIds.iterator().next() );
+        }
+        else
+        {        
+            Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+        	
+            OrganisationUnitGroupSet orgUnitGroupSet = orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() );
+        	
+            orgUnitGroup = organisationUnit.getGroupInGroupSet( orgUnitGroupSet );
+        }
     	
     	return orgUnitGroup;
     }
