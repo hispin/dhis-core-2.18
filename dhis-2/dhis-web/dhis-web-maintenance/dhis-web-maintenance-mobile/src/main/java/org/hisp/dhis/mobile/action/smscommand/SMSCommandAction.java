@@ -41,10 +41,12 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
@@ -101,7 +103,19 @@ public class SMSCommandAction
         return userGroupList;
     }
 
-    public List<Program> anonymousProgramList;
+    private List<Program> programList;
+
+    public List<Program> getProgramList()
+    {
+        return programList;
+    }
+
+    public void setProgramList( List<Program> programList )
+    {
+        this.programList = programList;
+    }
+
+    private List<TrackedEntityAttribute> trackedEntityAttributeList;
 
     private int selectedCommandID = -1;
 
@@ -148,12 +162,19 @@ public class SMSCommandAction
         {
             for ( SMSCode x : smsCommand.getCodes() )
             {
-                codes.put( "" + x.getDataElement().getId() + x.getOptionId(), x.getCode() );
+                if ( smsCommand.getParserType() == ParserType.TRACKED_ENTITY_REGISTRATION_PARSER )
+                {
+                    codes.put( "" + x.getTrackedEntityAttribute().getId(), x.getCode() );
+                }
+                else
+                {
+                    codes.put( "" + x.getDataElement().getId() + x.getOptionId(), x.getCode() );
+                }
+
             }
         }
         userGroupList = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
-        anonymousProgramList = new ArrayList<Program>(
-            programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+        programList = new ArrayList<Program>( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
         return SUCCESS;
     }
 
@@ -189,5 +210,29 @@ public class SMSCommandAction
     public SMSCommand getSmsCommand()
     {
         return smsCommand;
+    }
+
+    public List<TrackedEntityAttribute> getTrackedEntityAttributeList()
+    {
+        if ( smsCommand != null )
+        {
+            Program program = smsCommand.getProgram();
+            if ( program != null )
+            {
+                trackedEntityAttributeList = new ArrayList<TrackedEntityAttribute>();
+                for ( ProgramTrackedEntityAttribute programAttribute : program.getProgramAttributes() )
+                {
+                    trackedEntityAttributeList.add( programAttribute.getAttribute() );
+                }
+                return trackedEntityAttributeList;
+            }
+
+        }
+        return null;
+    }
+
+    public void setTrackedEntityAttributeList( List<TrackedEntityAttribute> trackedEntityAttributeList )
+    {
+        this.trackedEntityAttributeList = trackedEntityAttributeList;
     }
 }

@@ -45,6 +45,7 @@
     </set>
 
     <many-to-one name="userGroup" class="org.hisp.dhis.user.UserGroup" column="usergroupid" foreign-key="fk_smscommand_usergroup" />
+    <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_smscommand_program" />
 
   </class>
 
