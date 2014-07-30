@@ -38,6 +38,7 @@ import org.springframework.core.OrderComparator;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -147,6 +148,15 @@ public class DefaultSchemaService implements SchemaService
     public List<Schema> getSchemas()
     {
         return Lists.newArrayList( classSchemaMap.values() );
+    }
+
+    @Override
+    public List<Schema> getSortedSchemas()
+    {
+        List<Schema> schemas = Lists.newArrayList( classSchemaMap.values() );
+        Collections.sort( schemas, OrderComparator.INSTANCE );
+
+        return schemas;
     }
 
     @Override
