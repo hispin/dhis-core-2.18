@@ -1028,7 +1028,7 @@
     <spring.security.version>3.2.4.RELEASE</spring.security.version>
     <hibernate.version>4.2.0.Final</hibernate.version>
     <hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
-    <jackson.version>2.3.3</jackson.version>
+    <jackson.version>2.4.1</jackson.version>
     <camel.version>2.10.2</camel.version>
     <slf4j.version>1.6.6</slf4j.version>
     <geotools.version>9.3</geotools.version>
