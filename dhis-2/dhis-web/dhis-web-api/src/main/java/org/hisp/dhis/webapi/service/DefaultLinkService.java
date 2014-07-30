@@ -72,7 +72,7 @@ public class DefaultLinkService implements LinkService
             return;
         }
 
-        String endpoint = contextService.getServletPath() + "/" + schema.getApiEndpoint();
+        String endpoint = contextService.getServletPath() + schema.getApiEndpoint();
 
         if ( pager.getPage() < pager.getPageCount() )
         {
