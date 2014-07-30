@@ -72,6 +72,13 @@ public interface SchemaService
     List<Schema> getSchemas();
 
     /**
+     * Get all available schemas (which are generated with a schema descriptor).
+     *
+     * @return List of all available schemas
+     */
+    List<Schema> getSortedSchemas();
+
+    /**
      * Get all available schemas which have the metadata property set to true.
      *
      * @return List of all available metadata schemas
