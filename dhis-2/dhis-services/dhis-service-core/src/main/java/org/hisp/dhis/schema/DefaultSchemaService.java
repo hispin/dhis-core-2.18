@@ -38,7 +38,6 @@ import org.springframework.core.OrderComparator;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
