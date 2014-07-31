@@ -460,7 +460,8 @@
     <action name="showAddLockExceptionForm" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="page">/dhis-web-maintenance-dataadmin/addLockExceptionForm.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/addLockExceptionForm.vm</param>      
+      <param name="javascripts">javascript/dataArchive.js</param>
       <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
     </action>
 
@@ -472,11 +473,6 @@
 
     <action name="getDataSets" class="org.hisp.dhis.dataadmin.action.lockexception.GetDataSetsAction">
       <result name="success" type="velocity-json">jsonDataSets.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="getPeriods" class="org.hisp.dhis.dataadmin.action.lockexception.GetPeriodsAction">
-      <result name="success" type="velocity-json">jsonPeriods.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
