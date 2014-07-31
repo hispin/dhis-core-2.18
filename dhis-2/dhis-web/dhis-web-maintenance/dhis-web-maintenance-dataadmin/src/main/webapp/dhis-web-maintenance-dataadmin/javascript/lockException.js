@@ -8,7 +8,7 @@ function ouChanged( e ) {
     // arguments is only "array-like", so it doesnt have splice
     var args = Array.prototype.slice.call(arguments);
     var selectedOus = args.splice(1, args.length);
-
+    
     jQuery("#organisationUnitId").val(selectedOus.join(','));
 
     jQuery.getJSON('getDataSets.action?id=' + selectedOus.join(','), function ( data ) {
@@ -18,8 +18,7 @@ function ouChanged( e ) {
             resetDataSets();
         } else {
             for ( var n in data.dataSets ) {
-                var option = jQuery("<option />").attr("value", data.dataSets[n].id).text(data.dataSets[n].name)
-                jQuery("#dataSets").append(option);
+				jQuery("#dataSets").append("<option value='" +  data.dataSets[n].id + "' periodType='" + data.dataSets[n].periodType + "' allowFuturePeriods='" + data.dataSets[n].allowFuturePeriods + "'>" + data.dataSets[n].name + "</option>");
             }
 
             jQuery("#dataSets").removeAttr("disabled");
@@ -32,22 +31,13 @@ function ouChanged( e ) {
 function dataSetChanged( e ) {
     var dataSetId = jQuery("#dataSets option:selected").val();
     jQuery("#periods").children().remove();
+	currentPeriodOffset = 0;
 
     if ( !isNaN(dataSetId) ) {
-        jQuery.getJSON('getPeriods.action?id=' + dataSetId, function ( data ) {
-            if ( data.periods.length == 0 ) {
-                resetPeriods();
-            } else {
-                for ( var n in data.periods ) {
-                    var option = jQuery("<option />").attr("value", data.periods[n].id).text(data.periods[n].name);
-                    jQuery("#periods").append(option);
-                }
-
-                jQuery("#periods").removeAttr("disabled");
-            }
-
-            jQuery("#periods").trigger("change");
-        });
+       displayPeriods();
+	   enable('periods');
+	   enable('prevPeriod');
+	   enable('nextPeriod');
     } else {
         resetPeriods();
         jQuery("#periods").trigger("change");
@@ -64,8 +54,57 @@ function periodChanged( e ) {
 
 function resetDataSets() {
     jQuery("#dataSets").append("<option>-- Please select an organisation unit with a dataset --</option>").attr("disabled", true);
+	disable('prevPeriod');
+	disable('nextPeriod');
 }
 
 function resetPeriods() {
     jQuery("#periods").append("<option>-- Please select a dataset --</option>").attr("disabled", true);
+	disable('prevPeriod');
+	disable('nextPeriod');
+}
+
+/**
+ * Handles the onClick event for the next period button.
+ */
+var currentPeriodOffset = 0;
+
+function nextPeriodsSelected()
+{
+	if( currentPeriodOffset < 0 )
+	{
+		currentPeriodOffset++;
+		displayPeriods();
+	}
+}
+
+/**
+ * Handles the onClick event for the previous period button.
+ */
+function previousPeriodsSelected()
+{
+	currentPeriodOffset--;
+    displayPeriods();
+}
+
+/**
+ * Generates the period select list options.
+ */
+function displayPeriods()
+{
+    var periodType = $( '#dataSets option:selected' ).attr( "periodType" )
+    var allowFuturePeriods = $( '#dataSets option:selected' ).attr( "allowFuturePeriods" );
+    var periods = dhis2.period.generator.generateReversedPeriods(periodType,currentPeriodOffset);
+
+    if ( allowFuturePeriods == "false" )
+    {
+        periods = dhis2.period.generator.filterFuturePeriods( periods );
+    }
+
+    clearListById( 'periods' );
+
+    for( var i in periods )
+    {
+        jQuery("#periods").append("<option value='" + periods[i].iso + "' >" + periods[i].name  + "</option>" );
+    }
 }
