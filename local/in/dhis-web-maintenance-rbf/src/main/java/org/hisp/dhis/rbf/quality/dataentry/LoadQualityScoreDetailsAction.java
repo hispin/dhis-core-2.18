@@ -231,11 +231,6 @@ public class LoadQualityScoreDetailsAction
             overAllQtyDataElementId = overAllDataElement.getId();
         }
         
-        
-        
-        
-        
-        
         Constant qualityMaxDataElement = constantService.getConstantByName( QUALITY_MAX_DATAELEMENT );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         
