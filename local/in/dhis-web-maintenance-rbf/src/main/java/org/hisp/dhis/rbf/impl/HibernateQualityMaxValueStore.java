@@ -169,49 +169,49 @@ public class HibernateQualityMaxValueStore implements QualityMaxValueStore
 	}
 	
 	public Map<Integer, Double> getQualityMaxValues( OrganisationUnitGroup orgUnitGroup, String orgUnitBranchIds, DataSet dataSet, Period period )
-    {
-        Map<Integer, Double> qualityMaxValueMap = new HashMap<Integer, Double>();
-        
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String curPeriod = simpleDateFormat.format( period.getEndDate() );
-        
-        try
-        {                       
-            String query = "select td.dataelementid, td.value from "+
-                            "( " +
-                                "select max(asd.level) as level,asd.dataelementid,asd.orgunitgroupid,datasetid " +
-                                " from " +
-                                    "( "+
-                                        " select td.orgunitgroupid,td.organisationunitid,td.datasetid,td.dataelementid,os.level,td.value " +
-                                            " from qualitymaxvalue td inner join _orgunitstructure os on os.organisationunitid = td.organisationunitid "+
-                                            " where '" + curPeriod + "'  between date(td.startdate) and date(td.enddate) " +
-                                                " and orgunitgroupid in ( " + orgUnitGroup.getId() + ") " +
-                                                " and datasetid in ( " +dataSet.getId() + ") "+
-                                                " )asd "+
-                                                " group by asd.dataelementid,asd.orgunitgroupid,datasetid " +
-                                                " )sag1 " +
-                                                " inner join qualitymaxvalue td on td.dataelementid=sag1.dataelementid " +
-                                                " where td.orgunitgroupid=sag1.orgunitgroupid " + 
-                                                " and td.datasetid=sag1.datasetid " +
-                                                " and td.organisationunitid in ("+ orgUnitBranchIds +") ";
-            
-            System.out.println("Query: " + query );
-            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
-            while ( rs.next() )
-            {
-                Integer dataElementId = rs.getInt( 1 );
-                Double value = rs.getDouble( 2 );
-                qualityMaxValueMap.put( dataElementId, value );
-                System.out.println( dataElementId + " : " + value );
-            }
-        }
-        catch( Exception e )
         {
-            System.out.println("In getQualityMaxValues Exception :"+ e.getMessage() );
-        }
+            Map<Integer, Double> qualityMaxValueMap = new HashMap<Integer, Double>();
+            
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String curPeriod = simpleDateFormat.format( period.getEndDate() );
+            
+            try
+            {                       
+                String query = "select td.dataelementid, td.value from "+
+                                "( " +
+                                    "select max(asd.level) as level,asd.dataelementid,asd.orgunitgroupid,datasetid " +
+                                    " from " +
+                                        "( "+
+                                            " select td.orgunitgroupid,td.organisationunitid,td.datasetid,td.dataelementid,os.level,td.value " +
+                                                " from qualitymaxvalue td inner join _orgunitstructure os on os.organisationunitid = td.organisationunitid "+
+                                                " where '" + curPeriod + "'  between date(td.startdate) and date(td.enddate) " +
+                                                    " and orgunitgroupid in ( " + orgUnitGroup.getId() + ") " +
+                                                    " and datasetid in ( " +dataSet.getId() + ") "+
+                                                    " )asd "+
+                                                    " group by asd.dataelementid,asd.orgunitgroupid,datasetid " +
+                                                    " )sag1 " +
+                                                    " inner join qualitymaxvalue td on td.dataelementid=sag1.dataelementid " +
+                                                    " where td.orgunitgroupid=sag1.orgunitgroupid " + 
+                                                    " and td.datasetid=sag1.datasetid " +
+                                                    " and td.organisationunitid in ("+ orgUnitBranchIds +") ";
+                
+                System.out.println("Query: " + query );
+                SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+                while ( rs.next() )
+                {
+                    Integer dataElementId = rs.getInt( 1 );
+                    Double value = rs.getDouble( 2 );
+                    qualityMaxValueMap.put( dataElementId, value );
+                    System.out.println( dataElementId + " : " + value );
+                }
+            }
+            catch( Exception e )
+            {
+                System.out.println("In getQualityMaxValues Exception :"+ e.getMessage() );
+            }
         
-        return qualityMaxValueMap;
-    }
+            return qualityMaxValueMap;
+        }
     
 
 }
