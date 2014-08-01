@@ -122,6 +122,8 @@
 			<td></td>
 		</tr>
 		
+		<tr name='nonAnonymous'><td>&nbsp;</td></tr>
+		
 		<tr name='nonAnonymous'>
 			<th colspan="2">$i18n.getString( "enrollment_details" )</th>
 		</tr>
@@ -168,7 +170,8 @@
             <td></td>
         </tr>
 
-
+		<tr name='nonAnonymous'><td>&nbsp;</td></tr>
+		
 		<tr name='nonAnonymous'>
 			<th colspan="2">$i18n.getString( "dashboard_shortcut_to_add_relative" )</th>
 		</tr>
@@ -215,26 +218,18 @@
 			</td>
 		</tr>
 		
-		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-			
-	<tbody>
-	</table>
-
-  <table name='nonAnonymous'>
-      <thead>
-        <tr>
+		<tr><td>&nbsp;</td></tr>
+		
+        <tr name='nonAnonymous'>
           <th colspan="2">$i18n.getString( "scheduling_of_events" )</th>
         </tr>
-      </thead>
-
-      <tbody>
         <tr name='nonAnonymous'>
             <td><label for="ignoreOverdueEvents">$i18n.getString( "skip_to_generate_overdue_events" )</label></td>
             <td><input type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true' #if($program.ignoreOverdueEvents=='true') checked #end #if( $program.type!='1' ) disabled #end ></td>
             <td></td>
         </tr>
-      </tbody>
-  </table>
+    </tbody>
+</table>
 
   <br />
 
