@@ -35,6 +35,8 @@
     "are_you_sure_to_remove": "Are you sure you want to remove the selected item?",
     "use_custom_form": "Custom form",
     "use_default_form": "Default form",
+    "print": "Print",
+    "print_blank": "Print blank form",
     "show_hide_columns": "Show/hide columns",
     "show_all": "Show all",
     "hide": "Hide",

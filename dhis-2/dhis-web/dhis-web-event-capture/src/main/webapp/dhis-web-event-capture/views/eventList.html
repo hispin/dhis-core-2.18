@@ -183,7 +183,7 @@
                                 </ng-form>                                                
                             </td>
                             <td ng-if='noteExists'>                                
-                                <a href ng-click="showNotes(dhis2Event)" title="{{'show_comments'| translate}}"><i class="fa fa-info-circle"></i></a>
+                                <a href ng-click="showNotes(dhis2Event)" title="{{'show_comments'| translate}}" ng-if="dhis2Event.notes"><i class="fa fa-info-circle"></i></a>
                             </td>
                         </tr>
                     </tbody>        
