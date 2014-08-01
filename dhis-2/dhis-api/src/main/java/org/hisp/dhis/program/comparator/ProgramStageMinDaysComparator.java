@@ -28,9 +28,9 @@ package org.hisp.dhis.program.comparator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.program.ProgramStage;
-
 import java.util.Comparator;
+
+import org.hisp.dhis.program.ProgramStage;
 
 /**
  * @author Chau Thu Tran
@@ -40,6 +40,20 @@ public class ProgramStageMinDaysComparator implements Comparator<ProgramStage>
 {
     public int compare( ProgramStage programStage1, ProgramStage programStage2 )
     {
-        return programStage1.getMinDaysFromStart() - programStage2.getMinDaysFromStart();
+        if(  programStage1.getMinDaysFromStart() != programStage2.getMinDaysFromStart() )
+        {
+            return programStage1.getMinDaysFromStart() - programStage2.getMinDaysFromStart();
+        }
+        
+        if ( programStage1.getCreated().before( programStage2.getCreated() ) )
+        {
+            return -1;
+        }
+        else if ( programStage1.getCreated().after( programStage2.getCreated() ) )
+        {
+            return 1;
+        }
+        
+        return 0;
     }
 }
