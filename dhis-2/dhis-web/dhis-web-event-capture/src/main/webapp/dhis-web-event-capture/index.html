@@ -147,10 +147,12 @@
                                     {{displayCustomForm ? 'use_default_form' : 'use_custom_form'| translate}}
                                 </button>  
                             </td>
-                            <td ng-if="editingEventInFull || eventRegistration" style='padding-left: 10px;'>
+                            <td ng-if="dhis2Events.length > 0" style='padding-left: 10px;'>
                                 <button class="button button-std not-printable"
                                         onclick="javascript:window.print()">
-                                    {{'print'| translate}}
+                                    <span ng-if="!eventRegistration && !editingEventInFull">{{'print_list'| translate}}</span>
+                                    <span ng-if="eventRegistration">{{'print_form'| translate}}</span>
+                                    <span ng-if="editingEventInFull">{{'print_details'| translate}}</span>
                                 </button>  
                             </td> 
                         </tr>                       
@@ -167,7 +169,7 @@
                     <form name="outerForm" novalidate>
                         <div ng-if="editingEventInFull || eventRegistration">
                             <h3>
-                                <span ng-if="editingEventInFull">{{'update_event'| translate}}</span>                       
+                                <span ng-if="editingEventInFull">{{'event_details'| translate}}</span>                       
                                 <span ng-if="eventRegistration">{{'new_event'| translate}}</span>                            
                             </h3>
 

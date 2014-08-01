@@ -227,7 +227,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                 $scope.dhis2Events.splice(index,1);
                                 i--;                           
                             }
-                        }                                  
+                        }  
+                        
+                        if($scope.noteExists){
+                            $scope.eventGridColumns.push({name: 'Comment', id: 'comment', type: 'string', compulsory: false, showFilter: false, show: true});
+                        }
                     }                
                     $scope.eventFetched = true;
                 });            

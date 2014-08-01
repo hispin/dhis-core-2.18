@@ -620,9 +620,9 @@ select {
     #header, #leftBar, .not-printable {
         display: none;
     }
-    
+
     .container-default-form {
-        width: 80%;
+        width: 90%;
     }
 
     ::-webkit-input-placeholder { /* WebKit browsers */
@@ -636,5 +636,30 @@ select {
     }
     :-ms-input-placeholder { /* Internet Explorer 10+ */
         color: transparent;
+    }
+
+    .listTable
+    {
+        width: 100%;
+        border-collapse: collapse;
+        padding-top: 10px;
+        cursor: pointer;
+    }
+
+    .listTable th
+    {
+        background-color: rgba( 0, 0, 0, 0 );
+        border-bottom: 1px solid #cad5e5;
+        padding: 6px 0 3px 5px;
+    }
+
+    .listTable td
+    {
+        padding: 2px 2px 2px 5px;
+    }
+
+    .listTable > tbody > tr > td
+    {
+        padding: 11px 0 10px 5px;
     }
 }
