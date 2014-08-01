@@ -54,6 +54,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     //watch for selection of org unit from tree
     $scope.$watch('selectedOrgUnit', function(newObj, oldObj) {
         
+        $scope.dhis2Events = [];
         if( angular.isObject($scope.selectedOrgUnit)){            
             
             //apply translation - by now user's profile is fetched from server.
@@ -70,6 +71,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         //$scope.selectedOrgUnit = orgUnit;
         $scope.selectedProgram = null;
         $scope.selectedProgramStage = null;
+        $scope.dhis2Events = [];
 
         $scope.eventRegistration = false;
         $scope.editGridColumns = false;
