@@ -583,6 +583,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         });        
     };
     
+    $scope.printForm = function(){
+        var printContents = document.getElementById('printableForm').innerHTML;
+        var originalContents = document.body.innerHTML;        
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    };
+    
     $scope.showNotes = function(dhis2Event){
         
         var modalInstance = $modal.open({

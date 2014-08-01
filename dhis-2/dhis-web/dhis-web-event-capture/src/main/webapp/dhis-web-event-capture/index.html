@@ -67,8 +67,8 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js"></script>
 
         <link type="text/css" rel="stylesheet" href="../dhis-web-commons/font-awesome/css/font-awesome.min.css"/>
-        <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/light_blue/light_blue.css"/>
-        <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/widgets.css"/>     
+        <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/light_blue/light_blue.css"/>
+        <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css"/>     
         <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/menu.css">
         
         <link type="text/css" rel="stylesheet" href="styles/style.css">
@@ -134,7 +134,7 @@
                                 </select>      
                             </td>
                             <td style='padding-left: 10px;'>
-                                <button class="button button-std"
+                                <button class="button button-std not-printable"
                                         ng-show="selectedProgramStage" 
                                         ng-click="showEventRegistration()" 
                                         ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
@@ -142,11 +142,17 @@
                                 </button>  
                             </td>
                             <td ng-if="(editingEventInFull || eventRegistration) && customForm" style='padding-left: 10px;'>
-                                <button class="button button-std"
+                                <button class="button button-std not-printable"
                                         ng-click="switchDataEntryForm()">
                                     {{displayCustomForm ? 'use_default_form' : 'use_custom_form'| translate}}
                                 </button>  
-                            </td>                            
+                            </td>
+                            <td ng-if="editingEventInFull || eventRegistration" style='padding-left: 10px;'>
+                                <button class="button button-std not-printable"
+                                        onclick="javascript:window.print()">
+                                    {{'print'| translate}}
+                                </button>  
+                            </td> 
                         </tr>                       
                     </table>
                 </div>
@@ -157,39 +163,40 @@
                 <!-- event grid ends -->
 
                 <!-- event update in full / registration begins-->
-                <form name="outerForm" novalidate>
-                    <div ng-if="editingEventInFull || eventRegistration">
-                        <h3>
-                            <span ng-if="editingEventInFull">{{'update_event'| translate}}</span>                       
-                            <span ng-if="eventRegistration">{{'new_event'| translate}}</span>                            
-                        </h3>
+                <div>                
+                    <form name="outerForm" novalidate>
+                        <div ng-if="editingEventInFull || eventRegistration">
+                            <h3>
+                                <span ng-if="editingEventInFull">{{'update_event'| translate}}</span>                       
+                                <span ng-if="eventRegistration">{{'new_event'| translate}}</span>                            
+                            </h3>
 
-                        <div class="bordered-div" ng-if="displayCustomForm">
-                            <div ng-include="'views/customForm.html'"></div>  
-                        </div>
+                            <div class="bordered-div" ng-if="displayCustomForm">
+                                <div ng-include="'views/customForm.html'"></div>  
+                            </div>
 
-                        <div class="bordered-div" style="width:50%;" ng-if="!displayCustomForm">
-                            <div ng-include="'views/defaultForm.html'"></div>                
+                            <div class="bordered-div container-default-form" ng-if="!displayCustomForm">
+                                <div ng-include="'views/defaultForm.html'"></div>                
+                            </div>
+
+                            <!-- buttons for event registration / update begins -->
+                            <div style="clear: both;">                        
+                                <span ng-if="editingEventInFull">
+                                    <button ng-click="updateEvent()" class="button not-printable">{{'update'| translate}}</button>
+                                    <button ng-click="showEventList()" class="button not-printable">{{'go_back'| translate}}</button>
+                                </span>
+                                <span ng-if="eventRegistration">
+                                    <button ng-click="addEvent(true)" class="button not-printable">{{'save_and_add_new'| translate}}</button>
+                                    <button ng-click="addEvent()" class="button not-printable">{{'save_and_back'| translate}}</button>
+                                    <button ng-click="showEventList(null)" class="button not-printable">{{'go_back'| translate}}</button>
+                                </span> 
+                            </div>
+                            <!-- buttons for event registration / update ends -->
+
                         </div>
-                        
-                        <!-- buttons for event registration / update begins -->
-                        <div style="clear: both;">                        
-                            <span ng-if="editingEventInFull">
-                                <button ng-click="updateEvent()" class="button">{{'update'| translate}}</button>
-                                <button ng-click="showEventList()" class="button">{{'go_back'| translate}}</button>
-                            </span>
-                            <span ng-if="eventRegistration">
-                                <button ng-click="addEvent(true)" class="button">{{'save_and_add_new'| translate}}</button>
-                                <button ng-click="addEvent()" class="button">{{'save_and_back'| translate}}</button>
-                                <button ng-click="showEventList(null)" class="button">{{'go_back'| translate}}</button>
-                            </span> 
-                        </div>
-                        <!-- buttons for event registration / update ends -->
-                        
-                    </div>
-                </form>    
-                <!-- event update / registration ends -->
-                
+                    </form>  
+                </div>
+                <!-- event update / registration ends -->                
             </div>            
         </div>
     </body>
