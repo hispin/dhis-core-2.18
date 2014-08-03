@@ -410,7 +410,7 @@ public class CaseAggregationConditionServiceTest
         dataElements.add( dataElementC );
         dataElements.add( dataElementD );
 
-        assertTrue( equals( aggConditionServiceService.getCaseAggregationCondition( dataElements ), conditionA,
+        assertTrue( equals( aggConditionServiceService.getCaseAggregationConditions( dataElements , null, null, null ), conditionA,
             conditionB ) );
     }
 

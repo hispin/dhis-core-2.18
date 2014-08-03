@@ -335,7 +335,7 @@ public class CaseAggregationConditionStoreTest
         dataElements.add( dataElementC );
         dataElements.add( dataElementD );
 
-        assertTrue( equals( aggConditionServiceStore.get( dataElements ), conditionA, conditionB ) );
+        assertTrue( equals( aggConditionServiceStore.get( dataElements, null, null, null ), conditionA, conditionB ) );
     }
 
 }
