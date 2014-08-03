@@ -165,7 +165,7 @@ public class CaseAggregationResultAction
         DataSet selectedDataSet = dataSetService.getDataSet( dataSetId );
 
         Collection<CaseAggregationCondition> aggregationConditions = aggregationConditionService
-            .getCaseAggregationCondition( selectedDataSet.getDataElements() );
+            .getCaseAggregationConditions( selectedDataSet.getDataElements(), null, null , null );
 
         // ---------------------------------------------------------------------
         // Get selected periods list
