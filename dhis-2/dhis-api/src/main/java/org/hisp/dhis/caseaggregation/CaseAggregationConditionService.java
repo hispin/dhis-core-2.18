@@ -92,7 +92,7 @@ public interface CaseAggregationConditionService
      *         match.
      */
     CaseAggregationCondition getCaseAggregationCondition( String name );
-
+    
     /**
      * Returns all {@link CaseAggregationCondition}
      * 
@@ -127,10 +127,13 @@ public interface CaseAggregationConditionService
      * {@link DataElement}
      * 
      * @param dataElements DataElement collection
+     * @param key The name of CaseAggregationCondition
+     * @param first
+     * @param max
      * 
      * @return A collection of CaseAggregationCondition
      */
-    Collection<CaseAggregationCondition> getCaseAggregationCondition( Collection<DataElement> dataElements );
+    Collection<CaseAggregationCondition> getCaseAggregationConditions( Collection<DataElement> dataElements, String key, Integer first, Integer max  );
 
     /**
      * Retrieve a collection of {@link DataElement} by a
@@ -266,4 +269,10 @@ public interface CaseAggregationConditionService
      * @return List of TrackedEntityInstance ids
      */
     List<Integer> executeSQL( String sql );
+   
+    /**
+     * @param dataElements
+     * @return
+     */
+    int countCaseAggregationCondition( Collection<DataElement> dataElements, String key );
 }

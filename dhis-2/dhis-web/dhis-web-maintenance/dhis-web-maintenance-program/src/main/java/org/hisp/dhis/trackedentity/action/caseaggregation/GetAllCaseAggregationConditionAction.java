@@ -40,8 +40,7 @@ import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Chau Thu Tran
@@ -49,7 +48,7 @@ import com.opensymphony.xwork2.Action;
  * @version GetAllCaseAggregationConditionAction.java Nov 18, 2010 10:42:01 AM
  */
 public class GetAllCaseAggregationConditionAction
-    implements Action
+    extends ActionPagingSupport<CaseAggregationCondition>
 {
     // -------------------------------------------------------------------------
     // Dependency
@@ -83,6 +82,13 @@ public class GetAllCaseAggregationConditionAction
     public Integer getDataSetId()
     {
         return dataSetId;
+    }
+
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
     }
 
     private Collection<CaseAggregationCondition> aggregationConditions;
@@ -120,12 +126,10 @@ public class GetAllCaseAggregationConditionAction
         dataSets = new ArrayList<DataSet>( _datasets );
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
 
-        if ( dataSetId != null )
-        {
-            DataSet dataSet = dataSetService.getDataSet( dataSetId );
-
-            aggregationConditions = aggregationConditionService.getCaseAggregationCondition( dataSet.getDataElements() );
-        }
+        Collection<DataElement> dataElements = ( dataSetId == null ) ? null : dataSetService.getDataSet( dataSetId ).getDataElements();
+        this.paging = createPaging( aggregationConditionService.countCaseAggregationCondition( dataElements, key ) );
+        aggregationConditions = aggregationConditionService.getCaseAggregationConditions( dataElements, key,
+            paging.getStartPos(), paging.getPageSize() );
         
         return SUCCESS;
     }

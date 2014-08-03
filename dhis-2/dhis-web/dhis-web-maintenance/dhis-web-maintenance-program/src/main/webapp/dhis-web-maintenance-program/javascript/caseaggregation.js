@@ -369,11 +369,12 @@ function insertMultiValues( elementId ) {
 function getCaseAggConditionByDataset() {
   $.get('getCaseAggConditionByDataset.action',
     {
-      dataSetId: getFieldValue('dataSetId')
+      dataSetId: getFieldValue('dataSetId'),
+	  key: getFieldValue('key')
     }
     , function( html ) {
-      setTableStyles();
       setInnerHTML('list', html);
+	  setTableStyles();
     });
 }
 

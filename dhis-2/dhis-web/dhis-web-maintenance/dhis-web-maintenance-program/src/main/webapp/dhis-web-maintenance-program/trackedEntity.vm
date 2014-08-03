@@ -42,7 +42,8 @@
           #end
       </tbody>
       </table>
-	  #parse( "/dhis-web-commons/paging/paging.vm" )
+		<p></p>
+		#parse( "/dhis-web-commons/paging/paging.vm" )
     </td>
 
 		<td id="detailsData">
