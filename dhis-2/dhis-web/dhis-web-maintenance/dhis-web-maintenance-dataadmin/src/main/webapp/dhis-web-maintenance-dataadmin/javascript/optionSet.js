@@ -17,7 +17,7 @@ function showOptionSetDetails( context ) {
 }
 
 function showOptionList( context ) {
-  location.href = 'option.action?id=' + context.id;
+  location.href = 'option.action?optionSetId=' + context.id;
 }
 
 // -----------------------------------------------------------------------------

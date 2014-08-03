@@ -1,6 +1,4 @@
 
-#sharingDialog()
-
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 	
@@ -31,7 +29,15 @@
 				<col>          
 				<col width="120"> 
 				<tr>
-					<td>#filterDiv( "option" )</td>
+					<td>
+						<form onsubmit="submitFilter()" method="GET" action="option.action" id="filterKeyForm">
+							<input type="text" class="filterInput" placeholder="$i18n.getString('filter_by_name')" name="key" id="key">
+							<input type="hidden" id="optionSetId" name="optionSetId" value="$optionSet.id" />
+							<input type="hidden" value="" name="curKey" id="curKey">
+							<input type="submit" class="filterButton" value="Filter" id="filterButton">
+							<input type="button" class="filterButton" onclick="javascript:setFieldValue('key');byId('filterKeyForm').submit();" value="$i18n.getString('clear')">
+						</form>
+					</td>
 					<td colspan="3" style="text-align:right">
 						<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddOptionForm.action?id=$optionSet.id'" style="width:150px"><br>
 						<input type="button" value="$i18n.getString( "sort_options" )" onclick="window.location.href='sortOptionsForm.action?id=$optionSet.id'" style="width:150px"><br>
@@ -47,7 +53,7 @@
       </tr>
       </thead>
       <tbody id="list">
-      #foreach( $option in $optionSet.options )
+      #foreach( $option in $options )
       <tr id="tr${option.id}">
         <td data-id="$!option.id" data-uid="$!option.uid" data-type="Option" data-name="$encoder.htmlEncode( $!option.displayName )"
           data-can-manage="$security.canManage( $option )"

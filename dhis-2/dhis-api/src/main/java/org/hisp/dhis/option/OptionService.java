@@ -79,4 +79,6 @@ public interface OptionService
     Option getOptionByCode( String code );
     
     Option getOptionValueByName( OptionSet optionSet, String name );
+    
+    Collection<Option> getOptionValues( OptionSet optionSet, String option, Integer min, Integer max );
 }

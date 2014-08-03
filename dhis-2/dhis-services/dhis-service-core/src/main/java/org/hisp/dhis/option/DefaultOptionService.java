@@ -182,4 +182,9 @@ public class DefaultOptionService
     {
         return i18n( i18nService, optionStore.getOptionValueByName( optionSet, name ) );
     }
+    
+    public Collection<Option> getOptionValues( OptionSet optionSet, String option, Integer min, Integer max )
+    {
+        return i18n( i18nService, optionStore.getOptionValues( optionSet, option, min, max ) );
+    }
 }
