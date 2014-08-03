@@ -1092,6 +1092,7 @@ public class DataApprovalServiceTest
     @Test
     public void testMultiPeriodApproval() throws Exception
     {
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
         dataApprovalLevelService.addDataApprovalLevel( level2 );
 
         dataSetA.setApproveData( true );

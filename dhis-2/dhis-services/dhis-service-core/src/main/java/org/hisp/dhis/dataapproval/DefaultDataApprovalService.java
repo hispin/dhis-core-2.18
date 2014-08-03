@@ -146,7 +146,7 @@ public class DefaultDataApprovalService
     public void deleteDataApproval( DataApproval dataApproval )
     {
         if ( ( dataApproval.getCategoryOptionGroup() == null || securityService.canRead( dataApproval.getCategoryOptionGroup() ) )
-            && mayUnapprove( dataApproval.getOrganisationUnit(), dataApproval.isAccepted() ) )
+            && mayUnapprove( dataApproval ) )
         {
             PeriodType selectionPeriodType = dataApproval.getPeriod().getPeriodType();
             PeriodType dataSetPeriodType = dataApproval.getDataSet().getPeriodType();
@@ -178,7 +178,7 @@ public class DefaultDataApprovalService
         }
         else
         {
-            warnNotPermitted( dataApproval, "unapprove", mayUnapprove( dataApproval.getOrganisationUnit(), dataApproval.isAccepted() ) );
+            warnNotPermitted( dataApproval, "unapprove", mayUnapprove( dataApproval ) );
         }
     }
 
@@ -230,20 +230,21 @@ public class DefaultDataApprovalService
             && ( dataApprovalLevel.getCategoryOptionGroupSet() == null || securityService.canRead( dataApprovalLevel.getCategoryOptionGroupSet() ))
             && canReadOneCategoryOptionGroup( categoryOptionGroups ) )
         {
-            boolean unacceptPermissionNeededToUnapprove = false;
-
             switch ( status.getDataApprovalState() )
             {
                 case PARTIALLY_ACCEPTED_HERE:
                 case ACCEPTED_HERE:
-                    unacceptPermissionNeededToUnapprove = true;
                 case PARTIALLY_APPROVED_HERE:
                 case APPROVED_HERE:
+                    permissions.setMayApprove( mayApprove( organisationUnit ) );
+                    permissions.setMayUnapprove( mayUnapprove( status.getDataApproval() ) );
+                    permissions.setMayAccept( mayAcceptOrUnaccept( status.getDataApproval() ) );
+                    permissions.setMayUnaccept( permissions.isMayAccept() );
+                    break;
+
                 case UNAPPROVED_READY:
                     permissions.setMayApprove( mayApprove( organisationUnit ) );
-                    permissions.setMayUnapprove( mayUnapprove( organisationUnit, unacceptPermissionNeededToUnapprove ) );
-                    permissions.setMayAccept( mayAcceptOrUnaccept( organisationUnit ) );
-                    permissions.setMayUnaccept( permissions.isMayAccept() );
+                    permissions.setMayUnapprove( isAuthorizedToUnapprove( organisationUnit ) );
                     break;
             }
         }
@@ -281,7 +282,7 @@ public class DefaultDataApprovalService
     public void acceptOrUnaccept ( DataApproval dataApproval, boolean accepted )
     {
         if ( ( dataApproval.getCategoryOptionGroup() == null || securityService.canRead( dataApproval.getCategoryOptionGroup() ) )
-                && mayAcceptOrUnaccept( dataApproval.getOrganisationUnit() ) )
+                && mayAcceptOrUnaccept( dataApproval ) )
         {
             PeriodType selectionPeriodType = dataApproval.getPeriod().getPeriodType();
             PeriodType dataSetPeriodType = dataApproval.getDataSet().getPeriodType();
@@ -300,7 +301,7 @@ public class DefaultDataApprovalService
             }
         } else
         {
-            warnNotPermitted( dataApproval, accepted ? "accept" : "unaccept", mayAcceptOrUnaccept( dataApproval.getOrganisationUnit() ) );
+            warnNotPermitted( dataApproval, accepted ? "accept" : "unaccept", mayAcceptOrUnaccept( dataApproval ) );
         }
     }
 
@@ -401,7 +402,7 @@ public class DefaultDataApprovalService
      * @param categoryOptionGroups option groups (if any) for data selection
      * @return true if at most 1 option group and user can read, else false
      */
-    boolean canReadOneCategoryOptionGroup( Set<CategoryOptionGroup> categoryOptionGroups )
+    boolean canReadOneCategoryOptionGroup( Collection<CategoryOptionGroup> categoryOptionGroups )
     {
         if ( categoryOptionGroups == null || categoryOptionGroups.size() == 0 )
         {
@@ -414,6 +415,30 @@ public class DefaultDataApprovalService
         }
 
         return ( securityService.canRead( (CategoryOptionGroup) categoryOptionGroups.toArray()[0] ) );
+    }
+
+    /**
+     * Return true if there are no category option groups, or if the user
+     * can read any category option group from the collection.
+     *
+     * @param categoryOptionGroups option groups (if any) for data selection
+     * @return true if at most 1 option group and user can read, else false
+     */
+    boolean canReadSomeCategoryOptionGroup( Collection<CategoryOptionGroup> categoryOptionGroups )
+    {
+        if ( categoryOptionGroups == null )
+        {
+            return true;
+        }
+
+        for ( CategoryOptionGroup cog : categoryOptionGroups )
+        {
+            if ( securityService.canRead( cog ) )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -457,7 +482,7 @@ public class DefaultDataApprovalService
     }
 
     /**
-     * Checks to see whether a user may unapprove for a given organisation unit.
+     * Checks to see whether a user may unapprove a data approval.
      * <p>
      * A user may unapprove data for organisation unit A if they have the
      * authority to approve data for organisation unit B, and B is an
@@ -471,56 +496,72 @@ public class DefaultDataApprovalService
      * has been approved already at a higher level for the same period and
      * data set, and the user is not authorized to remove that approval as well.
      *
-     * @param organisationUnit The data approval status to check for permission.
-     * @param unacceptPermissionNeededToUnapprove Whether *unaccept* permission
-     *                                   is also needed to unapprove this data.
+     * @param dataApproval the data approval object for the attempted operation.
      * @return true if the user may unapprove, otherwise false
      */
-    private boolean mayUnapprove( OrganisationUnit organisationUnit, boolean unacceptPermissionNeededToUnapprove )
+    private boolean mayUnapprove( DataApproval dataApproval )
     {
-        if ( isAuthorizedToUnapprove( organisationUnit ) )
+        if ( isAuthorizedToUnapprove( dataApproval.getOrganisationUnit() ) )
         {
-            if ( !unacceptPermissionNeededToUnapprove || mayAcceptOrUnaccept( organisationUnit ) )
+            if ( !dataApproval.isAccepted() || mayAcceptOrUnaccept( dataApproval ) )
             {
-                log.debug( "mayUnapprove = true for organisation unit " + organisationUnit.getName() );
-
                 return true;
             }
         }
-
-        log.debug( "mayUnapprove = false for organisation unit " + organisationUnit.getName() );
 
         return false;
     }
 
     /**
-     * Checks to see whether a user may accept or unaccept for a given
-     * organisation unit.
+     * Checks to see whether a user may accept or unaccept an approval.
      *
-     * @param organisationUnit The organisation unit to check for permission.
+     * @param dataApproval The approval to check for permission.
      * @return true if the user may accept or unaccept, otherwise false.
      */
-    private boolean mayAcceptOrUnaccept ( OrganisationUnit organisationUnit )
+    private boolean mayAcceptOrUnaccept ( DataApproval dataApproval )
     {
+        OrganisationUnit organisationUnit = null;
+
         User user = currentUserService.getCurrentUser();
 
-        if ( user != null )
+        if ( dataApproval != null && user != null )
         {
             boolean mayAcceptAtLowerLevels = user.getUserCredentials().isAuthorized( DataApproval.AUTH_ACCEPT_LOWER_LEVELS );
 
-            if ( mayAcceptAtLowerLevels && CollectionUtils.containsAny( user.getOrganisationUnits(),
-                organisationUnit.getAncestors() ) )
-            {
-                log.debug( "User may accept or unaccept for organisation unit " + organisationUnit.getName() );
+            organisationUnit = dataApproval.getOrganisationUnit();
 
-                return true;
+            DataApprovalLevel dataApprovalLevel = dataApproval.getDataApprovalLevel();
+
+            if ( mayAcceptAtLowerLevels && organisationUnit != null && dataApprovalLevel != null && dataApprovalLevel.getLevel() > 1 )
+            {
+                DataApprovalLevel acceptLevel = dataApprovalLevelService.getDataApprovalLevelByLevelNumber( dataApprovalLevel.getLevel() - 1 );
+
+                if ( securityService.canRead( acceptLevel )
+                        && ( acceptLevel.getCategoryOptionGroupSet() == null ||
+                        ( securityService.canRead( acceptLevel.getCategoryOptionGroupSet() )
+                                && canReadSomeCategoryOptionGroup( acceptLevel.getCategoryOptionGroupSet().getMembers() ) ) ) )
+                {
+                    OrganisationUnit acceptOrgUnit = dataApproval.getOrganisationUnit();
+                    for ( int i = acceptLevel.getOrgUnitLevel(); i < dataApprovalLevel.getOrgUnitLevel(); i++ )
+                    {
+                        acceptOrgUnit = acceptOrgUnit.getParent();
+                    }
+
+                    if ( user.getOrganisationUnits().contains( acceptOrgUnit ) ||
+                            CollectionUtils.containsAny( user.getOrganisationUnits(), acceptOrgUnit.getAncestors() ) )
+                    {
+                        log.debug( "User may accept or unaccept for organisation unit " + organisationUnit.getName() );
+
+                        return true;
+                    }
+                }
             }
         }
 
         log.debug( "User with AUTH_ACCEPT_LOWER_LEVELS " + user.getUserCredentials().isAuthorized( DataApproval.AUTH_ACCEPT_LOWER_LEVELS )
                 + " with " + user.getOrganisationUnits().size() + " org units"
-                + " may not accept or unaccept for organisation unit " + organisationUnit.getName()
-                + " with " + organisationUnit.getAncestors().size() + " ancestors." );
+                + " may not accept or unaccept for organisation unit "
+                + ( organisationUnit == null ? "(null)" : organisationUnit.getName() ) );
 
         return false;
     }

@@ -101,6 +101,20 @@ public class DefaultDataApprovalLevelService
         return dataApprovalLevelStore.getByName( name );
     }
 
+    public DataApprovalLevel getDataApprovalLevelByLevelNumber( int levelNumber )
+    {
+        List<DataApprovalLevel> dataApprovalLevels = getAllDataApprovalLevels();
+
+        if ( levelNumber < 1 || levelNumber > dataApprovalLevels.size() )
+        {
+            return null;
+        }
+        else
+        {
+            return dataApprovalLevels.get( levelNumber - 1 );
+        }
+    }
+
     public List<DataApprovalLevel> getAllDataApprovalLevels()
     {
         List<DataApprovalLevel> dataApprovalLevels = dataApprovalLevelStore.getAllDataApprovalLevels();
