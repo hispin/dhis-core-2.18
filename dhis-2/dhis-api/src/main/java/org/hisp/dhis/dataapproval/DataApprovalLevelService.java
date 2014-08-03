@@ -63,6 +63,14 @@ public interface DataApprovalLevelService
     DataApprovalLevel getDataApprovalLevelByName( String name );
 
     /**
+     * Gets the data approval level with the given level number.
+     *
+     * @param levelNumber number of the level to return.
+     * @return a data approval level.
+     */
+    DataApprovalLevel getDataApprovalLevelByLevelNumber( int levelNumber );
+
+    /**
      * Gets a list of all data approval levels.
      *
      * @return List of all data approval levels, ordered from 1 to n.
