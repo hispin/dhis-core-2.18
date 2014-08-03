@@ -28,6 +28,7 @@ package org.hisp.dhis.option.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -67,18 +68,42 @@ public class HibernateOptionStore
         {
             query.setMaxResults( max );
         }
-        
+
         return query.list();
     }
-    
+
     public Option getOptionValueByName( OptionSet optionSet, String name )
     {
         String hql = "select option from OptionSet as optionset join optionset.options as option where optionset = :optionSet and lower(option.name) = :name";
-        
+
         Query query = getQuery( hql );
         query.setEntity( "optionSet", optionSet );
         query.setString( "name", name );
-        
+
         return (Option) query.uniqueResult();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<Option> getOptionValues( OptionSet optionSet, String option, Integer min, Integer max )
+    {
+        String hql = "select option from OptionSet as optionset join optionset.options as option where optionset = :optionSet ";
+
+        if ( option != null )
+        {
+            hql += " and lower(option.name) like ('%" + option + "%') ";
+        }
+
+        Query query = getQuery( hql );
+        query.setEntity( "optionSet", optionSet );
+
+        if ( min != null && max != null )
+        {
+            query.setFirstResult( min );
+            query.setMaxResults( max );
+        }
+        
+        hql += " order by index(option)";
+
+        return query.list();
     }
 }

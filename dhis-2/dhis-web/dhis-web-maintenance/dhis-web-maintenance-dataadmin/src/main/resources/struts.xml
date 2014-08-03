@@ -647,7 +647,7 @@
 	<!-- Option -->
 
 	<action name="option"
-		class="org.hisp.dhis.dataadmin.action.option.GetOptionSetAction">
+		class="org.hisp.dhis.dataadmin.action.option.GetOptionListAction">
 		<result name="success" type="velocity">/main.vm</result>
 		<param name="page">/dhis-web-maintenance-dataadmin/option.vm</param>
 		<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
@@ -706,10 +706,10 @@
 		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
 	</action>
 
-	<action name="sortOptions"
-		class="org.hisp.dhis.dataadmin.action.option.SortOptionsAction">
+	<action name="getOptionList"
+		class="org.hisp.dhis.dataadmin.action.option.GetOptionListAction">
 		<result name="success" type="redirect">option.action?id=${optionSetId}</result>
-		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
+		<param name="anyAuthorities">F_OPTIONSET_MANAGEMENT</param>
 	</action>
 	
   </package>
