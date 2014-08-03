@@ -173,7 +173,7 @@ public class DefaultCaseAggregationConditionService
     {
         return i18n( i18nService, aggregationConditionStore.getByName( name ) );
     }
-
+    
     @Override
     public void updateCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
     {
@@ -396,11 +396,17 @@ public class DefaultCaseAggregationConditionService
         return attributes;
     }
 
-    public Collection<CaseAggregationCondition> getCaseAggregationCondition( Collection<DataElement> dataElements )
+    public Collection<CaseAggregationCondition> getCaseAggregationConditions( Collection<DataElement> dataElements, String key,Integer first, Integer max )
     {
-        return i18n( i18nService, aggregationConditionStore.get( dataElements ) );
+        return i18n( i18nService, aggregationConditionStore.get( dataElements, key, first, max ) );
     }
 
+    @Override
+    public int countCaseAggregationCondition( Collection<DataElement> dataElements, String key )
+    {
+        return aggregationConditionStore.count( dataElements, key );
+    }
+    
     public void aggregate( List<CaseAggregateSchedule> caseAggregateSchedules, String taskStrategy )
     {       
         ConcurrentLinkedQueue<CaseAggregateSchedule> datasetQ = new ConcurrentLinkedQueue<CaseAggregateSchedule>(
@@ -479,7 +485,7 @@ public class DefaultCaseAggregationConditionService
     {
         return aggregationConditionStore.executeSQL( sql );
     }
-
+    
     // -------------------------------------------------------------------------
     // Support Methods
     // -------------------------------------------------------------------------

@@ -37,7 +37,10 @@ $(function() {
 		<tr>
       <td>$i18n.getString( "filter_by_name" )</td>
       <td>
-				<input type="text" onkeyup="filterValues( this.value , 1)" />
+				<input type="text" id="key" name="key" placeholder="$i18n.getString('filter_by_name')" onchange="getCaseAggConditionByDataset();" style="width:205px;" />
+				<input type="button" value="$i18n.getString('filter')" onclick="getCaseAggConditionByDataset();" class="nornal-button" />
+				<input type="button" value="$i18n.getString('clear')" onclick="setFieldValue('key','');getCaseAggConditionByDataset();" class="nornal-button" />
+				
 			</td>
 			<td colspan="3" style="text-align:right">
 				<input type="button" value="$i18n.getString( 'add_new' )" onclick="showAddCaseAggregationForm();" >
@@ -55,7 +58,9 @@ $(function() {
 			<tbody id="list">
 				#parse( "/dhis-web-maintenance-program/caseAggregationList.vm" )
 			</tbody>
-      </table>
+		</table>
+		<p></p>
+		#parse( "/dhis-web-commons/paging/paging.vm" )
     </td>
 
 		<td id="detailsData">

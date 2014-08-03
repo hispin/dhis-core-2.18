@@ -55,8 +55,9 @@
 
       </tbody>
       </table>
+		<p></p>
 		#parse( "/dhis-web-commons/paging/paging.vm" )
-		</td>
+	</td>
 
 		<td id="detailsData">
       <div id="detailsArea">

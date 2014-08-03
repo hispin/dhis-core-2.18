@@ -55,6 +55,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.caseaggregation.CaseAggregateSchedule;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
@@ -137,6 +140,24 @@ public class HibernateCaseAggregationConditionStore
     }
 
     @Override
+    public int count( Collection<DataElement> dataElements, String key )
+    {
+        Criteria criteria = getCriteria();
+        
+        if( dataElements!= null )
+        {
+            criteria.add(  Restrictions.in( "aggregationDataElement", dataElements ) );
+        }
+        if( key != null )
+        {
+            criteria.add(  Restrictions.ilike( "name", "%" + key + "%" ) );
+        }
+        
+        Number rs = ( Number ) criteria.setProjection(Projections.rowCount()).uniqueResult();
+        return rs != null ? rs.intValue() : 0;
+    }
+    
+    @Override
     public CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
     {
         return (CaseAggregationCondition) getCriteria( Restrictions.eq( "aggregationDataElement", dataElement ),
@@ -145,9 +166,28 @@ public class HibernateCaseAggregationConditionStore
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<CaseAggregationCondition> get( Collection<DataElement> dataElements )
+    public Collection<CaseAggregationCondition> get( Collection<DataElement> dataElements, String key, Integer first, Integer max )
     {
-        return getCriteria( Restrictions.in( "aggregationDataElement", dataElements ) ).list();
+        Criteria criteria = getCriteria();
+        
+        if( dataElements!= null )
+        {
+            criteria.add(  Restrictions.in( "aggregationDataElement", dataElements ) );
+        }
+        if( key != null )
+        {
+            criteria.add(  Restrictions.ilike( "name", "%" + key + "%" ) );
+        }
+        
+        if( first != null && max != null )
+        {
+            criteria.setFirstResult( first );
+            criteria.setMaxResults( max );
+        }
+        
+        criteria.addOrder(Order.desc("name"));
+        
+        return criteria.list();
     }
 
     public Grid getAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,

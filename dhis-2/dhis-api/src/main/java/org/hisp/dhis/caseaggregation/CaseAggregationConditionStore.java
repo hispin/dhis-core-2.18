@@ -64,15 +64,15 @@ public interface CaseAggregationConditionStore
     CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
 
     /**
-     * Retrieve a {@link CaseAggregationCondition} by a {@link DataElement} and
-     * {@link DataElementCategoryOptionCombo}
+     * Retrieve a collection of {@link CaseAggregationCondition} by a collection of {@link DataElement} 
      * 
-     * @param dataElement DataElement
-     * @param optionCombo DataElementCategoryOptionCombo
+     * @param dataElements DataElement collection
+     * @param first
+     * @param max
      * 
      * @return A CaseAggregationCondition
      */
-    Collection<CaseAggregationCondition> get( Collection<DataElement> dataElements );
+    Collection<CaseAggregationCondition> get( Collection<DataElement> dataElements, String key, Integer first, Integer max  );
 
     /**
      * Generate period list based on period Type and taskStrategy option
@@ -175,4 +175,12 @@ public interface CaseAggregationConditionStore
      * @return List of tracked entity instance ids
      */
     List<Integer> executeSQL( String sql );
+
+    /**
+     * Get the numbers of {@link CaseAggregationCondition} by {@link DataElement} list
+     * @param dataElements
+     * @param ket The name of CaseAggregationCondition
+     * @return
+     */
+    int count( Collection<DataElement> dataElements, String key );
 }
