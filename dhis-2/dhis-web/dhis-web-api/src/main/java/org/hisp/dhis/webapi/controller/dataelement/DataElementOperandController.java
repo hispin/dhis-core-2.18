@@ -48,7 +48,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = DataElementOperandSchemaDescriptor.API_ENDPOINT )
+@RequestMapping(value = DataElementOperandSchemaDescriptor.API_ENDPOINT)
 public class DataElementOperandController extends AbstractCrudController<DataElementOperand>
 {
     @Autowired
@@ -57,7 +57,7 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
     protected List<DataElementOperand> getEntityList( WebMetaData metaData, WebOptions options )
     {
         List<DataElement> dataElements = new ArrayList<>( manager.getAllSorted( DataElement.class ) );
-        List<DataElementOperand> entityList = new ArrayList<>( categoryService.getOperands( dataElements ) );
+        List<DataElementOperand> entityList = new ArrayList<>( categoryService.getFullOperands( dataElements ) );
 
         if ( options.hasPaging() )
         {
