@@ -2959,6 +2959,24 @@ Ext.onReady( function() {
 				treePanel.reset();
 			}
 
+            // dimensions
+			for (var key in dimensionIdSelectedStoreMap) {
+				if (dimensionIdSelectedStoreMap.hasOwnProperty(key)) {
+					var a = dimensionIdAvailableStoreMap[key],
+						s = dimensionIdSelectedStoreMap[key];
+
+					if (s.getCount() > 0) {
+						a.reset();
+						s.removeAll();
+					}
+
+					if (recMap[key]) {
+						s.add(recMap[key]);
+						ns.core.web.multiSelect.filterAvailable({store: a}, {store: s});
+					}
+				}
+			}
+
 			// options
 			if (optionsWindow) {
 				optionsWindow.setOptions(layout);
