@@ -8,7 +8,6 @@
   </ul>
 </div>
 
-
 <table class="mainPageTable">
 	<tr><td style="vertical-align:top">
 		<table width="100%">
@@ -42,7 +41,7 @@
 						data-type="trackedEntityForm" 
 						data-name="$encoder.htmlEncode( $!program.displayName )">
 						
-						#if($mapTrackedEntityForms.get($program.id))
+						#if($mapRegistrationForms.get($program.id))
 							<td><a>$program.name</a></td>
 						#else
 							<td>$program.name</td>
