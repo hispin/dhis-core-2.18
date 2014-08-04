@@ -33,14 +33,16 @@ import java.util.Comparator;
 import org.hisp.dhis.period.Period;
 
 /**
- * Sorts periods ascending based on the end date, then the periodtype frequency order.
+ * Sorts periods ascending based on the end date, then the period type frequency 
+ * order.
  * 
  * @author Jan Henrik Overland
- * @version $Id$
  */
 public class AscendingPeriodEndDateComparator
     implements Comparator<Period>
 {
+    public static final AscendingPeriodEndDateComparator INSTANCE = new AscendingPeriodEndDateComparator();
+    
     public int compare( Period period1, Period period2 )
     {
         if ( period1.getEndDate() == null )
