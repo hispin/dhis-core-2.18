@@ -664,7 +664,7 @@
 
 	<action name="addOption"
 		class="org.hisp.dhis.dataadmin.action.option.AddOptionAction">
-		<result name="success" type="redirect">option.action?id=${optionSetId}</result>
+		<result name="success" type="redirect">option.action?optionSetId=${optionSetId}</result>
 		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
 	</action>
 
@@ -678,7 +678,7 @@
 
 	<action name="updateOption"
 		class="org.hisp.dhis.dataadmin.action.option.UpdateOptionAction">
-		<result name="success" type="redirect">option.action?id=${optionSetId}</result>
+		<result name="success" type="redirect">option.action?optionSetId=${optionSetId}</result>
 		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
 	</action>
 
@@ -703,6 +703,11 @@
     <action name="sortOptionsForm" class="org.hisp.dhis.dataadmin.action.option.GetOptionSetAction">
 		<result name="success" type="velocity">/main.vm</result>
 		<param name="page">/dhis-web-maintenance-dataadmin/sortOptionsForm.vm</param>
+		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
+	</action>
+	
+	<action name="sortOptions" class="org.hisp.dhis.dataadmin.action.option.SortOptionsAction">
+		<result name="success" type="redirect">option.action?optionSetId=${optionSetId}</result>
 		<param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
 	</action>
 

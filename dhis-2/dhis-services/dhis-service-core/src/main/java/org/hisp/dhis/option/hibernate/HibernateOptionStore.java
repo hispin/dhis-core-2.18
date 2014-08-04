@@ -99,7 +99,7 @@ public class HibernateOptionStore
             hql += "and lower(option.name) like ('%" + option + "%') ";
         }
 
-        hql += "order by index(option)";
+        hql += " order by index(option)";
 
         Query query = getQuery( hql );
         query.setEntity( "optionSet", optionSet );
