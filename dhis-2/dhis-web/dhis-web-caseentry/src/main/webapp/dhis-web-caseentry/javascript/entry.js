@@ -1031,8 +1031,8 @@ function getOptions( uid, query, success ) {
         success: function ( data ) {
             success( $.map( data.options, function ( item ) {
                 return {
-                    label: item.o,
-                    id: item.o
+                    label: item.n,
+                    id: item.c
                 };
             } ) );
         }

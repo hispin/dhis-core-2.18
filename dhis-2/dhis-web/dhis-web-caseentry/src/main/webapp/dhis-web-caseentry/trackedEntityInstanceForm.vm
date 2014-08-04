@@ -72,7 +72,7 @@
 								 <select id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{required:$mandatory }}" >
 										 <option value="">[$i18n.getString( "please_select" )]</option>
 										 #foreach ($option in $attribute.optionSet.options )
-												 <option value="$option" #if("$value"=="$option") selected #end>$option</option>
+												 <option value="$option.code" #if("$value"=="$option.code") selected #end>$encoder.htmlEncode($option.name)</option>
 										 #end
 								 </select>	
 							#elseif( $attribute.valueType == "users" )
@@ -139,7 +139,7 @@
 						<select  id="attr$attribute.id"  name="attr$attribute.id" inherit="$!attribute.inherit" class=' #validate( "default"  $mandatory  )' >
 							 <option value="">[$i18n.getString( "please_select" )]</option>
 						#foreach ($option in $attribute.optionSet.options )
-							<option value="$option" #if($attributeValue == $option) selected="selected" #end>$option</option>
+							<option value="$option.code" #if($attributeValue == "$option.code") selected="selected" #end>$encoder.htmlEncode($option.name)</option>
 						#end
 						</select>
 					#elseif( $attribute.valueType == "users" )

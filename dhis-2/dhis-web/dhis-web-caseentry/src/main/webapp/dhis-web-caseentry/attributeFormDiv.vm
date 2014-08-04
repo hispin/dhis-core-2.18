@@ -31,7 +31,7 @@
 				<select  id="attr$attribute.id" name="attr$attribute.id" class=' #validate( "default"  $mandatory )' >
 					 <option value="">[$i18n.getString( "please_select" )]</option>
 				#foreach ($option in $attribute.optionSet.options )
-					<option value="$option" #if($value==$option) selected #end >$option</option>
+					<option value="$option.code" #if($value=="$option.code") selected #end >$encoder.htmlEncode($option.name)</option>
 				#end
 				</select>
 			#elseif( $attribute.valueType == "users" )
