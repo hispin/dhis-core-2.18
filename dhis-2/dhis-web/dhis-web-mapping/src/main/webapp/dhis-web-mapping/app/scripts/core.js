@@ -2588,15 +2588,16 @@ Ext.onReady( function() {
 			util.geojson = {};
 
 			util.geojson.decode = function(doc, levelOrder) {
-				var geojson = {};
-				geojson.type = 'FeatureCollection';
-				geojson.crs = {
-					type: 'EPSG',
-					properties: {
-						code: '4326'
-					}
+				var geojson = {
+                    type: 'FeatureCollection',
+                    crs: {
+                        type: 'EPSG',
+                        properties: {
+                            code: '4326'
+                        }
+                    },
+                    features: []
 				};
-				geojson.features = [];
 
                 levelOrder = levelOrder || 'ASC';
 
@@ -2657,7 +2658,7 @@ Ext.onReady( function() {
 				// accepts [number], [string], [{prop: number}], [{prop: string}]
 
 				if (!util.object.getLength(array)) {
-					return;
+					return array;
 				}
 
 				key = key || 'name';
