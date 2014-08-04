@@ -224,7 +224,7 @@ public class SaveDataValueAction
             }
         }
         else
-        {
+        {   /*    
             if( !(value.trim().equalsIgnoreCase( dataValue.getValue() ) ) )
             {
                 dataValue.setValue( value.trim() );
@@ -232,7 +232,14 @@ public class SaveDataValueAction
                 dataValue.setLastUpdated( now );
                 dataValue.setStoredBy( storedBy );                
                 dataValueService.updateDataValue( dataValue );
-          }            
+            }
+            */
+            
+            dataValue.setValue( value );
+            dataValue.setLastUpdated( now );
+            dataValue.setStoredBy( storedBy );
+
+            dataValueService.updateDataValue( dataValue );  
         }
         
         // for saving Over All Score

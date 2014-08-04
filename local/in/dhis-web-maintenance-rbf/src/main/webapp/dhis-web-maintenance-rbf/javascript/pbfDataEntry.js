@@ -183,8 +183,8 @@ function savePBFDataValue( dataElementId, valueType )
 	var defaultValue = document.getElementById(valueId).defaultValue;
 	var value = document.getElementById( valueId ).value;
 	
-	if(defaultValue != value)
-	{
+	//if(defaultValue != value)
+	//{
 		var dataValue = {
 				'dataElementId' : dataElementId,
 				'valueType' : valueType,
@@ -201,7 +201,7 @@ function savePBFDataValue( dataElementId, valueType )
             success: handleSuccess,
             error: handleError
         } );
-	}
+	//}
 	
 	function handleSuccess( json )
 	{
@@ -453,3 +453,79 @@ function getAvailablePeriodsTemp( availablePeriodsId, selectedPeriodsId, year )
 			
 		} );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+function getUtilizationRateTariffValue()
+{
+    var utilizationRate = $('#utilizationRate').val();
+	//alert( utilizationRate );
+	
+	var tempUtilizationRateDataElements = document.getElementById("utilizationRateDataElementLB");
+   	
+	if( utilizationRate != "" || utilizationRate != " " || utilizationRate != '' || utilizationRate != ' ' || utilizationRate.length != 0 )
+	{
+		for ( i=0; i < tempUtilizationRateDataElements.length; i++ )
+        {                    
+			var utilizationRateTariffMapValue1 = utilizationRateTariffMap[tempUtilizationRateDataElements.options[i].value];
+			
+			//alert( utilizationRateTariffMapValue1.split("#").length + " :  " + utilizationRateTariffMapValue1 );
+			
+			for( j=0; j < utilizationRateTariffMapValue1.split("#").length; j++ )
+			{
+		        var utilizationRateTariffMapValue = utilizationRateTariffMapValue1.split("#")[j];
+		        
+                var startRange = parseFloat( utilizationRateTariffMapValue.split(":")[0] );           
+                var endRange = parseFloat( utilizationRateTariffMapValue.split(":")[1] );
+                var tariffValue = parseFloat( utilizationRateTariffMapValue.split(":")[2] );    				
+			
+			    //alert( startRange + "--" + endRange + "--" +  tariffValue + "--" + utilizationRate );
+			
+                if( parseFloat( utilizationRate) >= parseFloat( startRange ) && parseFloat( utilizationRate ) < parseFloat( endRange ) )
+                {	
+					//alert( "2 Alert" + " : " + startRange + "--" + endRange + "--" +  tariffValue + "--" +  utilizationRate );
+					var dataElementId = tempUtilizationRateDataElements.options[i].value;
+					//alert( '#pbfdv_tariff_amt_'+dataElementId );
+                    $('#pbfdv_tariff_amt_'+dataElementId).val( tariffValue );
+					
+					//alert( $('#pbfdv_tariff_amt_'+dataElementId).val( parseFloat( tariffValue ) ) );
+                }
+            }
+        }
+	}
+	            
+}
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

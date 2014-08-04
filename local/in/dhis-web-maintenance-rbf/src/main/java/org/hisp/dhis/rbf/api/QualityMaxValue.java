@@ -8,55 +8,58 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 
-public class QualityMaxValue implements Serializable
+public class QualityMaxValue
+    implements Serializable
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private OrganisationUnitGroup orgUnitGroup;
-	
-	private OrganisationUnit organisationUnit;
-    
+    private OrganisationUnitGroup orgUnitGroup;
+
+    private OrganisationUnit organisationUnit;
+
     private DataElement dataElement;
-    
+
     private DataSet dataSet;
-    
+
     private Date startDate;
-    
+
     private Date endDate;
-    
+
     private Double value;
-    
+
     private String storedBy;
 
     private Date timestamp;
 
-    private String comment;    
+    private String comment;
 
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
     public QualityMaxValue()
-    {   
-    }
-    
-    public QualityMaxValue( OrganisationUnit organisationUnit, DataElement dataElement, DataSet dataSet, Date startDate, Date endDate, Double value)
     {
-        this.organisationUnit = organisationUnit;
-        this.dataElement = dataElement;
-        this.dataSet = dataSet;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.value = value;       
     }
 
-    public QualityMaxValue( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataElement dataElement, DataSet dataSet, Date startDate, Date endDate, Double value)
+    public QualityMaxValue( OrganisationUnit organisationUnit, DataElement dataElement, DataSet dataSet,
+        Date startDate, Date endDate, Double value )
     {
         this.organisationUnit = organisationUnit;
         this.dataElement = dataElement;
         this.dataSet = dataSet;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.value = value;       
+        this.value = value;
+    }
+
+    public QualityMaxValue( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit,
+        DataElement dataElement, DataSet dataSet, Date startDate, Date endDate, Double value )
+    {
+        this.organisationUnit = organisationUnit;
+        this.dataElement = dataElement;
+        this.dataSet = dataSet;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.value = value;
     }
 
     // -------------------------------------------------------------------------
@@ -83,7 +86,8 @@ public class QualityMaxValue implements Serializable
 
         final QualityMaxValue other = (QualityMaxValue) o;
 
-        return dataElement.equals( other.getDataElement() ) && dataSet.equals( other.getDataSet() ) && organisationUnit.equals( other.getOrganisationUnit() ) && orgUnitGroup.equals( other.getOrgUnitGroup() );
+        return dataElement.equals( other.getDataElement() ) && dataSet.equals( other.getDataSet() )
+            && organisationUnit.equals( other.getOrganisationUnit() ) && orgUnitGroup.equals( other.getOrgUnitGroup() );
     }
 
     @Override
@@ -193,7 +197,7 @@ public class QualityMaxValue implements Serializable
     {
         this.dataSet = dataSet;
     }
-    
+
     public OrganisationUnitGroup getOrgUnitGroup()
     {
         return orgUnitGroup;

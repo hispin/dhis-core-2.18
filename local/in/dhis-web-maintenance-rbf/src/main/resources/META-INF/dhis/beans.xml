@@ -289,6 +289,14 @@
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 	
+	
+	<bean id="org.hisp.dhis.rbf.quality.dataentry.LoadQualityMaxScoreAction"  class="org.hisp.dhis.rbf.quality.dataentry.LoadQualityMaxScoreAction" scope="prototype">
+		<property name="qualityMaxValueService" ref="org.hisp.dhis.rbf.api.QualityMaxValueService" />	
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>	
+	
+	
 	<!-- Payment Adjustment -->
 	
 	<bean id="org.hisp.dhis.rbf.payment.action.GetOrganisationUnitForPaymentAction" class="org.hisp.dhis.rbf.payment.action.GetOrganisationUnitForPaymentAction" scope="prototype">

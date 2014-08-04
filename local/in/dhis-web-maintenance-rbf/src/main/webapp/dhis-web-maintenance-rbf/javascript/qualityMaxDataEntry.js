@@ -1,3 +1,8 @@
+window.onload=function(){
+	jQuery('#qualityMaxScoreDiv').dialog({autoOpen: false});	
+
+}
+
 
 	var COLOR_GREEN = '#b9ffb9';
 	var COLOR_YELLOW = '#fffe8c';
@@ -22,6 +27,9 @@ function orgUnitHasBeenSelected( orgUnitIds , orgUnitNames )
 }
 
 selection.setListenerFunction( orgUnitHasBeenSelected );
+
+
+
 
 function orgUnitGroupChange()
 {
@@ -210,4 +218,76 @@ function saveQualityDataValue( dataElementId )
 	    document.getElementById(valueId).style.backgroundColor = color;	   
 	}
 }
+
+
+function loadQualityMaxScore()
+{
+	
+	var dataSetId = $( '#dataSetId' ).val();
+	var orgUnitId = $( '#selectedOrgunitID' ).val();
+	var orgUnitGroupId = $( '#orgUnitGroupId' ).val();
+	
+	if ( dataSetId == "-1"  || orgUnitGroupId == "-1"  || orgUnitId == "" ||  orgUnitId.length == 0 )
+	{
+		alert( "Please Select Organisation unit / Orgainsation Unit Group / Dataset" );
+		//return false;
+	}
+	
+	else
+	{
+		jQuery('#qualityMaxScoreDiv').dialog('destroy').remove();
+		jQuery('<div id="qualityMaxScoreDiv">' ).load( 'loadQualityMaxScore.action?dataSetId='+ dataSetId + "&orgUnitId=" + orgUnitId + "&orgUnitGroupId=" + orgUnitGroupId ).dialog({
+			title: " Quality Max Score ",
+			maximize: true,
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 500,
+			height: 200
+		});
+	}
+	
+}
+
+
+function applyStartDateEndDate( startDateEndDate )
+{
+	var sDateEDate = startDateEndDate.split(":");
+	var startDate = sDateEDate[0];
+	
+	var enddate = sDateEDate[1];
+	
+	document.getElementById("startDate").value = startDate;
+	document.getElementById("endDate").value = enddate;
+	
+	jQuery('#qualityMaxScoreDiv').dialog('destroy').remove();
+	
+	loadDataEntryForm();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

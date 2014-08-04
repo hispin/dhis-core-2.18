@@ -156,6 +156,12 @@
 			{
 				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/monthly_pps.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
+				
+				/*
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/Mathealth_report3_PH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+				*/
+				
 			}
 			
 			else if( orgUnitGroupName == "Province Hospitals")
@@ -231,7 +237,7 @@
 					<option value="-1">[$i18n.getString( "select" )]</option>
 					<option value="MATERNAL_HEALTH" >Maternal Health</option>
 					<option value="MONTHLY_PPS" >Monthly PPS</option>
-					<option value="MH_PATIENT_ALLOWANCE_CLAIM" >MH Patient Allownce Claim</option>
+					<option value="MH_PATIENT_ALLOWANCE_CLAIM" >MH Patient Allowance Claim</option>
 					<option value="HEALTH_PROVIDER_PAYMENT_CLAIM" >Health Provider Payment Claim</option>
 					
 					<!--
