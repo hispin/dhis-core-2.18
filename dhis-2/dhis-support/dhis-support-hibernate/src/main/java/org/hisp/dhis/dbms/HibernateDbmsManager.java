@@ -193,7 +193,7 @@ public class HibernateDbmsManager
         emptyTable( "dataelementcategory" );
         emptyTable( "dataelementcategoryoption" );
 
-        emptyTable( "option" );
+        emptyTable( "optionvalue" );
         emptyTable( "optionset" );
 
         dropTable( "aggregateddatavalue" );
