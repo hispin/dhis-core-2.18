@@ -88,8 +88,8 @@
 												<td>
 													<input id='$id' name="$id" type='radio' options='no' optionset="$programStageDataElement.dataElement.optionSet.uid"
 														data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" 
-														#if( $dataValue.value == $option) checked #end
-														onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option' )" tabindex="$tabIndex" />$i18n.getString("non_value")
+														#if( $dataValue.value == "$option.code") checked #end
+														onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option.code' )" tabindex="$tabIndex" />$i18n.getString("non_value")
 											</td>
 										#set($index=1)
 										#foreach($option in $programStageDataElement.dataElement.optionSet.options)
@@ -100,8 +100,8 @@
 											<td>
 											<input id='$id' name="$id" type='radio' options='no'
 											data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" 
-											#if( $dataValue.value == $option) checked #end
-											onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option' )" tabindex="$tabIndex" />$encoder.htmlEncode($option)
+											#if( $dataValue.value == "$option.code") checked #end
+											onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option.code' )" tabindex="$tabIndex" />$encoder.htmlEncode($option.name)
 											</td>
 											#set($index=$index + 1)
 										#end
