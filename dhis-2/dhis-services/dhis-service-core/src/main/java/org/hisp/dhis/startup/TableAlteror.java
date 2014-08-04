@@ -1167,29 +1167,7 @@ public class TableAlteror
     private void updateOptionTbl()
     {
         executeSql( "INSERT INTO option( optionid, code, created, lastupdated, name, optionsetid, sort_order) "
-            + " select " + statementBuilder.getAutoIncrementValue() + ", optionvalue, now(), now() , optionvalue, optionsetid, ( sort_order + 1 ) "
+            + " select " + statementBuilder.getAutoIncrementValue() + ", optionvalue, now(), now(), optionvalue, optionsetid, ( sort_order + 1 ) "
             + " from optionsetmembers " );
-
-        StatementHolder holder = statementManager.getHolder();
-
-        try
-        {
-            Statement statement = holder.getStatement();
-            ResultSet resultSet = statement.executeQuery( "select optionid from option where uid is null" );
-
-            while ( resultSet.next() )
-            {
-                int id = resultSet.getInt( "optionid" );
-                String uid = CodeGenerator.generateCode();
-                executeSql( "UPDATE option SET uid='" + uid + "'  WHERE optionid=" + id );
-            }
-            
-            executeSql( "drop table optionsetmembers" );
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
     }
-
 }
