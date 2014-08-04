@@ -336,6 +336,7 @@ public class LoadQualityScoreDetailsAction
         
         //System.out.println(" Payment dataSet Period Type---" + paymentDataSet.getPeriodType() );
         
+        period = periodService.reloadPeriod( period );
         
         Set<Period> periods = new HashSet<Period>( periodService.getIntersectingPeriodsByPeriodType( paymentDataSet.getPeriodType(), period.getStartDate(), period.getEndDate() ) );
         

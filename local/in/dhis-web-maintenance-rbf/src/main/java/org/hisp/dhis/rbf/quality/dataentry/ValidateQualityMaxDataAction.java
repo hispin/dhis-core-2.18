@@ -50,7 +50,7 @@ public class ValidateQualityMaxDataAction
 
     @Autowired
     private OrganisationUnitGroupService orgUnitGroupService;
-    
+
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
@@ -63,13 +63,13 @@ public class ValidateQualityMaxDataAction
     }
 
     private String orgUnitGroupId;
-    
-    public void setOrgUnitGroupId(String orgUnitGroupId) 
-    {
-		this.orgUnitGroupId = orgUnitGroupId;
-	}
 
-	private String dataSetId;
+    public void setOrgUnitGroupId( String orgUnitGroupId )
+    {
+        this.orgUnitGroupId = orgUnitGroupId;
+    }
+
+    private String dataSetId;
 
     public void setDataSetId( String dataSetId )
     {
@@ -117,19 +117,19 @@ public class ValidateQualityMaxDataAction
     {
         return message;
     }
-    
+
     private String maximumRange;
-    
-    public String getMaximumRange() 
+
+    public String getMaximumRange()
     {
-		return maximumRange;
-	}
+        return maximumRange;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-	public String execute()
+    public String execute()
         throws Exception
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
@@ -138,36 +138,41 @@ public class ValidateQualityMaxDataAction
         Date eDate = dateFormat.parse( endDate );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
-        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupId ) );
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer
+            .parseInt( orgUnitGroupId ) );
 
-        List<QualityMaxValue> qualityMaxValues = new ArrayList<QualityMaxValue>( qualityMaxValueService.getQuanlityMaxValues( orgUnitGroup, organisationUnit, dataSet ) );
+        List<QualityMaxValue> qualityMaxValues = new ArrayList<QualityMaxValue>(
+            qualityMaxValueService.getQuanlityMaxValues( orgUnitGroup, organisationUnit, dataSet ) );
         for ( QualityMaxValue qualityMaxValue : qualityMaxValues )
         {
-            if ( qualityMaxValue.getStartDate().getTime() ==  sDate.getTime() && qualityMaxValue.getEndDate().getTime() ==  eDate.getTime() )
+            if ( qualityMaxValue.getStartDate().getTime() == sDate.getTime()
+                && qualityMaxValue.getEndDate().getTime() == eDate.getTime() )
             {
                 message = message && false;
-            }  
-            else if (sDate.before( qualityMaxValue.getStartDate() ) && eDate.after( qualityMaxValue.getEndDate() ) )
-            {            	
-            	message = message || true;            	
-            	//System.out.println("Start date is less and end date is greater or equal "+message);
             }
-            else if (qualityMaxValue.getStartDate().getTime() >=  sDate.getTime() && sDate.getTime() <= qualityMaxValue.getEndDate().getTime() )
-            {            	
-            	message = message || true;
-            	//System.out.println("Start date between max start date and end date "+message);
+            else if ( sDate.before( qualityMaxValue.getStartDate() ) && eDate.after( qualityMaxValue.getEndDate() ) )
+            {
+                message = message || true;
+                // System.out.println("Start date is less and end date is greater or equal "+message);
             }
-            else if (qualityMaxValue.getStartDate().getTime() >=  eDate.getTime() && eDate.getTime() <= qualityMaxValue.getEndDate().getTime() )
-            {            	
-            	message = message || true;
-            	//System.out.println("End date between max start date and end date  "+message);
-            }            
+            else if ( qualityMaxValue.getStartDate().getTime() >= sDate.getTime()
+                && sDate.getTime() <= qualityMaxValue.getEndDate().getTime() )
+            {
+                message = message || true;
+                // System.out.println("Start date between max start date and end date "+message);
+            }
+            else if ( qualityMaxValue.getStartDate().getTime() >= eDate.getTime()
+                && eDate.getTime() <= qualityMaxValue.getEndDate().getTime() )
+            {
+                message = message || true;
+                // System.out.println("End date between max start date and end date  "+message);
+            }
             else
             {
-            	message = message && false;
+                message = message && false;
             }
         }
-        //System.out.println("Message: "+message);
+        // System.out.println("Message: "+message);
         return SUCCESS;
     }
 }

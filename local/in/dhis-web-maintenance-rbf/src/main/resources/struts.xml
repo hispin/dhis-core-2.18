@@ -21,6 +21,7 @@
 			<param name="menu">/dhis-web-maintenance-rbf/tariffMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/javascripts/ext/ext-all.js,javascript/TransformGrid.js,javascript/dataElement_combo.js</param>
 			<param name="stylesheets">../dhis-web-commons/javascripts/ext/resources/css/ext-all-gray.css</param>
+			<param name="requiredAuthorities">F_PBF_DATAELEMENT_TARIFF_MANAGEMENT</param>
 		</action>
 		<action name="loadTariffDetails" class="org.hisp.dhis.rbf.action.LoadTariffDetailsAction">
 			<result name="success" type="velocity">/content.vm</result>
@@ -49,6 +50,7 @@
             <param name="menu">/dhis-web-maintenance-rbf/tariffMenu.vm</param>
             <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/javascripts/ext/ext-all.js,javascript/TransformGrid.js</param>
         	<param name="stylesheets">../dhis-web-commons/javascripts/ext/resources/css/ext-all-gray.css</param>
+        	<param name="requiredAuthorities">F_PBF_BANK_MANAGEMENT</param>
         </action>
         
         <action name="loadbankDetails" class="org.hisp.dhis.rbf.action.LoadBankDetailsAction">
@@ -78,6 +80,7 @@
       <param name="menu">/dhis-web-maintenance-rbf/menuDataEntry.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/pbfDataEntry.js</param>
       <param name="stylesheets">css/dataentry.css</param>
+      <param name="requiredAuthorities">F_PBF_DATAENTRY</param>
     </action>	
 	
     <!-- Get OrganisationUnit Unit name -->
@@ -165,6 +168,7 @@
       <param name="menu">/dhis-web-maintenance-rbf/menuMaxEntry.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/qualityMaxDataEntry.js</param>
       <param name="stylesheets">css/dataentry.css</param>
+      <param name="requiredAuthorities">F_PBF_QUALITY_MAX_DATAENTRY</param>
     </action>
 	
 	<!-- Load DataEntry Form -->
@@ -172,6 +176,17 @@
 		<result name="success" type="velocity">/content.vm</result>
 		<param name="page">/dhis-web-maintenance-rbf/loadQualityMaxEntryForm.vm</param>
 	</action>
+	
+	<!-- Load Quality Score Data -->
+	<action name="loadQualityMaxScore" class="org.hisp.dhis.rbf.quality.dataentry.LoadQualityMaxScoreAction">
+		<result name="success" type="velocity">/content.vm</result>
+		<param name="page">/dhis-web-maintenance-rbf/loadQualityMaxScore.vm</param>
+	</action>	
+	
+	
+	
+	
+	
 	
 	<!-- Save Quality Value -->
 	<action name="saveQualityValue"
@@ -194,6 +209,7 @@
       <param name="menu">/dhis-web-maintenance-rbf/menuScoreEntry.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/qualityScoreDataEntry.js</param>
       <param name="stylesheets">css/dataentry.css</param>
+      <param name="requiredAuthorities">F_PBF_QUALITY_SCORE_DATAENTRY</param>
     </action>
     
 	<!-- Load DataEntry Form -->
@@ -231,6 +247,7 @@
       <param name="menu">/dhis-web-maintenance-rbf/menuPayment.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/paymentAdjustment.js</param>
       <param name="stylesheets">css/dataentry.css</param>
+      <param name="requiredAuthorities">F_PBF_PAYMENT_ADJUSTMENT_MANAGEMENT</param>
     </action>
     
 	<!-- Load Payment Adjustment List -->
@@ -245,6 +262,7 @@
         <param name="page">/dhis-web-maintenance-rbf/aggregationQueryList.vm</param>
         <param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
         <param name="javascripts">javascript/aggregationEngine.js</param>
+        <param name="requiredAuthorities">F_PBF_AGGREGATION_QUERY</param>
     </action>
 
     <action name="addAggregationQueryForm" class="org.hisp.dhis.rbf.aggregation.action.AddAggregationQueryFormAction">
@@ -310,7 +328,7 @@
    		<param name="page">/dhis-web-maintenance-rbf/qualityScorePaymentList.vm</param>
    		<param name="javascripts">javascript/qualityScorePayment.js</param>
    		<param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
-   		<param name="anyAuthorities">F_QUALITY_SCORE_PAYMENT</param>
+   		<param name="anyAuthorities">F_PBF_QUALITY_SCORE_PAYMENT</param>
    </action>
 
 
@@ -375,6 +393,7 @@
    		<param name="page">/dhis-web-maintenance-rbf/getAllLookups.vm</param>
    		<param name="javascripts">javascript/lookup.js</param>
    		<param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
+   		<param name="requiredAuthorities">F_PBF_LOOKUP</param>
    </action>
    
    <!-- Add Lookup -->
@@ -444,6 +463,7 @@
         <param name="page">/dhis-web-maintenance-rbf/pbfReportForm.vm</param>
         <param name="javascripts">javascript/prevNextPeriods.js</param>
         <param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
+        <param name="requiredAuthorities">F_PBF_REPORT</param>
    </action>	
 	
 	
@@ -455,6 +475,7 @@
    		<param name="page">/dhis-web-maintenance-rbf/utilizationRuleDataElements.vm</param>
    		<param name="javascripts">javascript/utilizationRule.js</param>
    		<param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
+   		<param name="requiredAuthorities">F_PBF_UTILIZATION_RULE_MANAGEMENT</param>
    </action>	
 	
 

@@ -25,9 +25,11 @@
 	   var fieldId = "#"+valueId;
 	   var defaultValue = document.getElementById(valueId).defaultValue;
 	   var value = document.getElementById(valueId).value;
-	
-	   if(defaultValue != value)
-	   {
+		
+	   //alert( defaultValue + ":" + value );
+	   
+	   //if(defaultValue != value)
+	  // {
 	       var dataValue = {
                 'dataElementId' : $utilizationRateDataElementId,        
                 'organisationUnitId' : $("#selectedOrgunitID").val(),
@@ -42,7 +44,7 @@
 	            success: handleSuccess,
 	            error: handleError
 	        } );
-	   }
+	   //}
 	
 	   function handleSuccess( json )
 	   {
