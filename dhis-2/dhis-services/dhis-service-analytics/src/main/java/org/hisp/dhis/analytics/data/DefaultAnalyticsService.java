@@ -223,24 +223,58 @@ public class DefaultAnalyticsService
         queryPlanner.validate( params );
         
         params.conform();
-                
+
         // ---------------------------------------------------------------------
         // Headers
         // ---------------------------------------------------------------------
 
         Grid grid = new ListGrid();
+        
+        addHeaders( params, grid );
 
+        // ---------------------------------------------------------------------
+        // Data
+        // ---------------------------------------------------------------------
+
+        addIndicatorValues( params, grid );
+        
+        addDataElementValues( params, grid );
+        
+        addDataSetValues( params, grid );
+        
+        addDynamicDimensionValues( params, grid );
+        
+        // ---------------------------------------------------------------------
+        // Meta-data
+        // ---------------------------------------------------------------------
+
+        addMetaData( params, grid );
+        
+        return grid;
+    }
+    
+    /**
+     * Adds headers to the given grid based on the given data query parameters.
+     */
+    private void addHeaders( DataQueryParams params, Grid grid )
+    {
         for ( DimensionalObject col : params.getHeaderDimensions() )
         {
             grid.addHeader( new GridHeader( col.getDimension(), col.getDisplayName(), String.class.getName(), false, true ) );
         }
         
         grid.addHeader( new GridHeader( DataQueryParams.VALUE_ID, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
+    }
 
-        // ---------------------------------------------------------------------
-        // Indicators
-        // ---------------------------------------------------------------------
-
+    /**
+     * Adds indicator values to the given grid based on the given data query 
+     * parameters.
+     * 
+     * @param params the data query parameters.
+     * @param grid the grid.
+     */
+    private void addIndicatorValues( DataQueryParams params, Grid grid )
+    {
         if ( params.getIndicators() != null )
         {   
             int indicatorIndex = params.getIndicatorDimensionIndex();
@@ -308,11 +342,17 @@ public class DefaultAnalyticsService
                 }
             }
         }
+    }
 
-        // ---------------------------------------------------------------------
-        // Data elements
-        // ---------------------------------------------------------------------
-
+    /**
+     * Adds data element values to the given grid based on the given data query 
+     * parameters.
+     * 
+     * @param params the data query parameters.
+     * @param grid the grid.
+     */
+    private void addDataElementValues( DataQueryParams params, Grid grid )
+    {
         if ( params.getDataElements() != null )
         {
             DataQueryParams dataSourceParams = params.instance();
@@ -328,11 +368,17 @@ public class DefaultAnalyticsService
                 grid.addValue( params.isSkipRounding() ? entry.getValue() : MathUtils.getRounded( entry.getValue() ) );
             }
         }
+    }
 
-        // ---------------------------------------------------------------------
-        // Data sets / completeness
-        // ---------------------------------------------------------------------
-
+    /**
+     * Adds data set values to the given grid based on the given data query 
+     * parameters.
+     * 
+     * @param params the data query parameters.
+     * @param grid the grid.
+     */
+    private void addDataSetValues( DataQueryParams params, Grid grid )
+    {
         if ( params.getDataSets() != null )
         {
             // -----------------------------------------------------------------
@@ -396,11 +442,17 @@ public class DefaultAnalyticsService
                 }
             }
         }
+    }
 
-        // ---------------------------------------------------------------------
-        // Other dimensions
-        // ---------------------------------------------------------------------
-
+    /**
+     * Adds values to the given grid based on dynamic dimensions from the given 
+     * data query parameters.
+     * 
+     * @param params the data query parameters.
+     * @param grid the grid.
+     */
+    private void addDynamicDimensionValues( DataQueryParams params, Grid grid )
+    {
         if ( params.getIndicators() == null && params.getDataElements() == null && params.getDataSets() == null )
         {
             Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( params.instance() );
@@ -412,11 +464,17 @@ public class DefaultAnalyticsService
                 grid.addValue( params.isSkipRounding() ? entry.getValue() : MathUtils.getRounded( entry.getValue() ) );
             }
         }
+    }
 
-        // ---------------------------------------------------------------------
-        // Meta-data
-        // ---------------------------------------------------------------------
-
+    /**
+     * Adds meta data values to the given grid based on the given data query 
+     * parameters.
+     * 
+     * @param params the data query parameters.
+     * @param grid the grid.
+     */
+    private void addMetaData( DataQueryParams params, Grid grid )
+    {
         if ( !params.isSkipMeta() )
         {
             Integer cocIndex = params.getCocIndex();
@@ -443,9 +501,7 @@ public class DefaultAnalyticsService
             }
             
             grid.setMetaData( metaData );
-        }
-        
-        return grid;
+        }        
     }
     
     @Override
@@ -524,12 +580,12 @@ public class DefaultAnalyticsService
     // -------------------------------------------------------------------------
 
     /**
-     * Generates a mapping of permutations keys (org unit id or null) and mappings
-     * of org unit group and counts.
+     * Generates a mapping of permutations keys (organisation unit id or null) 
+     * and mappings of organisation unit group and counts.
      * 
-     * @param params the data query params.
-     * @param indicators the indicators for which formulas to scan for org unit 
-     *        groups.
+     * @param params the data query parameters.
+     * @param indicators the indicators for which formulas to scan for organisation 
+     *        unit groups.
      * @return a map of maps.
      */
     private Map<String, Map<String, Integer>> getOrgUnitTargetMap( DataQueryParams params, Collection<Indicator> indicators )
@@ -641,6 +697,8 @@ public class DefaultAnalyticsService
      * Generates a mapping between a dimension key and the aggregated value. The
      * dimension key is a concatenation of the identifiers of the dimension items
      * separated by "-".
+     * 
+     * @param params the data query parameters.
      */
     private Map<String, Double> getAggregatedValueMap( DataQueryParams params, String tableName )        
     {
@@ -1055,6 +1113,13 @@ public class DefaultAnalyticsService
     // Supportive methods
     // -------------------------------------------------------------------------
     
+    /**
+     * Replaces the indicator dimension including items with the data elements
+     * part of the indicator expressions.
+     * 
+     * @param params the data query parameters.
+     * @param indicatorIndex the index of the indicator dimension in the given query.
+     */
     private DataQueryParams replaceIndicatorsWithDataElements( DataQueryParams params, int indicatorIndex )
     {
         List<Indicator> indicators = asTypedList( params.getIndicators() );        
@@ -1067,8 +1132,10 @@ public class DefaultAnalyticsService
     }
     
     /**
-     * Returns a mapping between the uid and the name of all dimension and filter
-     * items for the given params.
+     * Returns a mapping between the identifier and the name of all dimension and 
+     * filter items for the given parameters.
+     * 
+     * @param params the data query.
      */
     private Map<String, String> getUidNameMap( DataQueryParams params )
     {
@@ -1080,6 +1147,14 @@ public class DefaultAnalyticsService
         return map;
     }
 
+    /**
+     * Returns a mapping between identifiers and names for the given dimensional
+     * objects.
+     * 
+     * @param dimensions the dimensional objects.
+     * @param hierarchyMeta indicates whether to include meta data of the 
+     *        organisation unit hierarchy.
+     */
     private Map<String, String> getUidNameMap( List<DimensionalObject> dimensions, boolean hierarchyMeta )
     {
         Map<String, String> map = new HashMap<String, String>();
@@ -1103,6 +1178,10 @@ public class DefaultAnalyticsService
                 else if ( DimensionType.DATAELEMENT_GROUPSET.equals( dimension.getDimensionType() ) )
                 {
                     items = asList( dataElementService.getDataElementGroupSet( dimension.getDimension() ).getMembers() );
+                }
+                else if ( DimensionType.CATEGORYOPTION_GROUPSET.equals( dimension.getDimensionType() ) )
+                {
+                    items = asList( categoryService.getCategoryOptionGroupSet( dimension.getDimension() ).getMembers() );
                 }
                 else if ( DimensionType.CATEGORY.equals( dimension.getDimensionType() ) )
                 {
@@ -1139,6 +1218,9 @@ public class DefaultAnalyticsService
      * Returns a mapping between the category option combo identifiers and names
      * in the given grid. Returns an empty map if the grid or cocIndex parameters
      * are null.
+     * 
+     * @param grid the grid.
+     * @param cocIndex the category option combo index in the grid.
      */
     private Map<String, String> getCocNameMap( Grid grid, Integer cocIndex )
     {
