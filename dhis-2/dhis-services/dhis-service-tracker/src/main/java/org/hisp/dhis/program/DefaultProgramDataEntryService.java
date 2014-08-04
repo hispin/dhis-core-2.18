@@ -596,6 +596,7 @@ public class DefaultProgramDataEntryService
             for ( Option option : dataElement.getOptionSet().getOptions() )
             {
                 String optionValue = option.getName();
+                String optionCode = option.getCode();
                 if ( index == 4 )
                 {
                     inputHTML += "</tr><tr>";
@@ -603,11 +604,11 @@ public class DefaultProgramDataEntryService
                 }
 
                 inputHTML += "<td>" + metaData;
-                if ( entityInstanceDataValue != null && entityInstanceDataValue.getValue().equals( optionValue ) )
+                if ( entityInstanceDataValue != null && entityInstanceDataValue.getValue().equals( optionCode ) )
                 {
                     inputHTML += " checked ";
                 }
-                inputHTML += " onclick=\"saveRadio( \'" + dataElement.getUid() + "\', \'" + optionValue + "\' )\"  />"
+                inputHTML += " onclick=\"saveRadio( \'" + dataElement.getUid() + "\', \'" + optionCode + "\' )\"  />"
                     + optionValue;
                 inputHTML += "</td>";
                 index++;
