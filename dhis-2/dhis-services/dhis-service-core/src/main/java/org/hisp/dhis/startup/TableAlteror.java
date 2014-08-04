@@ -41,8 +41,6 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
-import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.jdbc.batchhandler.RelativePeriodsBatchHandler;
@@ -731,7 +729,7 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE dataelement DROP COLUMN active" );
 
-        updateOptionTbl();
+        updateOptions();
 
         log.info( "Tables updated" );
     }
@@ -1164,10 +1162,21 @@ public class TableAlteror
         return statementManager.getHolder().queryForInteger( sql );
     }
 
-    private void updateOptionTbl()
+    private void updateOptions()
     {
-        executeSql( "INSERT INTO option( optionid, code, created, lastupdated, name, optionsetid, sort_order) "
-            + " select " + statementBuilder.getAutoIncrementValue() + ", optionvalue, now(), now(), optionvalue, optionsetid, ( sort_order + 1 ) "
-            + " from optionsetmembers " );
+        String sql = "insert into optionvalue(optionid, code, name, optionsetid, sort_order) "
+            + "select " + statementBuilder.getAutoIncrementValue() + ", optionvalue, optionvalue, optionsetid, ( sort_order + 1 ) "
+            + "from optionsetmembers";
+        
+        int result = executeSql( sql );
+        
+        if ( result != -1 )
+        {
+            executeSql( "drop table optionsetmembers" );
+        }
+        else
+        {
+            log.info( "Updated optionvalue table, SQL: " + sql );
+        }
     }
 }

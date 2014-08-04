@@ -32,7 +32,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionSet;
@@ -40,8 +39,6 @@ import org.hisp.dhis.option.OptionStore;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $HibernateOptionStore.java Jun 15, 2012 9:45:48 AM$
  */
 public class HibernateOptionStore
     extends HibernateIdentifiableObjectStore<OptionSet>
@@ -55,15 +52,20 @@ public class HibernateOptionStore
     @Override
     public List<Option> getOptions( int optionSetId, String key, Integer max )
     {
-        String hql = "select option from OptionSet as optionset join optionset.options as option where optionset.id = :optionSetId ";
+        String hql = 
+            "select option from OptionSet as optionset " +
+            "join optionset.options as option where optionset.id = :optionSetId ";
+        
         if ( key != null )
         {
-            hql += " and lower(option.name) like lower('%" + key + "%') ";
+            hql += "and lower(option.name) like lower('%" + key + "%') ";
         }
 
-        hql += " order by index(option)";
+        hql += "order by index(option)";
+        
         Query query = getQuery( hql );
         query.setInteger( "optionSetId", optionSetId );
+        
         if ( max != null )
         {
             query.setMaxResults( max );
@@ -74,7 +76,9 @@ public class HibernateOptionStore
 
     public Option getOptionValueByName( OptionSet optionSet, String name )
     {
-        String hql = "select option from OptionSet as optionset join optionset.options as option where optionset = :optionSet and lower(option.name) = :name";
+        String hql = 
+            "select option from OptionSet as optionset " +
+            "join optionset.options as option where optionset = :optionSet and lower(option.name) = :name";
 
         Query query = getQuery( hql );
         query.setEntity( "optionSet", optionSet );
@@ -86,12 +90,16 @@ public class HibernateOptionStore
     @SuppressWarnings( "unchecked" )
     public Collection<Option> getOptionValues( OptionSet optionSet, String option, Integer min, Integer max )
     {
-        String hql = "select option from OptionSet as optionset join optionset.options as option where optionset = :optionSet ";
+        String hql = 
+            "select option from OptionSet as optionset " +
+            "join optionset.options as option where optionset = :optionSet ";
 
         if ( option != null )
         {
-            hql += " and lower(option.name) like ('%" + option + "%') ";
+            hql += "and lower(option.name) like ('%" + option + "%') ";
         }
+
+        hql += "order by index(option)";
 
         Query query = getQuery( hql );
         query.setEntity( "optionSet", optionSet );
@@ -102,8 +110,6 @@ public class HibernateOptionStore
             query.setMaxResults( max );
         }
         
-        hql += " order by index(option)";
-
         return query.list();
     }
 }

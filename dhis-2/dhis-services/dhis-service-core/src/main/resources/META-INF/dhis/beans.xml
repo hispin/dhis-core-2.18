@@ -1011,6 +1011,7 @@
         <value>usergroup</value>
         <value>userrole</value>
         <value>optionset</value>
+        <value>optionvalue</value>
         <value>validationcriteria</value>
       </list>
     </property>
