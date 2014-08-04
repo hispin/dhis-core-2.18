@@ -39,7 +39,7 @@ public class SMSCode
 
     private DataElement dataElement;
     
-    private TrackedEntityAttribute  trackedEntityAttribute;
+    private TrackedEntityAttribute trackedEntityAttribute;
 
     private int optionId;
 
@@ -55,8 +55,6 @@ public class SMSCode
         this.code = code;
         this.trackedEntityAttribute = trackedEntityAttribute;
     }
-    
-    
 
     public SMSCode()
     {

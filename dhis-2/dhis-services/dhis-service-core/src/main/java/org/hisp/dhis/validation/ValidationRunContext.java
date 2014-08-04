@@ -182,7 +182,7 @@ public class ValidationRunContext
     {
         addPeriodsToContext( periods );
         
-        boolean surveillanceRulesPresent = addRulesToContext ( rules );
+        boolean surveillanceRulesPresent = addRulesToContext( rules );
         
         removeAnyUnneededPeriodTypes();
         
