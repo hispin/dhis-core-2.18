@@ -28,6 +28,7 @@ package org.hisp.dhis.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -286,6 +287,7 @@ public class Schema implements Ordered
         return Lists.newArrayList( propertyMap.values() );
     }
 
+    @JsonIgnore
     public Map<String, Property> getPropertyMap()
     {
         return propertyMap;
