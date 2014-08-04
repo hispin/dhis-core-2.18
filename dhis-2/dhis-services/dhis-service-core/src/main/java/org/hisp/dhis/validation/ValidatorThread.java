@@ -582,7 +582,7 @@ public class ValidatorThread
                 period.getStartDate(), source, allowedPeriodTypes, context.getAttributeCombo(),
                 context.getCogDimensionConstraints(), context.getCoDimensionConstraints(), lastUpdatedMap );
         }
-
+        
         // See if there are any data elements we need to get recursively:
         Set<DataElement> recursiveDataElementsNeeded = new HashSet<DataElement>( recursiveDataElements );
         recursiveDataElementsNeeded.removeAll( dataElementsToGet );

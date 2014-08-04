@@ -380,8 +380,6 @@ public class DefaultDataApprovalService
                 da.getPeriod().getStartDate(),
                 da.getPeriod().getEndDate() );
 
-        DataApprovalLevel lowestApprovalLevel = null;
-
         for ( Period period : periods )
         {
             DataApprovalStatus status = getDataApprovalStatus( da.getDataSet(), period, da.getOrganisationUnit(),
