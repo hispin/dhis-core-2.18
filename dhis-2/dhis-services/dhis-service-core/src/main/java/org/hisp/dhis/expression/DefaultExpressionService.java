@@ -36,6 +36,7 @@ import static org.hisp.dhis.expression.Expression.SEPARATOR;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 import static org.hisp.dhis.system.util.MathUtils.isEqual;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -52,9 +53,12 @@ import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
@@ -931,6 +935,93 @@ public class DefaultExpressionService
         return operands;
     }
 
+    public void updateDataElementsInExpression()
+    {
+        Collection<Expression> expressionList = expressionStore.getAll();
+        
+        for( Expression expression : expressionList )
+        {
+            final Matcher matcher = OPERAND_PATTERN.matcher( expression.getExpression() );
+
+            int i = 0;
+            String description = expression.getDescription();
+            while ( matcher.find() )
+            {
+                String optionComboUid = matcher.group( 2 );
+                DataElementCategoryOptionCombo optionCombo = categoryService.
+                    getDataElementCategoryOptionCombo( optionComboUid );
+                DataElementCategoryCombo categoryCombo = null;
+                if( optionCombo != null)
+                {
+                    categoryCombo = optionCombo.getCategoryCombo();
+                }
+                else
+                { 
+                    // Add Option
+                    
+                    DataElementCategoryOption option = new DataElementCategoryOption( description );
+                    option.setCode( optionComboUid );
+                    categoryService.addDataElementCategoryOption( option );
+                    
+                    // Add category
+                    
+                    DataElementCategory category = new DataElementCategory();
+                    category.setName( description );
+                    category.setDataDimension( false );
+                    category.setDataDimensionType( DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION );
+
+                    List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+                    categoryOptions.add( option );
+                    category.setCategoryOptions( categoryOptions );
+                    categoryService.addDataElementCategory( category );
+                    
+                    
+                    // Add CategoryCombo
+                    
+                    categoryCombo = new DataElementCategoryCombo();
+                    categoryCombo.setName( description );
+                    categoryCombo.setDimensionType( DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION );
+                    categoryCombo.setSkipTotal( false );
+
+                    List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
+                    categories.add( category );
+                    categoryCombo.setCategories( categories );
+                    int categoryComboId = categoryService.addDataElementCategoryCombo( categoryCombo );
+                    categoryCombo.setId( categoryComboId );
+                    
+                    // Generate OptionCombo
+                    categoryService.generateOptionCombos( categoryCombo );
+                    
+                    optionCombo = categoryCombo.getOptionCombos().iterator().next();
+                    optionCombo.setUid( optionComboUid );
+                    categoryService.updateDataElementCategoryOptionCombo( optionCombo );
+                }
+              
+                String dataElementUid = matcher.group( 1 ) ;  
+                DataElement dataElement = dataElementService.getDataElement( dataElementUid );
+                 
+                if ( dataElement == null )
+                {
+                    dataElement = new DataElement();
+                    dataElement.setUid( dataElementUid );
+                    dataElement.setName( description );
+                    int length = ( expression.getDescription().length() < 50 ) ?  expression.getDescription().length() : 49;
+                    dataElement.setShortName( expression.getDescription().substring( 0, length ) );
+                    dataElement.setType( DataElement.VALUE_TYPE_INT );
+                    dataElement.setNumberType( DataElement.VALUE_TYPE_NUMBER );
+                    dataElement.setDomainType( DataElementDomain.AGGREGATE );
+                    dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
+                    dataElement.setCategoryCombo( categoryCombo );
+                    
+                    dataElementService.addDataElement( dataElement );
+                }
+                
+                i++;
+                description += "" + i;
+            }
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
