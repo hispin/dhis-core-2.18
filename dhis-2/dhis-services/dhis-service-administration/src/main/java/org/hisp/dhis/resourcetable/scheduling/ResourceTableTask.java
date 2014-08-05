@@ -28,9 +28,14 @@ package org.hisp.dhis.resourcetable.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_LAST_SUCCESSFUL_RESOURCE_TABLES_UPDATE;
+
+import java.util.Date;
+
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +55,9 @@ public class ResourceTableTask
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private SystemSettingManager systemSettingManager;
+    
     private TaskId taskId;
 
     public void setTaskId( TaskId taskId )
@@ -64,6 +72,8 @@ public class ResourceTableTask
     @Override
     public void run()
     {
+        final Date startTime = new Date();
+        
         notifier.notify( taskId, "Generating resource tables" );
         
         try
@@ -80,6 +90,8 @@ public class ResourceTableTask
             
             throw ex;
         }
+
+        systemSettingManager.saveSystemSetting( KEY_LAST_SUCCESSFUL_RESOURCE_TABLES_UPDATE, startTime );
     }    
 
     // -------------------------------------------------------------------------

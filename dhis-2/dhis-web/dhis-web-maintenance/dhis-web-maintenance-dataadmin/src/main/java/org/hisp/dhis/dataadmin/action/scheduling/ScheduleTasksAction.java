@@ -37,7 +37,7 @@ import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATA_SYNCH;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ORGUNITGROUPSET_AGG_LEVEL;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_PERIOD_TYPES;
+import static org.hisp.dhis.setting.SystemSettingManager.*;
 import static org.hisp.dhis.system.scheduling.Scheduler.CRON_DAILY_0AM;
 import static org.hisp.dhis.system.scheduling.Scheduler.CRON_EVERY_MIN;
 import static org.hisp.dhis.system.scheduling.Scheduler.STATUS_RUNNING;
@@ -210,13 +210,27 @@ public class ScheduleTasksAction
         return levels;
     }
     
+    private Date lastResourceTableSuccess;
+
+    public Date getLastResourceTableSuccess()
+    {
+        return lastResourceTableSuccess;
+    }
+    
+    private Date lastAnalyticsTableSuccess;
+
+    public Date getLastAnalyticsTableSuccess()
+    {
+        return lastAnalyticsTableSuccess;
+    }
+    
     private Date lastDataSyncSuccess;
     
     public Date getLastDataSyncSuccess()
     {
         return lastDataSyncSuccess;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -350,6 +364,9 @@ public class ScheduleTasksAction
         running = STATUS_RUNNING.equals( status );
         
         levels = organisationUnitService.getOrganisationUnitLevels();
+        
+        lastResourceTableSuccess = (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_RESOURCE_TABLES_UPDATE );
+        lastAnalyticsTableSuccess = (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_ANALYTICS_TABLES_UPDATE );
         lastDataSyncSuccess = synchronizationManager.getLastSynchSuccess();
 
         log.info( "Status: " + status );
