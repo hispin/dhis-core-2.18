@@ -164,7 +164,7 @@
       <span id="hideRightBar"><a href="javascript:hideHelpContent()" title="$i18n.getString( 'close' )">
         <img id="hideRightBarImg" src="../images/hide.png" alt="$i18n.getString( 'close' )"/></a>
       </span>
-      <div id="rightBarContents"/>
+      <div id="rightBarContents"></div>
     </div>
 
     #googleAnalyticsUA()
