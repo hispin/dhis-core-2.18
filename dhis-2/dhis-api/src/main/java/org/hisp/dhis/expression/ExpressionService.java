@@ -363,11 +363,4 @@ public interface ExpressionService
      * @param indicators the collection of Indicators.
      */
     Set<DataElementOperand> getOperandsInIndicators( Collection<Indicator> indicators );
-
-    /**
-     * the data element and option combo of expression formula, which doesn't
-     * match with any data elements and option combos existed in database, will
-     * be created and saved into database
-     */
-    void updateDataElementsInExpression();
 }
