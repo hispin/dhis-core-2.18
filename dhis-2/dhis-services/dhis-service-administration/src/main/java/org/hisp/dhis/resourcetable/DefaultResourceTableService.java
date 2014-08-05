@@ -492,7 +492,7 @@ public class DefaultResourceTableService
 
             values.add( period.getId() );
             values.add( period.getIsoDate() );
-            values.add( rowType.getFrequencyOrder() );
+            values.add( period.getDaysInPeriod() );
 
             for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
             {

@@ -38,6 +38,8 @@ import org.hisp.dhis.common.adapter.JacksonPeriodTypeDeserializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -206,7 +208,7 @@ public class Period
     }
 
     /**
-     * Return the potential number of periods of the given period type which is
+     * Returns the potential number of periods of the given period type which is
      * spanned by this period.
      *
      * @param type the period type.
@@ -220,6 +222,18 @@ public class Period
         return (int) Math.floor( no );
     }
 
+    /**
+     * Returns the number of days in the period, i.e. the days between the start
+     * and end date.
+     * 
+     * @return number of days in period.
+     */
+    public int getDaysInPeriod()
+    {
+        Days days = Days.daysBetween( new DateTime( startDate ), new DateTime( endDate ) );
+        return days.getDays() + 1;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
