@@ -105,18 +105,6 @@ public class UpdateProgramAction
         this.description = description;
     }
 
-    private Integer version;
-
-    public Integer getVersion()
-    {
-        return version;
-    }
-
-    public void setVersion( Integer version )
-    {
-        this.version = version;
-    }
-
     private String dateOfEnrollmentDescription;
 
     public void setDateOfEnrollmentDescription( String dateOfEnrollmentDescription )
@@ -299,7 +287,6 @@ public class UpdateProgramAction
         Program program = programService.getProgram( id );
         program.setName( name );
         program.setDescription( description );
-        program.setVersion( version );
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
         program.setType( type );
@@ -373,6 +360,8 @@ public class UpdateProgramAction
             program.setRelatedProgram( relatedProgram );
         }
 
+        program.increaseVersion(); //TODO make more fine-grained
+        
         programService.updateProgram( program );
 
         return SUCCESS;

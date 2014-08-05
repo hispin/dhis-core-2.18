@@ -212,6 +212,12 @@ public class Program
 
         return null;
     }
+    
+    public Program increaseVersion()
+    {
+        version = version != null ? version + 1 : 1;
+        return this;
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
