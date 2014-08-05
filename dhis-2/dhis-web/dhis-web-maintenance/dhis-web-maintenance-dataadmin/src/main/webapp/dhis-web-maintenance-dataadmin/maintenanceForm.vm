@@ -42,6 +42,11 @@
 </p>
 
 <p>
+    <input type="checkbox" id="updateExpression"/>
+    <label for="updateExpression">$i18n.getString( "update_the_data_elements_and_option_combos_in_expression" )</label>
+</p>
+
+<p>
 	<input type="button" value="$i18n.getString( 'perform_maintenance' )" onclick="performMaintenance()" style="width:170px"/>
 </p>
 
