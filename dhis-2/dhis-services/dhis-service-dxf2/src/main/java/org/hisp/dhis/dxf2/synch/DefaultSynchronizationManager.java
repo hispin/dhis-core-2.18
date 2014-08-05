@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.synch;
  */
 
 import static org.apache.commons.lang.StringUtils.trimToNull;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_LAST_SUCCESSFUL_DATA_SYNC;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -69,8 +70,6 @@ public class DefaultSynchronizationManager
     implements SynchronizationManager
 {
     private static final Log log = LogFactory.getLog( DefaultSynchronizationManager.class );
-    
-    private static final String KEY_LAST_SUCCESSFUL_SYNC = "keyLastSuccessfulSynch";
     
     private static final String PING_PATH = "/api/system/ping";
     private static final String HEADER_AUTHORIZATION = "Authorization";
@@ -227,7 +226,7 @@ public class DefaultSynchronizationManager
     
     public Date getLastSynchSuccess()
     {
-        return (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_SYNC );
+        return (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_DATA_SYNC );
     }
     
     // -------------------------------------------------------------------------
@@ -242,7 +241,7 @@ public class DefaultSynchronizationManager
     {
         Date fallback = new Cal().subtract( Calendar.DAY_OF_YEAR, 3 ).time();
         
-        return (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_SYNC, fallback );
+        return (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_DATA_SYNC, fallback );
     }
 
     /**
@@ -250,7 +249,7 @@ public class DefaultSynchronizationManager
      */
     private void setLastSynchSuccess( Date time )
     {
-        systemSettingManager.saveSystemSetting( KEY_LAST_SUCCESSFUL_SYNC, time );
+        systemSettingManager.saveSystemSetting( KEY_LAST_SUCCESSFUL_DATA_SYNC, time );
     }
 
     /**

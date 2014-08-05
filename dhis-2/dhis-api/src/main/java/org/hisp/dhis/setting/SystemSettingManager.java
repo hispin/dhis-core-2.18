@@ -98,6 +98,9 @@ public interface SystemSettingManager
     final String KEY_CUSTOM_LOGIN_PAGE_LOGO = "keyCustomLoginPageLogo";
     final String KEY_CUSTOM_TOP_MENU_LOGO = "keyCustomTopMenuLogo";
     final String KEY_ANALYTICS_MAINTENANCE_MODE = "keyAnalyticsMaintenanceMode";
+    final String KEY_LAST_SUCCESSFUL_DATA_SYNC = "keyLastSuccessfulDataSynch";
+    final String KEY_LAST_SUCCESSFUL_ANALYTICS_TABLES_UPDATE = "keyLastSuccessfulAnalyticsTablesUpdate";
+    final String KEY_LAST_SUCCESSFUL_RESOURCE_TABLES_UPDATE = "keyLastSuccessfulResourceTablesUpdate";
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";
