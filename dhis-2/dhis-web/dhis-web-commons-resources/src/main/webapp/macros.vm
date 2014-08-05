@@ -132,7 +132,7 @@ function clearFilter() {
 <tr>
 	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230]}}" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[1,230]}}" />
 	</td>
 </tr>
 #end
