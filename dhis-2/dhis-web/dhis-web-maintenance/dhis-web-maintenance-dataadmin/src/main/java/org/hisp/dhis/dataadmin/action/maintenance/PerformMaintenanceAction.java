@@ -37,10 +37,8 @@ import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datamart.DataMartManager;
-import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.maintenance.MaintenanceService;
 import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,30 +50,30 @@ public class PerformMaintenanceAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( PerformMaintenanceAction.class );
-
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Resource( name = "org.hisp.dhis.analytics.AnalyticsTableService" )
+    @Resource(name="org.hisp.dhis.analytics.AnalyticsTableService")
     private AnalyticsTableService analyticsTableService;
 
-    @Resource( name = "org.hisp.dhis.analytics.CompletenessTableService" )
+    @Resource(name="org.hisp.dhis.analytics.CompletenessTableService")
     private AnalyticsTableService completenessTableService;
-
-    @Resource( name = "org.hisp.dhis.analytics.CompletenessTargetTableService" )
+    
+    @Resource(name="org.hisp.dhis.analytics.CompletenessTargetTableService")
     private AnalyticsTableService completenessTargetTableService;
-
-    @Resource( name = "org.hisp.dhis.analytics.EventAnalyticsTableService" )
+    
+    @Resource(name="org.hisp.dhis.analytics.EventAnalyticsTableService")
     private AnalyticsTableService eventAnalyticsTableService;
-
+    
     private MaintenanceService maintenanceService;
 
     public void setMaintenanceService( MaintenanceService maintenanceService )
     {
         this.maintenanceService = maintenanceService;
     }
-
+    
     private DataSetCompletenessService completenessService;
 
     public void setCompletenessService( DataSetCompletenessService completenessService )
@@ -84,12 +82,12 @@ public class PerformMaintenanceAction
     }
 
     private AggregatedDataValueService aggregatedDataValueService;
-
+    
     public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
-
+        
     private DataMartManager dataMartManager;
 
     public void setDataMartManager( DataMartManager dataMartManager )
@@ -103,23 +101,20 @@ public class PerformMaintenanceAction
     {
         this.currentUserService = currentUserService;
     }
-
+    
     private DataElementCategoryService categoryService;
 
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
     }
-    
-    @Autowired
-    private ExpressionService expressionService;
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-
+    
     private boolean clearAnalytics;
-
+    
     public void setClearAnalytics( boolean clearAnalytics )
     {
         this.clearAnalytics = clearAnalytics;
@@ -133,7 +128,7 @@ public class PerformMaintenanceAction
     }
 
     public boolean dataMartIndex;
-
+    
     public void setDataMartIndex( boolean dataMartIndex )
     {
         this.dataMartIndex = dataMartIndex;
@@ -145,21 +140,21 @@ public class PerformMaintenanceAction
     {
         this.zeroValues = zeroValues;
     }
-
+    
     private boolean dataSetCompleteness;
 
     public void setDataSetCompleteness( boolean dataSetCompleteness )
     {
         this.dataSetCompleteness = dataSetCompleteness;
     }
-
+    
     private boolean prunePeriods;
 
     public void setPrunePeriods( boolean prunePeriods )
     {
         this.prunePeriods = prunePeriods;
     }
-
+    
     private boolean updateCategoryOptionCombos;
 
     public void setUpdateCategoryOptionCombos( boolean updateCategoryOptionCombos )
@@ -167,23 +162,15 @@ public class PerformMaintenanceAction
         this.updateCategoryOptionCombos = updateCategoryOptionCombos;
     }
 
-    private boolean updateExpression;
-
-    public void setUpdateExpression( boolean updateExpression )
-    {
-        this.updateExpression = updateExpression;
-    }
-    
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
-    public String execute()
+    
+    public String execute() 
         throws Exception
     {
         String username = currentUserService.getCurrentUsername();
-
+        
         if ( clearAnalytics )
         {
             analyticsTableService.dropTables();
@@ -191,68 +178,61 @@ public class PerformMaintenanceAction
             completenessTargetTableService.dropTables();
             eventAnalyticsTableService.dropTables();
         }
-
+        
         if ( clearDataMart )
         {
             aggregatedDataValueService.dropDataMart();
             aggregatedDataValueService.createDataMart();
-
+            
             log.info( "'" + username + "': Cleared data mart" );
         }
-
+        
         if ( dataMartIndex )
         {
             dataMartManager.dropDataValueIndex();
             dataMartManager.dropIndicatorValueIndex();
             dataMartManager.dropOrgUnitDataValueIndex();
             dataMartManager.dropOrgUnitIndicatorValueIndex();
-
+            
             dataMartManager.createDataValueIndex();
             dataMartManager.createIndicatorValueIndex();
             dataMartManager.createOrgUnitDataValueIndex();
             dataMartManager.createOrgUnitIndicatorValueIndex();
-
+            
             completenessService.dropIndex();
             completenessService.createIndex();
-
+            
             log.info( "'" + username + "': Rebuilt data mart indexes" );
         }
-
+        
         if ( zeroValues )
         {
             maintenanceService.deleteZeroDataValues();
-
+            
             log.info( "Cleared zero values" );
         }
-
+        
         if ( dataSetCompleteness )
         {
             completenessService.deleteDataSetCompleteness();
-
+            
             log.info( "'" + username + "': Cleared data completeness" );
         }
-
+        
         if ( prunePeriods )
         {
             maintenanceService.prunePeriods();
-
+            
             log.info( "'" + username + "': Pruned periods" );
         }
-
+        
         if ( updateCategoryOptionCombos )
         {
             categoryService.updateAllOptionCombos();
-
+            
             log.info( "'" + username + "': Updated category option combos" );
         }
-
-        if ( updateExpression )
-        {
-            expressionService.updateDataElementsInExpression();
-
-            log.info( "'" + username + "': Updated data elements and category option combos in expression" );
-        }
-
+        
         return SUCCESS;
     }
 }
