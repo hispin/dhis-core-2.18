@@ -62,6 +62,10 @@ public class TrackedEntityFormDeletionHandler
     public void deleteProgram( Program program )
     {
         TrackedEntityForm form = formService.getFormsWithProgram( program );
-        formService.deleteTrackedEntityForm( form );
+        
+        if ( form != null )
+        {
+            formService.deleteTrackedEntityForm( form );
+        }
     }
 }
