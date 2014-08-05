@@ -48,7 +48,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = DataElementOperandSchemaDescriptor.API_ENDPOINT)
+@RequestMapping( value = DataElementOperandSchemaDescriptor.API_ENDPOINT )
 public class DataElementOperandController extends AbstractCrudController<DataElementOperand>
 {
     @Autowired
