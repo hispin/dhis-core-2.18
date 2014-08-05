@@ -225,8 +225,8 @@ public class DateUtils
             return false;
         }
 
-        if ( (startDate.before( baseDate ) || startDate.equals( baseDate ))
-            && (endDate.after( baseDate ) || endDate.equals( baseDate )) )
+        if ( ( startDate.before( baseDate ) || startDate.equals( baseDate ) )
+            && ( endDate.after( baseDate ) || endDate.equals( baseDate ) ) )
         {
             return true;
         }

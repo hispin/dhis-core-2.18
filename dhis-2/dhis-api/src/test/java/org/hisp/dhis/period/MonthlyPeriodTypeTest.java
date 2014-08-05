@@ -92,8 +92,19 @@ public class MonthlyPeriodTypeTest
         
         testCal.set( period2.getStartDate());
         assertEquals( 2010, testCal.get( Calendar.YEAR) );
-        assertEquals( 0, testCal.get( Calendar.MONTH) );
-        
+        assertEquals( 0, testCal.get( Calendar.MONTH) );        
+    }
+    
+    @Test
+    public void testGetDaysInPeriod()
+    {
+        Period pA = periodType.createPeriod( "20040315" );
+        Period pB = periodType.createPeriod( "201403" );
+        Period pC = periodType.createPeriod( "2014Q2" );
+
+        assertEquals( 1, pA.getDaysInPeriod() );
+        assertEquals( 31, pB.getDaysInPeriod() );
+        assertEquals( 91, pC.getDaysInPeriod() );
     }
         
     @Test
