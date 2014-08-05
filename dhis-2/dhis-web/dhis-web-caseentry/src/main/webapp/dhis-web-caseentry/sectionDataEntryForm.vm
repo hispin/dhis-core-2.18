@@ -62,7 +62,7 @@
 									#set( $hasOptionSet = 'false')
 								#end
 								#if( $programStageDataElement.dataElement.textType == "longText" )
-									<textarea name="entryfield" type="text" data="{compulsory: $programStageDataElement.compulsory }" id="$id" name="entryfield" onchange="saveVal( '$programStageDataElement.dataElement.uid' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" maxlength=255 >$!encoder.htmlEncode( $dataValue.value )</textarea>
+									<textarea name="entryfield" type="text" data="{compulsory: $programStageDataElement.compulsory }" id="$id" name="entryfield" onchange="saveVal( '$programStageDataElement.dataElement.uid', this.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" maxlength=255 >$!encoder.htmlEncode( $dataValue.value )</textarea>
 								#elseif( $programStageDataElement.dataElement.type == "bool" )
 									<select name="entryfield" data="{compulsory: $programStageDataElement.compulsory }" id="$id" onchange="saveOpt( '$programStageDataElement.dataElement.uid' )" tabindex="$tabIndex">
 										<option value="">[$i18n.getString( "select_value" )]</option>
@@ -70,9 +70,9 @@
 										<option value="false" #if( $dataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
 									</select>
 								#elseif( $programStageDataElement.dataElement.type == "trueOnly" )
-									<input name="entryfield" type="checkbox" data="{compulsory: $programStageDataElement.compulsory, deType:'$programStageDataElement.dataElement.getType()'}" id="$id" name="entryfield" #if($dataValue.value=="true") checked #end onchange="saveVal( '$programStageDataElement.dataElement.uid' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
+									<input name="entryfield" type="checkbox" data="{compulsory: $programStageDataElement.compulsory, deType:'$programStageDataElement.dataElement.getType()'}" id="$id" name="entryfield" #if($dataValue.value=="true") checked #end onchange="saveVal( '$programStageDataElement.dataElement.uid', this.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
 								#elseif( $programStageDataElement.dataElement.type == "date" )
-									<input name="entryfield" type="text" data="{compulsory: $programStageDataElement.compulsory, deType:'$programStageDataElement.dataElement.getType()'}" id="$id" name="entryfield" value="$!encoder.htmlEncode( $dataValue.value )" onchange="saveVal( '$programStageDataElement.dataElement.uid' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="date-field datefield" >
+									<input name="entryfield" type="text" data="{compulsory: $programStageDataElement.compulsory, deType:'$programStageDataElement.dataElement.getType()'}" id="$id" name="entryfield" value="$!encoder.htmlEncode( $dataValue.value )" onchange="saveVal( '$programStageDataElement.dataElement.uid', this.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="date-field datefield" >
 									<script type="text/javascript">
 										#if($programStageDataElement.allowFutureDate=='true')
 											datePicker( '$programStageDataElement.programStage.uid'+ '-' + '$programStageDataElement.dataElement.uid' + '-val', false, false);
@@ -88,7 +88,7 @@
 												<td>
 													<input id='$id' name="$id" type='radio' options='no' optionset="$programStageDataElement.dataElement.optionSet.uid"
 														data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" 
-														#if( $dataValue.value == "$option.code") checked #end
+														#if( $dataValue.value == "$option.name") checked #end
 														onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option.code' )" tabindex="$tabIndex" />$i18n.getString("non_value")
 											</td>
 										#set($index=1)
@@ -100,7 +100,7 @@
 											<td>
 											<input id='$id' name="$id" type='radio' options='no'
 											data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" 
-											#if( $dataValue.value == "$option.code") checked #end
+											#if( $dataValue.value == "$option.name") checked #end
 											onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option.code' )" tabindex="$tabIndex" />$encoder.htmlEncode($option.name)
 											</td>
 											#set($index=$index + 1)
@@ -116,7 +116,7 @@
 									<input name="entryfield" 
 										data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" onkeypress="return keyPress(event, this)" tabindex="$tabIndex"
 										id="$id" type="text" value="$!encoder.htmlEncode( $dataValue.value )" 
-										onchange="saveVal( '$programStageDataElement.dataElement.uid' )" 
+										onchange="saveVal( '$programStageDataElement.dataElement.uid', this.value )" 
 										onkeypress="return keyPress(event, this)" tabindex="$tabIndex"/>
 								#end
 							</td> 

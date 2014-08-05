@@ -37,6 +37,8 @@ import java.util.Map;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.option.Option;
+import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -54,6 +56,7 @@ import org.hisp.dhis.program.comparator.ProgramStageSectionSortOrderComparator;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -109,6 +112,9 @@ public class LoadDataEntryAction
     {
         this.organisationUnitService = organisationUnitService;
     }
+
+    @Autowired
+    private OptionService optionService;
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -257,7 +263,7 @@ public class LoadDataEntryAction
     {
         return displayOptionSetAsRadioButton;
     }
-
+    
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -310,7 +316,7 @@ public class LoadDataEntryAction
             // ---------------------------------------------------------------------
             // Get program indicators
             // ---------------------------------------------------------------------
-            
+
             programIndicatorsMap.putAll( programIndicatorService.getProgramIndicatorValues( programStageInstance
                 .getProgramInstance() ) );
 
@@ -364,7 +370,19 @@ public class LoadDataEntryAction
         for ( TrackedEntityDataValue entityInstanceDataValue : entityInstanceDataValues )
         {
             int key = entityInstanceDataValue.getDataElement().getId();
-            entityInstanceDataValueMap.put( key, entityInstanceDataValue );
+            if ( entityInstanceDataValue.getDataElement().getOptionSet() != null )
+            {
+                String value = entityInstanceDataValue.getValue();
+                Option option = optionService.getOptionByCode( value );
+                
+                TrackedEntityDataValue instanceDataValue = new TrackedEntityDataValue(entityInstanceDataValue.getProgramStageInstance(), entityInstanceDataValue.getDataElement());
+                instanceDataValue.setValue( option.getName() );
+                entityInstanceDataValueMap.put( key, instanceDataValue );
+            }
+            else
+            {
+                entityInstanceDataValueMap.put( key, entityInstanceDataValue );
+            }
         }
 
         return entityInstanceDataValues;

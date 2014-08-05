@@ -5,7 +5,7 @@ var MAX_DROPDOWN_DISPLAYED = 30;
 // Save value
 //------------------------------------------------------------------------------
 
-function saveVal( dataElementUid )
+function saveVal( dataElementUid, fieldValue )
 {
     var programStageUid = getProgramStageUid();
     var fieldId = programStageUid + '-' + dataElementUid + '-val';
@@ -13,7 +13,6 @@ function saveVal( dataElementUid )
 
     if( field == null) return;
 
-    var fieldValue = jQuery.trim( field.value );
     var arrData = jQuery( "#" + fieldId ).attr( 'data' ).replace( '{', '' ).replace( '}', '' ).replace( /'/g, "" ).split( ',' );
     var data = [];
 
@@ -257,7 +256,7 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
 			params += byId( providedElsewhereId ).checked;
 		
 		params += '&value=';
-
+		
         if ( value != '' )
             params += htmlEncode( value );
 
@@ -1059,6 +1058,10 @@ function autocompletedField( idField )
 		minLength: 0,
 		select: function( event, ui ) {
 			var fieldValue = ui.item.value;
+			var fieldCode = "";
+			if(ui.item.id!=null){
+				fieldCode = ui.item.id; 
+			}
 
 			if ( !dhis2.trigger.invoke( "caseentry-value-selected", [dataElementUid, fieldValue] ) ) {
 				input.val( "" );
@@ -1067,7 +1070,7 @@ function autocompletedField( idField )
 
 			input.val( fieldValue );
 			if ( !unSave ) {
-				saveVal( dataElementUid );
+				saveVal( dataElementUid, fieldCode );
 			}
 			input.autocomplete( "close" );
 		},
@@ -1077,8 +1080,10 @@ function autocompletedField( idField )
 					valid = false;
 				if ( !valid ) {
 					$( this ).val( "" );
-					if(!unSave)
-						saveVal( dataElementUid );
+					if(!unSave){
+						var fieldCode = ui.item.id;
+						saveVal( dataElementUid, fieldCode );
+					}
 					input.data( "uiAutocomplete" ).term = "";
 					return false;
 				}
@@ -1194,7 +1199,7 @@ function autocompletedUsernameField( idField )
 			
 			input.val( fieldValue );			
 			if ( !unSave ) {
-				saveVal( dataElementUid );
+				saveVal( dataElementUid, fieldValue );
 			}
 			input.autocomplete( "close" );
 		},
@@ -1205,7 +1210,7 @@ function autocompletedUsernameField( idField )
 				if ( !valid ) {
 					$( this ).val( "" );
 					if(!unSave)
-						saveVal( dataElementUid );
+						saveVal( dataElementUid, fieldValue );
 					input.data( "uiAutocomplete" ).term = "";
 					return false;
 				}
