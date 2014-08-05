@@ -140,6 +140,10 @@ public class EmailMessageSender
         {
             log.warn( "Could not send email: " + ex.getMessage() + ", " + DebugUtils.getStackTrace( ex ) );
         }
+        catch ( RuntimeException ex )
+        {
+            log.warn( "Error while sending email: " + ex.getMessage() + ", " + DebugUtils.getStackTrace( ex ) );
+        }
 
         return null;
     }
