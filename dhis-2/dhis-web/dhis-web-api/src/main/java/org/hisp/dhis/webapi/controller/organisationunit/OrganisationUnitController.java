@@ -66,20 +66,20 @@ public class OrganisationUnitController
     {
         List<OrganisationUnit> entityList;
 
-        boolean levelSorted = options.getOptions().containsKey( "levelSorted" ) && Boolean.parseBoolean( options.getOptions().get( "levelSorted" ) );
+        boolean levelSorted = options.contains( "levelSorted" ) && Boolean.parseBoolean( options.get( "levelSorted" ) );
 
         Integer level = null;
 
         Integer maxLevel = null;
 
-        if ( options.getOptions().containsKey( "level" ) )
+        if ( options.contains( "level" ) )
         {
-            level = Integer.parseInt( options.getOptions().get( "level" ) );
+            level = Integer.parseInt( options.get( "level" ) );
         }
 
-        if ( options.getOptions().containsKey( "maxLevel" ) )
+        if ( options.contains( "maxLevel" ) )
         {
-            maxLevel = Integer.parseInt( options.getOptions().get( "maxLevel" ) );
+            maxLevel = Integer.parseInt( options.get( "maxLevel" ) );
 
             if ( organisationUnitService.getOrganisationUnitLevelByLevel( maxLevel ) == null )
             {
@@ -92,15 +92,15 @@ public class OrganisationUnitController
             }
         }
 
-        if ( "true".equals( options.getOptions().get( "userOnly" ) ) )
+        if ( options.isTrue( "userOnly" ) )
         {
             entityList = new ArrayList<>( currentUserService.getCurrentUser().getOrganisationUnits() );
         }
-        else if ( "true".equals( options.getOptions().get( "userDataViewOnly" ) ) )
+        else if ( options.isTrue( "userDataViewOnly" ) )
         {
             entityList = new ArrayList<>( currentUserService.getCurrentUser().getDataViewOrganisationUnits() );
         }
-        else if ( "true".equals( options.getOptions().get( "userDataViewFallback" ) ) )
+        else if ( options.isTrue( "userDataViewFallback" ) )
         {
             User user = currentUserService.getCurrentUser();
 
@@ -113,9 +113,9 @@ public class OrganisationUnitController
                 entityList = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
             }
         }
-        else if ( options.getOptions().containsKey( "query" ) )
+        else if ( options.contains( "query" ) )
         {
-            entityList = new ArrayList<>( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
+            entityList = new ArrayList<>( manager.filter( getEntityClass(), options.get( "query" ) ) );
 
             if ( levelSorted )
             {

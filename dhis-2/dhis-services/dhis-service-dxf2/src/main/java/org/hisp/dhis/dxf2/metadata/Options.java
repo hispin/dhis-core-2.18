@@ -34,6 +34,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hisp.dhis.system.util.TextUtils;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -141,7 +143,7 @@ public class Options
         return defaultValue;
     }
 
-    protected static boolean isTrue( String str )
+    protected static boolean stringIsTrue( String str )
     {
         return stringAsBoolean( str );
     }
@@ -176,7 +178,7 @@ public class Options
     {
         String enabled = options.get( type );
 
-        return isTrue( enabled ) || enabled == null && assumeTrue;
+        return stringIsTrue( enabled ) || ( enabled == null && assumeTrue );
     }
 
     public boolean isDisabled( String type )
@@ -198,6 +200,21 @@ public class Options
     public Date getDate( String key )
     {
         return stringAsDate( options.get( key ) );
+    }
+    
+    public boolean contains( String type )
+    {
+        return options.containsKey( type );
+    }
+    
+    public String get( String type )
+    {
+        return options.get( type );
+    }
+    
+    public boolean isTrue( String type )
+    {
+        return options.containsKey( type ) && TextUtils.TRUE.equalsIgnoreCase( options.get( type ) );
     }
 
     //--------------------------------------------------------------------------
@@ -246,5 +263,4 @@ public class Options
     {
         options.putAll( options );
     }
-
 }
