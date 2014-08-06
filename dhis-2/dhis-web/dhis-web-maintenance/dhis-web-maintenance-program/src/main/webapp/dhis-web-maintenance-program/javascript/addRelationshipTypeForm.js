@@ -1,8 +1,12 @@
 jQuery(document).ready(	function(){
 
 	jQuery('aIsToB').focus();
-		
-	validation( 'addRelationshipTypeForm', function(form){
+	
+	validation2( 'addRelationshipTypeForm', function( form )
+	{
 		validateAddRelationshipType();
-	}); 
+	},{
+		'rules' : getValidationRules( "relationshipType" )
+	});
+	
 });	

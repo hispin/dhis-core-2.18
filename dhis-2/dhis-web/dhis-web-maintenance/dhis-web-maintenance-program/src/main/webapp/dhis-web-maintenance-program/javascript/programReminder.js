@@ -128,17 +128,19 @@ function insertParams( paramValue ) {
   getMessageLength();
 }
 
-function whenToSendOnChange(  ) {
+function whenToSendOnChange() {
   var whenToSend = getFieldValue('whenToSend' );
   if( whenToSend == "" ) {
     enable('dateToCompare');
     enable('daysAllowedSendMessage' );
     enable('time');
+    enable('days');
   }
   else {
     disable('dateToCompare');
     disable('daysAllowedSendMessage');
     disable('time');
+    disable('days');
   }
 }
 

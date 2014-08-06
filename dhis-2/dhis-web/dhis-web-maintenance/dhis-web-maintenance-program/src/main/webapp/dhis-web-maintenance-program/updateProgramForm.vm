@@ -1,58 +1,62 @@
 <script>
 	jQuery( document ).ready( function()
 	{
-		validation( 'updateProgramForm', function( form ){
+		validation2( 'updateProgramForm', function( form )
+		{
 			enable('dateOfEnrollmentDescription');
 			enable('dateOfIncidentDescription');
 			form.submit();
-		}, function(){
-			var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
-			selectedPropertyIds.empty();
-			var personDisplayNames = jQuery( "#personDisplayNames" );
-			personDisplayNames.empty();
-			var compulsaryIdentifier = jQuery( "#compulsaryIdentifier" );
-			compulsaryIdentifier.empty();
-			var mandatorySelector = jQuery( "#mandatory" );
-			mandatorySelector.empty();		
-			var allowFutureDateSelector = jQuery( "#allowFutureDate" );
-			allowFutureDateSelector.empty();
-			
-			if( getFieldValue('type') != 3 ){
-				var isDisplayed = false;
-				jQuery("#selectedList").find("tr").each( function( i, item ){
-					selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
-					var displayed = jQuery( item ).find( "input[name='displayed']:first");
-					var checked = displayed.attr('checked') ? true : false;
-					if( checked ){
-						isDisplayed = true
+		},{
+			'beforeValidateHandler' : function()
+			{
+				var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
+				selectedPropertyIds.empty();
+				var personDisplayNames = jQuery( "#personDisplayNames" );
+				personDisplayNames.empty();
+				var compulsaryIdentifier = jQuery( "#compulsaryIdentifier" );
+				compulsaryIdentifier.empty();
+				var mandatorySelector = jQuery( "#mandatory" );
+				mandatorySelector.empty();
+				var allowFutureDateSelector = jQuery( "#allowFutureDate" );
+				allowFutureDateSelector.empty();
+				
+				if( getFieldValue('type') != 3 ){
+					
+					var isDisplayed = false;
+					jQuery("#selectedList").find("tr").each( function( i, item ){
+						selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
+						var displayed = jQuery( item ).find( "input[name='displayed']:first");
+						var checked = displayed.attr('checked') ? true : false;
+						personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+						if( checked ){
+							isDisplayed = true
+						}
+						
+						// mandatory
+						var mandatory = jQuery( item ).find( "input[name='mandatory']:first");
+						checked = mandatory.attr('checked') ? true : false;
+						mandatorySelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+						
+						// allowFutureDate
+						var allowFutureDate = jQuery( item ).find( "input[name='allowFutureDate']:first");
+						checked = allowFutureDate.attr('checked') ? true : false;
+						allowFutureDateSelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+					});
+					if( jQuery("#selectedList").find("tr").length > 0 && isDisplayed ){
+						compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
 					}
-					personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-					
-					// mandatory
-					var mandatory = jQuery( item ).find( "input[name='mandatory']:first");
-					checked = mandatory.attr('checked') ? true : false;
-					mandatorySelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-					
-					// allowFutureDate
-					var allowFutureDate = jQuery( item ).find( "input[name='allowFutureDate']:first");
-					checked = allowFutureDate.attr('checked') ? true : false;
-					allowFutureDateSelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-				});
-				if( jQuery("#selectedList").find("tr").length > 0 && isDisplayed ){
+				}
+				else{
 					compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
 				}
-			}
-			else{
-				compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
-			}
-			
+			},
+			'rules' : getValidationRules( "program" )
 		});
-	    checkValueIsExist( "name", "validateProgram.action",{id:getFieldValue('id')} );
-	    
-		var i18n_characters_without_params = '$encoder.jsEscape( $i18n.getString( "characters_without_params" ) , "'")';
 		
-		programOnChange();
-    });
+	    checkValueIsExist( "name", "validateProgram.action",{id:getFieldValue('id')} );
+	    programOnChange();
+		var i18n_characters_without_params = '$encoder.jsEscape( $i18n.getString( "characters_without_params" ) , "'")';
+	});
 
 </script>
 
@@ -81,7 +85,7 @@
 		</tr>
 
 		<tr>
-			<td><label for="type">$i18n.getString( "type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="type">$i18n.getString( "type" ) </label></td>
 			<td>
 				<select id="type" name="type" onchange='programOnChange();' class="{validate:{required:true}}">
 					<option value='1' #if( $program.type=='1' ) selected #end>$i18n.getString('multiple_events_with_registration')</option>
@@ -107,7 +111,7 @@
 		
 		<tr>
 			<td><label for="version">$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="version" name="version" value="$program.version" class="{validate:{required:true,integer:true}}"></td>
+			<td><input type="text" id="version" name="version" value="$!program.version" ></td>
 			<td></td>
 		</tr>
 		

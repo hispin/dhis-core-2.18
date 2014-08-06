@@ -24,7 +24,7 @@
 	
     <tr>
         <td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" class="{validate:{required:true}}" value="$caseAggregation.name"></td>
+        <td><input type="text" id="name" name="name" value="$caseAggregation.name"></td>
     </tr>
     
     <tr>
@@ -44,7 +44,7 @@
 		<td>
 			<input id="aggregationDataElementInput" name="aggregationDataElementInput" value='$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name' style='width:300px;'>
 			<a style='width:20px; margin-bottom:-5px;height:20px;' id='dataElementsButton' name='dataElementsButton'></a>
-			<input id="aggregationDataElementId" name="aggregationDataElementId" value="$caseAggregation.aggregationDataElement.id.$caseAggregation.optionCombo.id" class="{validate:{required:true}} hidden" >
+			<input id="aggregationDataElementId" name="aggregationDataElementId" value="$caseAggregation.aggregationDataElement.id.$caseAggregation.optionCombo.id" class="hidden" >
 		</td>				
 	</tr>
 	<tr>
@@ -86,7 +86,7 @@
 			<label for="deSumId">$i18n.getString( "data_element_for_sum_avg_min_max" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
 		</td>
 		<td>
-			<select id="deSumId" name="deSumId" class="{validate:{required:true}}" #if( $caseAggregation.deSum ) #else disabled #end>
+			<select id="deSumId" name="deSumId" #if( $caseAggregation.deSum ) #else disabled #end>
 				#if( $caseAggregation.deSum )
 				<option value='$caseAggregation.deSum.id'>$caseAggregation.deSum.displayName</option>
 				#end

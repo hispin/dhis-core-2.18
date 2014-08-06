@@ -17,11 +17,11 @@
     <tbody>
       <tr>
         <td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $attribute.name )" class="{validate:{required:true,rangelength:[2,160]}}"></td>
+        <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $attribute.name )" ></td>
       </tr>     
       <tr>
         <td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" value="$!encoder.htmlEncode( $attribute.shortName )" class="{validate:{required:true,rangelength:[2,50]}}"></td>
+        <td><input type="text" id="shortName" name="shortName" value="$!encoder.htmlEncode( $attribute.shortName )" ></td>
       </tr>     
       <tr>
         <td><label for="code">$i18n.getString( "code" )</td>
@@ -29,7 +29,7 @@
       </tr>      
       <tr>
         <td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $attribute.description )" class="{validate:{required:true,minlength:2}}"></td>
+        <td><textarea id="description" name="description" >$!encoder.htmlEncode( $attribute.description )</textarea></td>
       </tr>
       
     <tr>

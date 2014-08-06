@@ -95,3 +95,14 @@ fieldset
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+
+.class-th {
+    border-bottom: 1px solid #cad5e5;
+    border-collapse: collapse;
+    color: #39547d;
+    font-size: 13px;
+    font-weight: bold;
+    min-height: 28px;
+    padding: 3px 0 3px 1px;
+    text-align: left;
+}

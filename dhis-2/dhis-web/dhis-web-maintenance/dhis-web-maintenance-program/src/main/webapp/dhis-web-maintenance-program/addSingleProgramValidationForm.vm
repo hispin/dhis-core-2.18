@@ -17,13 +17,13 @@
 	<tr>
 		<td><label for="name">$i18n.getString('name') <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>			
-			<input type="text" id='name' name='name' class="{validate:{required:true,minlength:4}}" >
+			<input type="text" id='name' name='name' >
 		</td>
 	</tr>
 	<tr>
 		<td><label for="operator">$encoder.htmlEncode( $i18n.getString( "operator" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="operator" name="operator" class="{validate:{required:true}}">
+			<select id="operator" name="operator" >
 				<option value="">[ $i18n.getString( "please_select" ) ]</option>
 				<option value="equal_to">$encoder.htmlEncode( $i18n.getString( "equal_to" ) )</option>
 				<option value="not_equal_to">$encoder.htmlEncode( $i18n.getString( "not_equal_to" ) )</option>

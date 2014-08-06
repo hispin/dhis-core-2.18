@@ -13,11 +13,11 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $attributeGroup.name )" class="{validate:{required:true}}"/></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $attributeGroup.name )" /></td>
 	</tr>   
 	<tr>
 		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $attributeGroup.description )" class="{validate:{required:true}}"/></td>
+		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $attributeGroup.description )" /></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>
@@ -33,9 +33,9 @@
 	<tr>
 		<th>$i18n.getString( "availableAttribute" )</th>
 		<th>$i18n.getString( "filter" )</th>
-		<th>$i18n.getString( "selectedAttribute" )
-			<input type='hidden' id='hasAttributes' name='hasAttributes' class="{validate:{required:true}}">
-		</th>
+		<td class='class-th'>$i18n.getString( "selectedAttribute" )
+			<input type='hidden' id='attributeList' name='attributeList' >
+		</td>
 	</tr>
 	
 	<tr>

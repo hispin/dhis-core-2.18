@@ -61,7 +61,9 @@
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "expression" ) <em title="$i18n.getString( "required" )" class="required">*</em></legend>
-				<textarea style="width:660px" id="expression" name="expression" onkeyup='getConditionDescription();' maxlength="254" class="{validate:{required:true}}">$!programIndicator.expression</textarea>
+				<table><tr><td>
+					<textarea style="width:660px" id="expression" name="expression" onkeyup='getConditionDescription();' >$!programIndicator.expression</textarea>
+				</td></tr></table>
 			</fieldset>
 		</td>
 	</tr>

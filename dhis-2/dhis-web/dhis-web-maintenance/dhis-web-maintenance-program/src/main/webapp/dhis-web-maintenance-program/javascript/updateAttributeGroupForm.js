@@ -2,15 +2,20 @@ jQuery(document).ready(	function() {
 	
 	jQuery('name').focus();
 
-	validation( 'updateAttributeGroupForm', function(form){
+	validation2( 'updateAttributeGroupForm', function( form )
+		{
 			form.submit();
-		}, function(){
-			selectAllById('selectedAttributes');
-			if(jQuery("#selectedAttributes option").length > 0 ){
-				setFieldValue('hasAttributes', 'true');
-			}
+		},{
+			'beforeValidateHandler' : function()
+			{
+				selectAllById('selectedAttributes');
+				if(jQuery("#selectedAttributes option").length > 0 ){
+					setFieldValue('attributeList', 'true');
+				}
+			},
+			'rules' : getValidationRules( "trackedEntityAttributeGroup" )
 		});
-
+		
 	checkValueIsExist( "name", "validateAttributeGroup.action", {id:getFieldValue('id')});
 	
 	jQuery("#availableAttributes").dhisAjaxSelect({

@@ -1,14 +1,20 @@
 <script>
 jQuery( document ).ready( function()
 {
-	validation( 'programStageSectionForm', function(form){
+	validation2( 'programStageSectionForm', function( form )
+	{
 		form.submit();
-	}, function(){
-		selectAllById('dataElementIds');
-		if(jQuery("#dataElementIds option").length > 0 ){
-			setFieldValue('hasDataElement', 'true');
-		}
+	},{
+		'beforeValidateHandler' : function()
+		{
+			selectAllById('dataElementIds');
+			if(jQuery("#dataElementIds option").length > 0 ){
+				setFieldValue('dataElementList', 'true');
+			}
+		},
+		'rules' : getValidationRules( "programStageSection" )
 	});
+	
 	checkValueIsExist( "name", "validateProgramStageSection.action",{programStageId:getFieldValue('programStageId')});
 	byId('name').focus();
 });
@@ -28,7 +34,7 @@ jQuery( document ).ready( function()
 	<tbody>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+			<td><input type="text" id="name" name="name" /></td>
 		</tr>
 	</tbody>
 </table>
@@ -43,10 +49,10 @@ jQuery( document ).ready( function()
       <tr>        
         <th>$i18n.getString( "available_data_elements" )</th>
         <th></th>
-        <th>
+        <td class="class-th">
 			$i18n.getString( "selected_data_elements" )
-			<input type='hidden' id='hasDataElement' name='hasDataElement' class="{validate:{required:true}}">
-		</th>
+			<input type='hidden' id='dataElementList' name='dataElementList' >
+		</td>
       </tr>
     </thead>
   

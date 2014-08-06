@@ -2,83 +2,89 @@ var duplicate = false;
 jQuery( document ).ready( function()
 {
 	showHideUserGroup();
-	validation( 'updateProgramStageForm', function( form ){ 
+	
+	validation2( 'updateProgramStageForm', function( form )
+	{
 		form.submit();
-	}, function(){
-		selectAllById('selectedIndicators');
+	},{
+		'beforeValidateHandler' : function()
+		{
+			selectAllById('selectedIndicators');
 		
-		var selectedDataElementsValidator = jQuery( "#selectedDataElementsValidator" );
-		selectedDataElementsValidator.empty();
-		
-		var compulsories = jQuery( "#compulsories" );
-		compulsories.empty();
-		
-		var displayInReports = jQuery( "#displayInReports" );
-		displayInReports.empty();
-		
-		var allowFutureDates = jQuery( "#allowFutureDates" );
-		allowFutureDates.empty();
-		
-		var daysAllowedSendMessages = jQuery( "#daysAllowedSendMessages" );
-		daysAllowedSendMessages.empty();
-		
-		var templateMessages = jQuery( "#templateMessages" );
-		templateMessages.empty();
-		
-		var allowProvidedElsewhere = jQuery( "#allowProvidedElsewhere" );
-		allowProvidedElsewhere.empty();
-		
-		var sendTo = jQuery( "#sendTo" );
-		sendTo.empty();
-		
-		var whenToSend = jQuery( "#whenToSend" );
-		whenToSend.empty();
-		
-		var userGroup = jQuery( "#userGroup" );
-		userGroup.empty();
-		
-		var messageType = jQuery( "#messageType" );
-		messageType.empty();
+			var selectedDataElementsValidator = jQuery( "#selectedDataElementsValidator" );
+			selectedDataElementsValidator.empty();
+			
+			var compulsories = jQuery( "#compulsories" );
+			compulsories.empty();
+			
+			var displayInReports = jQuery( "#displayInReports" );
+			displayInReports.empty();
+			
+			var daysAllowedSendMessages = jQuery( "#daysAllowedSendMessages" );
+			daysAllowedSendMessages.empty();
+			
+			var allowFutureDates = jQuery( "#allowFutureDates" );
+			allowFutureDates.empty();
+			
+			var templateMessages = jQuery( "#templateMessages" );
+			templateMessages.empty();
+			
+			var allowProvidedElsewhere = jQuery( "#allowProvidedElsewhere" );
+			allowProvidedElsewhere.empty();
+			
+			var sendTo = jQuery( "#sendTo" );
+			sendTo.empty();
+			
+			var whenToSend = jQuery( "#whenToSend" );
+			whenToSend.empty();
+			
+			var userGroup = jQuery( "#userGroup" );
+			userGroup.empty();	
+			
+			var messageType = jQuery( "#messageType" );
+			messageType.empty();
 
-		jQuery("#selectedList").find("tr").each( function( i, item ){ 
+			jQuery("#selectedList").find("tr").each( function( i, item ){ 
+				
+				selectedDataElementsValidator.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
+				
+				var compulsory = jQuery( item ).find( "input[name='compulsory']:first");
+				var checked = compulsory.attr('checked') ? true : false;
+				compulsories.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+				
+				var allowProvided = jQuery( item ).find( "input[name='allowProvided']:first");
+				checked = allowProvided.attr('checked') ? true : false;
+				allowProvidedElsewhere.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+				
+				var displayInReport = jQuery( item ).find( "input[name='displayInReport']:first");
+				checked = displayInReport.attr('checked') ? true : false;
+				displayInReports.append( "<option value='" + checked + "' selected='true'><" + checked + "/option>" );
 			
-			selectedDataElementsValidator.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
-			
-			var compulsory = jQuery( item ).find( "input[name='compulsory']:first");
-			var checked = compulsory.attr('checked') ? true : false;
-			compulsories.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-			
-			var allowProvided = jQuery( item ).find( "input[name='allowProvided']:first");
-			checked = allowProvided.attr('checked') ? true : false;
-			allowProvidedElsewhere.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-			
-			var displayInReport = jQuery( item ).find( "input[name='displayInReport']:first");
-			checked = displayInReport.attr('checked') ? true : false;
-			displayInReports.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-		
-			var allowFutureDate = jQuery( item ).find( "input[name='allowFutureDate']:first");
-			checked = allowFutureDate.attr('checked') ? true : false;
-			allowFutureDates.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-		});
-		jQuery(".daysAllowedSendMessage").each( function( i, item ){ 
-			var days = (jQuery(item).attr('realvalue')==undefined) ? 0 : jQuery(item).attr('realvalue');
-			daysAllowedSendMessages.append( "<option value='" + days + "' selected='true'>" + days + "</option>" );
-		});
-		jQuery(".templateMessage").each( function( i, item ){ 
-			templateMessages.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
-		});
-		jQuery(".sendTo").each( function( i, item ){ 
-			sendTo.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
-		});
-		jQuery(".whenToSend").each( function( i, item ){ 
-			whenToSend.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
-		});
-		jQuery(".messageType").each( function( i, item ){ 
-			messageType.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
-		});
-		jQuery(".userGroup").each( function( i, item ){ 
-			userGroup.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
-		});
+				var allowFutureDate = jQuery( item ).find( "input[name='allowFutureDate']:first");
+				checked = allowFutureDate.attr('checked') ? true : false;
+				allowFutureDates.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+			});
+			jQuery(".daysAllowedSendMessage").each( function( i, item ){ 
+				var days = (jQuery(item).attr('realvalue')==undefined) ? 0 : jQuery(item).attr('realvalue');
+				daysAllowedSendMessages.append( "<option value='" + days + "' selected='true'>" + days + "</option>" );
+			});
+			jQuery(".templateMessage").each( function( i, item ){ 
+				templateMessages.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+			});
+			jQuery(".sendTo").each( function( i, item ){ 
+				sendTo.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+			});
+			jQuery(".whenToSend").each( function( i, item ){ 
+				whenToSend.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+			});
+			jQuery(".messageType").each( function( i, item ){ 
+				messageType.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+			});
+			jQuery(".userGroup").each( function( i, item ){ 
+				userGroup.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+			});
+		},
+		'rules' : getValidationRules( "programStage" )
 	});
 	
 	checkValueIsExist( "name", "validateProgramStage.action", {id:getFieldValue('programId'), programStageId:getFieldValue('id')});	
