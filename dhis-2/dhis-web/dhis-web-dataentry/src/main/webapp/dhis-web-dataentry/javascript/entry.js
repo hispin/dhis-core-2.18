@@ -17,7 +17,7 @@
 
 var FORMULA_PATTERN = /#\{.+?\}/g;
 var SEPARATOR = '.';
-var EVENT_VALUE_SAVED = 'dhis-web-dataentry-value-saved';
+var EVENT_VALUE_SAVED = 'dhis-web-dataentry-value-saved'; // Deprecated
 
 /**
  * Updates totals for data element total fields.
@@ -372,7 +372,9 @@ function ValueSaver( de, pe, co, value, fieldId, resultColor )
     {
     	dhis2.de.storageManager.clearDataValueJSON( dataValue );
         markValue( fieldId, resultColor );
-        $( 'body' ).trigger( EVENT_VALUE_SAVED, dataValue );
+        $( document ).trigger( dhis2.de.event.dataValueSaved, dataValue );
+        
+        $( 'body' ).trigger( EVENT_VALUE_SAVED, dataValue ); // Deprecated
     }
 
     function handleError( xhr, textStatus, errorThrown )

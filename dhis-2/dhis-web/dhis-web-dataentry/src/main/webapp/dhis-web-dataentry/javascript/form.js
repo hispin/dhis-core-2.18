@@ -1,5 +1,6 @@
 
 dhis2.util.namespace( 'dhis2.de' );
+dhis2.util.namespace( 'dhis2.de.event' );
 
 // whether current user has any organisation units
 dhis2.de.emptyOrganisationUnits = false;
@@ -36,8 +37,7 @@ dhis2.de.categoryCombos = {};
 // Categories for data value attributes
 dhis2.de.categories = {};
 
-// Array with keys on form {dataelementid}-{optioncomboid}-min/max with min/max
-// values
+// Array with keys {dataelementid}-{optioncomboid}-min/max with min/max values
 dhis2.de.currentMinMaxValueMap = [];
 
 // Indicates whether any data entry form has been loaded
@@ -75,25 +75,47 @@ dhis2.de.multiOrganisationUnit = false;
 
 // "organisationUnits" object inherited from ouwt.js
 
+// Colors
+
 var COLOR_GREEN = '#b9ffb9';
 var COLOR_YELLOW = '#fffe8c';
 var COLOR_RED = '#ff8a8a';
 var COLOR_ORANGE = '#ff6600';
 var COLOR_WHITE = '#fff';
 var COLOR_GREY = '#ccc';
-
 var COLOR_BORDER_ACTIVE = '#73ad72';
 var COLOR_BORDER = '#aaa';
 
 var DEFAULT_TYPE = 'int';
 var DEFAULT_NAME = '[unknown]';
 
+// Form types
+
 var FORMTYPE_CUSTOM = 'custom';
 var FORMTYPE_SECTION = 'section';
 var FORMTYPE_MULTIORG_SECTION = 'multiorg_section';
 var FORMTYPE_DEFAULT = 'default';
 
-var EVENT_FORM_LOADED = "dhis-web-dataentry-form-loaded";
+// Events
+
+dhis2.de.event.formLoaded = "dhis2.de.event.formLoaded";
+dhis2.de.event.dataValuesLoaded = "dhis2.de.event.dataValuesLoaded";
+dhis2.de.event.dataValueSaved = "dhis2.de.event.dataValueSaved";
+dhis2.de.event.completed = "dhis2.de.event.completed";
+dhis2.de.event.uncompleted = "dhis2.de.event.uncompleted";
+dhis2.de.event.formReady = "dhis2.de.event.formReady";
+
+/**
+ * Convenience method to be used from inside custom forms. When a function is
+ * registered inside a form it will be loaded every time the form is loaded,
+ * hence the need to unregister and the register the function.
+ */
+dhis2.de.on = function( event, fn )
+{
+	$( document ).off( event ).on( event, fn );
+}
+
+var EVENT_FORM_LOADED = "dhis-web-dataentry-form-loaded"; // Deprecated
 
 var MAX_DROPDOWN_DISPLAYED = 30;
 
@@ -549,24 +571,29 @@ function loadForm()
 
     if ( !dhis2.de.multiOrganisationUnit  )
     {
-        dhis2.de.storageManager.formExists( dataSetId ).done(function( value ) {
-           if( value ) {
-               console.log( 'Loading form locally: ' + dataSetId );
+        dhis2.de.storageManager.formExists( dataSetId ).done( function( value ) 
+        {           
+	    	if ( value ) 
+	    	{
+	            console.log( 'Loading form locally: ' + dataSetId );
+	
+	            dhis2.de.storageManager.getForm( dataSetId ).done( function( html ) 
+	            {
+	                $( '#contentDiv' ).html( html );
 
-               dhis2.de.storageManager.getForm( dataSetId ).done(function( html ) {
-                   $( '#contentDiv' ).html( html );
-
-                   if ( dhis2.de.dataSets[dataSetId].renderAsTabs ) {
-                       $( "#tabs" ).tabs();
-                   }
-
-                   enableSectionFilter();
-
-                   loadDataValues();
-                   dhis2.de.insertOptionSets();
-               });
-           }
-        });
+	                if ( dhis2.de.dataSets[dataSetId].renderAsTabs )
+	                {
+	                    $( "#tabs" ).tabs();
+	                }
+	
+	                enableSectionFilter();	               
+	                $( document ).trigger( dhis2.de.event.formLoaded );
+	
+	                loadDataValues();
+	                dhis2.de.insertOptionSets();
+	            } );
+	        } 
+        } );
     }
     else
     {
@@ -581,7 +608,8 @@ function loadForm()
         {
             if ( !dhis2.de.multiOrganisationUnit )
             {
-                if ( dhis2.de.dataSets[dataSetId].renderAsTabs ) {
+                if ( dhis2.de.dataSets[dataSetId].renderAsTabs ) 
+                {
                     $( "#tabs" ).tabs();
                 }
 
@@ -1358,7 +1386,7 @@ function getAndInsertDataValues()
       {
         $( '.indicator' ).attr( 'readonly', 'readonly' );
         $( '.dataelementtotal' ).attr( 'readonly', 'readonly' );
-        $( document ).trigger('dhis2.de.event.dataValuesLoaded');
+        $( document ).trigger( dhis2.de.event.dataValuesLoaded );
       }
 	} );
 }
@@ -1511,7 +1539,9 @@ function displayEntryFormCompleted()
     dhis2.de.dataEntryFormIsLoaded = true;
     hideLoader();
     
-    $( 'body' ).trigger( EVENT_FORM_LOADED );
+    $( document ).trigger( dhis2.de.event.formReady );
+    
+    $( 'body' ).trigger( EVENT_FORM_LOADED ); // Deprecated
 }
 
 function valueFocus( e )
@@ -1613,12 +1643,11 @@ function registerCompleteDataSet()
 	if ( !confirm( i18n_confirm_complete ) )
 	{
 		return false;
-  }
+    }
 	
-  $( document ).trigger('dhis2.de.event.completed');
-
-	validate( true, function() {
-	    var params = dhis2.de.storageManager.getCurrentCompleteDataSetParams();
+	validate( true, function() 
+    {
+        var params = dhis2.de.storageManager.getCurrentCompleteDataSetParams();
 
         var cc = dhis2.de.getCurrentCategoryCombo();
         var cp = dhis2.de.getCurrentCategoryOptionsQueryValue();
@@ -1638,7 +1667,7 @@ function registerCompleteDataSet()
 	        type: 'post',
 	    	success: function( data, textStatus, xhr )
 	        {
-          $( document ).trigger('dhis2.de.event.completed');
+                $( document ).trigger( dhis2.de.event.completed, params );
 	    		disableCompleteButton();
 	    		dhis2.de.storageManager.clearCompleteDataSet( params );
 	        },
@@ -1650,7 +1679,7 @@ function registerCompleteDataSet()
 	        	}
 	        	else // Offline, keep local value
 	        	{
-              $( document ).trigger('dhis2.de.event.completed');
+                    $( document ).trigger( dhis2.de.event.completed, params );
 	        		disableCompleteButton();
 	        		setHeaderMessage( i18n_offline_notification );
 	        	}
@@ -1689,7 +1718,7 @@ function undoCompleteDataSet()
     	type: 'delete',
     	success: function( data, textStatus, xhr )
         {
-          $( document ).trigger('dhis2.de.event.uncompleted');
+          $( document ).trigger( dhis2.de.event.uncompleted );
           disableUndoButton();
           dhis2.de.storageManager.clearCompleteDataSet( params );
         },
@@ -1701,7 +1730,7 @@ function undoCompleteDataSet()
         	}
         	else // Offline, keep local value
         	{
-            $( document ).trigger('dhis2.de.event.uncompleted');
+                $( document ).trigger( dhis2.de.event.uncompleted );
         		disableUndoButton();
         		setHeaderMessage( i18n_offline_notification );
         	}
