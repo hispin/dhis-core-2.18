@@ -212,9 +212,14 @@ public class Options
         return options.get( type );
     }
     
+    public Integer getInt( String type )
+    {
+        return options.get( type ) != null ? Integer.parseInt( options.get( type ) ) : null;
+    }
+    
     public boolean isTrue( String type )
     {
-        return options.containsKey( type ) && TextUtils.TRUE.equalsIgnoreCase( options.get( type ) );
+        return options.get( type ) != null && Boolean.parseBoolean( options.get( type ) );
     }
 
     //--------------------------------------------------------------------------
