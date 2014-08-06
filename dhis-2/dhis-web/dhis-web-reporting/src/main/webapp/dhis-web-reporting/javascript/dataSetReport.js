@@ -5,7 +5,6 @@
 dhis2.util.namespace( 'dhis2.dsr' );
 
 dhis2.dsr.currentPeriodOffset = 0;
-dhis2.dsr.periodTypeFactory = new PeriodType();
 dhis2.dsr.currentDataSetReport = null;
 
 //------------------------------------------------------------------------------
@@ -44,7 +43,7 @@ dhis2.dsr.getDataSetReport = function()
     dataSetReport.cp = cps;
     
     return dataSetReport;
-}
+};
 
 dhis2.dsr.setDataSetReport = function( dataSetReport )
 {
@@ -120,7 +119,7 @@ dhis2.dsr.dataSetSelected = function()
 	} ).fail( function() {
 		$( "#dimensionsDiv" ).hide();
 	} );
-}
+};
 
 //------------------------------------------------------------------------------
 // Period
@@ -130,13 +129,12 @@ dhis2.dsr.displayPeriods = function()
 {
     var periodType = $( "#periodType" ).val();
     dhis2.dsr.displayPeriodsInternal( periodType, dhis2.dsr.currentPeriodOffset );
-}
+};
 
 dhis2.dsr.displayPeriodsInternal = function( periodType, offset )
 {
-	var periods = dhis2.dsr.periodTypeFactory.get( periodType ).generatePeriods( offset );
-    periods = dhis2.dsr.periodTypeFactory.reverse( periods );
-    periods = dhis2.dsr.periodTypeFactory.filterFuturePeriodsExceptCurrent( periods );
+    var periods = dhis2.period.generator.generateReversedPeriods(periodType, offset);
+    periods = dhis2.period.generator.filterFuturePeriodsExceptCurrent( periods );
 
     $( "#periodId" ).removeAttr( "disabled" );
     clearListById( "periodId" );
@@ -145,7 +143,7 @@ dhis2.dsr.displayPeriodsInternal = function( periodType, offset )
     {
         addOptionById( "periodId", periods[i].iso, periods[i].name );
     }
-}
+};
 
 dhis2.dsr.displayNextPeriods = function()
 {
@@ -154,13 +152,13 @@ dhis2.dsr.displayNextPeriods = function()
         dhis2.dsr.currentPeriodOffset++;
         dhis2.dsr.displayPeriods();
     }
-}
+};
 
 dhis2.dsr.displayPreviousPeriods = function()
 {
     dhis2.dsr.currentPeriodOffset--;
     dhis2.dsr.displayPeriods();
-}
+};
 
 //------------------------------------------------------------------------------
 // Run report
