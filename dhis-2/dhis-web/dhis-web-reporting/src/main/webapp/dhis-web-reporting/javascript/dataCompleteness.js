@@ -1,6 +1,5 @@
 
 var currentPeriodOffset = 0;
-var periodTypeFactory = new PeriodType();
 
 //------------------------------------------------------------------------------
 // Period
@@ -9,9 +8,8 @@ var periodTypeFactory = new PeriodType();
 function displayPeriods()
 {
   var periodType = $( "#periodTypeId" ).val();
-  var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
-  periods = periodTypeFactory.reverse( periods );
-  periods = periodTypeFactory.filterFuturePeriodsExceptCurrent( periods );
+  var periods = dhis2.period.generator.generateReversedPeriods(periodType, currentPeriodOffset);
+  periods = dhis2.period.generator.filterFuturePeriods( periods );
 
   $( "#periodId" ).removeAttr( "disabled" );
   clearListById( "periodId" );
