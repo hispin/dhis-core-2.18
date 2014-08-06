@@ -67,126 +67,124 @@
 		
 		var orgUnitGroupName = tempOrgUnitGroupNameMap[orgUnitId];
 		
-		alert( orgUnitGroupName );
+		//alert( orgUnitGroupName );
 		
 		
 		if( rprDesign == "MH_PATIENT_ALLOWANCE_CLAIM")
 		{
-			if( orgUnitGroupName == "Health Center")
+			if( orgUnitGroupName == "Reporting Health Center")
 			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Mathealth_report3_HC.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/Mathealth_report3_HC.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
 			}
 			
-			else if( orgUnitGroupName == "Province Hospitals")
+			else if( orgUnitGroupName == "Reporting Province Hospitals")
 			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Mathealth_report3_PH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/Mathealth_report3_PH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
 			}
 			
-			else if( orgUnitGroupName == "District hospital type A" || orgUnitGroupName == "District hospital type B" )
+			else if( orgUnitGroupName == "Reporting District hospital" )
 			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Mathealth_report3_DH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/Mathealth_report3_DH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
 			}
-			
-			else 
-			{ 
-				showWarningMessage( "Selected Facility Not Related to any group" );
-				//return false; 
-			}		
+
+
+			else
+			{
+				   showWarningMessage( "Selected Facility Not Related to any group" );
+				   //return false;
+			}
 			
 		}
 		
 		else if( rprDesign == "HEALTH_PROVIDER_PAYMENT_CLAIM")
 		{
-			if( orgUnitGroupName == "Health Center")
+			if( orgUnitGroupName == "Reporting Health Center")
 			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Healthprovider_HC_report4.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/Healthprovider_HC_report4.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
 			}
 			
-			else if( orgUnitGroupName == "Province Hospitals")
+			else if( orgUnitGroupName == "Reporting Province Hospitals")
 			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/healthprovider_report4_PH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/healthprovider_report4_PH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
 			}
 			
-			else if( orgUnitGroupName == "District hospital type A" || orgUnitGroupName == "District hospital type B" )
+			else if( orgUnitGroupName == "Reporting District hospital" )
 			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/healthprovider_DH_report4.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/healthprovider_DH_report4.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
 			}
-			else 
-			{ 
-				showWarningMessage( "Selected Facility Not Related to any group" );
-				//return false; 
-			}					
+			else
+			{
+				   showWarningMessage( "Selected Facility Not Related to any group" );
+				   //return false;
+			}
+			
 		}		
 		
 		else if( rprDesign == "MATERNAL_HEALTH")
 		{
-			if( orgUnitGroupName == "Health Center")
+			if( orgUnitGroupName == "Reporting Health Center")
 			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/MATERNAL_HEALTH_HC.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/MATERNAL_HEALTH_HC.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
 			}
 			
-			else if( orgUnitGroupName == "Province Hospitals")
+			else if( orgUnitGroupName == "Reporting Province Hospitals")
 			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Mathealth_PH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/Mathealth_PH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
 			}
 			
-			else if( orgUnitGroupName == "District hospital type A" || orgUnitGroupName == "District hospital type B" )
+			else if( orgUnitGroupName == "Reporting District hospital" )
 			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Mathealth_DH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/Mathealth_DH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
 			}
-			else 
-			{ 
-				showWarningMessage( "Selected Facility Not Related to any group" );
-				//return false; 
-			}					
+			else
+			{
+				   showWarningMessage( "Selected Facility Not Related to any group" );
+				   //return false;
+			}
+			
 		}
 		
 		else if( rprDesign == "MONTHLY_PPS")
 		{
-			if( orgUnitGroupName == "Health Center")
+			if( orgUnitGroupName == "Reporting Health Center")
 			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/monthly_pps.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
-				window.location.href =  birtReportURL;
-				
-				/*
-				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/Mathealth_report3_PH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
-				window.location.href =  birtReportURL;
-				*/
-				
-			}
-			
-			else if( orgUnitGroupName == "Province Hospitals")
-			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/monthly_pps.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/monthly_pps.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
 			}
 			
-			else if( orgUnitGroupName == "District hospital type A" || orgUnitGroupName == "District hospital type B" )
+			else if( orgUnitGroupName == "Reporting Province Hospitals")
 			{
-				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/monthly_pps.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/monthly_pps.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 				window.location.href =  birtReportURL;
 			}
-			else 
-			{ 
-				showWarningMessage( "Selected Facility Not Related to any group" );
-				//return false; 
-			}					
+			
+			else if( orgUnitGroupName == "Reporting District hospital" )
+			{
+				var birtReportURL = "/birt/run?__report=/home/dhis2sever2/tomcat-8/webapps/birt/report/monthly_pps.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			else
+			{
+				   showWarningMessage( "Selected Facility Not Related to any group" );
+				   //return false;
+			}
+			
+		}
+
+		else
+		{
+			   showWarningMessage( "Design file is not set" );
+			   //return false;
 		}		
-		
-		else 
-		{ 
-			showWarningMessage( "Design file is not set" );
-			//return false; 
-		}			
 		
 		//alert( orgunit + "--" + orgUnitId )
 		
@@ -237,7 +235,7 @@
 					<option value="-1">[$i18n.getString( "select" )]</option>
 					<option value="MATERNAL_HEALTH" >Maternal Health</option>
 					<option value="MONTHLY_PPS" >Monthly PPS</option>
-					<option value="MH_PATIENT_ALLOWANCE_CLAIM" >MH Patient Allowance Claim</option>
+					<option value="MH_PATIENT_ALLOWANCE_CLAIM" >MH Patient Allownce Claim</option>
 					<option value="HEALTH_PROVIDER_PAYMENT_CLAIM" >Health Provider Payment Claim</option>
 					
 					<!--

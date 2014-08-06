@@ -27,7 +27,7 @@
 	
 </div>
 
-<div class="inputCriteria" style="width:480px;height:90px;">
+<div class="inputCriteria" style="width:600px;height:90px;">
 <table>
 	<tr>
 		<td><label for="orgUnitName">$i18n.getString( "organisation_unit" )</label></td>

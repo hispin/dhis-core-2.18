@@ -52,6 +52,7 @@
 #if ( $dataElements.size() > 0)
 
 <table class="formSection" id="dataEntryTable" style="width:100%">
+    
 	<tr bgcolor="#CBDDEB">
 		<th style="width:35%;">$i18n.getString( "dataelement" )</th>
 		<th style="text-align: center;width:15%;">$i18n.getString( "qty_reported" )</th>

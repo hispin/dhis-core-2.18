@@ -88,11 +88,13 @@
 	
 </div>
 
-<div class="inputCriteria" style="width:625px;height:90px;">
+<div class="inputCriteria" style="width:800px;height:90px;">
 <table>
 	<tr>
 		<td><label for="orgUnitName">$i18n.getString( "organisation_unit" )</label></td>
-		<td><input type="text" id="orgUnitName" name = "orgUnitName" readonly="readonly" value="$!organisationUnit.name" style="width:352px"></td>
+		<td><input type="text" id="orgUnitName" name = "orgUnitName" readonly="readonly"value="$!organisationUnit.name" style="width:352px"></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
 	
 	<tr>
@@ -105,6 +107,8 @@
 				#end
 			</select>
 		</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 		
     </tr>	
 
@@ -120,7 +124,7 @@
 			<input type="button" id="nextButton" disabled="disabled" style="width:75px" value="$i18n.getString( 'next_year' )" title="$i18n.getString('later_periods')" onclick="getAvailablePeriodsTemp( 'selectedPeriodId', 'selectedPeriodId', '1' )" >
 		</td>
 		
-		<td><label for="utilization_rate ">$i18n.getString( "Utilization Rate " )</label></td>
+		<td align="right"><label for="utilization_rate ">$i18n.getString( "Utilization Rate " )</label></td>
 		<td><input type="text" id="utilizationRate" name = "utilizationRate" style="text-align:center;width:75px;" onblur="saveUtilizationRateDataValue();" onkeyup="getUtilizationRateTariffValue();" ></td>			
 		
 	</tr>		

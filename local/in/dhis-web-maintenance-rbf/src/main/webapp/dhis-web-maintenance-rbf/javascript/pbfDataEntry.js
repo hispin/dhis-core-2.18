@@ -159,15 +159,41 @@ function savePBFDataValue( dataElementId, valueType )
 	var period = document.getElementById("selectedPeriodId").value;
 	var dataSetId = $( '#dataSetId' ).val();
 	var valueId = "";
+	
+	var qtyReportedFieldId = "pbfdv_qty_reported_"+dataElementId;
+	
+	var qtyValidatedFieldId = "pbfdv_qty_validated_"+dataElementId;
+	
+	var qtyRreported = document.getElementById( qtyReportedFieldId ).value;
+	
+	var qtyValidated = document.getElementById( qtyValidatedFieldId ).value;
+	
 	if( valueType == 1 )
 	{
 		valueId = "pbfdv_qty_reported_"+dataElementId;
 	}
+	
 	else if( valueType == 2 )
 	{
-		valueId = "pbfdv_qty_validated_"+dataElementId;
+		//alert( qtyRreported + ":" + qtyValidated )
 		
-		saveDataInDataValue( dataElementId );
+		if(  parseInt(qtyValidated)  > parseInt(qtyRreported)   )
+		{
+			alert( "Quantity Validated should less or equal to Quantity Reported" );
+			document.getElementById( qtyValidatedFieldId ).value = "";
+			return;
+		}
+		
+		else
+		{
+			valueId = "pbfdv_qty_validated_"+dataElementId;
+		
+			saveDataInDataValue( dataElementId );
+		}
+		
+		//valueId = "pbfdv_qty_validated_"+dataElementId;
+		
+		//saveDataInDataValue( dataElementId );
 		
 	}
 	

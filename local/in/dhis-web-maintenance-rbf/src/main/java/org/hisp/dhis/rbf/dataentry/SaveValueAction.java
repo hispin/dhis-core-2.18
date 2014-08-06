@@ -354,16 +354,39 @@ public class SaveValueAction
         {
             if( valueType.equals("1") )
             {
-        	pbfDataValue.setQuantityReported( Integer.parseInt( value ) );
+                Integer intVal = null;
+                if( value != null && !value.trim().equals( "" ) )
+                {
+                    intVal = Integer.parseInt( value );
+                }
+        	pbfDataValue.setQuantityReported( intVal );
+        	
+        	System.out.println(" PBF Value 1 " + intVal );
             }
             else if( valueType.equals("2") )
             {
-        	pbfDataValue.setQuantityValidated( Integer.parseInt( value ) );
+                Integer intVal = null;
+                if( value != null && !value.trim().equals( "" ) )
+                {
+                    intVal = Integer.parseInt( value );
+                }
+                
+                System.out.println(" PBF Value 2 " + intVal );
+                
+        	pbfDataValue.setQuantityValidated( intVal );
+        	
             }
             
             else if( valueType.equals("3") )
             {
-                pbfDataValue.setQuantityExternalVerification( Integer.parseInt( value ) );
+                Integer intVal = null;
+                if( value != null && !value.trim().equals( "" ) )
+                {
+                    intVal = Integer.parseInt( value );
+                }
+                System.out.println(" PBF Value 3 " + intVal );
+                
+                pbfDataValue.setQuantityExternalVerification( intVal );
             }
             
             pbfDataValue.setStoredBy(storedBy);
