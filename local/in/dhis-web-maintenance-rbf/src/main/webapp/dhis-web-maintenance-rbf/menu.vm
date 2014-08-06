@@ -67,7 +67,7 @@
     </ul>
 #end
 
-#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfReportForm") )
+#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "getAllLookups") )
     <h2>$i18n.getString( "Lookup" )</h2>
     <ul>
     	<li><a href="getAllLookups.action">$i18n.getString( "Lookup" )</a></li>
