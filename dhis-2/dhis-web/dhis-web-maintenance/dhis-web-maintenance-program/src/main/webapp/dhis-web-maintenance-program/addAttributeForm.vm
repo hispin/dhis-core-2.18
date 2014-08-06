@@ -14,13 +14,13 @@
     <tbody>
     <tr>
         <td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+        <td><input type="text" id="name" name="name" /></td>
         <td></td>
     </tr>   
     
     <tr>
         <td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" class="{validate:{required:true,rangelength:[2,50]}}"/></td>
+        <td><input type="text" id="shortName" name="shortName" /></td>
         <td></td>
     </tr>
     
@@ -32,7 +32,7 @@
     
     <tr>
         <td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:2}}"/></td>
+        <td><textarea id="description" name="description" ></textarea></td>
         <td></td>
     </tr>
 	

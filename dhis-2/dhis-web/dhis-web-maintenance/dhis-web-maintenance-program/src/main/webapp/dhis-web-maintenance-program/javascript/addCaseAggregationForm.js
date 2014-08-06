@@ -1,6 +1,10 @@
 jQuery(document).ready(	function(){
-	validation( 'addCaseAggregationForm', function(form){
+	
+	validation2( 'addCaseAggregationForm', function( form )
+	{
 		form.submit();
+	},{
+		'rules' : getValidationRules( "caseAggregation" )
 	});
 	
 	jQuery("#tabs").tabs();

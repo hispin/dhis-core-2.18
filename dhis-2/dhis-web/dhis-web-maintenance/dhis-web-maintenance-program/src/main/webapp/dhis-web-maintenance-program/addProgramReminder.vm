@@ -3,11 +3,17 @@
 	{
 		showHideUserGroup();
 		
-		validation( 'addReminderForm', function( form ){
+		validation2( 'addReminderForm', function( form )
+		{
 			form.submit();
-		}, function(){
-			enable('messageType');
+		},{
+			'beforeValidateHandler' : function()
+			{
+				enable('messageType');
+			},
+			'rules' : getValidationRules( "trackedEntityInstanceReminder" )
 		});
+		
 		checkValueIsExist( "name", "validateReminder.action" );
 	});
 
@@ -28,7 +34,7 @@
     <tbody>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input type="text" id="name" name="name"></td>
 			<td></td>
 		</tr>
 		<tr>
@@ -53,7 +59,6 @@
 		<tr>
 			<td><label for="days">$i18n.getString( "send_message" )</label></td>
 			<td><input type="text" id="days" name="days" 
-				class="{validate:{required:true,number:true}}"
 				onkeyup='setRealDays();' style="width:100px;" />
 				$i18n.getString('days')
 				<select id='time' name='time' onchange='setRealDays();' style="width:100px;">
@@ -67,7 +72,7 @@
 		<tr>
 			<td><label for="sendTo">$i18n.getString( "recipients" )</label></td>
 			<td>
-				<select type="text" id="sendTo" name="sendTo" class="{validate:{required:true,number:true}}" onchange="onchangeUserGroup(  )">
+				<select type="text" id="sendTo" name="sendTo" onchange="onchangeUserGroup()">
 					<option value="1" >$i18n.getString("tracked_entity_sms_only")</option>
 					<option value="3" >$i18n.getString("orgunit_phone_number_sms_only")</option>
 					<option value="2" >$i18n.getString("attribute_users")</option>
@@ -90,7 +95,7 @@
 		<tr>
 			<td><label for="messageType">$i18n.getString( "message_type" )</label></td>
 			<td>
-				<select type="text" id="messageType" name="messageType" disabled class="messageType {validate:{required:true,number:true}}" >
+				<select type="text" id="messageType" name="messageType" disabled class="messageType" >
 					<option value="1">$i18n.getString("direct_sms")</option>
 					<option value="2">$i18n.getString("message")</option>
 					<option value="3">$i18n.getString("both")</option>
@@ -115,7 +120,7 @@
 		</tr>
 		<tr>
 			<td><label for="optionSetId">$i18n.getString( "message" )</label></td>
-			<td><textarea onkeyup="getMessageLength()" id="templateMessage" name="templateMessage" class="templateMessage {validate:{required:true}}"></textarea></td>
+			<td><textarea onkeyup="getMessageLength()" id="templateMessage" name="templateMessage" ></textarea></td>
 		</tr>
 		<tr>
 			<td></td>

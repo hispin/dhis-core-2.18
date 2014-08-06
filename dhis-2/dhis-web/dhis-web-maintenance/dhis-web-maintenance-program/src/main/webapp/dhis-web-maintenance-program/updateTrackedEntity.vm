@@ -1,7 +1,10 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'updateTrackedEntityForm', function(form){
-				form.submit();
+		validation2( 'updateTrackedEntityForm', function( form )
+		{
+			form.submit();
+		},{
+			'rules' : getValidationRules( "trackedEntity" )
 		});
 		
 		checkValueIsExist( "name", "validateTrackedEntity.action", {id:getFieldValue('id')});

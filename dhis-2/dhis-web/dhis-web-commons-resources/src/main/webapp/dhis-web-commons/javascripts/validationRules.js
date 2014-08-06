@@ -458,7 +458,21 @@ var validationRules = {
 			"required": true
 		}
 	},
-	"patientAttributeGroup" : {
+	"trackedEntityAttribute" : {
+		"name" : {
+			"required" : true,
+			"rangelength" : [ 2,160 ]
+		},
+		"shortName" : {
+			"required" : true,
+			"rangelength" : [ 2, 50 ]
+		},
+		"description" : {
+			"required" : true,
+			"minlength" : 2
+		}
+	},
+	"trackedEntityAttributeGroup" : {
 		"name" : {
 			"required" : true,
 			"rangelength" : [ 2,160 ]

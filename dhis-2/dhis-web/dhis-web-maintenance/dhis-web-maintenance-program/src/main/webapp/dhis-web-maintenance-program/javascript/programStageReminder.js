@@ -133,11 +133,13 @@ function whenToSendOnChange(  ) {
     enable('dateToCompare');
     enable('daysAllowedSendMessage' );
     enable('time');
+    enable('days');
   }
   else {
     disable('dateToCompare');
     disable('daysAllowedSendMessage');
     disable('time');
+    disable('days');
   }
 }
 

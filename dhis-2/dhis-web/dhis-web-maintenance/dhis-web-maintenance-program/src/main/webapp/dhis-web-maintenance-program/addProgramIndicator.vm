@@ -1,8 +1,15 @@
 <script>
 jQuery( document ).ready( function()
 {
-	validation( 'programIndicatorForm', function(form){
+	validation2( 'programIndicatorForm', function( form )
+	{
 		form.submit();
+	},{
+		'beforeValidateHandler' : function()
+		{
+			
+		},
+		'rules' : getValidationRules( "programIndicator" )
 	});
 	
 	checkValueIsExist( "name", "validateProgramIndicator.action" );	
@@ -25,17 +32,17 @@ jQuery( document ).ready( function()
 	<tbody>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" class="{validate:{required:true,minlength:2}}"></td>
+			<td><input type="text" id="name" name="name" ></td>
 			<td></td>
 		</tr>	
 		<tr>
 			<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="shortName" name="shortName" class="{validate:{required:true,minlength:2}}"></td>
+			<td><input type="text" id="shortName" name="shortName" ></td>
 			<td></td>
 		</tr>	
 		<tr>
 			<td><label for="code">$i18n.getString( "code" ) </label></td>
-			<td><input type="text" id="code" name="code" class="{validate:{minlength:2}}"></td>
+			<td><input type="text" id="code" name="code" ></td>
 			<td></td>
 		</tr>	
 		<tr>
@@ -46,7 +53,7 @@ jQuery( document ).ready( function()
 		<tr>
 			<td><label for="valueType">$i18n.getString( "value_type" ) </label></td>
 			<td>
-				<select id="valueType" name="valueType" onchange='programIndicatorOnChange();' class="{validate:{required:true}}">
+				<select id="valueType" name="valueType" onchange='programIndicatorOnChange();' >
 					<option value='int'>$i18n.getString('int')</option>
 					<option value='date'>$i18n.getString('date')</option>
 				</select>
@@ -56,7 +63,7 @@ jQuery( document ).ready( function()
 		<tr id='rootDateTR' style='display:none'>
 			<td><label for="rootDate">$i18n.getString( "date_for_calculating" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
-				<select id="rootDate" name="rootDate" class="{validate:{required:true}}">
+				<select id="rootDate" name="rootDate" >
 					<option value='incident_date'>$i18n.getString('incident_date')</option>
 					<option value='execution_date'>$i18n.getString('report_date')</option>
 					<option value='current_date'>$i18n.getString('current_date')</option>

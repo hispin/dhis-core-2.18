@@ -19,7 +19,7 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="text" id="description" name="description" class="{validate:{required:true}}"/><br>
+					<input type="text" id="description" name="description" /><br>
 					<span id="exp-descriptionInfo" generated="true" class="error"></span>
 				</td>
 				<td>
@@ -40,7 +40,7 @@
 			</tr>
 			<tr>
 				<td>
-					<textarea id="expression" name="expression" style="width:316px;height:138px" wrap="virtual" onchange="getExpressionText()" class="{validate:{required:true}}"></textarea><br/>
+					<textarea id="expression" name="expression" style="width:316px;height:138px" wrap="virtual" onchange="getExpressionText()" ></textarea><br/>
 					<span id="exp-expressionInfo" generated="true" class="error"></span>
 				</td>
 				<td valign="top">

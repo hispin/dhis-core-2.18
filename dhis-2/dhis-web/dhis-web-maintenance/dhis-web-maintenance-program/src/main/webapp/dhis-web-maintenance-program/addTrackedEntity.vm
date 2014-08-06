@@ -1,8 +1,11 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'addTrackedEntityForm', function(form){
-				form.submit();
-		}); 
+		validation2( 'addTrackedEntityForm', function( form )
+		{
+			form.submit();
+		},{
+			'rules' : getValidationRules( "trackedEntity" )
+		});
 		
 		checkValueIsExist( "name", "validateTrackedEntity.action");
 	});	
@@ -19,13 +22,13 @@
     <tbody>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+			<td><input type="text" id="name" name="name" "/></td>
 			<td></td>
 		</tr>   
 		
 		<tr>
 			<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:2}}"/></td>
+			<td><input type="text" id="description" name="description" /></td>
 			<td></td>
 		</tr>
     </tbody>

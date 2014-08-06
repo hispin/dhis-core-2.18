@@ -1,9 +1,12 @@
 jQuery(document).ready(
 	function()
 	{
-		validation( 'validationCriteriaForm', function( form ){
-			form.submit();			
-		});
-				
+		validation2( 'validationCriteriaForm', function( form )
+		{
+			form.submit();
+		},{
+			'rules' : getValidationRules( "validationCriteria" )
+		});	
+			
 		checkValueIsExist( "name", "validateValidationCriteria.action");
 });	

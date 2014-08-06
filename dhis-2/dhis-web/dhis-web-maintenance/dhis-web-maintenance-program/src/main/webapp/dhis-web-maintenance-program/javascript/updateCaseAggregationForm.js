@@ -1,8 +1,11 @@
 jQuery(document).ready(	function(){
 	
-	validation( 'updateCaseAggregationForm', function(form){
+	validation2( 'updateCaseAggregationForm', function( form )
+	{
 		form.submit();
-	}); 
+	},{
+		'rules' : getValidationRules( "caseAggregation" )
+	});
 	
 	checkValueIsExist( "aggregationDataElementId", "validateCaseAggregation.action", {id:getFieldValue('id')});
 	

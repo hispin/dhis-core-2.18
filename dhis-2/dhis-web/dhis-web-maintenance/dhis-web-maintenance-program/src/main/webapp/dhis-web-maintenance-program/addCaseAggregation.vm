@@ -24,7 +24,7 @@
     <tr>
         <td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-			<input type="text" id="name" name="name" class="{validate:{required:true,minlength:2}}">
+			<input type="text" id="name" name="name" >
 		</td>
     </tr>
     
@@ -45,7 +45,7 @@
 		<td>			
 			<input id="aggregationDataElementInput" name="aggregationDataElementInput" style='width:300px;'>
 			<a style='width:20px; margin-bottom:-5px;height:20px;' id='dataElementsButton' name='dataElementsButton'></a>
-			<input type='hidden' id="aggregationDataElementId" name="aggregationDataElementId" class="{validate:{required:true}}" >
+			<input type='hidden' id="aggregationDataElementId" name="aggregationDataElementId" >
 		</td>
 	</tr>
 	
@@ -89,7 +89,7 @@
 			<label for="deSumId">$i18n.getString( "data_element_for_sum_avg_min_max" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
 		</td>
 		<td>
-			<select id="deSumId" name="deSumId" disabled class="{validate:{required:true}}"></select>
+			<select id="deSumId" name="deSumId" disabled ></select>
 		</td>
 	</tr>
 	

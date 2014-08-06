@@ -4,9 +4,17 @@
 	{
 		showHideUserGroup();
 		
-		validation( 'updateReminderForm', function( form ){
+		validation2( 'updateReminderForm', function( form )
+		{
 			form.submit();
+		},{
+			'beforeValidateHandler' : function()
+			{
+				enable('messageType');
+			},
+			'rules' : getValidationRules( "trackedEntityInstanceReminder" )
 		});
+		
 		checkValueIsExist( "name", "validateReminder.action",{id:getFieldValue('id')} );
 	});
 	var i18n_characters_without_params = '$encoder.jsEscape( $i18n.getString( "characters_without_params" ) , "'")';
@@ -29,7 +37,7 @@
     <tbody>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input style="width: 330px;" type="text" id="name" name="name" value="$encoder.htmlEncode( $reminder.name )" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input style="width: 330px;" type="text" id="name" name="name" value="$encoder.htmlEncode( $reminder.name )" ></td>
 			<td></td>
 		</tr>
 		<tr>
@@ -50,7 +58,6 @@
 			#end
 			<td><label for="days">$i18n.getString( "send_message" )</label></td>
 			<td><input type="text" id="days" name="days" 
-				class="{validate:{required:true,number:true}}" value="$!value"
 				onkeyup='setRealDays();' style="width:100px;"
 				#if($!reminder.whenToSend==1 || $!reminder.whenToSend==3 ) disabled #end />
 				$i18n.getString('days')
@@ -66,7 +73,7 @@
 		<tr>
 			<td><label for="sendTo">$i18n.getString( "recipients" )</label></td>
 			<td>
-				<select type="text" id="sendTo" name="sendTo" class="{validate:{required:true,number:true}}" onchange="onchangeUserGroup()">
+				<select type="text" id="sendTo" name="sendTo" onchange="onchangeUserGroup()">
 					<option value="1" #if($!reminder.sendTo==1) selected #end >$i18n.getString("tracked_entity_sms_only")</option>
 					<option value="3" #if($!reminder.sendTo==3) selected #end >$i18n.getString("orgunit_phone_number_sms_only")</option>
 					<option value="2" #if($!reminder.sendTo==2) selected #end >$i18n.getString("attribute_users")</option>
@@ -78,7 +85,7 @@
 		<tr>
 			<td><label for="userGroup">$i18n.getString( "user_group" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
-				<select type="text" id="userGroup" name="userGroup" #if($!reminder.sendTo!=5) disabled #end class="{validate:{required:true}}" >
+				<select type="text" id="userGroup" name="userGroup" #if($!reminder.sendTo!=5) disabled #end >
 					<option value="">[$i18n.getString("please_select")]</option>
 					#foreach($eachGroup in $userGroups)
 					<option value="$eachGroup.id" #if($!reminder.userGroup.id==$eachGroup.id) selected #end>$i18n.getString($eachGroup.name)</option>
@@ -89,7 +96,7 @@
 		<tr>
 			<td><label for="messageType">$i18n.getString( "message_type" )</label></td>
 			<td>
-				<select type="text" id="messageType" name="messageType" #if($!reminder.sendTo==1 || $!reminder.sendTo==3) disabled #end class="messageType {validate:{required:true,number:true}}" >
+				<select type="text" id="messageType" name="messageType" #if($!reminder.sendTo==1 || $!reminder.sendTo==3) disabled #end class="messageType" >
 					<option value="1" #if($!reminder.messageType==1) selected #end >$i18n.getString("direct_sms")</option>
 					<option value="2" #if($!reminder.messageType==2) selected #end >$i18n.getString("message")</option>
 					<option value="3" #if($!reminder.messageType==3) selected #end >$i18n.getString("both")</option>
@@ -113,7 +120,7 @@
 		</tr>
 		<tr>
 			<td><label for="message">$i18n.getString( "message" )</label></td>
-			<td><textarea onkeyup="getMessageLength()" id="templateMessage" name="templateMessage" style="width:320px" class="templateMessage {validate:{required:true}}">$reminder.templateMessage</textarea></td>
+			<td><textarea onkeyup="getMessageLength()" id="templateMessage" name="templateMessage" style="width:320px" class="templateMessage">$reminder.templateMessage</textarea></td>
 		</tr>
 		<tr>
 			<td></td>

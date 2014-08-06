@@ -3,57 +3,60 @@
 	
 	jQuery( document ).ready( function()
 	{	
-		validation( 'addProgramForm', function( form ){ 
-		enable('dateOfEnrollmentDescription');
-		enable('dateOfIncidentDescription');
-		form.submit();
-	}, function(){
-		
-		var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
-		selectedPropertyIds.empty();
-		var personDisplayNames = jQuery( "#personDisplayNames" );
-		personDisplayNames.empty();
-		var compulsaryIdentifier = jQuery( "#compulsaryIdentifier" );
-		compulsaryIdentifier.empty();
-		var mandatorySelector = jQuery( "#mandatory" );
-		mandatorySelector.empty();
-		var allowFutureDateSelector = jQuery( "#allowFutureDate" );
-		allowFutureDateSelector.empty();
-		
-        if( getFieldValue('type') != 3 ){
-			
-			var isDisplayed = false;
-            jQuery("#selectedList").find("tr").each( function( i, item ){
-                selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
-				var displayed = jQuery( item ).find( "input[name='displayed']:first");
-				var checked = displayed.attr('checked') ? true : false;
-				personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-				if( checked ){
-					isDisplayed = true
+		validation2( 'addProgramForm', function( form )
+		{
+			enable('dateOfEnrollmentDescription');
+			enable('dateOfIncidentDescription');
+			form.submit();
+		},{
+			'beforeValidateHandler' : function()
+			{
+				var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
+				selectedPropertyIds.empty();
+				var personDisplayNames = jQuery( "#personDisplayNames" );
+				personDisplayNames.empty();
+				var compulsaryIdentifier = jQuery( "#compulsaryIdentifier" );
+				compulsaryIdentifier.empty();
+				var mandatorySelector = jQuery( "#mandatory" );
+				mandatorySelector.empty();
+				var allowFutureDateSelector = jQuery( "#allowFutureDate" );
+				allowFutureDateSelector.empty();
+				
+				if( getFieldValue('type') != 3 ){
+					
+					var isDisplayed = false;
+					jQuery("#selectedList").find("tr").each( function( i, item ){
+						selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
+						var displayed = jQuery( item ).find( "input[name='displayed']:first");
+						var checked = displayed.attr('checked') ? true : false;
+						personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+						if( checked ){
+							isDisplayed = true
+						}
+						
+						// mandatory
+						var mandatory = jQuery( item ).find( "input[name='mandatory']:first");
+						checked = mandatory.attr('checked') ? true : false;
+						mandatorySelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+						
+						// allowFutureDate
+						var allowFutureDate = jQuery( item ).find( "input[name='allowFutureDate']:first");
+						checked = allowFutureDate.attr('checked') ? true : false;
+						allowFutureDateSelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+					});
+					if( jQuery("#selectedList").find("tr").length > 0 && isDisplayed ){
+						compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
+					}
 				}
-				
-				// mandatory
-				var mandatory = jQuery( item ).find( "input[name='mandatory']:first");
-				checked = mandatory.attr('checked') ? true : false;
-				mandatorySelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-				
-				// allowFutureDate
-				var allowFutureDate = jQuery( item ).find( "input[name='allowFutureDate']:first");
-				checked = allowFutureDate.attr('checked') ? true : false;
-				allowFutureDateSelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-			});
-			if( jQuery("#selectedList").find("tr").length > 0 && isDisplayed ){
-				compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
-			}
-		}
-		else{
-			compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
-		}
+				else{
+					compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
+				}
+					},
+					'rules' : getValidationRules( "program" )
+				});
 		
+		checkValueIsExist( "name", "validateProgram.action" );
 	});
-	
-	checkValueIsExist( "name", "validateProgram.action" );
-    });
 </script>
 
 <h3>$i18n.getString( "create_new_program" ) #openHelp( "program_information" )</h3>
@@ -70,20 +73,20 @@
 	<tbody>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input type="text" id="name" name="name" ></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
 			<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input type="text" id="description" name="description" ></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
 			<td><label for="type">$i18n.getString( "type" ) </label></td>
 			<td>
-				<select id="type" name="type" onchange='programOnChange();' class="{validate:{required:true}}">
+				<select id="type" name="type" onchange='programOnChange();' >
 					<option value='1'>$i18n.getString('multiple_events_with_registration')</option>
 					<option value='2'>$i18n.getString('single_event_with_registration')</option>
 					<option value='3'>$i18n.getString('single_event_without_registration')</option>
@@ -94,7 +97,7 @@
 		<tr name='nonAnonymous' class='multiEvents'>
 			<td><label for="trackedEntityId">$i18n.getString( "tracked_entity" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
-				<select id='trackedEntityId' name='trackedEntityId' class="{validate:{required:true}}">
+				<select id='trackedEntityId' name='trackedEntityId' >
 					<option value=''>[$i18n.getString('please_select')]</option>
 					#foreach($trackedEntity in $trackedEntities)
 					<option value='$trackedEntity.id'>$trackedEntity.displayName</option>
@@ -146,13 +149,13 @@
 
 		<tr name='nonAnonymous'>
 			<td><label for="dateOfIncidentDescription">$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" class="{validate:{required:true,minlength:2}}" value="$i18n.getString('incident_date')"></td>
+			<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" value="$i18n.getString('incident_date')"></td>
 			<td></td>
 		</tr>
 		
 		<tr name='nonAnonymous'>
 			<td><label for="dateOfEnrollmentDescription">$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}" value="$i18n.getString('enrollment_date')"></td>
+			<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" value="$i18n.getString('enrollment_date')"></td>
 			<td></td>
 		</tr>
 			
@@ -230,13 +233,13 @@
 	  <tr>        
 		<th>$i18n.getString( "available_attributes" )</th>
 		<th></th>
-		<th>$i18n.getString( "select_attributes" )
+		<td class='class-th'>$i18n.getString( "select_attributes" )
 			<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
 			<select style='display:none;' multiple id="personDisplayNames" name="personDisplayNames" ></select>
 			<select style='display:none;' multiple id="mandatory" name="mandatory" ></select>
 			<select style='display:none;' multiple id="allowFutureDate" name="allowFutureDate" ></select>
 			<select id='compulsaryIdentifier' name="compulsaryIdentifier" multiple="multiple" class="hidden {validate:{required:true}}" title="$i18n.getString('please_select_at_least_attribute_for_displaying_in_list')"></select>
-		</th>
+		</td>
 	  </tr>
 	</thead>
 	<tr>

@@ -9,11 +9,11 @@
 	<tr><th colspan="3">$i18n.getString('validation_criteria_details')</th></tr>
     <tr>
 		<td><label for="name">$i18n.getString('name') <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td colspan="2"><input type='text' id='name' name='name' class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+		<td colspan="2"><input type='text' id='name' name='name' /></td>
     </tr>
     <tr>
 		<td><label for="description">$i18n.getString('description') <em title="$i18n.getString( 'required' )" class="required">*</em></label></label></td>
-		<td colspan="2"><input type='text' id='description' name='description' class="{validate:{required:true,rangelength:[2,160]}}"></td>
+		<td colspan="2"><input type='text' id='description' name='description' ></td>
 	</tr>
     <tr>
 		<td><label for="property">$i18n.getString('criteria')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -42,7 +42,7 @@
 					</select>
 				</td>
 				<td id='valueTD'>
-					<input type='text' id='value' name='value' class="{validate:{required:true}}" style="width:130px"/>
+					<input type='text' id='value' name='value' style="width:130px"/>
 				</td>
 			</tr>
 		</table>
