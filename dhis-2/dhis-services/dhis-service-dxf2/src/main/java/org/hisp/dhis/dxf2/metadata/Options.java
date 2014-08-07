@@ -101,7 +101,12 @@ public class Options
     {
         return str != null ? Boolean.parseBoolean( str ) : defaultValue;
     }
-
+    
+    protected static boolean stringIsTrue( String str )
+    {
+        return stringAsBoolean( str, false );
+    }
+    
     protected static int stringAsInt( String str )
     {
         return stringAsInt( str, 0 );
@@ -157,7 +162,7 @@ public class Options
     {
         String enabled = options.get( type );
 
-        return isTrue( enabled ) || ( enabled == null && assumeTrue );
+        return stringIsTrue( enabled ) || ( enabled == null && assumeTrue );
     }
 
     /**
