@@ -28,20 +28,22 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.analytics.Partitions;
+import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.system.util.UniqueArrayList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.hisp.dhis.analytics.Partitions;
-import org.hisp.dhis.common.ListMap;
-import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.period.Cal;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.YearlyPeriodType;
-import org.hisp.dhis.system.util.UniqueArrayList;
 
 /**
  * @author Lars Helge Overland
@@ -49,67 +51,67 @@ import org.hisp.dhis.system.util.UniqueArrayList;
 public class PartitionUtils
 {
     private static final YearlyPeriodType PERIODTYPE = new YearlyPeriodType();
-    
+
     private static final String SEP = "_";
 
     public static List<Period> getPeriods( Date earliest, Date latest )
     {
         List<Period> periods = new ArrayList<Period>();
-        
+
         Period period = PERIODTYPE.createPeriod( earliest );
-        
+
         while ( period != null && period.getStartDate().before( latest ) )
         {
-            periods.add( period );            
+            periods.add( period );
             period = PERIODTYPE.getNextPeriod( period );
         }
-        
+
         return periods;
     }
 
     //TODO optimize by including required filter periods only
-    
+
     public static Partitions getPartitions( Period period, String tablePrefix, String tableSuffix, Set<String> validPartitions )
     {
         tablePrefix = StringUtils.trimToEmpty( tablePrefix );
         tableSuffix = StringUtils.trimToEmpty( tableSuffix );
 
         Partitions partitions = new Partitions();
-        
-        int startYear = year( period.getStartDate() );
-        int endYear = year( period.getEndDate() );
-        
+
+        int startYear = PeriodType.getCalendar().fromIso( DateUnit.fromJdkDate( period.getStartDate() ) ).getYear();
+        int endYear = PeriodType.getCalendar().fromIso( DateUnit.fromJdkDate( period.getEndDate() ) ).getYear();
+
         while ( startYear <= endYear )
         {
-            String name = tablePrefix + SEP + startYear + tableSuffix;            
+            String name = tablePrefix + SEP + startYear + tableSuffix;
             partitions.add( name.toLowerCase() );
             startYear++;
         }
 
         return partitions.prunePartitions( validPartitions );
     }
-    
+
     public static Partitions getPartitions( List<NameableObject> periods, String tablePrefix, String tableSuffix, Set<String> validPartitions )
     {
         UniqueArrayList<String> partitions = new UniqueArrayList<String>();
-        
+
         for ( NameableObject period : periods )
         {
             partitions.addAll( getPartitions( (Period) period, tablePrefix, tableSuffix, null ).getPartitions() );
         }
-        
+
         return new Partitions( new ArrayList<String>( partitions ) ).prunePartitions( validPartitions );
     }
-    
+
     public static ListMap<Partitions, NameableObject> getPartitionPeriodMap( List<NameableObject> periods, String tablePrefix, String tableSuffix, Set<String> validPartitions )
     {
         ListMap<Partitions, NameableObject> map = new ListMap<Partitions, NameableObject>();
-        
+
         for ( NameableObject period : periods )
         {
             map.putValue( getPartitions( (Period) period, tablePrefix, tableSuffix, null ).prunePartitions( validPartitions ), period );
         }
-        
+
         return map;
     }
 
@@ -119,17 +121,17 @@ public class PartitionUtils
     public static ListMap<String, NameableObject> getPeriodTypePeriodMap( Collection<NameableObject> periods )
     {
         ListMap<String, NameableObject> map = new ListMap<String, NameableObject>();
-        
+
         for ( NameableObject period : periods )
         {
             String periodTypeName = ((Period) period).getPeriodType().getName();
-            
+
             map.putValue( periodTypeName, period );
         }
-        
+
         return map;
     }
-    
+
     /**
      * Returns the year of the given date.
      */
@@ -137,7 +139,7 @@ public class PartitionUtils
     {
         return new Cal( date ).getYear();
     }
-    
+
     /**
      * Returns the max date within the year of the given date.
      */
