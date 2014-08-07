@@ -295,7 +295,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         CollectionNode collectionNode = fieldFilterService.filter( getEntityClass(), entities, fields );
 
-        if ( options.booleanTrue( "useWrapper" ) || entities.size() > 1 )
+        if ( options.isTrue( "useWrapper" ) || entities.size() > 1 )
         {
             RootNode rootNode = new RootNode( "metadata" );
             rootNode.setDefaultNamespace( DxfNamespaces.DXF_2_0 );

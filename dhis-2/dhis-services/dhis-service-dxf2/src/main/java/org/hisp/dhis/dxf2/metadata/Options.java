@@ -34,8 +34,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.system.util.TextUtils;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -98,29 +96,11 @@ public class Options
 
         return null;
     }
-
-    protected static boolean stringAsBoolean( String str )
-    {
-        return stringAsBoolean( str, false );
-    }
-
+    
     protected static boolean stringAsBoolean( String str, boolean defaultValue )
     {
-        if ( str != null )
-        {
-            if ( str.equalsIgnoreCase( "true" ) )
-            {
-                return true;
-            }
-            else if ( str.equalsIgnoreCase( "false" ) )
-            {
-                return false;
-            }
-        }
-
-        return defaultValue;
+        return str != null ? Boolean.parseBoolean( str ) : defaultValue;
     }
-
 
     protected static int stringAsInt( String str )
     {
@@ -141,11 +121,6 @@ public class Options
         }
 
         return defaultValue;
-    }
-
-    protected static boolean stringIsTrue( String str )
-    {
-        return stringAsBoolean( str );
     }
 
     //--------------------------------------------------------------------------
@@ -174,27 +149,24 @@ public class Options
     // Get options for classes/strings etc
     //--------------------------------------------------------------------------
 
+    /**
+     * Indicates whether the given object type is enabled. Takes the assumeTrue 
+     * parameter into account.
+     */
     public boolean isEnabled( String type )
     {
         String enabled = options.get( type );
 
-        return stringIsTrue( enabled ) || ( enabled == null && assumeTrue );
+        return isTrue( enabled ) || ( enabled == null && assumeTrue );
     }
 
+    /**
+     * Indicates whether the given object type is disabled. Takes the assumeTrue 
+     * parameter into account.
+     */
     public boolean isDisabled( String type )
     {
         return !isEnabled( type );
-    }
-
-    public boolean booleanTrue( String key )
-    {
-        return booleanTrue( key, false );
-    }
-
-    public boolean booleanTrue( String key, boolean defaultValue )
-    {
-        String value = options.get( key );
-        return stringAsBoolean( value, defaultValue );
     }
 
     public Date getDate( String key )
@@ -202,24 +174,45 @@ public class Options
         return stringAsDate( options.get( key ) );
     }
     
-    public boolean contains( String type )
+    /**
+     * Indicates whether the options contains the given parameter key.
+     */
+    public boolean contains( String key )
     {
-        return options.containsKey( type );
+        return options.containsKey( key );
+    }
+
+    /**
+     * Indicates whether the options contains a non-null option value for the given 
+     * parameter key.
+     */
+    public boolean containsValue( String key )
+    {
+        return options.get( key ) != null;
     }
     
-    public String get( String type )
+    /**
+     * Returns the option value for the given parameter key.
+     */
+    public String get( String key )
     {
-        return options.get( type );
+        return options.get( key );
+    }
+
+    /**
+     * Returns the option value for the given parameter key as in Integer.
+     */
+    public Integer getInt( String key )
+    {
+        return options.get( key ) != null ? Integer.parseInt( options.get( key ) ) : null;
     }
     
-    public Integer getInt( String type )
+    /**
+     * Indicates whether the option value for the parameter key is true.
+     */
+    public boolean isTrue( String key )
     {
-        return options.get( type ) != null ? Integer.parseInt( options.get( type ) ) : null;
-    }
-    
-    public boolean isTrue( String type )
-    {
-        return options.get( type ) != null && Boolean.parseBoolean( options.get( type ) );
+        return options.get( key ) != null && Boolean.parseBoolean( options.get( key ) );
     }
 
     //--------------------------------------------------------------------------

@@ -100,10 +100,10 @@ var FORMTYPE_DEFAULT = 'default';
 
 dhis2.de.event.formLoaded = "dhis2.de.event.formLoaded";
 dhis2.de.event.dataValuesLoaded = "dhis2.de.event.dataValuesLoaded";
+dhis2.de.event.formReady = "dhis2.de.event.formReady";
 dhis2.de.event.dataValueSaved = "dhis2.de.event.dataValueSaved";
 dhis2.de.event.completed = "dhis2.de.event.completed";
 dhis2.de.event.uncompleted = "dhis2.de.event.uncompleted";
-dhis2.de.event.formReady = "dhis2.de.event.formReady";
 
 /**
  * Convenience method to be used from inside custom forms. When a function is
