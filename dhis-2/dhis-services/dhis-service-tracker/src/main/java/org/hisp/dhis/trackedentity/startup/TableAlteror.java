@@ -130,9 +130,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE program DROP COLUMN maxDaysAllowedInputData" );
 
         executeSql( "ALTER TABLE period modify periodid int AUTO_INCREMENT" );
-        executeSql( "CREATE SEQUENCE period_periodid_seq" );
-        executeSql( "ALTER TABLE period ALTER COLUMN periodid SET DEFAULT NEXTVAL('period_periodid_seq')" );
-
+        
         executeSql( "UPDATE program SET programstage_dataelements=false WHERE displayInReports is null" );
 
         executeSql( "ALTER TABLE programvalidation DROP COLUMN leftside" );
@@ -296,6 +294,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE program_attributes DROP COLUMN allowdateinfuture" );
         executeSql( "UPDATE program_attributes SET allowFutureDate='false' WHERE allowFutureDate is null" );
 
+        executeSql( "ALTER TABLE period ALTER COLUMN periodid DROP DEFAULT" );
+        executeSql( "DROP SEQUENCE period_periodid_seq" );
+        
         updateProgramStageList();
         updateProgramAttributeList();
     }
