@@ -566,7 +566,7 @@ public class NepaliCalendar extends AbstractCalendar
         conversionMap.put( 2059, new int[]{ 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 } );
         conversionMap.put( 2060, new int[]{ 0, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30 } );
         conversionMap.put( 2061, new int[]{ 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 } );
-        conversionMap.put( 2062, new int[]{ 0, 31, 31, 31, 32, 31, 31, 29, 30, 29, 30, 29, 31 } );
+        conversionMap.put( 2062, new int[]{ 0, 30, 32, 31, 32, 31, 31, 29, 30, 29, 30, 29, 31 } );
         conversionMap.put( 2063, new int[]{ 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 } );
         conversionMap.put( 2064, new int[]{ 0, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30 } );
         conversionMap.put( 2065, new int[]{ 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 } );
@@ -585,15 +585,25 @@ public class NepaliCalendar extends AbstractCalendar
         conversionMap.put( 2078, new int[]{ 0, 31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30 } );
         conversionMap.put( 2079, new int[]{ 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 } );
         conversionMap.put( 2080, new int[]{ 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30 } );
-        conversionMap.put( 2081, new int[]{ 0, 31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 30, 30 } );
-        conversionMap.put( 2082, new int[]{ 0, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30 } );
-        conversionMap.put( 2083, new int[]{ 0, 31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30 } );
-        conversionMap.put( 2084, new int[]{ 0, 31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30 } );
-        conversionMap.put( 2085, new int[]{ 0, 31, 32, 31, 32, 30, 31, 30, 30, 29, 30, 30, 30 } );
-        conversionMap.put( 2086, new int[]{ 0, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30 } );
-        conversionMap.put( 2087, new int[]{ 0, 31, 31, 32, 31, 31, 31, 30, 30, 29, 30, 30, 30 } );
-        conversionMap.put( 2088, new int[]{ 0, 30, 31, 32, 32, 30, 31, 30, 30, 29, 30, 30, 30 } );
-        conversionMap.put( 2089, new int[]{ 0, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30 } );
-        conversionMap.put( 2090, new int[]{ 0, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30 } );
+        conversionMap.put( 2081, new int[]{ 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31 } );
+        conversionMap.put( 2082, new int[]{ 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 } );
+        conversionMap.put( 2083, new int[]{ 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 } );
+        conversionMap.put( 2084, new int[]{ 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 } );
+        conversionMap.put( 2085, new int[]{ 0, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31 } );
+        conversionMap.put( 2086, new int[]{ 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 } );
+        conversionMap.put( 2087, new int[]{ 0, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30 } );
+        conversionMap.put( 2088, new int[]{ 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 } );
+        conversionMap.put( 2089, new int[]{ 0, 30, 32, 31, 32, 31, 31, 29, 30, 29, 30, 29, 31 } );
+        conversionMap.put( 2090, new int[]{ 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 } );
+        conversionMap.put( 2091, new int[]{ 0, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30 } );
+        conversionMap.put( 2092, new int[]{ 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 } );
+        conversionMap.put( 2093, new int[]{ 0, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31 } );
+        conversionMap.put( 2094, new int[]{ 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 } );
+        conversionMap.put( 2095, new int[]{ 0, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 29 } );
+        conversionMap.put( 2096, new int[]{ 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 32 } );
+        conversionMap.put( 2097, new int[]{ 0, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30 } );
+        conversionMap.put( 2098, new int[]{ 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 } );
+        conversionMap.put( 2099, new int[]{ 0, 31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30 } );
+        conversionMap.put( 2100, new int[]{ 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 } );
     }
 }
