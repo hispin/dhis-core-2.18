@@ -1928,7 +1928,7 @@ Ext.onReady( function() {
                         var minimums = [];
 
                         for (var i = 0; i < store.numericFields.length; i++) {
-                            minimums.push(store.max(store.numericFields[i]));
+                            minimums.push(store.min(store.numericFields[i]));
                         }
 
                         return Ext.Array.min(minimums);
