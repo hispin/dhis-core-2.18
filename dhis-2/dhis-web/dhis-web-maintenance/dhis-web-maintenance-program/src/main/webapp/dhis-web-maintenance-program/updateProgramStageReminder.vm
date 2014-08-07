@@ -16,6 +16,7 @@
 		});
 		
 		checkValueIsExist( "name", "validateReminder.action",{id:getFieldValue('id')} );
+		whenToSendOnChange();
 	});
 	var i18n_characters_without_params = '$encoder.jsEscape( $i18n.getString( "characters_without_params" ) , "'")';
 
@@ -57,7 +58,8 @@
 				#set($value=-1 * $value)
 			#end
 			<td><label for="days">$i18n.getString( "send_message" )</label></td>
-			<td><input type="text" id="days" name="days" 
+			
+			<td><input type="text" id="days" name="days" value="$!value"
 				onkeyup='setRealDays();' style="width:100px;"
 				#if($!reminder.whenToSend==1 || $!reminder.whenToSend==3 ) disabled #end />
 				$i18n.getString('days')
