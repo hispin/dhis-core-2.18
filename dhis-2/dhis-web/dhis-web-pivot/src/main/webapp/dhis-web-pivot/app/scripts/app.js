@@ -15,7 +15,7 @@ Ext.onReady( function() {
 			core: {},
 			app: {}
 		};
-	
+
 	// set app config
 	(function() {
 
@@ -6055,7 +6055,11 @@ Ext.onReady( function() {
 						Ext.Ajax.request({
 							url: init.contextPath + '/api/system/info.json',
 							success: function(r) {
-								init.contextPath = Ext.decode(r.responseText).contextPath || init.contextPath;
+                                var info = Ext.decode(r.responseText);
+								init.contextPath = info.contextPath || init.contextPath;
+
+                                // calendar
+                                init.calendar = info.calendar;
 
 								// i18n
 								requests.push({
