@@ -162,12 +162,12 @@ public class OrganisationUnitController
     {
         OrganisationUnit organisationUnit = manager.get( getEntityClass(), uid );
 
+        List<OrganisationUnit> organisationUnits = Lists.newArrayList();
+
         if ( organisationUnit == null )
         {
-            return Lists.newArrayList();
+            return organisationUnits;
         }
-
-        List<OrganisationUnit> organisationUnits = Lists.newArrayList();
 
         if ( options.contains( "includeChildren" ) )
         {
@@ -179,6 +179,14 @@ public class OrganisationUnitController
         {
             options.getOptions().put( "useWrapper", "true" );
             organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( uid ) );
+        }
+        else if ( options.contains( "level" ) )
+        {
+            options.getOptions().put( "useWrapper", "true" );
+            int level = options.getInt( "level" );
+            int ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );
+            int targetLevel = ouLevel + level;
+            organisationUnits.addAll( organisationUnitService.getOrganisationUnitsAtLevel( targetLevel, organisationUnit ) );
         }
         else
         {
