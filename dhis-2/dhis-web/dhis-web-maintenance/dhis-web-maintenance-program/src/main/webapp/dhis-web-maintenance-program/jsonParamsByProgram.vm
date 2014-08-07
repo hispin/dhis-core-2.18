@@ -1,11 +1,11 @@
 { #set( $size = $!{programStages.size()} )
   "programStages": [
-  #foreach( ${programStage} in $!{programStages} )
-  {
-	"id": "${programStage.id}",
-	"name": "$!encoder.jsonEncode( ${programStage.displayName} )"
-  }#if( $velocityCount < $size ),#end
-  #end
+	  #foreach( ${programStage} in $!{programStages} )
+	  {
+		"id": "${programStage.id}",
+		"name": "$!encoder.jsonEncode( ${programStage.displayName} )"
+	  }#if( $velocityCount < $size ),#end
+	  #end
   ],
   "attributes":[
 	#set( $size = $!{attributes.size()} )
@@ -13,7 +13,16 @@
 	{
 		"id": "[CA:${attribute.id}]",
 		"name": "$!encoder.jsonEncode( ${attribute.name} )",
-		"suggested":"$!attribute.optionSet.options"
+		"suggested":[
+			#if( $!dataElement.optionSet )
+				#foreach( $opt in $!attribute.optionSet.options )
+					{
+						"code" : $opt.code,
+						"name" : "$encoder.xmlEncode($opt.name)"
+					}#if( $velocityCount < $size ),#end
+				#end
+			#end
+		]
 	}#if( $velocityCount < $size ),#end
 	#end
   ]
