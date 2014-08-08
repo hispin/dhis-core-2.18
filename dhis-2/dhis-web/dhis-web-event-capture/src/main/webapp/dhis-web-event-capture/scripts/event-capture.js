@@ -394,7 +394,7 @@ function getOptionSet( id )
 {
     return function() {
         return $.ajax( {
-            url: '../api/optionSets.json?filter=id:eq:' + id +'&fields=id,name,version,options',
+            url: '../api/optionSets.json?filter=id:eq:' + id +'&fields=id,name,version,options[id,name,code]',
             type: 'GET'
         }).done( function( response ){            
             _.each( _.values( response.optionSets ), function( optionSet ) {                

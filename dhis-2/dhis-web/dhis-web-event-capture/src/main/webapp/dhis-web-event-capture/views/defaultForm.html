@@ -75,7 +75,7 @@
                             <div class="container-fluid">
                                 <input type="text"
                                        ng-model="currentEvent[eventGridColumn.id]"                                                                    
-                                       typeahead="option for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                       typeahead="option.code as option.name for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
                                        typeahead-open-on-focus
                                        ng-required={{eventGridColumn.compulsory}}
                                        name="foo" 
