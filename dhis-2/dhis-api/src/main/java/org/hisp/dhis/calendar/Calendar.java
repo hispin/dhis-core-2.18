@@ -71,6 +71,16 @@ public interface Calendar
     String formattedDate( DateUnit dateUnit );
 
     /**
+     * Formats dateUnit using supplied date format
+     *
+     * @param dateFormat Date format to use
+     * @param dateUnit DateUnit representing local year, month, day
+     * @return Default date format
+     * @see #getDateFormat()
+     */
+    String formattedDate( String dateFormat, DateUnit dateUnit );
+
+    /**
      * Formats dateUnit using dateFormat and ISO 8601
      *
      * @param dateUnit DateUnit representing local year, month, day

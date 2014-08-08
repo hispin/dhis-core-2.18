@@ -28,6 +28,11 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.WeeklyPeriodType;
+
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
@@ -35,9 +40,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
-
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.WeeklyPeriodType;
 
 /**
  * @author Pham Thi Thuy
@@ -49,12 +51,12 @@ public class I18nFormat
     private static final DecimalFormat FORMAT_VALUE = new DecimalFormat( "#.#" ); // Fixed for now
     private static final String EMPTY = "";
     private static final String NAN = "NaN";
-    private static final String INVALID_DATE="Invalid date format";
-    
+    private static final String INVALID_DATE = "Invalid date format";
+
     public static final String FORMAT_DATE = "yyyy-MM-dd";
     public static final String FORMAT_TIME = "HH:mm";
     public static final String FORMAT_DATETIME = "yyyy-MM-dd HH:mm";
-    
+
     private ResourceBundle resourceBundle;
 
     public I18nFormat( ResourceBundle resourceBundle )
@@ -88,16 +90,48 @@ public class I18nFormat
         String[] shortWeekdays = { "weekday.short.sunday", "weekday.short.monday", "weekday.short.tuesday",
             "weekday.short.wednesday", "weekday.short.thursday", "weekday.short.friday", "weekday.short.saturday" };
 
+        String calendarName = PeriodType.getCalendar().name() + ".";
+
         for ( int i = 0; i < 12; ++i )
         {
-            months[i] = resourceBundle.getString( months[i] );
-            shortMonths[i] = resourceBundle.getString( shortMonths[i] );
+            if ( resourceBundle.containsKey( calendarName + months[i] ) )
+            {
+                months[i] = resourceBundle.getString( calendarName + months[i] );
+            }
+            else
+            {
+                months[i] = resourceBundle.getString( months[i] );
+            }
+
+            if ( resourceBundle.containsKey( calendarName + shortMonths[i] ) )
+            {
+                shortMonths[i] = resourceBundle.getString( calendarName + shortMonths[i] );
+            }
+            else
+            {
+                shortMonths[i] = resourceBundle.getString( shortMonths[i] );
+            }
         }
 
         for ( int i = 0; i < 7; ++i )
         {
-            weekdays[i] = resourceBundle.getString( weekdays[i] );
-            shortWeekdays[i] = resourceBundle.getString( shortWeekdays[i] );
+            if ( resourceBundle.containsKey( calendarName + weekdays[i] ) )
+            {
+                weekdays[i] = resourceBundle.getString( calendarName + weekdays[i] );
+            }
+            else
+            {
+                weekdays[i] = resourceBundle.getString( weekdays[i] );
+            }
+
+            if ( resourceBundle.containsKey( calendarName + shortWeekdays[i] ) )
+            {
+                shortWeekdays[i] = resourceBundle.getString( calendarName + shortWeekdays[i] );
+            }
+            else
+            {
+                shortWeekdays[i] = resourceBundle.getString( shortWeekdays[i] );
+            }
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -184,7 +218,7 @@ public class I18nFormat
         {
             return null;
         }
-        
+
         String typeName = period.getPeriodType().getName();
 
         if ( typeName.equals( WeeklyPeriodType.NAME ) ) // Use ISO dates due to potential week confusion
@@ -194,9 +228,35 @@ public class I18nFormat
 
         String keyStartDate = "format." + typeName + ".startDate";
         String keyEndDate = "format." + typeName + ".endDate";
-        
-        String startDate = commonFormatting( period.getStartDate(), resourceBundle.getString( keyStartDate ) );
-        String endDate = commonFormatting( period.getEndDate(), resourceBundle.getString( keyEndDate ) );
+
+        String startPattern = resourceBundle.getString( keyStartDate );
+        String endPattern = resourceBundle.getString( keyEndDate );
+
+        boolean dayPattern = startPattern.contains( "dd" ) || endPattern.contains( "dd" );
+
+        Date periodStartDate = period.getStartDate();
+        Date periodEndDate = period.getEndDate();
+
+        DateUnit start = PeriodType.getCalendar().fromIso( DateUnit.fromJdkDate( periodStartDate ) );
+        DateUnit end = PeriodType.getCalendar().fromIso( DateUnit.fromJdkDate( periodEndDate ) );
+
+        String startDate;
+        String endDate;
+
+        if ( !dayPattern )
+        {
+            // set day to first of month, so that we don't overflow when we convert to jdk date
+            start.setDay( 1 );
+            end.setDay( 1 );
+
+            startDate = commonFormatting( new DateUnit( start, true ).toJdkDate(), startPattern );
+            endDate = commonFormatting( new DateUnit( end, true ).toJdkDate(), endPattern );
+        }
+        else
+        {
+            startDate = PeriodType.getCalendar().formattedDate( startPattern, start );
+            endDate = PeriodType.getCalendar().formattedDate( endPattern, end );
+        }
 
         try
         {
@@ -207,11 +267,11 @@ public class I18nFormat
             return INVALID_DATE;
         }
     }
-    
+
     /**
      * Formats value. Returns empty string if value is null. Returns NaN if value
      * is not a number.
-     *  
+     *
      * @param value the value to format.
      */
     public String formatValue( Object value )
@@ -220,7 +280,7 @@ public class I18nFormat
         {
             return EMPTY;
         }
-        
+
         try
         {
             return FORMAT_VALUE.format( value );
@@ -230,7 +290,7 @@ public class I18nFormat
             return NAN;
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
