@@ -28,6 +28,7 @@ package org.hisp.dhis.webapi.controller.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.dataelement.DataElement;
@@ -56,16 +57,25 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
 
     protected List<DataElementOperand> getEntityList( WebMetaData metaData, WebOptions options )
     {
-        List<DataElement> dataElements = new ArrayList<>( manager.getAllSorted( DataElement.class ) );
-        List<DataElementOperand> entityList = new ArrayList<>( categoryService.getFullOperands( dataElements ) );
+        List<DataElementOperand> dataElementOperands;
+
+        if ( options.isTrue( "persisted" ) )
+        {
+            dataElementOperands = Lists.newArrayList( manager.getAll( DataElementOperand.class ) );
+        }
+        else
+        {
+            List<DataElement> dataElements = new ArrayList<>( manager.getAllSorted( DataElement.class ) );
+            dataElementOperands = new ArrayList<>( categoryService.getFullOperands( dataElements ) );
+        }
 
         if ( options.hasPaging() )
         {
-            Pager pager = new Pager( options.getPage(), entityList.size(), options.getPageSize() );
+            Pager pager = new Pager( options.getPage(), dataElementOperands.size(), options.getPageSize() );
             metaData.setPager( pager );
-            entityList = PagerUtils.pageCollection( entityList, pager );
+            dataElementOperands = PagerUtils.pageCollection( dataElementOperands, pager );
         }
 
-        return entityList;
+        return dataElementOperands;
     }
 }
