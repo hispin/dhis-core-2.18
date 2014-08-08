@@ -1164,7 +1164,7 @@ public class TableAlteror
 
     private void updateOptions()
     {
-        String sql = "insert into optionvalue(optionid, code, name, optionsetid, sort_order) "
+        String sql = "insert into optionvalue(optionvalueid, code, name, optionsetid, sort_order) "
             + "select " + statementBuilder.getAutoIncrementValue() + ", optionvalue, optionvalue, optionsetid, ( sort_order + 1 ) "
             + "from optionsetmembers";
         
