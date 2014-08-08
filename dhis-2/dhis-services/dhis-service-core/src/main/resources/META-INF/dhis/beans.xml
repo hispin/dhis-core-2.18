@@ -643,6 +643,7 @@
 
   <bean id="emailMessageSender" class="org.hisp.dhis.message.EmailMessageSender">
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+    <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 

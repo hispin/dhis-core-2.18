@@ -82,6 +82,12 @@ public class Configuration
     private String remoteServerPassword;
 
     // -------------------------------------------------------------------------
+    // SMTP
+    // -------------------------------------------------------------------------
+    
+    private String smtpPassword;
+    
+    // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
@@ -218,5 +224,18 @@ public class Configuration
     public void setRemoteServerPassword( String remoteServerPassword )
     {
         this.remoteServerPassword = remoteServerPassword;
+    }
+
+    /**
+     * Do not serialize.
+     */
+    public String getSmtpPassword()
+    {
+        return smtpPassword;
+    }
+    
+    public void setSmtpPassword( String smtpPassword )
+    {
+        this.smtpPassword = smtpPassword;
     }
 }
