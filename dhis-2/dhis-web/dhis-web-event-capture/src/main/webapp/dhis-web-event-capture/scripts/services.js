@@ -241,7 +241,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '" ' +
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory"' +
-                                            ' typeahead="option for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
+                                            ' typeahead="option.code as option.name for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
                                             ' typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "bool"){
