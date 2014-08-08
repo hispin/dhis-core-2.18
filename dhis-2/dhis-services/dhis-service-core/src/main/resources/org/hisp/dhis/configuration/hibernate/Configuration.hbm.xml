@@ -36,7 +36,9 @@
 	
 	<property name="remoteServerUsername" column="remoteserverusername" />
 	
-	<property name="remoteServerPassword" column="remoteServerPassword" type="encryptedString" />
+	<property name="remoteServerPassword" column="remoteserverpassword" type="encryptedString" />
+	
+	<property name="smtpPassword" column="smptpassword" type="encryptedString" />
 	
   </class>
 </hibernate-mapping>

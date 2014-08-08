@@ -146,11 +146,6 @@ public class DefaultSystemSettingManager
         return (Integer) getSystemSetting( KEY_EMAIL_PORT, DEFAULT_EMAIL_PORT );
     }
 
-    public String getEmailPassword()
-    {
-        return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_PASSWORD ) );
-    }
-
     public String getEmailUsername()
     {
         return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_USERNAME ) );

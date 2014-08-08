@@ -150,8 +150,6 @@ public interface SystemSettingManager
 
     String getEmailUsername();
 
-    String getEmailPassword();
-
     boolean getEmailTls();
     
     String getEmailSender();

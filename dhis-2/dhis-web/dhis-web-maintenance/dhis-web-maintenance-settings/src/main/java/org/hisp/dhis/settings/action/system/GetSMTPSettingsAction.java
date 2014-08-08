@@ -28,7 +28,10 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.configuration.Configuration;
+import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,12 +46,11 @@ public class GetSMTPSettingsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SystemSettingManager systemSettingManager;
 
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
+    @Autowired
+    private ConfigurationService configurationService;
 
     // -------------------------------------------------------------------------
     // Output
@@ -102,11 +104,13 @@ public class GetSMTPSettingsAction
 
     public String execute()
     {
+        Configuration config = configurationService.getConfiguration();
+        
         smtpHostName = systemSettingManager.getEmailHostName();
         
         smtpPort = systemSettingManager.getEmailPort();
         
-        smtpPassword = systemSettingManager.getEmailPassword();
+        smtpPassword = config.getSmtpPassword();
         
         smtpUsername = systemSettingManager.getEmailUsername();
 

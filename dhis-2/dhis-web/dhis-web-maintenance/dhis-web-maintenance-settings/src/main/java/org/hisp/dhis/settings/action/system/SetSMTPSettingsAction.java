@@ -30,8 +30,11 @@ package org.hisp.dhis.settings.action.system;
 
 import static org.hisp.dhis.setting.SystemSettingManager.*;
 
+import org.hisp.dhis.configuration.Configuration;
+import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -46,12 +49,11 @@ public class SetSMTPSettingsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SystemSettingManager systemSettingManager;
 
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
+    @Autowired
+    private ConfigurationService configurationService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -119,12 +121,14 @@ public class SetSMTPSettingsAction
 
     public String execute()
     {
+        Configuration config = configurationService.getConfiguration();
+        
         systemSettingManager.saveSystemSetting( KEY_EMAIL_HOST_NAME, smtpHostName );
 
         systemSettingManager.saveSystemSetting( KEY_EMAIL_PORT, smtpPort );
         
-        systemSettingManager.saveSystemSetting( KEY_EMAIL_PASSWORD, smtpPassword );
-
+        config.setSmtpPassword( smtpPassword );
+        
         systemSettingManager.saveSystemSetting( KEY_EMAIL_USERNAME, smtpUsername );
 
         systemSettingManager.saveSystemSetting( KEY_EMAIL_TLS, smtpTls );
@@ -132,6 +136,8 @@ public class SetSMTPSettingsAction
         systemSettingManager.saveSystemSetting( KEY_EMAIL_SENDER, emailSender );
         
         message = i18n.getString( "settings_updated" );
+        
+        configurationService.setConfiguration( config );
 
         return SUCCESS;
     }
