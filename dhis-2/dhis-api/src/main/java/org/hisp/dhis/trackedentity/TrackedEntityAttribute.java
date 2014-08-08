@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -40,6 +41,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionSet;
 
 /**
@@ -93,9 +95,9 @@ public class TrackedEntityAttribute
     private Boolean displayInListNoProgram = false;
 
     private Integer sortOrderInListNoProgram;
-    
+
     private Boolean confidential = false;
-    
+
     private Boolean unique = false;
 
     // For Local ID type
@@ -113,8 +115,8 @@ public class TrackedEntityAttribute
         setAutoFields();
     }
 
-    public TrackedEntityAttribute( String name, String description, String valueType,
-        Boolean inherit, Boolean displayOnVisitSchedule )
+    public TrackedEntityAttribute( String name, String description, String valueType, Boolean inherit,
+        Boolean displayOnVisitSchedule )
     {
         this.name = name;
         this.description = description;
@@ -181,7 +183,7 @@ public class TrackedEntityAttribute
     }
 
     @JsonProperty( "trackedEntityAttributeGroup" )
-    @JsonView( { DetailedView.class  } )
+    @JsonView( { DetailedView.class } )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JacksonXmlProperty( localName = "trackedEntityAttributeGroup", namespace = DxfNamespaces.DXF_2_0 )
     public TrackedEntityAttributeGroup getAttributeGroup()
@@ -325,7 +327,7 @@ public class TrackedEntityAttribute
     {
         this.confidential = confidential;
     }
-    
+
     // -------------------------------------------------------------------------
     // Static methods
     // -------------------------------------------------------------------------
@@ -353,5 +355,18 @@ public class TrackedEntityAttribute
             orgunitScope = trackedEntityAttribute.getOrgunitScope();
             programScope = trackedEntityAttribute.getProgramScope();
         }
+    }
+
+    public Boolean isValidOptionValue( String value )
+    {
+        for ( Option option : this.getOptionSet().getOptions() )
+        {
+            if ( option.getCode().equals( value ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
