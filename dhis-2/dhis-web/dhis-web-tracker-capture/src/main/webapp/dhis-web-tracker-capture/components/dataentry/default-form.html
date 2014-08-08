@@ -34,7 +34,7 @@
                                    ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
                                    ng-model="currentEvent[prStDe.dataElement.id]" 
                                    ng-required={{prStDe.compulsory}} 
-                                   typeahead="option for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                   typeahead="option.code as option.name for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
                                    typeahead-open-on-focus    
                                    ng-blur="saveDatavalue(prStDe)" 
                                    name="foo"/>

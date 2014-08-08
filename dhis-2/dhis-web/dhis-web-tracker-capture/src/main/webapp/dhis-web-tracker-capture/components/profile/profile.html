@@ -44,7 +44,7 @@
                                            name="foo"
                                            class="form-control"
                                            ng-model="attribute.value"                                                 
-                                           typeahead="option for option in attributes[attribute.attribute].optionSet.options | filter:$viewValue | limitTo:20" 
+                                           typeahead="option.code as option.name for option in attributes[attribute.attribute].optionSet.options | filter:$viewValue | limitTo:20" 
                                            typeahead-open-on-focus 
                                            ng-disabled="!editProfile" ng-required="attribute.mandatory"/>
                                     <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}} - {{attribute.type}}</span>

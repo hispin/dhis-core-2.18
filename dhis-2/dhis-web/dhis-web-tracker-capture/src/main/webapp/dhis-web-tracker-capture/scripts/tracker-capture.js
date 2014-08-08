@@ -516,7 +516,7 @@ function getOptionSet( id )
         return $.ajax( {
             url: '../api/optionSets.json',
             type: 'GET',
-            data: 'filter=id:eq:' + id +'&fields=id,name,version,options'
+            data: 'filter=id:eq:' + id +'&fields=id,name,version,options[id,name,code]'
         }).done( function( response ){            
             _.each( _.values( response.optionSets ), function( optionSet ) {                
                 dhis2.tc.store.set( 'optionSets', optionSet );
