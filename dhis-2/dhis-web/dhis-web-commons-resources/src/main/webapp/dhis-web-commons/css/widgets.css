@@ -851,3 +851,15 @@ input:-moz-placeholder
 {
   color: #276696;
 }
+
+.gridTable
+{
+  border-collapse: collapse;
+}
+
+.gridTable td, 
+.gridTable th
+{
+  border: 1px solid #e1e1e1;
+}
+
