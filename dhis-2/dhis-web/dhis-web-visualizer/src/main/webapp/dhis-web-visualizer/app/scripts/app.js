@@ -83,6 +83,18 @@ Ext.onReady( function() {
 				return Ext.clone(dimensionNames);
 			};
 
+            config.hasDimension = function(id) {
+                return Ext.isString(id) && this.findExact('id', id) != -1 ? true : false;
+            };
+
+            config.removeDimension = function(id) {
+                var index = this.findExact('id', id);
+
+                if (index != -1) {
+                    this.remove(this.getAt(index));
+                }
+            };
+
 			return Ext.create('Ext.data.Store', config);
 		};
 
@@ -306,6 +318,10 @@ Ext.onReady( function() {
             if (!hasDimension(record.id)) {
                 store.add(record);
             }
+
+            if (store !== dimensionStore && dimensionStore.hasDimension(record.id)) {
+                dimensionStore.removeDimension(record.id);
+            }
         };
 
         removeDimension = function(dataElementId) {
@@ -313,10 +329,9 @@ Ext.onReady( function() {
 
             for (var i = 0, store, index; i < stores.length; i++) {
                 store = stores[i];
-                index = store.findExact('id', dataElementId);
 
-                if (index != -1) {
-                    store.remove(store.getAt(index));
+                if (store.hasDimension(dataElementId)) {
+                    store.removeDimension(dataElementId);
                     dimensionStoreMap[dataElementId] = store;
                 }
             }
@@ -326,10 +341,7 @@ Ext.onReady( function() {
             var stores = [colStore, rowStore, filterStore];
 
             for (var i = 0, store, index; i < stores.length; i++) {
-                store = stores[i];
-                index = store.findExact('id', id);
-
-                if (index != -1) {
+                if (stores[i].hasDimension(id)) {
                     return true;
                 }
             }
