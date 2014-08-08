@@ -116,6 +116,15 @@ public abstract class AbstractCalendar implements Calendar
     }
 
     @Override
+    public String formattedDate( String dateFormat, DateUnit dateUnit )
+    {
+        return dateFormat
+            .replace( "yyyy", String.format( "%04d", dateUnit.getYear() ) )
+            .replace( "MM", String.format( "%02d", dateUnit.getMonth() ) )
+            .replace( "dd", String.format( "%02d", dateUnit.getDay() ) );
+    }
+
+    @Override
     public String formattedIsoDate( DateUnit dateUnit )
     {
         dateUnit = toIso( dateUnit );
