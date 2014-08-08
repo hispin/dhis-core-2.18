@@ -47,7 +47,7 @@
                                        name="foo"
                                        class="form-control"
                                        ng-model="attribute.value"                                                 
-                                       typeahead="option for option in attribute.optionSet.options | filter:$viewValue | limitTo:20" 
+                                       typeahead="option.code as option.name for option in attribute.optionSet.options | filter:$viewValue | limitTo:20" 
                                        typeahead-open-on-focus
                                        ng-required="attribute.mandatory"
                                        />

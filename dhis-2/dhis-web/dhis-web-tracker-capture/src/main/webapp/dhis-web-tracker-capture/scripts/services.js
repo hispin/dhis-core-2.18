@@ -763,7 +763,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                                             ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory"' +
                                             ' ng-blur="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
-                                            ' typeahead="option for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
+                                            ' typeahead="option.code as option.name for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
                                             ' typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "bool"){

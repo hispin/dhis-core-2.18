@@ -15,12 +15,13 @@
                     {{'program' | translate}}
                 </td>
                 <td>
-                    <select ng-model="selectedProgramForRelative"
+                    <select ng-model="program"
                             class="form-control"
-                            ng-change='setAttributesForSearch(selectedProgramForRelative)'
-                            ng-options="program as program.name for program in programs | orderBy: 'name'">
-                        <option value="">{{'please_select_a_program'| translate}}</option>
-                    </select>
+                            ng-options="program as program.name for program in programs | orderBy: 'name'" 
+                            ng-disabled="programs.length < 1"
+                            ng-change="setAttributesForSearch(program)">
+                        <option value="">{{programs.length > 0 ? 'please_select_a_program' : 'no_program_exists' | translate}}</option>
+                    </select>                    
                 </td>
             </tr>
             <tr ng-if="selectedProgramForRelative">
@@ -91,7 +92,7 @@
                         </div>                        
                         <div ng-switch-when="optionSet">
                             <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
-                                <option ng-repeat="option in attribute.optionSet.options" value="{{option}}">{{option}}</option>
+                                <option ng-repeat="option in attribute.optionSet.options" value="{{option.code}}">{{option.name}}</option>
                             </select>
                         </div>
                         <div ng-switch-when="bool">
