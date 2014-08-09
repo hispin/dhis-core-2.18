@@ -161,9 +161,9 @@ public class GeoToolsMapGenerationService
 
             BufferedImage legendImage = legendSet.render( i18nManager.getI18nFormat() );
 
-            BufferedImage titleImage = MapUtils.renderTitle( map.getName(), getImageWidth( legendImage, mapImage ) );
+            BufferedImage titleImage = MapUtils.renderTitle( map.getName(), width );
             
-            return combineLegendAndMapImages( titleImage, legendImage, mapImage );
+            return combineLegendAndMapImages( titleImage, legendImage, mapImage, width, height );
         }
     }
 
@@ -346,7 +346,7 @@ public class GeoToolsMapGenerationService
         return mapValues;
     }
     
-    private BufferedImage combineLegendAndMapImages( BufferedImage titleImage, BufferedImage legendImage, BufferedImage mapImage )
+    private BufferedImage combineLegendAndMapImages( BufferedImage titleImage, BufferedImage legendImage, BufferedImage mapImage, int width, int height )
     {
         Assert.isTrue( titleImage != null );
         Assert.isTrue( legendImage != null );
@@ -354,9 +354,6 @@ public class GeoToolsMapGenerationService
         Assert.isTrue( legendImage.getType() == mapImage.getType() );
 
         // Create image, note that image height cannot be less than legend
-        
-        int width = getImageWidth( legendImage, mapImage );
-        int height = Math.max( titleImage.getHeight() + mapImage.getHeight(), ( legendImage.getHeight() + 1 ) );
         
         BufferedImage finalImage = new BufferedImage( width, height, mapImage.getType() );
 
@@ -368,10 +365,5 @@ public class GeoToolsMapGenerationService
         g.drawImage( mapImage, legendImage.getWidth(), MapUtils.TITLE_HEIGHT, null );
 
         return finalImage;
-    }
-    
-    private int getImageWidth( BufferedImage legendImage, BufferedImage mapImage )
-    {
-        return ( legendImage != null ? legendImage.getWidth() : 0 ) + ( mapImage != null ? mapImage.getWidth() : 0 );
     }
 }
