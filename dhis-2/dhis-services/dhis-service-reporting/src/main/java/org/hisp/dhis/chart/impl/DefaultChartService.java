@@ -673,8 +673,11 @@ public class DefaultChartService
 
         setBasicConfig( multiplePieChart, chart );
         
-        multiplePieChart.getLegend().setItemFont( SUB_TITLE_FONT );
-
+        if ( multiplePieChart.getLegend() != null )
+        {
+            multiplePieChart.getLegend().setItemFont( SUB_TITLE_FONT );
+        }
+        
         MultiplePiePlot multiplePiePlot = (MultiplePiePlot) multiplePieChart.getPlot();
         JFreeChart pieChart = multiplePiePlot.getPieChart();
         pieChart.setBackgroundPaint( COLOR_TRANSPARENT );
