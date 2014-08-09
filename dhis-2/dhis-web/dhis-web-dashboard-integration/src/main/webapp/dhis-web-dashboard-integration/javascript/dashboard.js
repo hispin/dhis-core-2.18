@@ -1,7 +1,7 @@
 
 dhis2.util.namespace( 'dhis2.db' );
 
-dhis2.db.currentKey = "dhis2.dashboard.current";
+dhis2.db.currentKey = undefined;
 
 dhis2.db.current = function() 
 {
@@ -49,7 +49,10 @@ $( document ).ready( function()
 	$( "#searchField" ).focus();
 	$( "#searchField" ).keyup( dhis2.db.search );
 	
-	dhis2.db.renderDashboardListLoadFirst();
+	$.getJSON( "../api/me/user-account.json", function( json ) {
+		dhis2.db.currentKey = "dhis2.dashboard.current." + json.username;
+		dhis2.db.renderDashboardListLoadFirst();
+	} );
 } );
 
 //------------------------------------------------------------------------------
