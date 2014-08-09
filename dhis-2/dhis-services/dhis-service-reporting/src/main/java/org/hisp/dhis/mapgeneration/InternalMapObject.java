@@ -63,12 +63,17 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class InternalMapObject
 {
+    private static final float LINE_STROKE_WIDTH = 0.1f;
+    
     private static final String CIRCLE = "Circle";
     private static final String POINT = "Point";
     private static final String POLYGON = "Polygon";
     private static final String MULTI_POLYGON = "MultiPolygon";
     private static final String GEOMETRIES = "geometries";
     
+    public static final String TYPE_THEMATIC = "thematic";
+    public static final String TYPE_BOUNDARY = "boundary";
+        
     protected String name;
 
     protected double value;
@@ -81,13 +86,13 @@ public class InternalMapObject
 
     protected Color strokeColor;
 
-    protected int strokeWidth;
-
     protected InternalMapLayer mapLayer;
 
     protected Interval interval;
     
     private Geometry geometry;
+    
+    private MapLayerType mapLayerType;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -193,8 +198,14 @@ public class InternalMapObject
         }
         else if ( geometry instanceof Polygon || geometry instanceof MultiPolygon )
         {
-            style = SLD.createPolygonStyle( strokeColor, fillColor,
-                fillOpacity );
+            if ( MapLayerType.BOUNDARY.equals( mapLayerType ) )
+            {
+                style = SLD.createLineStyle( strokeColor, LINE_STROKE_WIDTH );
+            }
+            else
+            {
+                style = SLD.createPolygonStyle( strokeColor, fillColor, fillOpacity );
+            }
         }
         else
         {
@@ -302,17 +313,7 @@ public class InternalMapObject
     {
         this.strokeColor = strokeColor;
     }
-
-    public int getStrokeWidth()
-    {
-        return this.strokeWidth;
-    }
-
-    public void setStrokeWidth( int strokeWidth )
-    {
-        this.strokeWidth = strokeWidth;
-    }
-
+    
     public InternalMapLayer getMapLayer()
     {
         return this.mapLayer;
@@ -343,17 +344,22 @@ public class InternalMapObject
     {
         this.geometry = geometry;
     }
-
-    /**
-     * Returns a string representing this object, e.g. "InternalMapObject {
-     * name: "Khambia", value: 34.22, radius: 1.00, fillColor:
-     * java.awt.Color(255, 255, 255), fillOpacity: 0.75, strokeColor:
-     * java.awt.Color(0, 0, 0), strokeWidth: 2 }".
-     */
+    
+    public MapLayerType getMapLayerType()
+    {
+        return mapLayerType;
+    }
+    
+    public void setMapLayerType( MapLayerType mapLayerType )
+    {
+        this.mapLayerType = mapLayerType;
+    }
+    
+    @Override
     public String toString()
     {
         return String.format( "InternalMapObject {" + " name: \"%s\"," + " value: %.2f," + " radius: %d,"
             + " fillColor: %s," + " fillOpacity: %.2f" + " strokeColor: %s," + " strokeWidth: %d" + " }", name, value,
-            radius, fillColor, fillOpacity, strokeColor, strokeWidth );
+            radius, fillColor, fillOpacity, strokeColor );
     }
 }
