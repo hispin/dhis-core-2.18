@@ -4253,14 +4253,13 @@ Ext.onReady( function() {
 							periodOffset: 0,
 							listeners: {
 								select: function() {
-									var nsype = new PeriodType(),
-										periodType = this.getValue();
+                                    var periodType = this.getValue(),
+                                        generator = ns.core.init.periodGenerator,
+                                        periods = generator.filterFuturePeriodsExceptCurrent(generator.generateReversedPeriods(periodType, this.periodOffset));
 
-									var periods = nsype.get(periodType).generatePeriods({
-										offset: this.periodOffset,
-										filterFuturePeriods: true,
-										reversePeriods: true
-									});
+                                    for (var i = 0; i < periods.length; i++) {
+                                        periods[i].id = periods[i].iso;
+                                    }
 
 									fixedPeriodAvailableStore.setIndex(periods);
 									fixedPeriodAvailableStore.loadData(periods);
@@ -5959,7 +5958,37 @@ Ext.onReady( function() {
 						Ext.Ajax.request({
 							url: init.contextPath + '/api/system/info.json',
 							success: function(r) {
-								init.contextPath = Ext.decode(r.responseText).contextPath || init.contextPath;
+                                var info = Ext.decode(r.responseText),
+                                    dhis2PeriodUrl = '../../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
+                                    defaultCalendarId = 'gregorian',
+                                    calendarIdMap = {'iso8601': defaultCalendarId},
+                                    calendarId = calendarIdMap[info.calendar] || info.calendar || defaultCalendarId,
+                                    calendarIds = ['coptic', 'ethiopian', 'islamic', 'julian', 'nepali', 'thai'],
+                                    calendarScriptUrl,
+                                    createGenerator;
+calendarId = 'nepali';                                    
+                                    
+                                // calendar
+                                init.dateFormat = info.dateFormat || 'yyyy-mm-dd';
+
+                                createGenerator = function() {
+                                    init.calendar = $.calendars.instance(calendarId);
+                                    init.periodGenerator = new dhis2.period.PeriodGenerator(init.calendar, init.dateFormat);
+                                };
+
+                                if (Ext.Array.contains(calendarIds, calendarId)) {
+                                    calendarScriptUrl = '../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarId + '.min.js';
+
+                                    Ext.Loader.injectScriptElement(calendarScriptUrl, function() {
+                                        Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
+                                    });
+                                }
+                                else {
+                                    Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
+                                }
+
+                                // context path
+								init.contextPath = info.contextPath || init.contextPath;
 
 								// i18n
 								requests.push({
