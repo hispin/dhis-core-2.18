@@ -193,6 +193,7 @@ public class CurrentUserController
         UserAccount userAccount = new UserAccount();
 
         // user account
+        userAccount.setUsername( currentUser.getUsername() );
         userAccount.setFirstName( currentUser.getFirstName() );
         userAccount.setSurname( currentUser.getSurname() );
         userAccount.setEmail( currentUser.getEmail() );

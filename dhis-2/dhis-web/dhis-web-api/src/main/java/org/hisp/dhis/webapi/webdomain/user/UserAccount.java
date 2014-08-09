@@ -39,6 +39,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserAccount
 {
     // user account
+    private String username;
+    
     private String firstName;
 
     private String surname;
@@ -72,6 +74,17 @@ public class UserAccount
     {
     }
 
+    @JsonProperty
+    public String getUsername()
+    {
+        return username;
+    }
+    
+    public void setUsername( String username )
+    {
+        this.username = username;
+    }
+    
     @JsonProperty( required = true )
     public String getFirstName()
     {
