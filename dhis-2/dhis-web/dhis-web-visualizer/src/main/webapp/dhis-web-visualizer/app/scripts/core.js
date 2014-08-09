@@ -677,7 +677,7 @@ Ext.onReady( function() {
 					}
                     
 					if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
-                        if (DV.app) {
+                        if (!DV.plugin) {
                             alert('No values found');
                         }
                         return;
