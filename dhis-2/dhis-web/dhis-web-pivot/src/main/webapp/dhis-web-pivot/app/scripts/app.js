@@ -4281,14 +4281,13 @@ Ext.onReady( function() {
 							periodOffset: 0,
 							listeners: {
 								select: function() {
-									var ptype = new PeriodType(),
-										periodType = this.getValue();
+                                    var periodType = this.getValue(),
+                                        generator = ns.core.init.periodGenerator,
+                                        periods = generator.filterFuturePeriodsExceptCurrent(generator.generateReversedPeriods(periodType, this.periodOffset));
 
-									var periods = ptype.get(periodType).generatePeriods({
-										offset: this.periodOffset,
-										filterFuturePeriods: true,
-										reversePeriods: true
-									});
+                                    for (var i = 0; i < periods.length; i++) {
+                                        periods[i].id = periods[i].iso;
+                                    }
 
 									fixedPeriodAvailableStore.setIndex(periods);
 									fixedPeriodAvailableStore.loadData(periods);
@@ -6069,28 +6068,31 @@ Ext.onReady( function() {
 							success: function(r) {
                                 var info = Ext.decode(r.responseText),
                                     dhis2PeriodUrl = '../../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
-                                    calendarMap = {'iso8601': 'gregorian'},
-                                    calendarUrl;
+                                    defaultCalendarId = 'gregorian',
+                                    calendarIdMap = {'iso8601': defaultCalendarId},
+                                    calendarId = calendarIdMap[info.calendar] || info.calendar || defaultCalendarId,
+                                    calendarIds = ['coptic', 'ethiopian', 'islamic', 'julian', 'nepali', 'thai'],
+                                    calendarScriptUrl,
+                                    createGenerator;
 
                                 // calendar
-                                init.calendar = calendarMap[info.calendar] || info.calendar || 'gregorian';
                                 init.dateFormat = info.dateFormat || 'yyyy-mm-dd';
 
-                                //if (Ext.Array.contains(['coptic', 'ethiopian', 'islamic', 'julian', 'nepali', 'thai'], init.calendar)) {
-                                    //calendarUrl = '../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + init.calendar + '.min.js';
+                                createGenerator = function() {
+                                    init.calendar = $.calendars.instance(calendarId);
+                                    init.periodGenerator = new dhis2.period.PeriodGenerator(init.calendar, init.dateFormat);
+                                };
 
-                                    //Ext.Loader.injectScriptElement(calendarUrl, function() {
-                                        //Ext.Loader.injectScriptElement(dhis2PeriodUrl, function() {});
-                                    //});
-                                //}
-                                //else {
-                                    //Ext.Loader.injectScriptElement(dhis2PeriodUrl, function() {
-                                        //var cal = $.calendars.instance('gregorian'),
-                                            //gen = new dhis2.period.PeriodGenerator(cal, init.dateFormat);
+                                if (Ext.Array.contains(calendarIds, calendarId)) {
+                                    calendarScriptUrl = '../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarId + '.min.js';
 
-                                        //console.log(gen.generateReversedPeriods('Yearly', 0));
-                                    //});
-                                //}
+                                    Ext.Loader.injectScriptElement(calendarScriptUrl, function() {
+                                        Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
+                                    });
+                                }
+                                else {
+                                    Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
+                                }
 
                                 // context path
 								init.contextPath = info.contextPath || init.contextPath;
