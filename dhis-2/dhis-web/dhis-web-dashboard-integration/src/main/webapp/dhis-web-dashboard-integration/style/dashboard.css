@@ -330,30 +330,9 @@
   margin: 0;
 }
 
-.interpretationArea
+.gridTable td
 {
-  height: 125px;
-  width: 510px;
-  border: 1px solid #ccc;
-  resize: none;
-  overflow: auto;
-  margin: 10px 4px 6px 4px;
-  padding: 4px 0 0px 6px;
-}
-
-.interpretationButton
-{
-  width: 120px;
-  height: 24px;
-  margin: 0 0 6px 4px;
-}
-
-.interpretationCommentHeader
-{
-  padding: 7px 0 5px 0;
-  margin: 1px 0 12px 0;
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
+  text-align: right;
 }
 
 a.alert, .alert
@@ -461,6 +440,32 @@ div#selectionTree
 /*----------------------------------------------------------------------------*/
 /* Interpretation                                                             */
 /*----------------------------------------------------------------------------*/
+
+.interpretationArea
+{
+  height: 125px;
+  width: 510px;
+  border: 1px solid #ccc;
+  resize: none;
+  overflow: auto;
+  margin: 10px 4px 6px 4px;
+  padding: 4px 0 0px 6px;
+}
+
+.interpretationButton
+{
+  width: 120px;
+  height: 24px;
+  margin: 0 0 6px 4px;
+}
+
+.interpretationCommentHeader
+{
+  padding: 7px 0 5px 0;
+  margin: 1px 0 12px 0;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
 
 #interpretationFeed
 {
