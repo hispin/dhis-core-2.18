@@ -175,9 +175,7 @@ public class GeoToolsMapGenerationService
     private static final String DEFAULT_COLOR_LOW = "#ffff00";
 
     private static final float DEFAULT_OPACITY = 0.75f;
-    private static final String DEFAULT_STROKE_COLOR = "#ffffff";
 
-    private static final int DEFAULT_STROKE_WIDTH = 1;
     private static final Integer DEFAULT_RADIUS_HIGH = 35;
     private static final Integer DEFAULT_RADIUS_LOW = 15;
 
@@ -240,12 +238,6 @@ public class GeoToolsMapGenerationService
 
         Float opacity = mapView.getOpacity() != null ? mapView.getOpacity().floatValue() : DEFAULT_OPACITY;
 
-        // TODO MapView should be extended to feature stroke color
-        Color strokeColor = MapUtils.createColorFromString( DEFAULT_STROKE_COLOR );
-
-        // TODO MapView might be extended to feature stroke width
-        int strokeWidth = DEFAULT_STROKE_WIDTH;
-        
         boolean hasLegendSet = mapView.hasLegendSet();
 
         // Create and setup an internal layer
@@ -260,8 +252,6 @@ public class GeoToolsMapGenerationService
         mapLayer.setColorHigh( colorHigh );
         mapLayer.setOpacity( opacity );
         mapLayer.setClasses( mapView.getClasses() );
-        mapLayer.setStrokeColor( strokeColor );
-        mapLayer.setStrokeWidth( strokeWidth );
 
         if ( !mapView.isDataLayer() ) // Boundary (and facility) layer
         {

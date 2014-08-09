@@ -105,31 +105,4 @@ public class GeoToolsMapObjectTest
         geoToolsMapObject.setStrokeColor( Color.WHITE );
         assertEquals( Color.WHITE, geoToolsMapObject.getStrokeColor() );
     }
-
-    @Test
-    public void testSetGetStrokeWidth()
-    {
-        geoToolsMapObject.setStrokeWidth( 32 );
-        assertEquals( 32, geoToolsMapObject.getStrokeWidth() );
-        geoToolsMapObject.setStrokeWidth( 364114 );
-        assertEquals( 364114, geoToolsMapObject.getStrokeWidth() );
-    }
-
-    @Test
-    public void testSetGetMapLayer()
-    {
-        //TODO
-    }
-
-    @Test
-    public void testSetGetInterval()
-    {
-        //TODO
-    }
-
-    @Test
-    public void testToString()
-    {
-        //TODO
-    }
 }

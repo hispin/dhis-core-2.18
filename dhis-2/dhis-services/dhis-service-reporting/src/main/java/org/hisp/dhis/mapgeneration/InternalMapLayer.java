@@ -78,10 +78,6 @@ public class InternalMapLayer
     protected float opacity;
     
     protected Integer classes;
-
-    protected Color strokeColor;
-
-    protected int strokeWidth;
     
     protected IntervalSet intervalSet;
 
@@ -183,8 +179,8 @@ public class InternalMapLayer
         mapObject.setName( unit.getName() );
         mapObject.setValue( mapValue );
         mapObject.setFillOpacity( opacity );
-        mapObject.setStrokeColor( strokeColor );
-        mapObject.setStrokeWidth( strokeWidth );
+        mapObject.setStrokeColor( Color.WHITE );
+        mapObject.setMapLayerType( MapLayerType.THEMATIC );
 
         // Build and set the geometric primitive that outlines org unit on the map
         mapObject.buildGeometryForOrganisationUnit( unit );
@@ -208,7 +204,7 @@ public class InternalMapLayer
         mapObject.setName( unit.getName() );
         mapObject.setFillOpacity( opacity );
         mapObject.setStrokeColor( Color.BLACK );
-        mapObject.setStrokeWidth( 1 );
+        mapObject.setMapLayerType( MapLayerType.BOUNDARY );
 
         mapObject.buildGeometryForOrganisationUnit( unit );
         addMapObject( mapObject );
@@ -514,26 +510,6 @@ public class InternalMapLayer
     public void setClasses( Integer classes )
     {
         this.classes = classes;
-    }
-
-    public Color getStrokeColor()
-    {
-        return strokeColor;
-    }
-
-    public void setStrokeColor( Color strokeColor )
-    {
-        this.strokeColor = strokeColor;
-    }
-
-    public int getStrokeWidth()
-    {
-        return strokeWidth;
-    }
-
-    public void setStrokeWidth( int strokeWidth )
-    {
-        this.strokeWidth = strokeWidth;
     }
 
     public IntervalSet getIntervalSet()
