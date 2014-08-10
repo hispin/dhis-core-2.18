@@ -318,14 +318,10 @@ Ext.onReady( function() {
             if (!hasDimension(record.id)) {
                 store.add(record);
             }
-
-            if (store !== dimensionStore && dimensionStore.hasDimension(record.id)) {
-                dimensionStore.removeDimension(record.id);
-            }
         };
 
         removeDimension = function(dataElementId) {
-            var stores = [colStore, rowStore, filterStore];
+            var stores = [colStore, rowStore, filterStore, dimensionStore];
 
             for (var i = 0, store, index; i < stores.length; i++) {
                 store = stores[i];
@@ -338,7 +334,7 @@ Ext.onReady( function() {
         };
 
         hasDimension = function(id) {
-            var stores = [colStore, rowStore, filterStore];
+            var stores = [colStore, rowStore, filterStore, dimensionStore];
 
             for (var i = 0, store, index; i < stores.length; i++) {
                 if (stores[i].hasDimension(id)) {
