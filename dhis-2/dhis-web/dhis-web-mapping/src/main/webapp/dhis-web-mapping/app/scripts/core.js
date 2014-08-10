@@ -1608,75 +1608,97 @@ Ext.onReady( function() {
 
 		loadOrganisationUnits = function(view) {
 			var items = view.rows[0].items,
-				idParamString = '';
-
-			for (var i = 0; i < items.length; i++) {
-				idParamString += 'ids=' + items[i].id;
-				idParamString += i !== items.length - 1 ? '&' : '';
-			}
-
-			Ext.data.JsonP.request({
-				url: gis.init.contextPath + gis.conf.finals.url.path_module + 'getGeoJson.action?' + idParamString,
-				scope: this,
-				disableCaching: false,
-				success: function(r) {
-					var geojson = gis.util.geojson.decode(r, 'DESC'),
-						format = new OpenLayers.Format.GeoJSON(),
-						features = gis.util.map.getTransformedFeatureArray(format.read(geojson)),
-                        colors = ['black', 'blue', 'red', 'green', 'yellow'],
-                        levels = [],
-                        levelObjectMap = {};
-
-					if (!Ext.isArray(features)) {
-						olmap.mask.hide();
-						alert(GIS.i18n.invalid_coordinates);
-						return;
-					}
-
-					if (!features.length) {
-						olmap.mask.hide();
-						alert(GIS.i18n.no_valid_coordinates_found);
-						return;
-					}
-
-                    // get levels, colors, map
-                    for (var i = 0; i < features.length; i++) {
-                        levels.push(parseFloat(features[i].attributes.level));
+                url = function() {
+                    var params = '';
+                    for (var i = 0; i < items.length; i++) {
+                        params += 'ids=' + items[i].id;
+                        params += i !== items.length - 1 ? '&' : '';
                     }
+                    return gis.init.contextPath + gis.conf.finals.url.path_module + 'getGeoJson.action?' + params;
+                }(),
+                success,
+                failure;
 
-                    levels = Ext.Array.unique(levels).sort();
+            success = function(r) {
+                var geojson = gis.util.geojson.decode(r, 'DESC'),
+                    format = new OpenLayers.Format.GeoJSON(),
+                    features = gis.util.map.getTransformedFeatureArray(format.read(geojson)),
+                    colors = ['black', 'blue', 'red', 'green', 'yellow'],
+                    levels = [],
+                    levelObjectMap = {};
 
-                    for (var i = 0; i < levels.length; i++) {
-                        levelObjectMap[levels[i]] = {
-                            strokeColor: colors[i]
-                        };
+                if (!Ext.isArray(features)) {
+                    olmap.mask.hide();
+                    alert(GIS.i18n.invalid_coordinates);
+                    return;
+                }
+
+                if (!features.length) {
+                    olmap.mask.hide();
+                    alert(GIS.i18n.no_valid_coordinates_found);
+                    return;
+                }
+
+                // get levels, colors, map
+                for (var i = 0; i < features.length; i++) {
+                    levels.push(parseFloat(features[i].attributes.level));
+                }
+
+                levels = Ext.Array.unique(levels).sort();
+
+                for (var i = 0; i < levels.length; i++) {
+                    levelObjectMap[levels[i]] = {
+                        strokeColor: colors[i]
+                    };
+                }
+
+                // style
+                for (var i = 0, feature, obj, strokeWidth; i < features.length; i++) {
+                    feature = features[i];
+                    obj = levelObjectMap[feature.attributes.level];
+                    strokeWidth = levels.length === 1 ? 1 : feature.attributes.level == 2 ? 2 : 1;
+
+                    feature.style = {
+                        strokeColor: obj.strokeColor || 'black',
+                        strokeWidth: strokeWidth,
+                        fillOpacity: 0,
+                        pointRadius: 5,
+                        labelAlign: 'cr',
+                        labelYOffset: 13
+                    };
+                }
+
+                layer.core.featureStore.loadFeatures(features.slice(0));
+
+                loadData(view, features);
+            };
+
+            failure = function() {
+                olmap.mask.hide();
+                alert(GIS.i18n.coordinates_could_not_be_loaded);
+            };
+
+            if (GIS.plugin && !GIS.app) {
+                Ext.data.JsonP.request({
+                    url: url,
+                    disableCaching: false,
+                    success: function(r) {
+                        success(r);
                     }
-
-                    // style
-                    for (var i = 0, feature, obj, strokeWidth; i < features.length; i++) {
-                        feature = features[i];
-                        obj = levelObjectMap[feature.attributes.level];
-                        strokeWidth = levels.length === 1 ? 1 : feature.attributes.level == 2 ? 2 : 1;
-
-                        feature.style = {
-                            strokeColor: obj.strokeColor || 'black',
-                            strokeWidth: strokeWidth,
-                            fillOpacity: 0,
-                            pointRadius: 5,
-                            labelAlign: 'cr',
-                            labelYOffset: 13
-                        };
+                });
+            }
+            else {
+                Ext.Ajax.request({
+                    url: url,
+                    disableCaching: false,
+                    success: function(r) {
+                        success(Ext.decode(r.responseText));
+                    },
+                    failure: function() {
+                        failure();
                     }
-
-					layer.core.featureStore.loadFeatures(features.slice(0));
-
-					loadData(view, features);
-				},
-				failure: function(r) {
-					olmap.mask.hide();
-					alert(GIS.i18n.coordinates_could_not_be_loaded);
-				}
-			});
+                });
+            }
 		};
 
 		loadData = function(view, features) {
@@ -1982,6 +2004,9 @@ Ext.onReady( function() {
                     disableCaching: false,
                     success: function(r) {
                         success(Ext.decode(r.responseText));
+                    },
+                    failure: function() {
+                        failure();
                     }
                 });
             }

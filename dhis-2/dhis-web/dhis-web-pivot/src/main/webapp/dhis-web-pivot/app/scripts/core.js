@@ -1835,7 +1835,7 @@ Ext.onReady( function() {
 
 				message = message || 'Loading..';
 
-				if (component.mask) {
+				if (component.mask && component.mask.destroy) {
 					component.mask.destroy();
 					component.mask = null;
 				}

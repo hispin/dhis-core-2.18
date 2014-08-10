@@ -20,31 +20,31 @@
 			DHIS.getChart({
 				url: url,
 				el: 'chart1',
-				uid: 'BnEKy3SuouP'
+				uid: 'LW0O27b7TdD'
 			});
 
-			//DHIS.getChart({
-				//url: url,
-				//el: 'chart2',
-                //type: 'column',
-				//columns: [
-					//{dimension: 'in', items: [{id: 'Uvn6LCg7dVU'}, {id: 'sB79w2hiLp8'}]}
-				//],
-				//rows: [
-					//{dimension: 'pe', items: [{id: 'LAST_3_MONTHS'}]}
-				//],
-                //filters: [
-                    //{dimension: 'ou', items: [{id: 'USER_ORGUNIT'}]}
-                //],
-                ////targetLineValue: 70
-                ////baseLineValue: 20,
-                //showTrendLine: true,
-                //hideLegend: true,
-                ////title: 'My chart title',
-                //domainAxisTitle: 'Periods',
-                //rangeAxisTitle: 'Percent',
-                //legendPosition: 'right'
-			//});
+			DHIS.getChart({
+				url: url,
+				el: 'chart2',
+                type: 'column',
+				columns: [
+					{dimension: 'in', items: [{id: 'Uvn6LCg7dVU'}, {id: 'sB79w2hiLp8'}]}
+				],
+				rows: [
+					{dimension: 'pe', items: [{id: 'LAST_3_MONTHS'}]}
+				],
+                filters: [
+                    {dimension: 'ou', items: [{id: 'USER_ORGUNIT'}]}
+                ],
+                //targetLineValue: 70
+                //baseLineValue: 20,
+                showTrendLine: true,
+                hideLegend: true,
+                //title: 'My chart title',
+                domainAxisTitle: 'Periods',
+                rangeAxisTitle: 'Percent',
+                legendPosition: 'right'
+			});
 		});
 	</script>
 </head>
