@@ -5966,7 +5966,6 @@ Ext.onReady( function() {
                                     calendarIds = ['coptic', 'ethiopian', 'islamic', 'julian', 'nepali', 'thai'],
                                     calendarScriptUrl,
                                     createGenerator;
-calendarId = 'nepali';                                    
                                     
                                 // calendar
                                 init.dateFormat = info.dateFormat || 'yyyy-mm-dd';
