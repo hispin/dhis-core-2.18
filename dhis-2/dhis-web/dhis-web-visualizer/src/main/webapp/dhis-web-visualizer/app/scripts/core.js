@@ -68,7 +68,7 @@ Ext.onReady( function() {
                         objectName: 'ds'
                     },
                     category: {
-                        name: DV.i18n.categories,
+                        name: DV.i18n.assigned_categories,
                         dimensionName: 'co',
                         objectName: 'co',
                     },

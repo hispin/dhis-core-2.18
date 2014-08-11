@@ -38,7 +38,7 @@ Ext.onReady( function() {
 						}
 					},
 					category: {
-						name: NS.i18n.categories,
+						name: NS.i18n.assigned_categories,
 						dimensionName: 'co',
 						objectName: 'co',
 					},
@@ -418,7 +418,7 @@ Ext.onReady( function() {
 
 					// dc and co
 					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.category.objectName]) {
-						web.message.alert('Categories and detailed data elements cannot be specified together');
+						web.message.alert('Assigned categories and detailed data elements cannot be specified together');
 						return;
 					}
 
@@ -1753,7 +1753,7 @@ Ext.onReady( function() {
 						for (var j = 0, index; j < idIndexOrder.length; j++) {
 							index = idIndexOrder[j];
 
-							id += response.headers[index].name === co ? '.' : '';
+							//id += response.headers[index].name === co ? '.' : '';
 							id += row[index];
 						}
 
