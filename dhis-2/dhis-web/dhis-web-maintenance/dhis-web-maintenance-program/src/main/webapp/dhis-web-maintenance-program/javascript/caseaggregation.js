@@ -504,10 +504,10 @@ function cancelOnClick() {
   window.location.href = 'caseAggregation.action?dataSetId=' + dataSetId;
 }
 
-function attributeAutocompletedField( idField, optionSetUid )
+function attributeAutocompletedField( idField, optionSetUid, btnId, optionId )
 {
-	$("#attributesButton").unbind('click');
-	enable('attributesButton');
+	$("#" + btnId).unbind('click');
+	enable(btnId);
 	var input = jQuery( "#" + idField );
 	var select = jQuery( "#attributeId" );
 	input.autocomplete({
@@ -529,7 +529,7 @@ function attributeAutocompletedField( idField, optionSetUid )
 		  },
 		  select: function( event, ui ) {
 			input.val(ui.item.label);
-			jQuery("#attributeId").append( "<option value='" + ui.item.id + "'>" + ui.item.label + "</option>" );
+			jQuery("#" + optionId).append( "<option value='" + ui.item.id + "'>" + ui.item.label + "</option>" );
 			input.autocomplete("close");
 			
 			return false;
@@ -566,7 +566,7 @@ function attributeAutocompletedField( idField, optionSetUid )
 		.addClass("ui-combobox")
 		.insertAfter(input);
 
-	var button = $("#attributesButton")
+	var button = $("#" + btnId)
 		.attr("tabIndex", -1)
 		.attr("title", i18n_show_all_items)
 		.appendTo(wrapper)
@@ -594,19 +594,19 @@ function split( val ) {
   return val.split( /,\s*/ );
 }
 
-function getSuggestedValues( _this, suggestedField )
+function getSuggestedValues( _this, suggestedField, btnId, optionId )
 {
-	clearListById('attributeId');
+	clearListById(optionId);
 	var field = jQuery( '#' + suggestedField );
 	var option =  jQuery("#" + _this.id + " option:selected" );
 	if( option.attr('optionset') != "" ){
-		attributeAutocompletedField( suggestedField, option.attr('optionset') );
+		attributeAutocompletedField( suggestedField, option.attr('optionset'), btnId, optionId );
 		enable(suggestedField);
-		jQuery( '#attributesButton').css("display", "");
+		jQuery( '#' + btnId ).css("display", "");
 	}
 	else{
 		disable(suggestedField);
-		jQuery( '#attributesButton').css("display", "none");
+		jQuery( '#' + btnId ).css("display", "none");
 	}
 }
 

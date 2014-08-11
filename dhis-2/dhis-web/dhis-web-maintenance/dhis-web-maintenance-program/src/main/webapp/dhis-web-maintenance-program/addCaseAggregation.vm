@@ -52,12 +52,12 @@
 	<tr>
 		<td><label for="operator">$i18n.getString( "operator" )</label></td>
 		<td>
-			<input type="radio" id="operator" name="operator" value="COUNT" checked onchange='operatorOnchange(this.value)'> $i18n.getString('number_of_tracked_entity_instances')<br>
-			<input type="radio" id="operator" name="operator" value="times" onchange='operatorOnchange(this.value)'> $i18n.getString('number_of_visits')<br>
-			<input type="radio" id="operator" name="operator" value="sum" onchange='operatorOnchange(this.value)'> $i18n.getString('sum_dataelement_value')<br>
-			<input type="radio" id="operator" name="operator" value="avg" onchange='operatorOnchange(this.value)'> $i18n.getString('avg_dataelement_value')<br>
-			<input type="radio" id="operator" name="operator" value="min" onchange='operatorOnchange(this.value)'> $i18n.getString('min_dataelement_value')<br>
-			<input type="radio" id="operator" name="operator" value="max" onchange='operatorOnchange(this.value)'> $i18n.getString('max_dataelement_value')
+			<input type="radio" id="operator1" name="operator" value="COUNT" checked onchange='operatorOnchange(this.value)'> <label for='operator1'>$i18n.getString('number_of_tracked_entity_instances')</label><br>
+			<input type="radio" id="operator2" name="operator" value="times" onchange='operatorOnchange(this.value)'> <label for='operator2'>$i18n.getString('number_of_visits')</label><br>
+			<input type="radio" id="operator3" name="operator" value="sum" onchange='operatorOnchange(this.value)'> <label for='operator3'>$i18n.getString('sum_dataelement_value')</label><br>
+			<input type="radio" id="operator4" name="operator" value="avg" onchange='operatorOnchange(this.value)'> <label for='operator4'>$i18n.getString('avg_dataelement_value')</label><br>
+			<input type="radio" id="operator5" name="operator" value="min" onchange='operatorOnchange(this.value)'> <label for='operator5'>$i18n.getString('min_dataelement_value')</label><br>
+			<input type="radio" id="operator6" name="operator" value="max" onchange='operatorOnchange(this.value)'> <label for='operator6'>$i18n.getString('max_dataelement_value')</label>
 		</td>
 	</tr>
 	

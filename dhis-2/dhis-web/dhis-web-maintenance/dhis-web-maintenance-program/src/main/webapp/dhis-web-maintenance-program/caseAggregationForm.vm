@@ -30,17 +30,21 @@
 					<option value="username">$i18n.getString( "user_name" )</option>
 				</select>
 			</td>
+			<td>
+				<input type="text" disabled placeholder="$i18n.getString('enter_a_key')" id="deSuggestedValues" name="deSuggestedValues" style="width:300px;" />
+				<a style='width:20px; margin-bottom:-5px;height:20px;' id='deButton' name='deButton'></a>
+			</td>
 		</tr>
         <tr>
 			<td colspan='2'>
-				<select id="dataElements" name="dataElements" size="8" ondblclick="insertDataElement(this);" onclick="getSuggestedValues(this, 'suggestedDEValues' )"></select>
+				<select id="dataElements" name="dataElements" size="8" ondblclick="insertDataElement(this);" onclick="getSuggestedValues(this,'deSuggestedValues','deButton','suggestedDEValues' )" ></select>
 				<select id="dataElementBackups" name="dataElementBackups" style='display:none;'></select>
 			</td>
 			<td rowspan='4'>
 				<select name="suggestedDEValues" size="12" multiple id='suggestedDEValues' ondblclick="insertSingleValue('suggestedDEValues');" ></select>			
 			</td>
 		</tr>
-		 <tr>
+		<tr>
 			<td>
 				<table style='background-color:#CBDDEB'>
 					<tr>
@@ -71,16 +75,15 @@
 			<tr>
 				<td>$i18n.getString('filter_by_name')
 					<input style="width:180px;" type='text' id='txtSearchAttribue' name='txtSearchAttribue' placeholder="$i18n.getString('enter_an_attribute')" onKeyUp="filterAttribute(event, this.value, 'caseProperty','casePropertyBackups');"/>
-					<a style='width:20px; margin-bottom:-5px;height:20px;' id='attributesButton' name='attributesButton'></a>
 					<input type='button' value='$i18n.getString("clear")' onClick="setFieldValue('txtSearchAttribue', '');" style='width:50px'>			
 				</td>
 				<td>
 					<label>$i18n.getString( "available_values" )</label>
-						<input type="text" disabled placeholder="$i18n.getString('enter_a_key')" id="caSuggestedValues" name="caSuggestedValues" ondblclick="insertSingleValue('caSuggestedValues');" style="width:200px;">
+					<input type='button' title="$i18n.getString( 'insert_selected_values' )" value="&raquo;" class="small-button"  onClick="insertMultiValues('attributeId');" >
 				</td>
 			</tr>
 			<tr>
-				<td rowspan='2'>
+				<td rowspan='3'>
 					<select id='casePropertyBackups' name='casePropertyBackups' style='display:none;'>
 						#foreach($attribute in $attributes)
 							#if($attribute.valueType=='age')
@@ -93,7 +96,7 @@
 							#end
 						#end
 					</select>
-					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this, 'caSuggestedValues' )">
+					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this,'caSuggestedValues','attributesButton','attributeId' )">
 						#foreach($attribute in $attributes)
 							#if($attribute.valueType=='age')
 								#set($attId=$attribute.id + ".age")
@@ -109,8 +112,13 @@
 			</tr>
 			<tr>
 				<td>
-					<select multiple id='attributeId' name='attributeId' size=10 ondblclick="removeOption('attributeId')"></select>
-					<input type='button' title="$i18n.getString( 'insert_selected_values' )" value="&raquo;" class="small-button"  onClick="insertMultiValues('attributeId');" >
+					<input type="text" disabled placeholder="$i18n.getString('enter_a_key')" id="caSuggestedValues" name="caSuggestedValues" ondblclick="insertSingleValue('caSuggestedValues');" style="width:300px;">
+					<a style='width:20px; margin-bottom:-5px;height:20px;' id='attributesButton' name='attributesButton'></a>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<select multiple id='attributeId' name='attributeId' size=8 ondblclick="removeOption('attributeId')"></select>
 				</td>
 			</tr>
 			
