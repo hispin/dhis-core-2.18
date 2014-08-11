@@ -13,16 +13,12 @@
 	{
 		"id": "[CA:${attribute.id}]",
 		"name": "$!encoder.jsonEncode( ${attribute.name} )",
-		"suggested":[
-			#if( $!dataElement.optionSet )
-				#foreach( $opt in $!attribute.optionSet.options )
-					{
-						"code" : $opt.code,
-						"name" : "$encoder.xmlEncode($opt.name)"
-					}#if( $velocityCount < $size ),#end
-				#end
-			#end
-		]
+		"optionSet": #if( $!dataElement.optionSet)
+						"$!dataElement.optionSet.uid"
+					 #else
+						""
+					 #end
+		
 	}#if( $velocityCount < $size ),#end
 	#end
   ]

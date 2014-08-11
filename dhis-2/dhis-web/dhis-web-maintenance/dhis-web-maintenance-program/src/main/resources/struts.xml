@@ -793,6 +793,13 @@
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
+    
+     <action name="getOptions"
+      class="org.hisp.dhis.trackedentity.action.caseaggregation.GetOptionsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-maintenance-program/jsonOptions.vm
+      </result>
+    </action>
 
     <!-- Validation - ValidationCriteria -->
 
