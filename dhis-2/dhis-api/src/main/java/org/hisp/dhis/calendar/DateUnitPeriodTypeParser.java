@@ -155,7 +155,12 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
             int year = Integer.parseInt( matcher.group( 1 ) );
             int month = Integer.parseInt( matcher.group( 2 ) );
 
-            DateUnit start = new DateUnit( year, month, 1 );
+            if ( month < 1 || month > 6 )
+            {
+                return null;
+            }
+
+            DateUnit start = new DateUnit( year, (month * 2) - 1, 1 );
             DateUnit end = new DateUnit( start );
             end = getCalendar().plusMonths( end, 2 );
             end = getCalendar().minusDays( end, 1 );

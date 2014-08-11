@@ -29,7 +29,6 @@ package org.hisp.dhis.period;
  */
 
 import com.google.common.collect.Lists;
-
 import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.DateUnit;
 
@@ -90,7 +89,7 @@ public class BiMonthlyPeriodType
     public Period getNextPeriod( Period period )
     {
         Calendar cal = getCalendar();
-        
+
         DateUnit dateUnit = cal.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
         dateUnit = cal.plusMonths( dateUnit, 2 );
 
@@ -101,7 +100,7 @@ public class BiMonthlyPeriodType
     public Period getPreviousPeriod( Period period )
     {
         Calendar cal = getCalendar();
-        
+
         DateUnit dateUnit = cal.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
         dateUnit = cal.minusMonths( dateUnit, 2 );
 
@@ -116,7 +115,7 @@ public class BiMonthlyPeriodType
     public List<Period> generatePeriods( DateUnit dateUnit )
     {
         Calendar cal = getCalendar();
-        
+
         dateUnit.setMonth( 1 );
         dateUnit.setDay( 1 );
 
@@ -141,7 +140,7 @@ public class BiMonthlyPeriodType
     public List<Period> generateRollingPeriods( DateUnit dateUnit )
     {
         Calendar cal = getCalendar();
-        
+
         dateUnit.setDay( 1 );
         dateUnit = cal.minusMonths( dateUnit, (dateUnit.getMonth() % 2) + 10 );
 
@@ -159,7 +158,7 @@ public class BiMonthlyPeriodType
     @Override
     public String getIsoDate( DateUnit dateUnit )
     {
-        return String.format( "%d%02dB", dateUnit.getYear(), dateUnit.getMonth() );
+        return String.format( "%d%02dB", dateUnit.getYear(), (dateUnit.getMonth() + 1) / 2 );
     }
 
     @Override
@@ -172,7 +171,7 @@ public class BiMonthlyPeriodType
     public Date getRewindedDate( Date date, Integer rewindedPeriods )
     {
         Calendar cal = getCalendar();
-        
+
         date = date != null ? date : new Date();
         rewindedPeriods = rewindedPeriods != null ? rewindedPeriods : 1;
 
