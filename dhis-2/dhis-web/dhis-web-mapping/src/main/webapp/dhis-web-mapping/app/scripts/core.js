@@ -743,7 +743,7 @@ Ext.onReady( function() {
 				fillOpacity: 1,
 				strokeColor: '#fff',
 				strokeWidth: 1,
-                pointRadius: 5,
+                pointRadius: 8,
                 labelAlign: 'cr',
                 labelYOffset: 13,
                 fontFamily: 'arial,sans-serif,roboto,helvetica neue,helvetica,consolas'
@@ -752,7 +752,7 @@ Ext.onReady( function() {
 				fillOpacity: 0.9,
 				strokeColor: '#fff',
 				strokeWidth: 1,
-                pointRadius: 5,
+                pointRadius: 8,
 				cursor: 'pointer',
                 labelAlign: 'cr',
                 labelYOffset: 13
@@ -1416,7 +1416,7 @@ Ext.onReady( function() {
 		loadLegend = function(view) {
             var isPlugin = GIS.plugin && !GIS.app,
                 type = isPlugin ? 'jsonp' : 'json',
-                url = gis.init.contextPath + '/api/organisationUnitGroupSets/' + view.organisationUnitGroupSet.id + '.' + type + '?fields=organisationUnitGroups[id,name]',
+                url = gis.init.contextPath + '/api/organisationUnitGroupSets/' + view.organisationUnitGroupSet.id + '.' + type + '?fields=organisationUnitGroups[id,name,symbol]',
                 success;
 
 			view = view || layer.core.view;
