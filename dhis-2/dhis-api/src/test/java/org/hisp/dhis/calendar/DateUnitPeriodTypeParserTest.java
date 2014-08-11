@@ -28,9 +28,10 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -49,60 +50,60 @@ public class DateUnitPeriodTypeParserTest
     public void testDateUnitFormatParser()
     {
         // daily
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 2, 4 ), new DateUnit( 2014, 2, 4 ) ), format.parse( "20140204" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 2, 4 ), new DateUnit( 2014, 2, 4 ) ), format.parse( "20140204" ) );
 
         // weekly
-        Assert.assertEquals( new DateInterval( new DateUnit( 2013, 12, 30 ), new DateUnit( 2014, 1, 5 ) ), format.parse( "2014W1" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 1, 6 ), new DateUnit( 2014, 1, 12 ) ), format.parse( "2014W2" ) );
+        assertEquals( new DateInterval( new DateUnit( 2013, 12, 30 ), new DateUnit( 2014, 1, 5 ) ), format.parse( "2014W1" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 1, 6 ), new DateUnit( 2014, 1, 12 ) ), format.parse( "2014W2" ) );
 
         // monthly
-        Assert.assertNull( format.parse( "2014W0" ) );
-        Assert.assertNull( format.parse( "2014W53" ) );
-        Assert.assertNotNull( format.parse( "2009W53" ) ); // 2009 has 53 weeks
-        Assert.assertNull( format.parse( "2009W54" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 2, 1 ), new DateUnit( 2014, 2, 28 ) ), format.parse( "201402" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 4, 1 ), new DateUnit( 2014, 4, 30 ) ), format.parse( "201404" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 3, 1 ), new DateUnit( 2014, 3, 31 ) ), format.parse( "2014-03" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 5, 1 ), new DateUnit( 2014, 5, 31 ) ), format.parse( "2014-05" ) );
+        assertNull( format.parse( "2014W0" ) );
+        assertNull( format.parse( "2014W53" ) );
+        assertNotNull( format.parse( "2009W53" ) ); // 2009 has 53 weeks
+        assertNull( format.parse( "2009W54" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 2, 1 ), new DateUnit( 2014, 2, 28 ) ), format.parse( "201402" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 4, 1 ), new DateUnit( 2014, 4, 30 ) ), format.parse( "201404" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 3, 1 ), new DateUnit( 2014, 3, 31 ) ), format.parse( "2014-03" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 5, 1 ), new DateUnit( 2014, 5, 31 ) ), format.parse( "2014-05" ) );
 
         // bi-monthly
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 2, 1 ), new DateUnit( 2014, 3, 31 ) ), format.parse( "201402B" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 7, 1 ), new DateUnit( 2014, 8, 31 ) ), format.parse( "201407B" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 2, 1 ), new DateUnit( 2014, 3, 31 ) ), format.parse( "201402B" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 7, 1 ), new DateUnit( 2014, 8, 31 ) ), format.parse( "201407B" ) );
 
         // quarter
-        Assert.assertNull( format.parse( "2014Q0" ) );
-        Assert.assertNull( format.parse( "2014Q5" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 1, 1 ), new DateUnit( 2014, 3, 31 ) ), format.parse( "2014Q1" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 4, 1 ), new DateUnit( 2014, 6, 30 ) ), format.parse( "2014Q2" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 7, 1 ), new DateUnit( 2014, 9, 30 ) ), format.parse( "2014Q3" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 10, 1 ), new DateUnit( 2014, 12, 31 ) ), format.parse( "2014Q4" ) );
+        assertNull( format.parse( "2014Q0" ) );
+        assertNull( format.parse( "2014Q5" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 1, 1 ), new DateUnit( 2014, 3, 31 ) ), format.parse( "2014Q1" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 4, 1 ), new DateUnit( 2014, 6, 30 ) ), format.parse( "2014Q2" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 7, 1 ), new DateUnit( 2014, 9, 30 ) ), format.parse( "2014Q3" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 10, 1 ), new DateUnit( 2014, 12, 31 ) ), format.parse( "2014Q4" ) );
 
         // six-monthly
-        Assert.assertNull( format.parse( "2014S0" ) );
-        Assert.assertNull( format.parse( "2014S3" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 1, 1 ), new DateUnit( 2014, 6, 30 ) ), format.parse( "2014S1" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 7, 1 ), new DateUnit( 2014, 12, 31 ) ), format.parse( "2014S2" ) );
+        assertNull( format.parse( "2014S0" ) );
+        assertNull( format.parse( "2014S3" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 1, 1 ), new DateUnit( 2014, 6, 30 ) ), format.parse( "2014S1" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 7, 1 ), new DateUnit( 2014, 12, 31 ) ), format.parse( "2014S2" ) );
 
         // six-monthly april
-        Assert.assertNull( format.parse( "2014AprilS0" ) );
-        Assert.assertNull( format.parse( "2014AprilS3" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 4, 1 ), new DateUnit( 2014, 9, 30 ) ), format.parse( "2014AprilS1" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 10, 1 ), new DateUnit( 2015, 3, 31 ) ), format.parse( "2014AprilS2" ) );
+        assertNull( format.parse( "2014AprilS0" ) );
+        assertNull( format.parse( "2014AprilS3" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 4, 1 ), new DateUnit( 2014, 9, 30 ) ), format.parse( "2014AprilS1" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 10, 1 ), new DateUnit( 2015, 3, 31 ) ), format.parse( "2014AprilS2" ) );
 
         // yearly
-        Assert.assertEquals( new DateInterval( new DateUnit( 2013, 1, 1 ), new DateUnit( 2013, 12, 31 ) ), format.parse( "2013" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 1, 1 ), new DateUnit( 2014, 12, 31 ) ), format.parse( "2014" ) );
+        assertEquals( new DateInterval( new DateUnit( 2013, 1, 1 ), new DateUnit( 2013, 12, 31 ) ), format.parse( "2013" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 1, 1 ), new DateUnit( 2014, 12, 31 ) ), format.parse( "2014" ) );
 
         // financial april
-        Assert.assertEquals( new DateInterval( new DateUnit( 2013, 4, 1 ), new DateUnit( 2014, 3, 31 ) ), format.parse( "2013April" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 4, 1 ), new DateUnit( 2015, 3, 31 ) ), format.parse( "2014April" ) );
+        assertEquals( new DateInterval( new DateUnit( 2013, 4, 1 ), new DateUnit( 2014, 3, 31 ) ), format.parse( "2013April" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 4, 1 ), new DateUnit( 2015, 3, 31 ) ), format.parse( "2014April" ) );
 
         // financial july
-        Assert.assertEquals( new DateInterval( new DateUnit( 2013, 7, 1 ), new DateUnit( 2014, 6, 30 ) ), format.parse( "2013July" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 7, 1 ), new DateUnit( 2015, 6, 30 ) ), format.parse( "2014July" ) );
+        assertEquals( new DateInterval( new DateUnit( 2013, 7, 1 ), new DateUnit( 2014, 6, 30 ) ), format.parse( "2013July" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 7, 1 ), new DateUnit( 2015, 6, 30 ) ), format.parse( "2014July" ) );
 
         // financial october
-        Assert.assertEquals( new DateInterval( new DateUnit( 2013, 10, 1 ), new DateUnit( 2014, 9, 30 ) ), format.parse( "2013Oct" ) );
-        Assert.assertEquals( new DateInterval( new DateUnit( 2014, 10, 1 ), new DateUnit( 2015, 9, 30 ) ), format.parse( "2014Oct" ) );
+        assertEquals( new DateInterval( new DateUnit( 2013, 10, 1 ), new DateUnit( 2014, 9, 30 ) ), format.parse( "2013Oct" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 10, 1 ), new DateUnit( 2015, 9, 30 ) ), format.parse( "2014Oct" ) );
     }
 }
