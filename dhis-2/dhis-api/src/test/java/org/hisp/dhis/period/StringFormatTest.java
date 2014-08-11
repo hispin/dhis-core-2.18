@@ -74,7 +74,7 @@ public class StringFormatTest
         assertEquals( "Quarter format", "2010Q1", quarter1.getIsoDate() );
         assertEquals( "Semester format", "2010S1", semester1.getIsoDate() );
         assertEquals( "SemesterApril format", "2010AprilS1", semesterApril1.getIsoDate() );
-        assertEquals( "Bimonth format", "201003B", biMonth1.getIsoDate() );
+        assertEquals( "Bimonth format", "201002B", biMonth1.getIsoDate() );
         assertEquals( "Financial April", "2010April", financialApril.getIsoDate() );
         assertEquals( "Financial July", "2010July", financialJuly.getIsoDate() );
         assertEquals( "Financial Oct", "2010Oct", financialOct.getIsoDate() );
@@ -85,7 +85,7 @@ public class StringFormatTest
         assertEquals( quarter1, PeriodType.getPeriodFromIsoString( "2010Q1" ) );
         assertEquals( semester1, PeriodType.getPeriodFromIsoString( "2010S1" ) );
         assertEquals( semesterApril1, PeriodType.getPeriodFromIsoString( "2010AprilS1" ) );
-        assertEquals( biMonth1, PeriodType.getPeriodFromIsoString( "201003B" ) );
+        assertEquals( biMonth1, PeriodType.getPeriodFromIsoString( "201002B" ) );
         assertEquals( financialApril, PeriodType.getPeriodFromIsoString( "2010April" ) );
         assertEquals( financialJuly, PeriodType.getPeriodFromIsoString( "2010July" ) );
         assertEquals( financialOct, PeriodType.getPeriodFromIsoString( "2010Oct" ) );

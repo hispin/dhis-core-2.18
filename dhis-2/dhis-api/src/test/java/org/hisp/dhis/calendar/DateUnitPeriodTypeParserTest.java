@@ -67,8 +67,14 @@ public class DateUnitPeriodTypeParserTest
         assertEquals( new DateInterval( new DateUnit( 2014, 5, 1 ), new DateUnit( 2014, 5, 31 ) ), format.parse( "2014-05" ) );
 
         // bi-monthly
-        assertEquals( new DateInterval( new DateUnit( 2014, 2, 1 ), new DateUnit( 2014, 3, 31 ) ), format.parse( "201402B" ) );
-        assertEquals( new DateInterval( new DateUnit( 2014, 7, 1 ), new DateUnit( 2014, 8, 31 ) ), format.parse( "201407B" ) );
+        assertNull( format.parse( "201400B" ) );
+        assertNull( format.parse( "201407B" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 1, 1 ), new DateUnit( 2014, 2, 28 ) ), format.parse( "201401B" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 3, 1 ), new DateUnit( 2014, 4, 30 ) ), format.parse( "201402B" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 5, 1 ), new DateUnit( 2014, 6, 30 ) ), format.parse( "201403B" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 7, 1 ), new DateUnit( 2014, 8, 31 ) ), format.parse( "201404B" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 9, 1 ), new DateUnit( 2014, 10, 31 ) ), format.parse( "201405B" ) );
+        assertEquals( new DateInterval( new DateUnit( 2014, 11, 1 ), new DateUnit( 2014, 12, 31 ) ), format.parse( "201406B" ) );
 
         // quarter
         assertNull( format.parse( "2014Q0" ) );
