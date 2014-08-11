@@ -3418,7 +3418,7 @@ Ext.onReady( function() {
                         }
 
                         stages = program.programStages;
-                        attributes = Ext.Array.pluck(program.programTrackedEntityAttributes, 'trackedEntityAttribute');
+                        attributes = Ext.Array.pluck(program.programTrackedEntityAttributes, 'attribute');
 
                         // attributes cache
                         if (Ext.isArray(attributes) && attributes.length) {
