@@ -1197,7 +1197,8 @@ Ext.onReady( function() {
 				var removeDimensionFromXLayout,
 					getHeaderNames,
 					dimensions = Ext.Array.clean([].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || [])),
-                    getSeriesValidatedLayout;
+                    getSeriesValidatedLayout,
+                    layout;
 
 				removeDimensionFromXLayout = function(objectName) {
 					var getUpdatedAxis;

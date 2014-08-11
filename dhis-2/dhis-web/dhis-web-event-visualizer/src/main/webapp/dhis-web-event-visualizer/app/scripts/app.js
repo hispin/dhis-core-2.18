@@ -3058,7 +3058,7 @@ Ext.onReady( function() {
                         }
 
                         stages = program.programStages;
-                        attributes = Ext.Array.pluck(program.programTrackedEntityAttributes, 'trackedEntityAttribute');
+                        attributes = Ext.Array.pluck(program.programTrackedEntityAttributes, 'attribute');
 
                         // attributes cache
                         if (Ext.isArray(attributes) && attributes.length) {
@@ -3423,7 +3423,7 @@ Ext.onReady( function() {
 					for (var i = 0, record, dim; i < layout.columns.length; i++) {
                         dim = layout.columns[i];
                         record = recordMap[dim.dimension];
-
+                        
 						aggWindow.colStore.add(record || extendDim(Ext.clone(dim)));
 					}
 				}
@@ -3432,7 +3432,7 @@ Ext.onReady( function() {
 					for (var i = 0, record, dim; i < layout.rows.length; i++) {
                         dim = layout.rows[i];
                         record = recordMap[dim.dimension];
-
+                        
 						aggWindow.rowStore.add(record || extendDim(Ext.clone(dim)));
 					}
 				}
