@@ -378,11 +378,13 @@ Ext.onReady( function() {
 			colStore.removeAll();
 			rowStore.removeAll();
 			filterStore.removeAll();
+            dimensionStore.removeAll();
 
 			if (!isAll) {
 				colStore.add({id: dimConf.data.dimensionName, name: dimConf.data.name});
 				rowStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name});
 				filterStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
+				dimensionStore.add({id: dimConf.category.dimensionName, name: dimConf.category.name});
 			}
 		};
 

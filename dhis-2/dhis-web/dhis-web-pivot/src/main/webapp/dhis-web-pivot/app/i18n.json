@@ -162,5 +162,6 @@
 "open_this_table_as_map",
 "open_last_map",
 "show_row_totals",
-"show_col_totals"
+"show_col_totals",
+"assigned_categories"
 ]

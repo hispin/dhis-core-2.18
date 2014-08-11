@@ -224,5 +224,7 @@
 "go_to_maps",
 "open_this_chart_as_map",
 "open_last_map",
-"dimensions"
+"dimensions",
+"table_layout",
+"assigned_categories"
 ]
