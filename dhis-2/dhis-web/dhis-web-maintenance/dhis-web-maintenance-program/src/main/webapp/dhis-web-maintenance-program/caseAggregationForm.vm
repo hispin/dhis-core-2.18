@@ -33,7 +33,7 @@
 		</tr>
         <tr>
 			<td colspan='2'>
-				<select id="dataElements" name="dataElements" size="8" ondblclick="insertDataElement(this);" onclick="getSuggestedValues(this.id, 'suggestedDEValues' )"></select>
+				<select id="dataElements" name="dataElements" size="8" ondblclick="insertDataElement(this);" onclick="getSuggestedValues(this, 'suggestedDEValues' )"></select>
 				<select id="dataElementBackups" name="dataElementBackups" style='display:none;'></select>
 			</td>
 			<td rowspan='4'>
@@ -69,31 +69,51 @@
 	<div id="tab-2">
 		<table>
 			<tr>
-				<td><label>$i18n.getString( "tracked_entity_attributes" )</label></td>
+				<td>$i18n.getString('filter_by_name')
+					<input style="width:180px;" type='text' id='txtSearchAttribue' name='txtSearchAttribue' placeholder="$i18n.getString('enter_an_attribute')" onKeyUp="filterAttribute(event, this.value, 'caseProperty','casePropertyBackups');"/>
+					<a style='width:20px; margin-bottom:-5px;height:20px;' id='attributesButton' name='attributesButton'></a>
+					<input type='button' value='$i18n.getString("clear")' onClick="setFieldValue('txtSearchAttribue', '');" style='width:50px'>			
+				</td>
 				<td>
 					<label>$i18n.getString( "available_values" )</label>
-					<input type='button' title="$i18n.getString( 'insert_selected_values' )" value="&raquo;" class="small-button"  onClick="insertMultiValues('caSuggestedValues');" >
+						<input type="text" disabled placeholder="$i18n.getString('enter_a_key')" id="caSuggestedValues" name="caSuggestedValues" ondblclick="insertSingleValue('caSuggestedValues');" style="width:200px;">
 				</td>
 			</tr>
 			<tr>
-				<td>
-					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )">
+				<td rowspan='2'>
+					<select id='casePropertyBackups' name='casePropertyBackups' style='display:none;'>
 						#foreach($attribute in $attributes)
 							#if($attribute.valueType=='age')
 								#set($attId=$attribute.id + ".age")
 								#set($attVisitId=$attribute.id + ".visit")
-								<option suggested="" title="$attribute.displayName" value="[CA:$attId]">$attribute.displayName ($i18n.getString('ages'))</option>
-								<option value="[PS:*] AND [CA:$attVisitId]" name="multiProgram">$attribute.displayName ($i18n.getString( "age_at_visit_days_since_birth" ))</option>
+								<option optionSet="$!attribute.optionSet.uid" title="$attribute.displayName" value="[CA:$attId]">$attribute.displayName ($i18n.getString('ages'))</option>
+								<option optionSet="$!attribute.optionSet.uid" value="[PS:*] AND [CA:$attVisitId]" name="multiProgram">$attribute.displayName ($i18n.getString( "age_at_visit_days_since_birth" ))</option>
 							#else
-								<option suggested="" title="$attribute.displayName" value="[CA:$attribute.id]">$attribute.displayName</option>
+								<option optionSet="$!attribute.optionSet.uid"  title="$attribute.displayName" value="[CA:$attribute.id]">$attribute.displayName</option>
+							#end
+						#end
+					</select>
+					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this, 'caSuggestedValues' )">
+						#foreach($attribute in $attributes)
+							#if($attribute.valueType=='age')
+								#set($attId=$attribute.id + ".age")
+								#set($attVisitId=$attribute.id + ".visit")
+								<option optionSet="$!attribute.optionSet.uid"  optionSet="" title="$attribute.displayName" value="[CA:$attId]">$attribute.displayName ($i18n.getString('ages'))</option>
+								<option optionSet="$!attribute.optionSet.uid"  value="[PS:*] AND [CA:$attVisitId]" name="multiProgram">$attribute.displayName ($i18n.getString( "age_at_visit_days_since_birth" ))</option>
+							#else
+								<option optionSet="$!attribute.optionSet.uid" title="$attribute.displayName" value="[CA:$attribute.id]">$attribute.displayName</option>
 							#end
 						#end
 					</select>
 				</td>
+			</tr>
+			<tr>
 				<td>
-					<select multiple size="10" id='caSuggestedValues' ondblclick="insertSingleValue('caSuggestedValues');"></select>
+					<select multiple id='attributeId' name='attributeId' size=10 ondblclick="removeOption('attributeId')"></select>
+					<input type='button' title="$i18n.getString( 'insert_selected_values' )" value="&raquo;" class="small-button"  onClick="insertMultiValues('attributeId');" >
 				</td>
 			</tr>
+			
 		</table>
 	</div>
 	
@@ -161,7 +181,7 @@
 	<tr>
 		<td>
 			<fieldset>
-				<legend>$i18n.getString( "condition" )</legend>
+				<legend>$i18n.getString( "condition" ) <em title="$i18n.getString( 'required' )" class="required">*</em></legend>
 				<table><tr><td>
 					<textarea id="aggregationCondition" name="aggregationCondition" onkeyup='getConditionDescription();' maxlength="1000">$!caseAggregation.aggregationExpression</textarea>
 				</td></tr></table>

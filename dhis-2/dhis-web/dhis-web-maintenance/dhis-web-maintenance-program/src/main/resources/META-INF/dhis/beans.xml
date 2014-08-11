@@ -804,6 +804,12 @@
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.trackedentity.action.caseaggregation.GetOptionsAction"
+		class="org.hisp.dhis.trackedentity.action.caseaggregation.GetOptionsAction"
+		scope="prototype">
+	</bean>
 
 	<!-- Validation - ValidationCriteria -->
 

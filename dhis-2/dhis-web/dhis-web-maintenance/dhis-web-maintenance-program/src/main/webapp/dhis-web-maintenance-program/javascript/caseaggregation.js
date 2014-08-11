@@ -141,15 +141,18 @@ function getParams() {
       getTrackedEntityDataElements();
 
       clearListById('caseProperty');
+	  clearListById('casePropertyBackups');
       var type = jQuery('#programId option:selected').attr('programType');
       if( type != '3' ) {
         var caseProperty = jQuery('#caseProperty');
+        var casePropertyBackups = jQuery('#casePropertyBackups');
         for( i in json.attributes ) {
           var id = json.attributes[i].id;
           var name = json.attributes[i].name;
-          var suggested = json.attributes[i].suggested;
-
-          caseProperty.append("<option value='" + id + "' title='" + name + "' suggested='" + suggested + "'>" + name + "</option>");
+          var optionSet = json.attributes[i].optionSet;
+         
+ 		  caseProperty.append("<option value='" + id + "' title='" + name + "' optionSet='" + optionSet + "'>" + name + "</option>");
+          casePropertyBackups.append("<option value='" + id + "' title='" + name + "' optionSet='" + optionSet + "'>" + name + "</option>");
         }
       }
     });
@@ -206,10 +209,10 @@ function getTrackedEntityDataElements() {
       var deSumId = jQuery('#deSumId');
       deSumId.append("<option value='' >" + i18n_please_select + "</option>");
       for( i in json.dataElements ) {
-        dataElements.append("<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' dename='" + json.dataElements[i].name + "' decode='" + json.dataElements[i].code + "' suggested='" + json.dataElements[i].optionset + "' valuetype='" + json.dataElements[i].type + "'>" + json.dataElements[i].name + "</option>");
-        dataElementBackups.append("<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' dename='" + json.dataElements[i].name + "' decode='" + json.dataElements[i].code + "' suggested='" + json.dataElements[i].optionset + "' valuetype='" + json.dataElements[i].type + "'>" + json.dataElements[i].name + "</option>");
+        dataElements.append("<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' dename='" + json.dataElements[i].name + "' decode='" + json.dataElements[i].code + "' optionSet='" + json.dataElements[i].optionset + "' valuetype='" + json.dataElements[i].type + "'>" + json.dataElements[i].name + "</option>");
+        dataElementBackups.append("<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' dename='" + json.dataElements[i].name + "' decode='" + json.dataElements[i].code + "' optionSet='" + json.dataElements[i].optionset + "' valuetype='" + json.dataElements[i].type + "'>" + json.dataElements[i].name + "</option>");
         if( json.dataElements[i].type == 'int' ) {
-          deSumId.append("<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "' valuetype='" + json.dataElements[i].type + "'>" + json.dataElements[i].name + "</option>");
+          deSumId.append("<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' optionSet='" + json.dataElements[i].optionset + "' valuetype='" + json.dataElements[i].type + "'>" + json.dataElements[i].name + "</option>");
         }
       }
 
@@ -319,15 +322,15 @@ function testCaseAggregationCondition() {
     });
 }
 
-function getSuggestedValues( sourceId, targetId ) {
+function getoptionSetValues( sourceId, targetId ) {
   clearListById(targetId);
 
-  var suggestedValues = jQuery('select[id=' + sourceId + '] option:selected').attr('suggested');
-  if( suggestedValues ) {
+  var optionSetValues = jQuery('select[id=' + sourceId + '] option:selected').attr('optionSet');
+  if( optionSetValues ) {
     var arrValues = new Array();
-    arrValues = suggestedValues.replace(/[//[]+/g, '').replace(/]/g, '').split(', ');
+    arrValues = optionSetValues.replace(/[//[]+/g, '').replace(/]/g, '').split(', ');
 
-    var suggestedValueSelector = byId(targetId);
+    var optionSetValueSelector = byId(targetId);
     for( var i = 0; i < arrValues.length; i++ ) {
       var option = document.createElement("option");
       var value = jQuery.trim(arrValues[i]);
@@ -335,7 +338,7 @@ function getSuggestedValues( sourceId, targetId ) {
       option.text = value;
       option.title = value;
 
-      suggestedValueSelector.add(option, null);
+      optionSetValueSelector.add(option, null);
     }
   }
 }
@@ -347,7 +350,7 @@ function insertSingleValue( elementId ) {
 }
 
 function insertMultiValues( elementId ) {
-  var list = jQuery('select[id=' + elementId + '] option:selected')
+  var list = jQuery('select[id=' + elementId + '] option')
   if( list.length == 0 ) {
     return;
   }
@@ -401,14 +404,25 @@ function filterDataElement( event, value, fieldName, backupFieldsName ) {
     var option = jQuery(this);
     if( valueType == '' || valueType == option.attr('valueType') ) {
       if( value.length == 0 ) {
-        jQuery('#' + fieldName).append("<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('suggested') + "' valueType='" + option.attr('valueType') + "'>" + option.text() + "</option>");
+        jQuery('#' + fieldName).append("<option value='" + option.attr('value') + "' title='" + option.text() + "' optionSet='" + option.attr('optionSet') + "' valueType='" + option.attr('valueType') + "'>" + option.text() + "</option>");
       }
       else if( option.text().toLowerCase().indexOf(value.toLowerCase()) != -1 ) {
-        jQuery('#' + fieldName).append("<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('suggested') + "' valueType='" + option.attr('valueType') + "'>" + option.text() + "</option>");
+        jQuery('#' + fieldName).append("<option value='" + option.attr('value') + "' title='" + option.text() + "' optionSet='" + option.attr('optionSet') + "' valueType='" + option.attr('valueType') + "'>" + option.text() + "</option>");
       }
     }
   });
 
+}
+
+function filterAttribute( event, value, fieldName, backupFieldsName ) {
+  // Remove all options in data element fields
+  var field = jQuery('#' + fieldName + " option ").remove();
+  jQuery('#' + backupFieldsName + " option ").each(function() {
+    var option = jQuery(this);
+     if( option.text().toLowerCase().indexOf(value.toLowerCase()) != -1 ) {
+        jQuery('#' + fieldName).append("<option value='" + option.attr('value') + "' title='" + option.attr('value') + "' optionSet='" + option.attr('optionSet') + "' >" + option.text() + "</option>");
+      }
+  });
 }
 
 function sortByOnChange( sortBy ) {
@@ -488,4 +502,115 @@ function displayNameOnChange( displayName ) {
 function cancelOnClick() {
   var dataSetId = getFieldValue("dataSets");
   window.location.href = 'caseAggregation.action?dataSetId=' + dataSetId;
+}
+
+function attributeAutocompletedField( idField, optionSetUid )
+{
+	$("#attributesButton").unbind('click');
+	enable('attributesButton');
+	var input = jQuery( "#" + idField );
+	var select = jQuery( "#attributeId" );
+	input.autocomplete({
+		  delay: 0,
+		  minLength: 0,
+		  source: function( request, response ) {
+			$.ajax({
+			    url: "getOptions.action?id=" + optionSetUid + "&query=" + input.val(),
+				dataType: "json",
+			    success: function( data ) {
+				response( $.map( data.options, function ( item ) {
+					return {
+						label: item.n,
+						id: item.c
+					};
+				} ));
+			  }
+			});
+		  },
+		  select: function( event, ui ) {
+			input.val(ui.item.label);
+			jQuery("#attributeId").append( "<option value='" + ui.item.id + "'>" + ui.item.label + "</option>" );
+			input.autocomplete("close");
+			
+			return false;
+		  },
+		  change: function( event, ui ) {
+			if( !ui.item ) {
+			  var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex($(this).val()) + "$", "i"),
+				valid = false;
+			  select.children("option").each(function() {
+				if( $(this).text().match(matcher) ) {
+				  this.selected = valid = true;
+				  return false;
+				}
+			  });
+			  if( !valid ) {
+				// remove invalid value, as it didn't match anything
+				$(this).val("");
+				select.val("");
+				input.data("uiAutocomplete").term = "";
+				return false;
+			  }
+			}
+		  }
+		}).addClass("ui-widget");
+
+	input.data("uiAutocomplete")._renderItem = function( ul, item ) {
+		return $("<li></li>")
+		  .data("item.autocomplete", item)
+		  .append("<a>" + item.label + "</a>")
+		  .appendTo(ul);
+	  };
+
+	var wrapper = this.wrapper = $("<span style='width:200px'>")
+		.addClass("ui-combobox")
+		.insertAfter(input);
+
+	var button = $("#attributesButton")
+		.attr("tabIndex", -1)
+		.attr("title", i18n_show_all_items)
+		.appendTo(wrapper)
+		.button({
+		  icons: {
+			primary: "ui-icon-triangle-1-s"
+		  },
+		  text: false
+		})
+		.click(function() {
+		  // close if already visible
+		  if( input.autocomplete("widget").is(":visible") ) {
+			input.autocomplete("close");
+			return;
+		  }
+		  // work around a bug (likely same cause as #5265)
+		  $(this).blur();
+		  // pass empty string as value to search for, displaying all results
+		  input.autocomplete("search", "");
+		  input.focus();
+		});
+}
+
+function split( val ) {
+  return val.split( /,\s*/ );
+}
+
+function getSuggestedValues( _this, suggestedField )
+{
+	clearListById('attributeId');
+	var field = jQuery( '#' + suggestedField );
+	var option =  jQuery("#" + _this.id + " option:selected" );
+	if( option.attr('optionset') != "" ){
+		attributeAutocompletedField( suggestedField, option.attr('optionset') );
+		enable(suggestedField);
+		jQuery( '#attributesButton').css("display", "");
+	}
+	else{
+		disable(suggestedField);
+		jQuery( '#attributesButton').css("display", "none");
+	}
+}
+
+function removeOption( elementId )
+{
+	jQuery('#' + elementId + ' option:selected').remove();
 }

@@ -6,16 +6,7 @@
 	"name": "$!encoder.jsonEncode( ${dataElement.name} )",
 	"code": "$!encoder.jsonEncode( ${dataElement.code} )",
 	"type": "${dataElement.type}",
-	"optionset": #if( $!dataElement.optionSet )
-					[#foreach( $opt in $!dataElement.optionSet.options )
-						{
-							"code" : "$encoder.jsonEncode($opt.code)",
-							"name" : "$encoder.jsonEncode($opt.name)"
-						}#if( $velocityCount < $!dataElement.optionSet.options.size() ),#end
-					#end]
-				#else
-					""
-				#end
+	"optionset": #if( $!dataElement.optionSet ) "$!dataElement.optionSet.uid" #else "" #end
 		
   }#if( $velocityCount < $size ),#end
   #end

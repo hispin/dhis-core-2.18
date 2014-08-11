@@ -55,21 +55,11 @@ public class GetOptionsByDataElementAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private OptionService optionService;
 
     @Autowired
-    public void setOptionService( OptionService optionService )
-    {
-        this.optionService = optionService;
-    }
-
     private DataElementService dataElementService;
-
-    @Autowired
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
 
     // -------------------------------------------------------------------------
     // Input
