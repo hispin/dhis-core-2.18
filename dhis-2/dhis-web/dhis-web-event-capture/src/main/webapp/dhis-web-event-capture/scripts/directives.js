@@ -207,13 +207,19 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
 
 .directive('typeaheadOpenOnFocus', function () {
   return {
-    require: ['typeahead', 'ngModel'],
-    link: function (scope, element, attr, ctrls) {        
-      element.bind('focus', function () {
-        ctrls[0].getMatchesAsync(ctrls[1].$viewValue);
-      });
-    }
-  };
+        require: ['typeahead', 'ngModel'],
+        link: function (scope, element, attr, ctrls) {        
+            element.bind('focus', function () {
+                ctrls[0].getMatchesAsync(ctrls[1].$viewValue);
+                
+                scope.$watch(attr.ngModel, function(value) {
+                    if(value === '' || angular.isUndefined(value)){
+                        ctrls[0].getMatchesAsync(ctrls[1].$viewValue);
+                    }                
+                });
+            });
+        }
+    };
 })
 
 .directive('draggableModal', function(){
