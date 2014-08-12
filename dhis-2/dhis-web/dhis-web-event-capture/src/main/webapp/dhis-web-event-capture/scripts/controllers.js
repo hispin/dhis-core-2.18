@@ -8,6 +8,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         function($scope,
                 $filter,
                 $modal,
+                $timeout,
                 storage,
                 Paginator,
                 TranslationService,                
@@ -373,12 +374,16 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.displayCustomForm = !$scope.displayCustomForm;
     };
     
-    $scope.addEvent = function(addingAnotherEvent){        
+    $scope.addEvent = function(addingAnotherEvent){                
         
         //check for form validity
         $scope.outerForm.submitted = true;        
         if( $scope.outerForm.$invalid ){
             return false;
+        }
+        
+        if(addingAnotherEvent){
+            $scope.disableSaveAndAddNew = true;
         }
         
         //the form is valid, get the values
@@ -437,12 +442,18 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     $scope.eventRegistration = false;
                     $scope.editingEventInFull = false;
                     $scope.editingEventInGrid = false;  
-                    $scope.outerForm.submitted = false;
                 }
-                //reset form
+
+                //reset form                
                 $scope.currentEvent = angular.copy($scope.newDhis2Event); 
                 $scope.note = {};
                 $scope.outerForm.submitted = false;
+                $scope.disableSaveAndAddNew = false;
+                
+                //this is to hide typeAheadPopUps - shouldn't be an issue in the                
+                $timeout(function() {
+                    angular.element('#hideTypeAheadPopUp').trigger('click');
+                }, 10);
             }
         });
     }; 

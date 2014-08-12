@@ -159,7 +159,7 @@
                     </table>
                 </div>
                 <!-- selection ends -->
-
+                <div id="hideTypeAheadPopUp"ng-hide="true"></div>
                 <!-- event grid begins -->
                 <div ng-include="'views/eventList.html'"></div>
                 <!-- event grid ends -->
@@ -188,7 +188,7 @@
                                     <button ng-click="showEventList()" class="button not-printable">{{'go_back'| translate}}</button>
                                 </span>
                                 <span ng-if="eventRegistration">
-                                    <button ng-click="addEvent(true)" class="button not-printable">{{'save_and_add_new'| translate}}</button>
+                                    <button ng-disabled="disableSaveAndAddNew" ng-click="addEvent(true)" class="button not-printable">{{'save_and_add_new'| translate}}</button>
                                     <button ng-click="addEvent()" class="button not-printable">{{'save_and_back'| translate}}</button>
                                     <button ng-click="showEventList(null)" class="button not-printable">{{'go_back'| translate}}</button>
                                 </span> 
