@@ -125,7 +125,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                             $scope.selectedProgram = $scope.programs[0];
                         }                        
                     }
-                }                
+                } 
             });
         }        
     };
@@ -165,10 +165,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         if($scope.doSearch){
             $scope.search($scope.searchMode);
         }       
-    };
-    
+    };   
+   
     $scope.search = function(mode){ 
-
+        
         $scope.teiFetched = false;
         $scope.selectedSearchMode = mode;
         $scope.emptySearchText = false;
@@ -198,10 +198,14 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 return;
             }       
  
-            $scope.queryUrl = 'query=' + $scope.searchText;                     
+            $scope.queryUrl = 'query=' + $scope.searchText;     
+            
+            $scope.attributes = EntityQueryFactory.resetAttributesQuery($scope.attributes, $scope.enrollment);
         }
         
         if( $scope.selectedSearchMode === $scope.searchMode.attributeBased ){
+            
+            $scope.searchText = '';
             
             $scope.attributeUrl = EntityQueryFactory.getAttributesQuery($scope.attributes, $scope.enrollment);
             
@@ -211,6 +215,12 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 $scope.teiCount = null;
                 return;
             }
+        }
+        
+        if( $scope.selectedSearchMode === $scope.searchMode.listAll ){
+            $scope.searchText = '';
+            
+            $scope.attributes = EntityQueryFactory.resetAttributesQuery($scope.attributes, $scope.enrollment);
         }
         
         $scope.fetchTeis();
@@ -347,6 +357,111 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };    
 })
 
+//Controller for the search function
+//own controller is required because of the ng-include for the search
+.controller('SearchController',
+        function($scope,
+                Paginator,
+                TEIGridService,
+                TEIService,
+                EntityQueryFactory,
+                TranslationService) {
+
+    TranslationService.translate();
+    
+    $scope.search = function(mode){ 
+        
+        $scope.teiFetched = false;
+        $scope.selectedSearchMode = mode;
+        $scope.emptySearchText = false;
+        $scope.emptySearchAttribute = false;
+        //$scope.showSearchDiv = false;
+        $scope.showRegistrationDiv = false;  
+        $scope.showReportDiv = false;
+        $scope.showTrackedEntityDiv = false;
+        $scope.trackedEntityList = null; 
+        $scope.teiCount = null;
+        
+        $scope.queryUrl = null;
+        $scope.programUrl = null;
+        $scope.attributeUrl = {url: null, hasValue: false};
+    
+        if($scope.selectedProgram){
+            $scope.programUrl = 'program=' + $scope.selectedProgram.id;
+        }        
+        
+        //check search mode
+        if( $scope.selectedSearchMode === $scope.searchMode.freeText ){     
+
+            if(!$scope.searchText){                
+                $scope.emptySearchText = true;
+                $scope.teiFetched = false;   
+                $scope.teiCount = null;
+                return;
+            }       
+ 
+            $scope.queryUrl = 'query=' + $scope.searchText;     
+            
+            $scope.attributes = EntityQueryFactory.resetAttributesQuery($scope.attributes, $scope.enrollment);
+        }
+        
+        if( $scope.selectedSearchMode === $scope.searchMode.attributeBased ){
+            
+            $scope.searchText = '';
+            
+            $scope.attributeUrl = EntityQueryFactory.getAttributesQuery($scope.attributes, $scope.enrollment);
+            
+            if(!$scope.attributeUrl.hasValue && !$scope.selectedProgram){
+                $scope.emptySearchAttribute = true;
+                $scope.teiFetched = false;   
+                $scope.teiCount = null;
+                return;
+            }
+        }
+        
+        if( $scope.selectedSearchMode === $scope.searchMode.listAll ){
+            $scope.searchText = '';
+            
+            $scope.attributes = EntityQueryFactory.resetAttributesQuery($scope.attributes, $scope.enrollment);
+        }
+        
+        $scope.fetchTeis();
+    };
+    
+    $scope.fetchTeis = function(){
+        
+        //get events for the specified parameters
+        TEIService.search($scope.selectedOrgUnit.id, 
+                                            $scope.selectedOuMode.name,
+                                            $scope.queryUrl,
+                                            $scope.programUrl,
+                                            $scope.attributeUrl.url,
+                                            $scope.pager,
+                                            true).then(function(data){
+            //$scope.trackedEntityList = data;            
+            if(data.rows){
+                $scope.teiCount = data.rows.length;
+            }                    
+            
+            if( data.metaData.pager ){
+                $scope.pager = data.metaData.pager;
+                $scope.pager.toolBarDisplay = 5;
+
+                Paginator.setPage($scope.pager.page);
+                Paginator.setPageCount($scope.pager.pageCount);
+                Paginator.setPageSize($scope.pager.pageSize);
+                Paginator.setItemCount($scope.pager.total);                    
+            }
+            
+            //process tei grid
+            $scope.trackedEntityList = TEIGridService.format(data);
+            $scope.showTrackedEntityDiv = true;
+            $scope.teiFetched = true;  
+            $scope.doSearch = true;
+        });
+    };    
+})
+        
 //Controller for column show/hide
 .controller('ColumnDisplayController', 
     function($scope, 

@@ -698,7 +698,25 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         }
         return query;
         
-    };    
+    };   
+    
+    this.resetAttributesQuery = function(attributes, enrollment){
+        
+        angular.forEach(attributes, function(attribute){           
+            
+            attribute.operator = '';
+            attribute.exactValue = '';
+            attribute.startValue = '';
+            attribute.endValue = '';
+            attribute.value = '';           
+        });
+        
+        if(enrollment){
+            enrollment.programStartDate = '';
+            enrollment.programEndDate = '';          
+        }        
+        return attributes;        
+    }; 
 })
 
 /* service for dealing with custom form */
