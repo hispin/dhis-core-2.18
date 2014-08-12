@@ -468,6 +468,7 @@ public class HibernateCaseAggregationConditionStore
     private String createSQL( String caseExpression, String operator, Collection<Integer> orgunitIds, String startDate,
         String endDate )
     {
+        caseExpression = caseExpression.replaceAll( "\"", "'" );
         boolean orgunitCompletedProgramStage = false;
 
         StringBuffer sqlResult = new StringBuffer();
@@ -715,7 +716,12 @@ public class HibernateCaseAggregationConditionStore
         }
         else
         {
-            sql += " WHERE _pav.trackedentityinstanceid=pi.trackedentityinstanceid AND _pav.trackedentityattributeid=" + attributeId + " AND _pav.value ";
+            sql += " WHERE _pav.trackedentityinstanceid=pi.trackedentityinstanceid AND _pav.trackedentityattributeid=" + attributeId;
+            
+            if( isExist )
+            {
+                sql += " AND _pav.value ";
+            }
         }
 
         if ( isExist )
@@ -724,7 +730,7 @@ public class HibernateCaseAggregationConditionStore
         }
         else
         {
-            sql = " NOT ( " + sql;
+            sql = " NOT EXISTS ( " + sql;
         }
 
         return sql;
