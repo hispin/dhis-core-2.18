@@ -28,16 +28,17 @@ package org.hisp.dhis.webapi.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
-import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -128,6 +129,9 @@ public class CurrentUserController
     private ContextUtils contextUtils;
 
     @Autowired
+    private IdentifiableObjectManager manager;
+
+    @Autowired
     private I18nService i18nService;
 
     @RequestMapping( produces = { "application/json", "text/*" } )
@@ -142,6 +146,24 @@ public class CurrentUserController
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJsonWithView( response.getOutputStream(), currentUser, DetailedView.class );
+    }
+
+    @RequestMapping( value = "/dashboards", produces = { "application/json", "text/*" } )
+    public void getDashboards( HttpServletResponse response ) throws NotAuthenticatedException, IOException
+    {
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( currentUser == null )
+        {
+            throw new NotAuthenticatedException();
+        }
+
+        Map<String, List<?>> output = Maps.newHashMap();
+        List<org.hisp.dhis.dashboard.Dashboard> dashboards = Lists.newArrayList( manager.getAll( org.hisp.dhis.dashboard.Dashboard.class ) );
+        output.put( "dashboards", dashboards );
+
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+        JacksonUtils.toJsonWithView( response.getOutputStream(), output, DetailedView.class );
     }
 
     @RequestMapping( value = "/inbox", produces = { "application/json", "text/*" } )
