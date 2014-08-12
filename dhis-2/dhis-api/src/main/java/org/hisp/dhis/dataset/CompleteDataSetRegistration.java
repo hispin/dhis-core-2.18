@@ -32,7 +32,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.ImportableObject;
@@ -46,7 +45,7 @@ import java.util.Date;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement(localName = "completeDataSetRegistration", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "completeDataSetRegistration", namespace = DxfNamespaces.DXF_2_0 )
 public class CompleteDataSetRegistration
     implements ImportableObject, Serializable
 {
@@ -77,7 +76,7 @@ public class CompleteDataSetRegistration
     {
     }
 
-    public CompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source, 
+    public CompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source,
         DataElementCategoryOptionCombo attributeOptionCombo, Date date, String storedBy )
     {
         this.dataSet = dataSet;
@@ -99,10 +98,10 @@ public class CompleteDataSetRegistration
 
         int result = 1;
 
-        result = prime * result + ( ( dataSet == null ) ? 0 : dataSet.hashCode() );
-        result = prime * result + ( ( period == null ) ? 0 : period.hashCode() );
-        result = prime * result + ( ( source == null ) ? 0 : source.hashCode() );
-        result = prime * result + ( ( attributeOptionCombo == null ) ? 0 : attributeOptionCombo.hashCode() );
+        result = prime * result + ((dataSet == null) ? 0 : dataSet.hashCode());
+        result = prime * result + ((period == null) ? 0 : period.hashCode());
+        result = prime * result + ((source == null) ? 0 : source.hashCode());
+        result = prime * result + ((attributeOptionCombo == null) ? 0 : attributeOptionCombo.hashCode());
 
         return result;
     }
@@ -174,16 +173,14 @@ public class CompleteDataSetRegistration
         {
             return false;
         }
-        
+
         return true;
     }
 
     @Override
     public String toString()
     {
-        String toString = "[" + dataSet + ", " + period + ", " + source + ", " + attributeOptionCombo + ", " + date + "]";
-
-        return toString;
+        return "[" + dataSet + ", " + period + ", " + source + ", " + attributeOptionCombo + ", " + date + "]";
     }
 
     public String getName()
@@ -196,8 +193,8 @@ public class CompleteDataSetRegistration
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonSerialize(as = BaseIdentifiableObject.class)
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DataSet getDataSet()
     {
         return dataSet;
@@ -209,8 +206,8 @@ public class CompleteDataSetRegistration
     }
 
     @JsonProperty
-    @JsonSerialize(as = BaseIdentifiableObject.class)
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Period getPeriod()
     {
         return period;
@@ -221,9 +218,9 @@ public class CompleteDataSetRegistration
         this.period = period;
     }
 
-    @JsonProperty(value = "organisationUnit")
-    @JsonSerialize(as = BaseIdentifiableObject.class)
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonProperty( value = "organisationUnit" )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public OrganisationUnit getSource()
     {
         return source;
@@ -234,8 +231,8 @@ public class CompleteDataSetRegistration
         this.source = source;
     }
 
-    @JsonSerialize(as = BaseIdentifiableObject.class)
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DataElementCategoryOptionCombo getAttributeOptionCombo()
     {
         return attributeOptionCombo;
@@ -247,7 +244,7 @@ public class CompleteDataSetRegistration
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getDate()
     {
         return date;
@@ -259,7 +256,7 @@ public class CompleteDataSetRegistration
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getStoredBy()
     {
         return storedBy;
