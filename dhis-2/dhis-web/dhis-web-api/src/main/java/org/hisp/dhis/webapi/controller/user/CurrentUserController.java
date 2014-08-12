@@ -29,21 +29,8 @@ package org.hisp.dhis.webapi.controller.user;
  */
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.webapi.controller.exception.FilterTooShortException;
-import org.hisp.dhis.webapi.controller.exception.NotAuthenticatedException;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
-import org.hisp.dhis.webapi.utils.FormUtils;
-import org.hisp.dhis.webapi.webdomain.FormDataSet;
-import org.hisp.dhis.webapi.webdomain.FormOrganisationUnit;
-import org.hisp.dhis.webapi.webdomain.FormProgram;
-import org.hisp.dhis.webapi.webdomain.Forms;
-import org.hisp.dhis.webapi.webdomain.user.Dashboard;
-import org.hisp.dhis.webapi.webdomain.user.Inbox;
-import org.hisp.dhis.webapi.webdomain.user.Recipients;
-import org.hisp.dhis.webapi.webdomain.user.UserAccount;
 import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -63,6 +50,19 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSettingService;
+import org.hisp.dhis.webapi.controller.exception.FilterTooShortException;
+import org.hisp.dhis.webapi.controller.exception.NotAuthenticatedException;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
+import org.hisp.dhis.webapi.utils.FormUtils;
+import org.hisp.dhis.webapi.webdomain.FormDataSet;
+import org.hisp.dhis.webapi.webdomain.FormOrganisationUnit;
+import org.hisp.dhis.webapi.webdomain.FormProgram;
+import org.hisp.dhis.webapi.webdomain.Forms;
+import org.hisp.dhis.webapi.webdomain.user.Dashboard;
+import org.hisp.dhis.webapi.webdomain.user.Inbox;
+import org.hisp.dhis.webapi.webdomain.user.Recipients;
+import org.hisp.dhis.webapi.webdomain.user.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -155,11 +155,39 @@ public class CurrentUserController
         }
 
         Inbox inbox = new Inbox();
-        inbox.setMessageConversations( new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, MAX_OBJECTS ) ) );
-        inbox.setInterpretations( new ArrayList<Interpretation>( interpretationService.getInterpretations( 0, MAX_OBJECTS ) ) );
+        inbox.setMessageConversations( new ArrayList<>( messageService.getMessageConversations( 0, MAX_OBJECTS ) ) );
+        inbox.setInterpretations( new ArrayList<>( interpretationService.getInterpretations( 0, MAX_OBJECTS ) ) );
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), inbox );
+    }
+
+    @RequestMapping( value = "/inbox/messageConversations", produces = { "application/json", "text/*" } )
+    public void getInboxMessageConversations( HttpServletResponse response ) throws Exception
+    {
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( currentUser == null )
+        {
+            throw new NotAuthenticatedException();
+        }
+
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+        JacksonUtils.toJson( response.getOutputStream(), new ArrayList<>( messageService.getMessageConversations( 0, MAX_OBJECTS ) ) );
+    }
+
+    @RequestMapping( value = "/inbox/interpretations", produces = { "application/json", "text/*" } )
+    public void getInboxInterpretations( HttpServletResponse response ) throws Exception
+    {
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( currentUser == null )
+        {
+            throw new NotAuthenticatedException();
+        }
+
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+        JacksonUtils.toJson( response.getOutputStream(), new ArrayList<>( interpretationService.getInterpretations( 0, MAX_OBJECTS ) ) );
     }
 
     @RequestMapping( value = "/dashboard", produces = { "application/json", "text/*" } )
