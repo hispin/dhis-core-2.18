@@ -56,14 +56,14 @@ public class DefaultIdentifiableObjectManager
     private static final Log log = LogFactory.getLog( DefaultIdentifiableObjectManager.class );
 
     @Autowired
-    private Set<GenericIdentifiableObjectStore<IdentifiableObject>> identifiableObjectStores;
+    private Set<GenericIdentifiableObjectStore<? extends IdentifiableObject>> identifiableObjectStores;
 
     @Autowired
-    private Set<GenericNameableObjectStore<NameableObject>> nameableObjectStores;
+    private Set<GenericNameableObjectStore<? extends NameableObject>> nameableObjectStores;
 
-    private Map<Class<IdentifiableObject>, GenericIdentifiableObjectStore<IdentifiableObject>> identifiableObjectStoreMap;
+    private Map<Class<? extends IdentifiableObject>, GenericIdentifiableObjectStore<? extends IdentifiableObject>> identifiableObjectStoreMap;
 
-    private Map<Class<NameableObject>, GenericNameableObjectStore<NameableObject>> nameableObjectStoreMap;
+    private Map<Class<? extends NameableObject>, GenericNameableObjectStore<? extends NameableObject>> nameableObjectStoreMap;
 
     //--------------------------------------------------------------------------
     // IdentifiableObjectManager implementation
@@ -120,7 +120,7 @@ public class DefaultIdentifiableObjectManager
     @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> T get( String uid )
     {
-        for ( GenericIdentifiableObjectStore<IdentifiableObject> store : identifiableObjectStores )
+        for ( GenericIdentifiableObjectStore<? extends IdentifiableObject> store : identifiableObjectStores )
         {
             T object = (T) store.getByUid( uid );
 
@@ -509,7 +509,7 @@ public class DefaultIdentifiableObjectManager
     @Override
     public IdentifiableObject getObject( String uid, String simpleClassName )
     {
-        for ( GenericIdentifiableObjectStore<IdentifiableObject> objectStore : identifiableObjectStores )
+        for ( GenericIdentifiableObjectStore<? extends IdentifiableObject> objectStore : identifiableObjectStores )
         {
             if ( simpleClassName.equals( objectStore.getClazz().getSimpleName() ) )
             {
@@ -523,7 +523,7 @@ public class DefaultIdentifiableObjectManager
     @Override
     public IdentifiableObject getObject( int id, String simpleClassName )
     {
-        for ( GenericIdentifiableObjectStore<IdentifiableObject> objectStore : identifiableObjectStores )
+        for ( GenericIdentifiableObjectStore<? extends IdentifiableObject> objectStore : identifiableObjectStores )
         {
             if ( simpleClassName.equals( objectStore.getClazz().getSimpleName() ) )
             {
@@ -580,7 +580,7 @@ public class DefaultIdentifiableObjectManager
     {
         initMaps();
 
-        GenericIdentifiableObjectStore<IdentifiableObject> store = identifiableObjectStoreMap.get( clazz );
+        GenericIdentifiableObjectStore<? extends IdentifiableObject> store = identifiableObjectStoreMap.get( clazz );
 
         if ( store == null )
         {
@@ -592,14 +592,14 @@ public class DefaultIdentifiableObjectManager
             }
         }
 
-        return store;
+        return (GenericIdentifiableObjectStore<IdentifiableObject>) store;
     }
 
     private <T extends NameableObject> GenericNameableObjectStore<NameableObject> getNameableObjectStore( Class<T> clazz )
     {
         initMaps();
 
-        GenericNameableObjectStore<NameableObject> store = nameableObjectStoreMap.get( clazz );
+        GenericNameableObjectStore<? extends NameableObject> store = nameableObjectStoreMap.get( clazz );
 
         if ( store == null )
         {
@@ -611,7 +611,7 @@ public class DefaultIdentifiableObjectManager
             }
         }
 
-        return store;
+        return (GenericNameableObjectStore<NameableObject>) store;
     }
 
     private void initMaps()
@@ -621,16 +621,16 @@ public class DefaultIdentifiableObjectManager
             return; // Already initialized
         }
 
-        identifiableObjectStoreMap = new HashMap<Class<IdentifiableObject>, GenericIdentifiableObjectStore<IdentifiableObject>>();
+        identifiableObjectStoreMap = new HashMap<>();
 
-        for ( GenericIdentifiableObjectStore<IdentifiableObject> store : identifiableObjectStores )
+        for ( GenericIdentifiableObjectStore<? extends IdentifiableObject> store : identifiableObjectStores )
         {
             identifiableObjectStoreMap.put( store.getClazz(), store );
         }
 
-        nameableObjectStoreMap = new HashMap<Class<NameableObject>, GenericNameableObjectStore<NameableObject>>();
+        nameableObjectStoreMap = new HashMap<>();
 
-        for ( GenericNameableObjectStore<NameableObject> store : nameableObjectStores )
+        for ( GenericNameableObjectStore<? extends NameableObject> store : nameableObjectStores )
         {
             nameableObjectStoreMap.put( store.getClazz(), store );
         }
