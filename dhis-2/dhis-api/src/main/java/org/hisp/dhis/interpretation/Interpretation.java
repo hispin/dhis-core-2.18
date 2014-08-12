@@ -81,7 +81,7 @@ public class Interpretation
     private String text;
 
     @Scanned
-    private List<InterpretationComment> comments = new ArrayList<InterpretationComment>();
+    private List<InterpretationComment> comments = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Constructors
