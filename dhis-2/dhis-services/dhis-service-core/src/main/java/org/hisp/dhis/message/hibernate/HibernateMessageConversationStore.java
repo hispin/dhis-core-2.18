@@ -114,8 +114,8 @@ public class HibernateMessageConversationStore
                 conversation.setRead( resultSet.getBoolean( 7 ) );
                 conversation.setFollowUp( resultSet.getBoolean( 8 ) );
                 conversation.setMessageCount( resultSet.getInt( 9 ) );
-                conversation.setCreated( resultSet.getDate( 10 ) );
-                conversation.setLastUpdated( resultSet.getDate( 11 ) );
+                conversation.setCreated( resultSet.getTimestamp( 10 ) );
+                conversation.setLastUpdated( resultSet.getTimestamp( 11 ) );
 
                 return conversation;
             }
