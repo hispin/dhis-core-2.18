@@ -257,7 +257,6 @@ public class CsdController
 
             Facility facility = new Facility();
 
-            // facility.setOid( organisationUnit.getUrn() );
             facility.setOid( "urn:x-dhis:facility." + organisationUnit.getUid() );
 
             facility.getOtherID().add( new OtherID( organisationUnit.getUid(), "dhis2-uid" ) );
@@ -283,7 +282,6 @@ public class CsdController
                 facility.getContacts().add( contact );
             }
 
-            // TODO: this needs to be added to domain model?
             String facilityStatus = "Open";
 
             for ( OrganisationUnitGroup organisationUnitGroup : organisationUnit.getGroups() )
