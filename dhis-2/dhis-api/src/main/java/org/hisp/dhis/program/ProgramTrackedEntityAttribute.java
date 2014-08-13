@@ -33,7 +33,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
@@ -55,7 +54,7 @@ public class ProgramTrackedEntityAttribute
     private int id;
 
     private TrackedEntityAttribute attribute;
-    
+
     private boolean displayInList;
 
     private Boolean mandatory;
@@ -120,7 +119,7 @@ public class ProgramTrackedEntityAttribute
         this.mandatory = mandatory;
     }
 
-    @JsonProperty
+    @JsonProperty( "trackedEntityAttribute" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlProperty( localName = "trackedEntityAttribute", namespace = DxfNamespaces.DXF_2_0 )
