@@ -102,10 +102,22 @@ public class MessageConversation
     // Logic
     // --------------------------------------------------------------------------
 
+
     @Override
     public String toString()
     {
-        return "[" + subject + "]";
+        return "MessageConversation{" +
+            "subject='" + subject + '\'' +
+            ", lastSender=" + lastSender +
+            ", lastMessage=" + lastMessage +
+            ", userMessages=" + userMessages +
+            ", messages=" + messages +
+            ", read=" + read +
+            ", followUp=" + followUp +
+            ", lastSenderSurname='" + lastSenderSurname + '\'' +
+            ", lastSenderFirstname='" + lastSenderFirstname + '\'' +
+            ", messageCount=" + messageCount +
+            "} " + super.toString();
     }
 
     public void addUserMessage( UserMessage userMessage )

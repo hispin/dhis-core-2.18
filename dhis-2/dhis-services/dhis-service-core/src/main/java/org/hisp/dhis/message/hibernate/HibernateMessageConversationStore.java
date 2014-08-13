@@ -28,10 +28,6 @@ package org.hisp.dhis.message.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
 import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.jdbc.StatementBuilder;
@@ -41,6 +37,10 @@ import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.user.User;
 import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -54,12 +54,12 @@ public class HibernateMessageConversationStore
     // -------------------------------------------------------------------------
 
     private StatementBuilder statementBuilder;
-    
+
     public void setStatementBuilder( StatementBuilder statementBuilder )
     {
         this.statementBuilder = statementBuilder;
     }
-    
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
@@ -71,7 +71,7 @@ public class HibernateMessageConversationStore
 
         String sql = "select mc.messageconversationid, mc.uid, mc.subject, mc.lastmessage, ui.surname, ui.firstname, um.isread, um.isfollowup, (" +
             "select count(messageconversationid) from messageconversation_messages mcm where mcm.messageconversationid=mc.messageconversationid) as messagecount " +
-            "from messageconversation mc " +
+            ", mc.created, mc.lastupdated from messageconversation mc " +
             "inner join messageconversation_usermessages mu on mc.messageconversationid=mu.messageconversationid " +
             "inner join usermessage um on mu.usermessageid=um.usermessageid " +
             "left join userinfo ui on mc.lastsenderid=ui.userinfoid ";
@@ -114,6 +114,8 @@ public class HibernateMessageConversationStore
                 conversation.setRead( resultSet.getBoolean( 7 ) );
                 conversation.setFollowUp( resultSet.getBoolean( 8 ) );
                 conversation.setMessageCount( resultSet.getInt( 9 ) );
+                conversation.setCreated( resultSet.getDate( 10 ) );
+                conversation.setLastUpdated( resultSet.getDate( 11 ) );
 
                 return conversation;
             }
@@ -148,7 +150,7 @@ public class HibernateMessageConversationStore
         {
             return -1;
         }
-            
+
         String hql = "select count(*) from MessageConversation m join m.userMessages u where u.user = :user and u.read = false";
 
         Query query = getQuery( hql );
@@ -163,7 +165,7 @@ public class HibernateMessageConversationStore
         {
             return -1;
         }
-        
+
         String sql = "delete from messageconversation_messages where messageid in ("
             + "select messageid from message where userid = " + sender.getId() + ")";
 
@@ -182,7 +184,7 @@ public class HibernateMessageConversationStore
         {
             return -1;
         }
-        
+
         String sql = "delete from messageconversation_usermessages where usermessageid in ("
             + "select usermessageid from usermessage where userid = " + user.getId() + ")";
 
@@ -205,34 +207,34 @@ public class HibernateMessageConversationStore
     }
 
     public List<UserMessage> getLastRecipients( User user, Integer first, Integer max )
-    {        
-        String sql = " select distinct userinfoid, surname, firstname from userinfo uf" 
-                      + " join usermessage um on (uf.userinfoid = um.userid)"
-                      + " join messageconversation_usermessages mu on (um.usermessageid = mu.usermessageid)"
-                      + " join messageconversation mc on (mu.messageconversationid = mc.messageconversationid)"
-                      + " where mc.lastsenderid = " + user.getId();
-  
+    {
+        String sql = " select distinct userinfoid, surname, firstname from userinfo uf"
+            + " join usermessage um on (uf.userinfoid = um.userid)"
+            + " join messageconversation_usermessages mu on (um.usermessageid = mu.usermessageid)"
+            + " join messageconversation mc on (mu.messageconversationid = mc.messageconversationid)"
+            + " where mc.lastsenderid = " + user.getId();
+
         sql += " order by userinfoid desc";
-        
+
         if ( first != null && max != null )
         {
             sql += " " + statementBuilder.limitRecord( first, max );
         }
-        
+
         final List<UserMessage> recipients = jdbcTemplate.query( sql, new RowMapper<UserMessage>()
         {
             public UserMessage mapRow( ResultSet resultSet, int count ) throws SQLException
             {
                 UserMessage recipient = new UserMessage();
-                
+
                 recipient.setId( resultSet.getInt( 1 ) );
                 recipient.setLastRecipientSurname( resultSet.getString( 2 ) );
                 recipient.setLastRecipientFirstname( resultSet.getString( 3 ) );
-            
+
                 return recipient;
-            }           
-        } );        
-        
+            }
+        } );
+
         return recipients;
     }
 }
