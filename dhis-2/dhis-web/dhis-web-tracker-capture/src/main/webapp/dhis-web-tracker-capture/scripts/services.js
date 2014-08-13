@@ -434,7 +434,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 });
 
                 angular.forEach(program.programTrackedEntityAttributes, function(pAttribute){
-                    var att = attributes[pAttribute.attribute.id];
+                    var att = attributes[pAttribute.trackedEntityAttribute.id];
                     att.mandatory = pAttribute.mandatory;
                     if(pAttribute.displayInList){
                         att.displayInListNoProgram = true;
