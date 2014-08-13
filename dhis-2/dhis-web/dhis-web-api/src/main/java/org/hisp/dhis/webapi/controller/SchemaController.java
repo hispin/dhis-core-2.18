@@ -52,7 +52,7 @@ public class SchemaController
     @RequestMapping
     public @ResponseBody Schemas getSchemas()
     {
-        return new Schemas( schemaService.getSchemas() );
+        return new Schemas( schemaService.getSortedSchemas() );
     }
 
     @RequestMapping( value = "/{type}" )
