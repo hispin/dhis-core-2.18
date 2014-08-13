@@ -166,6 +166,7 @@ public class FormUtils
 
                 Group group = new Group();
                 group.setLabel( section.getDisplayName() );
+                group.setDataElementCount( section.getProgramStageDataElements().size() );
                 group.setFields( fields );
                 form.getGroups().add( group );
             }
@@ -173,11 +174,12 @@ public class FormUtils
         else
         {
             List<Field> fields = inputsFromProgramStageDataElements(
-                new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() ) );
+                new ArrayList<>( programStage.getProgramStageDataElements() ) );
 
             Group group = new Group();
             group.setLabel( "default" );
             group.setFields( fields );
+            group.setDataElementCount( programStage.getProgramStageDataElements().size() );
             form.getGroups().add( group );
         }
 
@@ -186,7 +188,7 @@ public class FormUtils
 
     private static List<Field> inputsFromProgramStageDataElements( List<ProgramStageDataElement> programStageDataElements )
     {
-        List<DataElement> dataElements = new ArrayList<DataElement>();
+        List<DataElement> dataElements = new ArrayList<>();
 
         for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
         {
@@ -203,7 +205,7 @@ public class FormUtils
 
     private static List<Field> inputsFromDataElements( List<DataElement> dataElements, final List<DataElementOperand> greyedFields )
     {
-        List<Field> fields = new ArrayList<Field>();
+        List<Field> fields = new ArrayList<>();
 
         for ( DataElement dataElement : dataElements )
         {
@@ -331,7 +333,7 @@ public class FormUtils
 
     private static Map<String, Field> buildCacheMap( Form form )
     {
-        Map<String, Field> cacheMap = new HashMap<String, Field>();
+        Map<String, Field> cacheMap = new HashMap<>();
 
         for ( Group group : form.getGroups() )
         {
