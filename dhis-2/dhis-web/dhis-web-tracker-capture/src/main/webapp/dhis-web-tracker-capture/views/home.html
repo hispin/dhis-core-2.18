@@ -228,7 +228,7 @@
     <!-- report div ends -->
 
     <!-- entity grid begins -->
-    <img class="col-md-12" src="../images/ajax-loader-bar.gif" ng-if="!teiFetched && searchText && !emptySearchTex"/>
+    <img src="../images/ajax-loader-bar.gif" alt="{{'in_progress' | translate}}" ng-if="!teiFetched && searchText && !emptySearchTex"/>
     <div class="row" ng-if="showTrackedEntityDiv">
         <div class="col-md-12" ng-include="'views/tei.html'"></div>  
     </div>
