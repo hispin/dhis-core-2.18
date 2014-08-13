@@ -702,9 +702,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     
     this.resetAttributesQuery = function(attributes, enrollment){
         
-        angular.forEach(attributes, function(attribute){           
-            
-            attribute.operator = '';
+        angular.forEach(attributes, function(attribute){
             attribute.exactValue = '';
             attribute.startValue = '';
             attribute.endValue = '';
