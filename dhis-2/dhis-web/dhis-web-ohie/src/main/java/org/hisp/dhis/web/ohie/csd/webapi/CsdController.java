@@ -80,6 +80,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import java.io.BufferedInputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -88,21 +89,27 @@ import com.google.common.collect.Maps;
 @RequestMapping(value = "/csd")
 public class CsdController
 {
+
     private static final String SOAP_CONTENT_TYPE = "application/soap+xml";
 
     // Name of group all facilities belong to
     private static final String FACILITY_DISCRIMINATOR_GROUP = "Health Facility";
-    
+
     // groupset for status codelist - open, closed, etc
     private static final String FACILITY_STATUS_GROUPSET = "Status";
-    
+
     // groupset for facility type codelist
     private static final String FACILITY_TYPE_GROUPSET = "Type";
+
+    // groupset for facility ownership (proxy for organisation)
+    private static final String FACILITY_OWNERSHIP_GROUPSET = "Facility Ownership";
+
+    // attribute on dataset (indicating proxy for service)
+    private static final String DATASET_SERVICE_ATTRIBUTE = "Service";
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
@@ -114,7 +121,8 @@ public class CsdController
     {
         try
         {
-            Class<?>[] classes = new Class<?>[]{
+            Class<?>[] classes = new Class<?>[]
+            {
                 Envelope.class
             };
 
@@ -123,8 +131,7 @@ public class CsdController
 
             marshaller = jaxbContext.createMarshaller();
             unmarshaller = jaxbContext.createUnmarshaller();
-        }
-        catch ( JAXBException ex )
+        } catch ( JAXBException ex )
         {
             ex.printStackTrace();
         }
@@ -133,11 +140,10 @@ public class CsdController
     // -------------------------------------------------------------------------
     // POST
     // -------------------------------------------------------------------------
-
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.ALL_VALUE)
     public void careServicesRequest( HttpServletRequest request, HttpServletResponse response ) throws IOException, JAXBException
     {
-        Object o = unmarshaller.unmarshal( request.getInputStream() );
+        Object o = unmarshaller.unmarshal( new BufferedInputStream( request.getInputStream() ) );
         Envelope env = (Envelope) o;
 
         validateRequest( env );
@@ -164,11 +170,9 @@ public class CsdController
         marshaller.marshal( envelope, response.getOutputStream() );
     }
 
-
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
-
     private void validateRequest( Envelope envelope )
     {
         try
@@ -178,8 +182,7 @@ public class CsdController
             {
                 throw new MissingGetDirectoryModificationsRequestException();
             }
-        }
-        catch ( NullPointerException ex )
+        } catch ( NullPointerException ex )
         {
             throw new SoapException();
         }
@@ -190,8 +193,7 @@ public class CsdController
             {
                 throw new MissingGetModificationsRequestException();
             }
-        }
-        catch ( NullPointerException ex )
+        } catch ( NullPointerException ex )
         {
             throw new SoapException();
         }
@@ -202,8 +204,7 @@ public class CsdController
             {
                 throw new MissingLastModifiedException();
             }
-        }
-        catch ( NullPointerException ex )
+        } catch ( NullPointerException ex )
         {
             throw new SoapException();
         }
@@ -255,16 +256,9 @@ public class CsdController
             }
 
             Facility facility = new Facility();
-            facility.setOid( "No oid, please provide facility_oid attribute value" );
 
-            for ( AttributeValue attributeValue : organisationUnit.getAttributeValues() )
-            {
-                if ( attributeValue.getAttribute().getName().equals( "facility_oid" ) )
-                {
-                    facility.setOid( attributeValue.getValue() );
-                    break;
-                }
-            }
+            // facility.setOid( organisationUnit.getUrn() );
+            facility.setOid( "urn:x-dhis:facility." + organisationUnit.getUid() );
 
             facility.getOtherID().add( new OtherID( organisationUnit.getUid(), "dhis2-uid" ) );
 
@@ -289,6 +283,7 @@ public class CsdController
                 facility.getContacts().add( contact );
             }
 
+            // TODO: this needs to be added to domain model?
             String facilityStatus = "Open";
 
             for ( OrganisationUnitGroup organisationUnitGroup : organisationUnit.getGroups() )
@@ -298,16 +293,15 @@ public class CsdController
                     continue;
                 }
 
-                if ( organisationUnitGroup.getGroupSet() != null &&
-                    FACILITY_STATUS_GROUPSET.equals( organisationUnitGroup.getGroupSet().getName() ) )
+                if ( organisationUnitGroup.getGroupSet() != null
+                    && FACILITY_STATUS_GROUPSET.equals( organisationUnitGroup.getGroupSet().getName() ) )
                 {
                     facilityStatus = organisationUnitGroup.getCode();
                     continue;
                 }
 
-                
-                if ( organisationUnitGroup.getGroupSet() != null &&
-                    FACILITY_TYPE_GROUPSET.equals( organisationUnitGroup.getGroupSet().getName() ) )
+                if ( organisationUnitGroup.getGroupSet() != null
+                    && FACILITY_TYPE_GROUPSET.equals( organisationUnitGroup.getGroupSet().getName() ) )
                 {
                     if ( organisationUnitGroup.getCode() == null )
                     {
@@ -332,36 +326,35 @@ public class CsdController
 
                     facility.getCodedTypes().add( codedType );
                 }
-            }
 
-            Organization organization = new Organization( "No oid, please provide organisation_oid attribute value." );
-            facility.getOrganizations().add( organization );
-
-            for ( DataSet dataSet : organisationUnit.getDataSets() )
-            {
-                String oid = null;
-
-                for ( AttributeValue attributeValue : dataSet.getAttributeValues() )
+                if ( organisationUnitGroup.getGroupSet() != null
+                    && FACILITY_OWNERSHIP_GROUPSET.equals( organisationUnitGroup.getGroupSet().getName() ) )
                 {
-                    if ( attributeValue.getAttribute().getName().equals( "service_oid" ) )
+
+                    Organization organization = new Organization( "urn:x-dhis:ownership." + organisationUnitGroup.getUid() );
+                    facility.getOrganizations().add( organization );
+
+                    for ( DataSet dataSet : organisationUnit.getDataSets() )
                     {
-                        oid = attributeValue.getValue();
-                        break;
+
+                        for ( AttributeValue attributeValue : dataSet.getAttributeValues() )
+                        {
+                            if ( attributeValue.getAttribute().getName().equals( DATASET_SERVICE_ATTRIBUTE ) )
+                            {
+                                Service service = new Service();
+                                service.setOid( "urn:x-dhis:dataSet." + dataSet.getUid() );
+
+                                service.getNames().add( new Name( new CommonName( attributeValue.getValue() ) ) );
+
+                                organization.getServices().add( service );
+                                break;
+                            }
+                        }
+
                     }
+
                 }
 
-                // skip if dataset doesn't have a service oid
-                if ( oid == null )
-                {
-                    continue;
-                }
-
-                Service service = new Service();
-                service.setOid( oid );
-
-                service.getNames().add( new Name( new CommonName( dataSet.getDisplayName() ) ) );
-
-                organization.getServices().add( service );
             }
 
             if ( OrganisationUnit.FEATURETYPE_POINT.equals( organisationUnit.getFeatureType() ) )
@@ -376,8 +369,7 @@ public class CsdController
                     geocode.setLatitude( coordinates.lat );
 
                     facility.setGeocode( geocode );
-                }
-                catch ( NumberFormatException ignored )
+                } catch ( NumberFormatException ignored )
                 {
                 }
             }
@@ -415,10 +407,6 @@ public class CsdController
                     addressLine.setValue( attributeValue.getValue() );
 
                     addressLines.get( attributeSplit[1] ).add( addressLine );
-                }
-                else if ( attributeValue.getAttribute().getName().equals( "organisation_oid" ) )
-                {
-                    organization.setOid( attributeValue.getValue() );
                 }
             }
 
