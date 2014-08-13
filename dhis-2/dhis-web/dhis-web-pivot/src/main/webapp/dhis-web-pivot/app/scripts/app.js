@@ -6095,7 +6095,7 @@ Ext.onReady( function() {
                             }
                         }());
 
-                        // user info
+                        // user info, i18n
                         requests.push({
                             url: init.contextPath + '/api/me/user-account.json',
                             success: function(r) {
@@ -6103,7 +6103,7 @@ Ext.onReady( function() {
 
                                 // i18n
                                 Ext.Ajax.request({
-                                    url: 'i18n/i18n_' + init.keyUiLocale + '.json',
+                                    url: 'i18n/' + init.keyUiLocale + '.json',
                                     success: function(r) {
                                         NS.i18n = Ext.decode(r.responseText);
                                         fn();

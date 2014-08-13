@@ -382,21 +382,19 @@ Ext.onReady( function() {
 											store: {
 												fields: ['id', 'name'],
 												data: function() {
-													var pt = new PeriodType(),
-														periodType = gis.init.systemSettings.infrastructuralPeriodType.id,
-														data;
+                                                    var periodType = gis.init.systemSettings.infrastructuralPeriodType.id,
+                                                        generator = gis.init.periodGenerator,
+														periods = generator.filterFuturePeriodsExceptCurrent(generator.generateReversedPeriods(periodType, this.periodOffset)) || [];
 
-													data = pt.get(periodType).generatePeriods({
-														offset: 0,
-														filterFuturePeriods: true,
-														reversePeriods: true
-													});
+													if (Ext.isArray(periods) && periods.length) {
+                                                        for (var i = 0; i < periods.length; i++) {
+                                                            periods[i].id = periods[i].iso;
+                                                        }
 
-													if (Ext.isArray(data) && data.length) {
-														data = data.slice(0,5);
+														periods = periods.slice(0,5);
 													}
 
-													return data;
+													return periods;
 												}()
 											},
 											lockPosition: false,
