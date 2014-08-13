@@ -340,6 +340,11 @@ public class BaseIdentifiableObject
     {
         this.displayName = displayName;
     }
+    
+    public String getUrn()
+    {
+        return "urn:x-dhis:" + getUid();
+    }
 
     // -------------------------------------------------------------------------
     // hashCode and equals
