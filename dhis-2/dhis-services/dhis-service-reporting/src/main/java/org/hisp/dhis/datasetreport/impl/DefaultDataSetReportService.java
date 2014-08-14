@@ -194,7 +194,7 @@ public class DefaultDataSetReportService
             for ( DataElement dataElement : dataElements )
             {
                 grid.addRow();
-                grid.addValue( new GridValue( dataElement.getName() ) ); // Data element name
+                grid.addValue( new GridValue( dataElement.getFormName() ) ); // Data element name
 
                 for ( DataElementCategoryOptionCombo optionCombo : optionCombos ) // Values
                 {

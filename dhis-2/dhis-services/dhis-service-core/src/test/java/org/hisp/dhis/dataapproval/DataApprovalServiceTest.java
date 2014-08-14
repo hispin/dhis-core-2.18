@@ -40,13 +40,7 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
-import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.mock.MockCurrentUserService;
@@ -60,6 +54,7 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author Jim Grace
@@ -407,7 +402,7 @@ public class DataApprovalServiceTest
     // -------------------------------------------------------------------------
 
     @Test
-    public void testAddAndGetDataApproval() throws Exception
+    public void testAddAllAndGetDataApproval() throws Exception
     {
         dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
         dataApprovalLevelService.addDataApprovalLevel( level2, 2 );
@@ -425,10 +420,7 @@ public class DataApprovalServiceTest
         DataApproval dataApprovalC = new DataApproval( level1, dataSetA, periodB, organisationUnitA, NO_GROUP, NOT_ACCEPTED, date, userA );
         DataApproval dataApprovalD = new DataApproval( level1, dataSetB, periodA, organisationUnitA, NO_GROUP, NOT_ACCEPTED, date, userA );
 
-        dataApprovalService.addDataApproval( dataApprovalA );
-        dataApprovalService.addDataApproval( dataApprovalB );
-        dataApprovalService.addDataApproval( dataApprovalC );
-        dataApprovalService.addDataApproval( dataApprovalD );
+        dataApprovalService.addAllDataApprovals( newArrayList(dataApprovalA, dataApprovalB, dataApprovalC, dataApprovalD) );
 
         dataSetA.setApproveData( true );
         dataSetB.setApproveData( true );

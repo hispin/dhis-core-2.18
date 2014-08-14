@@ -28,14 +28,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-import java.util.Date;
-
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
@@ -53,6 +45,11 @@ import org.hisp.dhis.period.PeriodService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
+import java.util.Date;
+
+import static org.junit.Assert.*;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -64,85 +61,92 @@ public class CompleteDataSetRegistrationBatchHandlerTest
     private BatchHandlerFactory batchHandlerFactory;
 
     private BatchHandler<CompleteDataSetRegistration> batchHandler;
-    
+
     private DataSet dataSetA;
+
     private DataSet dataSetB;
-    
+
     private Period periodA;
+
     private Period periodB;
-    
+
     private OrganisationUnit unitA;
-    
+
     private DataElementCategoryOptionCombo optionCombo;
-    
+
     private Date dateA;
+
     private Date dateB;
-    
+
     private CompleteDataSetRegistration registrationA;
+
     private CompleteDataSetRegistration registrationB;
+
     private CompleteDataSetRegistration registrationC;
+
     private CompleteDataSetRegistration registrationD;
-    
+
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
     @Override
     public void setUpTest()
     {
         dataSetService = (DataSetService) getBean( DataSetService.ID );
         periodService = (PeriodService) getBean( PeriodService.ID );
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        completeDataSetRegistrationService = (CompleteDataSetRegistrationService) getBean( CompleteDataSetRegistrationService.ID );
+        completeDataSetRegistrationService = (CompleteDataSetRegistrationService) getBean(
+            CompleteDataSetRegistrationService.ID );
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
+
         batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
-        
+
         dataSetA = createDataSet( 'A', new MonthlyPeriodType() );
         dataSetB = createDataSet( 'B', new MonthlyPeriodType() );
-        
+
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
-        
+
         periodA = createPeriod( new MonthlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) );
         periodB = createPeriod( new MonthlyPeriodType(), getDate( 2000, 2, 1 ), getDate( 2000, 2, 28 ) );
-        
+
         periodService.addPeriod( periodA );
-        periodService.addPeriod( periodB );        
-        
+        periodService.addPeriod( periodB );
+
         unitA = createOrganisationUnit( 'A' );
-        
+
         organisationUnitService.addOrganisationUnit( unitA );
-        
+
         optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        
+
         dateA = getDate( 2000, 1, 15 );
         dateB = getDate( 2000, 2, 15 );
-        
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, unitA, optionCombo, dateA, "" );
-        registrationB = new CompleteDataSetRegistration( dataSetA, periodB, unitA, optionCombo, dateB, "" );
-        registrationC = new CompleteDataSetRegistration( dataSetB, periodA, unitA, optionCombo, dateA, "" );
-        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, unitA, optionCombo, dateB, "" );
-        
+
+        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, unitA, optionCombo, dateA, "");
+        registrationB = new CompleteDataSetRegistration( dataSetA, periodB, unitA, optionCombo, dateB, "");
+        registrationC = new CompleteDataSetRegistration( dataSetB, periodA, unitA, optionCombo, dateA, "");
+        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, unitA, optionCombo, dateB, "");
+
         batchHandler.init();
     }
-    
+
     @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-    
+
     @Override
     public boolean emptyDatabaseAfterTest()
     {
         return true;
     }
-    
+
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
     @Test
     public void testAddObject()
     {
@@ -150,14 +154,15 @@ public class CompleteDataSetRegistrationBatchHandlerTest
         batchHandler.addObject( registrationB );
         batchHandler.addObject( registrationC );
         batchHandler.addObject( registrationD );
-        
+
         batchHandler.flush();
-        
-        Collection<CompleteDataSetRegistration> registrations = completeDataSetRegistrationService.getAllCompleteDataSetRegistrations();
-        
+
+        Collection<CompleteDataSetRegistration> registrations = completeDataSetRegistrationService
+            .getAllCompleteDataSetRegistrations();
+
         assertNotNull( registrations );
         assertEquals( 4, registrations.size() );
-        
+
         assertTrue( registrations.contains( registrationA ) );
         assertTrue( registrations.contains( registrationB ) );
         assertTrue( registrations.contains( registrationC ) );
@@ -171,24 +176,29 @@ public class CompleteDataSetRegistrationBatchHandlerTest
         batchHandler.insertObject( registrationB, false );
         batchHandler.insertObject( registrationC, false );
         batchHandler.insertObject( registrationD, false );
-        
-        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodA, unitA, optionCombo ) );
-        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodB, unitA, optionCombo ) );
-        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetB, periodA, unitA, optionCombo ) );
-        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetB, periodB, unitA, optionCombo ) );
+
+        assertNotNull( completeDataSetRegistrationService
+            .getCompleteDataSetRegistration( dataSetA, periodA, unitA, optionCombo ) );
+        assertNotNull( completeDataSetRegistrationService
+            .getCompleteDataSetRegistration( dataSetA, periodB, unitA, optionCombo ) );
+        assertNotNull( completeDataSetRegistrationService
+            .getCompleteDataSetRegistration( dataSetB, periodA, unitA, optionCombo ) );
+        assertNotNull( completeDataSetRegistrationService
+            .getCompleteDataSetRegistration( dataSetB, periodB, unitA, optionCombo ) );
     }
 
     @Test
     public void testUpdateObject()
     {
         batchHandler.insertObject( registrationA, false );
-        
+
         registrationA.setDate( dateB );
-        
+
         batchHandler.updateObject( registrationA );
-        
-        registrationA = completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodA, unitA, optionCombo );
-        
+
+        registrationA = completeDataSetRegistrationService
+            .getCompleteDataSetRegistration( dataSetA, periodA, unitA, optionCombo );
+
         assertEquals( dateB, registrationA.getDate() );
     }
 
@@ -197,10 +207,10 @@ public class CompleteDataSetRegistrationBatchHandlerTest
     {
         completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationA );
         completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationB );
-        
+
         assertTrue( batchHandler.objectExists( registrationA ) );
         assertTrue( batchHandler.objectExists( registrationB ) );
-        
+
         assertFalse( batchHandler.objectExists( registrationC ) );
         assertFalse( batchHandler.objectExists( registrationD ) );
     }
