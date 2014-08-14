@@ -249,7 +249,7 @@ public class DataSetController
         return form;
     }
 
-    @RequestMapping( value = "/{uid}/customDataEntryForm", method = { RequestMethod.PUT, RequestMethod.POST }, consumes = "text/html" )
+    @RequestMapping( value = { "/{uid}/customDataEntryForm", "/{uid}/form" }, method = { RequestMethod.PUT, RequestMethod.POST }, consumes = "text/html" )
     @PreAuthorize( "hasRole('ALL')" )
     public void updateCustomDataEntryForm( @PathVariable( "uid" ) String uid,
         @RequestBody String formContent,
