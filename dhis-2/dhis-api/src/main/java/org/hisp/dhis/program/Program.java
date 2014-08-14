@@ -79,13 +79,13 @@ public class Program
     private String dateOfIncidentDescription;
 
     @Scanned
-    private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+    private Set<OrganisationUnit> organisationUnits = new HashSet<>();
 
     @Scanned
-    private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+    private List<ProgramStage> programStages = new ArrayList<>();
 
     @Scanned
-    private Set<ValidationCriteria> validationCriteria = new HashSet<ValidationCriteria>();
+    private Set<ValidationCriteria> validationCriteria = new HashSet<>();
 
     private Integer type;
 
@@ -93,15 +93,15 @@ public class Program
 
     private Boolean ignoreOverdueEvents = false;
 
-    private List<ProgramTrackedEntityAttribute> programAttributes = new ArrayList<ProgramTrackedEntityAttribute>(); //TODO use List?
+    private List<ProgramTrackedEntityAttribute> programAttributes = new ArrayList<>();
 
     @Scanned
-    private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
+    private Set<UserAuthorityGroup> userRoles = new HashSet<>();
 
     private Boolean onlyEnrollOnce = false;
 
     @Scanned
-    private Set<TrackedEntityInstanceReminder> instanceReminders = new HashSet<TrackedEntityInstanceReminder>();
+    private Set<TrackedEntityInstanceReminder> instanceReminders = new HashSet<>();
 
     /**
      * Allow enrolling tracked entity to all org units disregarding whether the
