@@ -30,8 +30,6 @@ package org.hisp.dhis.dxf2.datavalue;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
-import org.hisp.dhis.dxf2.datavalue.DataValue;
-
 import java.io.IOException;
 
 /**
@@ -84,7 +82,7 @@ public class StreamingJsonDataValue extends DataValue
     {
         writeObjectField( "attributeOptionCombo", attributeOptionCombo );
     }
-    
+
     @Override
     public void setValue( String value )
     {

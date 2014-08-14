@@ -124,7 +124,8 @@ public class DefaultCompleteDataSetRegistrationService
     public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period,
         OrganisationUnit source, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        return completeDataSetRegistrationStore.getCompleteDataSetRegistration( dataSet, period, source, attributeOptionCombo );
+        return completeDataSetRegistrationStore
+            .getCompleteDataSetRegistration( dataSet, period, source, attributeOptionCombo );
     }
 
     public Collection<CompleteDataSetRegistration> getAllCompleteDataSetRegistrations()

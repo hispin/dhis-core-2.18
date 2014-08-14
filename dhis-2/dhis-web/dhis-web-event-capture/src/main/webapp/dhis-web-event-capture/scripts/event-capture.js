@@ -333,7 +333,7 @@ function getProgramStage( id )
 {
     return function() {
         return $.ajax( {
-            url: '../api/programStages.json?filter=id:eq:' + id +'&fields=id,name,version,description,reportDateDescription,captureCoordinates,dataEntryForm,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,optionSet[id]]]',
+            url: '../api/programStages.json?filter=id:eq:' + id +'&fields=id,name,version,description,reportDateDescription,captureCoordinates,dataEntryForm,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,formName,optionSet[id]]]',
             type: 'GET'
         }).done( function( response ){            
             _.each( _.values( response.programStages ), function( programStage ) {                

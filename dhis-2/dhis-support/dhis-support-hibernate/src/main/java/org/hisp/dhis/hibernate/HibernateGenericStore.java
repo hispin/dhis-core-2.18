@@ -36,6 +36,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hisp.dhis.acl.AccessStringHelper;
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -47,7 +48,6 @@ import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.ReadAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.interpretation.Interpretation;
-import org.hisp.dhis.acl.AccessStringHelper;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserGroupAccess;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -193,6 +193,7 @@ public class HibernateGenericStore<T>
             criteria.add( expression );
         }
 
+        criteria.setCacheable( cacheable );
         return criteria;
     }
 
@@ -202,7 +203,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return an object of the implementation Class type.
      */
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     protected final T getObject( Criterion... expressions )
     {
         return (T) getCriteria( expressions ).uniqueResult();
@@ -214,7 +215,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return a List with objects of the implementation Class type.
      */
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     protected final List<T> getList( Criterion... expressions )
     {
         return getCriteria( expressions ).list();
@@ -290,7 +291,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public final T get( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().get( getClazz(), id );
@@ -305,7 +306,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public final T load( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().load( getClazz(), id );
@@ -337,7 +338,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public final List<T> getAll()
     {
         Query query = sharingEnabled() ? getQueryAllAcl() : getQueryAll();
@@ -360,39 +361,39 @@ public class HibernateGenericStore<T>
 
     /**
      * Returns a Query instance. Allows for injecting a criteria part, such as
-     * "code = :code and name = :name". Note that the bound values must be set 
+     * "code = :code and name = :name". Note that the bound values must be set
      * on the query before executing it.
-     * 
+     *
      * @param hqlCriteria the HQL criteria.
      * @return a Query.
      */
     protected Query getQueryWithSelect( String hqlCriteria )
     {
         boolean sharingEnabled = sharingEnabled();
-        
+
         String hql = "select distinct c from " + clazz.getName() + " c";
-        
+
         if ( hqlCriteria != null )
         {
             hql += " where " + hqlCriteria;
         }
-        
+
         if ( sharingEnabled )
         {
             String criteria = hqlCriteria != null ? "and" : "where";
-            
+
             hql += " " + criteria + " ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
                 + " or exists "
                 + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%') )";
         }
-        
+
         Query query = getQuery( hql );
-        
+
         if ( sharingEnabled )
         {
             query.setEntity( "user", currentUserService.getCurrentUser() );
         }
-        
+
         return query;
     }
 

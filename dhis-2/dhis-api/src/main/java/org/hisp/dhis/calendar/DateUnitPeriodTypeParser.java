@@ -97,6 +97,8 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
             return null;
         }
 
+        Calendar calendar = getCalendar();
+
         if ( DateUnitType.DAILY.equals( type ) )
         {
             int year = Integer.parseInt( matcher.group( 1 ) );
@@ -104,7 +106,7 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
             int day = Integer.parseInt( matcher.group( 3 ) );
 
             DateUnit dateUnit = new DateUnit( year, month, day );
-            dateUnit.setDayOfWeek( getCalendar().weekday( dateUnit ) );
+            dateUnit.setDayOfWeek(calendar.weekday(dateUnit));
 
             return new DateInterval( dateUnit, dateUnit );
         }
@@ -113,27 +115,27 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
             int year = Integer.parseInt( matcher.group( 1 ) );
             int week = Integer.parseInt( matcher.group( 2 ) );
 
-            if ( week < 1 || week > getCalendar().weeksInYear( year ) )
+            if ( week < 1 || week > calendar.weeksInYear(year) )
             {
                 return null;
             }
 
             DateUnit start = new DateUnit( year, 1, 1 );
-            start = getCalendar().minusDays( start, getCalendar().weekday( start ) - 1 ); // rewind to start of week
+            start = calendar.minusDays(start, calendar.weekday(start) - 1); // rewind to start of week
 
             // since we rewind to start of week, we might end up in the previous years weeks, so we check and forward if needed
-            if ( getCalendar().isoWeek( start ) == getCalendar().weeksInYear( year ) )
+            if ( calendar.isoWeek(start) == calendar.weeksInYear(year) )
             {
-                start = getCalendar().plusWeeks( start, 1 );
+                start = calendar.plusWeeks(start, 1);
             }
 
-            start = getCalendar().plusWeeks( start, week - 1 );
+            start = calendar.plusWeeks(start, week - 1);
             DateUnit end = new DateUnit( start );
-            end = getCalendar().plusWeeks( end, 1 );
-            end = getCalendar().minusDays( end, 1 );
+            end = calendar.plusWeeks(end, 1);
+            end = calendar.minusDays(end, 1);
 
-            start.setDayOfWeek( getCalendar().weekday( start ) );
-            end.setDayOfWeek( getCalendar().weekday( end ) );
+            start.setDayOfWeek( calendar.weekday(start) );
+            end.setDayOfWeek( calendar.weekday(end) );
 
             return new DateInterval( start, end );
         }
@@ -143,10 +145,10 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
             int month = Integer.parseInt( matcher.group( 2 ) );
 
             DateUnit start = new DateUnit( year, month, 1 );
-            DateUnit end = new DateUnit( year, month, getCalendar().daysInMonth( start.getYear(), start.getMonth() ) );
+            DateUnit end = new DateUnit( year, month, calendar.daysInMonth(start.getYear(), start.getMonth()) );
 
-            start.setDayOfWeek( getCalendar().weekday( start ) );
-            end.setDayOfWeek( getCalendar().weekday( end ) );
+            start.setDayOfWeek( calendar.weekday(start) );
+            end.setDayOfWeek(calendar.weekday(end));
 
             return new DateInterval( start, end );
         }
@@ -162,11 +164,11 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
 
             DateUnit start = new DateUnit( year, (month * 2) - 1, 1 );
             DateUnit end = new DateUnit( start );
-            end = getCalendar().plusMonths( end, 2 );
-            end = getCalendar().minusDays( end, 1 );
+            end = calendar.plusMonths(end, 2);
+            end = calendar.minusDays(end, 1);
 
-            start.setDayOfWeek( getCalendar().weekday( start ) );
-            end.setDayOfWeek( getCalendar().weekday( end ) );
+            start.setDayOfWeek( calendar.weekday(start) );
+            end.setDayOfWeek(calendar.weekday(end));
 
             return new DateInterval( start, end );
         }
@@ -183,11 +185,11 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
 
             DateUnit start = new DateUnit( year, ((quarter - 1) * 3) + 1, 1 );
             DateUnit end = new DateUnit( start );
-            end = getCalendar().plusMonths( end, 3 );
-            end = getCalendar().minusDays( end, 1 );
+            end = calendar.plusMonths(end, 3);
+            end = calendar.minusDays(end, 1);
 
-            start.setDayOfWeek( getCalendar().weekday( start ) );
-            end.setDayOfWeek( getCalendar().weekday( end ) );
+            start.setDayOfWeek( calendar.weekday(start) );
+            end.setDayOfWeek(calendar.weekday(end));
 
             return new DateInterval( start, end );
         }
@@ -204,11 +206,11 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
 
             DateUnit start = new DateUnit( year, semester == 1 ? 1 : 7, 1 );
             DateUnit end = new DateUnit( start );
-            end = getCalendar().plusMonths( end, 6 );
-            end = getCalendar().minusDays( end, 1 );
+            end = calendar.plusMonths(end, 6);
+            end = calendar.minusDays(end, 1);
 
-            start.setDayOfWeek( getCalendar().weekday( start ) );
-            end.setDayOfWeek( getCalendar().weekday( end ) );
+            start.setDayOfWeek( calendar.weekday(start) );
+            end.setDayOfWeek(calendar.weekday(end));
 
             return new DateInterval( start, end );
         }
@@ -225,11 +227,11 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
 
             DateUnit start = new DateUnit( year, semester == 1 ? 4 : 10, 1 );
             DateUnit end = new DateUnit( start );
-            end = getCalendar().plusMonths( end, 6 );
-            end = getCalendar().minusDays( end, 1 );
+            end = calendar.plusMonths(end, 6);
+            end = calendar.minusDays(end, 1);
 
-            start.setDayOfWeek( getCalendar().weekday( start ) );
-            end.setDayOfWeek( getCalendar().weekday( end ) );
+            start.setDayOfWeek( calendar.weekday(start) );
+            end.setDayOfWeek(calendar.weekday(end));
 
             return new DateInterval( start, end );
         }
@@ -238,11 +240,11 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
             int year = Integer.parseInt( matcher.group( 1 ) );
 
             DateUnit start = new DateUnit( year, 1, 1 );
-            DateUnit end = new DateUnit( year, getCalendar().monthsInYear(),
-                getCalendar().daysInMonth( start.getYear(), getCalendar().monthsInYear() ) );
+            DateUnit end = new DateUnit( year, calendar.monthsInYear(),
+                calendar.daysInMonth(start.getYear(), calendar.monthsInYear()) );
 
-            start.setDayOfWeek( getCalendar().weekday( start ) );
-            end.setDayOfWeek( getCalendar().weekday( end ) );
+            start.setDayOfWeek(calendar.weekday(start));
+            end.setDayOfWeek( calendar.weekday(end) );
 
             return new DateInterval( start, end );
         }
@@ -252,11 +254,11 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
 
             DateUnit start = new DateUnit( year, 4, 1 );
             DateUnit end = new DateUnit( start );
-            end = getCalendar().plusYears( end, 1 );
-            end = getCalendar().minusDays( end, 1 );
+            end = calendar.plusYears(end, 1);
+            end = calendar.minusDays(end, 1);
 
-            start.setDayOfWeek( getCalendar().weekday( start ) );
-            end.setDayOfWeek( getCalendar().weekday( end ) );
+            start.setDayOfWeek( calendar.weekday(start) );
+            end.setDayOfWeek(calendar.weekday(end));
 
             return new DateInterval( start, end );
         }
@@ -266,11 +268,11 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
 
             DateUnit start = new DateUnit( year, 7, 1 );
             DateUnit end = new DateUnit( start );
-            end = getCalendar().plusYears( end, 1 );
-            end = getCalendar().minusDays( end, 1 );
+            end = calendar.plusYears(end, 1);
+            end = calendar.minusDays(end, 1);
 
-            start.setDayOfWeek( getCalendar().weekday( start ) );
-            end.setDayOfWeek( getCalendar().weekday( end ) );
+            start.setDayOfWeek( calendar.weekday(start) );
+            end.setDayOfWeek(calendar.weekday(end));
 
             return new DateInterval( start, end );
         }
@@ -280,11 +282,11 @@ public class DateUnitPeriodTypeParser implements PeriodTypeParser
 
             DateUnit start = new DateUnit( year, 10, 1 );
             DateUnit end = new DateUnit( start );
-            end = getCalendar().plusYears( end, 1 );
-            end = getCalendar().minusDays( end, 1 );
+            end = calendar.plusYears(end, 1);
+            end = calendar.minusDays(end, 1);
 
-            start.setDayOfWeek( getCalendar().weekday( start ) );
-            end.setDayOfWeek( getCalendar().weekday( end ) );
+            start.setDayOfWeek( calendar.weekday(start) );
+            end.setDayOfWeek(calendar.weekday(end));
 
             return new DateInterval( start, end );
         }

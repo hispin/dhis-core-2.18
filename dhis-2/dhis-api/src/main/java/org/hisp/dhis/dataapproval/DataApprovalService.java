@@ -35,6 +35,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -44,6 +45,13 @@ import java.util.Set;
 public interface DataApprovalService
 {
     String ID = DataApprovalService.class.getName();
+
+    /**
+     * Adds a list of DataApproval in order to approve data.
+     *
+     * @param dataApprovalList the DataApproval to add.
+     */
+    void addAllDataApprovals(List<DataApproval> dataApprovalList);
 
     /**
      * Adds a DataApproval in order to approve data.
@@ -60,6 +68,15 @@ public interface DataApprovalService
      * @param dataApproval the DataApproval to delete.
      */
     void deleteDataApproval( DataApproval dataApproval );
+
+    /**
+     * Deletes a list of DataApproval in order to un-approve data.
+     * Any higher-level DataApprovals above this organisation unit
+     * are also deleted for the same period and data set.
+     *
+     * @param dataApprovalList the DataApproval to delete.
+     */
+    void deleteDataApprovals( List<DataApproval> dataApprovalList );
 
     /**
      * Returns the data approval status for a given data set, period,

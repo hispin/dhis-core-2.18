@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.datavalueset;
+package org.hisp.dhis.dataapproval;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,27 +28,12 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
-
-import java.io.OutputStream;
-import java.io.Writer;
-import java.util.Date;
-import java.util.Set;
+import java.util.HashSet;
 
 /**
- * @author Lars Helge Overland
+ * Represents a collection of data approval state responses
  */
-public interface DataValueSetStore
+public class DataApprovalStateRequests
+    extends HashSet<DataApprovalStateRequest>
 {
-    public void writeDataValueSetXml(Set<DataSet> dataSets, Date completeDate, Period period, OrganisationUnit orgUnit,
-                                     Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out);
-
-    public void writeDataValueSetCsv(Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer);
-
-    public void writeDataValueSetJson(Set<DataSet> dataSets, Date completeDate, Period period, OrganisationUnit orgUnit,
-                                      Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out);
-
-    void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream );
 }
