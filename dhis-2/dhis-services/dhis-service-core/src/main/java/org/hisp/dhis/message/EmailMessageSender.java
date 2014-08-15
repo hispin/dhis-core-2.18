@@ -116,7 +116,6 @@ public class EmailMessageSender
         
         try
         {
-            System.out.println("pw " + password);
             Email email = getEmail( hostName, port, username, password, tls, from );
             email.setSubject( SUBJECT_PREFIX + subject );
             email.setMsg( text );
