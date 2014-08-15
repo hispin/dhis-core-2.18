@@ -215,7 +215,7 @@ public class OrganisationUnitController
         List<OrganisationUnit> organisationUnits = Lists.newArrayList();
         
         // Add organisation unit parents 
-        if ( organisationUnits != null )
+        if ( organisationUnit != null )
         {
             OrganisationUnit organisationUnitParent = organisationUnit.getParent();
 
@@ -224,10 +224,6 @@ public class OrganisationUnitController
                 organisationUnits.add( organisationUnitParent );
                 organisationUnitParent = organisationUnitParent.getParent();   
             }
-        }
-        else
-        {            
-            organisationUnits = Lists.newArrayList();            
         }
         
         WebMetaData metaData = new WebMetaData();      
