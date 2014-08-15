@@ -84,7 +84,7 @@ public class GetSelectedDataElementsAction
     {        
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
-        dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
+        dataElementList = new ArrayList<>( dataSet.getDataElements() );
 
         Collections.sort( dataElementList, new IdentifiableObjectNameComparator() );
         

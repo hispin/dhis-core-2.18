@@ -91,13 +91,13 @@ public class GetGroupSetListAction
         {
             this.paging = createPaging( organisationUnitGroupService.getOrganisationUnitGroupSetCountByName( key ) );
             
-            organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getOrganisationUnitGroupSetsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            organisationUnitGroupSets = new ArrayList<>( organisationUnitGroupService.getOrganisationUnitGroupSetsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( organisationUnitGroupService.getOrganisationUnitGroupSetCount() );
             
-            organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getOrganisationUnitGroupSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
+            organisationUnitGroupSets = new ArrayList<>( organisationUnitGroupService.getOrganisationUnitGroupSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
         Collections.sort( organisationUnitGroupSets, IdentifiableObjectNameComparator.INSTANCE );

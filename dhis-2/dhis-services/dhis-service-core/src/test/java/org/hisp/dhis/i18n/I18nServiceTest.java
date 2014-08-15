@@ -86,7 +86,7 @@ public class I18nServiceTest
         DataElement dataElementA = createDataElement( 'A' );
         String idA = dataElementA.getUid();
         
-        Map<String, String> translationsA = new HashMap<String, String>();
+        Map<String, String> translationsA = new HashMap<>();
         translationsA.put( "name", "frenchNameA" );
         translationsA.put( "shortName", "frenchShortNameA" );
         translationsA.put( "description", "frenchDescriptionA" );        
@@ -110,7 +110,7 @@ public class I18nServiceTest
         DataElement dataElementA = createDataElement( 'A' );
         dataElementService.addDataElement( dataElementA );
         
-        Map<String, String> translationsA = new HashMap<String, String>();
+        Map<String, String> translationsA = new HashMap<>();
         translationsA.put( "name", "frenchNameA" );
         translationsA.put( "shortName", "frenchShortNameA" );
         translationsA.put( "description", "frenchDescriptionA" );        
@@ -143,22 +143,22 @@ public class I18nServiceTest
         DataElement dataElementC = createDataElement( 'C' );
         dataElementService.addDataElement( dataElementC );
         
-        List<DataElement> elements = new ArrayList<DataElement>();
+        List<DataElement> elements = new ArrayList<>();
         elements.add( dataElementA );
         elements.add( dataElementB );
         elements.add( dataElementC );        
         
-        Map<String, String> translationsA = new HashMap<String, String>();
+        Map<String, String> translationsA = new HashMap<>();
         translationsA.put( "name", "frenchNameA" );
         translationsA.put( "shortName", "frenchShortNameA" );
         translationsA.put( "description", "frenchDescriptionA" );
         
-        Map<String, String> translationsB = new HashMap<String, String>();
+        Map<String, String> translationsB = new HashMap<>();
         translationsB.put( "name", "frenchNameB" );
         translationsB.put( "shortName", "frenchShortNameB" );
         translationsB.put( "description", "frenchDescriptionB" );
         
-        Map<String, String> translationsC = new HashMap<String, String>();
+        Map<String, String> translationsC = new HashMap<>();
         translationsC.put( "name", "frenchNameC" );
         translationsC.put( "shortName", "frenchShortNameC" );
         translationsC.put( "description", "frenchDescriptionC" );        

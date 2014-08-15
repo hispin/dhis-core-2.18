@@ -54,11 +54,11 @@ public class Message
 
     private String text;
 
-    private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+    private Set<OrganisationUnit> organisationUnits = new HashSet<>();
 
-    private Set<User> users = new HashSet<User>();
+    private Set<User> users = new HashSet<>();
 
-    private Set<UserGroup> userGroups = new HashSet<UserGroup>();
+    private Set<UserGroup> userGroups = new HashSet<>();
 
     public Message()
     {

@@ -113,13 +113,13 @@ public class GetIndicatorListAction
         {
             this.paging = createPaging( indicatorService.getIndicatorCountByName( key ) );
             
-            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            indicators = new ArrayList<>( indicatorService.getIndicatorsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( indicatorService.getIndicatorCount() );
             
-            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetween( paging.getStartPos(), paging.getPageSize() ) );
+            indicators = new ArrayList<>( indicatorService.getIndicatorsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
         Collections.sort( indicators, new IdentifiableObjectNameComparator() );

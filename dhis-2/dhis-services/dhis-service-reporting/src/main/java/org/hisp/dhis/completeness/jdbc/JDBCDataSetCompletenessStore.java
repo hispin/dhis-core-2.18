@@ -155,7 +155,7 @@ public class JDBCDataSetCompletenessStore
     
     public Collection<DataSet> getDataSetsWithRegistrations( Collection<DataSet> dataSets )
     {
-        Collection<DataSet> selection = new ArrayList<DataSet>();
+        Collection<DataSet> selection = new ArrayList<>();
         
         for ( DataSet dataSet : dataSets )
         {

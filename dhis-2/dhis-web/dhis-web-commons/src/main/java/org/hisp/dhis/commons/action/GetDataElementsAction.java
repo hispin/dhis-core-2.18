@@ -163,7 +163,7 @@ public class GetDataElementsAction
 
             if ( dataElementGroup != null )
             {
-                dataElements = new ArrayList<DataElement>( dataElementGroup.getMembers() );
+                dataElements = new ArrayList<>( dataElementGroup.getMembers() );
             }
         }
         else if ( categoryComboId != null && categoryComboId != ALL )
@@ -172,7 +172,7 @@ public class GetDataElementsAction
 
             if ( categoryCombo != null )
             {
-                dataElements = new ArrayList<DataElement>(
+                dataElements = new ArrayList<>(
                     dataElementService.getDataElementByCategoryCombo( categoryCombo ) );
             }
         }
@@ -182,7 +182,7 @@ public class GetDataElementsAction
 
             if ( dataset != null )
             {
-                dataElements = new ArrayList<DataElement>( dataset.getDataElements() );
+                dataElements = new ArrayList<>( dataset.getDataElements() );
             }
         }
         else if ( periodTypeName != null )
@@ -191,25 +191,25 @@ public class GetDataElementsAction
 
             if ( periodType != null )
             {
-                dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByPeriodType( periodType ) );
+                dataElements = new ArrayList<>( dataElementService.getDataElementsByPeriodType( periodType ) );
             }
         }
         else if ( domain != null )
         {
             if ( domain.equals( DataElementDomain.AGGREGATE.getValue() ) )
             {
-                dataElements = new ArrayList<DataElement>(
+                dataElements = new ArrayList<>(
                     dataElementService.getDataElementsByDomainType( DataElementDomain.AGGREGATE ) );
             }
             else
             {
-                dataElements = new ArrayList<DataElement>(
+                dataElements = new ArrayList<>(
                     dataElementService.getDataElementsByDomainType( DataElementDomain.TRACKER ) );
             }
         }
         else
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+            dataElements = new ArrayList<>( dataElementService.getAllDataElements() );
 
             ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), dataElements );
         }
@@ -221,7 +221,7 @@ public class GetDataElementsAction
 
         if ( dataElements == null )
         {
-            dataElements = new ArrayList<DataElement>();
+            dataElements = new ArrayList<>();
         }
 
         Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );

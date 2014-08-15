@@ -108,9 +108,9 @@ public class ExpressionServiceTest
     private String descriptionA;
     private String descriptionB;
     
-    private Set<DataElement> dataElements = new HashSet<DataElement>();
+    private Set<DataElement> dataElements = new HashSet<>();
 
-    private Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+    private Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -264,8 +264,8 @@ public class ExpressionServiceTest
     @Test
     public void testGetDataElementTotalUids()
     {
-        Set<String> uids = new HashSet<String>();
-        Set<String> empty = new HashSet<String>();
+        Set<String> uids = new HashSet<>();
+        Set<String> empty = new HashSet<>();
         
         uids.add( dataElementB.getUid() );
         uids.add( dataElementC.getUid() );
@@ -348,14 +348,14 @@ public class ExpressionServiceTest
     @Test
     public void testGenerateExpressionMap()
     {
-        Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
+        Map<DataElementOperand, Double> valueMap = new HashMap<>();
         valueMap.put( new DataElementOperand( dataElementA.getUid(), categoryOptionCombo.getUid() ), new Double( 12 ) );
         valueMap.put( new DataElementOperand( dataElementB.getUid(), categoryOptionCombo.getUid() ), new Double( 34 ) );
         
-        Map<String, Double> constantMap = new HashMap<String, Double>();
+        Map<String, Double> constantMap = new HashMap<>();
         constantMap.put( constantA.getUid(), 2.0 );
         
-        Map<String, Integer> orgUnitCountMap = new HashMap<String, Integer>();
+        Map<String, Integer> orgUnitCountMap = new HashMap<>();
         orgUnitCountMap.put( groupA.getUid(), groupA.getMembers().size() );
 
         assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap, constantMap, null, null, false ) );
@@ -367,9 +367,9 @@ public class ExpressionServiceTest
     @Test
     public void testGenerateExpressionMapNullIfNoValues()
     {
-        Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
+        Map<DataElementOperand, Double> valueMap = new HashMap<>();
         
-        Map<String, Double> constantMap = new HashMap<String, Double>();
+        Map<String, Double> constantMap = new HashMap<>();
 
         assertNull( expressionService.generateExpression( expressionA, valueMap, constantMap, null, null, true ) );
         assertNull( expressionService.generateExpression( expressionD, valueMap, constantMap, null, 5, true ) );
@@ -384,14 +384,14 @@ public class ExpressionServiceTest
         Expression expE = createExpression( 'E', expressionE, null, null );
         Expression expH = createExpression( 'H', expressionH, null, null );
         
-        Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
+        Map<DataElementOperand, Double> valueMap = new HashMap<>();
         valueMap.put( new DataElementOperand( dataElementA.getUid(), categoryOptionCombo.getUid() ), new Double( 12 ) );
         valueMap.put( new DataElementOperand( dataElementB.getUid(), categoryOptionCombo.getUid() ), new Double( 34 ) );
         
-        Map<String, Double> constantMap = new HashMap<String, Double>();
+        Map<String, Double> constantMap = new HashMap<>();
         constantMap.put( constantA.getUid(), 2.0 );
         
-        Map<String, Integer> orgUnitCountMap = new HashMap<String, Integer>();
+        Map<String, Integer> orgUnitCountMap = new HashMap<>();
         orgUnitCountMap.put( groupA.getUid(), groupA.getMembers().size() );
         
         assertEquals( 46d, expressionService.getExpressionValue( expA, valueMap, constantMap, null, null ), DELTA );
@@ -408,11 +408,11 @@ public class ExpressionServiceTest
         indicatorA.setNumerator( expressionE );
         indicatorA.setDenominator( expressionF );
 
-        Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
+        Map<DataElementOperand, Double> valueMap = new HashMap<>();
         valueMap.put( new DataElementOperand( dataElementA.getUid(), categoryOptionCombo.getUid() ), new Double( 12 ) );
         valueMap.put( new DataElementOperand( dataElementB.getUid(), categoryOptionCombo.getUid() ), new Double( 34 ) );
         
-        Map<String, Double> constantMap = new HashMap<String, Double>();
+        Map<String, Double> constantMap = new HashMap<>();
         constantMap.put( constantA.getUid(), 2.0 );
         
         assertEquals( 200d, expressionService.getIndicatorValue( indicatorA, period, valueMap, constantMap, null, null ), DELTA );        

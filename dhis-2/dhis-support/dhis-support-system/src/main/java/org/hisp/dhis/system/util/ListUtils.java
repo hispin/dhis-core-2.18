@@ -74,7 +74,7 @@ public class ListUtils
      */
     public static <T> void removeAll( List<T> list, Integer... indexes )
     {
-        List<Integer> inx = new ArrayList<Integer>( Arrays.asList( indexes ) );
+        List<Integer> inx = new ArrayList<>( Arrays.asList( indexes ) );
         
         removeAll( list, inx );
     }
@@ -87,7 +87,7 @@ public class ListUtils
      */
     public static <T> List<T> getAtIndexes( List<T> list, List<Integer> indexes )
     {
-        List<T> elements = new ArrayList<T>();
+        List<T> elements = new ArrayList<>();
         
         for ( Integer index : indexes )
         {
@@ -134,7 +134,7 @@ public class ListUtils
      */
     public static <T> Collection<T> getDuplicates( List<T> list, Comparator<T> comparator )
     {
-        Set<T> duplicates = new HashSet<T>();
+        Set<T> duplicates = new HashSet<>();
         
         Collections.sort( list, comparator );
         
@@ -161,7 +161,7 @@ public class ListUtils
      */
     public static <T> Collection<T> getCollection( T... items )
     {
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
         
         for ( T item : items )
         {
@@ -179,7 +179,7 @@ public class ListUtils
      */
     public static <T> List<T> getList( T... items )
     {
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
         
         for ( T item : items )
         {

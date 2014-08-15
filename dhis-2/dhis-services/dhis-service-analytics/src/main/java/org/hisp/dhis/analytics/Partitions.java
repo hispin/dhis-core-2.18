@@ -37,7 +37,7 @@ import java.util.Set;
  */
 public class Partitions
 {
-    private List<String> partitions = new ArrayList<String>();
+    private List<String> partitions = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -54,7 +54,7 @@ public class Partitions
     
     public Partitions( Partitions partitions )
     {
-        this.partitions = partitions != null ? new ArrayList<String>( partitions.getPartitions() ) : new ArrayList<String>();
+        this.partitions = partitions != null ? new ArrayList<>( partitions.getPartitions() ) : new ArrayList<String>();
     }
 
     // -------------------------------------------------------------------------

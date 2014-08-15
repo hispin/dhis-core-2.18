@@ -164,7 +164,7 @@ public class UpdateOrganisationUnitGroupAction
 
         if ( selectedDataSetsList != null )
         {
-            Set<DataSet> dataSets = new HashSet<DataSet>();
+            Set<DataSet> dataSets = new HashSet<>();
 
             for ( String id : selectedDataSetsList )
             {

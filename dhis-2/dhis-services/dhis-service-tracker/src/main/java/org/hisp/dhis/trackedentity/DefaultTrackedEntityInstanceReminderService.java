@@ -199,7 +199,7 @@ public class DefaultTrackedEntityInstanceReminderService
     @Override
     public Set<String> getPhonenumbers( TrackedEntityInstanceReminder reminder, TrackedEntityInstance entityInstance )
     {
-        Set<String> phoneNumbers = new HashSet<String>();
+        Set<String> phoneNumbers = new HashSet<>();
         switch ( reminder.getSendTo() )
         {
         case TrackedEntityInstanceReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED:
@@ -262,7 +262,7 @@ public class DefaultTrackedEntityInstanceReminderService
 
     public Set<User> getUsers( TrackedEntityInstanceReminder reminder, TrackedEntityInstance entityInstance )
     {
-        Set<User> users = new HashSet<User>();
+        Set<User> users = new HashSet<>();
 
         switch ( reminder.getSendTo() )
         {

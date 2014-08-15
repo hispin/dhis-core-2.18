@@ -53,7 +53,7 @@ public class GetUsernamesAction implements Action
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private SortedSet<String> usernames = new TreeSet<String>();
+    private SortedSet<String> usernames = new TreeSet<>();
 
     public Set<String> getUsernames()
     {

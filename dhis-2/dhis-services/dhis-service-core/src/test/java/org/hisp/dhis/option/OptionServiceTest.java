@@ -45,7 +45,7 @@ public class OptionServiceTest
 {
     private OptionService optionService;
 
-    private List<Option> options = new ArrayList<Option>();
+    private List<Option> options = new ArrayList<>();
 
     private OptionSet optionSetA = new OptionSet( "OptionSetA" );
 

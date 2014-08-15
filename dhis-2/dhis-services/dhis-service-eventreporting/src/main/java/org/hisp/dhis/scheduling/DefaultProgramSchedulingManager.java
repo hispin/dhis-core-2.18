@@ -62,7 +62,7 @@ public class DefaultProgramSchedulingManager implements ProgramSchedulingManager
         this.scheduler = scheduler;
     }
 
-    private Map<String, Runnable> tasks = new HashMap<String, Runnable>();
+    private Map<String, Runnable> tasks = new HashMap<>();
 
     public void setTasks( Map<String, Runnable> tasks )
     {
@@ -91,7 +91,7 @@ public class DefaultProgramSchedulingManager implements ProgramSchedulingManager
     
     public void scheduleTasks( Map<String, String> keyCronMap )
     {
-        systemSettingManager.saveSystemSetting( KEY_SEND_MESSAGE_SCHEDULED_TASKS, new HashMap<String, String>( keyCronMap ) );
+        systemSettingManager.saveSystemSetting( KEY_SEND_MESSAGE_SCHEDULED_TASKS, new HashMap<>( keyCronMap ) );
         
         scheduleTasks();
     }

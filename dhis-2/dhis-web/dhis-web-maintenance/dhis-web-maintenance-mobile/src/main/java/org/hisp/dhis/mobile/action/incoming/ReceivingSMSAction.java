@@ -90,7 +90,7 @@ public class ReceivingSMSAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<IncomingSms> listIncomingSms = new ArrayList<IncomingSms>();
+    private List<IncomingSms> listIncomingSms = new ArrayList<>();
 
     public List<IncomingSms> getListIncomingSms()
     {
@@ -201,7 +201,7 @@ public class ReceivingSMSAction
 
             this.paging = createPaging( total );
 
-            listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( null, keyword,
+            listIncomingSms = new ArrayList<>( incomingSmsService.getSmsByStatus( null, keyword,
                 this.paging.getStartPos(), this.paging.getPageSize() ) );
         }
         else
@@ -216,7 +216,7 @@ public class ReceivingSMSAction
 
                     this.paging = createPaging( total );
 
-                    listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( statusArray[i],
+                    listIncomingSms = new ArrayList<>( incomingSmsService.getSmsByStatus( statusArray[i],
                         keyword.trim(), this.paging.getStartPos(), this.paging.getPageSize() ) );
 
                     break;
@@ -225,7 +225,7 @@ public class ReceivingSMSAction
         }
         
         // Get the name of senders
-        senderNames = new ArrayList<String>();
+        senderNames = new ArrayList<>();
         senderNames.add( "" );
         String tempString;
         for ( IncomingSms incomingSms : listIncomingSms )

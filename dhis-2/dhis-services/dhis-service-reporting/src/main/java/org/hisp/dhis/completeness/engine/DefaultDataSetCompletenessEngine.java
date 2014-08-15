@@ -146,9 +146,9 @@ public class DefaultDataSetCompletenessEngine
 
         FilterUtils.filter( dataSets, new DataSetWithOrganisationUnitsFilter() );
 
-        List<List<OrganisationUnit>> organisationUnitPages = new PaginatedList<OrganisationUnit>( organisationUnits ).setNumberOfPages( cpuCores ).getPages();
+        List<List<OrganisationUnit>> organisationUnitPages = new PaginatedList<>( organisationUnits ).setNumberOfPages( cpuCores ).getPages();
 
-        List<Future<?>> futures = new ArrayList<Future<?>>();
+        List<Future<?>> futures = new ArrayList<>();
 
         for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
         {

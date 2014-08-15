@@ -116,7 +116,7 @@ public class DefaultProgramService
     @Override
     public Collection<Program> getPrograms( ValidationCriteria validationCriteria )
     {
-        Set<Program> programs = new HashSet<Program>();
+        Set<Program> programs = new HashSet<>();
 
         for ( Program program : getAllPrograms() )
         {
@@ -162,7 +162,7 @@ public class DefaultProgramService
     @Override
     public Collection<Program> getProgramsByCurrentUser( OrganisationUnit organisationUnit )
     {
-        Collection<Program> programs = new ArrayList<Program>( getProgramsByDisplayOnAllOrgunit( true, null ) );
+        Collection<Program> programs = new ArrayList<>( getProgramsByDisplayOnAllOrgunit( true, null ) );
         programs.addAll( getProgramsByDisplayOnAllOrgunit( false, organisationUnit ) );
         programs.retainAll( getProgramsByCurrentUser() );
 

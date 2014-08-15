@@ -191,9 +191,9 @@ public class DefaultMappingService
     {
         MapLegendSet mapLegendSet = getMapLegendSetByName( name );
 
-        Set<Indicator> indicators = new HashSet<Indicator>();
+        Set<Indicator> indicators = new HashSet<>();
 
-        Set<DataElement> dataElements = new HashSet<DataElement>();
+        Set<DataElement> dataElements = new HashSet<>();
 
         if ( mapLegendSet != null )
         {

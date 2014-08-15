@@ -43,7 +43,7 @@ public class GroupMemberAssociationVerifier
 {
     private static final String SEPARATOR = "-";
     
-    private static ThreadLocal<Set<String>> associationSet = new ThreadLocal<Set<String>>();
+    private static ThreadLocal<Set<String>> associationSet = new ThreadLocal<>();
     
     public static boolean isUnique( GroupMemberAssociation association, GroupMemberType type )
     {
@@ -62,7 +62,7 @@ public class GroupMemberAssociationVerifier
 
         if ( set == null )
         {
-            set = new HashSet<String>();
+            set = new HashSet<>();
         }
                 
         set.add( getString( association, type ) );

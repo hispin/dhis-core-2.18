@@ -81,14 +81,14 @@ public class AddRoleAction
         this.description = description;
     }
 
-    private Collection<String> selectedList = new ArrayList<String>();
+    private Collection<String> selectedList = new ArrayList<>();
 
     public void setSelectedList( Collection<String> selectedList )
     {
         this.selectedList = selectedList;
     }
 
-    private Collection<String> selectedListAuthority = new ArrayList<String>();
+    private Collection<String> selectedListAuthority = new ArrayList<>();
 
     public void setSelectedListAuthority( Collection<String> selectedListAuthority )
     {

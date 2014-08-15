@@ -134,7 +134,7 @@ public class DefaultSmsSender
             return message;
         }
 
-        List<User> toSendList = new ArrayList<User>();
+        List<User> toSendList = new ArrayList<>();
 
         String gatewayId = transportService.getDefaultGateway();
 
@@ -186,7 +186,7 @@ public class DefaultSmsSender
                     }
                     if ( text.length() > MAX_CHAR )
                     {
-                        List<String> splitTextList = new ArrayList<String>();
+                        List<String> splitTextList = new ArrayList<>();
                         splitTextList = splitLongUnicodeString( text, splitTextList );
                         for ( String each : splitTextList )
                         {
@@ -248,7 +248,7 @@ public class DefaultSmsSender
 
     private Set<String> getRecipientsPhoneNumber( List<User> users )
     {
-        Set<String> recipients = new HashSet<String>();
+        Set<String> recipients = new HashSet<>();
 
         for ( User user : users )
         {

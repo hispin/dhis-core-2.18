@@ -38,9 +38,9 @@ import org.hisp.dhis.common.ListMap;
  */
 public class DataQueryGroups
 {
-    private List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+    private List<DataQueryParams> queries = new ArrayList<>();
     
-    private List<List<DataQueryParams>> sequentialQueries = new ArrayList<List<DataQueryParams>>(); 
+    private List<List<DataQueryParams>> sequentialQueries = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -115,7 +115,7 @@ public class DataQueryGroups
 
     private static ListMap<String, DataQueryParams> getListMap( List<DataQueryParams> queries )
     {
-        ListMap<String, DataQueryParams> map = new ListMap<String, DataQueryParams>();
+        ListMap<String, DataQueryParams> map = new ListMap<>();
         
         for ( DataQueryParams query : queries )
         {

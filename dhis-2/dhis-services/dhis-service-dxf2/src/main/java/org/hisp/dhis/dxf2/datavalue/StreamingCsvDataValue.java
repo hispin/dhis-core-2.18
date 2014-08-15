@@ -47,7 +47,7 @@ public class StreamingCsvDataValue
     public StreamingCsvDataValue( CsvWriter writer )
     {
         this.writer = writer;
-        this.values = new ArrayList<String>();
+        this.values = new ArrayList<>();
     }
 
     public StreamingCsvDataValue( String[] row )

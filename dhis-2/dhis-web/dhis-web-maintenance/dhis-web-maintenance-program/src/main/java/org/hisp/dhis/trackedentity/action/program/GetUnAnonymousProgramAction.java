@@ -60,7 +60,7 @@ public class GetUnAnonymousProgramAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Collection<Program> programs = new ArrayList<Program>();
+    private Collection<Program> programs = new ArrayList<>();
 
     public Collection<Program> getPrograms()
     {

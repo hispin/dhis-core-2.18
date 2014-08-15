@@ -148,7 +148,7 @@ public class FormUtilsImpl
     public Map<String, DeflatedDataValue> getValidationViolations( OrganisationUnit organisationUnit,
         Collection<DataElement> dataElements, Period period )
     {
-        Map<String, DeflatedDataValue> validationErrorMap = new HashMap<String, DeflatedDataValue>();
+        Map<String, DeflatedDataValue> validationErrorMap = new HashMap<>();
 
         Double factor = (Double) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION,
             2.0 );
@@ -173,10 +173,10 @@ public class FormUtilsImpl
 
     public List<String> getValidationRuleViolations( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {
-        List<ValidationResult> validationRuleResults = new ArrayList<ValidationResult>( validationRuleService.validate(
+        List<ValidationResult> validationRuleResults = new ArrayList<>( validationRuleService.validate(
             dataSet, period, organisationUnit, null ) );
 
-        List<String> validationRuleViolations = new ArrayList<String>( validationRuleResults.size() );
+        List<String> validationRuleViolations = new ArrayList<>( validationRuleResults.size() );
 
         for ( ValidationResult result : validationRuleResults )
         {
@@ -195,8 +195,8 @@ public class FormUtilsImpl
 
     public Map<String, String> getDataValueMap( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {
-        Map<String, String> dataValueMap = new HashMap<String, String>();
-        List<DataValue> values = new ArrayList<DataValue>( dataValueService.getDataValues( organisationUnit, period,
+        Map<String, String> dataValueMap = new HashMap<>();
+        List<DataValue> values = new ArrayList<>( dataValueService.getDataValues( organisationUnit, period,
             dataSet.getDataElements() ) );
 
         for ( DataValue dataValue : values )
@@ -215,7 +215,7 @@ public class FormUtilsImpl
 
     public List<OrganisationUnit> organisationUnitWithDataSetsFilter( Collection<OrganisationUnit> organisationUnits )
     {
-        List<OrganisationUnit> ous = new ArrayList<OrganisationUnit>( organisationUnits );
+        List<OrganisationUnit> ous = new ArrayList<>( organisationUnits );
         FilterUtils.filter( ous, new OrganisationUnitWithDataSetsFilter() );
 
         return ous;
@@ -226,7 +226,7 @@ public class FormUtilsImpl
         User user = currentUserService.getCurrentUser();
         Validate.notNull( user );
 
-        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
+        List<OrganisationUnit> organisationUnits = new ArrayList<>( user.getOrganisationUnits() );
         Collections.sort( organisationUnits, IdentifiableObjectNameComparator.INSTANCE );
 
         return organisationUnitWithDataSetsFilter( organisationUnits );
@@ -238,7 +238,7 @@ public class FormUtilsImpl
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        List<DataSet> dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+        List<DataSet> dataSets = new ArrayList<>( organisationUnit.getDataSets() );
 
         UserCredentials userCredentials = currentUserService.getCurrentUser().getUserCredentials();
 

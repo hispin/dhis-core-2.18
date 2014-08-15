@@ -112,7 +112,7 @@ public class ValidationRule
     /**
      * The set of ValidationRuleGroups to which this ValidationRule belongs.
      */
-    private Set<ValidationRuleGroup> groups = new HashSet<ValidationRuleGroup>();
+    private Set<ValidationRuleGroup> groups = new HashSet<>();
 
     /**
      * The organisation unit level at which this rule is evaluated (Monitoring-type rules only).
@@ -225,7 +225,7 @@ public class ValidationRule
 
         if ( RULE_TYPE_VALIDATION.equals( ruleType ) )
         {
-            currentDataElements = new HashSet<DataElement>( currentDataElements );
+            currentDataElements = new HashSet<>( currentDataElements );
             currentDataElements.addAll( rightSide.getDataElementsInExpression() );
         }
 

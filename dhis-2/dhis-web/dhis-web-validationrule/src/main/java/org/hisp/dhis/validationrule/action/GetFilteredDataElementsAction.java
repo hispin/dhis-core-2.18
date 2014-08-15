@@ -120,7 +120,7 @@ public class GetFilteredDataElementsAction
         return dataElements;
     }
 
-    private List<DataElementOperand> operands = new ArrayList<DataElementOperand>();
+    private List<DataElementOperand> operands = new ArrayList<>();
 
     public List<DataElementOperand> getOperands()
     {
@@ -151,7 +151,7 @@ public class GetFilteredDataElementsAction
             // Get datasets with the periodType
             // -----------------------------------------------------------------
 
-            List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsByPeriodType( periodType ) );
+            List<DataSet> dataSets = new ArrayList<>( dataSetService.getDataSetsByPeriodType( periodType ) );
 
             Collections.sort( dataSets, new DataSetSortOrderComparator() );
 
@@ -159,20 +159,20 @@ public class GetFilteredDataElementsAction
             // Get available dataelements into the dataSets
             // -----------------------------------------------------------------
 
-            Set<DataElement> members = new HashSet<DataElement>();
+            Set<DataElement> members = new HashSet<>();
 
             for ( DataSet dataSet : dataSets )
             {
                  members.addAll( dataSet.getDataElements() );
             }
 
-            dataElements = new ArrayList<DataElement>(getIntegerDataElements( members ));
+            dataElements = new ArrayList<>(getIntegerDataElements( members ));
         }
         else
         {
             Collection<DataElement> members = dataSetService.getDataSet( dataSetId ).getDataElements();
 
-            dataElements = new ArrayList<DataElement>( getIntegerDataElements( members ) );
+            dataElements = new ArrayList<>( getIntegerDataElements( members ) );
         }
 
         Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
@@ -181,7 +181,7 @@ public class GetFilteredDataElementsAction
         // Create Operands
         // ---------------------------------------------------------------------
 
-        operands = new ArrayList<DataElementOperand>( categoryService.getOperands( dataElements ) );
+        operands = new ArrayList<>( categoryService.getOperands( dataElements ) );
 
         // ---------------------------------------------------------------------
         // String filter

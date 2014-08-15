@@ -72,14 +72,14 @@ public class GetExpandedTreeAction
         return roots;
     }
 
-    private List<OrganisationUnit> parents = new ArrayList<OrganisationUnit>();
+    private List<OrganisationUnit> parents = new ArrayList<>();
 
     public List<OrganisationUnit> getParents()
     {
         return parents;
     }
 
-    private Map<OrganisationUnit, List<OrganisationUnit>> childrenMap = new HashMap<OrganisationUnit, List<OrganisationUnit>>();
+    private Map<OrganisationUnit, List<OrganisationUnit>> childrenMap = new HashMap<>();
 
     public Map<OrganisationUnit, List<OrganisationUnit>> getChildrenMap()
     {
@@ -101,7 +101,7 @@ public class GetExpandedTreeAction
         throws Exception
     {     
         
-        roots = new ArrayList<OrganisationUnit>( selectionTreeManager.getRootOrganisationUnits() );
+        roots = new ArrayList<>( selectionTreeManager.getRootOrganisationUnits() );
 
         Collections.sort( roots, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -150,7 +150,7 @@ public class GetExpandedTreeAction
     private final Collection<OrganisationUnit> findPathNodes( Collection<OrganisationUnit> roots,
         Collection<OrganisationUnit> selected )
     {
-        Set<OrganisationUnit> pathNodes = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> pathNodes = new HashSet<>();
 
         for ( OrganisationUnit unit : selected )
         {

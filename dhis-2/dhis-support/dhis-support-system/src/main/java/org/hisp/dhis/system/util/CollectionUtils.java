@@ -77,8 +77,8 @@ public class CollectionUtils
     
     public static <T> Collection<T> intersection( Collection<T> c1, Collection<T> c2 )
     {
-        Set<T> set1 = new HashSet<T>( c1 );
-        set1.retainAll( new HashSet<T>( c2 ) );
+        Set<T> set1 = new HashSet<>( c1 );
+        set1.retainAll( new HashSet<>( c2 ) );
         return set1;
     }
     
@@ -89,7 +89,7 @@ public class CollectionUtils
     
     public static <T> Set<T> asSet( T... items )
     {
-        Set<T> set = new HashSet<T>();
+        Set<T> set = new HashSet<>();
         
         for ( T item : items )
         {
@@ -108,7 +108,7 @@ public class CollectionUtils
      */
     public static <K, V> AbstractMap.SimpleEntry<K, V> asEntry( K key, V value )
     {
-        return new AbstractMap.SimpleEntry<K, V>( key, value );
+        return new AbstractMap.SimpleEntry<>( key, value );
     }
 
     /**
@@ -119,7 +119,7 @@ public class CollectionUtils
      */
     public static <K, V> Map<K, V> asMap( AbstractMap.SimpleEntry<K, V>... entries )
     {
-        Map<K, V> map = new HashMap<K, V>();
+        Map<K, V> map = new HashMap<>();
 
         for ( AbstractMap.SimpleEntry<K, V> entry : entries )
         {

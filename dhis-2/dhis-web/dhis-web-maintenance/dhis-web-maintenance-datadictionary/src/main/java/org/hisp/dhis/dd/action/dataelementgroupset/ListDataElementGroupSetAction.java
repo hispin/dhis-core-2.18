@@ -91,13 +91,13 @@ public class ListDataElementGroupSetAction
         {
             this.paging = createPaging( dataElementService.getDataElementGroupSetCountByName( key ) );
             
-            dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getDataElementGroupSetsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            dataElementGroupSets = new ArrayList<>( dataElementService.getDataElementGroupSetsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( dataElementService.getDataElementGroupSetCount() );
             
-            dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getDataElementGroupSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
+            dataElementGroupSets = new ArrayList<>( dataElementService.getDataElementGroupSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
         Collections.sort( dataElementGroupSets, IdentifiableObjectNameComparator.INSTANCE );

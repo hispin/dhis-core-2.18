@@ -132,7 +132,7 @@ public class ShowUpdateAttributeAction
 
         periodTypes = periodService.getAllPeriodTypes();
 
-        optionSets = new ArrayList<OptionSet>( optionService.getAllOptionSets() );
+        optionSets = new ArrayList<>( optionService.getAllOptionSets() );
 
         return SUCCESS;
     }

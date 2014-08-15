@@ -137,10 +137,10 @@ public class MinMaxDataElementStoreTest
 
         assertTrue( minMaxDataElementStore.get( mmdeid1 ).getMax() == 100 );
 
-        Collection<DataElement> dataElements1 = new HashSet<DataElement>();
+        Collection<DataElement> dataElements1 = new HashSet<>();
         dataElements1.add( dataElement1 );
 
-        Collection<DataElement> dataElements2 = new HashSet<DataElement>();
+        Collection<DataElement> dataElements2 = new HashSet<>();
         dataElements2.add( dataElement2 );
         dataElements2.add( dataElement3 );
         dataElements2.add( dataElement4 );

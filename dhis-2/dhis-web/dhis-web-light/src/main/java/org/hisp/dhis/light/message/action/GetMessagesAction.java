@@ -80,9 +80,9 @@ public class GetMessagesAction
     public String execute()
         throws Exception
     {
-        conversations = new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, 10 ) );
+        conversations = new ArrayList<>( messageService.getMessageConversations( 0, 10 ) );
 
-        usermessages = new ArrayList<UserMessage>( messageService.getLastRecipients( 0, 5 ) );
+        usermessages = new ArrayList<>( messageService.getLastRecipients( 0, 5 ) );
 
         return SUCCESS;
     }

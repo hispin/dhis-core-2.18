@@ -231,7 +231,7 @@ public class DefaultXMLStreamReader
     {
         try
         {
-            final Map<String, String> elements = new HashMap<String, String>();
+            final Map<String, String> elements = new HashMap<>();
 
             String currentElementName = null;
 

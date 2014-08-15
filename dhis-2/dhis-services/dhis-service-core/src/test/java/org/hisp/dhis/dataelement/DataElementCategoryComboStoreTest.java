@@ -72,7 +72,7 @@ public class DataElementCategoryComboStoreTest
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categories = new ArrayList<DataElementCategory>();
+        categories = new ArrayList<>();
         
         categoryA = new DataElementCategory( "CategoryA" );
         categoryB = new DataElementCategory( "CategoryB" );

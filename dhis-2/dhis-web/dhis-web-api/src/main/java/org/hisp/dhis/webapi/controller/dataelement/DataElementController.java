@@ -80,11 +80,11 @@ public class DataElementController
                 Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
                 metaData.setPager( pager );
 
-                entityList = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( DataElementDomain.fromValue( domainType ), pager.getOffset(), pager.getPageSize() ) );
+                entityList = new ArrayList<>( dataElementService.getDataElementsByDomainType( DataElementDomain.fromValue( domainType ), pager.getOffset(), pager.getPageSize() ) );
             }
             else
             {
-                entityList = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( DataElementDomain.fromValue( domainType ) ) );
+                entityList = new ArrayList<>( dataElementService.getDataElementsByDomainType( DataElementDomain.fromValue( domainType ) ) );
                 Collections.sort( entityList, IdentifiableObjectNameComparator.INSTANCE );
             }
         }
@@ -95,11 +95,11 @@ public class DataElementController
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<DataElement>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+            entityList = new ArrayList<>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {
-            entityList = new ArrayList<DataElement>( manager.getAllSorted( getEntityClass() ) );
+            entityList = new ArrayList<>( manager.getAllSorted( getEntityClass() ) );
         }
 
         return entityList;

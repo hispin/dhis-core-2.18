@@ -65,7 +65,7 @@ public class DimensionOptionTest
         peA = createPeriod( "2000Q1" );
         ouA = createOrganisationUnit( 'A' );
         
-        options = new ArrayList<DimensionItem>();
+        options = new ArrayList<>();
         options.add( new DimensionItem( DATAELEMENT_DIM_ID, deA ) );
         options.add( new DimensionItem( PERIOD_DIM_ID, peA ) );
         options.add( new DimensionItem( ORGUNIT_DIM_ID, ouA ) );

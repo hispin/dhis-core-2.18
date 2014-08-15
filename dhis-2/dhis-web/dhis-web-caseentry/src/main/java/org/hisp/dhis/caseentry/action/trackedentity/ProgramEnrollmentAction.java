@@ -72,13 +72,13 @@ public class ProgramEnrollmentAction
 
     private Map<Integer, String> identiferMap;
 
-    private List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
+    private List<ProgramStageInstance> programStageInstances = new ArrayList<>();
 
-    private Collection<TrackedEntityAttribute> noGroupAttributes = new HashSet<TrackedEntityAttribute>();
+    private Collection<TrackedEntityAttribute> noGroupAttributes = new HashSet<>();
 
     private List<TrackedEntityAttributeGroup> attributeGroups;
 
-    private Map<Integer, String> attributeValueMap = new HashMap<Integer, String>();
+    private Map<Integer, String> attributeValueMap = new HashMap<>();
 
     private Boolean hasDataEntry;
 
@@ -160,7 +160,7 @@ public class ProgramEnrollmentAction
 
         programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
-        programStageInstances = new ArrayList<ProgramStageInstance>( programInstance.getProgramStageInstances() );
+        programStageInstances = new ArrayList<>( programInstance.getProgramStageInstances() );
 
         Collections.sort( programStageInstances, new ProgramStageInstanceVisitDateComparator() );
 
@@ -181,7 +181,7 @@ public class ProgramEnrollmentAction
         // Load attributes of the selected program
         // ---------------------------------------------------------------------
 
-        attributes = new ArrayList<ProgramTrackedEntityAttribute>( programInstance.getProgram().getProgramAttributes() );
+        attributes = new ArrayList<>( programInstance.getProgram().getProgramAttributes() );
 
         if ( attributes != null )
         {
@@ -197,7 +197,7 @@ public class ProgramEnrollmentAction
 
     private boolean showDataEntry( OrganisationUnit orgunit, Program program, ProgramInstance programInstance )
     {
-        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
+        Collection<OrganisationUnit> orgunits = new HashSet<>();
 
         if ( !orgunits.contains( orgunit ) && !program.getOrganisationUnits().contains( orgunit ) )
         {

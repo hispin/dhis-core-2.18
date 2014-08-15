@@ -157,9 +157,9 @@ public class NamebasedUtilsImpl
     {
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
         
-        List<org.hisp.dhis.api.mobile.model.DataElement> des = new ArrayList<org.hisp.dhis.api.mobile.model.DataElement>();
+        List<org.hisp.dhis.api.mobile.model.DataElement> des = new ArrayList<>();
 
-        List<ProgramStageDataElement> programStageDataElements =  new ArrayList<ProgramStageDataElement>(programStage.getProgramStageDataElements());
+        List<ProgramStageDataElement> programStageDataElements =  new ArrayList<>(programStage.getProgramStageDataElements());
 
         des = transformDataElementsToMobileModel( programStageDataElements );
         
@@ -168,7 +168,7 @@ public class NamebasedUtilsImpl
     
     public List<org.hisp.dhis.api.mobile.model.DataElement> transformDataElementsToMobileModel( List<ProgramStageDataElement> programStageDataElements )
     {
-        List<org.hisp.dhis.api.mobile.model.DataElement> des = new ArrayList<org.hisp.dhis.api.mobile.model.DataElement>();
+        List<org.hisp.dhis.api.mobile.model.DataElement> des = new ArrayList<>();
 
         for ( ProgramStageDataElement programStagedataElement : programStageDataElements )
         {

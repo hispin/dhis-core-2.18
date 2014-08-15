@@ -77,7 +77,7 @@ public class ValidateGroupSetAction
         this.name = name;
     }
 
-    private Collection<Integer> selectedGroups = new HashSet<Integer>();
+    private Collection<Integer> selectedGroups = new HashSet<>();
 
     public void setSelectedGroups( Collection<Integer> selectedGroups )
     {
@@ -131,7 +131,7 @@ public class ValidateGroupSetAction
 
         if ( !this.selectedGroups.isEmpty() )
         {
-            List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+            List<OrganisationUnit> units = new ArrayList<>();
 
             for ( Integer groupId : selectedGroups )
             {

@@ -194,7 +194,7 @@ public class HibernateOrganisationUnitStore
             "left join organisationunit ou on ou.organisationunitid=d.sourceid " +
             "left join dataset ds on ds.datasetid=d.datasetid";
 
-        final Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+        final Map<String, Set<String>> map = new HashMap<>();
 
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {
@@ -207,7 +207,7 @@ public class HibernateOrganisationUnitStore
 
                 if ( dataSets == null )
                 {
-                    dataSets = new HashSet<String>();
+                    dataSets = new HashSet<>();
                     map.put( organisationUnitId, dataSets );
                 }
 
@@ -226,7 +226,7 @@ public class HibernateOrganisationUnitStore
             "left join organisationunit ou on ou.organisationunitid=ougm.organisationunitid " +
             "left join dataset ds on ds.datasetid=ougds.datasetid";
 
-        final Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+        final Map<String, Set<String>> map = new HashMap<>();
 
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {
@@ -239,7 +239,7 @@ public class HibernateOrganisationUnitStore
 
                 if ( dataSets == null )
                 {
-                    dataSets = new HashSet<String>();
+                    dataSets = new HashSet<>();
                     map.put( organisationUnitId, dataSets );
                 }
 
@@ -255,7 +255,7 @@ public class HibernateOrganisationUnitStore
         final String sql = "select organisationunitid from organisationunit ou where not exists (" +
             "select sourceid from datavalue where sourceid=ou.organisationunitid)";
 
-        final Set<Integer> units = new HashSet<Integer>();
+        final Set<Integer> units = new HashSet<>();
 
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {

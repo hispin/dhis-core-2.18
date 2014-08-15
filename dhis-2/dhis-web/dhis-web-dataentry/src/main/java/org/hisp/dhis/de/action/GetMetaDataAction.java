@@ -137,7 +137,7 @@ public class GetMetaDataAction
         return dataElements;
     }
 
-    private List<DataElement> dataElementsWithOptionSet = new ArrayList<DataElement>();
+    private List<DataElement> dataElementsWithOptionSet = new ArrayList<>();
 
     public List<DataElement> getDataElementsWithOptionSet()
     {
@@ -200,7 +200,7 @@ public class GetMetaDataAction
         return defaultCategoryCombo;
     }
 
-    private ListMap<String, DataElementCategoryOption> categoryOptionMap = new ListMap<String, DataElementCategoryOption>();
+    private ListMap<String, DataElementCategoryOption> categoryOptionMap = new ListMap<>();
 
     public ListMap<String, DataElementCategoryOption> getCategoryOptionMap()
     {
@@ -244,10 +244,10 @@ public class GetMetaDataAction
 
         organisationUnitAssociationSetMap = organisationUnitSet.getOrganisationUnitAssociationSetMap();
 
-        dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsByUidNoAcl( organisationUnitSet.getDistinctDataSets() ) );
+        dataSets = new ArrayList<>( dataSetService.getDataSetsByUidNoAcl( organisationUnitSet.getDistinctDataSets() ) );
 
-        Set<DataElementCategoryCombo> categoryComboSet = new HashSet<DataElementCategoryCombo>();
-        Set<DataElementCategory> categorySet = new HashSet<DataElementCategory>();
+        Set<DataElementCategoryCombo> categoryComboSet = new HashSet<>();
+        Set<DataElementCategory> categorySet = new HashSet<>();
 
         for ( DataSet dataSet : dataSets )
         {
@@ -265,8 +265,8 @@ public class GetMetaDataAction
             }
         }
 
-        categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryComboSet );
-        categories = new ArrayList<DataElementCategory>( categorySet );
+        categoryCombos = new ArrayList<>( categoryComboSet );
+        categories = new ArrayList<>( categorySet );
 
         for ( DataElementCategory category : categories )
         {

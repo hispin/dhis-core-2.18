@@ -49,9 +49,9 @@ public class FormOrganisationUnit
 
     private String parent;
 
-    private Set<FormDataSet> dataSets = new HashSet<FormDataSet>();
+    private Set<FormDataSet> dataSets = new HashSet<>();
 
-    private Set<FormProgram> programs = new HashSet<FormProgram>();
+    private Set<FormProgram> programs = new HashSet<>();
 
     public FormOrganisationUnit()
     {

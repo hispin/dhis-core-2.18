@@ -221,10 +221,10 @@ public class GetDataSetReportOptionsAction
 
         defaultCategoryCombo = categoryService.getDefaultDataElementCategoryCombo();
 
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() ); 
-        categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAttributeCategoryCombos() );
-        categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>( categoryService.getAllCategoryOptionGroupSets() );
-        organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
+        dataSets = new ArrayList<>( dataSetService.getAllDataSets() );
+        categoryCombos = new ArrayList<>( categoryService.getAttributeCategoryCombos() );
+        categoryOptionGroupSets = new ArrayList<>( categoryService.getAllCategoryOptionGroupSets() );
+        organisationUnitGroupSets = new ArrayList<>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
 
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );   
         Collections.sort( categoryCombos, IdentifiableObjectNameComparator.INSTANCE );

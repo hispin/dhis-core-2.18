@@ -58,7 +58,7 @@ public class SaveAttributeInListNoProgramAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private List<Integer> selectedAttributeIds = new ArrayList<Integer>();
+    private List<Integer> selectedAttributeIds = new ArrayList<>();
 
     public void setSelectedAttributeIds( List<Integer> selectedAttributeIds )
     {

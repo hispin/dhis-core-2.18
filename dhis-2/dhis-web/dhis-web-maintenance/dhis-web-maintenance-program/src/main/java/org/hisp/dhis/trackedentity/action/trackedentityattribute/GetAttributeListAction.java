@@ -61,7 +61,7 @@ public class GetAttributeListAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+    private List<TrackedEntityAttribute> attributes = new ArrayList<>();
 
     public List<TrackedEntityAttribute> getAttributes()
     {
@@ -90,7 +90,7 @@ public class GetAttributeListAction
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( attributeService.getTrackedEntityAttributeCountByName( key ) );
-            attributes = new ArrayList<TrackedEntityAttribute>(
+            attributes = new ArrayList<>(
                 attributeService.getTrackedEntityAttributesBetweenByName( key, paging.getStartPos(),
                     paging.getPageSize() ) );
         }
@@ -98,7 +98,7 @@ public class GetAttributeListAction
         {
             this.paging = createPaging( attributeService.getTrackedEntityAttributeCount() );
             
-            attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesBetween(
+            attributes = new ArrayList<>( attributeService.getTrackedEntityAttributesBetween(
                 paging.getStartPos(), paging.getPageSize() ) );
         }
 

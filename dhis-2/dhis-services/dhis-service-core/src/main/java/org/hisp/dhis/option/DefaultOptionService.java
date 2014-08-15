@@ -133,7 +133,7 @@ public class DefaultOptionService
 
             OptionSet optionSet = getOptionSet( optionSetId );
 
-            options = new ArrayList<Option>( optionSet.getOptions() );
+            options = new ArrayList<>( optionSet.getOptions() );
         }
 
         return options;
@@ -146,12 +146,12 @@ public class DefaultOptionService
 
     public Collection<OptionSet> getOptionSetsBetweenByName( String name, int first, int max )
     {
-        return new HashSet<OptionSet>( i18n( i18nService, optionStore.getAllLikeNameOrderedName( name, first, max ) ) );
+        return new HashSet<>( i18n( i18nService, optionStore.getAllLikeNameOrderedName( name, first, max ) ) );
     }
 
     public Collection<OptionSet> getOptionSetsBetween( int first, int max )
     {
-        return new HashSet<OptionSet>( i18n( i18nService, optionStore.getAllOrderedName( first, max ) ) );
+        return new HashSet<>( i18n( i18nService, optionStore.getAllOrderedName( first, max ) ) );
     }
 
     public Integer getOptionSetCount()

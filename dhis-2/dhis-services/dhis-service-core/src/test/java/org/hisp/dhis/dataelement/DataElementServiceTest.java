@@ -260,7 +260,7 @@ public class DataElementServiceTest
         dataElementService.addDataElement( dataElementC );
         dataElementService.addDataElement( dataElementD );
 
-        Collection<DataElement> dataElementsRef = new HashSet<DataElement>();
+        Collection<DataElement> dataElementsRef = new HashSet<>();
         dataElementsRef.add( dataElementA );
         dataElementsRef.add( dataElementB );
         dataElementsRef.add( dataElementC );
@@ -292,7 +292,7 @@ public class DataElementServiceTest
         dataElementService.addDataElement( dataElementC );
         dataElementService.addDataElement( dataElementD );
 
-        Collection<DataElement> dataElementsRef = new HashSet<DataElement>();
+        Collection<DataElement> dataElementsRef = new HashSet<>();
         dataElementsRef.add( dataElementA );
         dataElementsRef.add( dataElementB );
         dataElementsRef.add( dataElementD );
@@ -535,12 +535,12 @@ public class DataElementServiceTest
         DataElementGroup dataElementGroupC = new DataElementGroup( "DataElementGroupC" );
         DataElementGroup dataElementGroupD = new DataElementGroup( "DataElementGroupD" );
         
-        Set<DataElement> membersA = new HashSet<DataElement>();
+        Set<DataElement> membersA = new HashSet<>();
         membersA.add( dataElementA );
         membersA.add( dataElementB );
         membersA.add( dataElementC );
         
-        Set<DataElement> membersB = new HashSet<DataElement>();
+        Set<DataElement> membersB = new HashSet<>();
         membersB.add( dataElementC );
         membersB.add( dataElementD );
 

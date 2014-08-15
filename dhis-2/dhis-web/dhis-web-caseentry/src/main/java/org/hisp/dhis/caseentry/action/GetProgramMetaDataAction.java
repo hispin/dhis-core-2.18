@@ -76,21 +76,21 @@ public class GetProgramMetaDataAction implements Action
         return programType;
     }
 
-    private List<Program> programs = new ArrayList<Program>();
+    private List<Program> programs = new ArrayList<>();
 
     public List<Program> getPrograms()
     {
         return programs;
     }
 
-    private Map<String, Set<String>> programAssociations = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> programAssociations = new HashMap<>();
 
     public Map<String, Set<String>> getProgramAssociations()
     {
         return programAssociations;
     }
 
-    private Set<OptionSet> optionSets = new HashSet<OptionSet>();
+    private Set<OptionSet> optionSets = new HashSet<>();
 
     public Set<OptionSet> getOptionSets()
     {
@@ -111,7 +111,7 @@ public class GetProgramMetaDataAction implements Action
     @Override
     public String execute() throws Exception
     {
-        programs = new ArrayList<Program>( programService.getProgramsByCurrentUser( programType ) );
+        programs = new ArrayList<>( programService.getProgramsByCurrentUser( programType ) );
 
         for ( Program program : programs )
         {

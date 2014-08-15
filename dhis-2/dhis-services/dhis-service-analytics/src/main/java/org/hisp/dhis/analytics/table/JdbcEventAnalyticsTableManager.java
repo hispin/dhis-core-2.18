@@ -72,7 +72,7 @@ public class JdbcEventAnalyticsTableManager
     {
         log.info( "Get tables using earliest: " + earliest + ", latest: " + latest );
 
-        List<AnalyticsTable> tables = new ArrayList<AnalyticsTable>();
+        List<AnalyticsTable> tables = new ArrayList<>();
 
         if ( earliest != null && latest != null )
         {
@@ -199,7 +199,7 @@ public class JdbcEventAnalyticsTableManager
             + MathUtils.NUMERIC_LENIENT_REGEXP + "'";
         final String doubleSelect = "cast(value as " + dbl + ")";
 
-        List<String[]> columns = new ArrayList<String[]>();
+        List<String[]> columns = new ArrayList<>();
 
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
             organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets();

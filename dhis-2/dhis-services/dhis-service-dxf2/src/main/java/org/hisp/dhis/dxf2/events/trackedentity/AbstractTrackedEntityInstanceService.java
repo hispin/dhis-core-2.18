@@ -180,7 +180,7 @@ public abstract class AbstractTrackedEntityInstanceService
         
         trackedEntityInstance.trimValuesToNull();
 
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        List<ImportConflict> importConflicts = new ArrayList<>();
         importConflicts.addAll( checkTrackedEntity( trackedEntityInstance ) );
         importConflicts.addAll( checkAttributes( trackedEntityInstance ) );
 
@@ -219,7 +219,7 @@ public abstract class AbstractTrackedEntityInstanceService
 
         trackedEntityInstance.trimValuesToNull();
 
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        List<ImportConflict> importConflicts = new ArrayList<>();
         importConflicts.addAll( checkRelationships( trackedEntityInstance ) );
         importConflicts.addAll( checkAttributes( trackedEntityInstance ) );
 
@@ -289,7 +289,7 @@ public abstract class AbstractTrackedEntityInstanceService
 
     private List<ImportConflict> checkTrackedEntity( TrackedEntityInstance trackedEntityInstance )
     {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        List<ImportConflict> importConflicts = new ArrayList<>();
 
         if ( trackedEntityInstance.getTrackedEntity() == null )
         {
@@ -310,7 +310,7 @@ public abstract class AbstractTrackedEntityInstanceService
 
     private List<ImportConflict> checkAttributes( TrackedEntityInstance trackedEntityInstance )
     {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        List<ImportConflict> importConflicts = new ArrayList<>();
 
         for ( Attribute attribute : trackedEntityInstance.getAttributes() )
         {
@@ -342,7 +342,7 @@ public abstract class AbstractTrackedEntityInstanceService
 
     private List<ImportConflict> checkScope( org.hisp.dhis.trackedentity.TrackedEntityInstance tei, TrackedEntityAttribute attribute, String value, OrganisationUnit organisationUnit )
     {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        List<ImportConflict> importConflicts = new ArrayList<>();
 
         if ( attribute == null || value == null )
         {
@@ -377,7 +377,7 @@ public abstract class AbstractTrackedEntityInstanceService
 
     private List<ImportConflict> checkRelationships( TrackedEntityInstance trackedEntityInstance )
     {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        List<ImportConflict> importConflicts = new ArrayList<>();
 
         for ( org.hisp.dhis.dxf2.events.trackedentity.Relationship relationship : trackedEntityInstance.getRelationships() )
         {

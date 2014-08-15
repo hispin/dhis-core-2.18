@@ -125,7 +125,7 @@ public class ScheduleTasksAction
         this.analyticsStrategy = analyticsStrategy;
     }
 
-    private Set<String> scheduledPeriodTypes = new HashSet<String>();
+    private Set<String> scheduledPeriodTypes = new HashSet<>();
 
     public Set<String> getScheduledPeriodTypes()
     {
@@ -249,7 +249,7 @@ public class ScheduleTasksAction
             }
             else
             {
-                ListMap<String, String> cronKeyMap = new ListMap<String, String>();
+                ListMap<String, String> cronKeyMap = new ListMap<>();
                 
                 // -------------------------------------------------------------
                 // Resource tables

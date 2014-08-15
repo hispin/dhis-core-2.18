@@ -198,7 +198,7 @@ public class ProgramStageInstanceServiceTest
             TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE, TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
             TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH );
 
-        Set<TrackedEntityInstanceReminder> reminders = new HashSet<TrackedEntityInstanceReminder>();
+        Set<TrackedEntityInstanceReminder> reminders = new HashSet<>();
         reminders.add( reminderA );
         reminders.add( reminderB );
         stageA.setReminders( reminders );
@@ -211,12 +211,12 @@ public class ProgramStageInstanceServiceTest
             TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE, TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
             TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH );
 
-        reminders = new HashSet<TrackedEntityInstanceReminder>();
+        reminders = new HashSet<>();
         reminders.add( reminderC );
         stageB.setReminders( reminders );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         programA.setProgramStages( programStages );
@@ -252,7 +252,7 @@ public class ProgramStageInstanceServiceTest
         stageC.setIrregular( true );
         programStageService.saveProgramStage( stageD );
 
-        programStages = new ArrayList<ProgramStage>();
+        programStages = new ArrayList<>();
         programStages.add( stageC );
         programStages.add( stageD );
         programB.setProgramStages( programStages );
@@ -392,7 +392,7 @@ public class ProgramStageInstanceServiceTest
         programStageInstanceService.addProgramStageInstance( programStageInstanceC );
         programStageInstanceService.addProgramStageInstance( programStageInstanceD1 );
 
-        Collection<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
+        Collection<ProgramInstance> programInstances = new HashSet<>();
         programInstances.add( programInstanceA );
         programInstances.add( programInstanceB );
 

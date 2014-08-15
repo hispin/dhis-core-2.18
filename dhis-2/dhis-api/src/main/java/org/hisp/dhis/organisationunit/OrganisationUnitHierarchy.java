@@ -49,13 +49,13 @@ public class OrganisationUnitHierarchy
     /**
      * Contains mappings between parent and immediate children.
      */
-    private Map<Integer, Set<Integer>> relationships = new HashMap<Integer, Set<Integer>>();
+    private Map<Integer, Set<Integer>> relationships = new HashMap<>();
 
-    private Map<Integer, Set<Integer>> subTrees = new HashMap<Integer, Set<Integer>>();
+    private Map<Integer, Set<Integer>> subTrees = new HashMap<>();
     
     // Key is on format "parent id:group id"
     
-    private Map<String, Set<Integer>> groupSubTrees = new HashMap<String, Set<Integer>>();
+    private Map<String, Set<Integer>> groupSubTrees = new HashMap<>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -79,7 +79,7 @@ public class OrganisationUnitHierarchy
             
             if ( children == null )
             {
-                children = new HashSet<Integer>();
+                children = new HashSet<>();
                 relationships.put( relation.getParentId(), children );
             }
             
@@ -152,10 +152,10 @@ public class OrganisationUnitHierarchy
         
         if ( preparedChildren != null )
         {
-            return new HashSet<Integer>( preparedChildren );
+            return new HashSet<>( preparedChildren );
         }
         
-        List<Integer> children = new ArrayList<Integer>();
+        List<Integer> children = new ArrayList<>();
         
         children.add( 0, parentId ); // Adds parent id to beginning of list
 
@@ -173,14 +173,14 @@ public class OrganisationUnitHierarchy
             }
         }
         
-        return new HashSet<Integer>( children );
+        return new HashSet<>( children );
     }
 
     public Set<Integer> getChildren( Collection<Integer> parentIds )
     {
         int capacity = parentIds.size() + 5;
         
-        Set<Integer> children = new HashSet<Integer>( Math.max( capacity, 16 ) );
+        Set<Integer> children = new HashSet<>( Math.max( capacity, 16 ) );
 
         for ( Integer id : parentIds )
         {
@@ -205,12 +205,12 @@ public class OrganisationUnitHierarchy
         
         if ( children != null )
         {
-            return new HashSet<Integer>( children );
+            return new HashSet<>( children );
         }
         
         children = getChildren( parentId );
         
-        Set<Integer> groupMembers = new HashSet<Integer>();
+        Set<Integer> groupMembers = new HashSet<>();
         
         for ( OrganisationUnit unit : group.getMembers() )
         {
@@ -231,7 +231,7 @@ public class OrganisationUnitHierarchy
         
         int capacity = ( parentIds.size() * groups.size() ) + 5;
         
-        Set<Integer> children = new HashSet<Integer>( Math.max( capacity, 16 ) );
+        Set<Integer> children = new HashSet<>( Math.max( capacity, 16 ) );
         
         for ( Integer id : parentIds )
         {

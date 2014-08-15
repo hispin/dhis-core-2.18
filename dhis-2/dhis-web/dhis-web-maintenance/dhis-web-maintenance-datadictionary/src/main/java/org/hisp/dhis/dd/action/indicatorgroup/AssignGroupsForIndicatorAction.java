@@ -65,7 +65,7 @@ public class AssignGroupsForIndicatorAction
         this.indicatorId = indicatorId;
     }
 
-    private Set<Integer> indicatorGroups = new HashSet<Integer>();
+    private Set<Integer> indicatorGroups = new HashSet<>();
 
     public void setIndicatorGroups( Set<Integer> indicatorGroups )
     {
@@ -76,7 +76,7 @@ public class AssignGroupsForIndicatorAction
     public String execute()
         throws Exception
     {
-        Set<IndicatorGroup> selectedGroups = new HashSet<IndicatorGroup>();
+        Set<IndicatorGroup> selectedGroups = new HashSet<>();
 
         for ( Integer id : indicatorGroups )
         {

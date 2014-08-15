@@ -453,7 +453,7 @@ public class AccountController
         String username = (String) request.getSession().getAttribute( "username" );
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
 
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         result.put( "status", "OK" );
 
         if ( userService.credentialsNonExpired( credentials ) )
@@ -514,7 +514,7 @@ public class AccountController
 
         // Custom code required because of our hacked jQuery validation
 
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
 
         result.put( "response", valid ? "success" : "error" );
         result.put( "message", valid ? "" : "Username is already taken" );
@@ -528,7 +528,7 @@ public class AccountController
 
     private String[] checkRecaptcha( String privateKey, String remoteIp, String challenge, String response )
     {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
         params.add( "privatekey", privateKey );
         params.add( "remoteip", remoteIp );
@@ -558,7 +558,7 @@ public class AccountController
 
     private Set<GrantedAuthority> getAuthorities( Set<UserAuthorityGroup> userRoles )
     {
-        Set<GrantedAuthority> auths = new HashSet<GrantedAuthority>();
+        Set<GrantedAuthority> auths = new HashSet<>();
 
         for ( UserAuthorityGroup userRole : userRoles )
         {
@@ -570,7 +570,7 @@ public class AccountController
 
     private Set<GrantedAuthority> getAuthorities( UserAuthorityGroup userRole )
     {
-        Set<GrantedAuthority> auths = new HashSet<GrantedAuthority>();
+        Set<GrantedAuthority> auths = new HashSet<>();
 
         for ( String auth : userRole.getAuthorities() )
         {

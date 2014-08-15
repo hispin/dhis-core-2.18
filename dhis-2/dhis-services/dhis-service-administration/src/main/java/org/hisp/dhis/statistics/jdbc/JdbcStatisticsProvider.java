@@ -59,7 +59,7 @@ public class JdbcStatisticsProvider
     
     public Map<Objects, Integer> getObjectCounts()
     {
-        final Map<Objects, Integer> objectCounts = new HashMap<Objects, Integer>();
+        final Map<Objects, Integer> objectCounts = new HashMap<>();
         
         objectCounts.put( Objects.DATAELEMENT, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM dataelement", Integer.class ) );
         objectCounts.put( Objects.DATAELEMENTGROUP, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM dataelementgroup", Integer.class ) );

@@ -115,7 +115,7 @@ public class DefaultDataBrowserGridService
             format );
 
         Grid grid = new ListGrid();
-        List<Integer> metaIds = new ArrayList<Integer>();
+        List<Integer> metaIds = new ArrayList<>();
 
         dataBrowserGridStore.setStructureForOrgUnit( grid, orgUnitParent, metaIds );
 
@@ -132,7 +132,7 @@ public class DefaultDataBrowserGridService
             format );
 
         Grid grid = new ListGrid();
-        List<Integer> metaIds = new ArrayList<Integer>();
+        List<Integer> metaIds = new ArrayList<>();
 
         dataBrowserGridStore.setDataElementStructureForDataSet( grid, dataSetId, metaIds );
 
@@ -149,7 +149,7 @@ public class DefaultDataBrowserGridService
             format );
 
         Grid grid = new ListGrid();
-        List<Integer> metaIds = new ArrayList<Integer>();
+        List<Integer> metaIds = new ArrayList<>();
 
         dataBrowserGridStore.setDataElementStructureForDataElementGroup( grid, dataElementGroupId, metaIds );
 
@@ -166,7 +166,7 @@ public class DefaultDataBrowserGridService
             format );
 
         Grid grid = new ListGrid();
-        List<Integer> metaIds = new ArrayList<Integer>();
+        List<Integer> metaIds = new ArrayList<>();
 
         dataBrowserGridStore.setDataElementGroupStructureForOrgUnitGroup( grid, orgUnitGroupId, metaIds );
 
@@ -184,7 +184,7 @@ public class DefaultDataBrowserGridService
         PeriodType periodType, I18nFormat format, boolean isZeroAdded )
     {
         Grid grid = new ListGrid();
-        List<Integer> metaIds = new ArrayList<Integer>();
+        List<Integer> metaIds = new ArrayList<>();
 
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
             format );
@@ -226,7 +226,7 @@ public class DefaultDataBrowserGridService
     public String getFromToDateFormat( PeriodType periodType, String fromDate, String toDate, I18nFormat format )
     {
         String stringFormatDate = "";
-        List<Period> periods = new ArrayList<Period>( this.getPeriodsList( periodType, fromDate, toDate ) );
+        List<Period> periods = new ArrayList<>( this.getPeriodsList( periodType, fromDate, toDate ) );
 
         for ( Period period : periods )
         {
@@ -272,7 +272,7 @@ public class DefaultDataBrowserGridService
 
         Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, date1, date2 );
 
-        List<Integer> betweenPeriodIds = new ArrayList<Integer>();
+        List<Integer> betweenPeriodIds = new ArrayList<>();
 
         for ( Period period : periods )
         {
@@ -305,7 +305,7 @@ public class DefaultDataBrowserGridService
             Date date1 = sdf.parse( fromDate );
             Date date2 = sdf.parse( toDate );
 
-            List<Period> periods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( 
+            List<Period> periods = new ArrayList<>( periodService.getPeriodsBetweenDates(
                 periodType, date1, date2 ) );
 
             if ( periods.isEmpty() )

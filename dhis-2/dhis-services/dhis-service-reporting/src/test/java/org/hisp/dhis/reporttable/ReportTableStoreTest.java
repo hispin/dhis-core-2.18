@@ -98,11 +98,11 @@ public class ReportTableStoreTest
     public void setUpTest()
         throws Exception
     {
-        dataElements = new ArrayList<DataElement>();
-        indicators = new ArrayList<Indicator>();
-        dataSets = new ArrayList<DataSet>();
-        periods = new ArrayList<Period>();
-        units = new ArrayList<OrganisationUnit>();
+        dataElements = new ArrayList<>();
+        indicators = new ArrayList<>();
+        dataSets = new ArrayList<>();
+        periods = new ArrayList<>();
+        units = new ArrayList<>();
         
         reportTableStore = (GenericIdentifiableObjectStore<ReportTable>) getBean( "org.hisp.dhis.reporttable.ReportTableStore" );
 

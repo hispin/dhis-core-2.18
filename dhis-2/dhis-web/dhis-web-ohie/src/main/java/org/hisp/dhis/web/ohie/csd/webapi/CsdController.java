@@ -214,7 +214,7 @@ public class CsdController
     {
         Date lastModified = envelope.getBody().getGetModificationsRequest().getLastModified();
 
-        return new ArrayList<OrganisationUnit>(
+        return new ArrayList<>(
             organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastModified ) );
     }
 
@@ -381,7 +381,7 @@ public class CsdController
 
             Map<String, List<AddressLine>> addressLines = Maps.newHashMap();
 
-            List<AttributeValue> attributeValues = new ArrayList<AttributeValue>( organisationUnit.getAttributeValues() );
+            List<AttributeValue> attributeValues = new ArrayList<>( organisationUnit.getAttributeValues() );
             Collections.sort( attributeValues, AttributeValueSortOrderComparator.INSTANCE );
 
             for ( AttributeValue attributeValue : attributeValues )

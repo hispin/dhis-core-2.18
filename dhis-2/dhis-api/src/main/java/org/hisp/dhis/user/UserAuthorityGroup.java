@@ -63,12 +63,12 @@ public class UserAuthorityGroup
      */
     private String description;
 
-    private Set<String> authorities = new HashSet<String>();
+    private Set<String> authorities = new HashSet<>();
 
-    private Set<UserCredentials> members = new HashSet<UserCredentials>();
+    private Set<UserCredentials> members = new HashSet<>();
 
     @Scanned
-    private Set<DataSet> dataSets = new HashSet<DataSet>();
+    private Set<DataSet> dataSets = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Logic

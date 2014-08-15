@@ -78,7 +78,7 @@ public class XWorkPortalUserInterceptor
     public String intercept( ActionInvocation invocation )
         throws Exception
     {
-        Map<String, Object> map = new HashMap<String, Object>( 3 );
+        Map<String, Object> map = new HashMap<>( 3 );
 
         map.put( "currentUsername", currentUserService.getCurrentUsername() );
         map.put( "currentUser", currentUserService.getCurrentUser() );

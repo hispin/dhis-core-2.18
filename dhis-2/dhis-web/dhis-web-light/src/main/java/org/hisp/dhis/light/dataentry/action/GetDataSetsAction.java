@@ -99,7 +99,7 @@ public class GetDataSetsAction
         return dataSetId;
     }
 
-    private List<DataSet> dataSets = new ArrayList<DataSet>();
+    private List<DataSet> dataSets = new ArrayList<>();
 
     public List<DataSet> getDataSets()
     {

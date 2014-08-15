@@ -75,7 +75,7 @@ public class DataElementCategoryComboServiceTest
     {
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categories = new ArrayList<DataElementCategory>();
+        categories = new ArrayList<>();
         
         categoryOptionA = new DataElementCategoryOption( "OptionA" );
         categoryOptionB = new DataElementCategoryOption( "OptionB" );

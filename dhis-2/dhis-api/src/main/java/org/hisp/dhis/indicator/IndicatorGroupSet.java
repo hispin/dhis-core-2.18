@@ -68,7 +68,7 @@ public class IndicatorGroupSet
     private Boolean compulsory = false;
 
     @Scanned
-    private List<IndicatorGroup> members = new ArrayList<IndicatorGroup>();
+    private List<IndicatorGroup> members = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -104,7 +104,7 @@ public class IndicatorGroupSet
 
     public Collection<Indicator> getIndicators()
     {
-        List<Indicator> indicators = new ArrayList<Indicator>();
+        List<Indicator> indicators = new ArrayList<>();
 
         for ( IndicatorGroup group : members )
         {
@@ -147,7 +147,7 @@ public class IndicatorGroupSet
 
     public List<IndicatorGroup> getSortedGroups()
     {
-        List<IndicatorGroup> sortedGroups = new ArrayList<IndicatorGroup>( members );
+        List<IndicatorGroup> sortedGroups = new ArrayList<>( members );
 
         Collections.sort( sortedGroups, new IdentifiableObjectNameComparator() );
 

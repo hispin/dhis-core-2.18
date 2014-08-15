@@ -164,7 +164,7 @@ public class DefaultAnalyticsSecurityManager
 
         params.removeDimensionOrFilter( DimensionalObject.ORGUNIT_DIM_ID );
 
-        List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( user.getDataViewOrganisationUnits() );
+        List<OrganisationUnit> orgUnits = new ArrayList<>( user.getDataViewOrganisationUnits() );
 
         DimensionalObject constraint = new BaseDimensionalObject( DimensionalObject.ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, orgUnits );
         

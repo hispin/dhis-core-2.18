@@ -64,7 +64,7 @@ public class DefaultCaseAggregateConditionSchedulingManager
         this.scheduler = scheduler;
     }
 
-    private Map<String, Runnable> tasks = new HashMap<String, Runnable>();
+    private Map<String, Runnable> tasks = new HashMap<>();
 
     public void setTasks( Map<String, Runnable> tasks )
     {
@@ -94,7 +94,7 @@ public class DefaultCaseAggregateConditionSchedulingManager
     public void scheduleTasks( Map<String, String> keyCronMap )
     {
         systemSettingManager.saveSystemSetting( KEY_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASKS,
-            new HashMap<String, String>( keyCronMap ) );
+            new HashMap<>( keyCronMap ) );
 
         scheduleTasks();
     }

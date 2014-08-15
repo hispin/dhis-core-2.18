@@ -73,7 +73,7 @@ public class GetTrackedEntityFormListAction
     // Getters & Setters
     // -------------------------------------------------------------------------
 
-    private Map<Integer, TrackedEntityForm> mapRegistrationForms = new HashMap<Integer, TrackedEntityForm>();
+    private Map<Integer, TrackedEntityForm> mapRegistrationForms = new HashMap<>();
 
     public Map<Integer, TrackedEntityForm> getMapRegistrationForms()
     {
@@ -109,7 +109,7 @@ public class GetTrackedEntityFormListAction
             }
         }
 
-        programs = new ArrayList<Program>( programService.getAllPrograms() );
+        programs = new ArrayList<>( programService.getAllPrograms() );
 
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
 

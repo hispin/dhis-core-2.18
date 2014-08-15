@@ -49,11 +49,11 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JacksonXmlRootElement( localName = "recipients", namespace = DxfNamespaces.DXF_2_0 )
 public class Recipients
 {
-    private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+    private Set<OrganisationUnit> organisationUnits = new HashSet<>();
 
-    private Set<User> users = new HashSet<User>();
+    private Set<User> users = new HashSet<>();
 
-    private Set<UserGroup> userGroups = new HashSet<UserGroup>();
+    private Set<UserGroup> userGroups = new HashSet<>();
 
     public Recipients()
     {

@@ -170,12 +170,12 @@ public class ReportTableGridTest
         
         batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
-        dataElements = new ArrayList<DataElement>();
-        categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
-        indicators = new ArrayList<Indicator>();
-        dataSets = new ArrayList<DataSet>();
-        periods = new ArrayList<Period>();
-        units = new ArrayList<OrganisationUnit>();
+        dataElements = new ArrayList<>();
+        categoryOptionCombos = new ArrayList<>();
+        indicators = new ArrayList<>();
+        dataSets = new ArrayList<>();
+        periods = new ArrayList<>();
+        units = new ArrayList<>();
         
         montlyPeriodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );       
 
@@ -183,7 +183,7 @@ public class ReportTableGridTest
         // Mock injection
         // ---------------------------------------------------------------------
 
-        valueMap = new HashMap<String, Double>();
+        valueMap = new HashMap<>();
         
         analyticsService = new MockAnalyticsService( valueMap );
         
@@ -341,7 +341,7 @@ public class ReportTableGridTest
     
     private Set<DataElementCategoryOptionCombo> getSet( DataElementCategoryOptionCombo c )
     {
-        return new HashSet<DataElementCategoryOptionCombo>( Arrays.asList( c ) );
+        return new HashSet<>( Arrays.asList( c ) );
     }
 
     // -------------------------------------------------------------------------

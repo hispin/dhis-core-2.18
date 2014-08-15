@@ -98,7 +98,7 @@ public class UpdateDataElementGroupAction
         this.code = code;
     }
 
-    private Set<String> groupMembers = new HashSet<String>();
+    private Set<String> groupMembers = new HashSet<>();
 
     public void setGroupMembers( Set<String> groupMembers )
     {
@@ -140,7 +140,7 @@ public class UpdateDataElementGroupAction
             dataElementGroup.setName( name );
         }
 
-        Set<DataElement> members = new HashSet<DataElement>();
+        Set<DataElement> members = new HashSet<>();
 
         for ( String id : groupMembers )
         {

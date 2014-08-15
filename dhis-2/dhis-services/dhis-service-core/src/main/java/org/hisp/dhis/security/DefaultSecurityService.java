@@ -180,10 +180,10 @@ public class DefaultSecurityService
 
         String[] result = initRestore( credentials, restoreOptions );
 
-        Set<User> users = new HashSet<User>();
+        Set<User> users = new HashSet<>();
         users.add( credentials.getUser() );
 
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         vars.put( "rootPath", rootPath );
         vars.put( "restorePath", rootPath + RESTORE_PATH + restoreType.getAction() );
         vars.put( "token", result[0] );

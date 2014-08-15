@@ -71,7 +71,7 @@ public class MobileClientController
 
         Collection<OrganisationUnit> units = user.getOrganisationUnits();
 
-        List<MobileOrgUnitLinks> unitList = new ArrayList<MobileOrgUnitLinks>();
+        List<MobileOrgUnitLinks> unitList = new ArrayList<>();
         for ( OrganisationUnit unit : units )
         {
             unitList.add( getOrgUnit( unit, request ) );
@@ -96,7 +96,7 @@ public class MobileClientController
 
         Collection<OrganisationUnit> units = user.getOrganisationUnits();
 
-        List<MobileOrgUnitLinks> unitList = new ArrayList<MobileOrgUnitLinks>();
+        List<MobileOrgUnitLinks> unitList = new ArrayList<>();
         for ( OrganisationUnit unit : units )
         {
             unitList.add( getOrgUnit( unit, request ) );
@@ -121,7 +121,7 @@ public class MobileClientController
 
         Collection<OrganisationUnit> units = user.getOrganisationUnits();
 
-        List<MobileOrgUnitLinks> unitList = new ArrayList<MobileOrgUnitLinks>();
+        List<MobileOrgUnitLinks> unitList = new ArrayList<>();
         for ( OrganisationUnit unit : units )
         {
             unitList.add( getOrgUnit( unit, request ) );

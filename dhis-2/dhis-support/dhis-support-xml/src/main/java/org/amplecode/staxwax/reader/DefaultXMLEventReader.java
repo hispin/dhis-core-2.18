@@ -281,7 +281,7 @@ public class DefaultXMLEventReader
     {
         try
         {
-            final Map<String, String> elements = new HashMap<String, String>();
+            final Map<String, String> elements = new HashMap<>();
             StartElement startEvent = currentEvent.asStartElement();
             Iterator<?> attributeIter = startEvent.getAttributes();
             if ( attributeIter.hasNext() )

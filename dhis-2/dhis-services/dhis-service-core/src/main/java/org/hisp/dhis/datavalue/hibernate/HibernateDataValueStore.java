@@ -326,7 +326,7 @@ public class HibernateDataValueStore
 
         if ( storedPeriod == null || sources == null || sources.isEmpty() )
         {
-            return new HashSet<DataValue>();
+            return new HashSet<>();
         }
 
         Session session = sessionFactory.getCurrentSession();
@@ -343,7 +343,7 @@ public class HibernateDataValueStore
     public Collection<DataValue> getDataValues( DataElement dataElement, Collection<Period> periods,
         Collection<OrganisationUnit> sources )
     {
-        Collection<Period> storedPeriods = new ArrayList<Period>();
+        Collection<Period> storedPeriods = new ArrayList<>();
 
         for ( Period period : periods )
         {
@@ -357,7 +357,7 @@ public class HibernateDataValueStore
 
         if ( storedPeriods.isEmpty() || sources == null || sources.isEmpty() )
         {
-            return new HashSet<DataValue>();
+            return new HashSet<>();
         }
 
         Session session = sessionFactory.getCurrentSession();
@@ -374,7 +374,7 @@ public class HibernateDataValueStore
     public Collection<DataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
         Collection<Period> periods, Collection<OrganisationUnit> sources )
     {
-        Collection<Period> storedPeriods = new ArrayList<Period>();
+        Collection<Period> storedPeriods = new ArrayList<>();
 
         for ( Period period : periods )
         {
@@ -388,7 +388,7 @@ public class HibernateDataValueStore
 
         if ( storedPeriods.isEmpty() || sources == null || sources.isEmpty() )
         {
-            return new HashSet<DataValue>();
+            return new HashSet<>();
         }
 
         Session session = sessionFactory.getCurrentSession();
@@ -409,7 +409,7 @@ public class HibernateDataValueStore
 
         if ( categoryOptionCombos == null || categoryOptionCombos.isEmpty() )
         {
-            return new HashSet<DataValue>();
+            return new HashSet<>();
         }
         
         Criteria criteria = session.createCriteria( DataValue.class );
@@ -467,7 +467,7 @@ public class HibernateDataValueStore
         Set<CategoryOptionGroup> cogDimensionConstraints, Set<DataElementCategoryOption> coDimensionConstraints,
         MapMap<Integer, DataElementOperand, Date> lastUpdatedMap )
     {
-        MapMap<Integer, DataElementOperand, Double> map = new MapMap<Integer, DataElementOperand, Double>();
+        MapMap<Integer, DataElementOperand, Double> map = new MapMap<>();
 
         if ( dataElements.isEmpty() || periodTypes.isEmpty()
                 || ( cogDimensionConstraints != null && cogDimensionConstraints.isEmpty() )
@@ -505,7 +505,7 @@ public class HibernateDataValueStore
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
-        MapMap<Integer, DataElementOperand, Long> checkForDuplicates = new MapMap<Integer, DataElementOperand, Long>();
+        MapMap<Integer, DataElementOperand, Long> checkForDuplicates = new MapMap<>();
 
         while ( rowSet.next() )
         {

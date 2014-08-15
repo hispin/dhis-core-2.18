@@ -111,7 +111,7 @@ public class ProgramIndicatorServiceTest
         ProgramStage stageB = new ProgramStage( "StageB", programA );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         programA.setProgramStages( programStages );

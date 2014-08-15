@@ -100,7 +100,7 @@ public class GetPeriodsByPeriodTypeAction
         
         if ( periodType != null )
         {
-            object = new ArrayList<Period>( periodService.getPeriodsByPeriodType( periodType ) );
+            object = new ArrayList<>( periodService.getPeriodsByPeriodType( periodType ) );
             
             FilterUtils.filter( object, new PastAndCurrentPeriodFilter() );
             

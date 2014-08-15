@@ -103,7 +103,7 @@ public class StartExportAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Set<String> periodTypes = new HashSet<String>();
+    private Set<String> periodTypes = new HashSet<>();
     
     public void setPeriodTypes( Set<String> periodTypes )
     {
@@ -173,7 +173,7 @@ public class StartExportAction
             Date start = DateUtils.getMediumDate( startDate );
             Date end = DateUtils.getMediumDate( endDate );
             
-            List<Period> periods = new ArrayList<Period>();
+            List<Period> periods = new ArrayList<>();
             
             for ( String type : periodTypes )
             {

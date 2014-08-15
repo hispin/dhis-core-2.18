@@ -182,21 +182,21 @@ public class ValidationAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Map<OrganisationUnit, List<ValidationResult>> validationResults = new TreeMap<OrganisationUnit, List<ValidationResult>>();
+    private Map<OrganisationUnit, List<ValidationResult>> validationResults = new TreeMap<>();
 
     public Map<OrganisationUnit, List<ValidationResult>> getValidationResults()
     {
         return validationResults;
     }
 
-    private Map<OrganisationUnit, List<DeflatedDataValue>> dataValues = new TreeMap<OrganisationUnit, List<DeflatedDataValue>>();
+    private Map<OrganisationUnit, List<DeflatedDataValue>> dataValues = new TreeMap<>();
 
     public Map<OrganisationUnit, List<DeflatedDataValue>> getDataValues()
     {
         return dataValues;
     }
     
-    private Map<OrganisationUnit, List<DataElementOperand>> commentViolations = new TreeMap<OrganisationUnit, List<DataElementOperand>>();
+    private Map<OrganisationUnit, List<DataElementOperand>> commentViolations = new TreeMap<>();
 
     public Map<OrganisationUnit, List<DataElementOperand>> getCommentViolations()
     {
@@ -231,7 +231,7 @@ public class ValidationAction
         Period period = periodService.getPeriod( selectedPeriod.getStartDate(), selectedPeriod.getEndDate(),
             selectedPeriod.getPeriodType() );
 
-        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> organisationUnits = new ArrayList<>();
 
         if ( !multiOu )
         {
@@ -277,7 +277,7 @@ public class ValidationAction
     
     private List<DeflatedDataValue> outlierAnalysis( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {
-        List<DeflatedDataValue> deflatedDataValues = new ArrayList<DeflatedDataValue>( minMaxOutlierAnalysisService.analyse( getCollection( organisationUnit ),
+        List<DeflatedDataValue> deflatedDataValues = new ArrayList<>( minMaxOutlierAnalysisService.analyse( getCollection( organisationUnit ),
             dataSet.getDataElements(), getCollection( period ), null ) );
 
         log.debug( "Number of outlier values: " + deflatedDataValues.size() );
@@ -291,7 +291,7 @@ public class ValidationAction
     
     private List<ValidationResult> validationRuleAnalysis( OrganisationUnit organisationUnit, DataSet dataSet, Period period, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        List<ValidationResult> validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, organisationUnit, attributeOptionCombo ) );
+        List<ValidationResult> validationResults = new ArrayList<>( validationRuleService.validate( dataSet, period, organisationUnit, attributeOptionCombo ) );
 
         log.debug( "Number of validation violations: " + validationResults.size() );
 
@@ -304,7 +304,7 @@ public class ValidationAction
     
     private List<DataElementOperand> noValueRequiresCommentAnalysis( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {
-        List<DataElementOperand> violations = new ArrayList<DataElementOperand>();
+        List<DataElementOperand> violations = new ArrayList<>();
      
         if ( !dataSet.isNoValueRequiresComment() )
         {

@@ -74,7 +74,7 @@ public class MessageServiceTest
         userService.addUser( userB );
        
         
-        users = new HashSet<User>();
+        users = new HashSet<>();
         users.add( userA );
         users.add( userB );        
     }

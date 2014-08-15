@@ -118,7 +118,7 @@ public class ProgramExpressionServiceTest
         ProgramStage stageB = new ProgramStage( "StageB", program );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );
@@ -207,7 +207,7 @@ public class ProgramExpressionServiceTest
     {
         programExpressionService.addProgramExpression( programExpressionA );
 
-        Map<String, String> dataValueMap = new HashMap<String, String>();
+        Map<String, String> dataValueMap = new HashMap<>();
         dataValueMap.put( stageAId + "." + deAId, "1" );
         dataValueMap.put( stageAId + "." + deBId, "2" );
 

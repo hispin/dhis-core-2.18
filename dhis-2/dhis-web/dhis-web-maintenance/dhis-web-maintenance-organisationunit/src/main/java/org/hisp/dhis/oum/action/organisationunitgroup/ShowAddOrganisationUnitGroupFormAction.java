@@ -68,7 +68,7 @@ public class ShowAddOrganisationUnitGroupFormAction
 
     public String execute()
     {
-        attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitGroupAttributes() );
+        attributes = new ArrayList<>( attributeService.getOrganisationUnitGroupAttributes() );
         Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;

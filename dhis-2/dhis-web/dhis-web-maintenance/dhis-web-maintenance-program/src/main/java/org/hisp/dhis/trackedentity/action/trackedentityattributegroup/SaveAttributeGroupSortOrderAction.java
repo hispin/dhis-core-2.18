@@ -59,7 +59,7 @@ implements Action
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private List<Integer> attributeGroupIds = new ArrayList<Integer>();
+    private List<Integer> attributeGroupIds = new ArrayList<>();
 
     public void setAttributeGroupIds( List<Integer> attributeGroupIds )
     {
@@ -74,7 +74,7 @@ implements Action
     {
         int sortOrder = 1;
 
-        List<TrackedEntityAttributeGroup> groups = new ArrayList<TrackedEntityAttributeGroup>( attributeGroupIds.size() );
+        List<TrackedEntityAttributeGroup> groups = new ArrayList<>( attributeGroupIds.size() );
 
         for ( Integer attributeGroupId : attributeGroupIds )
         {

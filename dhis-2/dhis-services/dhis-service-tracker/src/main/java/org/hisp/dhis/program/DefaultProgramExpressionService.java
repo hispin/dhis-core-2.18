@@ -189,7 +189,7 @@ public class DefaultProgramExpressionService
     @Override
     public Collection<DataElement> getDataElements( String programExpression )
     {
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
+        Collection<DataElement> dataElements = new HashSet<>();
 
         Pattern pattern = Pattern.compile( regExp );
         Matcher matcher = pattern.matcher( programExpression );

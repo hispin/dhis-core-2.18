@@ -180,7 +180,7 @@ public class J2MEDataValueSMSListener
             keyValuePairs[0] = sms;
         }
 
-        Map<String, String> keyValueMap = new HashMap<String, String>();
+        Map<String, String> keyValueMap = new HashMap<>();
         for ( String keyValuePair : keyValuePairs )
         {
             String[] token = keyValuePair.split( Pattern.quote( smsCommand.getSeparator() ) );
@@ -293,7 +293,7 @@ public class J2MEDataValueSMSListener
 
     private Collection<OrganisationUnit> getOrganisationUnitsByPhoneNumber( String sender )
     {
-        Collection<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>();
+        Collection<OrganisationUnit> orgUnits = new ArrayList<>();
         Collection<User> users = userService.getUsersByPhoneNumber( sender );
         for ( User u : users )
         {

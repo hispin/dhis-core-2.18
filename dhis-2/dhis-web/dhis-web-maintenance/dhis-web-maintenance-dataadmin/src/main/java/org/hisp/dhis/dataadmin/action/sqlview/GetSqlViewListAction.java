@@ -70,7 +70,7 @@ public class GetSqlViewListAction
     public String execute()
         throws Exception
     {
-        sqlViewObjectList = new ArrayList<SqlView>( sqlViewService.getAllSqlViews() );
+        sqlViewObjectList = new ArrayList<>( sqlViewService.getAllSqlViews() );
 
         return SUCCESS;
     }

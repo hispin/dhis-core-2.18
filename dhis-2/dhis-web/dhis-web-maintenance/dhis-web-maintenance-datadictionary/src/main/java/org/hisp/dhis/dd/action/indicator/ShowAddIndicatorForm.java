@@ -104,11 +104,11 @@ public class ShowAddIndicatorForm
 
     public String execute()
     {
-        indicatorTypes = new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() );
+        indicatorTypes = new ArrayList<>( indicatorService.getAllIndicatorTypes() );
         
-        attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
+        attributes = new ArrayList<>( attributeService.getIndicatorAttributes() );
 
-        legendSets = new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() );
+        legendSets = new ArrayList<>( mappingService.getAllMapLegendSets() );
         
         Collections.sort( indicatorTypes, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );

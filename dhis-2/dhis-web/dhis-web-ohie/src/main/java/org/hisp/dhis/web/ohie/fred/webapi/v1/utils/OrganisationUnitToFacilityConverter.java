@@ -112,10 +112,10 @@ public class OrganisationUnitToFacilityConverter implements Converter<Organisati
         }
 
         // make sure that dataSets always come in the same order. This is a must for safe ETag generation.
-        List<DataSet> ouDataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+        List<DataSet> ouDataSets = new ArrayList<>( organisationUnit.getDataSets() );
         Collections.sort( ouDataSets, new IdentifiableObjectNameComparator() );
 
-        List<String> dataSets = new ArrayList<String>();
+        List<String> dataSets = new ArrayList<>();
 
         for ( DataSet dataSet : ouDataSets )
         {

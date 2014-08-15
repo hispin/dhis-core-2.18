@@ -56,7 +56,7 @@ public class ConversionUtils
     {
         try
         {
-            Collection<Integer> identifiers = new ArrayList<Integer>();
+            Collection<Integer> identifiers = new ArrayList<>();
 
             Method method = clazz.getMethod( "getId", new Class[0] );
 
@@ -86,7 +86,7 @@ public class ConversionUtils
     {
         try
         {
-            Collection<String> identifiers = new ArrayList<String>();
+            Collection<String> identifiers = new ArrayList<>();
 
             Method method = clazz.getMethod( "getUid", new Class[0] );
 
@@ -134,7 +134,7 @@ public class ConversionUtils
      */
     public static Collection<Integer> getIntegerCollection( Collection<String> strings )
     {
-        Collection<Integer> integers = new ArrayList<Integer>();
+        Collection<Integer> integers = new ArrayList<>();
 
         if ( strings != null )
         {
@@ -194,7 +194,7 @@ public class ConversionUtils
      */
     public static <T> Set<T> getSet( Collection<T> objects )
     {
-        Set<T> set = new HashSet<T>();
+        Set<T> set = new HashSet<>();
 
         for ( T object : objects )
         {
@@ -212,7 +212,7 @@ public class ConversionUtils
      */
     public static <T> List<T> getList( Collection<T> objects )
     {
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
 
         for ( T object : objects )
         {
@@ -230,7 +230,7 @@ public class ConversionUtils
      */
     public static <T> List<T> getList( T... objects )
     {
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
 
         for ( T object : objects )
         {
@@ -249,7 +249,7 @@ public class ConversionUtils
      */
     public static <T> Map<Integer, T> getIdentifierMap( Collection<T> collection )
     {
-        Map<Integer, T> map = new HashMap<Integer, T>();
+        Map<Integer, T> map = new HashMap<>();
 
         for ( T object : collection )
         {
@@ -308,7 +308,7 @@ public class ConversionUtils
      */
     public static <T> Set<T> wrap( T object )
     {
-        Set<T> set = new HashSet<T>();
+        Set<T> set = new HashSet<>();
         set.add( object );
         return set;
     }
@@ -323,7 +323,7 @@ public class ConversionUtils
     @SuppressWarnings("unchecked")
     public static <T> Collection<T> cast( Collection<? super T> collection )
     {
-        Collection<T> list = new ArrayList<T>();
+        Collection<T> list = new ArrayList<>();
 
         for ( Object o : collection )
         {

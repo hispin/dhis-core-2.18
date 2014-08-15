@@ -52,13 +52,13 @@ public class Patient
     
     private String trackedEntityName;
 
-    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+    private List<PatientAttribute> attributes = new ArrayList<>();
 
-    private List<ProgramInstance> enrollmentPrograms = new ArrayList<ProgramInstance>();
+    private List<ProgramInstance> enrollmentPrograms = new ArrayList<>();
 
-    private List<ProgramInstance> completedPrograms = new ArrayList<ProgramInstance>();
+    private List<ProgramInstance> completedPrograms = new ArrayList<>();
 
-    private List<Relationship> relationships = new ArrayList<Relationship>();
+    private List<Relationship> relationships = new ArrayList<>();
 
 
     // -------------------------------------------------------------------------
@@ -204,7 +204,7 @@ public class Patient
         int attsNumb = din.readInt();
         if ( attsNumb > 0 )
         {
-            attributes = new ArrayList<PatientAttribute>();
+            attributes = new ArrayList<>();
             for ( int j = 0; j < attsNumb; j++ )
             {
                 PatientAttribute pa = new PatientAttribute();
@@ -217,7 +217,7 @@ public class Patient
         int numbEnrollmentPrograms = din.readInt();
         if ( numbEnrollmentPrograms > 0 )
         {
-            this.enrollmentPrograms = new ArrayList<ProgramInstance>();
+            this.enrollmentPrograms = new ArrayList<>();
             for ( int i = 0; i < numbEnrollmentPrograms; i++ )
             {
                 ProgramInstance program = new ProgramInstance();
@@ -230,7 +230,7 @@ public class Patient
         int numbCompletedPrograms = din.readInt();
         if ( numbCompletedPrograms > 0 )
         {
-            this.completedPrograms = new ArrayList<ProgramInstance>();
+            this.completedPrograms = new ArrayList<>();
             for ( int i = 0; i < numbCompletedPrograms; i++ )
             {
                 ProgramInstance program = new ProgramInstance();
@@ -243,7 +243,7 @@ public class Patient
         int numbRelationships = din.readInt();
         if ( numbRelationships > 0 )
         {
-            this.relationships = new ArrayList<Relationship>();
+            this.relationships = new ArrayList<>();
             for ( int i = 0; i < numbRelationships; i++ )
             {
                 Relationship relationship = new Relationship();

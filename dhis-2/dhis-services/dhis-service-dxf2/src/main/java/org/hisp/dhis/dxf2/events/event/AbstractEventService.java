@@ -186,7 +186,7 @@ public abstract class AbstractEventService
                     "Event.trackedEntityInstance does not point to a valid trackedEntityInstance." );
             }
 
-            List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+            List<ProgramInstance> programInstances = new ArrayList<>(
                 programInstanceService.getProgramInstances( entityInstance, program, ProgramInstance.STATUS_ACTIVE ) );
 
             if ( programInstances.isEmpty() )
@@ -205,7 +205,7 @@ public abstract class AbstractEventService
 
             if ( program.isSingleEvent() )
             {
-                List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>(
+                List<ProgramStageInstance> programStageInstances = new ArrayList<>(
                     programStageInstanceService.getProgramStageInstances( programInstances, EventStatus.ACTIVE ) );
 
                 if ( programStageInstances.isEmpty() )
@@ -245,7 +245,7 @@ public abstract class AbstractEventService
         }
         else
         {
-            List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+            List<ProgramInstance> programInstances = new ArrayList<>(
                 programInstanceService.getProgramInstances( program, ProgramInstance.STATUS_ACTIVE ) );
 
             if ( programInstances.isEmpty() )
@@ -422,7 +422,7 @@ public abstract class AbstractEventService
 
         saveTrackedEntityComment( programStageInstance, event, storedBy );
 
-        Set<TrackedEntityDataValue> dataValues = new HashSet<TrackedEntityDataValue>(
+        Set<TrackedEntityDataValue> dataValues = new HashSet<>(
             dataValueService.getTrackedEntityDataValues( programStageInstance ) );
 
         for ( DataValue value : event.getDataValues() )

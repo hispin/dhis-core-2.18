@@ -55,7 +55,7 @@ public class MapLegendSet
     private String symbolizer;
 
     @Scanned
-    private Set<MapLegend> mapLegends = new HashSet<MapLegend>();
+    private Set<MapLegend> mapLegends = new HashSet<>();
 
     public MapLegendSet()
     {

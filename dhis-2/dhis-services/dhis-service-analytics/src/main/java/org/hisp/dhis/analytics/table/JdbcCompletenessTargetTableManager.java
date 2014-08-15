@@ -51,7 +51,7 @@ public class JdbcCompletenessTargetTableManager
     @Transactional
     public List<AnalyticsTable> getTables( Integer lastYears )
     {
-        List<AnalyticsTable> tables = new ArrayList<AnalyticsTable>();
+        List<AnalyticsTable> tables = new ArrayList<>();
         tables.add( new AnalyticsTable( getTableName(), getDimensionColumns( null ) ) );
         return tables;
     }
@@ -133,7 +133,7 @@ public class JdbcCompletenessTargetTableManager
 
     public List<String[]> getDimensionColumns( AnalyticsTable table )
     {
-        List<String[]> columns = new ArrayList<String[]>();
+        List<String[]> columns = new ArrayList<>();
 
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
             organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets();

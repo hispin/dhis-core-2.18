@@ -111,11 +111,11 @@ public class InterpretationController
             Pager pager = new Pager( options.getPage(), count );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<Interpretation>( interpretationService.getInterpretations( pager.getOffset(), pager.getPageSize() ) );
+            entityList = new ArrayList<>( interpretationService.getInterpretations( pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {
-            entityList = new ArrayList<Interpretation>( interpretationService.getInterpretations() );
+            entityList = new ArrayList<>( interpretationService.getInterpretations() );
         }
 
         return entityList;

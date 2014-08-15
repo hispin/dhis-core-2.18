@@ -89,13 +89,13 @@ public class GetRoleListAction
         {
             this.paging = createPaging( userService.getUserRoleCountByName( key ) );
             
-            userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getUserRolesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            userAuthorityGroups = new ArrayList<>( userService.getUserRolesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( userService.getUserRoleCount() );
             
-            userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getUserRolesBetween( paging.getStartPos(), paging.getPageSize() ) );
+            userAuthorityGroups = new ArrayList<>( userService.getUserRolesBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
         return SUCCESS;

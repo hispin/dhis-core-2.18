@@ -117,9 +117,9 @@ public class DataValueConverter
         this.importObjectService = importObjectService;
         this.importAnalyser = importAnalyser;
         this.params = params;
-        this.dataElementMapping = new MimicingHashMap<Object, Integer>();
-        this.periodMapping = new MimicingHashMap<Object, Integer>();
-        this.sourceMapping = new MimicingHashMap<Object, Integer>();
+        this.dataElementMapping = new MimicingHashMap<>();
+        this.periodMapping = new MimicingHashMap<>();
+        this.sourceMapping = new MimicingHashMap<>();
     }
 
     // -------------------------------------------------------------------------

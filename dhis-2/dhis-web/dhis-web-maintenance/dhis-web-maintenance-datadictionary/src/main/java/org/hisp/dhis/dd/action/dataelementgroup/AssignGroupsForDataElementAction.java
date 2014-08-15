@@ -65,7 +65,7 @@ public class AssignGroupsForDataElementAction
         this.dataElementId = dataElementId;
     }
 
-    private Set<Integer> dataElementGroups = new HashSet<Integer>();
+    private Set<Integer> dataElementGroups = new HashSet<>();
 
     public void setDataElementGroups( Set<Integer> dataElementGroups )
     {
@@ -76,7 +76,7 @@ public class AssignGroupsForDataElementAction
     public String execute()
         throws Exception
     {
-        Set<DataElementGroup> selectedGroups = new HashSet<DataElementGroup>();
+        Set<DataElementGroup> selectedGroups = new HashSet<>();
 
         for ( Integer id : dataElementGroups )
         {

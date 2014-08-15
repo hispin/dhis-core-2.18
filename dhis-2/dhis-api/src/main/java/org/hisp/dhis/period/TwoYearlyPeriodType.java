@@ -138,7 +138,7 @@ public class TwoYearlyPeriodType
         cal.add( Calendar.YEAR, cal.get( Calendar.YEAR ) % 2 == 0 ? -10 : -9 );
         cal.set( Calendar.DAY_OF_YEAR, 1 );
 
-        ArrayList<Period> twoYears = new ArrayList<Period>();
+        ArrayList<Period> twoYears = new ArrayList<>();
 
         for ( int i = 0; i < 11; ++i )
         {
@@ -177,7 +177,7 @@ public class TwoYearlyPeriodType
         cal.add( Calendar.YEAR, cal.get( Calendar.YEAR ) % 2 == 0 ? -10 : -9 );
         cal.set( Calendar.DAY_OF_YEAR, 1 );
 
-        ArrayList<Period> twoYears = new ArrayList<Period>();
+        ArrayList<Period> twoYears = new ArrayList<>();
 
         for ( int i = 0; i < 5; ++i )
         {

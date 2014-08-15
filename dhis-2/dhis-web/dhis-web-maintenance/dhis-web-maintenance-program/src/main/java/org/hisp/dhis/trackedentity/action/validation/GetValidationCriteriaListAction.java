@@ -77,7 +77,7 @@ public class GetValidationCriteriaListAction
     public String execute()
         throws Exception
     {
-        criterias = new ArrayList<ValidationCriteria>( validationCriteriaService.getAllValidationCriterias() );
+        criterias = new ArrayList<>( validationCriteriaService.getAllValidationCriterias() );
 
         Collections.sort( criterias, new ValidationCriteriaComparator() );
 

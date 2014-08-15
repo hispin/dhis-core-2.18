@@ -141,7 +141,7 @@ public class XMLPreConverter
         Source sheet = new StreamSource( sheetStream );
 
         log.debug( "Populating xslt parameters" );
-        Map<String, String> xsltParams = new HashMap<String, String>();
+        Map<String, String> xsltParams = new HashMap<>();
 
         if ( userName != null )
         {

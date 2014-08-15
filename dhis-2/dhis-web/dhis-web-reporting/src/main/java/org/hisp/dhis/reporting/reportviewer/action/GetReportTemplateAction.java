@@ -67,11 +67,11 @@ public class GetReportTemplateAction
     {
         HttpServletResponse response = ServletActionContext.getResponse();
 
-        Map<String, String> typeTemplateMap = new HashMap<String, String>();
+        Map<String, String> typeTemplateMap = new HashMap<>();
         typeTemplateMap.put( TYPE_JASPER, TEMPLATE_JASPER );
         typeTemplateMap.put( TYPE_HTML, TEMPLATE_HTML );
         
-        Map<String, String> typeContentTypeMap = new HashMap<String, String>();
+        Map<String, String> typeContentTypeMap = new HashMap<>();
         typeContentTypeMap.put( TYPE_JASPER, ContextUtils.CONTENT_TYPE_XML );
         typeContentTypeMap.put( TYPE_HTML, ContextUtils.CONTENT_TYPE_HTML );
         

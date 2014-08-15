@@ -103,14 +103,14 @@ public class ViewTrackedEntityFormAction
         this.programId = programId;
     }
 
-    private Collection<TrackedEntityAttribute> attributes = new HashSet<TrackedEntityAttribute>();
+    private Collection<TrackedEntityAttribute> attributes = new HashSet<>();
 
     public Collection<TrackedEntityAttribute> getAttributes()
     {
         return attributes;
     }
 
-    private Collection<ProgramTrackedEntityAttribute> programAttributes = new ArrayList<ProgramTrackedEntityAttribute>();
+    private Collection<ProgramTrackedEntityAttribute> programAttributes = new ArrayList<>();
 
     public Collection<ProgramTrackedEntityAttribute> getProgramAttributes()
     {
@@ -152,7 +152,7 @@ public class ViewTrackedEntityFormAction
     public String execute()
         throws Exception
     {
-        List<Program> programs = new ArrayList<Program>( programService.getAllPrograms() );
+        List<Program> programs = new ArrayList<>( programService.getAllPrograms() );
 
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
 

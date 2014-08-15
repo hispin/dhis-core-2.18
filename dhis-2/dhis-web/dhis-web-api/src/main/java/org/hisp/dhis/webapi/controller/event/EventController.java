@@ -141,7 +141,7 @@ public class EventController
 
         Program pr = manager.get( Program.class, program );
         ProgramStage prs = manager.get( ProgramStage.class, programStage );
-        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> organisationUnits = new ArrayList<>();
         TrackedEntityInstance tei = null;
         OrganisationUnit rootOrganisationUnit = null;
 
@@ -227,11 +227,11 @@ public class EventController
 
     private Map<Object, Object> getMetaData( Program program )
     {
-        Map<Object, Object> metaData = new HashMap<Object, Object>();
+        Map<Object, Object> metaData = new HashMap<>();
 
         if ( program != null )
         {
-            Map<String, String> dataElements = new HashMap<String, String>();
+            Map<String, String> dataElements = new HashMap<>();
 
             for ( DataElement de : program.getAllDataElements() )
             {

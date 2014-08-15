@@ -59,12 +59,12 @@ public class UserGroup
      * Set of related users
      */
     @Scanned
-    private Set<User> members = new HashSet<User>();
+    private Set<User> members = new HashSet<>();
 
     /**
      * Set of the dynamic attributes values that belong to this user group.
      */
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    private Set<AttributeValue> attributeValues = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -103,7 +103,7 @@ public class UserGroup
 
     public void updateUsers( Set<User> updates )
     {
-        for ( User user : new HashSet<User>( members ) )
+        for ( User user : new HashSet<>( members ) )
         {
             if ( !updates.contains( user ) )
             {

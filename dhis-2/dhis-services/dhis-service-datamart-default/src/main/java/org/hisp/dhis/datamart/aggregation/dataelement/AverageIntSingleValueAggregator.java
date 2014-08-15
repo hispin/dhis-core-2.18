@@ -88,7 +88,7 @@ public class AverageIntSingleValueAggregator
         final Collection<CrossTabDataValue> crossTabValues = crossTabService.getCrossTabDataValues( operands, 
             aggregationCache.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ), organisationUnits, key );
         
-        final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, total value>
+        final Map<DataElementOperand, Double> values = new HashMap<>(); // <Operand, total value>
 
         for ( final CrossTabDataValue crossTabValue : crossTabValues )
         {
@@ -122,7 +122,7 @@ public class AverageIntSingleValueAggregator
     
     public Collection<DataElementOperand> filterOperands( final Collection<DataElementOperand> operands, final PeriodType periodType )
     {
-        final Collection<DataElementOperand> filteredOperands = new HashSet<DataElementOperand>();
+        final Collection<DataElementOperand> filteredOperands = new HashSet<>();
         
         for ( final DataElementOperand operand : operands )
         {

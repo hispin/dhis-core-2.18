@@ -46,7 +46,7 @@ public class ImportSummary
 {
     private ImportCount importCount = new ImportCount();
 
-    private List<ImportTypeSummary> importTypeSummaries = new ArrayList<ImportTypeSummary>();
+    private List<ImportTypeSummary> importTypeSummaries = new ArrayList<>();
 
     public ImportSummary()
     {

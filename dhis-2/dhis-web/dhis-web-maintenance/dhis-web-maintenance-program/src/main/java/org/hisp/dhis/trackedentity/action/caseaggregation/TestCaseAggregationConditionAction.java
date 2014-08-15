@@ -96,7 +96,7 @@ public class TestCaseAggregationConditionAction
     public String execute()
         throws Exception
     {
-        Collection<Integer> orgunitIds = new HashSet<Integer>();
+        Collection<Integer> orgunitIds = new HashSet<>();
         orgunitIds.add( 0 );
 
         MonthlyPeriodType periodType = new MonthlyPeriodType();

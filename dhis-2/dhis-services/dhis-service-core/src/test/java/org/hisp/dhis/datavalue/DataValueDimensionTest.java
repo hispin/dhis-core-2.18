@@ -143,7 +143,7 @@ public class DataValueDimensionTest
     @Test
     public void testGetDimensions()
     {
-        Collection<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+        Collection<DataElementCategoryOption> categoryOptions = new ArrayList<>();
         categoryOptions.add( male );
         categoryOptions.add( under15 );
         
@@ -157,7 +157,7 @@ public class DataValueDimensionTest
     @Test
     public void testGetByCategoryOptionCombos()
     {
-        Collection<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+        Collection<DataElementCategoryOption> categoryOptions = new ArrayList<>();
         categoryOptions.add( male );
         categoryOptions.add( under15 );
         

@@ -68,7 +68,7 @@ public class TrackedEntityAttributeServiceTest
         attributeB = createTrackedEntityAttribute( 'B' );
         attributeC = createTrackedEntityAttribute( 'C', TrackedEntityAttribute.TYPE_NUMBER );
 
-        List<TrackedEntityAttribute> attributesA = new ArrayList<TrackedEntityAttribute>();
+        List<TrackedEntityAttribute> attributesA = new ArrayList<>();
         attributesA.add( attributeA );
         attributesA.add( attributeB );
         attributeGroup = createTrackedEntityAttributeGroup( 'A', attributesA );

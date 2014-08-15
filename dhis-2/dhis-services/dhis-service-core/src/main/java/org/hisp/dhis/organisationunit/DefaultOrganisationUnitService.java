@@ -221,7 +221,7 @@ public class DefaultOrganisationUnitService
 
     public List<OrganisationUnit> getOrganisationUnitsByUid( Collection<String> uids )
     {
-        return new ArrayList<OrganisationUnit>( i18n( i18nService, organisationUnitStore.getByUid( uids ) ) );
+        return new ArrayList<>( i18n( i18nService, organisationUnitStore.getByUid( uids ) ) );
     }
 
     public OrganisationUnit getOrganisationUnit( String uid )
@@ -236,7 +236,7 @@ public class DefaultOrganisationUnitService
 
     public List<OrganisationUnit> getOrganisationUnitByName( String name )
     {
-        return new ArrayList<OrganisationUnit>( i18n( i18nService, organisationUnitStore.getAllEqName( name ) ) );
+        return new ArrayList<>( i18n( i18nService, organisationUnitStore.getAllEqName( name ) ) );
     }
 
     public OrganisationUnit getOrganisationUnitByCode( String code )
@@ -274,7 +274,7 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnits( Collection<OrganisationUnitGroup> groups, Collection<OrganisationUnit> parents )
     {
-        Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> members = new HashSet<>();
 
         for ( OrganisationUnitGroup group : groups )
         {
@@ -293,7 +293,7 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitsWithChildren( Collection<String> parentUids )
     {
-        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> units = new HashSet<>();
 
         for ( String uid : parentUids )
         {
@@ -321,7 +321,7 @@ public class DefaultOrganisationUnitService
             return Collections.emptySet();
         }
 
-        List<OrganisationUnit> result = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> result = new ArrayList<>();
 
         int rootLevel = organisationUnit.getOrganisationUnitLevel();
 
@@ -364,7 +364,7 @@ public class DefaultOrganisationUnitService
             return Collections.emptyList();
         }
 
-        ArrayList<OrganisationUnit> result = new ArrayList<OrganisationUnit>();
+        ArrayList<OrganisationUnit> result = new ArrayList<>();
 
         result.add( organisationUnit );
 
@@ -396,7 +396,7 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitsAtLevel( int level, OrganisationUnit parent )
     {
-        Set<OrganisationUnit> parents = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> parents = new HashSet<>();
         parents.add( parent );
 
         return getOrganisationUnitsAtLevel( level, parent != null ? parents : null );
@@ -404,7 +404,7 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitsAtLevel( int level, Collection<OrganisationUnit> parents )
     {
-        Set<Integer> levels = new HashSet<Integer>();
+        Set<Integer> levels = new HashSet<>();
         levels.add( level );
 
         return getOrganisationUnitsAtLevels( levels, parents );
@@ -414,10 +414,10 @@ public class DefaultOrganisationUnitService
     {
         if ( parents == null || parents.isEmpty() )
         {
-            parents = new HashSet<OrganisationUnit>( getRootOrganisationUnits() );
+            parents = new HashSet<>( getRootOrganisationUnits() );
         }
 
-        Set<OrganisationUnit> result = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> result = new HashSet<>();
 
         for ( Integer level : levels )
         {
@@ -785,7 +785,7 @@ public class DefaultOrganisationUnitService
 
     public List<OrganisationUnitLevel> getOrganisationUnitLevels()
     {
-        List<OrganisationUnitLevel> organisationUnitLevels = new ArrayList<OrganisationUnitLevel>( i18n( i18nService,
+        List<OrganisationUnitLevel> organisationUnitLevels = new ArrayList<>( i18n( i18nService,
             organisationUnitLevelStore.getAll() ) );
 
         Collections.sort( organisationUnitLevels, OrganisationUnitLevelComparator.INSTANCE );
@@ -800,14 +800,14 @@ public class DefaultOrganisationUnitService
 
     public List<OrganisationUnitLevel> getOrganisationUnitLevelByName( String name )
     {
-        return new ArrayList<OrganisationUnitLevel>( i18n( i18nService, organisationUnitLevelStore.getAllEqName( name ) ) );
+        return new ArrayList<>( i18n( i18nService, organisationUnitLevelStore.getAllEqName( name ) ) );
     }
 
     public List<OrganisationUnitLevel> getFilledOrganisationUnitLevels()
     {
         Map<Integer, OrganisationUnitLevel> levelMap = getOrganisationUnitLevelMap();
 
-        List<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>();
+        List<OrganisationUnitLevel> levels = new ArrayList<>();
 
         for ( int i = 0; i < getNumberOfOrganisationalLevels(); i++ )
         {
@@ -822,7 +822,7 @@ public class DefaultOrganisationUnitService
 
     public Map<Integer, OrganisationUnitLevel> getOrganisationUnitLevelMap()
     {
-        Map<Integer, OrganisationUnitLevel> levelMap = new HashMap<Integer, OrganisationUnitLevel>();
+        Map<Integer, OrganisationUnitLevel> levelMap = new HashMap<>();
 
         Collection<OrganisationUnitLevel> levels = getOrganisationUnitLevels();
 
@@ -886,7 +886,7 @@ public class DefaultOrganisationUnitService
     public Collection<OrganisationUnit> getOrganisationUnitByCoordinate( double longitude, double latitude,
         String topOrgUnitUid, Integer targetLevel )
     {
-        Collection<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>();
+        Collection<OrganisationUnit> orgUnits = new ArrayList<>();
 
         if ( GeoUtils.checkGeoJsonPointValid( longitude, latitude ) )
         {
@@ -913,7 +913,7 @@ public class DefaultOrganisationUnitService
             
             if ( topOrgUnit != null )
             {
-                Collection<OrganisationUnit> orgUnitChildren = new ArrayList<OrganisationUnit>();
+                Collection<OrganisationUnit> orgUnitChildren = new ArrayList<>();
 
                 if ( targetLevel != null )
                 {
@@ -973,7 +973,7 @@ public class DefaultOrganisationUnitService
     {
         for ( int i = searchLevel; i <= stopLevel; i++ )
         {
-            List<OrganisationUnit> unitsAtLevel = new ArrayList<OrganisationUnit>( getOrganisationUnitsAtLevel( i ) );
+            List<OrganisationUnit> unitsAtLevel = new ArrayList<>( getOrganisationUnitsAtLevel( i ) );
             FilterUtils.filter( unitsAtLevel, new OrganisationUnitPolygonCoveringCoordinateFilter( longitude, latitude ) );
             
             if ( unitsAtLevel.size() > 0 )
@@ -982,6 +982,6 @@ public class DefaultOrganisationUnitService
             }
         }
 
-        return new ArrayList<OrganisationUnit>();
+        return new ArrayList<>();
     }
 }

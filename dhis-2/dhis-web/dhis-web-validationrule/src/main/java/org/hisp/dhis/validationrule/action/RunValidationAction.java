@@ -148,7 +148,7 @@ public class RunValidationAction
         this.sendAlerts = sendAlerts;
     }
 
-    private List<ValidationResult> validationResults = new ArrayList<ValidationResult>();
+    private List<ValidationResult> validationResults = new ArrayList<>();
 
     public List<ValidationResult> getValidationResults()
     {
@@ -199,7 +199,7 @@ public class RunValidationAction
 
         log.info( "Validating data for " + ( group == null ? "all rules" : "group: " + group.getName() ) );
 
-        validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( format
+        validationResults = new ArrayList<>( validationRuleService.validate( format
                 .parseDate( startDate ), format.parseDate( endDate ), organisationUnits, attributeOptionCombo, group, sendAlerts, format ) );
 
         maxExceeded = validationResults.size() > ValidationRuleService.MAX_INTERACTIVE_ALERTS;

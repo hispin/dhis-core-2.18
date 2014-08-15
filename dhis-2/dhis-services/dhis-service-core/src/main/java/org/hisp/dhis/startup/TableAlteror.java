@@ -1042,7 +1042,7 @@ public class TableAlteror
     {
         StatementHolder holder = statementManager.getHolder();
 
-        List<Integer> distinctIds = new ArrayList<Integer>();
+        List<Integer> distinctIds = new ArrayList<>();
 
         try
         {
@@ -1071,7 +1071,7 @@ public class TableAlteror
     {
         StatementHolder holder = statementManager.getHolder();
 
-        Map<Integer, List<Integer>> idMap = new HashMap<Integer, List<Integer>>();
+        Map<Integer, List<Integer>> idMap = new HashMap<>();
 
         try
         {
@@ -1079,7 +1079,7 @@ public class TableAlteror
 
             for ( Integer distinctId : distinctIds )
             {
-                List<Integer> foreignIds = new ArrayList<Integer>();
+                List<Integer> foreignIds = new ArrayList<>();
 
                 ResultSet resultSet = statement.executeQuery( "SELECT " + col2 + " FROM " + table + " WHERE " + col1
                     + "=" + distinctId );

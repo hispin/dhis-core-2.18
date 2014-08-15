@@ -501,7 +501,7 @@ public class GetPreviewOptionsAction
 
         if ( type != null && status != null )
         {
-            importObjects = new ArrayList<ImportObject>( importObjectService.getImportObjects( valueOf( status ),
+            importObjects = new ArrayList<>( importObjectService.getImportObjects( valueOf( status ),
                 ClassMapUtil.getClass( type ) ) );
 
             Collections.sort( importObjects, new ImportObjectComparator() );

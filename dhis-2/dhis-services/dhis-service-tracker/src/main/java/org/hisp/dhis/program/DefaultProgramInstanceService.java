@@ -257,7 +257,7 @@ public class DefaultProgramInstanceService
     public List<Grid> getProgramInstanceReport( TrackedEntityInstance instance, I18n i18n )
     {
 
-        List<Grid> grids = new ArrayList<Grid>();
+        List<Grid> grids = new ArrayList<>();
 
         // ---------------------------------------------------------------------
         // Dynamic attributes
@@ -500,7 +500,7 @@ public class DefaultProgramInstanceService
 
         if ( outboundSms == null )
         {
-            outboundSms = new ArrayList<OutboundSms>();
+            outboundSms = new ArrayList<>();
         }
 
         outboundSms.addAll( sendMessages( programInstance, TrackedEntityInstanceReminder.SEND_WHEN_TO_EMROLLEMENT ) );
@@ -513,7 +513,7 @@ public class DefaultProgramInstanceService
 
         if ( messages == null )
         {
-            messages = new ArrayList<MessageConversation>();
+            messages = new ArrayList<>();
         }
 
         messages.addAll( sendMessageConversations( programInstance,
@@ -553,7 +553,7 @@ public class DefaultProgramInstanceService
 
         if ( outboundSms == null )
         {
-            outboundSms = new ArrayList<OutboundSms>();
+            outboundSms = new ArrayList<>();
         }
 
         outboundSms
@@ -567,7 +567,7 @@ public class DefaultProgramInstanceService
 
         if ( messageConversations == null )
         {
-            messageConversations = new ArrayList<MessageConversation>();
+            messageConversations = new ArrayList<>();
         }
 
         messageConversations.addAll( sendMessageConversations( programInstance,
@@ -764,7 +764,7 @@ public class DefaultProgramInstanceService
     private Collection<OutboundSms> sendMessages( ProgramInstance programInstance, int status )
     {
         TrackedEntityInstance entityInstance = programInstance.getEntityInstance();
-        Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
+        Collection<OutboundSms> outboundSmsList = new HashSet<>();
 
         Collection<TrackedEntityInstanceReminder> reminders = programInstance.getProgram().getInstanceReminders();
 
@@ -791,7 +791,7 @@ public class DefaultProgramInstanceService
     {
         I18nFormat format = i18nManager.getI18nFormat();
 
-        Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
+        Collection<MessageConversation> messageConversations = new HashSet<>();
 
         Collection<TrackedEntityInstanceReminder> reminders = programInstance.getProgram().getInstanceReminders();
         for ( TrackedEntityInstanceReminder rm : reminders )

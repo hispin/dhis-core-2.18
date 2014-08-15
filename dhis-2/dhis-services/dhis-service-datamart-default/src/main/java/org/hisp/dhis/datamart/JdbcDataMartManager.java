@@ -78,7 +78,7 @@ public class JdbcDataMartManager
     @Override
     public Set<DataElementOperand> getOperandsWithData( Set<DataElementOperand> operands )
     {
-        final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>();
+        final Set<DataElementOperand> operandsWithData = new HashSet<>();
         
         final StatementHolder holder = statementManager.getHolder();
         
@@ -120,7 +120,7 @@ public class JdbcDataMartManager
             
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
-            final Map<DataElementOperand, String> map = new HashMap<DataElementOperand, String>();
+            final Map<DataElementOperand, String> map = new HashMap<>();
             
             while ( resultSet.next() )
             {

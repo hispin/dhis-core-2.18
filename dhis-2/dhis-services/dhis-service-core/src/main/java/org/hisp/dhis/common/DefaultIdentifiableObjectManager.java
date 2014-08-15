@@ -216,7 +216,7 @@ public class DefaultIdentifiableObjectManager
     @Override
     public <T extends IdentifiableObject> Collection<T> filter( Class<T> clazz, String query )
     {
-        Set<T> uniqueObjects = new HashSet<T>();
+        Set<T> uniqueObjects = new HashSet<>();
 
         T uidObject = get( clazz, query );
 
@@ -234,7 +234,7 @@ public class DefaultIdentifiableObjectManager
 
         uniqueObjects.addAll( getLikeName( clazz, query ) );
 
-        List<T> objects = new ArrayList<T>( uniqueObjects );
+        List<T> objects = new ArrayList<>( uniqueObjects );
 
         Collections.sort( objects, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -249,7 +249,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         return (Collection<T>) store.getAll();
@@ -263,7 +263,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         return (Collection<T>) store.getAllOrderedName();
@@ -277,7 +277,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         return (List<T>) store.getByUid( uids );
@@ -304,7 +304,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         return (Collection<T>) store.getAllLikeName( name );
@@ -318,7 +318,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         return (Collection<T>) store.getAllLikeShortName( shortName );
@@ -332,7 +332,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         return (List<T>) store.getAllOrderedName( first, max );
@@ -346,7 +346,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         return (List<T>) store.getAllLikeNameOrderedName( name, first, max );
@@ -360,7 +360,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         return (Collection<T>) store.getAllGeLastUpdated( lastUpdated );
@@ -374,7 +374,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         return (Collection<T>) store.getAllGeLastUpdatedOrderedName( lastUpdated );
@@ -385,7 +385,7 @@ public class DefaultIdentifiableObjectManager
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
 
-        Set<Integer> ids = new HashSet<Integer>();
+        Set<Integer> ids = new HashSet<>();
 
         for ( String uid : uids )
         {
@@ -404,7 +404,7 @@ public class DefaultIdentifiableObjectManager
     @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property )
     {
-        Map<String, T> map = new HashMap<String, T>();
+        Map<String, T> map = new HashMap<>();
 
         GenericIdentifiableObjectStore<T> store = (GenericIdentifiableObjectStore<T>) getIdentifiableObjectStore( clazz );
 
@@ -454,7 +454,7 @@ public class DefaultIdentifiableObjectManager
     @SuppressWarnings("unchecked")
     public <T extends NameableObject> Map<String, T> getIdMap( Class<T> clazz, NameableProperty property )
     {
-        Map<String, T> map = new HashMap<String, T>();
+        Map<String, T> map = new HashMap<>();
 
         GenericNameableObjectStore<T> store = (GenericNameableObjectStore<T>) getNameableObjectStore( clazz );
 

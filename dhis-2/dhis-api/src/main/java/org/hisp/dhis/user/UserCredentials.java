@@ -96,19 +96,19 @@ public class UserCredentials
      * Set of user roles.
      */
     @Scanned
-    private Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
+    private Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<>();
 
     /**
      * Category option group set dimensions to constrain data analytics aggregation.
      */
     @Scanned
-    private Set<CategoryOptionGroupSet> cogsDimensionConstraints = new HashSet<CategoryOptionGroupSet>();
+    private Set<CategoryOptionGroupSet> cogsDimensionConstraints = new HashSet<>();
 
     /**
      * Category dimensions to constrain data analytics aggregation.
      */
     @Scanned
-    private Set<DataElementCategory> catDimensionConstraints = new HashSet<DataElementCategory>();
+    private Set<DataElementCategory> catDimensionConstraints = new HashSet<>();
 
     /**
      * Date of the user's last login.
@@ -172,7 +172,7 @@ public class UserCredentials
      */
     public Set<String> getAllAuthorities()
     {
-        Set<String> authorities = new HashSet<String>();
+        Set<String> authorities = new HashSet<>();
 
         for ( UserAuthorityGroup group : userAuthorityGroups )
         {
@@ -191,7 +191,7 @@ public class UserCredentials
      */
     public boolean hasAnyAuthority( Collection<String> auths )
     {
-        Set<String> all = new HashSet<String>( getAllAuthorities() );
+        Set<String> all = new HashSet<>( getAllAuthorities() );
         return all.removeAll( auths );
     }
 
@@ -235,7 +235,7 @@ public class UserCredentials
      */
     public Set<DataSet> getAllDataSets()
     {
-        Set<DataSet> dataSets = new HashSet<DataSet>();
+        Set<DataSet> dataSets = new HashSet<>();
 
         for ( UserAuthorityGroup group : userAuthorityGroups )
         {
@@ -380,7 +380,7 @@ public class UserCredentials
      */
     public Set<DimensionalObject> getDimensionConstraints()
     {
-        Set<DimensionalObject> constraints = new HashSet<DimensionalObject>();
+        Set<DimensionalObject> constraints = new HashSet<>();
 
         for ( CategoryOptionGroupSet cogs : cogsDimensionConstraints )
         {

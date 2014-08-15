@@ -75,7 +75,7 @@ public class GetFilterListSortOrderAction
     @Override
     public String execute() throws Exception
     {
-        filters = new ArrayList<MetaDataFilter>( metaDataFilterService.getAllFilters() );
+        filters = new ArrayList<>( metaDataFilterService.getAllFilters() );
 
         return SUCCESS;
     }

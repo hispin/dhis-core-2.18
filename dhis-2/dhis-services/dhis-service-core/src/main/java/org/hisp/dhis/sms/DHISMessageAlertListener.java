@@ -137,13 +137,13 @@ public class DHISMessageAlertListener
             {
                 User sender = users.iterator().next();
 
-                Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
+                Set<User> receivers = new HashSet<>( userGroup.getMembers() );
 
                 // forward to user group by SMS,Dhis2 message, Email
                 messageService.sendMessage( smsCommand.getName(), message, null, receivers, sender, false, false );
 
                 // confirm SMS was received and forwarded completely
-                Set<User> feedbackList = new HashSet<User>();
+                Set<User> feedbackList = new HashSet<>();
                 feedbackList.add( sender );
                 smsMessageSender.sendMessage( smsCommand.getName(), smsCommand.getReceivedMessage(), null,
                     feedbackList, true );

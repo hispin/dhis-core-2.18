@@ -92,7 +92,7 @@ public class ShowSendSMSFormAction
     public String execute()
         throws Exception
     {
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
 
         Collections.sort( userGroups, new UserGroupComparator() );
 

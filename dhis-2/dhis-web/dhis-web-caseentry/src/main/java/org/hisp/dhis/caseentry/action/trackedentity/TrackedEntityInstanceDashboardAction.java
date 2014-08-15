@@ -103,11 +103,11 @@ public class TrackedEntityInstanceDashboardAction
 
     private Collection<TrackedEntityAudit> entityInstanceAudits;
 
-    private Map<Integer, String> attributeValueMap = new HashMap<Integer, String>();
+    private Map<Integer, String> attributeValueMap = new HashMap<>();
 
-    private Collection<Relationship> relationships = new HashSet<Relationship>();
+    private Collection<Relationship> relationships = new HashSet<>();
 
-    private Map<String, String> programIndicatorsMap = new HashMap<String, String>();
+    private Map<String, String> programIndicatorsMap = new HashMap<>();
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -219,9 +219,9 @@ public class TrackedEntityInstanceDashboardAction
         // Get entityInstance-attribute-values
         // ---------------------------------------------------------------------
 
-        attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
+        attributes = new ArrayList<>( attributeService.getAllTrackedEntityAttributes() );
         
-        displayedAttributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesDisplayInList() );
+        displayedAttributes = new ArrayList<>( attributeService.getTrackedEntityAttributesDisplayInList() );
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         for ( TrackedEntityAttributeValue attributeValue : entityInstance.getAttributeValues() )
@@ -233,9 +233,9 @@ public class TrackedEntityInstanceDashboardAction
         // Get program enrollment
         // ---------------------------------------------------------------------
 
-        activeProgramInstances = new HashSet<ProgramInstance>();
+        activeProgramInstances = new HashSet<>();
 
-        completedProgramInstances = new HashSet<ProgramInstance>();
+        completedProgramInstances = new HashSet<>();
 
         for ( ProgramInstance programInstance : programInstances )
         {

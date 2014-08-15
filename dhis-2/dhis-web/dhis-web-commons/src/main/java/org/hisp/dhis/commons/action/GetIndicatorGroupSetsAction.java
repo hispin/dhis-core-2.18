@@ -81,7 +81,7 @@ public class GetIndicatorGroupSetsAction
     public String execute()
         throws Exception
     {
-        indicatorGroupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() );
+        indicatorGroupSets = new ArrayList<>( indicatorService.getAllIndicatorGroupSets() );
 
         if ( key != null )
         {

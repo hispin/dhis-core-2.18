@@ -102,7 +102,7 @@ public class SqlView
 
     public static Map<String, String> getCriteria( Set<String> params )
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         if ( params != null )
         {

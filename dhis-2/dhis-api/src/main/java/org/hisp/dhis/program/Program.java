@@ -167,7 +167,7 @@ public class Program
      */
     public Set<DataElement> getAllDataElements()
     {
-        Set<DataElement> elements = new HashSet<DataElement>();
+        Set<DataElement> elements = new HashSet<>();
 
         for ( ProgramStage stage : programStages )
         {
@@ -186,7 +186,7 @@ public class Program
      */
     public List<TrackedEntityAttribute> getTrackedEntityAttributes()
     {
-        List<TrackedEntityAttribute> entityAttributes = new ArrayList<TrackedEntityAttribute>();
+        List<TrackedEntityAttribute> entityAttributes = new ArrayList<>();
         for ( ProgramTrackedEntityAttribute programAttribute : programAttributes )
         {
             entityAttributes.add( programAttribute.getAttribute() );

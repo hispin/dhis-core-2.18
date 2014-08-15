@@ -156,7 +156,7 @@ public class TranslateAction
 
         HttpServletRequest request = ServletActionContext.getRequest();
 
-        Map<String, String> translations = new Hashtable<String, String>();
+        Map<String, String> translations = new Hashtable<>();
         
         for ( String propertyName : propertyNames )
         {

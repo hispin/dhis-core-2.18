@@ -65,7 +65,7 @@ public class GetCategoryOptionsAction
     
     public String execute()
     {
-        categoryOptions = new ArrayList<DataElementCategoryOption>( categoryService.getAllDataElementCategoryOptions() );
+        categoryOptions = new ArrayList<>( categoryService.getAllDataElementCategoryOptions() );
         
         Collections.sort( categoryOptions, IdentifiableObjectNameComparator.INSTANCE );
         

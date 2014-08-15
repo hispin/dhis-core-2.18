@@ -69,7 +69,7 @@ public class GetStringsFromLocaleAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Map<String, String> translations = new Hashtable<String, String>();
+    private Map<String, String> translations = new Hashtable<>();
 
     public Map<String, String> getTranslations()
     {

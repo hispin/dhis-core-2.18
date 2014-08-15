@@ -62,7 +62,7 @@ public class GetOrganisationUnitsAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+    private List<OrganisationUnit> organisationUnits = new ArrayList<>();
 
     public List<OrganisationUnit> getOrganisationUnits()
     {

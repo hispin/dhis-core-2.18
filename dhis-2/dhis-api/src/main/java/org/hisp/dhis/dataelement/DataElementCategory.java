@@ -69,7 +69,7 @@ public class DataElementCategory
     private String dataDimensionType;
 
     @Scanned
-    private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+    private List<DataElementCategoryOption> categoryOptions = new ArrayList<>();
 
     private boolean dataDimension;
 

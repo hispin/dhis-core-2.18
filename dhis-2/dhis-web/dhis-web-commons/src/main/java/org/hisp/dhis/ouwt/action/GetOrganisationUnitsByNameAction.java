@@ -82,7 +82,7 @@ public class GetOrganisationUnitsByNameAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+    private List<OrganisationUnit> organisationUnits = new ArrayList<>();
 
     public List<OrganisationUnit> getOrganisationUnits()
     {
@@ -99,7 +99,7 @@ public class GetOrganisationUnitsByNameAction
     {
         term = term.toLowerCase();
 
-        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>( currentUserService.getCurrentUser().getOrganisationUnits() );
+        Set<OrganisationUnit> userOrganisationUnits = new HashSet<>( currentUserService.getCurrentUser().getOrganisationUnits() );
 
         userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( IdentifiableObjectUtils.getUids( userOrganisationUnits ) ) );
 

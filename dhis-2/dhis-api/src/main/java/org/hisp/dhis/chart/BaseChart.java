@@ -116,7 +116,7 @@ public abstract class BaseChart
     // Dimensional properties
     // -------------------------------------------------------------------------
 
-    protected List<String> filterDimensions = new ArrayList<String>();
+    protected List<String> filterDimensions = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Transient properties
@@ -124,13 +124,13 @@ public abstract class BaseChart
 
     protected transient I18nFormat format;
 
-    protected transient List<Period> relativePeriods = new ArrayList<Period>();
+    protected transient List<Period> relativePeriods = new ArrayList<>();
 
     protected transient User user;
 
-    protected transient List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>();
+    protected transient List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<>();
 
-    protected transient List<OrganisationUnit> organisationUnitsInGroups = new ArrayList<OrganisationUnit>();
+    protected transient List<OrganisationUnit> organisationUnitsInGroups = new ArrayList<>();
 
     protected transient Grid dataItemGrid = null;
     

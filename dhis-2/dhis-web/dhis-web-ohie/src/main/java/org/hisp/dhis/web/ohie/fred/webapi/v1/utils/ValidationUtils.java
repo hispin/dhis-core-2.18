@@ -56,7 +56,7 @@ public final class ValidationUtils
 
     public static <T> String constraintViolationsToJson( Set<ConstraintViolation<T>> constraintViolations ) throws IOException
     {
-        Map<String, String> constraintViolationsMap = new HashMap<String, String>();
+        Map<String, String> constraintViolationsMap = new HashMap<>();
 
         for ( ConstraintViolation<T> constraintViolation : constraintViolations )
         {

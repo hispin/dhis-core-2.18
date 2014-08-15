@@ -53,7 +53,7 @@ public class CategoryOptionGroup
     extends BaseNameableObject
 {
     @Scanned
-    private Set<DataElementCategoryOption> members = new HashSet<DataElementCategoryOption>();
+    private Set<DataElementCategoryOption> members = new HashSet<>();
 
     private CategoryOptionGroupSet groupSet;
 

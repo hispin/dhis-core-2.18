@@ -48,7 +48,7 @@ public class StatementDialectFactoryBean
     
     static
     {
-        dialectMap = new HashMap<String, StatementDialect>();
+        dialectMap = new HashMap<>();
         dialectMap.put( "org.hibernate.dialect.MySQLDialect", StatementDialect.MYSQL );
         dialectMap.put( "org.hibernate.dialect.PostgreSQLDialect", StatementDialect.POSTGRESQL );
         dialectMap.put( "org.hibernate.dialect.H2Dialect", StatementDialect.H2 );

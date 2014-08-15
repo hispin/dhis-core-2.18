@@ -183,7 +183,7 @@ public class TrackedEntityAttributeValueStoreTest
         attributeValueStore.saveVoid( attributeValueB );
         attributeValueStore.saveVoid( attributeValueC );
 
-        Collection<TrackedEntityInstance> entityInstances = new HashSet<TrackedEntityInstance>();
+        Collection<TrackedEntityInstance> entityInstances = new HashSet<>();
         entityInstances.add( entityInstanceA );
         entityInstances.add( entityInstanceB );
 

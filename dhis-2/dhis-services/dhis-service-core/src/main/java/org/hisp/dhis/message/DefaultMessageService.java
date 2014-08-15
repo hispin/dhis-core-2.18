@@ -104,7 +104,7 @@ public class DefaultMessageService
     public int sendMessage( String subject, String text, String metaData, Set<User> users_,
         User sender, boolean includeFeedbackRecipients, boolean forceNotifications )
     {
-        Set<User> users = new HashSet<User>( users_ );
+        Set<User> users = new HashSet<>( users_ );
 
         // ---------------------------------------------------------------------
         // Add feedback recipients to users if they are not there
@@ -173,7 +173,7 @@ public class DefaultMessageService
 
         updateMessageConversation( conversation );
 
-        invokeMessageSenders( conversation.getSubject(), text, sender, new HashSet<User>( conversation.getUsers() ), false );
+        invokeMessageSenders( conversation.getSubject(), text, sender, new HashSet<>( conversation.getUsers() ), false );
     }
 
     public int sendCompletenessMessage( CompleteDataSetRegistration registration )
@@ -189,11 +189,11 @@ public class DefaultMessageService
 
         User sender = currentUserService.getCurrentUser();
 
-        Set<User> recipients = new HashSet<User>();
+        Set<User> recipients = new HashSet<>();
 
         if ( userGroup != null )
         {
-            recipients.addAll( new HashSet<User>( userGroup.getMembers() ) );
+            recipients.addAll( new HashSet<>( userGroup.getMembers() ) );
         }
 
         if ( dataSet.isNotifyCompletingUser() )
@@ -221,7 +221,7 @@ public class DefaultMessageService
         {
             int id = saveMessageConversation( conversation );
             
-            invokeMessageSenders( COMPLETE_SUBJECT, text, sender, new HashSet<User>( conversation.getUsers() ), false );
+            invokeMessageSenders( COMPLETE_SUBJECT, text, sender, new HashSet<>( conversation.getUsers() ), false );
 
             return id;
         }
@@ -310,7 +310,7 @@ public class DefaultMessageService
         {
             log.debug( "Invoking message sender: " + messageSender.getClass().getSimpleName() );
             
-            messageSender.sendMessage( subject, text, sender, new HashSet<User>( users ), forceSend );
+            messageSender.sendMessage( subject, text, sender, new HashSet<>( users ), forceSend );
         }
     }
 }

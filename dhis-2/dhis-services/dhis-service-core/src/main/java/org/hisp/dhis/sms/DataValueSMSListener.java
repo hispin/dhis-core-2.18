@@ -203,7 +203,7 @@ public class DataValueSMSListener
 
     private Map<String, String> parse( String sms, SMSCommand smsCommand )
     {
-        HashMap<String, String> output = new HashMap<String, String>();
+        HashMap<String, String> output = new HashMap<>();
         Pattern pattern = Pattern.compile( defaultPattern );
         if ( !StringUtils.isBlank( smsCommand.getSeparator() ) )
         {
@@ -264,7 +264,7 @@ public class DataValueSMSListener
 
     private Collection<OrganisationUnit> getOrganisationUnitsByPhoneNumber( String sender )
     {
-        Collection<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>();
+        Collection<OrganisationUnit> orgUnits = new ArrayList<>();
         Collection<User> users = userService.getUsersByPhoneNumber( sender );
         for ( User u : users )
         {
@@ -531,8 +531,8 @@ public class DataValueSMSListener
 
         Period period = null;
 
-        Map<String, DataValue> codesWithDataValues = new TreeMap<String, DataValue>();
-        List<String> codesWithoutDataValues = new ArrayList<String>();
+        Map<String, DataValue> codesWithDataValues = new TreeMap<>();
+        List<String> codesWithoutDataValues = new ArrayList<>();
 
         for ( SMSCode code : command.getCodes() )
         {

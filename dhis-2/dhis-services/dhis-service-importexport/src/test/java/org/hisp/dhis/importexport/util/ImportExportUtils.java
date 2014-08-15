@@ -140,7 +140,7 @@ public class ImportExportUtils
             Arrays.sort( ignoredBytePos );
         }
         
-        List<Character> lastChars = new ArrayList<Character>( LAST_CHAR_SIZE + 1 );
+        List<Character> lastChars = new ArrayList<>( LAST_CHAR_SIZE + 1 );
         
         try
         {

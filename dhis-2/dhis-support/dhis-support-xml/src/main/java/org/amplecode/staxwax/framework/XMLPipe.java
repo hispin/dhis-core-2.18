@@ -81,7 +81,7 @@ public class XMLPipe
 
     public XMLPipe()
     {
-        eventQ = new LinkedBlockingQueue<XMLEvent>();
+        eventQ = new LinkedBlockingQueue<>();
         output = new PipeReader();
         input = new PipeWriter();
     }

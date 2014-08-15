@@ -45,7 +45,7 @@ import java.util.List;
 public class Name
 {
     @XmlElement( name = "commonName", namespace = "urn:ihe:iti:csd:2013", required = true )
-    private List<CommonName> commonNames = new ArrayList<CommonName>();
+    private List<CommonName> commonNames = new ArrayList<>();
 
     @XmlElement( name = "honorific", namespace = "urn:ihe:iti:csd:2013" )
     private String honorific;
@@ -54,7 +54,7 @@ public class Name
     private String forename;
 
     @XmlElement( name = "otherNames", namespace = "urn:ihe:iti:csd:2013" )
-    private List<String> otherNames = new ArrayList<String>();
+    private List<String> otherNames = new ArrayList<>();
 
     @XmlElement( name = "surname", namespace = "urn:ihe:iti:csd:2013" )
     private String surname;

@@ -60,7 +60,7 @@ public class ProgramStage
 
     private List<Section> sections;
 
-    private List<ProgramStageDataElement> dataElements = new ArrayList<ProgramStageDataElement>();
+    private List<ProgramStageDataElement> dataElements = new ArrayList<>();
 
     public List<Section> getSections()
     {
@@ -229,7 +229,7 @@ public class ProgramStage
         {
             for ( int i = 0; i < sectionSize; i++ )
             {
-                sections = new ArrayList<Section>();
+                sections = new ArrayList<>();
                 Section se = new Section();
                 se.deSerialize( dint );
                 sections.add( se );

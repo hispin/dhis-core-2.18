@@ -113,42 +113,42 @@ public class GreySectionAction
         return sectionIsMultiDimensional;
     }
 
-    private Map<Integer, Collection<DataElementCategoryOption>> optionsMap = new HashMap<Integer, Collection<DataElementCategoryOption>>();
+    private Map<Integer, Collection<DataElementCategoryOption>> optionsMap = new HashMap<>();
 
     public Map<Integer, Collection<DataElementCategoryOption>> getOptionsMap()
     {
         return optionsMap;
     }
 
-    private Map<Integer, Collection<DataElementCategory>> orderedCategories = new HashMap<Integer, Collection<DataElementCategory>>();
+    private Map<Integer, Collection<DataElementCategory>> orderedCategories = new HashMap<>();
 
     public Map<Integer, Collection<DataElementCategory>> getOrderedCategories()
     {
         return orderedCategories;
     }
 
-    private Map<Integer, Collection<Integer>> colRepeat = new HashMap<Integer, Collection<Integer>>();
+    private Map<Integer, Collection<Integer>> colRepeat = new HashMap<>();
 
     public Map<Integer, Collection<Integer>> getColRepeat()
     {
         return colRepeat;
     }
 
-    private List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<>();
 
     public List<DataElementCategoryOptionCombo> getOptionCombos()
     {
         return optionCombos;
     }
 
-    private List<DataElementCategoryCombo> orderedCategoryCombos = new ArrayList<DataElementCategoryCombo>();
+    private List<DataElementCategoryCombo> orderedCategoryCombos = new ArrayList<>();
 
     public List<DataElementCategoryCombo> getOrderedCategoryCombos()
     {
         return orderedCategoryCombos;
     }
 
-    private Map<String, Boolean> greyedFields = new HashMap<String, Boolean>();
+    private Map<String, Boolean> greyedFields = new HashMap<>();
 
     public Map<String, Boolean> getGreyedFields()
     {
@@ -200,7 +200,7 @@ public class GreySectionAction
 
                     int total = optionCombos.size() / ( catColSpan * categoryOptionSize );
 
-                    Collection<Integer> cols = new ArrayList<Integer>( total );
+                    Collection<Integer> cols = new ArrayList<>( total );
 
                     for ( int i = 0; i < total; i++ )
                     {

@@ -204,7 +204,7 @@ public class OrganisationUnitConverter
                 
                 if ( unit.getFeatureType() != null )
                 {
-                    List<CoordinatesTuple> list = new ArrayList<CoordinatesTuple>();
+                    List<CoordinatesTuple> list = new ArrayList<>();
                     
                     while ( reader.moveToStartElement( FIELD_COORDINATES_TUPLE, FIELD_FEATURE ) )
                     {

@@ -75,7 +75,7 @@ public class GetAttributesAction
     @Override
     public String execute()
     {
-        attributes = new ArrayList<Attribute>( attributeService.getAllAttributes() );
+        attributes = new ArrayList<>( attributeService.getAllAttributes() );
         
         ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), attributes );
         

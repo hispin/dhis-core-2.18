@@ -244,7 +244,7 @@ public class DefaultTrackedEntityInstanceService
         // Grid rows
         // ---------------------------------------------------------------------
 
-        Set<String> tes = new HashSet<String>();
+        Set<String> tes = new HashSet<>();
 
         for ( Map<String, String> entity : entities )
         {
@@ -263,7 +263,7 @@ public class DefaultTrackedEntityInstanceService
             }
         }
 
-        Map<Object, Object> metaData = new HashMap<Object, Object>();
+        Map<Object, Object> metaData = new HashMap<>();
 
         if ( params.isPaging() )
         {
@@ -275,7 +275,7 @@ public class DefaultTrackedEntityInstanceService
 
         if ( !params.isSkipMeta() )
         {
-            Map<String, String> names = new HashMap<String, String>();
+            Map<String, String> names = new HashMap<>();
 
             for ( String te : tes )
             {

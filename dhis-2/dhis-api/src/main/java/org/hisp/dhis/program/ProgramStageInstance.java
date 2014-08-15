@@ -61,11 +61,11 @@ public class ProgramStageInstance
 
     private OrganisationUnit organisationUnit;
 
-    private List<OutboundSms> outboundSms = new ArrayList<OutboundSms>();
+    private List<OutboundSms> outboundSms = new ArrayList<>();
 
-    private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
+    private List<MessageConversation> messageConversations = new ArrayList<>();
 
-    private List<TrackedEntityComment> comments = new ArrayList<TrackedEntityComment>();
+    private List<TrackedEntityComment> comments = new ArrayList<>();
 
     private EventStatus status = EventStatus.ACTIVE;
 

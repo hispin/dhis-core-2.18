@@ -133,10 +133,10 @@ public class DataMartServiceMultiDimensionTest
         // Setup identifier Collections
         // ---------------------------------------------------------------------
 
-        dataElementIds = new HashSet<Integer>();
-        indicatorIds = new HashSet<Integer>();
-        periodIds = new HashSet<Integer>();
-        organisationUnitIds = new HashSet<Integer>();
+        dataElementIds = new HashSet<>();
+        indicatorIds = new HashSet<>();
+        periodIds = new HashSet<>();
+        organisationUnitIds = new HashSet<>();
         
         // ---------------------------------------------------------------------
         // Setup Dimensions

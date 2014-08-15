@@ -54,7 +54,7 @@ public class Dhis14ExpressionConverterTest
     @Test
     public void testConvertFromDhis14()
     {
-        Map<Object, Integer> mapping = new HashMap<Object, Integer>();
+        Map<Object, Integer> mapping = new HashMap<>();
         mapping.put( 243, 43 );
         mapping.put( 253, 53 );
         mapping.put( 263, 63 );        
@@ -69,7 +69,7 @@ public class Dhis14ExpressionConverterTest
     @Test
     public void testConvertToDhis14()
     {
-        Map<Object, String> mapping = new HashMap<Object, String>();
+        Map<Object, String> mapping = new HashMap<>();
         mapping.put( 43, AGGREGATION_OPERATOR_SUM );
         mapping.put( 53, AGGREGATION_OPERATOR_SUM );
         mapping.put( 63, AGGREGATION_OPERATOR_AVERAGE ); 

@@ -85,14 +85,14 @@ public class GetAttributesByProgramAction
         this.entityInstanceId = entityInstanceId;
     }
 
-    private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+    private List<TrackedEntityAttribute> attributes = new ArrayList<>();
 
     public List<TrackedEntityAttribute> getAttributes()
     {
         return attributes;
     }
 
-    private Map<Integer, String> attributeValueMaps = new HashMap<Integer, String>();
+    private Map<Integer, String> attributeValueMaps = new HashMap<>();
 
     public Map<Integer, String> getAttributeValueMaps()
     {
@@ -120,7 +120,7 @@ public class GetAttributesByProgramAction
         }
         else
         {
-            attributes = new ArrayList<TrackedEntityAttribute>(
+            attributes = new ArrayList<>(
                 attributeService.getTrackedEntityAttributesDisplayInList() );
         }
 

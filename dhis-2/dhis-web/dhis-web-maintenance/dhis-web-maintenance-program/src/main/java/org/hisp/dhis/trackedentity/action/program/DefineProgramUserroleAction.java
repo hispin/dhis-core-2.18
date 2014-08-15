@@ -75,7 +75,7 @@ public class DefineProgramUserroleAction
         this.id = id;
     }
 
-    private Collection<Integer> userRoleIds = new HashSet<Integer>();
+    private Collection<Integer> userRoleIds = new HashSet<>();
 
     public void setUserRoleIds( Collection<Integer> userRoleIds )
     {
@@ -92,7 +92,7 @@ public class DefineProgramUserroleAction
     {
         Program program = programService.getProgram( id );
 
-        Set<UserAuthorityGroup> userAutorities = new HashSet<UserAuthorityGroup>();
+        Set<UserAuthorityGroup> userAutorities = new HashSet<>();
 
         for ( Integer userRoleId : this.userRoleIds )
         {

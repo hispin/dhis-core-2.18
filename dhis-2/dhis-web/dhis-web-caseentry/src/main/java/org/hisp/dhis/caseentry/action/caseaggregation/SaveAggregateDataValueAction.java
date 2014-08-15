@@ -92,7 +92,7 @@ public class SaveAggregateDataValueAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Set<String> aggregateValues = new HashSet<String>();
+    private Set<String> aggregateValues = new HashSet<>();
 
     public void setAggregateValues( Set<String> aggregateValues )
     {

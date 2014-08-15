@@ -121,7 +121,7 @@ public class DefaultDataElementOperandService
 
     public List<DataElementOperand> getDataElementOperandsByUid( Collection<String> uids )
     {
-        List<DataElementOperand> list = new ArrayList<DataElementOperand>();
+        List<DataElementOperand> list = new ArrayList<>();
 
         for ( String uid : uids )
         {
@@ -158,7 +158,7 @@ public class DefaultDataElementOperandService
 
     public Collection<DataElementOperand> getDataElementOperandByDataElements( Collection<DataElement> dataElements )
     {
-        Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();
+        Collection<DataElementOperand> operands = new ArrayList<>();
 
         for ( DataElementOperand operand : getAllDataElementOperands() )
         {
@@ -174,7 +174,7 @@ public class DefaultDataElementOperandService
     public Collection<DataElementOperand> getDataElementOperandByOptionCombos(
         Collection<DataElementCategoryOptionCombo> optionCombos )
     {
-        Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();
+        Collection<DataElementOperand> operands = new ArrayList<>();
 
         for ( DataElementOperand operand : getAllDataElementOperands() )
         {

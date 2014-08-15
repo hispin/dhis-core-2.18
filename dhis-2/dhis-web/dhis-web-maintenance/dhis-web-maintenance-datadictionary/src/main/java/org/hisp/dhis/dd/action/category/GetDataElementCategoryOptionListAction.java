@@ -97,14 +97,14 @@ public class GetDataElementCategoryOptionListAction
         {
             this.paging = createPaging( dataElementCategoryService.getDataElementCategoryOptionCountByName( key ) );
 
-            dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>(
+            dataElementCategoryOptions = new ArrayList<>(
                 dataElementCategoryService.getDataElementCategoryOptionsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( dataElementCategoryService.getDataElementCategoryOptionCount() );
 
-            dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>(
+            dataElementCategoryOptions = new ArrayList<>(
                 dataElementCategoryService.getDataElementCategoryOptionsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 

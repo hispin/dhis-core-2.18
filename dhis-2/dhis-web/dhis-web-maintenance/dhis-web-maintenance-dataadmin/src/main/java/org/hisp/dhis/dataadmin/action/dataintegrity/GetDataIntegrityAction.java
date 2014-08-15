@@ -221,37 +221,37 @@ public class GetDataIntegrityAction
 
     public String execute()
     {
-        dataElementsWithoutDataSet = new ArrayList<DataElement>( dataIntegrityService.getDataElementsWithoutDataSet() );
-        dataElementsWithoutGroups = new ArrayList<DataElement>( dataIntegrityService.getDataElementsWithoutGroups() );
+        dataElementsWithoutDataSet = new ArrayList<>( dataIntegrityService.getDataElementsWithoutDataSet() );
+        dataElementsWithoutGroups = new ArrayList<>( dataIntegrityService.getDataElementsWithoutGroups() );
         dataElementsAssignedToDataSetsWithDifferentPeriodTypes = dataIntegrityService.getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
         dataElementsViolatingExclusiveGroupSets = dataIntegrityService.getDataElementsViolatingExclusiveGroupSets();
         dataElementsInDataSetNotInForm = dataIntegrityService.getDataElementsInDataSetNotInForm();
 
         log.info( "Checked data elements" );
         
-        dataSetsNotAssignedToOrganisationUnits = new ArrayList<DataSet>( dataIntegrityService.getDataSetsNotAssignedToOrganisationUnits() );
-        sectionsWithInvalidCategoryCombinations = new ArrayList<Section>( dataIntegrityService.getSectionsWithInvalidCategoryCombinations() );
+        dataSetsNotAssignedToOrganisationUnits = new ArrayList<>( dataIntegrityService.getDataSetsNotAssignedToOrganisationUnits() );
+        sectionsWithInvalidCategoryCombinations = new ArrayList<>( dataIntegrityService.getSectionsWithInvalidCategoryCombinations() );
         
         log.info( "Checked data sets" );
         
         indicatorsWithIdenticalFormulas = dataIntegrityService.getIndicatorsWithIdenticalFormulas();
-        indicatorsWithoutGroups = new ArrayList<Indicator>( dataIntegrityService.getIndicatorsWithoutGroups() );
+        indicatorsWithoutGroups = new ArrayList<>( dataIntegrityService.getIndicatorsWithoutGroups() );
         invalidIndicatorNumerators = dataIntegrityService.getInvalidIndicatorNumerators();
         invalidIndicatorDenominators = dataIntegrityService.getInvalidIndicatorDenominators();
         indicatorsViolatingExclusiveGroupSets = dataIntegrityService.getIndicatorsViolatingExclusiveGroupSets();
 
         log.info( "Checked indicators" );
         
-        organisationUnitsWithCyclicReferences = new ArrayList<OrganisationUnit>( dataIntegrityService
+        organisationUnitsWithCyclicReferences = new ArrayList<>( dataIntegrityService
             .getOrganisationUnitsWithCyclicReferences() );
-        orphanedOrganisationUnits = new ArrayList<OrganisationUnit>( dataIntegrityService
+        orphanedOrganisationUnits = new ArrayList<>( dataIntegrityService
             .getOrphanedOrganisationUnits() );
-        organisationUnitsWithoutGroups = new ArrayList<OrganisationUnit>( dataIntegrityService
+        organisationUnitsWithoutGroups = new ArrayList<>( dataIntegrityService
             .getOrganisationUnitsWithoutGroups() );
         organisationUnitsViolatingExclusiveGroupSets = dataIntegrityService.getOrganisationUnitsViolatingExclusiveGroupSets();
-        organisationUnitGroupsWithoutGroupSets = new ArrayList<OrganisationUnitGroup>( dataIntegrityService
+        organisationUnitGroupsWithoutGroupSets = new ArrayList<>( dataIntegrityService
             .getOrganisationUnitGroupsWithoutGroupSets() );
-        validationRulesWithoutGroups = new ArrayList<ValidationRule>( dataIntegrityService
+        validationRulesWithoutGroups = new ArrayList<>( dataIntegrityService
             .getValidationRulesWithoutGroups() );
         
         log.info( "Checked organisation units" );

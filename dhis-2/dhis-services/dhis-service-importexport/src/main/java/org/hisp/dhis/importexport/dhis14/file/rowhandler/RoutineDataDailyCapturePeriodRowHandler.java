@@ -74,8 +74,8 @@ public class RoutineDataDailyCapturePeriodRowHandler
         this.periodService = periodService;
         this.periodTypeMapping = periodTypeMapping;
         this.params = params;
-        this.list = new ArrayList<Integer>();
-        listUniqueIdentifiers = new ArrayList<String>();
+        this.list = new ArrayList<>();
+        listUniqueIdentifiers = new ArrayList<>();
     }
 
     // -------------------------------------------------------------------------

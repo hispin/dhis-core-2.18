@@ -41,7 +41,7 @@ public class ActivityValue
 
     private int programInstanceId;
 
-    private List<DataValue> dataValues = new ArrayList<DataValue>();
+    private List<DataValue> dataValues = new ArrayList<>();
 
     public ActivityValue()
     {

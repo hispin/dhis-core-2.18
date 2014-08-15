@@ -77,7 +77,7 @@ public class GenericHttpGatewayConfigTest
         throws IOException, JAXBException
     {
         Writer writer = new StringWriter();
-        Map<String, String> parameters = new HashMap<String, String>();
+        Map<String, String> parameters = new HashMap<>();
         parameters.put( "username", "u1" );
         parameters.put( "password", "p1" );
         parameters.put( "sender", "s1" );

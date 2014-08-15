@@ -74,7 +74,7 @@ public class UserStoreTest
         OrganisationUnit unit2 = new OrganisationUnit( "name2", "shortName2", "organisationUnitCode2", new Date(),
             new Date(), true, "comment" );
         
-        Set<OrganisationUnit> units1 = new HashSet<OrganisationUnit>();       
+        Set<OrganisationUnit> units1 = new HashSet<>();
         
         units1.add(unit1);
         units1.add(unit2);
@@ -110,7 +110,7 @@ public class UserStoreTest
 
         // Test getAllUsers
         User user2 = new User();
-        Set<OrganisationUnit> units2 = new HashSet<OrganisationUnit>();        
+        Set<OrganisationUnit> units2 = new HashSet<>();
         units2.add(unit2);
         
         user2.setSurname( "User2" );
@@ -129,7 +129,7 @@ public class UserStoreTest
         OrganisationUnit unit3 = new OrganisationUnit( "name3", "shortName3", "organisationUnitCode3", new Date(),
             new Date(), true, "comment" );        
         organisationUnitService.addOrganisationUnit( unit3 );
-        Set<OrganisationUnit> units3 = new HashSet<OrganisationUnit>();        
+        Set<OrganisationUnit> units3 = new HashSet<>();
         units3.add(unit3);
         
         user.setOrganisationUnits( units3 );

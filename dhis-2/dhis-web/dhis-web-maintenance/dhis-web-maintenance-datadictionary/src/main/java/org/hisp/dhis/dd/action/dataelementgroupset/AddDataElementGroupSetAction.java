@@ -88,7 +88,7 @@ public class AddDataElementGroupSetAction
         this.dataDimension = dataDimension;
     }
 
-    private List<String> groupMembers = new ArrayList<String>();
+    private List<String> groupMembers = new ArrayList<>();
 
     public void setGroupMembers( List<String> groupMembers )
     {
@@ -104,7 +104,7 @@ public class AddDataElementGroupSetAction
     {
         DataElementGroupSet dataElementGroupSet = new DataElementGroupSet( name, description, compulsory, dataDimension );
 
-        List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
+        List<DataElementGroup> dataElementGroups = new ArrayList<>();
 
         for ( String id : this.groupMembers )
         {

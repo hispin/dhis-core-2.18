@@ -134,7 +134,7 @@ public class GetDataElementListAction
         {
             this.paging = createPaging( dataElementService.getDataElementCountByName( key ) );
 
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            dataElements = new ArrayList<>( dataElementService.getDataElementsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else if ( domainType != null )
         {
@@ -142,13 +142,13 @@ public class GetDataElementListAction
             
             this.paging = createPaging( dataElementService.getDataElementCountByDomainType( deDomainType ) );
 
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( deDomainType, paging.getStartPos(), paging.getPageSize() ) );
+            dataElements = new ArrayList<>( dataElementService.getDataElementsByDomainType( deDomainType, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( dataElementService.getDataElementCount() );
 
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsBetween( paging.getStartPos(), paging.getPageSize() ) );
+            dataElements = new ArrayList<>( dataElementService.getDataElementsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
         Collections.sort( dataElements, new IdentifiableObjectNameComparator() );

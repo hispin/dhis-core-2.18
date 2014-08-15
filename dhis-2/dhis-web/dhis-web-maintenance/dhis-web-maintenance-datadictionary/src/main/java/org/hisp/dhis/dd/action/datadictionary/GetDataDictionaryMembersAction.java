@@ -72,14 +72,14 @@ public class GetDataDictionaryMembersAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<DataElement> selectedDataElements = new ArrayList<DataElement>() ;
+    private List<DataElement> selectedDataElements = new ArrayList<>() ;
 
     public List<DataElement> getSelectedDataElements()
     {
         return selectedDataElements;
     }
 
-    private List<Indicator> selectedIndicators = new ArrayList<Indicator>();
+    private List<Indicator> selectedIndicators = new ArrayList<>();
 
     public List<Indicator> getSelectedIndicators()
     {
@@ -107,10 +107,10 @@ public class GetDataDictionaryMembersAction
         {
             dataDictionary = dataDictionaryService.getDataDictionary( id );
             
-            selectedDataElements = new ArrayList<DataElement>( dataDictionary.getDataElements() );
+            selectedDataElements = new ArrayList<>( dataDictionary.getDataElements() );
             Collections.sort( selectedDataElements, new IdentifiableObjectNameComparator() );
             
-            selectedIndicators = new ArrayList<Indicator>( dataDictionary.getIndicators() );            
+            selectedIndicators = new ArrayList<>( dataDictionary.getIndicators() );
             Collections.sort( selectedIndicators, new IdentifiableObjectNameComparator() );
         }
         

@@ -127,7 +127,7 @@ public class GetProgramTrackingListAction
     {
         programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
-        outboundSms = new ArrayList<OutboundSms>( programStageInstance.getOutboundSms() );
+        outboundSms = new ArrayList<>( programStageInstance.getOutboundSms() );
 
         currentUsername = currentUserService.getCurrentUsername();
 

@@ -70,14 +70,14 @@ public class Facility
 
     // Geo-location represented by latitude and longitude coordinates in that order
     @NotNull
-    private List<Double> coordinates = new ArrayList<Double>();
+    private List<Double> coordinates = new ArrayList<>();
 
     // External Facility Identifiers
-    private List<Identifier> identifiers = new ArrayList<Identifier>();
+    private List<Identifier> identifiers = new ArrayList<>();
 
     // Implementation specific custom properties
     @ValidProperties
-    private Map<String, Object> properties = new TreeMap<String, Object>();
+    private Map<String, Object> properties = new TreeMap<>();
 
     public Facility()
     {

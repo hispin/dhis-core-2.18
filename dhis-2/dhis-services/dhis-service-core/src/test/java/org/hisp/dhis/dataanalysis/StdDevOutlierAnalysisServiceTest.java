@@ -71,7 +71,7 @@ public class StdDevOutlierAnalysisServiceTest
     private DataValue dataValueA;
     private DataValue dataValueB;
 
-    private Set<DataElement> dataElementsA = new HashSet<DataElement>();
+    private Set<DataElement> dataElementsA = new HashSet<>();
 
     private DataElementCategoryCombo categoryCombo;
 
@@ -166,7 +166,7 @@ public class StdDevOutlierAnalysisServiceTest
         dataValueService.addDataValue( dataValueB );
 
         double stdDevFactor = 2.0;
-        Collection<Period> periods = new ArrayList<Period>();
+        Collection<Period> periods = new ArrayList<>();
         periods.add( periodI );
         periods.add( periodJ );
         periods.add( periodA );

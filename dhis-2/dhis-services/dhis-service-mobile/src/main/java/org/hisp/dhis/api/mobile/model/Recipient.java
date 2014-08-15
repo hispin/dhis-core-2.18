@@ -42,7 +42,7 @@ public class Recipient
 
     private Collection<User> users;
 
-    private List<User> userList = new ArrayList<User>();
+    private List<User> userList = new ArrayList<>();
 
     public String getClientVersion()
     {

@@ -79,7 +79,7 @@ public class ClassMapUtil
     
     static
     {
-        classMap = new HashMap<Objects, Class<?>>();
+        classMap = new HashMap<>();
         
         classMap.put( CONSTANT, Constant.class );
         classMap.put( DATAELEMENT, DataElement.class );

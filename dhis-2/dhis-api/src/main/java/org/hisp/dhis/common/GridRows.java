@@ -40,7 +40,7 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "rows", namespace = DxfNamespaces.DXF_2_0)
 public class GridRows
 {
-    private List<GridRow> rows = new ArrayList<GridRow>();
+    private List<GridRow> rows = new ArrayList<>();
 
     @JsonProperty
     public List<GridRow> getRows()

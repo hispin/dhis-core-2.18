@@ -42,7 +42,7 @@ public class OrgUnits
 {
     private String clientVersion;
 
-    private List<MobileOrgUnitLinks> orgUnits = new ArrayList<MobileOrgUnitLinks>();
+    private List<MobileOrgUnitLinks> orgUnits = new ArrayList<>();
 
     public OrgUnits()
     {
@@ -96,7 +96,7 @@ public class OrgUnits
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        orgUnits = new ArrayList<MobileOrgUnitLinks>();
+        orgUnits = new ArrayList<>();
         dataInputStream.readDouble(); // TODO fix
         int size = dataInputStream.readInt();
 

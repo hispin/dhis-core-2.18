@@ -140,7 +140,7 @@ public class StreamUtils
      */
     public static List<File> getFileList( File directory, boolean sort )
     {
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
 
         if ( directory != null )
         {

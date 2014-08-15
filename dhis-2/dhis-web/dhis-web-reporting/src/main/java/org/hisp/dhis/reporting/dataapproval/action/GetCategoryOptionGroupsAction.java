@@ -129,7 +129,7 @@ public class GetCategoryOptionGroupsAction
             
             Set<CategoryOptionGroupSet> groupSets = getCategoryOptionGroupSets( approvalLevels );
             
-            categoryOptionGroups = new ArrayList<CategoryOptionGroup>( categoryService.getAllCategoryOptionGroups() );
+            categoryOptionGroups = new ArrayList<>( categoryService.getAllCategoryOptionGroups() );
             
             FilterUtils.filter( categoryOptionGroups, new CategoryOptionGroupGroupSetFilter( groupSets ) );
 
@@ -183,7 +183,7 @@ public class GetCategoryOptionGroupsAction
      */
     private Set<CategoryOptionGroupSet> getCategoryOptionGroupSets( Collection<DataApprovalLevel> approvalLevels )
     {
-        Set<CategoryOptionGroupSet> groupSets = new HashSet<CategoryOptionGroupSet>();
+        Set<CategoryOptionGroupSet> groupSets = new HashSet<>();
         
         for ( DataApprovalLevel level : approvalLevels )
         {

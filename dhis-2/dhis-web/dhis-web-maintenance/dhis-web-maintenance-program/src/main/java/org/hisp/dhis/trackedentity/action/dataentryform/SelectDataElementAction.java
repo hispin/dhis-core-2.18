@@ -118,14 +118,14 @@ public class SelectDataElementAction
         
         if ( association != null )
         {
-            dataElements =  new ArrayList<DataElement>( programStageDataElementService.getListDataElement( association )  );
+            dataElements =  new ArrayList<>( programStageDataElementService.getListDataElement( association )  );
 
             if ( typeTextOnly )
             {
             	dataElements =  FilterUtils.filter( dataElements, new DataElementStringTypeFilter());
             }
             
-            Collections.sort( new ArrayList<DataElement>( dataElements ), new IdentifiableObjectNameComparator() );
+            Collections.sort( new ArrayList<>( dataElements ), new IdentifiableObjectNameComparator() );
         }
 
         return SUCCESS;

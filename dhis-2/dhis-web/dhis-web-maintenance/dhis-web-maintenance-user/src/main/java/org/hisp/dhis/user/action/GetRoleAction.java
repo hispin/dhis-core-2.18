@@ -136,13 +136,13 @@ public class GetRoleAction
         // DataSets
         // ---------------------------------------------------------------------
 
-        availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        availableDataSets = new ArrayList<>( dataSetService.getAllDataSets() );
 
         availableDataSets.removeAll( userAuthorityGroup.getDataSets() );
 
         Collections.sort( availableDataSets, IdentifiableObjectNameComparator.INSTANCE );
 
-        roleDataSets = new ArrayList<DataSet>( userAuthorityGroup.getDataSets() );
+        roleDataSets = new ArrayList<>( userAuthorityGroup.getDataSets() );
 
         Collections.sort( roleDataSets, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -150,13 +150,13 @@ public class GetRoleAction
         // Authorities
         // ---------------------------------------------------------------------
 
-        availableAuthorities = new ArrayList<String>( authoritiesProvider.getSystemAuthorities() );
+        availableAuthorities = new ArrayList<>( authoritiesProvider.getSystemAuthorities() );
 
         availableAuthorities.removeAll( userAuthorityGroup.getAuthorities() );
 
         Collections.sort( availableAuthorities );
 
-        roleAuthorities = new ArrayList<String>( userAuthorityGroup.getAuthorities() );
+        roleAuthorities = new ArrayList<>( userAuthorityGroup.getAuthorities() );
 
         Collections.sort( roleAuthorities );
 

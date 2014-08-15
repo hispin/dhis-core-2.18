@@ -39,9 +39,9 @@ import java.util.Set;
  */
 public class PeriodHierarchy
 {
-    private Map<Integer, Set<Integer>> intersectingPeriods = new HashMap<Integer, Set<Integer>>();
+    private Map<Integer, Set<Integer>> intersectingPeriods = new HashMap<>();
     
-    private Map<Integer, Set<Integer>> periodsBetween = new HashMap<Integer, Set<Integer>>();
+    private Map<Integer, Set<Integer>> periodsBetween = new HashMap<>();
     
     public Map<Integer, Set<Integer>> getIntersectingPeriods()
     {
@@ -50,14 +50,14 @@ public class PeriodHierarchy
 
     public Set<Integer> getIntersectingPeriods( Period period )
     {
-        return new HashSet<Integer>( intersectingPeriods.get( period.getId() ) );
+        return new HashSet<>( intersectingPeriods.get( period.getId() ) );
     }
     
     public Set<Integer> getIntersectingPeriods( Collection<Period> periods )
     {
-        periods = new HashSet<Period>( periods );
+        periods = new HashSet<>( periods );
         
-        Set<Integer> set = new HashSet<Integer>();
+        Set<Integer> set = new HashSet<>();
         
         for ( Period period : periods )
         {
@@ -77,14 +77,14 @@ public class PeriodHierarchy
 
     public Set<Integer> getPeriodsBetween( Period period )
     {
-        return new HashSet<Integer>( periodsBetween.get( period.getId() ) );
+        return new HashSet<>( periodsBetween.get( period.getId() ) );
     }
     
     public Set<Integer> getPeriodsBetween( Collection<Period> periods )
     {
-        periods = new HashSet<Period>( periods );
+        periods = new HashSet<>( periods );
         
-        Set<Integer> set = new HashSet<Integer>();
+        Set<Integer> set = new HashSet<>();
         
         for ( Period period : periods )
         {

@@ -144,11 +144,11 @@ public abstract class DataBrowserTest
         // Setup identifier Collections
         // ---------------------------------------------------------------------
 
-        dataElementIds = new HashSet<Integer>();
-        dataElementGroupIds = new HashSet<Integer>();
-        periodIds = new HashSet<Integer>();
-        organisationUnitIds = new HashSet<Integer>();
-        organisationUnitGroupIds = new HashSet<Integer>();
+        dataElementIds = new HashSet<>();
+        dataElementGroupIds = new HashSet<>();
+        periodIds = new HashSet<>();
+        organisationUnitIds = new HashSet<>();
+        organisationUnitGroupIds = new HashSet<>();
 
         // ---------------------------------------------------------------------
         // Setup DataElements
@@ -174,9 +174,9 @@ public abstract class DataBrowserTest
         dataElementIds.add( dataElementService.addDataElement( dataElementE ) );
         dataElementIds.add( dataElementService.addDataElement( dataElementF ) );
 
-        Set<DataElement> dataElementsA = new HashSet<DataElement>();
-        Set<DataElement> dataElementsB = new HashSet<DataElement>();
-        Set<DataElement> dataElementsC = new HashSet<DataElement>();
+        Set<DataElement> dataElementsA = new HashSet<>();
+        Set<DataElement> dataElementsB = new HashSet<>();
+        Set<DataElement> dataElementsC = new HashSet<>();
 
         // One dataElement
         dataElementsA.add( dataElementA );
@@ -275,8 +275,8 @@ public abstract class DataBrowserTest
         // Setup OrganisationUnitGroups
         // ---------------------------------------------------------------------
         
-        Collection<OrganisationUnit> orgUnitsA = new HashSet<OrganisationUnit>();
-        Collection<OrganisationUnit> orgUnitsB = new HashSet<OrganisationUnit>();
+        Collection<OrganisationUnit> orgUnitsA = new HashSet<>();
+        Collection<OrganisationUnit> orgUnitsB = new HashSet<>();
 
         // Two orgUnits
         orgUnitsA.add( unitB );

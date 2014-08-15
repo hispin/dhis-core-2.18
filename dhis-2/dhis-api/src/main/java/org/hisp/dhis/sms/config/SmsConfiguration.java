@@ -60,13 +60,13 @@ public class SmsConfiguration
 
     public SmsConfiguration()
     {
-        this.gateways = new ArrayList<SmsGatewayConfig>();
+        this.gateways = new ArrayList<>();
     }
 
     public SmsConfiguration( boolean enabled )
     {
         this.enabled = enabled;
-        this.gateways = new ArrayList<SmsGatewayConfig>();
+        this.gateways = new ArrayList<>();
     }
 
     // -------------------------------------------------------------------------

@@ -88,7 +88,7 @@ public class GetIndicatorGroupsAction
 
     public String execute()
     {
-        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
+        indicatorGroups = new ArrayList<>( indicatorService.getAllIndicatorGroups() );
 
         if ( filterNoGroupSet )
         {

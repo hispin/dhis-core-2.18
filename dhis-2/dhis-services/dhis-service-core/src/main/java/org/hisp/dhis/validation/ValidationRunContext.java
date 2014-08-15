@@ -153,10 +153,10 @@ public class ValidationRunContext
         ValidationRunContext context = new ValidationRunContext();
         context.runType = runType;
         context.lastScheduledRun = lastScheduledRun;
-        context.validationResults = new ConcurrentLinkedQueue<ValidationResult>(); // thread-safe
-        context.periodTypeExtendedMap = new HashMap<PeriodType, PeriodTypeExtended>();
-        context.ruleXMap = new HashMap<ValidationRule, ValidationRuleExtended>();
-        context.sourceXs = new HashSet<OrganisationUnitExtended>();
+        context.validationResults = new ConcurrentLinkedQueue<>(); // thread-safe
+        context.periodTypeExtendedMap = new HashMap<>();
+        context.ruleXMap = new HashMap<>();
+        context.sourceXs = new HashSet<>();
         context.constantMap = constantMap;
         context.expressionService = expressionService;
         context.periodService = periodService;
@@ -264,7 +264,7 @@ public class ValidationRunContext
      */
     private void removeAnyUnneededPeriodTypes()
     {
-        Set<PeriodTypeExtended> periodTypeXs = new HashSet<PeriodTypeExtended>( periodTypeExtendedMap.values() );
+        Set<PeriodTypeExtended> periodTypeXs = new HashSet<>( periodTypeExtendedMap.values() );
         
         for ( PeriodTypeExtended periodTypeX : periodTypeXs )
         {
@@ -295,7 +295,7 @@ public class ValidationRunContext
      */
     private Set<OrganisationUnit> getAllOtherDescendants( Collection<OrganisationUnit> sources )
     {
-    	Set<OrganisationUnit> allOtherDescendants = new HashSet<OrganisationUnit>();
+    	Set<OrganisationUnit> allOtherDescendants = new HashSet<>();
     	
         for ( OrganisationUnit source : sources )
         {
@@ -395,7 +395,7 @@ public class ValidationRunContext
     private static Collection<PeriodType> getAllowedPeriodTypesForDataElements( Collection<DataElement> dataElements,
         PeriodType periodType )
     {
-        Collection<PeriodType> allowedPeriodTypes = new HashSet<PeriodType>();
+        Collection<PeriodType> allowedPeriodTypes = new HashSet<>();
         
         if ( dataElements != null )
         {

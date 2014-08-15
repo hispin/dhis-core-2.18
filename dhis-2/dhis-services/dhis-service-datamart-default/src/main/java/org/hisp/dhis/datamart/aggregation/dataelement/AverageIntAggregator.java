@@ -107,7 +107,7 @@ public class AverageIntAggregator
     private Map<DataElementOperand, Double> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
         final Date startDate, final Date endDate, int unitLevel )
     {
-        final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, [total value, total relevant days]>
+        final Map<DataElementOperand, Double> values = new HashMap<>(); // <Operand, [total value, total relevant days]>
         
         for ( final CrossTabDataValue crossTabValue : crossTabValues )
         {
@@ -173,7 +173,7 @@ public class AverageIntAggregator
 
     public Collection<DataElementOperand> filterOperands( final Collection<DataElementOperand> operands, final PeriodType periodType )
     {
-        final Collection<DataElementOperand> filteredOperands = new HashSet<DataElementOperand>();
+        final Collection<DataElementOperand> filteredOperands = new HashSet<>();
         
         for ( final DataElementOperand operand : operands )
         {

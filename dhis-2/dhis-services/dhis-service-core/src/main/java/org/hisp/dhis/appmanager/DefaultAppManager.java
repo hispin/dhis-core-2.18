@@ -61,7 +61,7 @@ public class DefaultAppManager
     /**
      * In-memory singleton list holding state for apps.
      */
-    private List<App> apps = new ArrayList<App>();
+    private List<App> apps = new ArrayList<>();
 
     @PostConstruct
     private void init()
@@ -236,7 +236,7 @@ public class DefaultAppManager
     @Override
     public void reloadApps()
     {
-        List<App> appList = new ArrayList<App>();
+        List<App> appList = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
 

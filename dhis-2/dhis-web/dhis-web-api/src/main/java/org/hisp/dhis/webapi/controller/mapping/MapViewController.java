@@ -127,7 +127,7 @@ public class MapViewController
         }
         else
         {
-            entityList = new ArrayList<MapView>( manager.getAll( getEntityClass() ) );
+            entityList = new ArrayList<>( manager.getAll( getEntityClass() ) );
         }
 
         return entityList;

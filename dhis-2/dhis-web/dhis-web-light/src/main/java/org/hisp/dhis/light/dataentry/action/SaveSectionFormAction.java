@@ -211,21 +211,21 @@ public class SaveSectionFormAction
         return dataSet;
     }
 
-    private Map<String, String> dataValues = new HashMap<String, String>();
+    private Map<String, String> dataValues = new HashMap<>();
 
     public Map<String, String> getDataValues()
     {
         return dataValues;
     }
 
-    private Map<String, DeflatedDataValue> validationViolations = new HashMap<String, DeflatedDataValue>();
+    private Map<String, DeflatedDataValue> validationViolations = new HashMap<>();
 
     public Map<String, DeflatedDataValue> getValidationViolations()
     {
         return validationViolations;
     }
 
-    private Map<String, String> typeViolations = new HashMap<String, String>();
+    private Map<String, String> typeViolations = new HashMap<>();
 
     public Map<String, String> getTypeViolations()
     {
@@ -263,7 +263,7 @@ public class SaveSectionFormAction
         return name;
     }
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<DataElement> dataElements = new ArrayList<>();
 
     public List<DataElement> getDataElements()
     {
@@ -468,7 +468,7 @@ public class SaveSectionFormAction
         else
         {
             name = "Default";
-            dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+            dataElements = new ArrayList<>( dataSet.getDataElements() );
             Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
         }
 

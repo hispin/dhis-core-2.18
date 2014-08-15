@@ -119,7 +119,7 @@ public class TrackedEntityInstanceReminderServiceTest
         OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
-        Set<OrganisationUnit> orgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> orgUnits = new HashSet<>();
         orgUnits.add( organisationUnit );
 
         user = new User();
@@ -139,7 +139,7 @@ public class TrackedEntityInstanceReminderServiceTest
             TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE,
             TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
             TrackedEntityInstanceReminder.MESSAGE_TYPE_DIRECT_SMS );
-        Set<TrackedEntityInstanceReminder> reminders = new HashSet<TrackedEntityInstanceReminder>();
+        Set<TrackedEntityInstanceReminder> reminders = new HashSet<>();
         reminders.add( reminderA );
         program.setInstanceReminders( reminders );
         programService.addProgram( program );
@@ -150,7 +150,7 @@ public class TrackedEntityInstanceReminderServiceTest
             TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE,
             TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
             TrackedEntityInstanceReminder.MESSAGE_TYPE_DIRECT_SMS );
-        reminders = new HashSet<TrackedEntityInstanceReminder>();
+        reminders = new HashSet<>();
         reminders.add( reminderB );
         stageA.setReminders( reminders );
         programStageService.saveProgramStage( stageA );
@@ -161,11 +161,11 @@ public class TrackedEntityInstanceReminderServiceTest
             TrackedEntityInstanceReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED,
             TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
             TrackedEntityInstanceReminder.MESSAGE_TYPE_DIRECT_SMS );
-        reminders = new HashSet<TrackedEntityInstanceReminder>();
+        reminders = new HashSet<>();
         reminders.add( reminderB );
         stageB.setReminders( reminders );
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );

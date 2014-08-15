@@ -134,20 +134,20 @@ public class ShowAddProgramFormAction
 
     public String execute()
     {
-        programs = new ArrayList<Program>( programService.getAllPrograms() );
+        programs = new ArrayList<>( programService.getAllPrograms() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
 
-        availableAttributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
+        availableAttributes = new ArrayList<>( attributeService.getAllTrackedEntityAttributes() );
         Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
         Collections.sort( userGroups, IdentifiableObjectNameComparator.INSTANCE );
 
-        relationshipTypes = new ArrayList<RelationshipType>( relationshipTypeService.getAllRelationshipTypes() );
+        relationshipTypes = new ArrayList<>( relationshipTypeService.getAllRelationshipTypes() );
         Collections.sort( relationshipTypes, IdentifiableObjectNameComparator.INSTANCE );
 
-        trackedEntities = new ArrayList<TrackedEntity>(trackedEntityService.getAllTrackedEntity());
+        trackedEntities = new ArrayList<>(trackedEntityService.getAllTrackedEntity());
         Collections.sort( trackedEntities, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;

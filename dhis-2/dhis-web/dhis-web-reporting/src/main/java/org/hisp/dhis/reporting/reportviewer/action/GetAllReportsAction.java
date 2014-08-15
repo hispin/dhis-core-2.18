@@ -58,7 +58,7 @@ public class GetAllReportsAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<Report> reports = new ArrayList<Report>();
+    private List<Report> reports = new ArrayList<>();
 
     public List<Report> getReports()
     {
@@ -88,13 +88,13 @@ public class GetAllReportsAction
         {
             this.paging = createPaging( reportService.getReportCountByName( key ) );
             
-            reports = new ArrayList<Report>( reportService.getReportsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            reports = new ArrayList<>( reportService.getReportsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else 
         {
             this.paging = createPaging( reportService.getReportCount() );
                 
-            reports = new ArrayList<Report>( reportService.getReportsBetween( paging.getStartPos(), paging.getPageSize() ) );
+            reports = new ArrayList<>( reportService.getReportsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
         return SUCCESS;

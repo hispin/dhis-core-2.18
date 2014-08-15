@@ -69,7 +69,7 @@ public class DataElementGroupSet
     private Boolean compulsory = false;
 
     @Scanned
-    private List<DataElementGroup> members = new ArrayList<DataElementGroup>();
+    private List<DataElementGroup> members = new ArrayList<>();
 
     private boolean dataDimension = true;
 
@@ -138,7 +138,7 @@ public class DataElementGroupSet
 
     public Collection<DataElement> getDataElements()
     {
-        List<DataElement> dataElements = new ArrayList<DataElement>();
+        List<DataElement> dataElements = new ArrayList<>();
 
         for ( DataElementGroup group : members )
         {
@@ -181,7 +181,7 @@ public class DataElementGroupSet
 
     public List<DataElementGroup> getSortedGroups()
     {
-        List<DataElementGroup> sortedGroups = new ArrayList<DataElementGroup>( members );
+        List<DataElementGroup> sortedGroups = new ArrayList<>( members );
 
         Collections.sort( sortedGroups, new IdentifiableObjectNameComparator() );
 

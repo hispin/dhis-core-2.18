@@ -140,7 +140,7 @@ public abstract class AbstractJdbcTableManager
     {
         log.info( "Get tables using earliest: " + earliest + ", latest: " + latest );
 
-        List<AnalyticsTable> tables = new ArrayList<AnalyticsTable>();
+        List<AnalyticsTable> tables = new ArrayList<>();
         
         if ( earliest != null && latest != null )
         {        

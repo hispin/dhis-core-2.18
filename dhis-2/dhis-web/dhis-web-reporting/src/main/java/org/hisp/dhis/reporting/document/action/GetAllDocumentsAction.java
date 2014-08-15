@@ -87,14 +87,14 @@ public class GetAllDocumentsAction
         {
             this.paging = createPaging( documentService.getDocumentCountByName( key ) );
 
-            documents = new ArrayList<Document>( documentService.getDocumentsBetweenByName( key, paging.getStartPos(),
+            documents = new ArrayList<>( documentService.getDocumentsBetweenByName( key, paging.getStartPos(),
                 paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( documentService.getDocumentCount() );
 
-            documents = new ArrayList<Document>( documentService.getDocumentsBetween( paging.getStartPos(), paging
+            documents = new ArrayList<>( documentService.getDocumentsBetween( paging.getStartPos(), paging
                 .getPageSize() ) );
         }
 

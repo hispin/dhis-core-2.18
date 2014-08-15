@@ -272,7 +272,7 @@ public class PdfDataEntryFormImportUtil
 
         public ProgramStageInstanceDataManager()
         {
-            programStageInstanceData = new HashMap<Integer, ProgramStageInstanceStoage>();
+            programStageInstanceData = new HashMap<>();
         }
 
         public void addDateData( int date, int rowNumber )
@@ -350,7 +350,7 @@ public class PdfDataEntryFormImportUtil
 
         public ProgramStageInstanceStoage()
         {
-            dataElementsValue = new HashMap<Integer, String>();
+            dataElementsValue = new HashMap<>();
         }
 
         // -------------------------------------------------------------------------

@@ -139,21 +139,21 @@ public class AddProgramStageAction
         this.minDaysFromStart = minDaysFromStart;
     }
 
-    private List<Integer> selectedDataElementsValidator = new ArrayList<Integer>();
+    private List<Integer> selectedDataElementsValidator = new ArrayList<>();
 
     public void setSelectedDataElementsValidator( List<Integer> selectedDataElementsValidator )
     {
         this.selectedDataElementsValidator = selectedDataElementsValidator;
     }
 
-    private List<Boolean> compulsories = new ArrayList<Boolean>();
+    private List<Boolean> compulsories = new ArrayList<>();
 
     public void setCompulsories( List<Boolean> compulsories )
     {
         this.compulsories = compulsories;
     }
 
-    private List<Boolean> allowProvidedElsewhere = new ArrayList<Boolean>();
+    private List<Boolean> allowProvidedElsewhere = new ArrayList<>();
 
     public void setAllowProvidedElsewhere( List<Boolean> allowProvidedElsewhere )
     {
@@ -181,35 +181,35 @@ public class AddProgramStageAction
         this.reportDateDescription = reportDateDescription;
     }
 
-    private List<Integer> daysAllowedSendMessages = new ArrayList<Integer>();
+    private List<Integer> daysAllowedSendMessages = new ArrayList<>();
 
     public void setDaysAllowedSendMessages( List<Integer> daysAllowedSendMessages )
     {
         this.daysAllowedSendMessages = daysAllowedSendMessages;
     }
 
-    private List<String> templateMessages = new ArrayList<String>();
+    private List<String> templateMessages = new ArrayList<>();
 
     public void setTemplateMessages( List<String> templateMessages )
     {
         this.templateMessages = templateMessages;
     }
 
-    private List<Integer> sendTo = new ArrayList<Integer>();
+    private List<Integer> sendTo = new ArrayList<>();
 
     public void setSendTo( List<Integer> sendTo )
     {
         this.sendTo = sendTo;
     }
 
-    private List<Integer> whenToSend = new ArrayList<Integer>();
+    private List<Integer> whenToSend = new ArrayList<>();
 
     public void setWhenToSend( List<Integer> whenToSend )
     {
         this.whenToSend = whenToSend;
     }
 
-    private List<Integer> messageType = new ArrayList<Integer>();
+    private List<Integer> messageType = new ArrayList<>();
 
     public void setMessageType( List<Integer> messageType )
     {
@@ -223,7 +223,7 @@ public class AddProgramStageAction
         this.autoGenerateEvent = autoGenerateEvent;
     }
 
-    private List<Boolean> displayInReports = new ArrayList<Boolean>();
+    private List<Boolean> displayInReports = new ArrayList<>();
 
     public void setDisplayInReports( List<Boolean> displayInReports )
     {
@@ -258,7 +258,7 @@ public class AddProgramStageAction
         this.allowFutureDates = allowFutureDates;
     }
 
-    private List<Integer> userGroup = new ArrayList<Integer>();
+    private List<Integer> userGroup = new ArrayList<>();
 
     public void setUserGroup( List<Integer> userGroup )
     {
@@ -314,7 +314,7 @@ public class AddProgramStageAction
         this.reportDateToUse = reportDateToUse;
     }
 
-    private List<Integer> selectedIndicators = new ArrayList<Integer>();
+    private List<Integer> selectedIndicators = new ArrayList<>();
 
     public void setSelectedIndicators( List<Integer> selectedIndicators )
     {
@@ -371,7 +371,7 @@ public class AddProgramStageAction
 
         // Program indicators
 
-        List<ProgramIndicator> programIndicators = new ArrayList<ProgramIndicator>();
+        List<ProgramIndicator> programIndicators = new ArrayList<>();
         for ( Integer id : selectedIndicators )
         {
             ProgramIndicator indicator = programIndicatorService.getProgramIndicator( id );
@@ -382,7 +382,7 @@ public class AddProgramStageAction
       
         // SMS Reminder
 
-        Set<TrackedEntityInstanceReminder> reminders = new HashSet<TrackedEntityInstanceReminder>();
+        Set<TrackedEntityInstanceReminder> reminders = new HashSet<>();
         for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )
         {
             TrackedEntityInstanceReminder reminder = new TrackedEntityInstanceReminder( "",
@@ -408,7 +408,7 @@ public class AddProgramStageAction
 
         programStageService.saveProgramStage( programStage );
         
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>( program.getProgramStages() );
+        List<ProgramStage> programStages = new ArrayList<>( program.getProgramStages() );
         Collections.sort( programStages, new ProgramStageMinDaysComparator() );
         program.getProgramStages().clear();
         program.setProgramStages( programStages );

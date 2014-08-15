@@ -41,7 +41,7 @@ public class ParametersMapXmlAdapter
     public Parameters marshal( Map<String, String> v )
         throws Exception
     {
-        ArrayList<Parameter> list = new ArrayList<Parameter>();
+        ArrayList<Parameter> list = new ArrayList<>();
 
         for ( Map.Entry<String, String> e : v.entrySet() )
         {
@@ -55,7 +55,7 @@ public class ParametersMapXmlAdapter
     public Map<String, String> unmarshal( Parameters v )
         throws Exception
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         
         for ( Parameter p : v.getParameters() )
         {

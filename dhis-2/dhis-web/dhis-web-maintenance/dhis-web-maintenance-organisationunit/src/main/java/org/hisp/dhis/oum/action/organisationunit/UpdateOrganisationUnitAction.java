@@ -225,21 +225,21 @@ public class UpdateOrganisationUnitAction
         this.phoneNumber = phoneNumber;
     }
 
-    private Collection<String> dataSets = new HashSet<String>();
+    private Collection<String> dataSets = new HashSet<>();
 
     public void setDataSets( Collection<String> dataSets )
     {
         this.dataSets = dataSets;
     }
 
-    private List<String> orgUnitGroupSets = new ArrayList<String>();
+    private List<String> orgUnitGroupSets = new ArrayList<>();
 
     public void setOrgUnitGroupSets( List<String> orgUnitGroupSets )
     {
         this.orgUnitGroupSets = orgUnitGroupSets;
     }
 
-    private List<String> orgUnitGroups = new ArrayList<String>();
+    private List<String> orgUnitGroups = new ArrayList<>();
 
     public void setOrgUnitGroups( List<String> orgUnitGroups )
     {
@@ -337,7 +337,7 @@ public class UpdateOrganisationUnitAction
             organisationUnit.setFeatureType( featureType );
         }
 
-        Set<DataSet> sets = new HashSet<DataSet>();
+        Set<DataSet> sets = new HashSet<>();
 
         for ( String id : dataSets )
         {

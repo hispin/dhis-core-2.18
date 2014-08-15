@@ -41,7 +41,7 @@ public class OrganisationUnitUtils
 {
     private static Map<String, OrganisationUnit> getOrganisationUnitMap( Collection<OrganisationUnit> organisationUnits )
     {
-        Map<String, OrganisationUnit> organisationUnitMap = new HashMap<String, OrganisationUnit>();
+        Map<String, OrganisationUnit> organisationUnitMap = new HashMap<>();
 
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {

@@ -135,13 +135,13 @@ public class ShowEventWithRegistrationFormAction
 
     private String programId;
 
-    private Collection<TrackedEntityAttribute> noGroupAttributes = new HashSet<TrackedEntityAttribute>();
+    private Collection<TrackedEntityAttribute> noGroupAttributes = new HashSet<>();
 
     private OrganisationUnit organisationUnit;
 
     private String customDataEntryFormCode;
 
-    private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
+    private List<ProgramStageDataElement> programStageDataElements = new ArrayList<>();
 
     private ProgramStage programStage;
 
@@ -167,21 +167,21 @@ public class ShowEventWithRegistrationFormAction
         return trackedEntities;
     }
 
-    private Map<Integer, String> trackedEntityAttributeValueMap = new HashMap<Integer, String>();
+    private Map<Integer, String> trackedEntityAttributeValueMap = new HashMap<>();
 
     public Map<Integer, String> getTrackedEntityAttributeValueMap()
     {
         return trackedEntityAttributeValueMap;
     }
 
-    private Map<Integer, Boolean> mandatoryMap = new HashMap<Integer, Boolean>();
+    private Map<Integer, Boolean> mandatoryMap = new HashMap<>();
 
     public Map<Integer, Boolean> getMandatoryMap()
     {
         return mandatoryMap;
     }
 
-    private Map<String, List<TrackedEntityAttribute>> attributesMap = new HashMap<String, List<TrackedEntityAttribute>>();
+    private Map<String, List<TrackedEntityAttribute>> attributesMap = new HashMap<>();
 
     public Map<String, List<TrackedEntityAttribute>> getAttributesMap()
     {
@@ -198,7 +198,7 @@ public class ShowEventWithRegistrationFormAction
         // Get registration form
         // ---------------------------------------------------------------------
 
-        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
+        trackedEntities = new ArrayList<>( trackedEntityService.getAllTrackedEntity() );
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
@@ -227,17 +227,17 @@ public class ShowEventWithRegistrationFormAction
             }
         }
 
-        List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+        List<TrackedEntityAttribute> attributes = new ArrayList<>();
 
         if ( customRegistrationForm == null )
         {
-            attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
+            attributeGroups = new ArrayList<>(
                 attributeGroupService.getAllTrackedEntityAttributeGroups() );
             Collections.sort( attributeGroups, new TrackedEntityAttributeGroupSortOrderComparator() );
 
             if ( program == null )
             {
-                attributes = new ArrayList<TrackedEntityAttribute>(
+                attributes = new ArrayList<>(
                     attributeService.getTrackedEntityAttributesDisplayInList() );
                 Collection<Program> programs = programService.getAllPrograms();
 
@@ -271,7 +271,7 @@ public class ShowEventWithRegistrationFormAction
                 }
                 else
                 {
-                    List<TrackedEntityAttribute> attrs = new ArrayList<TrackedEntityAttribute>();
+                    List<TrackedEntityAttribute> attrs = new ArrayList<>();
                     attrs.add( attribute );
                     attributesMap.put( groupName, attrs );
                 }
@@ -291,7 +291,7 @@ public class ShowEventWithRegistrationFormAction
         }
         else
         {
-            programStageDataElements = new ArrayList<ProgramStageDataElement>(
+            programStageDataElements = new ArrayList<>(
                 programStage.getProgramStageDataElements() );
         }
 

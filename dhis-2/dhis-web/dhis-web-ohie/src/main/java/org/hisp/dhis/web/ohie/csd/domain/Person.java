@@ -46,7 +46,7 @@ public class Person
     private Name name;
 
     @XmlElement( name = "address", namespace = "urn:ihe:iti:csd:2013" )
-    private List<Address> addresses = new ArrayList<Address>();
+    private List<Address> addresses = new ArrayList<>();
 
     @XmlElement( name = "gender", namespace = "urn:ihe:iti:csd:2013" )
     private String gender;

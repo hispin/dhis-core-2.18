@@ -42,7 +42,7 @@ public class QueryItem
 {
     private IdentifiableObject item;
 
-    private List<QueryFilter> filters = new ArrayList<QueryFilter>();
+    private List<QueryFilter> filters = new ArrayList<>();
     
     private boolean numeric;
 
@@ -100,7 +100,7 @@ public class QueryItem
 
     public static List<QueryItem> getQueryItems( Collection<? extends IdentifiableObject> objects )
     {
-        List<QueryItem> queryItems = new ArrayList<QueryItem>();
+        List<QueryItem> queryItems = new ArrayList<>();
         
         for ( IdentifiableObject object : objects )
         {

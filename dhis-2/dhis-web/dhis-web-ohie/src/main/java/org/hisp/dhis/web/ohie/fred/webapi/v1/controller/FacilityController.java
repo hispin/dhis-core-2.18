@@ -274,11 +274,11 @@ public class FacilityController
 
         if ( lastUpdated == null )
         {
-            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
+            allOrganisationUnits = new ArrayList<>( organisationUnitService.getAllOrganisationUnits() );
         }
         else
         {
-            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastUpdated ) );
+            allOrganisationUnits = new ArrayList<>( organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastUpdated ) );
         }
 
         filterByActiveList( activeList, allOrganisationUnits );
@@ -336,7 +336,7 @@ public class FacilityController
             limitValue = allOrganisationUnits.size() - offset;
         }
 
-        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( allOrganisationUnits.subList( offset, offset + limitValue ) );
+        List<OrganisationUnit> organisationUnits = new ArrayList<>( allOrganisationUnits.subList( offset, offset + limitValue ) );
         allOrganisationUnits.clear();
         allOrganisationUnits.addAll( organisationUnits );
     }
@@ -571,12 +571,12 @@ public class FacilityController
         }
 
         // TODO this probably belongs in "meta": {}
-        List<Map<String, Object>> hierarchy = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> hierarchy = new ArrayList<>();
         facility.getProperties().put( "hierarchy", hierarchy );
 
         for ( OrganisationUnitLevel organisationUnitLevel : organisationUnitLevels )
         {
-            Map<String, Object> level = new HashMap<String, Object>();
+            Map<String, Object> level = new HashMap<>();
 
             level.put( "id", organisationUnitLevel.getUid() );
 
@@ -656,11 +656,11 @@ public class FacilityController
             addHierarchyPropertyToFacility( organisationUnitLevels, facility );
             json = objectMapper.writeValueAsString( facility );
 
-            return new ResponseEntity<String>( json, headers, HttpStatus.CREATED );
+            return new ResponseEntity<>( json, headers, HttpStatus.CREATED );
         }
         else
         {
-            return new ResponseEntity<String>( json, headers, HttpStatus.UNPROCESSABLE_ENTITY );
+            return new ResponseEntity<>( json, headers, HttpStatus.UNPROCESSABLE_ENTITY );
         }
     }
 
@@ -753,11 +753,11 @@ public class FacilityController
             addHierarchyPropertyToFacility( organisationUnitLevels, facility );
             json = objectMapper.writeValueAsString( facility );
 
-            return new ResponseEntity<String>( json, headers, HttpStatus.OK );
+            return new ResponseEntity<>( json, headers, HttpStatus.OK );
         }
         else
         {
-            return new ResponseEntity<String>( json, headers, HttpStatus.UNPROCESSABLE_ENTITY );
+            return new ResponseEntity<>( json, headers, HttpStatus.UNPROCESSABLE_ENTITY );
         }
     }
 
@@ -778,7 +778,7 @@ public class FacilityController
 
         organisationUnitService.deleteOrganisationUnit( organisationUnit );
 
-        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.OK.toString(),
+        return new ResponseEntity<>( MessageUtils.jsonMessage( HttpStatus.OK.toString(),
             "Deleted facility with ID " + id ), HttpStatus.OK );
     }
 

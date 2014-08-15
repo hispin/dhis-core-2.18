@@ -216,12 +216,12 @@ public class DefaultDataSetService
 
     public List<DataSet> getDataSetByName( String name )
     {
-        return new ArrayList<DataSet>( i18n( i18nService, dataSetStore.getAllEqName( name ) ) );
+        return new ArrayList<>( i18n( i18nService, dataSetStore.getAllEqName( name ) ) );
     }
 
     public List<DataSet> getDataSetByShortName( String shortName )
     {
-        return new ArrayList<DataSet>( i18n( i18nService, dataSetStore.getAllEqShortName( shortName ) ) );
+        return new ArrayList<>( i18n( i18nService, dataSetStore.getAllEqShortName( shortName ) ) );
     }
 
     public DataSet getDataSetByCode( String code )
@@ -274,8 +274,8 @@ public class DefaultDataSetService
 
     public List<DataSet> getAvailableDataSets()
     {
-        List<DataSet> availableDataSetList = new ArrayList<DataSet>();
-        List<DataSet> dataSetList = new ArrayList<DataSet>( getAllDataSets() );
+        List<DataSet> availableDataSetList = new ArrayList<>();
+        List<DataSet> dataSetList = new ArrayList<>( getAllDataSets() );
 
         for ( DataSet dataSet : dataSetList )
         {
@@ -292,8 +292,8 @@ public class DefaultDataSetService
 
     public List<DataSet> getAssignedDataSets()
     {
-        List<DataSet> assignedDataSetList = new ArrayList<DataSet>();
-        List<DataSet> dataSetList = new ArrayList<DataSet>( getAllDataSets() );
+        List<DataSet> assignedDataSetList = new ArrayList<>();
+        List<DataSet> dataSetList = new ArrayList<>( getAllDataSets() );
 
         for ( DataSet dataSet : dataSetList )
         {
@@ -325,7 +325,7 @@ public class DefaultDataSetService
 
     public List<DataSet> getAssignedDataSetsByPeriodType( PeriodType periodType )
     {
-        List<DataSet> dataSetListByPeriodType = new ArrayList<DataSet>( getDataSetsByPeriodType( periodType ) );
+        List<DataSet> dataSetListByPeriodType = new ArrayList<>( getDataSetsByPeriodType( periodType ) );
 
         Iterator<DataSet> dataSetIterator = dataSetListByPeriodType.iterator();
         while ( dataSetIterator.hasNext() )
@@ -344,7 +344,7 @@ public class DefaultDataSetService
     {
         Collection<DataSet> dataSets = getDataSets( dataSetIdentifiers );
 
-        Set<DataElement> dataElements = new HashSet<DataElement>();
+        Set<DataElement> dataElements = new HashSet<>();
 
         for ( DataSet dataSet : dataSets )
         {
@@ -520,9 +520,9 @@ public class DefaultDataSetService
     @Override
     public void mergeWithCurrentUserOrganisationUnits( DataSet dataSet, Collection<OrganisationUnit> mergeOrganisationUnits )
     {
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>( dataSet.getSources() );
+        Set<OrganisationUnit> organisationUnits = new HashSet<>( dataSet.getSources() );
 
-        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> userOrganisationUnits = new HashSet<>();
 
         for ( OrganisationUnit organisationUnit : currentUserService.getCurrentUser().getOrganisationUnits() )
         {

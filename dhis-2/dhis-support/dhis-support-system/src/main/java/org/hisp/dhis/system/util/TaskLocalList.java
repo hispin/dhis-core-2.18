@@ -44,7 +44,7 @@ public class TaskLocalList<T>
     
     public TaskLocalList()
     {
-        this.internalMap = new HashMap<TaskId, List<T>>();
+        this.internalMap = new HashMap<>();
     }
     
     public List<T> get( TaskId id )
@@ -53,7 +53,7 @@ public class TaskLocalList<T>
         
         if ( list == null )
         {
-            list = new ArrayList<T>();
+            list = new ArrayList<>();
             internalMap.put( id, list );
         }
         

@@ -92,13 +92,13 @@ public class ListIndicatorGroupSetAction
         {
             this.paging = createPaging( indicatorService.getIndicatorGroupSetCountByName( key ) );
             
-            indicatorGroupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getIndicatorGroupSetsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            indicatorGroupSets = new ArrayList<>( indicatorService.getIndicatorGroupSetsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( indicatorService.getIndicatorGroupSetCount() );
             
-            indicatorGroupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getIndicatorGroupSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
+            indicatorGroupSets = new ArrayList<>( indicatorService.getIndicatorGroupSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
         Collections.sort( indicatorGroupSets, IdentifiableObjectNameComparator.INSTANCE );

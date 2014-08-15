@@ -39,7 +39,7 @@ import java.util.List;
 public class SharingUserGroups
 {
     @JsonProperty
-    private List<SharingUserGroupAccess> userGroups = new ArrayList<SharingUserGroupAccess>();
+    private List<SharingUserGroupAccess> userGroups = new ArrayList<>();
 
     public SharingUserGroups()
     {

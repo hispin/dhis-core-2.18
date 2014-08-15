@@ -92,7 +92,7 @@ public class GetSelectedDataElementsAction
     {
         ProgramStage programStage = programStageService.getProgramStage( associationId );
 
-        dataElementList = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
+        dataElementList = new ArrayList<>( programStageDataElementService.getListDataElement( programStage ) );
 
         Collections.sort( dataElementList, new IdentifiableObjectNameComparator() );
 

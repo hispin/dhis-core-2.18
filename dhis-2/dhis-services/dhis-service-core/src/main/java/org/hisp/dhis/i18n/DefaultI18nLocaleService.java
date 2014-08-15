@@ -61,9 +61,9 @@ public class DefaultI18nLocaleService
         this.localeStore = localeStore;
     }
     
-    private Map<String, String> languages = new LinkedHashMap<String, String>();
+    private Map<String, String> languages = new LinkedHashMap<>();
 
-    private Map<String, String> countries = new LinkedHashMap<String, String>();
+    private Map<String, String> countries = new LinkedHashMap<>();
     
     /**
      * Load all ISO languages and countries into mappings.
@@ -71,8 +71,8 @@ public class DefaultI18nLocaleService
     @PostConstruct
     public void init()
     {   
-        List<IdentifiableObject> langs = new ArrayList<IdentifiableObject>();
-        List<IdentifiableObject> countrs = new ArrayList<IdentifiableObject>();
+        List<IdentifiableObject> langs = new ArrayList<>();
+        List<IdentifiableObject> countrs = new ArrayList<>();
         
         for ( String lang : Locale.getISOLanguages() )
         {
@@ -184,7 +184,7 @@ public class DefaultI18nLocaleService
     
     public List<Locale> getAllLocales()
     {
-        List<Locale> locales = new ArrayList<Locale>();
+        List<Locale> locales = new ArrayList<>();
         
         for ( I18nLocale locale : localeStore.getAll() )
         {

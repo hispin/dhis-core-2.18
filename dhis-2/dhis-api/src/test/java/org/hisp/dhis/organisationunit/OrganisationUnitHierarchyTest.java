@@ -72,7 +72,7 @@ public class OrganisationUnitHierarchyTest
         group.addOrganisationUnit( unit10 );
         group.addOrganisationUnit( unit12 );
 
-        List<OrganisationUnitRelationship> relationships = new ArrayList<OrganisationUnitRelationship>();
+        List<OrganisationUnitRelationship> relationships = new ArrayList<>();
 
         relationships.add( new OrganisationUnitRelationship( 1, 2 ) );
         relationships.add( new OrganisationUnitRelationship( 1, 3 ) );
@@ -114,9 +114,9 @@ public class OrganisationUnitHierarchyTest
     @Test
     public void testGetChildren()
     {
-        Set<Integer> parentIds = new HashSet<Integer>();
+        Set<Integer> parentIds = new HashSet<>();
 
-        List<OrganisationUnitRelationship> relations = new ArrayList<OrganisationUnitRelationship>();
+        List<OrganisationUnitRelationship> relations = new ArrayList<>();
 
         int parentMax = 1000; // Increase to stress-test
         int childMax = 4;
@@ -143,7 +143,7 @@ public class OrganisationUnitHierarchyTest
     @Test
     public void testGetChildrenA()
     {
-        List<OrganisationUnitRelationship> relationships = new ArrayList<OrganisationUnitRelationship>();
+        List<OrganisationUnitRelationship> relationships = new ArrayList<>();
 
         relationships.add( new OrganisationUnitRelationship( 1, 2 ) );
         relationships.add( new OrganisationUnitRelationship( 1, 3 ) );
@@ -165,7 +165,7 @@ public class OrganisationUnitHierarchyTest
     @Test
     public void testGetChildrenB()
     {
-        Map<Integer, Set<Integer>> relationships = new HashMap<Integer, Set<Integer>>();
+        Map<Integer, Set<Integer>> relationships = new HashMap<>();
 
         relationships.put( 1, getSet( 2, 3 ) );
         relationships.put( 2, getSet( 4, 5, 6 ) );
@@ -211,7 +211,7 @@ public class OrganisationUnitHierarchyTest
 
     private Set<Integer> getSet( Integer... ints )
     {
-        Set<Integer> set = new HashSet<Integer>();
+        Set<Integer> set = new HashSet<>();
 
         Collections.addAll( set, ints );
 

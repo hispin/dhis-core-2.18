@@ -115,7 +115,7 @@ public class DataElementCategoryOptionComboStoreTest
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
         
-        Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+        Set<DataElementCategoryOption> categoryOptions = new HashSet<>();
         
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );        
@@ -137,7 +137,7 @@ public class DataElementCategoryOptionComboStoreTest
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
         
-        Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+        Set<DataElementCategoryOption> categoryOptions = new HashSet<>();
         
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );        
@@ -233,19 +233,19 @@ public class DataElementCategoryOptionComboStoreTest
         categoryService.generateOptionCombos( categoryComboA );
         categoryService.generateOptionCombos( categoryComboB );
         
-        Set<DataElementCategoryOption> categoryOptions1 = new HashSet<DataElementCategoryOption>();
+        Set<DataElementCategoryOption> categoryOptions1 = new HashSet<>();
         categoryOptions1.add( categoryOptionA );
         categoryOptions1.add( categoryOptionC );
 
-        Set<DataElementCategoryOption> categoryOptions2 = new HashSet<DataElementCategoryOption>();
+        Set<DataElementCategoryOption> categoryOptions2 = new HashSet<>();
         categoryOptions2.add( categoryOptionA );
         categoryOptions2.add( categoryOptionD );
 
-        Set<DataElementCategoryOption> categoryOptions3 = new HashSet<DataElementCategoryOption>();
+        Set<DataElementCategoryOption> categoryOptions3 = new HashSet<>();
         categoryOptions3.add( categoryOptionB );
         categoryOptions3.add( categoryOptionC );
 
-        Set<DataElementCategoryOption> categoryOptions4 = new HashSet<DataElementCategoryOption>();
+        Set<DataElementCategoryOption> categoryOptions4 = new HashSet<>();
         categoryOptions4.add( categoryOptionB );
         categoryOptions4.add( categoryOptionC );
         

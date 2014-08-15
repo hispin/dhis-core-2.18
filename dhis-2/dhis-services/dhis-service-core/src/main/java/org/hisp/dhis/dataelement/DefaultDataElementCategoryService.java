@@ -188,7 +188,7 @@ public class DefaultDataElementCategoryService
 
     public DataElementCategory getDataElementCategoryByName( String name )
     {
-        List<DataElementCategory> dataElementCategories = new ArrayList<DataElementCategory>(
+        List<DataElementCategory> dataElementCategories = new ArrayList<>(
             categoryStore.getAllEqName( name ) );
 
         if ( dataElementCategories.isEmpty() )
@@ -597,7 +597,7 @@ public class DefaultDataElementCategoryService
 
         addDataElementCategoryOptionCombo( categoryOptionCombo );
 
-        Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<DataElementCategoryOptionCombo>();
+        Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<>();
         categoryOptionCombos.add( categoryOptionCombo );
         categoryCombo.setOptionCombos( categoryOptionCombos );
 
@@ -635,7 +635,7 @@ public class DefaultDataElementCategoryService
 
     public Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements, boolean includeTotals )
     {
-        List<DataElementOperand> operands = new ArrayList<DataElementOperand>();
+        List<DataElementOperand> operands = new ArrayList<>();
 
         for ( DataElement dataElement : dataElements )
         {
@@ -671,7 +671,7 @@ public class DefaultDataElementCategoryService
 
     public Collection<DataElementOperand> getFullOperands( Collection<DataElement> dataElements )
     {
-        Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();
+        Collection<DataElementOperand> operands = new ArrayList<>();
 
         for ( DataElement dataElement : dataElements )
         {
@@ -752,7 +752,7 @@ public class DefaultDataElementCategoryService
 
     public Map<String, Integer> getDataElementCategoryOptionComboUidIdMap()
     {
-        Map<String, Integer> map = new HashMap<String, Integer>();
+        Map<String, Integer> map = new HashMap<>();
 
         for ( DataElementCategoryOptionCombo coc : getAllDataElementCategoryOptionCombos() )
         {
@@ -838,7 +838,7 @@ public class DefaultDataElementCategoryService
     @Override
     public CategoryOptionGroup getCategoryOptionGroupByShortName( String shortName )
     {
-        List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<CategoryOptionGroup>(
+        List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<>(
             categoryOptionGroupStore.getAllLikeShortName( shortName ) );
 
         if ( categoryOptionGroups.isEmpty() )

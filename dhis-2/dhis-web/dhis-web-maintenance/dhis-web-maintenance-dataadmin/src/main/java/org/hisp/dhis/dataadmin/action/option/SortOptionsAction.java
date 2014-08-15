@@ -72,7 +72,7 @@ public class SortOptionsAction
         return optionSetId;
     }
 
-    private List<Integer> optionIds = new ArrayList<Integer>();
+    private List<Integer> optionIds = new ArrayList<>();
 
     public void setOptionIds( List<Integer> optionIds )
     {
@@ -91,7 +91,7 @@ public class SortOptionsAction
         {
             OptionSet optionSet = optionService.getOptionSet( optionSetId );
             // optionSet.getOptions().clear();
-            List<Option> options = new ArrayList<Option>();
+            List<Option> options = new ArrayList<>();
             for ( int optionId : optionIds )
             {
                 Option option = optionService.getOption( optionId );

@@ -60,9 +60,9 @@ public class TrackedEntityInstance
     public static String PREFIX_PROGRAM_EVENT_BY_STATUS = "stat";
     public static String PREFIX_PROGRAM_STAGE = "prgst";
 
-    private Set<TrackedEntityAttributeValue> attributeValues = new HashSet<TrackedEntityAttributeValue>();
+    private Set<TrackedEntityAttributeValue> attributeValues = new HashSet<>();
 
-    private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
+    private Set<ProgramInstance> programInstances = new HashSet<>();
 
     private OrganisationUnit organisationUnit;
 

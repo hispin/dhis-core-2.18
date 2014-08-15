@@ -103,7 +103,7 @@ public class ShowedAssociationsEditorAction
 
     public Map<Integer, List<Object>> getMetaValueMaps()
     {
-        Map<Integer, List<Object>> maps = new Hashtable<Integer, List<Object>>();
+        Map<Integer, List<Object>> maps = new Hashtable<>();
 
         for ( List<Object> row : grid.getRows() )
         {
@@ -118,7 +118,7 @@ public class ShowedAssociationsEditorAction
 
     public List<String> getHeaderIds()
     {
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
 
         for ( GridHeader header : grid.getVisibleHeaders() )
         {
@@ -146,9 +146,9 @@ public class ShowedAssociationsEditorAction
 
         Set<DataSet> assignedDataSets = null;
 
-        List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        List<DataSet> dataSets = new ArrayList<>( dataSetService.getAllDataSets() );
 
-        List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> children = new ArrayList<>();
 
         if ( parent.getChildren() == null || parent.getChildren().isEmpty() )
         {
@@ -173,7 +173,7 @@ public class ShowedAssociationsEditorAction
 
         for ( OrganisationUnit child : children )
         {
-            assignedDataSets = new HashSet<DataSet>( child.getDataSets() );
+            assignedDataSets = new HashSet<>( child.getDataSets() );
 
             grid.addRow().addValue( new MetaValue( child.getId(), child.getDisplayName() ) );
 

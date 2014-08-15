@@ -197,7 +197,7 @@ public class DefaultEventAnalyticsService
         
         if ( !params.isSkipMeta() )
         {
-            Map<Object, Object> metaData = new HashMap<Object, Object>();
+            Map<Object, Object> metaData = new HashMap<>();
     
             Map<String, String> uidNameMap = getUidNameMap( params );
     
@@ -284,7 +284,7 @@ public class DefaultEventAnalyticsService
         // Meta-data
         // ---------------------------------------------------------------------
 
-        Map<Object, Object> metaData = new HashMap<Object, Object>();
+        Map<Object, Object> metaData = new HashMap<>();
 
         Map<String, String> uidNameMap = getUidNameMap( params );
 
@@ -527,7 +527,7 @@ public class DefaultEventAnalyticsService
 
     private Map<String, String> getUidNameMap( EventQueryParams params )
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         Program program = params.getProgram();
         ProgramStage stage = params.getProgramStage();
@@ -564,7 +564,7 @@ public class DefaultEventAnalyticsService
 
     private Map<String, String> getUidNameMap( List<DimensionalObject> dimensions, boolean hierarchyMeta )
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         for ( DimensionalObject dimension : dimensions )
         {

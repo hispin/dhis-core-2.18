@@ -144,7 +144,7 @@ public class CaseAggregationResultAction
         return autoSave;
     }
 
-    private List<Grid> grids = new ArrayList<Grid>();
+    private List<Grid> grids = new ArrayList<>();
 
     public List<Grid> getGrids()
     {
@@ -176,14 +176,14 @@ public class CaseAggregationResultAction
 
         CalendarPeriodType periodType = (CalendarPeriodType) PeriodType.getPeriodTypeByName( selectedDataSet
             .getPeriodType().getName() );
-        List<Period> periods = new ArrayList<Period>();
+        List<Period> periods = new ArrayList<>();
         periods.addAll( periodType.generatePeriods( sDate, eDate ) );
 
         // ---------------------------------------------------------------------
         // Get selected orgunits
         // ---------------------------------------------------------------------
 
-        Set<Integer> orgunitIds = new HashSet<Integer>();
+        Set<Integer> orgunitIds = new HashSet<>();
 
         OrganisationUnit selectedOrgunit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
 

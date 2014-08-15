@@ -97,7 +97,7 @@ public class GetInfrastructuralDataElementMapValuesAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Map<DataElement, Double> object = new HashMap<DataElement, Double>(); 
+    private Map<DataElement, Double> object = new HashMap<>();
 
     public Map<DataElement, Double> getObject()
     {
@@ -118,7 +118,7 @@ public class GetInfrastructuralDataElementMapValuesAction
             return SUCCESS;
         }
         
-        List<DataElement> dataElements = new ArrayList<DataElement>( group.getMembers() );
+        List<DataElement> dataElements = new ArrayList<>( group.getMembers() );
         Period period = periodService.getPeriod( periodId );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         

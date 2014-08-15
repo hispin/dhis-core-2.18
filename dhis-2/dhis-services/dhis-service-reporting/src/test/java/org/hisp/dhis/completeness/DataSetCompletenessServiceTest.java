@@ -108,7 +108,7 @@ public class DataSetCompletenessServiceTest
     private Date onTimeB;
     private Date tooLateB;
     
-    private Set<Integer> groupIds = new HashSet<Integer>();
+    private Set<Integer> groupIds = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -183,7 +183,7 @@ public class DataSetCompletenessServiceTest
         organisationUnitService.addOrganisationUnit( unitG );
         organisationUnitService.addOrganisationUnit( unitH );
         
-        unitIdsA = new HashSet<Integer>();
+        unitIdsA = new HashSet<>();
         unitIdsA.add( unitIdA );
         unitIdsA.add( unitIdB );
         unitIdsA.add( unitIdC );

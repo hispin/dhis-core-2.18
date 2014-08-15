@@ -186,7 +186,7 @@ public class GetDataSetOverviewAction
         return sectionName;
     }
 
-    private List<String> validationRuleViolations = new ArrayList<String>();
+    private List<String> validationRuleViolations = new ArrayList<>();
 
     public List<String> getValidationRuleViolations()
     {

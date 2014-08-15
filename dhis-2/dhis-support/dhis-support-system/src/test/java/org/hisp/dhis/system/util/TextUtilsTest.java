@@ -83,8 +83,8 @@ public class TextUtilsTest
     @Test
     public void testGetTokens()
     {
-        assertEquals( new ArrayList<String>( Arrays.asList( "John", "Doe", "Main", "Road", "25" ) ), TextUtils.getTokens( "John Doe Main Road 25" ) );
-        assertEquals( new ArrayList<String>( Arrays.asList( "Ted,Johnson", "Upper-Road", "45" ) ), TextUtils.getTokens( "Ted,Johnson Upper-Road 45" ) );        
+        assertEquals( new ArrayList<>( Arrays.asList( "John", "Doe", "Main", "Road", "25" ) ), TextUtils.getTokens( "John Doe Main Road 25" ) );
+        assertEquals( new ArrayList<>( Arrays.asList( "Ted,Johnson", "Upper-Road", "45" ) ), TextUtils.getTokens( "Ted,Johnson Upper-Road 45" ) );
     }
 
     @Test

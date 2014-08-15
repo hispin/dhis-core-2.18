@@ -436,7 +436,7 @@ public class HibernateUserCredentialsStore
 
     private Collection<UserCredentials> findByName( Collection<UserCredentials> users, String key )
     {
-        List<UserCredentials> returnList = new ArrayList<UserCredentials>();
+        List<UserCredentials> returnList = new ArrayList<>();
 
         for ( UserCredentials user : users )
         {
@@ -454,7 +454,7 @@ public class HibernateUserCredentialsStore
 
     private List<UserCredentials> getBlockUser( Collection<UserCredentials> usersList, int startPos, int pageSize )
     {
-        List<UserCredentials> elementList = new ArrayList<UserCredentials>( usersList );
+        List<UserCredentials> elementList = new ArrayList<>( usersList );
 
         int toIndex = Math.min( startPos + pageSize, elementList.size() );
 
@@ -463,7 +463,7 @@ public class HibernateUserCredentialsStore
 
     private List<UserCredentials> toUserCredentials( Collection<User> users )
     {
-        List<UserCredentials> credentials = new ArrayList<UserCredentials>();
+        List<UserCredentials> credentials = new ArrayList<>();
 
         for ( User user : users )
         {

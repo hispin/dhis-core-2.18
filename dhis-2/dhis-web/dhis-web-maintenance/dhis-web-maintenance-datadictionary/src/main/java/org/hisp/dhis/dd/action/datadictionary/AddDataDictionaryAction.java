@@ -127,7 +127,7 @@ public class AddDataDictionaryAction
 
         if ( selectedDataElements != null )
         {
-            Set<DataElement> members = new HashSet<DataElement>( selectedDataElements.size() );
+            Set<DataElement> members = new HashSet<>( selectedDataElements.size() );
 
             for ( String id : selectedDataElements )
             {
@@ -143,7 +143,7 @@ public class AddDataDictionaryAction
 
         if ( selectedIndicators != null )
         {
-            Set<Indicator> members = new HashSet<Indicator>( selectedIndicators.size() );
+            Set<Indicator> members = new HashSet<>( selectedIndicators.size() );
 
             for ( String id : selectedIndicators )
             {

@@ -131,7 +131,7 @@ public class GetOrganisationUnitAction
         return attributes;
     }
 
-    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+    public Map<Integer, String> attributeValues = new HashMap<>();
 
     public Map<Integer, String> getAttributeValues()
     {

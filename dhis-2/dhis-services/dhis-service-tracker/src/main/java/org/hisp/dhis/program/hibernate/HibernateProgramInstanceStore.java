@@ -69,7 +69,7 @@ public class HibernateProgramInstanceStore
     {
         if ( programs == null || programs.isEmpty() )
         {
-            return new ArrayList<ProgramInstance>();
+            return new ArrayList<>();
         }
 
         return getCriteria( Restrictions.in( "program", programs ) ).list();
@@ -81,7 +81,7 @@ public class HibernateProgramInstanceStore
     {
         if ( programs == null || programs.isEmpty() )
         {
-            return new ArrayList<ProgramInstance>();
+            return new ArrayList<>();
         }
 
         return getCriteria( 
@@ -96,7 +96,7 @@ public class HibernateProgramInstanceStore
     {
         if ( programs == null || programs.isEmpty() )
         {
-            return new ArrayList<ProgramInstance>();
+            return new ArrayList<>();
         }
 
         return getCriteria( 
@@ -117,7 +117,7 @@ public class HibernateProgramInstanceStore
     {
         if ( programs == null || programs.isEmpty() )
         {
-            return new ArrayList<ProgramInstance>();
+            return new ArrayList<>();
         }
 
         return getCriteria( Restrictions.in( "program", programs ), Restrictions.eq( "status", status ) ).list();
@@ -254,7 +254,7 @@ public class HibernateProgramInstanceStore
 
         int cols = rs.getMetaData().getColumnCount();
 
-        Collection<SchedulingProgramObject> schedulingProgramObjects = new HashSet<SchedulingProgramObject>();
+        Collection<SchedulingProgramObject> schedulingProgramObjects = new HashSet<>();
 
         while ( rs.next() )
         {

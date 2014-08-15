@@ -132,14 +132,14 @@ public class DefaultDataSetReportService
     public List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions,
         boolean selectedUnitOnly, I18nFormat format, I18n i18n )
     {
-        List<Section> sections = new ArrayList<Section>( dataSet.getSections() );
+        List<Section> sections = new ArrayList<>( dataSet.getSections() );
         Collections.sort( sections, new SectionOrderComparator() );
 
         Map<String, Double> valueMap = dataSetReportStore.getAggregatedValues( dataSet, period, unit, dimensions, selectedUnitOnly );
         Map<String, Double> subTotalMap = dataSetReportStore.getAggregatedSubTotals( dataSet, period, unit, dimensions );
         Map<String, Double> totalMap = dataSetReportStore.getAggregatedTotals( dataSet, period, unit, dimensions );
 
-        List<Grid> grids = new ArrayList<Grid>();
+        List<Grid> grids = new ArrayList<>();
         
         // ---------------------------------------------------------------------
         // Create a grid for each section
@@ -188,7 +188,7 @@ public class DefaultDataSetReportService
             // Grid values
             // -----------------------------------------------------------------
 
-            List<DataElement> dataElements = new ArrayList<DataElement>( section.getDataElements() );
+            List<DataElement> dataElements = new ArrayList<>( section.getDataElements() );
             FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
             
             for ( DataElement dataElement : dataElements )
@@ -198,7 +198,7 @@ public class DefaultDataSetReportService
 
                 for ( DataElementCategoryOptionCombo optionCombo : optionCombos ) // Values
                 {
-                    Map<Object, Object> attributes = new HashMap<Object, Object>();
+                    Map<Object, Object> attributes = new HashMap<>();
                     attributes.put( ATTR_DE, dataElement.getUid() );
                     attributes.put( ATTR_CO, optionCombo.getUid() );
                     
@@ -245,7 +245,7 @@ public class DefaultDataSetReportService
     public List<Grid> getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions, 
         boolean selectedUnitOnly, I18nFormat format, I18n i18n )
     {
-        ListMap<DataElementCategoryCombo, DataElement> map = new ListMap<DataElementCategoryCombo, DataElement>();
+        ListMap<DataElementCategoryCombo, DataElement> map = new ListMap<>();
         
         for ( DataElement dataElement : dataSet.getDataElements() )
         {

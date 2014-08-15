@@ -146,12 +146,12 @@ public class CrossTabServiceTest
                 
         Character[] characters = { 'A', 'B', 'C', 'D', 'E' };
         
-        periodIds = new HashSet<Integer>();
-        organisationUnitIds = new HashSet<Integer>();
+        periodIds = new HashSet<>();
+        organisationUnitIds = new HashSet<>();
         
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
-        Collection<Period> periods = new HashSet<Period>();
-        Collection<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+        Collection<DataElement> dataElements = new HashSet<>();
+        Collection<Period> periods = new HashSet<>();
+        Collection<OrganisationUnit> organisationUnits = new HashSet<>();
         
         for ( Character character : characters )
         {
@@ -170,7 +170,7 @@ public class CrossTabServiceTest
         
         defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
-        operands = new ArrayList<DataElementOperand>( categoryService.getOperands( dataElements ) );
+        operands = new ArrayList<>( categoryService.getOperands( dataElements ) );
         
         for ( DataElement dataElement : dataElements )
         {
@@ -236,7 +236,7 @@ public class CrossTabServiceTest
         BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
             setTableName( CrossTabStore.AGGREGATEDDATA_CACHE_PREFIX + key ).init();        
 
-        List<Object> valueList = new ArrayList<Object>( operands.size() + 2 );
+        List<Object> valueList = new ArrayList<>( operands.size() + 2 );
         valueList.add( 1 );
         valueList.add( 1 );
         

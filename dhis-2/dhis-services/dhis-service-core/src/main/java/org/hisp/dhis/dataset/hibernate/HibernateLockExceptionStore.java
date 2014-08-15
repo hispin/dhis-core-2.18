@@ -98,7 +98,7 @@ public class HibernateLockExceptionStore
     {
         final String sql = "select distinct datasetid, periodid from lockexception";
 
-        final List<LockException> lockExceptions = new ArrayList<LockException>();
+        final List<LockException> lockExceptions = new ArrayList<>();
 
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {

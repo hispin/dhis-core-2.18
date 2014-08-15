@@ -95,7 +95,7 @@ public class HibernateTrackedEntityAttributeValueStore
     {
         if ( entityInstances == null || entityInstances.isEmpty() )
         {
-            return new ArrayList<TrackedEntityAttributeValue>();
+            return new ArrayList<>();
         }
         
         return getCriteria( Restrictions.in( "entityInstance", entityInstances ) ).list();

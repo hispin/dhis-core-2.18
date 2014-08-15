@@ -88,7 +88,7 @@ public class HibernateValidationRuleStore
     @SuppressWarnings("unchecked")
     public Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements )
     {
-        Set<ValidationRule> validationRules = new HashSet<ValidationRule>();
+        Set<ValidationRule> validationRules = new HashSet<>();
         
         Collection<Integer> ids = ConversionUtils.getIdentifiers( DataElement.class, dataElements );
         

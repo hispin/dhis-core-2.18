@@ -193,7 +193,7 @@ public class DefaultProgramIndicatorService
     @Override
     public Map<String, String> getProgramIndicatorValues( ProgramInstance programInstance )
     {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
 
         Collection<ProgramIndicator> programIndicators = programIndicatorStore.getByProgram( programInstance
             .getProgram() );

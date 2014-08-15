@@ -85,7 +85,7 @@ public class GetAllProgramsAction
     {
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        programs = new ArrayList<Program>( programService.getProgramsByCurrentUser( organisationUnit ) );
+        programs = new ArrayList<>( programService.getProgramsByCurrentUser( organisationUnit ) );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
 
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );

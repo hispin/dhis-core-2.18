@@ -278,7 +278,7 @@ public abstract class DhisConvenienceTest
      */
     public static boolean equals( Collection<?> actual, Object... reference )
     {
-        final Collection<Object> collection = new HashSet<Object>();
+        final Collection<Object> collection = new HashSet<>();
 
         Collections.addAll( collection, reference );
 
@@ -1594,7 +1594,7 @@ public abstract class DhisConvenienceTest
         user.getUserCredentials().setUser( user );
         userService.addUserCredentials( user.getUserCredentials() );
 
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add( new SimpleGrantedAuthority( "ALL" ) );
 
         UserDetails userDetails = new org.springframework.security.core.userdetails.User( "username", "password", authorities );

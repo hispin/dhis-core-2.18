@@ -82,7 +82,7 @@ public class GetInterpretations
     {
         List<Interpretation> tempInterpretations = interpretationService.getInterpretations();
 
-        List<Interpretation> finalInterpretations = new ArrayList<Interpretation>();
+        List<Interpretation> finalInterpretations = new ArrayList<>();
 
         Iterator<Interpretation> i = tempInterpretations.iterator();
     

@@ -54,7 +54,7 @@ public class ProgramStageSection
 
     private ProgramStage programStage;
 
-    private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
+    private List<ProgramStageDataElement> programStageDataElements = new ArrayList<>();
 
     private Integer sortOrder;
 

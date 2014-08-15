@@ -658,7 +658,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     @Override
     public List<T> getByUid( Collection<String> uids )
     {
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
 
         if ( uids != null )
         {
@@ -679,7 +679,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     @Override
     public List<T> getByUidNoAcl( Collection<String> uids )
     {
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
 
         if ( uids != null )
         {

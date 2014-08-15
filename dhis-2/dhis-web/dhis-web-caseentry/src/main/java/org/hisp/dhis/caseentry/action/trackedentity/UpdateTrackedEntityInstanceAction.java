@@ -123,8 +123,8 @@ public class UpdateTrackedEntityInstanceAction
 
         Collection<TrackedEntityAttribute> attributes = attributeService.getAllTrackedEntityAttributes();
 
-        List<TrackedEntityAttributeValue> valuesForSave = new ArrayList<TrackedEntityAttributeValue>();
-        List<TrackedEntityAttributeValue> valuesForUpdate = new ArrayList<TrackedEntityAttributeValue>();
+        List<TrackedEntityAttributeValue> valuesForSave = new ArrayList<>();
+        List<TrackedEntityAttributeValue> valuesForUpdate = new ArrayList<>();
         Collection<TrackedEntityAttributeValue> valuesForDelete = null;
 
         TrackedEntityAttributeValue attributeValue = null;

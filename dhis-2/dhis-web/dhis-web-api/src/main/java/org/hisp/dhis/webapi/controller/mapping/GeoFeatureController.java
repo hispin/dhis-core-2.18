@@ -95,7 +95,7 @@ public class GeoFeatureController
         WebOptions options = new WebOptions( parameters );
         boolean includeGroupSets = "detailed".equals( options.getViewClass() );
 
-        Set<String> set = new HashSet<String>();
+        Set<String> set = new HashSet<>();
         set.add( ou );
 
         DataQueryParams params = analyticsService.getFromUrl( set, null, AggregationType.SUM, null, false, false, false, false, false, false, null );
@@ -115,7 +115,7 @@ public class GeoFeatureController
 
         Collection<OrganisationUnitGroupSet> groupSets = includeGroupSets ? organisationUnitGroupService.getAllOrganisationUnitGroupSets() : null;
 
-        List<GeoFeature> features = new ArrayList<GeoFeature>();
+        List<GeoFeature> features = new ArrayList<>();
 
         for ( OrganisationUnit unit : organisationUnits )
         {

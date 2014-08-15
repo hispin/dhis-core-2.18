@@ -73,7 +73,7 @@ public class GetAttributeListSortOrderAction
     @Override
     public String execute()
     {
-        attributes = new ArrayList<Attribute>( attributeService.getAllAttributes() );
+        attributes = new ArrayList<>( attributeService.getAllAttributes() );
 
         Collections.sort( attributes, new AttributeSortOrderComparator() );
 

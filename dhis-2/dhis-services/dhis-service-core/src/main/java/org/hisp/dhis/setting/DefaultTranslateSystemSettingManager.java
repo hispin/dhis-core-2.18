@@ -61,7 +61,7 @@ public class DefaultTranslateSystemSettingManager
     @Override
     public Map<String, String> getTranslationSystemAppearanceSettings( String localeStr )
     {
-        Map<String, String> translations = new Hashtable<String, String>();
+        Map<String, String> translations = new Hashtable<>();
 
         translations.put( KEY_APPLICATION_TITLE, getSystemSettingWithFallbacks( KEY_APPLICATION_TITLE, localeStr, DEFAULT_APPLICATION_TITLE ) );        
         translations.put( KEY_APPLICATION_INTRO, getSystemSettingWithFallbacks( KEY_APPLICATION_INTRO, localeStr, "" ) );
@@ -74,7 +74,7 @@ public class DefaultTranslateSystemSettingManager
     @Override
     public Map<String, String> getTranslationNoFallbackSystemAppearanceSettings( String localeStr )
     {
-        Map<String, String> translations = new Hashtable<String, String>();
+        Map<String, String> translations = new Hashtable<>();
 
         translations.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE + localeStr, DEFAULT_APPLICATION_TITLE ).toString() );        
         translations.put( KEY_APPLICATION_INTRO, systemSettingManager.getSystemSetting( KEY_APPLICATION_INTRO + localeStr, "" ).toString() );

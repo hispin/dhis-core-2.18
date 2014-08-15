@@ -72,7 +72,7 @@ public class GetCategoryOptionGroupListAction
         this.key = key;
     }
 
-    private List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<CategoryOptionGroup>();
+    private List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<>();
 
     public List<CategoryOptionGroup> getCategoryOptionGroups()
     {

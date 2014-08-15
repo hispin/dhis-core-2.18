@@ -50,7 +50,7 @@ public class RelativePeriods
      */
     private static final long serialVersionUID = 2949655296199662273L;
 
-    private static final List<Period> NO = new ArrayList<Period>();
+    private static final List<Period> NO = new ArrayList<>();
     
     public static final String LAST_WEEK = "last_week";
     public static final String REPORTING_MONTH = "reporting_month";
@@ -461,7 +461,7 @@ public class RelativePeriods
         Date monthDate = date == null ? subtractMonths( 1, new Date() ) : date;
         Date weekDate = date == null ? subtractWeeks( 1, new Date() ) : date;
         
-        List<Period> periods = new ArrayList<Period>();
+        List<Period> periods = new ArrayList<>();
 
         if ( isReportingMonth() )
         {
@@ -591,7 +591,7 @@ public class RelativePeriods
      */
     public List<Period> getLast12Months( Set<String> periodTypes )
     {
-        List<Period> periods = new ArrayList<Period>();
+        List<Period> periods = new ArrayList<>();
         
         Date date = subtractMonths( 1, new Date() );
         Date weekDate = subtractWeeks( 1, new Date() );
@@ -651,7 +651,7 @@ public class RelativePeriods
      */
     private List<Period> getRelativePeriodList( List<Period> relatives, String[] periodNames, boolean dynamicNames, I18nFormat format )
     {
-        List<Period> periods = new ArrayList<Period>();
+        List<Period> periods = new ArrayList<>();
 
         int c = 0;
         
@@ -735,7 +735,7 @@ public class RelativePeriods
      */
     public static List<Period> getRelativePeriodsFromEnum( RelativePeriodEnum relativePeriod, Date date, I18nFormat format, boolean dynamicNames )
     {
-        Map<RelativePeriodEnum, RelativePeriods> map = new HashMap<RelativePeriodEnum, RelativePeriods>();
+        Map<RelativePeriodEnum, RelativePeriods> map = new HashMap<>();
         
         map.put( RelativePeriodEnum.LAST_MONTH, new RelativePeriods().setReportingMonth( true ) );
         map.put( RelativePeriodEnum.LAST_BIMONTH, new RelativePeriods().setReportingBimonth( true ) );
@@ -771,7 +771,7 @@ public class RelativePeriods
      */
     public List<RelativePeriodEnum> getRelativePeriodEnums()
     {
-        List<RelativePeriodEnum> list = new ArrayList<RelativePeriodEnum>();
+        List<RelativePeriodEnum> list = new ArrayList<>();
         
         add( list, RelativePeriodEnum.LAST_MONTH, reportingMonth );
         add( list, RelativePeriodEnum.LAST_BIMONTH, reportingBimonth );

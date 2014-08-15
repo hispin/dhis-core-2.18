@@ -123,9 +123,9 @@ public class MapView
 
     private transient int parentLevel;
 
-    private transient List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>();
+    private transient List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<>();
 
-    private transient List<OrganisationUnit> organisationUnitsInGroups = new ArrayList<OrganisationUnit>();
+    private transient List<OrganisationUnit> organisationUnitsInGroups = new ArrayList<>();
 
     public MapView()
     {

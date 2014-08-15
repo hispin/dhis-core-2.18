@@ -132,7 +132,7 @@ public class LoadDataEntryAction
 
     private I18n i18n;
 
-    private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
+    private List<ProgramStageDataElement> programStageDataElements = new ArrayList<>();
 
     private Map<Integer, TrackedEntityDataValue> entityInstanceDataValueMap;
 
@@ -142,9 +142,9 @@ public class LoadDataEntryAction
 
     private ProgramStage programStage;
 
-    private List<ProgramStageSection> sections = new ArrayList<ProgramStageSection>();
+    private List<ProgramStageSection> sections = new ArrayList<>();
 
-    private Map<String, Double> calAttributeValueMap = new HashMap<String, Double>();
+    private Map<String, Double> calAttributeValueMap = new HashMap<>();
 
     private ProgramIndicatorService programIndicatorService;
 
@@ -252,7 +252,7 @@ public class LoadDataEntryAction
         return latitude;
     }
 
-    private Map<String, String> programIndicatorsMap = new HashMap<String, String>();
+    private Map<String, String> programIndicatorsMap = new HashMap<>();
 
     public Map<String, String> getProgramIndicatorsMap()
     {
@@ -294,14 +294,14 @@ public class LoadDataEntryAction
         // Get program-stage-instance
         // ---------------------------------------------------------------------
 
-        programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
+        programStageDataElements = new ArrayList<>( programStage.getProgramStageDataElements() );
         Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
         DataEntryForm dataEntryForm = programStage.getDataEntryForm();
 
         if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_SECTION ) )
         {
-            sections = new ArrayList<ProgramStageSection>( programStage.getProgramStageSections() );
+            sections = new ArrayList<>( programStage.getProgramStageSections() );
 
             Collections.sort( sections, new ProgramStageSectionSortOrderComparator() );
         }
@@ -365,7 +365,7 @@ public class LoadDataEntryAction
         Collection<TrackedEntityDataValue> entityInstanceDataValues = dataValueService
             .getTrackedEntityDataValues( programStageInstance );
 
-        entityInstanceDataValueMap = new HashMap<Integer, TrackedEntityDataValue>( entityInstanceDataValues.size() );
+        entityInstanceDataValueMap = new HashMap<>( entityInstanceDataValues.size() );
 
         for ( TrackedEntityDataValue entityInstanceDataValue : entityInstanceDataValues )
         {

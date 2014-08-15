@@ -345,7 +345,7 @@ public class DataBrowserAction
     public List<OrganisationUnit> getCurrentChildren()
     {
         Set<OrganisationUnit> tmp = selectedUnit.getChildren();
-        List<OrganisationUnit> list = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> list = new ArrayList<>();
 
         for ( OrganisationUnit o : tmp )
         {
@@ -361,7 +361,7 @@ public class DataBrowserAction
 
     public List<OrganisationUnit> getBreadCrumbOrgUnit()
     {
-        List<OrganisationUnit> myList = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> myList = new ArrayList<>();
 
         boolean loop = true;
         OrganisationUnit currentOrgUnit = selectedUnit;
@@ -391,7 +391,7 @@ public class DataBrowserAction
 
     public Map<Integer, List<Object>> getMetaValueMaps()
     {
-        Map<Integer, List<Object>> maps = new Hashtable<Integer, List<Object>>();
+        Map<Integer, List<Object>> maps = new Hashtable<>();
 
         for ( List<Object> row : grid.getRows() )
         {

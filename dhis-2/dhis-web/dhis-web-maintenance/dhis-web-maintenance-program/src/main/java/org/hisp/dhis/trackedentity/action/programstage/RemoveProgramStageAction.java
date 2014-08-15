@@ -108,7 +108,7 @@ public class RemoveProgramStageAction
             program.getProgramStages().remove( programStage );
             programStageService.deleteProgramStage( programStage );
             
-            List<ProgramStage> programStages = new ArrayList<ProgramStage>( program.getProgramStages() );
+            List<ProgramStage> programStages = new ArrayList<>( program.getProgramStages() );
             Collections.sort( programStages, new ProgramStageMinDaysComparator() );
             program.setProgramStages( programStages );
             programService.updateProgram( program );

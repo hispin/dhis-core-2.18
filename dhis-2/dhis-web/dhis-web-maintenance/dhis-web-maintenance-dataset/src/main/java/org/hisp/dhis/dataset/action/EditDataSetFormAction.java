@@ -117,14 +117,14 @@ public class EditDataSetFormAction
         this.dataSetId = dataSetId;
     }
 
-    private List<PeriodType> periodTypes = new ArrayList<PeriodType>();
+    private List<PeriodType> periodTypes = new ArrayList<>();
 
     public List<PeriodType> getPeriodTypes()
     {
         return periodTypes;
     }
 
-    private List<UserGroup> userGroups = new ArrayList<UserGroup>();
+    private List<UserGroup> userGroups = new ArrayList<>();
 
     public List<UserGroup> getUserGroups()
     {
@@ -138,21 +138,21 @@ public class EditDataSetFormAction
         return dataSet;
     }
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<DataElement> dataElements = new ArrayList<>();
 
     public List<DataElement> getDataElements()
     {
         return dataElements;
     }
 
-    private List<Indicator> indicators = new ArrayList<Indicator>();
+    private List<Indicator> indicators = new ArrayList<>();
 
     public List<Indicator> getIndicators()
     {
         return indicators;
     }
 
-    private List<DataElementCategoryCombo> categoryCombos = new ArrayList<DataElementCategoryCombo>();
+    private List<DataElementCategoryCombo> categoryCombos = new ArrayList<>();
     
     public List<DataElementCategoryCombo> getCategoryCombos()
     {
@@ -173,7 +173,7 @@ public class EditDataSetFormAction
         return attributes;
     }
 
-    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+    public Map<Integer, String> attributeValues = new HashMap<>();
 
     public Map<Integer, String> getAttributeValues()
     {
@@ -188,20 +188,20 @@ public class EditDataSetFormAction
         throws Exception
     {
         periodTypes = periodService.getAllPeriodTypes();
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
-        categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAttributeCategoryCombos() );
-        legendSets = new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() );
+        userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
+        categoryCombos = new ArrayList<>( categoryService.getAttributeCategoryCombos() );
+        legendSets = new ArrayList<>( mappingService.getAllMapLegendSets() );
         
         if ( dataSetId != null )
         {
             dataSet = dataSetService.getDataSet( dataSetId, true, true, false );
-            dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
-            indicators = new ArrayList<Indicator>( dataSet.getIndicators() );
+            dataElements = new ArrayList<>( dataSet.getDataElements() );
+            indicators = new ArrayList<>( dataSet.getIndicators() );
 
             attributeValues = AttributeUtils.getAttributeValueMap( dataSet.getAttributeValues() );
         }
 
-        attributes = new ArrayList<Attribute>( attributeService.getDataSetAttributes() );
+        attributes = new ArrayList<>( attributeService.getDataSetAttributes() );
 
         Collections.sort( userGroups, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );

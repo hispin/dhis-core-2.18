@@ -41,8 +41,8 @@ import org.junit.Test;
  */
 public class OrganisationUnitTest
 {
-    private List<CoordinatesTuple> multiPolygonCoordinatesList = new ArrayList<CoordinatesTuple>();
-    private List<CoordinatesTuple> pointCoordinatesList = new ArrayList<CoordinatesTuple>();
+    private List<CoordinatesTuple> multiPolygonCoordinatesList = new ArrayList<>();
+    private List<CoordinatesTuple> pointCoordinatesList = new ArrayList<>();
     
     private String multiPolygonCoordinates = "[[[[11.11,22.22],[33.33,44.44],[55.55,66.66]]],[[[77.77,88.88],[99.99,11.11],[22.22,33.33]]],[[[44.44,55.55],[66.66,77.77],[88.88,99.99]]]]";
     private String pointCoordinates = "[11.11,22.22]";

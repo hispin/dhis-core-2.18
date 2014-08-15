@@ -159,14 +159,14 @@ public class GetDataValuesForDataSetAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<DataValue> dataValues = new ArrayList<DataValue>();
+    private Collection<DataValue> dataValues = new ArrayList<>();
 
     public Collection<DataValue> getDataValues()
     {
         return dataValues;
     }
 
-    private Collection<MinMaxDataElement> minMaxDataElements = new ArrayList<MinMaxDataElement>();
+    private Collection<MinMaxDataElement> minMaxDataElements = new ArrayList<>();
 
     public Collection<MinMaxDataElement> getMinMaxDataElements()
     {

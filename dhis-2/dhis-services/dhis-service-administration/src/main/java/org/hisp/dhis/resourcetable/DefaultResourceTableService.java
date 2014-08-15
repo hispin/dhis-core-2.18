@@ -150,7 +150,7 @@ public class DefaultResourceTableService
 
         resourceTableStore.createOrganisationUnitStructure( maxLevel );
 
-        List<Object[]> batchArgs = new ArrayList<Object[]>();
+        List<Object[]> batchArgs = new ArrayList<>();
 
         for ( int i = 0; i < maxLevel; i++ )
         {
@@ -160,14 +160,14 @@ public class DefaultResourceTableService
 
             for ( OrganisationUnit unit : units )
             {
-                List<Object> values = new ArrayList<Object>();
+                List<Object> values = new ArrayList<>();
 
                 values.add( unit.getId() );
                 values.add( unit.getUid() );
                 values.add( level );
 
-                Map<Integer, Integer> identifiers = new HashMap<Integer, Integer>();
-                Map<Integer, String> uids = new HashMap<Integer, String>();
+                Map<Integer, Integer> identifiers = new HashMap<>();
+                Map<Integer, String> uids = new HashMap<>();
 
                 for ( int j = level; j > 0; j-- )
                 {
@@ -203,13 +203,13 @@ public class DefaultResourceTableService
 
         Collection<DataElementCategoryCombo> combos = categoryService.getAllDataElementCategoryCombos();
 
-        List<Object[]> batchArgs = new ArrayList<Object[]>();
+        List<Object[]> batchArgs = new ArrayList<>();
 
         for ( DataElementCategoryCombo combo : combos )
         {
             for ( DataElementCategoryOptionCombo coc : combo.getSortedOptionCombos() )
             {
-                List<Object> values = new ArrayList<Object>();
+                List<Object> values = new ArrayList<>();
 
                 values.add( coc.getId() );
                 values.add( coc.getName() );
@@ -231,9 +231,9 @@ public class DefaultResourceTableService
         // ---------------------------------------------------------------------
 
         List<DataElementCategoryOptionCombo> categoryOptionCombos =
-            new ArrayList<DataElementCategoryOptionCombo>( categoryService.getAllDataElementCategoryOptionCombos() );
+            new ArrayList<>( categoryService.getAllDataElementCategoryOptionCombos() );
 
-        List<CategoryOptionGroupSet> groupSets = new ArrayList<CategoryOptionGroupSet>( categoryService.getAllCategoryOptionGroupSets() );
+        List<CategoryOptionGroupSet> groupSets = new ArrayList<>( categoryService.getAllCategoryOptionGroupSets() );
 
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -243,11 +243,11 @@ public class DefaultResourceTableService
         // Populate table
         // ---------------------------------------------------------------------
 
-        List<Object[]> batchArgs = new ArrayList<Object[]>();
+        List<Object[]> batchArgs = new ArrayList<>();
 
         for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
         {
-            List<Object> values = new ArrayList<Object>();
+            List<Object> values = new ArrayList<>();
 
             values.add( categoryOptionCombo.getId() );
 
@@ -274,7 +274,7 @@ public class DefaultResourceTableService
     @Transactional
     public void generateDataElementGroupSetTable()
     {
-        List<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
+        List<DataElementGroupSet> groupSets = new ArrayList<>( dataElementService.getAllDataElementGroupSets() );
 
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -292,7 +292,7 @@ public class DefaultResourceTableService
     @Transactional
     public void generateIndicatorGroupSetTable()
     {
-        List<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() );
+        List<IndicatorGroupSet> groupSets = new ArrayList<>( indicatorService.getAllIndicatorGroupSets() );
 
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -310,7 +310,7 @@ public class DefaultResourceTableService
     @Transactional
     public void generateOrganisationUnitGroupSetTable()
     {
-        List<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>(
+        List<OrganisationUnitGroupSet> groupSets = new ArrayList<>(
             organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
 
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
@@ -333,12 +333,12 @@ public class DefaultResourceTableService
         // Create table
         // ---------------------------------------------------------------------
 
-        List<DataElementCategory> categories = new ArrayList<DataElementCategory>( categoryService.getAllDataElementCategories() );
+        List<DataElementCategory> categories = new ArrayList<>( categoryService.getAllDataElementCategories() );
 
         Collections.sort( categories, IdentifiableObjectNameComparator.INSTANCE );
 
         List<DataElementCategoryOptionCombo> categoryOptionCombos =
-            new ArrayList<DataElementCategoryOptionCombo>( categoryService.getAllDataElementCategoryOptionCombos() );
+            new ArrayList<>( categoryService.getAllDataElementCategoryOptionCombos() );
 
         resourceTableStore.createCategoryStructure( categories );
 
@@ -346,11 +346,11 @@ public class DefaultResourceTableService
         // Populate table
         // ---------------------------------------------------------------------
 
-        List<Object[]> batchArgs = new ArrayList<Object[]>();
+        List<Object[]> batchArgs = new ArrayList<>();
 
         for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
         {
-            List<Object> values = new ArrayList<Object>();
+            List<Object> values = new ArrayList<>();
 
             values.add( categoryOptionCombo.getId() );
             values.add( categoryOptionCombo.getName() );
@@ -390,11 +390,11 @@ public class DefaultResourceTableService
         // Populate table
         // ---------------------------------------------------------------------
 
-        List<Object[]> batchArgs = new ArrayList<Object[]>();
+        List<Object[]> batchArgs = new ArrayList<>();
 
         for ( DataElement dataElement : dataElements )
         {
-            List<Object> values = new ArrayList<Object>();
+            List<Object> values = new ArrayList<>();
 
             final DataSet dataSet = dataElement.getDataSet();
             final PeriodType periodType = dataElement.getPeriodType();
@@ -434,7 +434,7 @@ public class DefaultResourceTableService
 
         List<PeriodType> periodTypes = PeriodType.getAvailablePeriodTypes();
 
-        List<Object[]> batchArgs = new ArrayList<Object[]>();
+        List<Object[]> batchArgs = new ArrayList<>();
 
         Date startDate = new Cal( 1975, 1, 1, true ).time(); //TODO
         Date endDate = new Cal( 2030, 1, 1, true ).time();
@@ -445,7 +445,7 @@ public class DefaultResourceTableService
 
         for ( Period day : days )
         {
-            List<Object> values = new ArrayList<Object>();
+            List<Object> values = new ArrayList<>();
 
             values.add( day.getStartDate() );
 
@@ -481,14 +481,14 @@ public class DefaultResourceTableService
         // Populate table
         // ---------------------------------------------------------------------
 
-        List<Object[]> batchArgs = new ArrayList<Object[]>();
+        List<Object[]> batchArgs = new ArrayList<>();
 
         for ( Period period : periods )
         {
             final Date startDate = period.getStartDate();
             final PeriodType rowType = period.getPeriodType();
 
-            List<Object> values = new ArrayList<Object>();
+            List<Object> values = new ArrayList<>();
 
             values.add( period.getId() );
             values.add( period.getIsoDate() );
@@ -533,7 +533,7 @@ public class DefaultResourceTableService
     @Override
     public void createAllSqlViews()
     {
-        List<SqlView> sqlViews = new ArrayList<SqlView>( sqlViewService.getAllSqlViews() );
+        List<SqlView> sqlViews = new ArrayList<>( sqlViewService.getAllSqlViews() );
         Collections.sort( sqlViews, IdentifiableObjectNameComparator.INSTANCE );
 
         for ( SqlView sqlView : sqlViews )
@@ -546,7 +546,7 @@ public class DefaultResourceTableService
     @Override
     public void dropAllSqlViews()
     {
-        List<SqlView> views = new ArrayList<SqlView>( sqlViewService.getAllSqlViews() );
+        List<SqlView> views = new ArrayList<>( sqlViewService.getAllSqlViews() );
         Collections.sort( views, IdentifiableObjectNameComparator.INSTANCE );
         Collections.reverse( views );
 

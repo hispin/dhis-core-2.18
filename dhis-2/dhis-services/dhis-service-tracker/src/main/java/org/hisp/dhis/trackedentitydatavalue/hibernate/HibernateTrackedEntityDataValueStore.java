@@ -74,7 +74,7 @@ public class HibernateTrackedEntityDataValueStore
     {
         if ( dataElements == null || dataElements.isEmpty() )
         {
-            return new ArrayList<TrackedEntityDataValue>();
+            return new ArrayList<>();
         }
         
         return getCriteria( Restrictions.in( "dataElement", dataElements ), Restrictions.eq( "programStageInstance", programStageInstance ) ).list();
@@ -85,7 +85,7 @@ public class HibernateTrackedEntityDataValueStore
     {
         if ( programStageInstances == null || programStageInstances.isEmpty() )
         {
-            return new ArrayList<TrackedEntityDataValue>();
+            return new ArrayList<>();
         }
 
         return getCriteria( Restrictions.in( "programStageInstance", programStageInstances ) ).list();
@@ -103,7 +103,7 @@ public class HibernateTrackedEntityDataValueStore
      {
         if ( dataElements == null || dataElements.isEmpty() )
         {
-            return new ArrayList<TrackedEntityDataValue>();
+            return new ArrayList<>();
         }
         
         Criteria criteria = getCriteria();

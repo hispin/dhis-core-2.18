@@ -45,7 +45,7 @@ public class CodeGeneratorTest
         // set this as high as your heap space allows
         int numberOfCodes = 1000;
 
-        Set<String> codes = new HashSet<String>();
+        Set<String> codes = new HashSet<>();
         for ( int n = 0; n < numberOfCodes; ++n )
         {
             String code = CodeGenerator.generateCode();

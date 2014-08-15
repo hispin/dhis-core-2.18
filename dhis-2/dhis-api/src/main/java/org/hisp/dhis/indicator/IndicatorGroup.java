@@ -58,14 +58,14 @@ public class IndicatorGroup
     private static final long serialVersionUID = 1447947029536960810L;
 
     @Scanned
-    private Set<Indicator> members = new HashSet<Indicator>();
+    private Set<Indicator> members = new HashSet<>();
 
     private IndicatorGroupSet groupSet;
 
     /**
      * Set of the dynamic attributes values that belong to this indicator group.
      */
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    private Set<AttributeValue> attributeValues = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -100,7 +100,7 @@ public class IndicatorGroup
 
     public void updateIndicators( Set<Indicator> updates )
     {
-        for ( Indicator indicator : new HashSet<Indicator>( members ) )
+        for ( Indicator indicator : new HashSet<>( members ) )
         {
             if ( !updates.contains( indicator ) )
             {

@@ -73,7 +73,7 @@ public class AdvanceHttpPostGateWay
     public int sendMessages( Collection<OutboundMessage> outboundMessages )
         throws TimeoutException, GatewayException, IOException, InterruptedException
     {
-        Map<String, String> requestParameters = new HashMap<String, String>( parameters );
+        Map<String, String> requestParameters = new HashMap<>( parameters );
         
         for ( OutboundMessage outboundMessage : outboundMessages )
         {

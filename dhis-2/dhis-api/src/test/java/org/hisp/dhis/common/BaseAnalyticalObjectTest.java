@@ -51,7 +51,7 @@ public class BaseAnalyticalObjectTest
     @Test
     public void testSortKeys()
     {
-        Map<String, Double> valueMap = new HashMap<String, Double>();
+        Map<String, Double> valueMap = new HashMap<>();
         
         valueMap.put( "b1-a1-c1", 1d );
         valueMap.put( "a2-c2-b2", 2d );
@@ -71,7 +71,7 @@ public class BaseAnalyticalObjectTest
         assertEquals( 3d, valueMap.get( "a3-b3-c3" ), 0.01 );
         assertEquals( 4d, valueMap.get( "a4-b4-c4" ), 0.01 );
         
-        valueMap = new HashMap<String, Double>();
+        valueMap = new HashMap<>();
         
         valueMap.put( "b1", 1d );
         valueMap.put( "b2", 2d );
@@ -85,7 +85,7 @@ public class BaseAnalyticalObjectTest
         assertEquals( 1d, valueMap.get( "b1" ), 0.01 );
         assertEquals( 2d, valueMap.get( "b2" ), 0.01 );
 
-        valueMap = new HashMap<String, Double>();
+        valueMap = new HashMap<>();
         
         valueMap.put( null, 1d );
         
@@ -136,11 +136,11 @@ public class BaseAnalyticalObjectTest
         oB.setUid( "b1" );
         oC.setUid( "c1" );
         
-        List<NameableObject> column = new ArrayList<NameableObject>();
+        List<NameableObject> column = new ArrayList<>();
         column.add( oC );
         column.add( oA );
         
-        List<NameableObject> row = new ArrayList<NameableObject>();
+        List<NameableObject> row = new ArrayList<>();
         row.add( oB );
         
         assertEquals( "a1-b1-c1", BaseAnalyticalObject.getIdentifier( column, row ) );

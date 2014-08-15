@@ -147,7 +147,7 @@ public class Chart
 
     public List<Period> getAllPeriods()
     {
-        List<Period> list = new ArrayList<Period>();
+        List<Period> list = new ArrayList<>();
 
         list.addAll( relativePeriods );
 

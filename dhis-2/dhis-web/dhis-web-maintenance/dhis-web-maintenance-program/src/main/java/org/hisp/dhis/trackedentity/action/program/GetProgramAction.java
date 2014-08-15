@@ -155,9 +155,9 @@ public class GetProgramAction
         
         selectionTreeManager.setSelectedOrganisationUnits( program.getOrganisationUnits() );
         
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
        
-        programIndicators = new ArrayList<ProgramIndicator>( programIndicatorService.getProgramIndicators( program ) );
+        programIndicators = new ArrayList<>( programIndicatorService.getProgramIndicators( program ) );
 
         Collections.sort( programIndicators, IdentifiableObjectNameComparator.INSTANCE );
 

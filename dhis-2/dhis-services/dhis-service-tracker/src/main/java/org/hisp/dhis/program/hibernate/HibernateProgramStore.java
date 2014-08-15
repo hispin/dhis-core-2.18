@@ -104,7 +104,7 @@ public class HibernateProgramStore
     @Override
     public Collection<Program> getByCurrentUser()
     {
-        Collection<Program> programs = new HashSet<Program>();
+        Collection<Program> programs = new HashSet<>();
 
         if ( currentUserService.getCurrentUser() != null && !currentUserService.currentUserIsSuper() )
         {
@@ -130,7 +130,7 @@ public class HibernateProgramStore
     @Override
     public Collection<Program> getByCurrentUser( int type )
     {
-        Collection<Program> programs = new HashSet<Program>();
+        Collection<Program> programs = new HashSet<>();
 
         if ( currentUserService.getCurrentUser() != null && !currentUserService.currentUserIsSuper() )
         {

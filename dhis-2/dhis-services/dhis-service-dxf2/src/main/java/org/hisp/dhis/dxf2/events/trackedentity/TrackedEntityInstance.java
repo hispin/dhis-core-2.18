@@ -50,9 +50,9 @@ public class TrackedEntityInstance
 
     private String orgUnit;
 
-    private List<Relationship> relationships = new ArrayList<Relationship>();
+    private List<Relationship> relationships = new ArrayList<>();
 
-    private List<Attribute> attributes = new ArrayList<Attribute>();
+    private List<Attribute> attributes = new ArrayList<>();
 
     public TrackedEntityInstance()
     {

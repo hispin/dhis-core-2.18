@@ -60,14 +60,14 @@ public class DataElementGroup
     private static final long serialVersionUID = 6101685842665568056L;
 
     @Scanned
-    private Set<DataElement> members = new HashSet<DataElement>();
+    private Set<DataElement> members = new HashSet<>();
 
     private DataElementGroupSet groupSet;
 
     /**
      * Set of the dynamic attributes values that belong to this dataElement group.
      */
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    private Set<AttributeValue> attributeValues = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -112,7 +112,7 @@ public class DataElementGroup
 
     public void updateDataElements( Set<DataElement> updates )
     {
-        for ( DataElement dataElement : new HashSet<DataElement>( members ) )
+        for ( DataElement dataElement : new HashSet<>( members ) )
         {
             if ( !updates.contains( dataElement ) )
             {

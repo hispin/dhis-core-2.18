@@ -58,7 +58,7 @@ public class ExternalAccessVoter implements AccessDecisionVoter<FilterInvocation
     private static final Log LOG = LogFactory.getLog( ExternalAccessVoter.class );
 
     // this should probably be moved somewhere else, but leaving it here for now
-    private static final Map<String, Class<? extends IdentifiableObject>> externalClasses = new HashMap<String, Class<? extends IdentifiableObject>>();
+    private static final Map<String, Class<? extends IdentifiableObject>> externalClasses = new HashMap<>();
 
     static
     {

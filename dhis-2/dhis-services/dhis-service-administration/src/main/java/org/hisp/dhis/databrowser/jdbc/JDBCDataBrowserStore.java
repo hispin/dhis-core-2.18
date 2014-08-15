@@ -405,7 +405,7 @@ public class JDBCDataBrowserStore
         
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
 
-        List<Integer> headerIds = new ArrayList<Integer>();
+        List<Integer> headerIds = new ArrayList<>();
         setHeaderStructure( grid, rs, headerIds, isZeroAdded );
 
         if ( rs.first() != true )

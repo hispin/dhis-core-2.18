@@ -72,7 +72,7 @@ public class DataValueSet
 
     protected String attributeOptionCombo;
 
-    protected List<DataValue> dataValues = new ArrayList<DataValue>();
+    protected List<DataValue> dataValues = new ArrayList<>();
 
     //--------------------------------------------------------------------------
     // Constructors

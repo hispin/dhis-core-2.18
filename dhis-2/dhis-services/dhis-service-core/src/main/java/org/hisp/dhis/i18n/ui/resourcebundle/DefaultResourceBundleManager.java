@@ -140,13 +140,13 @@ public class DefaultResourceBundleManager
         
         if ( url.toExternalForm().startsWith( "jar:" ) )
         {
-            locales = new ArrayList<Locale>( getAvailableLocalesFromJar( url ) );
+            locales = new ArrayList<>( getAvailableLocalesFromJar( url ) );
         }
         else
         {
             String dirPath = new File( url.getFile() ).getParent();
 
-            locales = new ArrayList<Locale>( getAvailableLocalesFromDir( dirPath ) );
+            locales = new ArrayList<>( getAvailableLocalesFromDir( dirPath ) );
         }
         
         Collections.sort( locales, LocaleNameComparator.INSTANCE );
@@ -159,7 +159,7 @@ public class DefaultResourceBundleManager
     {
         JarFile jar = null;
 
-        Set<Locale> availableLocales = new HashSet<Locale>();
+        Set<Locale> availableLocales = new HashSet<>();
 
         try
         {
@@ -194,7 +194,7 @@ public class DefaultResourceBundleManager
         dirPath = convertURLToFilePath( dirPath );
 
         File dir = new File( dirPath );
-        Set<Locale> availableLocales = new HashSet<Locale>();
+        Set<Locale> availableLocales = new HashSet<>();
         File[] files = dir.listFiles( new FilenameFilter()
         {
             public boolean accept( File dir, String name )

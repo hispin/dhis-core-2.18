@@ -135,18 +135,18 @@ public class ShowAddProgramStageFormAction
 
     public String execute()
     {
-        programs = new ArrayList<Program>( programService.getAllPrograms() );
+        programs = new ArrayList<>( programService.getAllPrograms() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
 
         availableAttributes = attributeService.getAllTrackedEntityAttributes();
 
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
 
-        relationshipTypes = new ArrayList<RelationshipType>( relationshipTypeService.getAllRelationshipTypes() );
+        relationshipTypes = new ArrayList<>( relationshipTypeService.getAllRelationshipTypes() );
         Collections.sort( relationshipTypes, IdentifiableObjectNameComparator.INSTANCE );
 
-        trackedEntities = new ArrayList<TrackedEntity>(trackedEntityService.getAllTrackedEntity());
+        trackedEntities = new ArrayList<>(trackedEntityService.getAllTrackedEntity());
         Collections.sort( trackedEntities, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;

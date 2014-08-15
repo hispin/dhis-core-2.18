@@ -71,14 +71,14 @@ public class TrackedEntityAttributeController
     @Override
     protected List<TrackedEntityAttribute> getEntityList( WebMetaData metaData, WebOptions options )
     {
-        List<TrackedEntityAttribute> entityList = new ArrayList<TrackedEntityAttribute>();
+        List<TrackedEntityAttribute> entityList = new ArrayList<>();
 
         boolean withoutPrograms = options.getOptions().containsKey( "withoutPrograms" )
             && Boolean.parseBoolean( options.getOptions().get( "withoutPrograms" ) );
 
         if ( withoutPrograms )
         {
-            entityList = new ArrayList<TrackedEntityAttribute>(
+            entityList = new ArrayList<>(
                 trackedEntityAttributeService.getTrackedEntityAttributesWithoutProgram() );
         }
         else if ( options.getOptions().containsKey( "query" ) )
@@ -92,7 +92,7 @@ public class TrackedEntityAttributeController
 
             if ( program != null )
             {
-                entityList = new ArrayList<TrackedEntityAttribute>( program.getTrackedEntityAttributes() );
+                entityList = new ArrayList<>( program.getTrackedEntityAttributes() );
             }
         }
         else if ( options.hasPaging() )
@@ -102,12 +102,12 @@ public class TrackedEntityAttributeController
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<TrackedEntityAttribute>( manager.getBetween( getEntityClass(),
+            entityList = new ArrayList<>( manager.getBetween( getEntityClass(),
                 pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {
-            entityList = new ArrayList<TrackedEntityAttribute>( trackedEntityAttributeService.getAllTrackedEntityAttributes() );
+            entityList = new ArrayList<>( trackedEntityAttributeService.getAllTrackedEntityAttributes() );
         }
 
         return entityList;

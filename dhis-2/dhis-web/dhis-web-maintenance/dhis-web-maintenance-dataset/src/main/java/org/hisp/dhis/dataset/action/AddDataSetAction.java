@@ -318,7 +318,7 @@ public class AddDataSetAction
             dataSet.addDataElement( dataElementService.getDataElement( id ) );
         }
 
-        Set<Indicator> indicators = new HashSet<Indicator>();
+        Set<Indicator> indicators = new HashSet<>();
 
         for ( String id : inSelected )
         {

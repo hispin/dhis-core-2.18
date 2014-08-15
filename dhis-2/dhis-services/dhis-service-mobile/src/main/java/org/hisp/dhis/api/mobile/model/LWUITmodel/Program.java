@@ -60,9 +60,9 @@ public class Program
     
     private String trackedEntityName = "Tracked Entity";
 
-    private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+    private List<ProgramStage> programStages = new ArrayList<>();
 
-    private List<PatientAttribute> programAttributes = new ArrayList<PatientAttribute>();
+    private List<PatientAttribute> programAttributes = new ArrayList<>();
 
     public List<ProgramStage> getProgramStages()
     {

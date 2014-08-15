@@ -93,7 +93,7 @@ public class ContextUtils
     {
         Enumeration<String> enumeration = request.getParameterNames();
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
 
         while ( enumeration.hasMoreElements() )
         {

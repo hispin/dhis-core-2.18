@@ -37,7 +37,7 @@ import java.util.List;
 public class ScheduledTasks
     implements Runnable
 {
-    private List<Runnable> tasks = new ArrayList<Runnable>();
+    private List<Runnable> tasks = new ArrayList<>();
     
     public void addTask( Runnable task )
     {

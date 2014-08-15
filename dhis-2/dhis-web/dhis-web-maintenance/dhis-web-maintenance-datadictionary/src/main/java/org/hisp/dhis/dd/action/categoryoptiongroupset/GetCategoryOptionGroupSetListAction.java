@@ -72,7 +72,7 @@ public class GetCategoryOptionGroupSetListAction
         this.key = key;
     }
 
-    private List<CategoryOptionGroupSet> categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>();
+    private List<CategoryOptionGroupSet> categoryOptionGroupSets = new ArrayList<>();
 
     public List<CategoryOptionGroupSet> getCategoryOptionGroupSets()
     {
@@ -91,7 +91,7 @@ public class GetCategoryOptionGroupSetListAction
         {
             this.paging = createPaging( dataElementCategoryService.getCategoryOptionGroupSetCountByName( key ) );
 
-            categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>(
+            categoryOptionGroupSets = new ArrayList<>(
                 dataElementCategoryService.getCategoryOptionGroupSetsBetweenByName( paging.getStartPos(),
                     paging.getPageSize(), key ) );
         }
@@ -99,7 +99,7 @@ public class GetCategoryOptionGroupSetListAction
         {
             this.paging = createPaging( dataElementCategoryService.getCategoryOptionGroupSetCount() );
 
-            categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>(
+            categoryOptionGroupSets = new ArrayList<>(
                 dataElementCategoryService.getCategoryOptionGroupSetsBetween( paging.getStartPos(),
                     paging.getPageSize() ) );
         }

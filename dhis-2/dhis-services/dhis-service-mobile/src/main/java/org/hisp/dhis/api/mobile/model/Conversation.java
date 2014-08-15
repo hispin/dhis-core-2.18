@@ -42,11 +42,11 @@ public class Conversation
 
     private Collection<MessageConversation> conversations;
 
-    private List<MessageConversation> conversationList = new ArrayList<MessageConversation>();
+    private List<MessageConversation> conversationList = new ArrayList<>();
 
     private Collection<Message> messages;
 
-    private List<Message> messageList = new ArrayList<Message>();
+    private List<Message> messageList = new ArrayList<>();
 
     public Conversation( Collection<Message> messages )
     {

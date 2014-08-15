@@ -331,7 +331,7 @@ public class DefaultAnalyticsService
 
                     if ( value != null )
                     {
-                        List<DimensionItem> row = new ArrayList<DimensionItem>( options );
+                        List<DimensionItem> row = new ArrayList<>( options );
                         
                         row.add( indicatorIndex, new DimensionItem( INDICATOR_DIM_ID, indicator ) );
                                                     
@@ -479,7 +479,7 @@ public class DefaultAnalyticsService
         {
             Integer cocIndex = params.getCocIndex();
             
-            Map<Object, Object> metaData = new HashMap<Object, Object>();
+            Map<Object, Object> metaData = new HashMap<>();
             
             Map<String, String> uidNameMap = getUidNameMap( params );
             Map<String, String> cocNameMap = getCocNameMap( grid, cocIndex );            
@@ -519,8 +519,8 @@ public class DefaultAnalyticsService
         
         ReportTable reportTable = new ReportTable();
         
-        List<NameableObject[]> tableColumns = new ArrayList<NameableObject[]>();
-        List<NameableObject[]> tableRows = new ArrayList<NameableObject[]>();
+        List<NameableObject[]> tableColumns = new ArrayList<>();
+        List<NameableObject[]> tableRows = new ArrayList<>();
 
         if ( columns != null )
         {            
@@ -542,8 +542,8 @@ public class DefaultAnalyticsService
             }
         }
 
-        reportTable.setGridColumns( new CombinationGenerator<NameableObject>( tableColumns.toArray( IRT2D ) ).getCombinations() );
-        reportTable.setGridRows( new CombinationGenerator<NameableObject>( tableRows.toArray( IRT2D ) ).getCombinations() );
+        reportTable.setGridColumns( new CombinationGenerator<>( tableColumns.toArray( IRT2D ) ).getCombinations() );
+        reportTable.setGridRows( new CombinationGenerator<>( tableRows.toArray( IRT2D ) ).getCombinations() );
 
         addIfEmpty( reportTable.getGridColumns() ); 
         addIfEmpty( reportTable.getGridRows() );
@@ -616,7 +616,7 @@ public class DefaultAnalyticsService
      */
     private Map<String, Double> getAggregatedDataValueMapping( Grid grid )
     {
-        Map<String, Double> map = new HashMap<String, Double>();
+        Map<String, Double> map = new HashMap<>();
         
         int metaCols = grid.getWidth() - 1;
         int valueIndex = grid.getWidth() - 1;
@@ -712,11 +712,11 @@ public class DefaultAnalyticsService
         
         t.getSplitTime( "Planned query, got: " + queryGroups.getLargestGroupSize() + " for optimal: " + optimalQueries );
 
-        Map<String, Double> map = new HashMap<String, Double>();
+        Map<String, Double> map = new HashMap<>();
         
         for ( List<DataQueryParams> queries : queryGroups.getSequentialQueries() )
         {
-            List<Future<Map<String, Double>>> futures = new ArrayList<Future<Map<String, Double>>>();
+            List<Future<Map<String, Double>>> futures = new ArrayList<>();
             
             for ( DataQueryParams query : queries )
             {
@@ -842,12 +842,12 @@ public class DefaultAnalyticsService
     {        
         if ( DATA_X_DIM_ID.equals( dimension ) )
         {
-            List<DimensionalObject> dataDimensions = new ArrayList<DimensionalObject>();
+            List<DimensionalObject> dataDimensions = new ArrayList<>();
             
-            List<NameableObject> indicators = new ArrayList<NameableObject>();
-            List<NameableObject> dataElements = new ArrayList<NameableObject>();
-            List<NameableObject> dataSets = new ArrayList<NameableObject>();
-            List<NameableObject> operandDataElements = new ArrayList<NameableObject>();
+            List<NameableObject> indicators = new ArrayList<>();
+            List<NameableObject> dataElements = new ArrayList<>();
+            List<NameableObject> dataSets = new ArrayList<>();
+            List<NameableObject> operandDataElements = new ArrayList<>();
             
             options : for ( String uid : items )
             {
@@ -924,7 +924,7 @@ public class DefaultAnalyticsService
 
         if ( PERIOD_DIM_ID.equals( dimension ) )
         {
-            Set<Period> periods = new HashSet<Period>();
+            Set<Period> periods = new HashSet<>();
             
             for ( String isoPeriod : items )
             {
@@ -954,7 +954,7 @@ public class DefaultAnalyticsService
                 period.setName( format != null ? format.formatPeriod( period ) : null );
             }
 
-            List<Period> periodList = new ArrayList<Period>( periods );
+            List<Period> periodList = new ArrayList<>( periods );
             Collections.sort( periodList, AscendingPeriodEndDateComparator.INSTANCE );
             
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.PERIOD, null, DISPLAY_NAME_PERIOD, asList( periodList ) );
@@ -966,9 +966,9 @@ public class DefaultAnalyticsService
         {
             User user = currentUserService.getCurrentUser();
             
-            List<NameableObject> ous = new UniqueArrayList<NameableObject>();
-            List<Integer> levels = new UniqueArrayList<Integer>();
-            List<OrganisationUnitGroup> groups = new UniqueArrayList<OrganisationUnitGroup>();
+            List<NameableObject> ous = new UniqueArrayList<>();
+            List<Integer> levels = new UniqueArrayList<>();
+            List<OrganisationUnitGroup> groups = new UniqueArrayList<>();
             
             for ( String ou : items )
             {
@@ -1015,7 +1015,7 @@ public class DefaultAnalyticsService
                 }
             }
             
-            List<NameableObject> orgUnits = new UniqueArrayList<NameableObject>();
+            List<NameableObject> orgUnits = new UniqueArrayList<>();
             List<OrganisationUnit> ousList = NameableObjectUtils.asTypedList( ous );
             
             if ( !levels.isEmpty() )
@@ -1139,7 +1139,7 @@ public class DefaultAnalyticsService
      */
     private Map<String, String> getUidNameMap( DataQueryParams params )
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.putAll( getUidNameMap( params.getDimensions(), params.isHierarchyMeta() ) );
         map.putAll( getUidNameMap( params.getFilters(), params.isHierarchyMeta() ) );
         map.put( DATA_X_DIM_ID, DISPLAY_NAME_DATA_X );
@@ -1157,11 +1157,11 @@ public class DefaultAnalyticsService
      */
     private Map<String, String> getUidNameMap( List<DimensionalObject> dimensions, boolean hierarchyMeta )
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         
         for ( DimensionalObject dimension : dimensions )
         {
-            List<NameableObject> items = new ArrayList<NameableObject>( dimension.getItems() );
+            List<NameableObject> items = new ArrayList<>( dimension.getItems() );
 
             boolean hierarchy = hierarchyMeta && DimensionType.ORGANISATIONUNIT.equals( dimension.getDimensionType() );
             
@@ -1224,11 +1224,11 @@ public class DefaultAnalyticsService
      */
     private Map<String, String> getCocNameMap( Grid grid, Integer cocIndex )
     {
-        Map<String, String> metaData = new HashMap<String, String>();
+        Map<String, String> metaData = new HashMap<>();
         
         if ( grid != null && cocIndex != null )
         {
-            Set<String> uids = new HashSet<String>( ConversionUtils.<String>cast( grid.getColumn( cocIndex ) ) );
+            Set<String> uids = new HashSet<>( ConversionUtils.<String>cast( grid.getColumn( cocIndex ) ) );
             
             Collection<DataElementCategoryOptionCombo> cocs = categoryService.getDataElementCategoryOptionCombosByUid( uids );
             

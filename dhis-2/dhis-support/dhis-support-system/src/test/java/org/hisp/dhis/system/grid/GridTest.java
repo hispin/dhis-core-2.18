@@ -110,7 +110,7 @@ public class GridTest
     @Test
     public void testSubstituteMetaData()
     {
-        Map<Object, Object> metaData = new HashMap<Object, Object>();
+        Map<Object, Object> metaData = new HashMap<>();
         metaData.put( 11, "Eleven" );
         metaData.put( 12, "Twelve" );
         metaData.put( 21, "TwentyOne" );
@@ -132,7 +132,7 @@ public class GridTest
     @Test
     public void testSubstituteMetaDataForIndex()
     {
-        Map<Object, Object> metaData = new HashMap<Object, Object>();
+        Map<Object, Object> metaData = new HashMap<>();
         metaData.put( 11, "Eleven" );
         metaData.put( 12, "Twelve" );
         metaData.put( 21, "TwentyOne" );
@@ -235,7 +235,7 @@ public class GridTest
     @Test
     public void testAddColumn()
     {
-        List<Object> columnValues = new ArrayList<Object>();
+        List<Object> columnValues = new ArrayList<>();
         columnValues.add( 14 );
         columnValues.add( 24 );
         columnValues.add( 34 );
@@ -495,7 +495,7 @@ public class GridTest
     @Test
     public void testGridRowComparator()
     {
-        List<List<Object>> lists = new ArrayList<List<Object>>();
+        List<List<Object>> lists = new ArrayList<>();
         List<Object> l1 = getList( "b", "b", 50 );
         List<Object> l2 = getList( "c", "c", 400 );
         List<Object> l3 = getList( "a", "a", 6 );
@@ -616,7 +616,7 @@ public class GridTest
     
     private static List<Object> getList( Object... items )
     {
-        List<Object> list = new ArrayList<Object>();
+        List<Object> list = new ArrayList<>();
         
         for ( Object item : items )
         {

@@ -98,7 +98,7 @@ public class Section
         
         if ( numbOfDataElement > 0 )
         {
-            dataElementIds = new ArrayList<Integer>();
+            dataElementIds = new ArrayList<>();
             for ( int i = 0; i < numbOfDataElement; i++ )
             {
                 dataElementIds.add( dint.readInt() );

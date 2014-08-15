@@ -47,13 +47,13 @@ public class Service
     private String oid;
 
     @XmlElement( name = "name", namespace = "urn:ihe:iti:csd:2013" )
-    private List<Name> names = new ArrayList<Name>();
+    private List<Name> names = new ArrayList<>();
 
     @XmlElement( name = "language", namespace = "urn:ihe:iti:csd:2013" )
     private Language language;
 
     @XmlElement( name = "operatingHours", namespace = "urn:ihe:iti:csd:2013" )
-    private List<OperatingHours> operatingHours = new ArrayList<OperatingHours>();
+    private List<OperatingHours> operatingHours = new ArrayList<>();
 
     public Service()
     {

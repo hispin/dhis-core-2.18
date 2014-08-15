@@ -71,11 +71,11 @@ public class StdDevOutlierAnalysisService
     public final Collection<DeflatedDataValue> analyse( Collection<OrganisationUnit> organisationUnits,
         Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
     {
-        Set<Integer> units = new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );
+        Set<Integer> units = new HashSet<>( ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
         log.info( "Starting std dev analysis, no of org units: " + organisationUnits.size() + ", factor: " + stdDevFactor );
         
-        Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
+        Collection<DeflatedDataValue> outlierCollection = new ArrayList<>();
 
         loop : for ( DataElement dataElement : dataElements )
         {
@@ -92,8 +92,8 @@ public class StdDevOutlierAnalysisService
                     
                     Map<Integer, Double> averages = dataAnalysisStore.getAverage( dataElement, categoryOptionCombo, standardDeviations.keySet() );
                     
-                    Map<Integer, Integer> lowBoundMap = new HashMap<Integer, Integer>();
-                    Map<Integer, Integer> highBoundMap = new HashMap<Integer, Integer>();
+                    Map<Integer, Integer> lowBoundMap = new HashMap<>();
+                    Map<Integer, Integer> highBoundMap = new HashMap<>();
                     
                     for ( Integer unit : averages.keySet() )
                     {

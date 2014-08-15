@@ -104,7 +104,7 @@ public class GetGeoJsonFacilitiesAction
         return callback;
     }
 
-    private Collection<OrganisationUnit> object = new ArrayList<OrganisationUnit>();
+    private Collection<OrganisationUnit> object = new ArrayList<>();
 
     public Collection<OrganisationUnit> getObject()
     {
@@ -127,7 +127,7 @@ public class GetGeoJsonFacilitiesAction
     {
         groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
 
-        Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
+        Set<OrganisationUnitGroup> groups = new HashSet<>();
         
         for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
@@ -145,7 +145,7 @@ public class GetGeoJsonFacilitiesAction
             paramString += id + ";";
         }
 
-        Set<String> ouParams = new HashSet<String>();
+        Set<String> ouParams = new HashSet<>();
         
         ouParams.add( paramString.substring( 0, paramString.length() ) );
         
@@ -172,13 +172,13 @@ public class GetGeoJsonFacilitiesAction
             return SUCCESS;
         }
         
-        object = new ArrayList<OrganisationUnit>();
+        object = new ArrayList<>();
 
         for ( OrganisationUnit unit : organisationUnits )
         {
             if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
             {
-                List<String> groupNames = new ArrayList<String>( groupSets.size() );
+                List<String> groupNames = new ArrayList<>( groupSets.size() );
 
                 for ( OrganisationUnitGroupSet groupSet : groupSets )
                 {

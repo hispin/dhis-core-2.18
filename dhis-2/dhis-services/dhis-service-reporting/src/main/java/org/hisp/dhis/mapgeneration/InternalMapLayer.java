@@ -89,7 +89,7 @@ public class InternalMapLayer
 
     public InternalMapLayer()
     {
-        this.mapObjects = new ArrayList<InternalMapObject>();
+        this.mapObjects = new ArrayList<>();
     }
 
     // -------------------------------------------------------------------------
@@ -391,7 +391,7 @@ public class InternalMapLayer
     
     private List<Double> getSortedMapObjectValues()
     {
-        List<Double> values = new ArrayList<Double>();
+        List<Double> values = new ArrayList<>();
         
         for ( InternalMapObject object : mapObjects )
         {

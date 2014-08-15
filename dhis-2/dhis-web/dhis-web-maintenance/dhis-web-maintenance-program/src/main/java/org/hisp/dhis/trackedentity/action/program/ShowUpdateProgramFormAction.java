@@ -197,7 +197,7 @@ public class ShowUpdateProgramFormAction
     {
         program = programService.getProgram( id );
 
-        availableAttributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
+        availableAttributes = new ArrayList<>( attributeService.getAllTrackedEntityAttributes() );
         
         for ( ProgramTrackedEntityAttribute programAttribue : program.getProgramAttributes() )
         {
@@ -206,17 +206,17 @@ public class ShowUpdateProgramFormAction
         
         Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
-        programs = new ArrayList<Program>( programService.getAllPrograms() );
+        programs = new ArrayList<>( programService.getAllPrograms() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         programs.remove( program );
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
 
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
 
-        relationshipTypes = new ArrayList<RelationshipType>( relationshipTypeService.getAllRelationshipTypes() );
+        relationshipTypes = new ArrayList<>( relationshipTypeService.getAllRelationshipTypes() );
         Collections.sort( relationshipTypes, IdentifiableObjectNameComparator.INSTANCE );
 
-        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
+        trackedEntities = new ArrayList<>( trackedEntityService.getAllTrackedEntity() );
         Collections.sort( trackedEntities, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;

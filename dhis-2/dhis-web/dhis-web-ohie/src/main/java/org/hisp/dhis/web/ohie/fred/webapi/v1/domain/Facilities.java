@@ -41,9 +41,9 @@ import java.util.Map;
 @JsonPropertyOrder( value = { "meta", "facilities" } )
 public class Facilities
 {
-    private Map<String, Object> meta = new HashMap<String, Object>();
+    private Map<String, Object> meta = new HashMap<>();
 
-    private List<Facility> facilities = new ArrayList<Facility>();
+    private List<Facility> facilities = new ArrayList<>();
 
     public Facilities()
     {

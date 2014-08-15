@@ -71,7 +71,7 @@ public class GetDataElementGroupMembersAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<DataElement> groupMembers = new ArrayList<DataElement>();
+    private List<DataElement> groupMembers = new ArrayList<>();
 
     public List<DataElement> getGroupMembers()
     {
@@ -92,7 +92,7 @@ public class GetDataElementGroupMembersAction
         {
             DataElementGroup group = dataElementService.getDataElementGroup( id );
 
-            groupMembers = new ArrayList<DataElement>( group.getMembers() );
+            groupMembers = new ArrayList<>( group.getMembers() );
 
             Collections.sort( groupMembers, new IdentifiableObjectNameComparator() );
         }

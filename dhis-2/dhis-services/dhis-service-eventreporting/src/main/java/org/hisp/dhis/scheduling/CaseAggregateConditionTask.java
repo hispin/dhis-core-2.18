@@ -111,7 +111,7 @@ public class CaseAggregateConditionTask
         datasetSQL += "            on pt.periodtypeid=ds.periodtypeid ";
 
         SqlRowSet rsDataset = jdbcTemplate.queryForRowSet( datasetSQL );
-        List<CaseAggregateSchedule> caseAggregateSchedule = new ArrayList<CaseAggregateSchedule>();
+        List<CaseAggregateSchedule> caseAggregateSchedule = new ArrayList<>();
         while ( rsDataset.next() )
         {
             CaseAggregateSchedule dataSet = new CaseAggregateSchedule( rsDataset.getInt( "datasetid" ),

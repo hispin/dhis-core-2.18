@@ -71,11 +71,11 @@ public class PeriodTypeExtended {
     public PeriodTypeExtended( PeriodType periodType )
     {
     	this.periodType = periodType;
-	    periods = new HashSet<Period>();
-	    rules = new HashSet<ValidationRule>();
-	    dataElements = new HashSet<DataElement>();
-	    allowedPeriodTypes = new HashSet<PeriodType>();
-	    sourceDataElements = new HashMap<OrganisationUnit, Collection<DataElement>>();
+	    periods = new HashSet<>();
+	    rules = new HashSet<>();
+	    dataElements = new HashSet<>();
+	    allowedPeriodTypes = new HashSet<>();
+	    sourceDataElements = new HashMap<>();
     }
 
     public String toString()

@@ -129,7 +129,7 @@ public class DefaultCsvImportService
     private List<DataElementCategoryOption> categoryOptionsFromCsv( CsvReader reader )
         throws IOException
     {
-        List<DataElementCategoryOption> list = new ArrayList<DataElementCategoryOption>();
+        List<DataElementCategoryOption> list = new ArrayList<>();
 
         while ( reader.readRecord() )
         {
@@ -149,7 +149,7 @@ public class DefaultCsvImportService
     private List<CategoryOptionGroup> categoryOptionGroupsFromCsv( CsvReader reader )
         throws IOException
     {
-        List<CategoryOptionGroup> list = new ArrayList<CategoryOptionGroup>();
+        List<CategoryOptionGroup> list = new ArrayList<>();
 
         while ( reader.readRecord() )
         {
@@ -171,7 +171,7 @@ public class DefaultCsvImportService
     {
         DataElementCategoryCombo categoryCombo = categoryService.getDefaultDataElementCategoryCombo();
         
-        List<DataElement> list = new ArrayList<DataElement>();
+        List<DataElement> list = new ArrayList<>();
 
         while ( reader.readRecord() )
         {
@@ -217,7 +217,7 @@ public class DefaultCsvImportService
     private List<DataElementGroup> dataElementGroupsFromCsv( CsvReader reader )
         throws IOException
     {
-        List<DataElementGroup> list = new ArrayList<DataElementGroup>();
+        List<DataElementGroup> list = new ArrayList<>();
 
         while ( reader.readRecord() )
         {
@@ -237,7 +237,7 @@ public class DefaultCsvImportService
     private List<ValidationRule> validationRulesFromCsv( CsvReader reader )
         throws IOException
     {
-        List<ValidationRule> list = new ArrayList<ValidationRule>();
+        List<ValidationRule> list = new ArrayList<>();
 
         while ( reader.readRecord() )
         {
@@ -284,7 +284,7 @@ public class DefaultCsvImportService
     private List<OrganisationUnit> organisationUnitsFromCsv( CsvReader reader )
         throws IOException
     {
-        List<OrganisationUnit> list = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> list = new ArrayList<>();
 
         while ( reader.readRecord() )
         {
@@ -327,7 +327,7 @@ public class DefaultCsvImportService
     private List<OrganisationUnitGroup> organisationUnitGroupsFromCsv( CsvReader reader )
         throws IOException
     {
-        List<OrganisationUnitGroup> list = new ArrayList<OrganisationUnitGroup>();
+        List<OrganisationUnitGroup> list = new ArrayList<>();
 
         while ( reader.readRecord() )
         {
@@ -347,7 +347,7 @@ public class DefaultCsvImportService
     private List<OptionSet> getOptionSetsFromCsv( CsvReader reader )
         throws IOException
     {
-        ListMap<OptionSet, String> listMap = new ListMap<OptionSet, String>();
+        ListMap<OptionSet, String> listMap = new ListMap<>();
 
         while ( reader.readRecord() )
         {
@@ -363,12 +363,12 @@ public class DefaultCsvImportService
             }
         }
 
-        List<OptionSet> optionSets = new ArrayList<OptionSet>();
+        List<OptionSet> optionSets = new ArrayList<>();
 
         for ( OptionSet optionSet : listMap.keySet() )
         {
-            List<String> options = new ArrayList<String>( listMap.get( optionSet ) );
-            List<Option> optionObj = new ArrayList<Option>();
+            List<String> options = new ArrayList<>( listMap.get( optionSet ) );
+            List<Option> optionObj = new ArrayList<>();
             for ( String opt : options )
             {
                 Option option = new Option( opt, opt );

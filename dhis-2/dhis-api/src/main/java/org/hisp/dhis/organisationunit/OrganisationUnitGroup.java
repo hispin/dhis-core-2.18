@@ -63,10 +63,10 @@ public class OrganisationUnitGroup
     private String symbol;
 
     @Scanned
-    private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
+    private Set<OrganisationUnit> members = new HashSet<>();
 
     @Scanned
-    private Set<DataSet> dataSets = new HashSet<DataSet>();
+    private Set<DataSet> dataSets = new HashSet<>();
 
     private OrganisationUnitGroupSet groupSet;
 
@@ -74,7 +74,7 @@ public class OrganisationUnitGroup
      * Set of the dynamic attributes values that belong to this organisationUnit
      * group.
      */
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    private Set<AttributeValue> attributeValues = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -119,7 +119,7 @@ public class OrganisationUnitGroup
 
     public void updateOrganisationUnits( Set<OrganisationUnit> updates )
     {
-        for ( OrganisationUnit unit : new HashSet<OrganisationUnit>( members ) )
+        for ( OrganisationUnit unit : new HashSet<>( members ) )
         {
             if ( !updates.contains( unit ) )
             {
@@ -157,7 +157,7 @@ public class OrganisationUnitGroup
 
     public void updateDataSets( Set<DataSet> updates )
     {
-        for ( DataSet ds : new HashSet<DataSet>( dataSets ) )
+        for ( DataSet ds : new HashSet<>( dataSets ) )
         {
             if ( !updates.contains( ds ) )
             {

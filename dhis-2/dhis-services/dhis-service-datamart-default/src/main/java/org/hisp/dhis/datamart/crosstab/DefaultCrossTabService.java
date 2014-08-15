@@ -126,7 +126,7 @@ public class DefaultCrossTabService
             {
                 final Map<DataElementOperand, String> map = dataMartManager.getDataValueMap( periodId, sourceId );
 
-                final List<String> valueList = new ArrayList<String>( operands.size() + 2 );
+                final List<String> valueList = new ArrayList<>( operands.size() + 2 );
 
                 valueList.add( String.valueOf( periodId ) );
                 valueList.add( String.valueOf( sourceId ) );

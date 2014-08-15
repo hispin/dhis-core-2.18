@@ -75,7 +75,7 @@ public class GetLocaleListAction
         return total;
     }
 
-    private List<I18nLocale> i18nlocales = new ArrayList<I18nLocale>();
+    private List<I18nLocale> i18nlocales = new ArrayList<>();
 
     public List<I18nLocale> getI18nLocales()
     {
@@ -107,7 +107,7 @@ public class GetLocaleListAction
 
             this.paging = createPaging( total );
 
-            i18nlocales = new ArrayList<I18nLocale>( localeService.getI18nLocalesBetweenLikeName( key, paging.getStartPos(),
+            i18nlocales = new ArrayList<>( localeService.getI18nLocalesBetweenLikeName( key, paging.getStartPos(),
                 paging.getPageSize() ) );
         }
         else
@@ -116,7 +116,7 @@ public class GetLocaleListAction
 
             this.paging = createPaging( total );
 
-            i18nlocales = new ArrayList<I18nLocale>( localeService.getI18nLocalesBetween( paging.getStartPos(),
+            i18nlocales = new ArrayList<>( localeService.getI18nLocalesBetween( paging.getStartPos(),
                 paging.getPageSize() ) );
         }
 

@@ -40,7 +40,7 @@ public class DataElementCategoryDimension
     
     private DataElementCategory dimension;
     
-    private List<DataElementCategoryOption> items = new ArrayList<DataElementCategoryOption>();
+    private List<DataElementCategoryOption> items = new ArrayList<>();
 
     public int getId()
     {

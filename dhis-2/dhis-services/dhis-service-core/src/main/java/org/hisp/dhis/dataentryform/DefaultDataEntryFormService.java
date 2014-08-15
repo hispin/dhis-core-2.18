@@ -378,7 +378,7 @@ public class DefaultDataEntryFormService
 
         Map<String, DataElement> dataElementMap = getDataElementMap( dataSet );
 
-        Set<DataElement> dataElements = new HashSet<DataElement>();
+        Set<DataElement> dataElements = new HashSet<>();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( dataSet.getDataEntryForm().getHtmlCode() );
 
@@ -418,7 +418,7 @@ public class DefaultDataEntryFormService
             return null;
         }
 
-        Set<DataElementOperand> operands = new HashSet<DataElementOperand>();
+        Set<DataElementOperand> operands = new HashSet<>();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( dataSet.getDataEntryForm().getHtmlCode() );
 
@@ -485,7 +485,7 @@ public class DefaultDataEntryFormService
      */
     private Map<String, DataElement> getDataElementMap( DataSet dataSet )
     {
-        Map<String, DataElement> map = new HashMap<String, DataElement>();
+        Map<String, DataElement> map = new HashMap<>();
 
         for ( DataElement element : dataSet.getDataElements() )
         {

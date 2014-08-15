@@ -59,14 +59,14 @@ public class GetAccessSettingsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<UserAuthorityGroup> userRoles = new ArrayList<UserAuthorityGroup>();
+    private List<UserAuthorityGroup> userRoles = new ArrayList<>();
 
     public List<UserAuthorityGroup> getUserRoles()
     {
         return userRoles;
     }
     
-    private List<OrganisationUnit> selfRegistrationOrgUnits = new ArrayList<OrganisationUnit>();
+    private List<OrganisationUnit> selfRegistrationOrgUnits = new ArrayList<>();
 
     public List<OrganisationUnit> getSelfRegistrationOrgUnits()
     {
@@ -79,7 +79,7 @@ public class GetAccessSettingsAction
 
     public String execute()
     {
-        userRoles = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
+        userRoles = new ArrayList<>( userService.getAllUserAuthorityGroups() );
         
         FilterUtils.filter( userRoles, new NonCriticalUserAuthorityGroupFilter() );
         Collections.sort( userRoles, IdentifiableObjectNameComparator.INSTANCE );

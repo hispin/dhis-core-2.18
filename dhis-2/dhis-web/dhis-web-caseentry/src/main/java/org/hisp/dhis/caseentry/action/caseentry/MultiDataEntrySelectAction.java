@@ -100,21 +100,21 @@ public class MultiDataEntrySelectAction
         return programId;
     }
 
-    private Collection<Program> programs = new ArrayList<Program>();
+    private Collection<Program> programs = new ArrayList<>();
 
     public Collection<Program> getPrograms()
     {
         return programs;
     }
 
-    private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+    private List<TrackedEntityAttribute> attributes = new ArrayList<>();
 
     public List<TrackedEntityAttribute> getAttributes()
     {
         return attributes;
     }
 
-    private List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
+    private List<TrackedEntity> trackedEntities = new ArrayList<>();
 
     public List<TrackedEntity> getTrackedEntities()
     {
@@ -128,10 +128,10 @@ public class MultiDataEntrySelectAction
     public String execute()
         throws Exception
     {
-        attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
+        attributes = new ArrayList<>( attributeService.getAllTrackedEntityAttributes() );
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
         
-        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
+        trackedEntities = new ArrayList<>( trackedEntityService.getAllTrackedEntity() );
         Collections.sort( trackedEntities, IdentifiableObjectNameComparator.INSTANCE );
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();

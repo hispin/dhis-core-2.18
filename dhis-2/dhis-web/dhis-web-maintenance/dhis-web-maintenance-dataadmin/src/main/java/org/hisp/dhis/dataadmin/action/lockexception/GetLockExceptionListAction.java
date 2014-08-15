@@ -85,11 +85,11 @@ public class GetLockExceptionListAction
         if ( usePaging )
         {
             paging = createPaging( dataSetService.getLockExceptionCount() );
-            lockExceptions = new ArrayList<LockException>( dataSetService.getLockExceptionsBetween( paging.getStartPos(), paging.getEndPos() ) );
+            lockExceptions = new ArrayList<>( dataSetService.getLockExceptionsBetween( paging.getStartPos(), paging.getEndPos() ) );
         }
         else
         {
-            lockExceptions = new ArrayList<LockException>( dataSetService.getAllLockExceptions() );
+            lockExceptions = new ArrayList<>( dataSetService.getAllLockExceptions() );
         }
 
         Collections.sort( lockExceptions, new LockExceptionNameComparator() );

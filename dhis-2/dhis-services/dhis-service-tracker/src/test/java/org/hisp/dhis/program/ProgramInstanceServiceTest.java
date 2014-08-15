@@ -125,7 +125,7 @@ public class ProgramInstanceServiceTest
         organisationUnitB = createOrganisationUnit( 'B' );
         int idB = organisationUnitService.addOrganisationUnit( organisationUnitB );
 
-        orgunitIds = new HashSet<Integer>();
+        orgunitIds = new HashSet<>();
         orgunitIds.add( idA );
         orgunitIds.add( idB );
 
@@ -140,7 +140,7 @@ public class ProgramInstanceServiceTest
             TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE, TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
             TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH );
 
-        Set<TrackedEntityInstanceReminder> reminders = new HashSet<TrackedEntityInstanceReminder>();
+        Set<TrackedEntityInstanceReminder> reminders = new HashSet<>();
         reminders.add( reminderA );
         reminders.add( reminderB );
         programA.setInstanceReminders( reminders );
@@ -153,7 +153,7 @@ public class ProgramInstanceServiceTest
         ProgramStage stageB = new ProgramStage( "StageB", programA );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         programA.setProgramStages( programStages );
@@ -284,7 +284,7 @@ public class ProgramInstanceServiceTest
         programInstanceService.addProgramInstance( programInstanceC );
         programInstanceService.addProgramInstance( programInstanceD );
 
-        Collection<Program> programs = new HashSet<Program>();
+        Collection<Program> programs = new HashSet<>();
         programs.add( programA );
         programs.add( programB );
 

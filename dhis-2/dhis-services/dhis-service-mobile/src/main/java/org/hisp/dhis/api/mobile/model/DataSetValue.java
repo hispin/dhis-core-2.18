@@ -48,7 +48,7 @@ public class DataSetValue
 
     private boolean completed;
 
-    private List<DataValue> dataValues = new ArrayList<DataValue>();
+    private List<DataValue> dataValues = new ArrayList<>();
 
     @XmlAttribute
     public boolean isCompleted()

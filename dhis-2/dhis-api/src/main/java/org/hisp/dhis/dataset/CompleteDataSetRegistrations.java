@@ -43,7 +43,7 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "completeDataSetRegistrations", namespace = DxfNamespaces.DXF_2_0 )
 public class CompleteDataSetRegistrations
 {
-    private List<CompleteDataSetRegistration> completeDataSetRegistrationList = new ArrayList<CompleteDataSetRegistration>();
+    private List<CompleteDataSetRegistration> completeDataSetRegistrationList = new ArrayList<>();
 
     public CompleteDataSetRegistrations()
     {

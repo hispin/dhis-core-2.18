@@ -99,30 +99,30 @@ public class User
 
     private UserCredentials userCredentials;
 
-    private Set<UserGroup> groups = new HashSet<UserGroup>();
+    private Set<UserGroup> groups = new HashSet<>();
 
     /**
      * Organisation units for data input and data capture / write operations.
      * TODO move to UserCredentials.
      */
     @Scanned
-    private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+    private Set<OrganisationUnit> organisationUnits = new HashSet<>();
 
     /**
      * Organisation units for data output and data analysis / read operations.
      */
     @Scanned
-    private Set<OrganisationUnit> dataViewOrganisationUnits = new HashSet<OrganisationUnit>();
+    private Set<OrganisationUnit> dataViewOrganisationUnits = new HashSet<>();
 
     /**
      * Set of the dynamic attributes values that belong to this User.
      */
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    private Set<AttributeValue> attributeValues = new HashSet<>();
 
     /**
      * Ordered favorite apps.
      */
-    private List<String> apps = new ArrayList<String>();
+    private List<String> apps = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Logic
@@ -142,7 +142,7 @@ public class User
 
     public void updateOrganisationUnits( Set<OrganisationUnit> updates )
     {
-        for ( OrganisationUnit unit : new HashSet<OrganisationUnit>( organisationUnits ) )
+        for ( OrganisationUnit unit : new HashSet<>( organisationUnits ) )
         {
             if ( !updates.contains( unit ) )
             {

@@ -118,7 +118,7 @@ public class AddProgramStageSectionAction
         // Section
         // ---------------------------------------------------------------------
 
-        List<ProgramStageDataElement> psDataElements = new ArrayList<ProgramStageDataElement>();
+        List<ProgramStageDataElement> psDataElements = new ArrayList<>();
         for ( Integer id : dataElementIds )
         {
             DataElement dataElement = dataElementService.getDataElement( id );
@@ -137,7 +137,7 @@ public class AddProgramStageSectionAction
 
         if ( sections == null )
         {
-            sections = new HashSet<ProgramStageSection>();
+            sections = new HashSet<>();
         }
 
         sections.add( section );

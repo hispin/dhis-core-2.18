@@ -113,14 +113,14 @@ public class AggregatedValueController
 
         Collection<Period> periods = periodService.reloadPeriods( rp.getRelativePeriods() );
 
-        Collection<Integer> periodIds = new ArrayList<Integer>();
+        Collection<Integer> periodIds = new ArrayList<>();
 
         for ( Period period : periods )
         {
             periodIds.add( period.getId() );
         }
 
-        List<Integer> organisationUnitIds = new ArrayList<Integer>();
+        List<Integer> organisationUnitIds = new ArrayList<>();
 
         for ( String uid : organisationUnitsUids )
         {
@@ -132,14 +132,14 @@ public class AggregatedValueController
 
         if ( indicatorUids != null )
         {
-            List<Integer> indicatorIds = new ArrayList<Integer>();
+            List<Integer> indicatorIds = new ArrayList<>();
 
             for ( String uid : indicatorUids )
             {
                 indicatorIds.add( indicatorService.getIndicator( uid ).getId() );
             }
 
-            indicatorValues = new ArrayList<AggregatedIndicatorValue>( aggregatedDataValueService.
+            indicatorValues = new ArrayList<>( aggregatedDataValueService.
                 getAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds ) );
 
             for ( AggregatedIndicatorValue value : indicatorValues )
@@ -152,14 +152,14 @@ public class AggregatedValueController
         }
         else if ( dataElementUids != null )
         {
-            List<Integer> dataElementIds = new ArrayList<Integer>();
+            List<Integer> dataElementIds = new ArrayList<>();
 
             for ( String uid : dataElementUids )
             {
                 dataElementIds.add( dataElementService.getDataElement( uid ).getId() );
             }
 
-            dataElementValues = new ArrayList<AggregatedDataValue>( aggregatedDataValueService.
+            dataElementValues = new ArrayList<>( aggregatedDataValueService.
                 getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitIds ) );
 
             for ( AggregatedDataValue value : dataElementValues )
@@ -171,13 +171,13 @@ public class AggregatedValueController
             }
         }
 
-        List<Object> valueList = new ArrayList<Object>();
+        List<Object> valueList = new ArrayList<>();
 
         if ( indicatorValues != null )
         {
             for ( AggregatedIndicatorValue indicatorValue : indicatorValues )
             {
-                List<Object> values = new ArrayList<Object>();
+                List<Object> values = new ArrayList<>();
                 values.add( indicatorValue.getValue() );
                 values.add( indicatorValue.getIndicatorName() );
                 values.add( indicatorValue.getPeriodName() );
@@ -190,7 +190,7 @@ public class AggregatedValueController
         {
             for ( AggregatedDataValue dataValue : dataElementValues )
             {
-                List<Object> values = new ArrayList<Object>();
+                List<Object> values = new ArrayList<>();
                 values.add( dataValue.getValue() );
                 values.add( dataValue.getDataElementName() );
                 values.add( dataValue.getPeriodName() );

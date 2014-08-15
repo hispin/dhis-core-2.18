@@ -42,7 +42,7 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "row", namespace = DxfNamespaces.DXF_2_0)
 public class GridRow
 {
-    private List<String> rowData = new ArrayList<String>();
+    private List<String> rowData = new ArrayList<>();
 
     @JsonProperty
     @JsonView( {DetailedView.class} )

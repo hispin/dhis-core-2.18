@@ -91,7 +91,7 @@ public class GetOrganisationUnitGroupsAction
     public String execute()
         throws Exception
     {
-        organisationUnitGroups = new ArrayList<OrganisationUnitGroup>(
+        organisationUnitGroups = new ArrayList<>(
             organisationUnitGroupService.getAllOrganisationUnitGroups() );
 
         if ( filterNoGroupSet )

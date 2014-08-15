@@ -53,7 +53,7 @@ public class IdentityPopulator
         "dataelementcategoryoption", "categoryoptionid",
         "dataelementcategory", "categoryid" );
 
-    private List<String> tables = new ArrayList<String>();
+    private List<String> tables = new ArrayList<>();
     
     public void setTables( List<String> tables )
     {

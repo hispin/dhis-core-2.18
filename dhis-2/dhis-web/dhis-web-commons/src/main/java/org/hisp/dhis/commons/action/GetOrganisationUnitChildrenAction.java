@@ -85,7 +85,7 @@ public class GetOrganisationUnitChildrenAction
     {
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
 
-        organisationUnits = new ArrayList<OrganisationUnit>( unit.getChildren() );
+        organisationUnits = new ArrayList<>( unit.getChildren() );
 
         Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
 

@@ -46,7 +46,7 @@ public class ConfigurableModuleComparator
     // Configuration
     // -------------------------------------------------------------------------
 
-    private List<String> order = new ArrayList<String>();
+    private List<String> order = new ArrayList<>();
 
     public void setOrder( List<String> order )
     {

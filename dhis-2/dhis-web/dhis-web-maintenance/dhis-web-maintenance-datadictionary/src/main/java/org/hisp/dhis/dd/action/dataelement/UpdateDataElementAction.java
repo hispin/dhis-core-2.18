@@ -220,14 +220,14 @@ public class UpdateDataElementAction
         this.zeroIsSignificant = zeroIsSignificant;
     }
 
-    private List<String> dataElementGroupSets = new ArrayList<String>();
+    private List<String> dataElementGroupSets = new ArrayList<>();
 
     public void setDataElementGroupSets( List<String> dataElementGroupSets )
     {
         this.dataElementGroupSets = dataElementGroupSets;
     }
 
-    private List<String> dataElementGroups = new ArrayList<String>();
+    private List<String> dataElementGroups = new ArrayList<>();
 
     public void setDataElementGroups( List<String> dataElementGroups )
     {
@@ -328,7 +328,7 @@ public class UpdateDataElementAction
         dataElement.setUrl( url );
         dataElement.setZeroIsSignificant( zeroIsSignificant );
         dataElement.setCategoryCombo( categoryCombo );
-        dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
+        dataElement.setAggregationLevels( new ArrayList<>( ConversionUtils
             .getIntegerCollection( aggregationLevels ) ) );
         dataElement.setOptionSet( optionSet );
         dataElement.setCommentOptionSet( commentOptionSet );

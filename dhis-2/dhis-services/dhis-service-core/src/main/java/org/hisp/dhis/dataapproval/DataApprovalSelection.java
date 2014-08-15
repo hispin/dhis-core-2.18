@@ -103,7 +103,7 @@ class DataApprovalSelection
 
     private Map<CategoryOptionGroupSet, Set<CategoryOptionGroup>> selectionGroups = null;
 
-    private Set<CategoryOptionGroup> allSelectionGroups = new HashSet<CategoryOptionGroup>();
+    private Set<CategoryOptionGroup> allSelectionGroups = new HashSet<>();
 
     private List<DataApprovalLevel> allApprovalLevels;
 
@@ -406,7 +406,7 @@ class DataApprovalSelection
     {
         allApprovalLevels = dataApprovalLevelService.getAllDataApprovalLevels();
 
-        categoryOptionGroupsByLevel = new ArrayList<Set<CategoryOptionGroup>>();
+        categoryOptionGroupsByLevel = new ArrayList<>();
 
         if ( allApprovalLevels != null )
         {
@@ -450,7 +450,7 @@ class DataApprovalSelection
     {
         if ( selectionGroups == null )
         {
-            selectionGroups = new HashMap<CategoryOptionGroupSet, Set<CategoryOptionGroup>>();
+            selectionGroups = new HashMap<>();
 
             if ( categoryOptionGroups != null )
             {
@@ -512,7 +512,7 @@ class DataApprovalSelection
 
         if ( groups == null )
         {
-            groups = new HashSet<CategoryOptionGroup>();
+            groups = new HashSet<>();
 
             selectionGroups.put( groupSet, groups );
         }
@@ -830,7 +830,7 @@ class DataApprovalSelection
      */
     private boolean isGroupSetUnapprovedBelow ( OrganisationUnit orgUnit, CategoryOptionGroupSet cogs )
     {
-        Set<DataElementCategoryOption> selectedGroupsOptions = new HashSet<DataElementCategoryOption>();
+        Set<DataElementCategoryOption> selectedGroupsOptions = new HashSet<>();
 
         for ( CategoryOptionGroup group : allSelectionGroups )
         {

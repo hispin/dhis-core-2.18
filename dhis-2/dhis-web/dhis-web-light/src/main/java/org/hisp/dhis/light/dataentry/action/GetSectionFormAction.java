@@ -147,28 +147,28 @@ public class GetSectionFormAction
         return dataSet;
     }
 
-    private Map<String, String> dataValues = new HashMap<String, String>();
+    private Map<String, String> dataValues = new HashMap<>();
 
     public Map<String, String> getDataValues()
     {
         return dataValues;
     }
 
-    private Map<String, DeflatedDataValue> validationViolations = new HashMap<String, DeflatedDataValue>();
+    private Map<String, DeflatedDataValue> validationViolations = new HashMap<>();
 
     public Map<String, DeflatedDataValue> getValidationViolations()
     {
         return validationViolations;
     }
 
-    private List<String> validationRuleViolations = new ArrayList<String>();
+    private List<String> validationRuleViolations = new ArrayList<>();
 
     public List<String> getValidationRuleViolations()
     {
         return validationRuleViolations;
     }
 
-    private Map<String, Boolean> greyedFields = new HashMap<String, Boolean>();
+    private Map<String, Boolean> greyedFields = new HashMap<>();
 
     public Map<String, Boolean> getGreyedFields()
     {
@@ -176,7 +176,7 @@ public class GetSectionFormAction
     }
 
     // FIXME: Not in use, but seems to be referenced in html.
-    private Map<String, String> typeViolations = new HashMap<String, String>();
+    private Map<String, String> typeViolations = new HashMap<>();
 
     public Map<String, String> getTypeViolations()
     {
@@ -190,7 +190,7 @@ public class GetSectionFormAction
         return name;
     }
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<DataElement> dataElements = new ArrayList<>();
 
     public List<DataElement> getDataElements()
     {
@@ -239,7 +239,7 @@ public class GetSectionFormAction
         else
         {
             name = "Default";
-            dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+            dataElements = new ArrayList<>( dataSet.getDataElements() );
             Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
         }
 

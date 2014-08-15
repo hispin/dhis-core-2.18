@@ -54,7 +54,7 @@ public class StrutsAuthorityUtils
 
         final String param = staticParams.get( key );
 
-        HashSet<String> keys = new HashSet<String>();
+        HashSet<String> keys = new HashSet<>();
 
         StringTokenizer t = new StringTokenizer( param, "\t\n\r ," );
 
@@ -73,7 +73,7 @@ public class StrutsAuthorityUtils
 
     public static Collection<ConfigAttribute> getConfigAttributes( Collection<String> authorities )
     {
-        Collection<ConfigAttribute> configAttributes = new HashSet<ConfigAttribute>();
+        Collection<ConfigAttribute> configAttributes = new HashSet<>();
 
         for ( String authority : authorities )
         {

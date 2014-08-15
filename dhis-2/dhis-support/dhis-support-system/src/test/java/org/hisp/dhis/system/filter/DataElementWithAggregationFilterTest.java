@@ -66,7 +66,7 @@ public class DataElementWithAggregationFilterTest
         dataSetB.addDataElement( elementB );
         dataSetB.addDataElement( elementD );
         
-        List<DataElement> list = new ArrayList<DataElement>();
+        List<DataElement> list = new ArrayList<>();
         list.add( elementA );
         list.add( elementB );
         list.add( elementC );

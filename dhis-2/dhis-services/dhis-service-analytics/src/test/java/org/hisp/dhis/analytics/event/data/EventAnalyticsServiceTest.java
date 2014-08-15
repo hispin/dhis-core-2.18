@@ -150,11 +150,11 @@ public class EventAnalyticsServiceTest
     @Test
     public void testGetFromUrlA()
     {
-        Set<String> dimensionParams = new HashSet<String>();
+        Set<String> dimensionParams = new HashSet<>();
         dimensionParams.add( "ou:" + ouA.getUid() + ";" + ouB.getId() );
         dimensionParams.add( atA.getUid() + ":LE:5" );
         
-        Set<String> filterParams = new HashSet<String>();
+        Set<String> filterParams = new HashSet<>();
         filterParams.add( "pe:201401;201402" );
         
         EventQueryParams params = analyticsService.getFromUrl( prA.getUid(), null, 

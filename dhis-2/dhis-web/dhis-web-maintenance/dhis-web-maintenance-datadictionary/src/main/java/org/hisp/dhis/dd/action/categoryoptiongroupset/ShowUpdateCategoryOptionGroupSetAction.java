@@ -93,7 +93,7 @@ public class ShowUpdateCategoryOptionGroupSetAction
     {
         categoryOptionGroupSet = dataElementCategoryService.getCategoryOptionGroupSet( id );
 
-        groupMembers = new ArrayList<CategoryOptionGroup>( categoryOptionGroupSet.getMembers() );
+        groupMembers = new ArrayList<>( categoryOptionGroupSet.getMembers() );
 
         return SUCCESS;
     }

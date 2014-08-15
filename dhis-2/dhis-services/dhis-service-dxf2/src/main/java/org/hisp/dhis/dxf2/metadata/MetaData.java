@@ -110,123 +110,123 @@ public class MetaData
 
     private List<Schema> schemas = Lists.newArrayList();
 
-    private List<Attribute> attributes = new ArrayList<Attribute>();
+    private List<Attribute> attributes = new ArrayList<>();
 
-    private List<DataApprovalLevel> dataApprovalLevels = new ArrayList<DataApprovalLevel>();
+    private List<DataApprovalLevel> dataApprovalLevels = new ArrayList<>();
 
-    private List<Document> documents = new ArrayList<Document>();
+    private List<Document> documents = new ArrayList<>();
 
-    private List<Constant> constants = new ArrayList<Constant>();
+    private List<Constant> constants = new ArrayList<>();
 
-    private List<Concept> concepts = new ArrayList<Concept>();
+    private List<Concept> concepts = new ArrayList<>();
 
-    private List<User> users = new ArrayList<User>();
+    private List<User> users = new ArrayList<>();
 
-    private List<UserAuthorityGroup> userRoles = new ArrayList<UserAuthorityGroup>();
+    private List<UserAuthorityGroup> userRoles = new ArrayList<>();
 
-    private List<UserGroup> userGroups = new ArrayList<UserGroup>();
+    private List<UserGroup> userGroups = new ArrayList<>();
 
-    private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
+    private List<MessageConversation> messageConversations = new ArrayList<>();
 
-    private List<Interpretation> interpretations = new ArrayList<Interpretation>();
+    private List<Interpretation> interpretations = new ArrayList<>();
 
-    private List<OptionSet> optionSets = new ArrayList<OptionSet>();
+    private List<OptionSet> optionSets = new ArrayList<>();
 
-    private List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
+    private List<DataElementCategory> categories = new ArrayList<>();
 
-    private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+    private List<DataElementCategoryOption> categoryOptions = new ArrayList<>();
 
-    private List<DataElementCategoryCombo> categoryCombos = new ArrayList<DataElementCategoryCombo>();
+    private List<DataElementCategoryCombo> categoryCombos = new ArrayList<>();
 
-    private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<>();
 
-    private List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<CategoryOptionGroup>();
+    private List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<>();
 
-    private List<CategoryOptionGroupSet> categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>();
+    private List<CategoryOptionGroupSet> categoryOptionGroupSets = new ArrayList<>();
 
-    private List<DataElementOperand> dataElementOperands = new ArrayList<DataElementOperand>();
+    private List<DataElementOperand> dataElementOperands = new ArrayList<>();
 
-    private List<Dashboard> dashboards = new ArrayList<Dashboard>();
+    private List<Dashboard> dashboards = new ArrayList<>();
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<DataElement> dataElements = new ArrayList<>();
 
-    private List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
+    private List<DataElementGroup> dataElementGroups = new ArrayList<>();
 
-    private List<DataElementGroupSet> dataElementGroupSets = new ArrayList<DataElementGroupSet>();
+    private List<DataElementGroupSet> dataElementGroupSets = new ArrayList<>();
 
-    private List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
+    private List<DimensionalObject> dimensions = new ArrayList<>();
 
-    private List<Indicator> indicators = new ArrayList<Indicator>();
+    private List<Indicator> indicators = new ArrayList<>();
 
-    private List<IndicatorGroup> indicatorGroups = new ArrayList<IndicatorGroup>();
+    private List<IndicatorGroup> indicatorGroups = new ArrayList<>();
 
-    private List<IndicatorGroupSet> indicatorGroupSets = new ArrayList<IndicatorGroupSet>();
+    private List<IndicatorGroupSet> indicatorGroupSets = new ArrayList<>();
 
-    private List<IndicatorType> indicatorTypes = new ArrayList<IndicatorType>();
+    private List<IndicatorType> indicatorTypes = new ArrayList<>();
 
-    private List<NameableObject> items = new ArrayList<NameableObject>();
+    private List<NameableObject> items = new ArrayList<>();
 
-    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+    private List<OrganisationUnit> organisationUnits = new ArrayList<>();
 
-    private List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
+    private List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<>();
 
-    private List<OrganisationUnitGroupSet> organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>();
+    private List<OrganisationUnitGroupSet> organisationUnitGroupSets = new ArrayList<>();
 
-    private List<OrganisationUnitLevel> organisationUnitLevels = new ArrayList<OrganisationUnitLevel>();
+    private List<OrganisationUnitLevel> organisationUnitLevels = new ArrayList<>();
 
-    private List<ValidationRule> validationRules = new ArrayList<ValidationRule>();
+    private List<ValidationRule> validationRules = new ArrayList<>();
 
-    private List<ValidationRuleGroup> validationRuleGroups = new ArrayList<ValidationRuleGroup>();
+    private List<ValidationRuleGroup> validationRuleGroups = new ArrayList<>();
 
-    private List<SqlView> sqlViews = new ArrayList<SqlView>();
+    private List<SqlView> sqlViews = new ArrayList<>();
 
-    private List<Chart> charts = new ArrayList<Chart>();
+    private List<Chart> charts = new ArrayList<>();
 
-    private List<Report> reports = new ArrayList<Report>();
+    private List<Report> reports = new ArrayList<>();
 
-    private List<ReportTable> reportTables = new ArrayList<ReportTable>();
+    private List<ReportTable> reportTables = new ArrayList<>();
 
-    private List<Map> maps = new ArrayList<Map>();
+    private List<Map> maps = new ArrayList<>();
 
-    private List<MapView> mapViews = new ArrayList<MapView>();
+    private List<MapView> mapViews = new ArrayList<>();
 
-    private List<MapLegend> mapLegends = new ArrayList<MapLegend>();
+    private List<MapLegend> mapLegends = new ArrayList<>();
 
-    private List<MapLegendSet> mapLegendSets = new ArrayList<MapLegendSet>();
+    private List<MapLegendSet> mapLegendSets = new ArrayList<>();
 
-    private List<MapLayer> mapLayers = new ArrayList<MapLayer>();
+    private List<MapLayer> mapLayers = new ArrayList<>();
 
-    private List<DataDictionary> dataDictionaries = new ArrayList<DataDictionary>();
+    private List<DataDictionary> dataDictionaries = new ArrayList<>();
 
-    private List<Section> sections = new ArrayList<Section>();
+    private List<Section> sections = new ArrayList<>();
 
-    private List<DataSet> dataSets = new ArrayList<DataSet>();
+    private List<DataSet> dataSets = new ArrayList<>();
 
-    private List<MetaDataFilter> metaDataFilters = new ArrayList<MetaDataFilter>();
+    private List<MetaDataFilter> metaDataFilters = new ArrayList<>();
 
-    private List<Event> events = new ArrayList<Event>();
+    private List<Event> events = new ArrayList<>();
 
-    private List<EventReport> eventReports = new ArrayList<EventReport>();
+    private List<EventReport> eventReports = new ArrayList<>();
     
-    private List<EventChart> eventCharts = new ArrayList<EventChart>();
+    private List<EventChart> eventCharts = new ArrayList<>();
 
-    private List<Program> programs = new ArrayList<Program>();
+    private List<Program> programs = new ArrayList<>();
 
-    private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+    private List<ProgramStage> programStages = new ArrayList<>();
 
     private List<ProgramValidation> programValidations = Lists.newArrayList();
 
-    private List<ProgramStageSection> programStageSections = new ArrayList<ProgramStageSection>();
+    private List<ProgramStageSection> programStageSections = new ArrayList<>();
 
-    private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
+    private List<RelationshipType> relationshipTypes = new ArrayList<>();
 
-    private List<ValidationCriteria> validationCriterias = new ArrayList<ValidationCriteria>();
+    private List<ValidationCriteria> validationCriterias = new ArrayList<>();
 
-    private List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
+    private List<TrackedEntity> trackedEntities = new ArrayList<>();
 
-    private List<TrackedEntityAttribute> trackedEntityAttributes = new ArrayList<TrackedEntityAttribute>();
+    private List<TrackedEntityAttribute> trackedEntityAttributes = new ArrayList<>();
 
-    private List<TrackedEntityAttributeGroup> trackedEntityAttributeGroups = new ArrayList<TrackedEntityAttributeGroup>();
+    private List<TrackedEntityAttributeGroup> trackedEntityAttributeGroups = new ArrayList<>();
 
     public MetaData()
     {

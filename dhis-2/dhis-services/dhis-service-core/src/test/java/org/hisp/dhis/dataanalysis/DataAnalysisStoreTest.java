@@ -128,7 +128,7 @@ public class DataAnalysisStoreTest
         organisationUnitService.addOrganisationUnit( organisationUnitA );
         organisationUnitService.addOrganisationUnit( organisationUnitB );
         
-        organisationUnits = new HashSet<Integer>();
+        organisationUnits = new HashSet<>();
         organisationUnits.add( organisationUnitA.getId() );
         organisationUnits.add( organisationUnitB.getId() );
     }

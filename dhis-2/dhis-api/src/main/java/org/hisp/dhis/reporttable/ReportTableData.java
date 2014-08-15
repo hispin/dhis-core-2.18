@@ -41,11 +41,11 @@ public class ReportTableData
 {
     private String name;
     
-    private SortedMap<Integer, String> columns = new TreeMap<Integer, String>();
+    private SortedMap<Integer, String> columns = new TreeMap<>();
     
-    private List<String> prettyPrintColumns = new ArrayList<String>();
+    private List<String> prettyPrintColumns = new ArrayList<>();
     
-    private List<SortedMap<Integer, String>> rows = new ArrayList<SortedMap<Integer,String>>();
+    private List<SortedMap<Integer, String>> rows = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Constructors

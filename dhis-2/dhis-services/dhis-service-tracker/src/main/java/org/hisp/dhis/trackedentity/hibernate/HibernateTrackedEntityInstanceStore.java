@@ -153,11 +153,11 @@ public class HibernateTrackedEntityInstanceStore
 
         t.getTime( "Tracked entity instance query SQL: " + sql );
 
-        List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> list = new ArrayList<>();
 
         while ( rowSet.next() )
         {
-            final Map<String, String> map = new HashMap<String, String>();
+            final Map<String, String> map = new HashMap<>();
 
             map.put( TRACKED_ENTITY_INSTANCE_ID, rowSet.getString( TRACKED_ENTITY_INSTANCE_ID ) );
             map.put( CREATED_ID, rowSet.getString( CREATED_ID ) );

@@ -83,15 +83,15 @@ public class ProgramInstance
 
     private Program program;
 
-    private Set<ProgramStageInstance> programStageInstances = new HashSet<ProgramStageInstance>();
+    private Set<ProgramStageInstance> programStageInstances = new HashSet<>();
 
-    private List<OutboundSms> outboundSms = new ArrayList<OutboundSms>();
+    private List<OutboundSms> outboundSms = new ArrayList<>();
 
-    private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
+    private List<MessageConversation> messageConversations = new ArrayList<>();
 
     private Boolean followup = false;
 
-    private List<TrackedEntityComment> comments = new ArrayList<TrackedEntityComment>();
+    private List<TrackedEntityComment> comments = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Constructors

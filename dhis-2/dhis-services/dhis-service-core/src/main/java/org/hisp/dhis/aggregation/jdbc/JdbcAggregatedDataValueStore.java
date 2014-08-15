@@ -233,7 +233,7 @@ public class JdbcAggregatedDataValueStore
 
             RowMapper<AggregatedDataValue> rm = new AggregatedDataValueRowMapper();
             
-            return new JdbcStoreIterator<AggregatedDataValue>( resultSet, holder, rm );
+            return new JdbcStoreIterator<>( resultSet, holder, rm );
         }
         catch ( SQLException ex )
         {
@@ -364,7 +364,7 @@ public class JdbcAggregatedDataValueStore
 
             RowMapper<AggregatedIndicatorValue> rm = new AggregatedIndicatorValueRowMapper();
             
-            return new JdbcStoreIterator<AggregatedIndicatorValue>( resultSet, holder, rm );
+            return new JdbcStoreIterator<>( resultSet, holder, rm );
         }
         catch ( SQLException ex )
         {

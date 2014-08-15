@@ -88,7 +88,7 @@ public abstract class ConceptTest
         categoryService.addDataElementCategoryOption( categoryOptionB );
         categoryService.addDataElementCategoryOption( categoryOptionC );
 
-        categoryOptions = new ArrayList<DataElementCategoryOption>();
+        categoryOptions = new ArrayList<>();
 
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );

@@ -462,7 +462,7 @@ public class DataValueServiceTest
         dataValueService.addDataValue( dataValueC );
         dataValueService.addDataValue( dataValueD );
 
-        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+        Collection<OrganisationUnit> sources = new HashSet<>();
         sources.add( sourceA );
         sources.add( sourceB );
 
@@ -497,7 +497,7 @@ public class DataValueServiceTest
         dataValueService.addDataValue( dataValueC );
         dataValueService.addDataValue( dataValueD );
 
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
+        Collection<DataElement> dataElements = new HashSet<>();
         dataElements.add( dataElementA );
         dataElements.add( dataElementB );
 
@@ -532,11 +532,11 @@ public class DataValueServiceTest
         dataValueService.addDataValue( dataValueC );
         dataValueService.addDataValue( dataValueD );
         
-        Collection<Period> periods = new HashSet<Period>();
+        Collection<Period> periods = new HashSet<>();
         periods.add( periodA );
         periods.add( periodB );
 
-        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+        Collection<OrganisationUnit> sources = new HashSet<>();
         sources.add( sourceA );
         sources.add( sourceB );
         
@@ -565,11 +565,11 @@ public class DataValueServiceTest
         dataValueService.addDataValue( dataValueC );
         dataValueService.addDataValue( dataValueD );
         
-        Collection<Period> periods = new HashSet<Period>();
+        Collection<Period> periods = new HashSet<>();
         periods.add( periodA );
         periods.add( periodB );
 
-        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+        Collection<OrganisationUnit> sources = new HashSet<>();
         sources.add( sourceA );
         sources.add( sourceB );
         

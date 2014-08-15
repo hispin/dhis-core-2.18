@@ -430,7 +430,7 @@ public class HibernateCaseAggregationConditionStore
 
                 if ( orgunitIds == null )
                 {
-                    orgunitIds = new HashSet<Integer>();
+                    orgunitIds = new HashSet<>();
                     orgunitIds.addAll( _orgunitIds );
                 }
                 else
@@ -478,7 +478,7 @@ public class HibernateCaseAggregationConditionStore
         // Get minus(date dataelement, date dataelement) out from the expression
         // and run them later
 
-        Map<Integer, String> minus2SQLMap = new HashMap<Integer, String>();
+        Map<Integer, String> minus2SQLMap = new HashMap<>();
         int idx2 = 0;
         Pattern patternMinus2 = Pattern.compile( CaseAggregationCondition.minusDataelementRegExp );
         Matcher matcherMinus2 = patternMinus2.matcher( caseExpression );
@@ -501,7 +501,7 @@ public class HibernateCaseAggregationConditionStore
         // Get minus(date dataelement, date) out from the expression and run
         // them later
 
-        Map<Integer, String> minusSQLMap = new HashMap<Integer, String>();
+        Map<Integer, String> minusSQLMap = new HashMap<>();
         int idx = 0;
         Pattern patternMinus = Pattern.compile( CaseAggregationCondition.dataelementRegExp );
         Matcher matcherMinus = patternMinus.matcher( caseExpression );
@@ -948,7 +948,7 @@ public class HibernateCaseAggregationConditionStore
 
         boolean hasDataelement = hasDataelementCriteria( caseExpression );
 
-        Collection<Integer> orgunitIds = new HashSet<Integer>();
+        Collection<Integer> orgunitIds = new HashSet<>();
         orgunitIds.add( orgunitId );
 
         if ( hasOrgunitProgramStageCompleted( caseExpression ) )

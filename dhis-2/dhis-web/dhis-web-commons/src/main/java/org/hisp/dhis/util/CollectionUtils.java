@@ -48,7 +48,7 @@ public class CollectionUtils
     @SuppressWarnings( "unchecked" )
     public static <K, T> Map<K, T> createMap( Collection<T> collection, String keyMethod )
     {
-        Map<K, T> map = new HashMap<K, T>( collection.size() );
+        Map<K, T> map = new HashMap<>( collection.size() );
 
         if ( collection.isEmpty() )
         {
@@ -93,7 +93,7 @@ public class CollectionUtils
     @SuppressWarnings( "unchecked" )
     public static <K, T> List<K> createList( List<T> list, String valueMethod )
     {
-        List<K> valueList = new ArrayList<K>( list.size() );
+        List<K> valueList = new ArrayList<>( list.size() );
 
         if ( list.isEmpty() )
         {

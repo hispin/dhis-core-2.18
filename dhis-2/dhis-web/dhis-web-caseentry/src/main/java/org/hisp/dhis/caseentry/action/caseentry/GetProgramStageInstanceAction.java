@@ -111,7 +111,7 @@ public class GetProgramStageInstanceAction
         return currentUsername;
     }
 
-    private Map<String, TrackedEntityDataValue> dataValueMap = new HashMap<String, TrackedEntityDataValue>();
+    private Map<String, TrackedEntityDataValue> dataValueMap = new HashMap<>();
 
     public Map<String, TrackedEntityDataValue> getDataValueMap()
     {
@@ -164,7 +164,7 @@ public class GetProgramStageInstanceAction
         Collection<TrackedEntityDataValue> dataValues = dataValueService
             .getTrackedEntityDataValues( programStageInstance );
 
-        dataValueMap = new HashMap<String, TrackedEntityDataValue>( dataValues.size() );
+        dataValueMap = new HashMap<>( dataValues.size() );
 
         for ( TrackedEntityDataValue dataValue : dataValues )
         {

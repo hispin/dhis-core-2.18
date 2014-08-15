@@ -100,7 +100,7 @@ public class GetSectionOptionsAction
         return categoryCombo;
     }
     
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<DataElement> dataElements = new ArrayList<>();
     
     public List<DataElement> getDataElements()
     {
@@ -119,7 +119,7 @@ public class GetSectionOptionsAction
         
         categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
         
-        dataElements = new ArrayList<DataElement>( dataSet.getDataElements() ); // Available data elements must be member of data set
+        dataElements = new ArrayList<>( dataSet.getDataElements() ); // Available data elements must be member of data set
 
         for ( Section section : dataSet.getSections() )
         {

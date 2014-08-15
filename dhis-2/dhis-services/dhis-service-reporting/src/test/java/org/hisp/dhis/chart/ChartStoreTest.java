@@ -101,7 +101,7 @@ public class ChartStoreTest
         indicatorService.addIndicator( indicatorB );
         indicatorService.addIndicator( indicatorC );
 
-        List<Indicator> indicators = new ArrayList<Indicator>();
+        List<Indicator> indicators = new ArrayList<>();
         indicators.add( indicatorA );
         indicators.add( indicatorB );
         indicators.add( indicatorC );
@@ -120,7 +120,7 @@ public class ChartStoreTest
         periodService.addPeriod( periodB );
         periodService.addPeriod( periodC );
 
-        List<Period> periods = new ArrayList<Period>();
+        List<Period> periods = new ArrayList<>();
         periods.add( periodA );
         periods.add( periodB );
         periods.add( periodC );
@@ -135,7 +135,7 @@ public class ChartStoreTest
         organisationUnitService.addOrganisationUnit( unitA );
         organisationUnitService.addOrganisationUnit( unitB );
 
-        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> units = new ArrayList<>();
         units.add( unitA );
         units.add( unitB );
         // units.add( unitC );

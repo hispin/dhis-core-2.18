@@ -65,7 +65,7 @@ public class ShowDataElementFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+    public Map<Integer, String> attributeValues = new HashMap<>();
     private DataElementService dataElementService;
     private DataElementCategoryService dataElementCategoryService;
     private OrganisationUnitService organisationUnitService;
@@ -81,7 +81,7 @@ public class ShowDataElementFormAction
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-    private List<OrganisationUnitLevel> aggregationLevels = new ArrayList<OrganisationUnitLevel>();
+    private List<OrganisationUnitLevel> aggregationLevels = new ArrayList<>();
     private DataElementCategoryCombo defaultCategoryCombo;
     private List<DataElementGroupSet> groupSets;
     private List<Attribute> attributes;
@@ -198,7 +198,7 @@ public class ShowDataElementFormAction
         defaultCategoryCombo = dataElementCategoryService
             .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
-        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
+        dataElementCategoryCombos = new ArrayList<>( dataElementCategoryService
             .getDisaggregationCategoryCombos() );
 
         dataElementGroups = dataElementService.getAllDataElementGroups();
@@ -223,16 +223,16 @@ public class ShowDataElementFormAction
             dataElement.setCategoryCombo( defaultCategoryCombo );
         }
 
-        organisationUnitLevels = new ArrayList<OrganisationUnitLevel>( levelMap.values() );
+        organisationUnitLevels = new ArrayList<>( levelMap.values() );
 
-        groupSets = new ArrayList<DataElementGroupSet>( dataElementService
+        groupSets = new ArrayList<>( dataElementService
             .getCompulsoryDataElementGroupSetsWithMembers() );
 
-        attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
+        attributes = new ArrayList<>( attributeService.getDataElementAttributes() );
 
-        optionSets = new ArrayList<OptionSet>( optionService.getAllOptionSets() );
+        optionSets = new ArrayList<>( optionService.getAllOptionSets() );
 
-        legendSets = new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() );
+        legendSets = new ArrayList<>( mappingService.getAllMapLegendSets() );
 
         Collections.sort( dataElementCategoryCombos, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );

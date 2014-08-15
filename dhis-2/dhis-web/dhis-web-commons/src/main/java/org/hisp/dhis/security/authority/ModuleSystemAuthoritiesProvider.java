@@ -53,7 +53,7 @@ public class ModuleSystemAuthoritiesProvider
         this.authorityPrefix = authorityPrefix;
     }
 
-    private Set<String> excludes = new HashSet<String>();
+    private Set<String> excludes = new HashSet<>();
 
     public void setExcludes( Set<String> exclues )
     {
@@ -77,7 +77,7 @@ public class ModuleSystemAuthoritiesProvider
 
     public Collection<String> getSystemAuthorities()
     {
-        HashSet<String> authorities = new HashSet<String>();
+        HashSet<String> authorities = new HashSet<>();
 
         for ( Module module : moduleManager.getAllModules() )
         {

@@ -83,7 +83,7 @@ public class ShowUpdateDataElementGroupFormAction
         return attributes;
     }
 
-    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+    public Map<Integer, String> attributeValues = new HashMap<>();
 
     public Map<Integer, String> getAttributeValues()
     {
@@ -101,7 +101,7 @@ public class ShowUpdateDataElementGroupFormAction
         return dataElementGroup;
     }
 
-    private List<DataElement> groupMembers = new ArrayList<DataElement>();
+    private List<DataElement> groupMembers = new ArrayList<>();
 
     public List<DataElement> getGroupMembers()
     {
@@ -120,9 +120,9 @@ public class ShowUpdateDataElementGroupFormAction
 
         dataElementGroup = dataElementService.getDataElementGroup( id, true );
 
-        groupMembers = new ArrayList<DataElement>( dataElementGroup.getMembers() );
+        groupMembers = new ArrayList<>( dataElementGroup.getMembers() );
 
-        attributes = new ArrayList<Attribute>( attributeService.getDataElementGroupAttributes() );
+        attributes = new ArrayList<>( attributeService.getDataElementGroupAttributes() );
 
         attributeValues = AttributeUtils.getAttributeValueMap( dataElementGroup.getAttributeValues() );
 

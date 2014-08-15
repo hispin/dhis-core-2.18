@@ -100,9 +100,9 @@ public class DataSetCompletenessServiceExportTest
 
         registrationService = (CompleteDataSetRegistrationService) getBean( CompleteDataSetRegistrationService.ID );
 
-        dataSets = new ArrayList<DataSet>();
-        periods = new ArrayList<Period>();
-        units = new ArrayList<OrganisationUnit>();
+        dataSets = new ArrayList<>();
+        periods = new ArrayList<>();
+        units = new ArrayList<>();
 
         monthly = new MonthlyPeriodType();
         quarterly = new QuarterlyPeriodType();

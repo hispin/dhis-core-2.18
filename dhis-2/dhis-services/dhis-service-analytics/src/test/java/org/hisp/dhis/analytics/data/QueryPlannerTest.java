@@ -178,7 +178,7 @@ public class QueryPlannerTest
     @Test
     public void testGetHeaderDimensions()
     {
-        List<DimensionalObject> expected = new ArrayList<DimensionalObject>();
+        List<DimensionalObject> expected = new ArrayList<>();
         expected.add( new BaseDimensionalObject( DATA_X_DIM_ID ) );
         expected.add( new BaseDimensionalObject( ORGUNIT_DIM_ID ) );
         expected.add( new BaseDimensionalObject( PERIOD_DIM_ID ) );
@@ -198,7 +198,7 @@ public class QueryPlannerTest
 
         assertEquals( expected, params.getHeaderDimensions() );
         
-        expected = new ArrayList<DimensionalObject>();
+        expected = new ArrayList<>();
         expected.add( new BaseDimensionalObject( ORGUNIT_DIM_ID ) );
         expected.add( new BaseDimensionalObject( PERIOD_DIM_ID ) );
 
@@ -245,7 +245,7 @@ public class QueryPlannerTest
         params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) ) );
         params.enableCategoryOptionCombos();
         
-        Map<String, Double> aggregatedDataMap = new HashMap<String, Double>();
+        Map<String, Double> aggregatedDataMap = new HashMap<>();
         aggregatedDataMap.put( deA.getUid() + DIMENSION_SEP + ouA.getUid() + DIMENSION_SEP + "2000Q1" + DIMENSION_SEP + coc.getUid(), 1d );
         aggregatedDataMap.put( deA.getUid() + DIMENSION_SEP + ouA.getUid() + DIMENSION_SEP + "2000Q2" + DIMENSION_SEP + coc.getUid(), 2d );
         aggregatedDataMap.put( deA.getUid() + DIMENSION_SEP + ouB.getUid() + DIMENSION_SEP + "2000Q1" + DIMENSION_SEP + coc.getUid(), 3d );
@@ -277,19 +277,19 @@ public class QueryPlannerTest
         DataElementOperand deACoc = new DataElementOperand( deA.getUid(), coc.getUid() );
         DataElementOperand deBCoc = new DataElementOperand( deB.getUid(), coc.getUid() );
         
-        Map<DataElementOperand, Double> ouAQ1Expected = new HashMap<DataElementOperand, Double>();
+        Map<DataElementOperand, Double> ouAQ1Expected = new HashMap<>();
         ouAQ1Expected.put( deACoc, 1d );
         ouAQ1Expected.put( deBCoc, 5d );
 
-        Map<DataElementOperand, Double> ouAQ2Expected = new HashMap<DataElementOperand, Double>();
+        Map<DataElementOperand, Double> ouAQ2Expected = new HashMap<>();
         ouAQ2Expected.put( deACoc, 2d );
         ouAQ2Expected.put( deBCoc, 6d );
 
-        Map<DataElementOperand, Double> ouBQ1Expected = new HashMap<DataElementOperand, Double>();
+        Map<DataElementOperand, Double> ouBQ1Expected = new HashMap<>();
         ouBQ1Expected.put( deACoc, 3d );
         ouBQ1Expected.put( deBCoc, 7d );
 
-        Map<DataElementOperand, Double> ouBQ2Expected = new HashMap<DataElementOperand, Double>();
+        Map<DataElementOperand, Double> ouBQ2Expected = new HashMap<>();
         ouBQ2Expected.put( deACoc, 4d );
         ouBQ2Expected.put( deBCoc, 8d );
                 
@@ -660,7 +660,7 @@ public class QueryPlannerTest
 
     private static boolean samePeriodType( List<NameableObject> isoPeriods )
     {
-        Iterator<NameableObject> periods = new ArrayList<NameableObject>( isoPeriods ).iterator();
+        Iterator<NameableObject> periods = new ArrayList<>( isoPeriods ).iterator();
         
         PeriodType first = ((Period) periods.next()).getPeriodType();
         
@@ -679,7 +679,7 @@ public class QueryPlannerTest
     
     private static boolean samePartition( List<NameableObject> isoPeriods )
     {
-        Iterator<NameableObject> periods = new ArrayList<NameableObject>( isoPeriods ).iterator();
+        Iterator<NameableObject> periods = new ArrayList<>( isoPeriods ).iterator();
         
         int year = new Cal().set( ((Period) periods.next()).getStartDate() ).getYear();
         

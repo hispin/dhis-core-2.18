@@ -39,9 +39,9 @@ import org.hisp.dhis.period.Period;
  */
 public class Dhis14PeriodUtil
 {
-    private static ThreadLocal<Set<Period>> periodSet = new ThreadLocal<Set<Period>>();
+    private static ThreadLocal<Set<Period>> periodSet = new ThreadLocal<>();
     
-    private static ThreadLocal<Integer> periodIdentifier = new ThreadLocal<Integer>();
+    private static ThreadLocal<Integer> periodIdentifier = new ThreadLocal<>();
 
     // -------------------------------------------------------------------------
     // Period
@@ -53,7 +53,7 @@ public class Dhis14PeriodUtil
         
         if ( set == null )
         {
-            set = new HashSet<Period>();
+            set = new HashSet<>();
         }
         
         set.add( period );

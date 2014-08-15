@@ -118,7 +118,7 @@ public class DataQueryGroupsTest
         paramsD.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000Q3" ), createPeriod( "2000Q4" ), createPeriod(  "2001Q1" ), createPeriod( "2001Q2" ) ) );
         paramsD.setAggregationType( AggregationType.AVERAGE_INT );
         
-        List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+        List<DataQueryParams> queries = new ArrayList<>();
         queries.add( paramsA );
         queries.add( paramsB );
         queries.add( paramsC );

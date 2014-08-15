@@ -81,7 +81,7 @@ public class GetUserGroupsAction
     public String execute()
         throws Exception
     {
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
 
         if ( key != null )
         {

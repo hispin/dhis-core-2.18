@@ -51,7 +51,7 @@ public class ImportTypeSummary
 
     private ImportCount importCount = new ImportCount();
 
-    private List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+    private List<ImportConflict> importConflicts = new ArrayList<>();
 
     public ImportTypeSummary( String type )
     {

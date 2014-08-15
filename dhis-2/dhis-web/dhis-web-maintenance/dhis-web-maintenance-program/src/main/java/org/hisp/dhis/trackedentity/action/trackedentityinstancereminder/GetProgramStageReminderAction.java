@@ -132,9 +132,9 @@ public class GetProgramStageReminderAction
 
         programStage = programStageService.getProgramStage( programStageId );
 
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
 
-        attributes = new ArrayList<TrackedEntityAttribute>( programStage.getProgram().getTrackedEntityAttributes() );
+        attributes = new ArrayList<>( programStage.getProgram().getTrackedEntityAttributes() );
 
         return SUCCESS;
     }

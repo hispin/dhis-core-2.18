@@ -75,9 +75,9 @@ public class ProgramStage
 
     private Program program;
 
-    private Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>();
+    private Set<ProgramStageDataElement> programStageDataElements = new HashSet<>();
     
-    private List<ProgramIndicator> programIndicators = new ArrayList<ProgramIndicator>();
+    private List<ProgramIndicator> programIndicators = new ArrayList<>();
 
     @Scanned
     private Set<ProgramStageSection> programStageSections = new HashSet<>();

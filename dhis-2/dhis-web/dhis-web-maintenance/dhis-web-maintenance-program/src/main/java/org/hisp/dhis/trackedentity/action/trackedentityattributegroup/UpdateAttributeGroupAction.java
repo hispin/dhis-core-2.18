@@ -111,7 +111,7 @@ public class UpdateAttributeGroupAction
         attributeGroup.setName( name );
         attributeGroup.setDescription( description );
 
-        List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+        List<TrackedEntityAttribute> attributes = new ArrayList<>();
         
         for ( String attributeId : selectedAttributes )
         {

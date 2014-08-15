@@ -97,17 +97,17 @@ public class EventReport
     /**
      * Dimensions to crosstabulate / use as columns.
      */
-    private List<String> columnDimensions = new ArrayList<String>();
+    private List<String> columnDimensions = new ArrayList<>();
 
     /**
      * Dimensions to use as rows.
      */
-    private List<String> rowDimensions = new ArrayList<String>();
+    private List<String> rowDimensions = new ArrayList<>();
 
     /**
      * Dimensions to use as filter.
      */
-    private List<String> filterDimensions = new ArrayList<String>();
+    private List<String> filterDimensions = new ArrayList<>();
 
     /**
      * Indicates rendering of sub-totals for the table.

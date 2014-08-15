@@ -135,7 +135,7 @@ public class UpdateProgramStageSectionAction
 
         ProgramStageSection section = programStageSectionService.getProgramStageSection( id );
 
-        List<ProgramStageDataElement> psDataElements = new ArrayList<ProgramStageDataElement>();
+        List<ProgramStageDataElement> psDataElements = new ArrayList<>();
         for ( Integer id : dataElementIds )
         {
             DataElement dataElement = dataElementService.getDataElement( id );

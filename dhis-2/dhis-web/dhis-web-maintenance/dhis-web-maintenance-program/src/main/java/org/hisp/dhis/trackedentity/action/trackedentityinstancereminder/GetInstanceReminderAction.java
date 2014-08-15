@@ -132,9 +132,9 @@ public class GetInstanceReminderAction
 
         program = programService.getProgram( programId );
 
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
 
-        attributes = new ArrayList<TrackedEntityAttribute>( program.getTrackedEntityAttributes() );
+        attributes = new ArrayList<>( program.getTrackedEntityAttributes() );
 
         return SUCCESS;
     }

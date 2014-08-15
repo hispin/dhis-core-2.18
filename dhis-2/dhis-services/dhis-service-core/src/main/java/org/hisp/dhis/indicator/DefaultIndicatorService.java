@@ -147,12 +147,12 @@ public class DefaultIndicatorService
 
     public List<Indicator> getIndicatorByName( String name )
     {
-        return new ArrayList<Indicator>( i18n( i18nService, indicatorStore.getAllEqName( name ) ) );
+        return new ArrayList<>( i18n( i18nService, indicatorStore.getAllEqName( name ) ) );
     }
 
     public List<Indicator> getIndicatorByShortName( String shortName )
     {
-        return new ArrayList<Indicator>( i18n( i18nService, indicatorStore.getAllEqShortName( shortName ) ) );
+        return new ArrayList<>( i18n( i18nService, indicatorStore.getAllEqShortName( shortName ) ) );
     }
 
     public Indicator getIndicatorByCode( String code )
@@ -339,7 +339,7 @@ public class DefaultIndicatorService
 
     public List<IndicatorGroup> getIndicatorGroupByName( String name )
     {
-        return new ArrayList<IndicatorGroup>( i18n( i18nService, indicatorGroupStore.getAllEqName( name ) ) );
+        return new ArrayList<>( i18n( i18nService, indicatorGroupStore.getAllEqName( name ) ) );
     }
 
     public Collection<IndicatorGroup> getGroupsContainingIndicator( Indicator indicator )
@@ -424,13 +424,13 @@ public class DefaultIndicatorService
 
     public List<IndicatorGroupSet> getIndicatorGroupSetByName( String name )
     {
-        return new ArrayList<IndicatorGroupSet>( i18n( i18nService, indicatorGroupSetStore.getAllEqName( name ) ) );
+        return new ArrayList<>( i18n( i18nService, indicatorGroupSetStore.getAllEqName( name ) ) );
     }
 
     @Override
     public Collection<IndicatorGroupSet> getCompulsoryIndicatorGroupSets()
     {
-        Collection<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>();
+        Collection<IndicatorGroupSet> groupSets = new ArrayList<>();
 
         for ( IndicatorGroupSet groupSet : getAllIndicatorGroupSets() )
         {
@@ -458,7 +458,7 @@ public class DefaultIndicatorService
     @Override
     public Collection<IndicatorGroupSet> getCompulsoryIndicatorGroupSetsNotAssignedTo( Indicator indicator )
     {
-        Collection<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>();
+        Collection<IndicatorGroupSet> groupSets = new ArrayList<>();
 
         for ( IndicatorGroupSet groupSet : getCompulsoryIndicatorGroupSets() )
         {

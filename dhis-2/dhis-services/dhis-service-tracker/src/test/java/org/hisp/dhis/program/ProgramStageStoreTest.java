@@ -86,7 +86,7 @@ public class ProgramStageStoreTest
         programStageStore.save( stageA );
         programStageStore.save( stageB );
         
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );

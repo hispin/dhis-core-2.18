@@ -100,7 +100,7 @@ public class LoginAction
             return "mobile";
         }
 
-        availableLocales = new ArrayList<Locale>( resourceBundleManager.getAvailableLocales() );
+        availableLocales = new ArrayList<>( resourceBundleManager.getAvailableLocales() );
 
         return "standard";
     }

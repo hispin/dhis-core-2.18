@@ -142,7 +142,7 @@ public class EditSMSCommandForm
         throws Exception
     {
 
-        Set<SMSCode> codeSet = new HashSet<SMSCode>();
+        Set<SMSCode> codeSet = new HashSet<>();
 
         @SuppressWarnings( "unchecked" )
         List<JSONObject> jsonCodes = (List<JSONObject>) JSONObject.fromObject( codeDataelementOption ).get( "codes" );
@@ -158,7 +158,7 @@ public class EditSMSCommandForm
         @SuppressWarnings( "unchecked" )
         List<JSONObject> jsonSpecialCharacters = (List<JSONObject>) JSONObject.fromObject( specialCharactersInfo ).get(
             "specialCharacters" );
-        Set<SMSSpecialCharacter> specialCharacterSet = new HashSet<SMSSpecialCharacter>();
+        Set<SMSSpecialCharacter> specialCharacterSet = new HashSet<>();
         for ( JSONObject x : jsonSpecialCharacters )
         {
             String name = x.getString( "name" );

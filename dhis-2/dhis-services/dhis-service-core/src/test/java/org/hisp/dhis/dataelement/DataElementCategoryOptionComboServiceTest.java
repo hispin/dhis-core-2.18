@@ -113,7 +113,7 @@ public class DataElementCategoryOptionComboServiceTest
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
         
-        Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+        Set<DataElementCategoryOption> categoryOptions = new HashSet<>();
         
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );        
@@ -135,7 +135,7 @@ public class DataElementCategoryOptionComboServiceTest
     {
         categoryService.generateOptionCombos( categoryComboA );
         
-        Collection<DataElementCategoryOption> catopts = new LinkedList<DataElementCategoryOption>();
+        Collection<DataElementCategoryOption> catopts = new LinkedList<>();
         catopts.add( categoryOptionA );
         catopts.add( categoryOptionC );
         
@@ -148,7 +148,7 @@ public class DataElementCategoryOptionComboServiceTest
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
         
-        Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+        Set<DataElementCategoryOption> categoryOptions = new HashSet<>();
         
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );        

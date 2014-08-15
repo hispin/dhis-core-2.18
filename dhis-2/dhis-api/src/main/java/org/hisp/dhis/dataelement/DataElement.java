@@ -162,17 +162,17 @@ public class DataElement
     /**
      * The data element groups which this
      */
-    private Set<DataElementGroup> groups = new HashSet<DataElementGroup>();
+    private Set<DataElementGroup> groups = new HashSet<>();
 
     /**
      * The data sets which this data element is a member of.
      */
-    private Set<DataSet> dataSets = new HashSet<DataSet>();
+    private Set<DataSet> dataSets = new HashSet<>();
 
     /**
      * The lower organisation unit levels for aggregation.
      */
-    private List<Integer> aggregationLevels = new ArrayList<Integer>();
+    private List<Integer> aggregationLevels = new ArrayList<>();
 
     /**
      * There is no point of saving 0's for this data element default is false
@@ -183,7 +183,7 @@ public class DataElement
     /**
      * Set of the dynamic attributes values that belong to this data element.
      */
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    private Set<AttributeValue> attributeValues = new HashSet<>();
 
     /**
      * The option set for data values linked to this data element.
@@ -233,7 +233,7 @@ public class DataElement
 
     public void updateDataElementGroups( Set<DataElementGroup> updates )
     {
-        for ( DataElementGroup group : new HashSet<DataElementGroup>( groups ) )
+        for ( DataElementGroup group : new HashSet<>( groups ) )
         {
             if ( !updates.contains( group ) )
             {
@@ -324,7 +324,7 @@ public class DataElement
      */
     public DataSet getDataSet()
     {
-        List<DataSet> list = new ArrayList<DataSet>( dataSets );
+        List<DataSet> list = new ArrayList<>( dataSets );
         Collections.sort( list, DataSetFrequencyComparator.INSTANCE );
         return !list.isEmpty() ? list.get( 0 ) : null;
     }

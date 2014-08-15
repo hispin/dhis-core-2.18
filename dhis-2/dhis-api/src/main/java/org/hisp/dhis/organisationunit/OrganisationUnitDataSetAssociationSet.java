@@ -43,17 +43,17 @@ public class OrganisationUnitDataSetAssociationSet
     /**
      * List of data set association sets.
      */
-    private List<Set<String>> dataSetAssociationSets = new ArrayList<Set<String>>();
+    private List<Set<String>> dataSetAssociationSets = new ArrayList<>();
 
     /**
      * Mapping between organisation unit identifier and index of association set in list.
      */
-    private Map<String, Integer> organisationUnitAssociationSetMap = new HashMap<String, Integer>();
+    private Map<String, Integer> organisationUnitAssociationSetMap = new HashMap<>();
 
     /**
      * Set of distinct data sets in all association sets.
      */
-    private Set<String> distinctDataSets = new HashSet<String>();
+    private Set<String> distinctDataSets = new HashSet<>();
 
     public OrganisationUnitDataSetAssociationSet()
     {

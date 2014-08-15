@@ -74,11 +74,11 @@ public class DefaultImportAnalyser
     // This class is stateful and should have a prototype scope
     // -------------------------------------------------------------------------
 
-    private List<EntityPropertyValue> values = new ArrayList<EntityPropertyValue>();
+    private List<EntityPropertyValue> values = new ArrayList<>();
     
-    private List<Integer> dataElementIdentifiers = new ArrayList<Integer>();
+    private List<Integer> dataElementIdentifiers = new ArrayList<>();
     
-    private List<Indicator> indicators = new ArrayList<Indicator>();
+    private List<Indicator> indicators = new ArrayList<>();
     
     // -------------------------------------------------------------------------
     // ImportAnalyser implementation
@@ -146,7 +146,7 @@ public class DefaultImportAnalyser
      */
     private List<IndicatorFormulaIdentifier> getNonExistingIdentifiersInIndicators()
     {
-        List<IndicatorFormulaIdentifier> identifiers = new ArrayList<IndicatorFormulaIdentifier>();
+        List<IndicatorFormulaIdentifier> identifiers = new ArrayList<>();
         
         for ( Indicator indicator : indicators )
         {
@@ -185,7 +185,7 @@ public class DefaultImportAnalyser
     {
         Collections.sort( values );
         
-        Set<EntityPropertyValue> duplicates = new HashSet<EntityPropertyValue>();
+        Set<EntityPropertyValue> duplicates = new HashSet<>();
         
         EntityPropertyValue previous = null;
         
@@ -199,7 +199,7 @@ public class DefaultImportAnalyser
             previous = value;
         }
         
-        List<EntityPropertyValue> list = new ArrayList<EntityPropertyValue>( duplicates );
+        List<EntityPropertyValue> list = new ArrayList<>( duplicates );
         
         Collections.sort( list );
         

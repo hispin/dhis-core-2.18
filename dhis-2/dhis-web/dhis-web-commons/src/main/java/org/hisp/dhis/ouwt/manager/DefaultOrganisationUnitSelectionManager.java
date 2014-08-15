@@ -71,7 +71,7 @@ public class DefaultOrganisationUnitSelectionManager
             throw new IllegalArgumentException( "Root OrganisationUnit cannot be null" );
         }
 
-        saveToSession( SESSION_KEY_ROOT_ORG_UNITS, new HashSet<OrganisationUnit>( organisationUnits ) );
+        saveToSession( SESSION_KEY_ROOT_ORG_UNITS, new HashSet<>( organisationUnits ) );
 
         clearSelectedOrganisationUnits();
     }
@@ -156,7 +156,7 @@ public class DefaultOrganisationUnitSelectionManager
 
         if ( selectedUnits == null )
         {
-            return new HashSet<OrganisationUnit>();
+            return new HashSet<>();
         }
 
         return reloadOrganisationUnits( selectedUnits );
@@ -186,7 +186,7 @@ public class DefaultOrganisationUnitSelectionManager
             throw new IllegalArgumentException( "Selected OrganisationUnit cannot be null" );
         }
 
-        Set<OrganisationUnit> set = new HashSet<OrganisationUnit>( 1 );
+        Set<OrganisationUnit> set = new HashSet<>( 1 );
         set.add( selectedUnit );
         setSelectedOrganisationUnits( set );
     }
@@ -227,7 +227,7 @@ public class DefaultOrganisationUnitSelectionManager
 
     private Collection<OrganisationUnit> reloadOrganisationUnits( Collection<OrganisationUnit> units )
     {
-        Set<OrganisationUnit> reloadedUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> reloadedUnits = new HashSet<>();
 
         for ( OrganisationUnit unit : units )
         {
@@ -249,7 +249,7 @@ public class DefaultOrganisationUnitSelectionManager
     private Collection<OrganisationUnit> getUnitsInTree( Collection<OrganisationUnit> rootUnits,
         Collection<OrganisationUnit> selectedUnits )
     {
-        Collection<OrganisationUnit> unitsInTree = new ArrayList<OrganisationUnit>();
+        Collection<OrganisationUnit> unitsInTree = new ArrayList<>();
 
         for ( OrganisationUnit selectedUnit : selectedUnits )
         {

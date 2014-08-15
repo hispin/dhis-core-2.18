@@ -90,14 +90,14 @@ public class GetTrackedEntityListAction
         {
             this.paging = createPaging( trackedEntityService.getTrackedEntityCountByName( key ) );
 
-            trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getTrackedEntityBetweenByName( key,
+            trackedEntities = new ArrayList<>( trackedEntityService.getTrackedEntityBetweenByName( key,
                 paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( trackedEntityService.getTrackedEntityCount() );
 
-            trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getTrackedEntitysBetween(
+            trackedEntities = new ArrayList<>( trackedEntityService.getTrackedEntitysBetween(
                 paging.getStartPos(), paging.getPageSize() ) );
         }
 
