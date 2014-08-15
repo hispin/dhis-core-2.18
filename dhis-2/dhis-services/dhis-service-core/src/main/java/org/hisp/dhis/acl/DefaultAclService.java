@@ -33,6 +33,7 @@ import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
@@ -51,6 +52,9 @@ public class DefaultAclService implements AclService
 {
     @Autowired
     private SchemaService schemaService;
+
+    @Autowired
+    private CurrentUserService currentUserService;
 
     @Override
     public boolean isSupported( String type )
@@ -239,7 +243,7 @@ public class DefaultAclService implements AclService
         Schema schema = schemaService.getSchema( klass );
         return !(schema == null || !schema.isShareable())
             && ((!schema.getAuthorityByType( AuthorityType.EXTERNALIZE ).isEmpty() && haveOverrideAuthority( user ))
-                || haveAuthority( user, schema.getAuthorityByType( AuthorityType.EXTERNALIZE ) ));
+            || haveAuthority( user, schema.getAuthorityByType( AuthorityType.EXTERNALIZE ) ));
     }
 
     @Override
@@ -250,7 +254,7 @@ public class DefaultAclService implements AclService
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Class<? extends IdentifiableObject> classForType( String type )
     {
         Schema schema = schemaService.getSchemaBySingularName( type );
@@ -276,5 +280,25 @@ public class DefaultAclService implements AclService
     private boolean haveAuthority( User user, Collection<String> requiredAuthorities )
     {
         return containsAny( user.getUserCredentials().getAllAuthorities(), requiredAuthorities );
+    }
+
+    @Override
+    public <T extends IdentifiableObject> Access getAccess( T object )
+    {
+        return getAccess( object, currentUserService.getCurrentUser() );
+    }
+
+    @Override
+    public <T extends IdentifiableObject> Access getAccess( T object, User user )
+    {
+        Access access = new Access();
+        access.setManage( canManage( user, object ) );
+        access.setExternalize( canExternalize( user, object.getClass() ) );
+        access.setWrite( canWrite( user, object ) );
+        access.setRead( canRead( user, object ) );
+        access.setUpdate( canUpdate( user, object ) );
+        access.setDelete( canDelete( user, object ) );
+
+        return access;
     }
 }

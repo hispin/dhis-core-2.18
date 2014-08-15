@@ -185,4 +185,20 @@ public interface AclService
     <T extends IdentifiableObject> boolean defaultPublic( Class<T> klass );
 
     Class<? extends IdentifiableObject> classForType( String type );
+
+    /**
+     * Return the access object for a object.
+     *
+     * @param object Object to check for access
+     * @return Populated access instance
+     */
+    <T extends IdentifiableObject> Access getAccess( T object );
+
+    /**
+     * Return the access object for a object.
+     *
+     * @param object Object to check for access
+     * @return Populated access instance
+     */
+    <T extends IdentifiableObject> Access getAccess( T object, User user );
 }
