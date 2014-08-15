@@ -55,6 +55,8 @@ public class Event extends BaseLinkableObject
 
     private String enrollment;
 
+    private EventStatus enrollmentStatus;
+
     private String orgUnit;
 
     private String trackedEntityInstance;
@@ -85,6 +87,18 @@ public class Event extends BaseLinkableObject
     public void setEvent( String event )
     {
         this.event = event;
+    }
+
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
+    public EventStatus getEnrollmentStatus()
+    {
+        return enrollmentStatus;
+    }
+
+    public void setEnrollmentStatus( EventStatus programStatus )
+    {
+        this.enrollmentStatus = programStatus;
     }
 
     @JsonProperty( required = true )

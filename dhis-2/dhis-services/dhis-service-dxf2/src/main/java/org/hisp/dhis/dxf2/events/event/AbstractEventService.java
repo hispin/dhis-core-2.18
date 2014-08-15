@@ -396,13 +396,13 @@ public abstract class AbstractEventService
         }
         else if ( event.getStatus() == EventStatus.SKIPPED )
         {
-            programStageInstance.setStatus( EventStatus.SKIPPED );            
+            programStageInstance.setStatus( EventStatus.SKIPPED );
         }
-        
+
         else if ( event.getStatus() == EventStatus.SCHEDULE )
         {
-            programStageInstance.setStatus( EventStatus.SCHEDULE );            
-        } 
+            programStageInstance.setStatus( EventStatus.SCHEDULE );
+        }
 
         programStageInstance.setDueDate( dueDate );
         programStageInstance.setOrganisationUnit( organisationUnit );
@@ -545,12 +545,14 @@ public abstract class AbstractEventService
             event.setTrackedEntityInstance( programStageInstance.getProgramInstance().getEntityInstance().getUid() );
         }
 
+        event.setEnrollmentStatus( EventStatus.fromInt( programStageInstance.getProgramInstance().getStatus() ) );
         event.setStatus( programStageInstance.getStatus() );
         event.setEventDate( DateUtils.getLongDateString( programStageInstance.getExecutionDate() ) );
         event.setDueDate( DateUtils.getLongDateString( programStageInstance.getDueDate() ) );
         event.setStoredBy( programStageInstance.getCompletedUser() );
         event.setOrgUnit( programStageInstance.getOrganisationUnit().getUid() );
         event.setProgram( programStageInstance.getProgramInstance().getProgram().getUid() );
+        event.setEnrollment( programStageInstance.getProgramInstance().getUid() );
         event.setProgramStage( programStageInstance.getProgramStage().getUid() );
 
         if ( programStageInstance.getProgramInstance().getEntityInstance() != null )
@@ -713,7 +715,7 @@ public abstract class AbstractEventService
 
     private ProgramStageInstance createProgramStageInstance( ProgramStage programStage,
 
-    ProgramInstance programInstance, OrganisationUnit organisationUnit, Date dueDate, Date executionDate, int status,
+        ProgramInstance programInstance, OrganisationUnit organisationUnit, Date dueDate, Date executionDate, int status,
         Coordinate coordinate, String storedBy )
     {
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
@@ -726,7 +728,7 @@ public abstract class AbstractEventService
 
     private void updateProgramStageInstance( ProgramStage programStage, ProgramInstance programInstance,
 
-    OrganisationUnit organisationUnit, Date dueDate, Date executionDate, int status, Coordinate coordinate,
+        OrganisationUnit organisationUnit, Date dueDate, Date executionDate, int status, Coordinate coordinate,
         String storedBy, ProgramStageInstance programStageInstance )
     {
         programStageInstance.setProgramInstance( programInstance );
