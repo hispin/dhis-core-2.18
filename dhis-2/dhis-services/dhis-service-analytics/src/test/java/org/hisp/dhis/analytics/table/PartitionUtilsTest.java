@@ -68,7 +68,7 @@ public class PartitionUtilsTest
     @Test
     public void getGetPartitionsMultiplePeriods()
     {
-        List<NameableObject> periods = new ArrayList<NameableObject>();
+        List<NameableObject> periods = new ArrayList<>();
         periods.add( createPeriod( "200011" ) );
         periods.add( createPeriod( "200105" ) );
         periods.add( createPeriod( "200108" ) );
@@ -79,12 +79,12 @@ public class PartitionUtilsTest
     @Test
     public void getGetPartitionsMultiplePeriodsPrune()
     {
-        List<NameableObject> periods = new ArrayList<NameableObject>();
+        List<NameableObject> periods = new ArrayList<>();
         periods.add( createPeriod( "200011" ) );
         periods.add( createPeriod( "200105" ) );
         periods.add( createPeriod( "200108" ) );
 
-        Set<String> validPartitions = new HashSet<String>();
+        Set<String> validPartitions = new HashSet<>();
         validPartitions.add( TBL + "_2000" );
         
         assertEquals( new Partitions().add( TBL + "_2000" ), PartitionUtils.getPartitions( periods, TBL, null, validPartitions ) );
@@ -121,7 +121,7 @@ public class PartitionUtilsTest
         
         assertEquals( expected, PartitionUtils.getPartitions( period, TBL, null, null ) );
         
-        Set<String> validPartitions = new HashSet<String>();
+        Set<String> validPartitions = new HashSet<>();
         validPartitions.add( TBL + "_2008" );
         validPartitions.add( TBL + "_2010" );
         
@@ -165,7 +165,7 @@ public class PartitionUtilsTest
     @Test
     public void testGetTablePeriodMapPrune()
     {        
-        Set<String> validPartitions = new HashSet<String>();
+        Set<String> validPartitions = new HashSet<>();
         validPartitions.add( TBL + "_2000" );
         validPartitions.add( TBL + "_2002" );
         validPartitions.add( TBL + "_2003" );

@@ -94,7 +94,7 @@ public class DefaultConstantService
     
     public Map<String, Double> getConstantMap()
     {
-        Map<String, Double> map = new HashMap<String, Double>();
+        Map<String, Double> map = new HashMap<>();
         
         for ( Constant constant : getAllConstants() )
         {
@@ -106,7 +106,7 @@ public class DefaultConstantService
     
     public Map<String, Double> getConstantParameterMap()
     {
-        Map<String, Double> map = new HashMap<String, Double>();
+        Map<String, Double> map = new HashMap<>();
         
         for ( Constant constant : getAllConstants() )
         {

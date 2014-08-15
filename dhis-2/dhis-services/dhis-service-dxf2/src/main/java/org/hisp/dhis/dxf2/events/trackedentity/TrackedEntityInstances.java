@@ -43,7 +43,7 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "trackedEntityInstances", namespace = DxfNamespaces.DXF_2_0 )
 public class TrackedEntityInstances
 {
-    private List<TrackedEntityInstance> trackedEntityInstances = new ArrayList<TrackedEntityInstance>();
+    private List<TrackedEntityInstance> trackedEntityInstances = new ArrayList<>();
 
     public TrackedEntityInstances()
     {

@@ -100,9 +100,9 @@ public class ReflectionUtilsTest
     @Test
     public void testIsCollection()
     {
-        List<Object> colA = new ArrayList<Object>();
-        Collection<DataElement> colB = new HashSet<DataElement>();
-        Collection<DataElement> colC = new ArrayList<DataElement>();
+        List<Object> colA = new ArrayList<>();
+        Collection<DataElement> colB = new HashSet<>();
+        Collection<DataElement> colC = new ArrayList<>();
         
         assertTrue( isCollection( colA ) );
         assertTrue( isCollection( colB ) );

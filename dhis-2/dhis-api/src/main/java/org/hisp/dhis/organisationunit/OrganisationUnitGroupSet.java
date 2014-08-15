@@ -70,14 +70,14 @@ public class OrganisationUnitGroupSet
     private boolean compulsory;
 
     @Scanned
-    private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
+    private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<>();
 
     private boolean dataDimension = true;
 
     /**
      * Set of the dynamic attributes values that belong to this data element.
      */
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    private Set<AttributeValue> attributeValues = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -130,7 +130,7 @@ public class OrganisationUnitGroupSet
 
     public Collection<OrganisationUnit> getOrganisationUnits()
     {
-        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> units = new ArrayList<>();
 
         for ( OrganisationUnitGroup group : organisationUnitGroups )
         {
@@ -173,7 +173,7 @@ public class OrganisationUnitGroupSet
 
     public List<OrganisationUnitGroup> getSortedGroups()
     {
-        List<OrganisationUnitGroup> sortedGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroups );
+        List<OrganisationUnitGroup> sortedGroups = new ArrayList<>( organisationUnitGroups );
 
         Collections.sort( sortedGroups, IdentifiableObjectNameComparator.INSTANCE );
 

@@ -50,19 +50,19 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JacksonXmlRootElement( localName = "dashboardSearchResult", namespace = DxfNamespaces.DXF_2_0)
 public class DashboardSearchResult
 {
-    private List<User> users = new ArrayList<User>();
+    private List<User> users = new ArrayList<>();
     
-    private List<Chart> charts = new ArrayList<Chart>();
+    private List<Chart> charts = new ArrayList<>();
     
-    private List<EventChart> eventCharts = new ArrayList<EventChart>();
+    private List<EventChart> eventCharts = new ArrayList<>();
     
-    private List<Map> maps = new ArrayList<Map>();
+    private List<Map> maps = new ArrayList<>();
 
-    private List<ReportTable> reportTables = new ArrayList<ReportTable>();
+    private List<ReportTable> reportTables = new ArrayList<>();
     
-    private List<Report> reports = new ArrayList<Report>();
+    private List<Report> reports = new ArrayList<>();
 
-    private List<Document> resources = new ArrayList<Document>();
+    private List<Document> resources = new ArrayList<>();
     
     // -------------------------------------------------------------------------
     // Constructor

@@ -218,7 +218,7 @@ public class PeriodUtil
 
     public static Vector<String> generateMonthlyPeriods()
     {
-        Vector<String> months = new Vector<String>();
+        Vector<String> months = new Vector<>();
         Calendar cal = Calendar.getInstance();
 
         // Display only 12 previous periods including the current one
@@ -240,7 +240,7 @@ public class PeriodUtil
 
     public static Vector<String> generateYearlyPeriods()
     {
-        Vector<String> years = new Vector<String>();
+        Vector<String> years = new Vector<>();
         Calendar cal = Calendar.getInstance();
 
         // Display only 12 previous periods including the current one
@@ -257,7 +257,7 @@ public class PeriodUtil
     
     public static Vector<String> generateQuaterlyPeriods()
     {
-        Vector<String> quarters = new Vector<String>();
+        Vector<String> quarters = new Vector<>();
         Calendar cal = Calendar.getInstance();
         String[] quatersStr = { "Jan to Mar", "Apr to Jun", "Jul to Sep", "Oct to Dec" };
 

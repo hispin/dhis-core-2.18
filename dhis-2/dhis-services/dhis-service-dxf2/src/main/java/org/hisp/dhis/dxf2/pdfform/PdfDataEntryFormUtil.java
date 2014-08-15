@@ -201,7 +201,7 @@ public class PdfDataEntryFormUtil
 
         DataValueSet dataValueSet = new DataValueSet();
 
-        List<org.hisp.dhis.dxf2.datavalue.DataValue> dataValueList = new ArrayList<org.hisp.dhis.dxf2.datavalue.DataValue>();
+        List<org.hisp.dhis.dxf2.datavalue.DataValue> dataValueList = new ArrayList<>();
 
         try
         {

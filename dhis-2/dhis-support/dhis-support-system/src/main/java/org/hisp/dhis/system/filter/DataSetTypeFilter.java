@@ -41,7 +41,7 @@ import org.hisp.dhis.system.util.Filter;
 public class DataSetTypeFilter
     implements Filter<DataSet>
 {
-    private List<String> dataSetTypes = new ArrayList<String>();
+    private List<String> dataSetTypes = new ArrayList<>();
 
     public DataSetTypeFilter( String... types )
     {

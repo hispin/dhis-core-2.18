@@ -141,7 +141,7 @@ public class DefaultTrackedEntityAttributeService
             return result;
         }
 
-        return new HashSet<TrackedEntityAttribute>();
+        return new HashSet<>();
     }
 
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayInList()

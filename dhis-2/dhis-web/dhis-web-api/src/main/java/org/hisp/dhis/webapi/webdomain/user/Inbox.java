@@ -45,9 +45,9 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "inbox", namespace = DxfNamespaces.DXF_2_0 )
 public class Inbox
 {
-    private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
+    private List<MessageConversation> messageConversations = new ArrayList<>();
 
-    private List<Interpretation> interpretations = new ArrayList<Interpretation>();
+    private List<Interpretation> interpretations = new ArrayList<>();
 
     public Inbox()
     {

@@ -112,7 +112,7 @@ public class DimensionItem
      */
     public static String[] getItemIdentifiers( List<DimensionItem> items )
     {
-        List<String> itemUids = new ArrayList<String>();
+        List<String> itemUids = new ArrayList<>();
         
         if ( items != null && !items.isEmpty() )
         {

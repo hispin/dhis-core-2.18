@@ -62,7 +62,7 @@ public class AutomaticAccessFilter
     // Configuration
     // -------------------------------------------------------------------------
 
-    private Map<String, AutomaticAccessProvider> accessProviders = new HashMap<String, AutomaticAccessProvider>();
+    private Map<String, AutomaticAccessProvider> accessProviders = new HashMap<>();
 
     public void setAccessProviders( Map<String, AutomaticAccessProvider> accessProviders )
     {

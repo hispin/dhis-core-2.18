@@ -61,7 +61,7 @@ extends ActionPagingSupport<RelationshipType>
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
+    private List<RelationshipType> relationshipTypes = new ArrayList<>();
 
     public List<RelationshipType> getRelationshipTypes()
     {
@@ -90,7 +90,7 @@ extends ActionPagingSupport<RelationshipType>
         {
             this.paging = createPaging( relationshipTypeService.getRelationshipTypeCountByName( key ) );
 
-            relationshipTypes = new ArrayList<RelationshipType>(
+            relationshipTypes = new ArrayList<>(
                 relationshipTypeService.getRelationshipTypesBetweenByName( key, paging.getStartPos(),
                     paging.getPageSize() ) );
         }
@@ -98,7 +98,7 @@ extends ActionPagingSupport<RelationshipType>
         {
             this.paging = createPaging( relationshipTypeService.getRelationshipTypeCount() );
 
-            relationshipTypes = new ArrayList<RelationshipType>(
+            relationshipTypes = new ArrayList<>(
                 relationshipTypeService.getRelationshipTypesBetween( paging.getStartPos(),
                     paging.getPageSize() ) );
         }

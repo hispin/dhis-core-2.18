@@ -88,7 +88,7 @@ public class JdbcDataAnalysisStore
 
     public Map<Integer, Double> getStandardDeviation( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits )
     {
-        Map<Integer, Double> map = new HashMap<Integer, Double>();
+        Map<Integer, Double> map = new HashMap<>();
         
         if ( organisationUnits.isEmpty() )
         {
@@ -121,7 +121,7 @@ public class JdbcDataAnalysisStore
     
     public Map<Integer, Double> getAverage( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits )
     {
-        Map<Integer, Double> map = new HashMap<Integer, Double>();
+        Map<Integer, Double> map = new HashMap<>();
         
         if ( organisationUnits.isEmpty() )
         {
@@ -157,7 +157,7 @@ public class JdbcDataAnalysisStore
     {
         if ( dataElements.isEmpty() || categoryOptionCombos.isEmpty() || periods.isEmpty() || organisationUnits.isEmpty() )
         {
-            return new ArrayList<DeflatedDataValue>();
+            return new ArrayList<>();
         }
         
         String dataElementIds = getCommaDelimitedString( getIdentifiers( DataElement.class, dataElements ) );
@@ -194,7 +194,7 @@ public class JdbcDataAnalysisStore
     {
         if ( lowerBoundMap == null || lowerBoundMap.isEmpty() || periods.isEmpty() )
         {
-            return new ArrayList<DeflatedDataValue>();
+            return new ArrayList<>();
         }
         
         //TODO parallel processes

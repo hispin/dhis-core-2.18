@@ -100,7 +100,7 @@ public class ModelMapping
 
         // Client DataElement
         ModelList deCateOptCombo = new ModelList();
-        List<Model> listCateOptCombo = new ArrayList<Model>();
+        List<Model> listCateOptCombo = new ArrayList<>();
         deCateOptCombo.setModels( listCateOptCombo );
 
         for ( DataElementCategoryOptionCombo oneCatOptCombo : categoryCombo.getSortedOptionCombos() )

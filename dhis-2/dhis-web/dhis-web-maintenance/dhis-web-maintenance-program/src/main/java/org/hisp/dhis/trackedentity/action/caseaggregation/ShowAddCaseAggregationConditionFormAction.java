@@ -143,13 +143,13 @@ public class ShowAddCaseAggregationConditionFormAction
     @Override
     public String execute()
     {
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        dataSets = new ArrayList<>( dataSetService.getAllDataSets() );
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
         
-        programs = new ArrayList<Program>( programService.getAllPrograms() );
+        programs = new ArrayList<>( programService.getAllPrograms() );
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
 
-        attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
+        attributes = new ArrayList<>( attributeService.getAllTrackedEntityAttributes() );
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;

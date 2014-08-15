@@ -224,7 +224,7 @@ public class DataElementStoreTest
         dataElementStore.save( dataElementC );
         dataElementStore.save( dataElementD );
 
-        Collection<DataElement> dataElementsRef = new HashSet<DataElement>();
+        Collection<DataElement> dataElementsRef = new HashSet<>();
         dataElementsRef.add( dataElementA );
         dataElementsRef.add( dataElementB );
         dataElementsRef.add( dataElementC );
@@ -256,7 +256,7 @@ public class DataElementStoreTest
         dataElementStore.save( dataElementC );
         dataElementStore.save( dataElementD );
 
-        Collection<DataElement> dataElementsRef = new HashSet<DataElement>();
+        Collection<DataElement> dataElementsRef = new HashSet<>();
         dataElementsRef.add( dataElementA );
         dataElementsRef.add( dataElementB );
         dataElementsRef.add( dataElementD );
@@ -441,7 +441,7 @@ public class DataElementStoreTest
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
         
-        Collection<DataSet> dataSets = new HashSet<DataSet>();
+        Collection<DataSet> dataSets = new HashSet<>();
         dataSets.add( dataSetA );
         dataSets.add( dataSetB );
         

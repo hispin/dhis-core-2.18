@@ -819,7 +819,7 @@ public class DefaultDhis14FileImportService
      */
     private Set<Integer> getPeriodWithDataIdentifiers()
     {
-        Set<Integer> identifiers = new HashSet<Integer>();
+        Set<Integer> identifiers = new HashSet<>();
 
         List<?> list = queryManager.queryForList( "getDistinctPeriodIdentifiers", null );
 

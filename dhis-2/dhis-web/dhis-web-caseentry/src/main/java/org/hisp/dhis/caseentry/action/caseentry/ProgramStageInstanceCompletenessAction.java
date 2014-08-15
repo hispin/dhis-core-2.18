@@ -153,7 +153,7 @@ public class ProgramStageInstanceCompletenessAction
         // Get orgunitIds
         // ---------------------------------------------------------------------
 
-        Collection<Integer> orgunitIds = new HashSet<Integer>();
+        Collection<Integer> orgunitIds = new HashSet<>();
 
         for ( OrganisationUnit orgunit : orgunits )
         {

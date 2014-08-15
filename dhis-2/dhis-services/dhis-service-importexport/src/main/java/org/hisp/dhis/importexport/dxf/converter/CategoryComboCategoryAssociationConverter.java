@@ -145,7 +145,7 @@ public class CategoryComboCategoryAssociationConverter
 
     public void read( XMLReader reader, ImportParams params )
     {
-        Counter<Integer> counter = new Counter<Integer>(); // Used for backwards compatibility
+        Counter<Integer> counter = new Counter<>(); // Used for backwards compatibility
         
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {

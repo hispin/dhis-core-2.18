@@ -64,7 +64,7 @@ public class HibernateEventListenerWiring
     @Autowired
     private IdentifiableObjectManager objectManager;
 
-    private Set<IdentifiableObject> identifiableObjects = new HashSet<IdentifiableObject>();
+    private Set<IdentifiableObject> identifiableObjects = new HashSet<>();
 
     @PostConstruct
     public void registerListeners()
@@ -95,12 +95,12 @@ public class HibernateEventListenerWiring
             Object newValue = event.getCollection().getValue();
             Serializable oldValue = event.getCollection().getStoredSnapshot();
 
-            Collection<Object> newCol = new ArrayList<Object>();
-            Collection<Object> oldCol = new ArrayList<Object>();
+            Collection<Object> newCol = new ArrayList<>();
+            Collection<Object> oldCol = new ArrayList<>();
 
             if ( Collection.class.isInstance( newValue ) )
             {
-                newCol = new ArrayList<Object>( (Collection<Object>) newValue );
+                newCol = new ArrayList<>( (Collection<Object>) newValue );
 
                 if ( !newCol.isEmpty() )
                 {
@@ -108,7 +108,7 @@ public class HibernateEventListenerWiring
 
                     if ( !(next instanceof IdentifiableObject) )
                     {
-                        newCol = new ArrayList<Object>();
+                        newCol = new ArrayList<>();
                     }
                 }
             }
@@ -168,7 +168,7 @@ public class HibernateEventListenerWiring
             return;
         }
 
-        objectManager.update( new ArrayList<IdentifiableObject>( identifiableObjects ) );
+        objectManager.update( new ArrayList<>( identifiableObjects ) );
         identifiableObjects.clear();
     }
 }

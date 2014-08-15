@@ -54,7 +54,7 @@ public class OptionSet
 {
     private static final Pattern OPTION_PATTERN = Pattern.compile( "\\[(.*)\\]" );
 
-    private List<Option> options = new ArrayList<Option>();
+    private List<Option> options = new ArrayList<>();
 
     /**
      * Indicating version number.
@@ -128,7 +128,7 @@ public class OptionSet
     
     public List<String> getOptionValues()
     {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for( Option option : options )
         {
             result.add( option.getName() );

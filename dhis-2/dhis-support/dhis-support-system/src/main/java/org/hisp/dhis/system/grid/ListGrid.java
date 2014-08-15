@@ -111,16 +111,16 @@ public class ListGrid
     /**
      * Represents a mapping between column names and the index of the column in the grid.
      */
-    private Map<String, Integer> columnIndexMap = new HashMap<String, Integer>();
+    private Map<String, Integer> columnIndexMap = new HashMap<>();
 
     /**
      * Default constructor.
      */
     public ListGrid()
     {
-        this.headers = new ArrayList<GridHeader>();
-        this.metaData = new HashMap<Object, Object>();
-        this.grid = new ArrayList<List<Object>>();
+        this.headers = new ArrayList<>();
+        this.metaData = new HashMap<>();
+        this.grid = new ArrayList<>();
     }
     
     /**
@@ -128,9 +128,9 @@ public class ListGrid
      */
     public ListGrid( Map<Object, Object> metaData )
     {
-        this.headers = new ArrayList<GridHeader>();
+        this.headers = new ArrayList<>();
         this.metaData = metaData;
-        this.grid = new ArrayList<List<Object>>();
+        this.grid = new ArrayList<>();
     }
 
     // ---------------------------------------------------------------------
@@ -209,7 +209,7 @@ public class ListGrid
 
     public List<GridHeader> getVisibleHeaders()
     {
-        List<GridHeader> tempHeaders = new ArrayList<GridHeader>();
+        List<GridHeader> tempHeaders = new ArrayList<>();
 
         for ( GridHeader header : headers )
         {
@@ -269,7 +269,7 @@ public class ListGrid
 
     public Grid addRow()
     {
-        grid.add( new ArrayList<Object>() );
+        grid.add( new ArrayList<>() );
 
         currentRowWriteIndex++;
 
@@ -336,13 +336,13 @@ public class ListGrid
     {
         verifyGridState();
 
-        List<List<Object>> tempGrid = new ArrayList<List<Object>>();
+        List<List<Object>> tempGrid = new ArrayList<>();
 
         if ( headers != null && headers.size() > 0 )
         {
             for ( List<Object> row : grid )
             {
-                List<Object> tempRow = new ArrayList<Object>();
+                List<Object> tempRow = new ArrayList<>();
 
                 for ( int i = 0; i < row.size(); i++ )
                 {
@@ -361,7 +361,7 @@ public class ListGrid
 
     public List<Object> getColumn( int columnIndex )
     {
-        List<Object> column = new ArrayList<Object>();
+        List<Object> column = new ArrayList<>();
 
         for ( List<Object> row : grid )
         {
@@ -512,7 +512,7 @@ public class ListGrid
             }
         }
 
-        List<Object> regressionColumn = new ArrayList<Object>();
+        List<Object> regressionColumn = new ArrayList<>();
 
         for ( int i = 0; i < column.size(); i++ )
         {
@@ -566,7 +566,7 @@ public class ListGrid
 
         List<Object> column = getColumn( columnIndex );
 
-        List<Object> cumulativeColumn = new ArrayList<Object>();
+        List<Object> cumulativeColumn = new ArrayList<>();
 
         double sum = 0d;
 
@@ -849,7 +849,7 @@ public class ListGrid
 
         if ( headers != null && headers.size() > 0 )
         {
-            List<String> headerNames = new ArrayList<String>();
+            List<String> headerNames = new ArrayList<>();
 
             for ( GridHeader header : headers )
             {

@@ -186,7 +186,7 @@ public class TrackedEntityInstanceServiceTest
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA1,
             entityInstanceAttribute );
-        Set<TrackedEntityAttributeValue> entityInstanceAttributeValues = new HashSet<TrackedEntityAttributeValue>();
+        Set<TrackedEntityAttributeValue> entityInstanceAttributeValues = new HashSet<>();
         entityInstanceAttributeValues.add( attributeValue );
 
         int idA = entityInstanceService.createTrackedEntityInstance( entityInstanceA1, entityInstanceB1.getUid(),
@@ -205,14 +205,14 @@ public class TrackedEntityInstanceServiceTest
         entityInstanceA3.setName( "B" );
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3,
             entityInstanceAttribute );
-        Set<TrackedEntityAttributeValue> entityInstanceAttributeValues = new HashSet<TrackedEntityAttributeValue>();
+        Set<TrackedEntityAttributeValue> entityInstanceAttributeValues = new HashSet<>();
         entityInstanceAttributeValues.add( attributeValue );
         int idA = entityInstanceService.createTrackedEntityInstance( entityInstanceA3, entityInstanceB1.getUid(),
             relationshipTypeId, entityInstanceAttributeValues );
         assertNotNull( entityInstanceService.getTrackedEntityInstance( idA ) );
 
         attributeValue.setValue( "AttributeB" );
-        List<TrackedEntityAttributeValue> attributeValues = new ArrayList<TrackedEntityAttributeValue>();
+        List<TrackedEntityAttributeValue> attributeValues = new ArrayList<>();
         attributeValues.add( attributeValue );
 
         entityInstanceService.updateTrackedEntityInstance( entityInstanceA3, entityInstanceB1.getUid(),

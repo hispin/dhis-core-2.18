@@ -74,9 +74,9 @@ public class MinMaxOutlierAnalysisServiceTest
     private DataValue dataValueA;
     private DataValue dataValueB;
 
-    private Set<DataElement> dataElementsA = new HashSet<DataElement>();
-    private Set<DataElement> dataElementsB = new HashSet<DataElement>();
-    private Set<DataElement> dataElementsC = new HashSet<DataElement>();
+    private Set<DataElement> dataElementsA = new HashSet<>();
+    private Set<DataElement> dataElementsB = new HashSet<>();
+    private Set<DataElement> dataElementsC = new HashSet<>();
 
     private DataElementCategoryCombo categoryCombo;
 
@@ -182,7 +182,7 @@ public class MinMaxOutlierAnalysisServiceTest
         minMaxDataElement = new MinMaxDataElement( organisationUnitA, dataElementA, categoryOptionCombo, -40, 40, false );
         minMaxDataElementService.addMinMaxDataElement( minMaxDataElement );
                 
-        Collection<Period> periods = new ArrayList<Period>();
+        Collection<Period> periods = new ArrayList<>();
         periods.add( periodI );
         periods.add( periodJ );
         periods.add( periodA );

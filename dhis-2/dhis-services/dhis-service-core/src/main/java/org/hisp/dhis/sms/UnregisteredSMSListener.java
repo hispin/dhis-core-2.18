@@ -129,7 +129,7 @@ public class UnregisteredSMSListener
             }
             else
             {
-                Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
+                Set<User> receivers = new HashSet<>( userGroup.getMembers() );
 
                 UserCredentials anonymousUser = userService.getUserCredentialsByUsername( "anonymous" );
 
@@ -154,7 +154,7 @@ public class UnregisteredSMSListener
                     false, false );
 
                 // confirm SMS was received and forwarded completely
-                Set<User> feedbackList = new HashSet<User>();
+                Set<User> feedbackList = new HashSet<>();
                 User sender = new User();
                 sender.setPhoneNumber( senderPhoneNumber );
                 feedbackList.add( sender );

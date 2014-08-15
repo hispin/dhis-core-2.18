@@ -47,7 +47,7 @@ public class SpringScheduler
 {
     private static final Log log = LogFactory.getLog( SpringScheduler.class );
     
-    private Map<String, ScheduledFuture<?>> futures = new HashMap<String, ScheduledFuture<?>>();
+    private Map<String, ScheduledFuture<?>> futures = new HashMap<>();
 
     // -------------------------------------------------------------------------
     // Dependencies

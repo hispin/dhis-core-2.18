@@ -72,7 +72,7 @@ public class GetOrgUnitDistributionOptionsAction
 
     public String execute()
     {
-        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
+        groupSets = new ArrayList<>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
         
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );        
         

@@ -54,7 +54,7 @@ public class AppListAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<App> appList = new ArrayList<App>();
+    private List<App> appList = new ArrayList<>();
 
     public List<App> getAppList()
     {

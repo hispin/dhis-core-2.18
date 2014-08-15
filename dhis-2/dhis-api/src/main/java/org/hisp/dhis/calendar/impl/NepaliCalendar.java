@@ -500,7 +500,7 @@ public class NepaliCalendar extends AbstractCalendar
      * Map that gives an array of month lengths based on Nepali year lookup.
      * Index 1 - 12 is used for months, index 0 is used to give year total (lazy calculated).
      */
-    private final static Map<Integer, int[]> conversionMap = new HashMap<Integer, int[]>();
+    private final static Map<Integer, int[]> conversionMap = new HashMap<>();
 
     static
     {

@@ -68,7 +68,7 @@ public class DataElementHistory
      */
     private double maxValue = Double.NEGATIVE_INFINITY;
     
-    private List<DataElementHistoryPoint> historyPoints = new ArrayList<DataElementHistoryPoint>();
+    private List<DataElementHistoryPoint> historyPoints = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Getters and setters

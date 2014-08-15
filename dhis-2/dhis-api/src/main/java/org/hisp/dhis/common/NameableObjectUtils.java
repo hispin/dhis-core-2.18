@@ -48,7 +48,7 @@ public class NameableObjectUtils
      */
     public static List<NameableObject> getList( NameableObject... objects )
     {
-        List<NameableObject> list = new ArrayList<NameableObject>();
+        List<NameableObject> list = new ArrayList<>();
 
         if ( objects != null )
         {
@@ -66,7 +66,7 @@ public class NameableObjectUtils
      */
     public static List<NameableObject> asList( Collection<? extends NameableObject> collection )
     {
-        List<NameableObject> list = new ArrayList<NameableObject>();
+        List<NameableObject> list = new ArrayList<>();
         list.addAll( collection );
         return list;
     }
@@ -82,7 +82,7 @@ public class NameableObjectUtils
     @SuppressWarnings("unchecked")
     public static <T extends NameableObject> List<T> asTypedList( Collection<NameableObject> collection )
     {
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
 
         if ( collection != null )
         {
@@ -165,7 +165,7 @@ public class NameableObjectUtils
      */
     public static Map<String, NameableObject> getUidObjectMap( List<? extends NameableObject> objects )
     {
-        Map<String, NameableObject> map = new HashMap<String, NameableObject>();
+        Map<String, NameableObject> map = new HashMap<>();
 
         if ( objects != null )
         {

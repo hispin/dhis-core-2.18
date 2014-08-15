@@ -116,7 +116,7 @@ public class ExportDataValueAction
     {
         //TODO reimplement to use web api
         
-        Set<String> orgUnits = new HashSet<String>();
+        Set<String> orgUnits = new HashSet<>();
         
         for ( OrganisationUnit unit : selectionTreeManager.getReloadedSelectedOrganisationUnits() )
         {

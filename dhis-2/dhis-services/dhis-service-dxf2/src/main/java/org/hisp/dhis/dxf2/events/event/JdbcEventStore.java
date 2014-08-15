@@ -78,7 +78,7 @@ public class JdbcEventStore
         Boolean followUp, List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance,
         Date startDate, Date endDate, EventStatus status )
     {
-        List<Event> events = new ArrayList<Event>();
+        List<Event> events = new ArrayList<>();
 
         Integer trackedEntityInstanceId = null;
 
@@ -103,7 +103,7 @@ public class JdbcEventStore
         Event event = new Event();
         event.setEvent( "not_valid" );
         
-        Set<String> notes = new HashSet<String>();
+        Set<String> notes = new HashSet<>();
 
         while ( rowSet.next() )
         {

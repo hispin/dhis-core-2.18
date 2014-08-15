@@ -80,7 +80,7 @@ public class UpdateDataElementCategoryAction
         this.dataDimension = dataDimension;
     }
 
-    private List<String> selectedList = new ArrayList<String>();
+    private List<String> selectedList = new ArrayList<>();
 
     public void setSelectedList( List<String> selectedList )
     {
@@ -97,7 +97,7 @@ public class UpdateDataElementCategoryAction
         dataElementCategory.setName( name );
         dataElementCategory.setDataDimension( dataDimension );
 
-        List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>();
+        List<DataElementCategoryOption> options = new ArrayList<>();
 
         for ( String id : selectedList )
         {

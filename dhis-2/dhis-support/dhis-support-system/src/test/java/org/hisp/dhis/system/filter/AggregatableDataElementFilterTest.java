@@ -62,7 +62,7 @@ public class AggregatableDataElementFilterTest
         elementE.setType( DataElement.VALUE_TYPE_INT );
         elementF.setType( DataElement.VALUE_TYPE_STRING );        
         
-        Set<DataElement> set = new HashSet<DataElement>();
+        Set<DataElement> set = new HashSet<>();
         
         set.add( elementA );
         set.add( elementB );
@@ -71,7 +71,7 @@ public class AggregatableDataElementFilterTest
         set.add( elementE );
         set.add( elementF );
         
-        Set<DataElement> reference = new HashSet<DataElement>();
+        Set<DataElement> reference = new HashSet<>();
         
         reference.add( elementA );
         reference.add( elementB );

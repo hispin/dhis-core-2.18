@@ -117,7 +117,7 @@ public class SetupTreeAction
             selectionTreeManager.setSelectedOrganisationUnits( selectionManager.getSelectedOrganisationUnits() );
         }
 
-        validationRuleGroups = new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() );
+        validationRuleGroups = new ArrayList<>( validationRuleService.getAllValidationRuleGroups() );
 
         Collections.sort( validationRuleGroups, IdentifiableObjectNameComparator.INSTANCE );
 

@@ -51,7 +51,7 @@ public class DefaultDeletionManager
     private static final String DELETE_METHOD_PREFIX = "delete";
     private static final String ALLOW_METHOD_PREFIX = "allowDelete";
 
-    private List<DeletionHandler> handlers = new ArrayList<DeletionHandler>();
+    private List<DeletionHandler> handlers = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // DeletionManager implementation

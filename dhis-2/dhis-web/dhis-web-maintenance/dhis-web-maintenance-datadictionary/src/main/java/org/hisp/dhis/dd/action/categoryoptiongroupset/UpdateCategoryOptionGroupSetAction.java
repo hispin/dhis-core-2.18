@@ -85,7 +85,7 @@ public class UpdateCategoryOptionGroupSetAction
         this.dataDimension = dataDimension;
     }
 
-    private List<String> groupMembers = new ArrayList<String>();
+    private List<String> groupMembers = new ArrayList<>();
 
     public void setGroupMembers( List<String> groupMembers )
     {

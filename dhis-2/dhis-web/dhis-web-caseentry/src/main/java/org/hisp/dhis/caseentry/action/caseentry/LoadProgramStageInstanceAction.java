@@ -100,7 +100,7 @@ public class LoadProgramStageInstanceAction
         this.programId = programId;
     }
 
-    private Map<Integer, Integer> statusMap = new HashMap<Integer, Integer>();
+    private Map<Integer, Integer> statusMap = new HashMap<>();
 
     public Map<Integer, Integer> getStatusMap()
     {
@@ -132,9 +132,9 @@ public class LoadProgramStageInstanceAction
 
         program = programService.getProgram( programId );
 
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
+        List<ProgramInstance> programInstances = new ArrayList<>();
 
-        programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( entityInstance,
+        programInstances = new ArrayList<>( programInstanceService.getProgramInstances( entityInstance,
             program ) );
 
         if ( programInstances != null && programInstances.size() > 0 )

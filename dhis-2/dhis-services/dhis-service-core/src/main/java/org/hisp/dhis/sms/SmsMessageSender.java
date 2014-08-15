@@ -98,7 +98,7 @@ public class SmsMessageSender
             return "No gateway";
         }
 
-        Set<User> toSendList = new HashSet<User>();
+        Set<User> toSendList = new HashSet<>();
 
         User currentUser = currentUserService.getCurrentUser();
         
@@ -142,7 +142,7 @@ public class SmsMessageSender
             }
             if ( text.length() > MAX_CHAR )
             {
-                List<String> splitTextList = new ArrayList<String>();
+                List<String> splitTextList = new ArrayList<>();
                 splitTextList = splitLongUnicodeString( text, splitTextList );
                 
                 for ( String each : splitTextList )
@@ -217,7 +217,7 @@ public class SmsMessageSender
 
     private Set<String> getRecipientsPhoneNumber( Set<User> users )
     {
-        Set<String> recipients = new HashSet<String>();
+        Set<String> recipients = new HashSet<>();
 
         for ( User user : users )
         {

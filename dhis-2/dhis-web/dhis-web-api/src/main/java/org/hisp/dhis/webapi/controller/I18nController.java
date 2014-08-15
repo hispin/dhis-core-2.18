@@ -59,7 +59,7 @@ public class I18nController
         OutputStream outputStream, InputStream inputStream ) throws Exception
     {
         I18n i18n = i18nManager.getI18n( searchPackage );
-        Map<String, String> output = new HashMap<String, String>();
+        Map<String, String> output = new HashMap<>();
 
         List<String> input = JacksonUtils.getJsonMapper().readValue( inputStream, new TypeReference<List<String>>()
         {

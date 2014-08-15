@@ -326,7 +326,7 @@ public class DefaultProgramStageInstanceService
 
         if ( outboundSms == null )
         {
-            outboundSms = new ArrayList<OutboundSms>();
+            outboundSms = new ArrayList<>();
         }
 
         outboundSms.addAll( sendMessages( programStageInstance,
@@ -340,7 +340,7 @@ public class DefaultProgramStageInstanceService
 
         if ( messageConversations == null )
         {
-            messageConversations = new ArrayList<MessageConversation>();
+            messageConversations = new ArrayList<>();
         }
 
         messageConversations.addAll( sendMessageConversations( programStageInstance,
@@ -483,7 +483,7 @@ public class DefaultProgramStageInstanceService
         I18nFormat format )
     {
         TrackedEntityInstance entityInstance = programStageInstance.getProgramInstance().getEntityInstance();
-        Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
+        Collection<OutboundSms> outboundSmsList = new HashSet<>();
 
         Collection<TrackedEntityInstanceReminder> reminders = programStageInstance.getProgramStage()
             .getReminders();
@@ -508,7 +508,7 @@ public class DefaultProgramStageInstanceService
     private Collection<MessageConversation> sendMessageConversations( ProgramStageInstance programStageInstance,
          int status, I18nFormat format )
      {
-         Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
+         Collection<MessageConversation> messageConversations = new HashSet<>();
 
          Collection<TrackedEntityInstanceReminder> reminders = programStageInstance.getProgramStage()
              .getReminders();

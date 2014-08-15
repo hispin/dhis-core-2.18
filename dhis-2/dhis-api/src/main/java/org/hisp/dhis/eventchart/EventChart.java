@@ -76,9 +76,9 @@ public class EventChart
 
     private Date endDate;
 
-    private List<String> columnDimensions = new ArrayList<String>();
+    private List<String> columnDimensions = new ArrayList<>();
 
-    private List<String> rowDimensions = new ArrayList<String>();
+    private List<String> rowDimensions = new ArrayList<>();
 
     private String countType;
 

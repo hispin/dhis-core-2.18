@@ -106,13 +106,13 @@ public class Expression
      * A reference to the DataElements in the Expression.
      */
     @Scanned
-    private Set<DataElement> dataElementsInExpression = new HashSet<DataElement>();
+    private Set<DataElement> dataElementsInExpression = new HashSet<>();
 
     /**
      * A reference to the optionCombos in the Expression.
      */
     @Scanned
-    private Set<DataElementCategoryOptionCombo> optionCombosInExpression = new HashSet<DataElementCategoryOptionCombo>();
+    private Set<DataElementCategoryOptionCombo> optionCombosInExpression = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Transient properties
@@ -337,9 +337,9 @@ public class Expression
         nullIfBlank = other.isNullIfBlank();
 
         dataElementsInExpression = other.getDataElementsInExpression() == null ?
-            dataElementsInExpression : new HashSet<DataElement>( other.getDataElementsInExpression() );
+            dataElementsInExpression : new HashSet<>( other.getDataElementsInExpression() );
 
         optionCombosInExpression = other.getOptionCombosInExpression() == null ?
-            optionCombosInExpression : new HashSet<DataElementCategoryOptionCombo>( other.getOptionCombosInExpression() );
+            optionCombosInExpression : new HashSet<>( other.getOptionCombosInExpression() );
     }
 }

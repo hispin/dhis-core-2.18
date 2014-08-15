@@ -93,7 +93,7 @@ public class GetUsersAction
     public String execute()
         throws Exception
     {
-        users = new ArrayList<User>( userService.getAllUsers() );
+        users = new ArrayList<>( userService.getAllUsers() );
 
         ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), users );
         

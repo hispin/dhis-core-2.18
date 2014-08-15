@@ -52,14 +52,14 @@ public class UpdateMobileDataSetAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-    private Collection<String> selectedList = new HashSet<String>();
+    private Collection<String> selectedList = new HashSet<>();
 
     public void setSelectedList( Collection<String> selectedList )
     {
         this.selectedList = selectedList;
     }
 
-    private Collection<String> availableList = new HashSet<String>();
+    private Collection<String> availableList = new HashSet<>();
 
     public void setAvailableList( Collection<String> availableList )
     {

@@ -58,7 +58,7 @@ public class XWorkSecurityInterceptor
 
     private static final String KEY_SECURITY_SERVICE = "security";
 
-    private ThreadLocal<SecurityMetadataSource> definitionSourceTag = new ThreadLocal<SecurityMetadataSource>();
+    private ThreadLocal<SecurityMetadataSource> definitionSourceTag = new ThreadLocal<>();
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -161,7 +161,7 @@ public class XWorkSecurityInterceptor
 
     private void addActionAccessResolver( ActionInvocation invocation )
     {
-        Map<String, Object> accessResolverMap = new HashMap<String, Object>( 1 );
+        Map<String, Object> accessResolverMap = new HashMap<>( 1 );
 
         accessResolverMap.put( KEY_ACTION_ACCESS_RESOLVER, actionAccessResolver );
         accessResolverMap.put( KEY_SECURITY_SERVICE, securityService );

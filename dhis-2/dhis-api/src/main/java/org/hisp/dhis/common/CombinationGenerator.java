@@ -57,7 +57,7 @@ public class CombinationGenerator<T>
      */
     public List<List<T>> getCombinations()
     {
-        final List<List<T>> combinations = new ArrayList<List<T>>();
+        final List<List<T>> combinations = new ArrayList<>();
         
         while ( hasNext() )
         {
@@ -115,7 +115,7 @@ public class CombinationGenerator<T>
      */
     private List<T> getCurrent()
     {
-        final List<T> current = new ArrayList<T>( no );
+        final List<T> current = new ArrayList<>( no );
         
         for ( int i = 0; i < no; i++ )
         {

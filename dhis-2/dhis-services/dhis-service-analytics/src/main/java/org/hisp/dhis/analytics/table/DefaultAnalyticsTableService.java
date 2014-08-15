@@ -192,9 +192,9 @@ public class DefaultAnalyticsTableService
         
         log.info( "Populate table task number: " + taskNo );
         
-        ConcurrentLinkedQueue<AnalyticsTable> tableQ = new ConcurrentLinkedQueue<AnalyticsTable>( tables );
+        ConcurrentLinkedQueue<AnalyticsTable> tableQ = new ConcurrentLinkedQueue<>( tables );
         
-        List<Future<?>> futures = new ArrayList<Future<?>>();
+        List<Future<?>> futures = new ArrayList<>();
         
         for ( int i = 0; i < getProcessNo(); i++ )
         {
@@ -233,9 +233,9 @@ public class DefaultAnalyticsTableService
                 continue levelLoop;
             }
                         
-            ConcurrentLinkedQueue<AnalyticsTable> tableQ = new ConcurrentLinkedQueue<AnalyticsTable>( tables );
+            ConcurrentLinkedQueue<AnalyticsTable> tableQ = new ConcurrentLinkedQueue<>( tables );
 
-            List<Future<?>> futures = new ArrayList<Future<?>>();
+            List<Future<?>> futures = new ArrayList<>();
             
             for ( int j = 0; j < getProcessNo(); j++ )
             {
@@ -248,7 +248,7 @@ public class DefaultAnalyticsTableService
     
     private void createIndexes( List<AnalyticsTable> tables )
     {
-        ConcurrentLinkedQueue<AnalyticsIndex> indexes = new ConcurrentLinkedQueue<AnalyticsIndex>();
+        ConcurrentLinkedQueue<AnalyticsIndex> indexes = new ConcurrentLinkedQueue<>();
         
         for ( AnalyticsTable table : tables )
         {
@@ -262,7 +262,7 @@ public class DefaultAnalyticsTableService
         
         log.info( "No of indexes: " + indexes.size() );
         
-        List<Future<?>> futures = new ArrayList<Future<?>>();
+        List<Future<?>> futures = new ArrayList<>();
 
         for ( int i = 0; i < getProcessNo(); i++ )
         {
@@ -274,9 +274,9 @@ public class DefaultAnalyticsTableService
 
     private void vacuumTables( List<AnalyticsTable> tables )
     {
-        ConcurrentLinkedQueue<AnalyticsTable> tableQ = new ConcurrentLinkedQueue<AnalyticsTable>( tables );
+        ConcurrentLinkedQueue<AnalyticsTable> tableQ = new ConcurrentLinkedQueue<>( tables );
         
-        List<Future<?>> futures = new ArrayList<Future<?>>();
+        List<Future<?>> futures = new ArrayList<>();
         
         for ( int i = 0; i < getProcessNo(); i++ )
         {

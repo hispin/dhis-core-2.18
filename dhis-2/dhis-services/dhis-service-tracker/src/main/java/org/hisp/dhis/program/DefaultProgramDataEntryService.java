@@ -106,7 +106,7 @@ public class DefaultProgramDataEntryService
         I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
         OrganisationUnit organisationUnit )
     {
-        Map<String, Collection<TrackedEntityDataValue>> mapDataValue = new HashMap<String, Collection<TrackedEntityDataValue>>();
+        Map<String, Collection<TrackedEntityDataValue>> mapDataValue = new HashMap<>();
 
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting
@@ -832,7 +832,7 @@ public class DefaultProgramDataEntryService
         {
             return null;
         }
-        Map<String, DataElement> map = new HashMap<String, DataElement>();
+        Map<String, DataElement> map = new HashMap<>();
 
         for ( DataElement element : dataElements )
         {

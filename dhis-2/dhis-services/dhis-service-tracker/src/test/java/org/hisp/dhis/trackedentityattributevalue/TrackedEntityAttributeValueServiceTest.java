@@ -213,7 +213,7 @@ public class TrackedEntityAttributeValueServiceTest
         attributeValueService.addTrackedEntityAttributeValue( attributeValueB );
         attributeValueService.addTrackedEntityAttributeValue( attributeValueC );
 
-        Collection<TrackedEntityInstance> entityInstances = new HashSet<TrackedEntityInstance>();
+        Collection<TrackedEntityInstance> entityInstances = new HashSet<>();
         entityInstances.add( entityInstanceA );
         entityInstances.add( entityInstanceB );
 

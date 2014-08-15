@@ -81,14 +81,14 @@ public class Indicator
 
     private String url;
 
-    private Set<IndicatorGroup> groups = new HashSet<IndicatorGroup>();
+    private Set<IndicatorGroup> groups = new HashSet<>();
 
-    private Set<DataSet> dataSets = new HashSet<DataSet>();
+    private Set<DataSet> dataSets = new HashSet<>();
 
     /**
      * Set of the dynamic attributes values that belong to this indicator.
      */
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    private Set<AttributeValue> attributeValues = new HashSet<>();
 
     /**
      * The legend set for this indicator.
@@ -118,7 +118,7 @@ public class Indicator
 
     public void updateIndicatorGroups( Set<IndicatorGroup> updates )
     {
-        for ( IndicatorGroup group : new HashSet<IndicatorGroup>( groups ) )
+        for ( IndicatorGroup group : new HashSet<>( groups ) )
         {
             if ( !updates.contains( group ) )
             {

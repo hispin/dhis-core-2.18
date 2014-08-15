@@ -55,7 +55,7 @@ public class SchedulingManagerTest
     @Test
     public void testScheduleTasks()
     {
-        ListMap<String, String> cronKeyMap = new ListMap<String, String>();
+        ListMap<String, String> cronKeyMap = new ListMap<>();
         cronKeyMap.putValue( CRON_DAILY_0AM, TASK_RESOURCE_TABLE );
         cronKeyMap.putValue( CRON_DAILY_0AM, TASK_ANALYTICS_ALL );
         cronKeyMap.putValue( CRON_DAILY_0AM, TASK_DATAMART_LAST_YEAR );
@@ -74,7 +74,7 @@ public class SchedulingManagerTest
     @Test
     public void testStopTasks()
     {
-        ListMap<String, String> cronKeyMap = new ListMap<String, String>();
+        ListMap<String, String> cronKeyMap = new ListMap<>();
         cronKeyMap.putValue( CRON_DAILY_0AM, TASK_RESOURCE_TABLE );
         cronKeyMap.putValue( CRON_DAILY_0AM, TASK_ANALYTICS_ALL );
 
@@ -92,7 +92,7 @@ public class SchedulingManagerTest
     @Test
     public void testGetScheduledKeys()
     {
-        ListMap<String, String> cronKeyMap = new ListMap<String, String>();
+        ListMap<String, String> cronKeyMap = new ListMap<>();
         cronKeyMap.putValue( CRON_DAILY_0AM, TASK_RESOURCE_TABLE );
         cronKeyMap.putValue( CRON_DAILY_0AM, TASK_ANALYTICS_ALL );
         cronKeyMap.putValue( CRON_DAILY_0AM, TASK_DATAMART_LAST_YEAR );

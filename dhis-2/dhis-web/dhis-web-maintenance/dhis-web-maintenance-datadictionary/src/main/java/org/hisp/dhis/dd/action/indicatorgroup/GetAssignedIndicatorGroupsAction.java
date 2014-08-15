@@ -69,7 +69,7 @@ public class GetAssignedIndicatorGroupsAction
         this.indicatorId = indicatorId;
     }
 
-    private List<IndicatorGroup> indicatorGroups = new ArrayList<IndicatorGroup>();
+    private List<IndicatorGroup> indicatorGroups = new ArrayList<>();
 
     public List<IndicatorGroup> getIndicatorGroups()
     {
@@ -87,7 +87,7 @@ public class GetAssignedIndicatorGroupsAction
         {
             Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-            indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getGroupsContainingIndicator( indicator ) );
+            indicatorGroups = new ArrayList<>( indicatorService.getGroupsContainingIndicator( indicator ) );
 
             Collections.sort( indicatorGroups, IdentifiableObjectNameComparator.INSTANCE );
         }

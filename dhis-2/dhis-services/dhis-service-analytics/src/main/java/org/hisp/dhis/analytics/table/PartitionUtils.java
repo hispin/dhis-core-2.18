@@ -56,7 +56,7 @@ public class PartitionUtils
 
     public static List<Period> getPeriods( Date earliest, Date latest )
     {
-        List<Period> periods = new ArrayList<Period>();
+        List<Period> periods = new ArrayList<>();
 
         Period period = PERIODTYPE.createPeriod( earliest );
 
@@ -93,19 +93,19 @@ public class PartitionUtils
 
     public static Partitions getPartitions( List<NameableObject> periods, String tablePrefix, String tableSuffix, Set<String> validPartitions )
     {
-        UniqueArrayList<String> partitions = new UniqueArrayList<String>();
+        UniqueArrayList<String> partitions = new UniqueArrayList<>();
 
         for ( NameableObject period : periods )
         {
             partitions.addAll( getPartitions( (Period) period, tablePrefix, tableSuffix, null ).getPartitions() );
         }
 
-        return new Partitions( new ArrayList<String>( partitions ) ).prunePartitions( validPartitions );
+        return new Partitions( new ArrayList<>( partitions ) ).prunePartitions( validPartitions );
     }
 
     public static ListMap<Partitions, NameableObject> getPartitionPeriodMap( List<NameableObject> periods, String tablePrefix, String tableSuffix, Set<String> validPartitions )
     {
-        ListMap<Partitions, NameableObject> map = new ListMap<Partitions, NameableObject>();
+        ListMap<Partitions, NameableObject> map = new ListMap<>();
 
         for ( NameableObject period : periods )
         {
@@ -120,7 +120,7 @@ public class PartitionUtils
      */
     public static ListMap<String, NameableObject> getPeriodTypePeriodMap( Collection<NameableObject> periods )
     {
-        ListMap<String, NameableObject> map = new ListMap<String, NameableObject>();
+        ListMap<String, NameableObject> map = new ListMap<>();
 
         for ( NameableObject period : periods )
         {

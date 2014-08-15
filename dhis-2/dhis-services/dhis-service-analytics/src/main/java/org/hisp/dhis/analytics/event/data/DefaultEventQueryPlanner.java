@@ -143,7 +143,7 @@ public class DefaultEventQueryPlanner
     {
         Set<String> validPartitions = partitionManager.getEventAnalyticsPartitions();
 
-        List<EventQueryParams> queries = new ArrayList<EventQueryParams>();
+        List<EventQueryParams> queries = new ArrayList<>();
         
         List<EventQueryParams> groupedByPartition = groupByPartition( params, validPartitions );
         
@@ -205,7 +205,7 @@ public class DefaultEventQueryPlanner
         
         if ( params.hasStartEndDate() )
         {
-            List<EventQueryParams> queries = new ArrayList<EventQueryParams>();
+            List<EventQueryParams> queries = new ArrayList<>();
             
             Period queryPeriod = new Period();
             queryPeriod.setStartDate( params.getStartDate() );
@@ -229,7 +229,7 @@ public class DefaultEventQueryPlanner
         
     private static List<EventQueryParams> convert( List<DataQueryParams> params )
     {
-        List<EventQueryParams> eventParams = new ArrayList<EventQueryParams>();
+        List<EventQueryParams> eventParams = new ArrayList<>();
         
         for ( DataQueryParams param : params )
         {

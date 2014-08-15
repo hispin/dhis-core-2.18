@@ -126,7 +126,7 @@ public class UpdateUserGroupAction
 
         UserGroup userGroup = userGroupService.getUserGroup( userGroupId );
 
-        Set<User> userList = new HashSet<User>();
+        Set<User> userList = new HashSet<>();
 
         for ( Integer groupMember : groupMembersList )
         {

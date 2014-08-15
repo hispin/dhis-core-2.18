@@ -42,8 +42,8 @@ public class ResourceTableNameMap
 
     static
     {
-        resourceNameMap = new HashMap<String, String>();
-        ignoredNameMap = new HashMap<String, String>();
+        resourceNameMap = new HashMap<>();
+        ignoredNameMap = new HashMap<>();
 
         resourceNameMap.put( "_cocn", "_categoryoptioncomboname" );
         resourceNameMap.put( "_cs", "_categorystructure" );

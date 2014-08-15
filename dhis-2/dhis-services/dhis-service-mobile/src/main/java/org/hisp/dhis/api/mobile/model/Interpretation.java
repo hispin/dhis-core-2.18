@@ -17,7 +17,7 @@ public class Interpretation
 
     private Collection<InterpretationComment> inComments;
 
-    private List<InterpretationComment> interCommentList = new ArrayList<InterpretationComment>();
+    private List<InterpretationComment> interCommentList = new ArrayList<>();
 
     public int getId()
     {

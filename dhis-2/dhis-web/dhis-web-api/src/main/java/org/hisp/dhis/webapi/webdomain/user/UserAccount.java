@@ -68,7 +68,7 @@ public class UserAccount
 
     private String languages;
 
-    private Map<String, String> settings = new HashMap<String, String>();
+    private Map<String, String> settings = new HashMap<>();
     
     public UserAccount()
     {

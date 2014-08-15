@@ -68,14 +68,14 @@ public class XWorkPortalParamsInterceptor
     // External configuration
     // -------------------------------------------------------------------------
 
-    private Set<String> standardParams = new HashSet<String>();
+    private Set<String> standardParams = new HashSet<>();
 
     public void setStandardParams( Set<String> standardParams )
     {
         this.standardParams = standardParams;
     }
 
-    private Set<String> commaSeparatedParams = new HashSet<String>();
+    private Set<String> commaSeparatedParams = new HashSet<>();
 
     public void setCommaSeparatedParams( Set<String> commaSeparatedParams )
     {
@@ -107,7 +107,7 @@ public class XWorkPortalParamsInterceptor
             // Push the specified static parameters onto the value stack
             // ---------------------------------------------------------------------
 
-            Map<String, Object> matches = new HashMap<String, Object>();
+            Map<String, Object> matches = new HashMap<>();
 
             for ( Map.Entry<String, String> entry : staticParams.entrySet() )
             {
@@ -132,7 +132,7 @@ public class XWorkPortalParamsInterceptor
         }
 
         // TODO: move this to its own systemInfoInterceptor?
-        Map<String, Object> systemInfo = new HashMap<String, Object>();
+        Map<String, Object> systemInfo = new HashMap<>();
 
         String revision = systemService.getSystemInfo().getRevision();
 

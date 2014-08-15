@@ -346,7 +346,7 @@ public class ReflectionUtils
     public static List<Field> getAllFields( Class<?> clazz )
     {
         Class<?> searchType = clazz;
-        List<Field> fields = new ArrayList<Field>();
+        List<Field> fields = new ArrayList<>();
 
         while ( !Object.class.equals( searchType ) && searchType != null )
         {
@@ -387,7 +387,7 @@ public class ReflectionUtils
     public static List<Method> getAllMethods( Class<?> clazz )
     {
         Class<?> searchType = clazz;
-        List<Method> methods = new ArrayList<Method>();
+        List<Method> methods = new ArrayList<>();
 
         while ( searchType != null )
         {
@@ -467,7 +467,7 @@ public class ReflectionUtils
     public static Collection<Field> collectFields( Class<?> clazz, Predicate<Field> predicate )
     {
         Class<?> type = clazz;
-        Collection<Field> fields = new ArrayList<Field>();
+        Collection<Field> fields = new ArrayList<>();
 
         while ( !Object.class.equals( type ) && type != null )
         {
@@ -493,11 +493,11 @@ public class ReflectionUtils
     {
         if ( List.class.isAssignableFrom( clazz ) )
         {
-            return new ArrayList<E>();
+            return new ArrayList<>();
         }
         else if ( Set.class.isAssignableFrom( clazz ) )
         {
-            return new HashSet<E>();
+            return new HashSet<>();
         }
         else
         {

@@ -306,7 +306,7 @@ public class RelativePeriodTest
     @Test
     public void testGetRelativePeriodsFromPeriodTypes()
     {
-        Set<String> periodTypes = new HashSet<String>();
+        Set<String> periodTypes = new HashSet<>();
         periodTypes.add( MonthlyPeriodType.NAME );
         periodTypes.add( BiMonthlyPeriodType.NAME );
         periodTypes.add( QuarterlyPeriodType.NAME );

@@ -74,7 +74,7 @@ public class GetValidationCriteriaAction
 
     private int programId;
 
-    private List<TrackedEntityAttribute> attribute = new ArrayList<TrackedEntityAttribute>();
+    private List<TrackedEntityAttribute> attribute = new ArrayList<>();
 
     private ValidationCriteria validationCriteria;
 

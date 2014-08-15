@@ -220,8 +220,8 @@ public class DefaultChartService
             organisationUnit = user.getOrganisationUnit();
         }
 
-        List<OrganisationUnit> atLevels = new ArrayList<OrganisationUnit>();
-        List<OrganisationUnit> inGroups = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> atLevels = new ArrayList<>();
+        List<OrganisationUnit> inGroups = new ArrayList<>();
 
         if ( chart.hasOrganisationUnitLevels() )
         {
@@ -323,8 +323,8 @@ public class DefaultChartService
         UnivariateRealInterpolator interpolator = new SplineInterpolator();
 
         Integer periodCount = 0;
-        List<Double> x = new ArrayList<Double>();
-        List<Double> y = new ArrayList<Double>();
+        List<Double> x = new ArrayList<>();
+        List<Double> y = new ArrayList<>();
 
         // ---------------------------------------------------------------------
         // DataValue, MinValue and MaxValue DataSets

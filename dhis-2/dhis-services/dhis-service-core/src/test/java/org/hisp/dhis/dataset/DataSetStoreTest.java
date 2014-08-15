@@ -103,7 +103,7 @@ public class DataSetStoreTest
         dataSetStore.save( dataSetC );
         dataSetStore.save( dataSetD );
         
-        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+        Collection<OrganisationUnit> sources = new HashSet<>();
         sources.add( unitA );
         sources.add( unitB );
         
@@ -114,7 +114,7 @@ public class DataSetStoreTest
         assertTrue( dataSets.contains( dataSetB ) );
         assertTrue( dataSets.contains( dataSetC ) );
 
-        sources = new HashSet<OrganisationUnit>();
+        sources = new HashSet<>();
         sources.add( unitA );
         
         dataSets = dataSetStore.getDataSetsBySources( sources );

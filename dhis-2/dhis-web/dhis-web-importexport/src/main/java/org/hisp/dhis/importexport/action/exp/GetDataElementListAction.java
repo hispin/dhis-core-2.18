@@ -73,7 +73,7 @@ public class GetDataElementListAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<DataElement> dataElements = new ArrayList<>();
 
     public List<DataElement> getDataElements()
     {
@@ -131,11 +131,11 @@ public class GetDataElementListAction
     {
         if ( dataDictionaryId != null && dataElementGroupId == null )
         {
-            dataElements = new ArrayList<DataElement>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getDataElements() );
+            dataElements = new ArrayList<>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getDataElements() );
         }
         else if ( dataDictionaryId == null && dataElementGroupId != null )
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementGroup( dataElementGroupId ).getMembers() );
+            dataElements = new ArrayList<>( dataElementService.getDataElementGroup( dataElementGroupId ).getMembers() );
         }
         else if ( dataDictionaryId != null && dataElementGroupId != null )
         {
@@ -147,7 +147,7 @@ public class GetDataElementListAction
         }
         else
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+            dataElements = new ArrayList<>( dataElementService.getAllDataElements() );
         }
 
         Collections.sort( dataElements, new IdentifiableObjectNameComparator() );

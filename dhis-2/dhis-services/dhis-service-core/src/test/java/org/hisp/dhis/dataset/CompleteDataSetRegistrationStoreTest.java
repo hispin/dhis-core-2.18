@@ -200,16 +200,16 @@ public class CompleteDataSetRegistrationStoreTest
         registrationStore.saveCompleteDataSetRegistration( registrationG );
         registrationStore.saveCompleteDataSetRegistration( registrationH );
         
-        Collection<DataSet> dataSets = new ArrayList<DataSet>();
+        Collection<DataSet> dataSets = new ArrayList<>();
         
         dataSets.add( dataSetB );
         
-        Collection<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
+        Collection<OrganisationUnit> sources = new ArrayList<>();
 
         sources.add( sourceA );
         sources.add( sourceB );
         
-        Collection<Period> periods = new ArrayList<Period>();
+        Collection<Period> periods = new ArrayList<>();
         
         periods.add( periodA );
         
@@ -243,7 +243,7 @@ public class CompleteDataSetRegistrationStoreTest
         registrationStore.saveCompleteDataSetRegistration( registrationG );
         registrationStore.saveCompleteDataSetRegistration( registrationH );
         
-        Collection<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
+        Collection<OrganisationUnit> sources = new ArrayList<>();
         
         sources.add( sourceA );
         sources.add( sourceB );
@@ -278,7 +278,7 @@ public class CompleteDataSetRegistrationStoreTest
         registrationStore.saveCompleteDataSetRegistration( registrationG );
         registrationStore.saveCompleteDataSetRegistration( registrationH );
         
-        Collection<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
+        Collection<OrganisationUnit> sources = new ArrayList<>();
         
         sources.add( sourceA );
         sources.add( sourceB );

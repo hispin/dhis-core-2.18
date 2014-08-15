@@ -209,7 +209,7 @@ public class DefaultValidationRuleService
         
         if ( sendAlerts )
         {
-            Set<ValidationResult> resultsToAlert = new HashSet<ValidationResult>( results );
+            Set<ValidationResult> resultsToAlert = new HashSet<>( results );
             FilterUtils.filter( resultsToAlert, new ValidationResultToAlertFilter() );
             postAlerts( resultsToAlert, new Date() );
         }
@@ -224,7 +224,7 @@ public class DefaultValidationRuleService
     	
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = getAllValidationRules();
-        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+        Collection<OrganisationUnit> sources = new HashSet<>();
         sources.add( source );
 
         return Validator.validate( sources, periods, rules, null, null,
@@ -239,7 +239,7 @@ public class DefaultValidationRuleService
             + period.getStartDate() + " " + period.getEndDate() + " source: " + source.getName()
             + " attribute combo: " + ( attributeCombo == null ? "[none]" : attributeCombo.getName() ) );
 
-        Collection<Period> periods = new ArrayList<Period>();
+        Collection<Period> periods = new ArrayList<>();
         periods.add( period );
 
         Collection<ValidationRule> rules = null;
@@ -255,7 +255,7 @@ public class DefaultValidationRuleService
         
         log.info( "Using validation rules: " + rules.size() );
         
-        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+        Collection<OrganisationUnit> sources = new HashSet<>();
         sources.add( source );
         
         return Validator.validate( sources, periods, rules, attributeCombo, null,
@@ -310,7 +310,7 @@ public class DefaultValidationRuleService
      */
     private Set<ValidationRule> getAlertRules()
     {
-        Set<ValidationRule> rules = new HashSet<ValidationRule>();
+        Set<ValidationRule> rules = new HashSet<>();
         
         for ( ValidationRuleGroup validationRuleGroup : getAllValidationRuleGroups() )
         {
@@ -340,7 +340,7 @@ public class DefaultValidationRuleService
      */
     private Set<Period> getAlertPeriodsFromRules( Set<ValidationRule> rules )
     {
-        Set<Period> periods = new HashSet<Period>();
+        Set<Period> periods = new HashSet<>();
 
         Set<PeriodType> rulePeriodTypes = getPeriodTypesFromRules( rules );
 
@@ -377,7 +377,7 @@ public class DefaultValidationRuleService
      */
     private void postAlerts( Collection<ValidationResult> validationResults, Date scheduledRunStart )
     {
-        SortedSet<ValidationResult> results = new TreeSet<ValidationResult>( validationResults );
+        SortedSet<ValidationResult> results = new TreeSet<>( validationResults );
 
         Map<SortedSet<ValidationResult>, Set<User>> messageMap = getMessageMap( results );
 
@@ -398,7 +398,7 @@ public class DefaultValidationRuleService
      */
     private Set<PeriodType> getPeriodTypesFromRules ( Collection<ValidationRule> rules )
     {
-        Set<PeriodType> rulePeriodTypes = new HashSet<PeriodType>();
+        Set<PeriodType> rulePeriodTypes = new HashSet<>();
         
         for ( ValidationRule rule : rules )
         {
@@ -420,7 +420,7 @@ public class DefaultValidationRuleService
     {
         Map<User, SortedSet<ValidationResult>> userResults = getUserResults( results );
 
-        Map<SortedSet<ValidationResult>, Set<User>> messageMap = new HashMap<SortedSet<ValidationResult>, Set<User>>();
+        Map<SortedSet<ValidationResult>, Set<User>> messageMap = new HashMap<>();
 
         for ( Map.Entry<User, SortedSet<ValidationResult>> userResultEntry : userResults.entrySet() )
         {
@@ -428,7 +428,7 @@ public class DefaultValidationRuleService
 
             if ( users == null )
             {
-                users = new HashSet<User>();
+                users = new HashSet<>();
 
                 messageMap.put( userResultEntry.getValue(), users );
             }
@@ -448,7 +448,7 @@ public class DefaultValidationRuleService
      */
     private Map<User, SortedSet<ValidationResult>> getUserResults( SortedSet<ValidationResult> results )
     {
-        Map<User, SortedSet<ValidationResult>> userResults = new HashMap<User, SortedSet<ValidationResult>>();
+        Map<User, SortedSet<ValidationResult>> userResults = new HashMap<>();
 
         for ( ValidationResult result : results )
         {
@@ -466,7 +466,7 @@ public class DefaultValidationRuleService
 
                                 if ( resultSet == null )
                                 {
-                                    resultSet = new TreeSet<ValidationResult>();
+                                    resultSet = new TreeSet<>();
 
                                     userResults.put( user, resultSet );
                                 }
@@ -554,7 +554,7 @@ public class DefaultValidationRuleService
      */
     private Map<String, Integer> countResultsByImportanceType ( Set<ValidationResult> results )
     {
-        Map<String, Integer> importanceCountMap = new HashMap<String, Integer>();
+        Map<String, Integer> importanceCountMap = new HashMap<>();
         
         for ( ValidationResult result : results )
         {
@@ -576,9 +576,9 @@ public class DefaultValidationRuleService
      */
     private Collection<ValidationRule> getValidationTypeRulesForDataElements( Set<DataElement> dataElements )
     {
-        Set<ValidationRule> rulesForDataElements = new HashSet<ValidationRule>();
+        Set<ValidationRule> rulesForDataElements = new HashSet<>();
 
-        Set<DataElement> validationRuleElements = new HashSet<DataElement>();
+        Set<DataElement> validationRuleElements = new HashSet<>();
 
         for ( ValidationRule validationRule : getAllValidationRules() )
         {
@@ -608,11 +608,11 @@ public class DefaultValidationRuleService
      */
     private Collection<ValidationRule> getRulesForDataSet( DataSet dataSet )
     {
-        Set<ValidationRule> rulesForDataSet = new HashSet<ValidationRule>();
+        Set<ValidationRule> rulesForDataSet = new HashSet<>();
 
         Set<DataElementOperand> operands = dataEntryFormService.getOperandsInDataEntryForm( dataSet );
 
-        Set<DataElementOperand> validationRuleOperands = new HashSet<DataElementOperand>();
+        Set<DataElementOperand> validationRuleOperands = new HashSet<>();
 
         for ( ValidationRule rule : getAllValidationRules() )
         {

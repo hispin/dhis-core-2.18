@@ -44,7 +44,7 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "dataValueSets", namespace = DxfNamespaces.DXF_2_0 )
 public class DataValueSets
 {
-    private List<DataValueSet> dataValueSets = new ArrayList<DataValueSet>();
+    private List<DataValueSet> dataValueSets = new ArrayList<>();
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "dataValueSets", namespace = DxfNamespaces.DXF_2_0 )

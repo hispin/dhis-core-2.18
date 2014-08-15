@@ -148,7 +148,7 @@ public abstract class CalendarPeriodType
      */
     public List<Period> generatePeriods( Date startDate, Date endDate )
     {
-        List<Period> periods = new ArrayList<Period>();
+        List<Period> periods = new ArrayList<>();
 
         Period period = createPeriod( startDate );
 

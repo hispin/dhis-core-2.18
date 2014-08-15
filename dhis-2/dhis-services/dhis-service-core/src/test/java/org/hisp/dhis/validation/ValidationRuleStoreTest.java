@@ -103,7 +103,7 @@ public class ValidationRuleStoreTest
         dataElementService.addDataElement( dataElementC );
         dataElementService.addDataElement( dataElementD );
 
-        dataElements = new HashSet<DataElement>();
+        dataElements = new HashSet<>();
 
         dataElements.add( dataElementA );
         dataElements.add( dataElementB );
@@ -112,7 +112,7 @@ public class ValidationRuleStoreTest
 
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
-        optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+        optionCombos = new HashSet<>();
         optionCombos.add( categoryOptionCombo );
 
         expressionA = new Expression( "expressionA", "descriptionA", dataElements, optionCombos );
@@ -232,17 +232,17 @@ public class ValidationRuleStoreTest
     @Test
     public void testGetValidationRuleCount()
     {
-        Set<DataElement> dataElementsA = new HashSet<DataElement>();
+        Set<DataElement> dataElementsA = new HashSet<>();
         dataElementsA.add( dataElementA );
         dataElementsA.add( dataElementB );
 
-        Set<DataElement> dataElementsB = new HashSet<DataElement>();
+        Set<DataElement> dataElementsB = new HashSet<>();
         dataElementsB.add( dataElementC );
         dataElementsB.add( dataElementD );
 
-        Set<DataElement> dataElementsC = new HashSet<DataElement>();
+        Set<DataElement> dataElementsC = new HashSet<>();
 
-        Set<DataElement> dataElementsD = new HashSet<DataElement>();
+        Set<DataElement> dataElementsD = new HashSet<>();
         dataElementsD.addAll( dataElementsA );
         dataElementsD.addAll( dataElementsB );
 

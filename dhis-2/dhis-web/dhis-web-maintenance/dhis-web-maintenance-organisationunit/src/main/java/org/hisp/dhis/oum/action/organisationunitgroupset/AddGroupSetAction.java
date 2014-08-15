@@ -121,7 +121,7 @@ public class AddGroupSetAction
     {
         OrganisationUnitGroupSet groupSet = new OrganisationUnitGroupSet( name, description, compulsory, dataDimension );
 
-        Set<OrganisationUnitGroup> selectedMembers = new HashSet<OrganisationUnitGroup>();
+        Set<OrganisationUnitGroup> selectedMembers = new HashSet<>();
 
         if ( selectedGroups != null )
         {

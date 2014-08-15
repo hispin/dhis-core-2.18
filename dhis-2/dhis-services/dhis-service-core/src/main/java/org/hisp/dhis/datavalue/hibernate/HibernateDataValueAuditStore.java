@@ -102,7 +102,7 @@ public class HibernateDataValueAuditStore
 
         if( storedPeriod == null )
         {
-            return new ArrayList<DataValueAudit>();
+            return new ArrayList<>();
         }
 
         Criteria criteria = session.createCriteria( DataValueAudit.class )

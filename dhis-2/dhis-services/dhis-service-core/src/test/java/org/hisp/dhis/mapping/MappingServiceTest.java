@@ -249,7 +249,7 @@ public class MappingServiceTest
         MapLegendSet legendSet2 = createMapLegendSet( 'C' );
         MapLegendSet legendSet3 = createMapLegendSet( 'D' );
 
-        Collection<MapLegendSet> mapLegendSets = new HashSet<MapLegendSet>();
+        Collection<MapLegendSet> mapLegendSets = new HashSet<>();
 
         mapLegendSets.add( mapLegendSet );
         mapLegendSets.add( legendSet1 );

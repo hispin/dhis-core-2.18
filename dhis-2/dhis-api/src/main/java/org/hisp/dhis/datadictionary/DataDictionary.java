@@ -63,10 +63,10 @@ public class DataDictionary
     private String region;
 
     @Scanned
-    private Set<DataElement> dataElements = new HashSet<DataElement>();
+    private Set<DataElement> dataElements = new HashSet<>();
 
     @Scanned
-    private Set<Indicator> indicators = new HashSet<Indicator>();
+    private Set<Indicator> indicators = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Constructors

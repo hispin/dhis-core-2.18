@@ -411,7 +411,7 @@ public class PeriodServiceTest
         periodService.addPeriod( periodC );
         periodService.addPeriod( periodD );
 
-        Collection<Period> periodsARef = new HashSet<Period>();
+        Collection<Period> periodsARef = new HashSet<>();
         periodsARef.add( periodA );
         periodsARef.add( periodB );
         periodsARef.add( periodC );
@@ -443,7 +443,7 @@ public class PeriodServiceTest
         Period periodE = new Period( periodType, getDay( 17 ), getDay( 20 ) );
         Period periodF = new Period( periodType, getDay( 5 ), getDay( 20 ) );
         
-        Collection<Period> periods = new ArrayList<Period>();
+        Collection<Period> periods = new ArrayList<>();
         
         periods.add( periodA );
         periods.add( periodB );
@@ -487,7 +487,7 @@ public class PeriodServiceTest
         Period periodE = new Period( periodType, getDay( 17 ), getDay( 20 ) );
         Period periodF = new Period( periodType, getDay( 5 ), getDay( 20 ) );
         
-        Collection<Period> periods = new ArrayList<Period>();
+        Collection<Period> periods = new ArrayList<>();
         
         periods.add( periodA );
         periods.add( periodB );

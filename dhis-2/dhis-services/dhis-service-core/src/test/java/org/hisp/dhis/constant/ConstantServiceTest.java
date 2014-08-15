@@ -244,7 +244,7 @@ public class ConstantServiceTest
         Constant constantD = createConstant( 'D', 23.11d );
         Constant constantE = createConstant( 'E', 2.1d );
 
-        Collection<Constant> constantCollection = new ArrayList<Constant>();
+        Collection<Constant> constantCollection = new ArrayList<>();
 
         constantCollection.add( constantB );
         constantCollection.add( constantC );

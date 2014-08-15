@@ -38,7 +38,7 @@ public class GridValue
 {
     private Object value;
     
-    private Map<Object, Object> attributes = new HashMap<Object, Object>();
+    private Map<Object, Object> attributes = new HashMap<>();
 
     // ---------------------------------------------------------------------
     // Constructors

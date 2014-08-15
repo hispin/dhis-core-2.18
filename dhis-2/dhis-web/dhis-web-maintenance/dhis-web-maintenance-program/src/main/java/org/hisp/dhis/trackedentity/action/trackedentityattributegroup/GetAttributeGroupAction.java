@@ -103,7 +103,7 @@ public class GetAttributeGroupAction
     {
         attributeGroup = attributeGroupService.getTrackedEntityAttributeGroup( id );
 
-        attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesWithoutGroup() );
+        attributes = new ArrayList<>( attributeService.getTrackedEntityAttributesWithoutGroup() );
 
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 

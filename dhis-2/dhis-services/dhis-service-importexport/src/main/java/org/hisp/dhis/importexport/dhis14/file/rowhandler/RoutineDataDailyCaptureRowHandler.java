@@ -100,7 +100,7 @@ public class RoutineDataDailyCaptureRowHandler
         this.period = new Period();
         this.source = new OrganisationUnit();
         this.value = new DataValue();
-        this.list = new ArrayList<Integer>();
+        this.list = new ArrayList<>();
     }
 
     // -------------------------------------------------------------------------

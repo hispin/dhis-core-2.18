@@ -39,13 +39,13 @@ public class DataSetList
 {
     private String clientVersion;
 
-    private List<DataSet> addedDataSets = new ArrayList<DataSet>();
+    private List<DataSet> addedDataSets = new ArrayList<>();
 
-    private List<DataSet> deletedDataSets = new ArrayList<DataSet>();
+    private List<DataSet> deletedDataSets = new ArrayList<>();
 
-    private List<DataSet> modifiedDataSets = new ArrayList<DataSet>();
+    private List<DataSet> modifiedDataSets = new ArrayList<>();
 
-    private List<DataSet> currentDataSets = new ArrayList<DataSet>();
+    private List<DataSet> currentDataSets = new ArrayList<>();
 
     public DataSetList()
     {
@@ -290,7 +290,7 @@ public class DataSetList
         temp = dataInputStream.readInt();
         if ( temp > 0 )
         {
-            addedDataSets = new ArrayList<DataSet>();
+            addedDataSets = new ArrayList<>();
             for ( int i = 0; i < temp; i++ )
             {
                 DataSet dataSet = new DataSet();
@@ -301,7 +301,7 @@ public class DataSetList
         temp = dataInputStream.readInt();
         if ( temp > 0 )
         {
-            deletedDataSets = new ArrayList<DataSet>();
+            deletedDataSets = new ArrayList<>();
             for ( int i = 0; i < temp; i++ )
             {
                 DataSet dataSet = new DataSet();
@@ -312,7 +312,7 @@ public class DataSetList
         temp = dataInputStream.readInt();
         if ( temp > 0 )
         {
-            modifiedDataSets = new ArrayList<DataSet>();
+            modifiedDataSets = new ArrayList<>();
             for ( int i = 0; i < temp; i++ )
             {
                 DataSet dataSet = new DataSet();
@@ -323,7 +323,7 @@ public class DataSetList
         temp = dataInputStream.readInt();
         if ( temp > 0 )
         {
-            currentDataSets = new ArrayList<DataSet>();
+            currentDataSets = new ArrayList<>();
             for ( int i = 0; i < temp; i++ )
             {
                 DataSet dataSet = new DataSet();

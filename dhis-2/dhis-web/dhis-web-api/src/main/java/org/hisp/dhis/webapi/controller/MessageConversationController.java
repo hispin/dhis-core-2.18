@@ -111,11 +111,11 @@ public class MessageConversationController
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<MessageConversation>( messageService.getMessageConversations( pager.getOffset(), pager.getPageSize() ) );
+            entityList = new ArrayList<>( messageService.getMessageConversations( pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {
-            entityList = new ArrayList<MessageConversation>( manager.getAll( getEntityClass() ) );
+            entityList = new ArrayList<>( manager.getAll( getEntityClass() ) );
         }
 
         return entityList;
@@ -141,7 +141,7 @@ public class MessageConversationController
 
     public void postObject( HttpServletResponse response, HttpServletRequest request, Message message )
     {
-        List<User> users = new ArrayList<User>( message.getUsers() );
+        List<User> users = new ArrayList<>( message.getUsers() );
         message.getUsers().clear();
 
         for ( OrganisationUnit ou : message.getOrganisationUnits() )

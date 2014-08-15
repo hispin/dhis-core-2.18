@@ -147,7 +147,7 @@ public class GetDataCompletenessAction
         this.type = type;
     }
     
-    private Set<Integer> groupId = new HashSet<Integer>();
+    private Set<Integer> groupId = new HashSet<>();
 
     public void setGroupId( Set<Integer> groupId )
     {
@@ -196,17 +196,17 @@ public class GetDataCompletenessAction
                 Integer _periodId = period.getId();
 
                 DataSet dataSet = null;
-                List<DataSetCompletenessResult> mainResults = new ArrayList<DataSetCompletenessResult>();
-                List<DataSetCompletenessResult> footerResults = new ArrayList<DataSetCompletenessResult>();
+                List<DataSetCompletenessResult> mainResults = new ArrayList<>();
+                List<DataSetCompletenessResult> footerResults = new ArrayList<>();
 
                 DataSetCompletenessService completenessService = serviceProvider.provide( criteria );
 
                 if ( dataSetId != null && dataSetId != 0 ) // One ds for one ou
                 {
-                    mainResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
+                    mainResults = new ArrayList<>( completenessService.getDataSetCompleteness(
                         _periodId, getIdentifiers( OrganisationUnit.class, selectedUnit.getChildren() ), dataSetId, groupId ) );
 
-                    footerResults = new ArrayList<DataSetCompletenessResult>(
+                    footerResults = new ArrayList<>(
                         completenessService.getDataSetCompleteness( _periodId, Arrays.asList( selectedUnit.getId() ),
                             dataSetId, groupId ) );
 
@@ -214,7 +214,7 @@ public class GetDataCompletenessAction
                 }
                 else // All ds for children of one ou               
                 {
-                    mainResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
+                    mainResults = new ArrayList<>( completenessService.getDataSetCompleteness(
                         _periodId, selectedUnit.getId(), groupId ) );
                 }
 

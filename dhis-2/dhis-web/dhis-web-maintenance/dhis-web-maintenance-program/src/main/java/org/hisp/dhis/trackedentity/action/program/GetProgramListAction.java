@@ -61,7 +61,7 @@ public class GetProgramListAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private List<Program> programs = new ArrayList<Program>();
+    private List<Program> programs = new ArrayList<>();
 
     public List<Program> getPrograms()
     {
@@ -91,14 +91,14 @@ public class GetProgramListAction
         {
             this.paging = createPaging( programService.getProgramCountByName( key ) );
 
-            programs = new ArrayList<Program>( programService.getProgramBetweenByName( key, paging.getStartPos(),
+            programs = new ArrayList<>( programService.getProgramBetweenByName( key, paging.getStartPos(),
                 paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( programService.getProgramCount() );
             
-            programs = new ArrayList<Program>( programService.getProgramsBetween( paging.getStartPos(),
+            programs = new ArrayList<>( programService.getProgramsBetween( paging.getStartPos(),
                 paging.getPageSize() ) );
         }
 

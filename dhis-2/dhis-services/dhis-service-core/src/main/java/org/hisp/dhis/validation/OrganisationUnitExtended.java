@@ -59,7 +59,7 @@ public class OrganisationUnitExtended
     {
         this.source = source;
         this.toBeValidated = toBeValidated;
-        children = new HashSet<OrganisationUnit>( source.getChildren() );
+        children = new HashSet<>( source.getChildren() );
         level = source.getOrganisationUnitLevel();
     }
 

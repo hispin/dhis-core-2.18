@@ -61,9 +61,9 @@ public class Enrollment
 
     private Date dateOfIncident;
 
-    private List<Attribute> attributes = new ArrayList<Attribute>();
+    private List<Attribute> attributes = new ArrayList<>();
     
-    private List<Note> notes = new ArrayList<Note>();
+    private List<Note> notes = new ArrayList<>();
 
     public Enrollment()
     {

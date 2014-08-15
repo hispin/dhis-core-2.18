@@ -80,7 +80,7 @@ public class DimensionalObjectUtils
      */
     public static List<String> getUniqueDimensions( List<DimensionalObject> dimensions )
     {
-        List<String> dims = new ArrayList<String>();
+        List<String> dims = new ArrayList<>();
         
         if ( dimensions != null )
         {
@@ -107,7 +107,7 @@ public class DimensionalObjectUtils
      */
     public static List<String> getDimensions( List<DimensionalObject> dimensions )
     {
-        List<String> dims = new ArrayList<String>();
+        List<String> dims = new ArrayList<>();
         
         if ( dimensions != null )
         {
@@ -130,7 +130,7 @@ public class DimensionalObjectUtils
      */
     public static NameableObject[][] getItemArray( List<DimensionalObject> dimensions )
     {
-        List<NameableObject[]> arrays = new ArrayList<NameableObject[]>();
+        List<NameableObject[]> arrays = new ArrayList<>();
         
         for ( DimensionalObject dimension : dimensions )
         {
@@ -149,7 +149,7 @@ public class DimensionalObjectUtils
      */
     public static <T> Map<T, T> asMap( T... elements )
     {
-        Map<T, T> map = new HashMap<T, T>();
+        Map<T, T> map = new HashMap<>();
         
         if ( elements != null && ( elements.length % 2 == 0 ) )
         {
@@ -193,10 +193,10 @@ public class DimensionalObjectUtils
         
         if ( param.split( DIMENSION_NAME_SEP ).length > 1 )
         {
-            return new ArrayList<String>( Arrays.asList( param.split( DIMENSION_NAME_SEP )[1].split( OPTION_SEP ) ) );
+            return new ArrayList<>( Arrays.asList( param.split( DIMENSION_NAME_SEP )[1].split( OPTION_SEP ) ) );
         }
         
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
     
     /**
@@ -210,7 +210,7 @@ public class DimensionalObjectUtils
             return null;
         }
         
-        return new ArrayList<String>( Arrays.asList( param.split( OPTION_SEP ) ) );
+        return new ArrayList<>( Arrays.asList( param.split( OPTION_SEP ) ) );
     }
 
     /**

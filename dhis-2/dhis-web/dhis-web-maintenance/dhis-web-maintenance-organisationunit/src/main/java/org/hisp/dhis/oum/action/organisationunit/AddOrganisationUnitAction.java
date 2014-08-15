@@ -208,14 +208,14 @@ public class AddOrganisationUnitAction
         this.phoneNumber = phoneNumber;
     }
 
-    private Collection<String> dataSets = new HashSet<String>();
+    private Collection<String> dataSets = new HashSet<>();
 
     public void setDataSets( Collection<String> dataSets )
     {
         this.dataSets = dataSets;
     }
 
-    private Collection<String> selectedGroups = new HashSet<String>();
+    private Collection<String> selectedGroups = new HashSet<>();
 
     public void setSelectedGroups( Collection<String> selectedGroups )
     {

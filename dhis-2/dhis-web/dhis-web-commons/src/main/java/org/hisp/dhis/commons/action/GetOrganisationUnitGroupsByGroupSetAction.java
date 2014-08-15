@@ -85,7 +85,7 @@ public class GetOrganisationUnitGroupsByGroupSetAction
     {
         if ( id != null )
         {
-            organisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService
+            organisationUnitGroups = new ArrayList<>( organisationUnitGroupService
                 .getOrganisationUnitGroupSet( id ).getOrganisationUnitGroups() );
         }
 

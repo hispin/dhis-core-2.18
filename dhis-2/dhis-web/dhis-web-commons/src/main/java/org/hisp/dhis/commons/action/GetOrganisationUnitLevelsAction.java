@@ -72,7 +72,7 @@ public class GetOrganisationUnitLevelsAction
     public String execute()
         throws Exception
     {
-        organisationUnitLevels = new ArrayList<OrganisationUnitLevel>(
+        organisationUnitLevels = new ArrayList<>(
             organisationUnitService.getOrganisationUnitLevels() );
 
         if ( usePaging )

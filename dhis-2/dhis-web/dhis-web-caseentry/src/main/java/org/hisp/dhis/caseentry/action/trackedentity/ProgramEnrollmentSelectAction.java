@@ -92,7 +92,7 @@ public class ProgramEnrollmentSelectAction
         return entityInstance;
     }
 
-    private Collection<Program> programs = new ArrayList<Program>();
+    private Collection<Program> programs = new ArrayList<>();
 
     public Collection<Program> getPrograms()
     {
@@ -111,7 +111,7 @@ public class ProgramEnrollmentSelectAction
 
         // Get all programs
 
-        programs = new ArrayList<Program>( programService.getProgramsByCurrentUser( orgunit ) );
+        programs = new ArrayList<>( programService.getProgramsByCurrentUser( orgunit ) );
         programs.retainAll( programService.getProgramsByTrackedEntity( entityInstance.getTrackedEntity() ) );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
 

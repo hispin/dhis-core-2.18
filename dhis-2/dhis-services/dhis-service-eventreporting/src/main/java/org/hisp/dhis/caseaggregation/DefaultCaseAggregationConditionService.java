@@ -307,7 +307,7 @@ public class DefaultCaseAggregationConditionService
         String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
             + "[0-9]+" + SEPARATOR_ID + "[0-9]+" + "\\]";
 
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
+        Collection<DataElement> dataElements = new HashSet<>();
 
         // ---------------------------------------------------------------------
         // parse expressions
@@ -339,7 +339,7 @@ public class DefaultCaseAggregationConditionService
         String regExp = "\\[(" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE_DATAELEMENT + ")" + SEPARATOR_OBJECT
             + "[a-zA-Z0-9\\- ]+";
 
-        Collection<Program> programs = new HashSet<Program>();
+        Collection<Program> programs = new HashSet<>();
 
         // ---------------------------------------------------------------------
         // parse expressions
@@ -370,7 +370,7 @@ public class DefaultCaseAggregationConditionService
     {
         String regExp = "\\[" + OBJECT_TRACKED_ENTITY_ATTRIBUTE + SEPARATOR_OBJECT + "[0-9]+\\]";
 
-        Collection<TrackedEntityAttribute> attributes = new HashSet<TrackedEntityAttribute>();
+        Collection<TrackedEntityAttribute> attributes = new HashSet<>();
 
         // ---------------------------------------------------------------------
         // parse expressions
@@ -409,9 +409,9 @@ public class DefaultCaseAggregationConditionService
     
     public void aggregate( List<CaseAggregateSchedule> caseAggregateSchedules, String taskStrategy )
     {       
-        ConcurrentLinkedQueue<CaseAggregateSchedule> datasetQ = new ConcurrentLinkedQueue<CaseAggregateSchedule>(
+        ConcurrentLinkedQueue<CaseAggregateSchedule> datasetQ = new ConcurrentLinkedQueue<>(
             caseAggregateSchedules );
-        List<Future<?>> futures = new ArrayList<Future<?>>();
+        List<Future<?>> futures = new ArrayList<>();
 
         for ( int i = 0; i < getProcessNo(); i++ )
         { 

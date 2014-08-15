@@ -178,13 +178,13 @@ public class GetGeneralSettingsAction
             offlineOrganisationUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size );
         }
 
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        dataElementGroups = new ArrayList<>( dataElementService.getAllDataElementGroups() );
 
         Collections.sort( dataElementGroups, IdentifiableObjectNameComparator.INSTANCE );
 
-        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
+        periodTypes = new ArrayList<>( periodService.getAllPeriodTypes() );
 
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
 
         Collections.sort( userGroups, new UserGroupComparator() );
 

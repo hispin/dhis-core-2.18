@@ -96,7 +96,7 @@ public class I18nInterceptor
         // Make the objects available for web templates
         // ---------------------------------------------------------------------
 
-        Map<String, Object> i18nMap = new HashMap<String, Object>( 3 );
+        Map<String, Object> i18nMap = new HashMap<>( 3 );
         i18nMap.put( KEY_I18N, i18n );
         i18nMap.put( KEY_I18N_FORMAT, i18nFormat );
         i18nMap.put( KEY_LOCALE, locale );

@@ -67,14 +67,14 @@ public class DataElementCategoryOption
     private Date endDate;
 
     @Scanned
-    private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+    private Set<OrganisationUnit> organisationUnits = new HashSet<>();
 
-    private Set<DataElementCategory> categories = new HashSet<DataElementCategory>();
+    private Set<DataElementCategory> categories = new HashSet<>();
 
     @Scanned
-    private Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<DataElementCategoryOptionCombo>();
+    private Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<>();
 
-    private Set<CategoryOptionGroup> groups = new HashSet<CategoryOptionGroup>();
+    private Set<CategoryOptionGroup> groups = new HashSet<>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -106,7 +106,7 @@ public class DataElementCategoryOption
      */
     public Set<CategoryOptionGroupSet> getGroupSets()
     {
-        Set<CategoryOptionGroupSet> groupSets = new HashSet<CategoryOptionGroupSet>();
+        Set<CategoryOptionGroupSet> groupSets = new HashSet<>();
         
         if ( groups != null )
         {

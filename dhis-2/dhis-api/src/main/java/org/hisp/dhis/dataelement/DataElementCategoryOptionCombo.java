@@ -75,7 +75,7 @@ public class DataElementCategoryOptionCombo
      * The category options.
      */
     @Scanned
-    private Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+    private Set<DataElementCategoryOption> categoryOptions = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Transient properties
@@ -234,8 +234,8 @@ public class DataElementCategoryOptionCombo
             return false;
         }
 
-        final Set<String> names1 = new HashSet<String>();
-        final Set<String> names2 = new HashSet<String>();
+        final Set<String> names1 = new HashSet<>();
+        final Set<String> names2 = new HashSet<>();
 
         for ( DataElementCategoryOption option : categoryOptions )
         {
@@ -281,7 +281,7 @@ public class DataElementCategoryOptionCombo
      */
     public static Map<Integer, String> getCategoryOptionComboMap( Collection<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
-        Map<Integer, String> map = new HashMap<Integer, String>();
+        Map<Integer, String> map = new HashMap<>();
 
         for ( DataElementCategoryOptionCombo coc : categoryOptionCombos )
         {

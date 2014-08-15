@@ -67,7 +67,7 @@ public class JdbcPartitionManager
         
         log.info( "Information schema analytics SQL: " + sql );
 
-        Set<String> partitions = new HashSet<String>( jdbcTemplate.queryForList( sql, String.class ) );
+        Set<String> partitions = new HashSet<>( jdbcTemplate.queryForList( sql, String.class ) );
         ANALYTICS_PARTITIONS = partitions;
         return partitions;
     }
@@ -86,7 +86,7 @@ public class JdbcPartitionManager
         
         log.info( "Information schema event analytics SQL: " + sql );
         
-        Set<String> partitions = new HashSet<String>( jdbcTemplate.queryForList( sql, String.class ) );
+        Set<String> partitions = new HashSet<>( jdbcTemplate.queryForList( sql, String.class ) );
         ANALYTICS_EVENT_PARTITIONS = partitions;
         return partitions;
     }

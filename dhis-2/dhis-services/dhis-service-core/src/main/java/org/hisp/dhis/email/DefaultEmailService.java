@@ -85,16 +85,16 @@ public class DefaultEmailService
     @Override
     public void sendEmail( String subject, String text, User sender, User recipient, boolean forceSend )
     {
-        Set<User> recipients = new HashSet<User>();
+        Set<User> recipients = new HashSet<>();
         recipients.add( recipient );
 
-        emailMessageSender.sendMessage( subject, text, sender, new HashSet<User>( recipients ), forceSend );
+        emailMessageSender.sendMessage( subject, text, sender, new HashSet<>( recipients ), forceSend );
     }
 
     @Override
     public void sendEmail( String subject, String text, User sender, Set<User> recipients, boolean forceSend )
     {
-        emailMessageSender.sendMessage( subject, text, sender, new HashSet<User>( recipients ), forceSend );
+        emailMessageSender.sendMessage( subject, text, sender, new HashSet<>( recipients ), forceSend );
     }
 
     @Override

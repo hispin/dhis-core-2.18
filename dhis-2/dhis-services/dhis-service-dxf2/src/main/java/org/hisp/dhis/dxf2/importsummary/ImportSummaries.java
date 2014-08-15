@@ -49,7 +49,7 @@ public class ImportSummaries
 
     private int ignored;
 
-    private List<ImportSummary> importSummaries = new ArrayList<ImportSummary>();
+    private List<ImportSummary> importSummaries = new ArrayList<>();
 
     public ImportSummaries()
     {

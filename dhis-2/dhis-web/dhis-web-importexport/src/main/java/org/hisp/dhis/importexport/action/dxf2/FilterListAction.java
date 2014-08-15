@@ -95,13 +95,13 @@ public class FilterListAction
         {
             this.paging = createPaging( metaDataFilterService.getFilterCountByName( key ) );
 
-            filters = new ArrayList<MetaDataFilter>( metaDataFilterService.getFiltersBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            filters = new ArrayList<>( metaDataFilterService.getFiltersBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( metaDataFilterService.getFilterCount() );
 
-            filters = new ArrayList<MetaDataFilter>( metaDataFilterService.getFiltersBetween( paging.getStartPos(), paging.getPageSize() ) );
+            filters = new ArrayList<>( metaDataFilterService.getFiltersBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
         Collections.sort( filters, IdentifiableObjectNameComparator.INSTANCE );

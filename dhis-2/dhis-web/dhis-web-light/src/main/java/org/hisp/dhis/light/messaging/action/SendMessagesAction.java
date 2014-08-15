@@ -147,7 +147,7 @@ public class SendMessagesAction
      */
     private void updateRecipients(String recipientCheckBox)
     {
-        recipient = new HashSet<User>();
+        recipient = new HashSet<>();
         
         if ( recipientCheckBox != null )
         {

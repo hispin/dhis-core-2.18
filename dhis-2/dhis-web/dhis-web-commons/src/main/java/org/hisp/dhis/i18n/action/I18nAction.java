@@ -61,13 +61,13 @@ public class I18nAction
 
     private Locale currentLocale;
     
-    private List<Locale> availableLocales = new ArrayList<Locale>();
+    private List<Locale> availableLocales = new ArrayList<>();
     
-    private Map<String, String> translations = new Hashtable<String, String>();
+    private Map<String, String> translations = new Hashtable<>();
 
-    private Map<String, String> referenceTranslations = new Hashtable<String, String>();
+    private Map<String, String> referenceTranslations = new Hashtable<>();
     
-    private List<String> propertyNames = new ArrayList<String>();
+    private List<String> propertyNames = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Dependencies

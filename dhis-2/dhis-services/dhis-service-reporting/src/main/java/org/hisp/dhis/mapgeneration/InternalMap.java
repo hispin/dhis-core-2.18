@@ -33,7 +33,7 @@ import java.util.List;
 
 public class InternalMap
 {
-    private List<InternalMapLayer> layers = new ArrayList<InternalMapLayer>();
+    private List<InternalMapLayer> layers = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Constructors

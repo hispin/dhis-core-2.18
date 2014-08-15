@@ -76,7 +76,7 @@ public class GetDataCompletenessOptionsAction
         return dataSets;
     }
 
-    private List<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>();
+    private List<OrganisationUnitGroupSet> groupSets = new ArrayList<>();
 
     public List<OrganisationUnitGroupSet> getGroupSets()
     {
@@ -96,8 +96,8 @@ public class GetDataCompletenessOptionsAction
 
     public String execute()
     {
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
+        dataSets = new ArrayList<>( dataSetService.getAllDataSets() );
+        groupSets = new ArrayList<>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
         
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );

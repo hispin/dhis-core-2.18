@@ -43,7 +43,7 @@ public class CompositeSystemAuthoritiesProvider
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private Set<SystemAuthoritiesProvider> sources = new HashSet<SystemAuthoritiesProvider>();
+    private Set<SystemAuthoritiesProvider> sources = new HashSet<>();
 
     public void setSources( Set<SystemAuthoritiesProvider> sources )
     {
@@ -56,7 +56,7 @@ public class CompositeSystemAuthoritiesProvider
 
     public Collection<String> getSystemAuthorities()
     {
-        HashSet<String> authorities = new HashSet<String>();
+        HashSet<String> authorities = new HashSet<>();
 
         for ( SystemAuthoritiesProvider source : sources )
         {

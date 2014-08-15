@@ -84,7 +84,7 @@ public class ExceptionInterceptor
         this.showStackTrace = showStackTrace;
     }
 
-    private List<String> ignoredExceptions = new ArrayList<String>();
+    private List<String> ignoredExceptions = new ArrayList<>();
 
     public void setIgnoredExceptions( List<String> ignoredExceptions )
     {
@@ -115,7 +115,7 @@ public class ExceptionInterceptor
             // Save exception to value stack
             // -----------------------------------------------------------------
 
-            Map<String, Object> parameterMap = new HashMap<String, Object>( 3 );
+            Map<String, Object> parameterMap = new HashMap<>( 3 );
             parameterMap.put( TEMPLATE_KEY_EXCEPTION, e );
             parameterMap.put( TEMPLATE_KEY_SHOW_STACK_TRACE, showStackTrace );
             actionInvocation.getStack().push( parameterMap );

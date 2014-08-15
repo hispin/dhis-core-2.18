@@ -89,7 +89,7 @@ public class GetUserAction
     {
         user = userService.getUser( id );
 
-        userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
+        userAuthorityGroups = new ArrayList<>( userService.getAllUserAuthorityGroups() );
 
         if ( user != null )
         {

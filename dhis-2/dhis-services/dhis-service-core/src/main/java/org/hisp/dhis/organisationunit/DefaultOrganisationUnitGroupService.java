@@ -142,7 +142,7 @@ public class DefaultOrganisationUnitGroupService
 
     public List<OrganisationUnitGroup> getOrganisationUnitGroupByName( String name )
     {
-        return new ArrayList<OrganisationUnitGroup>(
+        return new ArrayList<>(
             i18n( i18nService, organisationUnitGroupStore.getAllEqName( name ) ) );
     }
 
@@ -153,7 +153,7 @@ public class DefaultOrganisationUnitGroupService
 
     public OrganisationUnitGroup getOrganisationUnitGroupByShortName( String shortName )
     {
-        List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>(
+        List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<>(
             organisationUnitGroupStore.getAllEqShortName( shortName ) );
 
         if ( organisationUnitGroups.isEmpty() )
@@ -255,7 +255,7 @@ public class DefaultOrganisationUnitGroupService
 
     public List<OrganisationUnitGroupSet> getOrganisationUnitGroupSetByName( String name )
     {
-        return new ArrayList<OrganisationUnitGroupSet>( i18n( i18nService,
+        return new ArrayList<>( i18n( i18nService,
             organisationUnitGroupSetStore.getAllEqName( name ) ) );
     }
 
@@ -272,7 +272,7 @@ public class DefaultOrganisationUnitGroupService
 
     public Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSets()
     {
-        Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>();
+        Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<>();
 
         for ( OrganisationUnitGroupSet groupSet : getAllOrganisationUnitGroupSets() )
         {
@@ -312,7 +312,7 @@ public class DefaultOrganisationUnitGroupService
     public Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSetsNotAssignedTo(
         OrganisationUnit organisationUnit )
     {
-        Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>();
+        Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<>();
 
         for ( OrganisationUnitGroupSet groupSet : getCompulsoryOrganisationUnitGroupSets() )
         {
@@ -349,9 +349,9 @@ public class DefaultOrganisationUnitGroupService
     @Override
     public void mergeWithCurrentUserOrganisationUnits( OrganisationUnitGroup organisationUnitGroup, Collection<OrganisationUnit> mergeOrganisationUnits )
     {
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>( organisationUnitGroup.getMembers() );
+        Set<OrganisationUnit> organisationUnits = new HashSet<>( organisationUnitGroup.getMembers() );
 
-        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> userOrganisationUnits = new HashSet<>();
 
         for ( OrganisationUnit organisationUnit : currentUserService.getCurrentUser().getOrganisationUnits() )
         {

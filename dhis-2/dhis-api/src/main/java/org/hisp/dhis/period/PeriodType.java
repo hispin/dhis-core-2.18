@@ -126,7 +126,7 @@ public abstract class PeriodType
      */
     public static List<PeriodType> getAvailablePeriodTypes()
     {
-        return new ArrayList<PeriodType>( PERIOD_TYPES );
+        return new ArrayList<>( PERIOD_TYPES );
     }
 
     /**

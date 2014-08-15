@@ -80,7 +80,7 @@ public class AddIndicatorGroupSetAction
         this.compulsory = compulsory;
     }
 
-    private List<String> groupMembers = new ArrayList<String>();
+    private List<String> groupMembers = new ArrayList<>();
 
     public void setGroupMembers( List<String> groupMembers )
     {
@@ -95,7 +95,7 @@ public class AddIndicatorGroupSetAction
     {
         IndicatorGroupSet indicatorGroupSet = new IndicatorGroupSet( name, description, compulsory );
 
-        List<IndicatorGroup> indicatorGroups = new ArrayList<IndicatorGroup>();
+        List<IndicatorGroup> indicatorGroups = new ArrayList<>();
 
         for ( String id : this.groupMembers )
         {

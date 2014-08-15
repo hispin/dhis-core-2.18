@@ -80,7 +80,7 @@ public class GetDataApprovalOptionsAction
     public String execute()
         throws Exception
     {
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        dataSets = new ArrayList<>( dataSetService.getAllDataSets() );
         periodTypes = getAvailablePeriodTypes();
 
         FilterUtils.filter( dataSets, new DataSetApproveDataFilter() );

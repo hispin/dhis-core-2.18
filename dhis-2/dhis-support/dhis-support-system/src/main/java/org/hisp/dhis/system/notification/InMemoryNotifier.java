@@ -58,8 +58,8 @@ public class InMemoryNotifier
     @PostConstruct
     public void init()
     {
-        notifications = new TaskLocalList<Notification>();
-        taskSummaries = new TaskLocalMap<TaskCategory, Object>();
+        notifications = new TaskLocalList<>();
+        taskSummaries = new TaskLocalMap<>();
     }
 
     // -------------------------------------------------------------------------
@@ -95,7 +95,7 @@ public class InMemoryNotifier
     @Override
     public List<Notification> getNotifications( TaskId id, String lastUid )
     {
-        List<Notification> list = new ArrayList<Notification>();
+        List<Notification> list = new ArrayList<>();
         
         if ( id != null )
         {

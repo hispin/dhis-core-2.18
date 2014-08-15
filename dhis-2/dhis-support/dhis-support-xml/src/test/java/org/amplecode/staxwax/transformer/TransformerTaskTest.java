@@ -72,7 +72,7 @@ public class TransformerTaskTest extends TestCase
         inputStreamB = classLoader.getResourceAsStream( "dataB.xml" );
         stylesheet = classLoader.getResourceAsStream( "transform.xsl" );
 
-        params = new HashMap<String, String>();
+        params = new HashMap<>();
         params.put( "name", "Bob" );
 
         Source sheet = new StreamSource( stylesheet );

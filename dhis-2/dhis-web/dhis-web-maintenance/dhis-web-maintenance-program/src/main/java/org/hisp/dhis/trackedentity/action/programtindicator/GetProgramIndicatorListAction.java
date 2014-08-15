@@ -100,7 +100,7 @@ public class GetProgramIndicatorListAction
     {
         program = programService.getProgram( programId );
 
-        programIndicators = new ArrayList<ProgramIndicator>( programIndicatorService.getProgramIndicators( program ) );
+        programIndicators = new ArrayList<>( programIndicatorService.getProgramIndicators( program ) );
 
         Collections.sort( programIndicators, IdentifiableObjectNameComparator.INSTANCE );
 

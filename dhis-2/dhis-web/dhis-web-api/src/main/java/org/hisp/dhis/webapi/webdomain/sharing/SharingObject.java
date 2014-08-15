@@ -54,7 +54,7 @@ public class SharingObject
     private SharingUser user = new SharingUser();
 
     @JsonProperty
-    private List<SharingUserGroupAccess> userGroupAccesses = new ArrayList<SharingUserGroupAccess>();
+    private List<SharingUserGroupAccess> userGroupAccesses = new ArrayList<>();
 
     public SharingObject()
     {

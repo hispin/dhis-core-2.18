@@ -42,7 +42,7 @@ public class TaskLocalMap<T, V>
     
     public TaskLocalMap()
     {
-        this.internalMap = new HashMap<TaskId, Map<T, V>>();
+        this.internalMap = new HashMap<>();
     }
 
     public Map<T, V> get( TaskId id )
@@ -51,7 +51,7 @@ public class TaskLocalMap<T, V>
         
         if ( map == null )
         {
-            map = new HashMap<T, V>();
+            map = new HashMap<>();
             internalMap.put( id, map );
         }
         

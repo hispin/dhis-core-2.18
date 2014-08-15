@@ -46,7 +46,7 @@ public class CrossTabDataValue
     /**
      * Contains Operand (data element id and category option combo id) and data value.
      */
-    private Map<DataElementOperand, String> valueMap = new HashMap<DataElementOperand, String>();
+    private Map<DataElementOperand, String> valueMap = new HashMap<>();
 
     // -------------------------------------------------------------------------
     // Constructors

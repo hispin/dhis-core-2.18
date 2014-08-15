@@ -71,7 +71,7 @@ public class Interval
     {
         this.valueLow = valueLow;
         this.valueHigh = valueHigh;
-        this.members = new ArrayList<InternalMapObject>();
+        this.members = new ArrayList<>();
     }
 
     public Interval( Color color, double valueLow, double valueHigh )
@@ -79,7 +79,7 @@ public class Interval
         this.color = color;
         this.valueLow = valueLow;
         this.valueHigh = valueHigh;
-        this.members = new ArrayList<InternalMapObject>();
+        this.members = new ArrayList<>();
     }
 
     // -------------------------------------------------------------------------

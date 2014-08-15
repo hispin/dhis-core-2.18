@@ -113,7 +113,7 @@ public class GetAllCaseAggregationConditionAction
     public String execute()
         throws Exception
     {
-        Collection<DataSet> _datasets = new HashSet<DataSet>();
+        Collection<DataSet> _datasets = new HashSet<>();
         aggregationConditions = aggregationConditionService.getAllCaseAggregationCondition();
 
         for ( CaseAggregationCondition aggCondition : aggregationConditions )
@@ -123,7 +123,7 @@ public class GetAllCaseAggregationConditionAction
             _datasets.addAll( dataElement.getDataSets() );
         }
 
-        dataSets = new ArrayList<DataSet>( _datasets );
+        dataSets = new ArrayList<>( _datasets );
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
 
         Collection<DataElement> dataElements = ( dataSetId == null ) ? null : dataSetService.getDataSet( dataSetId ).getDataElements();

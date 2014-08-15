@@ -43,7 +43,7 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "enrollments", namespace = DxfNamespaces.DXF_2_0 )
 public class Enrollments
 {
-    private List<Enrollment> enrollments = new ArrayList<Enrollment>();
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     public Enrollments()
     {

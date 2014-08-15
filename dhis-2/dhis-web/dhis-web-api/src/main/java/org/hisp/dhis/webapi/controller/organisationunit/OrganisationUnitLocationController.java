@@ -83,7 +83,7 @@ public class OrganisationUnitLocationController
         Model model, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
-        List<OrganisationUnit> entityList = new ArrayList<OrganisationUnit>(
+        List<OrganisationUnit> entityList = new ArrayList<>(
             organisationUnitService.getOrganisationUnitWithinDistance( longitude, latitude, distance ) );
 
         for ( OrganisationUnit orgunit : entityList )
@@ -135,7 +135,7 @@ public class OrganisationUnitLocationController
         Model model, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
-        List<OrganisationUnit> entityList = new ArrayList<OrganisationUnit>(
+        List<OrganisationUnit> entityList = new ArrayList<>(
             organisationUnitService.getOrganisationUnitByCoordinate( longitude, latitude, topOrgUnit, targetLevel ) );
 
         // Remove unrelated details and output in JSON format
@@ -165,7 +165,7 @@ public class OrganisationUnitLocationController
     {
         boolean withinOrgUnit = false;
 
-        Collection<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>();
+        Collection<OrganisationUnit> orgUnits = new ArrayList<>();
         orgUnits.add( organisationUnitService.getOrganisationUnit( orgUnitUid ) );
         FilterUtils.filter( orgUnits, new OrganisationUnitPolygonCoveringCoordinateFilter( longitude, latitude ) );
         

@@ -227,7 +227,7 @@ public class DefaultExpressionService
 
         if ( expression != null )
         {
-            dataElementsInExpression = new HashSet<DataElement>();
+            dataElementsInExpression = new HashSet<>();
 
             final Matcher matcher = OPERAND_PATTERN.matcher( expression );
 
@@ -251,7 +251,7 @@ public class DefaultExpressionService
         
         if ( indicators != null )
         {
-            groups = new HashSet<OrganisationUnitGroup>();
+            groups = new HashSet<>();
             
             for ( Indicator indicator : indicators )
             {
@@ -269,7 +269,7 @@ public class DefaultExpressionService
         
         if ( expression != null )
         {
-            groupsInExpression = new HashSet<OrganisationUnitGroup>();
+            groupsInExpression = new HashSet<>();
             
             final Matcher matcher = OU_GROUP_PATTERN.matcher( expression );
             
@@ -289,7 +289,7 @@ public class DefaultExpressionService
     
     public Set<String> getDataElementTotalUids( String expression )
     {
-        Set<String> uids = new HashSet<String>();
+        Set<String> uids = new HashSet<>();
         
         if ( expression != null )
         {
@@ -311,7 +311,7 @@ public class DefaultExpressionService
 
         if ( expression != null )
         {
-            optionCombosInExpression = new HashSet<DataElementCategoryOptionCombo>();
+            optionCombosInExpression = new HashSet<>();
 
             final Matcher matcher = OPERAND_PATTERN.matcher( expression );
 
@@ -337,7 +337,7 @@ public class DefaultExpressionService
 
         if ( expression != null )
         {
-            operandsInExpression = new HashSet<DataElementOperand>();
+            operandsInExpression = new HashSet<>();
 
             final Matcher matcher = OPERAND_PATTERN.matcher( expression );
 
@@ -358,7 +358,7 @@ public class DefaultExpressionService
     @Transactional
     public Set<DataElement> getDataElementsInIndicators( Collection<Indicator> indicators )
     {
-        Set<DataElement> dataElements = new HashSet<DataElement>();
+        Set<DataElement> dataElements = new HashSet<>();
         
         for ( Indicator indicator : indicators )
         {
@@ -632,7 +632,7 @@ public class DefaultExpressionService
     {
         if ( indicators != null && !indicators.isEmpty() )
         {
-            Set<String> dataElementTotals = new HashSet<String>();
+            Set<String> dataElementTotals = new HashSet<>();
             
             for ( Indicator indicator : indicators )
             {
@@ -661,7 +661,7 @@ public class DefaultExpressionService
     {
         if ( validationRules != null && !validationRules.isEmpty() )
         {
-            Set<String> dataElementTotals = new HashSet<String>();
+            Set<String> dataElementTotals = new HashSet<>();
             
             for ( ValidationRule rule : validationRules )
             {
@@ -917,7 +917,7 @@ public class DefaultExpressionService
     @Transactional
     public Set<DataElementOperand> getOperandsInIndicators( Collection<Indicator> indicators )
     {
-        final Set<DataElementOperand> operands = new HashSet<DataElementOperand>();
+        final Set<DataElementOperand> operands = new HashSet<>();
         
         for ( Indicator indicator : indicators )
         {

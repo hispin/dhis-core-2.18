@@ -388,10 +388,10 @@ public class CurrentUserController
         }
 
         Recipients recipients = new Recipients();
-        recipients.setOrganisationUnits( new HashSet<OrganisationUnit>( organisationUnitService.getOrganisationUnitsBetweenByName( filter, 0, MAX_OBJECTS ) ) );
+        recipients.setOrganisationUnits( new HashSet<>( organisationUnitService.getOrganisationUnitsBetweenByName( filter, 0, MAX_OBJECTS ) ) );
 
-        recipients.setUsers( new HashSet<User>( userService.getAllUsersBetweenByName( filter, 0, MAX_OBJECTS ) ) );
-        recipients.setUserGroups( new HashSet<UserGroup>( userGroupService.getUserGroupsBetweenByName( filter, 0, MAX_OBJECTS ) ) );
+        recipients.setUsers( new HashSet<>( userService.getAllUsersBetweenByName( filter, 0, MAX_OBJECTS ) ) );
+        recipients.setUserGroups( new HashSet<>( userGroupService.getUserGroupsBetweenByName( filter, 0, MAX_OBJECTS ) ) );
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), recipients );
@@ -407,12 +407,12 @@ public class CurrentUserController
             throw new NotAuthenticatedException();
         }
 
-        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> userOrganisationUnits = new HashSet<>();
         userOrganisationUnits.add( currentUser.getOrganisationUnit() );
 
         if ( parameters.containsKey( "includeChildren" ) && Boolean.parseBoolean( parameters.get( "includeChildren" ) ) )
         {
-            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+            List<OrganisationUnit> children = new ArrayList<>();
 
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
@@ -423,7 +423,7 @@ public class CurrentUserController
         }
         else if ( parameters.containsKey( "includeDescendants" ) && Boolean.parseBoolean( parameters.get( "includeDescendants" ) ) )
         {
-            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+            List<OrganisationUnit> children = new ArrayList<>();
 
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
@@ -458,19 +458,19 @@ public class CurrentUserController
             throw new NotAuthenticatedException();
         }
 
-        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-        Set<Program> programs = new HashSet<Program>();
-        Map<String, List<Program>> programAssociations = new HashMap<String, List<Program>>();
+        Set<OrganisationUnit> userOrganisationUnits = new HashSet<>();
+        Set<OrganisationUnit> organisationUnits = new HashSet<>();
+        Set<Program> programs = new HashSet<>();
+        Map<String, List<Program>> programAssociations = new HashMap<>();
         List<Program> userPrograms;
 
         if ( type == null )
         {
-            userPrograms = new ArrayList<Program>( programService.getProgramsByCurrentUser() );
+            userPrograms = new ArrayList<>( programService.getProgramsByCurrentUser() );
         }
         else
         {
-            userPrograms = new ArrayList<Program>( programService.getProgramsByCurrentUser( type ) );
+            userPrograms = new ArrayList<>( programService.getProgramsByCurrentUser( type ) );
         }
 
         if ( currentUserService.currentUserIsSuper() && currentUser.getOrganisationUnits().isEmpty() )
@@ -484,7 +484,7 @@ public class CurrentUserController
 
         if ( parameters.containsKey( "includeDescendants" ) && Boolean.parseBoolean( parameters.get( "includeDescendants" ) ) )
         {
-            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+            List<OrganisationUnit> children = new ArrayList<>();
 
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
@@ -495,7 +495,7 @@ public class CurrentUserController
         }
         else
         {
-            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+            List<OrganisationUnit> children = new ArrayList<>();
 
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
@@ -507,7 +507,7 @@ public class CurrentUserController
 
         for ( OrganisationUnit organisationUnit : userOrganisationUnits )
         {
-            List<Program> ouPrograms = new ArrayList<Program>( programService.getPrograms( organisationUnit ) );
+            List<Program> ouPrograms = new ArrayList<>( programService.getPrograms( organisationUnit ) );
 
             if ( !ouPrograms.isEmpty() )
             {
@@ -580,17 +580,17 @@ public class CurrentUserController
 
         Forms forms = new Forms();
 
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> organisationUnits = new HashSet<>();
         Set<DataSet> userDataSets;
-        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>( currentUser.getOrganisationUnits() );
+        Set<OrganisationUnit> userOrganisationUnits = new HashSet<>( currentUser.getOrganisationUnits() );
 
         if ( currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
         {
-            userDataSets = new HashSet<DataSet>( dataSetService.getAllDataSets() );
+            userDataSets = new HashSet<>( dataSetService.getAllDataSets() );
 
             if ( userOrganisationUnits.isEmpty() )
             {
-                userOrganisationUnits = new HashSet<OrganisationUnit>( organisationUnitService.getRootOrganisationUnits() );
+                userOrganisationUnits = new HashSet<>( organisationUnitService.getRootOrganisationUnits() );
             }
         }
         else
@@ -600,7 +600,7 @@ public class CurrentUserController
 
         if ( parameters.containsKey( "includeDescendants" ) && Boolean.parseBoolean( parameters.get( "includeDescendants" ) ) )
         {
-            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+            List<OrganisationUnit> children = new ArrayList<>();
 
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
@@ -611,7 +611,7 @@ public class CurrentUserController
         }
         else
         {
-            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+            List<OrganisationUnit> children = new ArrayList<>();
 
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {

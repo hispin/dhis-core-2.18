@@ -416,7 +416,7 @@ public class DefaultImportObjectManager
 
             object.setCategoryCombo( categoryService.getDataElementCategoryCombo( categoryComboId ) );
 
-            Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+            Set<DataElementCategoryOption> categoryOptions = new HashSet<>();
 
             for ( DataElementCategoryOption categoryOption : object.getCategoryOptions() )
             {

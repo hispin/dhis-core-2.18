@@ -160,27 +160,27 @@ public class GetOperandsAction
 
     public String execute()
     {
-        List<DataElement> dataElements = new ArrayList<DataElement>();
+        List<DataElement> dataElements = new ArrayList<>();
 
         if ( id != null )
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementGroup( id ).getMembers() );
+            dataElements = new ArrayList<>( dataElementService.getDataElementGroup( id ).getMembers() );
         }
         else if ( uid != null )
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementGroup( uid ).getMembers() );
+            dataElements = new ArrayList<>( dataElementService.getDataElementGroup( uid ).getMembers() );
         }
         else if ( !StringUtils.isEmpty( key ) )
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsLikeName( key ) );
+            dataElements = new ArrayList<>( dataElementService.getDataElementsLikeName( key ) );
         }
         else if ( dataSetId != null )
         {
-            dataElements = new ArrayList<DataElement>( dataSetService.getDataSet( dataSetId ).getDataElements() );
+            dataElements = new ArrayList<>( dataSetService.getDataSet( dataSetId ).getDataElements() );
         }
         else
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+            dataElements = new ArrayList<>( dataElementService.getAllDataElements() );
         }
 
         if ( aggregationOperator != null )
@@ -199,7 +199,7 @@ public class GetOperandsAction
 
         Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
         
-        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataElements,
+        operands = new ArrayList<>( dataElementCategoryService.getOperands( dataElements,
             includeTotals ) );
 
         if ( usePaging )

@@ -204,21 +204,21 @@ public class UpdateUserAction
         this.localeDb = localeDb;
     }
 
-    private List<String> urSelected = new ArrayList<String>();
+    private List<String> urSelected = new ArrayList<>();
 
     public void setUrSelected( List<String> urSelected )
     {
         this.urSelected = urSelected;
     }
 
-    private List<String> ugSelected = new ArrayList<String>();
+    private List<String> ugSelected = new ArrayList<>();
 
     public void setUgSelected( List<String> ugSelected )
     {
         this.ugSelected = ugSelected;
     }
 
-    private List<String> dcSelected = new ArrayList<String>();
+    private List<String> dcSelected = new ArrayList<>();
 
     public void setDcSelected( List<String> dcSelected )
     {
@@ -324,22 +324,22 @@ public class UpdateUserAction
         // Organisation units
         // ---------------------------------------------------------------------
 
-        Set<OrganisationUnit> dataCaptureOrgUnits = new HashSet<OrganisationUnit>( selectionManager.getSelectedOrganisationUnits() );
+        Set<OrganisationUnit> dataCaptureOrgUnits = new HashSet<>( selectionManager.getSelectedOrganisationUnits() );
         user.updateOrganisationUnits( dataCaptureOrgUnits );
 
-        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
         user.setDataViewOrganisationUnits( dataViewOrgUnits );
 
         if ( dataViewOrgUnits.size() == 0 && currentUser.getDataViewOrganisationUnits().size() != 0 )
         {
-            user.setDataViewOrganisationUnits( new HashSet<OrganisationUnit>( currentUser.getDataViewOrganisationUnits() ) );
+            user.setDataViewOrganisationUnits( new HashSet<>( currentUser.getDataViewOrganisationUnits() ) );
         }
 
         // ---------------------------------------------------------------------
         // User roles
         // ---------------------------------------------------------------------
 
-        Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
+        Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<>();
 
         for ( String id : urSelected )
         {
@@ -357,8 +357,8 @@ public class UpdateUserAction
         // from the current user.
         // ---------------------------------------------------------------------
 
-        userCredentials.setCogsDimensionConstraints( new HashSet<CategoryOptionGroupSet>( currentUser.getUserCredentials().getCogsDimensionConstraints() ) );
-        userCredentials.setCatDimensionConstraints( new HashSet<DataElementCategory>( currentUser.getUserCredentials().getCatDimensionConstraints() ) );
+        userCredentials.setCogsDimensionConstraints( new HashSet<>( currentUser.getUserCredentials().getCogsDimensionConstraints() ) );
+        userCredentials.setCatDimensionConstraints( new HashSet<>( currentUser.getUserCredentials().getCatDimensionConstraints() ) );
 
         for ( String id : dcSelected )
         {
@@ -413,14 +413,14 @@ public class UpdateUserAction
         // User groups
         // ---------------------------------------------------------------------
 
-        Set<UserGroup> userGroups = new HashSet<UserGroup>();
+        Set<UserGroup> userGroups = new HashSet<>();
 
         for ( String id : ugSelected )
         {
             userGroups.add( userGroupService.getUserGroup( id ) );
         }
 
-        for ( UserGroup userGroup : new HashSet<UserGroup>( user.getGroups() ) )
+        for ( UserGroup userGroup : new HashSet<>( user.getGroups() ) )
         {
             if ( !userGroups.contains( userGroup ) )
             {

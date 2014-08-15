@@ -164,7 +164,7 @@ public class GetAnalysisAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<DeflatedDataValue> dataValues = new ArrayList<DeflatedDataValue>();
+    private Collection<DeflatedDataValue> dataValues = new ArrayList<>();
 
     public Collection<DeflatedDataValue> getDataValues()
     {
@@ -184,7 +184,7 @@ public class GetAnalysisAction
 
     public String execute()
     {
-        Set<DataElement> dataElements = new HashSet<DataElement>();
+        Set<DataElement> dataElements = new HashSet<>();
         Collection<Period> periods = null;
         OrganisationUnit unit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
         Collection<OrganisationUnit> orgUnits = null;

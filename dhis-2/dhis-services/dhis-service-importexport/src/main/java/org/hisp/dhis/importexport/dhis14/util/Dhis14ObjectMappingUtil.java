@@ -53,7 +53,7 @@ public class Dhis14ObjectMappingUtil
     
     static
     {
-        periodTypeMap = new HashMap<Integer, PeriodType>();
+        periodTypeMap = new HashMap<>();
         
         periodTypeMap.put( 1, new MonthlyPeriodType() );
         periodTypeMap.put( 2, new QuarterlyPeriodType() );
@@ -68,7 +68,7 @@ public class Dhis14ObjectMappingUtil
     
     static
     {
-        dataElementTypeMap = new HashMap<Integer, String>();
+        dataElementTypeMap = new HashMap<>();
 
         dataElementTypeMap.put( 1, DataElement.VALUE_TYPE_STRING ); // Should be Date
         dataElementTypeMap.put( 2, DataElement.VALUE_TYPE_STRING );

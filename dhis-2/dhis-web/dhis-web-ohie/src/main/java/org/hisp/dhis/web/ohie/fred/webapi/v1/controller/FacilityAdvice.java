@@ -78,7 +78,7 @@ public class FacilityAdvice extends ResponseEntityExceptionHandler
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
 
-        return new ResponseEntity<String>( MessageUtils.jsonMessage( ex.getStatusText(),
+        return new ResponseEntity<>( MessageUtils.jsonMessage( ex.getStatusText(),
             ex.getMessage() ), headers, ex.getStatusCode() );
     }
 
@@ -88,7 +88,7 @@ public class FacilityAdvice extends ResponseEntityExceptionHandler
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
 
-        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.FORBIDDEN.toString(),
+        return new ResponseEntity<>( MessageUtils.jsonMessage( HttpStatus.FORBIDDEN.toString(),
             ex.getMessage() ), headers, HttpStatus.FORBIDDEN );
     }
 
@@ -98,7 +98,7 @@ public class FacilityAdvice extends ResponseEntityExceptionHandler
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
 
-        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.PRECONDITION_FAILED.toString(),
+        return new ResponseEntity<>( MessageUtils.jsonMessage( HttpStatus.PRECONDITION_FAILED.toString(),
             ex.getMessage() ), headers, HttpStatus.PRECONDITION_FAILED );
     }
 
@@ -108,7 +108,7 @@ public class FacilityAdvice extends ResponseEntityExceptionHandler
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
 
-        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
+        return new ResponseEntity<>( MessageUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
             ex.getMessage() ), headers, HttpStatus.NOT_FOUND );
     }
 
@@ -118,7 +118,7 @@ public class FacilityAdvice extends ResponseEntityExceptionHandler
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
 
-        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
+        return new ResponseEntity<>( MessageUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
             ex.getMessage() ), headers, HttpStatus.CONFLICT );
     }
 

@@ -64,9 +64,9 @@ public class Section
     private DataSet dataSet;
 
     @Scanned
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<DataElement> dataElements = new ArrayList<>();
 
-    private Set<DataElementOperand> greyedFields = new HashSet<DataElementOperand>();
+    private Set<DataElementOperand> greyedFields = new HashSet<>();
 
     private int sortOrder;
 

@@ -96,7 +96,7 @@ public class DefaultUserDetailsService
 
     private Collection<GrantedAuthority> getGrantedAuthorities( UserCredentials credentials )
     {
-        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        Set<GrantedAuthority> authorities = new HashSet<>();
 
         for ( UserAuthorityGroup group : credentials.getUserAuthorityGroups() )
         {

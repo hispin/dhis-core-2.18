@@ -41,28 +41,28 @@ import org.hisp.dhis.system.util.LoggingHashMap;
  */
 public class NameMappingUtil
 {
-    private static ThreadLocal<Map<Object, String>> conceptMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, String>> categoryMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, String>> categoryOptionMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, String>> categoryComboMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, DataElementCategoryOptionCombo>> categoryOptionComboMap = new ThreadLocal<Map<Object, DataElementCategoryOptionCombo>>();    
-    private static ThreadLocal<Map<Object, String>> dataElementMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, String>> dataElementGroupMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, String>> dataElementGroupSetMap = new ThreadLocal<Map<Object,String>>();
-    private static ThreadLocal<Map<Object, String>> indicatorMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, String>> indicatorGroupMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, String>> indicatorGroupSetMap = new ThreadLocal<Map<Object,String>>();
-    private static ThreadLocal<Map<Object, String>> indicatorTypeMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, String>> dataDictionaryMap = new ThreadLocal<Map<Object,String>>();
-    private static ThreadLocal<Map<Object, Period>> periodMap = new ThreadLocal<Map<Object, Period>>();
-    private static ThreadLocal<Map<Object, String>> dataSetMap = new ThreadLocal<Map<Object,String>>();
-    private static ThreadLocal<Map<Object, String>> organisationUnitMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, String>> organisationUnitGroupMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, String>> organisationUnitGroupSetMap = new ThreadLocal<Map<Object, String>>();
-    private static ThreadLocal<Map<Object, String>> reportTableMap = new ThreadLocal<Map<Object,String>>();
-    private static ThreadLocal<Map<Object, String>> dataElementAggregationOperatorMap = new ThreadLocal<Map<Object,String>>();
-    private static ThreadLocal<Map<Object, String>> dataEntryFormMap = new ThreadLocal<Map<Object,String>>();
-    private static ThreadLocal<Map<Object, String>> constantMap = new ThreadLocal<Map<Object,String>>();
+    private static ThreadLocal<Map<Object, String>> conceptMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> categoryMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> categoryOptionMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> categoryComboMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, DataElementCategoryOptionCombo>> categoryOptionComboMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> dataElementMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> dataElementGroupMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> dataElementGroupSetMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> indicatorMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> indicatorGroupMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> indicatorGroupSetMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> indicatorTypeMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> dataDictionaryMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, Period>> periodMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> dataSetMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> organisationUnitMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> organisationUnitGroupMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> organisationUnitGroupSetMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> reportTableMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> dataElementAggregationOperatorMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> dataEntryFormMap = new ThreadLocal<>();
+    private static ThreadLocal<Map<Object, String>> constantMap = new ThreadLocal<>();
 
     // -------------------------------------------------------------------------
     // Control
@@ -111,7 +111,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getConceptMap()
     {
-        return conceptMap.get() != null ? new HashMap<Object, String>( conceptMap.get() ) : new HashMap<Object, String>();
+        return conceptMap.get() != null ? new HashMap<>( conceptMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -131,7 +131,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getCategoryMap()
     {
-        return categoryMap.get() != null ? new HashMap<Object, String>( categoryMap.get() ) : new HashMap<Object, String>();
+        return categoryMap.get() != null ? new HashMap<>( categoryMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -151,7 +151,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getCategoryOptionMap()
     {
-        return categoryOptionMap.get() != null ? new HashMap<Object, String>( categoryOptionMap.get() ) : new HashMap<Object, String>();
+        return categoryOptionMap.get() != null ? new HashMap<>( categoryOptionMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -171,7 +171,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getCategoryComboMap()
     {
-        return categoryComboMap.get() != null ? new HashMap<Object, String>( categoryComboMap.get() ) : new HashMap<Object, String>();
+        return categoryComboMap.get() != null ? new HashMap<>( categoryComboMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -188,7 +188,7 @@ public class NameMappingUtil
         
         if ( map == null )
         {
-            map = new HashMap<Object, DataElementCategoryOptionCombo>();
+            map = new HashMap<>();
         }
         
         if ( !map.containsKey( categoryOptionComboId ) )
@@ -205,7 +205,7 @@ public class NameMappingUtil
      */
     public static Map<Object, DataElementCategoryOptionCombo> getCategoryOptionComboMap()
     {
-        return categoryOptionComboMap.get() != null ? new HashMap<Object, DataElementCategoryOptionCombo>( categoryOptionComboMap.get() ) : new HashMap<Object, DataElementCategoryOptionCombo>();
+        return categoryOptionComboMap.get() != null ? new HashMap<>( categoryOptionComboMap.get() ) : new HashMap<Object, DataElementCategoryOptionCombo>();
     }
 
     // -------------------------------------------------------------------------
@@ -225,7 +225,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getDataElementMap()
     {
-        return dataElementMap.get() != null ? new HashMap<Object, String>( dataElementMap.get() ) : new HashMap<Object, String>();
+        return dataElementMap.get() != null ? new HashMap<>( dataElementMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -245,7 +245,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getDataElementGroupMap()
     {
-        return dataElementGroupMap.get() != null ? new HashMap<Object, String>( dataElementGroupMap.get() ) : new HashMap<Object, String>();
+        return dataElementGroupMap.get() != null ? new HashMap<>( dataElementGroupMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -265,7 +265,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getDataElementGroupSetMap()
     {
-        return dataElementGroupSetMap.get() != null ? new HashMap<Object, String>( dataElementGroupSetMap.get() ) : new HashMap<Object, String>();
+        return dataElementGroupSetMap.get() != null ? new HashMap<>( dataElementGroupSetMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -285,7 +285,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getIndicatorMap()
     {
-        return indicatorMap.get() != null ? new HashMap<Object, String>( indicatorMap.get() ) : new HashMap<Object, String>();
+        return indicatorMap.get() != null ? new HashMap<>( indicatorMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -305,7 +305,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getIndicatorGroupMap()
     {
-        return indicatorGroupMap.get() != null ? new HashMap<Object, String>( indicatorGroupMap.get() ) : new HashMap<Object, String>();
+        return indicatorGroupMap.get() != null ? new HashMap<>( indicatorGroupMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -325,7 +325,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getIndicatorGroupSetMap()
     {
-        return indicatorGroupSetMap.get() != null ? new HashMap<Object, String>( indicatorGroupSetMap.get() ) : new HashMap<Object, String>();
+        return indicatorGroupSetMap.get() != null ? new HashMap<>( indicatorGroupSetMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -345,7 +345,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getIndicatorTypeMap()
     {
-        return indicatorTypeMap.get() != null ? new HashMap<Object, String>( indicatorTypeMap.get() ) : new HashMap<Object, String>();
+        return indicatorTypeMap.get() != null ? new HashMap<>( indicatorTypeMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -365,7 +365,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getDataDictionaryMap()
     {
-        return dataDictionaryMap.get() != null ? new HashMap<Object, String>( dataDictionaryMap.get() ) : new HashMap<Object, String>();
+        return dataDictionaryMap.get() != null ? new HashMap<>( dataDictionaryMap.get() ) : new HashMap<Object, String>();
     }
     
     // -------------------------------------------------------------------------
@@ -381,7 +381,7 @@ public class NameMappingUtil
         
         if ( map == null )
         {
-            map = new HashMap<Object, Period>();
+            map = new HashMap<>();
         }
         
         map.put( periodId, period );
@@ -394,7 +394,7 @@ public class NameMappingUtil
      */
     public static Map<Object, Period> getPeriodMap()
     {
-        return periodMap.get() != null ? new HashMap<Object, Period>( periodMap.get() ) : new HashMap<Object, Period>();
+        return periodMap.get() != null ? new HashMap<>( periodMap.get() ) : new HashMap<Object, Period>();
     }
     
     // -------------------------------------------------------------------------
@@ -414,7 +414,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getDataSetMap()
     {
-        return dataSetMap.get() != null ? new HashMap<Object, String>( dataSetMap.get() ) : new HashMap<Object, String>();
+        return dataSetMap.get() != null ? new HashMap<>( dataSetMap.get() ) : new HashMap<Object, String>();
     }
     
     // -------------------------------------------------------------------------
@@ -434,7 +434,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getOrganisationUnitMap()
     {
-        return organisationUnitMap.get() != null ? new HashMap<Object, String>( organisationUnitMap.get() ) : new HashMap<Object, String>();
+        return organisationUnitMap.get() != null ? new HashMap<>( organisationUnitMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -454,7 +454,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getOrganisationUnitGroupMap()
     {
-        return organisationUnitGroupMap.get() != null ? new HashMap<Object, String>( organisationUnitGroupMap.get() ) : new HashMap<Object, String>();
+        return organisationUnitGroupMap.get() != null ? new HashMap<>( organisationUnitGroupMap.get() ) : new HashMap<Object, String>();
     }
     
     // -------------------------------------------------------------------------
@@ -474,7 +474,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getGroupSetMap()
     {
-        return organisationUnitGroupSetMap.get() != null ? new HashMap<Object, String>( organisationUnitGroupSetMap.get() ) : new HashMap<Object, String>();
+        return organisationUnitGroupSetMap.get() != null ? new HashMap<>( organisationUnitGroupSetMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -494,7 +494,7 @@ public class NameMappingUtil
      */
     public static Map<Object, String> getReportTableMap()
     {
-        return reportTableMap.get() != null ? new HashMap<Object, String>( reportTableMap.get() ) : new HashMap<Object, String>();
+        return reportTableMap.get() != null ? new HashMap<>( reportTableMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -508,7 +508,7 @@ public class NameMappingUtil
     
     public static Map<Object, String> getDataElementAggregationOperatorMap()
     {
-        return dataElementAggregationOperatorMap.get() != null ? new LoggingHashMap<Object, String>( dataElementAggregationOperatorMap.get() ) : new HashMap<Object, String>();
+        return dataElementAggregationOperatorMap.get() != null ? new LoggingHashMap<>( dataElementAggregationOperatorMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------
@@ -529,7 +529,7 @@ public class NameMappingUtil
 
     public static Map<Object, String> getDataEntryFormMap()
     {
-        return dataEntryFormMap.get() != null ? new HashMap<Object, String>( dataEntryFormMap.get() ) : new HashMap<Object, String>();
+        return dataEntryFormMap.get() != null ? new HashMap<>( dataEntryFormMap.get() ) : new HashMap<Object, String>();
     }
     
 
@@ -551,7 +551,7 @@ public class NameMappingUtil
 
     public static Map<Object, String> getConstantMap()
     {
-        return constantMap.get() != null ? new HashMap<Object, String>( constantMap.get() ) : new HashMap<Object, String>();
+        return constantMap.get() != null ? new HashMap<>( constantMap.get() ) : new HashMap<Object, String>();
     }
     
     // -------------------------------------------------------------------------
@@ -564,7 +564,7 @@ public class NameMappingUtil
         
         if ( map == null )
         {
-            map = new HashMap<Object, String>();
+            map = new HashMap<>();
         }
         
         if ( !map.containsKey( key ) )

@@ -62,61 +62,61 @@ public class ExportParams
 
     private User currentUser;
 
-    private Collection<Integer> categories = new ArrayList<Integer>();
+    private Collection<Integer> categories = new ArrayList<>();
 
-    private Collection<Integer> categoryOptions = new ArrayList<Integer>();
+    private Collection<Integer> categoryOptions = new ArrayList<>();
 
-    private Collection<Integer> categoryCombos = new ArrayList<Integer>();
+    private Collection<Integer> categoryCombos = new ArrayList<>();
 
-    private Collection<Integer> categoryOptionCombos = new ArrayList<Integer>();
+    private Collection<Integer> categoryOptionCombos = new ArrayList<>();
 
-    private Collection<Integer> dataElements = new ArrayList<Integer>();
+    private Collection<Integer> dataElements = new ArrayList<>();
 
-    private Collection<Integer> dataElementGroups = new ArrayList<Integer>();
+    private Collection<Integer> dataElementGroups = new ArrayList<>();
 
-    private Collection<Integer> dataElementGroupSets = new ArrayList<Integer>();
+    private Collection<Integer> dataElementGroupSets = new ArrayList<>();
 
-    private Collection<Integer> indicators = new ArrayList<Integer>();
+    private Collection<Integer> indicators = new ArrayList<>();
 
-    private Collection<Integer> indicatorGroups = new ArrayList<Integer>();
+    private Collection<Integer> indicatorGroups = new ArrayList<>();
 
-    private Collection<Integer> indicatorGroupSets = new ArrayList<Integer>();
+    private Collection<Integer> indicatorGroupSets = new ArrayList<>();
 
-    private Collection<Integer> indicatorTypes = new ArrayList<Integer>();
+    private Collection<Integer> indicatorTypes = new ArrayList<>();
 
-    private Collection<Integer> dataDictionaries = new ArrayList<Integer>();
+    private Collection<Integer> dataDictionaries = new ArrayList<>();
 
-    private Collection<Integer> dataSets = new ArrayList<Integer>();
+    private Collection<Integer> dataSets = new ArrayList<>();
 
-    private Collection<Integer> periods = new ArrayList<Integer>();
+    private Collection<Integer> periods = new ArrayList<>();
 
-    private Collection<Integer> organisationUnits = new ArrayList<Integer>();
+    private Collection<Integer> organisationUnits = new ArrayList<>();
 
-    private Collection<Integer> organisationUnitGroups = new ArrayList<Integer>();
+    private Collection<Integer> organisationUnitGroups = new ArrayList<>();
 
-    private Collection<Integer> organisationUnitGroupSets = new ArrayList<Integer>();
+    private Collection<Integer> organisationUnitGroupSets = new ArrayList<>();
 
-    private Collection<Integer> organisationUnitLevels = new HashSet<Integer>();
+    private Collection<Integer> organisationUnitLevels = new HashSet<>();
 
-    private Collection<Integer> users = new HashSet<Integer>();
+    private Collection<Integer> users = new HashSet<>();
 
-    private Collection<Integer> validationRules = new ArrayList<Integer>();
+    private Collection<Integer> validationRules = new ArrayList<>();
 
-    private Collection<Integer> reports = new ArrayList<Integer>();
+    private Collection<Integer> reports = new ArrayList<>();
 
-    private Collection<Integer> reportTables = new ArrayList<Integer>();
+    private Collection<Integer> reportTables = new ArrayList<>();
 
-    private Collection<Integer> charts = new ArrayList<Integer>();
+    private Collection<Integer> charts = new ArrayList<>();
 
-    private Collection<DataElement> dataElementObjects = new ArrayList<DataElement>();
+    private Collection<DataElement> dataElementObjects = new ArrayList<>();
 
-    private Collection<Indicator> indicatorObjects = new ArrayList<Indicator>();
+    private Collection<Indicator> indicatorObjects = new ArrayList<>();
 
-    private Collection<OrganisationUnit> organisationUnitObjects = new ArrayList<OrganisationUnit>();
+    private Collection<OrganisationUnit> organisationUnitObjects = new ArrayList<>();
 
-    private Collection<UserCredentials> userObjects = new ArrayList<UserCredentials>();
+    private Collection<UserCredentials> userObjects = new ArrayList<>();
 
-    private Collection<ValidationRule> validationRuleObjects = new ArrayList<ValidationRule>();
+    private Collection<ValidationRule> validationRuleObjects = new ArrayList<>();
 
     private I18n i18n;
 

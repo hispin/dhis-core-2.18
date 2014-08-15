@@ -70,14 +70,14 @@ public class GetDataElementsNotInGroupAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<DataElement> groupMembers = new ArrayList<DataElement>();
+    private List<DataElement> groupMembers = new ArrayList<>();
 
     public List<DataElement> getGroupMembers()
     {
         return groupMembers;
     }
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<DataElement> dataElements = new ArrayList<>();
 
     public List<DataElement> getDataElements()
     {
@@ -98,7 +98,7 @@ public class GetDataElementsNotInGroupAction
         {
             DataElementGroup group = dataElementService.getDataElementGroup( groupId );
 
-            groupMembers = new ArrayList<DataElement>( group.getMembers() );
+            groupMembers = new ArrayList<>( group.getMembers() );
 
             Collections.sort( groupMembers, new IdentifiableObjectNameComparator() );
         }
@@ -107,7 +107,7 @@ public class GetDataElementsNotInGroupAction
         // Get available elements
         // ---------------------------------------------------------------------
 
-        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        dataElements = new ArrayList<>( dataElementService.getAllDataElements() );
 
         dataElements.removeAll( groupMembers );
 

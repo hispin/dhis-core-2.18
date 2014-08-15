@@ -51,9 +51,9 @@ public class ExportPipeThread
     
     private static final String XML_VERSION = "1.0";
     
-    private List<XMLConverter> xsdConverters = new ArrayList<XMLConverter>();
-    private List<XMLConverter> xmlConverters = new ArrayList<XMLConverter>();
-    private List<CSVConverter> csvConverters = new ArrayList<CSVConverter>();
+    private List<XMLConverter> xsdConverters = new ArrayList<>();
+    private List<XMLConverter> xmlConverters = new ArrayList<>();
+    private List<CSVConverter> csvConverters = new ArrayList<>();
         
     // -------------------------------------------------------------------------
     // Parameters

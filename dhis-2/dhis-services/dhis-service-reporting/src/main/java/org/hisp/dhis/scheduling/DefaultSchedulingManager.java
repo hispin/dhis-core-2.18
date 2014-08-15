@@ -67,7 +67,7 @@ public class DefaultSchedulingManager
         this.scheduler = scheduler;
     }
 
-    private Map<String, Runnable> tasks = new HashMap<String, Runnable>();
+    private Map<String, Runnable> tasks = new HashMap<>();
 
     public void setTasks( Map<String, Runnable> tasks )
     {
@@ -97,7 +97,7 @@ public class DefaultSchedulingManager
     
     public void scheduleTasks( ListMap<String, String> cronKeyMap )
     {
-        systemSettingManager.saveSystemSetting( KEY_SCHEDULED_TASKS, new ListMap<String, String>( cronKeyMap ) );
+        systemSettingManager.saveSystemSetting( KEY_SCHEDULED_TASKS, new ListMap<>( cronKeyMap ) );
         
         scheduleTasks();
     }

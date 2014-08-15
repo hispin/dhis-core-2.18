@@ -140,21 +140,21 @@ public class UpdateProgramAction
         this.displayIncidentDate = displayIncidentDate;
     }
 
-    private List<String> selectedPropertyIds = new ArrayList<String>();
+    private List<String> selectedPropertyIds = new ArrayList<>();
 
     public void setSelectedPropertyIds( List<String> selectedPropertyIds )
     {
         this.selectedPropertyIds = selectedPropertyIds;
     }
 
-    private List<Boolean> personDisplayNames = new ArrayList<Boolean>();
+    private List<Boolean> personDisplayNames = new ArrayList<>();
 
     public void setPersonDisplayNames( List<Boolean> personDisplayNames )
     {
         this.personDisplayNames = personDisplayNames;
     }
 
-    private List<Boolean> mandatory = new ArrayList<Boolean>();
+    private List<Boolean> mandatory = new ArrayList<>();
 
     public void setMandatory( List<Boolean> mandatory )
     {
@@ -259,7 +259,7 @@ public class UpdateProgramAction
         this.trackedEntityId = trackedEntityId;
     }
 
-    private List<Boolean> allowFutureDate = new ArrayList<Boolean>();
+    private List<Boolean> allowFutureDate = new ArrayList<>();
 
     public void setAllowFutureDate( List<Boolean> allowFutureDate )
     {

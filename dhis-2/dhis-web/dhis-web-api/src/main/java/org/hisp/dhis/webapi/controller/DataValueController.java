@@ -427,7 +427,7 @@ public class DataValueController
             return null;
         }
 
-        List<String> value = new ArrayList<String>();
+        List<String> value = new ArrayList<>();
         value.add( dataValue.getValue() );
 
         model.addAttribute( "model", value );

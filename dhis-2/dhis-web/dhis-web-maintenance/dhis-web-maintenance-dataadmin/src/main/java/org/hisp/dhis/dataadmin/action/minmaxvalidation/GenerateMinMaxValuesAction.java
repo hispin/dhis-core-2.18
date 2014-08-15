@@ -153,7 +153,7 @@ public class GenerateMinMaxValuesAction
         Double factor = (Double) systemSettingManager.
             getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0 );
 
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
+        Collection<DataElement> dataElements = new HashSet<>();
         
         for ( Integer dataSetId : dataSets )
         {

@@ -321,7 +321,7 @@ public class UpdateDataSetAction
         shortName = nullIfEmpty( shortName );
         description = nullIfEmpty( description );
 
-        Set<DataElement> dataElements = new HashSet<DataElement>();
+        Set<DataElement> dataElements = new HashSet<>();
 
         MapLegendSet legendSet = mappingService.getMapLegendSet( selectedLegendSetId );
 
@@ -330,7 +330,7 @@ public class UpdateDataSetAction
             dataElements.add( dataElementService.getDataElement( id ) );
         }
 
-        Set<Indicator> indicators = new HashSet<Indicator>();
+        Set<Indicator> indicators = new HashSet<>();
 
         for ( String id : inSelected )
         {

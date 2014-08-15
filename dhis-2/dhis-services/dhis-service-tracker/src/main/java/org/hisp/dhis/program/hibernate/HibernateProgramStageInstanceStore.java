@@ -129,7 +129,7 @@ public class HibernateProgramStageInstanceStore
 
         int cols = rs.getMetaData().getColumnCount();
 
-        Collection<SchedulingProgramObject> schedulingProgramObjects = new HashSet<SchedulingProgramObject>();
+        Collection<SchedulingProgramObject> schedulingProgramObjects = new HashSet<>();
 
         while ( rs.next() )
         {

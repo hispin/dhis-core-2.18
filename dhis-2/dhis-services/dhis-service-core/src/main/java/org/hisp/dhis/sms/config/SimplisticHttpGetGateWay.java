@@ -120,7 +120,7 @@ public class SimplisticHttpGetGateWay
     {
         log.debug( "Sending message " + msg + " " + getGatewayId() );
 
-        Map<String, String> requestParameters = new HashMap<String, String>( parameters );
+        Map<String, String> requestParameters = new HashMap<>( parameters );
 
         requestParameters.put( RECIPIENT, msg.getRecipient() );
         requestParameters.put( MESSAGE, msg.getText() );

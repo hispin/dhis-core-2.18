@@ -142,7 +142,7 @@ public class JDBCCrossTabStore
         
         if ( operands.isEmpty() || periodIds.isEmpty() || sourceIds.isEmpty() )
         {
-            return new ArrayList<CrossTabDataValue>();
+            return new ArrayList<>();
         }
         
         final String sql = "SELECT periodid, sourceid, " + getCommadelimitedString( operands ) + 
@@ -224,7 +224,7 @@ public class JDBCCrossTabStore
     private Collection<CrossTabDataValue> getCrossTabDataValues( ResultSet resultSet, Collection<DataElementOperand> operands )
         throws SQLException
     {
-        final List<CrossTabDataValue> values = new ArrayList<CrossTabDataValue>();
+        final List<CrossTabDataValue> values = new ArrayList<>();
         
         while ( resultSet.next() )
         {
@@ -252,7 +252,7 @@ public class JDBCCrossTabStore
     private Map<DataElementOperand, Double> getOperandValueMap( ResultSet resultSet, Collection<DataElementOperand> operands )
         throws SQLException
     {
-        final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>( operands.size() );
+        final Map<DataElementOperand, Double> valueMap = new HashMap<>( operands.size() );
         
         if ( resultSet.next() )
         { 

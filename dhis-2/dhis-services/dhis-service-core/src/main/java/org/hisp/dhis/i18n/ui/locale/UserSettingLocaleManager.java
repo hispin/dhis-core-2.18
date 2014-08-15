@@ -86,7 +86,7 @@ public class UserSettingLocaleManager
 
     public List<Locale> getLocalesOrderedByPriority()
     {
-        List<Locale> locales = new ArrayList<Locale>();
+        List<Locale> locales = new ArrayList<>();
 
         Locale userLocale = getUserSelectedLocale();
 

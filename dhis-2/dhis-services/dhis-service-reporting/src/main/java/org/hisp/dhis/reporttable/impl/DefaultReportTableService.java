@@ -115,8 +115,8 @@ public class DefaultReportTableService
                 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
 
-        List<OrganisationUnit> atLevels = new ArrayList<OrganisationUnit>();
-        List<OrganisationUnit> inGroups = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> atLevels = new ArrayList<>();
+        List<OrganisationUnit> inGroups = new ArrayList<>();
         
         if ( reportTable.hasOrganisationUnitLevels() )
         {

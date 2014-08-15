@@ -92,7 +92,7 @@ public class GetGeoJsonAction
         return callback;
     }
 
-    private Collection<OrganisationUnit> object = new ArrayList<OrganisationUnit>();
+    private Collection<OrganisationUnit> object = new ArrayList<>();
 
     public Collection<OrganisationUnit> getObject()
     {
@@ -113,7 +113,7 @@ public class GetGeoJsonAction
             paramString += id + ";";
         }
 
-        Set<String> ouParams = new HashSet<String>();
+        Set<String> ouParams = new HashSet<>();
         
         ouParams.add( paramString.substring( 0, paramString.length() ) );
         

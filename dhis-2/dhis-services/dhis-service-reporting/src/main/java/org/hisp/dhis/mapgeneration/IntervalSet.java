@@ -44,7 +44,7 @@ import java.util.List;
  */
 public class IntervalSet
 {
-    private List<Interval> intervals = new ArrayList<Interval>();
+    private List<Interval> intervals = new ArrayList<>();
 
     private InternalMapObject objectLow;
     

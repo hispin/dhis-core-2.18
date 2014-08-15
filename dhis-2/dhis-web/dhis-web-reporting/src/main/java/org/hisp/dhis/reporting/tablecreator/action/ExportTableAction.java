@@ -143,7 +143,7 @@ public class ExportTableAction
         return grid;
     }
 
-    private Map<String, Object> params = new HashMap<String, Object>();
+    private Map<String, Object> params = new HashMap<>();
 
     public Map<String, Object> getParams()
     {

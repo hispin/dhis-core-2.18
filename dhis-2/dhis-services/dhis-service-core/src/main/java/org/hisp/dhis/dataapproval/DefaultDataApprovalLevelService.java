@@ -135,7 +135,7 @@ public class DefaultDataApprovalLevelService
 
     public List<DataApprovalLevel> getUserDataApprovalLevels()
     {
-        List<DataApprovalLevel> userDataApprovalLevels = new ArrayList<DataApprovalLevel>();
+        List<DataApprovalLevel> userDataApprovalLevels = new ArrayList<>();
 
         User user = currentUserService.getCurrentUser();
 
@@ -145,7 +145,7 @@ public class DefaultDataApprovalLevelService
 
         if ( mayApprove || mayApproveAtLowerLevels || mayAcceptAtLowerLevels )
         {
-            Set<Integer> userOrgUnitLevels = new HashSet<Integer>();
+            Set<Integer> userOrgUnitLevels = new HashSet<>();
 
             for ( OrganisationUnit orgUnit : user.getOrganisationUnits() )
             {
@@ -327,7 +327,7 @@ public class DefaultDataApprovalLevelService
 
     public Map<OrganisationUnit, Integer> getUserReadApprovalLevels()
     {
-        Map<OrganisationUnit, Integer> map = new HashMap<OrganisationUnit, Integer>();
+        Map<OrganisationUnit, Integer> map = new HashMap<>();
 
         User user = currentUserService.getCurrentUser();
 

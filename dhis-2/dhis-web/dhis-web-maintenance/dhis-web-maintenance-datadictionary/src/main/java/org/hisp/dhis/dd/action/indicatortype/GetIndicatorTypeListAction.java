@@ -114,20 +114,20 @@ public class GetIndicatorTypeListAction
         {
             this.paging = createPaging( indicatorService.getIndicatorTypeCountByName( key ) );
 
-            indicatorTypes = new ArrayList<IndicatorType>( indicatorService.getIndicatorTypesBetweenByName( key,
+            indicatorTypes = new ArrayList<>( indicatorService.getIndicatorTypesBetweenByName( key,
                 paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( indicatorService.getIndicatorTypeCount() );
 
-            indicatorTypes = new ArrayList<IndicatorType>( indicatorService.getIndicatorTypesBetween(
+            indicatorTypes = new ArrayList<>( indicatorService.getIndicatorTypesBetween(
                 paging.getStartPos(), paging.getPageSize() ) );
         }
 
-        groupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getCompulsoryIndicatorGroupSetsWithMembers() );
+        groupSets = new ArrayList<>( indicatorService.getCompulsoryIndicatorGroupSetsWithMembers() );
 
-        attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
+        attributes = new ArrayList<>( attributeService.getIndicatorAttributes() );
 
         Collections.sort( indicatorTypes, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );

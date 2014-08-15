@@ -43,7 +43,7 @@ public class ConversionUtilsTest
     @Test
     public void getArray()
     {
-        List<Double> list = new ArrayList<Double>();
+        List<Double> list = new ArrayList<>();
         list.add( 1.0 );
         list.add( 2.0 );
         list.add( 3.0 );

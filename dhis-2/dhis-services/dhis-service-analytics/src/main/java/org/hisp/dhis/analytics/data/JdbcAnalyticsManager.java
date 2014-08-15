@@ -148,7 +148,7 @@ public class JdbcAnalyticsManager
             
             replaceDataPeriodsWithAggregationPeriods( map, params, dataPeriodAggregationPeriodMap );
             
-            return new AsyncResult<Map<String, Double>>( map );
+            return new AsyncResult<>( map );
         }
         catch ( RuntimeException ex )
         {
@@ -169,7 +169,7 @@ public class JdbcAnalyticsManager
                 return; // Period is filter, nothing to replace
             }
             
-            Set<String> keys = new HashSet<String>( dataValueMap.keySet() );
+            Set<String> keys = new HashSet<>( dataValueMap.keySet() );
             
             for ( String key : keys )
             {
@@ -359,7 +359,7 @@ public class JdbcAnalyticsManager
     private Map<String, Double> getKeyValueMap( DataQueryParams params, String sql )
         throws BadSqlGrammarException
     {
-        Map<String, Double> map = new HashMap<String, Double>();
+        Map<String, Double> map = new HashMap<>();
         
         Timer t = new Timer().start();
         

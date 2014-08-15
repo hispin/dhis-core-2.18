@@ -105,7 +105,7 @@ public class OrganisationUnitHierarchyConverter
 
     private Collection<OrganisationUnit> getHierarchy()
     {
-        Collection<OrganisationUnit> hierarchy = new ArrayList<OrganisationUnit>();
+        Collection<OrganisationUnit> hierarchy = new ArrayList<>();
 
         Collection<OrganisationUnit> roots = organisationUnitService.getRootOrganisationUnits();
 

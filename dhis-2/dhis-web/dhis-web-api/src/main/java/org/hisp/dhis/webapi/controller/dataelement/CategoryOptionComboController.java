@@ -62,11 +62,11 @@ public class CategoryOptionComboController
 
         if ( lastUpdated != null )
         {
-            entityList = new ArrayList<DataElementCategoryOptionCombo>( manager.getByLastUpdated( getEntityClass(), lastUpdated ) );
+            entityList = new ArrayList<>( manager.getByLastUpdated( getEntityClass(), lastUpdated ) );
         }
         else
         {
-            entityList = new ArrayList<DataElementCategoryOptionCombo>( manager.getAll( getEntityClass() ) );
+            entityList = new ArrayList<>( manager.getAll( getEntityClass() ) );
             Collections.sort( entityList, new IdentifiableObjectNameComparator() );
         }
 

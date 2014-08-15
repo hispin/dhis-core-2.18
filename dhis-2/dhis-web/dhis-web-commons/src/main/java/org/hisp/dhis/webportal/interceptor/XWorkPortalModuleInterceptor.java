@@ -80,7 +80,7 @@ public class XWorkPortalModuleInterceptor
     public String intercept( ActionInvocation actionInvocation )
         throws Exception
     {
-        Map<String, Object> handle = new HashMap<String, Object>( 2 );
+        Map<String, Object> handle = new HashMap<>( 2 );
 
         handle.put( KEY_MENU_MODULES, moduleManager.getAccessibleMenuModulesAndApps() );
 

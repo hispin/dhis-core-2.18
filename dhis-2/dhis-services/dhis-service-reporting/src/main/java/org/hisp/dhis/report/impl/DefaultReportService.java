@@ -140,7 +140,7 @@ public class DefaultReportService
     {
         Report report = getReport( reportUid );
         
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         params.putAll( constantService.getConstantParameterMap() );
 
@@ -227,9 +227,9 @@ public class DefaultReportService
     {
         Report report = getReport( uid );        
         OrganisationUnit organisationUnit = null;
-        List<OrganisationUnit> organisationUnitHierarchy = new ArrayList<OrganisationUnit>();
-        List<OrganisationUnit> organisationUnitChildren = new ArrayList<OrganisationUnit>();
-        List<Period> periods = new ArrayList<Period>();
+        List<OrganisationUnit> organisationUnitHierarchy = new ArrayList<>();
+        List<OrganisationUnit> organisationUnitChildren = new ArrayList<>();
+        List<Period> periods = new ArrayList<>();
         
         if ( ou != null )
         {

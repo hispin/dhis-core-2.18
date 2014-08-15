@@ -68,7 +68,7 @@ public class ValidateDataSetAction
         this.periodType = periodType;
     }
 
-    private Collection<String> dataElementId = new HashSet<String>();
+    private Collection<String> dataElementId = new HashSet<>();
 
     public void setDataElementsSelectedList( Collection<String> dataElementsSelectedList )
     {

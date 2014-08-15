@@ -13,7 +13,7 @@ public class PatientList
 {
     private String clientVersion;
 
-    private List<Patient> patientList = new ArrayList<Patient>();
+    private List<Patient> patientList = new ArrayList<>();
     
     public PatientList()
     {
@@ -67,7 +67,7 @@ public class PatientList
         size = dataInputStream.readInt();
         if ( size > 0 )
         {
-            patientList = new ArrayList<Patient>();
+            patientList = new ArrayList<>();
             for ( int i = 0; i < size; i++ )
             {
                 Patient patient = new Patient();

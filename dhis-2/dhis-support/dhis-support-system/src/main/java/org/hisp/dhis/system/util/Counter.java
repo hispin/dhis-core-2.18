@@ -40,7 +40,7 @@ public class Counter<T>
     
     public Counter()
     {
-        map = new HashMap<T, Integer>();
+        map = new HashMap<>();
     }
     
     public int count( T key )

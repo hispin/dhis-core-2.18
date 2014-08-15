@@ -105,7 +105,7 @@ public class AttributeUtils
      */
     public static Map<Integer, String> getAttributeValueMap( Set<AttributeValue> attributeValues )
     {
-        Map<Integer, String> attributeValuesMap = new HashMap<Integer, String>();
+        Map<Integer, String> attributeValuesMap = new HashMap<>();
 
         for ( AttributeValue attributeValue : attributeValues )
         {

@@ -287,7 +287,7 @@ public class ContextUtils
 
         String[] values = value.split( QUERY_PARAM_SEP );
         
-        return new HashSet<String>( Arrays.asList( values ) );
+        return new HashSet<>( Arrays.asList( values ) );
     }
     
     /**
@@ -305,7 +305,7 @@ public class ContextUtils
             return null;
         }
         
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         
         for ( String dim : dimensions )
         {

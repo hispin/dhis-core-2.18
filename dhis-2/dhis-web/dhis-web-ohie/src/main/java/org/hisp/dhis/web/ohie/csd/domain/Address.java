@@ -47,7 +47,7 @@ public class Address
     private String type;
 
     @XmlElement( name = "addressLine", namespace = "urn:ihe:iti:csd:2013" )
-    private List<AddressLine> addressLines = new ArrayList<AddressLine>();
+    private List<AddressLine> addressLines = new ArrayList<>();
 
     public Address()
     {

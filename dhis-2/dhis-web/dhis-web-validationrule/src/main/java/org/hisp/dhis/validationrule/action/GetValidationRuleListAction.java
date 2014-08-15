@@ -90,13 +90,13 @@ public class GetValidationRuleListAction
         {
             this.paging = createPaging( validationRuleService.getValidationRuleCountByName( key ) );
             
-            validationRulesList = new ArrayList<ValidationRule>( validationRuleService.getValidationRulesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            validationRulesList = new ArrayList<>( validationRuleService.getValidationRulesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( validationRuleService.getValidationRuleCount() );
             
-            validationRulesList = new ArrayList<ValidationRule>( validationRuleService.getValidationRulesBetween( paging.getStartPos(), paging.getPageSize() ) );
+            validationRulesList = new ArrayList<>( validationRuleService.getValidationRulesBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
         Collections.sort( validationRulesList, IdentifiableObjectNameComparator.INSTANCE );

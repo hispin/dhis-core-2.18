@@ -89,14 +89,14 @@ public class GetOrganisationUnitTreeAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+    private List<OrganisationUnit> organisationUnits = new ArrayList<>();
 
     public List<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
     }
 
-    private List<OrganisationUnit> rootOrganisationUnits = new ArrayList<OrganisationUnit>();
+    private List<OrganisationUnit> rootOrganisationUnits = new ArrayList<>();
 
     public List<OrganisationUnit> getRootOrganisationUnits()
     {
@@ -199,20 +199,20 @@ public class GetOrganisationUnitTreeAction
 
         if ( user.getOrganisationUnits() != null && user.getOrganisationUnits().size() > 0 )
         {
-            userOrganisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
-            rootOrganisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
+            userOrganisationUnits = new ArrayList<>( user.getOrganisationUnits() );
+            rootOrganisationUnits = new ArrayList<>( user.getOrganisationUnits() );
         }
         else
         {
             if ( user.getOrganisationUnits() != null && currentUserService.currentUserIsSuper() )
             {
-                userOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getRootOrganisationUnits() );
-                rootOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getRootOrganisationUnits() );
+                userOrganisationUnits = new ArrayList<>( organisationUnitService.getRootOrganisationUnits() );
+                rootOrganisationUnits = new ArrayList<>( organisationUnitService.getRootOrganisationUnits() );
             }
             else
             {
-                userOrganisationUnits = new ArrayList<OrganisationUnit>();
-                rootOrganisationUnits = new ArrayList<OrganisationUnit>();
+                userOrganisationUnits = new ArrayList<>();
+                rootOrganisationUnits = new ArrayList<>();
             }
         }
 

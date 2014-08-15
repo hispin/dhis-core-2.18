@@ -87,28 +87,28 @@ public class ShowUpdateValidationRuleGroupFormAction
         return validationRuleGroup;
     }
 
-    private List<ValidationRule> availableValidationRules = new ArrayList<ValidationRule>();
+    private List<ValidationRule> availableValidationRules = new ArrayList<>();
 
     public List<ValidationRule> getAvailableValidationRules()
     {
         return availableValidationRules;
     }
 
-    private List<ValidationRule> groupMembers = new ArrayList<ValidationRule>();
+    private List<ValidationRule> groupMembers = new ArrayList<>();
 
     public List<ValidationRule> getGroupMembers()
     {
         return groupMembers;
     }
 
-    private List<UserGroup> availableUserGroupsToAlert = new ArrayList<UserGroup>();
+    private List<UserGroup> availableUserGroupsToAlert = new ArrayList<>();
     
     public List<UserGroup> getAvailableUserGroupsToAlert()
     {
         return availableUserGroupsToAlert;
     }
 
-    private List<UserGroup> userGroupsToAlert = new ArrayList<UserGroup>();
+    private List<UserGroup> userGroupsToAlert = new ArrayList<>();
 
     public List<UserGroup> getUserGroupsToAlert()
     {
@@ -130,13 +130,13 @@ public class ShowUpdateValidationRuleGroupFormAction
     {
         validationRuleGroup = validationRuleService.getValidationRuleGroup( id, true );
 
-        groupMembers = new ArrayList<ValidationRule>( validationRuleGroup.getMembers() );
+        groupMembers = new ArrayList<>( validationRuleGroup.getMembers() );
 
         Collections.sort( groupMembers, IdentifiableObjectNameComparator.INSTANCE );
         
-        availableUserGroupsToAlert = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        availableUserGroupsToAlert = new ArrayList<>( userGroupService.getAllUserGroups() );
 
-        userGroupsToAlert = new ArrayList<UserGroup>( validationRuleGroup.getUserGroupsToAlert() );
+        userGroupsToAlert = new ArrayList<>( validationRuleGroup.getUserGroupsToAlert() );
         
         Collections.sort( userGroupsToAlert, IdentifiableObjectNameComparator.INSTANCE );
 

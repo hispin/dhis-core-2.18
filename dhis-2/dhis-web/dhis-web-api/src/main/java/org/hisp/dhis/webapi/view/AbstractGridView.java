@@ -59,7 +59,7 @@ public abstract class AbstractGridView extends AbstractView
     {
         Object object = model.get( "model" );
 
-        List<Grid> grids = new ArrayList<Grid>();
+        List<Grid> grids = new ArrayList<>();
 
         if ( WebMetaData.class.isAssignableFrom( object.getClass() ) )
         {

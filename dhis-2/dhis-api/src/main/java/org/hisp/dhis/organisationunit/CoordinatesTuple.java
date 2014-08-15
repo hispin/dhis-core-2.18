@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class CoordinatesTuple
 {
-    private List<String> coordinatesTuple = new ArrayList<String>();
+    private List<String> coordinatesTuple = new ArrayList<>();
 
     public void addCoordinates( String coordinates )
     {

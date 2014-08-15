@@ -170,7 +170,7 @@ public class DefaultDimensionService
     {
         DimensionalObject dimension = getDimension( uid );
 
-        List<NameableObject> items = new ArrayList<NameableObject>();
+        List<NameableObject> items = new ArrayList<>();
 
         if ( dimension != null && dimension.getItems() != null )
         {            
@@ -191,7 +191,7 @@ public class DefaultDimensionService
     
     public <T extends IdentifiableObject> List<T> getCanReadObjects( User user, List<T> objects )
     {        
-        List<T> list = new ArrayList<T>( objects );
+        List<T> list = new ArrayList<>( objects );
         Iterator<T> iterator = list.iterator();
         
         while ( iterator.hasNext() )
@@ -251,7 +251,7 @@ public class DefaultDimensionService
             return DimensionType.TRACKED_ENTITY_DATAELEMENT;
         }
 
-        final Map<String, DimensionType> dimObjectTypeMap = new HashMap<String, DimensionType>();
+        final Map<String, DimensionType> dimObjectTypeMap = new HashMap<>();
 
         dimObjectTypeMap.put( DimensionalObject.DATA_X_DIM_ID, DimensionType.DATA_X );
         dimObjectTypeMap.put( DimensionalObject.INDICATOR_DIM_ID, DimensionType.INDICATOR );
@@ -272,7 +272,7 @@ public class DefaultDimensionService
         Collection<DataElementGroupSet> degs = dataElementService.getDataDimensionDataElementGroupSets();
         Collection<OrganisationUnitGroupSet> ougs = organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets();
 
-        final List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
+        final List<DimensionalObject> dimensions = new ArrayList<>();
 
         dimensions.addAll( dcs );
         dimensions.addAll( cogs );
@@ -289,7 +289,7 @@ public class DefaultDimensionService
         Collection<CategoryOptionGroupSet> cogs = categoryService.getDataDimensionCategoryOptionGroupSets();
         Collection<DataElementCategory> cs = categoryService.getAttributeCategories();
 
-        final List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
+        final List<DimensionalObject> dimensions = new ArrayList<>();
 
         dimensions.addAll( cogs );
         dimensions.addAll( cs );
@@ -389,8 +389,8 @@ public class DefaultDimensionService
                 }
                 else if ( PERIOD.equals( type ) )
                 {
-                    List<RelativePeriodEnum> enums = new ArrayList<RelativePeriodEnum>();
-                    List<Period> periods = new UniqueArrayList<Period>();
+                    List<RelativePeriodEnum> enums = new ArrayList<>();
+                    List<Period> periods = new UniqueArrayList<>();
 
                     for ( String isoPeriod : uids )
                     {
@@ -410,7 +410,7 @@ public class DefaultDimensionService
                     }
 
                     object.setRelatives( new RelativePeriods().setRelativePeriodsFromEnums( enums ) );
-                    object.setPeriods( periodService.reloadPeriods( new ArrayList<Period>( periods ) ) );
+                    object.setPeriods( periodService.reloadPeriods( new ArrayList<>( periods ) ) );
                 }
                 else if ( ORGANISATIONUNIT.equals( type ) )
                 {

@@ -132,7 +132,7 @@ public class UpdateGroupSetAction
         organisationUnitGroupSet.setCompulsory( compulsory );
         organisationUnitGroupSet.setDataDimension( dataDimension );
 
-        Set<OrganisationUnitGroup> selectedMembers = new HashSet<OrganisationUnitGroup>();
+        Set<OrganisationUnitGroup> selectedMembers = new HashSet<>();
 
         if ( selectedGroups != null )
         {

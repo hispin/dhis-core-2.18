@@ -156,12 +156,12 @@ public class AnalyticsServiceTest
     @Test
     public void testGetFromUrlA()
     {
-        Set<String> dimensionParams = new HashSet<String>();
+        Set<String> dimensionParams = new HashSet<>();
         dimensionParams.add( "dx:" + deA.getUid() + ";" + deB.getUid() + ";" + deC.getUid() + ";" + deD.getUid() );
         dimensionParams.add( "pe:2012;2012S1;2012S2" );
         dimensionParams.add( ouGroupSetA.getUid() + ":" + ouGroupA.getUid() + ";" + ouGroupB.getUid() + ";" + ouGroupC.getUid() );
         
-        Set<String> filterParams = new HashSet<String>();
+        Set<String> filterParams = new HashSet<>();
         filterParams.add( "ou:" + ouA.getUid() + ";" + ouB.getUid() + ";" + ouC.getUid() + ";" + ouD.getUid() + ";" + ouE.getUid() );
         
         DataQueryParams params = analyticsService.getFromUrl( dimensionParams, filterParams, null, null, false, false, false, false, false, false, null );
@@ -175,10 +175,10 @@ public class AnalyticsServiceTest
     @Test
     public void testGetFromUrlB()
     {
-        Set<String> dimensionParams = new HashSet<String>();
+        Set<String> dimensionParams = new HashSet<>();
         dimensionParams.add( "dx:" + deA.getUid() + ";" + deB.getUid() + ";" + deC.getUid() + ";" + deD.getUid() );
 
-        Set<String> filterParams = new HashSet<String>();
+        Set<String> filterParams = new HashSet<>();
         filterParams.add( "ou:" + ouA.getUid() );
         
         DataQueryParams params = analyticsService.getFromUrl( dimensionParams, filterParams, null, null, false, false, false, false, false, false, null );
@@ -190,11 +190,11 @@ public class AnalyticsServiceTest
     @Test
     public void testGetFromUrlRelativePeriods()
     {
-        Set<String> dimensionParams = new HashSet<String>();
+        Set<String> dimensionParams = new HashSet<>();
         dimensionParams.add( "dx:" + deA.getUid() + ";" + deB.getUid() + ";" + deC.getUid() + ";" + deD.getUid() );
         dimensionParams.add( "pe:LAST_12_MONTHS" );
 
-        Set<String> filterParams = new HashSet<String>();
+        Set<String> filterParams = new HashSet<>();
         filterParams.add( "ou:" + ouA.getUid() + ";" + ouB.getUid() );
 
         DataQueryParams params = analyticsService.getFromUrl( dimensionParams, filterParams, null, null, false, false, false, false, false, false, null );
@@ -207,7 +207,7 @@ public class AnalyticsServiceTest
     @Test
     public void testGetFromUrlUserOrgUnit()
     {
-        Set<String> dimensionParams = new HashSet<String>();
+        Set<String> dimensionParams = new HashSet<>();
         dimensionParams.add( "ou:" + OrganisationUnit.KEY_USER_ORGUNIT );
         dimensionParams.add( "dx:" + deA.getUid() + ";" + deB.getUid() );
         dimensionParams.add( "pe:2011;2012" );
@@ -222,7 +222,7 @@ public class AnalyticsServiceTest
     @Test
     public void testGetFromUrlOrgUnitLevel()
     {
-        Set<String> dimensionParams = new HashSet<String>();
+        Set<String> dimensionParams = new HashSet<>();
         dimensionParams.add( "ou:LEVEL-2-" + ouA.getUid() );
         dimensionParams.add( "dx:" + deA.getUid() + ";" + deB.getUid() );
         dimensionParams.add( "pe:2011;2012" );
@@ -237,7 +237,7 @@ public class AnalyticsServiceTest
     @Test( expected = IllegalQueryException.class )
     public void testGetFromUrlNoDx()
     {
-        Set<String> dimensionParams = new HashSet<String>();
+        Set<String> dimensionParams = new HashSet<>();
         dimensionParams.add( "dx" );
         dimensionParams.add( "pe:2012,2012S1,2012S2" );
         
@@ -247,7 +247,7 @@ public class AnalyticsServiceTest
     @Test( expected = IllegalQueryException.class )
     public void testGetFromUrlNoPeriods()
     {
-        Set<String> dimensionParams = new HashSet<String>();
+        Set<String> dimensionParams = new HashSet<>();
         dimensionParams.add( "dx:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D" );
         dimensionParams.add( "pe" );
 
@@ -257,7 +257,7 @@ public class AnalyticsServiceTest
     @Test( expected = IllegalQueryException.class )
     public void testGetFromUrlNoOrganisationUnits()
     {
-        Set<String> dimensionParams = new HashSet<String>();
+        Set<String> dimensionParams = new HashSet<>();
         dimensionParams.add( "dx:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D" );
         dimensionParams.add( "ou" );
         
@@ -267,7 +267,7 @@ public class AnalyticsServiceTest
     @Test( expected = IllegalQueryException.class )
     public void testGetFromUrlInvalidDimension()
     {
-        Set<String> dimensionParams = new HashSet<String>();
+        Set<String> dimensionParams = new HashSet<>();
         dimensionParams.add( "dx:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D" );
         dimensionParams.add( "yebo:2012,2012S1,2012S2" );
         

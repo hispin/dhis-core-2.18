@@ -57,18 +57,18 @@ public class LegendSet
 
     public LegendSet()
     {
-        legends = new ArrayList<Legend>();
+        legends = new ArrayList<>();
     }
 
     public LegendSet( InternalMapLayer mapLayer )
     {
-        legends = new ArrayList<Legend>();
+        legends = new ArrayList<>();
         addMapLayer( mapLayer );
     }
 
     public LegendSet( List<InternalMapLayer> mapLayers )
     {
-        legends = new ArrayList<Legend>();
+        legends = new ArrayList<>();
         addMapLayers( mapLayers );
     }
 

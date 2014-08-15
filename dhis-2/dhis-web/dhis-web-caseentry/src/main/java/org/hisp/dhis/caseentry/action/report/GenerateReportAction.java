@@ -130,14 +130,14 @@ public class GenerateReportAction
         return organisationUnit;
     }
 
-    private Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
+    private Collection<ProgramInstance> programInstances = new ArrayList<>();
 
     public Collection<ProgramInstance> getProgramInstances()
     {
         return programInstances;
     }
 
-    private Map<Integer, Integer> statusMap = new HashMap<Integer, Integer>();
+    private Map<Integer, Integer> statusMap = new HashMap<>();
 
     public Map<Integer, Integer> getStatusMap()
     {
@@ -177,7 +177,7 @@ public class GenerateReportAction
         // Get orgunitIds
         // ---------------------------------------------------------------------
 
-        Collection<Integer> orgunitIds = new HashSet<Integer>();
+        Collection<Integer> orgunitIds = new HashSet<>();
 
         if ( facilityLB.equals( "selected" ) )
         {

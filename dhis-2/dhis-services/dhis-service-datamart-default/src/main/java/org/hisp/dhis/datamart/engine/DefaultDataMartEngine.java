@@ -239,7 +239,7 @@ public class DefaultDataMartEngine
 
         final Collection<Indicator> indicators = indicatorService.getIndicators( indicatorIds );
         final Collection<Period> periods = periodService.getPeriods( periodIds );
-        final List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnits( organisationUnitIds ) );
+        final List<OrganisationUnit> organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnits( organisationUnitIds ) );
         final Collection<OrganisationUnitGroup> organisationUnitGroups = organisationUnitGroupService.getOrganisationUnitGroups( organisationUnitGroupIds );
         final Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIds );
 
@@ -280,9 +280,9 @@ public class DefaultDataMartEngine
         // ---------------------------------------------------------------------
         
         final Collection<DataElementOperand> dataElementOperands = categoryService.getOperands( dataElements );
-        final List<DataElementOperand> indicatorOperands = new ArrayList<DataElementOperand>( categoryService.populateOperands( expressionService.getOperandsInIndicators( indicators ) ) );
+        final List<DataElementOperand> indicatorOperands = new ArrayList<>( categoryService.populateOperands( expressionService.getOperandsInIndicators( indicators ) ) );
         
-        Set<DataElementOperand> allOperands = new HashSet<DataElementOperand>();
+        Set<DataElementOperand> allOperands = new HashSet<>();
         allOperands.addAll( dataElementOperands );
         allOperands.addAll( indicatorOperands );
 
@@ -315,12 +315,12 @@ public class DefaultDataMartEngine
 
         final Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
         final Set<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
-        final List<List<Integer>> childrenPages = new PaginatedList<Integer>( childrenIds ).setNumberOfPages( cpuCores ).getPages();
+        final List<List<Integer>> childrenPages = new PaginatedList<>( childrenIds ).setNumberOfPages( cpuCores ).getPages();
 
-        final List<DataElementOperand> crossTabOperands = new ArrayList<DataElementOperand>( allOperands );
+        final List<DataElementOperand> crossTabOperands = new ArrayList<>( allOperands );
         final String key = crossTabService.createCrossTabTable( crossTabOperands );
         
-        List<Future<?>> crossTabFutures = new ArrayList<Future<?>>();
+        List<Future<?>> crossTabFutures = new ArrayList<>();
         
         for ( List<Integer> childrenPage : childrenPages )
         {
@@ -346,13 +346,13 @@ public class DefaultDataMartEngine
         // 2. Export data element values
         // ---------------------------------------------------------------------
 
-        List<List<OrganisationUnit>> organisationUnitPages = new PaginatedList<OrganisationUnit>( organisationUnits ).setNumberOfPages( cpuCores ).getPages();
+        List<List<OrganisationUnit>> organisationUnitPages = new PaginatedList<>( organisationUnits ).setNumberOfPages( cpuCores ).getPages();
 
         if ( allOperands.size() > 0 )
         {
             final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
 
-            List<Future<?>> futures = new ArrayList<Future<?>>();
+            List<Future<?>> futures = new ArrayList<>();
             
             for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
             {
@@ -409,7 +409,7 @@ public class DefaultDataMartEngine
 
         if ( isIndicators )
         {
-            List<Future<?>> futures = new ArrayList<Future<?>>();
+            List<Future<?>> futures = new ArrayList<>();
 
             for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
             {
@@ -479,17 +479,17 @@ public class DefaultDataMartEngine
             // 2. Export data element values
             // ---------------------------------------------------------------------
 
-            Collection<OrganisationUnit> groupOrganisationUnits = new HashSet<OrganisationUnit>( organisationUnits );
+            Collection<OrganisationUnit> groupOrganisationUnits = new HashSet<>( organisationUnits );
             
             FilterUtils.filter( groupOrganisationUnits, new OrganisationUnitAboveOrEqualToLevelFilter( groupLevel ) );
             
-            organisationUnitPages = new PaginatedList<OrganisationUnit>( groupOrganisationUnits ).setNumberOfPages( cpuCores ).getPages();
+            organisationUnitPages = new PaginatedList<>( groupOrganisationUnits ).setNumberOfPages( cpuCores ).getPages();
             
             if ( allOperands.size() > 0 )
             {
                 final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits, organisationUnitGroups );
                 
-                List<Future<?>> futures = new ArrayList<Future<?>>();
+                List<Future<?>> futures = new ArrayList<>();
                 
                 for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
                 {
@@ -546,7 +546,7 @@ public class DefaultDataMartEngine
 
             if ( isIndicators )
             {
-                List<Future<?>> futures = new ArrayList<Future<?>>();
+                List<Future<?>> futures = new ArrayList<>();
 
                 for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
                 {

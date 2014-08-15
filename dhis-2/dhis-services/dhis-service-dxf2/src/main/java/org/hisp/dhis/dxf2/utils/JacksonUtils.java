@@ -64,7 +64,7 @@ public class JacksonUtils
 
     private final static XmlMapper xmlMapper = new XmlMapper();
 
-    private final static Map<String, Class<?>> viewClasses = new HashMap<String, Class<?>>();
+    private final static Map<String, Class<?>> viewClasses = new HashMap<>();
 
     static
     {

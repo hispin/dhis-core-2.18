@@ -256,7 +256,7 @@ public class DefaultDataValueSetService
     public void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits,
         Writer writer )
     {
-        Set<Period> periods = new HashSet<Period>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
+        Set<Period> periods = new HashSet<>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
 
         if ( periods.isEmpty() )
         {
@@ -479,7 +479,7 @@ public class DefaultDataValueSetService
             identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager
             .getIdMap( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID );
-        Map<String, Period> periodMap = new HashMap<String, Period>();
+        Map<String, Period> periodMap = new HashMap<>();
 
         DataSet dataSet = dataValueSet.getDataSet() != null ?
             identifiableObjectManager.getObject( DataSet.class, IdentifiableProperty.UID, dataValueSet.getDataSet() ) :
@@ -724,7 +724,7 @@ public class DefaultDataValueSetService
 
     private Set<DataElement> getDataElements( Set<String> dataSets )
     {
-        Set<DataElement> dataElements = new HashSet<DataElement>();
+        Set<DataElement> dataElements = new HashSet<>();
 
         for ( String ds : dataSets )
         {
@@ -748,7 +748,7 @@ public class DefaultDataValueSetService
             throw new IllegalArgumentException( ERROR_INVALID_START_END_DATE + startDate + ", " + endDate );
         }
 
-        Set<Period> periods = new HashSet<Period>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
+        Set<Period> periods = new HashSet<>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
 
         if ( periods.isEmpty() )
         {
@@ -760,7 +760,7 @@ public class DefaultDataValueSetService
 
     private Set<OrganisationUnit> getOrgUnits( Set<String> orgUnits )
     {
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> organisationUnits = new HashSet<>();
 
         for ( String ou : orgUnits )
         {
@@ -779,7 +779,7 @@ public class DefaultDataValueSetService
 
     private Map<String, OrganisationUnit> getUuidOrgUnitMap()
     {
-        Map<String, OrganisationUnit> orgUnitMap = new HashMap<String, OrganisationUnit>();
+        Map<String, OrganisationUnit> orgUnitMap = new HashMap<>();
 
         Collection<OrganisationUnit> allOrganisationUnits = organisationUnitService.getAllOrganisationUnits();
 

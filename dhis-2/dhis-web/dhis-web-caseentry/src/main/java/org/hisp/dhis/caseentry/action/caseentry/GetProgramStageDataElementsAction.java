@@ -81,7 +81,7 @@ public class GetProgramStageDataElementsAction
     public String execute()
         throws Exception
     {
-        programStageDataElements = new ArrayList<ProgramStageDataElement>( programStageService.getProgramStage(
+        programStageDataElements = new ArrayList<>( programStageService.getProgramStage(
             programStageId ).getProgramStageDataElements() );
 
         return SUCCESS;

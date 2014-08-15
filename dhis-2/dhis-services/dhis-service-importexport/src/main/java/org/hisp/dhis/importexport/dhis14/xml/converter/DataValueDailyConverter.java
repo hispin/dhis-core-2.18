@@ -125,9 +125,9 @@ public class DataValueDailyConverter
         this.importObjectService = importObjectService;
         this.importAnalyser = importAnalyser;
         this.params = params;
-        this.dataElementMapping = new MimicingHashMap<Object, Integer>();
-        this.periodMapping = new MimicingHashMap<Object, Integer>();
-        this.sourceMapping = new MimicingHashMap<Object, Integer>();
+        this.dataElementMapping = new MimicingHashMap<>();
+        this.periodMapping = new MimicingHashMap<>();
+        this.sourceMapping = new MimicingHashMap<>();
     }
 
     // -------------------------------------------------------------------------
@@ -207,7 +207,7 @@ public class DataValueDailyConverter
                         }
                     }
 
-                    HashMap<String, DeflatedDataValueDaily> dailyDataCache = new HashMap<String, DeflatedDataValueDaily>();
+                    HashMap<String, DeflatedDataValueDaily> dailyDataCache = new HashMap<>();
 
                     for ( final Integer element : params.getDataElements() )
                     {

@@ -162,7 +162,7 @@ public class DefaultDataElementService
     public Collection<DataElement> getDataElementsByZeroIsSignificantAndGroup( boolean zeroIsSignificant,
         DataElementGroup dataElementGroup )
     {
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
+        Collection<DataElement> dataElements = new HashSet<>();
 
         for ( DataElement element : dataElementGroup.getMembers() )
         {
@@ -182,7 +182,7 @@ public class DefaultDataElementService
 
     public DataElement getDataElementByName( String name )
     {
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementStore.getAllEqName( name ) );
+        List<DataElement> dataElements = new ArrayList<>( dataElementStore.getAllEqName( name ) );
 
         if ( dataElements.isEmpty() )
         {
@@ -199,7 +199,7 @@ public class DefaultDataElementService
 
     public DataElement getDataElementByShortName( String shortName )
     {
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementStore.getAllEqShortName( shortName ) );
+        List<DataElement> dataElements = new ArrayList<>( dataElementStore.getAllEqShortName( shortName ) );
 
         if ( dataElements.isEmpty() )
         {
@@ -250,7 +250,7 @@ public class DefaultDataElementService
     public Map<DataElementCategoryCombo, List<DataElement>> getGroupedDataElementsByCategoryCombo(
         List<DataElement> dataElements )
     {
-        Map<DataElementCategoryCombo, List<DataElement>> mappedDataElements = new HashMap<DataElementCategoryCombo, List<DataElement>>();
+        Map<DataElementCategoryCombo, List<DataElement>> mappedDataElements = new HashMap<>();
 
         for ( DataElement dataElement : dataElements )
         {
@@ -260,7 +260,7 @@ public class DefaultDataElementService
             }
             else
             {
-                List<DataElement> des = new ArrayList<DataElement>();
+                List<DataElement> des = new ArrayList<>();
                 des.add( dataElement );
 
                 mappedDataElements.put( dataElement.getCategoryCombo(), des );
@@ -272,14 +272,14 @@ public class DefaultDataElementService
 
     public List<DataElementCategoryCombo> getDataElementCategoryCombos( List<DataElement> dataElements )
     {
-        Set<DataElementCategoryCombo> categoryCombos = new HashSet<DataElementCategoryCombo>();
+        Set<DataElementCategoryCombo> categoryCombos = new HashSet<>();
 
         for ( DataElement dataElement : dataElements )
         {
             categoryCombos.add( dataElement.getCategoryCombo() );
         }
 
-        List<DataElementCategoryCombo> listCategoryCombos = new ArrayList<DataElementCategoryCombo>( categoryCombos );
+        List<DataElementCategoryCombo> listCategoryCombos = new ArrayList<>( categoryCombos );
 
         Collections.sort( listCategoryCombos, new DataElementCategoryComboSizeComparator() );
 
@@ -353,7 +353,7 @@ public class DefaultDataElementService
 
     public Map<String, Integer> getDataElementUidIdMap()
     {
-        Map<String, Integer> map = new HashMap<String, Integer>();
+        Map<String, Integer> map = new HashMap<>();
 
         for ( DataElement dataElement : getAllDataElements() )
         {
@@ -436,7 +436,7 @@ public class DefaultDataElementService
 
     public DataElementGroup getDataElementGroupByName( String name )
     {
-        List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>(
+        List<DataElementGroup> dataElementGroups = new ArrayList<>(
             dataElementGroupStore.getAllEqName( name ) );
 
         if ( dataElementGroups.isEmpty() )
@@ -449,7 +449,7 @@ public class DefaultDataElementService
 
     public DataElementGroup getDataElementGroupByShortName( String shortName )
     {
-        List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>( dataElementGroupStore.getAllEqShortName( shortName ) );
+        List<DataElementGroup> dataElementGroups = new ArrayList<>( dataElementGroupStore.getAllEqShortName( shortName ) );
 
         if ( dataElementGroups.isEmpty() )
         {
@@ -549,7 +549,7 @@ public class DefaultDataElementService
 
     public DataElementGroupSet getDataElementGroupSetByName( String name )
     {
-        List<DataElementGroupSet> dataElementGroupSets = new ArrayList<DataElementGroupSet>(
+        List<DataElementGroupSet> dataElementGroupSets = new ArrayList<>(
             dataElementGroupSetStore.getAllEqName( name ) );
 
         if ( dataElementGroupSets.isEmpty() )
@@ -563,7 +563,7 @@ public class DefaultDataElementService
     @Override
     public Collection<DataElementGroupSet> getCompulsoryDataElementGroupSets()
     {
-        Collection<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>();
+        Collection<DataElementGroupSet> groupSets = new ArrayList<>();
 
         for ( DataElementGroupSet groupSet : getAllDataElementGroupSets() )
         {
@@ -591,7 +591,7 @@ public class DefaultDataElementService
     @Override
     public Collection<DataElementGroupSet> getCompulsoryDataElementGroupSetsNotAssignedTo( DataElement dataElement )
     {
-        Collection<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>();
+        Collection<DataElementGroupSet> groupSets = new ArrayList<>();
 
         for ( DataElementGroupSet groupSet : getCompulsoryDataElementGroupSets() )
         {

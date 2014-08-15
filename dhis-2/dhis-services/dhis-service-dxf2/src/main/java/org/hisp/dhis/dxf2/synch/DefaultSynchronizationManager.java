@@ -280,6 +280,6 @@ public class DefaultSynchronizationManager
     {
         HttpHeaders headers = new HttpHeaders();
         headers.set( HEADER_AUTHORIZATION, CodecUtils.getBasicAuthString( username, password ) ); 
-        return new HttpEntity<T>( headers );
+        return new HttpEntity<>( headers );
     }
 }

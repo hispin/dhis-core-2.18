@@ -56,7 +56,7 @@ public class DefaultStartupRoutineExecutor
 
     private static final String SKIP_PROP = "dhis.skip.startup";
     
-    private List<StartupRoutine> routines = new ArrayList<StartupRoutine>();
+    private List<StartupRoutine> routines = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Add methods

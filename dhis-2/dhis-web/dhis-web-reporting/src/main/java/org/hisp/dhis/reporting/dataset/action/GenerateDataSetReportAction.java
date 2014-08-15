@@ -220,7 +220,7 @@ public class GenerateDataSetReportAction
         return customDataEntryFormCode;
     }
 
-    private List<Grid> grids = new ArrayList<Grid>();
+    private List<Grid> grids = new ArrayList<>();
 
     public List<Grid> getGrids()
     {

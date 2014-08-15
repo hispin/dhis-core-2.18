@@ -127,7 +127,7 @@ public class GeoToolsMapGenerationService
 
         InternalMap internalMap = new InternalMap();
         
-        List<MapView> mapViews = new ArrayList<MapView>( map.getMapViews() );
+        List<MapView> mapViews = new ArrayList<>( map.getMapViews() );
         Collections.reverse( mapViews );
         
         User user = currentUserService.getCurrentUser();
@@ -186,8 +186,8 @@ public class GeoToolsMapGenerationService
             return null;
         }
 
-        List<OrganisationUnit> atLevels = new ArrayList<OrganisationUnit>();
-        List<OrganisationUnit> inGroups = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> atLevels = new ArrayList<>();
+        List<OrganisationUnit> inGroups = new ArrayList<>();
         
         if ( mapView.hasOrganisationUnitLevels() )
         {
@@ -207,7 +207,7 @@ public class GeoToolsMapGenerationService
 
         FilterUtils.filter( organisationUnits, new OrganisationUnitWithCoordinatesFilter() );
         
-        java.util.Map<String, OrganisationUnit> uidOuMap = new HashMap<String, OrganisationUnit>();
+        java.util.Map<String, OrganisationUnit> uidOuMap = new HashMap<>();
         
         for ( OrganisationUnit ou : organisationUnits )
         {
@@ -327,7 +327,7 @@ public class GeoToolsMapGenerationService
      */
     private List<MapValue> getMapValues( Grid grid )
     {
-        List<MapValue> mapValues = new ArrayList<MapValue>();
+        List<MapValue> mapValues = new ArrayList<>();
 
         for ( List<Object> row : grid.getRows() )
         {

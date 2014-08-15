@@ -78,11 +78,11 @@ public class SectionStoreTest
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
         
-        List<DataElement> dataElements = new ArrayList<DataElement>();
+        List<DataElement> dataElements = new ArrayList<>();
         dataElements.add( dataElementA );
         dataElements.add( dataElementB );
 
-        Set<DataElementOperand> operands = new HashSet<DataElementOperand>();
+        Set<DataElementOperand> operands = new HashSet<>();
         operands.add( new DataElementOperand( dataElementA, categoryCombo.getOptionCombos().iterator().next() ) );
                 
         sectionA = new Section( "SectionA", dataSet, dataElements, operands );

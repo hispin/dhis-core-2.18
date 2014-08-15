@@ -100,11 +100,11 @@ public class GetDataSetsAction
 
     private List<DataSet> getDataSetsForCurrentUser( String ids )
     {
-        Set<DataSet> dataSets = new HashSet<DataSet>();
+        Set<DataSet> dataSets = new HashSet<>();
 
         if ( ids.length() == 0 )
         {
-            return new ArrayList<DataSet>();
+            return new ArrayList<>();
         }
 
         for ( String id : ids.split( "," ) )
@@ -129,6 +129,6 @@ public class GetDataSetsAction
             dataSets.retainAll( userCredentials.getAllDataSets() );
         }
 
-        return new ArrayList<DataSet>( dataSets );
+        return new ArrayList<>( dataSets );
     }
 }

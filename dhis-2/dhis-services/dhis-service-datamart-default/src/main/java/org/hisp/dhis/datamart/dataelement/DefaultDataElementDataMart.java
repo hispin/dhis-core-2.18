@@ -153,7 +153,7 @@ public class DefaultDataElementDataMart
         
         final BatchHandler<Object> cacheHandler = inMemoryBatchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).setTableName( tableName + key ).init();
         
-        final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
+        final Map<DataElementOperand, Double> valueMap = new HashMap<>();
         
         final AggregatedDataValue aggregatedValue = new AggregatedDataValue();
         

@@ -499,7 +499,7 @@ public class MobileOrganisationUnitController
         {
             return null;
         }
-        Collection<String> localeStrings = new ArrayList<String>();
+        Collection<String> localeStrings = new ArrayList<>();
 
         for ( Locale locale : locales )
         {
@@ -510,11 +510,11 @@ public class MobileOrganisationUnitController
 
     private List<SMSCommand> getMobileSMSCommands( Collection<org.hisp.dhis.smscommand.SMSCommand> normalSMSCommands )
     {
-        List<SMSCommand> smsCommands = new ArrayList<SMSCommand>();
+        List<SMSCommand> smsCommands = new ArrayList<>();
         for ( org.hisp.dhis.smscommand.SMSCommand normalSMSCommand : normalSMSCommands )
         {
             SMSCommand mobileSMSCommand = new SMSCommand();
-            List<SMSCode> smsCodes = new ArrayList<SMSCode>();
+            List<SMSCode> smsCodes = new ArrayList<>();
 
             mobileSMSCommand.setName( normalSMSCommand.getName() );
             mobileSMSCommand.setCodeSeparator( normalSMSCommand.getCodeSeparator() );

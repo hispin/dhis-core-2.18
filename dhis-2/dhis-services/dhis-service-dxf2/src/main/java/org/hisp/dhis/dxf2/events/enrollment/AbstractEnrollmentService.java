@@ -118,7 +118,7 @@ public abstract class AbstractEnrollmentService
     {
         List<Program> programs = getProgramsWithRegistration();
 
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+        List<ProgramInstance> programInstances = new ArrayList<>(
             programInstanceService.getProgramInstances( programs ) );
 
         return getEnrollments( programInstances );
@@ -129,7 +129,7 @@ public abstract class AbstractEnrollmentService
     {
         List<Program> programs = getProgramsWithRegistration();
 
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+        List<ProgramInstance> programInstances = new ArrayList<>(
             programInstanceService.getProgramInstances( programs, status.getValue() ) );
 
         return getEnrollments( programInstances );
@@ -155,7 +155,7 @@ public abstract class AbstractEnrollmentService
     @Override
     public Enrollments getEnrollments( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance )
     {
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( entityInstance.getProgramInstances() );
+        List<ProgramInstance> programInstances = new ArrayList<>( entityInstance.getProgramInstances() );
 
         return getEnrollments( programInstances );
     }
@@ -164,7 +164,7 @@ public abstract class AbstractEnrollmentService
     public Enrollments getEnrollments( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance,
         EnrollmentStatus status )
     {
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+        List<ProgramInstance> programInstances = new ArrayList<>(
             programInstanceService.getProgramInstances( entityInstance, status.getValue() ) );
 
         return getEnrollments( programInstances );
@@ -173,7 +173,7 @@ public abstract class AbstractEnrollmentService
     @Override
     public Enrollments getEnrollments( Program program )
     {
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+        List<ProgramInstance> programInstances = new ArrayList<>(
             programInstanceService.getProgramInstances( program ) );
         return getEnrollments( programInstances );
     }
@@ -181,7 +181,7 @@ public abstract class AbstractEnrollmentService
     @Override
     public Enrollments getEnrollments( Program program, EnrollmentStatus status )
     {
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+        List<ProgramInstance> programInstances = new ArrayList<>(
             programInstanceService.getProgramInstances( program, status.getValue() ) );
 
         return getEnrollments( programInstances );
@@ -191,7 +191,7 @@ public abstract class AbstractEnrollmentService
     public Enrollments getEnrollments( OrganisationUnit organisationUnit )
     {
         List<Program> programs = getProgramsWithRegistration();
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+        List<ProgramInstance> programInstances = new ArrayList<>(
             programInstanceService.getProgramInstances( programs, organisationUnit ) );
 
         return getEnrollments( programInstances );
@@ -201,7 +201,7 @@ public abstract class AbstractEnrollmentService
     public Enrollments getEnrollments( OrganisationUnit organisationUnit, EnrollmentStatus status )
     {
         List<Program> programs = getProgramsWithRegistration();
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+        List<ProgramInstance> programInstances = new ArrayList<>(
             programInstanceService.getProgramInstances( programs, organisationUnit, status.getValue() ) );
 
         return getEnrollments( programInstances );
@@ -319,7 +319,7 @@ public abstract class AbstractEnrollmentService
             return importSummary;
         }
 
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        List<ImportConflict> importConflicts = new ArrayList<>();
         importConflicts.addAll( checkAttributes( enrollment ) );
 
         importSummary.setConflicts( importConflicts );
@@ -383,7 +383,7 @@ public abstract class AbstractEnrollmentService
             return importSummary;
         }
 
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        List<ImportConflict> importConflicts = new ArrayList<>();
         importConflicts.addAll( checkAttributes( enrollment ) );
 
         importSummary.setConflicts( importConflicts );
@@ -474,7 +474,7 @@ public abstract class AbstractEnrollmentService
 
     private List<ImportConflict> checkAttributes( Enrollment enrollment )
     {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        List<ImportConflict> importConflicts = new ArrayList<>();
 
         Program program = getProgram( enrollment.getProgram() );
         org.hisp.dhis.trackedentity.TrackedEntityInstance trackedEntityInstance = teiService
@@ -541,7 +541,7 @@ public abstract class AbstractEnrollmentService
     private List<ImportConflict> checkScope( org.hisp.dhis.trackedentity.TrackedEntityInstance tei,
         TrackedEntityAttribute attribute, String value, OrganisationUnit organisationUnit, Program program )
     {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        List<ImportConflict> importConflicts = new ArrayList<>();
 
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
@@ -623,7 +623,7 @@ public abstract class AbstractEnrollmentService
 
     private List<Program> getProgramsWithRegistration()
     {
-        List<Program> programs = new ArrayList<Program>();
+        List<Program> programs = new ArrayList<>();
         programs.addAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
         programs.addAll( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
 

@@ -89,7 +89,7 @@ public class InputUtils
 
         if ( opts != null )
         {
-            Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+            Set<DataElementCategoryOption> categoryOptions = new HashSet<>();
 
             for ( String id : opts )
             {
@@ -139,7 +139,7 @@ public class InputUtils
      */
     public Set<CategoryOptionGroup> getAttributeOptionGroup( HttpServletResponse response, String cog )
     {
-        Set<String> groups = new HashSet<String>();
+        Set<String> groups = new HashSet<>();
 
         groups.add(cog);
 
@@ -162,7 +162,7 @@ public class InputUtils
 
         if ( cog != null )
         {
-            groups = new HashSet<CategoryOptionGroup>();
+            groups = new HashSet<>();
 
             for ( String id : cog )
             {
@@ -202,7 +202,7 @@ public class InputUtils
         {
             Set<String> opts = ContextUtils.getQueryParamValues( cp );
 
-            options = new HashSet<DataElementCategoryOption>();
+            options = new HashSet<>();
 
             for ( String id : opts )
             {

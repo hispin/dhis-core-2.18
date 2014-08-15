@@ -90,20 +90,20 @@ public class OrganisationUnitTreeInterceptor
 
         selectedUnits = selectionManager.getSelectedOrganisationUnits();   
         
-        rootUnits = new ArrayList<OrganisationUnit>( selectionManager.getRootOrganisationUnits() );
+        rootUnits = new ArrayList<>( selectionManager.getRootOrganisationUnits() );
 
         if ( selectedUnits == null )
         {
             selectedUnits = Collections.emptySet();
         }
 
-        List<TreeNode> rootNodes = new ArrayList<TreeNode>( rootUnits.size() );
+        List<TreeNode> rootNodes = new ArrayList<>( rootUnits.size() );
 
         Set<OrganisationUnit> pathUnits = getPathUnits( rootUnits, selectedUnits );
 
         rootNodes = createLevelNodes( pathUnits, rootUnits, selectedUnits );
 
-        Map<String, Collection<TreeNode>> valueMap = new HashMap<String, Collection<TreeNode>>( 1 );
+        Map<String, Collection<TreeNode>> valueMap = new HashMap<>( 1 );
         valueMap.put( VALUE_KEY, rootNodes );
         actionInvocation.getStack().push( valueMap );
     }
@@ -116,10 +116,10 @@ public class OrganisationUnitTreeInterceptor
         Collection<OrganisationUnit> selectedUnits )
         throws Exception
     {
-        List<OrganisationUnit> childUnitsSorted = new ArrayList<OrganisationUnit>( childUnits );
+        List<OrganisationUnit> childUnitsSorted = new ArrayList<>( childUnits );
         Collections.sort( childUnitsSorted, IdentifiableObjectNameComparator.INSTANCE );
 
-        List<TreeNode> childNodes = new ArrayList<TreeNode>();
+        List<TreeNode> childNodes = new ArrayList<>();
 
         for ( OrganisationUnit childUnit : childUnitsSorted )
         {
@@ -145,7 +145,7 @@ public class OrganisationUnitTreeInterceptor
     {
         // Leaf nodes not included.
 
-        Set<OrganisationUnit> pathUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> pathUnits = new HashSet<>();
 
         for ( OrganisationUnit childUnit : childUnits )
         {

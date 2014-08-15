@@ -95,7 +95,7 @@ public class GetPeriodsAction
         {
             Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
 
-            periods = new ArrayList<Period>();
+            periods = new ArrayList<>();
 
             for ( PeriodType type : periodTypes )
             {
@@ -106,7 +106,7 @@ public class GetPeriodsAction
         {
             PeriodType periodType = periodService.getPeriodTypeByName( name );
 
-            periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( periodType ) );
+            periods = new ArrayList<>( periodService.getPeriodsByPeriodType( periodType ) );
         }
 
         for ( Period period : periods )

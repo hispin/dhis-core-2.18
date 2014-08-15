@@ -63,7 +63,7 @@ public class ProgramStageController
     @Override
     protected List<ProgramStage> getEntityList( WebMetaData metaData, WebOptions options )
     {
-        List<ProgramStage> entityList = new ArrayList<ProgramStage>();
+        List<ProgramStage> entityList = new ArrayList<>();
 
         if ( options.getOptions().containsKey( "query" ) )
         {
@@ -76,7 +76,7 @@ public class ProgramStageController
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<ProgramStage>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+            entityList = new ArrayList<>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
         }
         else if ( options.getOptions().containsKey( "program" ) )
         {
@@ -85,12 +85,12 @@ public class ProgramStageController
 
             if ( program != null )
             {
-                entityList = new ArrayList<ProgramStage>( program.getProgramStages() );
+                entityList = new ArrayList<>( program.getProgramStages() );
             }
         }
         else
         {
-            entityList = new ArrayList<ProgramStage>( manager.getAllSorted( getEntityClass() ) );
+            entityList = new ArrayList<>( manager.getAllSorted( getEntityClass() ) );
         }
 
         return entityList;

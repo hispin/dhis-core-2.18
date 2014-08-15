@@ -347,7 +347,7 @@ public class ExcelUtils
 
     private static Map<Boolean, String> getBoolean()
     {
-        Map<Boolean, String> map = new HashMap<Boolean, String>();
+        Map<Boolean, String> map = new HashMap<>();
         map.put( true, "Yes" );
         map.put( false, "No" );
         return map;
@@ -355,7 +355,7 @@ public class ExcelUtils
 
     private static Map<String, String> getType()
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put( DataElement.VALUE_TYPE_STRING, "Text" );
         map.put( DataElement.VALUE_TYPE_INT, "Number" );
         map.put( DataElement.VALUE_TYPE_BOOL, "Yes/No" );
@@ -364,7 +364,7 @@ public class ExcelUtils
 
     private static Map<String, String> getAggregationOperator()
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put( DataElement.AGGREGATION_OPERATOR_SUM, "Sum" );
         map.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, "Average" );
         map.put( DataElement.AGGREGATION_OPERATOR_COUNT, "Count" );

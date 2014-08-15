@@ -108,14 +108,14 @@ public class ProgramStageSectionServiceTest
         programStageDataElementService.addProgramStageDataElement( stageDeA );
         programStageDataElementService.addProgramStageDataElement( stageDeB );
 
-        List<ProgramStageDataElement> psDataElements = new ArrayList<ProgramStageDataElement>();
+        List<ProgramStageDataElement> psDataElements = new ArrayList<>();
         psDataElements.add( stageDeA );
         psDataElements.add( stageDeB );
 
         stageB = new ProgramStage( "B", program );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );
@@ -130,7 +130,7 @@ public class ProgramStageSectionServiceTest
         sectionB.setName( "B" );
         sectionB.setSortOrder( 2 );
 
-        Set<ProgramStageSection> sections = new HashSet<ProgramStageSection>();
+        Set<ProgramStageSection> sections = new HashSet<>();
         sections.add( sectionA );
         sections.add( sectionB );
         stageA.setProgramStageSections( sections );

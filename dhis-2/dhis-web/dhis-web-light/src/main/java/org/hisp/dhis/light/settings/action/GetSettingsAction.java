@@ -140,7 +140,7 @@ public class GetSettingsAction
         // Get available locales
         // ---------------------------------------------------------------------
 
-        availableLocales = new ArrayList<Locale>( resourceBundleManager.getAvailableLocales() );
+        availableLocales = new ArrayList<>( resourceBundleManager.getAvailableLocales() );
 
         Collections.sort( availableLocales, new Comparator<Locale>()
         {

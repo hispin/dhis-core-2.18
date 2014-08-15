@@ -65,7 +65,7 @@ public class DataQueryParamsTest
     @Test
     public void testGetDimensionItemsFromParam()
     {
-        List<String> expected = new ArrayList<String>( Arrays.asList( "D348asd782j", "kj78HnH6hgT", "9ds9dS98s2" ) );
+        List<String> expected = new ArrayList<>( Arrays.asList( "D348asd782j", "kj78HnH6hgT", "9ds9dS98s2" ) );
         
         assertEquals( expected, DimensionalObjectUtils.getDimensionItemsFromParam( "de:D348asd782j;kj78HnH6hgT;9ds9dS98s2" ) );        
     }
@@ -81,7 +81,7 @@ public class DataQueryParamsTest
     @Test
     public void testGetMeasureCriteriaFromParam()
     {
-        Map<MeasureFilter, Double> expected = new HashMap<MeasureFilter, Double>();
+        Map<MeasureFilter, Double> expected = new HashMap<>();
         expected.put( MeasureFilter.GT, 100d );
         expected.put( MeasureFilter.LT, 200d );
         
@@ -95,7 +95,7 @@ public class DataQueryParamsTest
         
         assertFalse( params.hasPeriods() );
         
-        List<NameableObject> periods = new ArrayList<NameableObject>();
+        List<NameableObject> periods = new ArrayList<>();
         
         params.getDimensions().add( new BaseDimensionalObject( PERIOD_DIM_ID, DimensionType.PERIOD, periods ) );
         

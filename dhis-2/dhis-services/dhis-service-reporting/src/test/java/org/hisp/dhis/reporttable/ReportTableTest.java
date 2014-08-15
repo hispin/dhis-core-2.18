@@ -116,14 +116,14 @@ public class ReportTableTest
     public void setUpTest()
         throws Exception
     {
-        dataElements = new ArrayList<DataElement>();
-        categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
-        indicators = new ArrayList<Indicator>();
-        dataSets = new ArrayList<DataSet>();
-        periods = new ArrayList<Period>();
-        units = new ArrayList<OrganisationUnit>();
-        relativeUnits = new ArrayList<OrganisationUnit>();
-        groups = new ArrayList<OrganisationUnitGroup>();
+        dataElements = new ArrayList<>();
+        categoryOptionCombos = new ArrayList<>();
+        indicators = new ArrayList<>();
+        dataSets = new ArrayList<>();
+        periods = new ArrayList<>();
+        units = new ArrayList<>();
+        relativeUnits = new ArrayList<>();
+        groups = new ArrayList<>();
         
         montlyPeriodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
 
@@ -147,7 +147,7 @@ public class ReportTableTest
 
         categoryCombo = new DataElementCategoryCombo( "CategoryComboA" );
         categoryCombo.setId( 'A' );
-        categoryCombo.setOptionCombos( new HashSet<DataElementCategoryOptionCombo>( categoryOptionCombos ) );
+        categoryCombo.setOptionCombos( new HashSet<>( categoryOptionCombos ) );
         
         indicatorType = createIndicatorType( 'A' );
 
@@ -222,7 +222,7 @@ public class ReportTableTest
 
     private static List<String> getColumnNames( List<List<NameableObject>> cols )
     {
-        List<String> columns = new ArrayList<String>();
+        List<String> columns = new ArrayList<>();
         
         for ( List<NameableObject> column : cols )
         {

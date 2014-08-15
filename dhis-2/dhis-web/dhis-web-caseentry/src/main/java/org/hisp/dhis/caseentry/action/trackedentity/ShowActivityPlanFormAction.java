@@ -93,7 +93,7 @@ public class ShowActivityPlanFormAction
     {
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        programs = new ArrayList<Program>( programService.getAllPrograms() );
+        programs = new ArrayList<>( programService.getAllPrograms() );
         programs.retainAll( programService.getProgramsByCurrentUser() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
 

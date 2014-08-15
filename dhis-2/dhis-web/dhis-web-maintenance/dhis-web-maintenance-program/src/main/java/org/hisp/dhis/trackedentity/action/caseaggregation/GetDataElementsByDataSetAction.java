@@ -108,7 +108,7 @@ public class GetDataElementsByDataSetAction
 
         query = StringUtils.trimToNull( query );
 
-        dataElements = new ArrayList<DataElement>( dataElementService.getDataElements( dataSet, query,
+        dataElements = new ArrayList<>( dataElementService.getDataElements( dataSet, query,
             MAX_DATAELEMENTS_DISPLAYED ) );
 
         Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );

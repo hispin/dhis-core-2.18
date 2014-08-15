@@ -84,14 +84,14 @@ public class GetStatisticsAction
         return objects;
     }
     
-    private Map<Integer, Integer> activeUsers = new HashMap<Integer, Integer>();
+    private Map<Integer, Integer> activeUsers = new HashMap<>();
 
     public Map<Integer, Integer> getActiveUsers()
     {
         return activeUsers;
     }
     
-    private Map<Integer, Integer> dataValueCount = new HashMap<Integer, Integer>();
+    private Map<Integer, Integer> dataValueCount = new HashMap<>();
 
     public Map<Integer, Integer> getDataValueCount()
     {
@@ -109,7 +109,7 @@ public class GetStatisticsAction
         
         Date lastHour = new Cal().now().subtract( Calendar.HOUR_OF_DAY, 1 ).time();
         
-        objects = new EnumMapWrapper<Objects, Integer>( Objects.class, counts );
+        objects = new EnumMapWrapper<>( Objects.class, counts );
         
         activeUsers.put( 0, userService.getActiveUsersCount( lastHour ) );
         activeUsers.put( 1, userService.getActiveUsersCount( 0 ) );

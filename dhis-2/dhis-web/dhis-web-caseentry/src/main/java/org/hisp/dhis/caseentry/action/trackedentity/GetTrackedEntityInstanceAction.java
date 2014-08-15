@@ -169,14 +169,14 @@ public class GetTrackedEntityInstanceAction
         return programs;
     }
 
-    private Map<Integer, String> attributeValueMap = new HashMap<Integer, String>();
+    private Map<Integer, String> attributeValueMap = new HashMap<>();
 
     public Map<Integer, String> getAttributeValueMap()
     {
         return attributeValueMap;
     }
 
-    private Collection<TrackedEntityAttribute> noGroupAttributes = new HashSet<TrackedEntityAttribute>();
+    private Collection<TrackedEntityAttribute> noGroupAttributes = new HashSet<>();
 
     public Collection<TrackedEntityAttribute> getNoGroupAttributes()
     {
@@ -197,7 +197,7 @@ public class GetTrackedEntityInstanceAction
         return relationship;
     }
 
-    private Map<Integer, Collection<TrackedEntityAttribute>> attributeGroupsMap = new HashMap<Integer, Collection<TrackedEntityAttribute>>();
+    private Map<Integer, Collection<TrackedEntityAttribute>> attributeGroupsMap = new HashMap<>();
 
     public Map<Integer, Collection<TrackedEntityAttribute>> getAttributeGroupsMap()
     {
@@ -223,7 +223,7 @@ public class GetTrackedEntityInstanceAction
         this.programId = programId;
     }
 
-    private Map<String, List<TrackedEntityAttribute>> attributesMap = new HashMap<String, List<TrackedEntityAttribute>>();
+    private Map<String, List<TrackedEntityAttribute>> attributesMap = new HashMap<>();
 
     public Map<String, List<TrackedEntityAttribute>> getAttributesMap()
     {
@@ -263,14 +263,14 @@ public class GetTrackedEntityInstanceAction
         return trackedEntities;
     }
 
-    private Map<Integer, Boolean> mandatoryMap = new HashMap<Integer, Boolean>();
+    private Map<Integer, Boolean> mandatoryMap = new HashMap<>();
 
     public Map<Integer, Boolean> getMandatoryMap()
     {
         return mandatoryMap;
     }
 
-    private Map<Integer, Boolean> allowFutureDateMap = new HashMap<Integer, Boolean>();
+    private Map<Integer, Boolean> allowFutureDateMap = new HashMap<>();
 
     public void setAllowFutureDateMap( Map<Integer, Boolean> allowFutureDateMap )
     {
@@ -285,7 +285,7 @@ public class GetTrackedEntityInstanceAction
         throws Exception
     {
         relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
-        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
+        trackedEntities = new ArrayList<>( trackedEntityService.getAllTrackedEntity() );
         entityInstance = entityInstanceService.getTrackedEntityInstance( id );
 
         healthWorkers = entityInstance.getOrganisationUnit().getUsers();
@@ -324,17 +324,17 @@ public class GetTrackedEntityInstanceAction
             }
         }
 
-        List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+        List<TrackedEntityAttribute> attributes = new ArrayList<>();
 
         if ( customRegistrationForm == null )
         {
-            attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
+            attributeGroups = new ArrayList<>(
                 attributeGroupService.getAllTrackedEntityAttributeGroups() );
             Collections.sort( attributeGroups, new TrackedEntityAttributeGroupSortOrderComparator() );
 
             if ( program == null )
             {
-                attributes = new ArrayList<TrackedEntityAttribute>(
+                attributes = new ArrayList<>(
                     attributeService.getTrackedEntityAttributesDisplayInList() );
                 Collections.sort( attributes, new TrackedEntityAttributeSortOrderInListNoProgramComparator() );
 
@@ -366,7 +366,7 @@ public class GetTrackedEntityInstanceAction
                 }
                 else
                 {
-                    List<TrackedEntityAttribute> attrs = new ArrayList<TrackedEntityAttribute>();
+                    List<TrackedEntityAttribute> attrs = new ArrayList<>();
                     attrs.add( attribute );
                     attributesMap.put( groupName, attrs );
                 }

@@ -82,7 +82,7 @@ public class AddDataElementCategoryComboAction
         this.skipTotal = skipTotal;
     }
     
-    private Collection<String> selectedList = new HashSet<String>();
+    private Collection<String> selectedList = new HashSet<>();
 
     public void setSelectedList( Collection<String> selectedList )
     {
@@ -100,7 +100,7 @@ public class AddDataElementCategoryComboAction
         categoryCombo.setDimensionType( dimensionType );
         categoryCombo.setSkipTotal( skipTotal );
 
-        List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
+        List<DataElementCategory> categories = new ArrayList<>();
 
         for ( String id : selectedList )
         {

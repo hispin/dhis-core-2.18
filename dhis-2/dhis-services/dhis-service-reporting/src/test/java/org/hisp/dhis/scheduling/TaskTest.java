@@ -51,7 +51,7 @@ public class TaskTest
     @Test
     public void testGetPeriods()
     {
-        Set<String> periodTypes = new HashSet<String>();
+        Set<String> periodTypes = new HashSet<>();
         periodTypes.add( MonthlyPeriodType.NAME );
         periodTypes.add( BiMonthlyPeriodType.NAME );
         periodTypes.add( QuarterlyPeriodType.NAME );

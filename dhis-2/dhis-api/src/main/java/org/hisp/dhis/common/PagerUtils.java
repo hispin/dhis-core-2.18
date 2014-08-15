@@ -44,7 +44,7 @@ public final class PagerUtils
 
     public static <T> List<T> pageCollection( Collection<T> col, int offset, int limit )
     {
-        List<T> objects = new ArrayList<T>( col );
+        List<T> objects = new ArrayList<>( col );
 
         if ( offset >= objects.size() )
         {

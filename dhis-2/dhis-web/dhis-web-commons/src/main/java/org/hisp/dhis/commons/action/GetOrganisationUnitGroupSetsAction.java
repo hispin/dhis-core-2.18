@@ -81,7 +81,7 @@ public class GetOrganisationUnitGroupSetsAction
     public String execute()
         throws Exception
     {
-        organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>(
+        organisationUnitGroupSets = new ArrayList<>(
             organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
 
         if ( key != null )

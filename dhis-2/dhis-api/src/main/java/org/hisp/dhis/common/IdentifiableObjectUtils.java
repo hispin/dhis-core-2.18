@@ -93,7 +93,7 @@ public class IdentifiableObjectUtils
      */
     public static <T extends IdentifiableObject> List<String> getUids( Collection<T> objects )
     {
-        List<String> uids = new ArrayList<String>();
+        List<String> uids = new ArrayList<>();
 
         if ( objects != null )
         {
@@ -114,7 +114,7 @@ public class IdentifiableObjectUtils
      */
     public static <T extends IdentifiableObject> List<Integer> getIdentifiers( Collection<T> objects )
     {
-        List<Integer> uids = new ArrayList<Integer>();
+        List<Integer> uids = new ArrayList<>();
 
         if ( objects != null )
         {
@@ -138,7 +138,7 @@ public class IdentifiableObjectUtils
     public static <T extends IdentifiableObject> List<T> filterNameByKey( List<T> identifiableObjects, String key,
         boolean ignoreCase )
     {
-        List<T> objects = new ArrayList<T>();
+        List<T> objects = new ArrayList<>();
         ListIterator<T> iterator = identifiableObjects.listIterator();
 
         if ( ignoreCase )
@@ -168,7 +168,7 @@ public class IdentifiableObjectUtils
      */
     public static List<IdentifiableObject> getList( IdentifiableObject... objects )
     {
-        List<IdentifiableObject> list = new ArrayList<IdentifiableObject>();
+        List<IdentifiableObject> list = new ArrayList<>();
 
         if ( objects != null )
         {
@@ -186,7 +186,7 @@ public class IdentifiableObjectUtils
      */
     public static List<IdentifiableObject> asList( Collection<? extends IdentifiableObject> collection )
     {
-        List<IdentifiableObject> list = new ArrayList<IdentifiableObject>();
+        List<IdentifiableObject> list = new ArrayList<>();
         list.addAll( collection );
         return list;
     }
@@ -202,7 +202,7 @@ public class IdentifiableObjectUtils
     @SuppressWarnings("unchecked")
     public static <T extends IdentifiableObject> List<T> asTypedList( Collection<IdentifiableObject> collection )
     {
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
 
         if ( collection != null )
         {
@@ -222,7 +222,7 @@ public class IdentifiableObjectUtils
      */
     public static <T extends IdentifiableObject> List<T> removeDuplicates( List<T> list )
     {
-        final List<T> temp = new ArrayList<T>( list );
+        final List<T> temp = new ArrayList<>( list );
         list.clear();
 
         for ( T object : temp )
@@ -280,7 +280,7 @@ public class IdentifiableObjectUtils
      */
     public static List<Integer> getIdList( Collection<? extends IdentifiableObject> identifiableObjects )
     {
-        List<Integer> integers = new ArrayList<Integer>();
+        List<Integer> integers = new ArrayList<>();
 
         if ( identifiableObjects != null )
         {
@@ -305,7 +305,7 @@ public class IdentifiableObjectUtils
      */
     public static Map<String, String> getUidNameMap( Collection<? extends IdentifiableObject> objects )
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         if ( objects != null )
         {

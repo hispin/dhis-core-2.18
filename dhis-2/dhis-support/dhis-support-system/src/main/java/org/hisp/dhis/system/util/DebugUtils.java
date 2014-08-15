@@ -48,7 +48,7 @@ public class DebugUtils
     
     public static final String SEPARATOR = "-";
     
-    private static ThreadLocal<Map<String, List<String>>> duplicateMapPeg = new ThreadLocal<Map<String,List<String>>>(); 
+    private static ThreadLocal<Map<String, List<String>>> duplicateMapPeg = new ThreadLocal<>();
     
     public static String logDuplicates( String key, Integer... values )
     {
@@ -88,14 +88,14 @@ public class DebugUtils
         
         if ( duplicateMap == null )
         {
-            duplicateMap = new HashMap<String, List<String>>();
+            duplicateMap = new HashMap<>();
         }
         
         List<String> list = duplicateMap.get( key );
 
         if ( list == null )
         {
-            list = new ArrayList<String>();
+            list = new ArrayList<>();
         }
                 
         String duplicate = null;

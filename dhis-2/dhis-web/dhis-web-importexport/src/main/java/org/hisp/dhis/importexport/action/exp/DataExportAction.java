@@ -199,7 +199,7 @@ public class DataExportAction
             params.setCharts( null );
             params.setPeriods( null );*/
             
-            Set<Integer> dataElementz = new HashSet<Integer>();
+            Set<Integer> dataElementz = new HashSet<>();
             
             Collection<DataElement> children = dataElementService.getAllDataElements();
             
@@ -210,7 +210,7 @@ public class DataExportAction
             
             params.setDataElements( dataElementz );
             
-            Set<Integer> orgUnits = new HashSet<Integer>();
+            Set<Integer> orgUnits = new HashSet<>();
             
             Collection<OrganisationUnit> orgChildren = organisationUnitService.getAllOrganisationUnits();
             

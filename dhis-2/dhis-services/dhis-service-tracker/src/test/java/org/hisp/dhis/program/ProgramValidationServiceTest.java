@@ -124,7 +124,7 @@ public class ProgramValidationServiceTest
         stageB = new ProgramStage( "B", program );
         int psIdB = programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );
@@ -155,7 +155,7 @@ public class ProgramValidationServiceTest
         stageInstanceA = programStageInstanceService.getProgramStageInstance( programInstance, stageA );
         stageInstanceB = programStageInstanceService.getProgramStageInstance( programInstance, stageB );
 
-        Set<ProgramStageInstance> programStageInstances = new HashSet<ProgramStageInstance>();
+        Set<ProgramStageInstance> programStageInstances = new HashSet<>();
         programStageInstances.add( stageInstanceA );
         programStageInstances.add( stageInstanceB );
         programInstance.setProgramStageInstances( programStageInstances );
@@ -269,7 +269,7 @@ public class ProgramValidationServiceTest
         programValidationService.addProgramValidation( validationA );
         programValidationService.addProgramValidation( validationB );
 
-        Collection<ProgramValidation> validationList = new HashSet<ProgramValidation>();
+        Collection<ProgramValidation> validationList = new HashSet<>();
         validationList.add( validationA );
         validationList.add( validationB );
 

@@ -91,7 +91,7 @@ public class GetSectionDataElementsAction
         this.categoryComboId = categoryComboId;
     }
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<DataElement> dataElements = new ArrayList<>();
 
     public List<DataElement> getDataElements()
     {
@@ -115,7 +115,7 @@ public class GetSectionDataElementsAction
 
         DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
 
-        dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+        dataElements = new ArrayList<>( dataSet.getDataElements() );
 
         for ( Section section : dataSet.getSections() )
         {

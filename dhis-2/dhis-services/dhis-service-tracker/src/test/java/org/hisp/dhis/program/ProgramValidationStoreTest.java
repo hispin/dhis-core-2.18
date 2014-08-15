@@ -96,7 +96,7 @@ public class ProgramValidationStoreTest
         stageB = new ProgramStage( "B", program );
         int psIdB = programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );

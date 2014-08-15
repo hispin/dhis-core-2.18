@@ -70,8 +70,8 @@ public class DefaultHibernateConfigurationProvider
     private String regularPropertiesFile = "hibernate.properties";
     private String testPropertiesFile = "hibernate-test.properties";
     
-    private List<Resource> jarResources = new ArrayList<Resource>();    
-    private List<Resource> dirResources = new ArrayList<Resource>();
+    private List<Resource> jarResources = new ArrayList<>();
+    private List<Resource> dirResources = new ArrayList<>();
     
     // -------------------------------------------------------------------------
     // Dependencies

@@ -83,7 +83,7 @@ public class ProvideContentAction
         return documents;
     }
 
-    private List<String> charts = new ArrayList<String>();
+    private List<String> charts = new ArrayList<>();
 
     public List<String> getCharts()
     {
@@ -105,7 +105,7 @@ public class ProvideContentAction
     public String execute()
         throws Exception
     {
-        chartsForAll = new ArrayList<Chart>( chartService.getAllCharts() );
+        chartsForAll = new ArrayList<>( chartService.getAllCharts() );
         
         currentUserService.getCurrentUser();
         

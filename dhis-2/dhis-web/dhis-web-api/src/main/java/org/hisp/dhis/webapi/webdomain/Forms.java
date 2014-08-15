@@ -48,10 +48,10 @@ import com.google.common.collect.Maps;
 public class Forms
 {
     // maps ou.uid => org unit.
-    private Map<String, FormOrganisationUnit> organisationUnits = new HashMap<String, FormOrganisationUnit>();
+    private Map<String, FormOrganisationUnit> organisationUnits = new HashMap<>();
 
     // maps dataSet.uid => form instance
-    private Map<String, Form> forms = new HashMap<String, Form>();
+    private Map<String, Form> forms = new HashMap<>();
 
     private Map<String, List<String>> optionSets = Maps.newHashMap();
 

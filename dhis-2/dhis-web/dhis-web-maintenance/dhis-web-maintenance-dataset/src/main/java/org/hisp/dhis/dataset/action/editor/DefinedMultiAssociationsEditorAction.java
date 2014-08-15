@@ -94,9 +94,9 @@ public class DefinedMultiAssociationsEditorAction
 
     private OrganisationUnit source;
 
-    private List<MetaValue> metaItems = new ArrayList<MetaValue>();
+    private List<MetaValue> metaItems = new ArrayList<>();
 
-    private Map<Integer, String> itemMaps = new HashMap<Integer, String>();
+    private Map<Integer, String> itemMaps = new HashMap<>();
 
     // -------------------------------------------------------------------------
     // Input

@@ -50,7 +50,7 @@ public class Events
 
     private String programInstance;
 
-    private List<Event> events = new ArrayList<Event>();
+    private List<Event> events = new ArrayList<>();
     
     private Map<Object, Object> metaData;
 

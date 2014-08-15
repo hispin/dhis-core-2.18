@@ -105,7 +105,7 @@ public class GetSectionAction
     {
         section = sectionService.getSection( sectionId );
 
-        sectionDataElements = new ArrayList<DataElement>( section.getDataElements() );       
+        sectionDataElements = new ArrayList<>( section.getDataElements() );
 
         categoryCombo = section.getDataElements().iterator().next().getCategoryCombo();
 

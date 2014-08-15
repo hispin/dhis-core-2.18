@@ -83,7 +83,7 @@ public class GetDataElementGroupMembersAction
         this.dataElementGroupId = dataElementGroupId;
     }
 
-    private List<DataElementOperand> operands = new ArrayList<DataElementOperand>();
+    private List<DataElementOperand> operands = new ArrayList<>();
 
     public List<DataElementOperand> getOperands()
     {
@@ -100,11 +100,11 @@ public class GetDataElementGroupMembersAction
         {
             DataElementGroup group = dataElementService.getDataElementGroup( dataElementGroupId.intValue() );
 
-            dataElements = new ArrayList<DataElement>( group.getMembers() );
+            dataElements = new ArrayList<>( group.getMembers() );
         }
         else
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+            dataElements = new ArrayList<>( dataElementService.getAllDataElements() );
         }
 
         Collections.sort( dataElements, new IdentifiableObjectNameComparator() );

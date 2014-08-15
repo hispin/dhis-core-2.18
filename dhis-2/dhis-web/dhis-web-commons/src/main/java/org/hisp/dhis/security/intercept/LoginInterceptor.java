@@ -53,7 +53,7 @@ public class LoginInterceptor
 
     public static final String JLI_SESSION_VARIABLE = "JLI";
 
-    private List<Action> actions = new ArrayList<Action>();
+    private List<Action> actions = new ArrayList<>();
 
     /**
      * @param actions List of actions to run on login.

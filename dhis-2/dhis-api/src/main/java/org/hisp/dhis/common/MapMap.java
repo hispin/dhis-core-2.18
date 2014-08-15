@@ -61,7 +61,7 @@ public class MapMap<T, U, V>
 
     public static <T, U, V> MapMap<T, U, V> asMapMap( AbstractMap.SimpleEntry<T, Map<U, V>>... entries )
     {
-        MapMap<T, U, V> map = new MapMap<T, U, V>();
+        MapMap<T, U, V> map = new MapMap<>();
 
         for ( AbstractMap.SimpleEntry<T, Map<U, V>> entry : entries )
         {

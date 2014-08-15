@@ -154,7 +154,7 @@ public class ScheduleCaseAggregateConditionAction
                 systemSettingManager.saveSystemSetting( KEY_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY,
                     taskStrategy );
 
-                Map<String, String> keyCronMap = new HashMap<String, String>();
+                Map<String, String> keyCronMap = new HashMap<>();
 
                 keyCronMap.put( CaseAggregateConditionSchedulingManager.TASK_AGGREGATE_QUERY_BUILDER,
                     Scheduler.CRON_DAILY_0AM );

@@ -139,7 +139,7 @@ public class TrackedEntityDataValueStoreTest
         stageB.setProgram( program );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );
@@ -201,7 +201,7 @@ public class TrackedEntityDataValueStoreTest
         dataValueStore.saveVoid( dataValueC );
         dataValueStore.saveVoid( dataValueD );
 
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
+        Collection<DataElement> dataElements = new HashSet<>();
         dataElements.add( dataElementA );
         dataElements.add( dataElementB );
 
@@ -219,7 +219,7 @@ public class TrackedEntityDataValueStoreTest
         dataValueStore.saveVoid( dataValueC );
         dataValueStore.saveVoid( dataValueD );
 
-        Collection<ProgramStageInstance> programStageInstances = new HashSet<ProgramStageInstance>();
+        Collection<ProgramStageInstance> programStageInstances = new HashSet<>();
         programStageInstances.add( stageInstanceA );
         programStageInstances.add( stageInstanceB );
 
@@ -258,7 +258,7 @@ public class TrackedEntityDataValueStoreTest
         dataValueStore.saveVoid( dataValueC );
         dataValueStore.saveVoid( dataValueD );
 
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
+        Collection<DataElement> dataElements = new HashSet<>();
         dataElements.add( dataElementA );
         dataElements.add( dataElementB );
 

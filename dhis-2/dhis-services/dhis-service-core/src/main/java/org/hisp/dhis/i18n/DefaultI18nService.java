@@ -161,7 +161,7 @@ public class DefaultI18nService
         
         List<String> properties = getObjectPropertyNames( object );
 
-        Map<String, String> translations = new HashMap<String, String>();
+        Map<String, String> translations = new HashMap<>();
 
         for ( String property : properties )
         {
@@ -234,7 +234,7 @@ public class DefaultI18nService
             return convertTranslations( translationService.getTranslations( className, locale, objectUid ) );
         }
 
-        return new HashMap<String, String>();
+        return new HashMap<>();
     }
 
     public Map<String, String> getTranslationsNoFallback( String className, String objectUid )
@@ -249,7 +249,7 @@ public class DefaultI18nService
             return convertTranslations( translationService.getTranslationsNoFallback( className, locale, objectUid ) );
         }
 
-        return new HashMap<String, String>();
+        return new HashMap<>();
     }
 
     // -------------------------------------------------------------------------
@@ -286,7 +286,7 @@ public class DefaultI18nService
      */
     private Map<String, String> getTranslationsForObject( Collection<Translation> translations, String objectUid )
     {
-        Collection<Translation> objectTranslations = new ArrayList<Translation>();
+        Collection<Translation> objectTranslations = new ArrayList<>();
 
         if ( objectUid != null )
         {
@@ -311,7 +311,7 @@ public class DefaultI18nService
      */
     private Map<String, String> convertTranslations( Collection<Translation> translations )
     {
-        Map<String, String> translationMap = new Hashtable<String, String>();
+        Map<String, String> translationMap = new Hashtable<>();
 
         for ( Translation translation : translations )
         {

@@ -76,9 +76,9 @@ public class ValidateProgramInstanceAction
 
     private Collection<ProgramValidationResult> programValidationResults;
 
-    private Map<Integer, String> leftsideFormulaMap = new HashMap<Integer, String>();
+    private Map<Integer, String> leftsideFormulaMap = new HashMap<>();
 
-    private Map<Integer, String> rightsideFormulaMap = new HashMap<Integer, String>();
+    private Map<Integer, String> rightsideFormulaMap = new HashMap<>();
 
     // -------------------------------------------------------------------------
     // Getters && Setters
@@ -112,11 +112,11 @@ public class ValidateProgramInstanceAction
     public String execute()
         throws Exception
     {
-        programValidationResults = new ArrayList<ProgramValidationResult>();
+        programValidationResults = new ArrayList<>();
 
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
-        List<ProgramValidation> validation = new ArrayList<ProgramValidation>(
+        List<ProgramValidation> validation = new ArrayList<>(
             programValidationService.getProgramValidation( programStageInstance.getProgramStage() ) );
 
         programValidationResults = programValidationService.validate( validation, programStageInstance );

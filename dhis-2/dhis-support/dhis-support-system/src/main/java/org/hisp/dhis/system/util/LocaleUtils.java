@@ -104,7 +104,7 @@ public class LocaleUtils
      */
     public static List<String> getLocaleFallbacks( Locale locale )
     {
-        List<String> locales = new ArrayList<String>();
+        List<String> locales = new ArrayList<>();
         
         locales.add( locale.getLanguage() );
         
@@ -130,9 +130,9 @@ public class LocaleUtils
      */
     public static List<Translation> getTranslationsHighestSpecifity( Collection<Translation> translations )
     {
-        Map<String, Translation> translationMap = new HashMap<String, Translation>();
+        Map<String, Translation> translationMap = new HashMap<>();
         
-        List<Translation> trans = new ArrayList<Translation>( translations );
+        List<Translation> trans = new ArrayList<>( translations );
         
         Collections.sort( trans, TranslationLocaleSpecificityComparator.INSTANCE );
         
@@ -141,6 +141,6 @@ public class LocaleUtils
             translationMap.put( tr.getClassIdPropKey(), tr );
         }
         
-        return new ArrayList<Translation>( translationMap.values() );
+        return new ArrayList<>( translationMap.values() );
     }
 }

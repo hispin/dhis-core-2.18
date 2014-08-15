@@ -134,7 +134,7 @@ public class ShowUpdateIndicatorFormAction
         return attributes;
     }
 
-    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+    public Map<Integer, String> attributeValues = new HashMap<>();
 
     public Map<Integer, String> getAttributeValues()
     {
@@ -163,15 +163,15 @@ public class ShowUpdateIndicatorFormAction
             indicatorTypeName = indicator.getIndicatorType().getName();
         }
 
-        indicatorTypes = new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() );
+        indicatorTypes = new ArrayList<>( indicatorService.getAllIndicatorTypes() );
 
-        groupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getCompulsoryIndicatorGroupSetsWithMembers() );
+        groupSets = new ArrayList<>( indicatorService.getCompulsoryIndicatorGroupSetsWithMembers() );
 
-        attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
+        attributes = new ArrayList<>( attributeService.getIndicatorAttributes() );
 
         attributeValues = AttributeUtils.getAttributeValueMap( indicator.getAttributeValues() );
 
-        legendSets = new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() );
+        legendSets = new ArrayList<>( mappingService.getAllMapLegendSets() );
         
         Collections.sort( indicatorTypes, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );

@@ -113,18 +113,18 @@ public class GetTrackedEntityDataElementsAction
         {
             Program program = programService.getProgram( programId );
 
-            Set<DataElement> dataElementsInProgram = new HashSet<DataElement>();
+            Set<DataElement> dataElementsInProgram = new HashSet<>();
 
             for ( ProgramStage programStage : program.getProgramStages() )
             {
                 dataElementsInProgram.addAll( programStageDataElementService.getListDataElement( programStage ) );
             }
             
-            dataElements = new ArrayList<DataElement>( dataElementsInProgram );
+            dataElements = new ArrayList<>( dataElementsInProgram );
         }
         else
         {
-            dataElements = new ArrayList<DataElement>( programStageDataElementService
+            dataElements = new ArrayList<>( programStageDataElementService
                 .getListDataElement( programStageService.getProgramStage( programStageId ) ) );
         }
         

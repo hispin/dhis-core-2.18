@@ -54,7 +54,7 @@ public class MappedRedirectStrategy
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private Map<String, String> redirectMap = new HashMap<String, String>();
+    private Map<String, String> redirectMap = new HashMap<>();
 
     public Map<String, String> getRedirectMap()
     {

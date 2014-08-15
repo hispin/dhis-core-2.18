@@ -146,7 +146,7 @@ public class JdbcCompletenessTableManager
     
     public List<String[]> getDimensionColumns( AnalyticsTable table )
     {
-        List<String[]> columns = new ArrayList<String[]>();
+        List<String[]> columns = new ArrayList<>();
 
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
             organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets();

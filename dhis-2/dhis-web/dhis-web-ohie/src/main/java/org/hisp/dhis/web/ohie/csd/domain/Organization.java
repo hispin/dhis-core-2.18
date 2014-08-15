@@ -47,25 +47,25 @@ public class Organization
     private String oid;
 
     @XmlElement( name = "otherID", namespace = "urn:ihe:iti:csd:2013" )
-    private List<OtherID> otherID = new ArrayList<OtherID>();
+    private List<OtherID> otherID = new ArrayList<>();
 
     @XmlElement( name = "codedType", namespace = "urn:ihe:iti:csd:2013" )
-    private List<CodedType> codedTypes = new ArrayList<CodedType>();
+    private List<CodedType> codedTypes = new ArrayList<>();
 
     @XmlElement( name = "primaryName", namespace = "urn:ihe:iti:csd:2013" )
     private String primaryName;
 
     @XmlElement( name = "otherName", namespace = "urn:ihe:iti:csd:2013" )
-    private List<Name> otherName = new ArrayList<Name>();
+    private List<Name> otherName = new ArrayList<>();
 
     @XmlElement( name = "address", namespace = "urn:ihe:iti:csd:2013" )
-    private List<Address> addresses = new ArrayList<Address>();
+    private List<Address> addresses = new ArrayList<>();
 
     @XmlElement( name = "contact", namespace = "urn:ihe:iti:csd:2013" )
-    private List<Contact> contacts = new ArrayList<Contact>();
+    private List<Contact> contacts = new ArrayList<>();
 
     @XmlElement( name = "service", namespace = "urn:ihe:iti:csd:2013" )
-    private List<Service> services = new ArrayList<Service>();
+    private List<Service> services = new ArrayList<>();
 
     public Organization()
     {

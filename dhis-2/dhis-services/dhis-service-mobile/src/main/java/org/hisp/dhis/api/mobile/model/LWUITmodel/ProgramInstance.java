@@ -56,7 +56,7 @@ public class ProgramInstance
 
     private String dateOfIncident;
 
-    private List<ProgramStage> programStageInstances = new ArrayList<ProgramStage>();
+    private List<ProgramStage> programStageInstances = new ArrayList<>();
 
     public Integer getId()
     {

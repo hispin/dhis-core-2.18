@@ -210,7 +210,7 @@ public class AddDataElementAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
-    private Collection<String> selectedGroups = new HashSet<String>();
+    private Collection<String> selectedGroups = new HashSet<>();
 
     public void setSelectedGroups( Collection<String> selectedGroups )
     {
@@ -297,7 +297,7 @@ public class AddDataElementAction
         dataElement.setUrl( url );
         dataElement.setZeroIsSignificant( zeroIsSignificant );
         dataElement.setCategoryCombo( categoryCombo );
-        dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils.getIntegerCollection( aggregationLevels ) ) );
+        dataElement.setAggregationLevels( new ArrayList<>( ConversionUtils.getIntegerCollection( aggregationLevels ) ) );
         dataElement.setOptionSet( optionSet );
         dataElement.setCommentOptionSet( commentOptionSet );
         dataElement.setLegendSet( legendSet );

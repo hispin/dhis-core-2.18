@@ -51,15 +51,15 @@ public class MemoryAggregationCache
     // Cache
     // -------------------------------------------------------------------------
 
-    private final ThreadLocal<Map<String, Collection<Integer>>> intersectingPeriodCache = new ThreadLocal<Map<String,Collection<Integer>>>();
+    private final ThreadLocal<Map<String, Collection<Integer>>> intersectingPeriodCache = new ThreadLocal<>();
 
-    private final ThreadLocal<Map<String, Collection<Integer>>> periodBetweenDatesCache = new ThreadLocal<Map<String,Collection<Integer>>>();
+    private final ThreadLocal<Map<String, Collection<Integer>>> periodBetweenDatesCache = new ThreadLocal<>();
 
-    private final ThreadLocal<Map<String, Collection<Integer>>> periodBetweenDatesPeriodTypeCache = new ThreadLocal<Map<String,Collection<Integer>>>();
+    private final ThreadLocal<Map<String, Collection<Integer>>> periodBetweenDatesPeriodTypeCache = new ThreadLocal<>();
 
-    private final ThreadLocal<Map<String, Period>> periodCache = new ThreadLocal<Map<String,Period>>();
+    private final ThreadLocal<Map<String, Period>> periodCache = new ThreadLocal<>();
 
-    private final ThreadLocal<Map<String, Integer>> organisationUnitLevelCache = new ThreadLocal<Map<String, Integer>>();
+    private final ThreadLocal<Map<String, Integer>> organisationUnitLevelCache = new ThreadLocal<>();
     
     // -------------------------------------------------------------------------
     // Dependencies

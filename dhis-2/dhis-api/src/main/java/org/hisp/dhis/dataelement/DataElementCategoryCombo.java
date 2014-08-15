@@ -69,13 +69,13 @@ public class DataElementCategoryCombo
      * A set with categories.
      */
     @Scanned
-    private List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
+    private List<DataElementCategory> categories = new ArrayList<>();
 
     /**
      * A set of category option combos. Use getSortedOptionCombos() to get a
      * sorted list of category option combos.
      */
-    private Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+    private Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<>();
 
     private String dimensionType;
 
@@ -113,7 +113,7 @@ public class DataElementCategoryCombo
 
     public List<DataElementCategoryOption> getCategoryOptions()
     {
-        final List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+        final List<DataElementCategoryOption> categoryOptions = new ArrayList<>();
 
         for ( DataElementCategory category : categories )
         {
@@ -141,7 +141,7 @@ public class DataElementCategoryCombo
 
         for ( DataElementCategory category : categories )
         {
-            arrays[i++] = new ArrayList<DataElementCategoryOption>(
+            arrays[i++] = new ArrayList<>(
                 category.getCategoryOptions() ).toArray( new DataElementCategoryOption[0] );
         }
 
@@ -150,15 +150,15 @@ public class DataElementCategoryCombo
 
     public List<DataElementCategoryOptionCombo> generateOptionCombosList()
     {
-        List<DataElementCategoryOptionCombo> list = new ArrayList<DataElementCategoryOptionCombo>();
+        List<DataElementCategoryOptionCombo> list = new ArrayList<>();
 
         CombinationGenerator<DataElementCategoryOption> generator =
-            new CombinationGenerator<DataElementCategoryOption>( getCategoryOptionsAsArray() );
+            new CombinationGenerator<>( getCategoryOptionsAsArray() );
 
         while ( generator.hasNext() )
         {
             DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
-            optionCombo.setCategoryOptions( new HashSet<DataElementCategoryOption>( generator.getNext() ) );
+            optionCombo.setCategoryOptions( new HashSet<>( generator.getNext() ) );
             optionCombo.setCategoryCombo( this );
             list.add( optionCombo );
         }
@@ -168,16 +168,16 @@ public class DataElementCategoryCombo
 
     public List<DataElementCategoryOptionCombo> getSortedOptionCombos()
     {
-        List<DataElementCategoryOptionCombo> list = new ArrayList<DataElementCategoryOptionCombo>();
+        List<DataElementCategoryOptionCombo> list = new ArrayList<>();
 
         CombinationGenerator<DataElementCategoryOption> generator =
-            new CombinationGenerator<DataElementCategoryOption>( getCategoryOptionsAsArray() );
+            new CombinationGenerator<>( getCategoryOptionsAsArray() );
 
         sortLoop: while ( generator.hasNext() )
         {
             List<DataElementCategoryOption> categoryOptions = generator.getNext();
 
-            Set<DataElementCategoryOption> categoryOptionSet = new HashSet<DataElementCategoryOption>( categoryOptions );
+            Set<DataElementCategoryOption> categoryOptionSet = new HashSet<>( categoryOptions );
 
             for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
             {
@@ -217,7 +217,7 @@ public class DataElementCategoryCombo
     //TODO update category option -> category option combo association
     public void generateOptionCombos()
     {
-        this.optionCombos = new HashSet<DataElementCategoryOptionCombo>( generateOptionCombosList() );
+        this.optionCombos = new HashSet<>( generateOptionCombosList() );
     }
     
     public boolean hasOptionCombos()

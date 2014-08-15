@@ -70,7 +70,7 @@ public class GetSystemAuthoritiesAction
     public String execute()
         throws Exception
     {
-        systemAuthorities = new ArrayList<String>( authoritiesProvider.getSystemAuthorities() );
+        systemAuthorities = new ArrayList<>( authoritiesProvider.getSystemAuthorities() );
 
         Collections.sort( systemAuthorities );
 

@@ -95,7 +95,7 @@ public class UpdateSectionAction
         this.description = description;
     }
 
-    private List<String> selectedList = new ArrayList<String>();
+    private List<String> selectedList = new ArrayList<>();
 
     public void setSelectedList( List<String> selectedList )
     {
@@ -109,7 +109,7 @@ public class UpdateSectionAction
     public String execute()
         throws Exception
     {
-        List<DataElement> dataElements = new ArrayList<DataElement>();
+        List<DataElement> dataElements = new ArrayList<>();
 
         Section section = sectionService.getSection( sectionId.intValue() );
 

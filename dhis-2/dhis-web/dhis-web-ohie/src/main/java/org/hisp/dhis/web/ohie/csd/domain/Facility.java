@@ -48,35 +48,35 @@ public class Facility
     private String oid;
 
     @XmlElement( name = "otherID", namespace = "urn:ihe:iti:csd:2013" )
-    private List<OtherID> otherID = new ArrayList<OtherID>();
+    private List<OtherID> otherID = new ArrayList<>();
 
     @XmlElement( name = "codedType", namespace = "urn:ihe:iti:csd:2013" )
-    private List<CodedType> codedTypes = new ArrayList<CodedType>();
+    private List<CodedType> codedTypes = new ArrayList<>();
 
     @XmlElement( name = "primaryName", namespace = "urn:ihe:iti:csd:2013" )
     private String primaryName;
 
     @XmlElement( name = "otherName", namespace = "urn:ihe:iti:csd:2013" )
-    private List<Name> otherName = new ArrayList<Name>();
+    private List<Name> otherName = new ArrayList<>();
 
     @XmlElement( name = "address", namespace = "urn:ihe:iti:csd:2013" )
-    private List<Address> addresses = new ArrayList<Address>();
+    private List<Address> addresses = new ArrayList<>();
 
     @XmlElement( name = "contact", namespace = "urn:ihe:iti:csd:2013" )
-    private List<Contact> contacts = new ArrayList<Contact>();
+    private List<Contact> contacts = new ArrayList<>();
 
     @XmlElement( name = "geocode", namespace = "urn:ihe:iti:csd:2013" )
     private Geocode geocode;
 
     @XmlElement( name = "contactPoint", namespace = "urn:ihe:iti:csd:2013" )
-    private List<ContactPoint> contactPoints = new ArrayList<ContactPoint>();
+    private List<ContactPoint> contactPoints = new ArrayList<>();
 
     @XmlElement( name = "organization", namespace = "urn:ihe:iti:csd:2013" )
     @XmlElementWrapper( name = "organizations", namespace = "urn:ihe:iti:csd:2013" )
-    private List<Organization> organizations = new ArrayList<Organization>();
+    private List<Organization> organizations = new ArrayList<>();
 
     @XmlElement( name = "operatingHours", namespace = "urn:ihe:iti:csd:2013" )
-    private List<OperatingHours> operatingHours = new ArrayList<OperatingHours>();
+    private List<OperatingHours> operatingHours = new ArrayList<>();
 
     @XmlElement( name = "record", namespace = "urn:ihe:iti:csd:2013" )
     private Record record;

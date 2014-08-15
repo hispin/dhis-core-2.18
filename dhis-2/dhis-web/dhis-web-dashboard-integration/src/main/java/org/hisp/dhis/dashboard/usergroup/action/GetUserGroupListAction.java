@@ -84,13 +84,13 @@ public class GetUserGroupListAction
         {
             this.paging = createPaging( userGroupService.getUserGroupCountByName( key ) );
             
-            userGroupList = new ArrayList<UserGroup>( userGroupService.getUserGroupsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            userGroupList = new ArrayList<>( userGroupService.getUserGroupsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( userGroupService.getUserGroupCount() );
             
-            userGroupList = new ArrayList<UserGroup>( userGroupService.getUserGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
+            userGroupList = new ArrayList<>( userGroupService.getUserGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
         return SUCCESS;

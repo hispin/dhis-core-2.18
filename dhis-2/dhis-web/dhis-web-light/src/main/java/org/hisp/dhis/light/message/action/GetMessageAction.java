@@ -108,7 +108,7 @@ public class GetMessageAction
         
         subject = conversation.getSubject();
         
-        messages = new ArrayList<Message>( conversation.getMessages() );
+        messages = new ArrayList<>( conversation.getMessages() );
         Collections.reverse( messages );
         conversation.markRead( currentUserService.getCurrentUser() );
         messageService.updateMessageConversation( conversation );

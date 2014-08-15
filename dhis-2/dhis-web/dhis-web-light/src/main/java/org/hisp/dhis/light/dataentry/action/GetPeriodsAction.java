@@ -152,21 +152,21 @@ public class GetPeriodsAction
         return dataSet;
     }
 
-    private Map<Period, Boolean> periodCompletedMap = new HashMap<Period, Boolean>();
+    private Map<Period, Boolean> periodCompletedMap = new HashMap<>();
 
     public Map<Period, Boolean> getPeriodCompletedMap()
     {
         return periodCompletedMap;
     }
 
-    private List<Period> periods = new ArrayList<Period>();
+    private List<Period> periods = new ArrayList<>();
 
     public List<Period> getPeriods()
     {
         return periods;
     }
 
-    private List<Period> lockedPeriods = new ArrayList<Period>();
+    private List<Period> lockedPeriods = new ArrayList<>();
 
     public List<Period> getLockedPeriods()
     {

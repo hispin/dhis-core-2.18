@@ -107,9 +107,9 @@ public class GetCompulsoryDataElementsAction
     {
         DataSet dataSet = dataSetService.getDataSet( id );
 
-        selectedOperands = new ArrayList<DataElementOperand>( dataSet.getCompulsoryDataElementOperands() );
+        selectedOperands = new ArrayList<>( dataSet.getCompulsoryDataElementOperands() );
 
-        availableOperands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataSet.getDataElements() ) );
+        availableOperands = new ArrayList<>( dataElementCategoryService.getOperands( dataSet.getDataElements() ) );
         
         Iterator<DataElementOperand> availableIter = availableOperands.iterator();
 

@@ -133,17 +133,17 @@ public class ReportTable
     /**
      * Dimensions to crosstabulate / use as columns.
      */
-    private List<String> columnDimensions = new ArrayList<String>();
+    private List<String> columnDimensions = new ArrayList<>();
     
     /**
      * Dimensions to use as rows.
      */
-    private List<String> rowDimensions = new ArrayList<String>();
+    private List<String> rowDimensions = new ArrayList<>();
     
     /**
      * Dimensions to use as filter.
      */
-    private List<String> filterDimensions = new ArrayList<String>();
+    private List<String> filterDimensions = new ArrayList<>();
     
     /**
      * The ReportParams of the ReportTable.
@@ -202,12 +202,12 @@ public class ReportTable
     /**
      * All crosstabulated columns.
      */
-    private transient List<List<NameableObject>> gridColumns = new ArrayList<List<NameableObject>>();
+    private transient List<List<NameableObject>> gridColumns = new ArrayList<>();
 
     /**
      * All rows.
      */
-    private transient List<List<NameableObject>> gridRows = new ArrayList<List<NameableObject>>();
+    private transient List<List<NameableObject>> gridRows = new ArrayList<>();
 
     /**
      * The name of the reporting month based on the report param.
@@ -345,9 +345,9 @@ public class ReportTable
     public void populateGridColumnsAndRows( Date date, User user, 
         List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups, I18nFormat format )
     {
-        List<NameableObject[]> tableColumns = new ArrayList<NameableObject[]>();
-        List<NameableObject[]> tableRows = new ArrayList<NameableObject[]>();
-        List<NameableObject> filterItems = new ArrayList<NameableObject>();
+        List<NameableObject[]> tableColumns = new ArrayList<>();
+        List<NameableObject[]> tableRows = new ArrayList<>();
+        List<NameableObject> filterItems = new ArrayList<>();
         
         for ( String dimension : columnDimensions )
         {
@@ -364,8 +364,8 @@ public class ReportTable
             filterItems.addAll( getDimensionalObject( filter, date, user, true, organisationUnitsAtLevel, organisationUnitsInGroups, format ).getItems() );
         }
 
-        gridColumns = new CombinationGenerator<NameableObject>( tableColumns.toArray( IRT2D ) ).getCombinations();
-        gridRows = new CombinationGenerator<NameableObject>( tableRows.toArray( IRT2D ) ).getCombinations();
+        gridColumns = new CombinationGenerator<>( tableColumns.toArray( IRT2D ) ).getCombinations();
+        gridRows = new CombinationGenerator<>( tableRows.toArray( IRT2D ) ).getCombinations();
 
         addIfEmpty( gridColumns ); 
         addIfEmpty( gridRows );
@@ -567,7 +567,7 @@ public class ReportTable
     @SuppressWarnings("unchecked")
     public Grid getGrid( Grid grid, Map<String, Double> valueMap, boolean paramColumns )
     {
-        valueMap = new HashMap<String, Double>( valueMap );
+        valueMap = new HashMap<>( valueMap );
         
         sortKeys( valueMap );
 

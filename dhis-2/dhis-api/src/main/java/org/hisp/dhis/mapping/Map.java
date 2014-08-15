@@ -60,7 +60,7 @@ public class Map
     private Integer zoom;
 
     @Scanned
-    private List<MapView> mapViews = new ArrayList<MapView>();
+    private List<MapView> mapViews = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Constructors

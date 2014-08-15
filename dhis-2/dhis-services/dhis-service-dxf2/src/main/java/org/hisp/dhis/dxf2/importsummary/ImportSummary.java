@@ -49,7 +49,7 @@ public class ImportSummary
 
     private ImportCount importCount = new ImportCount();
 
-    private List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
+    private List<ImportConflict> conflicts = new ArrayList<>();
 
     private String dataSetComplete;
 

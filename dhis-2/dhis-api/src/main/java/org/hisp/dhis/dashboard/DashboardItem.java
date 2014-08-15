@@ -81,13 +81,13 @@ public class DashboardItem
 
     private ReportTable reportTable;
     
-    private List<User> users = new ArrayList<User>();
+    private List<User> users = new ArrayList<>();
 
-    private List<ReportTable> reportTables = new ArrayList<ReportTable>();
+    private List<ReportTable> reportTables = new ArrayList<>();
 
-    private List<Report> reports = new ArrayList<Report>();
+    private List<Report> reports = new ArrayList<>();
 
-    private List<Document> resources = new ArrayList<Document>();
+    private List<Document> resources = new ArrayList<>();
 
     private Boolean messages;
 

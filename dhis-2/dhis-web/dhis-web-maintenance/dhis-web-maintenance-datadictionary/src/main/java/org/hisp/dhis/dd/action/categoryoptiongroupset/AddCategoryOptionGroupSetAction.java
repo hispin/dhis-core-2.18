@@ -78,7 +78,7 @@ public class AddCategoryOptionGroupSetAction
         this.dataDimension = dataDimension;
     }
 
-    private List<String> groupMembers = new ArrayList<String>();
+    private List<String> groupMembers = new ArrayList<>();
 
     public void setGroupMembers( List<String> groupMembers )
     {
@@ -97,7 +97,7 @@ public class AddCategoryOptionGroupSetAction
         categoryOptionGroupSet.setDescription( description );
         categoryOptionGroupSet.setDataDimension( dataDimension );
 
-        List<CategoryOptionGroup> members = new ArrayList<CategoryOptionGroup>();
+        List<CategoryOptionGroup> members = new ArrayList<>();
         
         for ( String id : groupMembers )
         {

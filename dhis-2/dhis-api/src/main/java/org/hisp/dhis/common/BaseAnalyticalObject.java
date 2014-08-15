@@ -117,42 +117,42 @@ public abstract class BaseAnalyticalObject
     // -------------------------------------------------------------------------
 
     @Scanned
-    protected List<Indicator> indicators = new ArrayList<Indicator>();
+    protected List<Indicator> indicators = new ArrayList<>();
 
     @Scanned
-    protected List<DataElement> dataElements = new ArrayList<DataElement>();
+    protected List<DataElement> dataElements = new ArrayList<>();
 
     @Scanned
-    protected List<DataElementOperand> dataElementOperands = new ArrayList<DataElementOperand>();
+    protected List<DataElementOperand> dataElementOperands = new ArrayList<>();
 
     @Scanned
-    protected List<DataSet> dataSets = new ArrayList<DataSet>();
+    protected List<DataSet> dataSets = new ArrayList<>();
 
     @Scanned
-    protected List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+    protected List<OrganisationUnit> organisationUnits = new ArrayList<>();
 
     @Scanned
-    protected List<Period> periods = new ArrayList<Period>();
+    protected List<Period> periods = new ArrayList<>();
 
     protected RelativePeriods relatives;
 
     @Scanned
-    protected List<DataElementCategoryDimension> categoryDimensions = new ArrayList<DataElementCategoryDimension>();
+    protected List<DataElementCategoryDimension> categoryDimensions = new ArrayList<>();
 
     @Scanned
-    protected List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
+    protected List<DataElementGroup> dataElementGroups = new ArrayList<>();
 
     @Scanned
-    protected List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
+    protected List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<>();
 
     @Scanned
-    protected List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<CategoryOptionGroup>();
+    protected List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<>();
 
     @Scanned
-    protected List<TrackedEntityAttributeDimension> attributeDimensions = new ArrayList<TrackedEntityAttributeDimension>();
+    protected List<TrackedEntityAttributeDimension> attributeDimensions = new ArrayList<>();
 
     @Scanned
-    protected List<TrackedEntityDataElementDimension> dataElementDimensions = new ArrayList<TrackedEntityDataElementDimension>();
+    protected List<TrackedEntityDataElementDimension> dataElementDimensions = new ArrayList<>();
 
     protected boolean userOrganisationUnit;
 
@@ -161,10 +161,10 @@ public abstract class BaseAnalyticalObject
     protected boolean userOrganisationUnitGrandChildren;
 
     @Scanned
-    protected List<Integer> organisationUnitLevels = new ArrayList<Integer>();
+    protected List<Integer> organisationUnitLevels = new ArrayList<>();
 
     @Scanned
-    protected List<OrganisationUnitGroup> itemOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
+    protected List<OrganisationUnitGroup> itemOrganisationUnitGroups = new ArrayList<>();
 
     protected boolean rewindRelativePeriods;
 
@@ -178,21 +178,21 @@ public abstract class BaseAnalyticalObject
     // Analytical properties
     // -------------------------------------------------------------------------
 
-    protected transient List<DimensionalObject> columns = new ArrayList<DimensionalObject>();
+    protected transient List<DimensionalObject> columns = new ArrayList<>();
 
-    protected transient List<DimensionalObject> rows = new ArrayList<DimensionalObject>();
+    protected transient List<DimensionalObject> rows = new ArrayList<>();
 
-    protected transient List<DimensionalObject> filters = new ArrayList<DimensionalObject>();
+    protected transient List<DimensionalObject> filters = new ArrayList<>();
 
-    protected transient Map<String, String> parentGraphMap = new HashMap<String, String>();
+    protected transient Map<String, String> parentGraphMap = new HashMap<>();
 
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
 
-    protected transient List<OrganisationUnit> transientOrganisationUnits = new ArrayList<OrganisationUnit>();
+    protected transient List<OrganisationUnit> transientOrganisationUnits = new ArrayList<>();
 
-    protected transient List<DataElementCategoryOptionCombo> transientCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    protected transient List<DataElementCategoryOptionCombo> transientCategoryOptionCombos = new ArrayList<>();
 
     protected transient Date relativePeriodDate;
 
@@ -261,7 +261,7 @@ public abstract class BaseAnalyticalObject
     protected DimensionalObject getDimensionalObject( String dimension, Date date, User user, boolean dynamicNames,
         List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups, I18nFormat format )
     {
-        List<NameableObject> items = new ArrayList<NameableObject>();
+        List<NameableObject> items = new ArrayList<>();
 
         DimensionType type = null;
 
@@ -350,7 +350,7 @@ public abstract class BaseAnalyticalObject
         {
             // Data element group set
 
-            ListMap<String, NameableObject> deGroupMap = new ListMap<String, NameableObject>();
+            ListMap<String, NameableObject> deGroupMap = new ListMap<>();
 
             for ( DataElementGroup group : dataElementGroups )
             {
@@ -369,7 +369,7 @@ public abstract class BaseAnalyticalObject
 
             // Organisation unit group set
 
-            ListMap<String, NameableObject> ouGroupMap = new ListMap<String, NameableObject>();
+            ListMap<String, NameableObject> ouGroupMap = new ListMap<>();
 
             for ( OrganisationUnitGroup group : organisationUnitGroups )
             {
@@ -388,7 +388,7 @@ public abstract class BaseAnalyticalObject
 
             // Category option group set
 
-            ListMap<String, NameableObject> coGroupMap = new ListMap<String, NameableObject>();
+            ListMap<String, NameableObject> coGroupMap = new ListMap<>();
 
             for ( CategoryOptionGroup group : categoryOptionGroups )
             {
@@ -407,7 +407,7 @@ public abstract class BaseAnalyticalObject
 
             // Tracked entity attribute
 
-            Map<String, TrackedEntityAttributeDimension> attributes = new HashMap<String, TrackedEntityAttributeDimension>();
+            Map<String, TrackedEntityAttributeDimension> attributes = new HashMap<>();
 
             for ( TrackedEntityAttributeDimension attribute : attributeDimensions )
             {
@@ -423,7 +423,7 @@ public abstract class BaseAnalyticalObject
 
             // Tracked entity data element
 
-            Map<String, TrackedEntityDataElementDimension> dataElements = new HashMap<String, TrackedEntityDataElementDimension>();
+            Map<String, TrackedEntityDataElementDimension> dataElements = new HashMap<>();
             
             for ( TrackedEntityDataElementDimension dataElement : dataElementDimensions )
             {
@@ -460,7 +460,7 @@ public abstract class BaseAnalyticalObject
      */
     protected List<DimensionalObject> getDimensionalObjectList( String dimension )
     {
-        List<DimensionalObject> objects = new ArrayList<DimensionalObject>();
+        List<DimensionalObject> objects = new ArrayList<>();
 
         List<String> categoryDims = getCategoryDims();
 
@@ -488,7 +488,7 @@ public abstract class BaseAnalyticalObject
         }
         else if ( PERIOD_DIM_ID.equals( dimension ) && (!periods.isEmpty() || hasRelativePeriods()) )
         {
-            List<Period> periodList = new ArrayList<Period>( periods );
+            List<Period> periodList = new ArrayList<>( periods );
 
             if ( hasRelativePeriods() )
             {
@@ -506,7 +506,7 @@ public abstract class BaseAnalyticalObject
         }
         else if ( ORGUNIT_DIM_ID.equals( dimension ) && (!organisationUnits.isEmpty() || !transientOrganisationUnits.isEmpty() || hasUserOrgUnit()) )
         {
-            List<NameableObject> ouList = new ArrayList<NameableObject>();
+            List<NameableObject> ouList = new ArrayList<>();
             ouList.addAll( organisationUnits );
             ouList.addAll( transientOrganisationUnits );
 
@@ -565,7 +565,7 @@ public abstract class BaseAnalyticalObject
         {
             // Data element group set
 
-            ListMap<String, NameableObject> deGroupMap = new ListMap<String, NameableObject>();
+            ListMap<String, NameableObject> deGroupMap = new ListMap<>();
 
             for ( DataElementGroup group : dataElementGroups )
             {
@@ -582,7 +582,7 @@ public abstract class BaseAnalyticalObject
 
             // Organisation unit group set
 
-            ListMap<String, NameableObject> ouGroupMap = new ListMap<String, NameableObject>();
+            ListMap<String, NameableObject> ouGroupMap = new ListMap<>();
 
             for ( OrganisationUnitGroup group : organisationUnitGroups )
             {
@@ -599,7 +599,7 @@ public abstract class BaseAnalyticalObject
 
             // Category option group set
 
-            ListMap<String, NameableObject> coGroupMap = new ListMap<String, NameableObject>();
+            ListMap<String, NameableObject> coGroupMap = new ListMap<>();
 
             for ( CategoryOptionGroup group : categoryOptionGroups )
             {
@@ -616,7 +616,7 @@ public abstract class BaseAnalyticalObject
 
             // Tracked entity attribute
 
-            Map<String, TrackedEntityAttributeDimension> attributes = new HashMap<String, TrackedEntityAttributeDimension>();
+            Map<String, TrackedEntityAttributeDimension> attributes = new HashMap<>();
 
             for ( TrackedEntityAttributeDimension attribute : attributeDimensions )
             {
@@ -632,7 +632,7 @@ public abstract class BaseAnalyticalObject
 
             // Tracked entity data element
 
-            Map<String, TrackedEntityDataElementDimension> dataElements = new HashMap<String, TrackedEntityDataElementDimension>();
+            Map<String, TrackedEntityDataElementDimension> dataElements = new HashMap<>();
 
             for ( TrackedEntityDataElementDimension dataElement : dataElementDimensions )
             {
@@ -652,7 +652,7 @@ public abstract class BaseAnalyticalObject
 
     private List<String> getCategoryDims()
     {
-        List<String> categoryDims = new ArrayList<String>();
+        List<String> categoryDims = new ArrayList<>();
 
         for ( DataElementCategoryDimension dim : categoryDimensions )
         {
@@ -678,7 +678,7 @@ public abstract class BaseAnalyticalObject
      */
     public static void sortKeys( Map<String, Double> valueMap )
     {
-        Map<String, Double> map = new HashMap<String, Double>();
+        Map<String, Double> map = new HashMap<>();
 
         for ( String key : valueMap.keySet() )
         {
@@ -720,9 +720,9 @@ public abstract class BaseAnalyticalObject
      */
     public static String getIdentifier( List<NameableObject> column, List<NameableObject> row )
     {
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
 
-        List<NameableObject> dimensions = new ArrayList<NameableObject>();
+        List<NameableObject> dimensions = new ArrayList<>();
         dimensions.addAll( column != null ? column : new ArrayList<NameableObject>() );
         dimensions.addAll( row != null ? row : new ArrayList<NameableObject>() );
 
@@ -750,7 +750,7 @@ public abstract class BaseAnalyticalObject
      */
     public Map<String, String> getMetaData()
     {
-        Map<String, String> meta = new HashMap<String, String>();
+        Map<String, String> meta = new HashMap<>();
 
         for ( DataElementGroup group : dataElementGroups )
         {

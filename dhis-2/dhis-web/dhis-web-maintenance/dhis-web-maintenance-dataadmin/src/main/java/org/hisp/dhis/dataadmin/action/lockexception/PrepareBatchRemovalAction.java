@@ -80,7 +80,7 @@ public class PrepareBatchRemovalAction
     @Override
     public String execute() throws Exception
     {
-        lockExceptions = new ArrayList<LockException>( dataSetService.getLockExceptionCombinations() );
+        lockExceptions = new ArrayList<>( dataSetService.getLockExceptionCombinations() );
 
         for ( LockException lockException : lockExceptions )
         {

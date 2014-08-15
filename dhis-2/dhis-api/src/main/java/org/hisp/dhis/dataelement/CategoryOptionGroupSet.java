@@ -57,7 +57,7 @@ public class CategoryOptionGroupSet
     extends BaseDimensionalObject
 {
     @Scanned
-    private List<CategoryOptionGroup> members = new ArrayList<CategoryOptionGroup>();
+    private List<CategoryOptionGroup> members = new ArrayList<>();
 
     private boolean dataDimension = true;
 

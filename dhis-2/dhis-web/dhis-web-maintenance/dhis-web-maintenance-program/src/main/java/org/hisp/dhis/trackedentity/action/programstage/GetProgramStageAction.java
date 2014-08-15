@@ -132,9 +132,9 @@ public class GetProgramStageAction
 
         programStageDataElements = programStage.getProgramStageDataElements();
         
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
         
-        programIndicators = new ArrayList<ProgramIndicator>( programIndicatorService.getProgramIndicators( programStage.getProgram() ) );
+        programIndicators = new ArrayList<>( programIndicatorService.getProgramIndicators( programStage.getProgram() ) );
         programIndicators.removeAll( programStage.getProgramIndicators() );
         
         return SUCCESS;

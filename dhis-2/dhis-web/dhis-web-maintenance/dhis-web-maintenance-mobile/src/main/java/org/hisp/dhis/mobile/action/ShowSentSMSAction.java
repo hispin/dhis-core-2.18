@@ -128,7 +128,7 @@ public class ShowSentSMSAction
     public String execute()
         throws Exception
     {
-        listOutboundSMS = new ArrayList<OutboundSms>();
+        listOutboundSMS = new ArrayList<>();
 
         if ( filterStatusType != null && filterStatusType == 0 )
         {
@@ -160,7 +160,7 @@ public class ShowSentSMSAction
         }
 
         // Get the name of recipients
-        recipientNames = new ArrayList<String>();
+        recipientNames = new ArrayList<>();
         recipientNames.add( "" );
         String tempString;
         for ( OutboundSms outboundSms : listOutboundSMS )

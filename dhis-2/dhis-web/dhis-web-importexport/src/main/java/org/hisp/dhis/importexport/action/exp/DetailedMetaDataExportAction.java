@@ -150,14 +150,14 @@ public class DetailedMetaDataExportAction
         this.exportFormat = exportFormat;
     }
 
-    private Collection<String> selectedDataElements = new ArrayList<String>();
+    private Collection<String> selectedDataElements = new ArrayList<>();
 
     public void setSelectedDataElements( Collection<String> selectedDataElements )
     {
         this.selectedDataElements = selectedDataElements;
     }
 
-    private Collection<String> selectedIndicators = new ArrayList<String>();
+    private Collection<String> selectedIndicators = new ArrayList<>();
 
     public void setSelectedIndicators( Collection<String> selectedIndicators )
     {
@@ -181,7 +181,7 @@ public class DetailedMetaDataExportAction
         params.setCategoryOptions( null );
         params.setCategoryOptionCombos( null );
         
-        Set<Integer> dataElements = new HashSet<Integer>();
+        Set<Integer> dataElements = new HashSet<>();
         
         if ( selectedIndicators.size() > 0 )
         {

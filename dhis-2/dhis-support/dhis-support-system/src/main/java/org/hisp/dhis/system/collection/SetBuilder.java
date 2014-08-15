@@ -41,7 +41,7 @@ public class SetBuilder<E>
     
     public SetBuilder()
     {
-        set = new HashSet<E>();
+        set = new HashSet<>();
     }
     
     public SetBuilder<E> add( E element )
@@ -71,6 +71,6 @@ public class SetBuilder<E>
      */
     public Set<E> build()
     {
-        return new HashSet<E>( set );
+        return new HashSet<>( set );
     }
 }

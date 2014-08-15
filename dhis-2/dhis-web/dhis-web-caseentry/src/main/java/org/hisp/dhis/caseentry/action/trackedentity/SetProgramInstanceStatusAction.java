@@ -66,7 +66,7 @@ public class SetProgramInstanceStatusAction
         this.programInstanceId = programInstanceId;
     }
 
-    private Collection<Program> programs = new ArrayList<Program>();
+    private Collection<Program> programs = new ArrayList<>();
 
     public Collection<Program> getPrograms()
     {

@@ -144,7 +144,7 @@ public class AddTrackedEntityInstanceAction
 
         Collection<TrackedEntityAttribute> attributes = attributeService.getAllTrackedEntityAttributes();
 
-        Set<TrackedEntityAttributeValue> attributeValues = new HashSet<TrackedEntityAttributeValue>();
+        Set<TrackedEntityAttributeValue> attributeValues = new HashSet<>();
 
         TrackedEntityAttributeValue attributeValue = null;
 

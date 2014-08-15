@@ -86,7 +86,7 @@ public class GetParamsByProgramAction
         this.programId = programId;
     }
 
-    private Collection<TrackedEntityAttribute> attributes = new HashSet<TrackedEntityAttribute>();
+    private Collection<TrackedEntityAttribute> attributes = new HashSet<>();
 
     public Collection<TrackedEntityAttribute> getAttributes()
     {
@@ -99,7 +99,7 @@ public class GetParamsByProgramAction
     public String execute()
     {
         Program program = programService.getProgram( programId );
-        programStages = new ArrayList<ProgramStage>( program.getProgramStages() );
+        programStages = new ArrayList<>( program.getProgramStages() );
 
         if ( program.isRegistration() )
         {

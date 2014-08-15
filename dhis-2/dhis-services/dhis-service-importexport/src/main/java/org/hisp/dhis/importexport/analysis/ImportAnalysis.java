@@ -37,9 +37,9 @@ import java.util.List;
  */
 public class ImportAnalysis
 {
-    private List<EntityPropertyValue> uniqueConstraintViolations = new ArrayList<EntityPropertyValue>();
+    private List<EntityPropertyValue> uniqueConstraintViolations = new ArrayList<>();
     
-    private List<IndicatorFormulaIdentifier> nonExistingDataElementIdentifiers = new ArrayList<IndicatorFormulaIdentifier>();
+    private List<IndicatorFormulaIdentifier> nonExistingDataElementIdentifiers = new ArrayList<>();
     
     // -------------------------------------------------------------------------
     // Getters and setters

@@ -75,7 +75,7 @@ public class HibernateDataElementStore
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getAggregateableDataElements()
     {
-        Set<String> types = new HashSet<String>();
+        Set<String> types = new HashSet<>();
 
         types.add( DataElement.VALUE_TYPE_INT );
         types.add( DataElement.VALUE_TYPE_BOOL );
@@ -206,7 +206,7 @@ public class HibernateDataElementStore
                 "from _dataelementcategoryoptioncombo " +
                 "where dataelementuid in (" + TextUtils.getQuotedCommaDelimitedString( dataElementUids ) + ")";
 
-        final ListMap<String, String> map = new ListMap<String, String>();
+        final ListMap<String, String> map = new ListMap<>();
 
         try
         {
@@ -226,7 +226,7 @@ public class HibernateDataElementStore
         catch ( BadSqlGrammarException ex )
         {
             log.error( "Resource table _dataelementcategoryoptioncomboname does not exist, please generate it" );
-            return new ListMap<String, String>();
+            return new ListMap<>();
         }
 
         return map;

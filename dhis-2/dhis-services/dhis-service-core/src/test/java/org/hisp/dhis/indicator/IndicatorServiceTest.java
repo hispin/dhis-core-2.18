@@ -291,8 +291,8 @@ public class IndicatorServiceTest
         IndicatorGroup indicatorGroup3 = new IndicatorGroup( "indicatorGroupName3" );
         IndicatorGroup indicatorGroup4 = new IndicatorGroup( "indicatorGroupName4" );
 
-        Set<Indicator> members1 = new HashSet<Indicator>();
-        Set<Indicator> members2 = new HashSet<Indicator>();
+        Set<Indicator> members1 = new HashSet<>();
+        Set<Indicator> members2 = new HashSet<>();
 
         members1.add( indicator1 );
         members1.add( indicator2 );

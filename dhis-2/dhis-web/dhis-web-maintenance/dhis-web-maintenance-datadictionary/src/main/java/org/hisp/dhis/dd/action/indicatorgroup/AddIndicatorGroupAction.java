@@ -74,7 +74,7 @@ public class AddIndicatorGroupAction
         this.name = name;
     }
 
-    private Set<String> groupMembers = new HashSet<String>();
+    private Set<String> groupMembers = new HashSet<>();
 
     public void setGroupMembers( Set<String> groupMembers )
     {

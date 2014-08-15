@@ -115,7 +115,7 @@ public class DefaultProgramValidationService
     public Collection<ProgramValidationResult> validate( Collection<ProgramValidation> validation,
         ProgramStageInstance programStageInstance )
     {
-        Collection<ProgramValidationResult> result = new HashSet<ProgramValidationResult>();
+        Collection<ProgramValidationResult> result = new HashSet<>();
 
         // ---------------------------------------------------------------------
         // Get data-values
@@ -133,7 +133,7 @@ public class DefaultProgramValidationService
                 .getProgramStageInstances() );
         }
 
-        Map<String, String> entityInstanceDataValueMap = new HashMap<String, String>( entityInstanceDataValues.size() );
+        Map<String, String> entityInstanceDataValueMap = new HashMap<>( entityInstanceDataValues.size() );
         for ( TrackedEntityDataValue entityInstanceDataValue : entityInstanceDataValues )
         {
             String key = entityInstanceDataValue.getProgramStageInstance().getProgramStage().getId() + "."

@@ -83,11 +83,11 @@ public class ShowIndicatorGroupEditorAction
 
     public String execute()
     {
-        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
+        indicatorGroups = new ArrayList<>( indicatorService.getAllIndicatorGroups() );
         
         Collections.sort( indicatorGroups, IdentifiableObjectNameComparator.INSTANCE );
 
-        indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+        indicators = new ArrayList<>( indicatorService.getAllIndicators() );
         
         Collections.sort( indicators, new IdentifiableObjectNameComparator() );
         

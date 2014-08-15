@@ -203,7 +203,7 @@ public class SaveProgramEnrollmentAction
         // Get the active event of program-instance
         // ---------------------------------------------------------------------
 
-        List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>(
+        List<ProgramStageInstance> programStageInstances = new ArrayList<>(
             programInstance.getProgramStageInstances() );
         Collections.sort( programStageInstances, new ProgramStageInstanceVisitDateComparator() );
 

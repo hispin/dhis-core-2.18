@@ -183,7 +183,7 @@ public class DataValueSetController
 
     private Set<String> getOrganisationUnits( Set<String> orgUnits, boolean children )
     {
-        Set<String> ous = new HashSet<String>();
+        Set<String> ous = new HashSet<>();
 
         if ( children )
         {

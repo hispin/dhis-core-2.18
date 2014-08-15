@@ -160,7 +160,7 @@ public class GetLockExceptionFormAction
 
         if ( dataSet == null )
         {
-            return new ArrayList<Period>();
+            return new ArrayList<>();
         }
 
         CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
@@ -182,10 +182,10 @@ public class GetLockExceptionFormAction
 
         if ( organisationUnit == null )
         {
-            return new ArrayList<DataSet>();
+            return new ArrayList<>();
         }
 
-        List<DataSet> dataSets = new ArrayList<DataSet>();
+        List<DataSet> dataSets = new ArrayList<>();
 
         if ( organisationUnit.getDataSets() != null )
         {

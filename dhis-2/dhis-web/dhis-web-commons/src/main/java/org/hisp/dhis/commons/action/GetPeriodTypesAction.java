@@ -71,7 +71,7 @@ public class GetPeriodTypesAction
     public String execute()
         throws Exception
     {
-        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
+        periodTypes = new ArrayList<>( periodService.getAllPeriodTypes() );
 
         if ( usePaging )
         {

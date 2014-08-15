@@ -67,9 +67,9 @@ public class Event extends BaseLinkableObject
 
     private Coordinate coordinate;
 
-    private List<DataValue> dataValues = new ArrayList<DataValue>();
+    private List<DataValue> dataValues = new ArrayList<>();
 
-    private List<Note> notes = new ArrayList<Note>();
+    private List<Note> notes = new ArrayList<>();
 
     public Event()
     {

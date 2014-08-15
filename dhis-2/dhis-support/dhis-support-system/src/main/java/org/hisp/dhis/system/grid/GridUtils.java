@@ -475,7 +475,7 @@ public class GridUtils
             return null;
         }
         
-        List<Grid> grids = new ArrayList<Grid>();
+        List<Grid> grids = new ArrayList<>();
         
         Parser parser = Parser.createParser( html, "UTF-8" );
         

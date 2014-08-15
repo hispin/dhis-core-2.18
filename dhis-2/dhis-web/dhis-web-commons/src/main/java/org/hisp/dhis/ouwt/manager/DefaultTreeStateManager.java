@@ -88,7 +88,7 @@ public class DefaultTreeStateManager
         {
             getTreeState().remove( unit.getId() );
 
-            Set<OrganisationUnit> collapsedUnits = new HashSet<OrganisationUnit>( 1 );
+            Set<OrganisationUnit> collapsedUnits = new HashSet<>( 1 );
             collapsedUnits.add( unit );
             return collapsedUnits;
         }
@@ -113,7 +113,7 @@ public class DefaultTreeStateManager
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( parentUnit
             .getId() );
 
-        Set<OrganisationUnit> collapsedUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> collapsedUnits = new HashSet<>();
 
         Set<Integer> treeState = getTreeState();
 
@@ -136,7 +136,7 @@ public class DefaultTreeStateManager
 
         if ( treeState == null )
         {
-            treeState = new HashSet<Integer>();
+            treeState = new HashSet<>();
 
             getSession().put( SESSION_KEY_TREE_STATE, treeState );
         }

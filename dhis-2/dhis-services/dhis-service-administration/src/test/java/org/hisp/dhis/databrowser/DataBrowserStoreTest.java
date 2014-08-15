@@ -70,7 +70,7 @@ public class DataBrowserStoreTest
     @Test
     public void testGetDataSetsBetweenPeriods()
     {
-        List<Integer> betweenPeriodIds = new ArrayList<Integer>();
+        List<Integer> betweenPeriodIds = new ArrayList<>();
         betweenPeriodIds.add( periodA.getId() );
         betweenPeriodIds.add( periodB.getId() );
         betweenPeriodIds.add( periodC.getId() );
@@ -110,7 +110,7 @@ public class DataBrowserStoreTest
     @Test
     public void testGetDataElementGroupsBetweenPeriods()
     {
-        List<Integer> betweenPeriodIds = new ArrayList<Integer>();
+        List<Integer> betweenPeriodIds = new ArrayList<>();
         betweenPeriodIds.add( periodA.getId() );
         betweenPeriodIds.add( periodB.getId() );
         betweenPeriodIds.add( periodC.getId() );
@@ -144,7 +144,7 @@ public class DataBrowserStoreTest
     @Test
     public void testGetOrgUnitGroupsBetweenPeriods()
     {
-        List<Integer> betweenPeriodIds = new ArrayList<Integer>();
+        List<Integer> betweenPeriodIds = new ArrayList<>();
 
         betweenPeriodIds.add( periodA.getId() );
         betweenPeriodIds.add( periodB.getId() );
@@ -180,7 +180,7 @@ public class DataBrowserStoreTest
     @Test
     public void testSetDataElementStructureForDataSetBetweenPeriods()
     {
-        List<Integer> metaList = new ArrayList<Integer>();
+        List<Integer> metaList = new ArrayList<>();
 
         // Retrieve dataElements of DataSetA - one dataElement
         Grid grid = new ListGrid();
@@ -224,7 +224,7 @@ public class DataBrowserStoreTest
     @Test
     public void testSetDataElementStructureForDataElementGroup()
     {
-        List<Integer> metaList = new ArrayList<Integer>();
+        List<Integer> metaList = new ArrayList<>();
 
         // Retrieve dataElements of DataElementGroupA - one dataElement
         Grid grid = new ListGrid();
@@ -268,7 +268,7 @@ public class DataBrowserStoreTest
     @Test
     public void testSetDataElementGroupStructureForOrgUnitGroup()
     {
-        List<Integer> metaList = new ArrayList<Integer>();
+        List<Integer> metaList = new ArrayList<>();
 
         // Retrieve orgUnitGroupA - three dataElementGroups
         Grid grid = new ListGrid();
@@ -316,7 +316,7 @@ public class DataBrowserStoreTest
     @Test
     public void testSetStructureForOrgUnit()
     {
-        List<Integer> metaList = new ArrayList<Integer>();
+        List<Integer> metaList = new ArrayList<>();
 
         // Retrieve children of unitB - three children
         Grid grid = new ListGrid();
@@ -360,7 +360,7 @@ public class DataBrowserStoreTest
     @Ignore
     public void testSetDataElementStructureForOrgUnit()
     {
-        List<Integer> metaList = new ArrayList<Integer>();
+        List<Integer> metaList = new ArrayList<>();
 
         // Retrieve structure for dataElements in periodA for unitC - six
         // dataElements
@@ -397,8 +397,8 @@ public class DataBrowserStoreTest
     @Test
     public void testSetCountDataElementsForDataSet()
     {
-        List<Integer> metaIds = new ArrayList<Integer>();
-        List<Integer> pList = new ArrayList<Integer>();
+        List<Integer> metaIds = new ArrayList<>();
+        List<Integer> pList = new ArrayList<>();
         pList.add( periodA.getId() );
 
         // Retrieve structure for dataElements in periodA for dataSetA - one
@@ -433,8 +433,8 @@ public class DataBrowserStoreTest
     @Test
     public void testSetCountDataElementsForDataElementGroupBetweenPeriods()
     {
-        List<Integer> metaIds = new ArrayList<Integer>();
-        List<Integer> pList = new ArrayList<Integer>();
+        List<Integer> metaIds = new ArrayList<>();
+        List<Integer> pList = new ArrayList<>();
         pList.add( periodA.getId() );
 
         // Retrieve structure for dataElements in periodA for dataElementGroupA
@@ -470,8 +470,8 @@ public class DataBrowserStoreTest
     @Test
     public void testSetCountDataElementGroupsForOrgUnitGroupBetweenPeriods()
     {
-        List<Integer> metaIds = new ArrayList<Integer>();
-        List<Integer> pList = new ArrayList<Integer>();
+        List<Integer> metaIds = new ArrayList<>();
+        List<Integer> pList = new ArrayList<>();
         pList.add( periodA.getId() );
 
         // Retrieve structure for dataElementGroups in periodA for unitGroupA -
@@ -515,8 +515,8 @@ public class DataBrowserStoreTest
     @Ignore
     public void testSetRawDataElementsForOrgUnitBetweenPeriods()
     {
-        List<Integer> metaIds = new ArrayList<Integer>();
-        List<Integer> pList = new ArrayList<Integer>();
+        List<Integer> metaIds = new ArrayList<>();
+        List<Integer> pList = new ArrayList<>();
         pList.add( periodA.getId() );
 
         // Retrieve structure for dataElements in periodA for unitC - six

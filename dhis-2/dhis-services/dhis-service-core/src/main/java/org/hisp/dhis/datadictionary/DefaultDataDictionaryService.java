@@ -101,17 +101,17 @@ public class DefaultDataDictionaryService
 
     public List<DataDictionary> getDataDictionaryByName( String name )
     {
-        return new ArrayList<DataDictionary>( i18n( i18nService, dataDictionaryStore.getAllEqName( name ) ) );
+        return new ArrayList<>( i18n( i18nService, dataDictionaryStore.getAllEqName( name ) ) );
     }
 
     public List<DataDictionary> getAllDataDictionaries()
     {
-        return new ArrayList<DataDictionary>( i18n( i18nService, dataDictionaryStore.getAll() ) );
+        return new ArrayList<>( i18n( i18nService, dataDictionaryStore.getAll() ) );
     }
 
     public List<DataElement> getDataElementsByDictionaryId( int dictionaryId )
     {
-        return new ArrayList<DataElement>( i18n( i18nService, dataDictionaryStore.get( dictionaryId ).getDataElements() ) );
+        return new ArrayList<>( i18n( i18nService, dataDictionaryStore.get( dictionaryId ).getDataElements() ) );
     }
 
     public int getDataDictionaryCount()
@@ -126,11 +126,11 @@ public class DefaultDataDictionaryService
 
     public List<DataDictionary> getDataDictionariesBetween( int first, int max )
     {
-        return new ArrayList<DataDictionary>( i18n( i18nService, dataDictionaryStore.getAllOrderedName( first, max ) ) );
+        return new ArrayList<>( i18n( i18nService, dataDictionaryStore.getAllOrderedName( first, max ) ) );
     }
 
     public List<DataDictionary> getDataDictionariesBetweenByName( String name, int first, int max )
     {
-        return new ArrayList<DataDictionary>( i18n( i18nService, dataDictionaryStore.getAllLikeNameOrderedName( name, first, max ) ) );
+        return new ArrayList<>( i18n( i18nService, dataDictionaryStore.getAllLikeNameOrderedName( name, first, max ) ) );
     }
 }

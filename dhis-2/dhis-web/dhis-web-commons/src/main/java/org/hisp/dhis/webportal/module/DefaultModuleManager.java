@@ -58,13 +58,13 @@ public class DefaultModuleManager
 
     private boolean modulesDetected = false;
 
-    private Map<String, Module> modulesByName = new HashMap<String, Module>();
+    private Map<String, Module> modulesByName = new HashMap<>();
 
-    private Map<String, Module> modulesByNamespace = new HashMap<String, Module>();
+    private Map<String, Module> modulesByNamespace = new HashMap<>();
 
-    private List<Module> menuModules = new ArrayList<Module>();
+    private List<Module> menuModules = new ArrayList<>();
     
-    private ThreadLocal<Module> currentModule = new ThreadLocal<Module>();
+    private ThreadLocal<Module> currentModule = new ThreadLocal<>();
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -121,7 +121,7 @@ public class DefaultModuleManager
     {
         detectModules();
 
-        return new ArrayList<Module>( menuModules );
+        return new ArrayList<>( menuModules );
     }
 
     public List<Module> getAccessibleMenuModules()
@@ -149,7 +149,7 @@ public class DefaultModuleManager
     {
         detectModules();
 
-        return new ArrayList<Module>( modulesByName.values() );
+        return new ArrayList<>( modulesByName.values() );
     }
     
     public Module getCurrentModule()
@@ -245,7 +245,7 @@ public class DefaultModuleManager
     
     private List<Module> getAccessibleModules( List<Module> modules )
     {
-        List<Module> allowed = new ArrayList<Module>();
+        List<Module> allowed = new ArrayList<>();
         
         for ( Module module : modules )
         {
@@ -257,7 +257,7 @@ public class DefaultModuleManager
         
         if ( modules.size() > allowed.size() )
         {
-            List<Module> denied = new ArrayList<Module>( modules );
+            List<Module> denied = new ArrayList<>( modules );
             denied.removeAll( allowed );
             
             log.debug( "User denied access to modules: " + denied );

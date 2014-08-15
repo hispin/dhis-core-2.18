@@ -393,10 +393,10 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level4, 4 );
         dataApprovalLevelService.addDataApprovalLevel( level5, 5 );
 
-        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<>();
         assignedOrgUnits.add( organisationUnitC );
 
-        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<>();
         dataViewOrgUnits.add( organisationUnitB );
 
         CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits );
@@ -429,10 +429,10 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level4, 4 );
         dataApprovalLevelService.addDataApprovalLevel( level5, 5 );
 
-        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<>();
         assignedOrgUnits.add( organisationUnitC );
 
-        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<>();
         dataViewOrgUnits.add( organisationUnitB );
 
         CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
@@ -464,10 +464,10 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level3, 3 ); // 3rd approval level
         dataApprovalLevelService.addDataApprovalLevel( level5, 4 ); // 4th approval level
 
-        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<>();
         assignedOrgUnits.add( organisationUnitC );
 
-        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<>();
         dataViewOrgUnits.add( organisationUnitB );
 
         CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits );
@@ -503,11 +503,11 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level4, 4 );
         dataApprovalLevelService.addDataApprovalLevel( level5, 5 );
 
-        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<>();
         assignedOrgUnits.add( organisationUnitC );
         assignedOrgUnits.add( organisationUnitF );
 
-        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<>();
         dataViewOrgUnits.add( organisationUnitB );
 
         CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits );
@@ -545,10 +545,10 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level1A );
         dataApprovalLevelService.addDataApprovalLevel( level1 );
 
-        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<>();
         assignedOrgUnits.add( organisationUnitB );
 
-        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<>();
         dataViewOrgUnits.add( organisationUnitB );
 
         CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits, DataApproval.AUTH_APPROVE );
@@ -579,10 +579,10 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level1A );
         dataApprovalLevelService.addDataApprovalLevel( level1 );
 
-        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<>();
         assignedOrgUnits.add( organisationUnitB );
 
-        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<>();
         dataViewOrgUnits.add( organisationUnitB );
 
         CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
@@ -617,10 +617,10 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level1A );
         dataApprovalLevelService.addDataApprovalLevel( level1 );
 
-        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<>();
         assignedOrgUnits.add( organisationUnitB );
 
-        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<>();
         dataViewOrgUnits.add( organisationUnitB );
 
         CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
@@ -656,10 +656,10 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level1A );
         dataApprovalLevelService.addDataApprovalLevel( level1 );
 
-        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<>();
         assignedOrgUnits.add( organisationUnitB );
 
-        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<>();
         dataViewOrgUnits.add( organisationUnitB );
 
         CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits, DataApproval.AUTH_ACCEPT_LOWER_LEVELS );

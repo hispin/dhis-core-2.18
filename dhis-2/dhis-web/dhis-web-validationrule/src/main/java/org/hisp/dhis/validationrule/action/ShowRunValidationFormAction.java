@@ -110,7 +110,7 @@ public class ShowRunValidationFormAction
             selectionTreeManager.setSelectedOrganisationUnits( selectionManager.getSelectedOrganisationUnits() );
         }
         
-        validationRuleGroups = new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() );
+        validationRuleGroups = new ArrayList<>( validationRuleService.getAllValidationRuleGroups() );
 
         return SUCCESS;
     }

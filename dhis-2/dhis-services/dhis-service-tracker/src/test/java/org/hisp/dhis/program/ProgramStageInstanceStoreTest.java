@@ -167,7 +167,7 @@ public class ProgramStageInstanceStoreTest
             TrackedEntityInstanceReminder.DUE_DATE_TO_COMPARE, TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE,
             TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT, TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH );
 
-        Set<TrackedEntityInstanceReminder> reminders = new HashSet<TrackedEntityInstanceReminder>();
+        Set<TrackedEntityInstanceReminder> reminders = new HashSet<>();
         reminders.add( reminderA );
         reminders.add( reminderB );
         stageA.setReminders( reminders );
@@ -179,12 +179,12 @@ public class ProgramStageInstanceStoreTest
             TrackedEntityInstanceReminder.DUE_DATE_TO_COMPARE, TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE,
             TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT, TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH );
 
-        reminders = new HashSet<TrackedEntityInstanceReminder>();
+        reminders = new HashSet<>();
         reminders.add( reminderC );
         stageB.setReminders( reminders );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         programA.setProgramStages( programStages );
@@ -220,7 +220,7 @@ public class ProgramStageInstanceStoreTest
         stageC.setIrregular( true );
         programStageService.saveProgramStage( stageD );
 
-        programStages = new ArrayList<ProgramStage>();
+        programStages = new ArrayList<>();
         programStages.add( stageC );
         programStages.add( stageD );
         programB.setProgramStages( programStages );
@@ -293,7 +293,7 @@ public class ProgramStageInstanceStoreTest
         programStageInstanceStore.save( programStageInstanceC );
         programStageInstanceStore.save( programStageInstanceD1 );
 
-        Collection<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
+        Collection<ProgramInstance> programInstances = new HashSet<>();
         programInstances.add( programInstanceA );
         programInstances.add( programInstanceB );
 
@@ -322,7 +322,7 @@ public class ProgramStageInstanceStoreTest
         programStageInstanceStore.save( programStageInstanceA );
         programStageInstanceStore.save( programStageInstanceB );
 
-        Collection<Integer> orgunitIds = new HashSet<Integer>();
+        Collection<Integer> orgunitIds = new HashSet<>();
         orgunitIds.add( orgunitAId );
         orgunitIds.add( orgunitBId );
 

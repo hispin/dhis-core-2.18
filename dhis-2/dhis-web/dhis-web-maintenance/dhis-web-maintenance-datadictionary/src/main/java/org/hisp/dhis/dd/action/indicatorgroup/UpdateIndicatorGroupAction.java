@@ -84,7 +84,7 @@ public class UpdateIndicatorGroupAction
         this.name = name;
     }
 
-    private Set<String> groupMembers = new HashSet<String>();
+    private Set<String> groupMembers = new HashSet<>();
 
     public void setGroupMembers( Set<String> groupMembers )
     {
@@ -118,7 +118,7 @@ public class UpdateIndicatorGroupAction
             indicatorGroup.setName( name );
         }
 
-        Set<Indicator> members = new HashSet<Indicator>();
+        Set<Indicator> members = new HashSet<>();
 
         for ( String memberId : groupMembers )
         {

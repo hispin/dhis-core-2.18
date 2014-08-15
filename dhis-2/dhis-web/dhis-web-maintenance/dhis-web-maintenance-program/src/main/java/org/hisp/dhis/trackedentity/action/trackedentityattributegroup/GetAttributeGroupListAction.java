@@ -61,7 +61,7 @@ public class GetAttributeGroupListAction
     // Getter && Setter
     // -------------------------------------------------------------------------
 
-    private List<TrackedEntityAttributeGroup> attributeGroups = new ArrayList<TrackedEntityAttributeGroup>();
+    private List<TrackedEntityAttributeGroup> attributeGroups = new ArrayList<>();
 
     public List<TrackedEntityAttributeGroup> getAttributeGroups()
     {
@@ -91,7 +91,7 @@ public class GetAttributeGroupListAction
         {
             this.paging = createPaging( attributeGroupService.getTrackedEntityAttributeGroupCountByName( key ) );
 
-            attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
+            attributeGroups = new ArrayList<>(
                 attributeGroupService.getTrackedEntityAttributeGroupsBetweenByName( key, paging.getStartPos(),
                     paging.getPageSize() ) );
         }
@@ -99,7 +99,7 @@ public class GetAttributeGroupListAction
         {
             this.paging = createPaging( attributeGroupService.getTrackedEntityAttributeGroupCount() );
 
-            attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
+            attributeGroups = new ArrayList<>(
                 attributeGroupService.getTrackedEntityAttributeGroupsBetween( paging.getStartPos(),
                     paging.getPageSize() ) );
         }

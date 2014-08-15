@@ -72,7 +72,7 @@ public class ShowAddCategoryOptionGroupSetAction
     public String execute()
         throws Exception
     {
-        categoryOptionGroups = new ArrayList<CategoryOptionGroup>(
+        categoryOptionGroups = new ArrayList<>(
             dataElementCategoryService.getAllCategoryOptionGroups() );
 
         return SUCCESS;

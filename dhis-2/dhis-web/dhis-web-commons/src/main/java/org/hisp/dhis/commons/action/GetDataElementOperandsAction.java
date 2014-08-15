@@ -110,12 +110,12 @@ public class GetDataElementOperandsAction
         {
             dataSet = dataSetService.getDataSet( dataSetId );
 
-            operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet
+            operands = new ArrayList<>( dataElementCategoryService.getFullOperands( dataSet
                 .getDataElements() ) );
         }
         else
         {
-            operands = new ArrayList<DataElementOperand>();
+            operands = new ArrayList<>();
         }
 
         if ( key != null )

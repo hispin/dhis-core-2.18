@@ -254,7 +254,7 @@ public class ExportPivotViewService
     
     private Map<Integer, String> getPeriodIdIsoMap( Collection<Period> periods )
     {
-        Map<Integer, String> map = new HashMap<Integer, String>();
+        Map<Integer, String> map = new HashMap<>();
         
         for ( Period period : periods )
         {

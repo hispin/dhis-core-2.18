@@ -60,7 +60,7 @@ public class BaseDimensionalObject
     /**
      * The dimensional items for this dimension.
      */
-    private List<NameableObject> items = new ArrayList<NameableObject>();
+    private List<NameableObject> items = new ArrayList<>();
 
     /**
      * Filter. Applicable for events. Contains operator and filter on this format:
@@ -85,14 +85,14 @@ public class BaseDimensionalObject
     public BaseDimensionalObject( String dimension, List<? extends NameableObject> items )
     {
         this.uid = dimension;
-        this.items = new ArrayList<NameableObject>( items );
+        this.items = new ArrayList<>( items );
     }
 
     public BaseDimensionalObject( String dimension, DimensionType dimensionType, List<? extends NameableObject> items )
     {
         this.uid = dimension;
         this.dimensionType = dimensionType;
-        this.items = new ArrayList<NameableObject>( items );
+        this.items = new ArrayList<>( items );
     }
 
     public BaseDimensionalObject( String dimension, DimensionType dimensionType, String dimensionName, List<? extends NameableObject> items )
@@ -100,7 +100,7 @@ public class BaseDimensionalObject
         this.uid = dimension;
         this.dimensionType = dimensionType;
         this.dimensionName = dimensionName;
-        this.items = new ArrayList<NameableObject>( items );
+        this.items = new ArrayList<>( items );
     }
 
     public BaseDimensionalObject( String dimension, DimensionType dimensionType, String dimensionName, String displayName, List<? extends NameableObject> items )
@@ -109,7 +109,7 @@ public class BaseDimensionalObject
         this.dimensionType = dimensionType;
         this.dimensionName = dimensionName;
         this.displayName = displayName;
-        this.items = new ArrayList<NameableObject>( items );
+        this.items = new ArrayList<>( items );
     }
 
     public BaseDimensionalObject( String dimension, DimensionType dimensionType, String dimensionName, String displayName, String filter )

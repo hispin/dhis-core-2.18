@@ -38,7 +38,7 @@ import org.hisp.dhis.sms.incoming.IncomingSmsStore;
 public class DatabaseSupportedInternalMemoryMessageQueue
     implements MessageQueue
 {
-    private List<IncomingSms> queue = new ArrayList<IncomingSms>();
+    private List<IncomingSms> queue = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Dependencies

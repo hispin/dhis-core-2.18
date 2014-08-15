@@ -466,7 +466,7 @@ public class PeriodStoreTest
         periodStore.addPeriod( periodC );
         periodStore.addPeriod( periodD );
 
-        Collection<Period> periodsARef = new HashSet<Period>();
+        Collection<Period> periodsARef = new HashSet<>();
         periodsARef.add( periodA );
         periodsARef.add( periodB );
         periodsARef.add( periodC );

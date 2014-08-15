@@ -109,7 +109,7 @@ public class SearchOrganisationUnitsAction
         this.name = name;
     }
 
-    private Collection<Integer> groupId = new HashSet<Integer>();
+    private Collection<Integer> groupId = new HashSet<>();
 
     public Collection<Integer> getGroupId()
     {
@@ -180,7 +180,7 @@ public class SearchOrganisationUnitsAction
         // Get group sets
         // ---------------------------------------------------------------------
 
-        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() );
+        groupSets = new ArrayList<>( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() );
         
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         
@@ -202,7 +202,7 @@ public class SearchOrganisationUnitsAction
 
             selectedOrganisationUnit = selectedOrganisationUnit != null && selectedOrganisationUnit.getParent() == null ? null : selectedOrganisationUnit;
             
-            Collection<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
+            Collection<OrganisationUnitGroup> groups = new HashSet<>();
             
             for ( Integer id : groupId )
             {
@@ -215,7 +215,7 @@ public class SearchOrganisationUnitsAction
             
             boolean limit = type == null; // Only limit for HTML view since browser is memory constrained
             
-            organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups, selectedOrganisationUnit, limit ) );
+            organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups, selectedOrganisationUnit, limit ) );
             
             limited = organisationUnits != null && organisationUnits.size() == OrganisationUnitService.MAX_LIMIT;
             

@@ -77,14 +77,14 @@ public class GetMessageRecipientsAction
         this.filter = filter;
     }
 
-    private Set<User> users = new HashSet<User>();
+    private Set<User> users = new HashSet<>();
 
     public Set<User> getUsers()
     {
         return users;
     }
 
-    private Set<UserGroup> userGroups = new HashSet<UserGroup>();
+    private Set<UserGroup> userGroups = new HashSet<>();
 
     public Set<UserGroup> getUserGroups()
     {
@@ -102,9 +102,9 @@ public class GetMessageRecipientsAction
             
         if ( filter != null )
         {
-            users = new HashSet<User>( userService.getAllUsersBetweenByName( filter, 0, MAX_PER_OBJECT ) );
+            users = new HashSet<>( userService.getAllUsersBetweenByName( filter, 0, MAX_PER_OBJECT ) );
             
-            userGroups = new HashSet<UserGroup>( userGroupService.getUserGroupsBetweenByName( filter, 0, MAX_PER_OBJECT ) );
+            userGroups = new HashSet<>( userGroupService.getUserGroupsBetweenByName( filter, 0, MAX_PER_OBJECT ) );
         }
 
         contextUtils.configureResponse( ServletActionContext.getResponse(), CONTENT_TYPE_JSON, CacheStrategy.CACHE_1_HOUR );

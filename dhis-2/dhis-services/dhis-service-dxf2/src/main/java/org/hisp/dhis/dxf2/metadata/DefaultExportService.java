@@ -143,7 +143,7 @@ public class DefaultExportService
                 notifier.notify( taskId, message );
             }
 
-            ReflectionUtils.invokeSetterMethod( schema.getPlural(), metaData, new ArrayList<IdentifiableObject>( idObjects ) );
+            ReflectionUtils.invokeSetterMethod( schema.getPlural(), metaData, new ArrayList<>( idObjects ) );
         }
 
         log.info( "Export done at " + new Date() );

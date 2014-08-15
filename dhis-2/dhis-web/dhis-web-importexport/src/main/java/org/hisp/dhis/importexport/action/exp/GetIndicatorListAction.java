@@ -105,11 +105,11 @@ public class GetIndicatorListAction
     {   
         if ( dataDictionaryId != null && indicatorGroupId == null )
         {
-            indicators = new ArrayList<Indicator>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getIndicators() );
+            indicators = new ArrayList<>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getIndicators() );
         }
         else if ( dataDictionaryId == null && indicatorGroupId != null )
         {
-            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorGroup( indicatorGroupId ).getMembers() );
+            indicators = new ArrayList<>( indicatorService.getIndicatorGroup( indicatorGroupId ).getMembers() );
         }
         else if ( dataDictionaryId != null && indicatorGroupId != null )
         {
@@ -121,7 +121,7 @@ public class GetIndicatorListAction
         }
         else
         {
-            indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+            indicators = new ArrayList<>( indicatorService.getAllIndicators() );
         }
         
         Collections.sort( indicators, new IdentifiableObjectNameComparator() );

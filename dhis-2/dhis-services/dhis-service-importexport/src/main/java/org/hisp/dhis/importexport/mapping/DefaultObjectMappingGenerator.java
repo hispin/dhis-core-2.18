@@ -343,7 +343,7 @@ public class DefaultObjectMappingGenerator
 
         batchHandler.init();
 
-        Map<Object, Integer> periodMap = new LoggingHashMap<Object, Integer>();
+        Map<Object, Integer> periodMap = new LoggingHashMap<>();
 
         Map<Object, Period> mapping = NameMappingUtil.getPeriodMap();
 
@@ -376,7 +376,7 @@ public class DefaultObjectMappingGenerator
 
         batchHandler.init();
 
-        Map<Period, Integer> periodMap = new LoggingHashMap<Period, Integer>();
+        Map<Period, Integer> periodMap = new LoggingHashMap<>();
 
         Collection<Period> periods = NameMappingUtil.getPeriodMap().values();
 
@@ -409,7 +409,7 @@ public class DefaultObjectMappingGenerator
     @Transactional
     public Map<String, Integer> getPeriodTypeMapping()
     {
-        Map<String, Integer> periodTypeMap = new LoggingHashMap<String, Integer>();
+        Map<String, Integer> periodTypeMap = new LoggingHashMap<>();
 
         Collection<PeriodType> periodTypes = periodStore.getAllPeriodTypes();
 
@@ -430,7 +430,7 @@ public class DefaultObjectMappingGenerator
     {
         batchHandler.init();
 
-        Map<Object, Integer> identifierMap = new LoggingHashMap<Object, Integer>();
+        Map<Object, Integer> identifierMap = new LoggingHashMap<>();
 
         if ( nameMap != null )
         {
@@ -455,7 +455,7 @@ public class DefaultObjectMappingGenerator
     private Map<Object, Integer> getMapping( Map<Object, DataElementCategoryOptionCombo> categoryOptionComboMap,
         boolean skipMapping )
     {
-        Map<Object, Integer> identifierMap = new LoggingHashMap<Object, Integer>();
+        Map<Object, Integer> identifierMap = new LoggingHashMap<>();
 
         if ( categoryOptionComboMap != null )
         {

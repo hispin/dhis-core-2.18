@@ -58,7 +58,7 @@ public class OutboundSms extends BaseIdentifiableObject
     public OutboundSms( String msg, String... recipients )
     {
         message = msg;
-        this.recipients = new HashSet<String>();
+        this.recipients = new HashSet<>();
         Collections.addAll( this.recipients, recipients );
     }
 

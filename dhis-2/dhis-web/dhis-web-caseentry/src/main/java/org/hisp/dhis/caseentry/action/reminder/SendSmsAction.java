@@ -186,7 +186,7 @@ public class SendSmsAction
             List<OutboundSms> outboundSmsList = programStageInstance.getOutboundSms();
             if ( outboundSmsList == null )
             {
-                outboundSmsList = new ArrayList<OutboundSms>();
+                outboundSmsList = new ArrayList<>();
             }
             outboundSmsList.add( outboundSms );
 
@@ -225,7 +225,7 @@ public class SendSmsAction
             List<OutboundSms> outboundSmsList = programInstance.getOutboundSms();
             if ( outboundSmsList == null )
             {
-                outboundSmsList = new ArrayList<OutboundSms>();
+                outboundSmsList = new ArrayList<>();
             }
             outboundSmsList.add( outboundSms );
 

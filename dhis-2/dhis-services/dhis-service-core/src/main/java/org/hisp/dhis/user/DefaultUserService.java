@@ -308,7 +308,7 @@ public class DefaultUserService
 
     public List<User> queryForUsers( String query )
     {
-        List<User> users = new ArrayList<User>();
+        List<User> users = new ArrayList<>();
 
         User uidUser = userStore.getByUid( query );
 
@@ -330,7 +330,7 @@ public class DefaultUserService
 
         if ( cogsConstraints != null && !cogsConstraints.isEmpty() )
         {
-            groups = new HashSet<CategoryOptionGroup>();
+            groups = new HashSet<>();
 
             for ( CategoryOptionGroupSet set : cogsConstraints )
             {
@@ -355,7 +355,7 @@ public class DefaultUserService
 
         if ( catConstraints != null && !catConstraints.isEmpty() )
         {
-            options = new HashSet<DataElementCategoryOption>();
+            options = new HashSet<>();
 
             for ( DataElementCategory cat : catConstraints )
             {
@@ -674,7 +674,7 @@ public class DefaultUserService
 
     public Map<User, Serializable> getUserSettings( String name, Serializable defaultValue )
     {
-        Map<User, Serializable> map = new HashMap<User, Serializable>();
+        Map<User, Serializable> map = new HashMap<>();
 
         for ( UserSetting setting : userCredentialsStore.getUserSettings( name ) )
         {

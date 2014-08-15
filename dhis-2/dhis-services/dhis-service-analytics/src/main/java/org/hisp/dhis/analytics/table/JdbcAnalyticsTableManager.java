@@ -223,7 +223,7 @@ public class JdbcAnalyticsTableManager
 
     public List<String[]> getDimensionColumns( AnalyticsTable table )
     {
-        List<String[]> columns = new ArrayList<String[]>();
+        List<String[]> columns = new ArrayList<>();
 
         Collection<DataElementGroupSet> dataElementGroupSets =
             dataElementService.getDataDimensionDataElementGroupSets();

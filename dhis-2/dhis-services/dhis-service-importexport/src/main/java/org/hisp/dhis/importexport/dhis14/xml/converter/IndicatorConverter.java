@@ -123,8 +123,8 @@ public class IndicatorConverter
         DataElementCategoryOptionCombo categoryOptionCombo )
     {
         this.importObjectService = importObjectService;
-        this.indicatorTypeMapping = new MimicingHashMap<Object, Integer>();
-        this.dataElementMapping = new MimicingHashMap<Object, Integer>();
+        this.indicatorTypeMapping = new MimicingHashMap<>();
+        this.dataElementMapping = new MimicingHashMap<>();
         this.indicatorService = indicatorService;
         this.importAnalyser = importAnalyser;
         this.categoryOptionCombo = categoryOptionCombo;

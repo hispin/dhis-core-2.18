@@ -69,11 +69,11 @@ public class TrackedEntityAttributeGroupServiceTest
         attributeService.addTrackedEntityAttribute( attributeB );
         attributeService.addTrackedEntityAttribute( attributeC );
 
-        List<TrackedEntityAttribute> attributesA = new ArrayList<TrackedEntityAttribute>();
+        List<TrackedEntityAttribute> attributesA = new ArrayList<>();
         attributesA.add( attributeA );
         attributesA.add( attributeB );
 
-        List<TrackedEntityAttribute> attributesB = new ArrayList<TrackedEntityAttribute>();
+        List<TrackedEntityAttribute> attributesB = new ArrayList<>();
         attributesB.add( attributeC );
 
         attributeGroupA = createTrackedEntityAttributeGroup( 'A', attributesA );

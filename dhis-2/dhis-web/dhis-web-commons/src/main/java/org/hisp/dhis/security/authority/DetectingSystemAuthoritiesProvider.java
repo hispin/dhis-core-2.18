@@ -60,7 +60,7 @@ public class DetectingSystemAuthoritiesProvider
 
     public Collection<String> getSystemAuthorities()
     {
-        HashSet<String> authorities = new HashSet<String>();
+        HashSet<String> authorities = new HashSet<>();
 
         Configuration configuration = Dispatcher.getInstance().getConfigurationManager().getConfiguration();
 

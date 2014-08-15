@@ -150,7 +150,7 @@ public class DefaultPeriodService
 
     public Collection<Period> getIntersectionPeriods( Collection<Period> periods )
     {
-        Set<Period> intersecting = new HashSet<Period>();
+        Set<Period> intersecting = new HashSet<>();
 
         for ( Period period : periods )
         {
@@ -162,7 +162,7 @@ public class DefaultPeriodService
 
     public Collection<Period> getBoundaryPeriods( Period period, Collection<Period> periods )
     {
-        Collection<Period> immutablePeriods = new ArrayList<Period>( periods );
+        Collection<Period> immutablePeriods = new ArrayList<>( periods );
 
         Iterator<Period> iterator = immutablePeriods.iterator();
 
@@ -182,7 +182,7 @@ public class DefaultPeriodService
 
     public Collection<Period> getInclusivePeriods( Period period, Collection<Period> periods )
     {
-        Collection<Period> immutablePeriods = new ArrayList<Period>( periods );
+        Collection<Period> immutablePeriods = new ArrayList<>( periods );
 
         Iterator<Period> iterator = immutablePeriods.iterator();
 
@@ -202,7 +202,7 @@ public class DefaultPeriodService
 
     public List<Period> reloadPeriods( List<Period> periods )
     {
-        List<Period> reloaded = new ArrayList<Period>();
+        List<Period> reloaded = new ArrayList<>();
 
         for ( Period period : periods )
         {
@@ -214,7 +214,7 @@ public class DefaultPeriodService
 
     public List<Period> getPeriods( Period lastPeriod, int historyLength )
     {
-        List<Period> periods = new ArrayList<Period>( historyLength );
+        List<Period> periods = new ArrayList<>( historyLength );
 
         lastPeriod = periodStore.reloadForceAddPeriod( lastPeriod );
 
@@ -265,7 +265,7 @@ public class DefaultPeriodService
     
     public List<Period> reloadIsoPeriods( List<String> isoPeriods )
     {
-        List<Period> periods = new ArrayList<Period>();
+        List<Period> periods = new ArrayList<>();
         
         for ( String iso : isoPeriods )
         {
@@ -286,8 +286,8 @@ public class DefaultPeriodService
         
         for ( Period period : periods )
         {
-            hierarchy.getIntersectingPeriods().put( period.getId(), new HashSet<Integer>( getIdentifiers( Period.class, getIntersectingPeriods( period.getStartDate(), period.getEndDate() ) ) ) );            
-            hierarchy.getPeriodsBetween().put( period.getId(), new HashSet<Integer>( getIdentifiers( Period.class, getPeriodsBetweenDates( period.getStartDate(), period.getEndDate() ) ) ) );
+            hierarchy.getIntersectingPeriods().put( period.getId(), new HashSet<>( getIdentifiers( Period.class, getIntersectingPeriods( period.getStartDate(), period.getEndDate() ) ) ) );
+            hierarchy.getPeriodsBetween().put( period.getId(), new HashSet<>( getIdentifiers( Period.class, getPeriodsBetweenDates( period.getStartDate(), period.getEndDate() ) ) ) );
         }
         
         return hierarchy;

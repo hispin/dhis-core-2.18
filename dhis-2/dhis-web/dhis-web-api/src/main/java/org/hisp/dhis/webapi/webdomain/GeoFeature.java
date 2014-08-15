@@ -94,7 +94,7 @@ public class GeoFeature
     /**
      * Dimensions and dimension items.
      */
-    private Map<String, String> dimensions = new HashMap<String, String>();
+    private Map<String, String> dimensions = new HashMap<>();
     
     public GeoFeature()
     {

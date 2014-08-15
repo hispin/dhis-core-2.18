@@ -52,9 +52,9 @@ public class Group
     
     private int dataElementCount;
 
-    private List<Field> fields = new ArrayList<Field>();
+    private List<Field> fields = new ArrayList<>();
 
-    private Map<Object, Object> metaData = new HashMap<Object, Object>();
+    private Map<Object, Object> metaData = new HashMap<>();
 
     public Group()
     {

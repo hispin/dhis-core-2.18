@@ -239,7 +239,7 @@ public class DataSetServiceTest
         dataSetService.addDataSet( dataSetC );
         dataSetService.addDataSet( dataSetD );
 
-        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+        Collection<OrganisationUnit> sources = new HashSet<>();
         sources.add( unitA );
         sources.add( unitB );
 
@@ -250,7 +250,7 @@ public class DataSetServiceTest
         assertTrue( dataSets.contains( dataSetB ) );
         assertTrue( dataSets.contains( dataSetC ) );
 
-        sources = new HashSet<OrganisationUnit>();
+        sources = new HashSet<>();
         sources.add( unitA );
 
         dataSets = dataSetService.getDataSetsBySources( sources );
@@ -277,7 +277,7 @@ public class DataSetServiceTest
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
 
-        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+        Collection<OrganisationUnit> sources = new HashSet<>();
 
         sources.add( unitA );
         sources.add( unitB );

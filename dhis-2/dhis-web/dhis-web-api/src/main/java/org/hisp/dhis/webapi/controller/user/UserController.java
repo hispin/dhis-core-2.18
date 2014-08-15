@@ -124,11 +124,11 @@ public class UserController
             Pager pager = new Pager( options.getPage(), count );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<User>( userService.getAllUsersBetween( pager.getOffset(), pager.getPageSize() ) );
+            entityList = new ArrayList<>( userService.getAllUsersBetween( pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {
-            entityList = new ArrayList<User>( userService.getAllUsers() );
+            entityList = new ArrayList<>( userService.getAllUsers() );
         }
 
         return entityList;
@@ -367,7 +367,7 @@ public class UserController
         {
             boolean writeGroupRequired = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
 
-            for ( UserGroup ug : new ArrayList<UserGroup>( user.getGroups() ) )
+            for ( UserGroup ug : new ArrayList<>( user.getGroups() ) )
             {
                 UserGroup group = userGroupService.getUserGroup( ug.getUid() );
 

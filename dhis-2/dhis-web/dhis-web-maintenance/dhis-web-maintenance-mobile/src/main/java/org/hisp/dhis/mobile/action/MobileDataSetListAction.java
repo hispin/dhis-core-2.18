@@ -71,7 +71,7 @@ public class MobileDataSetListAction
     public String execute()
         throws Exception
     {
-        mobileDatasets = new ArrayList<DataSet>(dataSetService.getDataSetsForMobile());
+        mobileDatasets = new ArrayList<>(dataSetService.getDataSetsForMobile());
         Collections.sort( mobileDatasets, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;

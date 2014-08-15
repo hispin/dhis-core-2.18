@@ -61,7 +61,7 @@ public class TrackedEntityAttributeGroup
     private Integer sortOrder;
 
     @Scanned
-    private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+    private List<TrackedEntityAttribute> attributes = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Constructors

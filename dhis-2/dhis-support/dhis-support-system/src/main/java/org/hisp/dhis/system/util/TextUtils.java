@@ -128,7 +128,7 @@ public class TextUtils
             return null;
         }
         
-        return new ArrayList<String>( Arrays.asList( string.split( "\\s" ) ) );
+        return new ArrayList<>( Arrays.asList( string.split( "\\s" ) ) );
     }
     
     /**

@@ -81,7 +81,7 @@ public class ValidateDataElementCategoryComboAction
         this.name = name;
     }
 
-    private Collection<Integer> selectedCategories = new HashSet<Integer>();
+    private Collection<Integer> selectedCategories = new HashSet<>();
 
     public void setSelectedCategories( Collection<Integer> selectedCategories )
     {

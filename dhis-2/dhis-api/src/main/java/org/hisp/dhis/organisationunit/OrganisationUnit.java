@@ -121,23 +121,23 @@ public class OrganisationUnit
 
     private String phoneNumber;
 
-    private Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
+    private Set<OrganisationUnitGroup> groups = new HashSet<>();
 
-    private Set<DataSet> dataSets = new HashSet<DataSet>();
+    private Set<DataSet> dataSets = new HashSet<>();
 
-    private Set<User> users = new HashSet<User>();
+    private Set<User> users = new HashSet<>();
 
     /**
      * Set of the dynamic attributes values that belong to this
      * organisationUnit.
      */
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    private Set<AttributeValue> attributeValues = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Transient fields
     // -------------------------------------------------------------------------
 
-    private Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
+    private Set<OrganisationUnit> children = new HashSet<>();
 
     private transient boolean currentParent;
 
@@ -145,7 +145,7 @@ public class OrganisationUnit
 
     private transient String type;
 
-    private transient List<String> groupNames = new ArrayList<String>();
+    private transient List<String> groupNames = new ArrayList<>();
 
     private transient Double value;
 
@@ -257,7 +257,7 @@ public class OrganisationUnit
 
     public void updateDataSets( Set<DataSet> updates )
     {
-        for ( DataSet dataSet : new HashSet<DataSet>( dataSets ) )
+        for ( DataSet dataSet : new HashSet<>( dataSets ) )
         {
             if ( !updates.contains( dataSet ) )
             {
@@ -295,7 +295,7 @@ public class OrganisationUnit
 
     public List<OrganisationUnit> getSortedChildren()
     {
-        List<OrganisationUnit> sortedChildren = new ArrayList<OrganisationUnit>( children );
+        List<OrganisationUnit> sortedChildren = new ArrayList<>( children );
 
         Collections.sort( sortedChildren, COMPARATOR );
 
@@ -304,7 +304,7 @@ public class OrganisationUnit
 
     public Set<OrganisationUnit> getGrandChildren()
     {
-        Set<OrganisationUnit> grandChildren = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> grandChildren = new HashSet<>();
 
         for ( OrganisationUnit child : children )
         {
@@ -316,7 +316,7 @@ public class OrganisationUnit
 
     public List<OrganisationUnit> getSortedGrandChildren()
     {
-        List<OrganisationUnit> grandChildren = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> grandChildren = new ArrayList<>();
 
         for ( OrganisationUnit child : getSortedChildren() )
         {
@@ -396,7 +396,7 @@ public class OrganisationUnit
 
     public List<CoordinatesTuple> getCoordinatesAsList()
     {
-        List<CoordinatesTuple> list = new ArrayList<CoordinatesTuple>();
+        List<CoordinatesTuple> list = new ArrayList<>();
 
         if ( coordinates != null && !coordinates.trim().isEmpty() )
         {
@@ -534,7 +534,7 @@ public class OrganisationUnit
 
     public List<OrganisationUnit> getAncestors()
     {
-        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> units = new ArrayList<>();
 
         OrganisationUnit unit = parent;
 
@@ -550,7 +550,7 @@ public class OrganisationUnit
     
     public Set<DataElement> getDataElementsInDataSets()
     {
-        Set<DataElement> dataElements = new HashSet<DataElement>();
+        Set<DataElement> dataElements = new HashSet<>();
 
         for ( DataSet dataSet : dataSets )
         {
@@ -562,7 +562,7 @@ public class OrganisationUnit
 
     public Map<PeriodType, Set<DataElement>> getDataElementsInDataSetsByPeriodType()
     {
-    	Map<PeriodType,Set<DataElement>> map = new HashMap<PeriodType,Set<DataElement>>();
+    	Map<PeriodType,Set<DataElement>> map = new HashMap<>();
     	
         for ( DataSet dataSet : dataSets )
         {
@@ -570,7 +570,7 @@ public class OrganisationUnit
             
             if ( dataElements == null )
             {
-                dataElements = new HashSet<DataElement>();
+                dataElements = new HashSet<>();
                 map.put( dataSet.getPeriodType(), dataElements );
             }
             
@@ -594,7 +594,7 @@ public class OrganisationUnit
 
     public Set<OrganisationUnit> getChildrenThisIfEmpty()
     {
-        Set<OrganisationUnit> set = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> set = new HashSet<>();
 
         if ( hasChild() )
         {
@@ -673,7 +673,7 @@ public class OrganisationUnit
 
     public Set<DataSet> getAllDataSets()
     {
-        Set<DataSet> allDataSets = new HashSet<DataSet>( dataSets );
+        Set<DataSet> allDataSets = new HashSet<>( dataSets );
 
         for ( OrganisationUnitGroup organisationUnitGroup : groups )
         {
@@ -689,7 +689,7 @@ public class OrganisationUnit
      */
     public static Map<String, String> getParentGraphMap( List<OrganisationUnit> organisationUnits )
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         
         if ( organisationUnits != null )
         {
@@ -708,7 +708,7 @@ public class OrganisationUnit
      */
     public static Map<String, String> getParentNameGraphMap( List<OrganisationUnit> organisationUnits, boolean includeThis )
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         
         if ( organisationUnits != null )
         {

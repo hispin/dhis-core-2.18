@@ -129,7 +129,7 @@ public class SMSCommandAction
         this.selectedCommandID = selectedCommandID;
     }
 
-    private Map<String, String> codes = new HashMap<String, String>();
+    private Map<String, String> codes = new HashMap<>();
 
     public Map<String, String> getCodes()
     {
@@ -173,8 +173,8 @@ public class SMSCommandAction
 
             }
         }
-        userGroupList = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
-        programList = new ArrayList<Program>( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
+        userGroupList = new ArrayList<>( userGroupService.getAllUserGroups() );
+        programList = new ArrayList<>( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
         return SUCCESS;
     }
 
@@ -189,7 +189,7 @@ public class SMSCommandAction
             DataSet d = smsCommand.getDataset();
             if ( d != null )
             {
-                dataElements = new ArrayList<DataElement>( d.getDataElements() );
+                dataElements = new ArrayList<>( d.getDataElements() );
                 Collections.sort( dataElements, new DataElementSortOrderComparator() );
                 return dataElements;
             }
@@ -219,7 +219,7 @@ public class SMSCommandAction
             Program program = smsCommand.getProgram();
             if ( program != null )
             {
-                trackedEntityAttributeList = new ArrayList<TrackedEntityAttribute>();
+                trackedEntityAttributeList = new ArrayList<>();
                 for ( ProgramTrackedEntityAttribute programAttribute : program.getProgramAttributes() )
                 {
                     trackedEntityAttributeList.add( programAttribute.getAttribute() );

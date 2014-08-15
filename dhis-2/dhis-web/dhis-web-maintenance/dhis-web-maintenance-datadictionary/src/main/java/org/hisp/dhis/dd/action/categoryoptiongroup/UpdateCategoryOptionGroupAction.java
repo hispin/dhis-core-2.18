@@ -84,7 +84,7 @@ public class UpdateCategoryOptionGroupAction
         this.code = code;
     }
 
-    private Set<String> groupMembers = new HashSet<String>();
+    private Set<String> groupMembers = new HashSet<>();
 
     public void setGroupMembers( Set<String> groupMembers )
     {

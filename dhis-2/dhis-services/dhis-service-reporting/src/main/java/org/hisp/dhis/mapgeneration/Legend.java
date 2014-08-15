@@ -59,7 +59,7 @@ public class Legend
     public Legend( InternalMapLayer mapLayer )
     {
         this.mapLayer = mapLayer;
-        this.legendItems = new ArrayList<LegendItem>();
+        this.legendItems = new ArrayList<>();
 
         for ( Interval interval : mapLayer.getIntervalSet().getIntervals() )
         {

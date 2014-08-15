@@ -94,36 +94,36 @@ public class DataSet
      * All DataElements associated with this DataSet.
      */
     @Scanned
-    private Set<DataElement> dataElements = new HashSet<DataElement>();
+    private Set<DataElement> dataElements = new HashSet<>();
 
     /**
      * Indicators associated with this data set. Indicators are used for view
      * and output purposes, such as calculated fields in forms and reports.
      */
     @Scanned
-    private Set<Indicator> indicators = new HashSet<Indicator>();
+    private Set<Indicator> indicators = new HashSet<>();
 
     /**
      * The DataElementOperands for which data must be entered in order for the
      * DataSet to be considered as complete.
      */
-    private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<DataElementOperand>();
+    private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<>();
 
     /**
      * All Sources that register data with this DataSet.
      */
     @Scanned
-    private Set<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+    private Set<OrganisationUnit> sources = new HashSet<>();
 
     /**
      * All OrganisationUnitGroup that register data with this DataSet.
      */
-    private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
+    private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<>();
 
     /**
      * The Sections associated with the DataSet.
      */
-    private Set<Section> sections = new HashSet<Section>();
+    private Set<Section> sections = new HashSet<>();
 
     /**
      * The CategoryCombo used for data attributes.
@@ -186,7 +186,7 @@ public class DataSet
     /**
      * Set of the dynamic attributes values that belong to this data element.
      */
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    private Set<AttributeValue> attributeValues = new HashSet<>();
 
     // -------------------------------------------------------------------------
     // Form properties
@@ -302,7 +302,7 @@ public class DataSet
 
     public void updateOrganisationUnits( Set<OrganisationUnit> updates )
     {
-        for ( OrganisationUnit unit : new HashSet<OrganisationUnit>( sources ) )
+        for ( OrganisationUnit unit : new HashSet<>( sources ) )
         {
             if ( !updates.contains( unit ) )
             {
@@ -340,7 +340,7 @@ public class DataSet
 
     public void updateOrganisationUnitGroups( Set<OrganisationUnitGroup> updates )
     {
-        for ( OrganisationUnitGroup group : new HashSet<OrganisationUnitGroup>( organisationUnitGroups ) )
+        for ( OrganisationUnitGroup group : new HashSet<>( organisationUnitGroups ) )
         {
             if ( !updates.contains( group ) )
             {
@@ -368,7 +368,7 @@ public class DataSet
 
     public void updateDataElements( Set<DataElement> updates )
     {
-        for ( DataElement dataElement : new HashSet<DataElement>( dataElements ) )
+        for ( DataElement dataElement : new HashSet<>( dataElements ) )
         {
             if ( !updates.contains( dataElement ) )
             {
@@ -410,7 +410,7 @@ public class DataSet
      */
     public Set<OrganisationUnit> getAllOrganisationUnits()
     {
-        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        Set<OrganisationUnit> units = new HashSet<>();
 
         units.addAll( sources );
 
@@ -449,7 +449,7 @@ public class DataSet
 
     public Set<DataElement> getDataElementsInSections()
     {
-        Set<DataElement> dataElements = new HashSet<DataElement>();
+        Set<DataElement> dataElements = new HashSet<>();
 
         for ( Section section : sections )
         {
@@ -471,7 +471,7 @@ public class DataSet
      */
     public Set<CategoryOptionGroupSet> getCategoryOptionGroupSets()
     {
-        Set<CategoryOptionGroupSet> groupSets = new HashSet<CategoryOptionGroupSet>();
+        Set<CategoryOptionGroupSet> groupSets = new HashSet<>();
 
         if ( categoryCombo != null )
         {

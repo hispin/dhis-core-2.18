@@ -86,7 +86,7 @@ public class ModelList
         throws IOException
     {
         int size = dataInputStream.readInt();
-        models = new ArrayList<Model>( size );
+        models = new ArrayList<>( size );
 
         for ( int i = 0; i < size; i++ )
         {

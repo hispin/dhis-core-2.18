@@ -220,7 +220,7 @@ public class DefaultQueryPlanner
         
         params = params.instance();
         
-        List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+        List<DataQueryParams> queries = new ArrayList<>();
         
         List<DataQueryParams> groupedByPartition = groupByPartition( params, tableName, null );
         
@@ -316,7 +316,7 @@ public class DefaultQueryPlanner
     {
         int optimalForSubQuery = MathUtils.divideToFloor( optimalQueries, queryGroups.getLargestGroupSize() );
         
-        List<DataQueryParams> subQueries = new ArrayList<DataQueryParams>();
+        List<DataQueryParams> subQueries = new ArrayList<>();
         
         for ( DataQueryParams query : queryGroups.getAllQueries() )
         {
@@ -330,7 +330,7 @@ public class DefaultQueryPlanner
                 continue;
             }
 
-            List<List<NameableObject>> valuePages = new PaginatedList<NameableObject>( values ).setNumberOfPages( optimalForSubQuery ).getPages();
+            List<List<NameableObject>> valuePages = new PaginatedList<>( values ).setNumberOfPages( optimalForSubQuery ).getPages();
             
             for ( List<NameableObject> valuePage : valuePages )
             {
@@ -356,7 +356,7 @@ public class DefaultQueryPlanner
     {
         Set<String> validPartitions = partitionManager.getAnalyticsPartitions();
         
-        List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+        List<DataQueryParams> queries = new ArrayList<>();
 
         if ( params.isSkipPartitioning() )
         {
@@ -411,7 +411,7 @@ public class DefaultQueryPlanner
      */
     public List<DataQueryParams> groupByPeriodType( DataQueryParams params )
     {
-        List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+        List<DataQueryParams> queries = new ArrayList<>();
 
         if ( params.isSkipPartitioning() )
         {
@@ -460,7 +460,7 @@ public class DefaultQueryPlanner
     
     public List<DataQueryParams> groupByOrgUnitLevel( DataQueryParams params )
     {
-        List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+        List<DataQueryParams> queries = new ArrayList<>();
 
         if ( params.getOrganisationUnits() != null && !params.getOrganisationUnits().isEmpty() )
         {
@@ -524,7 +524,7 @@ public class DefaultQueryPlanner
      */
     private List<DataQueryParams> groupByAggregationType( DataQueryParams params )
     {
-        List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+        List<DataQueryParams> queries = new ArrayList<>();
         
         if ( params.getAggregationType() != null )
         {
@@ -586,7 +586,7 @@ public class DefaultQueryPlanner
      */
     private List<DataQueryParams> groupByDataPeriodType( DataQueryParams params )
     {
-        List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+        List<DataQueryParams> queries = new ArrayList<>();
 
         if ( params.getDataElements() == null || params.getDataElements().isEmpty() )
         {
@@ -622,7 +622,7 @@ public class DefaultQueryPlanner
      */
     private ListMap<Integer, NameableObject> getLevelOrgUnitMap( Collection<NameableObject> orgUnits )
     {
-        ListMap<Integer, NameableObject> map = new ListMap<Integer, NameableObject>();
+        ListMap<Integer, NameableObject> map = new ListMap<>();
         
         for ( NameableObject orgUnit : orgUnits )
         {
@@ -642,7 +642,7 @@ public class DefaultQueryPlanner
      */
     private ListMap<AggregationType, NameableObject> getAggregationTypeDataElementMap( Collection<NameableObject> dataElements, PeriodType aggregationPeriodType )
     {
-        ListMap<AggregationType, NameableObject> map = new ListMap<AggregationType, NameableObject>();
+        ListMap<AggregationType, NameableObject> map = new ListMap<>();
         
         for ( NameableObject element : dataElements )
         {
@@ -697,7 +697,7 @@ public class DefaultQueryPlanner
      */
     private ListMap<PeriodType, NameableObject> getPeriodTypeDataElementMap( Collection<NameableObject> dataElements )
     {
-        ListMap<PeriodType, NameableObject> map = new ListMap<PeriodType, NameableObject>();
+        ListMap<PeriodType, NameableObject> map = new ListMap<>();
         
         for ( NameableObject element : dataElements )
         {

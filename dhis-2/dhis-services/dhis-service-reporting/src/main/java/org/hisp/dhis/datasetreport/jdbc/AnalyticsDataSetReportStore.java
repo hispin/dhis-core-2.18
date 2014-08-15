@@ -70,13 +70,13 @@ public class AnalyticsDataSetReportStore
     public Map<String, Double> getAggregatedValues( DataSet dataSet, Period period, OrganisationUnit unit, 
         Map<String, String> dimensions, boolean rawData )
     {
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+        List<DataElement> dataElements = new ArrayList<>( dataSet.getDataElements() );
         
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
         
         if ( dataElements.isEmpty() )
         {
-            return new HashMap<String, Double>();
+            return new HashMap<>();
         }
         
         DataQueryParams params = new DataQueryParams();
@@ -96,7 +96,7 @@ public class AnalyticsDataSetReportStore
         
         Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
         
-        Map<String, Double> dataMap = new HashMap<String, Double>();
+        Map<String, Double> dataMap = new HashMap<>();
         
         for ( Entry<String, Double> entry : map.entrySet() )
         {
@@ -110,11 +110,11 @@ public class AnalyticsDataSetReportStore
     @Override
     public Map<String, Double> getAggregatedSubTotals( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions )
     {
-        Map<String, Double> dataMap = new HashMap<String, Double>();
+        Map<String, Double> dataMap = new HashMap<>();
         
         for ( Section section : dataSet.getSections() )
         {
-            List<DataElement> dataElements = new ArrayList<DataElement>( section.getDataElements() );
+            List<DataElement> dataElements = new ArrayList<>( section.getDataElements() );
             List<DataElementCategory> categories = section.getCategoryCombo().getCategories();
 
             FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
@@ -162,13 +162,13 @@ public class AnalyticsDataSetReportStore
     @Override
     public Map<String, Double> getAggregatedTotals( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions )
     {
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+        List<DataElement> dataElements = new ArrayList<>( dataSet.getDataElements() );
 
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
 
         if ( dataElements.isEmpty() )
         {
-            return new HashMap<String, Double>();
+            return new HashMap<>();
         }
         
         DataQueryParams params = new DataQueryParams();
@@ -187,7 +187,7 @@ public class AnalyticsDataSetReportStore
         
         Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
 
-        Map<String, Double> dataMap = new HashMap<String, Double>();
+        Map<String, Double> dataMap = new HashMap<>();
         
         for ( Entry<String, Double> entry : map.entrySet() )
         {
@@ -201,11 +201,11 @@ public class AnalyticsDataSetReportStore
     @Override
     public Map<String, Double> getAggregatedIndicatorValues( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions )
     {
-        List<Indicator> indicators = new ArrayList<Indicator>( dataSet.getIndicators() );
+        List<Indicator> indicators = new ArrayList<>( dataSet.getIndicators() );
         
         if ( indicators.isEmpty() )
         {
-            return new HashMap<String, Double>();
+            return new HashMap<>();
         }        
 
         DataQueryParams params = new DataQueryParams();
@@ -224,7 +224,7 @@ public class AnalyticsDataSetReportStore
         
         Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
 
-        Map<String, Double> dataMap = new HashMap<String, Double>();
+        Map<String, Double> dataMap = new HashMap<>();
         
         for ( Entry<String, Double> entry : map.entrySet() )
         {

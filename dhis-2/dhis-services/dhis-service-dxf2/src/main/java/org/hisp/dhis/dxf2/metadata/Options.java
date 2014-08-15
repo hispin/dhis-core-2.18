@@ -132,7 +132,7 @@ public class Options
     // Internal State
     //--------------------------------------------------------------------------
 
-    protected Map<String, String> options = new HashMap<String, String>();
+    protected Map<String, String> options = new HashMap<>();
 
     protected boolean assumeTrue;
 

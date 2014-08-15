@@ -95,7 +95,7 @@ public class OrganisationUnitHierarchyConverter
     {
         this.importObjectService = importObjectService;
         this.organisationUnitService = organisationUnitService;
-        this.organisationUnitMapping = new MimicingHashMap<Object, Integer>();
+        this.organisationUnitMapping = new MimicingHashMap<>();
     }
     
     // -------------------------------------------------------------------------

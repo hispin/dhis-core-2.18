@@ -89,7 +89,7 @@ public class AverageBoolAggregator
         final Map<DataElementOperand, double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
             period.getEndDate(), period.getStartDate(), period.getEndDate(), unitLevel ); // <Operand, [total value, total days]>
 
-        final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, average value>
+        final Map<DataElementOperand, Double> values = new HashMap<>(); // <Operand, average value>
 
         double average = 0.0;
         
@@ -109,7 +109,7 @@ public class AverageBoolAggregator
     private Map<DataElementOperand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
         final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate, int unitLevel )
     {
-        final Map<DataElementOperand, double[]> totalSums = new HashMap<DataElementOperand, double[]>(); // <Operand, [total value, total days]>
+        final Map<DataElementOperand, double[]> totalSums = new HashMap<>(); // <Operand, [total value, total days]>
 
         for ( final CrossTabDataValue crossTabValue : crossTabValues )
         {
@@ -172,7 +172,7 @@ public class AverageBoolAggregator
 
     public Collection<DataElementOperand> filterOperands( final Collection<DataElementOperand> operands, final PeriodType periodType )
     {
-        final Collection<DataElementOperand> filteredOperands = new HashSet<DataElementOperand>();
+        final Collection<DataElementOperand> filteredOperands = new HashSet<>();
         
         for ( final DataElementOperand operand : operands )
         {

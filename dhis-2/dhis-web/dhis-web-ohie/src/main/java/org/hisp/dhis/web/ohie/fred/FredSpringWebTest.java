@@ -93,7 +93,7 @@ public abstract class FredSpringWebTest
 
     public UsernamePasswordAuthenticationToken getPrincipal( String... authorities )
     {
-        List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<SimpleGrantedAuthority>();
+        List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
 
         for ( String authority : authorities )
         {

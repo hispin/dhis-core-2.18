@@ -132,7 +132,7 @@ public class EditSectionAction
 
         dataSet = section.getDataSet();
 
-        dataElementOfDataSet = new ArrayList<DataElement>( dataSet.getDataElements() );
+        dataElementOfDataSet = new ArrayList<>( dataSet.getDataElements() );
 
         Collection<Section> sections = dataSet.getSections();
 
@@ -158,7 +158,7 @@ public class EditSectionAction
             }
         }
 
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        dataElementGroups = new ArrayList<>( dataElementService.getAllDataElementGroups() );
 
         Collections.sort( dataElementOfDataSet, new IdentifiableObjectNameComparator() );
 

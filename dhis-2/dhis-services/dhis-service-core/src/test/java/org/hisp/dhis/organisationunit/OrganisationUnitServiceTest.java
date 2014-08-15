@@ -143,7 +143,7 @@ public class OrganisationUnitServiceTest
         organisationUnitService.addOrganisationUnit( unit3 );
         organisationUnitService.addOrganisationUnit( unit4 );
 
-        List<OrganisationUnit> actual = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( id1 ) );
+        List<OrganisationUnit> actual = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id1 ) );
 
         assertEquals( 3, actual.size() );
         assertTrue( actual.contains( unit1 ) );
@@ -163,8 +163,8 @@ public class OrganisationUnitServiceTest
         int id2 = organisationUnitService.addOrganisationUnit( unit2 );
         organisationUnitService.addOrganisationUnit( unit3 );
 
-        List<OrganisationUnit> actual1 = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( id1 ) );
-        List<OrganisationUnit> actual2 = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( id2 ) );
+        List<OrganisationUnit> actual1 = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id1 ) );
+        List<OrganisationUnit> actual2 = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id2 ) );
 
         assertEquals( 1, actual1.get( 0 ).getLevel() );
         assertEquals( 2, actual1.get( 1 ).getLevel() );
@@ -456,8 +456,8 @@ public class OrganisationUnitServiceTest
         organisationUnitService.addOrganisationUnit( unitN );
         organisationUnitService.addOrganisationUnit( unitO );
 
-        List<OrganisationUnit> unitsA = new ArrayList<OrganisationUnit>( Arrays.asList( unitB, unitC ) );
-        List<OrganisationUnit> unitsB = new ArrayList<OrganisationUnit>( Arrays.asList( unitD, unitE ) );
+        List<OrganisationUnit> unitsA = new ArrayList<>( Arrays.asList( unitB, unitC ) );
+        List<OrganisationUnit> unitsB = new ArrayList<>( Arrays.asList( unitD, unitE ) );
 
         OrganisationUnit nill = null;
 

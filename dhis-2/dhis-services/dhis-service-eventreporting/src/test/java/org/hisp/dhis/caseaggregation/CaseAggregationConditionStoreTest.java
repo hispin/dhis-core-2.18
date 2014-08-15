@@ -185,7 +185,7 @@ public class CaseAggregationConditionStoreTest
         categoryService.addDataElementCategoryCombo( categoryComboA );
 
         categoryOptionCombo = new DataElementCategoryOptionCombo();
-        Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+        Set<DataElementCategoryOption> categoryOptions = new HashSet<>();
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );
         categoryOptionCombo.setCategoryCombo( categoryComboA );
@@ -226,7 +226,7 @@ public class CaseAggregationConditionStoreTest
         int attributeId = attributeService.addTrackedEntityAttribute( attribute );
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstance, attribute );
-        Set<TrackedEntityAttributeValue> attributeValues = new HashSet<TrackedEntityAttributeValue>();
+        Set<TrackedEntityAttributeValue> attributeValues = new HashSet<>();
         attributeValues.add( attributeValue );
 
         // ---------------------------------------------------------------------
@@ -242,7 +242,7 @@ public class CaseAggregationConditionStoreTest
         ProgramStage stageB = new ProgramStage( "Stage-B", program );
         stageBId = programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+        List<ProgramStage> programStages = new ArrayList<>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );
@@ -331,7 +331,7 @@ public class CaseAggregationConditionStoreTest
         aggConditionServiceStore.save( conditionA );
         aggConditionServiceStore.save( conditionB );
 
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
+        Collection<DataElement> dataElements = new HashSet<>();
         dataElements.add( dataElementC );
         dataElements.add( dataElementD );
 

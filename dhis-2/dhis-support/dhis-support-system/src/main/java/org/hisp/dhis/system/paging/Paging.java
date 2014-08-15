@@ -189,7 +189,7 @@ public class Paging
     
     public static <T extends IdentifiableObject> List<T> getObjectsBetween( Collection<T> objects, int first, int max )
     {
-        final List<T> list = new ArrayList<T>( objects );
+        final List<T> list = new ArrayList<>( objects );
 
         Collections.sort( list, IdentifiableObjectNameComparator.INSTANCE );
         
@@ -202,7 +202,7 @@ public class Paging
 
     public static <T extends IdentifiableObject> List<T> getObjectsBetweenByName( Collection<T> objects, String name, int first, int max )
     {
-        final List<T> list = new ArrayList<T>();
+        final List<T> list = new ArrayList<>();
         
         if ( name != null )
         {
@@ -226,7 +226,7 @@ public class Paging
     
     public static <T extends IdentifiableObject> Collection<T> getObjectsByName( Collection<T> objects, String name )
     {
-        final List<T> list = new ArrayList<T>();
+        final List<T> list = new ArrayList<>();
         
         if ( name != null )
         {

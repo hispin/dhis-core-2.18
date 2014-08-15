@@ -44,7 +44,7 @@ public class ListUtilsTest
     @Test
     public void testRemoveAll()
     {
-        List<String> list = new ArrayList<String>( Arrays.asList( "a", "b", "c", "d", "e", "f", "g", "h" ) );
+        List<String> list = new ArrayList<>( Arrays.asList( "a", "b", "c", "d", "e", "f", "g", "h" ) );
         
         Integer[] indexes = { 0, 2, 5, 7 };
 

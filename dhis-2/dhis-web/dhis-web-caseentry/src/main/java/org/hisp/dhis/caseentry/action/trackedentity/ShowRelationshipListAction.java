@@ -82,7 +82,7 @@ public class ShowRelationshipListAction
         return entityInstance;
     }
     
-    Collection<TrackedEntityAttributeValue> attributeValues = new ArrayList<TrackedEntityAttributeValue>();
+    Collection<TrackedEntityAttributeValue> attributeValues = new ArrayList<>();
 
     public Collection<TrackedEntityAttributeValue> getAttributeValues()
     {

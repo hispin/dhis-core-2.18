@@ -83,7 +83,7 @@ public class ShowUpdateIndicatorGroupFormAction
         return indicatorGroup;
     }
 
-    private List<Indicator> groupMembers = new ArrayList<Indicator>();
+    private List<Indicator> groupMembers = new ArrayList<>();
 
     public List<Indicator> getGroupMembers()
     {
@@ -97,7 +97,7 @@ public class ShowUpdateIndicatorGroupFormAction
         return attributes;
     }
 
-    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+    public Map<Integer, String> attributeValues = new HashMap<>();
 
     public Map<Integer, String> getAttributeValues()
     {
@@ -112,9 +112,9 @@ public class ShowUpdateIndicatorGroupFormAction
     {
         indicatorGroup = indicatorService.getIndicatorGroup( id, true );
 
-        groupMembers = new ArrayList<Indicator>( indicatorGroup.getMembers() );
+        groupMembers = new ArrayList<>( indicatorGroup.getMembers() );
 
-        attributes = new ArrayList<Attribute>( attributeService.getIndicatorGroupAttributes() );
+        attributes = new ArrayList<>( attributeService.getIndicatorGroupAttributes() );
 
         attributeValues = AttributeUtils.getAttributeValueMap( indicatorGroup.getAttributeValues() );
 

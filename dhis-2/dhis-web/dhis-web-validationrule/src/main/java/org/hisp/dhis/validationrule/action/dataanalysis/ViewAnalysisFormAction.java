@@ -88,7 +88,7 @@ public class ViewAnalysisFormAction
 
     public String execute() throws Exception
     {
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        dataSets = new ArrayList<>( dataSetService.getAllDataSets() );
         
         Collections.sort( dataSets, new IdentifiableObjectNameComparator() );
         

@@ -114,7 +114,7 @@ public class GetIndicatorsAction
 
             if ( indicatorGroup != null )
             {
-                indicators = new ArrayList<Indicator>( indicatorGroup.getMembers() );
+                indicators = new ArrayList<>( indicatorGroup.getMembers() );
             }
         }
         else if ( dataSetId != null )
@@ -123,12 +123,12 @@ public class GetIndicatorsAction
 
             if ( dataset != null )
             {
-                indicators = new ArrayList<Indicator>( dataset.getIndicators() );
+                indicators = new ArrayList<>( dataset.getIndicators() );
             }
         }
         else
         {
-            indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+            indicators = new ArrayList<>( indicatorService.getAllIndicators() );
 
             ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), indicators );
         }
@@ -140,7 +140,7 @@ public class GetIndicatorsAction
 
         if ( indicators == null )
         {
-            indicators = new ArrayList<Indicator>();
+            indicators = new ArrayList<>();
         }
 
         Collections.sort( indicators, IdentifiableObjectNameComparator.INSTANCE );

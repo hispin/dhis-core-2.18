@@ -71,18 +71,18 @@ public class TrackedEntityInstanceQueryParams
     /**
      * Attributes to be included in the response. Can be used to filter response.
      */
-    private List<QueryItem> attributes = new ArrayList<QueryItem>();
+    private List<QueryItem> attributes = new ArrayList<>();
 
     /**
      * Filters for the response.
      */
-    private List<QueryItem> filters = new ArrayList<QueryItem>();
+    private List<QueryItem> filters = new ArrayList<>();
     
     /**
      * Organisation units for which instances in the response were registered at.
      * Is related to the specified OrganisationUnitMode.
      */
-    private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+    private Set<OrganisationUnit> organisationUnits = new HashSet<>();
     
     /**
      * Program for which instances in the response must be enrolled in.
@@ -232,7 +232,7 @@ public class TrackedEntityInstanceQueryParams
      */
     public SetMap<Integer, OrganisationUnit> getLevelOrgUnitMap()
     {
-        SetMap<Integer, OrganisationUnit> setMap = new SetMap<Integer, OrganisationUnit>();
+        SetMap<Integer, OrganisationUnit> setMap = new SetMap<>();
         
         for ( OrganisationUnit ou : organisationUnits )
         {
@@ -293,7 +293,7 @@ public class TrackedEntityInstanceQueryParams
      */
     public List<QueryItem> getAttributesAndFilters()
     {
-        List<QueryItem> items = new ArrayList<QueryItem>();
+        List<QueryItem> items = new ArrayList<>();
         items.addAll( attributes );
         items.addAll( filters );
         return items;
@@ -304,8 +304,8 @@ public class TrackedEntityInstanceQueryParams
      */
     public List<QueryItem> getDuplicateAttributes()
     {
-        Set<QueryItem> items = new HashSet<QueryItem>();
-        List<QueryItem> duplicates = new ArrayList<QueryItem>();
+        Set<QueryItem> items = new HashSet<>();
+        List<QueryItem> duplicates = new ArrayList<>();
         
         for ( QueryItem item : getAttributes() )
         {
@@ -323,8 +323,8 @@ public class TrackedEntityInstanceQueryParams
      */
     public List<QueryItem> getDuplicateFilters()
     {
-        Set<QueryItem> items = new HashSet<QueryItem>();
-        List<QueryItem> duplicates = new ArrayList<QueryItem>();
+        Set<QueryItem> items = new HashSet<>();
+        List<QueryItem> duplicates = new ArrayList<>();
         
         for ( QueryItem item : getFilters() )
         {

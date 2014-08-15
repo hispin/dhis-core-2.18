@@ -50,9 +50,9 @@ public class Form
 
     private String subtitle;
         
-    private List<Group> groups = new ArrayList<Group>();
+    private List<Group> groups = new ArrayList<>();
 
-    private Map<String, Object> options = new HashMap<String, Object>();
+    private Map<String, Object> options = new HashMap<>();
     
     public Form()
     {

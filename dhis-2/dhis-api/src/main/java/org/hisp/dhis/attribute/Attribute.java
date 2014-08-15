@@ -79,7 +79,7 @@ public class Attribute
 
     private Integer sortOrder;
 
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    private Set<AttributeValue> attributeValues = new HashSet<>();
 
     public Attribute()
     {

@@ -72,7 +72,7 @@ public class ExpressionStoreTest
 
     private String descriptionB;
 
-    private Set<DataElement> dataElements = new HashSet<DataElement>();
+    private Set<DataElement> dataElements = new HashSet<>();
 
     private Set<DataElementCategoryOptionCombo> optionCombos;
 
@@ -102,7 +102,7 @@ public class ExpressionStoreTest
             .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         DataElementCategoryOptionCombo categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
 
-        optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+        optionCombos = new HashSet<>();
         optionCombos.add( categoryOptionCombo );
 
         expressionA = "[" + dataElementIdA + "] + [" + dataElementIdB + "]";

@@ -83,7 +83,7 @@ public class UserGroupServiceTest
     @Test
     public void testAddUserGroup()
     {
-        Set<User> members = new HashSet<User>();
+        Set<User> members = new HashSet<>();
 
         members.add( user1 );
         members.add( user2 );
@@ -101,7 +101,7 @@ public class UserGroupServiceTest
     @Test
     public void testDeleteUserGroup()
     {
-        Set<User> members = new HashSet<User>();
+        Set<User> members = new HashSet<>();
 
         members.add( user1 );
         members.add( user2 );
@@ -125,7 +125,7 @@ public class UserGroupServiceTest
     @Test
     public void testUpdateUserGroup()
     {
-        Set<User> members = new HashSet<User>();
+        Set<User> members = new HashSet<>();
 
         members.add( user1 );
         members.add( user3 );
@@ -160,9 +160,9 @@ public class UserGroupServiceTest
     @Test
     public void testGetAllUserGroups()
     {
-        List<UserGroup> userGroups = new ArrayList<UserGroup>();
+        List<UserGroup> userGroups = new ArrayList<>();
 
-        Set<User> members = new HashSet<User>();
+        Set<User> members = new HashSet<>();
 
         members.add( user1 );
         members.add( user3 );
@@ -172,7 +172,7 @@ public class UserGroupServiceTest
 
         userGroupService.addUserGroup( userGroupA );
 
-        members = new HashSet<User>();
+        members = new HashSet<>();
 
         members.add( user1 );
         members.add( user2 );
@@ -188,7 +188,7 @@ public class UserGroupServiceTest
     @Test
     public void testGetUserGroupById()
     {
-        Set<User> members = new HashSet<User>();
+        Set<User> members = new HashSet<>();
 
         members.add( user1 );
         members.add( user2 );
@@ -209,7 +209,7 @@ public class UserGroupServiceTest
     @Test
     public void testGetUserGroupByName()
     {
-        Set<User> members = new HashSet<User>();
+        Set<User> members = new HashSet<>();
 
         members.add( user1 );
 

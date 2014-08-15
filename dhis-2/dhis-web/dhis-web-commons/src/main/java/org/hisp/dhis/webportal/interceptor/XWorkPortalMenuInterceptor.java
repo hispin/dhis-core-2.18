@@ -81,7 +81,7 @@ public class XWorkPortalMenuInterceptor
     public String intercept( ActionInvocation invocation )
         throws Exception
     {
-        Map<String, MenuState> menuStateMap = new HashMap<String, MenuState>( 1 );
+        Map<String, MenuState> menuStateMap = new HashMap<>( 1 );
 
         MenuState menuState = menuStateManager.getMenuState();
 

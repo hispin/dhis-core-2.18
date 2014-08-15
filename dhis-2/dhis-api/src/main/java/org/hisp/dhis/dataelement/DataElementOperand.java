@@ -94,7 +94,7 @@ public class DataElementOperand
 
     private String aggregationOperator;
 
-    private List<Integer> aggregationLevels = new ArrayList<Integer>();
+    private List<Integer> aggregationLevels = new ArrayList<>();
 
     private int frequencyOrder;
 
@@ -370,7 +370,7 @@ public class DataElementOperand
         this.operandName = getPrettyName( dataElement, categoryOptionCombo );
         this.aggregationOperator = dataElement.getAggregationOperator();
         this.frequencyOrder = dataElement.getFrequencyOrder();
-        this.aggregationLevels = new ArrayList<Integer>( dataElement.getAggregationLevels() );
+        this.aggregationLevels = new ArrayList<>( dataElement.getAggregationLevels() );
         this.valueType = dataElement.getType();
 
         this.uid = dataElementId + SEPARATOR + optionComboId;
@@ -389,7 +389,7 @@ public class DataElementOperand
         this.operandName = getPrettyName( dataElement, null );
         this.aggregationOperator = dataElement.getAggregationOperator();
         this.frequencyOrder = dataElement.getFrequencyOrder();
-        this.aggregationLevels = new ArrayList<Integer>( dataElement.getAggregationLevels() );
+        this.aggregationLevels = new ArrayList<>( dataElement.getAggregationLevels() );
         this.valueType = dataElement.getType();
 
         this.uid = dataElementId;

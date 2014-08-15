@@ -90,14 +90,14 @@ public class GetAttributeListAction
         {
             this.paging = createPaging( attributeService.getAttributeCountByName( key ) );
 
-            attributes = new ArrayList<Attribute>( attributeService.getAttributesBetweenByName( key,
+            attributes = new ArrayList<>( attributeService.getAttributesBetweenByName( key,
                 paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( attributeService.getAttributeCount() );
 
-            attributes = new ArrayList<Attribute>( attributeService.getAttributesBetween( paging.getStartPos(),
+            attributes = new ArrayList<>( attributeService.getAttributesBetween( paging.getStartPos(),
                 paging.getPageSize() ) );
         }
 

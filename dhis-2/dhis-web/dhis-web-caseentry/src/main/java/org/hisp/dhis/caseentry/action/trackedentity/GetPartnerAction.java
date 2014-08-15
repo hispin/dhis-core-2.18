@@ -114,7 +114,7 @@ public class GetPartnerAction
         return programs;
     }
 
-    private Map<Integer, String> attributeValueMap = new HashMap<Integer, String>();
+    private Map<Integer, String> attributeValueMap = new HashMap<>();
 
     public Map<Integer, String> getAttributeValueMap()
     {

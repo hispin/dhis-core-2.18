@@ -175,11 +175,11 @@ public class ViewDataEntryFormAction
 
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
         
-        dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
+        dataElementList = new ArrayList<>( dataSet.getDataElements() );
 
         Collections.sort( dataElementList, IdentifiableObjectNameComparator.INSTANCE );
 
-        categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );
+        categoryCombos = new ArrayList<>( categoryService.getAllDataElementCategoryCombos() );
         
         Collections.sort( categoryCombos, IdentifiableObjectNameComparator.INSTANCE );
         
