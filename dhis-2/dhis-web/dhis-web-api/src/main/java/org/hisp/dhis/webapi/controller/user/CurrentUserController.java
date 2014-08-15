@@ -33,6 +33,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -168,6 +169,11 @@ public class CurrentUserController
         for ( org.hisp.dhis.dashboard.Dashboard dashboard : dashboards )
         {
             dashboard.setAccess( aclService.getAccess( dashboard ) );
+
+            for ( DashboardItem dashboardItem : dashboard.getItems() )
+            {
+                dashboardItem.setAccess( aclService.getAccess( dashboardItem ) );
+            }
         }
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
