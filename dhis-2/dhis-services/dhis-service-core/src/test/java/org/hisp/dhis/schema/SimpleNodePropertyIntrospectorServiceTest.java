@@ -52,42 +52,68 @@ class SimpleFieldsOnly
 
     @NodeSimple( isReadable = false, isWritable = true )
     private String writeOnly;
+
+    @NodeSimple( namespace = "http://ns.example.org" )
+    private String propertyWithNamespace;
 }
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class NodePropertyIntrospectorServiceTest
+public class SimpleNodePropertyIntrospectorServiceTest
 {
-    private NodePropertyIntrospectorService introspectorService;
+    private Map<String, Property> propertyMap;
 
     @Before
     public void setup()
     {
-        introspectorService = new NodePropertyIntrospectorService();
+        propertyMap = new NodePropertyIntrospectorService().scanClass( SimpleFieldsOnly.class );
     }
 
     @Test
-    public void simpleProperties() throws NoSuchFieldException
+    public void testContainsKey() throws NoSuchFieldException
     {
-        Map<String, Property> propertyMap = introspectorService.scanClass( SimpleFieldsOnly.class );
-
         assertTrue( propertyMap.containsKey( "simpleProperty" ) );
         assertFalse( propertyMap.containsKey( "simplePropertyRenamed" ) );
         assertTrue( propertyMap.containsKey( "renamedProperty" ) );
         assertTrue( propertyMap.containsKey( "readOnly" ) );
         assertTrue( propertyMap.containsKey( "writeOnly" ) );
+    }
 
+    @Test
+    public void testAttribute()
+    {
         assertFalse( propertyMap.get( "simpleProperty" ).isAttribute() );
         assertTrue( propertyMap.get( "renamedProperty" ).isAttribute() );
-        assertFalse( propertyMap.get( "notPersistedProperty" ).isPersisted() );
+    }
 
+    @Test
+    public void testPersisted()
+    {
+        assertTrue( propertyMap.get( "simpleProperty" ).isPersisted() );
+        assertFalse( propertyMap.get( "notPersistedProperty" ).isPersisted() );
+    }
+
+    @Test
+    public void testReadWrite()
+    {
         assertTrue( propertyMap.get( "readOnly" ).isReadable() );
         assertFalse( propertyMap.get( "readOnly" ).isWritable() );
 
         assertFalse( propertyMap.get( "writeOnly" ).isReadable() );
         assertTrue( propertyMap.get( "writeOnly" ).isWritable() );
+    }
 
+    @Test
+    public void testFieldName()
+    {
+        assertEquals( "simpleProperty", propertyMap.get( "simpleProperty" ).getFieldName() );
         assertEquals( "simplePropertyRenamed", propertyMap.get( "renamedProperty" ).getFieldName() );
+    }
+
+    @Test
+    public void testNamespace()
+    {
+        assertEquals( "http://ns.example.org", propertyMap.get( "propertyWithNamespace" ).getNamespace() );
     }
 }
