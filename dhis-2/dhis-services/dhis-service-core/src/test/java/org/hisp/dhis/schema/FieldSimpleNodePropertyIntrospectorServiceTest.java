@@ -81,7 +81,7 @@ public class FieldSimpleNodePropertyIntrospectorServiceTest
     }
 
     @Test
-    public void testContainsKey() throws NoSuchFieldException
+    public void testContainsKey()
     {
         assertTrue( propertyMap.containsKey( "simpleProperty" ) );
         assertFalse( propertyMap.containsKey( "simplePropertyRenamed" ) );
