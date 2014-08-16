@@ -117,83 +117,98 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
             if ( field.isAnnotationPresent( NodeSimple.class ) )
             {
                 NodeSimple nodeSimple = field.getAnnotation( NodeSimple.class );
-                property.setSimple( true );
-                property.setAttribute( nodeSimple.isAttribute() );
-                property.setPersisted( nodeSimple.isPersisted() );
-                property.setNamespace( nodeSimple.namespace() );
-                property.setWritable( nodeSimple.isWritable() );
-                property.setReadable( nodeSimple.isReadable() );
-
-                if ( !nodeSimple.isWritable() )
-                {
-                    property.setSetterMethod( null );
-                }
-
-                if ( !nodeSimple.isReadable() )
-                {
-                    property.setGetterMethod( null );
-                }
-
-                if ( !StringUtils.isEmpty( nodeSimple.value() ) )
-                {
-                    property.setName( nodeSimple.value() );
-                }
+                handleNodeSimple( nodeSimple, property );
             }
             else if ( field.isAnnotationPresent( NodeComplex.class ) )
             {
                 NodeComplex nodeComplex = field.getAnnotation( NodeComplex.class );
-                property.setSimple( false );
-                property.setNamespace( nodeComplex.namespace() );
-                property.setWritable( nodeComplex.isWritable() );
-                property.setReadable( nodeComplex.isReadable() );
-
-                if ( !nodeComplex.isWritable() )
-                {
-                    property.setSetterMethod( null );
-                }
-
-                if ( !nodeComplex.isReadable() )
-                {
-                    property.setGetterMethod( null );
-                }
-
-                if ( !StringUtils.isEmpty( nodeComplex.value() ) )
-                {
-                    property.setName( nodeComplex.value() );
-                }
+                handleNodeComplex( nodeComplex, property );
             }
             else if ( field.isAnnotationPresent( NodeCollection.class ) )
             {
                 NodeCollection nodeCollection = field.getAnnotation( NodeCollection.class );
-                property.setCollectionWrapping( nodeCollection.useWrapping() );
-                property.setWritable( nodeCollection.isWritable() );
-                property.setReadable( nodeCollection.isReadable() );
-
-                if ( !nodeCollection.isWritable() )
-                {
-                    property.setSetterMethod( null );
-                }
-
-                if ( !nodeCollection.isReadable() )
-                {
-                    property.setGetterMethod( null );
-                }
-
-                if ( !StringUtils.isEmpty( nodeCollection.value() ) )
-                {
-                    property.setCollectionName( nodeCollection.value() );
-                }
-
-                if ( !StringUtils.isEmpty( nodeCollection.itemName() ) )
-                {
-                    property.setName( nodeCollection.itemName() );
-                }
+                handleNodeCollection( nodeCollection, property );
             }
 
             propertyMap.put( property.getName(), property );
         }
 
         return propertyMap;
+    }
+
+    private void handleNodeSimple( NodeSimple nodeSimple, Property property )
+    {
+        property.setSimple( true );
+        property.setAttribute( nodeSimple.isAttribute() );
+        property.setPersisted( nodeSimple.isPersisted() );
+        property.setNamespace( nodeSimple.namespace() );
+        property.setWritable( nodeSimple.isWritable() );
+        property.setReadable( nodeSimple.isReadable() );
+
+        if ( !nodeSimple.isWritable() )
+        {
+            property.setSetterMethod( null );
+        }
+
+        if ( !nodeSimple.isReadable() )
+        {
+            property.setGetterMethod( null );
+        }
+
+        if ( !StringUtils.isEmpty( nodeSimple.value() ) )
+        {
+            property.setName( nodeSimple.value() );
+        }
+    }
+
+    private void handleNodeComplex( NodeComplex nodeComplex, Property property )
+    {
+        property.setSimple( false );
+        property.setNamespace( nodeComplex.namespace() );
+        property.setWritable( nodeComplex.isWritable() );
+        property.setReadable( nodeComplex.isReadable() );
+
+        if ( !nodeComplex.isWritable() )
+        {
+            property.setSetterMethod( null );
+        }
+
+        if ( !nodeComplex.isReadable() )
+        {
+            property.setGetterMethod( null );
+        }
+
+        if ( !StringUtils.isEmpty( nodeComplex.value() ) )
+        {
+            property.setName( nodeComplex.value() );
+        }
+    }
+
+    private void handleNodeCollection( NodeCollection nodeCollection, Property property )
+    {
+        property.setCollectionWrapping( nodeCollection.useWrapping() );
+        property.setWritable( nodeCollection.isWritable() );
+        property.setReadable( nodeCollection.isReadable() );
+
+        if ( !nodeCollection.isWritable() )
+        {
+            property.setSetterMethod( null );
+        }
+
+        if ( !nodeCollection.isReadable() )
+        {
+            property.setGetterMethod( null );
+        }
+
+        if ( !StringUtils.isEmpty( nodeCollection.value() ) )
+        {
+            property.setCollectionName( nodeCollection.value() );
+        }
+
+        if ( !StringUtils.isEmpty( nodeCollection.itemName() ) )
+        {
+            property.setName( nodeCollection.itemName() );
+        }
     }
 
     private Method getGetter( Class<?> klass, Field field )
