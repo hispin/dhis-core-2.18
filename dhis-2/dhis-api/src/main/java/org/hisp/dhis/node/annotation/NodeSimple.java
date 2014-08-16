@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Target( { ElementType.FIELD } )
+@Target( { ElementType.FIELD, ElementType.METHOD } )
 @Retention( RetentionPolicy.RUNTIME )
 @NodeAnnotation
 public @interface NodeSimple
