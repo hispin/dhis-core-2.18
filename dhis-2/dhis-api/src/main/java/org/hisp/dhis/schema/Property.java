@@ -215,6 +215,11 @@ public class Property implements Ordered
         return getterMethod;
     }
 
+    public void setGetterMethod( Method getterMethod )
+    {
+        this.getterMethod = getterMethod;
+    }
+
     public Method getSetterMethod()
     {
         return setterMethod;
