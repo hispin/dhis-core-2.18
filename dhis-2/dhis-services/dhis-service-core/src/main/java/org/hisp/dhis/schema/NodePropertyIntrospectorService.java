@@ -119,6 +119,16 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
                 property.setWritable( nodeSimple.isWritable() );
                 property.setReadable( nodeSimple.isReadable() );
 
+                if ( !nodeSimple.isWritable() )
+                {
+                    property.setSetterMethod( null );
+                }
+
+                if ( !nodeSimple.isReadable() )
+                {
+                    property.setGetterMethod( null );
+                }
+
                 if ( !StringUtils.isEmpty( nodeSimple.value() ) )
                 {
                     property.setName( nodeSimple.value() );
@@ -132,6 +142,16 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
                 property.setWritable( nodeComplex.isWritable() );
                 property.setReadable( nodeComplex.isReadable() );
 
+                if ( !nodeComplex.isWritable() )
+                {
+                    property.setSetterMethod( null );
+                }
+
+                if ( !nodeComplex.isReadable() )
+                {
+                    property.setGetterMethod( null );
+                }
+
                 if ( !StringUtils.isEmpty( nodeComplex.value() ) )
                 {
                     property.setName( nodeComplex.value() );
@@ -143,6 +163,16 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
                 property.setCollectionWrapping( nodeCollection.useWrapping() );
                 property.setWritable( nodeCollection.isWritable() );
                 property.setReadable( nodeCollection.isReadable() );
+
+                if ( !nodeCollection.isWritable() )
+                {
+                    property.setSetterMethod( null );
+                }
+
+                if ( !nodeCollection.isReadable() )
+                {
+                    property.setGetterMethod( null );
+                }
 
                 if ( !StringUtils.isEmpty( nodeCollection.value() ) )
                 {

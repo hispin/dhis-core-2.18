@@ -56,14 +56,14 @@ class SimpleFieldsOnly
     @NodeSimple( namespace = "http://ns.example.org" )
     private String propertyWithNamespace;
 
-    public void setWriteOnly( boolean writeOnly )
+    public void setSimpleProperty( String simpleProperty )
     {
-
+        this.simpleProperty = simpleProperty;
     }
 
-    public boolean isWriteOnly()
+    public String getSimpleProperty()
     {
-        return writeOnly;
+        return simpleProperty;
     }
 }
 
@@ -112,6 +112,9 @@ public class FieldSimpleNodePropertyIntrospectorServiceTest
 
         assertFalse( propertyMap.get( "writeOnly" ).isReadable() );
         assertTrue( propertyMap.get( "writeOnly" ).isWritable() );
+
+        assertNull( propertyMap.get( "readOnly" ).getSetterMethod() );
+        assertNull( propertyMap.get( "writeOnly" ).getGetterMethod() );
     }
 
     @Test
@@ -130,14 +133,14 @@ public class FieldSimpleNodePropertyIntrospectorServiceTest
     @Test
     public void testGetter()
     {
-        assertNull( propertyMap.get( "simpleProperty" ).getGetterMethod() );
-        assertNotNull( propertyMap.get( "writeOnly" ).getGetterMethod() );
+        assertNotNull( propertyMap.get( "simpleProperty" ).getGetterMethod() );
+        assertNull( propertyMap.get( "renamedProperty" ).getGetterMethod() );
     }
 
     @Test
     public void testSetter()
     {
-        assertNull( propertyMap.get( "simpleProperty" ).getSetterMethod() );
-        assertNotNull( propertyMap.get( "writeOnly" ).getGetterMethod() );
+        assertNotNull( propertyMap.get( "simpleProperty" ).getSetterMethod() );
+        assertNull( propertyMap.get( "renamedProperty" ).getSetterMethod() );
     }
 }
