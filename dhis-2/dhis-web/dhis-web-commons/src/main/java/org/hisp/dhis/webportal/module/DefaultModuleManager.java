@@ -225,7 +225,7 @@ public class DefaultModuleManager
 
         Collections.sort( menuModules, moduleComparator );
 
-        log.info( "Menu modules detected: " + menuModules );
+        log.debug( "Menu modules detected: " + menuModules );
         
         modulesDetected = true;
     }
