@@ -116,6 +116,8 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
                 property.setAttribute( nodeSimple.isAttribute() );
                 property.setPersisted( nodeSimple.isPersisted() );
                 property.setNamespace( nodeSimple.namespace() );
+                property.setWritable( nodeSimple.isWritable() );
+                property.setReadable( nodeSimple.isReadable() );
 
                 if ( !StringUtils.isEmpty( nodeSimple.value() ) )
                 {
@@ -127,6 +129,8 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
                 NodeComplex nodeComplex = field.getAnnotation( NodeComplex.class );
                 property.setSimple( false );
                 property.setNamespace( nodeComplex.namespace() );
+                property.setWritable( nodeComplex.isWritable() );
+                property.setReadable( nodeComplex.isReadable() );
 
                 if ( !StringUtils.isEmpty( nodeComplex.value() ) )
                 {
@@ -137,6 +141,8 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
             {
                 NodeCollection nodeCollection = field.getAnnotation( NodeCollection.class );
                 property.setCollectionWrapping( nodeCollection.useWrapping() );
+                property.setWritable( nodeCollection.isWritable() );
+                property.setReadable( nodeCollection.isReadable() );
 
                 if ( !StringUtils.isEmpty( nodeCollection.value() ) )
                 {

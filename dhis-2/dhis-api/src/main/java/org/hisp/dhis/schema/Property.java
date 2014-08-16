@@ -162,6 +162,12 @@ public class Property implements Ordered
     @NodeSimple
     private boolean nameableObject;
 
+    @NodeSimple
+    private boolean readable;
+
+    @NodeSimple
+    private boolean writable;
+
     public Property()
     {
     }
@@ -373,6 +379,30 @@ public class Property implements Ordered
     public void setNameableObject( boolean nameableObject )
     {
         this.nameableObject = nameableObject;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isReadable()
+    {
+        return readable;
+    }
+
+    public void setReadable( boolean readable )
+    {
+        this.readable = readable;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isWritable()
+    {
+        return writable;
+    }
+
+    public void setWritable( boolean writable )
+    {
+        this.writable = writable;
     }
 
     @Override
