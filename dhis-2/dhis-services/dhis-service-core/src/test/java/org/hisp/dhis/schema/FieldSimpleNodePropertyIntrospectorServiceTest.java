@@ -51,16 +51,26 @@ class SimpleFieldsOnly
     private String readOnly;
 
     @NodeSimple( isReadable = false, isWritable = true )
-    private String writeOnly;
+    private boolean writeOnly;
 
     @NodeSimple( namespace = "http://ns.example.org" )
     private String propertyWithNamespace;
+
+    public void setWriteOnly( boolean writeOnly )
+    {
+
+    }
+
+    public boolean isWriteOnly()
+    {
+        return writeOnly;
+    }
 }
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class SimpleNodePropertyIntrospectorServiceTest
+public class FieldSimpleNodePropertyIntrospectorServiceTest
 {
     private Map<String, Property> propertyMap;
 
@@ -115,5 +125,19 @@ public class SimpleNodePropertyIntrospectorServiceTest
     public void testNamespace()
     {
         assertEquals( "http://ns.example.org", propertyMap.get( "propertyWithNamespace" ).getNamespace() );
+    }
+
+    @Test
+    public void testGetter()
+    {
+        assertNull( propertyMap.get( "simpleProperty" ).getGetterMethod() );
+        assertNotNull( propertyMap.get( "writeOnly" ).getGetterMethod() );
+    }
+
+    @Test
+    public void testSetter()
+    {
+        assertNull( propertyMap.get( "simpleProperty" ).getSetterMethod() );
+        assertNotNull( propertyMap.get( "writeOnly" ).getGetterMethod() );
     }
 }
