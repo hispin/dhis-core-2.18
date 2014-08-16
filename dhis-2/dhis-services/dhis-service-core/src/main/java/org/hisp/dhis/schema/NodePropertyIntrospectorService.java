@@ -31,6 +31,8 @@ package org.hisp.dhis.schema;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.node.annotation.NodeAnnotation;
@@ -45,6 +47,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +57,8 @@ import java.util.Map;
  */
 public class NodePropertyIntrospectorService extends AbstractPropertyIntrospectorService
 {
+    private static final Log log = LogFactory.getLog( NodePropertyIntrospectorService.class );
+
     @Override
     protected Map<String, Property> scanClass( Class<?> klass )
     {
@@ -204,6 +209,7 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
     private Method getMethodWithPrefix( Class<?> klass, Field field, List<String> prefixes, boolean includeType )
     {
         String name = StringUtils.capitalize( field.getName() );
+        List<Method> methods = new ArrayList<>();
 
         for ( String prefix : prefixes )
         {
@@ -213,7 +219,7 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
 
                 if ( method != null )
                 {
-                    return method;
+                    methods.add( method );
                 }
             }
             catch ( NoSuchMethodException ignored )
@@ -221,6 +227,13 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
             }
         }
 
-        return null;
+        // TODO should we just return null in this case? if this happens, its clearly a mistake
+        if ( methods.size() > 1 )
+        {
+            log.error( "More than one method found for field " + field.getName() + " on class " + klass.getName()
+                + ", Methods: " + methods + ". Using method: " + methods.get( 0 ).getName() + "." );
+        }
+
+        return methods.isEmpty() ? null : methods.get( 0 );
     }
 }
