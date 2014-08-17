@@ -48,7 +48,7 @@ class ComplexFields
     @NodeComplex
     private Value property;
 
-    @NodeComplex( value = "propertyRenamed" )
+    @NodeComplex( value = "renamedProperty" )
     private Value propertyToBeRenamed;
 
     @NodeComplex( isReadable = true, isWritable = false )
@@ -62,6 +62,16 @@ class ComplexFields
 
     @NodeComplex( namespace = "http://ns.example.org" )
     private Value propertyWithNamespace;
+
+    public Value getProperty()
+    {
+        return property;
+    }
+
+    public void setProperty( Value property )
+    {
+        this.property = property;
+    }
 }
 
 /**
@@ -82,10 +92,10 @@ public class FieldComplexNodePropertyIntrospectorServiceTest
     {
         assertTrue( propertyMap.containsKey( "property" ) );
         assertFalse( propertyMap.containsKey( "propertyToBeRenamed" ) );
-        assertTrue( propertyMap.containsKey( "propertyRenamed" ) );
+        assertTrue( propertyMap.containsKey( "renamedProperty" ) );
         assertTrue( propertyMap.containsKey( "readOnly" ) );
         assertTrue( propertyMap.containsKey( "writeOnly" ) );
-        assertTrue( propertyMap.containsKey( "propertyRenamed" ) );
+        assertTrue( propertyMap.containsKey( "notPersistedProperty" ) );
         assertTrue( propertyMap.containsKey( "propertyWithNamespace" ) );
     }
 
@@ -113,7 +123,7 @@ public class FieldComplexNodePropertyIntrospectorServiceTest
     public void testFieldName()
     {
         assertEquals( "property", propertyMap.get( "property" ).getFieldName() );
-        assertEquals( "propertyToBeRenamed", propertyMap.get( "propertyRenamed" ).getFieldName() );
+        assertEquals( "propertyToBeRenamed", propertyMap.get( "renamedProperty" ).getFieldName() );
     }
 
     @Test
@@ -125,10 +135,14 @@ public class FieldComplexNodePropertyIntrospectorServiceTest
     @Test
     public void testGetter()
     {
+        assertNotNull( propertyMap.get( "property" ).getGetterMethod() );
+        assertNull( propertyMap.get( "renamedProperty" ).getGetterMethod() );
     }
 
     @Test
     public void testSetter()
     {
+        assertNotNull( propertyMap.get( "property" ).getSetterMethod() );
+        assertNull( propertyMap.get( "renamedProperty" ).getSetterMethod() );
     }
 }

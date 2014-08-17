@@ -28,56 +28,71 @@ package org.hisp.dhis.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import org.hisp.dhis.node.annotation.NodeCollection;
 import org.hisp.dhis.node.annotation.NodeSimple;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
 
-class SimpleFields
+class Item
 {
-    @NodeSimple( isAttribute = false )
-    private String property;
+    @NodeSimple
+    private String value;
+}
 
-    @NodeSimple( value = "renamedProperty", isAttribute = true )
-    private String propertyToBeRenamed;
+class CollectionFields
+{
+    @NodeCollection
+    private List<String> property = new ArrayList<>();
 
-    @NodeSimple( isPersisted = false )
-    private String notPersistedProperty;
+    @NodeCollection( value = "renamedProperty" )
+    private List<String> propertyToBeRenamed = new ArrayList<>();
 
-    @NodeSimple( isReadable = true, isWritable = false )
-    private String readOnly;
+    @NodeCollection( isReadable = true, isWritable = false )
+    private List<String> readOnly = new ArrayList<>();
 
-    @NodeSimple( isReadable = false, isWritable = true )
-    private boolean writeOnly;
+    @NodeCollection( isReadable = false, isWritable = true )
+    private List<String> writeOnly = new ArrayList<>();
 
-    @NodeSimple( namespace = "http://ns.example.org" )
-    private String propertyWithNamespace;
+    @NodeCollection( isPersisted = false )
+    private List<String> notPersistedProperty = new ArrayList<>();
 
-    public String getProperty()
+    @NodeCollection( namespace = "http://ns.example.org" )
+    private List<String> propertyWithNamespace = new ArrayList<>();
+
+    public List<String> getProperty()
     {
         return property;
     }
 
-    public void setProperty( String property )
+    public void setProperty( List<String> property )
     {
         this.property = property;
     }
+
+    @NodeCollection
+    private List<Item> items1 = new ArrayList<>();
+
+    @NodeCollection( value = "items", itemName = "item" )
+    private List<Item> items2 = new ArrayList<>();
 }
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FieldSimpleNodePropertyIntrospectorServiceTest
+public class FieldCollectionNodePropertyIntrospectorServiceTest
 {
     private Map<String, Property> propertyMap;
 
     @Before
     public void setup()
     {
-        propertyMap = new NodePropertyIntrospectorService().scanClass( SimpleFields.class );
+        propertyMap = new NodePropertyIntrospectorService().scanClass( CollectionFields.class );
     }
 
     @Test
@@ -88,13 +103,10 @@ public class FieldSimpleNodePropertyIntrospectorServiceTest
         assertTrue( propertyMap.containsKey( "renamedProperty" ) );
         assertTrue( propertyMap.containsKey( "readOnly" ) );
         assertTrue( propertyMap.containsKey( "writeOnly" ) );
-    }
-
-    @Test
-    public void testAttribute()
-    {
-        assertFalse( propertyMap.get( "property" ).isAttribute() );
-        assertTrue( propertyMap.get( "renamedProperty" ).isAttribute() );
+        assertTrue( propertyMap.containsKey( "notPersistedProperty" ) );
+        assertTrue( propertyMap.containsKey( "propertyWithNamespace" ) );
+        assertTrue( propertyMap.containsKey( "items1" ) );
+        assertTrue( propertyMap.containsKey( "items" ) );
     }
 
     @Test
@@ -122,6 +134,7 @@ public class FieldSimpleNodePropertyIntrospectorServiceTest
     {
         assertEquals( "property", propertyMap.get( "property" ).getFieldName() );
         assertEquals( "propertyToBeRenamed", propertyMap.get( "renamedProperty" ).getFieldName() );
+        assertEquals( "items2", propertyMap.get( "items" ).getFieldName() );
     }
 
     @Test
@@ -142,5 +155,15 @@ public class FieldSimpleNodePropertyIntrospectorServiceTest
     {
         assertNotNull( propertyMap.get( "property" ).getSetterMethod() );
         assertNull( propertyMap.get( "renamedProperty" ).getSetterMethod() );
+    }
+
+    @Test
+    public void testItemName()
+    {
+        assertEquals( "items1", propertyMap.get( "items1" ).getName() );
+        assertEquals( "items1", propertyMap.get( "items1" ).getCollectionName() );
+
+        assertEquals( "item", propertyMap.get( "items" ).getName() );
+        assertEquals( "items", propertyMap.get( "items" ).getCollectionName() );
     }
 }

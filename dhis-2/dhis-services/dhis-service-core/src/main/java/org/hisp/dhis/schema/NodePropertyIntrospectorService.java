@@ -130,7 +130,15 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
                 handleNodeCollection( nodeCollection, property );
             }
 
-            propertyMap.put( property.getName(), property );
+            if ( property.isCollection() )
+            {
+                propertyMap.put( property.getCollectionName(), property );
+            }
+            else
+            {
+                propertyMap.put( property.getName(), property );
+            }
+
         }
 
         return propertyMap;
@@ -188,6 +196,8 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
     private void handleNodeCollection( NodeCollection nodeCollection, Property property )
     {
         property.setCollectionWrapping( nodeCollection.useWrapping() );
+        property.setNamespace( nodeCollection.namespace() );
+        property.setPersisted( nodeCollection.isPersisted() );
         property.setWritable( nodeCollection.isWritable() );
         property.setReadable( nodeCollection.isReadable() );
 
@@ -204,6 +214,10 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
         if ( !StringUtils.isEmpty( nodeCollection.value() ) )
         {
             property.setCollectionName( nodeCollection.value() );
+        }
+        else
+        {
+            property.setCollectionName( property.getName() );
         }
 
         if ( !StringUtils.isEmpty( nodeCollection.itemName() ) )
