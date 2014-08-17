@@ -28,6 +28,7 @@ package org.hisp.dhis.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import org.hisp.dhis.node.annotation.NodeComplex;
 import org.hisp.dhis.node.annotation.NodeSimple;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,71 +37,62 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-class SimpleFields
+class Value
 {
-    @NodeSimple( isAttribute = false )
-    private String simpleProperty;
+    @NodeSimple
+    private String value;
+}
 
-    @NodeSimple( value = "renamedProperty", isAttribute = true )
-    private String simplePropertyRenamed;
+class ComplexFields
+{
+    @NodeComplex
+    private Value property;
 
-    @NodeSimple( isPersisted = false )
-    private String notPersistedProperty;
+    @NodeComplex( value = "propertyRenamed" )
+    private Value propertyToBeRenamed;
 
-    @NodeSimple( isReadable = true, isWritable = false )
-    private String readOnly;
+    @NodeComplex( isReadable = true, isWritable = false )
+    private Value readOnly;
 
-    @NodeSimple( isReadable = false, isWritable = true )
-    private boolean writeOnly;
+    @NodeComplex( isReadable = false, isWritable = true )
+    private Value writeOnly;
 
-    @NodeSimple( namespace = "http://ns.example.org" )
-    private String propertyWithNamespace;
+    @NodeComplex( isPersisted = false )
+    private Value notPersistedProperty;
 
-    public void setSimpleProperty( String simpleProperty )
-    {
-        this.simpleProperty = simpleProperty;
-    }
-
-    public String getSimpleProperty()
-    {
-        return simpleProperty;
-    }
+    @NodeComplex( namespace = "http://ns.example.org" )
+    private Value propertyWithNamespace;
 }
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FieldSimpleNodePropertyIntrospectorServiceTest
+public class FieldComplexNodePropertyIntrospectorServiceTest
 {
     private Map<String, Property> propertyMap;
 
     @Before
     public void setup()
     {
-        propertyMap = new NodePropertyIntrospectorService().scanClass( SimpleFields.class );
+        propertyMap = new NodePropertyIntrospectorService().scanClass( ComplexFields.class );
     }
 
     @Test
     public void testContainsKey()
     {
-        assertTrue( propertyMap.containsKey( "simpleProperty" ) );
-        assertFalse( propertyMap.containsKey( "simplePropertyRenamed" ) );
-        assertTrue( propertyMap.containsKey( "renamedProperty" ) );
+        assertTrue( propertyMap.containsKey( "property" ) );
+        assertFalse( propertyMap.containsKey( "propertyToBeRenamed" ) );
+        assertTrue( propertyMap.containsKey( "propertyRenamed" ) );
         assertTrue( propertyMap.containsKey( "readOnly" ) );
         assertTrue( propertyMap.containsKey( "writeOnly" ) );
-    }
-
-    @Test
-    public void testAttribute()
-    {
-        assertFalse( propertyMap.get( "simpleProperty" ).isAttribute() );
-        assertTrue( propertyMap.get( "renamedProperty" ).isAttribute() );
+        assertTrue( propertyMap.containsKey( "propertyRenamed" ) );
+        assertTrue( propertyMap.containsKey( "propertyWithNamespace" ) );
     }
 
     @Test
     public void testPersisted()
     {
-        assertTrue( propertyMap.get( "simpleProperty" ).isPersisted() );
+        assertTrue( propertyMap.get( "property" ).isPersisted() );
         assertFalse( propertyMap.get( "notPersistedProperty" ).isPersisted() );
     }
 
@@ -120,8 +112,8 @@ public class FieldSimpleNodePropertyIntrospectorServiceTest
     @Test
     public void testFieldName()
     {
-        assertEquals( "simpleProperty", propertyMap.get( "simpleProperty" ).getFieldName() );
-        assertEquals( "simplePropertyRenamed", propertyMap.get( "renamedProperty" ).getFieldName() );
+        assertEquals( "property", propertyMap.get( "property" ).getFieldName() );
+        assertEquals( "propertyToBeRenamed", propertyMap.get( "propertyRenamed" ).getFieldName() );
     }
 
     @Test
@@ -133,14 +125,10 @@ public class FieldSimpleNodePropertyIntrospectorServiceTest
     @Test
     public void testGetter()
     {
-        assertNotNull( propertyMap.get( "simpleProperty" ).getGetterMethod() );
-        assertNull( propertyMap.get( "renamedProperty" ).getGetterMethod() );
     }
 
     @Test
     public void testSetter()
     {
-        assertNotNull( propertyMap.get( "simpleProperty" ).getSetterMethod() );
-        assertNull( propertyMap.get( "renamedProperty" ).getSetterMethod() );
     }
 }
