@@ -164,6 +164,7 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
     private void handleNodeComplex( NodeComplex nodeComplex, Property property )
     {
         property.setSimple( false );
+        property.setPersisted( nodeComplex.isPersisted() );
         property.setNamespace( nodeComplex.namespace() );
         property.setWritable( nodeComplex.isWritable() );
         property.setReadable( nodeComplex.isReadable() );
