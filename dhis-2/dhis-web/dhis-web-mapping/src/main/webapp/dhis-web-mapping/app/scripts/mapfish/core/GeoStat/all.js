@@ -58,7 +58,7 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
 		return GIS.core.LayerLoaderFacility(this.gis, this.layer);
 	},
 
-	decode: function(doc) {
+	decode: function(organisationUnits) {
 		var feature,
 			group,
 			attr,
@@ -73,21 +73,21 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
 				features: []
 			};
 
-        for (var i = 0; i < doc.geojson.length; i++) {
-			attr = doc.geojson[i];
+        for (var i = 0; i < organisationUnits.length; i++) {
+			attr = organisationUnits[i];
 
 			feature = {
+                type: 'Feature',
                 geometry: {
-                    type: parseInt(attr.ty) === 1 ? 'MultiPolygon' : 'Point',
-                    coordinates: attr.co
+                    type: parseInt(attr.ty) === 1 ? 'Point' : 'MultiPolygon',
+                    coordinates: JSON.parse(attr.co)
                 },
                 properties: {
-                    id: attr.uid,
-                    internalId: attr.iid,
+                    id: attr.id,
                     name: attr.na
                 }
             };
-            feature.properties = Ext.Object.merge(feature.properties, attr.groupSets);
+            feature.properties = Ext.Object.merge(feature.properties, attr.dimensions);
 
             geojson.features.push(feature);
         }

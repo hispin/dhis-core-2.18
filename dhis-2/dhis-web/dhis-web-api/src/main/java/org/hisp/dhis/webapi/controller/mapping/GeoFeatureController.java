@@ -139,7 +139,7 @@ public class GeoFeatureController
 
                     if ( group != null )
                     {
-                        feature.getDimensions().put( groupSet.getUid(), group.getUid() );
+                        feature.getDimensions().put( groupSet.getUid(), group.getName() );
                     }
                 }
             }
