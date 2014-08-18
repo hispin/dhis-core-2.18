@@ -75,16 +75,12 @@ public class OrganisationUnitController
     {
         List<OrganisationUnit> entityList;
 
-        Integer level = null;
-
+        Integer level = options.getInt( "level" );
+        Integer maxLevel = options.getInt( "maxLevel" );        
         boolean levelSorted = options.isTrue( "levelSorted" );
 
-        Integer maxLevel = options.getInt( "level" );
-
-        if ( options.contains( "maxLevel" ) )
+        if ( maxLevel != null )
         {
-            maxLevel = options.getInt( "maxLevel" );
-
             if ( organisationUnitService.getOrganisationUnitLevelByLevel( maxLevel ) == null )
             {
                 maxLevel = null;
