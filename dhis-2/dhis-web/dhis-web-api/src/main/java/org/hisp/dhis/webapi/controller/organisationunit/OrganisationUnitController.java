@@ -202,15 +202,14 @@ public class OrganisationUnitController
     }
     
     @RequestMapping( value = "/{uid}/parents", method = RequestMethod.GET )
-    public List<OrganisationUnit> getEntityList( @PathVariable( "uid" ) String uid
-        , @RequestParam Map<String, String> parameters
-        , Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    public List<OrganisationUnit> getEntityList( @PathVariable( "uid" ) String uid, 
+        @RequestParam Map<String, String> parameters, Model model, 
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     { 
         OrganisationUnit organisationUnit = manager.get( getEntityClass(), uid );
 
         List<OrganisationUnit> organisationUnits = Lists.newArrayList();
         
-        // Add organisation unit parents 
         if ( organisationUnit != null )
         {
             OrganisationUnit organisationUnitParent = organisationUnit.getParent();
@@ -230,7 +229,5 @@ public class OrganisationUnitController
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
         
         return organisationUnits;
-    }
-
-    
+    }    
 }
