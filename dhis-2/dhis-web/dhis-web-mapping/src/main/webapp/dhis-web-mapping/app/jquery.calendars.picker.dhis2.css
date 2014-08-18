@@ -1,0 +1,8 @@
+.calendars-popup {
+	z-index: 100000;
+    margin-top: 2px;
+}
+
+.calendars-nav a {
+    padding: 2px;
+}

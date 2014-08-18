@@ -44,6 +44,10 @@
  * General
  *--------------------------------------------------------------------------*/
 
+.calendars-popup {
+    z-index: 999999 !important;
+}
+
 html * {
 	font-family: arial, sans-serif, liberation sans, consolas !important;
 }
