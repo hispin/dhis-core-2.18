@@ -774,21 +774,19 @@ Ext.onReady( function() {
 											store: {
 												fields: ['id', 'name'],
 												data: function() {
-													var pt = new PeriodType(),
-														periodType = gis.init.systemSettings.infrastructuralPeriodType.id,
-														data;
+                                                    var periodType = gis.init.systemSettings.infrastructuralPeriodType.id,
+                                                        generator = gis.init.periodGenerator,
+														periods = generator.filterFuturePeriodsExceptCurrent(generator.generateReversedPeriods(periodType, this.periodOffset)) || [];
 
-													data = pt.get(periodType).generatePeriods({
-														offset: 0,
-														filterFuturePeriods: true,
-														reversePeriods: true
-													});
+													if (Ext.isArray(periods) && periods.length) {
+                                                        for (var i = 0; i < periods.length; i++) {
+                                                            periods[i].id = periods[i].iso;
+                                                        }
 
-													if (Ext.isArray(data) && data.length) {
-														data = data.slice(0,5);
+														periods = periods.slice(0,5);
 													}
 
-													return data;
+													return periods;
 												}()
 											},
 											lockPosition: false,
@@ -1135,7 +1133,7 @@ Ext.onReady( function() {
 				fillOpacity: 1,
 				strokeColor: '#fff',
 				strokeWidth: 1,
-                pointRadius: 5,
+                pointRadius: 8,
                 labelAlign: 'cr',
                 labelYOffset: 13,
                 fontFamily: 'arial,sans-serif,roboto,helvetica neue,helvetica,consolas'
@@ -1144,7 +1142,7 @@ Ext.onReady( function() {
 				fillOpacity: 0.9,
 				strokeColor: '#fff',
 				strokeWidth: 1,
-                pointRadius: 5,
+                pointRadius: 8,
 				cursor: 'pointer',
                 labelAlign: 'cr',
                 labelYOffset: 13
@@ -1733,13 +1731,15 @@ Ext.onReady( function() {
 
 		loadOrganisationUnits = function(view) {
             var items = view.rows[0].items,
+                isPlugin = GIS.plugin && !GIS.app,
                 url = function() {
-                    var params = '';
+                    var params = '?ou=ou:';
                     for (var i = 0; i < items.length; i++) {
-                        params += 'ids=' + items[i].id;
-                        params += i !== items.length - 1 ? '&' : '';
+                        params += items[i].id;
+                        params += i !== items.length - 1 ? ';' : '';
                     }
-                    return gis.init.contextPath + gis.conf.finals.url.path_module + 'getGeoJsonFacilities.action?' + params;
+
+                    return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params + '&viewClass=detailed';
                 }(),
                 success,
                 failure;
@@ -1808,7 +1808,7 @@ Ext.onReady( function() {
 		loadLegend = function(view) {
             var isPlugin = GIS.plugin && !GIS.app,
                 type = isPlugin ? 'jsonp' : 'json',
-                url = gis.init.contextPath + '/api/organisationUnitGroupSets/' + view.organisationUnitGroupSet.id + '.' + type + '?fields=organisationUnitGroups[id,name]',
+                url = gis.init.contextPath + '/api/organisationUnitGroupSets/' + view.organisationUnitGroupSet.id + '.' + type + '?fields=organisationUnitGroups[id,name,symbol]',
                 success;
 
 			view = view || layer.core.view;
@@ -2000,13 +2000,14 @@ Ext.onReady( function() {
 
 		loadOrganisationUnits = function(view) {
 			var items = view.rows[0].items,
+                isPlugin = GIS.plugin && !GIS.app,
                 url = function() {
-                    var params = '';
+                    var params = '?ou=ou:';
                     for (var i = 0; i < items.length; i++) {
-                        params += 'ids=' + items[i].id;
-                        params += i !== items.length - 1 ? '&' : '';
+                        params += items[i].id;
+                        params += i !== items.length - 1 ? ';' : '';
                     }
-                    return gis.init.contextPath + gis.conf.finals.url.path_module + 'getGeoJson.action?' + params;
+                    return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params;
                 }(),
                 success,
                 failure;
@@ -2070,7 +2071,7 @@ Ext.onReady( function() {
                 alert(GIS.i18n.coordinates_could_not_be_loaded);
             };
 
-            if (GIS.plugin && !GIS.app) {
+            if (isPlugin) {
                 Ext.data.JsonP.request({
                     url: url,
                     disableCaching: false,
@@ -2343,13 +2344,14 @@ Ext.onReady( function() {
 
 		loadOrganisationUnits = function(view) {
 			var items = view.rows[0].items,
-				url = function() {
-                    var params = '';
+                isPlugin = GIS.plugin && !GIS.app,
+                url = function() {
+                    var params = '?ou=ou:';
                     for (var i = 0; i < items.length; i++) {
-                        params += 'ids=' + items[i].id;
-                        params += i !== items.length - 1 ? '&' : '';
+                        params += items[i].id;
+                        params += i !== items.length - 1 ? ';' : '';
                     }
-                    return gis.init.contextPath + gis.conf.finals.url.path_module + 'getGeoJson.action?' + params;
+                    return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params;
                 }(),
                 success,
                 failure;
@@ -2381,7 +2383,7 @@ Ext.onReady( function() {
                 alert(GIS.i18n.coordinates_could_not_be_loaded);
             };
 
-            if (GIS.plugin && !GIS.app) {
+            if (isPlugin) {
                 Ext.data.JsonP.request({
                     url: url,
                     disableCaching: false,
@@ -3004,7 +3006,7 @@ Ext.onReady( function() {
 
 			util.geojson = {};
 
-			util.geojson.decode = function(doc, levelOrder) {
+			util.geojson.decode = function(organisationUnits, levelOrder) {
 				var geojson = {
                     type: 'FeatureCollection',
                     crs: {
@@ -3019,26 +3021,43 @@ Ext.onReady( function() {
                 levelOrder = levelOrder || 'ASC';
 
                 // sort
-                doc.geojson = util.array.sort(doc.geojson, levelOrder, 'le');
+                organisationUnits = util.array.sort(organisationUnits, levelOrder, 'le');
 
-				for (var i = 0; i < doc.geojson.length; i++) {
+				for (var i = 0, ou, gpid = '', gppg = ''; i < organisationUnits.length; i++) {
+                    ou = organisationUnits[i];
+
+                    // grand parent
+                    if (Ext.isString(ou.pg) && ou.pg.length) {
+                        var ids = Ext.Array.clean(ou.pg.split('/'));
+
+                        // grand parent id
+                        if (ids.length >= 2) {
+                            gpid = ids[ids.length - 2];
+                        }
+
+                        // grand parent parentgraph
+                        if (ids.length > 2) {
+                            gppg = '/' + ids.slice(0, ids.length - 2).join('/');
+                        }
+                    }
+
 					geojson.features.push({
+                        type: 'Feature',
 						geometry: {
-							type: parseInt(doc.geojson[i].ty) === 1 ? 'MultiPolygon' : 'Point',
-							coordinates: doc.geojson[i].co
+							type: parseInt(ou.ty) === 1 ? 'Point' : 'MultiPolygon',
+							coordinates: JSON.parse(ou.co)
 						},
 						properties: {
-							id: doc.geojson[i].uid,
-							internalId: doc.geojson[i].iid,
-							name: doc.geojson[i].na,
-							hasCoordinatesDown: doc.geojson[i].hcd,
-							hasCoordinatesUp: doc.geojson[i].hcu,
-							level: doc.geojson[i].le,
-							grandParentParentGraph: doc.geojson[i].gppg,
-							grandParentId: doc.geojson[i].gpuid,
-							parentGraph: doc.geojson[i].parentGraph,
-							parentId: doc.geojson[i].pi,
-							parentName: doc.geojson[i].pn
+							id: ou.id,
+							name: ou.na,
+							hasCoordinatesDown: ou.hcd,
+							hasCoordinatesUp: ou.hcu,
+							level: ou.le,
+							grandParentParentGraph: gppg,
+							grandParentId: gpid,
+							parentGraph: ou.pg,
+							parentId: ou.pi,
+							parentName: ou.pn
 						}
 					});
 				}
