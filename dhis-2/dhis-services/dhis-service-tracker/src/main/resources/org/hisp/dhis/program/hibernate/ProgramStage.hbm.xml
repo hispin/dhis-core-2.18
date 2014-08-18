@@ -71,6 +71,8 @@
 
     <property name="reportDateToUse" />
     
+    <property name="preGenerateUID" />
+    
     <list name="programIndicators" table="programstage_programindicators">
       <key column="programStageid" />
       <list-index column="sort_order" base="1" />

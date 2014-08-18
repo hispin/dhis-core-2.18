@@ -13,6 +13,7 @@
 	"allowGenerateNextVisit": "$!programStage.allowGenerateNextVisit",
 	"generatedByEnrollmentDate": "$!programStage.generatedByEnrollmentDate",
 	"openAfterEnrollment": "$!programStage.openAfterEnrollment",
+	"preGenerateUID": "$!programStage.preGenerateUID",
 	"reportDateToUse": "$!programStage.reportDateToUse",
 	"reminders":[
 	#foreach($reminder in $programStage.reminders)

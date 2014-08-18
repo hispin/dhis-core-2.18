@@ -320,6 +320,13 @@ public class AddProgramStageAction
     {
         this.selectedIndicators = selectedIndicators;
     }
+    
+    private Boolean preGenerateUID;
+
+    public void setPreGenerateUID( Boolean preGenerateUID )
+    {
+        this.preGenerateUID = preGenerateUID;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -340,6 +347,7 @@ public class AddProgramStageAction
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
         allowGenerateNextVisit = (allowGenerateNextVisit == null) ? false : allowGenerateNextVisit;
         openAfterEnrollment = (openAfterEnrollment == null) ? false : openAfterEnrollment;
+        preGenerateUID = (preGenerateUID == null) ? false : preGenerateUID;
 
         ProgramStage programStage = new ProgramStage();
         Program program = programService.getProgram( id );
@@ -368,6 +376,7 @@ public class AddProgramStageAction
         programStage.setAllowGenerateNextVisit( allowGenerateNextVisit );
         programStage.setOpenAfterEnrollment( openAfterEnrollment );
         programStage.setReportDateToUse( reportDateToUse );
+        programStage.setPreGenerateUID( preGenerateUID );
 
         // Program indicators
 

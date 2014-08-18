@@ -144,6 +144,11 @@
 			</tr>
 			
 			<tr>
+				<td><label for="preGenerateUID">$i18n.getString( "pre_generate_event_uid" )</label></td>
+				<td><input type="checkbox" id="preGenerateUID" name="preGenerateUID" value='true' #if( $programStage.preGenerateUID && $programStage.preGenerateUID=='true' ) checked #end /></td>
+			</tr>
+			
+			<tr>
 				<td><label for="reportDateDescription">$i18n.getString( "report_date_description" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 				<td><input type="text" id="reportDateDescription" name="reportDateDescription" value='$!programStage.reportDateDescription' class="{validate:{required:true}}" /></td>
 			</tr>
