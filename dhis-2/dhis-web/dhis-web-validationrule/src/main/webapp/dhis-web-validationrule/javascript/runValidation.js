@@ -27,7 +27,7 @@ function validateRunValidation()
 	    {
 		    $( '#validateButton' ).attr( 'disabled', true )
 
-	        setWaitMessage( i18n_analysing_please_wait );
+	        setHeaderWaitMessage( i18n_analysing_please_wait );
 
 	        $.get( 'runValidationAction.action', 
 	        { 
@@ -38,7 +38,7 @@ function validateRunValidation()
 	        }, 
 	        function( data )
 	        {
-	            hideMessage();
+	            hideHeaderMessage();
 	            $( 'div#analysisInput' ).hide();
 	            $( 'div#analysisResult' ).show();
 	            $( 'div#analysisResult' ).html( data );

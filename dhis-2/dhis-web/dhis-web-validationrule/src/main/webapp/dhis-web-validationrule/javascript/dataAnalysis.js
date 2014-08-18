@@ -58,7 +58,7 @@ function analyseDataInvalid()
 
 function analyseData()
 {
-    setWaitMessage( i18n_analysing_please_wait );
+    setHeaderWaitMessage( i18n_analysing_please_wait );
 
     var url = "getAnalysis.action" + "?key=" + $( "#key" ).val() + "&toDate=" + $( "#toDate" ).val() + "&fromDate="
             + $( "#fromDate" ).val() + "&" + getParamString( "dataSets", "dataSets" );
@@ -70,7 +70,7 @@ function analyseData()
 
     $.get( url, function( data )
     {
-    	hideMessage();
+    	hideHeaderMessage();
         $( "div#analysisInput" ).hide();
         $( "div#analysisResult" ).show();
         $( "div#analysisResult" ).html( data );
@@ -81,13 +81,13 @@ function analyseData()
 
 function getFollowUpAnalysis()
 {
-    setWaitMessage( i18n_analysing_please_wait );
+    setHeaderWaitMessage( i18n_analysing_please_wait );
 
     var url = "getAnalysis.action?key=followup";
 
     $.get( url, function( data )
     {
-        hideMessage();
+        hideHeaderMessage();
         $( "div#analysisResult" ).show();
         $( "div#analysisResult" ).html( data );
     } );
