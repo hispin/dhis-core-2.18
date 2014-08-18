@@ -162,17 +162,20 @@ trackerCapture.controller('ReportController',
 //conroller for tei report
 .controller('TeiReportController',
         function($scope,
-                $modal,
+                $filter,
                 CurrentSelection,
                 storage,
                 DateUtils,
                 EventUtils,
+                TEIService,
                 TranslationService,
                 ProgramFactory,
+                ProgramStageFactory,
+                EnrollmentService,
                 DHIS2EventFactory) {
 
     TranslationService.translate();    
-    
+    $scope.showProgramReportDetailsDiv = false;
     $scope.programs = [];  
     $scope.programNames = [];  
     $scope.programStageNames = [];
@@ -188,6 +191,7 @@ trackerCapture.controller('ReportController',
     });
         
     $scope.$on('dashboardWidgets', function(event, args) {
+        $scope.showProgramReportDetailsDiv = false;
         var selections = CurrentSelection.get();
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');
         $scope.selectedTei = selections.tei;  
@@ -216,7 +220,6 @@ trackerCapture.controller('ReportController',
         });
         
         DHIS2EventFactory.getEventsByProgram($scope.selectedTei.trackedEntityInstance, orgUnitId, programId).then(function(eventList){
-
             angular.forEach(eventList, function(ev){
                 if(ev.program){       
                     ev.visited = true;
@@ -256,119 +259,75 @@ trackerCapture.controller('ReportController',
         });
     };
     
-       
-    
     $scope.showProgramReportDetails = function(pr){
         
-        var modalInstance = $modal.open({
-            templateUrl: 'components/report/program-details.html',
-            controller: 'ProgramDetailsController',
-            windowClass: 'modal-full-window',
-            resolve: {
-                program: function () {
-                    return pr;
-                },
-                report: function(){
-                    return $scope.report[pr.id];
-                },
-                selectedTei: function(){
-                    return $scope.selectedTei;
-                },
-                entityName: function(){
-                    return $scope.selectedEntity.name;
-                },
-                reportMode: function(){
-                    return 'TEI';
-                }
-            }
-        });
+        $scope.showProgramReportDetailsDiv = !$scope.showProgramReportDetailsDiv;
+        $scope.selectedProgram = pr;
+        $scope.selectedReport = $scope.report[pr.id];
+        
+        //today as report date
+        $scope.today = moment();
+        $scope.today = Date.parse($scope.today);
+        $scope.today = $filter('date')($scope.today, 'yyyy-MM-dd');
 
-        modalInstance.result.then({
-        });
-    };
-})
-
-//Controller for program details
-.controller('ProgramDetailsController', 
-    function($scope, 
-            $modalInstance,
-            $filter,
-            ProgramStageFactory,
-            TEIService,
-            EnrollmentService,
-            DateUtils,
-            program,
-            report,
-            selectedTei,
-            entityName,
-            reportMode){
-    
-    $scope.selectedTei = selectedTei;
-    $scope.entityName = entityName;
-    $scope.reportMode = reportMode;
-    $scope.selectedProgram = program;
-    $scope.report = report;
-    
-    //today as report date
-    $scope.today = moment();
-    $scope.today = Date.parse($scope.today);
-    $scope.today = $filter('date')($scope.today, 'yyyy-MM-dd');
-
-    //process tei attributes, this is to have consistent display that the tei 
-    //contains program attributes whether is has value or not
-    TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, null).then(function(tei){
-        $scope.selectedTei = tei;  
-    });
-    
-    //get program stage for the selected program
-    //they are needed assign data element names for event data values
-    $scope.programStages = [];  
-    $scope.allowProvidedElsewhereExists = [];
-    angular.forEach($scope.selectedProgram.programStages, function(st){
-        ProgramStageFactory.get(st.id).then(function(stage){
-            $scope.programStages[stage.id] = stage;
-            var providedElsewhereExists = false;
-            for(var i=0; i<stage.programStageDataElements.length && !providedElsewhereExists; i++){                
-                if(stage.programStageDataElements[i].allowProvidedElsewhere){
-                    providedElsewhereExists = true;
-                    $scope.allowProvidedElsewhereExists[st.id] = true;
-                }                
-            }            
-        });
-    });
-    
-    //program reports come grouped in enrollment
-    //process for each enrollment
-    $scope.enrollments = [];        
-    angular.forEach(Object.keys($scope.report.enrollments), function(enr){        
-        //format report data values
-        angular.forEach($scope.report.enrollments[enr], function(ev){
-            angular.forEach(ev.notes, function(note){
-                note.storedDate = moment(note.storedDate).format('DD.MM.YYYY @ hh:mm A');
-            }); 
-
-            if(ev.dataValues){
-                angular.forEach(ev.dataValues, function(dv){
-                    if(dv.dataElement){
-                        ev[dv.dataElement] = dv;
-                    }                    
-                });
-            }
+        //process tei attributes, this is to have consistent display so that the tei 
+        //contains program attributes whether it has value or not
+        TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, null).then(function(tei){
+            $scope.tei = tei;  
         });
         
-        //get enrollment details
-        EnrollmentService.get(enr).then(function(enrollment){
-            enrollment.dateOfEnrollment = DateUtils.format(enrollment.dateOfEnrollment);
-            enrollment.dateOfIncident = DateUtils.format(enrollment.dateOfIncident);            
-            angular.forEach(enrollment.notes, function(note){
-                note.storedDate = moment(note.storedDate).format('DD.MM.YYYY @ hh:mm A');
-            });            
-            $scope.enrollments.push(enrollment);               
+        //get program stage for the selected program
+        //they are needed assign data element names for event data values
+        $scope.programStages = [];  
+        $scope.allowProvidedElsewhereExists = [];
+        angular.forEach($scope.selectedProgram.programStages, function(st){
+            ProgramStageFactory.get(st.id).then(function(stage){
+                $scope.programStages[stage.id] = stage;
+                var providedElsewhereExists = false;
+                for(var i=0; i<stage.programStageDataElements.length && !providedElsewhereExists; i++){                
+                    if(stage.programStageDataElements[i].allowProvidedElsewhere){
+                        providedElsewhereExists = true;
+                        $scope.allowProvidedElsewhereExists[st.id] = true;
+                    }                
+                }            
+            });
         });
-    });
-    
-    $scope.close = function () {
-        $modalInstance.close();        
-    };   
+        
+        //program reports come grouped in enrollment, process for each enrollment
+        $scope.enrollments = [];        
+        angular.forEach(Object.keys($scope.selectedReport.enrollments), function(enr){        
+            //format report data values
+            angular.forEach($scope.selectedReport.enrollments[enr], function(ev){
+                angular.forEach(ev.notes, function(note){
+                    note.storedDate = moment(note.storedDate).format('DD.MM.YYYY @ hh:mm A');
+                }); 
 
+                if(ev.dataValues){
+                    angular.forEach(ev.dataValues, function(dv){
+                        if(dv.dataElement){
+                            ev[dv.dataElement] = dv;
+                        }                    
+                    });
+                }
+            });
+
+            //get enrollment details
+            EnrollmentService.get(enr).then(function(enrollment){
+                enrollment.dateOfEnrollment = DateUtils.format(enrollment.dateOfEnrollment);
+                enrollment.dateOfIncident = DateUtils.format(enrollment.dateOfIncident);            
+                angular.forEach(enrollment.notes, function(note){
+                    note.storedDate = moment(note.storedDate).format('DD.MM.YYYY @ hh:mm A');
+                });            
+                $scope.enrollments.push(enrollment);               
+            });
+        });    
+    };
+    
+    $scope.close = function(){
+        $scope.showProgramReportDetailsDiv = false;
+    };
+    
+    $scope.print = function(){
+        $scope.showProgramReportDetailsDiv = false;
+    };
 });
