@@ -315,6 +315,13 @@ public class UpdateProgramStageAction
     {
         this.selectedIndicators = selectedIndicators;
     }
+    
+    private Boolean preGenerateUID;
+
+    public void setPreGenerateUID( Boolean preGenerateUID )
+    {
+        this.preGenerateUID = preGenerateUID;
+    }
 
     @Autowired
     private ProgramIndicatorService programIndicatorService;
@@ -338,6 +345,7 @@ public class UpdateProgramStageAction
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
         allowGenerateNextVisit = (allowGenerateNextVisit == null) ? false : allowGenerateNextVisit;
         openAfterEnrollment = (openAfterEnrollment == null) ? false : openAfterEnrollment;
+        preGenerateUID = (preGenerateUID == null) ? false : preGenerateUID;
 
         ProgramStage programStage = programStageService.getProgramStage( id );
 
@@ -355,6 +363,7 @@ public class UpdateProgramStageAction
         programStage.setAllowGenerateNextVisit( allowGenerateNextVisit );
         programStage.setOpenAfterEnrollment( openAfterEnrollment );
         programStage.setReportDateToUse( reportDateToUse );
+        programStage.setPreGenerateUID( preGenerateUID );
 
         if ( programStage.getProgram().isSingleEvent() )
         {
