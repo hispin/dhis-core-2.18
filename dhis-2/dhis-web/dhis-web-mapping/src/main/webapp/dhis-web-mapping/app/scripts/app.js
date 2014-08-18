@@ -4524,29 +4524,54 @@ Ext.onReady( function() {
         });
 
             // date
-		startDate = Ext.create('Ext.form.field.Date', {
+
+        onDateFieldRender = function(c) {
+            $('#' + c.inputEl.id).calendarsPicker({
+                calendar: gis.init.calendar,
+                dateFormat: gis.init.dateFormat
+            });
+        };
+
+        startDate = Ext.create('Ext.form.field.Text', {
 			fieldLabel: 'Start date',
 			labelAlign: 'top',
 			labelCls: 'gis-form-item-label-top',
-            //labelStyle: 'font-weight: bold',
 			labelSeparator: '',
-			columnWidth: 0.5,
-			//style: 'margin-right: 1px',
-			format: 'Y-m-d',
-			value: new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))
-		});
+            columnWidth: 0.5,
+            height: 41,
+            listeners: {
+                render: function(c) {
+                    onDateFieldRender(c);
+                }
+            }
+        });
 
-		endDate = Ext.create('Ext.form.field.Date', {
+        endDate = Ext.create('Ext.form.field.Text', {
 			fieldLabel: 'End date',
 			labelAlign: 'top',
 			labelCls: 'gis-form-item-label-top',
-            //labelStyle: 'font-weight: bold',
 			labelSeparator: '',
-			columnWidth: 0.5,
-			style: 'margin-left: 1px',
-			format: 'Y-m-d',
-			value: new Date()
-		});
+            columnWidth: 0.5,
+            height: 41,
+            style: 'margin-left: 1px',
+            listeners: {
+                render: function(c) {
+                    onDateFieldRender(c);
+                }
+            }
+        });
+
+		//endDate = Ext.create('Ext.form.field.Date', {
+			//fieldLabel: 'End date',
+			//labelAlign: 'top',
+			//labelCls: 'gis-form-item-label-top',
+            ////labelStyle: 'font-weight: bold',
+			//labelSeparator: '',
+			//columnWidth: 0.5,
+			//style: 'margin-left: 1px',
+			//format: 'Y-m-d',
+			//value: new Date()
+		//});
 
         period = Ext.create('Ext.panel.Panel', {
             title: '<div class="gis-panel-title-period">Periods</div>',
@@ -5155,8 +5180,10 @@ Ext.onReady( function() {
             view.program = program.getRecord();
             view.stage = stage.getRecord();
 
-            view.startDate = startDate.getSubmitValue();
-            view.endDate = endDate.getSubmitValue();
+            //view.startDate = startDate.getSubmitValue();
+            //view.endDate = endDate.getSubmitValue();
+            view.startDate = startDate.getValue();
+            view.endDate = endDate.getValue();
 
             view.dataElements = [];
 
