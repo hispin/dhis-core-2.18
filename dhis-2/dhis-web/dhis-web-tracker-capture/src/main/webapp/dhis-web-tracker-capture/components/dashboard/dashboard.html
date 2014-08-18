@@ -1,5 +1,5 @@
 <div class="container-1-1">    
-    <div class="col-sm-12 vertical-spacing">
+    <div class="col-sm-12 vertical-spacing  not-printable">
 
         <button type="button" class="btn btn-default" ng-click="back()">{{'back'| translate}}</button>
 
@@ -30,14 +30,14 @@
             <div class="col-sm-6 col-md-8">
                 <div sortable class="row connectedSortable empty-dashboard-container">
                     <div ng-repeat="biggerWidget in biggerDashboardWidgets">
-                        <div class="col-sm-12" ng-show="biggerWidget.show" ng-include="biggerWidget.view"></div>
+                        <div class="col-sm-12" ng-show="biggerWidget.show" ng-include="biggerWidget.view" ng-class="{true: 'not-printable'} [biggerWidget.title != 'report']"></div>
                     </div>                                       
                 </div>                
             </div>            
             <div class="col-sm-6 col-md-4">
                 <div sortable class="row connectedSortable empty-dashboard-container">                   
                     <div class="col-sm-12" ng-repeat="smallerWidget in smallerDashboardWidgets">                        
-                        <div ng-show="smallerWidget.show" ng-include="smallerWidget.view"></div>
+                        <div ng-show="smallerWidget.show" ng-include="smallerWidget.view" ng-class="{true: 'not-printable'} [smallerWidget.title != 'report']"></div>
                     </div>                   
                 </div>
             </div>
