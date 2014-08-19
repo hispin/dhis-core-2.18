@@ -57,7 +57,7 @@ public class EmailMessageSender
     private static final Log log = LogFactory.getLog( EmailMessageSender.class );
     private static final String FROM_ADDRESS = "noreply@dhis2.org";
     private static final String FROM_NAME = "DHIS 2 Message [No reply]";
-    private static final String SUBJECT_PREFIX = "[DHIS2] ";
+    private static final String SUBJECT_PREFIX = "[DHIS 2] ";
     private static final String LB = System.getProperty( "line.separator" );
 
     // -------------------------------------------------------------------------
