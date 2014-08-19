@@ -7,7 +7,7 @@ var eventCaptureFilters = angular.module('eventCaptureFilters', [])
 .filter('gridFilter', function($filter){    
     
     return function(data, filters, filterTypes){
-        
+
         if(!data ){
             return;
         }

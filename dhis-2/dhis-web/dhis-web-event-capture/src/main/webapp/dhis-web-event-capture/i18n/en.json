@@ -51,6 +51,7 @@
     "new_event": "New Event",
     "data_element": "Data element",
     "value": "Value",
+    "form_id": "Form id",
     "register_event": "Register event",
     "total_number_of_pages": "No. of pages",
     "rows_per_page": "No. of rows per page",

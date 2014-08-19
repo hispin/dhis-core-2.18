@@ -1,23 +1,31 @@
 <table style='width: 50%;'>
+    <tr ng-if="selectedProgramStage.preGenerateUID">
+        <td>
+            {{'form_id'| translate}}
+        </td>
+        <td>
+            <input type="text" ng-disabled="true" ng-model="currentEvent['uid']" style="width:99%;">
+        </td>
+    </tr>
     <tr>
         <td>
-            {{selectedProgramStage.reportDateDescription ? selectedProgramStage.reportDateDescription : 'incident_date' | translate }}
+            {{selectedProgramStage.reportDateDescription ? selectedProgramStage.reportDateDescription : 'incident_date'| translate }}
         </td>
         <td>
             <input type="text"                                                   
-                    placeholder="yyyy-mm-dd" 
-                    ng-date 
-                    ng-model="currentEvent.eventDate"
-                    ng-disabled="editingEventInFull"    
-                    ng-required="true" 
-                    name="eventDate"
-                    style="width:99%;"/>
+                   placeholder="yyyy-mm-dd" 
+                   ng-date 
+                   ng-model="currentEvent.eventDate"
+                   ng-disabled="editingEventInFull"    
+                   ng-required="true" 
+                   name="eventDate"
+                   style="width:99%;"/>
             <span ng-show="outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{'required'| translate}}</span>
         </td>
     </tr>
     <tr ng-if="selectedProgramStage.captureCoordinates">
         <td>
-            {{'latitude' | translate}}
+            {{'latitude'| translate}}
         </td>
         <td>
             <input type="number"
@@ -32,7 +40,7 @@
     </tr>
     <tr ng-if="selectedProgramStage.captureCoordinates">
         <td>
-            {{'longitude' | translate}}
+            {{'longitude'| translate}}
         </td>
         <td>
             <input type="number"
@@ -58,15 +66,15 @@
             <thead>
                 <tr>
                     <th style="width:100%;">
-                        {{'recorded_comments' | translate}}
+                        {{'recorded_comments'| translate}}
                     </th>
                 </tr>
             </thead>
             <tr ng-repeat="note in currentEvent.notes">
                 <td class="over-flow-hidden" style="width:100%;">
                     <p>{{note.value}}</p>
-                    <p><strong>{{'created_by' | translate}}: </strong>{{note.storedBy}}</p>
-                    <p><strong>{{'date' | translate}}: </strong>{{note.storedDate}}</p>                    
+                    <p><strong>{{'created_by'| translate}}: </strong>{{note.storedBy}}</p>
+                    <p><strong>{{'date'| translate}}: </strong>{{note.storedDate}}</p>                    
                 </td>
             </tr>
         </table>  

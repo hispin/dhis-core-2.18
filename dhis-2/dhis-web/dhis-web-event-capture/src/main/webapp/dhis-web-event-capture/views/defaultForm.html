@@ -10,6 +10,14 @@
         </tr>                        
     </thead>
     <tbody id="list">
+        <tr ng-if="selectedProgramStage.preGenerateUID && currentEvent['uid']">
+            <td>
+                {{'form_id' | translate}}
+            </td>
+            <td>
+                <input type="text" ng-disabled="true" ng-model="currentEvent['uid']" style="width:99%;">
+            </td>
+        </tr>
         <tr>
             <td>
                 {{selectedProgramStage.reportDateDescription ? selectedProgramStage.reportDateDescription : 'incident_date'| translate }}
@@ -56,9 +64,9 @@
                 <span ng-show="outerForm.submitted && outerForm.longitude.$invalid" class="required">{{'number_required'| translate}}[-180 ... 180]</span>
             </td>                                            
         </tr>
-        <tr ng-repeat="eventGridColumn in eventGridColumns" ng-if="eventGridColumn.id !== 'comment'">
+        <tr ng-repeat="eventGridColumn in eventGridColumns" ng-if="eventGridColumn.id !== 'comment' && eventGridColumn.id !== 'uid'">
             <td >
-                {{eventGridColumn.name}}                                              
+                {{eventGridColumn.name}}                                    
             </td>
             <td >
                 <ng-form name="innerForm">

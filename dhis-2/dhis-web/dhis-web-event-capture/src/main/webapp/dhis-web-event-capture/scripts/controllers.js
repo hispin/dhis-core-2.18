@@ -101,7 +101,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             });       
         }        
     };    
-    
         
     //get events for the selected program (and org unit)
     $scope.loadEvents = function(){   
@@ -134,6 +133,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
                 $scope.newDhis2Event = {dataValues: []};
                 $scope.currentEvent = {dataValues: []};
+                
+                if($scope.selectedProgramStage.preGenerateUID){
+                    $scope.eventGridColumns.push({name: 'form_id', id: 'uid', type: 'string', compulsory: false, showFilter: false, show: true});
+                    $scope.filterTypes['uid'] = 'string';
+                }
 
                 angular.forEach($scope.selectedProgramStage.programStageDataElements, function(prStDe){
                     $scope.programStageDataElements[prStDe.dataElement.id] = prStDe; 
@@ -221,7 +225,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                     }
 
                                     $scope.dhis2Events[i][dataValue.dataElement] = dataValue.value; 
-                                });  
+                                });
+                                
+                                $scope.dhis2Events[i]['uid'] = $scope.dhis2Events[i].event;
 
                                 delete $scope.dhis2Events[i].dataValues;
                             }
@@ -233,7 +239,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                         }  
                         
                         if($scope.noteExists){
-                            $scope.eventGridColumns.push({name: 'Comment', id: 'comment', type: 'string', compulsory: false, showFilter: false, show: true});
+                            $scope.eventGridColumns.push({name: 'comment', id: 'comment', type: 'string', compulsory: false, showFilter: false, show: true});
                         }
                     }                
                     $scope.eventFetched = true;
@@ -340,6 +346,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.outerForm.submitted = false;
         $scope.note = {};
         
+        if($scope.selectedProgramStage.preGenerateUID){
+            $scope.eventUID = dhis2.util.uid();
+            $scope.currentEvent['uid'] = $scope.eventUID;
+        }
+        
         //$scope.currentEvent = {};
     };    
     
@@ -404,6 +415,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 dataValues: dataValues
         }; 
         
+        if($scope.selectedProgramStage.preGenerateUID && !angular.isUndefined(newEvent['uid'])){
+            dhis2Event.event = newEvent['uid'];
+        }
+        
         if(!angular.isUndefined($scope.note.value) && $scope.note.value != ''){
             dhis2Event.notes = [{value: $scope.note.value}];
             
@@ -450,7 +465,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 $scope.outerForm.submitted = false;
                 $scope.disableSaveAndAddNew = false;
                 
-                //this is to hide typeAheadPopUps - shouldn't be an issue in the                
+                //this is to hide typeAheadPopUps - shouldn't be an issue in 
+                //the first place.                
                 $timeout(function() {
                     angular.element('#hideTypeAheadPopUp').trigger('click');
                 }, 10);

@@ -6,7 +6,8 @@
     <table class="listTable dhis2-table-striped-border">
         <tr ng-repeat="eventGridColumn in eventGridColumns">
             <td>
-                {{eventGridColumn.name}}
+                <span ng-if="eventGridColumn.id !== 'comment' && eventGridColumn.id !== 'uid'">{{eventGridColumn.name}}</span>
+                <span ng-if="eventGridColumn.id === 'comment' || eventGridColumn.id === 'uid'">{{eventGridColumn.name | translate}}</span>
             </td>
             <td>
                 <input type="checkbox" ng-model="eventGridColumn.show" ng-change="showHideColumns(eventGridColumn)" ng-disabled="hiddenGridColumns + 1 == eventGridColumns.length && eventGridColumn.show">
