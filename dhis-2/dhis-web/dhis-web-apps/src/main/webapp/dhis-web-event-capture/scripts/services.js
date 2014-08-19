@@ -217,7 +217,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                     var attributes = {};
                                        
                     $(inputElement[0].attributes).each(function() {
-                        attributes[this.nodeName] = this.nodeValue;                       
+                        attributes[this.nodeName] = this.value;                       
                     });
                     
                     var deId = '', newInputField;     
