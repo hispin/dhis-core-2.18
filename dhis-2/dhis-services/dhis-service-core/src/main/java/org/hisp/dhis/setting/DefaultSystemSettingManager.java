@@ -200,7 +200,13 @@ public class DefaultSystemSettingManager
 
         for ( SystemSetting systemSetting : systemSettings )
         {
-            settingsMap.put( systemSetting.getName(), systemSetting.getValue() );
+            Serializable settingValue = systemSetting.getValue();
+            if ( settingValue == null )
+            {
+                settingValue = DEFAULT_SETTINGS_VALUES.get( systemSetting.getName() );
+            }
+
+            settingsMap.put( systemSetting.getName(), settingValue );
         }
 
         return settingsMap;
@@ -212,7 +218,7 @@ public class DefaultSystemSettingManager
         
         for ( String name : names )
         {
-            Serializable setting = getSystemSetting( name );
+            Serializable setting = getSystemSetting( name, DEFAULT_SETTINGS_VALUES.get( name ) );
             
             if ( setting != null )
             {
