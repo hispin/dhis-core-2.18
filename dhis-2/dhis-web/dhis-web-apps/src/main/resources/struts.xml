@@ -8,7 +8,7 @@
 
 	<package name="dhis-web-apps" extends="dhis-web-commons" namespace="/dhis-web-apps">
 		<action name="index" class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="redirect">../index.html</result>
+			<result name="success" type="redirect">index.html</result>
 		</action>
     </package>
 
