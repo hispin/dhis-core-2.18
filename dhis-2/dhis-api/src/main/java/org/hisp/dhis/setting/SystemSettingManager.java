@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
 
 /**
@@ -118,6 +119,24 @@ public interface SystemSettingManager
     final String DEFAULT_TIME_FOR_SENDING_MESSAGE = "08:00";
     final String DEFAULT_CACHE_STRATEGY = "CACHE_6AM_TOMORROW";
     final int DEFAULT_ANALYTICS_MAX_LIMIT = 50000;
+
+    final Map<String, Serializable> DEFAULT_SETTINGS_VALUES = new HashMap<String, Serializable>()
+    {
+        {
+            put( KEY_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY, DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY );
+            put( KEY_FLAG, DEFAULT_FLAG );
+            put( KEY_CALENDAR, DEFAULT_CALENDAR );
+            put( KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT );
+            put( KEY_FACTOR_OF_DEVIATION, DEFAULT_FACTOR_OF_DEVIATION );
+            put( KEY_ORGUNITGROUPSET_AGG_LEVEL, DEFAULT_ORGUNITGROUPSET_AGG_LEVEL );
+            put( KEY_START_MODULE, DEFAULT_START_MODULE );
+            put( KEY_APPLICATION_TITLE, DEFAULT_APPLICATION_TITLE );
+            put( KEY_EMAIL_PORT, DEFAULT_EMAIL_PORT );
+            put( KEY_TIME_FOR_SENDING_MESSAGE, DEFAULT_TIME_FOR_SENDING_MESSAGE );
+            put( KEY_CACHE_STRATEGY, DEFAULT_CACHE_STRATEGY );
+            put( KEY_ANALYTICS_MAX_LIMIT, DEFAULT_ANALYTICS_MAX_LIMIT );
+        }
+    };
 
     final String SYSPROP_PORTAL = "runningAsPortal";
 
