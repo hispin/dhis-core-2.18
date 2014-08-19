@@ -240,6 +240,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                             newInputField = '<input type="text" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '" ' +
+                                            ' ng-disabled="currentEvent[uid] == \'uid\'" ' +
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory"' +
                                             ' typeahead="option.code as option.name for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
                                             ' typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory">';

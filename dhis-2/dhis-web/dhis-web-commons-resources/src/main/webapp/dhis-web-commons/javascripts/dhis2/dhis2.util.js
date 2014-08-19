@@ -103,6 +103,25 @@ dhis2.util.uuid = function() {
   return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 };
 
+
+dhis2.util.uid = function() {
+  var letters = "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var allowedChars = "0123456789" + letters;
+  var NUMBER_OF_CODEPOINTS = allowedChars.length;
+  var CODESIZE = 11;
+  var uid;
+
+  //the uid should start with a char 
+  uid = letters.charAt( Math.random() * (letters.length) );
+
+  for ( var i = 1; i < CODESIZE; ++i ){
+    uid += allowedChars.charAt( Math.random() * (NUMBER_OF_CODEPOINTS) );
+  }
+  
+  return uid;
+};
+
+
 /**
  * Normalizes an argument object returned from a jQuery promise. If the argument
  * is undefined, not an array or an empty array, undefined is returned. If the

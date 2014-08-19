@@ -48,7 +48,8 @@
                                     <span ng-hide="eventGridColumn.showFilter" class="bold" ng-click="sortEventGrid(eventGridColumn)">
                                         <i ng-show="sortHeader == eventGridColumn.id && !reverse" class="fa fa-sort-desc"></i>
                                         <i ng-show="sortHeader == eventGridColumn.id && reverse" class="fa fa-sort-asc"></i>
-                                        {{eventGridColumn.name}}
+                                        <span ng-if="eventGridColumn.id !== 'uid'">{{eventGridColumn.name}}</span>
+                                        <span ng-if="eventGridColumn.id == 'uid'">{{eventGridColumn.name | translate}}</span>
                                     </span>
                                     <!-- sort icon ends -->
 
@@ -91,13 +92,14 @@
                                     {{'comment' | translate}}
                                 </span>
                             </th> 
-                            <!--<th ng-if='noteExists'>
-                                {{'comment' | translate}}
-                            </th>-->
                         </tr>                        
                     </thead>
                     <tbody id="list">
                         <tr ng-repeat="dhis2Event in dhis2Events | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes">
+                            
+                            <!--<td ng-repeat="eventGridColumn in eventGridColumns" ng-if="eventGridColumn.id === 'uid' && eventGridColumn.show">                                
+                                {{dhis2Event.event}}  
+                            </td>-->
                             
                             <!-- Visible when event is not under editing -->
                             <td dhis-context-menu 
@@ -129,13 +131,14 @@
                                             <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red"><em title="{{'required'| translate}}" class="required">*</em></span>
                                         </div>
                                         <div ng-switch-when="string">                                        
-                                            <div class="container-fluid">
+                                            <div class="container-fluid">                                                
                                                 <input type="text" 
                                                        ng-model="dhis2Event[eventGridColumn.id]" 
                                                        ng-blur="updateEventDataValue(dhis2Event, eventGridColumn.id)" 
                                                        typeahead="option.code as option.name for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
                                                        typeahead-open-on-focus
                                                        ng-required={{eventGridColumn.compulsory}}
+                                                       ng-disabled="eventGridColumn.id == 'uid'"
                                                        name="foo" 
                                                        style="width:98%;"
                                                        ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
