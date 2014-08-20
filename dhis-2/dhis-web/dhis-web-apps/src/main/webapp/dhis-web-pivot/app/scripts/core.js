@@ -929,7 +929,6 @@ Ext.onReady( function() {
 							xDim.ids = [];
 
 							for (var j = 0; j < items.length; j++) {
-console.log("xl", items[j].id);
 								xDim.ids.push(items[j].id);
 							}
 						}
