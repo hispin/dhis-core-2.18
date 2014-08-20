@@ -323,6 +323,7 @@ public class LoadFormAction
             dataSetCopy.setShortName( dataSet.getShortName() );
             dataSetCopy.setRenderAsTabs( dataSet.isRenderAsTabs() );
             dataSetCopy.setRenderHorizontally( dataSet.isRenderHorizontally() );
+            dataSetCopy.setDataElementDecoration( dataSet.isDataElementDecoration() );
             dataSet = dataSetCopy;
 
             for ( int i = 0; i < orderedCategoryCombos.size(); i++ )
