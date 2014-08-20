@@ -38,6 +38,7 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.node.annotation.NodeAnnotation;
 import org.hisp.dhis.node.annotation.NodeCollection;
 import org.hisp.dhis.node.annotation.NodeComplex;
+import org.hisp.dhis.node.annotation.NodeRoot;
 import org.hisp.dhis.node.annotation.NodeSimple;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
@@ -223,6 +224,18 @@ public class NodePropertyIntrospectorService extends AbstractPropertyIntrospecto
         if ( !StringUtils.isEmpty( nodeCollection.itemName() ) )
         {
             property.setName( nodeCollection.itemName() );
+        }
+        else // if itemName is not set, check to see if itemKlass have a @RootNode with a name
+        {
+            if ( property.getItemKlass() != null && property.getItemKlass().isAnnotationPresent( NodeRoot.class ) )
+            {
+                NodeRoot nodeRoot = property.getItemKlass().getAnnotation( NodeRoot.class );
+
+                if ( !StringUtils.isEmpty( nodeRoot.value() ) )
+                {
+                    property.setName( nodeRoot.value() );
+                }
+            }
         }
     }
 

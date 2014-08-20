@@ -29,6 +29,7 @@ package org.hisp.dhis.schema;
  */
 
 import org.hisp.dhis.node.annotation.NodeCollection;
+import org.hisp.dhis.node.annotation.NodeRoot;
 import org.hisp.dhis.node.annotation.NodeSimple;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +40,7 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-class Item
+@NodeRoot( value = "collectionItem" ) class Item
 {
     @NodeSimple
     private String value;
@@ -160,10 +161,16 @@ public class FieldCollectionNodePropertyIntrospectorServiceTest
     @Test
     public void testItemName()
     {
-        assertEquals( "items1", propertyMap.get( "items1" ).getName() );
+        assertEquals( "collectionItem", propertyMap.get( "items1" ).getName() );
         assertEquals( "items1", propertyMap.get( "items1" ).getCollectionName() );
 
         assertEquals( "item", propertyMap.get( "items" ).getName() );
         assertEquals( "items", propertyMap.get( "items" ).getCollectionName() );
+    }
+
+    @Test
+    public void testItemKlass()
+    {
+        assertTrue( Item.class.equals( propertyMap.get( "items1" ).getItemKlass() ) );
     }
 }
