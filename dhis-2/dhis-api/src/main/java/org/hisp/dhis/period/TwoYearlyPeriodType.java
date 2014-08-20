@@ -99,7 +99,7 @@ public class TwoYearlyPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public Period getNextPeriod( Period period )
+    public Period getNextPeriod( Period period, org.hisp.dhis.calendar.Calendar calendar )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
         cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) - cal.get( Calendar.YEAR ) % 2 + 2 );
@@ -114,7 +114,7 @@ public class TwoYearlyPeriodType
     }
 
     @Override
-    public Period getPreviousPeriod( Period period )
+    public Period getPreviousPeriod( Period period, org.hisp.dhis.calendar.Calendar calendar )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
         cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) - cal.get( Calendar.YEAR ) % 2 - 2 );

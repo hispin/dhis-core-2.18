@@ -96,25 +96,21 @@ public class YearlyPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public Period getNextPeriod( Period period )
+    public Period getNextPeriod( Period period, Calendar calendar )
     {
-        Calendar cal = getCalendar();
-        
         DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
-        dateUnit = cal.plusYears( dateUnit, 1 );
+        dateUnit = calendar.plusYears( dateUnit, 1 );
 
-        return createPeriod( dateUnit, cal );
+        return createPeriod( dateUnit, calendar );
     }
 
     @Override
-    public Period getPreviousPeriod( Period period )
+    public Period getPreviousPeriod( Period period, Calendar calendar )
     {
-        Calendar cal = getCalendar();
-        
         DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
-        dateUnit = cal.minusYears( dateUnit, 1 );
+        dateUnit = calendar.minusYears( dateUnit, 1 );
 
-        return createPeriod( dateUnit, cal );
+        return createPeriod( dateUnit, calendar );
     }
 
     /**

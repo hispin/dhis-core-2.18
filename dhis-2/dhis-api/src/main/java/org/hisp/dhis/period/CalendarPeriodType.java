@@ -29,6 +29,7 @@ package org.hisp.dhis.period;
  */
 
 import com.google.common.collect.Lists;
+import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.DateUnit;
 
 import java.util.ArrayList;
@@ -63,7 +64,21 @@ public abstract class CalendarPeriodType
      * @param period the Period to base the next Period on.
      * @return a Period which is the next of the given Period.
      */
-    public abstract Period getNextPeriod( Period period );
+    public final Period getNextPeriod( Period period )
+    {
+        return getNextPeriod( period, getCalendar() );
+    }
+
+    /**
+     * Returns a Period which is the next of the given Period. Only valid
+     * Periods are returned. If the given Period is of different PeriodType than
+     * the executing PeriodType, or the given Period is invalid, the returned
+     * Period might overlap the given Period.
+     *
+     * @param period the Period to base the next Period on.
+     * @return a Period which is the next of the given Period.
+     */
+    public abstract Period getNextPeriod( Period period, Calendar calendar );
 
     /**
      * Returns a Period which is the previous of the given Period. Only valid
@@ -74,7 +89,21 @@ public abstract class CalendarPeriodType
      * @param period the Period to base the previous Period on.
      * @return a Period which is the previous of the given Period.
      */
-    public abstract Period getPreviousPeriod( Period period );
+    public final Period getPreviousPeriod( Period period )
+    {
+        return getPreviousPeriod( period, getCalendar() );
+    }
+
+    /**
+     * Returns a Period which is the previous of the given Period. Only valid
+     * Periods are returned. If the given Period is of different PeriodType than
+     * the executing PeriodType, or the given Period is invalid, the returned
+     * Period might overlap the given Period.
+     *
+     * @param period the Period to base the previous Period on.
+     * @return a Period which is the previous of the given Period.
+     */
+    public abstract Period getPreviousPeriod( Period period, Calendar calendar );
 
     /**
      * Generates a list of Periods for a defined time span containing the given
@@ -152,10 +181,12 @@ public abstract class CalendarPeriodType
 
         Period period = createPeriod( startDate );
 
+        Calendar calendar = getCalendar();
+
         while ( period.getStartDate().before( endDate ) )
         {
             periods.add( period );
-            period = getNextPeriod( period );
+            period = getNextPeriod( period, calendar );
         }
 
         return periods;

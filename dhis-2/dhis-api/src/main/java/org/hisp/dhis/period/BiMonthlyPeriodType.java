@@ -86,25 +86,21 @@ public class BiMonthlyPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public Period getNextPeriod( Period period )
+    public Period getNextPeriod( Period period, Calendar calendar )
     {
-        Calendar cal = getCalendar();
+        DateUnit dateUnit = calendar.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
+        dateUnit = calendar.plusMonths( dateUnit, 2 );
 
-        DateUnit dateUnit = cal.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
-        dateUnit = cal.plusMonths( dateUnit, 2 );
-
-        return createPeriod( cal.toIso( dateUnit ), cal );
+        return createPeriod( calendar.toIso( dateUnit ), calendar );
     }
 
     @Override
-    public Period getPreviousPeriod( Period period )
+    public Period getPreviousPeriod( Period period, Calendar calendar )
     {
-        Calendar cal = getCalendar();
+        DateUnit dateUnit = calendar.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
+        dateUnit = calendar.minusMonths( dateUnit, 2 );
 
-        DateUnit dateUnit = cal.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
-        dateUnit = cal.minusMonths( dateUnit, 2 );
-
-        return createPeriod( cal.toIso( dateUnit ), cal );
+        return createPeriod( calendar.toIso( dateUnit ), calendar );
     }
 
     /**

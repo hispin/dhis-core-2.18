@@ -29,7 +29,6 @@ package org.hisp.dhis.period;
  */
 
 import com.google.common.collect.Lists;
-
 import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.DateUnit;
 
@@ -94,25 +93,21 @@ public class MonthlyPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public Period getNextPeriod( Period period )
+    public Period getNextPeriod( Period period, Calendar calendar )
     {
-        Calendar cal = getCalendar();
-        
-        DateUnit dateUnit = cal.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
-        dateUnit = cal.plusMonths( dateUnit, 1 );
+        DateUnit dateUnit = calendar.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
+        dateUnit = calendar.plusMonths( dateUnit, 1 );
 
-        return createPeriod( cal.toIso( dateUnit ), cal );
+        return createPeriod( calendar.toIso( dateUnit ), calendar );
     }
 
     @Override
-    public Period getPreviousPeriod( Period period )
+    public Period getPreviousPeriod( Period period, Calendar calendar )
     {
-        Calendar cal = getCalendar();
-        
-        DateUnit dateUnit = cal.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
-        dateUnit = cal.minusMonths( dateUnit, 1 );
+        DateUnit dateUnit = calendar.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
+        dateUnit = calendar.minusMonths( dateUnit, 1 );
 
-        return createPeriod( cal.toIso( dateUnit ), cal );
+        return createPeriod( calendar.toIso( dateUnit ), calendar );
     }
 
     /**
@@ -123,7 +118,7 @@ public class MonthlyPeriodType
     public List<Period> generatePeriods( DateUnit dateUnit )
     {
         Calendar cal = getCalendar();
-        
+
         dateUnit.setMonth( 1 );
         dateUnit.setDay( 1 );
 
@@ -148,7 +143,7 @@ public class MonthlyPeriodType
     public List<Period> generateRollingPeriods( DateUnit dateUnit )
     {
         Calendar cal = getCalendar();
-        
+
         dateUnit.setDay( 1 );
         dateUnit = cal.minusMonths( dateUnit, 11 );
 
@@ -179,7 +174,7 @@ public class MonthlyPeriodType
     public Date getRewindedDate( Date date, Integer rewindedPeriods )
     {
         Calendar cal = getCalendar();
-        
+
         date = date != null ? date : new Date();
         rewindedPeriods = rewindedPeriods != null ? rewindedPeriods : 1;
 

@@ -75,7 +75,7 @@ public class QuarterlyPeriodType
     {
         DateUnit start = new DateUnit( dateUnit );
 
-        start.setMonth( ( ( dateUnit.getMonth() - 1 ) - ( ( dateUnit.getMonth() - 1 ) % 3 ) ) + 1 );
+        start.setMonth( ((dateUnit.getMonth() - 1) - ((dateUnit.getMonth() - 1) % 3)) + 1 );
         start.setDay( 1 );
 
         DateUnit end = new DateUnit( start );
@@ -96,25 +96,21 @@ public class QuarterlyPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public Period getNextPeriod( Period period )
+    public Period getNextPeriod( Period period, org.hisp.dhis.calendar.Calendar calendar )
     {
-        org.hisp.dhis.calendar.Calendar cal = getCalendar();
-        
         DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
-        dateUnit = cal.plusMonths( dateUnit, 3 );
+        dateUnit = calendar.plusMonths( dateUnit, 3 );
 
-        return createPeriod( dateUnit, cal );
+        return createPeriod( dateUnit, calendar );
     }
 
     @Override
-    public Period getPreviousPeriod( Period period )
+    public Period getPreviousPeriod( Period period, org.hisp.dhis.calendar.Calendar calendar )
     {
-        org.hisp.dhis.calendar.Calendar cal = getCalendar();
-        
         DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
-        dateUnit = cal.minusMonths( dateUnit, 3 );
+        dateUnit = calendar.minusMonths( dateUnit, 3 );
 
-        return createPeriod( dateUnit, cal );
+        return createPeriod( dateUnit, calendar );
     }
 
     /**
@@ -125,7 +121,7 @@ public class QuarterlyPeriodType
     public List<Period> generatePeriods( DateUnit dateUnit )
     {
         org.hisp.dhis.calendar.Calendar cal = getCalendar();
-        
+
         dateUnit.setMonth( 1 );
         dateUnit.setDay( 1 );
 
@@ -157,7 +153,7 @@ public class QuarterlyPeriodType
     public List<Period> generateRollingPeriods( DateUnit dateUnit )
     {
         org.hisp.dhis.calendar.Calendar cal = getCalendar();
-        
+
         dateUnit.setDay( 1 );
 
         dateUnit = cal.minusMonths( dateUnit, 9 );
@@ -238,7 +234,7 @@ public class QuarterlyPeriodType
     public Date getRewindedDate( Date date, Integer rewindedPeriods )
     {
         org.hisp.dhis.calendar.Calendar cal = getCalendar();
-        
+
         date = date != null ? date : new Date();
         rewindedPeriods = rewindedPeriods != null ? rewindedPeriods : 1;
 
