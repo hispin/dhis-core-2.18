@@ -96,25 +96,21 @@ public class WeeklyPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public Period getNextPeriod( Period period )
+    public Period getNextPeriod( Period period, Calendar calendar )
     {
-        Calendar cal = getCalendar();
-        
         DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
-        dateUnit = cal.plusWeeks( dateUnit, 1 );
+        dateUnit = calendar.plusWeeks( dateUnit, 1 );
 
-        return createPeriod( dateUnit, cal );
+        return createPeriod( dateUnit, calendar );
     }
 
     @Override
-    public Period getPreviousPeriod( Period period )
+    public Period getPreviousPeriod( Period period, Calendar calendar )
     {
-        Calendar cal = getCalendar();
-        
         DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
-        dateUnit = cal.minusWeeks( dateUnit, 1 );
+        dateUnit = calendar.minusWeeks( dateUnit, 1 );
 
-        return createPeriod( dateUnit, cal );
+        return createPeriod( dateUnit, calendar );
     }
 
     /**
