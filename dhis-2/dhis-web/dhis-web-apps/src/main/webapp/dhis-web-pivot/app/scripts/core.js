@@ -247,7 +247,7 @@ Ext.onReady( function() {
 						return;
 					}
 
-					config.id = config.id.replace('#', '.');
+					config.id = config.id.replace('.', '#');
 
 					return config;
 				}();
@@ -929,6 +929,7 @@ Ext.onReady( function() {
 							xDim.ids = [];
 
 							for (var j = 0; j < items.length; j++) {
+console.log("xl", items[j].id);
 								xDim.ids.push(items[j].id);
 							}
 						}
@@ -1719,8 +1720,8 @@ Ext.onReady( function() {
 					for (var i = 0, id, splitId ; i < ids.length; i++) {
 						id = ids[i];
 
-						if (id.indexOf('.') !== -1) {
-							splitId = id.split('.');
+						if (id.indexOf('#') !== -1) {
+							splitId = id.split('#');
 							response.metaData.names[id] = response.metaData.names[splitId[0]] + ' ' + response.metaData.names[splitId[1]];
 						}
 					}
@@ -1899,7 +1900,7 @@ Ext.onReady( function() {
 
 					if (dimName === dx) {
 						for (var j = 0, index; j < items.length; j++) {
-							index = items[j].indexOf('.');
+							index = items[j].indexOf('#');
 
 							if (index > 0) {
 								addCategoryDimension = true;
@@ -2285,8 +2286,7 @@ Ext.onReady( function() {
 							uuids = [];
 
 							// meta data uid
-							//id = (xColAxis ? support.prototype.str.replaceAll(xColAxis.ids[j], '-', '') : '') + (xRowAxis ? support.prototype.str.replaceAll(xRowAxis.ids[i], '-', '') : '');
-							id = (xColAxis ? xColAxis.ids[j] : '') + (xRowAxis ? xRowAxis.ids[i] : '');
+							id = ((xColAxis ? xColAxis.ids[j] : '') + (xRowAxis ? xRowAxis.ids[i] : '')).replace('#', '');
 
                             // value html element id
 							uuid = Ext.data.IdGenerator.get('uuid').generate();
