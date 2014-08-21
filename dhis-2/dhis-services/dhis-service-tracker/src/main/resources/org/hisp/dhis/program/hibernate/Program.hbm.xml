@@ -49,7 +49,7 @@
 
     <property name="onlyEnrollOnce" />
 
-    <list name="programAttributes" cascade="all,delete-orphan">
+    <list name="programAttributes" cascade="save-update">
       <key column="programid" />
       <list-index column="sort_order" base="1" />
       <one-to-many class="org.hisp.dhis.program.ProgramTrackedEntityAttribute" />
@@ -63,8 +63,7 @@
         column="userroleid" foreign-key="fk_program_userroles" />
     </set>
 
-    <set name="instanceReminders" order-by="daysAllowedSendMessage"
-      cascade="all">
+    <set name="instanceReminders" order-by="daysAllowedSendMessage" cascade="all">
       <key column="programid" />
       <one-to-many class="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder" />
     </set>
