@@ -297,7 +297,7 @@
     </table>
     
     <accordion close-others='false'>
-        <accordion-group heading="{{section.name}}" ng-repeat='section in selectedProgramStage.programStageSections'>
+        <accordion-group heading="{{section.name}}" is-open="section.open" ng-repeat='section in selectedProgramStage.programStageSections'>
             <table class="dhis2-list-table-striped">                    
                 <thead>                        
                     <tr>
