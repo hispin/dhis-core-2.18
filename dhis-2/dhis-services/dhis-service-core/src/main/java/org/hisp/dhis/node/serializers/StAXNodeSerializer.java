@@ -44,7 +44,10 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -107,6 +110,13 @@ public class StAXNodeSerializer extends AbstractNodeSerializer
     protected void startWriteSimpleNode( SimpleNode simpleNode ) throws Exception
     {
         String value = String.format( "%s", simpleNode.getValue() );
+
+        if ( Date.class.isAssignableFrom( simpleNode.getValue().getClass() ) )
+        {
+            SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" );
+            dateFormat.setTimeZone( TimeZone.getTimeZone("UTC") );
+            value = dateFormat.format( (Date) simpleNode.getValue() );
+        }
 
         if ( simpleNode.isAttribute() )
         {
