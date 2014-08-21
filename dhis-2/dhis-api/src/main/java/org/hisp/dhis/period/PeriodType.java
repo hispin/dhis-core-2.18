@@ -327,6 +327,17 @@ public abstract class PeriodType
     }
 
     /**
+     * Returns an instance of a DateUnit.
+     *
+     * @param date date of calendar in local calendar
+     * @return an instance of a Calendar without any time of day.
+     */
+    public static DateUnit createLocalDateUnitInstance( Date date, org.hisp.dhis.calendar.Calendar calendar )
+    {
+        return calendar.fromIso( DateUnit.fromJdkDate( date ) );
+    }
+
+    /**
      * Clears the time of day in a Calendar instance.
      *
      * @param calendar the Calendar to fix.

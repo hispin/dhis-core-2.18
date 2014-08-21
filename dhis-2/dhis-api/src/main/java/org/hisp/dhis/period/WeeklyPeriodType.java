@@ -98,7 +98,7 @@ public class WeeklyPeriodType
     @Override
     public Period getNextPeriod( Period period, Calendar calendar )
     {
-        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
+        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
         dateUnit = calendar.plusWeeks( dateUnit, 1 );
 
         return createPeriod( dateUnit, calendar );
@@ -107,7 +107,7 @@ public class WeeklyPeriodType
     @Override
     public Period getPreviousPeriod( Period period, Calendar calendar )
     {
-        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
+        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
         dateUnit = calendar.minusWeeks( dateUnit, 1 );
 
         return createPeriod( dateUnit, calendar );

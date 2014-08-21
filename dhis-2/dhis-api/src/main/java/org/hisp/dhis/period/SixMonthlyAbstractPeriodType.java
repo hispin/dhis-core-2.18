@@ -123,7 +123,7 @@ public abstract class SixMonthlyAbstractPeriodType
         Calendar cal = getCalendar();
         
         Period period = createPeriod( dateUnit, cal );
-        dateUnit = createLocalDateUnitInstance( period.getStartDate() );
+        dateUnit = createLocalDateUnitInstance( period.getStartDate(), cal );
 
         List<Period> periods = Lists.newArrayList();
 

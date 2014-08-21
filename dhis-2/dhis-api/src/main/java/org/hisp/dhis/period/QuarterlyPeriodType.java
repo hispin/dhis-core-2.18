@@ -98,7 +98,7 @@ public class QuarterlyPeriodType
     @Override
     public Period getNextPeriod( Period period, org.hisp.dhis.calendar.Calendar calendar )
     {
-        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
+        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
         dateUnit = calendar.plusMonths( dateUnit, 3 );
 
         return createPeriod( dateUnit, calendar );
@@ -107,7 +107,7 @@ public class QuarterlyPeriodType
     @Override
     public Period getPreviousPeriod( Period period, org.hisp.dhis.calendar.Calendar calendar )
     {
-        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
+        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
         dateUnit = calendar.minusMonths( dateUnit, 3 );
 
         return createPeriod( dateUnit, calendar );
