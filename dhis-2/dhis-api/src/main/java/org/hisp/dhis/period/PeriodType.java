@@ -323,7 +323,7 @@ public abstract class PeriodType
      */
     public static DateUnit createLocalDateUnitInstance( Date date )
     {
-        return getCalendar().fromIso( DateUnit.fromJdkDate( date ) );
+        return createLocalDateUnitInstance( date, getCalendar() );
     }
 
     /**
