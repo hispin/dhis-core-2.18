@@ -121,7 +121,7 @@ public class JdbcEventStore
                 event.setProgram( rowSet.getString( "p_uid" ) );
                 event.setProgramStage( rowSet.getString( "ps_uid" ) );
 
-                if ( rowSet.getInt( "p_type" ) != 3 )
+                if ( rowSet.getInt( "p_type" ) != Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
                 {
                     event.setEnrollment( rowSet.getString( "pi_uid" ) );
                     event.setEnrollmentStatus( EventStatus.fromInt( rowSet.getInt( "pi_status" ) ) );
