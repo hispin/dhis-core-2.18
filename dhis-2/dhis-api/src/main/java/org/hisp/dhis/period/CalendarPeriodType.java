@@ -157,10 +157,12 @@ public abstract class CalendarPeriodType
         dateUnit = getCalendar().minusYears( dateUnit, 4 );
         List<Period> periods = Lists.newArrayList();
 
+        Calendar calendar = getCalendar();
+
         for ( int i = 0; i < 5; i++ )
         {
             periods.addAll( generatePeriods( dateUnit ) );
-            dateUnit = getCalendar().plusYears( dateUnit, 1 );
+            dateUnit = calendar.plusYears( dateUnit, 1 );
         }
 
         return periods;
