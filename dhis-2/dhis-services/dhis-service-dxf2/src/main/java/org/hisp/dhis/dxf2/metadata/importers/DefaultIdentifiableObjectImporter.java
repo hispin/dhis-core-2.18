@@ -436,7 +436,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     programTrackedEntityAttributeSet.add( trackedEntityAttribute );
                 }
 
-                sessionFactory.getCurrentSession().flush();
                 programTrackedEntityAttributes.clear();
                 sessionFactory.getCurrentSession().flush();
             }
