@@ -28,17 +28,8 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdList;
-import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
-import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,8 +45,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdList;
+import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -102,7 +101,7 @@ public class JdbcEventStore
 
         Event event = new Event();
         event.setEvent( "not_valid" );
-        
+
         Set<String> notes = new HashSet<>();
 
         while ( rowSet.next() )
@@ -121,13 +120,18 @@ public class JdbcEventStore
                 event.setStatus( EventStatus.valueOf( rowSet.getString( "psi_status" ) ) );
                 event.setProgram( rowSet.getString( "p_uid" ) );
                 event.setProgramStage( rowSet.getString( "ps_uid" ) );
-                event.setEnrollment( rowSet.getString( "pi_uid" ) );
-                event.setEnrollmentStatus( EventStatus.fromInt( rowSet.getInt( "pi_status" ) ) );
+
+                if ( rowSet.getInt( "p_type" ) != 3 )
+                {
+                    event.setEnrollment( rowSet.getString( "pi_uid" ) );
+                    event.setEnrollmentStatus( EventStatus.fromInt( rowSet.getInt( "pi_status" ) ) );
+                }
+
                 event.setStoredBy( rowSet.getString( "psi_completeduser" ) );
                 event.setOrgUnit( rowSet.getString( "ou_uid" ) );
-                event.setDueDate( StringUtils.defaultIfEmpty( 
+                event.setDueDate( StringUtils.defaultIfEmpty(
                     rowSet.getString( "psi_duedate" ), rowSet.getString( "psi_duedate" ) ) );
-                event.setEventDate( StringUtils.defaultIfEmpty( 
+                event.setEventDate( StringUtils.defaultIfEmpty(
                     rowSet.getString( "psi_executiondate" ), rowSet.getString( "psi_executiondate" ) ) );
 
                 if ( rowSet.getBoolean( "ps_capturecoordinates" ) )
@@ -161,8 +165,8 @@ public class JdbcEventStore
                 }
 
                 events.add( event );
-            }            
-            
+            }
+
             if ( rowSet.getString( "pdv_value" ) != null && rowSet.getString( "de_uid" ) != null )
             {
                 DataValue dataValue = new DataValue();
@@ -172,20 +176,20 @@ public class JdbcEventStore
                 dataValue.setStoredBy( rowSet.getString( "pdv_storedby" ) );
 
                 event.getDataValues().add( dataValue );
-            }            
-            
+            }
+
             if ( rowSet.getString( "psinote_value" ) != null && !notes.contains( rowSet.getString( "psinote_id" ) ) )
-            {                
+            {
                 Note note = new Note();
                 note.setValue( rowSet.getString( "psinote_value" ) );
-                note.setStoredDate( StringUtils.defaultIfEmpty( 
-                    rowSet.getString( "psinote_soreddate" ), rowSet.getString( "psinote_soreddate" ) ) );           
+                note.setStoredDate( StringUtils.defaultIfEmpty(
+                    rowSet.getString( "psinote_soreddate" ), rowSet.getString( "psinote_soreddate" ) ) );
                 note.setStoredBy( rowSet.getString( "psinote_storedby" ) );
-                
+
                 event.getNotes().add( note );
                 notes.add( rowSet.getString( "psinote_id" ) );
             }
-            
+
         }
 
         return events;
@@ -196,17 +200,17 @@ public class JdbcEventStore
     {
         SqlHelper hlp = new SqlHelper();
 
-        String sql = 
-            "select pi.uid as pi_uid, pi.status as pi_status, p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, " +
-            "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude, " +
-            "psinote.trackedentitycommentid as psinote_id, psinote.commenttext as psinote_value, psinote.createddate as psinote_soreddate, psinote.creator as psinote_storedby, " +
-            "pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid " +
-            "from program p " +
-            "left join programstage ps on ps.programid=p.programid " +
-            "left join programstageinstance psi on ps.programstageid=psi.programstageid " +
-            "left join programinstance pi on pi.programinstanceid=psi.programinstanceid " +
-            "left join programstageinstancecomments psic on psi.programstageinstanceid=psic.programstageinstanceid " +
-            "left join trackedentitycomment psinote on psic.trackedentitycommentid=psinote.trackedentitycommentid ";
+        String sql =
+            "select pi.uid as pi_uid, pi.status as pi_status, p.uid as p_uid, p.type as p_type, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, " +
+                "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude, " +
+                "psinote.trackedentitycommentid as psinote_id, psinote.commenttext as psinote_value, psinote.createddate as psinote_soreddate, psinote.creator as psinote_storedby, " +
+                "pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid " +
+                "from program p " +
+                "left join programstage ps on ps.programid=p.programid " +
+                "left join programstageinstance psi on ps.programstageid=psi.programstageid " +
+                "left join programinstance pi on pi.programinstanceid=psi.programinstanceid " +
+                "left join programstageinstancecomments psic on psi.programstageinstanceid=psic.programstageinstanceid " +
+                "left join trackedentitycomment psinote on psic.trackedentitycommentid=psinote.trackedentitycommentid ";
 
         if ( status == null || EventStatus.isExistingEvent( status ) )
         {
@@ -214,15 +218,15 @@ public class JdbcEventStore
         }
         else
         {
-            sql += 
+            sql +=
                 "left join trackedentityinstance tei on tei.trackedentityinstanceid=pi.trackedentityinstanceid " +
-                "left join organisationunit ou on (tei.organisationunitid=ou.organisationunitid) ";
+                    "left join organisationunit ou on (tei.organisationunitid=ou.organisationunitid) ";
         }
 
-        sql += 
+        sql +=
             "left join trackedentitydatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid " +
-            "left join dataelement de on pdv.dataelementid=de.dataelementid " +
-            "left join trackedentityinstance pa on pa.trackedentityinstanceid=pi.trackedentityinstanceid ";
+                "left join dataelement de on pdv.dataelementid=de.dataelementid " +
+                "left join trackedentityinstance pa on pa.trackedentityinstanceid=pi.trackedentityinstanceid ";
 
         if ( trackedEntityInstanceId != null )
         {
@@ -282,7 +286,7 @@ public class JdbcEventStore
             {
                 sql += hlp.whereAnd() + " psi.duedate <= '" + getMediumDateString( endDate ) + "' ";
             }
-            
+
             if ( status == EventStatus.VISITED )
             {
                 sql = "and psi.status = '" + EventStatus.ACTIVE.name() + "' and psi.executiondate is not null ";
@@ -295,7 +299,7 @@ public class JdbcEventStore
             {
                 sql += "and psi.executiondate is null and date(now()) <= date(psi.duedate) and psi.status = '" + EventStatus.ACTIVE.name() + "' ";
             }
-            else  if ( status == EventStatus.OVERDUE )
+            else if ( status == EventStatus.OVERDUE )
             {
                 sql += "and psi.executiondate is null and date(now()) > date(psi.duedate) and psi.status = '" + EventStatus.ACTIVE.name() + "' ";
             }
