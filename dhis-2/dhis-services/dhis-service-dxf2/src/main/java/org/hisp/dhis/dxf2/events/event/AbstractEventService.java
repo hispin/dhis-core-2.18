@@ -415,16 +415,19 @@ public abstract class AbstractEventService
         programStageInstance.setDueDate( dueDate );
         programStageInstance.setOrganisationUnit( organisationUnit );
 
-        if ( programStageInstance.getProgramStage().getCaptureCoordinates() && event.getCoordinate().isValid() )
+        if( !singleValue )
         {
-            programStageInstance.setLatitude( event.getCoordinate().getLatitude() );
-            programStageInstance.setLongitude( event.getCoordinate().getLongitude() );
-        }
-        else
-        {
-            programStageInstance.setLatitude( null );
-            programStageInstance.setLongitude( null );
-        }
+            if ( programStageInstance.getProgramStage().getCaptureCoordinates() && event.getCoordinate().isValid() )
+            {
+                programStageInstance.setLatitude( event.getCoordinate().getLatitude() );
+                programStageInstance.setLongitude( event.getCoordinate().getLongitude() );
+            }
+            else
+            {
+                programStageInstance.setLatitude( null );
+                programStageInstance.setLongitude( null );
+            }
+        }        
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
@@ -497,7 +500,7 @@ public abstract class AbstractEventService
 
         if ( event.getStatus() == EventStatus.ACTIVE )
         {
-            programStageInstance.setStatus( EventStatus.ACTIVE );
+            programStageInstance.setStatus( EventStatus.VISITED );
         }
         else if ( event.getStatus() == EventStatus.COMPLETED )
         {
@@ -505,11 +508,11 @@ public abstract class AbstractEventService
         }
         else if ( event.getStatus() == EventStatus.SCHEDULE )
         {
-            programStageInstance.setStatus( EventStatus.ACTIVE );
+            programStageInstance.setStatus( EventStatus.VISITED );
         }
         else if ( event.getStatus() == EventStatus.SKIPPED )
         {
-            programStageInstance.setStatus( EventStatus.ACTIVE );
+            programStageInstance.setStatus( EventStatus.VISITED );
         }
 
         programStageInstance.setExecutionDate( executionDate );
