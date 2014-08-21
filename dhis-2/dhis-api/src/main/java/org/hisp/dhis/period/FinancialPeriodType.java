@@ -125,10 +125,12 @@ public abstract class FinancialPeriodType
         dateUnit.setMonth( getBaseMonth() + 1 );
         dateUnit.setDay( 1 );
 
+        Calendar calendar = getCalendar();
+
         for ( int i = 0; i < 11; i++ )
         {
             periods.add( createPeriod( dateUnit, cal ) );
-            dateUnit = getCalendar().plusYears( dateUnit, 1 );
+            dateUnit = calendar.plusYears( dateUnit, 1 );
         }
 
         return periods;
