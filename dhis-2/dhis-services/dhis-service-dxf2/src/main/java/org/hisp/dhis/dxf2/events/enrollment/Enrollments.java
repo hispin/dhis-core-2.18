@@ -49,8 +49,8 @@ public class Enrollments
     {
     }
 
-    @JsonProperty( "enrollmentList" )
-    @JacksonXmlElementWrapper( localName = "enrollmentList", namespace = DxfNamespaces.DXF_2_0 )
+    @JsonProperty( "enrollments" )
+    @JacksonXmlElementWrapper( localName = "enrollments", useWrapping = false, namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "enrollment", namespace = DxfNamespaces.DXF_2_0 )
     public List<Enrollment> getEnrollments()
     {
