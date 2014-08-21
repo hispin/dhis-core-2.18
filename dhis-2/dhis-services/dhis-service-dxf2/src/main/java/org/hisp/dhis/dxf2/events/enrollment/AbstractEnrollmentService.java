@@ -257,15 +257,15 @@ public abstract class AbstractEnrollmentService
     @Override
     public Enrollment getEnrollment( ProgramInstance programInstance )
     {
-        if ( programInstance.getEntityInstance() == null )
-        {
-            return null;
-        }
-
         Enrollment enrollment = new Enrollment();
 
         enrollment.setEnrollment( programInstance.getUid() );
-        enrollment.setTrackedEntityInstance( programInstance.getEntityInstance().getUid() );
+
+        if ( programInstance.getEntityInstance() != null )
+        {
+            enrollment.setTrackedEntityInstance( programInstance.getEntityInstance().getUid() );
+        }
+
         enrollment.setProgram( programInstance.getProgram().getUid() );
         enrollment.setStatus( EnrollmentStatus.fromInt( programInstance.getStatus() ) );
         enrollment.setDateOfEnrollment( programInstance.getEnrollmentDate() );
