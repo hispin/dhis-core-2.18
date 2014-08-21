@@ -126,6 +126,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 $scope.selectedProgramStage = programStage;   
                 
                 console.log('The stage is:  ', $scope.selectedProgramStage);
+                
+                angular.forEach($scope.selectedProgramStage.programStageSections, function(section){
+                    section.open = true;
+                });
 
                 //$scope.customForm = CustomFormService.processCustomForm($scope.selectedProgramStage);
                 $scope.customForm = $scope.selectedProgramStage.dataEntryForm ? $scope.selectedProgramStage.dataEntryForm.htmlCode : null; 
@@ -394,7 +398,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         
         //check for form validity
         $scope.outerForm.submitted = true;        
-        if( $scope.outerForm.$invalid ){
+        if( $scope.outerForm.$invalid ){            
+            angular.forEach($scope.selectedProgramStage.programStageSections, function(section){
+                section.open = true;
+            });
             return false;
         }
         
@@ -486,6 +493,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         //check for form validity
         $scope.outerForm.submitted = true;        
         if( $scope.outerForm.$invalid ){
+            angular.forEach($scope.selectedProgramStage.programStageSections, function(section){
+                section.open = true;
+            });
             return false;
         }
         
