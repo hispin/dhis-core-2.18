@@ -4539,6 +4539,13 @@ Ext.onReady( function() {
 			labelSeparator: '',
             columnWidth: 0.5,
             height: 41,
+            value: function() {
+                var greg = $.calendars.instance('gregorian'),
+                    date = greg.parseDate('yyyy-mm-dd', (new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))).toJSON().slice(0,10));
+
+                date = gis.init.calendar.fromJD(date.toJD());
+                return gis.init.calendar.formatDate(gis.init.dateFormat, date);
+            }(),
             listeners: {
                 render: function(c) {
                     onDateFieldRender(c);
@@ -4554,24 +4561,13 @@ Ext.onReady( function() {
             columnWidth: 0.5,
             height: 41,
             style: 'margin-left: 1px',
+            value: gis.init.calendar.today().toString(),
             listeners: {
                 render: function(c) {
                     onDateFieldRender(c);
                 }
             }
         });
-
-		//endDate = Ext.create('Ext.form.field.Date', {
-			//fieldLabel: 'End date',
-			//labelAlign: 'top',
-			//labelCls: 'gis-form-item-label-top',
-            ////labelStyle: 'font-weight: bold',
-			//labelSeparator: '',
-			//columnWidth: 0.5,
-			//style: 'margin-left: 1px',
-			//format: 'Y-m-d',
-			//value: new Date()
-		//});
 
         period = Ext.create('Ext.panel.Panel', {
             title: '<div class="gis-panel-title-period">Periods</div>',
