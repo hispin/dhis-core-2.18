@@ -63,7 +63,7 @@ $(document).ready(function()
         promise = promise.then( getLoginDetails );
         promise = promise.then( getMetaPrograms );     
         promise = promise.then( getPrograms );     
-        promise = promise.then( getProgramStages );    
+        promise = promise.then( getProgramStages );
         promise = promise.then( getOptionSets );    
         promise.done( function() {           
             selection.responseReceived();            
@@ -188,7 +188,7 @@ function getMetaPrograms()
     $.ajax({
         url: '../api/programs.json',
         type: 'GET',
-        data:'type=3&userFilter=true&paging=false&fields=id,name,version,programStages[id,version,programStageDataElements[dataElement[id,optionSet[id,version]]]]'
+        data:'type=3&userFilter=true&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[dataElement[id,optionSet[id,version]]]]'
     }).done( function(response) {          
         var programs = [];
         _.each( _.values( response.programs ), function ( program ) { 
@@ -257,7 +257,7 @@ function getProgram( id )
 {
     return function() {
         return $.ajax( {
-            url: '../api/programs.json?filter=id:eq:' + id +'&fields=id,name,version,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name,version]',
+            url: '../api/programs.json?filter=id:eq:' + id +'&fields=id,name,version,dataEntryMethod,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name,version]',
             type: 'GET'
         }).done( function( response ){
             
@@ -334,7 +334,7 @@ function getProgramStage( id )
 {
     return function() {
         return $.ajax( {
-            url: '../api/programStages.json?filter=id:eq:' + id +'&fields=id,name,version,description,reportDateDescription,captureCoordinates,dataEntryForm,minDaysFromStart,repeatable,preGenerateUID,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,formName,optionSet[id]]]',
+            url: '../api/programStages.json?filter=id:eq:' + id +'&fields=id,name,version,description,reportDateDescription,captureCoordinates,dataEntryForm,minDaysFromStart,repeatable,preGenerateUID,programStageSections[id,name,programStageDataElements[dataElement[id]]],programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,formName,optionSet[id]]]',
             type: 'GET'
         }).done( function( response ){            
             _.each( _.values( response.programStages ), function( programStage ) {                

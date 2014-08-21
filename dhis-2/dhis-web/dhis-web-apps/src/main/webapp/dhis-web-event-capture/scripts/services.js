@@ -4,6 +4,19 @@
 
 var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource'])
 
+
+.service('DateUtils', function($filter){
+    
+    return {
+        format: function(dateValue) {            
+            dateValue = moment(dateValue, 'YYYY-MM-DD')._d;
+            dateValue = Date.parse(dateValue);
+            dateValue = $filter('date')(dateValue, 'yyyy-MM-dd');
+            return dateValue;
+        }
+    };            
+})
+
 /* factory for loading logged in user profiles from DHIS2 */
 .factory('CurrentUserProfile', function($http) { 
            
@@ -134,7 +147,6 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
         },
     
         update: function(dhis2Event){  
-            console.log('the event is:  ', dhis2Event);
             dhis2.ec.storageManager.saveEvent(dhis2Event);
             var promise = $http.put('../api/events/' + dhis2Event.event, dhis2Event).then(function(response){
                 dhis2.ec.storageManager.clearEvent(dhis2Event);
