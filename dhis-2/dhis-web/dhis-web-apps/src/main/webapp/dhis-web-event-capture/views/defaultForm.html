@@ -11,7 +11,7 @@
             </tr>                        
         </thead>
         <tbody id="list">
-            <tr ng-if="selectedProgramStage.preGenerateUID && currentEvent['uid']">
+            <tr ng-if="selectedProgramStage.preGenerateUID || editingEventInFull">
                 <td>
                     {{'form_id' | translate}}
                 </td>
@@ -83,7 +83,7 @@
                             <div ng-switch-when="string">                                        
 
                                 <div class="container-fluid">                                
-                                    <span ng-if="!selectedProgram.dataEntryMethod || programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length > 8">
+                                    <span ng-if="!selectedProgram.dataEntryMethod || programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length > 7">
                                         <input type="text"
                                                ng-model="currentEvent[eventGridColumn.id]"                                                                    
                                                typeahead="option.code as option.name for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
@@ -214,85 +214,6 @@
                     <span ng-show="outerForm.submitted && outerForm.longitude.$invalid" class="required">{{'number_required'| translate}}[-180 ... 180]</span>
                 </td>                                            
             </tr>        
-            <!--<tr ng-repeat="eventGridColumn in eventGridColumns" ng-if="eventGridColumn.id !== 'comment' && eventGridColumn.id !== 'uid' && eventGridColumn.id !== 'event_date'">
-                <td >
-                    {{eventGridColumn.name}}                                    
-                </td>
-                <td >
-                    <ng-form name="innerForm">
-                        <div ng-switch="eventGridColumn.type">
-                            <div ng-switch-when="int">
-                                <input type="number"
-                                       ng-model="currentEvent[eventGridColumn.id]"                                                                
-                                       ng-required={{eventGridColumn.compulsory}}
-                                       name="foo" 
-                                       style="width:99%;"/>
-                                <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
-                            </div>
-                            <div ng-switch-when="string">                                        
-
-                                <div class="container-fluid">                                
-                                    <span ng-if="!selectedProgram.dataEntryMethod || programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length > 8">
-                                        <input type="text"
-                                               ng-model="currentEvent[eventGridColumn.id]"                                                                    
-                                               typeahead="option.code as option.name for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
-                                               typeahead-open-on-focus
-                                               ng-required={{eventGridColumn.compulsory}}
-                                               name="foo" 
-                                               style="width:99%;"/>
-                                        <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
-                                    </span>
-                                    <span ng-if="selectedProgram.dataEntryMethod && programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length < 7">                                    
-                                        <label>
-                                            <input type="radio" 
-                                                   name="foo" 
-                                                   ng-required={{eventGridColumn.compulsory}}
-                                                   ng-model="currentEvent[eventGridColumn.id]"
-                                                   value=""> {{'no_value' | translate}}<br>
-                                        </label>                                    
-                                        <label ng-repeat="option in  programStageDataElements[eventGridColumn.id].dataElement.optionSet.options">
-                                            <input type="radio" 
-                                                   name={{eventGridColumn.id}}   
-                                                   ng-required={{eventGridColumn.compulsory}}
-                                                   ng-model="currentEvent[eventGridColumn.id]"
-                                                   value={{option.code}}> {{option.name}}<br>                                        
-                                        </label>                                    
-                                        <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>                                    
-                                    </span>
-                                </div>                            
-                            </div>
-                            <div ng-switch-when="bool">
-                                <select ng-model="currentEvent[eventGridColumn.id]"                                                                
-                                        ng-required={{eventGridColumn.compulsory}}
-                                        name="foo" 
-                                        style="width:99%;"/>
-                                <option value="">{{'please_select'| translate}}</option>                        
-                                <option value="0">{{'no'| translate}}</option>
-                                <option value="1">{{'yes'| translate}}</option>
-                                </select>
-                                <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
-                            </div>
-                            <div ng-switch-when="date">
-                                <input type="text"                                                                
-                                       placeholder="yyyy-mm-dd" 
-                                       ng-date 
-                                       ng-model="currentEvent[eventGridColumn.id]"                                                               
-                                       ng-required={{eventGridColumn.compulsory}}
-                                       name="foo" 
-                                       style="width:99%;"/>
-                                <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
-                            </div>
-                            <div ng-switch-when="trueOnly">
-                                <input type="checkbox"                                                                      
-                                       ng-model="currentEvent[eventGridColumn.id]"                                                               
-                                       ng-required={{eventGridColumn.compulsory}}
-                                       name="foo"/>
-                                <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
-                            </div>
-                        </div>
-                    </ng-form>
-                </td>
-            </tr>-->        
         </tbody>
     </table>
     
@@ -312,7 +233,7 @@
                 <tbody id="list">       
                     <tr ng-repeat="de in section.programStageDataElements">
                         <td >
-                            {{programStageDataElements[de.dataElement.id].dataElement.name}}
+                            {{programStageDataElements[de.dataElement.id].dataElement.formName ? programStageDataElements[de.dataElement.id].dataElement.formName : programStageDataElements[de.dataElement.id].dataElement.name}}
                         </td>
                         <td >
                             <ng-form name="innerForm">

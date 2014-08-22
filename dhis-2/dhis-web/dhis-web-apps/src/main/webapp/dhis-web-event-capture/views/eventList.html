@@ -140,7 +140,7 @@
                                                            name="foo" 
                                                            style="width:99%;"/>                                                    
                                                 </span>
-                                                <span ng-if="eventGridColumn.id !== 'uid' && !selectedProgram.dataEntryMethod || programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length > 8">
+                                                <span ng-if="eventGridColumn.id !== 'uid' && !selectedProgram.dataEntryMethod || programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length > 7">
                                                     <input type="text" 
                                                        ng-model="dhis2Event[eventGridColumn.id]" 
                                                        ng-change="updateEventDataValue(dhis2Event, eventGridColumn.id)" 
