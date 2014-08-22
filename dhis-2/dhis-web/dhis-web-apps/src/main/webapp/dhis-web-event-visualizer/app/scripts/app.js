@@ -3021,7 +3021,7 @@ Ext.onReady( function() {
 			stage.clearValue();
 
 			dataElementsByStageStore.removeAll();
-			dataElementSelected.removeAll();
+			dataElementSelected.removeAllDataElements(true);
 
             load = function(stages) {
                 stage.enable();
@@ -3029,9 +3029,6 @@ Ext.onReady( function() {
 
                 stagesByProgramStore.removeAll();
                 stagesByProgramStore.loadData(stages);
-
-                ns.app.aggregateLayoutWindow.resetData();
-				//ns.app.queryLayoutWindow.resetData();
 
                 stageId = (layout ? layout.programStage.id : null) || (stages.length === 1 ? stages[0].id : null);
 
@@ -3108,8 +3105,7 @@ Ext.onReady( function() {
 
 		onStageSelect = function(stageId, layout) {
             if (!layout) {
-                dataElementSelected.removeAll();
-                ns.app.aggregateLayoutWindow.resetData();
+                dataElementSelected.removeAllDataElements(true);
             }
 
 			loadDataElements(stageId, layout);
@@ -3265,12 +3261,12 @@ Ext.onReady( function() {
 
 				return hasDataElement;
 			},
-			removeAllDataElements: function() {
+			removeAllDataElements: function(reset) {
 				var items = this.items.items,
 					len = items.length;
 
 				for (var i = 0; i < len; i++) {
-					items[0].removeDataElement();
+					items[0].removeDataElement(reset);
 				}
 			}
         });
@@ -3308,12 +3304,14 @@ Ext.onReady( function() {
 				dataElement: element
 			}));
 
-			ux.removeDataElement = function() {
+			ux.removeDataElement = function(reset) {
 				dataElementSelected.remove(ux);
 
 				if (!dataElementSelected.hasDataElement(element.id)) {
-					dataElementsByStageStore.add(element);
-					dataElementsByStageStore.sort();
+                    if (!reset) {
+                        dataElementsByStageStore.add(element);
+                        dataElementsByStageStore.sort();
+                    }
 
                     ns.app.aggregateLayoutWindow.removeDimension(element.id);
 				}
