@@ -172,6 +172,11 @@ public class DateUnit
         return iso8601;
     }
 
+    /**
+     * Converts dateUnit to Joda-Time DateTime
+     *
+     * @return Populated DateTime object
+     */
     public DateTime toDateTime()
     {
         if ( !iso8601 )
@@ -182,11 +187,22 @@ public class DateUnit
         return new DateTime( year, month, day, 0, 0, ISOChronology.getInstance() );
     }
 
+    /**
+     * Converts dateUnit to Joda-Time DateTime with a specific chronology.
+     *
+     * @param chronology Chronology to use
+     * @return Populated DateTime object
+     */
     public DateTime toDateTime( Chronology chronology )
     {
         return new DateTime( year, month, day, 0, 0, chronology );
     }
 
+    /**
+     * Converts dateUnit to JDK Calendar
+     *
+     * @return Populated JDK Calendar object
+     */
     public java.util.Calendar toJdkCalendar()
     {
         if ( !iso8601 )
@@ -200,22 +216,45 @@ public class DateUnit
         return calendar;
     }
 
+    /**
+     * Converts dateUnit to JDK Date
+     *
+     * @return Populated JDK Date object
+     */
     public Date toJdkDate()
     {
         return toJdkCalendar().getTime();
     }
 
+    /**
+     * Converts from Joda-Time DateTime to DateUnit
+     *
+     * @param dateTime DateTime object
+     * @return Populated DateUnit object
+     */
     public static DateUnit fromDateTime( DateTime dateTime )
     {
         return new DateUnit( dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(), dateTime.getDayOfWeek() );
     }
 
+    /**
+     * Converts from JDK Calendar to DateUnit
+     *
+     * @param calendar JDK Calendar object
+     * @return Populated DateUnit object
+     */
     public static DateUnit fromJdkCalendar( java.util.Calendar calendar )
     {
         return new DateUnit( calendar.get( java.util.Calendar.YEAR ), calendar.get( java.util.Calendar.MONTH ) + 1,
             calendar.get( java.util.Calendar.DAY_OF_MONTH ), calendar.get( java.util.Calendar.DAY_OF_WEEK ), true );
     }
 
+    /**
+     * Converts from JDK Date to DateUnit
+     *
+     * @param date JDK Date object
+     * @return Populated DateUnit object
+     */
     public static DateUnit fromJdkDate( Date date )
     {
         DateUnit dateUnit = fromDateTime( new DateTime( date.getTime() ) );
