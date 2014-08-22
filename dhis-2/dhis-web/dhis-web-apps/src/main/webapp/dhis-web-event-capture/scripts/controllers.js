@@ -125,8 +125,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 
                 $scope.selectedProgramStage = programStage;   
                 
-                console.log('The stage is:  ', $scope.selectedProgramStage);
-                
                 angular.forEach($scope.selectedProgramStage.programStageSections, function(section){
                     section.open = true;
                 });
@@ -141,10 +139,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 $scope.newDhis2Event = {dataValues: []};
                 $scope.currentEvent = {dataValues: []};
                 
-                if($scope.selectedProgramStage.preGenerateUID){
-                    $scope.eventGridColumns.push({name: 'form_id', id: 'uid', type: 'string', compulsory: false, showFilter: false, show: true});
-                    $scope.filterTypes['uid'] = 'string';
-                }
+                $scope.eventGridColumns.push({name: 'form_id', id: 'uid', type: 'string', compulsory: false, showFilter: false, show: true});
+                $scope.filterTypes['uid'] = 'string';                
                 
                 $scope.eventGridColumns.push({name: $scope.selectedProgramStage.reportDateDescription ? $scope.selectedProgramStage.reportDateDescription : 'incident_date', id: 'event_date', type: 'date', compulsory: false, showFilter: false, show: true});
                 $scope.filterTypes['event_date'] = 'date';
@@ -157,7 +153,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     //create a template for new event
                     //for date type dataelements, filtering is based on start and end dates
                     var dataElement = prStDe.dataElement;
-                    var name = dataElement.formName || dataElement.name;
+                    var name = dataElement.formName ? dataElement.formName : dataElement.name;
                     
                     $scope.newDhis2Event.dataValues.push({id: dataElement.id, value: ''});   
                     if($scope.selectedProgramStage.captureCoordinates){
