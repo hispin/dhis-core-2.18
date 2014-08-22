@@ -28,20 +28,20 @@ package org.hisp.dhis.dxf2.events.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.DxfNamespaces;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "trackedEntityInstance", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "trackedEntityInstance", namespace = DxfNamespaces.DXF_2_0)
 public class TrackedEntityInstance
 {
     private String trackedEntity;
@@ -71,9 +71,9 @@ public class TrackedEntityInstance
             }
         }
     }
-    
-    @JsonProperty( required = true )
-    @JacksonXmlProperty( isAttribute = true )
+
+    @JsonProperty(required = true)
+    @JacksonXmlProperty(isAttribute = true)
     public String getTrackedEntity()
     {
         return trackedEntity;
@@ -84,8 +84,8 @@ public class TrackedEntityInstance
         this.trackedEntity = trackedEntity;
     }
 
-    @JsonProperty( required = true )
-    @JacksonXmlProperty( isAttribute = true )
+    @JsonProperty(required = true)
+    @JacksonXmlProperty(isAttribute = true)
     public String getTrackedEntityInstance()
     {
         return trackedEntityInstance;
@@ -96,8 +96,8 @@ public class TrackedEntityInstance
         this.trackedEntityInstance = trackedEntityInstance;
     }
 
-    @JsonProperty( required = true )
-    @JacksonXmlProperty( isAttribute = true )
+    @JsonProperty(required = true)
+    @JacksonXmlProperty(isAttribute = true)
     public String getOrgUnit()
     {
         return orgUnit;
@@ -109,7 +109,7 @@ public class TrackedEntityInstance
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public List<Relationship> getRelationships()
     {
         return relationships;
@@ -121,7 +121,8 @@ public class TrackedEntityInstance
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlElementWrapper( localName = "attributes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
     public List<Attribute> getAttributes()
     {
         return attributes;
