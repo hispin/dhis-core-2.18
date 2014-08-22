@@ -49,8 +49,8 @@ public class TrackedEntityInstances
     {
     }
 
-    @JsonProperty( "trackedEntityInstanceList" )
-    @JacksonXmlElementWrapper( localName = "trackedEntityInstanceList", namespace = DxfNamespaces.DXF_2_0 )
+    @JsonProperty( "trackedEntityInstances" )
+    @JacksonXmlElementWrapper( localName = "trackedEntityInstances", useWrapping = false, namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "trackedEntityInstance", namespace = DxfNamespaces.DXF_2_0 )
     public List<TrackedEntityInstance> getTrackedEntityInstances()
     {
