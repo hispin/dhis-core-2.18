@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.amplecode.staxwax.factory.XMLFactory;
+import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dxf2.datavalue.DataValue;
@@ -110,7 +111,7 @@ public class SpringDataValueSetStore
         DataValueSet dataValueSet = new StreamingJsonDataValueSet( outputStream );
 
         final String sql =
-            "select de.uid as deuid, pe.startdate, pt.name, ou.uid as ouuid, coc.uid as cocuid, aoc.uid as aocuid, dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
+            "select de.uid as deuid, pe.startdate as pestart, pt.name as ptname, ou.uid as ouuid, coc.uid as cocuid, aoc.uid as aocuid, dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
             "from datavalue dv " +
             "join dataelement de on (dv.dataelementid=de.dataelementid) " +
             "join period pe on (dv.periodid=pe.periodid) " +
@@ -133,25 +134,25 @@ public class SpringDataValueSetStore
         dataValueSet.setPeriod( period != null ? period.getIsoDate() : null );
         dataValueSet.setOrgUnit( orgUnit != null ? orgUnit.getUid() : null );
 
+        Calendar calendar = PeriodType.getCalendar();
+        
         while ( rowSet.next() )
         {
             DataValue dataValue = dataValueSet.getDataValueInstance();
 
+            String periodType = rowSet.getString( "ptname" );
+            Date startDate = rowSet.getDate( "pestart" );
+            Period isoPeriod = PeriodType.getPeriodTypeByName( periodType ).createPeriod( startDate, calendar );
+            
             dataValue.setDataElement( rowSet.getString( "deuid" ) );
-            dataValue.setPeriod( rowSet.getString( "peiso" ) );
+            dataValue.setPeriod( isoPeriod.getIsoDate() );
             dataValue.setOrgUnit( rowSet.getString( "ouuid" ) );
             dataValue.setCategoryOptionCombo( rowSet.getString( "cocuid" ) );
             dataValue.setAttributeOptionCombo( rowSet.getString( "aocuid" ) );
             dataValue.setValue( rowSet.getString( "value" ) );
             dataValue.setStoredBy( rowSet.getString( "storedby" ) );
-
-            Date lastUpdated = rowSet.getDate( "lastupdated" );
-            
-            if ( lastUpdated != null )
-            {
-                dataValue.setLastUpdated( getLongDateString( lastUpdated ) );
-            }
-            
+            dataValue.setCreated( getLongDateString( rowSet.getDate( "created" ) ) );
+            dataValue.setLastUpdated( getLongDateString( rowSet.getDate( "lastupdated" ) ) );
             dataValue.setComment( rowSet.getString( "comment" ) );
             dataValue.setFollowup( rowSet.getBoolean( "followup" ) );
             dataValue.close();
@@ -167,10 +168,11 @@ public class SpringDataValueSetStore
     private String getDataValueSql( Set<DataSet> dataSets, Collection<Period> periods, Collection<OrganisationUnit> orgUnits )
     {
         return
-            "select de.uid as deuid, pe.iso as peiso, ou.uid as ouuid, coc.uid as cocuid, aoc.uid as aocuid, dv.value, dv.storedby, dv.lastupdated, dv.comment, dv.followup " +
+            "select de.uid as deuid, pe.startdate as pestart, pt.name as ptname, ou.uid as ouuid, coc.uid as cocuid, aoc.uid as aocuid, dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
             "from datavalue dv " +
             "join dataelement de on (dv.dataelementid=de.dataelementid) " +
-            "join _periodstructure pe on (dv.periodid=pe.periodid) " +
+            "join period pe on (dv.periodid=pe.periodid) " +
+            "join periodtype pt on (pe.periodtypeid=pt.periodtypeid) " +
             "join organisationunit ou on (dv.sourceid=ou.organisationunitid) " +
             "join categoryoptioncombo coc on (dv.categoryoptioncomboid=coc.categoryoptioncomboid) " +
             "join categoryoptioncombo aoc on (dv.attributeoptioncomboid=aoc.categoryoptioncomboid) " +
