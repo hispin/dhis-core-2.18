@@ -76,6 +76,8 @@ translation<-merge(translation,template,by="key")
 translation<-translation[as.character(translation$value_template) != as.character(translation$value_translation),]
 #Remove any empty values
 translation<-translation[as.character(translation$value_translation) != "",]
+#Remove any duplicates
+translation<-translation[!duplicated(translation),]
 #Arrange as the same order as in the template
 translation<-arrange(translation,template_order)
 out<-paste0(translation$key,"=",translation$value_translation)
