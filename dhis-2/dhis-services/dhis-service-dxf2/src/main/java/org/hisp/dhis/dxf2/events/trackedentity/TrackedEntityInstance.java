@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement(localName = "trackedEntityInstance", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "trackedEntityInstance", namespace = DxfNamespaces.DXF_2_0 )
 public class TrackedEntityInstance
 {
     private String trackedEntity;
@@ -72,8 +72,8 @@ public class TrackedEntityInstance
         }
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(isAttribute = true)
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getTrackedEntity()
     {
         return trackedEntity;
@@ -84,8 +84,8 @@ public class TrackedEntityInstance
         this.trackedEntity = trackedEntity;
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(isAttribute = true)
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getTrackedEntityInstance()
     {
         return trackedEntityInstance;
@@ -96,8 +96,8 @@ public class TrackedEntityInstance
         this.trackedEntityInstance = trackedEntityInstance;
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(isAttribute = true)
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getOrgUnit()
     {
         return orgUnit;
@@ -109,7 +109,7 @@ public class TrackedEntityInstance
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public List<Relationship> getRelationships()
     {
         return relationships;
