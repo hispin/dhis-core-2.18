@@ -28,6 +28,20 @@ package org.hisp.dhis.resourcetable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_CATEGORY_OPTION_COMBO_NAME;
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_DATA_ELEMENT_STRUCTURE;
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_DATE_PERIOD_STRUCTURE;
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_ORGANISATION_UNIT_STRUCTURE;
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_PERIOD_STRUCTURE;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.calendar.Calendar;
@@ -58,18 +72,8 @@ import org.hisp.dhis.resourcetable.statement.CreateCategoryOptionGroupSetTableSt
 import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
+import org.hisp.dhis.system.cache.PeriodCache;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.hisp.dhis.resourcetable.ResourceTableStore.*;
 
 /**
  * @author Lars Helge Overland
@@ -138,7 +142,14 @@ public class DefaultResourceTableService
     {
         this.sqlViewService = sqlViewService;
     }
+    
+    private PeriodCache periodCache;
 
+    public void setPeriodCache( PeriodCache periodCache )
+    {
+        this.periodCache = periodCache;
+    }
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitStructure
     // -------------------------------------------------------------------------
@@ -437,11 +448,11 @@ public class DefaultResourceTableService
         List<Object[]> batchArgs = new ArrayList<>();
 
         Date startDate = new Cal( 1975, 1, 1, true ).time(); //TODO
-        Date endDate = new Cal( 2030, 1, 1, true ).time();
+        Date endDate = new Cal( 2025, 1, 1, true ).time();
 
         List<Period> days = new DailyPeriodType().generatePeriods( startDate, endDate );
 
-        Calendar cal = PeriodType.getCalendar();
+        Calendar calendar = PeriodType.getCalendar();
 
         for ( Period day : days )
         {
@@ -451,11 +462,7 @@ public class DefaultResourceTableService
 
             for ( PeriodType periodType : periodTypes )
             {
-                Period period = periodType.createPeriod( day.getStartDate(), cal );
-
-                Assert.notNull( period );
-
-                values.add( period.getIsoDate() );
+                values.add( periodCache.getIsoPeriod( periodType, day.getStartDate(), calendar ) );
             }
 
             batchArgs.add( values.toArray() );
@@ -481,6 +488,8 @@ public class DefaultResourceTableService
         // Populate table
         // ---------------------------------------------------------------------
 
+        Calendar calendar = PeriodType.getCalendar();
+
         List<Object[]> batchArgs = new ArrayList<>();
 
         for ( Period period : periods )
@@ -498,7 +507,7 @@ public class DefaultResourceTableService
             {
                 if ( rowType.getFrequencyOrder() <= periodType.getFrequencyOrder() )
                 {
-                    values.add( periodType.createPeriod( startDate ).getIsoDate() );
+                    values.add( periodCache.getIsoPeriod( periodType, startDate, calendar ) );
                 }
                 else
                 {
