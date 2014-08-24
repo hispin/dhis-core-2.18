@@ -28,10 +28,27 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_CSV;
+import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_JSON;
+import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_XML;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.util.Date;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.IdentifiableObjectUtils;
-import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
@@ -39,7 +56,6 @@ import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.view.ClassPathUriResolver;
-import org.hisp.dhis.webapi.webdomain.DataValueSets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -50,23 +66,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.hisp.dhis.webapi.utils.ContextUtils.*;
 
 @Controller
 @RequestMapping( value = DataValueSetController.RESOURCE_PATH )
@@ -113,10 +112,8 @@ public class DataValueSetController
         else
         {
             log.info( "Get XML bulk data value set for start date: " + startDate + ", end date: " + endDate );
-
-            Set<String> ous = getOrganisationUnits( orgUnit, children );
             
-            dataValueSetService.writeDataValueSetXml( dataSet, startDate, endDate, ous, false, response.getOutputStream() );
+            dataValueSetService.writeDataValueSetXml( dataSet, startDate, endDate, orgUnit, children, response.getOutputStream() );
         }
     }
 
@@ -146,10 +143,8 @@ public class DataValueSetController
         else
         {
             log.info( "Get JSON bulk data value set for start date: " + startDate + ", end date: " + endDate );
-
-            Set<String> ous = getOrganisationUnits( orgUnit, children );
             
-            dataValueSetService.writeDataValueSetJson( dataSet, startDate, endDate, ous, false, response.getOutputStream() );
+            dataValueSetService.writeDataValueSetJson( dataSet, startDate, endDate, orgUnit, children, response.getOutputStream() );
         }
     }
 
@@ -164,27 +159,9 @@ public class DataValueSetController
     {
         log.info( "Get CSV bulk data value set for start date: " + startDate + ", end date: " + endDate );
 
-        Set<String> ous = getOrganisationUnits( orgUnit, children );
-
         response.setContentType( CONTENT_TYPE_CSV );
-        dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, ous, false, response.getWriter() );
-    }
-
-    private Set<String> getOrganisationUnits( Set<String> orgUnits, boolean children )
-    {
-        Set<String> ous = new HashSet<>();
-
-        if ( children )
-        {
-            for ( String ou : orgUnits )
-            {
-                ous.addAll( IdentifiableObjectUtils.getUids( organisationUnitService.getOrganisationUnitsWithChildren( ou ) ) );
-            }
-        }
-
-        ous.addAll( orgUnits );
-
-        return ous;
+        
+        dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, orgUnit, children, response.getWriter() );
     }
 
     // -------------------------------------------------------------------------
