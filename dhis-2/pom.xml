@@ -324,12 +324,6 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-support-jdbc-test</artifactId>
-        <version>${project.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-support-hibernate</artifactId>
         <version>${project.version}</version>
       </dependency>
