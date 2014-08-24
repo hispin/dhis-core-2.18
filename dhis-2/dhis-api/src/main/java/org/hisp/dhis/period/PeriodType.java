@@ -242,9 +242,7 @@ public abstract class PeriodType
      */
     public Period createPeriod( Date date, org.hisp.dhis.calendar.Calendar calendar )
     {
-        Calendar cal = createCalendarInstance( date );
-        
-        return createPeriod( calendar.fromIso( DateUnit.fromJdkCalendar( cal ) ), calendar );
+        return createPeriod( calendar.fromIso( DateUnit.fromJdkDate( date ) ), calendar );
     }
 
     public Period toIsoPeriod( DateUnit start, DateUnit end )

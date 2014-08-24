@@ -238,6 +238,18 @@ public class DateUnit
     }
 
     /**
+     * Converts from Joda-Time DateTime to DateUnit
+     *
+     * @param dateTime DateTime object
+     * @param iso8601 whether date time is iso8601
+     * @return Populated DateUnit object
+     */
+    public static DateUnit fromDateTime( DateTime dateTime, boolean iso8601 )
+    {
+        return new DateUnit( dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(), dateTime.getDayOfWeek(), iso8601 );
+    }
+
+    /**
      * Converts from JDK Calendar to DateUnit
      *
      * @param calendar JDK Calendar object
@@ -257,8 +269,7 @@ public class DateUnit
      */
     public static DateUnit fromJdkDate( Date date )
     {
-        DateUnit dateUnit = fromDateTime( new DateTime( date.getTime() ) );
-        return new DateUnit( dateUnit, true );
+        return fromDateTime( new DateTime( date.getTime() ), true );
     }
 
     @Override
