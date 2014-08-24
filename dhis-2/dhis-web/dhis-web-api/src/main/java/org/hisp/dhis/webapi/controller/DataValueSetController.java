@@ -87,17 +87,6 @@ public class DataValueSetController
     // Get
     // -------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.GET, produces = { CONTENT_TYPE_HTML, CONTENT_TYPE_TEXT } )
-    public String getDataValueSets( Model model ) throws Exception
-    {
-        DataValueSets dataValueSets = new DataValueSets();
-        dataValueSets.getDataValueSets().add( new DataValueSet() );
-
-        model.addAttribute( "model", dataValueSets );
-
-        return "dataValueSets";
-    }
-
     @RequestMapping( method = RequestMethod.GET, produces = CONTENT_TYPE_XML )
     public void getDataValueSetXml(
         @RequestParam Set<String> dataSet,
