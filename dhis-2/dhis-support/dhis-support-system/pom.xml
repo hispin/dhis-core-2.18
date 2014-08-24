@@ -163,6 +163,10 @@
       <groupId>org.htmlparser</groupId>
       <artifactId>htmlparser</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>

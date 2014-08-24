@@ -38,7 +38,6 @@ import org.hisp.dhis.calendar.DateUnitType;
 import org.hisp.dhis.calendar.PeriodTypeParser;
 import org.hisp.dhis.calendar.impl.Iso8601Calendar;
 import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.Timer;
 
 import java.io.Serializable;
 import java.util.ArrayList;

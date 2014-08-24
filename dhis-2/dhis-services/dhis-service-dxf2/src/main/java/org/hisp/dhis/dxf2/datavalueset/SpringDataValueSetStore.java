@@ -29,7 +29,7 @@ package org.hisp.dhis.dxf2.datavalueset;
  */
 
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdentifiers;
-import static org.hisp.dhis.system.util.DateUtils.*;
+import static org.hisp.dhis.system.util.DateUtils.getLongDateString;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.io.OutputStream;
@@ -41,13 +41,13 @@ import java.util.Set;
 
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.hisp.dhis.calendar.Calendar;
-import org.hisp.dhis.common.Timer;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dxf2.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.cache.PeriodCache;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,10 @@ public class SpringDataValueSetStore
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
+    
+    @Autowired
+    private PeriodCache periodCache;
+    
     //--------------------------------------------------------------------------
     // DataValueSetStore implementation
     //--------------------------------------------------------------------------
@@ -141,13 +144,10 @@ public class SpringDataValueSetStore
         while ( rowSet.next() )
         {
             DataValue dataValue = dataValueSet.getDataValueInstance();
+            PeriodType pt = PeriodType.getPeriodTypeByName( rowSet.getString( "ptname" ) );
 
-            String periodType = rowSet.getString( "ptname" );
-            Date startDate = rowSet.getDate( "pestart" );            
-            Period isoPeriod = PeriodType.getPeriodTypeByName( periodType ).createPeriod( startDate, calendar );
-            
             dataValue.setDataElement( rowSet.getString( "deuid" ) );
-            dataValue.setPeriod( isoPeriod.getIsoDate() );
+            dataValue.setPeriod( periodCache.getIsoPeriod( pt, rowSet.getDate( "pestart" ), calendar ) );
             dataValue.setOrgUnit( rowSet.getString( "ouuid" ) );
             dataValue.setCategoryOptionCombo( rowSet.getString( "cocuid" ) );
             dataValue.setAttributeOptionCombo( rowSet.getString( "aocuid" ) );
@@ -162,7 +162,7 @@ public class SpringDataValueSetStore
 
         dataValueSet.close();
     }
-
+    
     //--------------------------------------------------------------------------
     // DataValueSetStore implementation
     //--------------------------------------------------------------------------
