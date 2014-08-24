@@ -247,11 +247,43 @@ public class HibernateCaseAggregationConditionStore
             grid.addHeader( new GridHeader( i18n.getString( colName ), false, true ) );
         }
 
-        grid.addRows( rs );
+        addRows( rs, grid );
 
         return grid;
     }
 
+    public void addRows( SqlRowSet rs, Grid grid )
+    {
+        int cols = rs.getMetaData().getColumnCount();
+        String idValue = "";
+        int index = 1;
+        while ( rs.next() )
+        {
+        	grid.addRow();
+        	for ( int i = 1; i <= cols; i++ )
+            {
+            	Object value = rs.getObject( i );
+            	if( i==1 )
+            	{
+            		if( !value.toString().equals(idValue) )
+		        	{
+		        		grid.addValue( index );
+		        		idValue = value.toString();
+		        		index ++;
+		        	}
+            		else
+            		{
+            			grid.addValue( "" );
+            		}
+            	}
+            	else
+            	{
+            		grid.addValue( value );
+            	}
+            }
+        }
+    }
+    
     public void insertAggregateValue( String expression, String operator, Integer dataElementId, Integer optionComboId, int attributeOptioncomboId, 
         Integer deSumId, Collection<Integer> orgunitIds, Period period )
     {
@@ -947,7 +979,7 @@ public class HibernateCaseAggregationConditionStore
         String sql = "SELECT ";
 
         boolean hasDataelement = hasDataelementCriteria( caseExpression );
-
+        boolean hasEntityInstance = hasEntityInstanceCriteria( caseExpression );
         Collection<Integer> orgunitIds = new HashSet<>();
         orgunitIds.add( orgunitId );
 
@@ -958,27 +990,33 @@ public class HibernateCaseAggregationConditionStore
                     DateUtils.getMediumDateString( period.getStartDate() ),
                     DateUtils.getMediumDateString( period.getEndDate() ) );
         }
+        else  if ( hasDataelement )
+        {
+            sql += "pdv.programstageinstanceid as event, pdv.value,pgs.name as program_stage, psi.executiondate as report_date,";
+        }
         else
         {
-            if ( hasDataelement )
-            {
-                sql += "pdv.value,pgs.name as program_stage, psi.executiondate as report_date,";
-            }
+        	 sql += "p.trackedentityinstanceid,p.trackedentityid,ou.name";
         }
 
         sql = sql.substring( 0, sql.length() - 1 );
         sql += " FROM ";
 
+        if( hasEntityInstance )
+        {
+        	sql += " INNER JOIN trackedentityinstance p on p.trackedentityinstanceid=pi.trackedentityinstanceid ";
+        }
+        
         if ( hasDataelement )
         {
-            sql += " programinstance as pi INNER JOIN trackedentityinstance p on p.trackedentityinstanceid=pi.trackedentityinstanceid";
+            sql += " programinstance as pi ";
             sql += " INNER JOIN programstageinstance psi ON pi.programinstanceid=psi.programinstanceid ";
             sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid ";
             sql += " INNER JOIN trackedentitydatavalue pdv ON pdv.programstageinstanceid=psi.programstageinstanceid ";
             sql += " INNER JOIN program pg ON pg.programid=pi.programid ";
             sql += " INNER JOIN programstage pgs ON pgs.programid=pg.programid ";
         }
-        else
+        else if( !hasEntityInstance )
         {
             sql += " programinstance as pi INNER JOIN trackedentityinstance p on p.trackedentityinstanceid=pi.trackedentityinstanceid";
             sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=p.organisationunitid ";
