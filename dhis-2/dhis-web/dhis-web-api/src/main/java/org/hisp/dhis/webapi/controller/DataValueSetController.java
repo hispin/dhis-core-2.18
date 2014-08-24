@@ -119,7 +119,7 @@ public class DataValueSetController
 
             log.info( "Get XML data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
 
-            dataValueSetService.writeDataValueSet( ds, period, ou, response.getOutputStream() );
+            dataValueSetService.writeDataValueSetXml( ds, period, ou, response.getOutputStream() );
         }
         else
         {
@@ -127,7 +127,7 @@ public class DataValueSetController
 
             Set<String> ous = getOrganisationUnits( orgUnit, children );
             
-            dataValueSetService.writeDataValueSet( dataSet, startDate, endDate, ous, response.getOutputStream() );
+            dataValueSetService.writeDataValueSetXml( dataSet, startDate, endDate, ous, false, response.getOutputStream() );
         }
     }
 
@@ -160,7 +160,7 @@ public class DataValueSetController
 
             Set<String> ous = getOrganisationUnits( orgUnit, children );
             
-            dataValueSetService.writeDataValueSetJson( dataSet, startDate, endDate, ous, response.getOutputStream() );
+            dataValueSetService.writeDataValueSetJson( dataSet, startDate, endDate, ous, false, response.getOutputStream() );
         }
     }
 
@@ -178,7 +178,7 @@ public class DataValueSetController
         Set<String> ous = getOrganisationUnits( orgUnit, children );
 
         response.setContentType( CONTENT_TYPE_CSV );
-        dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, ous, response.getWriter() );
+        dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, ous, false, response.getWriter() );
     }
 
     private Set<String> getOrganisationUnits( Set<String> orgUnits, boolean children )

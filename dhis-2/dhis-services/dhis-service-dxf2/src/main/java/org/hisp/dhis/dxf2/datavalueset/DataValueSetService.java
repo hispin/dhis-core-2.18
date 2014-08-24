@@ -42,19 +42,22 @@ import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.scheduling.TaskId;
 
+/**
+ * @author Lars Helge Overland
+ */
 public interface DataValueSetService
 {
-    void writeDataValueSet( String dataSet, String period, String orgUnit, OutputStream out );
+    void writeDataValueSetXml( String dataSet, String period, String orgUnit, OutputStream out );
 
-    void writeDataValueSet( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, OutputStream out );
+    void writeDataValueSetXml( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, boolean includeChildren, OutputStream out );
 
     void writeDataValueSetJson( String ds, String period, String ou, OutputStream outputStream );
 
-    void writeDataValueSetJson( Set<String> dataSet, Date startDate, Date endDate, Set<String> ous, OutputStream outputStream );
+    void writeDataValueSetJson( Set<String> dataSet, Date startDate, Date endDate, Set<String> ous, boolean includeChildren, OutputStream outputStream );
 
     void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream );
     
-    void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, Writer writer );
+    void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, boolean includeChildren, Writer writer );
 
     RootNode getDataValueSetTemplate( DataSet dataSet, Period period, List<String> orgUnits,
         boolean writeComments, String ouScheme, String deScheme );
