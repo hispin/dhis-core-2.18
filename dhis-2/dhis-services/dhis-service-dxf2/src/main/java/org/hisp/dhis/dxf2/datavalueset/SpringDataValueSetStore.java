@@ -41,6 +41,7 @@ import java.util.Set;
 
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.common.Timer;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dxf2.datavalue.DataValue;
@@ -142,7 +143,7 @@ public class SpringDataValueSetStore
             DataValue dataValue = dataValueSet.getDataValueInstance();
 
             String periodType = rowSet.getString( "ptname" );
-            Date startDate = rowSet.getDate( "pestart" );
+            Date startDate = rowSet.getDate( "pestart" );            
             Period isoPeriod = PeriodType.getPeriodTypeByName( periodType ).createPeriod( startDate, calendar );
             
             dataValue.setDataElement( rowSet.getString( "deuid" ) );

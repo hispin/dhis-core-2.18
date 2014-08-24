@@ -77,6 +77,11 @@ public class Period
      * Required. Must be unique together with startDate.
      */
     private Date endDate;
+    
+    /**
+     * Transient string holding the ISO representation of the period.
+     */
+    private transient String isoPeriod;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -93,6 +98,7 @@ public class Period
         this.startDate = period.getStartDate();
         this.endDate = period.getEndDate();
         this.name = period.getName();
+        this.isoPeriod = period.getIsoDate();
     }
 
     protected Period( PeriodType periodType, Date startDate, Date endDate )
@@ -100,6 +106,14 @@ public class Period
         this.periodType = periodType;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    protected Period( PeriodType periodType, Date startDate, Date endDate, String isoPeriod )
+    {
+        this.periodType = periodType;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isoPeriod = isoPeriod;
     }
 
     // -------------------------------------------------------------------------
@@ -131,13 +145,13 @@ public class Period
     }
 
     /**
-     * Returns an ISO8601 formatted string version of the period
+     * Returns an ISO8601 formatted string version of the period.
      *
      * @return the period string
      */
     public String getIsoDate()
     {
-        return periodType.getIsoDate( this );
+        return isoPeriod != null ? isoPeriod : periodType.getIsoDate( this );
     }
 
     /**

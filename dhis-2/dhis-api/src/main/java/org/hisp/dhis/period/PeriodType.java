@@ -29,6 +29,7 @@ package org.hisp.dhis.period;
  */
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.calendar.DateInterval;
 import org.hisp.dhis.calendar.DateUnit;
@@ -37,6 +38,7 @@ import org.hisp.dhis.calendar.DateUnitType;
 import org.hisp.dhis.calendar.PeriodTypeParser;
 import org.hisp.dhis.calendar.impl.Iso8601Calendar;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.Timer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -241,8 +243,10 @@ public abstract class PeriodType
      * @return the valid Period based on the given date
      */
     public Period createPeriod( Date date, org.hisp.dhis.calendar.Calendar calendar )
-    {
-        return createPeriod( calendar.fromIso( DateUnit.fromJdkDate( date ) ), calendar );
+    {    
+        DateUnit unit = DateUnit.fromJdkDate( date );
+    
+        return createPeriod( calendar.fromIso( unit ), calendar );
     }
 
     public Period toIsoPeriod( DateUnit start, DateUnit end )
@@ -254,7 +258,10 @@ public abstract class PeriodType
 
     protected Period toIsoPeriod( DateUnit start, DateUnit end, org.hisp.dhis.calendar.Calendar calendar )
     {
-        return new Period( this, calendar.toIso( start ).toJdkDate(), calendar.toIso( end ).toJdkDate() );        
+        DateUnit from = calendar.toIso( start );
+        DateUnit to = calendar.toIso( end );
+        
+        return new Period( this, from.toJdkDate(), to.toJdkDate(), getIsoDate( from ) );        
     }
     
     public Period toIsoPeriod( DateUnit dateUnit )
@@ -424,7 +431,7 @@ public abstract class PeriodType
         final DateUnit from = cal.toIso( dateInterval.getFrom() );
         final DateUnit to = cal.toIso( dateInterval.getTo() );
 
-        return new Period( this, from.toJdkDate(), to.toJdkDate() );
+        return new Period( this, from.toJdkDate(), to.toJdkDate(), getIsoDate( from ) );
     }
 
     /**
@@ -437,7 +444,7 @@ public abstract class PeriodType
     {
         return getIsoDate( createLocalDateUnitInstance( period.getStartDate() ) );
     }
-
+    
     /**
      * Returns an iso8601 formatted string representation of the dataUnit
      *
