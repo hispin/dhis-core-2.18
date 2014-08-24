@@ -84,7 +84,8 @@ public class SpringDataValueSetStore
     }
 
     @Override
-    public void writeDataValueSetJson( Set<DataSet> dataSets, Date completeDate, Period period, OrganisationUnit orgUnit, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream outputStream )
+    public void writeDataValueSetJson( Set<DataSet> dataSets, Date completeDate, Period period, OrganisationUnit orgUnit, 
+        Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream outputStream )
     {
         DataValueSet dataValueSet = new StreamingJsonDataValueSet( outputStream );
 
@@ -96,13 +97,13 @@ public class SpringDataValueSetStore
     }
 
     @Override
-    public void writeDataValueSetCsv( Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer )
+    public void writeDataValueSetCsv( Set<DataSet> dataSets, Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer )
     {
         DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CsvWriter( writer, CSV_DELIM ) );
 
-        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet( getDataValueSql( null, periods, orgUnits ) );
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet( getDataValueSql( dataSets, periods, orgUnits ) );
 
-        writeDataValueSet( sqlRowSet, null, null, null, null, periods, orgUnits, dataValueSet );
+        writeDataValueSet( sqlRowSet, dataSets, null, null, null, periods, orgUnits, dataValueSet );
     }
 
     @Override

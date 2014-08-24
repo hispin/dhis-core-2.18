@@ -43,6 +43,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -116,18 +117,8 @@ public class ExportDataValueAction
     {
         //TODO reimplement to use web api
         
-        Set<String> orgUnits = new HashSet<>();
-        
-        for ( OrganisationUnit unit : selectionTreeManager.getReloadedSelectedOrganisationUnits() )
-        {
-            Collection<OrganisationUnit> children = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
-            
-            for ( OrganisationUnit child : children )
-            {
-                orgUnits.add( child.getUid() );
-            }
-        }
-        
+        Set<String> orgUnits = new HashSet<>( IdentifiableObjectUtils.getUids( selectionTreeManager.getSelectedOrganisationUnits() ) );
+                
         HttpServletResponse response = ServletActionContext.getResponse();
         
         if ( FORMAT_CSV.equals( exportFormat ) )
@@ -136,13 +127,13 @@ public class ExportDataValueAction
             
             Writer writer = new OutputStreamWriter( getZipOut( response, getFileName( EXTENSION_CSV ) ) );
             
-            dataValueSetService.writeDataValueSetCsv( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, writer );
+            dataValueSetService.writeDataValueSetCsv( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, true, writer );
         }
         else
         {
             ContextUtils.configureResponse( response, CONTENT_TYPE_XML, true, getFileName( EXTENSION_XML_ZIP ), true );
             
-            dataValueSetService.writeDataValueSet( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, getZipOut( response, getFileName( EXTENSION_XML ) ) );
+            dataValueSetService.writeDataValueSetXml( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, true, getZipOut( response, getFileName( EXTENSION_XML ) ) );
         }
         
         return SUCCESS;

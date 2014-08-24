@@ -42,13 +42,13 @@ import java.util.Set;
  */
 public interface DataValueSetStore
 {
-    public void writeDataValueSetXml(Set<DataSet> dataSets, Date completeDate, Period period, OrganisationUnit orgUnit,
-                                     Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out);
+    public void writeDataValueSetXml( Set<DataSet> dataSets, Date completeDate, Period period,
+        OrganisationUnit orgUnit, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out );
 
-    public void writeDataValueSetCsv(Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer);
+    public void writeDataValueSetCsv( Set<DataSet> dataSets, Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer );
 
-    public void writeDataValueSetJson(Set<DataSet> dataSets, Date completeDate, Period period, OrganisationUnit orgUnit,
-                                      Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out);
+    public void writeDataValueSetJson( Set<DataSet> dataSets, Date completeDate, Period period,
+        OrganisationUnit orgUnit, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out );
 
     void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream );
 }
