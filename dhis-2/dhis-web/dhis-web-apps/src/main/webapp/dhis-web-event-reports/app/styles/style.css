@@ -169,13 +169,15 @@ body.x-windows {
 }
 
 .ns-form-item-label-top {
-	padding-left: 4px;
+	padding-left: 2px;
 	float: none;
 	clear: none;
 	display: block;
 	margin-bottom: 2px !important;
-    font-weight: bold;
     color: #333;
+}
+.ns-form-item-label-top-padding {
+    padding-top: 3px;
 }
 
 .ns-container-default {
