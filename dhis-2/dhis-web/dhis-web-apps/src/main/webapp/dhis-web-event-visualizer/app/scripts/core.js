@@ -545,8 +545,8 @@ Ext.onReady( function() {
 
                     // dates
                     if (config.startDate && config.endDate) {
-                        layout.startDate = config.startDate;
-                        layout.endDate = config.endDate;
+                        layout.startDate = config.startDate.substr(0,10);
+                        layout.endDate = config.endDate.substr(0,10);
                     }
 
 					// properties
