@@ -77,6 +77,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.ListUtils;
@@ -130,6 +131,9 @@ public class DefaultEventAnalyticsService
     @Autowired
     private AnalyticsService analyticsService;
 
+    @Autowired
+    private SystemSettingManager systemSettingManager;
+
     // -------------------------------------------------------------------------
     // EventAnalyticsService implementation
     // -------------------------------------------------------------------------
@@ -145,6 +149,8 @@ public class DefaultEventAnalyticsService
         
         Grid grid = new ListGrid();
 
+        int maxLimit = getMaxLimit();
+        
         // ---------------------------------------------------------------------
         // Headers
         // ---------------------------------------------------------------------
@@ -169,12 +175,12 @@ public class DefaultEventAnalyticsService
 
         for ( EventQueryParams query : queries )
         {
-            analyticsManager.getAggregatedEventData( query, grid );
+            analyticsManager.getAggregatedEventData( query, grid, maxLimit );
         }
-
-        if ( grid.getHeight() > MAX_ROWS_LIMIT )
+        
+        if ( grid.getHeight() > maxLimit )
         {
-            throw new IllegalQueryException( "Number of rows produced by query is larger than the max limit: " + MAX_ROWS_LIMIT );
+            throw new IllegalQueryException( "Number of rows produced by query is larger than the max limit: " + maxLimit );
         }
 
         // ---------------------------------------------------------------------
@@ -233,7 +239,7 @@ public class DefaultEventAnalyticsService
         params.replacePeriodsWithStartEndDates();
         
         Grid grid = new ListGrid();
-
+        
         // ---------------------------------------------------------------------
         // Headers
         // ---------------------------------------------------------------------
@@ -275,7 +281,7 @@ public class DefaultEventAnalyticsService
                 count += analyticsManager.getEventCount( params );
             }
     
-            analyticsManager.getEvents( params, grid );
+            analyticsManager.getEvents( params, grid, getMaxLimit() );
     
             t.getTime( "Queried events, got: " + grid.getHeight() );
         }
@@ -615,5 +621,13 @@ public class DefaultEventAnalyticsService
         }
 
         throw new IllegalQueryException( "Item identifier does not reference any item part of the program: " + item );
+    }
+    
+    /**
+     * Returns the max records limit. 0 indicates no limit.
+     */
+    private int getMaxLimit()
+    {
+        return (Integer) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_ANALYTICS_MAX_LIMIT, SystemSettingManager.DEFAULT_ANALYTICS_MAX_LIMIT );
     }
 }
