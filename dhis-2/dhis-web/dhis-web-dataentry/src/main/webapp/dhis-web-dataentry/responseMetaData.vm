@@ -28,7 +28,8 @@
 "indicatorFormulas": {
 #set( $size = $indicators.size() )
 #foreach( $indicator in $indicators )
-"${indicator.uid}":"($!{indicator.explodedNumerator})/($!{indicator.explodedDenominator})*($!{indicator.indicatorType.factor})"#if( $velocityCount < $size ),#end
+#set( $formula = "($!{indicator.explodedNumerator})/($!{indicator.explodedDenominator})*($!{indicator.indicatorType.factor})" )
+"${indicator.uid}":"$encoder.jsonEncode( $formula )"#if( $velocityCount < $size ),#end
 #end },
 
 "dataSets": {
