@@ -1,5 +1,5 @@
 {
-    "dimensions": "Dimensiones
+    "dimensions": "Dimensiones",
     "font_size": "Tama\u00f1o de fuente",
     "at_least_one_period_must_be_specified_as_column_row_or_filter": "Se debe especificar al menos un periodo como fila, columna o filtro",
     "example1": "Creando tabla din\u00e1mica",
@@ -91,7 +91,7 @@
     "last_12_months": "\u00daltimos 12 meses",
     "bimonths": "Dos meses",
     "last_bimonth": "\u00daltimos 2 meses",
-    "last_6_bimonths": "\u00daltimos 6 "dos meses"",
+    "last_6_bimonths": "\u00daltimos 6 dos meses",
     "show_subtotals": "Mostrar sub-totales",
     "quarters": "Trimestres",
     "last_quarter": "\u00daltimo trimestre",
@@ -124,5 +124,5 @@
     "indicators_cannot_be_specified_as_filter": "Los indicadores no se pueden especificar como filtros",
     "categories_cannot_be_specified_as_filter": "Las categor\u00edas no se pueden usar como filtro",
     "data_element_group_sets_cannot_be_specified_together_with_data_sets": "Conjuntos de grupos de elementos de datos no se pueden especificar junto a sets de datos",
-    "at_least_one_dimension_must_be_specified_as_row_or_column": "Se debe especificar al menos una dimensi\u00f3n como fila o columna
+    "at_least_one_dimension_must_be_specified_as_row_or_column": "Se debe especificar al menos una dimensi\u00f3n como fila o columna"
 }
