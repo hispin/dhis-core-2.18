@@ -841,6 +841,7 @@ public class DefaultAnalyticsService
     }
     
     // TODO verify that current user can read each dimension and dimension item
+    // TODO optimize so that org unit levels + boundary are used in query instead of fetching all org units one by one
     
     public List<DimensionalObject> getDimension( String dimension, List<String> items, Date relativePeriodDate, I18nFormat format, boolean allowNull )
     {        

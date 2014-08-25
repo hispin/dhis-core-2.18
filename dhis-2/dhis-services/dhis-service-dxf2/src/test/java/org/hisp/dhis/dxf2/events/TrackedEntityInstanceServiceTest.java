@@ -34,7 +34,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;

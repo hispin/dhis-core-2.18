@@ -33,7 +33,6 @@ import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import org.hamcrest.CoreMatchers;
