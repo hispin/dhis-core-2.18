@@ -1171,6 +1171,9 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             if(dhis2Event.status === 'COMPLETED'){
                 return 'alert alert-success';//'stage-completed';
             }
+            else if(dhis2Event.status === 'SKIPPED'){
+                return 'alert alert-warning'; //'stage-skipped';
+            }
             else{                
                 if(moment(eventDate).isAfter(dhis2Event.dueDate)){
                     return 'alert alert-danger';//'stage-overdue';
