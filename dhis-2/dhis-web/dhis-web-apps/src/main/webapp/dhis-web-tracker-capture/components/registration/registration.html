@@ -76,7 +76,12 @@
                         {{selectedProgram.dateOfEnrollmentDescription}}
                     </td>
                     <td>
-                        <input type="text" placeholder="yyyy-mm-dd" name="dateOfEnrollment" class="form-control" ng-date ng-model="enrollment.incidentDate" ng-required="true"/>
+                        <span ng-if="selectedProgram.selectEnrollmentDatesInFuture">
+                            <input type="text" placeholder="yyyy-mm-dd" name="dateOfEnrollment" class="form-control" ng-date ng-model="enrollment.enrollmentDate" ng-required="true"/>
+                        </span>                        
+                        <span ng-if="!selectedProgram.selectEnrollmentDatesInFuture">
+                            <input type="text" placeholder="yyyy-mm-dd" name="dateOfEnrollment" class="form-control" ng-date ng-model="enrollment.enrollmentDate" max-date="today" ng-required="true"/>
+                        </span>
                         <span ng-show="outerForm.submitted && outerForm.dateOfEnrollment.$invalid" class="error">{{'required'| translate}}</span>
                     </td>
                 </tr>     
@@ -85,7 +90,12 @@
                         {{selectedProgram.dateOfIncidentDescription}}
                     </td>
                     <td>
-                        <input type="text" placeholder="yyyy-mm-dd" class="form-control" ng-date ng-model="enrollment.enrollmentDate" />
+                        <span ng-if="selectedProgram.selectIncidentDatesInFuture">
+                            <input type="text" placeholder="yyyy-mm-dd" class="form-control" ng-date ng-model="enrollment.incidentDate" />
+                        </span>                        
+                        <span ng-if="!selectedProgram.selectIncidentDatesInFuture">
+                            <input type="text" placeholder="yyyy-mm-dd" class="form-control" ng-date ng-model="enrollment.incidentDate" max-date="today"/>
+                        </span>
                     </td>
                 </tr>
             </table>

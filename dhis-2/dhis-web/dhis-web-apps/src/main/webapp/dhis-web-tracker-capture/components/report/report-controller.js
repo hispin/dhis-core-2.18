@@ -11,6 +11,8 @@ trackerCapture.controller('ReportController',
 
     TranslationService.translate();
     
+    $scope.today = DateUtils.format(moment());
+    
     $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];         
     $scope.selectedOuMode = $scope.ouModes[0];
     $scope.report = {};

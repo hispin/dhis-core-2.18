@@ -16,8 +16,10 @@ trackerCapture.controller('RegistrationController',
                 TranslationService) {
 
     //do translation of the registration page
-    TranslationService.translate();   
-
+    TranslationService.translate();    
+    
+    $scope.today = DateUtils.format(moment());
+    
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
     $scope.enrollment = {enrollmentDate: '', incidentDate: ''};   
     
