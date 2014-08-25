@@ -33,7 +33,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import org.hamcrest.CoreMatchers;
 import org.hisp.dhis.DhisSpringTest;
