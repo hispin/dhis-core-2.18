@@ -29,7 +29,8 @@ package org.hisp.dhis.period;
  */
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.calendar.DateInterval;
 import org.hisp.dhis.calendar.DateUnit;
@@ -47,6 +48,9 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The superclass of all PeriodTypes.
@@ -57,6 +61,23 @@ import java.util.Map;
 public abstract class PeriodType
     implements Serializable
 {
+    // cache for speeding up period lookup, uses calendar.name() + periodType.getName() + date.toString() as key
+    private static Cache<String, Period> periodCache = CacheBuilder.newBuilder()
+        .expireAfterWrite( 5, TimeUnit.MINUTES )
+        .initialCapacity( 5000 )
+        .maximumSize( 30000 )
+        .build();
+
+    private String getCacheKey( Date date )
+    {
+        return getCalendar().name() + "-" + getName() + "-" + date.toString();
+    }
+
+    private String getCacheKey( org.hisp.dhis.calendar.Calendar calendar, Date date )
+    {
+        return calendar.name() + "-" + getName() + "-" + date.toString();
+    }
+
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -219,15 +240,30 @@ public abstract class PeriodType
      * @param date the date which is contained by the created period.
      * @return the valid Period based on the given date
      */
-    public Period createPeriod( Date date )
+    public Period createPeriod( final Date date )
     {
-        return createPeriod( createCalendarInstance( date ) );
+        try
+        {
+            return periodCache.get( getCacheKey( date ), new Callable<Period>()
+            {
+                @Override
+                public Period call() throws Exception
+                {
+                    return createPeriod( createCalendarInstance( date ) );
+                }
+            } );
+        }
+        catch ( ExecutionException ignored )
+        {
+        }
+
+        return null;
     }
 
     public Period createPeriod( Calendar cal )
     {
         org.hisp.dhis.calendar.Calendar calendar = getCalendar();
-        
+
         return createPeriod( calendar.fromIso( DateUnit.fromJdkCalendar( cal ) ), calendar );
     }
 
@@ -237,21 +273,34 @@ public abstract class PeriodType
      * method is intended for use in situations where a huge number of of periods
      * will be generated and its desirable to re-use the calendar.
      *
-     * @param date the date which is contained by the created period.
+     * @param date     the date which is contained by the created period.
      * @param calendar the calendar implementation to use.
      * @return the valid Period based on the given date
      */
-    public Period createPeriod( Date date, org.hisp.dhis.calendar.Calendar calendar )
-    {    
-        DateUnit unit = DateUnit.fromJdkDate( date );
-    
-        return createPeriod( calendar.fromIso( unit ), calendar );
+    public Period createPeriod( final Date date, final org.hisp.dhis.calendar.Calendar calendar )
+    {
+        try
+        {
+            return periodCache.get( getCacheKey( calendar, date ), new Callable<Period>()
+            {
+                @Override
+                public Period call() throws Exception
+                {
+                    return createPeriod( calendar.fromIso( DateUnit.fromJdkDate( date ) ), calendar );
+                }
+            } );
+        }
+        catch ( ExecutionException ignored )
+        {
+        }
+
+        return null;
     }
 
     public Period toIsoPeriod( DateUnit start, DateUnit end )
     {
         org.hisp.dhis.calendar.Calendar cal = getCalendar();
-        
+
         return toIsoPeriod( start, end, cal );
     }
 
@@ -259,15 +308,15 @@ public abstract class PeriodType
     {
         DateUnit from = calendar.toIso( start );
         DateUnit to = calendar.toIso( end );
-        
-        return new Period( this, from.toJdkDate(), to.toJdkDate(), getIsoDate( from ) );        
+
+        return new Period( this, from.toJdkDate(), to.toJdkDate(), getIsoDate( from ) );
     }
-    
+
     public Period toIsoPeriod( DateUnit dateUnit )
     {
         return toIsoPeriod( dateUnit, dateUnit );
-    }    
-    
+    }
+
     public abstract Period createPeriod( DateUnit dateUnit, org.hisp.dhis.calendar.Calendar calendar );
 
     /**
@@ -298,7 +347,7 @@ public abstract class PeriodType
     public static Calendar createCalendarInstance()
     {
         org.hisp.dhis.calendar.Calendar cal = getCalendar();
-        
+
         return cal.toIso( cal.today() ).toJdkCalendar();
     }
 
@@ -426,7 +475,7 @@ public abstract class PeriodType
         }
 
         org.hisp.dhis.calendar.Calendar cal = getCalendar();
-        
+
         final DateUnit from = cal.toIso( dateInterval.getFrom() );
         final DateUnit to = cal.toIso( dateInterval.getTo() );
 
@@ -443,7 +492,7 @@ public abstract class PeriodType
     {
         return getIsoDate( createLocalDateUnitInstance( period.getStartDate() ) );
     }
-    
+
     /**
      * Returns an iso8601 formatted string representation of the dataUnit
      *
