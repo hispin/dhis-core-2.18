@@ -33,8 +33,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -92,6 +94,13 @@ public class DefaultModuleManager
     public void setDefaultActionName( String defaultActionName )
     {
         this.defaultActionName = defaultActionName;
+    }
+    
+    private Set<String> menuModuleExclusions = new HashSet<>();
+    
+    public void setMenuModuleExclusions( Set<String> menuModuleExclusions )
+    {
+        this.menuModuleExclusions = menuModuleExclusions;
     }
     
     // -------------------------------------------------------------------------
@@ -182,7 +191,7 @@ public class DefaultModuleManager
             
             if ( packageConfig.getAllActionConfigs().size() == 0 )
             {
-                log.warn( "Ignoring action package with no actions: " + name );
+                log.debug( "Ignoring action package with no actions: " + name );
 
                 continue;
             }
@@ -208,8 +217,10 @@ public class DefaultModuleManager
             Module module = new Module( name, namespace );
             modulesByName.put( name, module );
             modulesByNamespace.put( namespace, module );
+            
+            boolean include = !menuModuleExclusions.contains( name );
 
-            if ( packageConfig.getActionConfigs().containsKey( defaultActionName ) )
+            if ( packageConfig.getActionConfigs().containsKey( defaultActionName ) && include )
             {
                 module.setDefaultAction( ".." + namespace + "/" + defaultActionName + ".action" );
 
