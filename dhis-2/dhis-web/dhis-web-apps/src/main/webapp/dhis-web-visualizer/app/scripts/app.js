@@ -5996,11 +5996,12 @@ Ext.onReady( function() {
                             }
                         }());
 
-                        // user info
+                        // user info, i18n
                         requests.push({
                             url: init.contextPath + '/api/me/user-account.json',
                             success: function(r) {
-                                init.keyUiLocale = Ext.decode(r.responseText).settings.keyUiLocale || 'en';
+                                var defaultKeyUiLocale = 'en';
+                                init.keyUiLocale = Ext.decode(r.responseText).settings.keyUiLocale || defaultKeyUiLocale;
 
                                 // i18n
                                 Ext.Ajax.request({
@@ -6008,6 +6009,31 @@ Ext.onReady( function() {
                                     success: function(r) {
                                         NS.i18n = Ext.decode(r.responseText);
                                         fn();
+                                    },
+                                    failure: function() {
+                                        var failure = function() {
+                                            alert('No translations found for system locale (' + init.keyUiLocale + ') or default locale (' + defaultKeyUiLocale + ').');
+                                        };
+
+                                        if (init.keyUiLocale !== defaultKeyUiLocale) {
+                                            Ext.Ajax.request({
+                                                url: 'i18n/' + defaultKeyUiLocale + '.json',
+                                                success: function(r) {
+                                                    console.log('No translations found for system locale (' + init.keyUiLocale + ').');
+                                                    NS.i18n = Ext.decode(r.responseText);
+                                                },
+                                                failure: function() {
+                                                    failure();
+                                                },
+                                                callback: function() {
+                                                    fn();
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            fn();
+                                            failure();
+                                        }
                                     }
                                 });
                             }

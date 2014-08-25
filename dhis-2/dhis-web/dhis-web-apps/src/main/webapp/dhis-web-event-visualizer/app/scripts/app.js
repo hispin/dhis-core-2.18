@@ -533,7 +533,7 @@ Ext.onReady( function() {
                         else {
                             container.valueStore.loadOptionSet();
                         }
-                    }
+                    }                    
                 });
 
                 this.valueCmp = Ext.create('Ext.form.field.Text', {
@@ -6775,6 +6775,7 @@ Ext.onReady( function() {
                                             });
                                         }
                                         else {
+                                            fn();
                                             failure();
                                         }
                                     }
