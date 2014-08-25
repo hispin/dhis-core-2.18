@@ -2785,15 +2785,18 @@ Ext.onReady( function() {
 				var dimensionHeaders = xResponse.dimensionHeaders,
 					rows = xResponse.rows,
                     names = xResponse.metaData.names,
+                    pager = xResponse.metaData.pager,
+                    count = pager.page * pager.pageSize - pager.pageSize
 					tableCls = 'pivot',
 					html = '';
-
+                    
 				xResponse.sortableIdObjects = [];
 
 				tableCls += layout.displayDensity ? ' ' + layout.displayDensity : '';
 				tableCls += layout.fontSize ? ' ' + layout.fontSize : '';
 
 				html += '<table class="' + tableCls + '"><tr>';
+                html += '<td class="pivot-dim pivot-dim-subtotal">' + '#' + '</td>';                
 
 				// get header indexes
 				for (var i = 0, header, uuid; i < dimensionHeaders.length; i++) {
@@ -2814,6 +2817,7 @@ Ext.onReady( function() {
 				for (var i = 0, row; i < rows.length; i++) {
 					row = rows[i];
 					html += '<tr>';
+                    html += '<td class="pivot-value align-right">' + (count + (i + 1)) + '</td>';                    
 
 					for (var j = 0, str, header, name; j < dimensionHeaders.length; j++) {
 						header = dimensionHeaders[j];

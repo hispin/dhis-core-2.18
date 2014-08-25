@@ -3068,6 +3068,7 @@ Ext.onReady( function() {
             periodMode,
             onPeriodModeSelect,
             getDateLink,
+            onDateFieldRender,
 			startDate,
 			endDate,
             startEndDate,
@@ -3911,27 +3912,49 @@ Ext.onReady( function() {
             });
         };
 
-        startDate = Ext.create('Ext.form.field.Date', {
+        onDateFieldRender = function(c) {
+            $('#' + c.inputEl.id).calendarsPicker({
+                calendar: ns.core.init.calendar,
+                dateFormat: ns.core.init.dateFormat
+            });
+        };
+        
+        startDate = Ext.create('Ext.form.field.Text', {
 			fieldLabel: 'Start date',
 			labelAlign: 'top',
-			labelCls: 'ns-form-item-label-top',
+			labelCls: 'ns-form-item-label-top ns-form-item-label-top-padding',
 			labelSeparator: '',
-            width: (accBaseWidth / 2) - 1,
-			style: 'margin:4px 1px 7px 0; color: #333;',
-			format: 'Y-m-d',
-			value: new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))
-		});
+            columnWidth: 0.5,
+            height: 44,
+            value: function() {
+                var greg = $.calendars.instance('gregorian'),
+                    date = greg.parseDate('yyyy-mm-dd', (new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))).toJSON().slice(0,10));
 
-		endDate = Ext.create('Ext.form.field.Date', {
+                date = ns.core.init.calendar.fromJD(date.toJD());
+                return ns.core.init.calendar.formatDate(ns.core.init.dateFormat, date);
+            }(),
+            listeners: {
+                render: function(c) {
+                    onDateFieldRender(c);
+                }
+            }
+        });
+
+        endDate = Ext.create('Ext.form.field.Text', {
 			fieldLabel: 'End date',
 			labelAlign: 'top',
-			labelCls: 'ns-form-item-label-top',
+			labelCls: 'ns-form-item-label-top ns-form-item-label-top-padding',
 			labelSeparator: '',
-            width: (accBaseWidth / 2) - 1,
-			style: 'margin:4px 1px 7px 0; color: #333;',
-			format: 'Y-m-d',
-			value: new Date()
-		});
+            columnWidth: 0.5,
+            height: 44,
+            style: 'margin-left: 1px',
+            value: ns.core.init.calendar.today().toString(),
+            listeners: {
+                render: function(c) {
+                    onDateFieldRender(c);
+                }
+            }
+        });
 
         startEndDate = Ext.create('Ext.container.Container', {
             cls: 'ns-container-default',
@@ -4313,13 +4336,13 @@ Ext.onReady( function() {
 		});
 
         onPeriodTypeSelect = function(value) {
-            var ptype = new PeriodType(),
+            var periodType = value,
+                generator = ns.core.init.periodGenerator,
+                periods = generator.filterFuturePeriodsExceptCurrent(generator.generateReversedPeriods(periodType, this.periodOffset));
 
-                periods = ptype.get(value).generatePeriods({
-                    offset: periodType.periodOffset,
-                    filterFuturePeriods: true,
-                    reversePeriods: true
-                });
+            for (var i = 0; i < periods.length; i++) {
+                periods[i].id = periods[i].iso;
+            }
 
             fixedPeriodAvailableStore.setIndex(periods);
             fixedPeriodAvailableStore.loadData(periods);
@@ -7061,13 +7084,47 @@ Ext.onReady( function() {
                 Ext.Ajax.request({
                     url: init.contextPath + '/api/system/info.json',
                     success: function(r) {
-                        init.contextPath = Ext.decode(r.responseText).contextPath || init.contextPath;
+                        var info = Ext.decode(r.responseText);
+
+                        // context path
+                        init.contextPath = info.contextPath || init.contextPath;
+
+                        // calendars
+                        init.dateFormat = info.dateFormat || 'yyyy-mm-dd';
+
+                        (function() {
+                            var dhis2PeriodUrl = '../../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
+                                defaultCalendarId = 'gregorian',
+                                calendarIdMap = {'iso8601': defaultCalendarId},
+                                calendarId = calendarIdMap[info.calendar] || info.calendar || defaultCalendarId,
+                                calendarIds = ['coptic', 'ethiopian', 'islamic', 'julian', 'nepali', 'thai'],
+                                calendarScriptUrl,
+                                createGenerator;
+
+                            // calendar
+                            createGenerator = function() {
+                                init.calendar = $.calendars.instance(calendarId);
+                                init.periodGenerator = new dhis2.period.PeriodGenerator(init.calendar, init.dateFormat);
+                            };
+
+                            if (Ext.Array.contains(calendarIds, calendarId)) {
+                                calendarScriptUrl = '../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarId + '.min.js';
+
+                                Ext.Loader.injectScriptElement(calendarScriptUrl, function() {
+                                    Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
+                                });
+                            }
+                            else {
+                                Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
+                            }
+                        }());
 
                         // user info, i18n
                         requests.push({
                             url: init.contextPath + '/api/me/user-account.json',
                             success: function(r) {
-                                init.keyUiLocale = Ext.decode(r.responseText).settings.keyUiLocale || 'en';
+                                var defaultKeyUiLocale = 'en';                                
+                                init.keyUiLocale = Ext.decode(r.responseText).settings.keyUiLocale || defaultKeyUiLocale;
 
                                 // i18n
                                 Ext.Ajax.request({
@@ -7075,6 +7132,30 @@ Ext.onReady( function() {
                                     success: function(r) {
                                         NS.i18n = Ext.decode(r.responseText);
                                         fn();
+                                    },
+                                    failure: function() {
+                                        var failure = function() {
+                                            alert('No translations found for system locale (' + init.keyUiLocale + ') or default locale (' + defaultKeyUiLocale + ').');
+                                        };
+
+                                        if (init.keyUiLocale !== defaultKeyUiLocale) {
+                                            Ext.Ajax.request({
+                                                url: 'i18n/' + defaultKeyUiLocale + '.json',
+                                                success: function(r) {
+                                                    console.log('No translations found for system locale (' + init.keyUiLocale + ').');
+                                                    NS.i18n = Ext.decode(r.responseText);
+                                                },
+                                                failure: function() {
+                                                    failure();
+                                                },
+                                                callback: function() {
+                                                    fn();
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            failure();
+                                        }
                                     }
                                 });
                             }

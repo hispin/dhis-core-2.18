@@ -4530,6 +4530,8 @@ Ext.onReady( function() {
                 calendar: gis.init.calendar,
                 dateFormat: gis.init.dateFormat
             });
+
+            Ext.get(c.id).setStyle('z-index', 100000);
         };
 
         startDate = Ext.create('Ext.form.field.Text', {
