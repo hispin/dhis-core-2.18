@@ -6,6 +6,12 @@
 
 	<include file="dhis-web-commons.xml" />
 
+	<package name="dhis-web-apps" extends="dhis-web-commons" namespace="/dhis-web-apps">
+		<action name="index" class="org.hisp.dhis.commons.action.NoAction">
+			<result name="success" type="redirect">index.html</result>
+		</action>
+    </package>
+    
 	<package name="dhis-web-pivot" extends="dhis-web-commons" namespace="/dhis-web-pivot">
 		<action name="index" class="org.hisp.dhis.commons.action.NoAction">
 			<result name="success" type="redirect">app/index.html</result>
