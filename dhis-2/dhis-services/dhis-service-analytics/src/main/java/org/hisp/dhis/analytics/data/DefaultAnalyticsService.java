@@ -128,6 +128,7 @@ import org.hisp.dhis.period.RelativePeriodEnum;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.AscendingPeriodEndDateComparator;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.DebugUtils;
@@ -194,6 +195,9 @@ public class DefaultAnalyticsService
 
     @Autowired
     private DataElementOperandService operandService;
+    
+    @Autowired
+    private SystemSettingManager systemSettingManager;
 
     @Autowired
     private CurrentUserService currentUserService;
@@ -704,7 +708,7 @@ public class DefaultAnalyticsService
     {
         queryPlanner.validateMaintenanceMode();
         
-        int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, MAX_QUERIES );
+        int optimalQueries = MathUtils.getWithin( getProcessNo(), 1, MAX_QUERIES );
         
         Timer t = new Timer().start();
         
@@ -1239,5 +1243,17 @@ public class DefaultAnalyticsService
         }
         
         return metaData;
+    }
+
+    /**
+     * Gets the number of available cores. Uses explicit number from system
+     * setting if available. Detects number of cores from current server runtime
+     * if not.
+     */
+    private int getProcessNo()
+    {
+        Integer cores = (Integer) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_DATABASE_SERVER_CPUS );
+        
+        return ( cores == null || cores == 0 ) ? SystemUtils.getCpuCores() : cores;
     }
 }

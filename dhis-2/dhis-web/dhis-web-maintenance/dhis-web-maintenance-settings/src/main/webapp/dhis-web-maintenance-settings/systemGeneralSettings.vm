@@ -4,6 +4,7 @@
       jQuery.postUTF8('setSystemGeneralSettings.action', {
         cacheStrategy: getFieldValue('cacheStrategy'),
         analyticsMaxLimit: getFieldValue('analyticsMaxLimit'),
+        databaseServerCpus: getFieldValue('databaseServerCpus'),
         infrastructuralDataElements: getFieldValue('infrastructuralDataElements'),
         infrastructuralPeriodType: getFieldValue('infrastructuralPeriodType'),
         feedbackRecipients: getFieldValue('feedbackRecipients'),
@@ -43,6 +44,19 @@
 	<option value="100000" #if( $keyAnalyticsMaxLimit == "100000" )selected="selected"#end>100 000</option>
 	<option value="200000" #if( $keyAnalyticsMaxLimit == "200000" )selected="selected"#end>200 000</option>
 	<option value="0" #if( $keyAnalyticsMaxLimit == "0" )selected="selected"#end>$i18n.getString( "unlimited" )</option>
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "no_of_database_server_cpus" )</div>
+
+<div class="setting">
+<select id="databaseServerCpus" name="databaseServerCpus">
+	<option value="0">$i18n.getString( "automatic" ) ($i18n.getString( "detect_based_on_web_server" ))</option>
+	<option value="2" #if( $keyDatabaseServerCpus == "2" )selected="selected"#end>2</option>
+	<option value="4" #if( $keyDatabaseServerCpus == "4" )selected="selected"#end>4</option>
+	<option value="8" #if( $keyDatabaseServerCpus == "8" )selected="selected"#end>8</option>
+	<option value="16" #if( $keyDatabaseServerCpus == "16" )selected="selected"#end>16</option>
+	<option value="32" #if( $keyDatabaseServerCpus == "32" )selected="selected"#end>32</option>
 </select>
 </div>
 

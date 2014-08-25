@@ -47,6 +47,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.Clock;
@@ -86,6 +87,9 @@ public class DefaultAnalyticsTableService
     
     @Autowired
     private Notifier notifier;
+    
+    @Autowired
+    private SystemSettingManager systemSettingManager;
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -294,10 +298,18 @@ public class DefaultAnalyticsTableService
         }
     }
     
+    /**
+     * Gets the number of available cores. Uses explicit number from system
+     * setting if available. Detects number of cores from current server runtime
+     * if not. Subtracts one to the number of cores if greater than two to allow
+     * one core for general system operations.
+     */
     private int getProcessNo()
     {
-        int cores = SystemUtils.getCpuCores();
+        Integer cores = (Integer) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_DATABASE_SERVER_CPUS );
         
+        cores = ( cores == null || cores == 0 ) ? SystemUtils.getCpuCores() : cores;
+                        
         return cores > 2 ? ( cores - 1 ) : cores;
     }
 }
