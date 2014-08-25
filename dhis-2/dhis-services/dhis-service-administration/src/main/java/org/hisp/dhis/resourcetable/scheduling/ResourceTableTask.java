@@ -38,6 +38,7 @@ import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.system.util.Clock;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -73,6 +74,7 @@ public class ResourceTableTask
     public void run()
     {
         final Date startTime = new Date();
+        final Clock clock = new Clock().startClock();
         
         notifier.notify( taskId, "Generating resource tables" );
         
@@ -80,7 +82,7 @@ public class ResourceTableTask
         {
             generateAll();
             
-            notifier.notify( taskId, NotificationLevel.INFO, "Resource tables generated", true );
+            notifier.notify( taskId, NotificationLevel.INFO, "Resource tables generated: " + clock.time(), true );
         }
         catch ( RuntimeException ex )
         {

@@ -41,6 +41,7 @@ import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.DebugUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -117,6 +118,7 @@ public class AnalyticsTableTask
     public void run()
     {
         final Date startTime = new Date();
+        final Clock clock = new Clock().startClock();
         
         notifier.clear( taskId ).notify( taskId, "Analytics table update process started" );
 
@@ -149,7 +151,7 @@ public class AnalyticsTableTask
                 eventAnalyticsTableService.update( lastYears, taskId );
             }
             
-            notifier.notify( taskId, INFO, "Analytics tables updated", true );
+            notifier.notify( taskId, INFO, "Analytics tables updated: " + clock.time(), true );
         }
         catch ( RuntimeException ex )
         {
