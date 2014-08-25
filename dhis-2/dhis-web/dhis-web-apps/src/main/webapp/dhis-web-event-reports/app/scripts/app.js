@@ -7134,6 +7134,7 @@ Ext.onReady( function() {
                                             });
                                         }
                                         else {
+                                            fn();
                                             failure();
                                         }
                                     }
