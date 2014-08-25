@@ -44,7 +44,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
-import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
@@ -78,12 +77,12 @@ public class JdbcEventAnalyticsManager
     
     @Autowired
     private StatementBuilder statementBuilder;
-
+    
     // -------------------------------------------------------------------------
     // EventAnalyticsManager implementation
     // -------------------------------------------------------------------------
 
-    public Grid getAggregatedEventData( EventQueryParams params, Grid grid )
+    public Grid getAggregatedEventData( EventQueryParams params, Grid grid, int maxLimit )
     {
         String countClause = ( params.isProgramRegistration() && params.isUniqueInstances() ) ? "count(distinct tei)" : "count(psi)";
         
@@ -127,7 +126,7 @@ public class JdbcEventAnalyticsManager
         }
         else
         {
-            sql += "limit " + ( EventAnalyticsService.MAX_ROWS_LIMIT + 1 );
+            sql += "limit " + ( maxLimit + 1 );
         }
         
         // ---------------------------------------------------------------------
@@ -176,7 +175,7 @@ public class JdbcEventAnalyticsManager
         }
     }
     
-    public Grid getEvents( EventQueryParams params, Grid grid )
+    public Grid getEvents( EventQueryParams params, Grid grid, int maxLimit )
     {
         List<String> fixedCols = Arrays.asList( "psi", "ps", "executiondate", "longitude", "latitude", "ouname", "oucode" );
         
@@ -226,7 +225,7 @@ public class JdbcEventAnalyticsManager
         }
         else
         {
-            sql += "limit " + ( EventAnalyticsService.MAX_ROWS_LIMIT + 1 );
+            sql += "limit " + ( maxLimit + 1 );
         }
 
         // ---------------------------------------------------------------------
