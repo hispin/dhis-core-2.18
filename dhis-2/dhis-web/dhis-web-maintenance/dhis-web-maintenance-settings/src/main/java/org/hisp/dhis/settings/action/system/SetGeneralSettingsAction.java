@@ -111,6 +111,13 @@ public class SetGeneralSettingsAction
     {
         this.analyticsMaxLimit = analyticsMaxLimit;
     }
+    
+    private Integer databaseServerCpus;
+    
+    public void setDatabaseServerCpus( Integer databaseServerCpus )
+    {
+        this.databaseServerCpus = databaseServerCpus;
+    }
 
     private Integer infrastructuralDataElements;
 
@@ -218,6 +225,7 @@ public class SetGeneralSettingsAction
     {
         systemSettingManager.saveSystemSetting( KEY_CACHE_STRATEGY, cacheStrategy );
         systemSettingManager.saveSystemSetting( KEY_ANALYTICS_MAX_LIMIT, analyticsMaxLimit );
+        systemSettingManager.saveSystemSetting( KEY_DATABASE_SERVER_CPUS, databaseServerCpus );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         systemSettingManager.saveSystemSetting( KEY_PHONE_NUMBER_AREA_CODE, phoneNumberAreaCode );
