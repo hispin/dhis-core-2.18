@@ -3,7 +3,6 @@ trackerCapture.controller('EnrollmentController',
                 $scope,  
                 $timeout,
                 $location,
-                orderByFilter,
                 DateUtils,
                 EventUtils,
                 storage,
@@ -16,7 +15,8 @@ trackerCapture.controller('EnrollmentController',
                 ModalService,
                 DialogService) {
     TranslationService.translate();
-
+    
+    $scope.today = DateUtils.format(moment());
     
     //listen for the selected items
     $scope.$on('selectedItems', function(event, args) {   
