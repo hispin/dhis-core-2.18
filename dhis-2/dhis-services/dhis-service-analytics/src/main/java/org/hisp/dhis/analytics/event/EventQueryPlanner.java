@@ -54,4 +54,9 @@ public interface EventQueryPlanner
      * @param params the query params.
      */
     EventQueryParams planEventQuery( EventQueryParams params );
+    
+    /**
+     * Returns the max number of records to return.
+     */
+    int getMaxLimit();
 }

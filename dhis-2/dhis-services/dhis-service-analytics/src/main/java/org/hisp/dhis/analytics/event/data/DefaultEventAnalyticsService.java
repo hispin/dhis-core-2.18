@@ -149,7 +149,7 @@ public class DefaultEventAnalyticsService
         
         Grid grid = new ListGrid();
 
-        int maxLimit = getMaxLimit();
+        int maxLimit = queryPlanner.getMaxLimit();
         
         // ---------------------------------------------------------------------
         // Headers
@@ -281,7 +281,7 @@ public class DefaultEventAnalyticsService
                 count += analyticsManager.getEventCount( params );
             }
     
-            analyticsManager.getEvents( params, grid, getMaxLimit() );
+            analyticsManager.getEvents( params, grid, queryPlanner.getMaxLimit() );
     
             t.getTime( "Queried events, got: " + grid.getHeight() );
         }
@@ -621,13 +621,5 @@ public class DefaultEventAnalyticsService
         }
 
         throw new IllegalQueryException( "Item identifier does not reference any item part of the program: " + item );
-    }
-    
-    /**
-     * Returns the max records limit. 0 indicates no limit.
-     */
-    private int getMaxLimit()
-    {
-        return (Integer) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_ANALYTICS_MAX_LIMIT, SystemSettingManager.DEFAULT_ANALYTICS_MAX_LIMIT );
     }
 }
