@@ -1552,7 +1552,7 @@ Ext.onReady( function() {
 					url: gis.init.contextPath + '/api/analytics/events/query/' + view.program.id + '.json' + paramString,
 					disableCaching: false,
 					failure: function(r) {
-						alert(r.responseText);
+                        alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 					},
 					success: function(r) {
 						success(Ext.decode(r.responseText));
@@ -2511,7 +2511,7 @@ Ext.onReady( function() {
 					url: gis.init.contextPath + '/api/analytics.json' + paramString,
 					disableCaching: false,
 					failure: function(r) {
-						alert(r.responseText);
+                        alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 					},
 					success: function(r) {
 						success(Ext.decode(r.responseText));

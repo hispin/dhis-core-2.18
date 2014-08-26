@@ -1033,7 +1033,7 @@ Ext.onReady( function() {
 							params: Ext.encode(favorite),
 							failure: function(r) {
 								ns.core.web.mask.show();
-								alert(r.responseText);
+                                alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 							},
 							success: function(r) {
 								var id = r.getAllResponseHeaders().location.split('/').pop();
@@ -1065,7 +1065,7 @@ Ext.onReady( function() {
 							method: 'GET',
 							failure: function(r) {
 								ns.core.web.mask.show();
-								alert(r.responseText);
+                                alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 							},
 							success: function(r) {
 								chart = Ext.decode(r.responseText);
@@ -1078,7 +1078,7 @@ Ext.onReady( function() {
 									params: Ext.encode(chart),
 									failure: function(r) {
 										ns.core.web.mask.show();
-										alert(r.responseText);
+                                        alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 									},
 									success: function(r) {
 										if (ns.app.layout && ns.app.layout.id && ns.app.layout.id === id) {
@@ -1308,7 +1308,7 @@ Ext.onReady( function() {
 										method: 'GET',
 										failure: function(r) {
 											ns.app.viewport.mask.hide();
-											alert(r.responseText);
+                                            alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 										},
 										success: function(r) {
 											var sharing = Ext.decode(r.responseText),
@@ -2190,7 +2190,7 @@ Ext.onReady( function() {
 					url: init.contextPath + '/api/charts/' + id + '.json?fields=' + ns.core.conf.url.analysisFields.join(','),
 					failure: function(r) {
 						web.mask.hide(ns.app.centerRegion);
-						alert(r.responseText);
+                        alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 					},
 					success: function(r) {
 						var layoutConfig = Ext.decode(r.responseText),
@@ -2231,8 +2231,8 @@ Ext.onReady( function() {
 						if (r.status === 413 || r.status === 414) {
 							web.analytics.validateUrl(init.contextPath + '/api/analytics.json' + paramString);
 						}
-						else {
-							alert(r.responseText);
+                        else {
+                            alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 						}
 					},
 					success: function(r) {

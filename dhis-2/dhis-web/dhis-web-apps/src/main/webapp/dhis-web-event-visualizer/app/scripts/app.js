@@ -1829,7 +1829,7 @@ Ext.onReady( function() {
 							params: Ext.encode(favorite),
 							failure: function(r) {
 								ns.core.web.mask.show();
-								alert(r.responseText);
+                                alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 							},
 							success: function(r) {
 								var id = r.getAllResponseHeaders().location.split('/').pop();
@@ -1860,7 +1860,7 @@ Ext.onReady( function() {
 							method: 'GET',
 							failure: function(r) {
 								ns.core.web.mask.show();
-								alert(r.responseText);
+                                alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 							},
 							success: function(r) {
 								eventChart = Ext.decode(r.responseText);
@@ -1873,7 +1873,7 @@ Ext.onReady( function() {
 									params: Ext.encode(eventChart),
 									failure: function(r) {
 										ns.core.web.mask.show();
-										alert(r.responseText);
+                                        alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 									},
 									success: function(r) {
 										if (ns.app.layout && ns.app.layout.id === id) {
@@ -2108,7 +2108,7 @@ Ext.onReady( function() {
 										method: 'GET',
 										failure: function(r) {
 											ns.app.viewport.mask.hide();
-											alert(r.responseText);
+                                            alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 										},
 										success: function(r) {
 											var sharing = Ext.decode(r.responseText),
@@ -5763,7 +5763,7 @@ Ext.onReady( function() {
 					url: init.contextPath + '/api/eventCharts/' + id + '.json?fields=' + conf.url.analysisFields.join(','),
 					failure: function(r) {
 						web.mask.hide(ns.app.centerRegion);
-						alert(r.responseText);
+                        alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 					},
 					success: function(r) {
 						var layoutConfig = Ext.decode(r.responseText),
@@ -5792,7 +5792,7 @@ Ext.onReady( function() {
 
 						web.mask.hide(ns.app.centerRegion);
 
-                        alert(r.responseText);
+                        alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 					},
 					success: function(r) {
                         ns.app.dateCreate = new Date();

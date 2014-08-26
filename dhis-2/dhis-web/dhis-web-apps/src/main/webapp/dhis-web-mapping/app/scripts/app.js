@@ -2903,7 +2903,7 @@ Ext.onReady( function() {
 										method: 'GET',
 										failure: function(r) {
                                             gis.olmap.mask.hide();
-											alert(r.responseText);
+                                            alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
 										},
 										success: function(r) {
 											var sharing = Ext.decode(r.responseText),
