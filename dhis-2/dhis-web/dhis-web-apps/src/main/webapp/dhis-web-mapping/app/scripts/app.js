@@ -600,7 +600,7 @@ Ext.onReady( function() {
 				isLoaded: false,
 				pageSize: 10,
 				page: 1,
-				defaultUrl: gis.init.contextPath + gis.conf.finals.url.path_api + 'maps.json?fields=id,name,access',
+				defaultUrl: gis.init.contextPath + '/api/maps.json?fields=id,name,access',
 				loadStore: function(url) {
 					this.proxy.url = url || this.defaultUrl;
 
@@ -2629,7 +2629,7 @@ Ext.onReady( function() {
 					};
 
 					Ext.Ajax.request({
-						url: gis.init.contextPath + gis.conf.finals.url.path_api + 'maps/',
+						url: gis.init.contextPath + '/api/maps/',
 						method: 'POST',
 						headers: {'Content-Type': 'application/json'},
 						params: Ext.encode(map),
@@ -3854,84 +3854,88 @@ Ext.onReady( function() {
 	};
 
 	GIS.app.InterpretationWindow = function() {
-		var window,
-			textarea,
-			panel,
-			button;
+		var textArea,
+			shareButton,
+			window;
 
-		textarea = Ext.create('Ext.form.field.TextArea', {
-			cls: 'gis-textarea',
-			height: 130,
-			fieldStyle: 'padding-left: 3px; padding-top: 3px',
-			emptyText: GIS.i18n.write_your_interpretation + '..'
-		});
-
-		panel = Ext.create('Ext.panel.Panel', {
-			cls: 'gis-container-inner',
-			html: function() {
-				var moduleUrl = gis.init.contextPath + '/dhis-web-mapping/app/index.html?id=' + gis.map.id,
-					apiUrl = gis.init.contextPath + '/api/maps/' + gis.map.id + '/data',
-					html = '';
-
-				html += '<div><b>Map link: </b><span class="user-select"><a href="' + moduleUrl + '" target="_blank">' + moduleUrl + '</a></span></div>';
-				html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
-
-				return html;
-			}(),
-			style: 'padding:3px',
-		});
-
-		button = Ext.create('Ext.button.Button', {
-			text: GIS.i18n.share,
-			handler: function() {
-				if (textarea.getValue() && gis.map && gis.map.id) {
-					Ext.Ajax.request({
-						url: gis.init.contextPath + gis.conf.finals.url.path_api + 'interpretations/map/' + gis.map.id,
-						method: 'POST',
-						params: textarea.getValue(),
-						headers: {'Content-Type': 'text/html'},
-						success: function() {
-							window.destroy();
-						}
-					});
+		if (Ext.isString(gis.map.id)) {
+            textArea = Ext.create('Ext.form.field.TextArea', {
+                cls: 'gis-textarea',
+                height: 130,
+                fieldStyle: 'padding-left: 3px; padding-top: 3px',
+                emptyText: GIS.i18n.write_your_interpretation + '..',
+				enableKeyEvents: true,
+				listeners: {
+					keyup: function() {
+						shareButton.xable();
+					}
 				}
-			}
-		});
+            });
 
-		window = Ext.create('Ext.window.Window', {
-			title: gis.map.name,
-			layout: 'fit',
-			iconCls: 'gis-window-title-icon-interpretation',
-			cls: 'gis-container-default',
-            bodyStyle: 'padding: 1px',
-			width: 500,
-			resizable: true,
-			modal: true,
-			items: [
-				textarea,
-				panel
-			],
-			bbar: [
-				'->',
-				button
-			],
-			listeners: {
-				show: function() {
-					this.setPosition(325, 33);
+			shareButton = Ext.create('Ext.button.Button', {
+				text: GIS.i18n.share,
+				disabled: true,
+				xable: function() {
+					this.setDisabled(!textArea.getValue());
 				},
-				destroy: function() {
-					document.body.oncontextmenu = function(){
-						return false;
-					};
+				handler: function() {
+					if (textArea.getValue()) {
+						Ext.Ajax.request({
+                            url: gis.init.contextPath + '/api/interpretations/map/' + gis.map.id,
+							method: 'POST',
+							params: textArea.getValue(),
+							headers: {'Content-Type': 'text/html'},
+							success: function() {
+								textArea.reset();
+								window.hide();
+							}
+						});
+					}
 				}
+			});
 
-			}
-		});
+            window = Ext.create('Ext.window.Window', {
+                title: gis.map.name,
+                layout: 'fit',
+                iconCls: 'gis-window-title-icon-interpretation',
+                cls: 'gis-container-default',
+                bodyStyle: 'padding: 1px',
+                width: 500,
+                resizable: true,
+                modal: true,
+                items: [
+                    textArea
+                ],
+				bbar: {
+					//cls: 'gis-toolbar-bbar',
+					defaults: {
+						height: 24
+					},
+					items: [
+						'->',
+						shareButton
+					]
+				},
+                listeners: {
+                    show: function() {
+                        this.setPosition(325, 33);
 
-		document.body.oncontextmenu = true; // right click to copy url
+						document.body.oncontextmenu = true;
+                    },
+					hide: function() {
+						document.body.oncontextmenu = function(){return false;};
+					},
+					destroy: function() {
+						gis.viewport.interpretationWindow = null;
+					}
+                }
+            });
 
-		return window;
-	};
+			return window;
+		}
+
+		return;
+    };
 
 	GIS.app.CircleLayer = function(features, radius) {
 		var points = gis.util.map.getPointsByFeatures(features),
@@ -8504,12 +8508,104 @@ Ext.onReady( function() {
 			}
 		});
 
+        favoriteUrlItem = Ext.create('Ext.menu.Item', {
+			text: 'Favorite link' + '&nbsp;&nbsp;',
+			iconCls: 'gis-menu-item-datasource',
+			disabled: true,
+			xable: function() {
+				if (gis.map.id) {
+					this.enable();
+				}
+				else {
+					this.disable();
+				}
+			},
+            handler: function() {
+                var url = gis.init.contextPath + '/dhis-web-mapping/app/index.html?id=' + gis.map.id,
+                    textField,
+                    window;
+
+                textField = Ext.create('Ext.form.field.Text', {
+                    html: '<a class="user-select td-nobreak" target="_blank" href="' + url + '">' + url + '</a>'
+                });
+
+				window = Ext.create('Ext.window.Window', {
+					title: 'Favorite link',
+					layout: 'fit',
+					modal: true,
+					resizable: false,
+					destroyOnBlur: true,
+                    bodyStyle: 'padding: 12px 18px; background-color: #fff; font-size: 11px',
+                    html: '<a class="user-select td-nobreak" target="_blank" href="' + url + '">' + url + '</a>',
+					listeners: {
+						show: function(w) {
+                            this.setPosition(325, 33);
+
+							document.body.oncontextmenu = true;
+						},
+						hide: function() {
+							document.body.oncontextmenu = function(){return false;};
+						}
+					}
+				});
+
+				window.show();
+            }
+        });
+
+        apiUrlItem = Ext.create('Ext.menu.Item', {
+			text: 'API link' + '&nbsp;&nbsp;',
+			iconCls: 'gis-menu-item-datasource',
+			disabled: true,
+			xable: function() {
+				if (gis.map.id) {
+					this.enable();
+				}
+				else {
+					this.disable();
+				}
+			},
+            handler: function() {
+                var url = gis.init.contextPath + '/api/maps/' + gis.map.id + '/data',
+                    textField,
+                    window;
+
+                textField = Ext.create('Ext.form.field.Text', {
+                    html: '<a class="user-select td-nobreak" target="_blank" href="' + url + '">' + url + '</a>'
+                });
+
+				window = Ext.create('Ext.window.Window', {
+					title: 'API link',
+					layout: 'fit',
+					modal: true,
+					resizable: false,
+					destroyOnBlur: true,
+                    bodyStyle: 'padding: 12px 18px; background-color: #fff; font-size: 11px',
+                    html: '<a class="user-select td-nobreak" target="_blank" href="' + url + '">' + url + '</a>',
+					listeners: {
+						show: function(w) {
+                            this.setPosition(325, 33);
+
+							document.body.oncontextmenu = true;
+						},
+						hide: function() {
+							document.body.oncontextmenu = function(){return false;};
+						}
+					}
+				});
+
+				window.show();
+            }
+        });
+
 		shareButton = Ext.create('Ext.button.Button', {
 			text: GIS.i18n.share,
             disabled: true,
 			xableItems: function() {
 				interpretationItem.xable();
 				pluginItem.xable();
+				favoriteUrlItem.xable();
+				apiUrlItem.xable();
 			},
 			menu: {
 				cls: 'gis-menu',
@@ -8517,7 +8613,9 @@ Ext.onReady( function() {
 				showSeparator: false,
 				items: [
 					interpretationItem,
-					pluginItem
+					pluginItem,
+                    favoriteUrlItem,
+                    apiUrlItem
 				],
 				listeners: {
 					afterrender: function() {
