@@ -234,7 +234,7 @@ public class Schema implements Ordered
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDisplayName()
     {
-        return displayName != null ? displayName : name;
+        return displayName != null ? displayName : getName();
     }
 
     public void setDisplayName( String displayName )
