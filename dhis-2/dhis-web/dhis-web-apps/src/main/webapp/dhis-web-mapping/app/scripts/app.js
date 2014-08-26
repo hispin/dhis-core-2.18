@@ -9183,7 +9183,19 @@ Ext.onReady( function() {
                                     url: 'i18n/' + init.keyUiLocale + '.json',
                                     success: function(r) {
                                         GIS.i18n = Ext.decode(r.responseText);
-                                        fn();
+
+                                        if (init.keyUiLocale !== defaultKeyUiLocale) {
+                                            Ext.Ajax.request({
+                                                url: 'i18n/' + defaultKeyUiLocale + '.json',
+                                                success: function(r) {
+                                                    Ext.applyIf(NS.i18n, Ext.decode(r.responseText));
+                                                },
+                                                callback: fn
+                                            })
+                                        }
+                                        else {
+                                            fn();
+                                        }
                                     },
                                     failure: function() {
                                         var failure = function() {
@@ -9200,9 +9212,7 @@ Ext.onReady( function() {
                                                 failure: function() {
                                                     failure();
                                                 },
-                                                callback: function() {
-                                                    fn();
-                                                }
+                                                callback: fn
                                             });
                                         }
                                         else {
