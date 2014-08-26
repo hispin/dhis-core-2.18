@@ -63,19 +63,19 @@ public abstract class PeriodType
 {
     // cache for speeding up period lookup, uses calendar.name() + periodType.getName() + date.toString() as key
     private static Cache<String, Period> periodCache = CacheBuilder.newBuilder()
-        .expireAfterWrite( 5, TimeUnit.MINUTES )
-        .initialCapacity( 5000 )
+        .expireAfterAccess( 5, TimeUnit.MINUTES )
+        .initialCapacity( 10000 )
         .maximumSize( 30000 )
         .build();
 
     private String getCacheKey( Date date )
     {
-        return getCalendar().name() + "-" + getName() + "-" + date.toString();
+        return getCalendar().name() + getName() + date.getTime();
     }
 
     private String getCacheKey( org.hisp.dhis.calendar.Calendar calendar, Date date )
     {
-        return calendar.name() + "-" + getName() + "-" + date.toString();
+        return calendar.name() + getName() + date.getTime();
     }
 
     /**

@@ -100,11 +100,23 @@ public class TimeUnit
         this.second = second;
     }
 
+    /**
+     * Convert a Joda-Time DateTime object to a TimeUnit
+     *
+     * @param dateTime DateTime object to convert
+     * @return TimeUnit object created from given DateTime
+     */
     public static TimeUnit fromDateTime( DateTime dateTime )
     {
         return new TimeUnit( dateTime.getHourOfDay(), dateTime.getMinuteOfHour(), dateTime.getSecondOfMinute() );
     }
 
+    /**
+     * Convert a JDK Calendar to TimeUnit object
+     *
+     * @param calendar Calendar to convert
+     * @return TimeUnit object created from given Calendar
+     */
     public static TimeUnit fromJdkCalendar( Calendar calendar )
     {
         int amPm = calendar.get( Calendar.AM_PM );
@@ -113,6 +125,12 @@ public class TimeUnit
             calendar.get( Calendar.SECOND ) );
     }
 
+    /**
+     * Convert a JDK Date to TimeUnit object
+     *
+     * @param date Date to convert
+     * @return TimeUnit object created from given Date
+     */
     public static TimeUnit fromJdkDate( Date date )
     {
         return fromDateTime( new DateTime( date.getTime() ) );
