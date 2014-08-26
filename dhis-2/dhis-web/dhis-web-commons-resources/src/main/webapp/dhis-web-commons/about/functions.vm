@@ -1,5 +1,5 @@
 <ul class="moduleList">
-	#introListImgItem( "../dhis-web-commons-about/help.action", "help_center", "function-help-center" )
+    #introListImgItem( "$!helpPageLink", "help_center", "function-help-center" )
     #introListImgItem( "../dhis-web-commons-about/software.action", "supportive_software", "function-supportive-software" )
     #introListImgItem( "../dhis-web-commons-about/modules.action", "system_overview", "function-system-overview" )
     #introListImgItem( "../api", "web_api", "function-web-api" )

@@ -14,7 +14,8 @@
         phoneNumberAreaCode: getFieldValue('phoneNumberAreaCode'),
         googleAnalyticsUA: getFieldValue('googleAnalyticsUA'),
         multiOrganisationUnitForms: jQuery('#multiOrganisationUnitForms').is(':checked'),
-        analyticsMaintenanceMode: jQuery('#analyticsMaintenanceMode').is(':checked')
+        analyticsMaintenanceMode: jQuery('#analyticsMaintenanceMode').is(':checked'),
+        helpPageLink: getFieldValue('helpPageLink')
       }, function( json ) {
         if( json.response == "success" ) {
           setHeaderDelayMessage(json.message);
@@ -113,6 +114,12 @@
 
 <div class="setting">
 	<input type="text" id="phoneNumberAreaCode" name="phoneNumberAreaCode" value="$!phoneNumberAreaCode"/>
+</div>
+
+<div class="settingLabel">$i18n.getString( "help_page_link" )</div>
+
+<div class="setting">
+	<input type="text" id="helpPageLink" name="helpPageLink" value="$!helpPageLink"/>
 </div>
 
 <div class="settingLabel">$i18n.getString( "google_analytics_ua_key" )</div>
