@@ -3,17 +3,17 @@
 /* App Module */
 
 var trackerCapture = angular.module('trackerCapture',
-		 ['ui.bootstrap', 
-		  'ngRoute', 
-		  'ngCookies',  
-		  'trackerCaptureServices',
-		  'trackerCaptureFilters',
-                  'trackerCaptureDirectives', 
-                  'trackerCaptureControllers',
-		  'angularLocalStorage',
-                  'ui.select2',
-                  'd2Menu',
-		  'pascalprecht.translate'])
+        ['ui.bootstrap', 
+         'ngRoute', 
+         'ngCookies',  
+         'trackerCaptureServices',
+         'trackerCaptureFilters',
+         'trackerCaptureDirectives', 
+         'trackerCaptureControllers',
+         'angularLocalStorage',
+         'ui.select2',
+         'd2Menu',
+         'pascalprecht.translate'])
               
 .value('DHIS2URL', '..')
 
@@ -28,6 +28,9 @@ var trackerCapture = angular.module('trackerCapture',
     }).when('/dashboard',{
         templateUrl:'components/dashboard/dashboard.html',
         controller: 'DashboardController'
+    }).when('/report',{
+        templateUrl:'components/report/report.html',
+        controller: 'ReportController'
     }).otherwise({
         redirectTo : '/'
     });  

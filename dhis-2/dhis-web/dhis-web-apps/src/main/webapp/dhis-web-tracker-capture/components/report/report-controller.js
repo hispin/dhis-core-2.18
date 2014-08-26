@@ -7,7 +7,9 @@ trackerCapture.controller('ReportController',
                 TEIGridService,
                 TranslationService,
                 AttributesFactory,
-                DHIS2EventFactory) {
+                ProgramFactory,
+                DHIS2EventFactory,
+                storage) {
 
     TranslationService.translate();
     
@@ -16,6 +18,57 @@ trackerCapture.controller('ReportController',
     $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];         
     $scope.selectedOuMode = $scope.ouModes[0];
     $scope.report = {};
+    
+    //watch for selection of org unit from tree
+    $scope.$watch('selectedOrgUnit', function() {        
+        if( angular.isObject($scope.selectedOrgUnit)){            
+            storage.set('SELECTED_OU', $scope.selectedOrgUnit);            
+            $scope.loadPrograms($scope.selectedOrgUnit);
+        }
+    });
+    
+    //load programs associated with the selected org unit.
+    $scope.loadPrograms = function(orgUnit) {                
+        
+        $scope.selectedOrgUnit = orgUnit;
+        
+        if (angular.isObject($scope.selectedOrgUnit)) {   
+
+            ProgramFactory.getAll().then(function(programs){
+                $scope.programs = [];
+                angular.forEach(programs, function(program){                            
+                    if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id)){                                
+                        $scope.programs.push(program);
+                    }
+                });
+
+                if($scope.programs.length === 0){
+                    $scope.selectedProgram = null;
+                }
+                else{
+                    if($scope.selectedProgram){
+                        angular.forEach($scope.programs, function(program){                            
+                            if(program.id === $scope.selectedProgram.id){                                
+                                $scope.selectedProgram = program;
+                            }
+                        });
+                    }
+                    else{                        
+                        if($scope.programs.length === 1){
+                            $scope.selectedProgram = $scope.programs[0];
+                        }                        
+                    }
+                } 
+            });
+        }        
+    };
+    
+    //watch for selection of org unit from tree
+    $scope.$watch('selectedProgram', function() {        
+        if( angular.isObject($scope.selectedProgram)){            
+            $scope.dataReady = false;
+        }
+    });
     
     $scope.generateReport = function(){
         
@@ -71,6 +124,7 @@ trackerCapture.controller('ReportController',
                         ev = EventUtils.setEventOrgUnitName(ev);
                     }
                 });
+                
             });
         });
     };

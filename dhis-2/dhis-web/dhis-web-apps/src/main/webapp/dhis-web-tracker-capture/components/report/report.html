@@ -1,11 +1,50 @@
-<div class="bordered-div"  ng-controller="ReportController">
+<script src="../dhis-web-commons/ouwt/ouwt.js"></script>
+<script src="scripts/tracker-capture.js"></script>
+
+<div id="leftBar">
+   
+    <div class='col-sm-12'>
+        <h2>
+            {{'menu' | translate}}
+        </h2>
+    </div>
+    <ul class="nav nav-pills nav-stacked" ng-controller="LeftBarMenuController">
+        <li><a href class='menuTitle' ng-click="showHome()">{{'registration_and_data_entry' | translate}}</a></li>
+        <li><a href class='menuTitle' ng-click="showSummaryReport()">{{'program_summary_report' | translate}}</a></li>
+        <li><a href class='menuTitle' ng-click="showVisitSchedule()">{{'visit_schedule' | translate}}</a></li>
+        <li><a href class='menuTitle' ng-click="showLostToFollowup()">{{'lost_to_followup' | translate}}</a></li>
+    </ul>
+    <div id="orgUnitTree" style="margin-top:20px">
+        <ul>
+        </ul>
+    </div>
+    <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
+    <!--- selected org unit begins -->
+    <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
+    <!--- selected org unit ends  -->
+</div>
+
+<div id="mainPage" class="bordered-div">
     <form name="outerForm" novalidate>               
         <div class="row">
-            <div class="col-md-6">
-                <table class="table-borderless">
+            <div class="col-sm-12 col-md-8">
+                <table class="table table-borderless table-striped">
                     <tr>
-                        <td>{{'org_unit'| translate}}</td>
-                        <td>                    
+                        <td class='col-sm-6 col-md-4 vertical-center'>
+                            {{'program' | translate}}
+                        </td>
+                        <td class='col-sm-6 col-md-4'>
+                            <select ng-model="selectedProgram"
+                                    class="form-control"
+                                    ng-options="program as program.name for program in programs | orderBy: 'name'" 
+                                    ng-disabled="programs.length < 1">
+                                <option value="">{{programs.length > 0 ? 'please_select_a_program' : 'no_program_exists' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='col-sm-6 col-md-4 vertical-center'>{{'org_unit'| translate}}</td>
+                        <td class='col-sm-6 col-md-4'>                 
                             <label><input type="radio" ng-model="selectedOuMode.name" name="selected" value="SELECTED"> {{'SELECTED'| translate}}</label><br/>
                             <label><input type="radio" ng-model="selectedOuMode.name" name="children" value="CHILDREN"> {{'CHILDREN'| translate}}</label><br/>
                             <label><input type="radio" ng-model="selectedOuMode.name" name="descendants" value="DESCENDANTS"> {{'DESCENDANTS'| translate}}</label><br/>
@@ -30,9 +69,8 @@
                     </tr>
                 </table>                
             </div>
-            <div class="col-md-6 trim">                  
-                <button type="button" class="btn btn-primary" ng-click="generateReport()" ng-disabled="!selectedProgram">{{'go'| translate}}</button>
-                <button type="button" class="btn btn-default small-horizonal-spacing" ng-click="showReport()">{{'close'| translate}}</button>
+            <div class="col-md-6 trim">
+                <button type="button" class="btn btn-primary" ng-click="generateReport()" ng-disabled="!selectedProgram">{{'go'| translate}}</button>               
             </div>
         </div>
     </form>

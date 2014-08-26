@@ -346,7 +346,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }, function () {
         });
     };
-    
+
     $scope.showDashboard = function(currentEntity){   
         $location.path('/dashboard').search({tei: currentEntity.id,                                            
                                             program: $scope.selectedProgram ? $scope.selectedProgram.id: null});                                    
@@ -380,6 +380,23 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             $scope.hiddenGridColumns++;            
         }      
     };    
+})
+
+//Controller for the header section
+.controller('LeftBarMenuController',
+        function($scope,
+                $location,
+                TranslationService) {
+
+    TranslationService.translate();
+    
+    $scope.showHome = function(){
+        $location.path('/').search();                                    
+    };
+    
+    $scope.showSummaryReport = function(){   
+        $location.path('/report').search();                                    
+    };   
 })
 
 //Controller for the header section
