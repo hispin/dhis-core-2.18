@@ -576,6 +576,7 @@ public class DefaultIdentifiableObjectManager
     // Supportive methods
     //--------------------------------------------------------------------------
 
+    @SuppressWarnings("unchecked")
     private <T extends IdentifiableObject> GenericIdentifiableObjectStore<IdentifiableObject> getIdentifiableObjectStore( Class<T> clazz )
     {
         initMaps();
@@ -595,6 +596,7 @@ public class DefaultIdentifiableObjectManager
         return (GenericIdentifiableObjectStore<IdentifiableObject>) store;
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends NameableObject> GenericNameableObjectStore<NameableObject> getNameableObjectStore( Class<T> clazz )
     {
         initMaps();

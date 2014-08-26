@@ -425,7 +425,7 @@ public class ExpressionServiceTest
     @Test
     public void testAddGetExpression()
     {
-        Expression expression = new Expression( expressionA, descriptionA, dataElements, optionCombos );
+        Expression expression = new Expression( expressionA, descriptionA, dataElements );
 
         int id = expressionService.addExpression( expression );
 
@@ -439,7 +439,7 @@ public class ExpressionServiceTest
     @Test
     public void testUpdateExpression()
     {
-        Expression expression = new Expression( expressionA, descriptionA, dataElements, optionCombos );
+        Expression expression = new Expression( expressionA, descriptionA, dataElements );
 
         int id = expressionService.addExpression( expression );
 
@@ -462,8 +462,8 @@ public class ExpressionServiceTest
     @Test
     public void testDeleteExpression()
     {
-        Expression exprA = new Expression( expressionA, descriptionA, dataElements, optionCombos );
-        Expression exprB = new Expression( expressionB, descriptionB, dataElements, optionCombos );
+        Expression exprA = new Expression( expressionA, descriptionA, dataElements );
+        Expression exprB = new Expression( expressionB, descriptionB, dataElements );
 
         int idA = expressionService.addExpression( exprA );
         int idB = expressionService.addExpression( exprB );
@@ -485,8 +485,8 @@ public class ExpressionServiceTest
     @Test
     public void testGetAllExpressions()
     {
-        Expression exprA = new Expression( expressionA, descriptionA, dataElements, optionCombos );
-        Expression exprB = new Expression( expressionB, descriptionB, dataElements, optionCombos );
+        Expression exprA = new Expression( expressionA, descriptionA, dataElements );
+        Expression exprB = new Expression( expressionB, descriptionB, dataElements );
 
         expressionService.addExpression( exprA );
         expressionService.addExpression( exprB );

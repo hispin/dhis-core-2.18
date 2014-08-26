@@ -215,7 +215,6 @@ public class AddValidationRuleAction
         leftSide.setDescription( leftSideDescription );
         leftSide.setNullIfBlank( leftSideNullIfBlank );
         leftSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( leftSideExpression ) );
-        leftSide.setOptionCombosInExpression( expressionService.getOptionCombosInExpression( leftSideExpression ) );
         
         Expression rightSide = new Expression();
         
@@ -223,7 +222,6 @@ public class AddValidationRuleAction
         rightSide.setDescription( rightSideDescription );
         rightSide.setNullIfBlank( rightSideNullIfBlank );
         rightSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSideExpression ) );
-        rightSide.setOptionCombosInExpression( expressionService.getOptionCombosInExpression( rightSideExpression ) );
         
         ValidationRule validationRule = new ValidationRule();
         

@@ -281,16 +281,16 @@ public class ValidationRuleServiceTest
         optionCombos.add( optionCombo );
 
         expressionA = new Expression( "#{" + dataElementA.getUid() + suffix + "} + #{" + dataElementB.getUid() + suffix + "}",
-            "descriptionA", dataElementsA, optionCombos );
+            "descriptionA", dataElementsA );
         expressionB = new Expression( "#{" + dataElementC.getUid() + suffix + "} - #{" + dataElementD.getUid() + suffix + "}",
-            "descriptionB", dataElementsB , optionCombos);
-        expressionC = new Expression( "#{" + dataElementB.getUid() + suffix + "} * 2", "descriptionC", dataElementsC, optionCombos );
-        expressionD = new Expression( "#{" + dataElementB.getUid() + suffix + "}", "descriptionD", dataElementsC, optionCombos );
-        expressionE = new Expression( "#{" + dataElementB.getUid() + suffix + "} * 1.5", "descriptionE", dataElementsC, optionCombos );
+            "descriptionB", dataElementsB );
+        expressionC = new Expression( "#{" + dataElementB.getUid() + suffix + "} * 2", "descriptionC", dataElementsC );
+        expressionD = new Expression( "#{" + dataElementB.getUid() + suffix + "}", "descriptionD", dataElementsC );
+        expressionE = new Expression( "#{" + dataElementB.getUid() + suffix + "} * 1.5", "descriptionE", dataElementsC );
         expressionF = new Expression( "#{" + dataElementB.getUid() + suffix + "} / #{" + dataElementE.getUid() + suffix + "}",
-        		"descriptionF", dataElementsD, optionCombos );
+        		"descriptionF", dataElementsD );
         expressionG = new Expression( "#{" + dataElementB.getUid() + suffix + "} * 1.5 / #{" + dataElementE.getUid() + suffix + "}",
-        		"descriptionG", dataElementsD, optionCombos );
+        		"descriptionG", dataElementsD );
 
         expressionService.addExpression( expressionA );
         expressionService.addExpression( expressionB );

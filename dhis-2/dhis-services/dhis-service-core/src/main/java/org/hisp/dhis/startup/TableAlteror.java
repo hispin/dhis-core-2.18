@@ -127,6 +127,7 @@ public class TableAlteror
         executeSql( "DROP TABLE dashboarditem_trackedentitytabularreports" );
         executeSql( "DROP TABLE categoryoptioncombousergroupaccesses" );
         executeSql( "DROP TABLE validationrulegroupuserrolestoalert" );
+        executeSql( "DROP TABLE expressionoptioncombo" );
         executeSql( "ALTER TABLE categoryoptioncombo drop column userid" );
         executeSql( "ALTER TABLE categoryoptioncombo drop column publicaccess" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
