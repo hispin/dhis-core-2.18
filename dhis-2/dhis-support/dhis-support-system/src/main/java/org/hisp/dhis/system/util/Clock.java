@@ -57,6 +57,8 @@ public class Clock
     
     public String time()
     {
+        super.split();
+        
         return DurationFormatUtils.formatDurationHMS( super.getSplitTime() );
     }
     
