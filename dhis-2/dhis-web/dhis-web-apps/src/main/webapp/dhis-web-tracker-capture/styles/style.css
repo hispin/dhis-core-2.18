@@ -20,7 +20,11 @@ div#leftBar {
 }
 
 div#orgUnitTree {
-    height: 75%;
+    height: 50%;
+}
+
+.menuTitle {
+    font-size: 1em;
 }
 
 .top-bar {

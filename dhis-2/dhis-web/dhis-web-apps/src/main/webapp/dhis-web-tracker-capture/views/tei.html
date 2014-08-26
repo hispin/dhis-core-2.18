@@ -13,7 +13,7 @@
         
         <!-- entity begins -->
         <div class="vertical-spacing">
-            <table class="table table-striped dhis2-table-hover">               
+            <table class="table table-striped dhis2-table-hover table-bordered">               
                 <thead>                        
                     <tr>
                         <th ng-show="gridColumn.show" ng-repeat="gridColumn in gridColumns">
@@ -33,8 +33,9 @@
                 </tbody>        
             </table>
         </div>
-        <!-- entity ends -->  
-        <serverside-paginator></serverside-paginator> 
-                  
+        <!-- entity ends -->      
+        <span ng-if='pager.pageCount > 1'>
+            <serverside-paginator></serverside-paginator> 
+        </span>                  
     </div>
 </div> 
