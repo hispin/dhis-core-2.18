@@ -430,8 +430,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid ) throws
-        Exception
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid ) 
+        throws Exception
     {
         List<T> objects = getEntity( uid );
 

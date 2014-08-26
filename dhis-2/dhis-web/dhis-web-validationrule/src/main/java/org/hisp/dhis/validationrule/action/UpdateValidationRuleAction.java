@@ -227,13 +227,11 @@ public class UpdateValidationRuleAction
         validationRule.getLeftSide().setDescription( leftSideDescription );
         validationRule.getLeftSide().setNullIfBlank( leftSideNullIfBlank );
         validationRule.getLeftSide().setDataElementsInExpression( expressionService.getDataElementsInExpression( leftSideExpression ) );
-        validationRule.getLeftSide().setOptionCombosInExpression( expressionService.getOptionCombosInExpression( leftSideExpression ) );
 
         validationRule.getRightSide().setExpression( rightSideExpression );
         validationRule.getRightSide().setDescription( rightSideDescription );
         validationRule.getRightSide().setNullIfBlank( rightSideNullIfBlank );
         validationRule.getRightSide().setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSideExpression ) );
-        validationRule.getRightSide().setOptionCombosInExpression( expressionService.getOptionCombosInExpression( rightSideExpression ) );
         validationRule.setOrganisationUnitLevel( organisationUnitLevel );
         
         PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );

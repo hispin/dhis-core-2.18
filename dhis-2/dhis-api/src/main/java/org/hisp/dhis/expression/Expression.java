@@ -108,12 +108,6 @@ public class Expression
     @Scanned
     private Set<DataElement> dataElementsInExpression = new HashSet<>();
 
-    /**
-     * A reference to the optionCombos in the Expression.
-     */
-    @Scanned
-    private Set<DataElementCategoryOptionCombo> optionCombosInExpression = new HashSet<>();
-
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -138,13 +132,11 @@ public class Expression
      * @param description              A description of the Expression.
      * @param dataElementsInExpression A reference to the DataElements in the Expression.
      */
-    public Expression( String expression, String description, Set<DataElement> dataElementsInExpression,
-        Set<DataElementCategoryOptionCombo> optionCombosInExpression )
+    public Expression( String expression, String description, Set<DataElement> dataElementsInExpression )
     {
         this.expression = expression;
         this.description = description;
         this.dataElementsInExpression = dataElementsInExpression;
-        this.optionCombosInExpression = optionCombosInExpression;
     }
 
     // -------------------------------------------------------------------------
@@ -230,7 +222,6 @@ public class Expression
             ", explodedExpression='" + explodedExpression + '\'' +
             ", description='" + description + '\'' +
             ", dataElementsInExpression=" + dataElementsInExpression.size() +
-            ", optionCombosInExpression=" + optionCombosInExpression.size() +
             '}';
     }
 
@@ -274,21 +265,6 @@ public class Expression
     public void setDataElementsInExpression( Set<DataElement> dataElementsInExpression )
     {
         this.dataElementsInExpression = dataElementsInExpression;
-    }
-
-    @JsonProperty(value = "categoryOptionCombos")
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "categoryOptionCombos", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "categoryOptionCombo", namespace = DxfNamespaces.DXF_2_0)
-    public Set<DataElementCategoryOptionCombo> getOptionCombosInExpression()
-    {
-        return optionCombosInExpression;
-    }
-
-    public void setOptionCombosInExpression( Set<DataElementCategoryOptionCombo> optionCombosInExpression )
-    {
-        this.optionCombosInExpression = optionCombosInExpression;
     }
 
     @JsonProperty
@@ -338,8 +314,5 @@ public class Expression
 
         dataElementsInExpression = other.getDataElementsInExpression() == null ?
             dataElementsInExpression : new HashSet<>( other.getDataElementsInExpression() );
-
-        optionCombosInExpression = other.getOptionCombosInExpression() == null ?
-            optionCombosInExpression : new HashSet<>( other.getOptionCombosInExpression() );
     }
 }

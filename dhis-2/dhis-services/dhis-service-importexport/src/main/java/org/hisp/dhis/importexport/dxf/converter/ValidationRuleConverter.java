@@ -172,15 +172,11 @@ public class ValidationRuleConverter
             
             validationRule.getLeftSide().setDataElementsInExpression(
                 expressionService.getDataElementsInExpression( validationRule.getLeftSide().getExpression() ) );
-            validationRule.getLeftSide().setOptionCombosInExpression(
-                expressionService.getOptionCombosInExpression( validationRule.getLeftSide().getExpression() ) );
 
             validationRule.getRightSide().setExpression( values.get( FIELD_RIGHTSIDE_EXPRESSION ) );
             validationRule.getRightSide().setDescription( values.get( FIELD_RIGHTSIDE_DESCRIPTION ) );
             validationRule.getRightSide().setDataElementsInExpression(
                 expressionService.getDataElementsInExpression( validationRule.getRightSide().getExpression() ) );
-            validationRule.getRightSide().setOptionCombosInExpression(
-                expressionService.getOptionCombosInExpression( validationRule.getRightSide().getExpression() ) );
 
             validationRule.setPeriodType( PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME ) );
 

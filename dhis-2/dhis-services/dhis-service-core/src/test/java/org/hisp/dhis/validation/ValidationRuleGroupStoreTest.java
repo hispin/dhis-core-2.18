@@ -120,8 +120,8 @@ public class ValidationRuleGroupStoreTest
         optionCombos = new HashSet<>();
         optionCombos.add( categoryOptionCombo );
 
-        expressionA = new Expression( "expressionA", "descriptionA", dataElements, optionCombos );
-        expressionB = new Expression( "expressionB", "descriptionB", dataElements, optionCombos );
+        expressionA = new Expression( "expressionA", "descriptionA", dataElements );
+        expressionB = new Expression( "expressionB", "descriptionB", dataElements );
 
         expressionService.addExpression( expressionB );
         expressionService.addExpression( expressionA );

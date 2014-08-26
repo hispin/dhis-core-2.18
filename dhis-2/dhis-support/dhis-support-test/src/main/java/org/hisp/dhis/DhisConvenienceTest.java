@@ -1061,7 +1061,6 @@ public abstract class DhisConvenienceTest
         expression.setExpression( expressionString );
         expression.setDescription( "Description" + uniqueCharacter );
         expression.setDataElementsInExpression( dataElementsInExpression );
-        expression.setOptionCombosInExpression( optionCombosInExpression );
 
         return expression;
     }

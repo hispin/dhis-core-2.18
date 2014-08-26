@@ -124,7 +124,7 @@ public class ExpressionStoreTest
     @Test
     public void testAddGetExpression()
     {
-        Expression expr = new Expression( expressionA, descriptionA, dataElements, optionCombos );
+        Expression expr = new Expression( expressionA, descriptionA, dataElements );
 
         int id = expressionStore.save( expr );
 
@@ -138,7 +138,7 @@ public class ExpressionStoreTest
     @Test
     public void testUpdateExpression()
     {
-        Expression expr = new Expression( expressionA, descriptionA, dataElements, optionCombos );
+        Expression expr = new Expression( expressionA, descriptionA, dataElements );
 
         int id = expressionStore.save( expr );
 
@@ -161,8 +161,8 @@ public class ExpressionStoreTest
     @Test
     public void testDeleteExpression()
     {
-        Expression exprA = new Expression( expressionA, descriptionA, dataElements, optionCombos );
-        Expression exprB = new Expression( expressionB, descriptionB, dataElements, optionCombos );
+        Expression exprA = new Expression( expressionA, descriptionA, dataElements );
+        Expression exprB = new Expression( expressionB, descriptionB, dataElements );
 
         int idA = expressionStore.save( exprA );
         int idB = expressionStore.save( exprB );
@@ -184,8 +184,8 @@ public class ExpressionStoreTest
     @Test
     public void testGetAllExpressions()
     {
-        Expression exprA = new Expression( expressionA, descriptionA, dataElements, optionCombos );
-        Expression exprB = new Expression( expressionB, descriptionB, dataElements, optionCombos );
+        Expression exprA = new Expression( expressionA, descriptionA, dataElements );
+        Expression exprB = new Expression( expressionB, descriptionB, dataElements );
 
         expressionStore.save( exprA );
         expressionStore.save( exprB );

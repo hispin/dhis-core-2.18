@@ -261,14 +261,12 @@ public class DefaultCsvImportService
                 leftSide.setDescription( getSafe( values, 10, null, 255 ) );
                 leftSide.setNullIfBlank( Boolean.valueOf( getSafe( values, 11, Boolean.FALSE.toString(), 5 ) ) );
                 leftSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( leftSide.getExpression() ) );
-                leftSide.setOptionCombosInExpression( expressionService.getOptionCombosInExpression( leftSide.getExpression() ) );
                 leftSide.setNullIfBlank( true );
                 
                 rightSide.setExpression( getSafe( values, 12, null, 255 ) );
                 rightSide.setDescription( getSafe( values, 13, null, 255 ) );
                 rightSide.setNullIfBlank( Boolean.valueOf( getSafe( values, 14, Boolean.FALSE.toString(), 5 ) ) );
                 rightSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSide.getExpression() ) );
-                rightSide.setOptionCombosInExpression( expressionService.getOptionCombosInExpression( rightSide.getExpression() ) );
                 rightSide.setNullIfBlank( true );
                 
                 object.setLeftSide( leftSide );

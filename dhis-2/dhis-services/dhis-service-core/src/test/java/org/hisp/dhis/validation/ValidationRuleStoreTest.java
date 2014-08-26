@@ -115,8 +115,8 @@ public class ValidationRuleStoreTest
         optionCombos = new HashSet<>();
         optionCombos.add( categoryOptionCombo );
 
-        expressionA = new Expression( "expressionA", "descriptionA", dataElements, optionCombos );
-        expressionB = new Expression( "expressionB", "descriptionB", dataElements, optionCombos );
+        expressionA = new Expression( "expressionA", "descriptionA", dataElements );
+        expressionB = new Expression( "expressionB", "descriptionB", dataElements );
 
         expressionService.addExpression( expressionB );
         expressionService.addExpression( expressionA );
@@ -246,9 +246,9 @@ public class ValidationRuleStoreTest
         dataElementsD.addAll( dataElementsA );
         dataElementsD.addAll( dataElementsB );
 
-        Expression expression1 = new Expression( "Expression1", "Expression1", dataElementsA, optionCombos );
-        Expression expression2 = new Expression( "Expression2", "Expression2", dataElementsB, optionCombos );
-        Expression expression3 = new Expression( "Expression3", "Expression3", dataElementsC, optionCombos );
+        Expression expression1 = new Expression( "Expression1", "Expression1", dataElementsA );
+        Expression expression2 = new Expression( "Expression2", "Expression2", dataElementsB );
+        Expression expression3 = new Expression( "Expression3", "Expression3", dataElementsC );
 
         expressionService.addExpression( expression1 );
         expressionService.addExpression( expression2 );
