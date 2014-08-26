@@ -330,6 +330,11 @@
   margin: 0;
 }
 
+.gridTable th
+{
+  text-align: center;
+}
+
 .gridTable td
 {
   text-align: right;
