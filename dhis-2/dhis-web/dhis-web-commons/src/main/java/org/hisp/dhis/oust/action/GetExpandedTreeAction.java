@@ -99,8 +99,7 @@ public class GetExpandedTreeAction
 
     public String execute()
         throws Exception
-    {     
-        
+    {        
         roots = new ArrayList<>( selectionTreeManager.getRootOrganisationUnits() );
 
         Collections.sort( roots, IdentifiableObjectNameComparator.INSTANCE );
