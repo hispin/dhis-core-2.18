@@ -102,6 +102,7 @@ public interface SystemSettingManager
     final String KEY_LAST_SUCCESSFUL_DATA_SYNC = "keyLastSuccessfulDataSynch";
     final String KEY_LAST_SUCCESSFUL_ANALYTICS_TABLES_UPDATE = "keyLastSuccessfulAnalyticsTablesUpdate";
     final String KEY_LAST_SUCCESSFUL_RESOURCE_TABLES_UPDATE = "keyLastSuccessfulResourceTablesUpdate";
+    final String KEY_HELP_PAGE_LINK = "helpPageLink";
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";
@@ -120,7 +121,8 @@ public interface SystemSettingManager
     final String DEFAULT_CACHE_STRATEGY = "CACHE_6AM_TOMORROW";
     final int DEFAULT_ANALYTICS_MAX_LIMIT = 50000;
     final int DEFAULT_DATABASE_SERVER_CPUS = 0; // Detect automatically
-
+    final String DEFAULT_HELP_PAGE_LINK = "../dhis-web-commons-about/help.action";
+	
     final Map<String, Serializable> DEFAULT_SETTINGS_VALUES = new HashMap<String, Serializable>()
     {
         {

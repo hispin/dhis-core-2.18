@@ -942,6 +942,17 @@
 (function () {
     dhis2.menu.ui.initMenu = function () {
         try {
+		var helpPageLink = "";
+		$.ajax({
+			type : "GET",
+			url : "../dhis-web-commons/menu/getHelpPageLinkModule.action",
+			dataType : "json",
+			async : false,
+			success : function(json) {
+				helpPageLink = json;
+			}
+		});
+			
             dhis2.menu.ui.createMenu("profile", [
                 {
                     name: "settings",
@@ -967,7 +978,7 @@
                 {
                     name: "help",
                     namespace: "/dhis-web-commons-about",
-                    defaultAction: "../dhis-web-commons-about/help.action",
+                    defaultAction: helpPageLink.defaultAction,
                     icon: "../icons/function-account.png",
                     description: ""
                 },
