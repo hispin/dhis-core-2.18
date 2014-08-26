@@ -9,7 +9,7 @@
       $.each(data.schemas, function( idx ) {
         if( this.metadata ) {
           var o = {
-            name: this.plural,
+            name: this.displayName,
             id: this.plural
           }
 
