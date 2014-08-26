@@ -461,7 +461,7 @@ public class DefaultResourceTableService
             values.add( day.getStartDate() );
 
             for ( PeriodType periodType : periodTypes )
-            {
+            {                
                 values.add( periodCache.getIsoPeriod( periodType, day.getStartDate(), calendar ) );
             }
 
