@@ -68,8 +68,6 @@
       <one-to-many class="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder" />
     </set>
 
-    <property name="displayOnAllOrgunit" />
-
     <property name="selectEnrollmentDatesInFuture" />
 
     <property name="selectIncidentDatesInFuture" />

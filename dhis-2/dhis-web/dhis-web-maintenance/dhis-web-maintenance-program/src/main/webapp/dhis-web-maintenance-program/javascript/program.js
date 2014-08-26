@@ -65,9 +65,6 @@ function showProgramDetails( context ) {
     var onlyEnrollOnce = ( json.program.onlyEnrollOnce == 'true') ? i18n_yes : i18n_no;
     setInnerHTML('onlyEnrollOnceField', onlyEnrollOnce);
 
-    var displayOnAllOrgunit = ( json.program.displayOnAllOrgunit == 'true') ? i18n_yes : i18n_no;
-    setInnerHTML('displayOnAllOrgunitField', displayOnAllOrgunit);
-
     var selectEnrollmentDatesInFuture = ( json.program.selectEnrollmentDatesInFuture == 'true') ? i18n_yes : i18n_no;
     setInnerHTML('selectEnrollmentDatesInFutureField', selectEnrollmentDatesInFuture);
 

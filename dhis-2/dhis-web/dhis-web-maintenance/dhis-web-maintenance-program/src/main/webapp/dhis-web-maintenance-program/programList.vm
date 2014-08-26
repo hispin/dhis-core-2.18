@@ -73,7 +73,6 @@
 				<p><label class="bold">$i18n.getString( "allow_select_incident_date_in_future" ):</label><br><span id="selectIncidentDatesInFutureField"></span></p>
 				<p><label class="bold">$i18n.getString( "skip_to_generate_overdue_events" ):</label><br><span id="ignoreOverdueEventsField"></span></p>
 				<p><label class="bold">$i18n.getString( "only_enroll_once" ):</label><br><span id="onlyEnrollOnceField"></span></p>
-				<p><label class="bold">$i18n.getString( "allow_enrollment_at_all_orgunits" ):</label><br><span id="displayOnAllOrgunitField"></span></p>
 				<p><label class="bold">$i18n.getString( "show_incident_date" ):</label><br><span id="displayIncidentDate"></span></p>                              
 				<p><label class="bold">$i18n.getString( "date_of_incident_description" ):</label><br><span id="dateOfIncidentDescriptionField"></span></p>                              
 				<p><label class="bold">$i18n.getString( "date_of_enrollment_description" ):</label><br><span id="dateOfEnrollmentDescriptionField"></span></p>                          

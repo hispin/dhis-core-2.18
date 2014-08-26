@@ -1101,11 +1101,11 @@ public class HibernateCaseAggregationConditionStore
             {
                 periodid = rs.getInt( "periodid" );
             }
-
+            
             if ( periodid == null )
             {
-                String insertSql = "insert into period (periodtypeid,startdate,enddate) " + " VALUES " + "("
-                    + periodTypeId + ",'" + start + "','" + end + "' )";
+                String insertSql = "insert into period (periodid, periodtypeid,startdate,enddate) " + " VALUES " + "("
+                		+ statementBuilder.getAutoIncrementValue() +"," + periodTypeId + ",'" + start + "','" + end + "' )";
                 jdbcTemplate.execute( insertSql );
 
                 period.setId( jdbcTemplate.queryForObject( sql, Integer.class ) );

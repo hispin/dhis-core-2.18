@@ -28,7 +28,6 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -112,26 +111,5 @@ public class ProgramStoreTest
 
         Collection<Program> programs = programStore.get( Program.MULTIPLE_EVENTS_WITH_REGISTRATION, organisationUnitA );
         assertTrue( equals( programs, programA, programB ) );
-    }
-
-    @Test
-    public void testGetProgramsByDisplayOnAllOrgunit()
-    {
-        programA.setDisplayOnAllOrgunit( true );
-        programB.setDisplayOnAllOrgunit( true );
-        programC.setDisplayOnAllOrgunit( false );
-
-        programStore.save( programA );
-        programStore.save( programB );
-        programStore.save( programC );
-
-        Collection<Program> programs = programStore.getProgramsByDisplayOnAllOrgunit( true, organisationUnitA );
-        assertEquals( 2, programs.size() );
-        assertTrue( programs.contains( programA ) );
-        assertTrue( programs.contains( programB ) );
-
-        programs = programStore.getProgramsByDisplayOnAllOrgunit( false, organisationUnitB );
-        assertEquals( 1, programs.size() );
-        assertTrue( programs.contains( programC ) );
     }
 }

@@ -88,19 +88,7 @@ public interface ProgramStore
      * @return Program list by a type specified
      */
     Collection<Program> getByCurrentUser( int type );
-
-    /**
-     * Get {@link Program} which are displayed on all {@link OrganisationUnit}
-     * for searching or enrolling a person
-     *
-     * @param displayOnAllOrgunit Optional flag to specify programs can
-     *                            displayed for searching or enrolling (<code>true</code> ) or
-     *                            cannot be used on the orgunit (<code>false</code>) instances.
-     * @param orgunit             {@link OrganisationUnit}
-     * @return Program list
-     */
-    Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit );
-
+    
     /**
      * Get {@link Program} by TrackedEntity
      *
