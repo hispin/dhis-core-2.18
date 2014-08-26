@@ -33,6 +33,4 @@
 
   <bean id="debugger" class="org.hisp.dhis.system.debug.DebuggerImpl" />
   
-  <bean id="periodCache" class="org.hisp.dhis.system.cache.PeriodCache" />
-
 </beans>

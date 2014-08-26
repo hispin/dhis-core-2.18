@@ -69,9 +69,6 @@ public class SpringDataValueSetStore
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
-    @Autowired
-    private PeriodCache periodCache;
-    
     //--------------------------------------------------------------------------
     // DataValueSetStore implementation
     //--------------------------------------------------------------------------
@@ -143,7 +140,7 @@ public class SpringDataValueSetStore
                 PeriodType pt = PeriodType.getPeriodTypeByName( rs.getString( "ptname" ) );
 
                 dataValue.setDataElement( rs.getString( "deuid" ) );
-                dataValue.setPeriod( periodCache.getIsoPeriod( pt, rs.getDate( "pestart" ), calendar ) );
+                dataValue.setPeriod( pt.createPeriod( rs.getDate( "pestart" ), calendar ).getIsoDate() );
                 dataValue.setOrgUnit( rs.getString( "ouuid" ) );
                 dataValue.setCategoryOptionCombo( rs.getString( "cocuid" ) );
                 dataValue.setAttributeOptionCombo( rs.getString( "aocuid" ) );
