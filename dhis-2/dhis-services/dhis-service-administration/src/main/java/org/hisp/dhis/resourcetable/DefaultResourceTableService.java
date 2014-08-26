@@ -72,7 +72,6 @@ import org.hisp.dhis.resourcetable.statement.CreateCategoryOptionGroupSetTableSt
 import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
-import org.hisp.dhis.system.cache.PeriodCache;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
