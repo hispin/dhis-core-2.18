@@ -167,12 +167,6 @@
 			<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription"  value="$!program.dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}" #if( $program.type=='3' ) disabled #end></td>
 			<td></td>
 		</tr>
-		
-        <tr name='nonAnonymous'>
-            <td><label for="displayOnAllOrgunit">$i18n.getString( "allow_enrollment_at_all_orgunits" )</label></td>
-            <td><input type="checkbox" id="displayOnAllOrgunit" name="displayOnAllOrgunit" value='true' #if($program.displayOnAllOrgunit) checked #end></td>
-            <td></td>
-        </tr>
 
 		<tr name='nonAnonymous'><td>&nbsp;</td></tr>
 		

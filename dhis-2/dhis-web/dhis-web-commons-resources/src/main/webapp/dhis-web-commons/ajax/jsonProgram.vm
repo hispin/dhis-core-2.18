@@ -13,7 +13,6 @@
 	"programStageCount": "${program.programStages.size()}",
 	"noAttributes": "$!program.attributes.size()",
 	"onlyEnrollOnce": "$!program.onlyEnrollOnce",
-	"displayOnAllOrgunit": "$!program.displayOnAllOrgunit",
 	"selectEnrollmentDatesInFuture": "$!program.selectEnrollmentDatesInFuture",
 	"selectIncidentDatesInFuture": "$!program.selectIncidentDatesInFuture"
   }

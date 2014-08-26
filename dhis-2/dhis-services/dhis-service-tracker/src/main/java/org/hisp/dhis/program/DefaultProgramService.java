@@ -162,8 +162,7 @@ public class DefaultProgramService
     @Override
     public Collection<Program> getProgramsByCurrentUser( OrganisationUnit organisationUnit )
     {
-        Collection<Program> programs = new ArrayList<>( getProgramsByDisplayOnAllOrgunit( true, null ) );
-        programs.addAll( getProgramsByDisplayOnAllOrgunit( false, organisationUnit ) );
+        Collection<Program> programs = new ArrayList<>( getPrograms( organisationUnit ) );
         programs.retainAll( getProgramsByCurrentUser() );
 
         return programs;
@@ -197,15 +196,6 @@ public class DefaultProgramService
     public Collection<Program> getProgramsBetween( int min, int max )
     {
         return i18n( i18nService, programStore.getAllOrderedName( min, max ) );
-    }
-    
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-    
-    private Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit )
-    {
-        return i18n( i18nService, programStore.getProgramsByDisplayOnAllOrgunit( displayOnAllOrgunit, orgunit ) );
     }
 
 }

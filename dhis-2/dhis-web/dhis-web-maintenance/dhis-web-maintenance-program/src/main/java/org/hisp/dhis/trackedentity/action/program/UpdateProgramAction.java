@@ -196,13 +196,6 @@ public class UpdateProgramAction
         this.remindCompleted = remindCompleted;
     }
 
-    private Boolean displayOnAllOrgunit;
-
-    public void setDisplayOnAllOrgunit( Boolean displayOnAllOrgunit )
-    {
-        this.displayOnAllOrgunit = displayOnAllOrgunit;
-    }
-
     private Boolean selectEnrollmentDatesInFuture;
 
     public void setSelectEnrollmentDatesInFuture( Boolean selectEnrollmentDatesInFuture )
@@ -279,7 +272,6 @@ public class UpdateProgramAction
         ignoreOverdueEvents = (ignoreOverdueEvents == null) ? false : ignoreOverdueEvents;
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
-        displayOnAllOrgunit = (displayOnAllOrgunit == null) ? false : displayOnAllOrgunit;
         selectEnrollmentDatesInFuture = (selectEnrollmentDatesInFuture == null) ? false : selectEnrollmentDatesInFuture;
         selectIncidentDatesInFuture = (selectIncidentDatesInFuture == null) ? false : selectIncidentDatesInFuture;
         dataEntryMethod = (dataEntryMethod == null) ? false : dataEntryMethod;
@@ -292,7 +284,6 @@ public class UpdateProgramAction
         program.setType( type );
         program.setDisplayIncidentDate( displayIncidentDate );
         program.setOnlyEnrollOnce( onlyEnrollOnce );
-        program.setDisplayOnAllOrgunit( displayOnAllOrgunit );
         program.setSelectEnrollmentDatesInFuture( selectEnrollmentDatesInFuture );
         program.setSelectIncidentDatesInFuture( selectIncidentDatesInFuture );
         program.setDataEntryMethod( dataEntryMethod );

@@ -103,12 +103,6 @@ public class Program
     @Scanned
     private Set<TrackedEntityInstanceReminder> instanceReminders = new HashSet<>();
 
-    /**
-     * Allow enrolling tracked entity to all org units disregarding whether the
-     * program is assigned for the org unit or not.
-     */
-    private Boolean displayOnAllOrgunit = true;
-
     private Boolean selectEnrollmentDatesInFuture = false;
 
     private Boolean selectIncidentDatesInFuture = false;
@@ -424,19 +418,6 @@ public class Program
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getDisplayOnAllOrgunit()
-    {
-        return displayOnAllOrgunit;
-    }
-
-    public void setDisplayOnAllOrgunit( Boolean displayOnAllOrgunit )
-    {
-        this.displayOnAllOrgunit = displayOnAllOrgunit;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getSelectEnrollmentDatesInFuture()
     {
         return selectEnrollmentDatesInFuture;
@@ -571,7 +552,6 @@ public class Program
             displayIncidentDate = program.getDisplayIncidentDate();
             ignoreOverdueEvents = program.getIgnoreOverdueEvents();
             onlyEnrollOnce = program.getOnlyEnrollOnce();
-            displayOnAllOrgunit = program.getDisplayOnAllOrgunit();
             selectEnrollmentDatesInFuture = program.getSelectEnrollmentDatesInFuture();
             selectIncidentDatesInFuture = program.getSelectIncidentDatesInFuture();
             relationshipText = program.getRelationshipText();

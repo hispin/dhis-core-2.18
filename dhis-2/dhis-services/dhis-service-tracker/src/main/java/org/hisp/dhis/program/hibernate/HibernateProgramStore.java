@@ -155,21 +155,6 @@ public class HibernateProgramStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit )
-    {
-        Criteria criteria = getCriteria();
-        criteria.add( Restrictions.eq( "displayOnAllOrgunit", displayOnAllOrgunit ) );
-        if ( orgunit != null )
-        {
-            criteria.createAlias( "organisationUnits", "orgunit" );
-            criteria.add( Restrictions.eq( "orgunit.id", orgunit.getId() ) );
-        }
-
-        return criteria.list();
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<Program> getByTrackedEntity( TrackedEntity trackedEntity )
     {
         return getCriteria( Restrictions.eq( "trackedEntity", trackedEntity ) ).list();
