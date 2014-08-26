@@ -60,7 +60,7 @@ public class PeriodCache
     {
         try
         {
-            String key = calendar.name() + periodType.getName() + startDate.toString();
+            String key = calendar.name() + periodType.getName() + String.valueOf( startDate.getTime() );
             
             return periodCache.get( key, new Callable<String>() 
             {                
