@@ -64,10 +64,10 @@ public class DefaultSchemaService implements SchemaService
         for ( SchemaDescriptor descriptor : descriptors )
         {
             Schema schema = descriptor.getSchema();
+            schema.setDisplayName( beautify( schema.getName() ) );
 
             if ( schema.getProperties().isEmpty() )
             {
-                schema.setDisplayName( beautify( schema.getName() ) );
                 schema.setPropertyMap( Maps.newHashMap( propertyIntrospectorService.getPropertiesMap( schema.getKlass() ) ) );
             }
 
