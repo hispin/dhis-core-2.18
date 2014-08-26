@@ -91,6 +91,11 @@ public class Schema implements Ordered
     private String name;
 
     /**
+     * A beautified (and possibly translated) name that can be used in UI.
+     */
+    private String displayName;
+
+    /**
      * This will normally be set to equal plural, and is normally used as a wrapper for a collection of
      * instances of this klass type.
      */
@@ -223,6 +228,18 @@ public class Schema implements Ordered
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getDisplayName()
+    {
+        return displayName != null ? displayName : name;
+    }
+
+    public void setDisplayName( String displayName )
+    {
+        this.displayName = displayName;
     }
 
     @JsonProperty
