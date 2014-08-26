@@ -28,6 +28,7 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
@@ -97,6 +98,8 @@ public class IndexController
             {
                 ComplexNode complexNode = collectionNode.addChild( new ComplexNode( "resource" ) );
 
+                // TODO add i18n to this
+                complexNode.addChild( new SimpleNode( "displayName", beautify( schema.getPlural() ) ) );
                 complexNode.addChild( new SimpleNode( "singular", schema.getSingular() ) );
                 complexNode.addChild( new SimpleNode( "plural", schema.getPlural() ) );
                 complexNode.addChild( new SimpleNode( "href", contextService.getContextPath() + "/api" + schema.getApiEndpoint() ) );
@@ -104,5 +107,11 @@ public class IndexController
         }
 
         return rootNode;
+    }
+
+    private String beautify( String name )
+    {
+        String[] camelCaseWords = StringUtils.capitalize( name ).split( "(?=[A-Z])" );
+        return StringUtils.join( camelCaseWords, " " ).trim();
     }
 }
