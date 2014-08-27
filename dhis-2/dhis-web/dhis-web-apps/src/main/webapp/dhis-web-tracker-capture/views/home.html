@@ -3,17 +3,13 @@
 
 <div id="leftBar">
    
-    <div class='col-sm-12'>
-        <h2>
-            {{'menu' | translate}}
-        </h2>
-    </div>
-    <ul class="nav nav-pills nav-stacked" ng-controller="LeftBarMenuController">
-        <li><a href class='menuTitle' ng-click="showHome()">{{'registration_and_data_entry' | translate}}</a></li>
-        <li><a href class='menuTitle' ng-click="showSummaryReport()">{{'program_summary_report' | translate}}</a></li>
-        <li><a href class='menuTitle' ng-click="showVisitSchedule()">{{'visit_schedule' | translate}}</a></li>
-        <li><a href class='menuTitle' ng-click="showLostToFollowup()">{{'lost_to_followup' | translate}}</a></li>
-    </ul>
+    <div class="left-bar-menu" ng-controller="LeftBarMenuController">
+        <ul class="nav nav-pills nav-stacked">
+            <li><a href ng-click="showHome()">{{'registration_and_data_entry' | translate}}</a></li>
+            <li><a href ng-click="showReportTypes()">{{'reports' | translate}}</a></li>
+        </ul>
+    </div>        
+    
     <div id="orgUnitTree" style="margin-top:20px">
         <ul>
         </ul>

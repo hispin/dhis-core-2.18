@@ -1,0 +1,25 @@
+<div id="leftBar">   
+    <div class="left-bar-menu" ng-controller="LeftBarMenuController">
+        <ul class="nav nav-pills nav-stacked">
+            <li><a href ng-click="showHome()">{{'registration_and_data_entry' | translate}}</a></li>
+            <li><a href ng-click="showReportTypes()">{{'reports' | translate}}</a></li>
+        </ul>
+    </div>    
+</div>
+<div id="mainPage">
+    <h2>{{'tracker_reports' | translate}}</h2>
+    <div class="row">
+        <div class="col-md-6 report-type-container" ng-click="showSummaryReport()">
+            <h2><i class="fa fa-list-alt"></i> <span class="horizonal-spacing">{{'program_summary' | translate}}</span></h2>
+            {{'program_summary_description' | translate}}
+        </div>
+        <div class="col-md-6 report-type-container">
+            <h2><i class="fa fa-clock-o"></i> <span class="horizonal-spacing">{{'upcoming_events' | translate}}</span></h2>
+            {{'upcoming_events_description' | translate}}
+        </div>
+        <div class="col-md-6 report-type-container">
+            <h2><i class="fa fa-exclamation-circle"></i> <span class="horizonal-spacing">{{'overdue_events' | translate}}</span></h2>
+            {{'overdue_events_description' | translate}}
+        </div>        
+    </div>
+</div>

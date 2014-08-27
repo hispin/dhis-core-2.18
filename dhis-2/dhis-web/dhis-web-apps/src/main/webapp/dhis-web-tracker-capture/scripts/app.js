@@ -31,6 +31,9 @@ var trackerCapture = angular.module('trackerCapture',
     }).when('/report',{
         templateUrl:'components/report/report.html',
         controller: 'ReportController'
+    }).when('/reports',{
+        templateUrl:'components/report/reports.html',
+        controller: 'ReportTypesController'
     }).otherwise({
         redirectTo : '/'
     });  
