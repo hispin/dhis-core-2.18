@@ -11,6 +11,6 @@ trackerCapture.controller('LeftBarMenuController',
     }; 
     
     $scope.showReportTypes = function(){
-        $location.path('/reports').search();
+        $location.path('/report-types').search();
     };
 });
