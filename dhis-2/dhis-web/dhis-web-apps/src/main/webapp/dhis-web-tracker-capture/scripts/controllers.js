@@ -391,12 +391,33 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     TranslationService.translate();
     
     $scope.showHome = function(){
-        $location.path('/').search();                                    
+        $location.path('/').search();
+    }; 
+    
+    $scope.showReportTypes = function(){
+        $location.path('/reports').search();
     };
+})
+
+//Controller for the header section
+.controller('ReportTypesController',
+        function($scope,
+                $location,
+                TranslationService) {
+
+    TranslationService.translate();
     
     $scope.showSummaryReport = function(){   
-        $location.path('/report').search();                                    
+        $location.path('/report').search();
+    };
+    
+    $scope.showOverDueEvents = function(){   
+        $location.path('/report').search();
     };   
+    
+    $scope.showUpcomingEvents = function(){
+        $location.path('/report').search();
+    };
 })
 
 //Controller for the header section

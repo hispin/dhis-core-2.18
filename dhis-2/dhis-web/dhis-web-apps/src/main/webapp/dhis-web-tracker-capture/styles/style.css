@@ -23,10 +23,6 @@ div#orgUnitTree {
     height: 50%;
 }
 
-.menuTitle {
-    font-size: 1em;
-}
-
 .top-bar {
     font-size: 16pt;
     font-weight: normal;
@@ -765,12 +761,21 @@ a:active {
     left: auto;
 }
 
+.left-bar-menu{
+    margin-top: 15px;
+}
 
+.report-type-container{
+    padding: 10px;
+}
+
+.report-type-container:hover, .report-type-container:focus{
+    background-color: #ebebeb;
+    cursor: pointer;
+}
 @media print {
     #header, #leftBar, .not-printable {
         display: none;
     }
-    
-  
 
 }
