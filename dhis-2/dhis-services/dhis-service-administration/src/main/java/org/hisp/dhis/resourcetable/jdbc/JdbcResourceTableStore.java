@@ -302,7 +302,7 @@ public class JdbcResourceTableStore
         
         jdbcTemplate.execute( statement.getStatement() );
     }
-        
+    
     public void populateOrganisationUnitGroupSetStructure( List<OrganisationUnitGroupSet> groupSets )
     {
         String sql = 
@@ -354,6 +354,41 @@ public class JdbcResourceTableStore
         jdbcTemplate.execute( statement.getStatement() );
     }
 
+    public void populateCategoryStructure( List<DataElementCategory> categories )
+    {
+        String sql = 
+            "insert into " + CreateCategoryTableStatement.TABLE_NAME + " " +
+            "select coc.categoryoptioncomboid as cocid, con.categoryoptioncomboname as cocname, ";
+        
+        for ( DataElementCategory category : categories )
+        {
+            sql += "(" +
+                "select co.name from categoryoptioncombos_categoryoptions cocco " +
+                "inner join dataelementcategoryoption co on cocco.categoryoptionid = co.categoryoptionid " +
+                "inner join categories_categoryoptions cco on co.categoryoptionid = cco.categoryoptionid " +
+                "where coc.categoryoptioncomboid = cocco.categoryoptioncomboid " +
+                "and cco.categoryid = " + category.getId() + " " +
+                "limit 1) as " + statementBuilder.columnQuote( category.getName() ) + ", ";
+
+            sql += "(" +
+                "select co.uid from categoryoptioncombos_categoryoptions cocco " +
+                "inner join dataelementcategoryoption co on cocco.categoryoptionid = co.categoryoptionid " +
+                "inner join categories_categoryoptions cco on co.categoryoptionid = cco.categoryoptionid " +
+                "where coc.categoryoptioncomboid = cocco.categoryoptioncomboid " +
+                "and cco.categoryid = " + category.getId() + " " +
+                "limit 1) as " + statementBuilder.columnQuote( category.getUid() ) + ", ";
+        }
+
+        sql = TextUtils.removeLastComma( sql ) + " ";
+        sql += 
+            "from categoryoptioncombo coc " +
+            "inner join _categoryoptioncomboname con on coc.categoryoptioncomboid = con.categoryoptioncomboid";
+        
+        log.info( "Populate category structure SQL: " + sql );
+        
+        jdbcTemplate.execute( sql );        
+    }
+    
     // -------------------------------------------------------------------------
     // DataElementStructure
     // -------------------------------------------------------------------------

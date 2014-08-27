@@ -110,6 +110,8 @@ public interface ResourceTableStore
      */
     void createCategoryStructure( List<DataElementCategory> categories );
     
+    void populateCategoryStructure( List<DataElementCategory> categories );
+    
     /**
      * Creates table.
      */
