@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.SortedMap;
 
+import java.io.Serializable;
+
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.setting.StyleManager;
@@ -181,7 +183,7 @@ public class GetGeneralSettingsAction
         currentStyle = styleManager.getCurrentStyle();
 
         analysisDisplayProperty = (String) userSettingService.getUserSetting( KEY_ANALYSIS_DISPLAY_PROPERTY,
-            DEFAULT_ANALYSIS_DISPLAY_PROPERTY );
+            (Serializable) DEFAULT_ANALYSIS_DISPLAY_PROPERTY );
 
         messageEmailNotification = (Boolean) userSettingService.getUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, false );
 
