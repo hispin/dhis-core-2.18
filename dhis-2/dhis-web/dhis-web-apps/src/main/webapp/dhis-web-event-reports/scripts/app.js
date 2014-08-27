@@ -7111,54 +7111,47 @@ Ext.onReady( function() {
                                 var defaultKeyUiLocale = 'en';
                                 init.keyUiLocale = Ext.decode(r.responseText).settings.keyUiLocale || defaultKeyUiLocale;
 
+                                // i18n
                                 Ext.Ajax.request({
-                                    url: init.contextPath + '/dhis-web-commons/javascripts/javaProperties.js',
+                                    url: 'i18n/' + init.keyUiLocale + '.properties',
                                     success: function(r) {
-                                        var parseProperties = Ext.decode(r.responseText).parseProperties;
+                                        NS.i18n = dhis2.util.parseJavaProperties(r.responseText);
 
-                                        // i18n
-                                        Ext.Ajax.request({
-                                            url: 'i18n/' + init.keyUiLocale + '.properties',
-                                            success: function(r) {
-                                                NS.i18n = parseProperties(r.responseText);
+                                        if (init.keyUiLocale !== defaultKeyUiLocale) {
+                                            Ext.Ajax.request({
+                                                url: 'i18n/' + defaultKeyUiLocale + '.properties',
+                                                success: function(r) {
+                                                    Ext.applyIf(NS.i18n, dhis2.util.parseJavaProperties(r.responseText));
+                                                },
+                                                callback: fn
+                                            })
+                                        }
+                                        else {
+                                            fn();
+                                        }
+                                    },
+                                    failure: function() {
+                                        var failure = function() {
+                                            alert('No translations found for system locale (' + init.keyUiLocale + ') or default locale (' + defaultKeyUiLocale + ').');
+                                        };
 
-                                                if (init.keyUiLocale !== defaultKeyUiLocale) {
-                                                    Ext.Ajax.request({
-                                                        url: 'i18n/' + defaultKeyUiLocale + '.properties',
-                                                        success: function(r) {
-                                                            Ext.applyIf(NS.i18n, parseProperties(r.responseText));
-                                                        },
-                                                        callback: fn
-                                                    })
-                                                }
-                                                else {
-                                                    fn();
-                                                }
-                                            },
-                                            failure: function() {
-                                                var failure = function() {
-                                                    alert('No translations found for system locale (' + init.keyUiLocale + ') or default locale (' + defaultKeyUiLocale + ').');
-                                                };
-
-                                                if (init.keyUiLocale !== defaultKeyUiLocale) {
-                                                    Ext.Ajax.request({
-                                                        url: 'i18n/' + defaultKeyUiLocale + '.json',
-                                                        success: function(r) {
-                                                            console.log('No translations found for system locale (' + init.keyUiLocale + ').');
-                                                            NS.i18n = parseProperties(r.responseText);
-                                                        },
-                                                        failure: function() {
-                                                            failure();
-                                                        },
-                                                        callback: fn
-                                                    });
-                                                }
-                                                else {
-                                                    fn();
+                                        if (init.keyUiLocale !== defaultKeyUiLocale) {
+                                            Ext.Ajax.request({
+                                                url: 'i18n/' + defaultKeyUiLocale + '.json',
+                                                success: function(r) {
+                                                    console.log('No translations found for system locale (' + init.keyUiLocale + ').');
+                                                    NS.i18n = dhis2.util.parseJavaProperties(r.responseText);
+                                                },
+                                                failure: function() {
                                                     failure();
-                                                }
-                                            }
-                                        });
+                                                },
+                                                callback: fn
+                                            });
+                                        }
+                                        else {
+                                            fn();
+                                            failure();
+                                        }
                                     }
                                 });
                             }

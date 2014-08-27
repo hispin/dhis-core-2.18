@@ -60,6 +60,28 @@ dhis2.util.escape = function( text ) {
 };
 
 /**
+ * Convert a Java properties file into a javascript object.
+ */
+dhis2.util.parseJavaProperties = function( javaProperties ) {
+    var obj = {}, lines;
+    
+    if (typeof javaProperties !== 'string') {
+        return obj;
+    }
+    
+    lines = javaProperties.split(/\n/);
+
+    for (var i = 0, a; i < lines.length; i++) {
+        if (!!(typeof lines[i] === 'string' && lines[i].length && lines[i].indexOf('=') !== -1)) {
+            a = lines[i].split('=');
+            obj[a[0].trim()] = eval('"' + a[1].trim().replace(/"/g, '\'') + '"');
+        }
+    }
+
+    return obj;
+};
+
+/**
  * jQuery cannot correctly filter strings with () in them, so here is a fix
  * until jQuery gets updated.
  */
