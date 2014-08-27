@@ -14,31 +14,31 @@
     
 	<package name="dhis-web-pivot" extends="dhis-web-commons" namespace="/dhis-web-pivot">
 		<action name="index" class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="redirect">app/index.html</result>
+			<result name="success" type="redirect">index.html</result>
 		</action>
     </package>
     
 	<package name="dhis-web-visualizer" extends="dhis-web-commons" namespace="/dhis-web-visualizer">
 		<action name="index" class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="redirect">app/index.html</result>
+			<result name="success" type="redirect">index.html</result>
 		</action>
     </package>
     
 	<package name="dhis-web-mapping" extends="dhis-web-commons" namespace="/dhis-web-mapping">
 		<action name="index" class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="redirect">app/index.html</result>
+			<result name="success" type="redirect">index.html</result>
 		</action>
     </package>
     
 	<package name="dhis-web-event-reports" extends="dhis-web-commons" namespace="/dhis-web-event-reports">
 		<action name="index" class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="redirect">app/index.html</result>
+			<result name="success" type="redirect">index.html</result>
 		</action>
     </package>
     
 	<package name="dhis-web-event-visualizer" extends="dhis-web-commons" namespace="/dhis-event-visualizer">
 		<action name="index" class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="redirect">app/index.html</result>
+			<result name="success" type="redirect">index.html</result>
 		</action>
     </package>
     
