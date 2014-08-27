@@ -28,9 +28,9 @@ var trackerCapture = angular.module('trackerCapture',
     }).when('/dashboard',{
         templateUrl:'components/dashboard/dashboard.html',
         controller: 'DashboardController'
-    }).when('/report',{
-        templateUrl:'components/report/report.html',
-        controller: 'ReportController'
+    }).when('/summary-report',{
+        templateUrl:'components/report/summary-report.html',
+        controller: 'SummaryReportController'
     }).when('/reports',{
         templateUrl:'components/report/reports.html',
         controller: 'ReportTypesController'
