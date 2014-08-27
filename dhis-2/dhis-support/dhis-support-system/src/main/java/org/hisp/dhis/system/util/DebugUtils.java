@@ -137,10 +137,14 @@ public class DebugUtils
     public static String getStackTrace( Throwable t )
     {
         StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter( sw, true );
-        t.printStackTrace( pw );
-        pw.flush();
-        sw.flush();
+        
+        if ( t != null )
+        {
+            PrintWriter pw = new PrintWriter( sw, true );
+            t.printStackTrace( pw );
+            pw.flush();
+            sw.flush();
+        }
         
         return sw.toString();
     }
