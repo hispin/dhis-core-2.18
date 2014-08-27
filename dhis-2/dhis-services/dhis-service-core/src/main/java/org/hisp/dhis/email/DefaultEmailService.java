@@ -47,6 +47,7 @@ public class DefaultEmailService
 {
     private static final String TEST_EMAIL_SUBJECT = "Test email from DHIS 2";
     private static final String TEST_EMAIL_TEXT = "This is an automatically generated email from ";
+    private static final String TEST_DEFAULT_SENDER = "DHIS 2";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -101,7 +102,8 @@ public class DefaultEmailService
     @Override
     public void sendTestEmail( )
     {
-        String instanceName = StringUtils.trimToEmpty( (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_APPLICATION_TITLE ) );
+        String instanceName = StringUtils.defaultIfBlank( (String) systemSettingManager.getSystemSetting( 
+            SystemSettingManager.KEY_APPLICATION_TITLE ), TEST_DEFAULT_SENDER );
         
         sendEmail( TEST_EMAIL_SUBJECT, TEST_EMAIL_TEXT + instanceName, null, currentUserService.getCurrentUser(), true );
     }
