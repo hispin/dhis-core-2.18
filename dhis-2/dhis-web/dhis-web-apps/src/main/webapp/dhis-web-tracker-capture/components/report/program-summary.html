@@ -79,6 +79,7 @@
             <div class="alert alert-warning">{{'please_select_program_report'| translate}}</div> 
         </div>
     </div>
+    <img src="../images/ajax-loader-bar.gif" ng-if="!dataReady && reportStarted"/>
     <div ng-if="dataReady">
         <div ng-switch="teiCount">                    
             <div ng-switch-when="undefined">
