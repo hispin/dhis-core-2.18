@@ -9112,7 +9112,22 @@ Ext.onReady( function() {
 				systemSettings: {},
 				extensions: {}
 			},
+            parseProperties,
 			fn;
+
+        parseProperties = function(properties) {
+            var rows = Ext.Array.clean(properties.split(/\n/)),
+                i18n = {};
+
+            for (var i = 0, a; i < rows.length; i++) {
+                if (!!(typeof rows[i] === 'string' && rows[i].length)) {
+                    a = rows[i].split('=');
+                    i18n[a[0].trim()] = eval('"' + a[1].trim().replace(/"/g, '\'') + '"');
+                }
+            }
+
+            return i18n;
+        };
 
 		fn = function() {
 			if (++callbacks === requests.length) {
@@ -9180,15 +9195,15 @@ Ext.onReady( function() {
 
                                 // i18n
                                 Ext.Ajax.request({
-                                    url: 'i18n/' + init.keyUiLocale + '.json',
+                                    url: 'i18n/' + init.keyUiLocale + '.properties',
                                     success: function(r) {
-                                        GIS.i18n = Ext.decode(r.responseText);
+                                        GIS.i18n = parseProperties(r.responseText);
 
                                         if (init.keyUiLocale !== defaultKeyUiLocale) {
                                             Ext.Ajax.request({
-                                                url: 'i18n/' + defaultKeyUiLocale + '.json',
+                                                url: 'i18n/' + defaultKeyUiLocale + '.properties',
                                                 success: function(r) {
-                                                    Ext.applyIf(NS.i18n, Ext.decode(r.responseText));
+                                                    Ext.applyIf(NS.i18n, parseProperties(r.responseText));
                                                 },
                                                 callback: fn
                                             })
@@ -9207,7 +9222,7 @@ Ext.onReady( function() {
                                                 url: 'i18n/' + defaultKeyUiLocale + '.json',
                                                 success: function(r) {
                                                     console.log('No translations found for system locale (' + init.keyUiLocale + ').');
-                                                    GIS.i18n = Ext.decode(r.responseText);
+                                                    GIS.i18n = parseProperties(r.responseText);
                                                 },
                                                 failure: function() {
                                                     failure();

@@ -6025,7 +6025,22 @@ Ext.onReady( function() {
 		var requests = [],
 			callbacks = 0,
 			init = {},
+            parseProperties,
 			fn;
+
+        parseProperties = function(properties) {
+            var rows = Ext.Array.clean(properties.split(/\n/)),
+                i18n = {};
+
+            for (var i = 0, a; i < rows.length; i++) {
+                if (!!(typeof rows[i] === 'string' && rows[i].length)) {
+                    a = rows[i].split('=');
+                    i18n[a[0].trim()] = eval('"' + a[1].trim().replace(/"/g, '\'') + '"');
+                }
+            }
+
+            return i18n;
+        };
 
 		fn = function() {
 			if (++callbacks === requests.length) {
@@ -6089,20 +6104,20 @@ Ext.onReady( function() {
                         requests.push({
                             url: init.contextPath + '/api/me/user-account.json',
                             success: function(r) {
-                                var defaultKeyUiLocale = 'en';                                    
+                                var defaultKeyUiLocale = 'en';
                                 init.keyUiLocale = Ext.decode(r.responseText).settings.keyUiLocale || defaultKeyUiLocale;
-                                
+
                                 // i18n
                                 Ext.Ajax.request({
-                                    url: 'i18n/' + init.keyUiLocale + '.json',
+                                    url: 'i18n/' + init.keyUiLocale + '.properties',
                                     success: function(r) {
-                                        NS.i18n = Ext.decode(r.responseText);
+                                        NS.i18n = parseProperties(r.responseText);
 
                                         if (init.keyUiLocale !== defaultKeyUiLocale) {
                                             Ext.Ajax.request({
-                                                url: 'i18n/' + defaultKeyUiLocale + '.json',
+                                                url: 'i18n/' + defaultKeyUiLocale + '.properties',
                                                 success: function(r) {
-                                                    Ext.applyIf(NS.i18n, Ext.decode(r.responseText));
+                                                    Ext.applyIf(NS.i18n, parseProperties(r.responseText));
                                                 },
                                                 callback: fn
                                             })
@@ -6121,7 +6136,7 @@ Ext.onReady( function() {
                                                 url: 'i18n/' + defaultKeyUiLocale + '.json',
                                                 success: function(r) {
                                                     console.log('No translations found for system locale (' + init.keyUiLocale + ').');
-                                                    NS.i18n = Ext.decode(r.responseText);
+                                                    NS.i18n = parseProperties(r.responseText);
                                                 },
                                                 failure: function() {
                                                     failure();
