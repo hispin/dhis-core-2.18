@@ -129,8 +129,8 @@ public abstract class AbstractJdbcTableManager
         
         Date latest = getLatestData();
         
-        earliest = earliest.before( MIN_EARLIEST_DATE ) ? MIN_EARLIEST_DATE : earliest;
-        latest = latest.after( MAX_LATEST_DATE ) ? MAX_LATEST_DATE : latest;
+        earliest = earliest != null && earliest.before( MIN_EARLIEST_DATE ) ? MIN_EARLIEST_DATE : earliest;
+        latest = latest != null && latest.after( MAX_LATEST_DATE ) ? MAX_LATEST_DATE : latest;
         
         return getTables( earliest, latest );
     }
