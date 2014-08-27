@@ -1,4 +1,4 @@
-trackerCapture.controller('ReportController',
+trackerCapture.controller('SummaryReportController',
         function($scope,
                 $modal,
                 DateUtils,
