@@ -589,30 +589,37 @@ public class OrganisationUnitServiceTest
         throws Exception
     {
         OrganisationUnitGroup group1 = new OrganisationUnitGroup( "organisationUnitGroupName1" );
-        int gid1 = organisationUnitGroupService.addOrganisationUnitGroup( group1 );
-
         OrganisationUnitGroup group2 = new OrganisationUnitGroup( "organisationUnitGroupName2" );
-        int gid2 = organisationUnitGroupService.addOrganisationUnitGroup( group2 );
-
         OrganisationUnitGroup group3 = new OrganisationUnitGroup( "organisationUnitGroupName3" );
-        int gid3 = organisationUnitGroupService.addOrganisationUnitGroup( group3 );
-
         OrganisationUnitGroup group4 = new OrganisationUnitGroup( "organisationUnitGroupName4" );
-        int gid4 = organisationUnitGroupService.addOrganisationUnitGroup( group4 );
 
-        Iterator<OrganisationUnitGroup> iterator = organisationUnitGroupService.getAllOrganisationUnitGroups().iterator();
+        Collection<OrganisationUnitGroup> groups = new ArrayList<>();
+        groups.add( group1 );
+        groups.add( group2 );
+        groups.add( group3 );
+        groups.add( group4 );
 
-        OrganisationUnitGroup organisationUnitGroup1 = iterator.next();
-        assertTrue( organisationUnitGroup1.getId() == gid1 );
+        ArrayList<Integer> groupIds = new ArrayList<>();
 
-        OrganisationUnitGroup organisationUnitGroup2 = iterator.next();
-        assertTrue( organisationUnitGroup2.getId() == gid2 );
+        for ( OrganisationUnitGroup group : groups )
+        {
+            groupIds.add( organisationUnitGroupService.addOrganisationUnitGroup( group ) );
+        }
 
-        OrganisationUnitGroup organisationUnitGroup3 = iterator.next();
-        assertTrue( organisationUnitGroup3.getId() == gid3 );
+        Collection<OrganisationUnitGroup> fetchedGroups = organisationUnitGroupService.getAllOrganisationUnitGroups();
 
-        OrganisationUnitGroup organisationUnitGroup4 = iterator.next();
-        assertTrue( organisationUnitGroup4.getId() == gid4 );
+        ArrayList<Integer> fetchedGroupIds = new ArrayList<>();
+
+        for ( OrganisationUnitGroup group : fetchedGroups )
+        {
+            fetchedGroupIds.add( group.getId() );
+        }
+
+        assertTrue( fetchedGroups.size() == 4 );
+        assertTrue( fetchedGroups.containsAll( groups ));
+
+        assertTrue( fetchedGroupIds.size() == 4 );
+        assertTrue( fetchedGroupIds.containsAll( groupIds ) );
     }
 
     @Test
