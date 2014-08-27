@@ -67,6 +67,8 @@ public interface SqlViewService
 
     String makeUpForQueryStatement( String query );
 
+    int getSqlViewCountByName( String name );
+    
     // -------------------------------------------------------------------------
     // SqlView Expanded
     // -------------------------------------------------------------------------

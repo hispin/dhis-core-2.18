@@ -28,18 +28,22 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.sqlview.SqlView;
-import org.hisp.dhis.sqlview.SqlViewService;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.sqlview.SqlViewService;
 
 /**
  * @author Dang Duy Hieu
  */
 public class GetSqlViewListAction
-    implements Action
+    extends ActionPagingSupport<SqlView>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -63,6 +67,18 @@ public class GetSqlViewListAction
         return sqlViewObjectList;
     }
 
+    private String key;
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -70,8 +86,23 @@ public class GetSqlViewListAction
     public String execute()
         throws Exception
     {
-        sqlViewObjectList = new ArrayList<>( sqlViewService.getAllSqlViews() );
+        if ( isNotBlank( key ) )
+        {
+            this.paging = createPaging( sqlViewService.getSqlViewCountByName( key ) );
+            sqlViewObjectList = new ArrayList<>(
+                sqlViewService.getSqlViewsBetweenByName( key, paging.getStartPos(),
+                    paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( sqlViewService.getSqlViewCount() );
+            
+            sqlViewObjectList = new ArrayList<>( sqlViewService.getSqlViewsBetween(
+                paging.getStartPos(), paging.getPageSize() ) );
+        }
 
+        Collections.sort( sqlViewObjectList, IdentifiableObjectNameComparator.INSTANCE );
+        
         return SUCCESS;
     }
 }
