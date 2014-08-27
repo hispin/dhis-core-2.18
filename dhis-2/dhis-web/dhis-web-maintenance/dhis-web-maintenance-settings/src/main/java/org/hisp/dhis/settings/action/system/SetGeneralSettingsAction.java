@@ -29,6 +29,8 @@ package org.hisp.dhis.settings.action.system;
  */
 
 import com.opensymphony.xwork2.Action;
+
+import org.apache.commons.lang3.StringUtils;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -241,7 +243,7 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_CALENDAR, calendar );
         systemSettingManager.saveSystemSetting( KEY_DATE_FORMAT, dateFormat );
         systemSettingManager.saveSystemSetting( KEY_ANALYTICS_MAINTENANCE_MODE, analyticsMaintenanceMode );
-        systemSettingManager.saveSystemSetting( KEY_HELP_PAGE_LINK, helpPageLink );
+        systemSettingManager.saveSystemSetting( KEY_HELP_PAGE_LINK, StringUtils.trimToNull( helpPageLink ) );
 
         Configuration configuration = configurationService.getConfiguration();
 
