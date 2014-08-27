@@ -122,7 +122,7 @@
     "upcoming_events": "Upcoming Events",
     "upcoming_events_description": "Generate a report that lists tracked entity instances and their upcoming events that require attention. The events displayed are those that are scheduled in due time.",
     "overdue_events": "Overdue Events",
-    "overdue_events_description": "Generate a report of overdue events for a selected program and organisation unit. The report displays list of tracked entity instances and thier events which are either missing or overdue.",
+    "overdue_events_description": "Generate a report of overdue events for a selected program and organisation unit. The report displays list of tracked entity instances and their events that are not conducted on their scheduled due dates.",
     "report": "Report",
     "_report": "report",     
     "visit_schedule": "Visit Schedule",

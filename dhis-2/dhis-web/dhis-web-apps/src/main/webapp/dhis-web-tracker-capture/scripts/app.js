@@ -28,12 +28,18 @@ var trackerCapture = angular.module('trackerCapture',
     }).when('/dashboard',{
         templateUrl:'components/dashboard/dashboard.html',
         controller: 'DashboardController'
-    }).when('/summary-report',{
-        templateUrl:'components/report/summary-report.html',
-        controller: 'SummaryReportController'
-    }).when('/reports',{
-        templateUrl:'components/report/reports.html',
+    }).when('/report-types',{
+        templateUrl:'views/report-types.html',
         controller: 'ReportTypesController'
+    }).when('/program-summary',{
+        templateUrl:'components/report/program-summary.html',
+        controller: 'ProgramSummaryController'
+    }).when('/overdue-events',{
+        templateUrl:'components/report/overdue-events.html',
+        controller: 'OverdueEventsController'
+    }).when('/upcoming-events',{
+        templateUrl:'components/report/upcoming-events.html',
+        controller: 'UpcomingEventsController'
     }).otherwise({
         redirectTo : '/'
     });  

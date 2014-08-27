@@ -6,15 +6,15 @@ trackerCapture.controller('ReportTypesController',
 
     TranslationService.translate();
     
-    $scope.showSummaryReport = function(){   
-        $location.path('/summary-report').search();
+    $scope.programSummary = function(){   
+        $location.path('/program-summary').search();
     };
     
-    $scope.showOverDueEvents = function(){   
-        $location.path('/report').search();
+    $scope.overdueEvents = function(){   
+        $location.path('/overdue-events').search();
     };   
     
-    $scope.showUpcomingEvents = function(){
-        $location.path('/report').search();
+    $scope.upcomingEvents = function(){
+        $location.path('/upcoming-events').search();
     };
 });
