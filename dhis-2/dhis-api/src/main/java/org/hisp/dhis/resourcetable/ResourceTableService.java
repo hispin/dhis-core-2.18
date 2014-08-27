@@ -69,6 +69,8 @@ public interface ResourceTableService
     
     /**
      * Generates a resource table for all category option combos.
+     * 
+     * Depends on the category option combo names table.
      */
     void generateCategoryTable();
     
