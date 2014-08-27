@@ -31,6 +31,7 @@ package org.hisp.dhis.email;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.CurrentUserService;
@@ -100,7 +101,8 @@ public class DefaultEmailService
     @Override
     public void sendTestEmail( )
     {
-        String instanceName = systemSettingManager.getSystemSetting( SystemSettingManager.KEY_APPLICATION_TITLE ).toString();
+        String instanceName = StringUtils.trimToEmpty( (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_APPLICATION_TITLE ) );
+        
         sendEmail( TEST_EMAIL_SUBJECT, TEST_EMAIL_TEXT + instanceName, null, currentUserService.getCurrentUser(), true );
     }
 }
