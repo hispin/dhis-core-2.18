@@ -134,6 +134,12 @@ public class DefaultSqlViewService
         return query.replaceAll( "\\s*;\\s+", ";" ).replaceAll( ";+", ";" ).replaceAll( "\\s+", " " ).trim();
     }
 
+    @Override
+    public int getSqlViewCountByName( String name )
+    {
+        return sqlViewStore.getCountLikeName( name );
+    }
+    
     // -------------------------------------------------------------------------
     // SqlView expanded
     // -------------------------------------------------------------------------
