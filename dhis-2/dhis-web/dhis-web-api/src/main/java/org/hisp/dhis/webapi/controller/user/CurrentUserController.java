@@ -34,7 +34,6 @@ import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION
 import static org.hisp.dhis.user.UserSettingService.KEY_UI_LOCALE;
 import static org.hisp.dhis.user.UserSettingService.KEY_ANALYSIS_DISPLAY_PROPERTY;
 
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
