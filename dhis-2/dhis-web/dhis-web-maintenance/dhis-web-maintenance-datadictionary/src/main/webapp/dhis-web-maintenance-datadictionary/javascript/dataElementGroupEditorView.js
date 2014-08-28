@@ -350,12 +350,13 @@ function getAssignedDataElementGroups()
 
     var id = jQuery( "#view_2 #availableDataElements2" ).val();
     var list_2 = jQuery( "#view_2 #assignedGroups" );
-    list_2.empty();
-
+    
     jQuery.postJSON( "getAssignedDataElementGroups.action", {
         dataElementId : ( isNotNull( id ) ? id : -1 )
     }, function( json )
-    {
+    { 
+		clearListById('view_2 [id="assignedGroups"]');
+	
         jQuery.each( json.dataElementGroups, function( i, item )
         {
             list_2.append( '<option value="' + item.id + '">' + item.name + '</option>' );
