@@ -23,7 +23,7 @@
 <input type="button" value="$i18n.getString( 'get_report_as_html' )" onclick="window.location.href='../api/sqlViews/${sqlView.uid}/data.html'" style="width:135px"/>
 <input type="button" value="$i18n.getString( 'get_report_as_xml' )" onclick="window.location.href='../api/sqlViews/${sqlView.uid}/data.xml'" style="width:135px"/>
 <input type="button" value="$i18n.getString( 'get_report_as_json' )" onclick="window.location.href='../api/sqlViews/${sqlView.uid}/data.json'" style="width:135px"/>
-<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='showSqlViewListForm.action'" style="width:140px" style="width:135px"/>
+<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='sqlView.action'" style="width:140px" style="width:135px"/>
 </div>
 <br/>
 
