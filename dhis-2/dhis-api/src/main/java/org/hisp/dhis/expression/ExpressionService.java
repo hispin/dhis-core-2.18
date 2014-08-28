@@ -350,10 +350,13 @@ public interface ExpressionService
      * @param constantMap the mapping between the constant uid and value to use
      *        in the calculation.
      * @param orgUnitCountMap the mapping between organisation unit group uid and
-     *        count of org units to use in the calculation.
+     *        count of organisation units to use in the calculation.
      * @param days the number of days to use in the calculation.
+     * @param missingValueStrategy the strategy to use when data values are missing
+     *        when calculating the expression. Strategy defaults to NEVER_SKIP if null.
      */
-    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days, boolean nullIfNoValues );
+    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, 
+        Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days, MissingValueStrategy missingValueStrategy );
     
     /**
      * Returns all Operands included in the formulas for the given collection of

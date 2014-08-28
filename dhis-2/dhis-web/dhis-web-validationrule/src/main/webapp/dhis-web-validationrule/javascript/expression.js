@@ -63,7 +63,6 @@ function filterDataElements( dataSetName, filterName )
         {
             addOptionById( "dataElementId", "[" + objects[i].operandId + "]", objects[i].operandName );
         }
-
     } );
 }
 
@@ -123,26 +122,6 @@ function validateExpression()
         disable( 'periodTypeName' );
         return true;
     } );
-}
-
-function validateExpressionReceived( xmlObject )
-{
-    var type = xmlObject.getAttribute( 'type' );
-    var message = xmlObject.firstChild.nodeValue;
-
-    if ( type == "success" )
-    {
-        var description = byId( "expDescription" ).value;
-        var expression = byId( "expression" ).value;
-        var textualDescription = byId( "textualExpression" ).innerHTML;
-        var side = byId( "side" ).value;
-        saveExpression( side, description, expression, textualDescription );
-        disable( 'periodTypeName' );
-    } 
-    else if ( type == "error" )
-    {
-        byId( "textualExpression" ).innerHTML = message;
-    }
 }
 
 function saveExpression( side, description, expression, textualDescription )

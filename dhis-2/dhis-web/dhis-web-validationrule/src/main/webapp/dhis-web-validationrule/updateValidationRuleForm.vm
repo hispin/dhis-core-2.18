@@ -105,13 +105,13 @@
 				<input type="hidden" id="leftSideDescription" name="leftSideDescription" value="$!validationRule.leftSide.description">
 				<input type="hidden" id="leftSideExpression" name="leftSideExpression" value="$!validationRule.leftSide.expression">
 				<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression" value="$!leftSideTextualExpression">
-				<input type="hidden" id="leftSideNullIfBlank" name="leftSideNullIfBlank" value="$!validationRule.leftSide.nullIfBlank">
+				<input type="hidden" id="leftSideMissingValueStrategy" name="leftSideMissingValueStrategy" value="$!validationRule.leftSide.missingValueStrategy">
 				
 				<input type="button" value="$i18n.getString( 'edit_right_side' )" style="width:10em" onclick="editRightExpression();">
 				<input type="hidden" id="rightSideDescription" name="rightSideDescription" value="$!validationRule.rightSide.description">
 				<input type="hidden" id="rightSideExpression" name="rightSideExpression" value="$!validationRule.rightSide.expression">
 				<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression" value="$!rightSideTextualExpression">
-				<input type="hidden" id="rightSideNullIfBlank" name="rightSideNullIfBlank" value="$!validationRule.rightSide.nullIfBlank">
+				<input type="hidden" id="rightSideMissingValueStrategy" name="rightSideMissingValueStrategy" value="$!validationRule.rightSide.missingValueStrategy">
 		</td>
 	</tr>
 	<tr>

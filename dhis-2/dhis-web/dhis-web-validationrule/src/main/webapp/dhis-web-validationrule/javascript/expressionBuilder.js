@@ -9,7 +9,7 @@ jQuery(document).ready(function()
 		minWidth: 840,
 		minHeight: 560,
 		width: 840,
-		height: 630,
+		height: 655,
 		title: "Expression"
 	});
 		
@@ -24,11 +24,13 @@ jQuery(document).ready(function()
 function editLeftExpression()
 {		
 	left = true;
+	var strategy = $( '#leftSideMissingValueStrategy' ).val();
+	strategy = ( strategy ) ? strategy : 'SKIP_IF_ANY_VALUE_MISSING';
 	
 	$( '#expression' ).val( $( '#leftSideExpression' ).val() );
 	$( '#description' ).val( $( '#leftSideDescription' ).val() );
 	$( '#formulaText' ).text( $( '#leftSideTextualExpression' ).val() );
-	$( '#nullIfBlank' ).attr( 'checked', ( $( '#leftSideNullIfBlank' ).val() == 'true' || $( '#leftSideNullIfBlank' ).val() == '' ) );
+	$( 'input[name="missingValueStrategy"][value="' + strategy + '"]' ).prop( 'checked', true );
 	
 	dialog.dialog("open");
 }
@@ -36,11 +38,13 @@ function editLeftExpression()
 function editRightExpression()
 {
 	left = false;
+	var strategy = $( '#rightSideMissingValueStrategy' ).val();
+	strategy = ( strategy ) ? strategy : 'SKIP_IF_ANY_VALUE_MISSING';
 	
 	$( '#expression' ).val( $( '#rightSideExpression' ).val() );
 	$( '#description' ).val( $( '#rightSideDescription' ).val() );
 	$( '#formulaText' ).text( $( '#rightSideTextualExpression' ).val() );
-	$( '#nullIfBlank' ).attr( 'checked', ( $( '#rightSideNullIfBlank' ).val() == 'true' || $( '#rightSideNullIfBlank' ).val() == '' ) );
+	$( 'input[name="missingValueStrategy"][value="' + strategy + '"]' ).prop( 'checked', true );
 	
 	dialog.dialog("open");
 }
@@ -116,8 +120,10 @@ function insertText( inputAreaName, inputText )
 
 function insertExpression()
 {
-	var expression = $( '#expression' ).val();
-	var description = $( '#description' ).val();
+	var expression = $( '#expression' ).val(),
+		description = $( '#description' ).val(),
+		formulaText = $( '#formulaText' ).text(),
+		missingValueStrategy = $( 'input[name="missingValueStrategy"]:checked' ).val();
 	
 	jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', 
 	{
@@ -127,23 +133,23 @@ function insertExpression()
 	{
 		if ( json.response == 'error' )
 		{
-			markInvalid( 'expression-container textarea[id=expression]' , json.message );
+			markInvalid( 'expression-container textarea[id=expression]', json.message );
 		}
 		else 
 		{								
 			if ( left )
 			{
 				$( '#leftSideExpression' ).val( expression );
-				$( '#leftSideDescription' ).val( description );					
-				$( '#leftSideTextualExpression' ).val( $( '#formulaText' ).text() );
-				$( '#leftSideNullIfBlank' ).val( $( '#nullIfBlank' ).is( ':checked' ) );
+				$( '#leftSideDescription' ).val( description );
+				$( '#leftSideTextualExpression' ).val( formulaText );
+				$( '#leftSideMissingValueStrategy' ).val( missingValueStrategy );
 			}
 			else
 			{
 				$( '#rightSideExpression' ).val( expression );
-				$( '#rightSideDescription' ).val( description );					
-				$( '#rightSideTextualExpression' ).val( $( '#formulaText' ).text() );
-				$( '#rightSideNullIfBlank' ).val( $( '#nullIfBlank' ).is( ':checked' ) );								
+				$( '#rightSideDescription' ).val( description );
+				$( '#rightSideTextualExpression' ).val( formulaText );
+				$( '#rightSideMissingValueStrategy' ).val( missingValueStrategy );
 			}
 			
 			dialog.dialog( "close" );

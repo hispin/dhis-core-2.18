@@ -50,6 +50,7 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.expression.MissingValueStrategy;
 import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionSet;
@@ -259,15 +260,13 @@ public class DefaultCsvImportService
                 
                 leftSide.setExpression( getSafe( values, 9, null, 255 ) );
                 leftSide.setDescription( getSafe( values, 10, null, 255 ) );
-                leftSide.setNullIfBlank( Boolean.valueOf( getSafe( values, 11, Boolean.FALSE.toString(), 5 ) ) );
+                leftSide.setMissingValueStrategy( MissingValueStrategy.safeValueOf( getSafe( values, 11, MissingValueStrategy.NEVER_SKIP.toString(), 50 ) ) );
                 leftSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( leftSide.getExpression() ) );
-                leftSide.setNullIfBlank( true );
                 
                 rightSide.setExpression( getSafe( values, 12, null, 255 ) );
                 rightSide.setDescription( getSafe( values, 13, null, 255 ) );
-                rightSide.setNullIfBlank( Boolean.valueOf( getSafe( values, 14, Boolean.FALSE.toString(), 5 ) ) );
+                rightSide.setMissingValueStrategy( MissingValueStrategy.safeValueOf( getSafe( values, 14,  MissingValueStrategy.NEVER_SKIP.toString(), 50 ) ) );
                 rightSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSide.getExpression() ) );
-                rightSide.setNullIfBlank( true );
                 
                 object.setLeftSide( leftSide );
                 object.setRightSide( rightSide );

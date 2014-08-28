@@ -96,10 +96,10 @@ public class Expression
     private String description;
 
     /**
-     * Indicates whether the expression should evaluate to null if there are
-     * missing data values in the expression.
+     * Indicates whether the expression should evaluate to null if all or any
+     * data values are missing in the expression.
      */
-    private boolean nullIfBlank;
+    private MissingValueStrategy missingValueStrategy;
 
     /**
      * A reference to the DataElements in the Expression.
@@ -267,7 +267,7 @@ public class Expression
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
@@ -282,15 +282,15 @@ public class Expression
     @JsonProperty
     @JsonView({ DetailedView.class, ExportView.class })
     @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
-    public boolean isNullIfBlank()
+    public MissingValueStrategy getMissingValueStrategy()
     {
-        return nullIfBlank;
+        return missingValueStrategy;
     }
 
-    public void setNullIfBlank( boolean nullIfBlank )
+    public void setMissingValueStrategy( MissingValueStrategy missingValueStrategy )
     {
-        this.nullIfBlank = nullIfBlank;
-    }
+        this.missingValueStrategy = missingValueStrategy;
+    }    
 
     @JsonIgnore
     public String getExplodedExpression()
@@ -309,7 +309,7 @@ public class Expression
 
         expression = other.getExpression() == null ? expression : other.getExpression();
         description = other.getDescription() == null ? description : other.getDescription();
-        nullIfBlank = other.isNullIfBlank();
+        missingValueStrategy = other.getMissingValueStrategy() == null ? missingValueStrategy : other.getMissingValueStrategy();
 
         dataElementsInExpression = other.getDataElementsInExpression() == null ?
             dataElementsInExpression : new HashSet<>( other.getDataElementsInExpression() );

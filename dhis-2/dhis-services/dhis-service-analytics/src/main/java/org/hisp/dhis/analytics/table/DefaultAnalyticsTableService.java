@@ -97,7 +97,9 @@ public class DefaultAnalyticsTableService
     
     public void update( Integer lastYears, TaskId taskId )
     {
-        Clock clock = new Clock().startClock().logTime( "Starting update, no of processes: " + getProcessNo() );
+        int processNo = getProcessNo();
+        
+        Clock clock = new Clock().startClock().logTime( "Starting update, no of processes: " + processNo );
         
         String validState = tableManager.validState();
         
@@ -111,7 +113,7 @@ public class DefaultAnalyticsTableService
         
         clock.logTime( "Partition tables: " + tables + ", last years: " + lastYears );
         
-        notifier.notify( taskId, "Creating analytics tables" );
+        notifier.notify( taskId, "Creating analytics tables, last years: " + lastYears + ", processes: " + processNo );
         
         createTables( tables );
         

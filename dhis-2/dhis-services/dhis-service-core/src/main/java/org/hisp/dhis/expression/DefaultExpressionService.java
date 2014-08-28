@@ -35,6 +35,7 @@ import static org.hisp.dhis.expression.Expression.PAR_OPEN;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 import static org.hisp.dhis.system.util.MathUtils.isEqual;
+import static org.hisp.dhis.expression.MissingValueStrategy.*;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -164,7 +165,8 @@ public class DefaultExpressionService
             return null;
         }
         
-        final String denominatorExpression = generateExpression( indicator.getExplodedDenominatorFallback(), valueMap, constantMap, orgUnitCountMap, days, false );
+        final String denominatorExpression = generateExpression( indicator.getExplodedDenominatorFallback(), 
+            valueMap, constantMap, orgUnitCountMap, days, NEVER_SKIP );
         
         if ( denominatorExpression == null )
         {
@@ -175,7 +177,8 @@ public class DefaultExpressionService
         
         if ( !isEqual( denominatorValue, 0d ) )
         {
-            final String numeratorExpression = generateExpression( indicator.getExplodedNumeratorFallback(), valueMap, constantMap, orgUnitCountMap, days, false );
+            final String numeratorExpression = generateExpression( indicator.getExplodedNumeratorFallback(), 
+                valueMap, constantMap, orgUnitCountMap, days, NEVER_SKIP );
             
             if ( numeratorExpression == null )
             {
@@ -197,21 +200,14 @@ public class DefaultExpressionService
     public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap,
         Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days )
     {
-        final String expressionString = generateExpression( expression.getExplodedExpressionFallback(), valueMap, constantMap, 
-            orgUnitCountMap, days, expression.isNullIfBlank() );
-
-        Double result = expressionString != null ? calculateExpression( expressionString ) : null;
-
-        log.debug( "Expression: " + expression.getExplodedExpressionFallback() + ", generated: " + expressionString + ", result: " + result );
-        
-        return result;
+        return getExpressionValue( expression, valueMap, constantMap, orgUnitCountMap, days, null );
     }
 
     public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap,
         Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days, Set<DataElementOperand> incompleteValues )
     {
-        final String expressionString = generateExpression( expression.getExplodedExpressionFallback(), valueMap, constantMap, orgUnitCountMap, days,
-            expression.isNullIfBlank(), incompleteValues );
+        String expressionString = generateExpression( expression.getExplodedExpressionFallback(), valueMap, constantMap, 
+            orgUnitCountMap, days, expression.getMissingValueStrategy(), incompleteValues );
 
         Double result = expressionString != null ? calculateExpression( expressionString ) : null;
         
@@ -823,18 +819,20 @@ public class DefaultExpressionService
 
     @Transactional
     public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, 
-        Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days, boolean nullIfNoValues )
+        Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days, MissingValueStrategy missingValueStrategy )
     {
-    	return generateExpression( expression, valueMap, constantMap, orgUnitCountMap, days, nullIfNoValues, null );
+    	return generateExpression( expression, valueMap, constantMap, orgUnitCountMap, days, missingValueStrategy, null );
     }
 
     private String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, 
-        Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days, boolean nullIfNoValues, Set<DataElementOperand> incompleteValues )
+        Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days, MissingValueStrategy missingValueStrategy, Set<DataElementOperand> incompleteValues )
     {
         if ( expression == null || expression.isEmpty() )
         {
             return null;
         }
+        
+        missingValueStrategy = missingValueStrategy == null ? NEVER_SKIP : missingValueStrategy;
         
         // ---------------------------------------------------------------------
         // Operands
@@ -843,20 +841,37 @@ public class DefaultExpressionService
         StringBuffer sb = new StringBuffer();
         Matcher matcher = OPERAND_PATTERN.matcher( expression );
         
+        int matchCount = 0;
+        int valueCount = 0;
+                
         while ( matcher.find() )
         {
+            matchCount++;
+            
             DataElementOperand operand = DataElementOperand.getOperand( matcher.group() );
 
             final Double value = valueMap.get( operand );
             
-            if ( nullIfNoValues && ( value == null || ( incompleteValues != null && incompleteValues.contains( operand ) ) ) )
+            boolean missingValue = value == null || ( incompleteValues != null && incompleteValues.contains( operand ) );
+            
+            if ( missingValue && SKIP_IF_ANY_VALUE_MISSING.equals( missingValueStrategy ) )
             {
                 return null;
+            }
+            
+            if ( !missingValue )
+            {
+                valueCount++;
             }
 
             String replacement = value != null ? String.valueOf( value ) : NULL_REPLACEMENT;
             
             matcher.appendReplacement( sb, replacement );
+        }
+        
+        if ( SKIP_IF_ALL_VALUES_MISSING.equals( missingValueStrategy ) && matchCount > 0 && valueCount == 0 )
+        {
+            return null;
         }
         
         expression = appendTail( matcher, sb );

@@ -37,15 +37,15 @@ jQuery( document ).ready( function(){
         <th>$i18n.getString( "organisation_unit_counts" )</th>
 	</tr>
 	<tr>
-		<td>
+		<td valign="top">
 			<input type="text" id="description" name="description" class="{validate:{required:true}}" style="width:100%"/>
 			<div class="tipText" style="margin-top: 4px">$i18n.getString( "tip" ): $i18n.getString( "use" ) abs(x) sin(x) cos(x) tan(x) ln(x) log(x) sqrt(x) mod(x,y)</div>
 		</td>
 		<td></td>
-		<td>
+		<td valign="top">
 			<select id="constantId" name="constantId" size="3" style="width:100%" ondblclick="insertText( 'expression', this.value )"></select>
 		</td>
-        <td>
+        <td valign="top">
             <select id="orgUnitGroupId" name="orgUnitGroupId" size="3" style="width:100%" ondblclick="insertText( 'expression', this.value )"></select>
         </td>
 	</tr>

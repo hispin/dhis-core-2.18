@@ -28,6 +28,9 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.expression.MissingValueStrategy.SKIP_IF_ANY_VALUE_MISSING;
+import static org.hisp.dhis.expression.MissingValueStrategy.safeValueOf;
+
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.expression.Operator;
@@ -133,11 +136,11 @@ public class AddValidationRuleAction
         this.leftSideDescription = leftSideDescription;
     }
 
-    private boolean leftSideNullIfBlank;
+    private String leftSideMissingValueStrategy;
     
-    public void setLeftSideNullIfBlank( boolean leftSideNullIfBlank )
+    public void setLeftSideMissingValueStrategy( String leftSideMissingValueStrategy )
     {
-        this.leftSideNullIfBlank = leftSideNullIfBlank;
+        this.leftSideMissingValueStrategy = leftSideMissingValueStrategy;
     }
 
     private String rightSideExpression;
@@ -154,11 +157,11 @@ public class AddValidationRuleAction
         this.rightSideDescription = rightSideDescription;
     }
     
-    private boolean rightSideNullIfBlank;
+    private String rightSideMissingValueStrategy;
 
-    public void setRightSideNullIfBlank( boolean rightSideNullIfBlank )
+    public void setRightSideMissingValueStrategy( String rightSideMissingValueStrategy )
     {
-        this.rightSideNullIfBlank = rightSideNullIfBlank;
+        this.rightSideMissingValueStrategy = rightSideMissingValueStrategy;
     }
 
     private Integer organisationUnitLevel;
@@ -213,14 +216,14 @@ public class AddValidationRuleAction
         
         leftSide.setExpression( leftSideExpression );
         leftSide.setDescription( leftSideDescription );
-        leftSide.setNullIfBlank( leftSideNullIfBlank );
+        leftSide.setMissingValueStrategy( safeValueOf( leftSideMissingValueStrategy, SKIP_IF_ANY_VALUE_MISSING ) );
         leftSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( leftSideExpression ) );
         
         Expression rightSide = new Expression();
         
         rightSide.setExpression( rightSideExpression );
         rightSide.setDescription( rightSideDescription );
-        rightSide.setNullIfBlank( rightSideNullIfBlank );
+        rightSide.setMissingValueStrategy( safeValueOf( rightSideMissingValueStrategy, SKIP_IF_ANY_VALUE_MISSING ) );
         rightSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSideExpression ) );
         
         ValidationRule validationRule = new ValidationRule();
