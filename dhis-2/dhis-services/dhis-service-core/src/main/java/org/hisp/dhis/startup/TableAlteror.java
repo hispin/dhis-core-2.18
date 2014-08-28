@@ -722,6 +722,10 @@ public class TableAlteror
 
         // validation rule group, new column alertbyorgunits
         executeSql( "UPDATE validationrulegroup SET alertbyorgunits=false WHERE alertbyorgunits IS NULL" );
+        
+        executeSql( "update expression set missingvaluestrategy = 'SKIP_IF_ANY_VALUE_MISSING' where nullifblank = true or nullifblank is null" );
+        executeSql( "update expression set missingvaluestrategy = 'NEVER_SKIP' where nullifblank = false" );
+        executeSql( "alter table expression alter column missingvaluestrategy set not null" );
 
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeCompleteDataSetRegistrationsWithAttributeOptionCombo();

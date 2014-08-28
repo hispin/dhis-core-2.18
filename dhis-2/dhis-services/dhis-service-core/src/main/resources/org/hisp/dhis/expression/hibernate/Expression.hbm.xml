@@ -16,7 +16,7 @@
 
     <property name="expression" type="text" />
 
-	<property name="nullIfBlank" />
+    <property name="missingValueStrategy" column="missingvaluestrategy" type="org.hisp.dhis.common.MissingValueStrategyUserType" />
 
     <set name="dataElementsInExpression" table="expressiondataelement">
       <cache usage="read-write" />      
