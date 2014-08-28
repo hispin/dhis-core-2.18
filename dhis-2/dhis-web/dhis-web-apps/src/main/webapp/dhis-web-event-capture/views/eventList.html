@@ -96,18 +96,22 @@
                     </thead>
                     <tbody id="list">
                         <tr ng-repeat="dhis2Event in dhis2Events | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes">
-                            
-                            <!--<td ng-repeat="eventGridColumn in eventGridColumns" ng-if="eventGridColumn.id === 'uid' && eventGridColumn.show">                                
-                                {{dhis2Event.event}}  
-                            </td>-->
-                            
+                           
                             <!-- Visible when event is not under editing -->
                             <td dhis-context-menu 
                                 selected-item={{dhis2Event}}
                                 ng-click="showEventList()"
                                 ng-hide="(currentEvent.event == dhis2Event.event) || !eventGridColumn.show || eventGridColumn.id === 'comment'" 
-                                ng-repeat="eventGridColumn in eventGridColumns">                                                
-                                {{dhis2Event[eventGridColumn.id]}}                                                
+                                ng-repeat="eventGridColumn in eventGridColumns">
+                                <span ng-switch="eventGridColumn.type">
+                                    <span ng-switch-when="bool">
+                                        <span ng-if="dhis2Event[eventGridColumn.id] == 'false'">{{'no'| translate}}</span>
+                                        <span ng-if="dhis2Event[eventGridColumn.id] == 'true'">{{'yes'| translate}}</span>
+                                    </span>
+                                    <span ng-switch-default>
+                                        {{dhis2Event[eventGridColumn.id]}}
+                                    </span>
+                                </span>                                
                             </td>
 
                             <!-- Visible when event is under editing - in grid -->
@@ -186,11 +190,10 @@
                                                     name="foo" 
                                                     style="width:98%;"
                                                     ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
-                                                    ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"
-                                                    />
+                                                    ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]">
                                                 <option value="">{{'please_select'| translate}}</option>                        
-                                                <option value="0">{{'no'| translate}}</option>
-                                                <option value="1">{{'yes'| translate}}</option>
+                                                <option value="false">{{'no'| translate}}</option>
+                                                <option value="true">{{'yes'| translate}}</option>
                                             </select>
                                             <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red"><em title="{{'required'| translate}}" class="required">*</em></span>
                                         </div>
