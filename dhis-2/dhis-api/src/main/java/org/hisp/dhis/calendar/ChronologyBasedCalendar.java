@@ -68,6 +68,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
 
         DateTime dateTime = dateUnit.toDateTime( ISOChronology.getInstance() );
         dateTime = dateTime.withChronology( chronology );
+
         return DateUnit.fromDateTime( dateTime );
     }
 
@@ -110,8 +111,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
         fromDateUnit.setDayOfWeek( isoWeekday( fromDateUnit ) );
         toDateUnit.setDayOfWeek( isoWeekday( toDateUnit ) );
 
-        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ),
-            DateIntervalType.ISO8601_YEAR );
+        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ), DateIntervalType.ISO8601_YEAR );
     }
 
     private DateInterval toMonthIsoInterval( DateUnit dateUnit, int offset, int length )
@@ -135,8 +135,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
         fromDateUnit.setDayOfWeek( isoWeekday( fromDateUnit ) );
         toDateUnit.setDayOfWeek( isoWeekday( toDateUnit ) );
 
-        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ),
-            DateIntervalType.ISO8601_MONTH );
+        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ), DateIntervalType.ISO8601_MONTH );
     }
 
     private DateInterval toWeekIsoInterval( DateUnit dateUnit, int offset, int length )
@@ -160,8 +159,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
         fromDateUnit.setDayOfWeek( isoWeekday( fromDateUnit ) );
         toDateUnit.setDayOfWeek( isoWeekday( toDateUnit ) );
 
-        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ),
-            DateIntervalType.ISO8601_WEEK );
+        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ), DateIntervalType.ISO8601_WEEK );
     }
 
     private DateInterval toDayIsoInterval( DateUnit dateUnit, int offset, int length )
@@ -185,42 +183,41 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
         fromDateUnit.setDayOfWeek( isoWeekday( fromDateUnit ) );
         toDateUnit.setDayOfWeek( isoWeekday( toDateUnit ) );
 
-        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ),
-            DateIntervalType.ISO8601_DAY );
+        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ), DateIntervalType.ISO8601_DAY );
     }
 
     @Override
     public int monthsInYear()
     {
-        DateTime dateTime = new DateTime( 1, 1, 1, 0, 0, chronology );
+        DateTime dateTime = new DateTime( 1, 1, 1, 12, 0, chronology );
         return dateTime.monthOfYear().getMaximumValue();
     }
 
     @Override
     public int daysInWeek()
     {
-        DateTime dateTime = new DateTime( 1, 1, 1, 0, 0, chronology );
+        DateTime dateTime = new DateTime( 1, 1, 1, 12, 0, chronology );
         return dateTime.dayOfWeek().getMaximumValue();
     }
 
     @Override
     public int daysInYear( int year )
     {
-        DateTime dateTime = new DateTime( year, 1, 1, 0, 0, chronology );
+        DateTime dateTime = new DateTime( year, 1, 1, 12, 0, chronology );
         return (int) dateTime.year().toInterval().toDuration().getStandardDays();
     }
 
     @Override
     public int daysInMonth( int year, int month )
     {
-        DateTime dateTime = new DateTime( year, month, 1, 0, 0, chronology );
+        DateTime dateTime = new DateTime( year, month, 1, 12, 0, chronology );
         return dateTime.dayOfMonth().getMaximumValue();
     }
 
     @Override
     public int weeksInYear( int year )
     {
-        DateTime dateTime = new DateTime( year, 1, 1, 0, 0, chronology );
+        DateTime dateTime = new DateTime( year, 1, 1, 12, 0, chronology );
         return dateTime.weekOfWeekyear().getMaximumValue();
     }
 
