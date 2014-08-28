@@ -32,6 +32,8 @@ import static org.hisp.dhis.user.UserSettingService.KEY_DB_LOCALE;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 import static org.hisp.dhis.user.UserSettingService.KEY_UI_LOCALE;
+import static org.hisp.dhis.user.UserSettingService.KEY_ANALYSIS_DISPLAY_PROPERTY;
+
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -312,6 +314,7 @@ public class CurrentUserController
         userAccount.getSettings().put( KEY_DB_LOCALE, TextUtils.toString( userSettingService.getUserSetting( KEY_DB_LOCALE ) ) );
         userAccount.getSettings().put( KEY_MESSAGE_EMAIL_NOTIFICATION, TextUtils.toString( userSettingService.getUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION ) ) );
         userAccount.getSettings().put( KEY_MESSAGE_SMS_NOTIFICATION, TextUtils.toString( userSettingService.getUserSetting( KEY_MESSAGE_SMS_NOTIFICATION ) ) );
+        userAccount.getSettings().put( KEY_ANALYSIS_DISPLAY_PROPERTY, TextUtils.toString( userSettingService.getUserSetting( KEY_ANALYSIS_DISPLAY_PROPERTY ) ) );
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), userAccount );
