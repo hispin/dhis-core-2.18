@@ -300,7 +300,6 @@ public class TableAlteror
         updateProgramStageList();
         updateProgramAttributeList();
         
-        executeSql( "ALTER TABLE program DROP COLUMN displayonallorgunit" );
     }
 
     // -------------------------------------------------------------------------
