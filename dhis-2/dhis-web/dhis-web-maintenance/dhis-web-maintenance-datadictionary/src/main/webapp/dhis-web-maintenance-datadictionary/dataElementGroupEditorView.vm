@@ -113,7 +113,7 @@
 
 			<tr>
 				<td>
-					<select class="select" id="availableDataElements2" size="30" onclick="getAssignedDataElementGroups()"/>
+					<select class="select" id="availableDataElements2" size="30" onchange="getAssignedDataElementGroups()"/>
 				</td>
 				<td>
 					<select class="select" id="assignedGroups" multiple="multiple" size="30" ondblclick="moveSelectedById(this.id, 'availableGroups');"/>
