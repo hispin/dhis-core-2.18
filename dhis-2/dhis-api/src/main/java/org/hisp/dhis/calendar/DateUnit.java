@@ -184,7 +184,7 @@ public class DateUnit
             throw new RuntimeException( "Cannot convert non-ISO8601 DateUnit to DateTime." );
         }
 
-        return new DateTime( year, month, day, 0, 0, ISOChronology.getInstance() );
+        return new DateTime( year, month, day, 12, 0, ISOChronology.getInstance() );
     }
 
     /**
@@ -195,7 +195,7 @@ public class DateUnit
      */
     public DateTime toDateTime( Chronology chronology )
     {
-        return new DateTime( year, month, day, 0, 0, chronology );
+        return new DateTime( year, month, day, 12, 0, chronology );
     }
 
     /**
