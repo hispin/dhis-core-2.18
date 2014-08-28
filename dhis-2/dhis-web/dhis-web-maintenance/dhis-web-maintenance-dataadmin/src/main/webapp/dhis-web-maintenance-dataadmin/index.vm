@@ -6,7 +6,7 @@
     #introListImgItem( "displayMaintenanceForm.action" "maintenance" "maintenance" )
     #introListImgItem( "displayResourceTableForm.action" "resource_table" "resourcetable" )
     #introListImgItem( "locale.action" "locale" "datadictionary" )
-    #introListImgItem( "showSqlViewListForm.action" "sql_view" "sqlview" )
+    #introListImgItem( "sqlView.action" "sql_view" "sqlview" )
     #introListImgItem( "displayOrganisationUnitMergeForm.action" "organisation_unit_merge" "organisationunitmerge" )
     #introListImgItem( "displayDuplicateDataEliminationForm.action" "duplicate_data_elimination" "duplicatedataelimination" )
     #introListImgItem( "viewStatistics.action" "data_statistics" "datastatistics" )
