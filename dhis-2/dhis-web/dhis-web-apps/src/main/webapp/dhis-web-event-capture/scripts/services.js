@@ -262,9 +262,10 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '" ' +
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory">' + 
-                                            'option value="">{{\'please_select\'| translate}}</option>' +
-                                            '<option value="0">{{\'no\'| translate}}</option>' + 
-                                            '<option value="1">{{\'yes\'| translate}}</option>';
+                                            '<option value="">{{\'please_select\'| translate}}</option>' +
+                                            '<option value="false">{{\'no\'| translate}}</option>' + 
+                                            '<option value="true">{{\'yes\'| translate}}</option>' +
+                                            '</select>';
                         }
                         if(programStageDataElements[deId].dataElement.type == "date"){
                             newInputField = '<input type="text" ' +

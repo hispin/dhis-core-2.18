@@ -116,10 +116,10 @@
                                 <select ng-model="currentEvent[eventGridColumn.id]"                                                                
                                         ng-required={{eventGridColumn.compulsory}}
                                         name="foo" 
-                                        style="width:99%;"/>
+                                        style="width:99%;">
                                 <option value="">{{'please_select'| translate}}</option>                        
-                                <option value="0">{{'no'| translate}}</option>
-                                <option value="1">{{'yes'| translate}}</option>
+                                <option value="false">{{'no'| translate}}</option>
+                                <option value="true">{{'yes'| translate}}</option>
                                 </select>
                                 <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
                             </div>
@@ -282,10 +282,10 @@
                                         <select ng-model="currentEvent[de.dataElement.id]"                                                                
                                                 ng-required={{programStageDataElements[de.dataElement.id].compulsory}}
                                                 name="foo" 
-                                                style="width:99%;"/>
+                                                style="width:99%;">
                                         <option value="">{{'please_select'| translate}}</option>                        
-                                        <option value="0">{{'no'| translate}}</option>
-                                        <option value="1">{{'yes'| translate}}</option>
+                                        <option value="false">{{'no'| translate}}</option>
+                                        <option value="true">{{'yes'| translate}}</option>
                                         </select>
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
                                     </div>
