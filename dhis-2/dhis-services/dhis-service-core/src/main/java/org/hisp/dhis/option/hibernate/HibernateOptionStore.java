@@ -74,7 +74,7 @@ public class HibernateOptionStore
         return query.list();
     }
 
-    public Option getOptionValueByName( OptionSet optionSet, String name )
+    public Option getOptionByName( OptionSet optionSet, String name )
     {
         String hql = 
             "select option from OptionSet as optionset " +
@@ -87,8 +87,21 @@ public class HibernateOptionStore
         return (Option) query.uniqueResult();
     }
 
+    public Option getOptionByCode( OptionSet optionSet, String code )
+    {
+        String hql = 
+            "select option from OptionSet as optionset " +
+            "join optionset.options as option where optionset = :optionSet and option.code = :code";
+
+        Query query = getQuery( hql );
+        query.setEntity( "optionSet", optionSet );
+        query.setString( "code", code );
+
+        return (Option) query.uniqueResult();
+    }
+
     @SuppressWarnings( "unchecked" )
-    public Collection<Option> getOptionValues( OptionSet optionSet, String option, Integer min, Integer max )
+    public Collection<Option> getOptions( OptionSet optionSet, String option, Integer min, Integer max )
     {
         String hql = 
             "select option from OptionSet as optionset " +

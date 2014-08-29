@@ -42,8 +42,10 @@ public interface OptionStore extends GenericIdentifiableObjectStore<OptionSet>
 {
     List<Option> getOptions( int optionSetId, String key, Integer max  );
    
-    Option getOptionValueByName( OptionSet optionSet, String name );
+    Option getOptionByName( OptionSet optionSet, String name );
+    
+    Option getOptionByCode( OptionSet optionSet, String code );
 
-    Collection<Option> getOptionValues( OptionSet optionSet, String option, Integer min, Integer max );
+    Collection<Option> getOptions( OptionSet optionSet, String option, Integer min, Integer max );
 }
 

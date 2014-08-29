@@ -103,7 +103,7 @@ public class GetOptionListAction
        
         this.paging = createPaging( optionSet.getOptions().size() );
 
-        options = optionService.getOptionValues( optionSet, key, paging.getStartPos(), paging.getPageSize() );
+        options = optionService.getOptions( optionSet, key, paging.getStartPos(), paging.getPageSize() );
 
         return SUCCESS;
     }

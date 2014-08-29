@@ -39,6 +39,7 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionService;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -370,10 +371,11 @@ public class LoadDataEntryAction
         for ( TrackedEntityDataValue entityInstanceDataValue : entityInstanceDataValues )
         {
             int key = entityInstanceDataValue.getDataElement().getId();
-            if ( entityInstanceDataValue.getDataElement().getOptionSet() != null )
+            OptionSet optionSet = entityInstanceDataValue.getDataElement().getOptionSet();
+            if ( optionSet != null )
             {
                 String value = entityInstanceDataValue.getValue();
-                Option option = optionService.getOptionByCode( value );
+                Option option = optionService.getOptionByCode( optionSet, value );
                 
                 TrackedEntityDataValue instanceDataValue = new TrackedEntityDataValue(entityInstanceDataValue.getProgramStageInstance(), entityInstanceDataValue.getDataElement());
                 instanceDataValue.setValue( option.getName() );

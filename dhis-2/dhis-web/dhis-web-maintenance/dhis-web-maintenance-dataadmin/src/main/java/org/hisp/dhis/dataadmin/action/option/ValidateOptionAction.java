@@ -108,11 +108,11 @@ public class ValidateOptionAction
     public String execute()
         throws Exception
     {
+        OptionSet optionSet = optionService.getOptionSet( optionSetId );
+        
         if ( name != null )
         {
-            OptionSet optionSet = optionService.getOptionSet( optionSetId );
-
-            Option match = optionService.getOptionValueByName( optionSet, name );
+            Option match = optionService.getOptionByName( optionSet, name );
 
             if ( match != null && (id == null || match.getId() != id) )
             {
@@ -124,7 +124,7 @@ public class ValidateOptionAction
 
         if ( code != null )
         {
-            Option match = optionService.getOptionByCode( code );
+            Option match = optionService.getOptionByCode( optionSet, code );
 
             if ( match != null && (id == null || match.getId() != id) )
             {
