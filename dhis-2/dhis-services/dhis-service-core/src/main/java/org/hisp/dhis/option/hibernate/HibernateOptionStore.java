@@ -82,7 +82,7 @@ public class HibernateOptionStore
 
         Query query = getQuery( hql );
         query.setEntity( "optionSet", optionSet );
-        query.setString( "name", name.toLowerCase() );
+        query.setString( "name", name );
 
         return (Option) query.uniqueResult();
     }
