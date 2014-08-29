@@ -78,7 +78,7 @@ public class HibernateOptionStore
     {
         String hql = 
             "select option from OptionSet as optionset " +
-            "join optionset.options as option where optionset = :optionSet and lower(option.name) = :name";
+            "join optionset.options as option where optionset = :optionSet and option.name = :name";
 
         Query query = getQuery( hql );
         query.setEntity( "optionSet", optionSet );

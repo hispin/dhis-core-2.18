@@ -128,7 +128,7 @@ public class ValidateOptionAction
 
             if ( match != null && (id == null || match.getId() != id) )
             {
-                message = i18n.getString( "name_in_use" );
+                message = i18n.getString( "code_in_use" );
 
                 return ERROR;
             }
