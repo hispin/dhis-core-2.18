@@ -533,8 +533,15 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });            
             return promise;
         },
-        getByOrgUnitAndProgram: function(orgUnit, ouMode, program, startDate, endDate){   
-            var promise = $http.get( '../api/events.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&startDate=' + startDate + '&endDate=' + endDate + '&paging=false').then(function(response){
+        getByOrgUnitAndProgram: function(orgUnit, ouMode, program, startDate, endDate){
+            var url;
+            if(startDate && endDate){
+                url = '../api/events.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&startDate=' + startDate + '&endDate=' + endDate + '&paging=false';
+            }
+            else{
+                url = '../api/events.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&paging=false';
+            }
+            var promise = $http.get( url ).then(function(response){
                 return response.data.events;
             });            
             return promise;

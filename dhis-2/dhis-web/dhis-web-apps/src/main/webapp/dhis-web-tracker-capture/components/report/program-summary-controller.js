@@ -28,36 +28,13 @@ trackerCapture.controller('ProgramSummaryController',
     });
     
     //load programs associated with the selected org unit.
-    $scope.loadPrograms = function(orgUnit) {                
-        
-        $scope.selectedOrgUnit = orgUnit;
-        
-        if (angular.isObject($scope.selectedOrgUnit)) {   
-
+    $scope.loadPrograms = function(orgUnit) {
+        $scope.selectedOrgUnit = orgUnit;        
+        if (angular.isObject($scope.selectedOrgUnit)){
             ProgramFactory.getAll().then(function(programs){
-                $scope.programs = [];
-                angular.forEach(programs, function(program){                            
-                    if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id)){                                
-                        $scope.programs.push(program);
-                    }
-                });
-
-                if($scope.programs.length === 0){
-                    $scope.selectedProgram = null;
-                }
-                else{
-                    if($scope.selectedProgram){
-                        angular.forEach($scope.programs, function(program){                            
-                            if(program.id === $scope.selectedProgram.id){                                
-                                $scope.selectedProgram = program;
-                            }
-                        });
-                    }
-                    else{                        
-                        if($scope.programs.length === 1){
-                            $scope.selectedProgram = $scope.programs[0];
-                        }                        
-                    }
+                $scope.programs = programs;                
+                if($scope.programs.length === 1){
+                    $scope.selectedProgram = $scope.programs[0];
                 } 
             });
         }        
@@ -166,8 +143,7 @@ trackerCapture.controller('ProgramSummaryController',
 
         modalInstance.result.then({
         });
-    };   
-    
+    };    
 })
 
 //Controller for event details

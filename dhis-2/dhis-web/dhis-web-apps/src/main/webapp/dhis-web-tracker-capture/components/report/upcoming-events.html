@@ -21,75 +21,19 @@
 <div id="mainPage" class="bordered-div">
     <h2>{{'upcoming_events' | translate}}</h2>
     <form name="outerForm" novalidate>               
-        <div class="row">
-            <div class="col-sm-12 col-md-8">
-                <table class="table table-borderless table-striped">
-                    <tr>
-                        <td class='col-sm-6 col-md-4 vertical-center'>
-                            {{'program' | translate}}
-                        </td>
-                        <td class='col-sm-6 col-md-4'>
-                            <select ng-model="selectedProgram"
-                                    class="form-control"
-                                    ng-options="program as program.name for program in programs | orderBy: 'name'" 
-                                    ng-disabled="programs.length < 1">
-                                <option value="">{{programs.length > 0 ? 'please_select_a_program' : 'no_program_exists' | translate}}</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class='col-sm-6 col-md-4 vertical-center'>{{'org_unit'| translate}}</td>
-                        <td class='col-sm-6 col-md-4'>                 
-                            <label><input type="radio" ng-model="selectedOuMode.name" name="selected" value="SELECTED"> {{'SELECTED'| translate}}</label><br/>
-                            <label><input type="radio" ng-model="selectedOuMode.name" name="children" value="CHILDREN"> {{'CHILDREN'| translate}}</label><br/>
-                            <label><input type="radio" ng-model="selectedOuMode.name" name="descendants" value="DESCENDANTS"> {{'DESCENDANTS'| translate}}</label><br/>
-                            <label><input type="radio" ng-model="selectedOuMode.name" name="accessible" value="ACCESSIBLE"> {{'ACCESSIBLE'| translate}}</label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-8 col-md-6">
-                <table class="table-borderless">
-                    <tr>
-                        <td>
-                            <input type="text" name="reportStartDate" placeholder="{{'start_date'| translate}} (yyyy-mm-dd)" class="form-control" ng-date ng-model="report.startDate" max="today" ng-required="true"/> 
-                            <span ng-show="outerForm.submitted && outerForm.reportStartDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}} (yyyy-mm-dd)</span>
-                        </td>
-                        <td>
-                            <input type="text" name="reportEndDate" placeholder="{{'end_date'| translate}} (yyyy-mm-dd)" class="form-control" ng-date ng-model="report.endDate" max="today" ng-required="true"/>
-                            <span ng-show="outerForm.submitted && outerForm.reportEndDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}} (yyyy-mm-dd)</span>
-                        </td>
-                    </tr>
-                </table>                
-            </div>
-            <div class="col-md-6 trim">
-                <button type="button" class="btn btn-primary" ng-click="generateReport()" ng-disabled="!selectedProgram">{{'go'| translate}}</button>               
-            </div>
-        </div>
-    </form>
-    <div class="row" ng-if="programs.length < 1">        
-        <div class="col-sm-8 col-md-6 vertical-spacing">
-            <div class="alert alert-warning">{{'no_program_exists_report'| translate}}</div> 
-        </div>
-    </div>
-    <div class="row" ng-if="programs.length > 0 && !selectedProgram">        
-        <div class="col-sm-8 col-md-6 vertical-spacing">
-            <div class="alert alert-warning">{{'please_select_program_report'| translate}}</div> 
-        </div>
-    </div>
+        <div ng-include="'components/report/reportForm.html'"></div>
+    </form>    
     <img src="../images/ajax-loader-bar.gif" ng-if="!dataReady && reportStarted"/>
     <div ng-if="dataReady">
-        <div ng-switch="teiCount">                    
+        <div ng-switch="teiList.length">                    
             <div ng-switch-when="undefined">
                 <div class="alert alert-warning vertical-spacing">
-                    {{'no'| translate}} {{selectedProgram.trackedEntity.name|| 'records' | translate}} {{'found'| translate}}                        
+                    {{'no_data_found'| translate}}
                 </div>
             </div>
             <div ng-switch-when="0">  
                 <div class="alert alert-warning vertical-spacing">
-                    {{'no'| translate}} {{selectedProgram.trackedEntity.name|| 'records' | translate}} {{'found'| translate}}                        
+                    {{'no_data_found'| translate}}
                 </div>
             </div>    
             <div ng-switch-default> 
@@ -100,38 +44,28 @@
                         <thead>
                             <tr>
                                 <th>{{selectedProgram.trackedEntity.name}}</th>
-                                <th>{{selectedProgram.name}} {{'visit' | translate}}</th>
+                                <th>{{selectedProgram.name}} {{'upcoming_event'| translate}}</th>
                             </tr>
                         </thead>
-                        <tr ng-repeat="tei in teiList.rows">
+                        <tr ng-repeat="tei in teiList">
                             <td>
                                 <span ng-repeat="gridColumn in gridColumns">
                                     <span class="bold">{{gridColumn.name}}:</span> {{tei[gridColumn.id]}}<br>
                                 </span>
                             </td>
-                            <td class='vertical-center'>    
-                                <div class='bold inline-block' ng-if='!dhis2Events[tei.id]'>{{'no_visit_made' | translate}}</div>
-                                <div class="inline-block" ng-repeat="ev in dhis2Events[tei.id] | orderBy: 'eventDate'">                                    
-                                    <div class="block align-center">{{ev.orgUnitName}}</div>                   
-                                    <div class="empty-stage-container" 
-                                         title="{{'no_data' | translate}}"
+                            <td>
+                                <span class='bold inline-block' ng-if='!dhis2Events[tei.id]'>{{'no_visit_made'| translate}}</span>
+                                <span class="inline-block" ng-repeat="ev in dhis2Events[tei.id] | orderBy: 'dueDate'">                                    
+                                    <span class="block align-center">{{ev.orgUnitName}}</span>                   
+                                    <span class="stage-container" 
+                                         title="{{'details'| translate}}"
                                          ng-class="{'{{ev.statusColor}}': true}"
-                                         ng-if='!ev.dataValues'>
-                                        {{ev.name}}<br/>
-                                        {{ev.eventDate}}<br>
-                                        {{'no_data' | translate}}
-                                    </div>
-                                    <div class="stage-container" 
-                                         title="{{'details' | translate}}"
-                                         ng-class="{'{{ev.statusColor}}': true}"
-                                         ng-if='ev.dataValues'
                                          ng-click="showEventDetails(ev, tei)">
                                         {{ev.name}}<br/>
-                                        {{ev.eventDate}}<br>  
-                                        {{'data_exists' | translate}}
-                                    </div>                                    
-                                    <span><i class="fa fa-arrow-right" ng-show="$index < dhis2Events[tei.id].length - 1"></i></span>
-                                </div>                                         
+                                        {{ev.dueDate}}<br>  
+                                    </span>                                    
+                                    <i class="fa fa-arrow-right" ng-show="$index < dhis2Events[tei.id].length - 1"></i>
+                                </span>                                             
                             </td>
                         </tr>
                     </table>

@@ -55,7 +55,7 @@
                             </td>
                             <td>
                                 <span class='bold inline-block' ng-if='!dhis2Events[tei.id]'>{{'no_visit_made'| translate}}</span>
-                                <span class="inline-block" ng-repeat="ev in dhis2Events[tei.id]| orderBy: 'eventDate'">                                    
+                                <span class="inline-block" ng-repeat="ev in dhis2Events[tei.id] | orderBy: 'eventDate'">                                    
                                     <span class="block align-center">{{ev.orgUnitName}}</span>                   
                                     <span class="empty-stage-container" 
                                          title="{{'no_data'| translate}}"
