@@ -103,9 +103,8 @@ trackerCapture.controller('UpcomingEventsController',
                 $scope.teiCount = data.rows.length;                
             }
             
-            
             //process tei grid
-            $scope.teiList = TEIGridService.format(data);          
+            $scope.teiList = TEIGridService.format(data, false);          
             
             DHIS2EventFactory.getByOrgUnitAndProgram($scope.selectedOrgUnit.id, $scope.selectedOuMode.name, $scope.selectedProgram.id).then(function(eventList){
                 $scope.dhis2Events = [];

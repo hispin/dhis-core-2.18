@@ -533,8 +533,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });            
             return promise;
         },
-        getByOrgUnitAndProgram: function(orgUnit, ouMode, program){   
-            var promise = $http.get( '../api/events.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&paging=false').then(function(response){
+        getByOrgUnitAndProgram: function(orgUnit, ouMode, program, startDate, endDate){   
+            var promise = $http.get( '../api/events.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&startDate=' + startDate + '&endDate=' + endDate + '&paging=false').then(function(response){
                 return response.data.events;
             });            
             return promise;
@@ -1052,7 +1052,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 .service('TEIGridService', function(OrgUnitService, DateUtils){
     
     return {
-        format: function(grid){
+        format: function(grid, map){
             if(!grid || !grid.rows){
                 return;
             }
@@ -1093,12 +1093,17 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                     }
 
                     if(!isEmpty){
-                        entityList.push(entity);
+                        if(map){
+                            entityList[entity.id] = entity;
+                        }
+                        else{
+                            entityList.push(entity);
+                        }
                     }        
                 });                
             });
             return {headers: attributes, rows: entityList, pager: grid.metaData.pager};                                    
-        },   
+        },
         generateGridColumns: function(attributes, ouMode){
             
             var columns = attributes ? angular.copy(attributes) : [];
