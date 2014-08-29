@@ -83,10 +83,10 @@ public class H2StatementBuilder
     {
         return
             "DELETE FROM datavalue " +
-            "USING datavalue, dataelement " +
-            "WHERE datavalue.dataelementid = dataelement.dataelementid " +
-            "AND dataelement.aggregationtype = 'sum' " +
-            "AND dataelement.zeroissignificant = false " +
+            "WHERE datavalue.dataelementid IN (" +
+                "SELECT dataelementid from dataelement " +
+                "WHERE dataelement.aggregationtype = 'sum' " +
+                "AND dataelement.zeroissignificant = false) " +
             "AND datavalue.value = '0'";
     }
 
