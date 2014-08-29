@@ -507,7 +507,7 @@ public class HibernateCaseAggregationConditionStore
 
         String sqlOrgunitCompleted = "";
 
-        // Get minus(date dataelement, date dataelement) out from the expression
+        // Get minus(DATE dataelement, DATE dataelement) out from the expression
         // and run them later
 
         Map<Integer, String> minus2SQLMap = new HashMap<>();
@@ -530,6 +530,29 @@ public class HibernateCaseAggregationConditionStore
             idx2++;
         }
 
+        // Get minus(DATE attribute, DATE attribute) out from the expression
+        // and run them later
+
+        Map<Integer, String> minus2AttributeSQLMap = new HashMap<>();
+        int idx1 = 0;
+        Pattern patternAttrMinus2 = Pattern.compile( CaseAggregationCondition.minusAttributeRegExp );
+        Matcher matcherAttrMinus2 = patternAttrMinus2.matcher( caseExpression );
+        while ( matcherAttrMinus2.find() )
+        { 
+           String attribute1 = matcherAttrMinus2.group( 2 );
+           String attribute2 = matcherAttrMinus2.group( 5 );
+           String compareSide = matcherAttrMinus2.group( 6 ) + matcherAttrMinus2.group( 7 );
+           minus2AttributeSQLMap.put(
+                idx1,
+                getConditionForMisus2Attribute(attribute1, attribute2, compareSide ));
+               
+            caseExpression = caseExpression.replace( matcherAttrMinus2.group( 0 ),
+                CaseAggregationCondition.MINUS_ATTRIBUTE_OPERATOR + "_" + idx1 );
+
+            idx1++;
+        }
+
+        
         // Get minus(date dataelement, date) out from the expression and run
         // them later
 
@@ -669,6 +692,13 @@ public class HibernateCaseAggregationConditionStore
             sql = sql
                 .replace( CaseAggregationCondition.MINUS_DATAELEMENT_OPERATOR + "_" + key, minus2SQLMap.get( key ) );
         }
+        
+        for ( int key = 0; key < idx1; key++ )
+        {
+            sql = sql
+                .replace( CaseAggregationCondition.MINUS_ATTRIBUTE_OPERATOR + "_" + key, minus2AttributeSQLMap.get( key ) );
+        }
+
 
         return sql + " ) ";
     }
@@ -949,6 +979,18 @@ public class HibernateCaseAggregationConditionStore
             + endDate
             + "' ) AS d2 WHERE DATE(d1.value ) - DATE(d2.value) " + compareSide;
     }
+    
+    private String getConditionForMisus2Attribute(String attribute1, String attribute2, String compareSide)
+    {
+         return " EXISTS ( SELECT * FROM (  SELECT _teav.value FROM trackedentityattributevalue _teav "
+            + " WHERE _teav.trackedentityinstanceid=p.trackedentityinstanceid "
+            + " and _teav.trackedentityattributeid = " + attribute1 + " ) as a1 , "
+            + " ( SELECT _teav.value FROM trackedentityattributevalue _teav "
+            + " WHERE _teav.trackedentityinstanceid=p.trackedentityinstanceid  "
+            + " and  _teav.trackedentityattributeid =  " + attribute2 + " ) as a2 "
+            + " WHERE DATE(a1.value ) - DATE(a2.value) " + compareSide;
+    }
+
 
     /**
      * Return the Ids of organisation units which entity instances registered or
