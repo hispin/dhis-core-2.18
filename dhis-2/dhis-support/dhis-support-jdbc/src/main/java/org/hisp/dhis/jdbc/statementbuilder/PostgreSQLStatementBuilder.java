@@ -104,6 +104,7 @@ public class PostgreSQLStatementBuilder
             "USING dataelement " +
             "WHERE datavalue.dataelementid = dataelement.dataelementid " +
             "AND dataelement.aggregationtype = 'sum' " +
+            "AND dataelement.zeroissignificant = false " +
             "AND datavalue.value = '0'";
     }
 

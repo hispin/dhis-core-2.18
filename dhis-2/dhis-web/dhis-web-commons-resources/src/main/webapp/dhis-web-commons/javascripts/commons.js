@@ -85,7 +85,8 @@ function referrerBack( defaultUrl )
  *
  * @param context Context vars from context menu
  */
-function translateWithContext( context ) {
+function translateWithContext( context ) 
+{
   translate( context.type, context.uid );
 }
 

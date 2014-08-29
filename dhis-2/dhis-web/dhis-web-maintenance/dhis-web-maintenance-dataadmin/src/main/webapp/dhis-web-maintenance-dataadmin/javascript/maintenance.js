@@ -11,7 +11,7 @@ function performMaintenance()
     
     if ( clearAnalytics || clearDataMart || dataMartIndex || zeroValues || dataSetCompleteness || prunePeriods || updateCategoryOptionCombos )
     {
-        setWaitMessage( i18n_performing_maintenance );
+        setHeaderWaitMessage( i18n_performing_maintenance );
         
         var params = "clearAnalytics=" + clearAnalytics + 
         	"&clearDataMart=" + clearDataMart + 
@@ -27,12 +27,12 @@ function performMaintenance()
 			   data: params,
 			   dataType: "xml",
 			   success: function(result){
-					setMessage( i18n_maintenance_performed );
+				   setHeaderDelayMessage( i18n_maintenance_performed );
 			   }
 			});
     }
     else
     {
-        setMessage( i18n_select_options );
+    	setHeaderDelayMessage( i18n_select_options );
     }
 }

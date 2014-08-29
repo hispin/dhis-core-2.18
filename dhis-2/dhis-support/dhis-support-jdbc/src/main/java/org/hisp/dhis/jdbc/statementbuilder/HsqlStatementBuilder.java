@@ -83,7 +83,11 @@ public class HsqlStatementBuilder
     {
         return
             "DELETE FROM datavalue " +
-            "WHERE datavalue.value = '0'";
+            "USING datavalue, dataelement " +
+            "WHERE datavalue.dataelementid = dataelement.dataelementid " +
+            "AND dataelement.aggregationtype = 'sum' " +
+            "AND dataelement.zeroissignificant = false " +
+            "AND datavalue.value = '0'";
     }
 
     @Override

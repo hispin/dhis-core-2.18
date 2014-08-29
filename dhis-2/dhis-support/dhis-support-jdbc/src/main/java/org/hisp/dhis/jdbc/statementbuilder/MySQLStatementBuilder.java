@@ -86,6 +86,7 @@ public class MySQLStatementBuilder
             "USING datavalue, dataelement " +
             "WHERE datavalue.dataelementid = dataelement.dataelementid " +
             "AND dataelement.aggregationtype = 'sum' " +
+            "AND dataelement.zeroissignificant = false " +
             "AND datavalue.value = '0'";
     }
 
