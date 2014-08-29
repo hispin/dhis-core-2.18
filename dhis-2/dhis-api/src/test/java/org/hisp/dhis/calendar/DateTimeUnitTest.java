@@ -28,14 +28,15 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
+import org.joda.time.DateTime;
+import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
-import org.joda.time.DateTime;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -80,7 +81,7 @@ public class DateTimeUnitTest
     public void toDateTimeTest()
     {
         DateTimeUnit dateTimeUnit = new DateTimeUnit( 2014, 3, 20, true );
-        DateTime dateTime = dateTimeUnit.toDateTime();
+        DateTime dateTime = dateTimeUnit.toJodaDateTime();
 
         assertEquals( 2014, dateTime.getYear() );
         assertEquals( 3, dateTime.getMonthOfYear() );
@@ -106,5 +107,41 @@ public class DateTimeUnitTest
         assertEquals( 2014, dateTimeUnit.getYear() );
         assertEquals( 3, dateTimeUnit.getMonth() );
         assertEquals( 20, dateTimeUnit.getDay() );
+    }
+
+    @Test
+    public void defaultTimeZoneTest()
+    {
+        assertEquals( TimeZone.getDefault(), new DateTimeUnit().getTimeZone() );
+    }
+
+    @Test
+    public void adjustedTimeZoneTest()
+    {
+        TimeZone timeZone = TimeZone.getTimeZone( "Asia/Ho_Chi_Minh" ); // UTC/GMT +7.00 hours
+
+        DateTimeUnit dateTimeUnit = new DateTimeUnit( true );
+        dateTimeUnit.setDate( 2014, 3, 20 );
+        dateTimeUnit.setTime( 14, 0, 0, 0 );
+        dateTimeUnit.setTimeZone( timeZone );
+
+        assertEquals( 7, dateTimeUnit.toUtc().getHour() );
+    }
+
+    // Test for JT conversion exception:
+    // Illegal instant due to time zone offset transition (daylight savings time 'gap'): 1986-01-01T00:00:00.000 (Asia/Kathmandu)
+    @Test
+    public void illegalInstantGapTest()
+    {
+        TimeZone timeZone = TimeZone.getTimeZone( "Asia/Kathmandu" );
+
+        DateTimeUnit dateTimeUnit = new DateTimeUnit( true );
+        dateTimeUnit.setDate( 1986, 1, 1 );
+        dateTimeUnit.setTime( 0, 0, 0, 0 );
+        dateTimeUnit.setTimeZone( timeZone );
+
+        dateTimeUnit.toJodaDateTime();
+
+        System.err.println( "tz: " + timeZone );
     }
 }

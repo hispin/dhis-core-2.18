@@ -245,8 +245,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     @Override
     public int weekday( DateTimeUnit dateTimeUnit )
     {
-        DateTime dateTime = dateTimeUnit.toJodaDateTime( chronology );
-        return dateTime.getDayOfWeek();
+        return dateTimeUnit.toJodaDateTime( chronology ).getDayOfWeek();
     }
 
     @Override
