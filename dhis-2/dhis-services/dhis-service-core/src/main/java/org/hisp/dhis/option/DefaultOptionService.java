@@ -50,18 +50,18 @@ public class DefaultOptionService
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private GenericIdentifiableObjectStore<OptionSet> optionSetStore;
+
+    public void setOptionSetStore( GenericIdentifiableObjectStore<OptionSet> optionSetStore )
+    {
+        this.optionSetStore = optionSetStore;
+    }
+
     private OptionStore optionStore;
 
     public void setOptionStore( OptionStore optionStore )
     {
         this.optionStore = optionStore;
-    }
-
-    private GenericIdentifiableObjectStore<Option> optionValueStore;
-
-    public void setOptionValueStore( GenericIdentifiableObjectStore<Option> optionValueStore )
-    {
-        this.optionValueStore = optionValueStore;
     }
 
     private I18nService i18nService;
@@ -72,43 +72,71 @@ public class DefaultOptionService
     }
 
     // -------------------------------------------------------------------------
-    // Implementation methods -
+    // OptionService implementation
+    // -------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
+    // Option Set
     // -------------------------------------------------------------------------
 
     public int saveOptionSet( OptionSet optionSet )
     {
-        return optionStore.save( optionSet );
+        return optionSetStore.save( optionSet );
     }
 
     public void updateOptionSet( OptionSet optionSet )
     {
-        optionStore.update( optionSet );
+        optionSetStore.update( optionSet );
     }
 
     public OptionSet getOptionSet( int id )
     {
-        return i18n( i18nService, optionStore.get( id ) );
+        return i18n( i18nService, optionSetStore.get( id ) );
     }
 
     public OptionSet getOptionSet( String uid )
     {
-        return i18n( i18nService, optionStore.getByUid( uid ) );
+        return i18n( i18nService, optionSetStore.getByUid( uid ) );
     }
 
     public OptionSet getOptionSetByName( String name )
     {
-        return i18n( i18nService, optionStore.getByName( name ) );
+        return i18n( i18nService, optionSetStore.getByName( name ) );
     }
 
     public void deleteOptionSet( OptionSet optionSet )
     {
-        optionStore.delete( optionSet );
+        optionSetStore.delete( optionSet );
     }
 
     public Collection<OptionSet> getAllOptionSets()
     {
-        return i18n( i18nService, optionStore.getAll() );
+        return i18n( i18nService, optionSetStore.getAll() );
     }
+
+    public Integer getOptionSetsCountByName( String name )
+    {
+        return optionStore.getCountLikeName( name );
+    }
+
+    public Collection<OptionSet> getOptionSetsBetweenByName( String name, int first, int max )
+    {
+        return new HashSet<>( i18n( i18nService, optionSetStore.getAllLikeNameOrderedName( name, first, max ) ) );
+    }
+
+    public Collection<OptionSet> getOptionSetsBetween( int first, int max )
+    {
+        return new HashSet<>( i18n( i18nService, optionSetStore.getAllOrderedName( first, max ) ) );
+    }
+
+    public Integer getOptionSetCount()
+    {
+        return optionSetStore.getCount();
+    }
+
+    // -------------------------------------------------------------------------
+    // Option
+    // -------------------------------------------------------------------------
 
     public List<Option> getOptions( String optionSetUid, String key, Integer max )
     {
@@ -139,43 +167,19 @@ public class DefaultOptionService
         return options;
     }
 
-    public Integer getOptionSetsCountByName( String name )
-    {
-        return optionStore.getCountLikeName( name );
-    }
-
-    public Collection<OptionSet> getOptionSetsBetweenByName( String name, int first, int max )
-    {
-        return new HashSet<>( i18n( i18nService, optionStore.getAllLikeNameOrderedName( name, first, max ) ) );
-    }
-
-    public Collection<OptionSet> getOptionSetsBetween( int first, int max )
-    {
-        return new HashSet<>( i18n( i18nService, optionStore.getAllOrderedName( first, max ) ) );
-    }
-
-    public Integer getOptionSetCount()
-    {
-        return optionStore.getCount();
-    }
-
-    // -------------------------------------------------------------------------
-    // Option
-    // -------------------------------------------------------------------------
-
     public void updateOption( Option option )
     {
-        optionValueStore.update( option ); 
+        optionStore.update( option ); 
     }
     
     public Option getOption( int id )
     {
-        return i18n( i18nService, optionValueStore.get( id ) );
+        return i18n( i18nService, optionStore.get( id ) );
     }
 
     public Option getOptionByCode( String code )
     {
-        return i18n( i18nService, optionValueStore.getByCode( code ) );
+        return i18n( i18nService, optionStore.getByCode( code ) );
     }
 
     public Option getOptionByName( OptionSet optionSet, String name )

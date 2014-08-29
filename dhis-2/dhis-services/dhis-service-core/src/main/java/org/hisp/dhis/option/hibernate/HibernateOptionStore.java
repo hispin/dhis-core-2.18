@@ -41,7 +41,7 @@ import org.hisp.dhis.option.OptionStore;
  * @author Chau Thu Tran
  */
 public class HibernateOptionStore
-    extends HibernateIdentifiableObjectStore<OptionSet>
+    extends HibernateIdentifiableObjectStore<Option>
     implements OptionStore
 {
     // -------------------------------------------------------------------------
