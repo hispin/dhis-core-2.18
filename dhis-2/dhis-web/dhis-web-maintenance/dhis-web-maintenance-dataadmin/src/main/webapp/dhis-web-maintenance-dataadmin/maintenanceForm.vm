@@ -45,4 +45,3 @@
 	<input type="button" value="$i18n.getString( 'perform_maintenance' )" onclick="performMaintenance()" style="width:170px"/>
 </p>
 
-<span id="message"></span>
