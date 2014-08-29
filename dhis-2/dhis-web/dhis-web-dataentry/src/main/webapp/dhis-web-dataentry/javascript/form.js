@@ -1381,13 +1381,13 @@ function getAndInsertDataValues()
 	    success: function( json ) // online
 	    {
 	    	insertDataValues( json );
-      },
-      complete: function()
-      {
-        $( '.indicator' ).attr( 'readonly', 'readonly' );
-        $( '.dataelementtotal' ).attr( 'readonly', 'readonly' );
-        $( document ).trigger( dhis2.de.event.dataValuesLoaded );
-      }
+        },
+        complete: function()
+        {
+            $( '.indicator' ).attr( 'readonly', 'readonly' );
+            $( '.dataelementtotal' ).attr( 'readonly', 'readonly' );
+            $( document ).trigger( dhis2.de.event.dataValuesLoaded );
+        }
 	} );
 }
 
@@ -1448,7 +1448,11 @@ function insertDataValues( json )
             if ( $( fieldId ).attr( 'name' ) == 'entrytrueonly' && 'true' == value.val ) 
             {
                 $( fieldId ).attr( 'checked', true );
-            } 
+            }
+            else if ( $( fieldId ).attr( 'name' ) == 'entryoptionset' )
+            {
+            	dhis2.de.setOptionNameInField( fieldId, value );            	
+            }
             else 
             {
                 $( fieldId ).val( value.val );
@@ -2543,6 +2547,30 @@ function StorageManager()
 // -----------------------------------------------------------------------------
 
 /**
+ * Inserts the name of the option set in the input field with the given identifier.
+ * The option set input fields should use the name as label and code as value to
+ * be saved.
+ * 
+ * @fieldId the identifier of the field on the form #deuid-cocuid-val.
+ * @value the value with properties id (deuid-cocuid) and val (option name).
+ */
+dhis2.de.setOptionNameInField = function( fieldId, value )
+{
+	var optionSetUid = dhis2.de.optionSets[value.id].uid;
+	
+	DAO.store.get( 'optionSets', optionSetUid ).done( function( obj ) {		
+		if ( obj && obj.optionSet && obj.optionSet.options ) {			
+			$.each( obj.optionSet.options, function( inx, option ) {
+				if ( option && option.code == value.val ) {
+					$( fieldId ).val( option.name );
+					return false;
+				}
+			} );
+		}		
+	} );
+};
+
+/**
  * Performs a search for options for the option set with the given identifier based
  * on the given query. If query is null, the first MAX options for the option set
  * is used. Checks and uses option set from local store, if not fetches option
@@ -2699,7 +2727,7 @@ dhis2.de.autocompleteOptionSetField = function( idField, optionSetUid )
             dhis2.de.searchOptionSet( optionSetUid, input.val(), response );
         },
         select: function ( event, ui ) {
-            input.val( ui.item.value );
+            input.val( ui.item.id );
             input.autocomplete( 'close' );
             input.change();
         },
