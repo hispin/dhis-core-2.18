@@ -38,6 +38,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dxf2.fieldfilter.FieldFilterService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.metadata.ImportService;
@@ -145,7 +146,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         List<T> entityList;
 
-        if ( filters.isEmpty() )
+        if ( filters.isEmpty() || DataElementOperand.class.isAssignableFrom( getEntityClass() ))
         {
             entityList = getEntityList( metaData, options );
         }
