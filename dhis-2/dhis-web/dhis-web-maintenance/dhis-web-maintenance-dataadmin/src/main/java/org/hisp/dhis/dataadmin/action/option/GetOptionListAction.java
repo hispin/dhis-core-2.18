@@ -77,6 +77,11 @@ public class GetOptionListAction
         this.key = key;
     }
 
+    public String getKey()
+    {
+        return key;
+    }
+
     private OptionSet optionSet;
 
     public OptionSet getOptionSet()

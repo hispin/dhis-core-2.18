@@ -35,7 +35,7 @@
 	<tr>
 	  <td></td>
 	  <td colspan="2">
-		<input type="submit"  value="$i18n.getString( 'add' )" style="width:10em">
+		<input type="submit"  value="$i18n.getString( 'update' )" style="width:10em">
 		<input type="button" onclick="window.location.href='option.action?optionSetId=$optionSet.id'" value="$i18n.getString( 'cancel' )" style="width:10em"/></p>
       </td>
 	</tr>

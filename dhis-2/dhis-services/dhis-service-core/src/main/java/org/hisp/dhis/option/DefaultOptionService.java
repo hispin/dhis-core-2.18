@@ -196,4 +196,9 @@ public class DefaultOptionService
     {
         return i18n( i18nService, optionStore.getOptions( optionSet, option, min, max ) );
     }
+    
+    public void deleteOption( Option option  )
+    {
+        optionValueStore.delete( option );
+    }
 }

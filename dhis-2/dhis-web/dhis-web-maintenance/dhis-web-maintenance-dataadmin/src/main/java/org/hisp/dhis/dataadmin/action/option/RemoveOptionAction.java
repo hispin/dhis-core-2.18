@@ -83,6 +83,7 @@ public class RemoveOptionAction
 
         Option option = optionService.getOption( id );
         optionSet.getOptions().remove( option );
+        optionService.deleteOption(option);
 
         optionService.updateOptionSet( optionSet );
 
