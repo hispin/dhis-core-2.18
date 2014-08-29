@@ -93,7 +93,6 @@ trackerCapture.controller('ProgramSummaryController',
             
         AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){            
             $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);   
-            console.log('The columns are:  ', $scope.gridColumns);
         });  
         
         //fetch TEIs for the selected program and orgunit/mode
