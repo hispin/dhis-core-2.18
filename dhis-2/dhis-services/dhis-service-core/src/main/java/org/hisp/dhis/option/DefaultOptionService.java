@@ -199,6 +199,7 @@ public class DefaultOptionService
     
     public void deleteOption( Option option  )
     {
-        optionValueStore.delete( option );
+        optionStore.delete( option );
     }
+    
 }
