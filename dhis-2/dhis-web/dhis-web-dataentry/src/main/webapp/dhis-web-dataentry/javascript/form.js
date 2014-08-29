@@ -2568,7 +2568,7 @@ dhis2.de.searchOptionSet = function( uid, query, success )
                             break;
                         }
 
-                        if ( item.toLowerCase().indexOf( query ) != -1 ) {
+                        if ( item.name.toLowerCase().indexOf( query ) != -1 ) {
                             options.push( item );
                         }
                     }
@@ -2576,11 +2576,11 @@ dhis2.de.searchOptionSet = function( uid, query, success )
 
                 success( $.map( options, function ( item ) {
                     return {
-                        label: item,
-                        id: item
+                        label: item.name,
+                        id: item.code
                     };
                 } ) );
-            } 
+            }
             else {
                 dhis2.de.getOptions( uid, query, success );
             }
@@ -2605,8 +2605,8 @@ dhis2.de.getOptions = function( uid, query, success )
         success: function ( data ) {
             success( $.map( data.options, function ( item ) {
                 return {
-                    label: item,
-                    id: item
+                    label: item.name,
+                    id: item.code
                 };
             } ) );
         }
@@ -2659,7 +2659,7 @@ dhis2.de.loadOptionSets = function()
 };
 
 /**
- * Insersts option sets in the appropriate input fields.
+ * Inserts option sets in the appropriate input fields.
  */
 dhis2.de.insertOptionSets = function() 
 {
@@ -2675,7 +2675,8 @@ dhis2.de.insertOptionSets = function()
 
         item = item + '-val';
         optionSetKey = optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
-        dhis2.de.autocompleteOptionSetField( item, dhis2.de.optionSets[optionSetKey].uid );
+        var optionSetUid = dhis2.de.optionSets[optionSetKey].uid;
+        dhis2.de.autocompleteOptionSetField( item, optionSetUid );
     } );
 };
 
