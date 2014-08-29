@@ -766,7 +766,12 @@ a:active {
 }
 
 .report-type-container{
+    
     padding: 10px;
+}
+
+.validation-error {
+    color: #b94a48 !important;
 }
 
 .report-type-container:hover, .report-type-container:focus{
