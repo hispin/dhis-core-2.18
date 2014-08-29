@@ -31,9 +31,6 @@
 	<tr>
       <td><label for='code'>$i18n.getString( "code" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
       <td ><input type="text" id="code" name="code" readonly value='$option.code' class="{validate:{required:true,minlength:2}}" /></td>
-    </tr>   
-    <tr>
-      <td style="height:15px"></td>
     </tr>
 	<tr>
 	  <td></td>
