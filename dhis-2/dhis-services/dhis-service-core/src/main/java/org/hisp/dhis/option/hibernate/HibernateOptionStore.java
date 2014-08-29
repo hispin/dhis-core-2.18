@@ -82,7 +82,7 @@ public class HibernateOptionStore
 
         Query query = getQuery( hql );
         query.setEntity( "optionSet", optionSet );
-        query.setString( "name", name );
+        query.setString( "name", name.toLowerCase() );
 
         return (Option) query.uniqueResult();
     }
@@ -109,7 +109,7 @@ public class HibernateOptionStore
 
         if ( option != null )
         {
-            hql += "and lower(option.name) like ('%" + option + "%') ";
+            hql += "and lower(option.name) like ('%" + option.toLowerCase() + "%') ";
         }
 
         hql += " order by index(option)";

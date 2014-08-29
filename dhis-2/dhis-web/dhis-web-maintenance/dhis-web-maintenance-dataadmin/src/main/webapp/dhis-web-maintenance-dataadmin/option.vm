@@ -31,7 +31,7 @@
 				<tr>
 					<td>
 						<form onsubmit="submitFilter()" method="GET" action="option.action" id="filterKeyForm">
-							<input type="text" class="filterInput" placeholder="$i18n.getString('filter_by_name')" name="key" id="key">
+							<input type="text" class="filterInput" placeholder="$i18n.getString('filter_by_name')" name="key" id="key" value="$!key">
 							<input type="hidden" id="optionSetId" name="optionSetId" value="$optionSet.id" />
 							<input type="hidden" value="" name="curKey" id="curKey">
 							<input type="submit" class="filterButton" value="Filter" id="filterButton">
@@ -65,8 +65,10 @@
       #end
       </tbody>
 			</table>
-			<p></p>
-			#parse( "/dhis-web-commons/paging/paging.vm" )
+			#if($options.size() > 0)
+				<p></p>
+				#parse( "/dhis-web-commons/paging/paging.vm" )
+			#end
 		</td>
 		
 		<td id="detailsData">
