@@ -29,7 +29,7 @@ package org.hisp.dhis.calendar.impl;
  */
 
 import org.hisp.dhis.calendar.Calendar;
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,14 +50,14 @@ public class NepaliCalendarTest
     @Test
     public void testToIso()
     {
-        Assert.assertEquals( new DateUnit( 2014, 4, 14, true ), calendar.toIso( new DateUnit( 2071, 1, 1 ) ) );
-        Assert.assertEquals( new DateUnit( 2014, 4, 14, true ), calendar.toIso( 2071, 1, 1 ) );
+        Assert.assertEquals( new DateTimeUnit( 2014, 4, 14, true ), calendar.toIso( new DateTimeUnit( 2071, 1, 1 ) ) );
+        Assert.assertEquals( new DateTimeUnit( 2014, 4, 14, true ), calendar.toIso( 2071, 1, 1 ) );
     }
 
     @Test
     public void testFromIso()
     {
-        Assert.assertEquals( new DateUnit( 2071, 1, 1, false ), calendar.fromIso( new DateUnit( 2014, 4, 14, true ) ) );
-        Assert.assertEquals( new DateUnit( 2071, 1, 1, false ), calendar.fromIso( 2014, 4, 14 ) );
+        Assert.assertEquals( new DateTimeUnit( 2071, 1, 1, false ), calendar.fromIso( new DateTimeUnit( 2014, 4, 14, true ) ) );
+        Assert.assertEquals( new DateTimeUnit( 2071, 1, 1, false ), calendar.fromIso( 2014, 4, 14 ) );
     }
 }

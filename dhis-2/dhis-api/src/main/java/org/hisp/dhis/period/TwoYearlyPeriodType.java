@@ -28,7 +28,7 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -83,7 +83,7 @@ public class TwoYearlyPeriodType
     }
 
     @Override
-    public Period createPeriod( DateUnit dateUnit, org.hisp.dhis.calendar.Calendar calendar )
+    public Period createPeriod( DateTimeUnit dateTimeUnit, org.hisp.dhis.calendar.Calendar calendar )
     {
         return null;
     }
@@ -153,7 +153,7 @@ public class TwoYearlyPeriodType
     }
 
     @Override
-    public List<Period> generatePeriods( DateUnit dateUnit )
+    public List<Period> generatePeriods( DateTimeUnit dateTimeUnit )
     {
         return null; // TODO
     }
@@ -165,9 +165,9 @@ public class TwoYearlyPeriodType
     }
 
     @Override
-    public List<Period> generateRollingPeriods( DateUnit dateUnit )
+    public List<Period> generateRollingPeriods( DateTimeUnit dateTimeUnit )
     {
-        return generateLast5Years( getCalendar().toIso( dateUnit ).toJdkDate() );
+        return generateLast5Years( getCalendar().toIso( dateTimeUnit ).toJdkDate() );
     }
 
     @Override
@@ -198,7 +198,7 @@ public class TwoYearlyPeriodType
     }
 
     @Override
-    public String getIsoDate( DateUnit dateUnit )
+    public String getIsoDate( DateTimeUnit dateTimeUnit )
     {
         return null; // TODO
     }

@@ -31,7 +31,7 @@ package org.hisp.dhis.period;
 import com.google.common.collect.Lists;
 
 import org.hisp.dhis.calendar.Calendar;
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 
 import java.util.Date;
 import java.util.List;
@@ -71,10 +71,10 @@ public class YearlyPeriodType
     }
 
     @Override
-    public Period createPeriod( DateUnit dateUnit, Calendar calendar )
+    public Period createPeriod( DateTimeUnit dateTimeUnit, Calendar calendar )
     {
-        DateUnit start = new DateUnit( dateUnit );
-        DateUnit end = new DateUnit( dateUnit );
+        DateTimeUnit start = new DateTimeUnit( dateTimeUnit );
+        DateTimeUnit end = new DateTimeUnit( dateTimeUnit );
 
         start.setDay( 1 );
         start.setMonth( 1 );
@@ -98,39 +98,39 @@ public class YearlyPeriodType
     @Override
     public Period getNextPeriod( Period period, Calendar calendar )
     {
-        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
-        dateUnit = calendar.plusYears( dateUnit, 1 );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
+        dateTimeUnit = calendar.plusYears( dateTimeUnit, 1 );
 
-        return createPeriod( dateUnit, calendar );
+        return createPeriod( dateTimeUnit, calendar );
     }
 
     @Override
     public Period getPreviousPeriod( Period period, Calendar calendar )
     {
-        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
-        dateUnit = calendar.minusYears( dateUnit, 1 );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
+        dateTimeUnit = calendar.minusYears( dateTimeUnit, 1 );
 
-        return createPeriod( dateUnit, calendar );
+        return createPeriod( dateTimeUnit, calendar );
     }
 
     /**
      * Generates yearly periods for the last 5, current and next 5 years.
      */
     @Override
-    public List<Period> generatePeriods( DateUnit dateUnit )
+    public List<Period> generatePeriods( DateTimeUnit dateTimeUnit )
     {
         Calendar cal = getCalendar();
         
-        dateUnit = cal.minusYears( dateUnit, 5 );
-        dateUnit.setDay( 1 );
-        dateUnit.setMonth( 1 );
+        dateTimeUnit = cal.minusYears( dateTimeUnit, 5 );
+        dateTimeUnit.setDay( 1 );
+        dateTimeUnit.setMonth( 1 );
 
         List<Period> periods = Lists.newArrayList();
 
         for ( int i = 0; i < 11; ++i )
         {
-            periods.add( createPeriod( dateUnit, cal ) );
-            dateUnit = cal.plusYears( dateUnit, 1 );
+            periods.add( createPeriod( dateTimeUnit, cal ) );
+            dateTimeUnit = cal.plusYears( dateTimeUnit, 1 );
         }
 
         return periods;
@@ -147,9 +147,9 @@ public class YearlyPeriodType
     }
 
     @Override
-    public List<Period> generateRollingPeriods( DateUnit dateUnit )
+    public List<Period> generateRollingPeriods( DateTimeUnit dateTimeUnit )
     {
-        return generateLast5Years( getCalendar().toIso( dateUnit ).toJdkDate() );
+        return generateLast5Years( getCalendar().toIso( dateTimeUnit ).toJdkDate() );
     }
 
     /**
@@ -161,26 +161,26 @@ public class YearlyPeriodType
     {
         Calendar cal = getCalendar();
         
-        DateUnit dateUnit = createLocalDateUnitInstance( date );
-        dateUnit = cal.minusYears( dateUnit, 4 );
-        dateUnit.setDay( 1 );
-        dateUnit.setMonth( 1 );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( date );
+        dateTimeUnit = cal.minusYears( dateTimeUnit, 4 );
+        dateTimeUnit.setDay( 1 );
+        dateTimeUnit.setMonth( 1 );
 
         List<Period> periods = Lists.newArrayList();
 
         for ( int i = 0; i < 5; ++i )
         {
-            periods.add( createPeriod( dateUnit, cal ) );
-            dateUnit = cal.plusYears( dateUnit, 1 );
+            periods.add( createPeriod( dateTimeUnit, cal ) );
+            dateTimeUnit = cal.plusYears( dateTimeUnit, 1 );
         }
 
         return periods;
     }
 
     @Override
-    public String getIsoDate( DateUnit dateUnit )
+    public String getIsoDate( DateTimeUnit dateTimeUnit )
     {
-        return String.valueOf( dateUnit.getYear() );
+        return String.valueOf( dateTimeUnit.getYear() );
     }
 
     @Override
@@ -197,9 +197,9 @@ public class YearlyPeriodType
         date = date != null ? date : new Date();
         rewindedPeriods = rewindedPeriods != null ? rewindedPeriods : 1;
 
-        DateUnit dateUnit = createLocalDateUnitInstance( date );
-        dateUnit = cal.minusYears( dateUnit, rewindedPeriods );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( date );
+        dateTimeUnit = cal.minusYears( dateTimeUnit, rewindedPeriods );
 
-        return cal.toIso( dateUnit ).toJdkDate();
+        return cal.toIso( dateTimeUnit ).toJdkDate();
     }
 }

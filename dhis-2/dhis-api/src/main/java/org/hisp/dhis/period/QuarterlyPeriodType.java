@@ -29,7 +29,7 @@ package org.hisp.dhis.period;
  */
 
 import com.google.common.collect.Lists;
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -71,14 +71,14 @@ public class QuarterlyPeriodType
     }
 
     @Override
-    public Period createPeriod( DateUnit dateUnit, org.hisp.dhis.calendar.Calendar calendar )
+    public Period createPeriod( DateTimeUnit dateTimeUnit, org.hisp.dhis.calendar.Calendar calendar )
     {
-        DateUnit start = new DateUnit( dateUnit );
+        DateTimeUnit start = new DateTimeUnit( dateTimeUnit );
 
-        start.setMonth( ((dateUnit.getMonth() - 1) - ((dateUnit.getMonth() - 1) % 3)) + 1 );
+        start.setMonth( ((dateTimeUnit.getMonth() - 1) - ((dateTimeUnit.getMonth() - 1) % 3)) + 1 );
         start.setDay( 1 );
 
-        DateUnit end = new DateUnit( start );
+        DateTimeUnit end = new DateTimeUnit( start );
         end = calendar.plusMonths( end, 2 );
         end.setDay( calendar.daysInMonth( end.getYear(), end.getMonth() ) );
 
@@ -98,19 +98,19 @@ public class QuarterlyPeriodType
     @Override
     public Period getNextPeriod( Period period, org.hisp.dhis.calendar.Calendar calendar )
     {
-        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
-        dateUnit = calendar.plusMonths( dateUnit, 3 );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
+        dateTimeUnit = calendar.plusMonths( dateTimeUnit, 3 );
 
-        return createPeriod( dateUnit, calendar );
+        return createPeriod( dateTimeUnit, calendar );
     }
 
     @Override
     public Period getPreviousPeriod( Period period, org.hisp.dhis.calendar.Calendar calendar )
     {
-        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
-        dateUnit = calendar.minusMonths( dateUnit, 3 );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
+        dateTimeUnit = calendar.minusMonths( dateTimeUnit, 3 );
 
-        return createPeriod( dateUnit, calendar );
+        return createPeriod( dateTimeUnit, calendar );
     }
 
     /**
@@ -118,20 +118,20 @@ public class QuarterlyPeriodType
      * Period's startDate exists.
      */
     @Override
-    public List<Period> generatePeriods( DateUnit dateUnit )
+    public List<Period> generatePeriods( DateTimeUnit dateTimeUnit )
     {
         org.hisp.dhis.calendar.Calendar cal = getCalendar();
 
-        dateUnit.setMonth( 1 );
-        dateUnit.setDay( 1 );
+        dateTimeUnit.setMonth( 1 );
+        dateTimeUnit.setDay( 1 );
 
-        int year = dateUnit.getYear();
+        int year = dateTimeUnit.getYear();
         List<Period> periods = Lists.newArrayList();
 
-        while ( year == dateUnit.getYear() )
+        while ( year == dateTimeUnit.getYear() )
         {
-            periods.add( createPeriod( dateUnit, cal ) );
-            dateUnit = cal.plusMonths( dateUnit, 3 );
+            periods.add( createPeriod( dateTimeUnit, cal ) );
+            dateTimeUnit = cal.plusMonths( dateTimeUnit, 3 );
         }
 
         return periods;
@@ -150,38 +150,38 @@ public class QuarterlyPeriodType
     }
 
     @Override
-    public List<Period> generateRollingPeriods( DateUnit dateUnit )
+    public List<Period> generateRollingPeriods( DateTimeUnit dateTimeUnit )
     {
         org.hisp.dhis.calendar.Calendar cal = getCalendar();
 
-        dateUnit.setDay( 1 );
+        dateTimeUnit.setDay( 1 );
 
-        dateUnit = cal.minusMonths( dateUnit, 9 );
+        dateTimeUnit = cal.minusMonths( dateTimeUnit, 9 );
 
         List<Period> periods = Lists.newArrayList();
 
         for ( int i = 0; i < 4; i++ )
         {
-            periods.add( createPeriod( dateUnit, cal ) );
-            dateUnit = cal.plusMonths( dateUnit, 3 );
+            periods.add( createPeriod( dateTimeUnit, cal ) );
+            dateTimeUnit = cal.plusMonths( dateTimeUnit, 3 );
         }
 
         return periods;
     }
 
     @Override
-    public String getIsoDate( DateUnit dateUnit )
+    public String getIsoDate( DateTimeUnit dateTimeUnit )
     {
-        switch ( dateUnit.getMonth() )
+        switch ( dateTimeUnit.getMonth() )
         {
             case 1:
-                return dateUnit.getYear() + "Q1";
+                return dateTimeUnit.getYear() + "Q1";
             case 4:
-                return dateUnit.getYear() + "Q2";
+                return dateTimeUnit.getYear() + "Q2";
             case 7:
-                return dateUnit.getYear() + "Q3";
+                return dateTimeUnit.getYear() + "Q3";
             case 10:
-                return dateUnit.getYear() + "Q4";
+                return dateTimeUnit.getYear() + "Q4";
             default:
                 throw new IllegalArgumentException( "Month not valid [1,4,7,10]" );
         }
@@ -238,9 +238,9 @@ public class QuarterlyPeriodType
         date = date != null ? date : new Date();
         rewindedPeriods = rewindedPeriods != null ? rewindedPeriods : 1;
 
-        DateUnit dateUnit = createLocalDateUnitInstance( date );
-        dateUnit = cal.minusMonths( dateUnit, rewindedPeriods * 3 );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( date );
+        dateTimeUnit = cal.minusMonths( dateTimeUnit, rewindedPeriods * 3 );
 
-        return cal.toIso( dateUnit ).toJdkDate();
+        return cal.toIso( dateTimeUnit ).toJdkDate();
     }
 }

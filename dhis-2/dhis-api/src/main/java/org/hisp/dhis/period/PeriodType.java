@@ -33,7 +33,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.calendar.DateInterval;
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.calendar.DateUnitPeriodTypeParser;
 import org.hisp.dhis.calendar.DateUnitType;
 import org.hisp.dhis.calendar.PeriodTypeParser;
@@ -264,7 +264,7 @@ public abstract class PeriodType
     {
         org.hisp.dhis.calendar.Calendar calendar = getCalendar();
 
-        return createPeriod( calendar.fromIso( DateUnit.fromJdkCalendar( cal ) ), calendar );
+        return createPeriod( calendar.fromIso( DateTimeUnit.fromJdkCalendar( cal ) ), calendar );
     }
 
     /**
@@ -286,7 +286,7 @@ public abstract class PeriodType
                 @Override
                 public Period call() throws Exception
                 {
-                    return createPeriod( calendar.fromIso( DateUnit.fromJdkDate( date ) ), calendar );
+                    return createPeriod( calendar.fromIso( DateTimeUnit.fromJdkDate( date ) ), calendar );
                 }
             } );
         }
@@ -297,27 +297,27 @@ public abstract class PeriodType
         return null;
     }
 
-    public Period toIsoPeriod( DateUnit start, DateUnit end )
+    public Period toIsoPeriod( DateTimeUnit start, DateTimeUnit end )
     {
         org.hisp.dhis.calendar.Calendar cal = getCalendar();
 
         return toIsoPeriod( start, end, cal );
     }
 
-    protected Period toIsoPeriod( DateUnit start, DateUnit end, org.hisp.dhis.calendar.Calendar calendar )
+    protected Period toIsoPeriod( DateTimeUnit start, DateTimeUnit end, org.hisp.dhis.calendar.Calendar calendar )
     {
-        DateUnit from = calendar.toIso( start );
-        DateUnit to = calendar.toIso( end );
+        DateTimeUnit from = calendar.toIso( start );
+        DateTimeUnit to = calendar.toIso( end );
 
         return new Period( this, from.toJdkDate(), to.toJdkDate(), getIsoDate( from ) );
     }
 
-    public Period toIsoPeriod( DateUnit dateUnit )
+    public Period toIsoPeriod( DateTimeUnit dateTimeUnit )
     {
-        return toIsoPeriod( dateUnit, dateUnit );
+        return toIsoPeriod( dateTimeUnit, dateTimeUnit );
     }
 
-    public abstract Period createPeriod( DateUnit dateUnit, org.hisp.dhis.calendar.Calendar calendar );
+    public abstract Period createPeriod( DateTimeUnit dateTimeUnit, org.hisp.dhis.calendar.Calendar calendar );
 
     /**
      * Returns a comparable value for the frequency length of this PeriodType.
@@ -374,7 +374,7 @@ public abstract class PeriodType
      * @param date date of calendar in local calendar
      * @return an instance of a Calendar without any time of day.
      */
-    public static DateUnit createLocalDateUnitInstance( Date date )
+    public static DateTimeUnit createLocalDateUnitInstance( Date date )
     {
         return createLocalDateUnitInstance( date, getCalendar() );
     }
@@ -385,9 +385,9 @@ public abstract class PeriodType
      * @param date date of calendar in local calendar
      * @return an instance of a Calendar without any time of day.
      */
-    public static DateUnit createLocalDateUnitInstance( Date date, org.hisp.dhis.calendar.Calendar calendar )
+    public static DateTimeUnit createLocalDateUnitInstance( Date date, org.hisp.dhis.calendar.Calendar calendar )
     {
-        return calendar.fromIso( DateUnit.fromJdkDate( date ) );
+        return calendar.fromIso( DateTimeUnit.fromJdkDate( date ) );
     }
 
     /**
@@ -476,8 +476,8 @@ public abstract class PeriodType
 
         org.hisp.dhis.calendar.Calendar cal = getCalendar();
 
-        final DateUnit from = cal.toIso( dateInterval.getFrom() );
-        final DateUnit to = cal.toIso( dateInterval.getTo() );
+        final DateTimeUnit from = cal.toIso( dateInterval.getFrom() );
+        final DateTimeUnit to = cal.toIso( dateInterval.getTo() );
 
         return new Period( this, from.toJdkDate(), to.toJdkDate(), getIsoDate( from ) );
     }
@@ -496,10 +496,10 @@ public abstract class PeriodType
     /**
      * Returns an iso8601 formatted string representation of the dataUnit
      *
-     * @param dateUnit Period
+     * @param dateTimeUnit Period
      * @return the period as string
      */
-    public abstract String getIsoDate( DateUnit dateUnit );
+    public abstract String getIsoDate( DateTimeUnit dateTimeUnit );
 
     /**
      * Generates a period based on the given iso8601 formatted string.

@@ -33,7 +33,7 @@ import javax.validation.constraints.NotNull;
 /**
  * Class representing a date interval.
  * @author Morten Olav Hansen <mortenoh@gmail.com>
- * @see DateUnit
+ * @see DateTimeUnit
  * @see Calendar
  */
 public class DateInterval
@@ -42,38 +42,38 @@ public class DateInterval
      * Start of interval. Required.
      */
     @NotNull
-    private final DateUnit from;
+    private final DateTimeUnit from;
 
     /**
      * End of interval. Required.
      */
     @NotNull
-    private final DateUnit to;
+    private final DateTimeUnit to;
 
     /**
      * Interval type this interval represents.
      */
     private DateIntervalType type;
 
-    public DateInterval( DateUnit from, DateUnit to )
+    public DateInterval( DateTimeUnit from, DateTimeUnit to )
     {
         this.from = from;
         this.to = to;
     }
 
-    public DateInterval( DateUnit from, DateUnit to, DateIntervalType type )
+    public DateInterval( DateTimeUnit from, DateTimeUnit to, DateIntervalType type )
     {
         this.from = from;
         this.to = to;
         this.type = type;
     }
 
-    public DateUnit getFrom()
+    public DateTimeUnit getFrom()
     {
         return from;
     }
 
-    public DateUnit getTo()
+    public DateTimeUnit getTo()
     {
         return to;
     }

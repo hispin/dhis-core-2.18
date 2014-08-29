@@ -33,7 +33,7 @@ import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.calendar.CalendarService;
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -105,7 +105,7 @@ public class ShowAddOrganisationUnitFormAction
 
     public String execute()
     {
-        DateUnit today = calendarService.getSystemCalendar().today();
+        DateTimeUnit today = calendarService.getSystemCalendar().today();
         defaultDate = calendarService.getSystemCalendar().formattedDate( today );
 
         dataSets = new ArrayList<>( dataSetService.getAllDataSets() );

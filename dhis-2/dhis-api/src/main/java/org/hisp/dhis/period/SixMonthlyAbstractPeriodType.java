@@ -31,7 +31,7 @@ package org.hisp.dhis.period;
 import com.google.common.collect.Lists;
 
 import org.hisp.dhis.calendar.Calendar;
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 
 import java.util.Date;
 import java.util.List;
@@ -62,22 +62,22 @@ public abstract class SixMonthlyAbstractPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public Period createPeriod( DateUnit dateUnit, Calendar calendar )
+    public Period createPeriod( DateTimeUnit dateTimeUnit, Calendar calendar )
     {
-        int year = calendar.monthsInYear() * dateUnit.getYear();
-        int yearMonth = year + dateUnit.getMonth() - getBaseMonth();
+        int year = calendar.monthsInYear() * dateTimeUnit.getYear();
+        int yearMonth = year + dateTimeUnit.getMonth() - getBaseMonth();
 
         // TODO how should we handle years with odd number of months? (Ethiopian)
         
         int months = (((yearMonth % 12) / 6) * 6) + getBaseMonth();
 
-        DateUnit start = new DateUnit( dateUnit );
+        DateTimeUnit start = new DateTimeUnit( dateTimeUnit );
         start.setDay( 1 );
         start.setMonth( 1 );
         start = calendar.plusMonths( start, months );
         start.setDayOfWeek( calendar.weekday( start ) );
 
-        DateUnit end = new DateUnit( start );
+        DateTimeUnit end = new DateTimeUnit( start );
         end = calendar.plusMonths( end, 5 );
         end.setDay( calendar.daysInMonth( end.getYear(), end.getMonth() ) );
         end.setDayOfWeek( calendar.weekday( end ) );
@@ -98,19 +98,19 @@ public abstract class SixMonthlyAbstractPeriodType
     @Override
     public Period getNextPeriod( Period period, Calendar calendar )
     {
-        DateUnit dateUnit = calendar.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
-        dateUnit = calendar.plusMonths( dateUnit, 6 );
+        DateTimeUnit dateTimeUnit = calendar.fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) );
+        dateTimeUnit = calendar.plusMonths( dateTimeUnit, 6 );
 
-        return createPeriod( calendar.toIso( dateUnit ), calendar );
+        return createPeriod( calendar.toIso( dateTimeUnit ), calendar );
     }
 
     @Override
     public Period getPreviousPeriod( Period period, Calendar calendar )
     {
-        DateUnit dateUnit = calendar.fromIso( DateUnit.fromJdkDate( period.getStartDate() ) );
-        dateUnit = calendar.minusMonths( dateUnit, 6 );
+        DateTimeUnit dateTimeUnit = calendar.fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) );
+        dateTimeUnit = calendar.minusMonths( dateTimeUnit, 6 );
 
-        return createPeriod( calendar.toIso( dateUnit ), calendar );
+        return createPeriod( calendar.toIso( dateTimeUnit ), calendar );
     }
 
     /**
@@ -118,16 +118,16 @@ public abstract class SixMonthlyAbstractPeriodType
      * Period's startDate exists.
      */
     @Override
-    public List<Period> generatePeriods( DateUnit dateUnit )
+    public List<Period> generatePeriods( DateTimeUnit dateTimeUnit )
     {
         Calendar cal = getCalendar();
         
-        Period period = createPeriod( dateUnit, cal );
-        dateUnit = createLocalDateUnitInstance( period.getStartDate(), cal );
+        Period period = createPeriod( dateTimeUnit, cal );
+        dateTimeUnit = createLocalDateUnitInstance( period.getStartDate(), cal );
 
         List<Period> periods = Lists.newArrayList();
 
-        if ( dateUnit.getMonth() == (getBaseMonth() + 1) )
+        if ( dateTimeUnit.getMonth() == (getBaseMonth() + 1) )
         {
             periods.add( period );
             periods.add( getNextPeriod( period ) );
@@ -159,9 +159,9 @@ public abstract class SixMonthlyAbstractPeriodType
     }
 
     @Override
-    public List<Period> generateRollingPeriods( DateUnit dateUnit )
+    public List<Period> generateRollingPeriods( DateTimeUnit dateTimeUnit )
     {
-        return generateRollingPeriods( getCalendar().toIso( dateUnit ).toJdkDate() );
+        return generateRollingPeriods( getCalendar().toIso( dateTimeUnit ).toJdkDate() );
     }
 
     @Override
@@ -172,9 +172,9 @@ public abstract class SixMonthlyAbstractPeriodType
         date = date != null ? date : new Date();
         rewindedPeriods = rewindedPeriods != null ? rewindedPeriods : 1;
 
-        DateUnit dateUnit = createLocalDateUnitInstance( date );
-        cal.minusMonths( dateUnit, rewindedPeriods * 6 );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( date );
+        cal.minusMonths( dateTimeUnit, rewindedPeriods * 6 );
 
-        return cal.toIso( dateUnit ).toJdkDate();
+        return cal.toIso( dateTimeUnit ).toJdkDate();
     }
 }

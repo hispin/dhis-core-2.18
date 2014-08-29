@@ -36,7 +36,7 @@ import java.util.List;
 
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.calendar.CalendarService;
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -274,7 +274,7 @@ public class AddOrganisationUnitAction
         // Create organisation unit
         // ---------------------------------------------------------------------
 
-        DateUnit isoOpeningDate = calendarService.getSystemCalendar().toIso( openingDate );
+        DateTimeUnit isoOpeningDate = calendarService.getSystemCalendar().toIso( openingDate );
 
         OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, code, isoOpeningDate.toJdkCalendar().getTime(), null, active, comment );
 

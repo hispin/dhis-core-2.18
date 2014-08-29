@@ -28,7 +28,7 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 
 import java.util.Calendar;
 
@@ -78,14 +78,14 @@ public class SixMonthlyPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public String getIsoDate( DateUnit dateUnit )
+    public String getIsoDate( DateTimeUnit dateTimeUnit )
     {
-        switch ( dateUnit.getMonth() )
+        switch ( dateTimeUnit.getMonth() )
         {
             case 1:
-                return dateUnit.getYear() + "S1";
+                return dateTimeUnit.getYear() + "S1";
             case 7:
-                return dateUnit.getYear() + "S2";
+                return dateTimeUnit.getYear() + "S2";
             default:
                 throw new IllegalArgumentException( "Month not valid [1,7]" );
         }
