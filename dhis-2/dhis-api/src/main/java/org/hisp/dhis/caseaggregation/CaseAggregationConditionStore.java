@@ -105,11 +105,12 @@ public interface CaseAggregationConditionStore
      * @param caseAggregationCondition CaseAggregationCondition
      * @param orgunitIds The list of {@link OrganisationUnit} ids
      * @param period {@link Period}
+     * @param nonRegistrationProgram Specify if the expression of aggregationCondition has any single event without registration program
      * @param format I18nFormat
      * @param i18n I18n
      */
     Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
-        Period period, I18nFormat format, I18n i18n );
+        Period period, boolean nonRegistrationProgram, I18nFormat format, I18n i18n );
 
     /**
      * Insert data values into database directly
@@ -162,10 +163,11 @@ public interface CaseAggregationConditionStore
      *        MIN and MAX
      * @param orgunitIds The id of {@link OrganisationUnit}
      * @param period The period for retrieving data
+     * @Param nonRegistrationProgram Specify if the expression of aggregationCondition has any single event without registration program
      * 
      * @return SQL
      */
-    String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period );
+    String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period, boolean nonRegistrationProgram );
 
     /**
      * Get list of {@link TrackedEntityInstance} ids from SQL

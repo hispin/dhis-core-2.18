@@ -231,14 +231,14 @@ public class HibernateCaseAggregationConditionStore
 
     @Override
     public Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
-        Period period, I18nFormat format, I18n i18n )
+        Period period, boolean nonRegistrationProgram, I18nFormat format, I18n i18n )
     {
         Grid grid = new ListGrid();
         grid.setTitle( orgunit.getName() + " - " + aggregationCondition.getDisplayName() );
         grid.setSubtitle( format.formatPeriod( period ) );
 
         String sql = parseExpressionDetailsToSql( aggregationCondition.getAggregationExpression(),
-            aggregationCondition.getOperator(), orgunit.getId(), period );
+            aggregationCondition.getOperator(), orgunit.getId(), period, nonRegistrationProgram );
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
 
@@ -1016,12 +1016,11 @@ public class HibernateCaseAggregationConditionStore
     }
 
     @Override
-    public String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period )
+    public String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId,
+        Period period, boolean nonRegistrationProgram )
     {
         String sql = "SELECT ";
-
-        boolean hasDataelement = hasDataelementCriteria( caseExpression );
-        boolean hasEntityInstance = hasEntityInstanceCriteria( caseExpression );
+        
         Collection<Integer> orgunitIds = new HashSet<>();
         orgunitIds.add( orgunitId );
 
@@ -1032,47 +1031,49 @@ public class HibernateCaseAggregationConditionStore
                     DateUtils.getMediumDateString( period.getStartDate() ),
                     DateUtils.getMediumDateString( period.getEndDate() ) );
         }
-        else  if ( hasDataelement )
+        else if ( nonRegistrationProgram )
         {
-            sql += "pdv.programstageinstanceid as event, pdv.value,pgs.name as program_stage, psi.executiondate as report_date,";
+            sql += " pdv.programstageinstanceid as event, pgs.name as program_stage, de.name as data_element, pdv.value, psi.executiondate as report_date ";
+            sql += " FROM programstageinstance psi inner join programinstance pi on pi.programinstanceid=psi.programinstanceid ";
+            sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid ";
+            sql += " INNER JOIN trackedentitydatavalue pdv ON pdv.programstageinstanceid=psi.programstageinstanceid ";
+            sql += " INNER JOIN dataelement de ON de.dataelementid=pdv.dataelementid ";
+            sql += " INNER JOIN program pg on pg.programid=pi.programid ";
+            sql += " INNER JOIN programstage pgs ON pgs.programid=pg.programid ";
         }
         else
         {
-            sql += "p.trackedentityinstanceid,ou.name,";
-        }
-
-        sql = sql.substring( 0, sql.length() - 1 );
-        sql += " FROM ";
-
-        if( hasEntityInstance )
-        {
-            sql += " programinstance as pi INNER JOIN trackedentityinstance p on p.trackedentityinstanceid=pi.trackedentityinstanceid";
-            sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=p.organisationunitid ";
-        }
-        
-        if ( hasDataelement )
-        {
-            if( hasEntityInstance )
+            sql += " p.trackedentityinstanceid as tracked_entity_instance, tea.name as attribute, ";
+            sql += "teav.value as value, pg.name as program ";
+            sql += "FROM trackedentityinstance p ";
+            sql += "INNER JOIN trackedentityattributevalue teav on p.trackedentityinstanceid=teav.trackedentityinstanceid  ";
+            sql += "INNER JOIN trackedentityattribute tea on tea.trackedentityattributeid=teav.trackedentityattributeid  ";
+            sql += "INNER JOIN programinstance as pi on p.trackedentityinstanceid=pi.trackedentityinstanceid  ";
+            sql += "INNER JOIN program pg on pg.programid=pi.programid  ";
+            sql += "INNER JOIN programstage pgs on pgs.programid=pg.programid  ";
+            
+            if( hasDataelementCriteria( caseExpression ) )
             {
-                sql += " INNER JOIN programinstance as pi on pi.trackedentityinstanceid=p.trackedentityinstanceid ";
+                sql += " INNER JOIN programstageinstance psi on pi.programinstanceid=psi.programinstanceid ";
+                sql += " INNER JOIN organisationunit ou on ou.organisationunitid=psi.organisationunitid ";
+                sql += " INNER JOIN trackedentitydatavalue pdv on pdv.programstageinstanceid=psi.programstageinstanceid ";
             }
-            else
-            {
-                sql += " programinstance as pi ";
-            }
-            sql += " INNER JOIN programstageinstance psi ON pi.programinstanceid=psi.programinstanceid ";
-            sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid ";
-            sql += " INNER JOIN trackedentitydatavalue pdv ON pdv.programstageinstanceid=psi.programstageinstanceid ";
-            sql += " INNER JOIN program pg ON pg.programid=pi.programid ";
-            sql += " INNER JOIN programstage pgs ON pgs.programid=pg.programid ";
-        }
-        
+        }       
 
         sql += " WHERE "
             + createSQL( caseExpression, operator, orgunitIds, DateUtils.getMediumDateString( period.getStartDate() ),
                 DateUtils.getMediumDateString( period.getEndDate() ) );
 
         sql = sql.replaceAll( "COMBINE", "" );
+
+        if ( nonRegistrationProgram )
+        {
+            sql += " ORDER BY pdv.programstageinstanceid";
+        }
+        else
+        {
+            sql += " ORDER BY  p.trackedentityinstanceid ";
+        }
 
         return sql;
     }
@@ -1207,10 +1208,10 @@ public class HibernateCaseAggregationConditionStore
         return false;
     }
 
-    private boolean hasDataelementCriteria( String expresstion )
+    private boolean hasDataelementCriteria( String expression )
     {
         Pattern pattern = Pattern.compile( CaseAggregationCondition.regExp );
-        Matcher matcher = pattern.matcher( expresstion );
+        Matcher matcher = pattern.matcher( expression );
         while ( matcher.find() )
         {
             String match = matcher.group();
@@ -1230,5 +1231,6 @@ public class HibernateCaseAggregationConditionStore
 
         return false;
     }
+    
 
 }
