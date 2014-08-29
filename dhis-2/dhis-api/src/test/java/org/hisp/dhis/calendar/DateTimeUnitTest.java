@@ -141,7 +141,5 @@ public class DateTimeUnitTest
         dateTimeUnit.setTimeZone( timeZone );
 
         dateTimeUnit.toJodaDateTime();
-
-        System.err.println( "tz: " + timeZone );
     }
 }
