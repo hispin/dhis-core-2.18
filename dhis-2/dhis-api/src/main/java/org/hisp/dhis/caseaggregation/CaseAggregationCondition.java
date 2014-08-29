@@ -91,6 +91,8 @@ public class CaseAggregationCondition
     public static String MINUS_OPERATOR = "DATEDIFF";
 
     public static String MINUS_DATAELEMENT_OPERATOR = "DEDATEDIFF";
+    
+    public static String MINUS_ATTRIBUTE_OPERATOR = "ATTRDATEDIFF";
 
     public static String AUTO_STORED_BY = "aggregated_from_tracker";
 
@@ -108,6 +110,10 @@ public class CaseAggregationCondition
         + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([0-9]+" + SEPARATOR_ID + "[0-9]+" + SEPARATOR_ID
         + "[0-9]+)+\\])\\s*(,)\\s*(\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([0-9]+"
         + SEPARATOR_ID + "[0-9]+" + SEPARATOR_ID + "[0-9]+)+\\])\\s*\\)\\s*(>=|<=|!=|>|<|=){1}\\s*([0-9]+)";
+    public static final String minusAttributeRegExp = MINUS_ATTRIBUTE_OPERATOR + "{1}\\s*\\(\\s*(\\["
+        + OBJECT_TRACKED_ENTITY_ATTRIBUTE + SEPARATOR_OBJECT + "([0-9]+)+\\])\\s*(,)\\s*(\\[" 
+        + OBJECT_TRACKED_ENTITY_ATTRIBUTE + SEPARATOR_OBJECT + "([0-9]+)+\\])\\s*\\)\\s*(>=|<=|!=|>|<|=){1}\\s*([0-9]+)";
+
 
     // -------------------------------------------------------------------------
     // Fields
