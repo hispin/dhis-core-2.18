@@ -6199,7 +6199,7 @@ Ext.onReady( function() {
                                     // calendar
                                     createGenerator = function() {
                                         init.calendar = $.calendars.instance(calendarId);
-                                        init.periodGenerator = new dhis2.period.PeriodGenerator(init.calendar, init.dateFormat);
+                                        init.periodGenerator = new dhis2.period.PeriodGenerator(init.calendar, init.systemInfo.dateFormat);
                                     };
 
                                     if (Ext.Array.contains(calendarIds, calendarId)) {
