@@ -24,7 +24,7 @@
 #else
     #foreach( $section in $sections )
         #set( $categoryComboId = $sectionCombos.get( $section.id ) )
-        #renderSection( $categoryComboId $section.dataElements $section.displayName )
+        #renderSection( $categoryComboId $section.dataElements $section.displayName $section.description )
     #end
 #end
 
@@ -33,19 +33,22 @@
     @param $dataElements Data Elements to be rendered in your section
     @param $args.title Include if you want a title rendered in your section
 *#
-#macro( renderSection $categoryComboId $dataElements $title )
+#macro( renderSection $categoryComboId $dataElements $title $description )
 <table class="formSection" style="margin-bottom: 20px;">
 #if( $!title )
 <tr>
   <td>
-    <div class="cent"><h3>$encoder.htmlEncode( $title )</h3></div>
+    <div class="cent"><h3>$!encoder.htmlEncode( $title )</h3></div>
+    #if ( $description )
+    <div class="cent sectionDescription">$!encoder.htmlEncode( $description )</div>
+    #end
   </td>
 </tr>
 #end
 <tr>
   <td>
     <div>
-    <table cellspacing="0">
+    <table class="sectionTable" cellspacing="0">
     #set( $colCount = $numberOfTotalColumns.get( $categoryComboId ) )
     #set( $categories = $orderedCategories.get( $categoryComboId ) )
     #set( $optionsMap = $orderedOptionsMap.get( $categoryComboId ) )

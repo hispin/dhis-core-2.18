@@ -100,6 +100,18 @@
   border: 1px solid #CBDDEB;
 }
 
+.sectionTable
+{
+  border-collapse: collapse;
+}
+
+.sectionDescription
+{
+  font-size: 13px;
+  color: #777;
+  padding-bottom: 10px;
+}
+
 .sectionFilter
 {
   padding: 5px;
