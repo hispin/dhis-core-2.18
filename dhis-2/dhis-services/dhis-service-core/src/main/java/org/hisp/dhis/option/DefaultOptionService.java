@@ -178,13 +178,18 @@ public class DefaultOptionService
         return i18n( i18nService, optionValueStore.getByCode( code ) );
     }
 
-    public Option getOptionValueByName( OptionSet optionSet, String name )
+    public Option getOptionByName( OptionSet optionSet, String name )
     {
-        return i18n( i18nService, optionStore.getOptionValueByName( optionSet, name ) );
+        return i18n( i18nService, optionStore.getOptionByName( optionSet, name ) );
+    }
+
+    public Option getOptionByCode( OptionSet optionSet, String name )
+    {
+        return i18n( i18nService, optionStore.getOptionByName( optionSet, name ) );
     }
     
-    public Collection<Option> getOptionValues( OptionSet optionSet, String option, Integer min, Integer max )
+    public Collection<Option> getOptions( OptionSet optionSet, String option, Integer min, Integer max )
     {
-        return i18n( i18nService, optionStore.getOptionValues( optionSet, option, min, max ) );
+        return i18n( i18nService, optionStore.getOptions( optionSet, option, min, max ) );
     }
 }

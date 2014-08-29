@@ -5,7 +5,7 @@
 		});
 
 		checkValueIsExist( "name", "validateOption.action",{optionSetId:getFieldValue('optionSetId')});	
-		checkValueIsExist( "code", "validateOption.action");	
+		checkValueIsExist( "code", "validateOption.action",{optionSetId:getFieldValue('optionSetId')});	
 	});
 
 </script>
