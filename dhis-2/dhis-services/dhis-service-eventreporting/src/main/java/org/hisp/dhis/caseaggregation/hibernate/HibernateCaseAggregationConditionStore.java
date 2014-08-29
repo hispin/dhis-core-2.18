@@ -1038,7 +1038,7 @@ public class HibernateCaseAggregationConditionStore
         }
         else
         {
-        	 sql += "p.trackedentityinstanceid,p.trackedentityid,ou.name";
+            sql += "p.trackedentityinstanceid,ou.name,";
         }
 
         sql = sql.substring( 0, sql.length() - 1 );
@@ -1046,23 +1046,27 @@ public class HibernateCaseAggregationConditionStore
 
         if( hasEntityInstance )
         {
-        	sql += " INNER JOIN trackedentityinstance p on p.trackedentityinstanceid=pi.trackedentityinstanceid ";
+            sql += " programinstance as pi INNER JOIN trackedentityinstance p on p.trackedentityinstanceid=pi.trackedentityinstanceid";
+            sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=p.organisationunitid ";
         }
         
         if ( hasDataelement )
         {
-            sql += " programinstance as pi ";
+            if( hasEntityInstance )
+            {
+                sql += " INNER JOIN programinstance as pi on pi.trackedentityinstanceid=p.trackedentityinstanceid ";
+            }
+            else
+            {
+                sql += " programinstance as pi ";
+            }
             sql += " INNER JOIN programstageinstance psi ON pi.programinstanceid=psi.programinstanceid ";
             sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid ";
             sql += " INNER JOIN trackedentitydatavalue pdv ON pdv.programstageinstanceid=psi.programstageinstanceid ";
             sql += " INNER JOIN program pg ON pg.programid=pi.programid ";
             sql += " INNER JOIN programstage pgs ON pgs.programid=pg.programid ";
         }
-        else if( !hasEntityInstance )
-        {
-            sql += " programinstance as pi INNER JOIN trackedentityinstance p on p.trackedentityinstanceid=pi.trackedentityinstanceid";
-            sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=p.organisationunitid ";
-        }
+        
 
         sql += " WHERE "
             + createSQL( caseExpression, operator, orgunitIds, DateUtils.getMediumDateString( period.getStartDate() ),
