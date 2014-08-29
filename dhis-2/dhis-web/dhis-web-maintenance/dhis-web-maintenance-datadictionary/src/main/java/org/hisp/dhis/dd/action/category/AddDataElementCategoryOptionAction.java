@@ -30,7 +30,7 @@ package org.hisp.dhis.dd.action.category;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.calendar.CalendarService;
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
@@ -119,13 +119,13 @@ public class AddDataElementCategoryOptionAction
 
         if ( startDate != null && startDate.trim().length() != 0 )
         {
-            DateUnit isoStartDate = calendarService.getSystemCalendar().toIso( startDate );
+            DateTimeUnit isoStartDate = calendarService.getSystemCalendar().toIso( startDate );
             sDate = isoStartDate.toJdkCalendar().getTime();
         }
 
         if ( endDate != null && endDate.trim().length() != 0 )
         {
-            DateUnit isoEndDate = calendarService.getSystemCalendar().toIso( endDate );
+            DateTimeUnit isoEndDate = calendarService.getSystemCalendar().toIso( endDate );
             eDate = isoEndDate.toJdkCalendar().getTime();
         }
 

@@ -33,7 +33,7 @@ import com.google.common.collect.Lists;
 import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.DateInterval;
 import org.hisp.dhis.calendar.DateIntervalType;
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 
 import java.util.Date;
 import java.util.List;
@@ -74,12 +74,12 @@ public class WeeklyPeriodType
     }
 
     @Override
-    public Period createPeriod( DateUnit dateUnit, Calendar calendar )
+    public Period createPeriod( DateTimeUnit dateTimeUnit, Calendar calendar )
     {
-        DateUnit start = new DateUnit( dateUnit );
-        start = calendar.minusDays( dateUnit, calendar.weekday( start ) - 1 );
+        DateTimeUnit start = new DateTimeUnit( dateTimeUnit );
+        start = calendar.minusDays( dateTimeUnit, calendar.weekday( start ) - 1 );
 
-        DateUnit end = new DateUnit( start );
+        DateTimeUnit end = new DateTimeUnit( start );
         end = calendar.plusDays( end, calendar.daysInWeek() - 1 );
 
         return toIsoPeriod( start, end, calendar );
@@ -98,19 +98,19 @@ public class WeeklyPeriodType
     @Override
     public Period getNextPeriod( Period period, Calendar calendar )
     {
-        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
-        dateUnit = calendar.plusWeeks( dateUnit, 1 );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
+        dateTimeUnit = calendar.plusWeeks( dateTimeUnit, 1 );
 
-        return createPeriod( dateUnit, calendar );
+        return createPeriod( dateTimeUnit, calendar );
     }
 
     @Override
     public Period getPreviousPeriod( Period period, Calendar calendar )
     {
-        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
-        dateUnit = calendar.minusWeeks( dateUnit, 1 );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( period.getStartDate(), calendar );
+        dateTimeUnit = calendar.minusWeeks( dateTimeUnit, 1 );
 
-        return createPeriod( dateUnit, calendar );
+        return createPeriod( dateTimeUnit, calendar );
     }
 
     /**
@@ -118,21 +118,21 @@ public class WeeklyPeriodType
      * startDate exists.
      */
     @Override
-    public List<Period> generatePeriods( DateUnit dateUnit )
+    public List<Period> generatePeriods( DateTimeUnit dateTimeUnit )
     {
         Calendar cal = getCalendar();
         
         List<Period> periods = Lists.newArrayList();
 
         // rewind to start of week
-        dateUnit = cal.minusDays( dateUnit, cal.weekday( dateUnit ) - 1 );
+        dateTimeUnit = cal.minusDays( dateTimeUnit, cal.weekday( dateTimeUnit ) - 1 );
 
-        for ( int i = 0; i < cal.weeksInYear( dateUnit.getYear() ); i++ )
+        for ( int i = 0; i < cal.weeksInYear( dateTimeUnit.getYear() ); i++ )
         {
-            DateInterval interval = cal.toInterval( dateUnit, DateIntervalType.ISO8601_WEEK );
+            DateInterval interval = cal.toInterval( dateTimeUnit, DateIntervalType.ISO8601_WEEK );
             periods.add( new Period( this, interval.getFrom().toJdkDate(), interval.getTo().toJdkDate() ) );
 
-            dateUnit = cal.plusWeeks( dateUnit, 1 );
+            dateTimeUnit = cal.plusWeeks( dateTimeUnit, 1 );
         }
 
         return periods;
@@ -143,18 +143,18 @@ public class WeeklyPeriodType
      * given date is inside.
      */
     @Override
-    public List<Period> generateRollingPeriods( DateUnit dateUnit )
+    public List<Period> generateRollingPeriods( DateTimeUnit dateTimeUnit )
     {
         Calendar cal = getCalendar();
         
         List<Period> periods = Lists.newArrayList();
-        dateUnit = cal.minusDays( dateUnit, cal.weekday( dateUnit ) - 1 );
-        dateUnit = cal.minusDays( dateUnit, 357 );
+        dateTimeUnit = cal.minusDays( dateTimeUnit, cal.weekday( dateTimeUnit ) - 1 );
+        dateTimeUnit = cal.minusDays( dateTimeUnit, 357 );
 
         for ( int i = 0; i < 52; i++ )
         {
-            periods.add( createPeriod( dateUnit, cal ) );
-            dateUnit = cal.plusWeeks( dateUnit, 1 );
+            periods.add( createPeriod( dateTimeUnit, cal ) );
+            dateTimeUnit = cal.plusWeeks( dateTimeUnit, 1 );
         }
 
         return periods;
@@ -165,18 +165,18 @@ public class WeeklyPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public String getIsoDate( DateUnit dateUnit )
+    public String getIsoDate( DateTimeUnit dateTimeUnit )
     {
         Calendar cal = getCalendar();
         
-        int week = cal.week( dateUnit );
+        int week = cal.week( dateTimeUnit );
 
-        if ( week == 1 && dateUnit.getMonth() == cal.monthsInYear() )
+        if ( week == 1 && dateTimeUnit.getMonth() == cal.monthsInYear() )
         {
-            dateUnit.setYear( dateUnit.getYear() + 1 );
+            dateTimeUnit.setYear( dateTimeUnit.getYear() + 1 );
         }
 
-        return String.format( "%dW%d", dateUnit.getYear(), week );
+        return String.format( "%dW%d", dateTimeUnit.getYear(), week );
     }
 
     /**
@@ -196,9 +196,9 @@ public class WeeklyPeriodType
         date = date != null ? date : new Date();
         rewindedPeriods = rewindedPeriods != null ? rewindedPeriods : 1;
 
-        DateUnit dateUnit = createLocalDateUnitInstance( date );
-        dateUnit = cal.minusWeeks( dateUnit, rewindedPeriods );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( date );
+        dateTimeUnit = cal.minusWeeks( dateTimeUnit, rewindedPeriods );
 
-        return cal.toIso( dateUnit ).toJdkDate();
+        return cal.toIso( dateTimeUnit ).toJdkDate();
     }
 }

@@ -28,7 +28,7 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 
 import java.util.Calendar;
 
@@ -60,9 +60,9 @@ public class FinancialJulyPeriodType
     }
 
     @Override
-    public String getIsoDate( DateUnit dateUnit )
+    public String getIsoDate( DateTimeUnit dateTimeUnit )
     {
-        return String.format( "%dJuly", dateUnit.getYear() );
+        return String.format( "%dJuly", dateTimeUnit.getYear() );
     }
 
     @Override

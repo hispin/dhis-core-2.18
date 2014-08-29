@@ -28,7 +28,7 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
@@ -237,8 +237,8 @@ public class I18nFormat
         Date periodStartDate = period.getStartDate();
         Date periodEndDate = period.getEndDate();
 
-        DateUnit start = PeriodType.getCalendar().fromIso( DateUnit.fromJdkDate( periodStartDate ) );
-        DateUnit end = PeriodType.getCalendar().fromIso( DateUnit.fromJdkDate( periodEndDate ) );
+        DateTimeUnit start = PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( periodStartDate ) );
+        DateTimeUnit end = PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( periodEndDate ) );
 
         String startDate;
         String endDate;
@@ -249,8 +249,8 @@ public class I18nFormat
             start.setDay( 1 );
             end.setDay( 1 );
 
-            startDate = commonFormatting( new DateUnit( start, true ).toJdkDate(), startPattern );
-            endDate = commonFormatting( new DateUnit( end, true ).toJdkDate(), endPattern );
+            startDate = commonFormatting( new DateTimeUnit( start, true ).toJdkDate(), startPattern );
+            endDate = commonFormatting( new DateTimeUnit( end, true ).toJdkDate(), endPattern );
         }
         else
         {

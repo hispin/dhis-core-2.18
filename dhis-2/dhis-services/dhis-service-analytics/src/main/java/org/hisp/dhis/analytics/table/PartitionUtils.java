@@ -30,7 +30,7 @@ package org.hisp.dhis.analytics.table;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.Partitions;
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Cal;
@@ -78,8 +78,8 @@ public class PartitionUtils
 
         Partitions partitions = new Partitions();
 
-        int startYear = PeriodType.getCalendar().fromIso( DateUnit.fromJdkDate( period.getStartDate() ) ).getYear();
-        int endYear = PeriodType.getCalendar().fromIso( DateUnit.fromJdkDate( period.getEndDate() ) ).getYear();
+        int startYear = PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) ).getYear();
+        int endYear = PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( period.getEndDate() ) ).getYear();
 
         while ( startYear <= endYear )
         {

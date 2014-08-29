@@ -28,7 +28,7 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class RelativePeriodTest
 
     private static Date getDate( int year, int month, int day )
     {
-        return new DateUnit( year, month, day, true ).toJdkDate();
+        return new DateTimeUnit( year, month, day, true ).toJdkDate();
     }
 
     @Test

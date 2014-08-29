@@ -30,7 +30,7 @@ package org.hisp.dhis.period;
 
 import com.google.common.collect.Lists;
 import org.hisp.dhis.calendar.Calendar;
-import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.DateTimeUnit;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -134,14 +134,14 @@ public abstract class CalendarPeriodType
         return generatePeriods( createLocalDateUnitInstance( date ) );
     }
 
-    public abstract List<Period> generatePeriods( DateUnit dateUnit );
+    public abstract List<Period> generatePeriods( DateTimeUnit dateTimeUnit );
 
     public List<Period> generateRollingPeriods( Date date )
     {
         return generateRollingPeriods( createLocalDateUnitInstance( date ) );
     }
 
-    public abstract List<Period> generateRollingPeriods( DateUnit dateUnit );
+    public abstract List<Period> generateRollingPeriods( DateTimeUnit dateTimeUnit );
 
     /**
      * Generates a list of Periods for the last 5 years. Must be overridden by
@@ -153,16 +153,16 @@ public abstract class CalendarPeriodType
      */
     public List<Period> generateLast5Years( Date date )
     {
-        DateUnit dateUnit = createLocalDateUnitInstance( date );
-        dateUnit = getCalendar().minusYears( dateUnit, 4 );
+        DateTimeUnit dateTimeUnit = createLocalDateUnitInstance( date );
+        dateTimeUnit = getCalendar().minusYears( dateTimeUnit, 4 );
         List<Period> periods = Lists.newArrayList();
 
         Calendar calendar = getCalendar();
 
         for ( int i = 0; i < 5; i++ )
         {
-            periods.addAll( generatePeriods( dateUnit ) );
-            dateUnit = calendar.plusYears( dateUnit, 1 );
+            periods.addAll( generatePeriods( dateTimeUnit ) );
+            dateTimeUnit = calendar.plusYears( dateTimeUnit, 1 );
         }
 
         return periods;
