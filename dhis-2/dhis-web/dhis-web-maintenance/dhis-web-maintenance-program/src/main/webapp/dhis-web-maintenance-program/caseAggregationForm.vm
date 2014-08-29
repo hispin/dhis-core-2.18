@@ -191,8 +191,8 @@
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "condition" ) <em title="$i18n.getString( 'required' )" class="required">*</em></legend>
-				<table><tr><td>
-					<textarea id="aggregationCondition" name="aggregationCondition" onkeyup='getConditionDescription();' maxlength="1000">$!caseAggregation.aggregationExpression</textarea>
+				<table style="width:100%"><tr><td>
+					<textarea id="aggregationCondition" name="aggregationCondition" onkeyup='getConditionDescription();' maxlength="1000" style="width:100%">$!caseAggregation.aggregationExpression</textarea>
 				</td></tr></table>
 			</fieldset>
 		</td>
