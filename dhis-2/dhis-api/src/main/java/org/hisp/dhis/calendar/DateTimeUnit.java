@@ -28,13 +28,17 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.base.Objects;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.IllegalInstantException;
+import org.joda.time.LocalDateTime;
 import org.joda.time.chrono.ISOChronology;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * Class representing a specific calendar date.
@@ -93,6 +97,11 @@ public class DateTimeUnit
      */
     private int millis;
 
+    /**
+     * TimeZone for this dateTime instance, defaults to the local tz, used when converting to/from joda/jdk calenders.
+     */
+    private TimeZone timeZone = TimeZone.getDefault();
+
     public DateTimeUnit( boolean iso8601 )
     {
         this.iso8601 = iso8601;
@@ -147,6 +156,21 @@ public class DateTimeUnit
     public DateTimeUnit( int year, int month, int day, int dayOfWeek )
     {
         this( year, month, day, dayOfWeek, false );
+    }
+
+    public void setDate( int year, int month, int day )
+    {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
+
+    public void setTime( int hour, int minute, int second, int millis )
+    {
+        this.hour = hour;
+        this.minute = minute;
+        this.second = second;
+        this.millis = millis;
     }
 
     public int getYear()
@@ -234,19 +258,40 @@ public class DateTimeUnit
         this.millis = millis;
     }
 
+    public TimeZone getTimeZone()
+    {
+        return timeZone;
+    }
+
+    public void setTimeZone( TimeZone timeZone )
+    {
+        this.timeZone = timeZone;
+    }
+
+    public DateTimeUnit toUtc()
+    {
+        return DateTimeUnit.fromJodaDateTime( toJodaDateTime().toDateTime( DateTimeZone.UTC ), true );
+    }
+
     /**
      * Converts dateUnit to Joda-Time DateTime
      *
      * @return Populated DateTime object
      */
-    public DateTime toDateTime()
+    public DateTime toJodaDateTime()
     {
-        if ( !iso8601 )
+        try
         {
-            throw new RuntimeException( "Cannot convert non-ISO8601 DateUnit to DateTime." );
+            return new DateTime( year, month, day, hour, minute, second, millis, ISOChronology.getInstance( DateTimeZone.forTimeZone( timeZone ) ) );
+        }
+        catch ( IllegalInstantException ex )
+        {
+            LocalDateTime localDateTime = new LocalDateTime( year, month, day, hour, minute, second, millis,
+                ISOChronology.getInstance( DateTimeZone.forTimeZone( timeZone ) ) );
+
+            return localDateTime.toLocalDate().toDateTimeAtStartOfDay();
         }
 
-        return new DateTime( year, month, day, 12, 0, ISOChronology.getInstance() );
     }
 
     /**
@@ -257,7 +302,7 @@ public class DateTimeUnit
      */
     public DateTime toJodaDateTime( Chronology chronology )
     {
-        return new DateTime( year, month, day, 12, 0, chronology );
+        return toJodaDateTime().withChronology( chronology );
     }
 
     /**
@@ -267,15 +312,7 @@ public class DateTimeUnit
      */
     public java.util.Calendar toJdkCalendar()
     {
-        if ( !iso8601 )
-        {
-            throw new RuntimeException( "Cannot convert non-ISO8601 DateUnit to JDK Calendar." );
-        }
-
-        java.util.Calendar calendar = new GregorianCalendar( year, month - 1, day );
-        calendar.setTime( calendar.getTime() );
-
-        return calendar;
+        return toJodaDateTime().toGregorianCalendar();
     }
 
     /**
@@ -285,7 +322,7 @@ public class DateTimeUnit
      */
     public Date toJdkDate()
     {
-        return toJdkCalendar().getTime();
+        return toJodaDateTime().toDate();
     }
 
     /**
@@ -308,7 +345,13 @@ public class DateTimeUnit
      */
     public static DateTimeUnit fromJodaDateTime( DateTime dateTime, boolean iso8601 )
     {
-        return new DateTimeUnit( dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(), dateTime.getDayOfWeek(), iso8601 );
+        DateTimeUnit dateTimeUnit = new DateTimeUnit( iso8601 );
+        dateTimeUnit.setDate( dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth() );
+        dateTimeUnit.setDayOfWeek( dateTime.getDayOfWeek() );
+        dateTimeUnit.setTime( dateTime.getHourOfDay(), dateTime.getMinuteOfHour(), dateTime.getSecondOfMinute(), dateTime.getMillisOfSecond() );
+        dateTimeUnit.setTimeZone( dateTime.getZone().toTimeZone() );
+
+        return dateTimeUnit;
     }
 
     /**
@@ -319,8 +362,7 @@ public class DateTimeUnit
      */
     public static DateTimeUnit fromJdkCalendar( java.util.Calendar calendar )
     {
-        return new DateTimeUnit( calendar.get( java.util.Calendar.YEAR ), calendar.get( java.util.Calendar.MONTH ) + 1,
-            calendar.get( java.util.Calendar.DAY_OF_MONTH ), calendar.get( java.util.Calendar.DAY_OF_WEEK ), true );
+        return fromJodaDateTime( new DateTime( calendar ) );
     }
 
     /**
@@ -334,18 +376,24 @@ public class DateTimeUnit
         return fromJodaDateTime( new DateTime( date.getTime() ), true );
     }
 
+    // Note that we do not include dayOfWeek in equals/hashCode, this might not always be set
     @Override
     public boolean equals( Object o )
     {
         if ( this == o ) return true;
         if ( o == null || getClass() != o.getClass() ) return false;
 
-        DateTimeUnit dateTimeUnit = (DateTimeUnit) o;
+        DateTimeUnit that = (DateTimeUnit) o;
 
-        if ( day != dateTimeUnit.day ) return false;
-        if ( iso8601 != dateTimeUnit.iso8601 ) return false;
-        if ( month != dateTimeUnit.month ) return false;
-        if ( year != dateTimeUnit.year ) return false;
+        if ( day != that.day ) return false;
+        if ( hour != that.hour ) return false;
+        if ( iso8601 != that.iso8601 ) return false;
+        if ( millis != that.millis ) return false;
+        if ( minute != that.minute ) return false;
+        if ( month != that.month ) return false;
+        if ( second != that.second ) return false;
+        if ( year != that.year ) return false;
+        if ( !timeZone.equals( that.timeZone ) ) return false;
 
         return true;
     }
@@ -357,17 +405,28 @@ public class DateTimeUnit
         result = 31 * result + month;
         result = 31 * result + day;
         result = 31 * result + (iso8601 ? 1 : 0);
+        result = 31 * result + hour;
+        result = 31 * result + minute;
+        result = 31 * result + second;
+        result = 31 * result + millis;
+        result = 31 * result + timeZone.hashCode();
         return result;
     }
 
     @Override
     public String toString()
     {
-        return "DateUnit{" +
-            "year=" + year +
-            ", month=" + month +
-            ", day=" + day +
-            ", iso8601=" + iso8601 +
-            '}';
+        return Objects.toStringHelper( this )
+            .add( "year", year )
+            .add( "month", month )
+            .add( "day", day )
+            .add( "dayOfWeek", dayOfWeek )
+            .add( "iso8601", iso8601 )
+            .add( "hour", hour )
+            .add( "minute", minute )
+            .add( "second", second )
+            .add( "millis", millis )
+            .add( "timeZone", timeZone )
+            .toString();
     }
 }

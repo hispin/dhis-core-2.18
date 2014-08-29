@@ -72,7 +72,7 @@ public class NepaliCalendar extends AbstractCalendar
             return dateTimeUnit;
         }
 
-        DateTime dateTime = startIso.toDateTime();
+        DateTime dateTime = startIso.toJodaDateTime();
 
         int totalDays = 0;
 
@@ -96,8 +96,8 @@ public class NepaliCalendar extends AbstractCalendar
     @Override
     public DateTimeUnit fromIso( DateTimeUnit dateTimeUnit )
     {
-        DateTime start = startIso.toDateTime();
-        DateTime end = dateTimeUnit.toDateTime();
+        DateTime start = startIso.toJodaDateTime();
+        DateTime end = dateTimeUnit.toJodaDateTime();
 
         return plusDays( startNepal, Days.daysBetween( start, end ).getDays() );
     }

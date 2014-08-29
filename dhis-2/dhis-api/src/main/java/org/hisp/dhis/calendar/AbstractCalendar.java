@@ -128,7 +128,7 @@ public abstract class AbstractCalendar implements Calendar
     public String formattedIsoDate( DateTimeUnit dateTimeUnit )
     {
         dateTimeUnit = toIso( dateTimeUnit );
-        DateTime dateTime = dateTimeUnit.toDateTime();
+        DateTime dateTime = dateTimeUnit.toJodaDateTime();
         DateTimeFormatter format = DateTimeFormat.forPattern( getDateFormat() );
 
         return format.print( dateTime );
