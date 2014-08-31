@@ -113,7 +113,7 @@ public class DefaultAnalyticsTableService
         
         clock.logTime( "Partition tables: " + tables + ", last years: " + lastYears );
         
-        notifier.notify( taskId, "Creating analytics tables, last years: " + lastYears + ", processes: " + processNo );
+        notifier.notify( taskId, "Creating analytics tables, processes: " + processNo );
         
         createTables( tables );
         
