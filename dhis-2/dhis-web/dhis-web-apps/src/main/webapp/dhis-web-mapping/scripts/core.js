@@ -704,7 +704,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name', 'level'],
 			proxy: {
 				type: isPlugin ? 'jsonp' : 'ajax',
-				url: gis.init.contextPath + gis.conf.finals.url.path_api + 'organisationUnitLevels.' + (isPlugin ? 'jsonp' : 'json') + '?fields=id,name,level&paging=false',
+				url: gis.init.contextPath + '/api/organisationUnitLevels.' + (isPlugin ? 'jsonp' : 'json') + '?fields=id,name,level&paging=false',
 				reader: {
 					type: 'json',
 					root: 'organisationUnitLevels'
@@ -2208,7 +2208,7 @@ Ext.onReady( function() {
 					legends = [];
 
 				Ext.Ajax.request({
-					url: gis.init.contextPath + gis.conf.finals.url.path_api + 'mapLegendSets/' + view.legendSet.id + '.json?fields=' + gis.conf.url.mapLegendSetFields.join(','),
+					url: gis.init.contextPath + '/api/mapLegendSets/' + view.legendSet.id + '.json?fields=' + gis.conf.url.mapLegendSetFields.join(','),
 					scope: this,
 					success: function(r) {
 						legends = Ext.decode(r.responseText).mapLegends;
