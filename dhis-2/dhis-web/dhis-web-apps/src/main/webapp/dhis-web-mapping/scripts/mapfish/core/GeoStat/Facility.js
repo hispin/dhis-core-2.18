@@ -146,7 +146,7 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
             var rule = new OpenLayers.Rule({
                 symbolizer: {
                     'pointRadius': 8,
-                    'externalGraphic': '../../images/orgunitgroup/' + items[i].data.symbol
+                    'externalGraphic': '../images/orgunitgroup/' + items[i].data.symbol
                 },
                 filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.EQUAL_TO,
@@ -184,7 +184,7 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
 
         for (var i = 0; i < items.length; i++) {
             child = document.createElement("div");
-            child.style.backgroundImage = 'url(../../images/orgunitgroup/' + items[i].data.symbol + ')';
+            child.style.backgroundImage = 'url(../images/orgunitgroup/' + items[i].data.symbol + ')';
             child.style.backgroundRepeat = 'no-repeat';
             child.style.width = "25px";
             child.style.height = "18px";

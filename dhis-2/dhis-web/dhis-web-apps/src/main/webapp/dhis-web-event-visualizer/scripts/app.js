@@ -6714,7 +6714,7 @@ Ext.onReady( function() {
                         init.dateFormat = info.dateFormat || 'yyyy-mm-dd';
 
                         (function() {
-                            var dhis2PeriodUrl = '../../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
+                            var dhis2PeriodUrl = '../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
                                 defaultCalendarId = 'gregorian',
                                 calendarIdMap = {'iso8601': defaultCalendarId},
                                 calendarId = calendarIdMap[info.calendar] || info.calendar || defaultCalendarId,
@@ -6729,7 +6729,7 @@ Ext.onReady( function() {
                             };
 
                             if (Ext.Array.contains(calendarIds, calendarId)) {
-                                calendarScriptUrl = '../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarId + '.min.js';
+                                calendarScriptUrl = '../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarId + '.min.js';
 
                                 Ext.Loader.injectScriptElement(calendarScriptUrl, function() {
                                     Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
