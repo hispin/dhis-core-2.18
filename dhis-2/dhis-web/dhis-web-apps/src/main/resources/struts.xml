@@ -36,7 +36,7 @@
 		</action>
     </package>
     
-	<package name="dhis-web-event-visualizer" extends="dhis-web-commons" namespace="/dhis-event-visualizer">
+	<package name="dhis-web-event-visualizer" extends="dhis-web-commons" namespace="/dhis-web-event-visualizer">
 		<action name="index" class="org.hisp.dhis.commons.action.NoAction">
 			<result name="success" type="redirect">index.html</result>
 		</action>
