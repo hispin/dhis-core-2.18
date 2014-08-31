@@ -709,9 +709,14 @@ public class DefaultChartService
     private void setBasicConfig( JFreeChart jFreeChart, BaseChart chart)
     {
         jFreeChart.getTitle().setFont( TITLE_FONT );
-        jFreeChart.addSubtitle( getSubTitle( chart ) );
+        
         jFreeChart.setBackgroundPaint( COLOR_TRANSPARENT );
         jFreeChart.setAntiAlias( true );
+        
+        if ( !chart.isHideTitle() )
+        {
+            jFreeChart.addSubtitle( getSubTitle( chart ) );
+        }
         
         Plot plot = jFreeChart.getPlot();
         plot.setBackgroundPaint( COLOR_TRANSPARENT );
@@ -720,12 +725,14 @@ public class DefaultChartService
 
     private TextTitle getSubTitle( BaseChart chart )
     {
-        TextTitle title = new TextTitle();
+        TextTitle textTitle = new TextTitle();
 
-        title.setFont( SUB_TITLE_FONT );
-        title.setText( chart.generateTitle() );
-
-        return title;
+        String title = chart.hasTitle() ? chart.getTitle() : chart.generateTitle();
+        
+        textTitle.setFont( SUB_TITLE_FONT );
+        textTitle.setText( title );
+        
+        return textTitle;
     }
 
     private CategoryDataset[] getCategoryDataSet( BaseChart chart )
