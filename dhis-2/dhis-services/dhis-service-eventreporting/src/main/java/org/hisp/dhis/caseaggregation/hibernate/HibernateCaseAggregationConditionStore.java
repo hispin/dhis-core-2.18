@@ -403,8 +403,8 @@ public class HibernateCaseAggregationConditionStore
             }
         }
         else
-        {
-            sql += " " + operator + "( cast( pdv.value as DOUBLE PRECISION ) ) ";
+        { 
+            sql += " " + operator + "( cast( pdv.value as " + statementBuilder.getDoubleColumnType() + " ) ) ";
             sql += "FROM trackedentitydatavalue pdv ";
             sql += "    INNER JOIN programstageinstance psi  ";
             sql += "            ON psi.programstageinstanceid = pdv.programstageinstanceid ";
