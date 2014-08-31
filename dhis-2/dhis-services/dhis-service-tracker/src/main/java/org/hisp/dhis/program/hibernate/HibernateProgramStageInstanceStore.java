@@ -210,7 +210,7 @@ public class HibernateProgramStageInstanceStore
             + "inner join organisationunit ou on ou.organisationunitid=psi.organisationunitid "
             + "inner join program pg on pg.programid = ps.programid "
             + "where ou.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds ) + " ) "
-            + "and pg.programid = " + program.getId()
+            + "and pg.programid = " + program.getId() + " "
             + "group by ou.name, ps.name, psi.completeduser, psi.completeddate, psi.status "
             + "having psi.completeddate >= '" + startDate + "' AND psi.completeddate <= '" + endDate + "' "
             + "and psi.status='" + EventStatus.COMPLETED.name()  + "' "
