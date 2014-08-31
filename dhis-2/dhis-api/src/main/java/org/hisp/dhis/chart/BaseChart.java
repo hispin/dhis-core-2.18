@@ -196,6 +196,11 @@ public abstract class BaseChart
     {
         return getAnalyticsType().equals( type );
     }
+    
+    public boolean hasTitle()
+    {
+        return title != null && !title.isEmpty();
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters for transient properties
