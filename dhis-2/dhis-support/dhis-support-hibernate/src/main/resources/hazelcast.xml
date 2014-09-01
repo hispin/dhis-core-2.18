@@ -23,6 +23,10 @@
       </join>
   </network>
    -->
+  <properties>
+    <property name="hazelcast.rest.enabled">false</property>
+    <property name="hazelcast.socket.bind.any">false</property>
+  </properties>
   <network>
     <interfaces enabled="true">
       <interface>127.0.0.1</interface>
