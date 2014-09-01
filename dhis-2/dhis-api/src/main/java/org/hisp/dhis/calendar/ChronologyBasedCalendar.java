@@ -30,6 +30,7 @@ package org.hisp.dhis.calendar;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -189,36 +190,36 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     @Override
     public int monthsInYear()
     {
-        DateTime dateTime = new DateTime( 1, 1, 1, 12, 0, chronology );
-        return dateTime.monthOfYear().getMaximumValue();
+        LocalDate localDate = new LocalDate( 1, 1, 1, chronology );
+        return localDate.toDateTimeAtStartOfDay().monthOfYear().getMaximumValue();
     }
 
     @Override
     public int daysInWeek()
     {
-        DateTime dateTime = new DateTime( 1, 1, 1, 12, 0, chronology );
-        return dateTime.dayOfWeek().getMaximumValue();
+        LocalDate localDate = new LocalDate( 1, 1, 1, chronology );
+        return localDate.toDateTimeAtStartOfDay().dayOfWeek().getMaximumValue();
     }
 
     @Override
     public int daysInYear( int year )
     {
-        DateTime dateTime = new DateTime( year, 1, 1, 12, 0, chronology );
-        return (int) dateTime.year().toInterval().toDuration().getStandardDays();
+        LocalDate localDate = new LocalDate( year, 1, 1, chronology );
+        return (int) localDate.toDateTimeAtStartOfDay().year().toInterval().toDuration().getStandardDays();
     }
 
     @Override
     public int daysInMonth( int year, int month )
     {
-        DateTime dateTime = new DateTime( year, month, 1, 12, 0, chronology );
-        return dateTime.dayOfMonth().getMaximumValue();
+        LocalDate localDate = new LocalDate( year, month, 1, chronology );
+        return localDate.toDateTimeAtStartOfDay().dayOfMonth().getMaximumValue();
     }
 
     @Override
     public int weeksInYear( int year )
     {
-        DateTime dateTime = new DateTime( year, 1, 1, 12, 0, chronology );
-        return dateTime.weekOfWeekyear().getMaximumValue();
+        LocalDate localDate = new LocalDate( year, 1, 1, chronology );
+        return localDate.toDateTimeAtStartOfDay().weekOfWeekyear().getMaximumValue();
     }
 
     @Override
