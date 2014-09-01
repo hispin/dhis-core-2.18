@@ -268,6 +268,11 @@ public class DateTimeUnit
         this.timeZone = timeZone;
     }
 
+    /**
+     * Return current instance with timeZone set to UTC
+     *
+     * @return DateTimeUnit instance with timeZone set to UTC
+     */
     public DateTimeUnit toUtc()
     {
         return DateTimeUnit.fromJodaDateTime( toJodaDateTime().toDateTime( DateTimeZone.UTC ), true );
