@@ -2,7 +2,6 @@
     <h2>{{'schedule_details'| translate}}</h2>
 </div>
 <div class="modal-body">
-    <div class='row' ng-if="reportMode === 'PROGRAM'">
         <span class="bold">
             {{entityName}}
         </span>
@@ -16,7 +15,7 @@
                 </td>                
             </tr>
         </table>
-    </div>
+
     <div class='row' ng-if='currentEvent'>      
         <hr ng-if="reportMode === 'PROGRAM'">
         <span class="bold">
