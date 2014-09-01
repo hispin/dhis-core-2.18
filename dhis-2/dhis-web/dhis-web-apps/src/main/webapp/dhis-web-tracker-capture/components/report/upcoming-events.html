@@ -49,8 +49,8 @@
                         </thead>
                         <tr ng-repeat="tei in teiList">
                             <td>
-                                <span ng-repeat="gridColumn in gridColumns">
-                                    <span class="bold">{{gridColumn.name}}:</span> {{tei[gridColumn.id]}}<br>
+                                <span ng-repeat="attribute in attributes">
+                                    <span class="bold">{{attribute.name}}:</span> {{tei[attribute.id]}}<br>
                                 </span>
                             </td>
                             <td>
@@ -58,9 +58,9 @@
                                 <span class="inline-block" ng-repeat="ev in dhis2Events[tei.id] | orderBy: 'dueDate'">                                    
                                     <span class="block align-center">{{ev.orgUnitName}}</span>                   
                                     <span class="stage-container" 
-                                         title="{{'details'| translate}}"
+                                         title="{{'reschedule'| translate}}"
                                          ng-class="{'{{ev.statusColor}}': true}"
-                                         ng-click="showEventDetails(ev, tei)">
+                                         ng-click="showReschedule(ev, tei)">
                                         {{ev.name}}<br/>
                                         {{ev.dueDate}}<br>  
                                     </span>                                    
