@@ -1,30 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.2.xsd"
-           xmlns="http://www.hazelcast.com/schema/config"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <!-- 
-    <group>
-        <name>dhis-hz-cluster</name>
-        <password>dhis-hz-cluster</password>
-    </group>
-    <network>
-        <port auto-increment="true" port-count="100">5701</port>
-        <outbound-ports>
-            <ports>0</ports>
-        </outbound-ports>
-        <join>
-            <multicast enabled="false">
-                <multicast-group>224.2.2.3</multicast-group>
-                <multicast-port>54327</multicast-port>
-            </multicast>
-            <tcp-ip enabled="true">
-                <member>127.0.0.1</member>
-            </tcp-ip>
-        </join>
-    </network>
-     -->
-	<map name="default">
-		<time-to-live-seconds>720</time-to-live-seconds>
-		<max-size policy="PER_NODE">800000</max-size>
-		<eviction-policy>LRU</eviction-policy>
-	</map>
+  xmlns="http://www.hazelcast.com/schema/config"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!--
+  <group>
+      <name>dhis-hz-cluster</name>
+      <password>dhis-hz-cluster</password>
+  </group>
+  <network>
+      <port auto-increment="true" port-count="100">5701</port>
+      <outbound-ports>
+          <ports>0</ports>
+      </outbound-ports>
+      <join>
+          <multicast enabled="false">
+              <multicast-group>224.2.2.3</multicast-group>
+              <multicast-port>54327</multicast-port>
+          </multicast>
+          <tcp-ip enabled="true">
+              <member>127.0.0.1</member>
+          </tcp-ip>
+      </join>
+  </network>
+   -->
+  <network>
+    <interfaces enabled="true">
+      <interface>127.0.0.1</interface>
+    </interfaces>
+  </network>
+  <map name="default">
+    <time-to-live-seconds>720</time-to-live-seconds>
+    <max-size policy="PER_NODE">800000</max-size>
+    <eviction-policy>LRU</eviction-policy>
+  </map>
 </hazelcast>
