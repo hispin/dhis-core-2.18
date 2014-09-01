@@ -60,19 +60,19 @@ jQuery(function() {
         </div>
         <div class="interpretationItem">
         #if( $ip.chartInterpretation )
-            <a href="../dhis-web-visualizer/app/index.html?id=${ip.chart.uid}&date=${format.formatDate( $ip.created )}">
+            <a href="../dhis-web-visualizer/index.html?id=${ip.chart.uid}&date=${format.formatDate( $ip.created )}">
             <img style="cursor:pointer"
                 src="../api/charts/${ip.chart.uid}/data?date=${format.formatDate( $ip.created )}&width=558&height=300${ou}"
                 title="$i18n.getString( 'click_to_view_in_data_visualizer' )"></a>
         #elseif( $ip.mapInterpretation )
-            <a href="../dhis-web-mapping/app/index.html?id=${ip.map.uid}">
+            <a href="../dhis-web-mapping/index.html?id=${ip.map.uid}">
             <img style="cursor:pointer"
                 src="../api/maps/${ip.map.uid}/data?date=${format.formatDate( $ip.created )}&width=558"
                 title="$i18n.getString( 'click_to_view_in_gis' )"></a>
         #elseif( $ip.reportTableInterpretation )
             <a class="bold"
                title="$i18n.getString( 'click_to_view_report_table' )"
-               href="../dhis-web-pivot/app/index.html?id=${ip.reportTable.uid}${pe}${ou}">
+               href="../dhis-web-pivot/index.html?id=${ip.reportTable.uid}${pe}${ou}">
                $encoder.htmlEncode( $ip.reportTable.name )</a>
         #elseif( $ip.dataSetReportInterpretation )
             <a class="bold"

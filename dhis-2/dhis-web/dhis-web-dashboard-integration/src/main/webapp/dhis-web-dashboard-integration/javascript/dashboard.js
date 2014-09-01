@@ -414,7 +414,7 @@ dhis2.db.renderDashboard = function( id )
 				}
 				else if ( "reportTables" == dashboardItem.type )
 				{
-					dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.reportTables, "Pivot tables", "../dhis-web-pivot/app/index.html?id=", "" );
+					dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.reportTables, "Pivot tables", "../dhis-web-pivot/index.html?id=", "" );
 				}
 				else if ( "reports" == dashboardItem.type )
 				{
@@ -579,22 +579,22 @@ dhis2.db.getIndex = function( itemId )
 
 dhis2.db.exploreChart = function( uid )
 {
-	window.location.href = "../dhis-web-visualizer/app/index.html?id=" + uid;
+	window.location.href = "../dhis-web-visualizer/index.html?id=" + uid;
 }
 
 dhis2.db.exploreEventChart = function( uid )
 {
-	window.location.href = "../dhis-web-event-visualizer/app/index.html?id=" + uid;
+	window.location.href = "../dhis-web-event-visualizer/index.html?id=" + uid;
 }
 
 dhis2.db.exploreMap = function( uid )
 {
-	window.location.href = "../dhis-web-mapping/app/index.html?id=" + uid;
+	window.location.href = "../dhis-web-mapping/index.html?id=" + uid;
 }
 
 dhis2.db.exploreReportTable = function( uid )
 {
-	window.location.href = "../dhis-web-pivot/app/index.html?id=" + uid;
+	window.location.href = "../dhis-web-pivot/index.html?id=" + uid;
 }
 
 dhis2.db.renderReportTable = function( tableId, itemId )
@@ -697,7 +697,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.charts )
 			{
 				var o = data.charts[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-visualizer/app/index.html?id=" + o.id, "img": "chart_small", "name": o.name, "type": "chart", "id": o.id, "i18n_add": i18n_add } ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-visualizer/index.html?id=" + o.id, "img": "chart_small", "name": o.name, "type": "chart", "id": o.id, "i18n_add": i18n_add } ) );
 			}
 		}
 
@@ -708,7 +708,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.eventCharts )
 			{
 				var o = data.eventCharts[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-event-visualizer/app/index.html?id=" + o.id, "img": "chart_small", "name": o.name, "type": "eventChart", "id": o.id, "i18n_add": i18n_add } ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-event-visualizer/index.html?id=" + o.id, "img": "chart_small", "name": o.name, "type": "eventChart", "id": o.id, "i18n_add": i18n_add } ) );
 			}
 		}
 		
@@ -719,7 +719,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.maps )
 			{
 				var o = data.maps[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-mapping/app/index.html?id=" + o.id, "img": "map_small", "name": o.name, "type": "map", "id": o.id, "i18n_add": i18n_add } ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-mapping/index.html?id=" + o.id, "img": "map_small", "name": o.name, "type": "map", "id": o.id, "i18n_add": i18n_add } ) );
 			}
 		}
 		
@@ -730,7 +730,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.reportTables )
 			{
 				var o = data.reportTables[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-pivot/app/index.html?id=" + o.id, "img": "table_small", "name": o.name, "type": "reportTable", "id": o.id, "i18n_add": i18n_add } ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-pivot/index.html?id=" + o.id, "img": "table_small", "name": o.name, "type": "reportTable", "id": o.id, "i18n_add": i18n_add } ) );
 			}
 		}
 		
