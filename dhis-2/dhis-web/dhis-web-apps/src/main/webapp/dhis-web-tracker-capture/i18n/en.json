@@ -165,6 +165,8 @@
     "scheduling": "Scheduling",
     "reschedule": "Reschedule",
     "rescheduling": "Rescheduling",
+    "scheduling_messaging": "Scheduling and Messaging",
+    "not_yet_enrolled_scheduling": "Not yet enrolled. Scheduling not possible.",
     "schedule_details": "Schedule details",
     "enroll": "Enroll",
     "new_enrollment": "New enrollment",

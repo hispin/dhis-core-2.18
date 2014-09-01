@@ -1,0 +1,15 @@
+<div class="panel panel-default" ng-controller="SchedulingMessagingController">
+    <div class="panel-heading handle bold">
+        {{schedulingMessagingWidget.title| translate}}
+        <span class="pull-right">
+            <a class="small-horizonal-spacing" href ng-click="expandCollapse(schedulingMessagingWidget)">
+                <span ng-show="schedulingMessagingWidget.expand"><i class="fa fa-chevron-up" title="{{'collapse'| translate}}"></i></span>
+                <span ng-show="!schedulingMessagingWidget.expand"><i class="fa fa-chevron-down" title="{{'expand'| translate}}"></i></span>
+            </a>
+            <a class="small-horizonal-spacing" href ng-click="removeWidget(schedulingMessagingWidget)" title="{{'remove'| translate}}"><i class="fa fa-times-circle"></i></a>            
+        </span>        
+    </div>    
+    <div ng-show="schedulingMessagingWidget.expand" class="panel-body dashboard-element-container">        
+        <div ng-show="!selectedEnrollment" class="alert alert-warning">{{'not_yet_enrolled_scheduling'| translate}}</div>
+    </div>
+</div>

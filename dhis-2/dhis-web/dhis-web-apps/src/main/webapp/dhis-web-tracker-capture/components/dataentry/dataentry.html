@@ -26,7 +26,7 @@
                                 {{dhis2Event.name}}<br/>
                                 {{dhis2Event.sortingDate}}         
                             </span>
-                            <i class="fa fa-arrow-right" ng-show="$index < dhis2Events.length - 1"></i>
+                            <i class="fa fa-arrow-right" ng-if="$index < dhis2Events.length - 1"></i>
                         </td>                        
                     </tr>
                 </tbody>                
@@ -47,7 +47,7 @@
                                 {{dummyEvent.name}}<br/>
                                 {{dummyEvent.dueDate}}         
                             </span>
-                            <i class="fa fa-arrow-right" ng-show="$index < dummyEvents.length - 1"></i>
+                            <i class="fa fa-arrow-right" ng-if="$index < dummyEvents.length - 1"></i>
                         </td>                        
                     </tr>                        
                 </tbody>                
@@ -57,12 +57,12 @@
                     <div class="col-md-6">
                         {{currentDummyEvent.reportDateDescription}}
                         <input type="text" placeholder="yyyy-mm-dd" name="eventDate" class="form-control" ng-date ng-model="currentDummyEvent.eventDate" ng-required="false"/>
-                        <span ng-show="eventCreationForm.submitted && eventCreationForm.eventDate.$invalid" class="error">{{'required'| translate}}</span>
+                        <span ng-if="eventCreationForm.submitted && eventCreationForm.eventDate.$invalid" class="error">{{'required'| translate}}</span>
                     </div>
                     <div class="col-md-6">
                         {{'due_date'| translate}}
                         <input type="text" placeholder="yyyy-mm-dd" name="dueDate" class="form-control" ng-date ng-model="currentDummyEvent.dueDate" ng-required="true"/>
-                        <span ng-show="eventCreationForm.submitted && eventCreationForm.dueDate.$invalid" class="error">{{'required'| translate}}</span>
+                        <span ng-if="eventCreationForm.submitted && eventCreationForm.dueDate.$invalid" class="error">{{'required'| translate}}</span>
                     </div>                        
                 </div>
                 <div class="row vertical-spacing">   
@@ -74,7 +74,7 @@
             </form>            
         </div>        
 
-        <div ng-show="currentEvent && !showEventCreationDiv">
+        <div ng-if="currentEvent && !showEventCreationDiv">
             <div class="row">
                 <div class="col-md-6">
                     {{currentEvent.reportDateDescription}}
@@ -87,7 +87,7 @@
                            ng-model="currentEvent.eventDate" 
                            ng-required="true" 
                            blur-or-change="saveEventDate()"/>
-                    <span ng-show="invalidDate" class="error">{{'date_required'| translate}}</span>     
+                    <span ng-if="invalidDate" class="error">{{'date_required'| translate}}</span>     
                 </div>
                 <div class="col-md-6">
                     {{'due_date'| translate}}
@@ -102,7 +102,7 @@
                            ng-disabled="currentEvent.eventDate"/>
                 </div>                        
             </div>
-            <div ng-show="currentEvent.eventDate">
+            <div ng-if="currentEvent.eventDate">
             
                 <div class='row'><hr></div>
                 <div class='col-md-12' ng-if="customForm">
