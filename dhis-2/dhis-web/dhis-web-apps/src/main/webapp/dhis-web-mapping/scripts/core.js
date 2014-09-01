@@ -2499,9 +2499,9 @@ Ext.onReady( function() {
 
             conf.url.analysisFields = [
                 '*',
-                'columns[dimension,filter,items[id,name]]',
-                'rows[dimension,filter,items[id,name]]',
-                'filters[dimension,filter,items[id,name]]',
+                'columns[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
+                'rows[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
+                'filters[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
                 '!lastUpdated',
                 '!href',
                 '!created',
