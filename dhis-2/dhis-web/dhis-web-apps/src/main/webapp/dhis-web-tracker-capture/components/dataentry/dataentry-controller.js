@@ -390,7 +390,7 @@ trackerCapture.controller('DataEntryController',
             var e = {event: $scope.currentEvent.event,
                  enrollment: $scope.currentEvent.enrollment,
                  dueDate: $scope.currentEvent.dueDate,
-                 status: $scope.currentEvent.status === 'SCHEDULE' ? 'ACTIVE' : $scope.currentEvent.status,
+                 status: $scope.currentEvent.status == 'SCHEDULE' ? 'ACTIVE' : $scope.currentEvent.status,
                  program: $scope.currentEvent.program,
                  programStage: $scope.currentEvent.programStage,
                  orgUnit: $scope.currentEvent.orgUnit,
@@ -408,6 +408,7 @@ trackerCapture.controller('DataEntryController',
                 for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
                     if($scope.dhis2Events[i].event === $scope.currentEvent.event ){
                         $scope.dhis2Events[i].statusColor = statusColor;
+                        $scope.dhis2Events[i].status = e.status;
                         continueLoop = false;
                     }
                 }
