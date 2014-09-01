@@ -8,17 +8,21 @@
 </div>
 <div id="mainPage">
     <h1>{{'tracker_reports'| translate}}</h1>
-    <div class="row col-md-10">        
-        <div class="col-md-6 report-type-container" ng-click="programSummary()">
-            <h2><small><i class="fa fa-list-alt fa-3x black"></i></small><span class="horizonal-spacing">{{'program_summary'| translate}}</span></h2>
+    <div class="row col-sm-10">        
+        <div class="col-sm-6 report-type-container" ng-click="programSummary()">
+            <h2><small><i class="fa fa-list-alt fa-2x black"></i></small><span class="horizonal-spacing">{{'program_summary'| translate}}</span></h2>
             {{'program_summary_description'| translate}}
         </div>
-        <div class="col-md-6 report-type-container" ng-click="upcomingEvents()">
-            <h2><small><i class="fa fa-clock-o fa-3x black"></i></small><span class="horizonal-spacing">{{'upcoming_events'| translate}}</span></h2>
+        <div class="col-sm-6 report-type-container" ng-click="programStatistics()">
+            <h2><small><i class="fa fa-bar-chart fa-2x black"></i></small><span class="horizonal-spacing">{{'program_statistics'| translate}}</span></h2>
+            {{'program_statistics_description'| translate}}
+        </div>
+        <div class="col-sm-6 report-type-container" ng-click="upcomingEvents()">
+            <h2><small><i class="fa fa-clock-o fa-2x black"></i></small><span class="horizonal-spacing">{{'upcoming_events'| translate}}</span></h2>
             {{'upcoming_events_description'| translate}}
         </div>
-        <div class="col-md-6 report-type-container" ng-click="overdueEvents()">
-            <h2><small><i class="fa fa-bell-o fa-3x black"></i></small><span class="horizonal-spacing">{{'overdue_events'| translate}}</span></h2>
+        <div class="col-sm-6 report-type-container" ng-click="overdueEvents()">
+            <h2><small><i class="fa fa-bell-o fa-2x black"></i></small><span class="horizonal-spacing">{{'overdue_events'| translate}}</span></h2>
             {{'overdue_events_description'| translate}}
         </div>
     </div>
