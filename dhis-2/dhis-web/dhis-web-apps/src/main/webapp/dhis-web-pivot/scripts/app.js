@@ -4203,7 +4203,7 @@ Ext.onReady( function() {
             var type = periodType.getValue(),
                 periodOffset = periodType.periodOffset,
                 generator = ns.core.init.periodGenerator,
-                periods = generator.generateReversedPeriods(type, type === 'Yearly' ? periodOffset - 5 : periodOffset);           
+                periods = generator.generateReversedPeriods(type, type === 'Yearly' ? periodOffset - 5 : periodOffset);
 
             for (var i = 0; i < periods.length; i++) {
                 periods[i].id = periods[i].iso;
@@ -4212,7 +4212,7 @@ Ext.onReady( function() {
             fixedPeriodAvailableStore.setIndex(periods);
             fixedPeriodAvailableStore.loadData(periods);
             ns.core.web.multiSelect.filterAvailable(fixedPeriodAvailable, fixedPeriodSelected);
-        };            
+        };
 
         periodType = Ext.create('Ext.form.field.ComboBox', {
             cls: 'ns-combo',

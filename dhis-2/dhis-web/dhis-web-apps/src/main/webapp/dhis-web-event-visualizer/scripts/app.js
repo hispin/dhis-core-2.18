@@ -3954,14 +3954,15 @@ Ext.onReady( function() {
 			}
 		});
 
-        onPeriodTypeSelect = function(value) {
-            var ptype = new PeriodType(),
+        onPeriodTypeSelect = function() {
+            var type = periodType.getValue(),
+                periodOffset = periodType.periodOffset,
+                generator = ns.core.init.periodGenerator,
+                periods = generator.generateReversedPeriods(type, type === 'Yearly' ? periodOffset - 5 : periodOffset);
 
-                periods = ptype.get(value).generatePeriods({
-                    offset: periodType.periodOffset,
-                    filterFuturePeriods: true,
-                    reversePeriods: true
-                });
+            for (var i = 0; i < periods.length; i++) {
+                periods[i].id = periods[i].iso;
+            }
 
             fixedPeriodAvailableStore.setIndex(periods);
             fixedPeriodAvailableStore.loadData(periods);
@@ -3981,7 +3982,8 @@ Ext.onReady( function() {
             periodOffset: 0,
             listeners: {
                 select: function(cmp) {
-                    onPeriodTypeSelect(cmp.getValue());
+                    periodType.periodOffset = 0;
+                    onPeriodTypeSelect();
                 }
             }
         });
@@ -3993,7 +3995,7 @@ Ext.onReady( function() {
             handler: function() {
                 if (periodType.getValue()) {
                     periodType.periodOffset--;
-                    onPeriodTypeSelect(periodType.getValue());
+                    onPeriodTypeSelect();
                 }
             }
         });
@@ -4005,7 +4007,7 @@ Ext.onReady( function() {
             handler: function() {
                 if (periodType.getValue()) {
                     periodType.periodOffset++;
-                    onPeriodTypeSelect(periodType.getValue());
+                    onPeriodTypeSelect();
                 }
             }
         });
