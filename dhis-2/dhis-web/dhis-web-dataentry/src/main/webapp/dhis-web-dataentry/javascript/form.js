@@ -979,8 +979,6 @@ function dataSetSelected()
         clearEntryForm();
         dhis2.de.clearAttributes();
     }
-
-    dhis2.de.updateOptionsStatus();
 }
 
 // -----------------------------------------------------------------------------
@@ -1164,35 +1162,6 @@ dhis2.de.getCurrentCategoryOptions = function()
 };
 
 /**
- * Updates the options status showing options selected if any.
- */
-dhis2.de.updateOptionsStatus = function()
-{
-    var html = '';
-
-    if ( dhis2.de.currentCategories && dhis2.de.currentCategories.length != 0 )
-    {
-        var prefix = '(';
-        $.safeEach( dhis2.de.currentCategories, function ( idx, category ) {
-            var option = $('#category-' + category.id).val();
-
-            if ( option && option != -1) {
-                var options = dhis2.de.categories[ category.id ].options;
-                var matching = $.grep(options, function (e) {
-                    return e.id == option;
-                });
-                
-                html += prefix + matching[0].name;
-                prefix = ', ';
-            }
-        });
-        html += html.length == 0 ? '' : ')';
-    }
-
-    $( '#currentOptionsSelection' ).html( html );
-};
-
-/**
  * Returns a query param value for the currently selected category options where
  * each option is separated by the ; character.
  */
@@ -1287,8 +1256,6 @@ dhis2.de.attributeSelected = function( categoryId )
     {
         clearEntryForm();
     }
-
-    dhis2.de.updateOptionsStatus();
 };
 
 // -----------------------------------------------------------------------------
