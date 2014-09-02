@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -248,21 +249,11 @@ public class AddDataElementAction
         // Prepare values
         // ---------------------------------------------------------------------
 
-        if ( alternativeName != null && alternativeName.trim().length() == 0 )
-        {
-            alternativeName = null;
-        }
-
-        if ( code != null && code.trim().length() == 0 )
-        {
-            code = null;
-        }
-
-        if ( description != null && description.trim().length() == 0 )
-        {
-            description = null;
-        }
-
+        alternativeName = StringUtils.trimToNull( alternativeName );
+        code = StringUtils.trimToNull( code );
+        description = StringUtils.trimToNull( description );
+        formName = StringUtils.trimToNull( formName );
+        
         // ---------------------------------------------------------------------
         // Create data element
         // ---------------------------------------------------------------------
