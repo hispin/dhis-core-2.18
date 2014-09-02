@@ -931,13 +931,11 @@ function getSortedDataSetListForOrgUnits( orgUnits )
  * Callback for changes in data set list.
  */
 function dataSetSelected()
-{
-    var x = dhis2.de.currentDataSetId;
-    
+{    
     var dataSetId = $( '#selectedDataSetId' ).val();
 
     var previousDataSetValid = ( dhis2.de.currentDataSetId && dhis2.de.currentDataSetId != -1 );    
-    var previousPeriodType = previousDataSetValid ? dhis2.de.dataSets[dhis2.de.currentDataSetId].periodType : null;
+    var previousPeriodType = !!previousDataSetValid ? dhis2.de.dataSets[dhis2.de.currentDataSetId].periodType : null;
 
     dhis2.de.currentDataSetId = dataSetId;
     
