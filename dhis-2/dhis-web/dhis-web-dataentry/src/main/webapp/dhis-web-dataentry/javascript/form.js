@@ -1205,7 +1205,7 @@ dhis2.de.getAttributesMarkup = function()
 
     var options = dhis2.de.getCurrentCategoryOptions();
 
-	if ( !dhis2.de.currentCategories || dhis2.de.currentCategories.length == 0 || period.iso == "" ) {
+	if ( !dhis2.de.currentCategories || dhis2.de.currentCategories.length == 0 || !period ) {
 		return html;
 	}
 	
