@@ -107,6 +107,7 @@ import org.jfree.chart.renderer.category.AreaRenderer;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.renderer.category.StackedAreaRenderer;
 import org.jfree.chart.renderer.category.StackedBarRenderer;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
@@ -491,13 +492,13 @@ public class DefaultChartService
     }
 
     /**
-     * Returns an area renderer.
+     * Returns a stacked area renderer.
      * <p/>
      * TODO centralize these renderer methods.
      */
-    private AreaRenderer getAreaRenderer()
+    private AreaRenderer getStackedAreaRenderer()
     {
-        AreaRenderer renderer = new AreaRenderer();
+        StackedAreaRenderer renderer = new StackedAreaRenderer();
 
         for ( int i = 0; i < COLORS.length; i++ )
         {
@@ -555,7 +556,7 @@ public class DefaultChartService
         }
         else if ( chart.isType( TYPE_AREA ) )
         {
-            return getAreaChart( chart, dataSets[0] );
+            return getStackedAreaChart( chart, dataSets[0] );
         }
         else if ( chart.isType( TYPE_PIE ) )
         {
@@ -619,22 +620,22 @@ public class DefaultChartService
         return jFreeChart;
     }
 
-    private JFreeChart getAreaChart( BaseChart chart, CategoryDataset dataSet )
+    private JFreeChart getStackedAreaChart( BaseChart chart, CategoryDataset dataSet )
     {
-        JFreeChart areaChart = ChartFactory.createAreaChart( chart.getName(), chart.getDomainAxisLabel(),
+        JFreeChart stackedAreaChart = ChartFactory.createStackedAreaChart( chart.getName(), chart.getDomainAxisLabel(),
             chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, !chart.isHideLegend(), false, false );
 
-        setBasicConfig( areaChart, chart );
+        setBasicConfig( stackedAreaChart, chart );
 
-        CategoryPlot plot = (CategoryPlot) areaChart.getPlot();
+        CategoryPlot plot = (CategoryPlot) stackedAreaChart.getPlot();
         plot.setOrientation( PlotOrientation.VERTICAL );
-        plot.setRenderer( getAreaRenderer() );
+        plot.setRenderer( getStackedAreaRenderer() );
 
         CategoryAxis xAxis = plot.getDomainAxis();
         xAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
         xAxis.setLabelFont( LABEL_FONT );
 
-        return areaChart;
+        return stackedAreaChart;
     }
 
     private JFreeChart getRadarChart( BaseChart chart, CategoryDataset dataSet )
