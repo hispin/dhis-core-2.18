@@ -54,10 +54,12 @@ import org.hisp.dhis.hibernate.exception.ReadAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroupAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import java.util.HashSet;
@@ -170,6 +172,8 @@ public class HibernateGenericStore<T>
     /**
      * Creates a Criteria for the implementation Class type.
      *
+     * Please note that sharing is not considered.
+     *
      * @return a Criteria instance.
      */
     protected final Criteria getCriteria()
@@ -179,18 +183,25 @@ public class HibernateGenericStore<T>
 
     protected final Disjunction getSharingDisjunction()
     {
+        return getSharingDisjunction( currentUserService.getCurrentUser() );
+    }
+
+    protected final Disjunction getSharingDisjunction( User user )
+    {
+        Assert.notNull( user, "User argument can't be null." );
+
         Disjunction disjunction = Restrictions.disjunction();
 
         disjunction.add( Restrictions.like( "publicAccess", "r%" ) );
         disjunction.add( Restrictions.isNull( "user" ) );
-        disjunction.add( Restrictions.eq( "user", currentUserService.getCurrentUser() ) );
+        disjunction.add( Restrictions.eq( "user", user ) );
 
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass( UserGroupAccess.class, "uga" );
         detachedCriteria.createAlias( "uga.userGroup", "ug" );
         detachedCriteria.createAlias( "ug.members", "ugm" );
 
         detachedCriteria.add( Restrictions.like( "uga.access", "r%" ) );
-        detachedCriteria.add( Restrictions.eq( "ugm.id", currentUserService.getCurrentUser().getId() ) );
+        detachedCriteria.add( Restrictions.eq( "ugm.id", user.getId() ) );
 
         detachedCriteria.setProjection( Projections.id() );
 
@@ -199,12 +210,12 @@ public class HibernateGenericStore<T>
         return disjunction;
     }
 
-    /**
-     * Creates a Criteria for the implementation Class type.
-     *
-     * @return a Criteria instance.
-     */
     protected final Criteria getSharingCriteria()
+    {
+        return getSharingCriteria( currentUserService.getCurrentUser() );
+    }
+
+    protected final Criteria getSharingCriteria( User user )
     {
         Criteria criteria = getCriteria();
 
@@ -213,7 +224,9 @@ public class HibernateGenericStore<T>
             return criteria;
         }
 
-        criteria.add( getSharingDisjunction() );
+        Assert.notNull( user, "User argument can't be null." );
+
+        criteria.add( getSharingDisjunction( user ) );
 
         return criteria;
     }
