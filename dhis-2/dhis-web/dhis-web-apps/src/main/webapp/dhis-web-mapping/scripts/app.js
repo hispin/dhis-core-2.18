@@ -8426,7 +8426,7 @@ Ext.onReady( function() {
 		});
 
 		pluginItem = Ext.create('Ext.menu.Item', {
-			text: 'Embed as plugin' + '&nbsp;&nbsp;',
+			text: 'Embed in web page' + '&nbsp;&nbsp;',
 			iconCls: 'gis-menu-item-datasource',
 			disabled: true,
 			xable: function() {
