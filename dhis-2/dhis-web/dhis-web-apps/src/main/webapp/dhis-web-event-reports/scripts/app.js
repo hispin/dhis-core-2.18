@@ -4319,10 +4319,11 @@ Ext.onReady( function() {
 			}
 		});
 
-        onPeriodTypeSelect = function(value) {
-            var periodType = value,
+        onPeriodTypeSelect = function() {
+            var type = periodType.getValue(),
+                periodOffset = periodType.periodOffset,
                 generator = ns.core.init.periodGenerator,
-                periods = generator.filterFuturePeriodsExceptCurrent(generator.generateReversedPeriods(periodType, this.periodOffset));
+                periods = generator.generateReversedPeriods(type, type === 'Yearly' ? periodOffset - 5 : periodOffset);
 
             for (var i = 0; i < periods.length; i++) {
                 periods[i].id = periods[i].iso;
@@ -4346,7 +4347,8 @@ Ext.onReady( function() {
             periodOffset: 0,
             listeners: {
                 select: function(cmp) {
-                    onPeriodTypeSelect(cmp.getValue());
+                    periodType.periodOffset = 0;
+                    onPeriodTypeSelect();
                 }
             }
         });
@@ -4358,7 +4360,7 @@ Ext.onReady( function() {
             handler: function() {
                 if (periodType.getValue()) {
                     periodType.periodOffset--;
-                    onPeriodTypeSelect(periodType.getValue());
+                    onPeriodTypeSelect();
                 }
             }
         });
@@ -4370,7 +4372,7 @@ Ext.onReady( function() {
             handler: function() {
                 if (periodType.getValue()) {
                     periodType.periodOffset++;
-                    onPeriodTypeSelect(periodType.getValue());
+                    onPeriodTypeSelect();
                 }
             }
         });

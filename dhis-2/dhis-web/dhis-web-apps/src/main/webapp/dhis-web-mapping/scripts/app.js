@@ -6749,6 +6749,7 @@ Ext.onReady( function() {
 			dataElementDetailLevel,
 			dataElementPanel,
 			dataSet,
+            onPeriodTypeSelect,
 			periodType,
 			period,
 			periodPrev,
@@ -7270,6 +7271,33 @@ Ext.onReady( function() {
 			store: dataSetStore
 		});
 
+        onPeriodTypeSelect = function() {
+            var type = periodType.getValue(),
+                periodOffset = periodType.periodOffset,
+                generator = gis.init.periodGenerator,
+                periods = generator.generateReversedPeriods(type, type === 'Yearly' ? periodOffset - 5 : periodOffset);
+                
+            if (type === 'relativePeriods') {
+                periodsByTypeStore.loadData(gis.conf.period.relativePeriods);
+
+                periodPrev.disable();
+                periodNext.disable();
+            }
+            else {
+                for (var i = 0; i < periods.length; i++) {
+                    periods[i].id = periods[i].iso;
+                }
+
+                periodsByTypeStore.setIndex(periods);
+                periodsByTypeStore.loadData(periods);
+                
+                periodPrev.enable();
+                periodNext.enable();
+            }
+
+            period.selectFirst();
+        };            
+
 		periodType = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'gis-combo',
 			editable: false,
@@ -7280,36 +7308,10 @@ Ext.onReady( function() {
 			width: 142,
 			store: gis.store.periodTypes,
 			periodOffset: 0,
-			selectHandler: function() {
-                var periodType = this.getValue(),
-                    generator = gis.init.periodGenerator,
-                    periods;
-
-				if (periodType === 'relativePeriods') {
-					periodsByTypeStore.loadData(gis.conf.period.relativePeriods);
-
-					periodPrev.disable();
-					periodNext.disable();
-				}
-				else {
-                    periods = generator.filterFuturePeriodsExceptCurrent(generator.generateReversedPeriods(periodType, this.periodOffset));
-
-                    for (var i = 0; i < periods.length; i++) {
-                        periods[i].id = periods[i].iso;
-                    }
-
-					periodsByTypeStore.setIndex(periods);
-					periodsByTypeStore.loadData(periods);
-
-					periodPrev.enable();
-					periodNext.enable();
-				}
-
-				period.selectFirst();
-			},
 			listeners: {
 				select: function() {
-					this.selectHandler();
+                    periodType.periodOffset = 0;
+                    onPeriodTypeSelect();
 				}
 			}
 		});
@@ -7337,10 +7339,10 @@ Ext.onReady( function() {
             height: 24,
 			style: 'margin-left: 1px',
 			handler: function() {
-				if (periodType.getValue()) {
-					periodType.periodOffset--;
-					periodType.fireEvent('select');
-				}
+                if (periodType.getValue()) {
+                    periodType.periodOffset--;
+                    onPeriodTypeSelect();
+                }
 			}
 		});
 
@@ -7352,11 +7354,11 @@ Ext.onReady( function() {
 			style: 'margin-left: 1px',
 			scope: this,
 			handler: function() {
-				if (periodType.getValue() && periodType.periodOffset < 0) {
-					periodType.periodOffset++;
-					periodType.fireEvent('select');
-				}
-			}
+                if (periodType.getValue()) {
+                    periodType.periodOffset++;
+                    onPeriodTypeSelect();
+                }
+            }
 		});
 
 		periodTypePanel = Ext.create('Ext.panel.Panel', {

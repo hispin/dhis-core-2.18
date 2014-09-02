@@ -2370,6 +2370,8 @@ Ext.onReady( function() {
             relativePeriod,
             fixedPeriodAvailable,
             fixedPeriodSelected,
+            onPeriodTypeSelect,
+            periodType,
             period,
             treePanel,
             userOrganisationUnit,
@@ -4170,6 +4172,40 @@ Ext.onReady( function() {
 			}
 		});
 
+        onPeriodTypeSelect = function() {
+            var type = periodType.getValue(),
+                periodOffset = periodType.periodOffset,
+                generator = ns.core.init.periodGenerator,
+                periods = generator.generateReversedPeriods(type, type === 'Yearly' ? periodOffset - 5 : periodOffset);           
+
+            for (var i = 0; i < periods.length; i++) {
+                periods[i].id = periods[i].iso;
+            }
+
+            fixedPeriodAvailableStore.setIndex(periods);
+            fixedPeriodAvailableStore.loadData(periods);
+            ns.core.web.multiSelect.filterAvailable(fixedPeriodAvailable, fixedPeriodSelected);
+        };            
+
+        periodType = Ext.create('Ext.form.field.ComboBox', {
+            cls: 'ns-combo',
+            style: 'margin-bottom:1px',
+            width: ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding - 62 - 62 - 2,
+            valueField: 'id',
+            displayField: 'name',
+            emptyText: NS.i18n.select_period_type,
+            editable: false,
+            queryMode: 'remote',
+            store: periodTypeStore,
+            periodOffset: 0,
+            listeners: {
+                select: function() {
+                    periodType.periodOffset = 0;
+                    onPeriodTypeSelect();
+                }
+            }
+        });
+
 		period = {
 			xtype: 'panel',
 			title: '<div class="ns-panel-title-period">Periods</div>',
@@ -4231,44 +4267,16 @@ Ext.onReady( function() {
 					bodyStyle: 'border-style:none',
 					style: 'margin-top:0px',
 					items: [
-						{
-							xtype: 'combobox',
-							cls: 'ns-combo',
-							style: 'margin-bottom:1px',
-							width: ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding - 62 - 62 - 2,
-							valueField: 'id',
-							displayField: 'name',
-							emptyText: NS.i18n.select_period_type,
-							editable: false,
-							queryMode: 'remote',
-							store: periodTypeStore,
-							periodOffset: 0,
-							listeners: {
-								select: function() {
-                                    var periodType = this.getValue(),
-                                        generator = ns.core.init.periodGenerator,
-                                        periods = generator.filterFuturePeriodsExceptCurrent(generator.generateReversedPeriods(periodType, this.periodOffset));
-
-                                    for (var i = 0; i < periods.length; i++) {
-                                        periods[i].id = periods[i].iso;
-                                    }
-
-									fixedPeriodAvailableStore.setIndex(periods);
-									fixedPeriodAvailableStore.loadData(periods);
-									ns.core.web.multiSelect.filterAvailable(fixedPeriodAvailable, fixedPeriodSelected);
-								}
-							}
-						},
+                        periodType,
 						{
 							xtype: 'button',
 							text: NS.i18n.prev_year,
 							style: 'margin-left:1px; border-radius:2px',
 							height: 24,
 							handler: function() {
-								var cb = this.up('panel').down('combobox');
-								if (cb.getValue()) {
-									cb.periodOffset--;
-									cb.fireEvent('select');
+								if (periodType.getValue()) {
+									periodType.periodOffset--;
+                                    onPeriodTypeSelect();
 								}
 							}
 						},
@@ -4278,10 +4286,9 @@ Ext.onReady( function() {
 							style: 'margin-left:1px; border-radius:2px',
 							height: 24,
 							handler: function() {
-								var cb = this.up('panel').down('combobox');
-								if (cb.getValue() && cb.periodOffset < 0) {
-									cb.periodOffset++;
-									cb.fireEvent('select');
+								if (periodType.getValue()) {
+									periodType.periodOffset++;
+                                    onPeriodTypeSelect();
 								}
 							}
 						}
@@ -4290,7 +4297,7 @@ Ext.onReady( function() {
 				{
 					xtype: 'panel',
 					layout: 'column',
-					bodyStyle: 'border-style:none; padding-bottom:1px',
+					bodyStyle: 'border-style:none; padding-bottom:2px',
 					items: [
 						fixedPeriodAvailable,
 						fixedPeriodSelected
