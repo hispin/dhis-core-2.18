@@ -112,7 +112,7 @@ dhis2.de.event.uncompleted = "dhis2.de.event.uncompleted";
  */
 dhis2.de.on = function( event, fn )
 {
-	$( document ).off( event ).on( event, fn );
+    $( document ).off( event ).on( event, fn );
 }
 
 var EVENT_FORM_LOADED = "dhis-web-dataentry-form-loaded"; // Deprecated
@@ -828,14 +828,14 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
                     multiDataSetValid = true;
                 }
 
-                $( '<option />' ).attr( 'data-multiorg', true ).attr( 'value', item.id).html(item.name).appendTo( '#selectedDataSetId' );
+                $( '<option />' ).attr( 'data-multiorg', true ).attr( 'value', item.id).html( item.name ).appendTo( '#selectedDataSetId' );
             } );
 
             $( '#selectDataSetId' ).append( '</optgroup>' );
         }
     }
 
-    if ( !dhis2.de.multiOrganisationUnit && dataSetValid && dataSetId != null ) {
+    if ( !dhis2.de.multiOrganisationUnit && dataSetValid && dataSetId ) {
         $( '#selectedDataSetId' ).val( dataSetId ); // Restore selected data set
 
         if ( dhis2.de.inputSelected() && dhis2.de.dataEntryFormIsLoaded ) {
@@ -844,12 +844,13 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
             loadDataValues();
         }
     } 
-    else if ( dhis2.de.multiOrganisationUnit && multiDataSetValid && dataSetId != null ) {
+    else if ( dhis2.de.multiOrganisationUnit && multiDataSetValid && dataSetId ) {
         $( '#selectedDataSetId' ).val( dataSetId ); // Restore selected data set
         dataSetSelected();
     }
     else {
     	dhis2.de.multiOrganisationUnit = false;
+        dhis2.de.currentDataSetId = null;
 
         clearSectionFilters();
         clearPeriod();
