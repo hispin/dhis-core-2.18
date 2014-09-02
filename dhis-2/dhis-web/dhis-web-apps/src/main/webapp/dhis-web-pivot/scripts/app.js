@@ -5419,7 +5419,7 @@ Ext.onReady( function() {
 		});
 
 		pluginItem = Ext.create('Ext.menu.Item', {
-			text: 'Embed in any webpage' + '&nbsp;&nbsp;',
+			text: 'Embed in web page' + '&nbsp;&nbsp;',
 			iconCls: 'ns-menu-item-datasource',
 			disabled: true,
 			xable: function() {
