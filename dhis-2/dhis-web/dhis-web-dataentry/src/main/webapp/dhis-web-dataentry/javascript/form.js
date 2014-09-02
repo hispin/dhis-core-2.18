@@ -1217,7 +1217,7 @@ dhis2.de.getAttributesMarkup = function()
 
 		$.safeEach( category.options, function( idx, option ) {
 			if ( dhis2.de.optionValidWithinPeriod( option, period ) ) {
-				var selected = Ext.Array.contains( options, option.id ) ? " selected" : "";
+				var selected = ( $.inArray( option.id, options ) != -1 ) ? " selected" : "";
 				html += '<option value="' + option.id + '"' + selected + '>' + option.name + '</option>';
 			}
 		} );
