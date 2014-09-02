@@ -128,7 +128,7 @@ public class DefaultChartService
 
     private static final String TREND_PREFIX = "Trend - ";
 
-    private static final Color[] colors = { Color.decode( "#88be3b" ), Color.decode( "#3b6286" ),
+    private static final Color[] COLORS = { Color.decode( "#88be3b" ), Color.decode( "#3b6286" ),
         Color.decode( "#b7404c" ), Color.decode( "#ff9f3a" ), Color.decode( "#968f8f" ), Color.decode( "#b7409f" ),
         Color.decode( "#ffda64" ), Color.decode( "#4fbdae" ), Color.decode( "#b78040" ), Color.decode( "#676767" ),
         Color.decode( "#6a33cf" ), Color.decode( "#4a7833" ) };
@@ -450,9 +450,9 @@ public class DefaultChartService
 
         renderer.setMaximumBarWidth( 0.07 );
 
-        for ( int i = 0; i < colors.length; i++ )
+        for ( int i = 0; i < COLORS.length; i++ )
         {
-            renderer.setSeriesPaint( i, colors[i] );
+            renderer.setSeriesPaint( i, COLORS[i] );
             renderer.setShadowVisible( false );
         }
 
@@ -466,9 +466,9 @@ public class DefaultChartService
     {
         LineAndShapeRenderer renderer = new LineAndShapeRenderer();
 
-        for ( int i = 0; i < colors.length; i++ )
+        for ( int i = 0; i < COLORS.length; i++ )
         {
-            renderer.setSeriesPaint( i, colors[i] );
+            renderer.setSeriesPaint( i, COLORS[i] );
         }
 
         return renderer;
@@ -481,9 +481,9 @@ public class DefaultChartService
     {
         StackedBarRenderer renderer = new StackedBarRenderer();
 
-        for ( int i = 0; i < colors.length; i++ )
+        for ( int i = 0; i < COLORS.length; i++ )
         {
-            renderer.setSeriesPaint( i, colors[i] );
+            renderer.setSeriesPaint( i, COLORS[i] );
             renderer.setShadowVisible( false );
         }
 
@@ -499,9 +499,9 @@ public class DefaultChartService
     {
         AreaRenderer renderer = new AreaRenderer();
 
-        for ( int i = 0; i < colors.length; i++ )
+        for ( int i = 0; i < COLORS.length; i++ )
         {
-            renderer.setSeriesPaint( i, colors[i] );
+            renderer.setSeriesPaint( i, COLORS[i] );
         }
 
         return renderer;
@@ -622,7 +622,7 @@ public class DefaultChartService
     private JFreeChart getAreaChart( BaseChart chart, CategoryDataset dataSet )
     {
         JFreeChart areaChart = ChartFactory.createAreaChart( chart.getName(), chart.getDomainAxisLabel(),
-            chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
+            chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, !chart.isHideLegend(), false, false );
 
         setBasicConfig( areaChart, chart );
 
@@ -652,7 +652,7 @@ public class DefaultChartService
     private JFreeChart getStackedBarChart( BaseChart chart, CategoryDataset dataSet, boolean horizontal )
     {
         JFreeChart stackedBarChart = ChartFactory.createStackedBarChart( chart.getName(), chart.getDomainAxisLabel(),
-            chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
+            chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, !chart.isHideLegend(), false, false );
 
         setBasicConfig( stackedBarChart, chart );
 
@@ -696,7 +696,7 @@ public class DefaultChartService
 
         for ( int i = 0; i < dataSets[0].getColumnCount(); i++ )
         {
-            piePlot.setSectionPaint( dataSets[0].getColumnKey( i ), colors[(i % colors.length)] );
+            piePlot.setSectionPaint( dataSets[0].getColumnKey( i ), COLORS[(i % COLORS.length)] );
         }
 
         return multiplePieChart;
