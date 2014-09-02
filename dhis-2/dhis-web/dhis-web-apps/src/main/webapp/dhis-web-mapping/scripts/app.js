@@ -8754,7 +8754,6 @@ Ext.onReady( function() {
 						menu: {},
 						handler: function(b) {
 							b.menu = Ext.create('Ext.menu.Menu', {
-                                title: 'sddd',
 								closeAction: 'destroy',
 								shadow: false,
 								showSeparator: false,
