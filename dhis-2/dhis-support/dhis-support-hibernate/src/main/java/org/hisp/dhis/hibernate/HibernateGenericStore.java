@@ -36,6 +36,11 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hisp.dhis.acl.AccessStringHelper;
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.AuditLogUtil;
@@ -172,6 +177,47 @@ public class HibernateGenericStore<T>
         return getClazzCriteria().setCacheable( cacheable );
     }
 
+    protected final Disjunction getSharingDisjunction()
+    {
+        Disjunction disjunction = Restrictions.disjunction();
+
+        disjunction.add( Restrictions.like( "publicAccess", "r%" ) );
+        disjunction.add( Restrictions.isNull( "user" ) );
+        disjunction.add( Restrictions.eq( "user", currentUserService.getCurrentUser() ) );
+
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass( UserGroupAccess.class, "uga" );
+        detachedCriteria.createAlias( "uga.userGroup", "ug" );
+        detachedCriteria.createAlias( "ug.members", "ugm" );
+
+        detachedCriteria.add( Restrictions.like( "uga.access", "r%" ) );
+        detachedCriteria.add( Restrictions.eq( "ugm.id", currentUserService.getCurrentUser().getId() ) );
+
+        detachedCriteria.setProjection( Projections.id() );
+
+        disjunction.add( Subqueries.exists( detachedCriteria ) );
+
+        return disjunction;
+    }
+
+    /**
+     * Creates a Criteria for the implementation Class type.
+     *
+     * @return a Criteria instance.
+     */
+    protected final Criteria getSharingCriteria()
+    {
+        Criteria criteria = getCriteria();
+
+        if ( !sharingEnabled() )
+        {
+            return criteria;
+        }
+
+        criteria.add( getSharingDisjunction() );
+
+        return criteria;
+    }
+
     protected Criteria getClazzCriteria()
     {
         return sessionFactory.getCurrentSession().createCriteria( getClazz() );
@@ -203,7 +249,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return an object of the implementation Class type.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected final T getObject( Criterion... expressions )
     {
         return (T) getCriteria( expressions ).uniqueResult();
@@ -215,7 +261,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return a List with objects of the implementation Class type.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected final List<T> getList( Criterion... expressions )
     {
         return getCriteria( expressions ).list();
@@ -291,7 +337,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final T get( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().get( getClazz(), id );
@@ -306,7 +352,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final T load( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().load( getClazz(), id );
@@ -338,7 +384,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final List<T> getAll()
     {
         Query query = sharingEnabled() ? getQueryAllAcl() : getQueryAll();
@@ -405,6 +451,8 @@ public class HibernateGenericStore<T>
     @Override
     public int getCount()
     {
+        // return getSharingCriteria().list().size();
+
         Query query = sharingEnabled() ? getQueryCountAcl() : getQueryCount();
 
         return ((Long) query.uniqueResult()).intValue();
@@ -439,10 +487,8 @@ public class HibernateGenericStore<T>
 
     protected boolean sharingEnabled()
     {
-        boolean enabled = forceAcl() || (aclService.isShareable( clazz ) && !(currentUserService.getCurrentUser() == null ||
+        return forceAcl() || (aclService.isShareable( clazz ) && !(currentUserService.getCurrentUser() == null ||
             CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), AclService.ACL_OVERRIDE_AUTHORITIES )));
-
-        return enabled;
     }
 
     protected boolean isReadAllowed( T object )
