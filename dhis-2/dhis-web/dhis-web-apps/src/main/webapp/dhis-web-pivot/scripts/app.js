@@ -2854,7 +2854,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name', 'index'],
 			proxy: {
 				type: 'ajax',
-				url: ns.core.init.contextPath + '/api/dataElementGroups.json?fields=id,name&paging=false',
+				url: ns.core.init.contextPath + '/api/dataElementGroups.json?fields=id,' + ns.core.init.namePropertyUrl + '&paging=false',
 				reader: {
 					type: 'json',
 					root: 'dataElementGroups'
