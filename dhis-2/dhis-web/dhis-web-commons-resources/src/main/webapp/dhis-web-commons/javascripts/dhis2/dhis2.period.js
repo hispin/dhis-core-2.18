@@ -725,7 +725,7 @@ $.extend(dhis2.period.SixMonthlyAprilGenerator.prototype, {
     periods.push(period);
 
     startDate = this.calendar.newDate(year, 10, 1);
-    endDate = this.calendar.newDate(startDate).set(startDate.year() + 1, 'y').set(2, 'm');
+    endDate = this.calendar.newDate(startDate).set(startDate.year() + 1, 'y').set(3, 'm');
     endDate.set(endDate.daysInMonth(endDate.month()), 'd');
 
     period = {};
