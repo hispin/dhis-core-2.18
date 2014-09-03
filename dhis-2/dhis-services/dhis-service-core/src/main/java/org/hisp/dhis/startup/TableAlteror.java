@@ -1179,9 +1179,5 @@ public class TableAlteror
         {
             executeSql( "drop table optionsetmembers" );
         }
-        else
-        {
-            log.info( "Updated optionvalue table, SQL: " + sql );
-        }
     }
 }
