@@ -1,4 +1,4 @@
-package org.hisp.dhis.rbf.aggregation.action;
+package org.hisp.dhis.rbf.scheduler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,28 +19,24 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.rbf.api.Lookup;
 import org.hisp.dhis.rbf.impl.DefaultPBFAggregationService;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.opensymphony.xwork2.Action;
 
-public class RunAggregationQueryAction
-    implements Action
+/**
+ * @author Mithilesh Kumar Thakur
+ */
+public class RunAggregationQueryActionByScheduler implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
 
     private OrganisationUnitService organisationUnitService;
 
@@ -48,14 +44,7 @@ public class RunAggregationQueryAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    /*
-    private OrganisationUnitGroupService organisationUnitGroupService;
 
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-    */
     private CaseAggregationConditionService aggregationConditionService;
 
     public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
@@ -70,13 +59,6 @@ public class RunAggregationQueryAction
         this.defaultPBFAggregationService = defaultPBFAggregationService;
     }
 
-    /*private CCEIAggregationService cceiAggregationService;
-
-    public void setCceiAggregationService( CCEIAggregationService cceiAggregationService )
-    {
-        this.cceiAggregationService = cceiAggregationService;
-    }
-*/
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -98,9 +80,17 @@ public class RunAggregationQueryAction
         this.constantService = constantService;
     }
 
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
+    
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
     public List<DataElement> getDataElements()
@@ -115,77 +105,56 @@ public class RunAggregationQueryAction
         return importStatus;
     }
     
-    private String selectedPeriodId;
-    
-    public void setSelectedPeriodId( String selectedPeriodId )
-    {
-        this.selectedPeriodId = selectedPeriodId;
-    }
-        
+
     private Date aggregationPeriod;
     
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
+    public String execute() throws Exception
     {
+        System.out.println(" Aggregation Job Scheduler Started at : " + new Date() );
+        
         Map<String, Double> aggregationResultMap = new HashMap<String, Double>();
 
-        //Set<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
-
-        Set<OrganisationUnit> tempOrgUnitList = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
-        
         Set<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>();
         
-        for ( OrganisationUnit org : tempOrgUnitList )
-        {
-            orgUnitList.addAll( organisationUnitService.getOrganisationUnitWithChildren( org.getId() )  ) ;
-        }
-        
-        /*
-        List<OrganisationUnit> rootOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getRootOrganisationUnits() );
-
-        OrganisationUnit rootOrganisationUnit = rootOrganisationUnits.get( 0 );
-        */
-        
-        
-        //Set<OrganisationUnitGroup> orgUnitGroups = new HashSet<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
-
-        /*List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) );
-
-        OrganisationUnitGroup ouGroup = ouGroups.get( 0 );
-
-        if ( ouGroup != null )
-        {
-            orgUnitList.retainAll( ouGroup.getMembers() );
-        }*/
-
-        /*
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyyMM" );
-        String curMonth = simpleDateFormat.format( new Date() );
-        Period period = PeriodType.getPeriodFromIsoString( curMonth );
-        period = periodService.reloadPeriod( period );
-        
-        List<Period> periods = new ArrayList<Period>();
-        periods.add( period );
-*/
+        orgUnitList.addAll( organisationUnitService.getAllOrganisationUnits() );
         
         Period period = new Period();
         
-        period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
-        period = periodService.reloadPeriod( period );
+        aggregationPeriod = new Date();
         
-        if( period != null )
-        {
-            aggregationPeriod = period.getStartDate();
-        }
+        // find first day and last day of previous month
         
-        else
-        {
-            aggregationPeriod = new Date();
-        }
+        /*
+        Calendar calprevious = Calendar.getInstance();
+        calprevious.add(Calendar.MONTH, -1);
+        calprevious.set(Calendar.DATE, 1);
+        Date firstDateOfPreviousMonth = calprevious.getTime();
+        
+        calprevious.set(Calendar.DATE, calprevious.getActualMaximum(Calendar.DATE)); // changed calendar to cal
+
+        Date lastDateOfPreviousMonth = calprevious.getTime();
+        
+        System.out.println( "First Date Of Previous Month -- " + firstDateOfPreviousMonth + " Last Date Of Previous Month -- " + lastDateOfPreviousMonth );
+        */
+        
+        // find first day and last day of current month
+        /*
+        Calendar calCurrent = Calendar.getInstance();
+        calCurrent.add(Calendar.MONTH, 0);
+        calCurrent.set(Calendar.DATE, 1);
+        Date firstDateOfCurrentMonth = calCurrent.getTime();
+        
+        calCurrent.set(Calendar.DATE, calCurrent.getActualMaximum(Calendar.DATE)); // changed calendar to cal
+
+        Date lastDateOfCurrentMonth = calCurrent.getTime();
+        
+        System.out.println( "First Date Of Current Month -- " + firstDateOfCurrentMonth + " Last Date Of Current Month -- " + lastDateOfCurrentMonth );
+        */
+        
         
         //System.out.println( " Aggregation Period -- " + aggregationPeriod );
         
@@ -211,14 +180,16 @@ public class RunAggregationQueryAction
                 
                 DataSet dataSet = dataSetService.getDataSet( dataSetId );
                 
-                Set<OrganisationUnit> orgUnits = new HashSet<OrganisationUnit>( dataSet.getSources() );
+                //Set<OrganisationUnit> orgUnits = new HashSet<OrganisationUnit>( dataSet.getSources() );
                 
-                System.out.println( " Size of DataSet Source -- " + orgUnits.size() );
+                Set<OrganisationUnit> orgUnits = new HashSet<OrganisationUnit>( getDataSetSources( dataSet ) );
                 
+                System.out.println( " Size of  orgUnit List -- " + orgUnitList.size() );
                 
                 orgUnits.retainAll( orgUnitList );
                 
-                System.out.println( " Size of OrgList Source -- " + orgUnits.size() );
+                //System.out.println( " Size of OrgList Source -- " + orgUnits.size() );
+                System.out.println( " Size of DataSet Source -- " + orgUnits.size() );
                 
                 List<Period> periods = new ArrayList<Period>();
                 
@@ -271,7 +242,11 @@ public class RunAggregationQueryAction
         }
         
         importStatus = defaultPBFAggregationService.importData( aggregationResultMap );
-
+        
+        System.out.println(" Aggregation Job Scheduler Status : " + importStatus );
+        
+        System.out.println(" Aggregation Job Scheduler Ended at : " + new Date() );
+        
         return SUCCESS;
     }
     
@@ -322,4 +297,40 @@ public class RunAggregationQueryAction
     }
 
 
+    // get dataSet Source List
+    public List<OrganisationUnit> getDataSetSources( DataSet dataSet )
+    {
+        List<OrganisationUnit> dataSetSourceList = new ArrayList<OrganisationUnit>();
+        
+        try
+        {
+            String query = "SELECT distinct(sourceid) FROM datasetsource " +
+                            " WHERE  datasetid  = " + dataSet.getId()  + " ";
+          
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+
+            while ( rs.next() )
+            {
+                Integer orgUnitId = rs.getInt( 1 );
+                
+                if ( orgUnitId != null )
+                {
+                    OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+                    dataSetSourceList.add( orgUnit );
+                }
+            }
+
+            return dataSetSourceList;
+        }
+        
+        catch ( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataSet Id or Source Id ", e );
+        }
+        
+    }    
+    
+    
+    //SELECT distinct(sourceid)FROM datasetsource where datasetid = 1432;
+    
 }

@@ -9,8 +9,34 @@
 	
 	document.getElementById("utilizationRate").value = '$!utilizationRate';
 	
-	//getUtilizationRateTariffValue();
+	var urDEListSize = document.getElementById("urDataElementSize").value;
 	
+	//alert( urDEListSize );
+	if( urDEListSize > 0 )
+	{
+		//$( '#urDataElementDiv' ).show();
+		//alert( "Greater " + urDEListSize );
+		//document.getElementById("urDataElementLavel").style.visibility= "visible";
+		//document.getElementById("urDataElementText").style.visibility= "visible";
+		
+		showById('urDataElementLavel');
+		showById('urDataElementText');
+		
+	}
+	
+	else
+	{
+		//$( '#urDataElementDiv' ).hide();
+		//alert( "less and equal " + urDEListSize );
+		//document.getElementById("urDataElementLavel").style.visibility= "hidden";
+		//document.getElementById("urDataElementText").style.visibility= "hidden";
+		
+		hideById('urDataElementLavel');
+		hideById('urDataElementText');
+	}
+		
+	//getUtilizationRateTariffValue();
+		
 </script>
 
 
@@ -47,10 +73,19 @@
 </select>
 
 <input type="hidden" id='totalDataElementId' name = 'totalDataElementId' value="$!totalDataElementId" />
+<input type="hidden" id='dataSetLockStatus' name = 'dataSetLockStatus' value="$locked" />
+<input type="hidden" id='urDataElementSize' name = 'urDataElementSize' value="$utilizationRateDataElements.size()" />
+
 
 #set( $tabIndex = 1 )
 #if ( $dataElements.size() > 0)
-
+<!--
+#if( $locked )
+	In side if ---- $locked
+#else
+	In Side else --- $locked
+#end
+-->
 <table class="formSection" id="dataEntryTable" style="width:100%">
     
 	<tr bgcolor="#CBDDEB">
@@ -144,7 +179,8 @@
 				#else
         			<td>
         				<input onblur="savePBFDataValue('$dataElement.id', 1 )" type="text" name="pbfdv_qty_reported_$dataElement.id" id="pbfdv_qty_reported_$dataElement.id" 
-        						value="$!pbfDataValue.quantityReported" tabindex="$tabIndex" style="text-align: center;" #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") ) disabled="disabled" #end
+        						value="$!pbfDataValue.quantityReported" tabindex="$tabIndex" style="text-align: center;" 
+								#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") ) disabled="disabled" #end
         						#if($dataElement.type =='number') class="{validate:{number:true}}" 
         						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
         						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
@@ -155,7 +191,8 @@
 					#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated") || $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") )
             			<td>
             				<input onblur="savePBFDataValue('$dataElement.id', 2 )" onkeyup="calTariffVal('$dataElement.id')" type="text" name="pbfdv_qty_validated_$dataElement.id" id="pbfdv_qty_validated_$dataElement.id" 
-            						value="$!pbfDataValue.quantityValidated" tabindex="$tabIndex" style="text-align: center;" #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") ) disabled="disabled" #end
+            						value="$!pbfDataValue.quantityValidated" tabindex="$tabIndex" style="text-align: center;" 
+									#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") ) disabled="disabled" #end
             						#if($dataElement.type =='number') class="{validate:{number:true}}" 
             						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
             						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
@@ -214,7 +251,7 @@
     						#end class="tariff$count" readonly/>
     			</td>
     			<td >
-    				<input type="text" id="total_$dataElement.id" style="text-align: center;" readonly />
+    				<input type="text" id="total_$dataElement.id" style="text-align: center;" readonly  />
                 </td>
 							
 
@@ -271,7 +308,7 @@
 			<td >&nbsp;</td>
 			<td >&nbsp;</td>
 			<td>
-				<input type="text" id="all-total" style="text-align: center;" readonly/>
+				<input type="text" id="all-total" style="text-align: center;" readonly  />
             </td>
 		</tr>
 	#end

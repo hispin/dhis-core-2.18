@@ -23,7 +23,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.rbf.api.Lookup;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +52,15 @@ public class DefaultPBFAggregationService
         this.currentUserService = currentUserService;
     }
 
+    /*
     private PeriodService periodService;
     
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
     }
-
+    */
+    
     private DataElementCategoryService dataElementCategoryService;
     
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
@@ -110,7 +111,7 @@ public class DefaultPBFAggregationService
                                                 " and td.datasetid=sag1.datasetid " +
                                                 " and td.organisationunitid in ("+ orgUnitBranchIds +") ";
             
-            System.out.println("Query: " + query );
+            //System.out.println("Query: " + query );
             
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -132,16 +133,23 @@ public class DefaultPBFAggregationService
     
     public Map<String, Double> calculateOverallQualityScore( List<Period> periods, DataElement dataElement, Set<OrganisationUnit> orgUnits, Integer dataSetId, int settingLevel )
     {
+        System.out.println(" In side calculateOverallQualityScore method " );
+        
         Map<String, Double> aggregationResultMap = new HashMap<String, Double>();
         
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        
+        
         
         try
         {
             Map<String, Double> maxScoreResultMap = new HashMap<String, Double>();
             for( OrganisationUnit orgUnit : orgUnits )
             {
-                OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( orgUnit );
+                //OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( orgUnit );
+                
+                Integer orgUnitGroupId = getOrgUnitGroupIdforTariff( orgUnit );
+                
                 List<OrganisationUnit> orgUnitBranch = organisationUnitService.getOrganisationUnitBranch( orgUnit.getId() );
                 String orgUnitBranchIds = "-1";
                 for( OrganisationUnit ou : orgUnitBranch )
@@ -161,7 +169,7 @@ public class DefaultPBFAggregationService
                                     " select td.orgunitgroupid,td.organisationunitid,td.datasetid,td.dataelementid,os.level,td.value " +
                                         " from qualitymaxvalue td inner join _orgunitstructure os on os.organisationunitid = td.organisationunitid "+
                                         " where '" + curPeriod + "'  between date(td.startdate) and date(td.enddate) " +
-                                            " and orgunitgroupid in ( " + orgUnitGroup.getId() + ") " +
+                                            " and orgunitgroupid in ( " + orgUnitGroupId + ") " +
                                             " and datasetid in ( " + dataSetId + ") "+
                                             " )asd "+
                                             " group by asd.dataelementid,asd.orgunitgroupid,datasetid " +
@@ -216,10 +224,10 @@ public class DefaultPBFAggregationService
                                     " dv.periodid IN (" + periodsByComma + ") AND "+
                                     " dv.sourceid IN ("+ orgUnitIdsByComma +") AND " +
                                     " dsm.datasetid = " + dataSetId +" " +
-                                    " GROUP BY dv.sourceid, dv.periodid";
+                                    " AND dv.value != null GROUP BY dv.sourceid, dv.periodid";
             
             
-            //System.out.println( query );
+            //System.out.println( "Query is --- " + query );
             
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -246,7 +254,7 @@ public class DefaultPBFAggregationService
         }
         catch( Exception e )
         {
-            System.out.println("Exception :"+ e.getMessage() );
+            System.out.println("Exception EEEEEE---TTTTTT: " + e.getMessage() );
         }
         
         return aggregationResultMap;
@@ -414,7 +422,7 @@ public class DefaultPBFAggregationService
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-                Integer deId = rs.getInt( 1 );
+                //Integer deId = rs.getInt( 1 );
                 Double value = rs.getDouble( 2 );
                 maxScore += value;
             }                
@@ -539,7 +547,7 @@ public class DefaultPBFAggregationService
                 jdbcTemplate.update( insertQuery );
             }
 
-            importStatus = "Successfully populated aggregated data for the period : "; //+ period.getStartDateString();
+            importStatus = "Successfully populated aggregated data : "; // for the period + period.getStartDateString();
             importStatus += "<br/> Total new records : " + insertCount;
             importStatus += "<br/> Total updated records : " + updateCount;
 
@@ -551,9 +559,11 @@ public class DefaultPBFAggregationService
 
         return importStatus;
     }
-
+/*
     public OrganisationUnitGroup findPBFOrgUnitGroupforTariff( OrganisationUnit organisationUnit )
     {
+        System.out.println(" In side findPBFOrgUnitGroupforTariff method " );
+        
         Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
         
         OrganisationUnitGroupSet orgUnitGroupSet = orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() );
@@ -561,6 +571,53 @@ public class DefaultPBFAggregationService
         OrganisationUnitGroup orgUnitGroup = organisationUnit.getGroupInGroupSet( orgUnitGroupSet );
         
         return orgUnitGroup;
+        
     }
+ */
+    
+    
+    public Integer getOrgUnitGroupIdforTariff( OrganisationUnit organisationUnit )
+    {
+        //System.out.println(" In side findPBFOrgUnitGroupforTariff method " );
+        
+        Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+        
+        OrganisationUnitGroupSet orgUnitGroupSet = orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() );
+        
+        Integer orgUnitGroupId = null;
+        
+        try
+        {
+            String query = "SELECT orgunitgroupid from orgunitgroupsetmembers where orgunitgroupsetid = " + orgUnitGroupSet.getId() + " AND "
+                + " orgunitgroupid in ( select orgunitgroupid from orgunitgroupmembers where organisationunitid = " + organisationUnit.getId() + ")";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+
+            if ( rs.next() )
+            {
+                orgUnitGroupId = rs.getInt( 1 );
+            }
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+        
+        return orgUnitGroupId;
+        
+        
+        
+        
+        //"SELECT orgunitgroupid from orgunitgroupsetmembers where orgunitgroupsetid = 1372 and orgunitgroupid in ( select orgunitgroupid from orgunitgroupmembers where organisationunitid = 1230 )";
+
+        
+        
+        
+        
+    }    
+    
+    
+    
+    
 
 }

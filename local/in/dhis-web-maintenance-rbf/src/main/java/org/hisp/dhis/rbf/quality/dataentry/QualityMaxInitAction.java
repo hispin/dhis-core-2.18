@@ -24,7 +24,8 @@ import com.opensymphony.xwork2.Action;
  */
 public class QualityMaxInitAction implements Action
 {
-	private final static String TARIFF_SETTING_AUTHORITY_GROUP_SET_ID = "TARIFF_SETTING_AUTHORITY_GROUP_SET_ID";
+    private final static String TARIFF_SETTING_AUTHORITY_GROUP_SET_ID = "TARIFF_SETTING_AUTHORITY_GROUP_SET_ID";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

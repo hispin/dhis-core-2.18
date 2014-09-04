@@ -1,4 +1,4 @@
-package org.hisp.dhis.rbf.aggregation.action;
+package org.hisp.dhis.rbf.scheduler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,76 +19,29 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.rbf.api.Lookup;
 import org.hisp.dhis.rbf.impl.DefaultPBFAggregationService;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import com.opensymphony.xwork2.Action;
-
-public class RunAggregationQueryAction
-    implements Action
+/**
+ * @author Mithilesh Kumar Thakur
+ */
+public class AggregationJobScheduler extends QuartzJobBean
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
 
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-    /*
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-    */
-    private CaseAggregationConditionService aggregationConditionService;
-
-    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
-    {
-        this.aggregationConditionService = aggregationConditionService;
-    }
-
-    private DefaultPBFAggregationService defaultPBFAggregationService;
-    
-    public void setDefaultPBFAggregationService( DefaultPBFAggregationService defaultPBFAggregationService )
-    {
-        this.defaultPBFAggregationService = defaultPBFAggregationService;
-    }
-
-    /*private CCEIAggregationService cceiAggregationService;
-
-    public void setCceiAggregationService( CCEIAggregationService cceiAggregationService )
-    {
-        this.cceiAggregationService = cceiAggregationService;
-    }
-*/
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
-    private DataSetService dataSetService;
-    
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
     }
 
     private ConstantService constantService;
@@ -97,98 +50,67 @@ public class RunAggregationQueryAction
     {
         this.constantService = constantService;
     }
+    
+    private CaseAggregationConditionService aggregationConditionService;
+
+    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
+    {
+        this.aggregationConditionService = aggregationConditionService;
+    }
+    
+    private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+    
+    private DefaultPBFAggregationService defaultPBFAggregationService;
+    
+    public void setDefaultPBFAggregationService( DefaultPBFAggregationService defaultPBFAggregationService )
+    {
+        this.defaultPBFAggregationService = defaultPBFAggregationService;
+    }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
+    
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
-    private String importStatus = "";
-
-    public String getImportStatus()
-    {
-        return importStatus;
-    }
-    
-    private String selectedPeriodId;
-    
-    public void setSelectedPeriodId( String selectedPeriodId )
-    {
-        this.selectedPeriodId = selectedPeriodId;
-    }
-        
     private Date aggregationPeriod;
     
-    // -------------------------------------------------------------------------
-    // Action
-    // -------------------------------------------------------------------------
+    private String importStatus = "";
 
-    public String execute()
-        throws Exception
+    // -------------------------------------------------------------------------
+    // implementation
+    // -------------------------------------------------------------------------
+    
+    protected void executeInternal( JobExecutionContext context ) throws JobExecutionException
     {
-        Map<String, Double> aggregationResultMap = new HashMap<String, Double>();
-
-        //Set<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
-
-        Set<OrganisationUnit> tempOrgUnitList = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
         
+        System.out.println(" Aggregation Job Scheduler Started at : " + new Date() );
+        
+        //System.out.println(" Aggregation context Job Run Time at : " + context.getJobRunTime() );
+        
+        // orgUnit Information
         Set<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>();
         
-        for ( OrganisationUnit org : tempOrgUnitList )
-        {
-            orgUnitList.addAll( organisationUnitService.getOrganisationUnitWithChildren( org.getId() )  ) ;
-        }
+        orgUnitList = new HashSet<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
         
-        /*
-        List<OrganisationUnit> rootOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getRootOrganisationUnits() );
-
-        OrganisationUnit rootOrganisationUnit = rootOrganisationUnits.get( 0 );
-        */
-        
-        
-        //Set<OrganisationUnitGroup> orgUnitGroups = new HashSet<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
-
-        /*List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) );
-
-        OrganisationUnitGroup ouGroup = ouGroups.get( 0 );
-
-        if ( ouGroup != null )
-        {
-            orgUnitList.retainAll( ouGroup.getMembers() );
-        }*/
-
-        /*
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyyMM" );
-        String curMonth = simpleDateFormat.format( new Date() );
-        Period period = PeriodType.getPeriodFromIsoString( curMonth );
-        period = periodService.reloadPeriod( period );
-        
-        List<Period> periods = new ArrayList<Period>();
-        periods.add( period );
-*/
-        
+        // period information
         Period period = new Period();
         
-        period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
-        period = periodService.reloadPeriod( period );
+        aggregationPeriod = new Date();
         
-        if( period != null )
-        {
-            aggregationPeriod = period.getStartDate();
-        }
-        
-        else
-        {
-            aggregationPeriod = new Date();
-        }
-        
-        //System.out.println( " Aggregation Period -- " + aggregationPeriod );
-        
+        // Aggregation implement
         Constant tariff_authority = constantService.getConstantByName( "TARIFF_SETTING_AUTHORITY" );
         int tariff_setting_authority = 0;
         if ( tariff_authority == null )
@@ -199,8 +121,12 @@ public class RunAggregationQueryAction
         {
             tariff_setting_authority = (int) tariff_authority.getValue();
         }
-
+        
+        
+        Map<String, Double> aggregationResultMap = new HashMap<String, Double>();
+        
         Set<CaseAggregationCondition> conditions = new HashSet<CaseAggregationCondition>( aggregationConditionService.getAllCaseAggregationCondition() );
+        
         for ( CaseAggregationCondition condition : conditions )
         {
             DataElement dataElement = condition.getAggregationDataElement();
@@ -213,12 +139,7 @@ public class RunAggregationQueryAction
                 
                 Set<OrganisationUnit> orgUnits = new HashSet<OrganisationUnit>( dataSet.getSources() );
                 
-                System.out.println( " Size of DataSet Source -- " + orgUnits.size() );
-                
-                
                 orgUnits.retainAll( orgUnitList );
-                
-                System.out.println( " Size of OrgList Source -- " + orgUnits.size() );
                 
                 List<Period> periods = new ArrayList<Period>();
                 
@@ -264,18 +185,21 @@ public class RunAggregationQueryAction
             
             dataElements.add( dataElement );
         }
-
-        for( String key : aggregationResultMap.keySet() )
-        {
-            System.out.println( key + " -- " + aggregationResultMap.get(  key ) );
-        }
         
         importStatus = defaultPBFAggregationService.importData( aggregationResultMap );
-
-        return SUCCESS;
+        
+        System.out.println(" Aggregation Job Scheduler Status : " + importStatus );
+        
+        System.out.println(" Aggregation Job Scheduler Ended at : " + new Date() );
+        
     }
+
     
-    
+    // -------------------------------------------------------------------------
+    // Support methods 
+    // -------------------------------------------------------------------------
+ 
+ 
     public Period getCurrentPeriod( PeriodType periodType, Date currentDate )
     {
         Period period = new Period();
@@ -320,6 +244,8 @@ public class RunAggregationQueryAction
 
         return period;
     }
+ 
+    
 
-
+    
 }

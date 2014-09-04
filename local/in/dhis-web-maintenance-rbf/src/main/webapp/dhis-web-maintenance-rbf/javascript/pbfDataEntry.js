@@ -67,7 +67,23 @@ function loadDataEntryForm()
 	
 	$( '#saveButton' ).removeAttr( 'disabled' );
 	
-
+	/*
+	var dataSetLockStatus = $( '#dataSetLockStatus' ).val();
+	
+	alert( dataSetLockStatus );
+	
+	if ( dataSetLockStatus == "true" )
+	{
+        $( '#dataEntryFormDiv input').attr( 'disabled', 'disabled' );
+		setHeaderDelayMessage( i18n_dataset_is_locked );
+	}
+	else
+	{
+        $( '#dataEntryFormDiv input' ).removeAttr( 'disabled' );
+		
+	}
+	*/
+	
 	var selectedPeriodId = $( '#selectedPeriodId' ).val();
 	
 	if ( selectedPeriodId == "-1" && dataSetId == "-1" )
@@ -81,6 +97,35 @@ function loadDataEntryForm()
 	{
 	    jQuery('#loaderDiv').show();
 	    
+	    //alert("uuuuuu");
+	    
+	    var url = "loadDataEntryForm.action" + "?orgUnitId=" + orgUnitId + "&dataSetId=" + dataSetId + "&selectedPeriodId=" + selectedPeriodId;
+	    
+		$( "#dataEntryFormDiv" ).load( url, function()
+			    {
+					var lockStatue  = document.getElementById("dataSetLockStatus").value;
+					
+					//alert( lockStatue );
+					
+					if ( lockStatue == "true" )
+					{
+						document.getElementById( "utilizationRate" ).disabled = true;
+						$( '#dataEntryFormDiv input').attr( 'disabled', 'disabled' );
+						setHeaderDelayMessage( i18n_dataset_is_locked );
+					}
+					else
+					{
+				        $( '#dataEntryFormDiv input' ).removeAttr( 'disabled' );
+				        $( '#utilizationRate' ).removeAttr( 'disabled' );
+						
+					}
+					
+					jQuery('#loaderDiv').hide();
+					showById('dataEntryFormDiv');
+
+			    } );
+	    
+	    /*
 		jQuery('#dataEntryFormDiv').load('loadDataEntryForm.action',
 			{
 				orgUnitId:orgUnitId,
@@ -88,10 +133,29 @@ function loadDataEntryForm()
 				selectedPeriodId:selectedPeriodId
 			}, function()
 			{
+				
+				var lockStatue  = document.getElementById("dataSetLockStatus").value;
+				
+				alert( lockStatue );
+				
+				if ( lockStatue == "true" )
+				{
+			        $( '#dataEntryFormDiv input').attr( 'disabled', 'disabled' );
+					setHeaderDelayMessage( i18n_dataset_is_locked );
+				}
+				else
+				{
+			        $( '#dataEntryFormDiv input' ).removeAttr( 'disabled' );
+					
+				}
+				
+				
 				showById('dataEntryFormDiv');
 				jQuery('#loaderDiv').hide();
 			});
 		hideLoader();
+		*/
+		
 	}
 
 }
@@ -388,30 +452,13 @@ function saveTotalValueInDataValue()
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // load periods
 function loadPeriods()
 {
 	$( '#dataEntryFormDiv' ).html( '' );
+	
+	hideById('urDataElementLavel');
+	hideById('urDataElementText');
 	
     var orgUnitId = $( '#selectedOrgunitID' ).val();
 

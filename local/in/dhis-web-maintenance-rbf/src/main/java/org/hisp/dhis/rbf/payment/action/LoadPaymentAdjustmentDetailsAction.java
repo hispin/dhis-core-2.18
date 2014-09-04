@@ -305,8 +305,11 @@ public class LoadPaymentAdjustmentDetailsAction
             unadjusted = unadjusted + amount;
         }
         unAdjustedAmount = unadjusted + "";
+        
         Collections.sort( dataElements );
+        
         DataElement dataElement = dataElementService.getDataElement( (int) paymentAmount.getValue() );
+        
         DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, optionCombo );
 
         if ( dataValue != null )

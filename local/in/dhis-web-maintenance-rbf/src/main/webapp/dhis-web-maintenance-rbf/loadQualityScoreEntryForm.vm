@@ -27,6 +27,7 @@
 </select>
 
 <input type="hidden" id='overAllQtyDataElementId' name = 'overAllQtyDataElementId' value="$!overAllQtyDataElementId" />
+<input type="hidden" id='dataSetLockStatus' name = 'dataSetLockStatus' value="$locked" />
 
 #set( $tabIndex = 1 )
 #if ( $dataElements.size() > 0)
@@ -199,5 +200,8 @@
 	}
 	
 	calCulateQualityScorePayment();
+	
+	
+	
 	
 </script>

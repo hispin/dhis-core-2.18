@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -208,11 +210,37 @@ public class HibernateQualityMaxValueStore
         Query query = getQuery( hql );
         */
         
-        //return query.list();
-       
-        
+        //return query.list();               
         
     }    
+    
+    public Set<Integer> getOrgUnitGroupsByDataset( Integer dataSetId, String orgUnitIds )
+    {
+        Set<Integer> orgUnitGroupIds = new HashSet<Integer>();
+        
+        try
+        {
+            String query = "select orgunitgroupid from qualitymaxvalue " + 
+                            " WHERE " +
+                                " datasetid = " + dataSetId + " AND " +
+                                " organisationunitid IN (" + orgUnitIds + ")";
+            
+            //System.out.println( query );
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+
+            while( rs.next() )
+            {
+                orgUnitGroupIds.add( rs.getInt( 1 ) );
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("In getOrgUnitGroupsByDataset Exception :"+ e.getMessage() );            
+        }
+        
+        return orgUnitGroupIds;
+    }
     
     
     public List<String>  getDistinctStartDateEndDateFromQualityMaxScore( OrganisationUnitGroup orgUnitGroup , OrganisationUnit organisationUnit, DataSet dataSet )
@@ -229,7 +257,7 @@ public class HibernateQualityMaxValueStore
                            " and  datasetid =  " + dataSet.getId();
             
             
-            System.out.println( "Query: " + query );
+            //System.out.println( "Query: " + query );
             
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             
@@ -289,14 +317,14 @@ public class HibernateQualityMaxValueStore
                 + " where td.orgunitgroupid=sag1.orgunitgroupid " + " and td.datasetid=sag1.datasetid "
                 + " and td.organisationunitid in (" + orgUnitBranchIds + ") ";
 
-            System.out.println( "Query: " + query );
+            //System.out.println( "Query: " + query );
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
                 Integer dataElementId = rs.getInt( 1 );
                 Double value = rs.getDouble( 2 );
                 qualityMaxValueMap.put( dataElementId, value );
-                System.out.println( dataElementId + " : " + value );
+                //System.out.println( dataElementId + " : " + value );
             }
         }
         catch ( Exception e )
@@ -307,4 +335,57 @@ public class HibernateQualityMaxValueStore
         return qualityMaxValueMap;
     }
 
-}
+    // get QuanlityMax Value StartDate and EndDate
+    public String getQuanlityMaxValueStartDateEndDate( Integer orgunitgroupId, Integer organisationUnitId, Integer dataSetId, String date )
+    {
+        String value = null;
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        
+        try
+        {
+            String query = "SELECT startdate, enddate from qualitymaxvalue " + 
+                " WHERE orgunitgroupid = " + orgunitgroupId + " AND " +
+                " organisationunitid = " + organisationUnitId + " AND " +
+                " datasetid = " + dataSetId + " AND  '"  + date + "'  >= startdate AND '"  + date + "' <= enddate";
+                
+               
+            /*
+            SELECT orgunitgroupid, organisationunitid, datasetid, dataelementid, startdate, enddate from qualitymaxvalue  
+            WHERE   orgunitgroupid = 1521 AND  datasetid = 1432  AND organisationunitid = 49 AND  '2014-07-01' >= startdate AND 
+            '2014-07-01' <=  enddate; 
+            
+            " startdate <= '" + date + "' AND "+ 
+                " enddate >= '" + date +"'";
+            
+            */
+
+            //System.out.println( " query is --: " + query );
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+
+            if ( rs.next() )
+            {
+                Date sDate = rs.getDate( 1 );
+                
+                Date eDate = rs.getDate( 2 );
+                
+                if ( sDate != null && eDate != null  )
+                {
+                    value  = simpleDateFormat.format( sDate ) + " To " + simpleDateFormat.format( eDate ) ;
+                }
+            }
+
+        }
+        catch ( Exception e )
+        {
+            System.out.println(" In Quanlity Max Value Exception :"+ e.getMessage() );
+        }
+        
+        return value; 
+    }
+   
+}    
+    
+    
+   

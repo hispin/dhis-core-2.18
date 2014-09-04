@@ -138,40 +138,79 @@ public class ValidateQualityMaxDataAction
         Date eDate = dateFormat.parse( endDate );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
-        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer
-            .parseInt( orgUnitGroupId ) );
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupId ) );
 
-        List<QualityMaxValue> qualityMaxValues = new ArrayList<QualityMaxValue>(
-            qualityMaxValueService.getQuanlityMaxValues( orgUnitGroup, organisationUnit, dataSet ) );
+        List<QualityMaxValue> qualityMaxValues = new ArrayList<QualityMaxValue>( qualityMaxValueService.getQuanlityMaxValues( orgUnitGroup, organisationUnit, dataSet ) );
+        
+        
+        String startDateValue = qualityMaxValueService.getQuanlityMaxValueStartDateEndDate(  orgUnitGroup.getId(), organisationUnit.getId(), dataSet.getId(), startDate );
+        
+        String endDateValue = qualityMaxValueService.getQuanlityMaxValueStartDateEndDate( orgUnitGroup.getId(), organisationUnit.getId(), dataSet.getId(), endDate );
+        
+        //System.out.println(  startDateValue + " -- " + endDateValue );
+        
         for ( QualityMaxValue qualityMaxValue : qualityMaxValues )
         {
-            if ( qualityMaxValue.getStartDate().getTime() == sDate.getTime()
-                && qualityMaxValue.getEndDate().getTime() == eDate.getTime() )
+            if ( qualityMaxValue.getStartDate().getTime() == sDate.getTime() && qualityMaxValue.getEndDate().getTime() == eDate.getTime() )
             {
                 message = message && false;
+                 
+                //System.out.println( " 0 . Start date and end date are equal " + message );
             }
+            
+            else if ( startDateValue != null )
+            {
+                message = message || true;
+                //System.out.println( " 1 . Start Date Value " + startDateValue +" -- "+ message );
+            }
+            
+            else if ( endDateValue != null )
+            {
+                message = message || true;
+                //System.out.println( " 2 . End Date Value " + endDateValue +" -- "+ message );
+            }            
+            
+            /*
             else if ( sDate.before( qualityMaxValue.getStartDate() ) && eDate.after( qualityMaxValue.getEndDate() ) )
             {
                 message = message || true;
-                // System.out.println("Start date is less and end date is greater or equal "+message);
+                System.out.println(" 1 . Start date is less and end date is greater or equal " + message);
             }
-            else if ( qualityMaxValue.getStartDate().getTime() >= sDate.getTime()
-                && sDate.getTime() <= qualityMaxValue.getEndDate().getTime() )
+            
+            else if ( qualityMaxValue.getStartDate().getTime() >= sDate.getTime() && sDate.getTime() <= qualityMaxValue.getEndDate().getTime() )
             {
                 message = message || true;
-                // System.out.println("Start date between max start date and end date "+message);
+                System.out.println(" 2 . Start date between max start date and end date " + message);
             }
-            else if ( qualityMaxValue.getStartDate().getTime() >= eDate.getTime()
-                && eDate.getTime() <= qualityMaxValue.getEndDate().getTime() )
+            
+            else if ( qualityMaxValue.getStartDate().getTime() >= eDate.getTime() && eDate.getTime() <= qualityMaxValue.getEndDate().getTime() )
             {
                 message = message || true;
-                // System.out.println("End date between max start date and end date  "+message);
+                System.out.println(" 3 . End date between max start date and end date  " + message);
             }
+            
+            else if ( sDate.getTime() >= qualityMaxValue.getStartDate().getTime() && eDate.getTime() < qualityMaxValue.getEndDate().getTime() )
+            {
+                message = message || true;
+                System.out.println(" 4 . Start date is greater or equal and end date is less " + message);
+            }
+            
+            else if ( sDate.getTime() > qualityMaxValue.getStartDate().getTime() && eDate.getTime() <= qualityMaxValue.getEndDate().getTime() )
+            {
+                message = message || true;
+                System.out.println(" 5 . Start date is greater and end date is less or equal " + message);
+            }
+            
             else
             {
                 message = message && false;
+                
+                System.out.println( " 6 . Start date " + sDate + " and end date " + sDate +" -- "+  message );
             }
+            */
+            
         }
+        
         // System.out.println("Message: "+message);
         return SUCCESS;
     }

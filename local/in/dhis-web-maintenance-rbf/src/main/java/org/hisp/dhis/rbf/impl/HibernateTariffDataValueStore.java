@@ -308,7 +308,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
                                                 " and sag1.level=td.orgunitlevelid ";
                                                 //" and td.organisationunitid in ("+ orgUnitBranchIds +") ";
             
-            System.out.println("Query: " + query );
+            //System.out.println("Query: " + query );
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
@@ -337,7 +337,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
                                 " datasetid = " + dataSetId + " AND " +
                                 " organisationunitid IN (" + orgUnitIds + ")";
             
-            System.out.println( query );
+            //System.out.println( query );
             
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
 

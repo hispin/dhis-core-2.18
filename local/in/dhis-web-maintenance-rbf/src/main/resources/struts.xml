@@ -146,8 +146,6 @@
 	</action>
 
 
-
-
 	
 	<!-- Quality Max Data Entry -->
 	
@@ -378,13 +376,6 @@
 
 
 
-
-
-
-
-
-	
-
 	<!-- Lookup -->
     
     <!-- Get All Lookups -->
@@ -423,7 +414,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-rbf/editLookup.vm</param>
       <param name="javascripts">javascript/lookup.js</param>
-      <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_DATASET_PUBLIC_ADD,F_DATASET_PRIVATE_ADD</param>
     </action>
     
     <!-- Update Lookup -->    
@@ -447,24 +438,7 @@
 
 
 
-
-    <!-- Reports -->
-    <action name="PBFInvoiceReportForm" class="org.hisp.dhis.rbf.report.action.PBFInvoiceReportFormAction">
-        <result name="success" type="velocity">/main.vm</result>
-        <param name="page">/dhis-web-maintenance-rbf/PBFInvoiceReportForm.vm</param>
-        <param name="javascripts">javascript/prevNextPeriods.js</param>
-        <param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
-   </action>
 	
-	
-    <!-- PBF Reports -->
-    <action name="pbfReportForm" class="org.hisp.dhis.rbf.report.action.PBFReportFormAction">
-        <result name="success" type="velocity">/main.vm</result>
-        <param name="page">/dhis-web-maintenance-rbf/pbfReportForm.vm</param>
-        <param name="javascripts">javascript/prevNextPeriods.js</param>
-        <param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
-        <param name="requiredAuthorities">F_PBF_REPORT</param>
-   </action>	
 	
 	
 	<!-- Utilization Rule Management -->
@@ -515,6 +489,157 @@
    		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
    		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
    </action>
+
+
+
+	<!-- Reports Management -->
+	
+	<!--  Report Home page -->
+    <action name="reportHomePage"
+        class="org.hisp.dhis.rbf.reportmanagement.action.ReportsHomePageAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-rbf/reportHomePage.vm</param>
+        <param name="menu">/dhis-web-maintenance-rbf/pbfReportMenu.vm</param>
+        <param name="requiredAuthorities">F_PBF_REPORT_MANAGEMENT</param>
+    </action>	
+	
+	
+	<action name="reportManagement"
+	    class="org.hisp.dhis.rbf.reportmanagement.action.ReportsListAction">
+	    <result name="success" type="velocity">/main.vm</result>
+	    <param name="page">/dhis-web-maintenance-rbf/reportsList.vm</param>
+	    <param name="menu">/dhis-web-maintenance-rbf/pbfReportMenu.vm</param>
+	    <param name="javascripts">javascript/reportManagement.js,javascript/filterTable.js</param>
+	    <param name="requiredAuthorities">F_PBF_REPORT_MANAGEMENT_LIST</param>
+	</action>
+	
+	<!-- Report Management Addition -->
+	<action name="addReportForm"
+	    class="org.hisp.dhis.rbf.reportmanagement.action.AddReportFormAction">
+	    <result name="success" type="velocity">/main.vm</result>
+	    <param name="page">/dhis-web-maintenance-rbf/addReportForm.vm</param>
+	    <param name="menu">/dhis-web-maintenance-rbf/pbfReportMenu.vm</param>
+	    <param name="javascripts">javascript/reportManagement.js</param>
+	</action>
+	<action name="addReport"
+	    class="org.hisp.dhis.rbf.reportmanagement.action.AddReportAction">
+	    <result name="success" type="redirect">reportManagement.action</result>
+	</action>
+	
+	<!-- Report Editing/Updation -->
+	<action name="editReportForm"
+	    class="org.hisp.dhis.rbf.reportmanagement.action.UpdateReportForm">
+	    <result name="success" type="velocity">/main.vm</result>
+	    <param name="page">/dhis-web-maintenance-rbf/editReportForm.vm</param>
+	    <param name="menu">/dhis-web-maintenance-rbf/pbfReportMenu.vm</param>
+	    <param name="javascripts">javascript/reportManagement.js</param>
+	</action>
+	<action name="editReport"
+	    class="org.hisp.dhis.rbf.reportmanagement.action.UpdateReportAction">
+	    <result name="success" type="redirect">reportManagement.action</result>
+	</action>
+	
+	<!-- Report Management Validation during Addition or Updation of Report -->
+	<action name="validateReport"
+	    class="org.hisp.dhis.rbf.reportmanagement.action.ValidateReportAction">
+	    <result name="success" type="velocity-xml">/dhis-web-maintenance-rbf/responseReportManagementSuccess.vm</result>
+	    <result name="input" type="velocity-xml">/dhis-web-maintenance-rbf/responseReportManagementInput.vm</result>
+	    <param name="onExceptionReturn">plainTextError</param>
+	</action>
+	
+	<!-- Get Report details -->
+	<action name="getReport"
+	    class="org.hisp.dhis.rbf.reportmanagement.action.GetReportAction">
+	    <result name="success" type="velocity-xml">/dhis-web-maintenance-rbf/responseReportManagementObject.vm</result>
+	    <param name="onExceptionReturn">plainTextError</param>
+	</action>
+      
+    <!-- Report Association -->  
+	<action name="defineReportAssociationsForm"
+	    class="org.hisp.dhis.rbf.reportmanagement.action.SetupAssociationsTreeAction">
+	    <result name="success" type="velocity">/main.vm</result>
+	    <param name="menu">/dhis-web-maintenance-rbf/pbfReportMenu.vm</param>
+	    <param name="page">/dhis-web-maintenance-rbf/reportAssociations.vm</param>
+	    <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/reportManagementAssociations.js</param>
+	</action>
+			
+    <!-- Report Association save -->
+    <action name="defineReportAssociations"
+        class="org.hisp.dhis.rbf.reportmanagement.action.DefineReportAssociationsAction">
+        <result name="success" type="redirect">reportManagement.action</result>
+    </action>       
+
+    <!-- Report Deletion -->
+     <action name="delReport"
+         class="org.hisp.dhis.rbf.reportmanagement.action.DelReportAction">
+         <result name="success" type="redirect">reportManagement.action</result>
+     </action>
+
+
+    <!-- PBF Reports -->
+    <action name="pbfReportForm" class="org.hisp.dhis.rbf.reportmanagement.action.PBFReportFormAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-rbf/pbfReportForm.vm</param>
+        <param name="menu">/dhis-web-maintenance-rbf/menuWithTree.vm</param>
+        <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/prevNextPeriods.js,javascript/reportManagement.js</param>
+        <param name="requiredAuthorities">F_PBF_REPORT</param>
+   </action>
+
+   <!-- PBF Reports List -->
+   <action name="getPBFReportList" class="org.hisp.dhis.rbf.reportmanagement.action.GetPBFReportsAction">
+       <result name="success" type="velocity-xml">/dhis-web-maintenance-rbf/responsePBFReports.vm</result>
+       <!--<param name="javascripts">javascript/reportManagement.js</param>-->
+       <param name="onExceptionReturn">plainTextError</param>
+   </action>
+
+	<!-- Get PBF Reports Periods -->
+    <action name="getPBFPeriods" class="org.hisp.dhis.rbf.reportmanagement.action.GetPBFReportPeriodsAction">
+        <result name="success" type="velocity-json">/dhis-web-maintenance-rbf/jsonPeriods.vm</result>
+    </action>
+
+
+
+
+
+
+
+    <!-- PBF Reports -->
+    <action name="PBFInvoiceReportForm" class="org.hisp.dhis.rbf.report.action.PBFInvoiceReportFormAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-rbf/PBFInvoiceReportForm.vm</param>
+        <param name="javascripts">javascript/prevNextPeriods.js</param>
+        <param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
+   </action>
+	
+	
+	
+	
+	
+    <!-- PBF Reports -->
+    <!-- 
+    <action name="pbfReportForm" class="org.hisp.dhis.rbf.report.action.PBFReportFormAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-rbf/pbfReportForm.vm</param>
+        <param name="javascripts">javascript/prevNextPeriods.js</param>
+        <param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
+        <param name="requiredAuthorities">F_PBF_REPORT</param>
+   </action>
+	-->	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 	</package>

@@ -59,13 +59,33 @@
     </ul>
 #end
 
-
+<!--
 #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfReportForm") )
     <h2>$i18n.getString( "pbf_report" )</h2>
     <ul>
         <li><a href="pbfReportForm.action">$i18n.getString( "pbf_report" )</a></li>
     </ul>
 #end
+-->
+
+#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "reportManagement") )
+    <ul>
+        <li><a href = "reportManagement.action">Report Management</a></li>
+		#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfReportForm") )
+			<li><a href="pbfReportForm.action">$i18n.getString( "pbf_report" )</a></li>
+		#end	
+    </ul>
+    
+#end
+<!--
+#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "reportHomePage") )
+    <h2>$i18n.getString( "pbf_report" )</h2>
+    <ul>
+        <li><a href="reportHomePage.action">$i18n.getString( "pbf_report" )</a></li>
+    </ul>
+#end
+-->
+
 
 #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "getAllLookups") )
     <h2>$i18n.getString( "Lookup" )</h2>

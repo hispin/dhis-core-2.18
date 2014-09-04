@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -112,6 +113,16 @@ public class DefaultQualityMaxValueService
     {
         return qualityMaxValueStore.getDistinctStartDateEndDateFromQualityMaxScore( orgUnitGroup, organisationUnit, dataSet );
     }    
+    
+    public Set<Integer> getOrgUnitGroupsByDataset( Integer dataSetId, String orgUnitIds )
+    {
+        return qualityMaxValueStore.getOrgUnitGroupsByDataset( dataSetId, orgUnitIds );
+    }
+    
+    public String getQuanlityMaxValueStartDateEndDate( Integer orgunitgroupId, Integer organisationUnitId, Integer dataSetId, String date )
+    {
+        return qualityMaxValueStore.getQuanlityMaxValueStartDateEndDate( orgunitgroupId, organisationUnitId, dataSetId, date );
+    }   
     
     
 }
