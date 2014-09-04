@@ -404,10 +404,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     public List<T> getAllOrderedName( int first, int max )
     {
         /*
-        return getSharingCriteria()
-            .setFirstResult( first )
-            .setMaxResults( max )
-            .list();
+        return getSharingCriteria().setFirstResult( first ).setMaxResults( max ).list();
         */
 
         Query query = sharingEnabled() ? getQueryAllOrderedNameAcl() : getQueryAllOrderedName();
