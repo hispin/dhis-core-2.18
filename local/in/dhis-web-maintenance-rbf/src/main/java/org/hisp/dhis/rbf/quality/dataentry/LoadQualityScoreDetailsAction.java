@@ -1,7 +1,10 @@
 package org.hisp.dhis.rbf.quality.dataentry;
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,6 +25,7 @@ import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -117,6 +121,13 @@ public class LoadQualityScoreDetailsAction
     @Autowired
     private DataElementService dataElementService;
     
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+    
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
@@ -198,6 +209,13 @@ public class LoadQualityScoreDetailsAction
         return overAllQtyDataElementId;
     }
     
+    private boolean locked = false;
+    
+    public boolean isLocked()
+    {
+        return locked;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -242,22 +260,24 @@ public class LoadQualityScoreDetailsAction
         }
         
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
-
+        
+        locked = dataSetService.isLocked( dataSet, period, organisationUnit, null, null );
+        
         DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
-        OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( organisationUnit );
+        OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( organisationUnit, dataSet.getId(), orgUnitBranchIds );
         
         if( orgUnitGroup != null )
         {
-        	qualityMaxValueMap.putAll( qualityMaxValueService.getQualityMaxValues( orgUnitGroup, orgUnitBranchIds, dataSet, period ) );
+            qualityMaxValueMap.putAll( qualityMaxValueService.getQualityMaxValues( orgUnitGroup, orgUnitBranchIds, dataSet, period ) );
         }
 
         //List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
         
         
         
-        dataElements = new ArrayList<DataElement>();
-        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        //dataElements = new ArrayList<DataElement>();
+        //dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
         
         List<DataElement> dataElementList = new ArrayList<DataElement>();
         
@@ -298,7 +318,10 @@ public class LoadQualityScoreDetailsAction
         }
         
         
-        dataElements.retainAll( tempDataElementList );
+        //dataElements.retainAll( tempDataElementList );
+        
+        dataElements = new ArrayList<DataElement>( geti18nDataElements( dataElementList ) );
+        
         
         for ( DataElement dataElement : dataElements )
         {
@@ -336,33 +359,41 @@ public class LoadQualityScoreDetailsAction
         
         //System.out.println(" Payment dataSet Period Type---" + paymentDataSet.getPeriodType() );
         
-        period = periodService.reloadPeriod( period );
-        
-        Set<Period> periods = new HashSet<Period>( periodService.getIntersectingPeriodsByPeriodType( paymentDataSet.getPeriodType(), period.getStartDate(), period.getEndDate() ) );
-        
-        for( Period period1 : periods )
+        if( paymentDataSet != null )
         {
-            Double overAllAdjustedAmt = defaultPBFAggregationService.calculateOverallUnadjustedPBFAmount( period1, organisationUnit, paymentDataSet );
-            
-            if( overAllAdjustedAmt == null || overAllAdjustedAmt == 0 )
+        
+            period = periodService.reloadPeriod( period );
+        
+            Set<Period> periods = new HashSet<Period>( periodService.getIntersectingPeriodsByPeriodType( paymentDataSet.getPeriodType(), period.getStartDate(), period.getEndDate() ) );
+        
+            for( Period period1 : periods )
             {
-                paymentMessage += period1.getDisplayName() +", ";
-                flag = 2;
+                Double overAllAdjustedAmt = defaultPBFAggregationService.calculateOverallUnadjustedPBFAmount( period1, organisationUnit, paymentDataSet );
+                
+                if( overAllAdjustedAmt == null || overAllAdjustedAmt == 0 )
+                {
+                    paymentMessage += period1.getDisplayName() +", ";
+                    flag = 2;
+                }
+                else
+                {
+                    totalUnadjustedAmt += overAllAdjustedAmt;
+                }
+            }
+        
+            if( flag == 1 )
+            {
+                paymentMessage = " ";
             }
             else
             {
-                totalUnadjustedAmt += overAllAdjustedAmt;
+            	paymentMessage = paymentMessage.substring(0, paymentMessage.length()-2);
+            	paymentMessage += " ) ";
             }
-        }
-        
-        if( flag == 1 )
-        {
-            paymentMessage = " ";
         }
         else
         {
-        	paymentMessage = paymentMessage.substring(0, paymentMessage.length()-2);
-        	paymentMessage += " ) ";
+            paymentMessage = "Payment dataset is not linked for this quality score dataset.";
         }
 
         qualityScorePayments = new HashSet<QualityScorePayment>( qualityScorePaymentService.getAllQualityScorePayments() );
@@ -370,15 +401,26 @@ public class LoadQualityScoreDetailsAction
         return SUCCESS;
     }
 
-    public OrganisationUnitGroup findPBFOrgUnitGroupforTariff( OrganisationUnit organisationUnit )
+    public OrganisationUnitGroup findPBFOrgUnitGroupforTariff( OrganisationUnit organisationUnit, Integer dataSetId, String orgUnitIds )
     {
-    	Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
-    	
-    	OrganisationUnitGroupSet orgUnitGroupSet = orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() );
-    	
-    	OrganisationUnitGroup orgUnitGroup = organisationUnit.getGroupInGroupSet( orgUnitGroupSet );
-    	
-    	return orgUnitGroup;
+        
+        Set<Integer> orgUnitGroupIds = qualityMaxValueService.getOrgUnitGroupsByDataset( dataSetId, orgUnitIds );
+        
+        OrganisationUnitGroup orgUnitGroup = null;
+        if( orgUnitGroupIds != null && orgUnitGroupIds.size() > 0 )
+        {
+             orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupIds.iterator().next() );
+        }
+        else
+        {        
+            Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+                
+            OrganisationUnitGroupSet orgUnitGroupSet = orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() );
+                
+            orgUnitGroup = organisationUnit.getGroupInGroupSet( orgUnitGroupSet );
+        }
+        
+        return orgUnitGroup;            	
     }
     
     public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
@@ -393,4 +435,11 @@ public class LoadQualityScoreDetailsAction
             return findParentOrgunitforTariff( organisationUnit.getParent(), tariffOULevel );
         }
     }
+    
+    public Collection<DataElement> geti18nDataElements( List<DataElement> dataElements )
+    {
+        return i18n( i18nService, dataElements );
+    }
+    
+    
 }

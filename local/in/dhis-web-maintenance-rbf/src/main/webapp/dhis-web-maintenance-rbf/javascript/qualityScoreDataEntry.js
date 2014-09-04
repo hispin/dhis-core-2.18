@@ -67,7 +67,6 @@ function loadDataEntryForm()
 	
 	$( '#saveButton' ).removeAttr( 'disabled' );
 	
-
 	var selectedPeriodId = $( '#selectedPeriodId' ).val();
 	
 	if ( selectedPeriodId == "-1" && dataSetId == "-1" )
@@ -88,6 +87,17 @@ function loadDataEntryForm()
 				selectedPeriodId:selectedPeriodId
 			}, function()
 			{
+				var lockStatue  = document.getElementById("dataSetLockStatus").value;
+				if ( lockStatue == "true" )
+				{
+					$( '#dataEntryFormDiv input').attr( 'disabled', 'disabled' );
+					setHeaderDelayMessage( "Data set is locked" );
+				}
+				else
+				{
+			        $( '#dataEntryFormDiv input' ).removeAttr( 'disabled' );
+				}				
+				
 				showById('dataEntryFormDiv');
 				jQuery('#loaderDiv').hide();
 			});

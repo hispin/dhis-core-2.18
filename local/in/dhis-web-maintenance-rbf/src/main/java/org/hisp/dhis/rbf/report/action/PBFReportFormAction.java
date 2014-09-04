@@ -33,6 +33,8 @@ public class PBFReportFormAction implements Action
 {
     private final static String REPORTING_GROUP_SET = "REPORTING_GROUP_SET";
     
+    private final static String TARIFF_SETTING_AUTHORITY_GROUP_SET_ID = "TARIFF_SETTING_AUTHORITY_GROUP_SET_ID";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -110,9 +112,16 @@ public class PBFReportFormAction implements Action
         return orgUnitGroupNameMap;
     }
     
+    private Map<String, Integer> orgUnitGroupIdMap = new HashMap<String, Integer>();
+    
+    public Map<String, Integer> getOrgUnitGroupIdMap()
+    {
+        return orgUnitGroupIdMap;
+    }
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
+
 
     public String execute() throws Exception
     {
@@ -149,6 +158,10 @@ public class PBFReportFormAction implements Action
         
         OrganisationUnitGroupSet organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( (int) orgUnitGroupSetId.getValue()  );
         
+        
+        Constant orgUnitPBFGroupSetId = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY_GROUP_SET_ID );
+        
+        OrganisationUnitGroupSet pbfOrganisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( (int) orgUnitPBFGroupSetId.getValue()  );
         
         //System.out.println( "  organisationUnit List size   " + orgUnitList.size() );orgUnitGroupSetId
         
@@ -187,6 +200,24 @@ public class PBFReportFormAction implements Action
                     if( orgUnit.getGroups().contains( organisationUnitGroup ) )
                     {
                         orgUnitGroupNameMap.put( orgUnit.getUid(), organisationUnitGroup.getName() );
+                        break;
+                    }
+                }
+            }
+        }
+        
+        
+        orgUnitGroupIdMap = new HashMap<String, Integer>();
+        
+        for( OrganisationUnit orgUnit : orgUnitList )
+        {
+            for ( OrganisationUnitGroup organisationUnitGroup : pbfOrganisationUnitGroupSet.getOrganisationUnitGroups() )
+            {
+                if( orgUnit.getGroups() != null && orgUnit.getGroups().size() > 0 )
+                {
+                    if( orgUnit.getGroups().contains( organisationUnitGroup ) )
+                    {
+                        orgUnitGroupIdMap.put( orgUnit.getUid(), organisationUnitGroup.getId() );
                         break;
                     }
                 }

@@ -1,6 +1,9 @@
 package org.hisp.dhis.rbf.dataentry;
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +26,7 @@ import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -134,7 +138,13 @@ public class LoadDataEntryFormAction implements Action
     @Autowired
     private DataElementCategoryService categoryService;
     
-    
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+
     
     // -------------------------------------------------------------------------
     // Comparator
@@ -268,12 +278,17 @@ public class LoadDataEntryFormAction implements Action
     {
         return totalDataElementId;
     }
-
+    
+    private boolean locked = false;
+    
+    public boolean isLocked()
+    {
+        return locked;
+    }
     
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
 
     public String execute()
     {
@@ -309,13 +324,19 @@ public class LoadDataEntryFormAction implements Action
         dataSet = dataSetService.getDataSet( dataSetId );
 
         period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
-
+        
+        
+        locked = dataSetService.isLocked( dataSet, period, organisationUnit, null, null );
+        
+        //System.out.println( dataSet.getName() + "-- " + locked );
+        
+        
         //dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
         //Collections.sort( dataElements );
 
-        dataElements = new ArrayList<DataElement>();
-        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        //dataElements = new ArrayList<DataElement>();
+        //dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
         
         List<DataElement> dataElementList = new ArrayList<DataElement>();
         
@@ -338,8 +359,9 @@ public class LoadDataEntryFormAction implements Action
             dataElementList.addAll( dataSet.getDataElements() );
         }
         
+        //dataElements.retainAll( dataElementList );
         
-        dataElements.retainAll( dataElementList );
+        dataElements = new ArrayList<DataElement>( geti18nDataElements( dataElementList ) );
         
         optionCombos = new ArrayList<DataElementCategoryOptionCombo>();
 
@@ -562,6 +584,11 @@ public class LoadDataEntryFormAction implements Action
         {
             return findParentOrgunitforTariff( organisationUnit.getParent(), tariffOULevel );
         }
+    }
+    
+    public Collection<DataElement> geti18nDataElements( List<DataElement> dataElements )
+    {
+        return i18n( i18nService, dataElements );
     }
 
 }

@@ -1,7 +1,10 @@
 package org.hisp.dhis.rbf.quality.dataentry;
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +20,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -78,6 +82,13 @@ public class LoadQualityMaxDetailsAction
     
     @Autowired
     private DataElementService dataElementService;
+    
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
 
     // -------------------------------------------------------------------------
     // Input / Output
@@ -168,8 +179,6 @@ public class LoadQualityMaxDetailsAction
         
         List<DataElement> tempDataElementList = new ArrayList<DataElement>();
         
-        
-        
         List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
         for ( DataElement de : dataElementList )
         {
@@ -183,7 +192,10 @@ public class LoadQualityMaxDetailsAction
             }
         }
 
-        dataElements.retainAll( tempDataElementList );
+        //dataElements.retainAll( tempDataElementList );
+        
+        dataElements = new ArrayList<DataElement>( geti18nDataElements( dataElementList ) );
+        
         
         for ( DataElement dataElement : dataElements )
         {
@@ -192,16 +204,20 @@ public class LoadQualityMaxDetailsAction
             if ( qualityMaxValue != null )
             {
                 qualityMaxValueMap.put( dataElement.getId(), qualityMaxValue );
-                System.out.println( "In Quality Data Value" );
+                //System.out.println( "In Quality Data Value" );
             }
         }
         
-        
-        
-        
-        Collections.sort( dataElements );
+       
+        //Collections.sort( dataElements );
         
         
         return SUCCESS;
     }
+    
+    public Collection<DataElement> geti18nDataElements( List<DataElement> dataElements )
+    {
+        return i18n( i18nService, dataElements );
+    }
+    
 }
