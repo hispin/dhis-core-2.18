@@ -30,7 +30,8 @@ trackerCapture.controller('ProfileController',
         //display only those attributes that belong the selected program
         //if no program, display attributesInNoProgram
         TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.selectedEnrollment).then(function(tei){
-            $scope.selectedTei = tei;            
+            $scope.selectedTei = tei; 
+            console.log('The tei is:  ', $scope.selectedTei);
         });
     });
     
