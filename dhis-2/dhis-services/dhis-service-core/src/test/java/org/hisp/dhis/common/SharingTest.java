@@ -31,6 +31,7 @@ package org.hisp.dhis.common;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.acl.AccessStringHelper;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
@@ -99,6 +100,13 @@ public class SharingTest
         assertNotNull( dataElement.getPublicAccess() );
         assertFalse( AccessStringHelper.canRead( dataElement.getPublicAccess() ) );
         assertFalse( AccessStringHelper.canWrite( dataElement.getPublicAccess() ) );
+    }
+
+    @Test( expected = CreateAccessDeniedException.class )
+    public void userDeniedCreateObject()
+    {
+        createUserAndInjectSecurityContext( false );
+        identifiableObjectManager.save( createDataElement( 'A' ) );
     }
 
     @Test
