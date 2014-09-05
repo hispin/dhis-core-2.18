@@ -1524,8 +1524,10 @@ public class ActivityReportingServiceImpl
 
         for ( TrackedEntityAttribute displayAttribute : attributes )
         {
-            Collection<TrackedEntityInstance> resultPatients = attValueService.getTrackedEntityInstance(
-                displayAttribute, keyword );
+            Collection<TrackedEntityInstance> resultPatients = null; // attValueService.getTrackedEntityInstance( displayAttribute, keyword );
+                
+            //TODO re-implement using DefaultTrackedEntityInstanceService.getTrackedEntityInstances( TrackedEntityInstanceQueryParams )
+                
             // Search in specific OrgUnit
             if ( orgUnitId != 0 )
             {

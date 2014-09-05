@@ -133,11 +133,4 @@ public class DefaultTrackedEntityAttributeValueService
             addTrackedEntityAttributeValue( _attributeValue );
         }
     }
-
-    @Override
-    public Collection<TrackedEntityInstance> getTrackedEntityInstance( TrackedEntityAttribute attribute, String value )
-    {
-        return attributeValueStore.getTrackedEntityInstances( attribute, value );
-    }
-
 }

@@ -112,16 +112,6 @@ public interface TrackedEntityAttributeValueStore
     Collection<TrackedEntityAttributeValue> searchByValue( TrackedEntityAttribute attribute, String searchText );
 
     /**
-     * Retrieve instances who have the same value on an attribute
-     * 
-     * @param attribute TrackedEntityAttribute
-     * @param value An attribute value for searching
-     * 
-     * @return TrackedEntityInstance list
-     */
-    Collection<TrackedEntityInstance> getTrackedEntityInstances( TrackedEntityAttribute attribute, String value );
-
-    /**
      * Retrieve attribute values of an instance by a program
      * 
      * @param instance TrackedEntityInstance

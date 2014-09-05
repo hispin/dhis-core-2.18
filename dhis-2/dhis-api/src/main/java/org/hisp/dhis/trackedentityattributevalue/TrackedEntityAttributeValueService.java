@@ -119,15 +119,4 @@ public interface TrackedEntityAttributeValueService
      * @param destination Destination instance
      */
     void copyTrackedEntityAttributeValues( TrackedEntityInstance source, TrackedEntityInstance destination );
-
-    /**
-     * Retrieve instances who have the same value on an attribute
-     * 
-     * @param attribute TrackedEntityAttribute
-     * @param value An attribute value for searching
-     * 
-     * @return TrackedEntityAttributeValue list
-     */
-    Collection<TrackedEntityInstance> getTrackedEntityInstance( TrackedEntityAttribute attribute, String value );
-
 }
