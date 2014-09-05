@@ -33,8 +33,9 @@ import java.util.List;
 public class ReportModel 
 {
 
-    public final static String RM_STATIC = "static";
-        
+    public final static String RM_STATIC = "STATIC";
+    
+    /*
     public final static String RM_DYNAMIC_WITH_ROOT = "dynamicwithrootfacility";
         
     public final static String RM_DYNAMIC_WITHOUT_ROOT = "dynamicwithoutroot";
@@ -54,6 +55,7 @@ public class ReportModel
     public final static String RM_PROGRESSIVE_ORGUNIT = "PROGRESSIVE-ORGUNIT";
     
     public final static String RM_PROGRESSIVE_PERIOD = "PROGRESSIVE-PERIOD";
+    */
     
         
     public static List<String> getReportModels()
@@ -61,7 +63,7 @@ public class ReportModel
         List<String> reportModels = new ArrayList<String>();
 
         reportModels.add( RM_STATIC );
-        
+        /*
         reportModels.add( RM_STATIC_DATAELEMENTS );
         
         reportModels.add( RM_STATIC_FINANCIAL );
@@ -81,7 +83,8 @@ public class ReportModel
         reportModels.add( RM_PROGRESSIVE_ORGUNIT );
         
         reportModels.add( RM_PROGRESSIVE_PERIOD );
-
+        */
+        
         return reportModels;            
     }
         

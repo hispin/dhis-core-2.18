@@ -106,6 +106,23 @@ public class HibernateReportStore
     }
 
     @SuppressWarnings( "unchecked" )
+    public Collection<Report_in> getReportBySourceAndReportType( OrganisationUnit source, String reportType )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Report_in.class );
+        criteria.createAlias( "sources", "s" );
+        criteria.add( Restrictions.eq( "s.id", source.getId() ) );
+        
+        criteria.add( Restrictions.eq( "reportType", reportType ) );
+
+        return criteria.list();
+    }
+    
+    
+    
+    
+    @SuppressWarnings( "unchecked" )
     public Collection<Report_in> getReportsByPeriodAndReportType( PeriodType periodType, String reportType )
     {
         Session session = sessionFactory.getCurrentSession();

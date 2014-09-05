@@ -29,7 +29,6 @@ package org.hisp.dhis.aggregation.impl.indicator;
  */
 
 import static org.hisp.dhis.system.util.DateUtils.daysBetween;
-import static org.hisp.dhis.system.util.MathUtils.INVALID;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 
 import java.util.Date;
@@ -37,7 +36,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.aggregation.impl.cache.AggregationCache;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -58,13 +56,14 @@ public class IndicatorAggregation
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+    /*
     private AggregationCache aggregationCache;
 
     public void setAggregationCache( AggregationCache aggregationCache )
     {
         this.aggregationCache = aggregationCache;
     }    
+    */
     
     private DataElementService dataElementService;
     
@@ -106,7 +105,8 @@ public class IndicatorAggregation
         double denominatorValue = calculateExpression( generateExpression( indicator.getDenominator(),
             startDate, endDate, organisationUnit, days ) );
         
-        if ( denominatorValue == INVALID || denominatorValue == 0.0 )
+        
+        if (  denominatorValue == 0.0 )
         {
             return null;
         }
@@ -114,7 +114,7 @@ public class IndicatorAggregation
         double numeratorValue = calculateExpression( generateExpression( indicator.getNumerator(), startDate,
             endDate, organisationUnit, days ) );
         
-        if ( numeratorValue == INVALID )
+        if ( numeratorValue == 0.0 )
         {
             return null;
         }
@@ -150,6 +150,8 @@ public class IndicatorAggregation
     {
         Map<String, Double> constantMap = constantService.getConstantMap();
         
+        Map<String, Integer> constantMap1 = new HashMap<String, Integer>();
+        
         Set<DataElementOperand> operands = expressionService.getOperandsInExpression( expression );
         
         Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
@@ -159,9 +161,11 @@ public class IndicatorAggregation
             DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
             DataElementCategoryOptionCombo optionCombo = !operand.isTotal() ? categoryService.getDataElementCategoryOptionCombo( operand.getOptionComboId() ) : null;
 
-            valueMap.put( operand, aggregationCache.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit ) );            
+            //valueMap.put( operand, aggregationCache.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit ) );            
         }
         
-        return expressionService.generateExpression( expression, valueMap, constantMap, null, false );
+        return expressionService.generateExpression( expression, valueMap, constantMap, constantMap1, null, false );
+        
+        //return expressionService.generateExpression( expression, valueMap, constantMap, null, false );
     }
 }

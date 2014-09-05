@@ -220,6 +220,12 @@ public class DefaultReportService
     }
 
     @Transactional
+    public Collection<Report_in> getReportBySourceAndReportType( OrganisationUnit source, String reportType  )
+    {
+        return reportStore.getReportBySourceAndReportType( source, reportType );
+    }    
+   
+    @Transactional
     public Collection<Report_in> getReportsByPeriodAndReportType( PeriodType periodType, String reportType )
     {
         return reportStore.getReportsByPeriodAndReportType( periodType, reportType );
@@ -867,13 +873,13 @@ public class DefaultReportService
                         tempPeriod = (Period) periodList.get( 0 );
                     }
 
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
-                        optionCombo );
-
+                    //DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod, optionCombo );
+                    DataValue dataValue = dataValueService.getDataValue( dataElement, tempPeriod, organisationUnit, optionCombo );
+                    
                     if ( dataValue != null && dataValue.getValue() != null )
                     {
                         replaceString = dataValue.getValue();
-                    }
+                    } 
                     else
                     {
                         replaceString = "";
@@ -1015,8 +1021,8 @@ public class DefaultReportService
                         double aggregatedValue = 0.0;
                         for ( Period tempPeriod : periodList )
                         {
-                            DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement,
-                                tempPeriod, optionCombo );
+                            //DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement,  tempPeriod, optionCombo );
+                            DataValue dataValue = dataValueService.getDataValue( dataElement, tempPeriod, organisationUnit, optionCombo );
 
                             if ( dataValue != null )
                             {
@@ -1047,8 +1053,8 @@ public class DefaultReportService
                         tempPeriod = (Period) periodList.get( 0 );
                     }
 
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
-                        optionCombo );
+                    //DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod, optionCombo );
+                    DataValue dataValue = dataValueService.getDataValue( dataElement, tempPeriod, organisationUnit, optionCombo );
 
                     if ( dataValue != null )
                     {
@@ -1197,8 +1203,8 @@ public class DefaultReportService
                         tempPeriod = (Period) periodList.get( 0 );
                     }
 
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
-                        optionCombo );
+                    //DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod, optionCombo );
+                    DataValue dataValue = dataValueService.getDataValue( dataElement, tempPeriod, organisationUnit, optionCombo );
 
                     if ( dataValue != null )
                     {
@@ -2030,9 +2036,10 @@ public class DefaultReportService
                         tempPeriod = periodService.getPeriod( periodIds.iterator().next() );
                     }
 
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
-                        optionCombo );
-
+                    //DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod, optionCombo );
+                    
+                    DataValue dataValue = dataValueService.getDataValue( dataElement, tempPeriod, organisationUnit, optionCombo );
+                    
                     if ( dataValue != null && dataValue.getValue() != null )
                     {
                         replaceString = dataValue.getValue();
