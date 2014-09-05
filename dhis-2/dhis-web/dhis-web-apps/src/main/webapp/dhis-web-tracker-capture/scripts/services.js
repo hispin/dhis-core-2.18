@@ -203,7 +203,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service to deal with enrollment */
-.service('EnrollmentService', function($http, EventUtils, DHIS2EventFactory) {
+.service('EnrollmentService', function($http) {
     
     return {        
         get: function( enrollmentUid ){
@@ -1163,7 +1163,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                               sortingDate: dueDate,
                               name: programStage.name,
                               reportDateDescription: programStage.reportDateDescription,
-                              status: 'ACTIVE'};
+                              status: 'SCHEDULED'};
             dummyEvent.statusColor = 'alert alert-info';//'stage-on-time';
             if(moment(today).isAfter(dummyEvent.dueDate)){
                 dummyEvent.statusColor = 'alert alert-danger';//'stage-overdue';

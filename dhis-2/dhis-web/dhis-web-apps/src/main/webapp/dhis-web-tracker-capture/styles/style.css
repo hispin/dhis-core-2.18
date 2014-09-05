@@ -475,6 +475,9 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     margin: -15px !important;    
 }
 
+.add-default-padding {
+    margin: 15px !important;
+}
 .add-default-top-margin {
     margin-top: 15px !important;    
 }
@@ -777,6 +780,7 @@ a:active {
     background-color: #ebebeb;
     cursor: pointer;
 }
+
 @media print {
     #header, #leftBar, .not-printable {
         display: none;
