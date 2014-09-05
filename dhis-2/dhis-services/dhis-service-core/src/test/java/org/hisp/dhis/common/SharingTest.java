@@ -28,15 +28,23 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Sets;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.acl.AccessStringHelper;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
+import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupAccess;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -46,6 +54,9 @@ import static org.junit.Assert.*;
 public class SharingTest
     extends DhisSpringTest
 {
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @Override
     protected void setUpTest() throws Exception
     {
@@ -109,6 +120,24 @@ public class SharingTest
         identifiableObjectManager.save( createDataElement( 'A' ) );
     }
 
+    @Test( expected = DeleteAccessDeniedException.class )
+    public void userDeniedDeleteObject()
+    {
+        createUserAndInjectSecurityContext( false, "F_DATAELEMENT_PUBLIC_ADD", "F_USER_ADD" );
+
+        User user = createUser( 'B' );
+        identifiableObjectManager.save( user );
+
+        DataElement dataElement = createDataElement( 'A' );
+        identifiableObjectManager.save( dataElement );
+
+        dataElement.setUser( user );
+        dataElement.setPublicAccess( AccessStringHelper.newInstance().build() );
+        sessionFactory.getCurrentSession().update( dataElement );
+
+        identifiableObjectManager.delete( dataElement );
+    }
+
     @Test
     public void objectsWithNoUser()
     {
@@ -120,5 +149,71 @@ public class SharingTest
         Collection<DataElement> all = identifiableObjectManager.getAll( DataElement.class );
 
         assertEquals( 4, all.size() );
+    }
+
+    @Test
+    public void readPrivateObjects()
+    {
+        createUserAndInjectSecurityContext( false, "F_DATAELEMENT_PUBLIC_ADD", "F_USER_ADD" );
+
+        User user = createUser( 'B' );
+        identifiableObjectManager.save( user );
+
+        identifiableObjectManager.save( createDataElement( 'A' ) );
+        identifiableObjectManager.save( createDataElement( 'B' ) );
+        identifiableObjectManager.save( createDataElement( 'C' ) );
+        identifiableObjectManager.save( createDataElement( 'D' ) );
+
+        assertEquals( 4, identifiableObjectManager.getAll( DataElement.class ).size() );
+
+        List<DataElement> dataElements = new ArrayList<>( identifiableObjectManager.getAll( DataElement.class ) );
+
+        for ( DataElement dataElement : dataElements )
+        {
+            dataElement.setUser( user );
+            dataElement.setPublicAccess( AccessStringHelper.newInstance().build() );
+
+            sessionFactory.getCurrentSession().update( dataElement );
+        }
+
+        assertEquals( 0, identifiableObjectManager.getAll( DataElement.class ).size() );
+    }
+
+    @Test
+    public void readUserGroupSharedObjects()
+    {
+        User loginUser = createUserAndInjectSecurityContext( false, "F_DATAELEMENT_PUBLIC_ADD", "F_USER_ADD", "F_USERGROUP_PUBLIC_ADD" );
+
+        User user = createUser( 'B' );
+        identifiableObjectManager.save( user );
+
+        UserGroup userGroup = createUserGroup( 'A', Sets.newHashSet( loginUser ) );
+        identifiableObjectManager.save( userGroup );
+
+        identifiableObjectManager.save( createDataElement( 'A' ) );
+        identifiableObjectManager.save( createDataElement( 'B' ) );
+        identifiableObjectManager.save( createDataElement( 'C' ) );
+        identifiableObjectManager.save( createDataElement( 'D' ) );
+
+        assertEquals( 4, identifiableObjectManager.getAll( DataElement.class ).size() );
+
+        List<DataElement> dataElements = new ArrayList<>( identifiableObjectManager.getAll( DataElement.class ) );
+
+        for ( DataElement dataElement : dataElements )
+        {
+            dataElement.setUser( user );
+            dataElement.setPublicAccess( AccessStringHelper.newInstance().build() );
+
+            UserGroupAccess userGroupAccess = new UserGroupAccess();
+            userGroupAccess.setAccess( AccessStringHelper.newInstance().enable( AccessStringHelper.Permission.READ ).build() );
+            userGroupAccess.setUserGroup( userGroup );
+
+            sessionFactory.getCurrentSession().save( userGroupAccess );
+
+            dataElement.getUserGroupAccesses().add( userGroupAccess );
+            sessionFactory.getCurrentSession().update( dataElement );
+        }
+
+        assertEquals( 4, identifiableObjectManager.getAll( DataElement.class ).size() );
     }
 }
