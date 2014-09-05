@@ -5,8 +5,8 @@
   
   <parent>
     <groupId>org.hisp.dhis</groupId>
-    <artifactId>dhis-services</artifactId>
-    <version>2.15-SNAPSHOT</version>
+    <artifactId>dhis-in-services</artifactId>
+    <version>2.17-SNAPSHOT</version>
   </parent>
   
   <artifactId>dhis-service-aggregationengine-default</artifactId>
@@ -27,12 +27,12 @@
     </dependency>
     
     <!-- Other -->
-    
+    <!--
     <dependency>
       <groupId>jep</groupId>
       <artifactId>jep</artifactId>
     </dependency>    
-    
+    -->
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>

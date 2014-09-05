@@ -58,6 +58,8 @@ public interface ReportService
     Report_in getReportByName( String name );
 
     Collection<Report_in> getReportBySource( OrganisationUnit source );
+    
+    Collection<Report_in> getReportBySourceAndReportType( OrganisationUnit source, String reportType  );
 
     Collection<Report_in> getAllReports();
 

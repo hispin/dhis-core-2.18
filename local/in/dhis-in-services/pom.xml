@@ -17,13 +17,17 @@
 	<!--
     <module>dhis-in-service-dbmanager</module>
 	<module>dhis-in-service-linelisting</module> 
-	<module>dhis-in-service-reports</module>
-    <module>dhis-in-service-survey</module>
+	
+    
 	<module>dhis-in-service-dataentrystatus</module>-->
 	<!--<module>dhis-service-aggregationengine-default</module>-->
+	<module>dhis-in-service-survey</module>
 	<module>dhis-in-service-configuration</module>
-	<!--<module>dhis-in-service-coldchain</module>-->
 	<module>dhis-in-service-lookup</module>
+	<module>dhis-in-service-reports</module>
+	<module>dhis-service-aggregationengine</module>
+	<!--<module>dhis-in-service-coldchain</module>-->
+	
   </modules>
   
   <dependencies>
