@@ -1,4 +1,4 @@
-<div class="panel panel-default" ng-controller="EnrollmentController">
+<div class="panel panel-info" ng-controller="EnrollmentController">
     <div class="panel-heading handle bold">                                            
         <!--<span ng-class="{'text-primary': !showEnrollmentHistoryDiv}">{{enrollmentWidget.title| translate}}</span>-->
         {{enrollmentWidget.title| translate}}
@@ -165,10 +165,10 @@
             <div class="alert alert-warning">{{'not_active_enrollment_exists'| translate}}</div> 
         </div>
         <div ng-if="!selectedProgram && programExists">
-            <div class="alert alert-warning">{{'please_select_a_program_for_enrollment'| translate}}</div> 
+            <div class="alert alert-danger">{{'please_select_a_program_for_enrollment'| translate}}</div> 
         </div>
         <div ng-if="!programExists">
-            <div class="alert alert-warning">{{'no_program_exists_enrollment'| translate}}</div> 
+            <div class="alert alert-danger">{{'no_program_exists_enrollment'| translate}}</div> 
         </div>
 
     </div>

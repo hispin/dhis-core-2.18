@@ -18,6 +18,7 @@ trackerCapture.controller('DataEntryController',
     $scope.dataEntryOuterForm = {};
     $scope.displayCustomForm = false;
     $scope.currentElement = {};
+    $scope.schedulingEnabled = false;
     
     var loginDetails = storage.get('LOGIN_DETAILS');
     var storedBy = '';
@@ -140,6 +141,10 @@ trackerCapture.controller('DataEntryController',
     
     $scope.showEventCreation = function(){
         $scope.showEventCreationDiv = !$scope.showEventCreationDiv;
+    };
+    
+    $scope.enableRescheduling = function(){
+        $scope.schedulingEnabled = !$scope.schedulingEnabled;
     };
     
     $scope.showDummyEventCreation = function(dummyEvent){
@@ -455,15 +460,14 @@ trackerCapture.controller('DataEntryController',
                         $scope.dhis2Events[i].statusColor = statusColor;
                         continueLoop = false;
                     }
-                } 
+                }
+                $scope.schedulingEnabled = !$scope.schedulingEnabled;
             });
         }              
     };
     
     $scope.addNote = function(){
-        
         if(!angular.isUndefined($scope.note) && $scope.note != ""){
-
             var newNote = {value: $scope.note};
 
             if(angular.isUndefined( $scope.currentEvent.notes) ){
@@ -486,6 +490,10 @@ trackerCapture.controller('DataEntryController',
             });
         }        
     };    
+    
+    $scope.clearNote = function(){
+         $scope.note = '';           
+    };
     
     $scope.getInputNotifcationClass = function(id, custom){
         if($scope.currentElement.id){

@@ -1,4 +1,4 @@
-<div class="panel panel-default" ng-controller="DataEntryController">
+<div class="panel panel-info" ng-controller="DataEntryController">
     <div class="panel-heading handle bold">
         {{dataentryWidget.title| translate}}        
         <span class="nav-pills" ng-if="allowEventCreation">
@@ -18,7 +18,7 @@
             <table class="table-borderless">
                 <tbody>
                     <tr>
-                        <td class="inline-block" ng-repeat="dhis2Event in dhis2Events | orderBy:'sortingDate':reverse">
+                        <td class="inline-block" ng-repeat="dhis2Event in dhis2Events| orderBy:'sortingDate':reverse">
                             <span class="block align-center">{{dhis2Event.orgUnitName}}</span>                                              
                             <span class="stage-container"                                                     
                                   ng-class="{'current-stage': currentEvent && currentEvent.event == dhis2Event.event, '{{dhis2Event.statusColor}}': true}"                                                      
@@ -32,14 +32,14 @@
                 </tbody>                
             </table>
         </div>     
-        <div ng-if="!dhis2Events && selectedEnrollment" class="alert alert-warning">{{'no_event_is_yet_created'| translate}}</div>
+        <div ng-if="!dhis2Events && selectedEnrollment" class="alert alert-danger">{{'no_event_is_yet_created'| translate}}</div>
         <div ng-if="dhis2Events && showEventCreationDiv" class="alert alert-warning">{{'event_creation'| translate}}</div>
-        <div ng-if="!selectedEnrollment" class="alert alert-warning">{{'not_yet_enrolled_data_entry'| translate}}</div> 
+        <div ng-if="!selectedEnrollment" class="alert alert-danger">{{'not_yet_enrolled_data_entry'| translate}}</div> 
         <div ng-show="dummyEvents && showEventCreationDiv">            
             <table class="table-borderless">
                 <tbody>
                     <tr>
-                        <td class="inline-block" ng-repeat="dummyEvent in dummyEvents | orderBy:'sortingDate':reverse">
+                        <td class="inline-block" ng-repeat="dummyEvent in dummyEvents| orderBy:'sortingDate':reverse">
                             <span class="block align-center">{{dhis2Event.orgUnitName}}</span>                                              
                             <span class="stage-container"                                                     
                                   ng-class="{'current-stage': currentDummyEvent && currentDummyEvent.programStage == dummyEvent.programStage, '{{dummyEvent.statusColor}}': true}"                                                      
@@ -87,10 +87,15 @@
                            ng-model="currentEvent.eventDate" 
                            ng-required="true" 
                            blur-or-change="saveEventDate()"/>
-                    <span ng-if="invalidDate" class="error">{{'date_required'| translate}}</span>     
+                    <span ng-if="invalidDate" class="error">{{'date_required'| translate}}</span>
                 </div>
                 <div class="col-md-6">
-                    {{'due_date'| translate}}
+                    <span ng-if="currentEvent.eventDate">
+                        {{'due_date'| translate}}
+                    </span>
+                    <span ng-if="!currentEvent.eventDate">
+                        <a href ng-click="enableRescheduling()" title="{{ schedulingEnabled ? 'disable_rescheduling' : 'enable_rescheduling' | translate}}"><span class="text-primary bold">{{'due_date'| translate}}</span></a>                        
+                    </span>                    
                     <input type="text" 
                            name="dueDate" 
                            placeholder="yyyy-mm-dd"
@@ -99,56 +104,59 @@
                            ng-date 
                            ng-model="currentEvent.dueDate" 
                            blur-or-change="saveDueDate()" 
-                           ng-disabled="currentEvent.eventDate"/>
+                           ng-disabled="currentEvent.eventDate || !schedulingEnabled"/>
+                    <span ng-if="invalidDate" class="error">{{'date_required'| translate}}</span>
                 </div>                        
             </div>
-            <div ng-if="currentEvent.eventDate">
-            
-                <div class='row'><hr></div>
+            <div ng-if="currentEvent.eventDate">                            
                 <div class='col-md-12' ng-if="customForm">
                     <a href ng-click="switchDataEntryForm()" title="{{displayCustomForm ? 'default_form' : 'custom_form'| translate}}"><span class="primary pull-right"><i class="fa fa-file-text fa-2x"></i></span></a>                
                 </div>
                 <div class="vertical-spacing" ng-if="displayCustomForm" ng-include="'components/dataentry/custom-form.html'"></div>  
                 <div class="vertical-spacing" ng-if="!displayCustomForm" ng-include="'components/dataentry/default-form.html'"></div>
-                <div class='row'><hr></div>                                
-            </div>
-            <div class="row">
-                <div class="col-md-10">
-                    <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_your_note_here'| translate}}"></textarea>
-                </div>
-                <div class="col-md-2 add-default-top-margin">
-                    <button type="button" 
-                            class="btn btn-primary"
-                            ng-click="addNote()">
-                        {{'add'| translate}}
-                    </button>
-                </div>
+            </div>            
 
-                <table class="table table-striped dhis2-table-hover">
-                    <tr ng-repeat="note in currentEvent.notes">
-                        <td class="overflow-ellipsis">
-                            <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
-                                <div>{{note.value}}</div>
-                            </d2-pop-over>
-                            <script type="text/ng-template" id="note.html">
-                                <p>{{content.value}}</p>
-                                <hr>
-                                <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
-                                <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
-                            </script>
-                        </td> 
-                    </tr>
-                </table>
-            </div>
             <div class="form-group">
-                <div">
-                        <a href ng-click="completeIncompleteEvent()" class="btn btn-warning" ng-if="currentEvent.eventDate && (currentEvent.status === 'ACTIVE' || currentEvent.status === 'VISITED')">{{'complete'| translate}}</a>
-                        <a href ng-click="completeIncompleteEvent()" class="btn btn-warning" ng-if="currentEvent.eventDate && currentEvent.status === 'COMPLETED'">{{'incomplete'| translate}}</a>                       
-                        <a href ng-click="validateEvent()" class="btn btn-info" ng-disabled="true" ng-if="currentEvent.eventDate">{{'validate'| translate}}</a>                        
-                        <a href ng-click="skipUnskipEvent()" class="btn btn-warning" ng-if="!currentEvent.eventDate">{{currentEvent.status === 'SKIPPED' ? 'unskip' : 'skip' | translate}}</a>
-                    <a href ng-click="deleteEvent()" class="btn btn-danger">{{'delete'| translate}}</a>
-                </div>
+                <div class='row'><hr></div>
+                <a href ng-click="completeIncompleteEvent()" class="btn btn-warning" ng-if="currentEvent.eventDate && (currentEvent.status === 'ACTIVE' || currentEvent.status === 'VISITED')">{{'complete'| translate}}</a>
+                <a href ng-click="completeIncompleteEvent()" class="btn btn-warning" ng-if="currentEvent.eventDate && currentEvent.status === 'COMPLETED'">{{'incomplete'| translate}}</a>                       
+                <a href ng-click="validateEvent()" class="btn btn-info" ng-disabled="true" ng-if="currentEvent.eventDate">{{'validate'| translate}}</a>                        
+                <a href ng-click="skipUnskipEvent()" class="btn btn-warning" ng-if="!currentEvent.eventDate">{{currentEvent.status === 'SKIPPED' ? 'unskip' : 'skip'| translate}}</a>
+                <a href ng-click="deleteEvent()" class="btn btn-danger">{{'delete'| translate}}</a>
             </div>
+        </div>
+
+        <div ng-show="currentEvent && !showEventCreationDiv" class='remove-default-padding overflow-ellipsis'>
+            <div class='row'><hr></div>
+            <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_new_note_here'| translate}}"></textarea> 
+            <div class="vertical-spacing">
+                <button type="button" 
+                        class="btn btn-primary small-horizonal-spacing"
+                        ng-click="addNote()">
+                    {{'add'| translate}}
+                </button>        
+                <button type="button" 
+                        class="btn btn-default small-horizonal-spacing" 
+                        ng-click="clearNote()">
+                    {{'clear'| translate}}
+                </button>
+            </div>
+
+            <table class="table table-striped dhis2-table-hover">
+                <tr ng-repeat="note in currentEvent.notes">
+                    <td class="overflow-ellipsis">
+                        <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
+                            <div>{{note.value}}</div>
+                        </d2-pop-over>
+                        <script type="text/ng-template" id="note.html">
+                            <p>{{content.value}}</p>
+                            <hr>
+                            <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
+                            <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
+                        </script>
+                    </td> 
+                </tr>
+            </table>
+        </div>
     </div>        
-    </div>
 </div>

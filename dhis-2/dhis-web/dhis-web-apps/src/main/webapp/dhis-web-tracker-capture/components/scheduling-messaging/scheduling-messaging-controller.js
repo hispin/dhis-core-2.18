@@ -37,6 +37,10 @@ trackerCapture.controller('SchedulingMessagingController',
                 $scope.selectedTei && 
                 $scope.selectedEnrollment){            
             
+            angular.forEach($scope.selectedProgram.programStages, function(stage){
+                $scope.selectedProgramWithStage[stage.id] = stage;
+            });
+            
             //check if the selected TEI has any of the contact attributes
             //that can be used for communication
             TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.selectedEnrollment).then(function(tei){
@@ -49,38 +53,37 @@ trackerCapture.controller('SchedulingMessagingController',
                         continueLoop = false;
                     }
                 }
-            });
-        
-            angular.forEach($scope.selectedProgram.programStages, function(stage){
-                $scope.selectedProgramWithStage[stage.id] = stage;
-            });
-            
-            DHIS2EventFactory.getEventsByStatus($scope.selectedTei.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id, 'ACTIVE').then(function(eventList){                
-                angular.forEach(eventList, function(dhis2Event){                    
-                    if( dhis2Event.enrollment === $scope.selectedEnrollment.enrollment && 
-                        dhis2Event.status === 'SCHEDULE' &&
-                        angular.isUndefined(dhis2Event.eventDate)){
-                        var eventStage = $scope.selectedProgramWithStage[dhis2Event.programStage];
-                        if(angular.isObject(eventStage)){
-                            
-                            $scope.dhis2Events.push(dhis2Event);
-                            dhis2Event.name = eventStage.name; 
-                            dhis2Event.reportDateDescription = eventStage.reportDateDescription;
-                            dhis2Event.dueDate = DateUtils.format(dhis2Event.dueDate);
+                        
+                DHIS2EventFactory.getEventsByStatus($scope.selectedTei.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id, 'ACTIVE').then(function(eventList){                
+                    angular.forEach(eventList, function(dhis2Event){                    
+                        if( dhis2Event.enrollment === $scope.selectedEnrollment.enrollment && 
+                            dhis2Event.status === 'SCHEDULE' &&
+                            angular.isUndefined(dhis2Event.eventDate)){
+                            var eventStage = $scope.selectedProgramWithStage[dhis2Event.programStage];
+                            if(angular.isObject(eventStage)){
 
-                            if(dhis2Event.eventDate){
-                                dhis2Event.eventDate = DateUtils.format(dhis2Event.eventDate);
-                                dhis2Event.sortingDate = DateUtils.format(dhis2Event.eventDate);
-                            }
-                            else{
-                                dhis2Event.sortingDate = dhis2Event.dueDate;
-                            }                            
-                            dhis2Event.statusColor = EventUtils.getEventStatusColor(dhis2Event);  
-                            dhis2Event = EventUtils.setEventOrgUnitName(dhis2Event);                            
-                        } 
+                                $scope.dhis2Events.push(dhis2Event);
+                                dhis2Event.name = eventStage.name; 
+                                dhis2Event.reportDateDescription = eventStage.reportDateDescription;
+                                dhis2Event.dueDate = DateUtils.format(dhis2Event.dueDate);
+
+                                if(dhis2Event.eventDate){
+                                    dhis2Event.eventDate = DateUtils.format(dhis2Event.eventDate);
+                                    dhis2Event.sortingDate = DateUtils.format(dhis2Event.eventDate);
+                                }
+                                else{
+                                    dhis2Event.sortingDate = dhis2Event.dueDate;
+                                }                            
+                                dhis2Event.statusColor = EventUtils.getEventStatusColor(dhis2Event);  
+                                dhis2Event = EventUtils.setEventOrgUnitName(dhis2Event);                            
+                            } 
+                        }
+                    });                
+                    $scope.schedulingPossible = $scope.dhis2Events.length > 0 ? true : false;
+                    if($scope.schedulingPossible && $scope.messagingPossible){
+                        
                     }
-                });                
-                $scope.schedulingPossible = $scope.dhis2Events.length > 0 ? true : false;
+                });
             });
         }
     });

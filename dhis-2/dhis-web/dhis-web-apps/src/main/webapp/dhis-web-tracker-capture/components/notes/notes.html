@@ -1,4 +1,4 @@
-<div class="panel panel-default" ng-controller="NotesController">
+<div class="panel panel-info" ng-controller="NotesController">
     <div class="panel-heading handle bold">
         {{notesWidget.title| translate}}        
         <span class="nav-pills" ng-show="selectedEnrollment">
@@ -12,40 +12,36 @@
             <a class="small-horizonal-spacing" href ng-click="removeWidget(notesWidget)" title="{{'remove'| translate}}"><i class="fa fa-times-circle"></i></a>            
         </span>        
     </div>
-    <div ng-show="notesWidget.expand" class="panel-body dashboard-widget-container">
-        <div ng-show="selectedEnrollment && !selectedEnrollment.notes" class="alert alert-info">{{'empty_notes'| translate}}</div> 
-        <div ng-show="!selectedEnrollment" class="alert alert-warning">{{'not_yet_enrolled_note'| translate}}</div>
-        
-        <div class="add-note" ng-show="addNoteField">
-            <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_your_note_here'| translate}}"></textarea> 
-            <div class="vertical-spacing">
-	            <button type="button" 
-	                    class="btn btn-primary"
-	                    ng-click="addNote()">
-	                {{'save'| translate}}
-	            </button>        
-	            <button type="button" 
-	                    class="btn btn-default small-horizonal-spacing" 
-	                    ng-click="closeAddNote()">
-	                {{'cancel'| translate}}
-	            </button>
-	        </div>
-        </div>
-
+    <div ng-show="notesWidget.expand" class="panel-body dashboard-widget-container">        
+        <div ng-show="!selectedEnrollment" class="alert alert-danger">{{'not_yet_enrolled_note'| translate}}</div>
         <div ng-show='selectedEnrollment' class='remove-default-padding overflow-ellipsis'>
+                <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_new_note_here'| translate}}"></textarea> 
+                <div class="vertical-spacing">
+                    <button type="button" 
+                            class="btn btn-primary small-horizonal-spacing"
+                            ng-click="addNote()">
+                        {{'add'| translate}}
+                    </button>        
+                    <button type="button" 
+                            class="btn btn-default small-horizonal-spacing" 
+                            ng-click="clearNote()">
+                        {{'clear'| translate}}
+                    </button>
+                </div>
+            <div ng-show="!selectedEnrollment.notes" class="alert alert-warning">{{'empty_notes'| translate}}</div> 
             <table class="table table-striped dhis2-table-hover">
                 <tr ng-repeat="note in selectedEnrollment.notes| filter:noteSearchText">
                     <td>
-                        <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
-                            <div>{{note.value}}</div>
-                        </d2-pop-over>
-                        <script type="text/ng-template" id="note.html">
-                            <p>{{content.value}}</p>
-                            <hr>
-                            <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
-                            <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
-                        </script>
-                    </td> 
+                <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
+                    <div>{{note.value}}</div>
+                </d2-pop-over>
+                <script type="text/ng-template" id="note.html">
+                    <p>{{content.value}}</p>
+                    <hr>
+                    <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
+                    <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
+                </script>
+                </td> 
                 </tr>
             </table>
         </div>

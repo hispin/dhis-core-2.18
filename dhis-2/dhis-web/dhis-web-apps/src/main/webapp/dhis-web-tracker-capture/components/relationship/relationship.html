@@ -1,4 +1,4 @@
-<div class="panel panel-default" ng-controller="RelationshipController">
+<div class="panel panel-info" ng-controller="RelationshipController">
     <div class="panel-heading handle bold">
         {{relationshipWidget.title| translate}}
         <span class="nav-pills" ng-show="selectedTei">
@@ -13,8 +13,8 @@
         </span>        
     </div>
     <div ng-show="relationshipWidget.expand" class="panel-body dashboard-widget-container">
-        <div ng-show="selectedTei && !selectedTei.relationships" class="alert alert-info">{{'no_relationship'| translate}}</div> 
-        <div ng-show="!selectedTei" class="alert alert-info">{{'relationship_not_possible'| translate}}</div> 
+        <div ng-show="selectedTei && !selectedTei.relationships" class="alert alert-warning">{{'no_relationship'| translate}}</div> 
+        <div ng-show="!selectedTei" class="alert alert-danger">{{'relationship_not_possible'| translate}}</div> 
         
         <div ng-show="selectedTei" class="remove-default-padding">
             <table class="table table-striped dhis2-table-hover">
