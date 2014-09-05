@@ -38,7 +38,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
@@ -278,14 +277,18 @@ public class HibernateGenericStore<T>
     @Override
     public int save( T object )
     {
-        BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
-        identifiableObject.setPublicAccess( AccessStringHelper.newInstance().build() );
-        identifiableObject.setUserGroupAccesses( new HashSet<UserGroupAccess>() );
+        if ( IdentifiableObject.class.isAssignableFrom( object.getClass() ) )
+        {
+            ((BaseIdentifiableObject) object).setPublicAccess( AccessStringHelper.newInstance().build() );
+            ((BaseIdentifiableObject) object).setUserGroupAccesses( new HashSet<UserGroupAccess>() );
+        }
 
         User currentUser = currentUserService.getCurrentUser();
 
         if ( !Interpretation.class.isAssignableFrom( clazz ) && currentUser != null && aclService.isShareable( clazz ) )
         {
+            BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
+
             // TODO we might want to allow setting sharing props on save, but for now we null them out
 
             if ( identifiableObject.getUser() == null )
