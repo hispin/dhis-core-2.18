@@ -66,8 +66,7 @@ trackerCapture.controller('NotesController',
         }        
     };
     
-    $scope.closeAddNote = function(){
-         $scope.addNoteField = false;
+    $scope.clearNote = function(){
          $scope.note = '';           
     };
     
