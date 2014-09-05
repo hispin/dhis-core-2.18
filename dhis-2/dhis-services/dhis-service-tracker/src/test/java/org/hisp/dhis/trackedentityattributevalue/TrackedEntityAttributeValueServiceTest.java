@@ -248,17 +248,4 @@ public class TrackedEntityAttributeValueServiceTest
         attributeValue = attributeValueService.getTrackedEntityAttributeValue( entityInstanceB, attributeA );
         assertNull( attributeValue );
     }
-
-    @Test
-    public void testGetEntityInstances()
-    {
-        attributeValueService.addTrackedEntityAttributeValue( attributeValueA );
-        attributeValueService.addTrackedEntityAttributeValue( attributeValueB );
-        attributeValueService.addTrackedEntityAttributeValue( attributeValueC );
-
-        Collection<TrackedEntityInstance> entityInstances = attributeValueService.getTrackedEntityInstance( attributeA, "A" );
-        assertEquals( 1, entityInstances.size() );
-        assertTrue( entityInstances.contains( entityInstanceA ) );
-    }
-
 }
