@@ -46,10 +46,17 @@ import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.CalendarPeriodType;
+import org.hisp.dhis.period.FinancialAprilPeriodType;
+import org.hisp.dhis.period.FinancialJulyPeriodType;
+import org.hisp.dhis.period.FinancialOctoberPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.hisp.dhis.period.SixMonthlyAprilPeriodType;
+import org.hisp.dhis.period.SixMonthlyPeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
@@ -91,9 +98,11 @@ public class DefaultPdfDataEntryFormService
     private static final int TEXTBOXWIDTH = 160;
 
     private static final int PERIODRANGE_PREVYEARS = 1;
-
     private static final int PERIODRANGE_FUTUREYEARS = 2;
 
+    private static final int PERIODRANGE_PREVYEARS_YEARLY = 5;
+    private static final int PERIODRANGE_FUTUREYEARS_YEARLY = 6;
+    
     private static final Integer MAX_OPTIONS_DISPLAYED = 30;
 
     private static final Integer PROGRAM_FORM_ROW_NUMBER = 10;
@@ -201,7 +210,7 @@ public class DefaultPdfDataEntryFormService
     private List<Period> getPeriods_DataSet( PeriodType periodType )
         throws ParseException
     {
-        Period period = setPeriodDateRange();
+        Period period = setPeriodDateRange( periodType );
 
         return ((CalendarPeriodType) periodType).generatePeriods( period.getStartDate(), period.getEndDate() );
     }
@@ -266,7 +275,7 @@ public class DefaultPdfDataEntryFormService
                 if ( !categoryOptionCombo.isDefault() )
                     categoryOptionComboDisplayName = categoryOptionCombo.getDisplayName();
 
-                addCell_Text( table, PdfDataEntryFormUtil.getPdfPCell( hasBorder ), dataElement.getDisplayName() + " " + categoryOptionComboDisplayName,
+                addCell_Text( table, PdfDataEntryFormUtil.getPdfPCell( hasBorder ), dataElement.getFormNameFallback() + " " + categoryOptionComboDisplayName,
                     Element.ALIGN_RIGHT );
 
                 String strFieldLabel = PdfDataEntryFormUtil.LABELCODE_DATAENTRYTEXTFIELD + dataElement.getUid() + "_"
@@ -413,7 +422,7 @@ public class DefaultPdfDataEntryFormService
         {
             DataElement dataElement = programStageDataElement.getDataElement();
 
-            addCell_Text( table, PdfDataEntryFormUtil.getPdfPCell( hasBorder ), dataElement.getDisplayFormName(), Element.ALIGN_CENTER );
+            addCell_Text( table, PdfDataEntryFormUtil.getPdfPCell( hasBorder ), dataElement.getFormNameFallback(), Element.ALIGN_CENTER );
         }
 
         addCell_Text( table, PdfDataEntryFormUtil.getPdfPCell( hasBorder ), TEXT_BLANK, Element.ALIGN_CENTER );
@@ -434,8 +443,6 @@ public class DefaultPdfDataEntryFormService
                 DataElement dataElement = programStageDataElement.getDataElement();
 
                 OptionSet optionSet = dataElement.getOptionSet();
-
-                // addCell_Text(table, dataElement.getFormName());
 
                 String strFieldLabel = PdfDataEntryFormUtil.LABELCODE_DATAENTRYTEXTFIELD
                     + Integer.toString( dataElement.getId() )
@@ -476,9 +483,9 @@ public class DefaultPdfDataEntryFormService
     private List<Period> getProgramStagePeriodList()
         throws ParseException
     {
-        Period period = setPeriodDateRange();
-
         PeriodType periodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
+
+        Period period = setPeriodDateRange( periodType );
 
         return ((CalendarPeriodType) periodType).generatePeriods( period.getStartDate(), period.getEndDate() );
     }
@@ -770,7 +777,7 @@ public class DefaultPdfDataEntryFormService
         return periodTitles;
     }
 
-    private Period setPeriodDateRange()
+    private Period setPeriodDateRange( PeriodType periodType )
         throws ParseException
     {
         Period period = new Period();
@@ -783,6 +790,18 @@ public class DefaultPdfDataEntryFormService
         int startYear = currYear - PERIODRANGE_PREVYEARS;
         int endYear = currYear + PERIODRANGE_FUTUREYEARS;
 
+        if ( periodType.getName() == QuarterlyPeriodType.NAME
+            || periodType.getName() == SixMonthlyPeriodType.NAME
+            || periodType.getName() == SixMonthlyAprilPeriodType.NAME
+            || periodType.getName() == YearlyPeriodType.NAME
+            || periodType.getName() == FinancialAprilPeriodType.NAME
+            || periodType.getName() == FinancialJulyPeriodType.NAME
+            || periodType.getName() == FinancialOctoberPeriodType.NAME )
+        {
+            startYear = currYear - PERIODRANGE_PREVYEARS_YEARLY ;
+            endYear = currYear + PERIODRANGE_FUTUREYEARS_YEARLY ;                       
+        }
+            
         period.setStartDate( simpleDateFormat.parse( String.valueOf( startYear ) + "-01-01" ) );
         period.setEndDate( simpleDateFormat.parse( String.valueOf( endYear ) + "-01-01" ) );
 
