@@ -42,10 +42,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class SqlViewSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "sqlView";
+
+    public static final String PLURAL = "sqlViews";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( SqlView.class, "sqlView", "sqlViews" );
+        Schema schema = new Schema( SqlView.class, SINGULAR, PLURAL );
         schema.setShareable( true );
         schema.setOrder( 1010 );
 
