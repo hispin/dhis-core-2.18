@@ -189,6 +189,10 @@ div.paging a.active
     font-weight: bold;
 }
 
+.light-blue {
+    color: #67abcc;
+}
+
 .white {
     color: white;
 }
