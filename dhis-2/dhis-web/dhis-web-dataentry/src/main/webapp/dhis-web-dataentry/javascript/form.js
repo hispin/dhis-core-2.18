@@ -1751,23 +1751,9 @@ function displayUserDetails()
 // Validation
 // -----------------------------------------------------------------------------
 
-function displayValidationDialog( data, height )
-{
-	height = isDefined( height ) ? height : 500;
-	
-	$( '#validationDiv' ).html( data );
-	
-    $( '#validationDiv' ).dialog( {
-        modal: true,
-        title: 'Validation',
-        width: 920,
-        height: height
-    } );
-}
-
 function validate( ignoreSuccessfulValidation, successCallback )
 {
-	var compulsoryCombinationsValid = validateCompulsoryCombinations();
+	var compulsoryCombinationsValid = dhis2.de.validateCompulsoryCombinations();
 	
 	// Check for compulsory combinations and return false if violated
 	
@@ -1776,7 +1762,7 @@ function validate( ignoreSuccessfulValidation, successCallback )
     	var html = '<h3>' + i18n_validation_result + ' &nbsp;<img src="../images/warning_small.png"></h3>' +
         	'<p class="bold">' + i18n_all_values_for_data_element_must_be_filled + '</p>';
 		
-    	displayValidationDialog( html, 300 );
+    	dhis2.de.displayValidationDialog( html, 300 );
 	
 		return false;
 	}
@@ -1814,11 +1800,11 @@ function validate( ignoreSuccessfulValidation, successCallback )
         	
         	if ( hasViolations )
         	{
-        		displayValidationDialog( response, 500 );
+        		dhis2.de.displayValidationDialog( response, 500 );
         	}
         	else if ( !ignoreSuccessfulValidation )
         	{
-        		displayValidationDialog( successHtml, 200 );
+        		dhis2.de.displayValidationDialog( successHtml, 200 );
         	}        	
         }
         
@@ -1829,7 +1815,32 @@ function validate( ignoreSuccessfulValidation, successCallback )
     } );
 }
 
-function validateCompulsoryCombinations()
+/**
+ * Displays the validation dialog.
+ * 
+ * @param html the html content to display in the dialog.
+ * @param height the height of the dialog.
+ */
+dhis2.de.displayValidationDialog = function( html, height )
+{
+	height = isDefined( height ) ? height : 500;
+	
+	$( '#validationDiv' ).html( html );
+	
+    $( '#validationDiv' ).dialog( {
+        modal: true,
+        title: 'Validation',
+        width: 920,
+        height: height
+    } );
+}
+
+/**
+ * Validates that all category option combinations have all values or no values
+ * per data element given that the fieldCombinationRequired is true for the 
+ * current data set.
+ */
+dhis2.de.validateCompulsoryCombinations = function()
 {
 	var fieldCombinationRequired = dhis2.de.dataSets[dhis2.de.currentDataSetId].fieldCombinationRequired;
 	

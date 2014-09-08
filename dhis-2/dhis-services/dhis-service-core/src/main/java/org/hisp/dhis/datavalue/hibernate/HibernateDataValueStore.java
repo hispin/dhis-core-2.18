@@ -470,8 +470,8 @@ public class HibernateDataValueStore
         MapMap<Integer, DataElementOperand, Double> map = new MapMap<>();
 
         if ( dataElements.isEmpty() || periodTypes.isEmpty()
-                || ( cogDimensionConstraints != null && cogDimensionConstraints.isEmpty() )
-                || ( coDimensionConstraints != null && coDimensionConstraints.isEmpty() ) )
+            || ( cogDimensionConstraints != null && cogDimensionConstraints.isEmpty() )
+            || ( coDimensionConstraints != null && coDimensionConstraints.isEmpty() ) )
         {
             return map;
         }
