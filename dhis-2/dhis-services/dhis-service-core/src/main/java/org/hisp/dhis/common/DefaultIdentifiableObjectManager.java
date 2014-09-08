@@ -256,7 +256,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getAllByName( Class<T> clazz, String name )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -270,7 +270,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getAllByNameIgnoreCase( Class<T> clazz, String name )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -280,7 +280,7 @@ public class DefaultIdentifiableObjectManager
             return new ArrayList<>();
         }
 
-        return (Collection<T>) store.getAll();
+        return (Collection<T>) store.getAllEqNameIgnoreCase( name );
     }
 
     @Override
