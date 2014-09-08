@@ -145,9 +145,9 @@ public class DefaultSecurityService
         return true;
     }
 
-    public boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreOptions restoreOptions )
+    public boolean validateRestore( UserCredentials credentials, RestoreOptions restoreOptions )
     {
-        if ( credentials == null || rootPath == null )
+        if ( credentials == null || restoreOptions == null )
         {
             return false;
         }
@@ -174,7 +174,24 @@ public class DefaultSecurityService
 
         if ( credentials.hasAnyAuthority( Arrays.asList( UserAuthorityGroup.CRITICAL_AUTHS ) ) )
         {
-            log.info( "Not allowed to  " + restoreType.name() + " users with critical authorities" );
+            log.info( "Not allowed to " + restoreType.name() + " users with critical authorities" );
+            return false;
+        }
+
+        return true;
+    }
+    
+    public boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreOptions restoreOptions )
+    {
+        if ( credentials == null || rootPath == null || restoreOptions == null )
+        {
+            return false;
+        }
+
+        RestoreType restoreType = restoreOptions.getRestoreType();
+
+        if ( validateRestore( credentials, restoreOptions ) == false )
+        {
             return false;
         }
 
