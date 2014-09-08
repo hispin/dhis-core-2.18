@@ -75,6 +75,8 @@ public class TrackedEntityAttribute
     public static final String TYPE_TRACKER_ASSOCIATE = "trackerAssociate";
 
     public static final String TYPE_USERS = "users";
+    
+    public static final String TYPE_EMAIL = "email";
 
     private String description;
 
