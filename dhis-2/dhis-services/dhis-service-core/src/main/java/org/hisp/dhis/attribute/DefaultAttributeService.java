@@ -201,7 +201,7 @@ public class DefaultAttributeService
     @Override
     public Set<Attribute> getAttributesBetweenByName( String name, int first, int max )
     {
-        return new HashSet<>( i18n( i18nService, attributeStore.getAllLikeNameOrderedName( name, first, max ) ));
+        return new HashSet<>( i18n( i18nService, attributeStore.getAllLikeName( name, first, max ) ));
     }
 
     // -------------------------------------------------------------------------

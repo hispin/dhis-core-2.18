@@ -151,7 +151,7 @@ public class DefaultTrackedEntityAttributeService
 
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesBetweenByName( String name, int min, int max )
     {
-        return attributeStore.getAllLikeNameOrderedName( name, min, max );
+        return attributeStore.getAllLikeName( name, min, max );
     }
 
     public int getTrackedEntityAttributeCount()

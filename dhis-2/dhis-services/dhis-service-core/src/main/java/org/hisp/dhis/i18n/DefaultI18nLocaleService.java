@@ -179,7 +179,7 @@ public class DefaultI18nLocaleService
     
     public Collection<I18nLocale> getI18nLocalesBetweenLikeName( String name, int first, int max )
     {
-        return localeStore.getAllLikeNameOrderedName( name, first, max );
+        return localeStore.getAllLikeName( name, first, max );
     }
     
     public List<Locale> getAllLocales()

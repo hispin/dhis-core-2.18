@@ -132,6 +132,16 @@ public interface GenericIdentifiableObjectStore<T>
     List<T> getAllLikeName( String name );
 
     /**
+     * Retrieves a List of objects where the name is like the given name.
+     *
+     * @param name  the name.
+     * @param first the first result object to return.
+     * @param max   the max number of result objects to return.
+     * @return a List of objects.
+     */
+    List<T> getAllLikeName( String name, int first, int max );
+
+    /**
      * Retrieves a List of objects where the shortName is like the given shortName.
      *
      * @param shortName the shortName.
@@ -157,23 +167,20 @@ public interface GenericIdentifiableObjectStore<T>
     List<T> getAllOrderedLastUpdated( int first, int max );
 
     /**
-     * Retrieves the objects determined by the given first result and max result
-     * which name is like the given name.
-     *
-     * @param name  the name which result object names must be like.
-     * @param first the first result object to return.
-     * @param max   the max number of result objects to return.
-     * @return List of objects.
-     */
-    List<T> getAllLikeNameOrderedName( String name, int first, int max );
-
-    /**
      * Gets the count of objects which name is like the given name.
      *
      * @param name the name which result object names must be like.
      * @return the count of objects.
      */
     int getCountLikeName( String name );
+
+    /**
+     * Gets the count of objects which shortName is like the given shortName.
+     *
+     * @param shortName the shortName which result object shortNames must be like.
+     * @return the count of objects.
+     */
+    int getCountLikeShortName( String shortName );
 
     /**
      * Retrieves a list of objects referenced by the given List of uids.
@@ -184,7 +191,7 @@ public interface GenericIdentifiableObjectStore<T>
     List<T> getByUid( Collection<String> uids );
 
     /**
-     * Retrieves a list of objects referenced by the given List of uids. 
+     * Retrieves a list of objects referenced by the given List of uids.
      * Bypasses the ACL system.
      *
      * @param uids a List of uids.

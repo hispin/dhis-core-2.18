@@ -67,7 +67,7 @@ public class HibernateUserStore
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<User> getAllLikeNameOrderedName( String name, int first, int max )
+    public List<User> getAllLikeName( String name, int first, int max )
     {
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.or( Restrictions.ilike( "surname", "%" + name + "%" ),

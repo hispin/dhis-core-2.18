@@ -298,7 +298,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getAllSortedByLastUpdated( Class<T> clazz )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -333,6 +333,19 @@ public class DefaultIdentifiableObjectManager
         if ( store != null )
         {
             return store.getCountLikeName( name );
+        }
+
+        return 0;
+    }
+
+    @Override
+    public <T extends IdentifiableObject> int getCountByShortName( Class<T> clazz, String shortName )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store != null )
+        {
+            return store.getCountLikeShortName( shortName );
         }
 
         return 0;
@@ -391,7 +404,7 @@ public class DefaultIdentifiableObjectManager
             return new ArrayList<>();
         }
 
-        return (List<T>) store.getAllLikeNameOrderedName( name, first, max );
+        return (List<T>) store.getAllLikeName( name, first, max );
     }
 
     @Override

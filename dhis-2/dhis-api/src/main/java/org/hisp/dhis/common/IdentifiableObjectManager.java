@@ -108,6 +108,8 @@ public interface IdentifiableObjectManager
 
     <T extends IdentifiableObject> int getCountByName( Class<T> clazz, String name );
 
+    <T extends IdentifiableObject> int getCountByShortName( Class<T> clazz, String shortName );
+
     // -------------------------------------------------------------------------
     // NO ACL
     // -------------------------------------------------------------------------
