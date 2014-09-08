@@ -58,11 +58,6 @@ trackerCapture.controller('NotesController',
     });
    
     $scope.searchNoteField = false;
-    $scope.addNoteField = false;    
-    
-    $scope.showAddNote = function() {
-        $scope.addNoteField = !$scope.addNoteField;
-    };
     
     $scope.addNote = function(){
         
