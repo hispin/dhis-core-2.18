@@ -4,10 +4,9 @@
             {{notesWidget.title| translate}}
         </span>
         <span ng-if="messagingPossible">
-            <!--{{notesWidget.title| translate}}-->
-            <a href ng-click="showNotes()" title="{{'show_hide_notes'| translate}}"><span class="bold" ng-class="{'black': showNotesDiv}">{{notesWidget.title| translate}}</span></a>
+            <a href ng-click="showNotes()" title="{{'show_hide_notes'| translate}}"><span ng-class="{'light-blue': showMessagingDiv}">{{notesWidget.title| translate}}</span></a>
             <span class="nav-pills">
-                | <a href ng-click="showMessaging()" title="{{'show_hide_messaging'| translate}}"><span class="bold" ng-class="{'black': showMessagingDiv}">{{'messaging'| translate}}</span></a>
+                | <a href ng-click="showMessaging()" title="{{'show_hide_messaging'| translate}}"><span ng-class="{'light-blue': showNotesDiv}">{{'messaging'| translate}}</span></a>
             </span>
         </span>
 

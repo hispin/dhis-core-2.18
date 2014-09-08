@@ -1,9 +1,11 @@
 <div class="panel panel-info" ng-controller="ProfileController">
     <div class="panel-heading handle bold">
-        {{profileWidget.title| translate}}
-        <span class="nav-pills" ng-show="selectedTei.attributes.length">
-            | <a href ng-click="enableEdit()" title="{{'edit_profile'| translate}}"><span class="bold">{{'edit'| translate}}</span></a>
+
+        <a href ng-click="enableEdit()"><span ng-class="{'light-blue': editProfile}">{{profileWidget.title| translate}}</span></a>
+        <span class="nav-pills">
+            | <a href ng-click="enableEdit()" title="{{'edit_profile'| translate}}"><span ng-class="{'light-blue': !editProfile}">{{'edit'| translate}}</span></a>
         </span>
+        
         <span class="pull-right">
             <a class="small-horizonal-spacing" href ng-click="expandCollapse(profileWidget)">
                 <span ng-show="profileWidget.expand"><i class="fa fa-chevron-up" title="{{'collapse'| translate}}"></i></span>

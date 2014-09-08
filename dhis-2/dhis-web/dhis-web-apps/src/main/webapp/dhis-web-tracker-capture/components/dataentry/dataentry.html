@@ -1,9 +1,10 @@
 <div class="panel panel-info" ng-controller="DataEntryController">
     <div class="panel-heading handle bold">
-        {{dataentryWidget.title| translate}}        
+        <a href ng-click="showEventCreation()"><span ng-class="{'light-blue': showEventCreationDiv}">{{dataentryWidget.title| translate}}</span></a>
         <span class="nav-pills" ng-if="allowEventCreation">
-            | <a href ng-click="showEventCreation()"><span class="bold">{{'create_new_event'| translate}}</span></a>
+            | <a href ng-click="showEventCreation()"><span ng-class="{'light-blue': !showEventCreationDiv}">{{'create_new_event'| translate}}</span></a>
         </span>
+        
         <span class="pull-right">
             <a class="small-horizonal-spacing" href ng-click="expandCollapse(dataentryWidget)">
                 <span ng-show="dataentryWidget.expand"><i class="fa fa-chevron-up" title="{{'collapse'| translate}}"></i></span>

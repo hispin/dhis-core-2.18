@@ -1,5 +1,6 @@
 trackerCapture.controller('RelationshipController',
         function($scope,
+                $rootScope,
                 $modal,                
                 $location,
                 $route,
@@ -9,6 +10,7 @@ trackerCapture.controller('RelationshipController',
 
     TranslationService.translate();        
 
+    $rootScope.showAddRelationshipDiv = false;
     $scope.relationshipTypes = []; 
     $scope.relationships = [];
     RelationshipFactory.getAll().then(function(rels){
@@ -26,27 +28,32 @@ trackerCapture.controller('RelationshipController',
         $scope.selectedEnrollment = $scope.selections.enrollment;
     });
     
-    $scope.showAddRelationship = function() {        
-        var modalInstance = $modal.open({
-            templateUrl: 'components/relationship/add-relationship.html',
-            controller: 'AddRelationshipController',
-            windowClass: 'modal-full-window',
-            resolve: {
-                relationshipTypes: function () {
-                    return $scope.relationshipTypes;
-                },
-                selections: function () {
-                    return $scope.selections;
-                },
-                selectedTei: function(){
-                    return $scope.selectedTei;
+    $scope.showAddRelationship = function() {
+        $rootScope.showAddRelationshipDiv = !$rootScope.showAddRelationshipDiv;
+        
+        console.log('It is me relationship:  ', $rootScope.showAddRelationshipDiv);
+        if($rootScope.showAddRelationshipDiv){
+            var modalInstance = $modal.open({
+                templateUrl: 'components/relationship/add-relationship.html',
+                controller: 'AddRelationshipController',
+                windowClass: 'modal-full-window',
+                resolve: {
+                    relationshipTypes: function () {
+                        return $scope.relationshipTypes;
+                    },
+                    selections: function () {
+                        return $scope.selections;
+                    },
+                    selectedTei: function(){
+                        return $scope.selectedTei;
+                    }
                 }
-            }
-        });
+            });
 
-        modalInstance.result.then(function (relationships) {
-            $scope.selectedTei.relationships = relationships;           
-        });
+            modalInstance.result.then(function (relationships) {
+                $scope.selectedTei.relationships = relationships;           
+            });
+        }        
     };    
     
     $scope.showDashboard = function(rel){
@@ -66,6 +73,7 @@ trackerCapture.controller('RelationshipController',
 //Controller for adding new relationship
 .controller('AddRelationshipController', 
     function($scope, 
+            $rootScope,
             CurrentSelection,
             OperatorFactory,
             AttributesFactory,
@@ -305,7 +313,8 @@ trackerCapture.controller('RelationshipController',
     };    
     
     $scope.close = function () {
-      $modalInstance.close($scope.selectedTei.relationships ? $scope.selectedTei.relationships : []);
+        $modalInstance.close($scope.selectedTei.relationships ? $scope.selectedTei.relationships : []);
+        $rootScope.showAddRelationshipDiv = !$rootScope.showAddRelationshipDiv;
     };
     
     $scope.assignRelationship = function(relativeTei){
