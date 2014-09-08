@@ -439,6 +439,7 @@ Ext.onReady( function() {
 		var showRowTotals,
             showColTotals,
 			showSubTotals,
+			showDimensionLabels,
 			hideEmptyRows,
             aggregationType,
 			showHierarchy,
@@ -454,34 +455,36 @@ Ext.onReady( function() {
 			parameters,
 
 			comboboxWidth = 262,
+            comboBottomMargin = 1,
+            checkboxBottomMargin = 2,
 			window;
 
         showColTotals = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_col_totals,
-			style: 'margin-bottom:4px',
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 			checked: true
 		});
 
 		showRowTotals = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_row_totals,
-			style: 'margin-bottom:4px',
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 			checked: true
 		});
 
 		showSubTotals = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_subtotals,
-			style: 'margin-bottom:4px',
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 			checked: true
 		});
 
 		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.hide_empty_rows,
-			style: 'margin-bottom:4px'
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 		});
 
 		aggregationType = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:3px',
+			style: 'margin-top:3px; margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.aggregation_type,
@@ -506,12 +509,17 @@ Ext.onReady( function() {
 
 		showHierarchy = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_hierarchy,
-			style: 'margin-bottom:4px'
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
+		});
+
+		showDimensionLabels = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.show_dimension_labels,
+			style: 'margin-bottom:' + comboBottomMargin + 'px'
 		});
 
 		displayDensity = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:3px',
+			style: 'margin-top:5px; margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.display_density,
@@ -532,7 +540,7 @@ Ext.onReady( function() {
 
 		fontSize = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:3px',
+			style: 'margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.font_size,
@@ -554,7 +562,7 @@ Ext.onReady( function() {
 		digitGroupSeparator = Ext.create('Ext.form.field.ComboBox', {
 			labelStyle: 'color:#333',
 			cls: 'ns-combo',
-			style: 'margin-bottom:3px',
+			style: 'margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.digit_group_separator,
@@ -574,10 +582,11 @@ Ext.onReady( function() {
 
 		legendSet = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:3px',
+			style: 'margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.legend_set,
+			labelStyle: 'color:#333',
 			valueField: 'id',
 			displayField: 'name',
 			editable: false,
@@ -679,6 +688,7 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
+                showDimensionLabels,
 				displayDensity,
 				fontSize,
 				digitGroupSeparator,
@@ -702,7 +712,7 @@ Ext.onReady( function() {
 
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_options,
-			bodyStyle: 'background-color:#fff; padding:5px',
+			bodyStyle: 'background-color:#fff; padding:3px',
 			closeAction: 'hide',
 			autoShow: true,
 			modal: true,
@@ -713,6 +723,7 @@ Ext.onReady( function() {
 					showRowTotals: showRowTotals.getValue(),
                     showColTotals: showColTotals.getValue(),
 					showSubTotals: showSubTotals.getValue(),
+                    showDimensionLabels: showDimensionLabels.getValue(),
 					hideEmptyRows: hideEmptyRows.getValue(),
                     aggregationType: aggregationType.getValue(),
 					showHierarchy: showHierarchy.getValue(),
@@ -733,6 +744,7 @@ Ext.onReady( function() {
 				showRowTotals.setValue(Ext.isBoolean(layout.showRowTotals) ? layout.showRowTotals : true);
 				showColTotals.setValue(Ext.isBoolean(layout.showColTotals) ? layout.showColTotals : true);
 				showSubTotals.setValue(Ext.isBoolean(layout.showSubTotals) ? layout.showSubTotals : true);
+				showDimensionLabels.setValue(Ext.isBoolean(layout.showDimensionLabels) ? layout.showDimensionLabels : true);
 				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
                 aggregationType.setValue(Ext.isString(layout.aggregationType) ? layout.aggregationType : 'default');
 				showHierarchy.setValue(Ext.isBoolean(layout.showHierarchy) ? layout.showHierarchy : false);
@@ -751,7 +763,7 @@ Ext.onReady( function() {
 			items: [
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px; margin-left:2px',
+					style: 'margin-top:2px; margin-bottom:6px; margin-left:3px',
 					html: NS.i18n.data
 				},
 				data,
@@ -760,7 +772,7 @@ Ext.onReady( function() {
 				},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px; margin-left:2px',
+					style: 'margin-bottom:6px; margin-left:3px',
 					html: NS.i18n.organisation_units
 				},
 				organisationUnits,
@@ -769,12 +781,12 @@ Ext.onReady( function() {
 				},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px; margin-left:2px',
+					style: 'margin-bottom:6px; margin-left:3px',
 					html: NS.i18n.style
 				},
 				style,
 				{
-					bodyStyle: 'border:0 none; padding:4px'
+					bodyStyle: 'border:0 none; padding:3px'
 				},
 				{
 					bodyStyle: 'border:1px solid #d5d5d5; padding:5px; background-color:#f0f0f0',
@@ -829,6 +841,7 @@ Ext.onReady( function() {
 					w.showRowTotals = showRowTotals;
                     w.showColTotals = showColTotals;
 					w.showSubTotals = showSubTotals;
+                    w.showDimensionLabels = showDimensionLabels;
 					w.hideEmptyRows = hideEmptyRows;
                     w.aggregationType = aggregationType;
 					w.showHierarchy = showHierarchy;

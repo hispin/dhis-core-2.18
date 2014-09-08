@@ -195,6 +195,11 @@ public class ReportTable
      */
     private String aggregationType;
     
+    /**
+     * Indicates showing organisation unit hierarchy names.
+     */
+    private boolean showDimensionLabels;
+    
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -990,6 +995,20 @@ public class ReportTable
         this.showHierarchy = showHierarchy;
     }
 
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isShowDimensionLabels()
+    {
+        return showDimensionLabels;
+    }
+
+    public void setShowDimensionLabels( boolean showDimensionLabels )
+    {
+        this.showDimensionLabels = showDimensionLabels;
+    }
+
     // -------------------------------------------------------------------------
     // Get- and set-methods for transient properties
     // -------------------------------------------------------------------------
@@ -1062,6 +1081,8 @@ public class ReportTable
             displayDensity = reportTable.getDisplayDensity();
             fontSize = reportTable.getFontSize();
             legendSet = reportTable.getLegendSet();
+            showDimensionLabels = reportTable.isShowDimensionLabels();
+            hideEmptyRows = reportTable.isHideEmptyRows();
             
             columnDimensions.clear();
             columnDimensions.addAll( reportTable.getColumnDimensions() );
