@@ -218,9 +218,23 @@ executiondate = (executiondate + interval '1 year'),
 created = (created + interval '1 year'),
 lastupdated = (lastupdated + interval '1 year');
 
--- Replace first digit in invalid uid with letter a
+-- (Write) Replace first digit in invalid uid with letter a
 
 update organisationunit set uid = regexp_replace(uid,'\d','a') where uid SIMILAR TO '[0-9]%';
+
+-- (Write) Delete validation rules and clean up expressions
+
+delete from validationrule where name = 'abc';
+delete from expressiondataelement where expressionid not in (
+  select leftexpressionid from validationrule
+  union all
+  select rightexpressionid from validationrule
+);
+delete from expression where expressionid not in (
+  select leftexpressionid from validationrule
+  union all
+  select rightexpressionid from validationrule
+);
 
 -- (Write) Insert random org unit codes
 
