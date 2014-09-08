@@ -270,6 +270,7 @@ public abstract class AbstractEnrollmentService
         enrollment.setStatus( EnrollmentStatus.fromInt( programInstance.getStatus() ) );
         enrollment.setDateOfEnrollment( programInstance.getEnrollmentDate() );
         enrollment.setDateOfIncident( programInstance.getDateOfIncident() );
+        enrollment.setFollowup( programInstance.getFollowup() );
 
         List<TrackedEntityComment> comments = programInstance.getComments();
 
@@ -345,6 +346,7 @@ public abstract class AbstractEnrollmentService
         }
 
         updateAttributeValues( enrollment );
+        programInstance.setFollowup( enrollment.getFollowup() );
         programInstanceService.updateProgramInstance( programInstance );
         
         saveTrackedEntityComment( programInstance, enrollment );
@@ -404,6 +406,7 @@ public abstract class AbstractEnrollmentService
         programInstance.setEntityInstance( entityInstance );
         programInstance.setDateOfIncident( enrollment.getDateOfIncident() );
         programInstance.setEnrollmentDate( enrollment.getDateOfEnrollment() );
+        programInstance.setFollowup( enrollment.getFollowup() );
 
         if ( programInstance.getStatus() != enrollment.getStatus().getValue() )
         {
