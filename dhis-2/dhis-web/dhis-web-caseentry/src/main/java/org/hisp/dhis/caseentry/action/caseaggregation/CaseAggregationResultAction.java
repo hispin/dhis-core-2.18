@@ -165,7 +165,7 @@ public class CaseAggregationResultAction
         DataSet selectedDataSet = dataSetService.getDataSet( dataSetId );
 
         Collection<CaseAggregationCondition> aggregationConditions = aggregationConditionService
-            .getCaseAggregationConditions( selectedDataSet.getDataElements(), null, null , null );
+            .getCaseAggregationConditions( selectedDataSet.getDataElements(), null, null, null );
 
         // ---------------------------------------------------------------------
         // Get selected periods list
@@ -212,20 +212,14 @@ public class CaseAggregationResultAction
         // Aggregation
         // ---------------------------------------------------------------------
 
-        for ( CaseAggregationCondition condition : aggregationConditions )
+        if ( autoSave )
         {
-            for ( Period period : periods )
-            {
-                if ( autoSave )
-                {
-                    aggregationConditionService.insertAggregateValue( condition, orgunitIds, period );
-                }
-                else
-                {
-                    grids.add( aggregationConditionService.getAggregateValue( condition, orgunitIds, period, format,
-                        i18n ) );
-                }
-            }
+            aggregationConditionService.insertAggregateValue( aggregationConditions, orgunitIds, periods );
+        }
+        else
+        {
+            grids = aggregationConditionService.getAggregateValue( aggregationConditions, orgunitIds, periods, format,
+                i18n );
         }
         return SUCCESS;
     }
