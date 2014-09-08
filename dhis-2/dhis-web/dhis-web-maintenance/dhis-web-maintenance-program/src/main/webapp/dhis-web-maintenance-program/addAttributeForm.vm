@@ -79,6 +79,7 @@
 				<option value="trueOnly">$i18n.getString( "yes_only" )</option>
                 <option value="date">$i18n.getString( "date" )</option>
                 <option value="phoneNumber">$i18n.getString( "phone_number" )</option>
+                <option value="phoneNumber">$i18n.getString( "email" )</option>
                 <option value="trackerAssociate">$i18n.getString( "tracker_associate" )</option>
                 <option value="users">$i18n.getString( "users" )</option>
                 <option value="optionSet">$i18n.getString( "option_set" )</option>
