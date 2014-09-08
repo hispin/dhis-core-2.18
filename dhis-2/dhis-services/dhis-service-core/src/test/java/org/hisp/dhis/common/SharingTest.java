@@ -32,9 +32,11 @@ import com.google.common.collect.Sets;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.acl.AccessStringHelper;
+import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
@@ -76,6 +78,49 @@ public class SharingTest
     }
 
     @Test
+    public void getEqualToName()
+    {
+        DataElement dataElement = createDataElement( 'A' );
+        identifiableObjectManager.save( dataElement );
+
+        assertNotNull( identifiableObjectManager.getByName( DataElement.class, "DataElementA" ) );
+        assertNull( identifiableObjectManager.getByName( DataElement.class, "DataElementB" ) );
+        assertEquals( dataElement, identifiableObjectManager.getByName( DataElement.class, "DataElementA" ) );
+    }
+
+    @Test
+    public void getAllEqualToName()
+    {
+        OrganisationUnit organisationUnitA1 = createOrganisationUnit( 'A' );
+        organisationUnitA1.setCode( null );
+        identifiableObjectManager.save( organisationUnitA1 );
+
+        OrganisationUnit organisationUnitA2 = createOrganisationUnit( 'B' );
+        organisationUnitA2.setName( "OrganisationUnitA" );
+        organisationUnitA2.setCode( null );
+        identifiableObjectManager.save( organisationUnitA2 );
+
+        assertEquals( 2, identifiableObjectManager.getAllByName( OrganisationUnit.class, "OrganisationUnitA" ).size() );
+        assertEquals( 0, identifiableObjectManager.getAllByName( OrganisationUnit.class, "organisationunita" ).size() );
+    }
+
+    @Test
+    public void getAllEqualToNameIgnoreCase()
+    {
+        OrganisationUnit organisationUnitA1 = createOrganisationUnit( 'A' );
+        organisationUnitA1.setCode( null );
+        identifiableObjectManager.save( organisationUnitA1 );
+
+        OrganisationUnit organisationUnitA2 = createOrganisationUnit( 'B' );
+        organisationUnitA2.setName( "OrganisationUnitA" );
+        organisationUnitA2.setCode( null );
+        identifiableObjectManager.save( organisationUnitA2 );
+
+        assertEquals( 2, identifiableObjectManager.getAllByNameIgnoreCase( OrganisationUnit.class, "OrganisationUnitA" ).size() );
+        assertEquals( 2, identifiableObjectManager.getAllByNameIgnoreCase( OrganisationUnit.class, "organisationunita" ).size() );
+    }
+
+    @Test
     public void userIsCurrentIfNoUserSet()
     {
         User user = createUserAndInjectSecurityContext( true );
@@ -113,14 +158,14 @@ public class SharingTest
         assertFalse( AccessStringHelper.canWrite( dataElement.getPublicAccess() ) );
     }
 
-    @Test( expected = CreateAccessDeniedException.class )
+    @Test(expected = CreateAccessDeniedException.class)
     public void userDeniedCreateObject()
     {
         createUserAndInjectSecurityContext( false );
         identifiableObjectManager.save( createDataElement( 'A' ) );
     }
 
-    @Test( expected = DeleteAccessDeniedException.class )
+    @Test(expected = DeleteAccessDeniedException.class)
     public void userDeniedDeleteObject()
     {
         createUserAndInjectSecurityContext( false, "F_DATAELEMENT_PUBLIC_ADD", "F_USER_ADD" );
