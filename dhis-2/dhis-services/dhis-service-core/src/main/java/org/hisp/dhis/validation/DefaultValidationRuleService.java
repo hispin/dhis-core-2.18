@@ -53,8 +53,6 @@ import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
@@ -110,13 +108,6 @@ public class DefaultValidationRuleService
     public void setExpressionService( ExpressionService expressionService )
     {
         this.expressionService = expressionService;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     private PeriodService periodService;
@@ -242,17 +233,8 @@ public class DefaultValidationRuleService
         Collection<Period> periods = new ArrayList<>();
         periods.add( period );
 
-        Collection<ValidationRule> rules = null;
-        
-        if ( DataSet.TYPE_CUSTOM.equals( dataSet.getDataSetType() ) )
-        {
-            rules = getRulesForDataSet( dataSet );
-        }
-        else
-        {
-            rules = getValidationTypeRulesForDataElements( dataSet.getDataElements() );
-        }
-        
+        Collection<ValidationRule> rules = getValidationTypeRulesForDataElements( dataSet.getDataElements() );
+                
         log.info( "Using validation rules: " + rules.size() );
         
         Collection<OrganisationUnit> sources = new HashSet<>();
@@ -596,39 +578,6 @@ public class DefaultValidationRuleService
         }
 
         return rulesForDataElements;
-    }
-
-    /**
-     * Returns all validation rules which have data elements assigned to them
-     * which are members of the given data set.
-     * 
-     * @param dataSet the data set
-     * @return all validation rules which have data elements assigned to them
-     *         which are members of the given data set
-     */
-    private Collection<ValidationRule> getRulesForDataSet( DataSet dataSet )
-    {
-        Set<ValidationRule> rulesForDataSet = new HashSet<>();
-
-        Set<DataElementOperand> operands = dataEntryFormService.getOperandsInDataEntryForm( dataSet );
-
-        Set<DataElementOperand> validationRuleOperands = new HashSet<>();
-
-        for ( ValidationRule rule : getAllValidationRules() )
-        {
-            validationRuleOperands.clear();
-            validationRuleOperands.addAll( expressionService.getOperandsInExpression(
-                rule.getLeftSide().getExpression() ) );
-            validationRuleOperands.addAll( expressionService.getOperandsInExpression(
-                rule.getRightSide().getExpression() ) );
-
-            if ( operands.containsAll( validationRuleOperands ) )
-            {
-                rulesForDataSet.add( rule );
-            }
-        }
-
-        return rulesForDataSet;
     }
     
     /**
