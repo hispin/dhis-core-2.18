@@ -173,6 +173,9 @@ body.x-windows {
 .align-left {
 	text-align: left !important;
 }
+.align-right {
+	text-align: right !important;
+}
 
 /*----------------------------------------------------------------------------
  * Pivot
@@ -214,9 +217,12 @@ table.pivot {
 	background-color: #adb8c9;
 }
 
-.pivot-dim-empty {
+.pivot-dim-label {
+	background-color: #f7f9fD;
+	white-space: nowrap;
+}
+.pivot-empty {
 	background-color: #dae6f8;
-	text-align: center;
 }
 
 .pivot-value {

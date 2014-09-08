@@ -178,6 +178,8 @@
 
     <property name="showHierarchy" />
 
+    <property name="showDimensionLabels" />
+
     <!-- Access properties -->
     <property name="externalAccess" />
 

@@ -3981,7 +3981,7 @@ Ext.onReady( function() {
             store: periodTypeStore,
             periodOffset: 0,
             listeners: {
-                select: function(cmp) {
+                select: function() {
                     periodType.periodOffset = 0;
                     onPeriodTypeSelect();
                 }
