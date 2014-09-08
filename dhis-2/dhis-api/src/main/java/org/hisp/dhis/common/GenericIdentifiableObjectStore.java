@@ -140,6 +140,13 @@ public interface GenericIdentifiableObjectStore<T>
     List<T> getAllLikeShortName( String shortName );
 
     /**
+     * The returned list is ordered by the last updated property descending.
+     *
+     * @return List of objects.
+     */
+    List<T> getAllOrderedLastUpdated();
+
+    /**
      * Retrieves the objects determined by the given first result and max result.
      * The returned list is ordered by the last updated property descending.
      *

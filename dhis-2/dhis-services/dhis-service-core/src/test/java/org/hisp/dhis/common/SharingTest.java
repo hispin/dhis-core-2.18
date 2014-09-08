@@ -32,7 +32,6 @@ import com.google.common.collect.Sets;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.acl.AccessStringHelper;
-import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
@@ -75,6 +74,31 @@ public class SharingTest
         assertNotNull( dataElement.getPublicAccess() );
         assertFalse( AccessStringHelper.canRead( dataElement.getPublicAccess() ) );
         assertFalse( AccessStringHelper.canWrite( dataElement.getPublicAccess() ) );
+    }
+
+    @Test
+    public void getCount()
+    {
+        identifiableObjectManager.save( createDataElement( 'A' ) );
+        identifiableObjectManager.save( createDataElement( 'B' ) );
+        identifiableObjectManager.save( createDataElement( 'C' ) );
+        identifiableObjectManager.save( createDataElement( 'D' ) );
+
+        assertEquals( 4, identifiableObjectManager.getCount( DataElement.class ) );
+    }
+
+    @Test
+    public void getCountByName()
+    {
+        identifiableObjectManager.save( createDataElement( 'A' ) );
+        identifiableObjectManager.save( createDataElement( 'B' ) );
+        identifiableObjectManager.save( createDataElement( 'C' ) );
+        identifiableObjectManager.save( createDataElement( 'D' ) );
+
+        assertEquals( 1, identifiableObjectManager.getCountByName( DataElement.class, "DataElementA" ) );
+        assertEquals( 1, identifiableObjectManager.getCountByName( DataElement.class, "DataElementB" ) );
+        assertEquals( 1, identifiableObjectManager.getCountByName( DataElement.class, "DataElementC" ) );
+        assertEquals( 1, identifiableObjectManager.getCountByName( DataElement.class, "DataElementD" ) );
     }
 
     @Test
@@ -121,6 +145,64 @@ public class SharingTest
     }
 
     @Test
+    public void getAllLikeName()
+    {
+        identifiableObjectManager.save( createDataElement( 'A' ) );
+        identifiableObjectManager.save( createDataElement( 'B' ) );
+        identifiableObjectManager.save( createDataElement( 'C' ) );
+        identifiableObjectManager.save( createDataElement( 'D' ) );
+
+        assertEquals( 4, identifiableObjectManager.getLikeName( DataElement.class, "DataElement" ).size() );
+        assertEquals( 4, identifiableObjectManager.getLikeName( DataElement.class, "dataElement" ).size() );
+    }
+
+    @Test
+    public void getAllLikeShortName()
+    {
+        identifiableObjectManager.save( createDataElement( 'A' ) );
+        identifiableObjectManager.save( createDataElement( 'B' ) );
+        identifiableObjectManager.save( createDataElement( 'C' ) );
+        identifiableObjectManager.save( createDataElement( 'D' ) );
+
+        assertEquals( 4, identifiableObjectManager.getLikeShortName( DataElement.class, "DataElementShort" ).size() );
+        assertEquals( 4, identifiableObjectManager.getLikeShortName( DataElement.class, "dataElementSHORT" ).size() );
+    }
+
+    @Test
+    public void getAllOrderedName()
+    {
+        identifiableObjectManager.save( createDataElement( 'D' ) );
+        identifiableObjectManager.save( createDataElement( 'B' ) );
+        identifiableObjectManager.save( createDataElement( 'C' ) );
+        identifiableObjectManager.save( createDataElement( 'A' ) );
+
+        List<DataElement> dataElements = new ArrayList<>( identifiableObjectManager.getAllSorted( DataElement.class ) );
+
+        assertEquals( 4, dataElements.size() );
+        assertEquals( "DataElementA", dataElements.get( 0 ).getName() );
+        assertEquals( "DataElementB", dataElements.get( 1 ).getName() );
+        assertEquals( "DataElementC", dataElements.get( 2 ).getName() );
+        assertEquals( "DataElementD", dataElements.get( 3 ).getName() );
+    }
+
+    @Test
+    public void getAllOrderedLastUpdated()
+    {
+        identifiableObjectManager.save( createDataElement( 'A' ) );
+        identifiableObjectManager.save( createDataElement( 'B' ) );
+        identifiableObjectManager.save( createDataElement( 'C' ) );
+        identifiableObjectManager.save( createDataElement( 'D' ) );
+
+        List<DataElement> dataElements = new ArrayList<>( identifiableObjectManager.getAllSortedByLastUpdated( DataElement.class ) );
+
+        assertEquals( 4, dataElements.size() );
+        assertEquals( "DataElementD", dataElements.get( 0 ).getName() );
+        assertEquals( "DataElementC", dataElements.get( 1 ).getName() );
+        assertEquals( "DataElementB", dataElements.get( 2 ).getName() );
+        assertEquals( "DataElementA", dataElements.get( 3 ).getName() );
+    }
+
+    @Test
     public void userIsCurrentIfNoUserSet()
     {
         User user = createUserAndInjectSecurityContext( true );
@@ -158,14 +240,14 @@ public class SharingTest
         assertFalse( AccessStringHelper.canWrite( dataElement.getPublicAccess() ) );
     }
 
-    @Test(expected = CreateAccessDeniedException.class)
+    @Test( expected = CreateAccessDeniedException.class )
     public void userDeniedCreateObject()
     {
         createUserAndInjectSecurityContext( false );
         identifiableObjectManager.save( createDataElement( 'A' ) );
     }
 
-    @Test(expected = DeleteAccessDeniedException.class)
+    @Test( expected = DeleteAccessDeniedException.class )
     public void userDeniedDeleteObject()
     {
         createUserAndInjectSecurityContext( false, "F_DATAELEMENT_PUBLIC_ADD", "F_USER_ADD" );
