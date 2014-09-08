@@ -179,128 +179,36 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     @SuppressWarnings( "unchecked" )
     public List<T> getAllEqName( String name )
     {
-        Query query = sharingEnabled() ? getQueryAllEqNameAcl( name ) : getQueryAllEqName( name );
-
-        return query.list();
-    }
-
-    private Query getQueryAllEqNameAcl( String name )
-    {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where name = :name and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " ) order by c.name";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setString( "name", name );
-
-        return query;
-    }
-
-    private Query getQueryAllEqName( String name )
-    {
-        Query query = getQuery( "from " + clazz.getName() + " c where name = :name order by c.name" );
-        query.setString( "name", name );
-
-        return query;
+        return getSharingCriteria()
+            .add( Restrictions.eq( "name", name ) )
+            .list();
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
     public List<T> getAllEqNameIgnoreCase( String name )
     {
-        Query query = sharingEnabled() ? getQueryAllEqNameAclIgnoreCase( name ) : getQueryAllEqNameIgnoreCase( name );
-
-        return query.list();
-    }
-
-    private Query getQueryAllEqNameAclIgnoreCase( String name )
-    {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where lower(name) = :name and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " ) order by c.name";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setString( "name", name.toLowerCase() );
-
-        return query;
-    }
-
-    private Query getQueryAllEqNameIgnoreCase( String name )
-    {
-        Query query = getQuery( "from " + clazz.getName() + " c where lower(name) = :name order by c.name" );
-        query.setString( "name", name.toLowerCase() );
-
-        return query;
+        return getSharingCriteria()
+            .add( Restrictions.eq( "name", name ).ignoreCase() )
+            .list();
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
     public List<T> getAllEqShortName( String shortName )
     {
-        Query query = sharingEnabled() ? getQueryAllEqShortNameAcl( shortName ) : getQueryAllEqShortName( shortName );
-
-        return query.list();
-    }
-
-    private Query getQueryAllEqShortNameAcl( String shortName )
-    {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where shortName = :shortName and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " ) order by c.shortName";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setString( "shortName", shortName );
-
-        return query;
-    }
-
-    private Query getQueryAllEqShortName( String shortName )
-    {
-        Query query = getQuery( "from " + clazz.getName() + " c where shortName = :shortName order by c.shortName" );
-        query.setString( "shortName", shortName );
-
-        return query;
+        return getSharingCriteria()
+            .add( Restrictions.eq( "shortName", shortName ) )
+            .list();
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
     public List<T> getAllEqShortNameIgnoreCase( String shortName )
     {
-        Query query = sharingEnabled() ? getQueryAllEqShortNameAclIgnoreCase( shortName ) : getQueryAllEqShortNameIgnoreCase( shortName );
-
-        return query.list();
-    }
-
-    private Query getQueryAllEqShortNameAclIgnoreCase( String shortName )
-    {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where lower(shortName) = :shortName and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " ) order by c.shortName";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setString( "shortName", shortName.toLowerCase() );
-
-        return query;
-    }
-
-    private Query getQueryAllEqShortNameIgnoreCase( String shortName )
-    {
-        Query query = getQuery( "from " + clazz.getName() + " c where lower(shortName) = :shortName order by c.shortName" );
-        query.setString( "shortName", shortName.toLowerCase() );
-
-        return query;
+        return getSharingCriteria()
+            .add( Restrictions.eq( "shortName", shortName ).ignoreCase() )
+            .list();
     }
 
     @Override
@@ -403,14 +311,9 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     @SuppressWarnings( "unchecked" )
     public List<T> getAllOrderedName( int first, int max )
     {
-        // return getSharingCriteria().setFirstResult( first ).setMaxResults( max ).list();
-
-        Query query = sharingEnabled() ? getQueryAllOrderedNameAcl() : getQueryAllOrderedName();
-
-        query.setFirstResult( first );
-        query.setMaxResults( max );
-
-        return query.list();
+        return getSharingCriteria()
+            .setFirstResult( first ).setMaxResults( max )
+            .list();
     }
 
     @Override

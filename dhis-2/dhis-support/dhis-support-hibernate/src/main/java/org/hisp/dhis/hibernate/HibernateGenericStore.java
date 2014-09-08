@@ -38,6 +38,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
@@ -391,22 +392,7 @@ public class HibernateGenericStore<T>
     @SuppressWarnings( "unchecked" )
     public final List<T> getAll()
     {
-        Query query = sharingEnabled() ? getQueryAllAcl() : getQueryAll();
-
-        return query.list();
-    }
-
-    private Query getQueryAllAcl()
-    {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-
-        return query;
+        return getSharingCriteria().list();
     }
 
     /**
@@ -455,28 +441,7 @@ public class HibernateGenericStore<T>
     @Override
     public int getCount()
     {
-        // return ((Number) getSharingCriteria().setProjection( Projections.countDistinct( "id" ) ).uniqueResult()).intValue();
-
-        Query query = sharingEnabled() ? getQueryCountAcl() : getQueryCount();
-        return ((Long) query.uniqueResult()).intValue();
-    }
-
-    private Query getQueryCountAcl()
-    {
-        String hql = "select count(distinct c) from " + clazz.getName() + " c"
-            + " where c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-
-        return query;
-    }
-
-    private Query getQueryCount()
-    {
-        return getQuery( "select count(distinct c) from " + clazz.getName() + " c" );
+        return ((Number) getSharingCriteria().setProjection( Projections.countDistinct( "id" ) ).uniqueResult()).intValue();
     }
 
     //----------------------------------------------------------------------------------------------------------------
