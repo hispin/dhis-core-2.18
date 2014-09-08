@@ -189,7 +189,7 @@ public class HibernateGenericStore<T>
 
     protected final Criteria getSharingCriteria( User user, String access )
     {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( getClazz(), "c" ).setCacheable( false );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( getClazz(), "c" ).setCacheable( cacheable );
 
         if ( !sharingEnabled() )
         {
@@ -431,11 +431,6 @@ public class HibernateGenericStore<T>
         }
 
         return query;
-    }
-
-    private Query getQueryAll()
-    {
-        return getQuery( "from " + clazz.getName() + " c" );
     }
 
     @Override

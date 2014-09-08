@@ -31,6 +31,7 @@ package org.hisp.dhis.common.hibernate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -181,6 +182,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     {
         return getSharingCriteria()
             .add( Restrictions.eq( "name", name ) )
+            .addOrder( Order.asc( "name" ) )
             .list();
     }
 
@@ -190,6 +192,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     {
         return getSharingCriteria()
             .add( Restrictions.eq( "name", name ).ignoreCase() )
+            .addOrder( Order.asc( "name" ) )
             .list();
     }
 
@@ -199,6 +202,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     {
         return getSharingCriteria()
             .add( Restrictions.eq( "shortName", shortName ) )
+            .addOrder( Order.asc( "shortName" ) )
             .list();
     }
 
@@ -208,6 +212,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     {
         return getSharingCriteria()
             .add( Restrictions.eq( "shortName", shortName ).ignoreCase() )
+            .addOrder( Order.asc( "shortName" ) )
             .list();
     }
 
@@ -215,32 +220,10 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     @SuppressWarnings( "unchecked" )
     public List<T> getAllLikeName( String name )
     {
-        Query query = sharingEnabled() ? getQueryAllLikeNameAcl( name ) : getQueryAllLikeName( name );
-
-        return query.list();
-    }
-
-    private Query getQueryAllLikeNameAcl( String name )
-    {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where lower(name) like :name and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " ) order by c.name";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setString( "name", "%" + name.toLowerCase() + "%" );
-
-        return query;
-    }
-
-    private Query getQueryAllLikeName( String name )
-    {
-        Query query = getQuery( "from " + clazz.getName() + " c where lower(name) like :name order by c.name" );
-        query.setString( "name", "%" + name.toLowerCase() + "%" );
-
-        return query;
+        return getSharingCriteria()
+            .add( Restrictions.like( "name", "%" + name + "%" ).ignoreCase() )
+            .addOrder( Order.asc( "name" ) )
+            .list();
     }
 
     @Override
@@ -249,62 +232,22 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     {
         if ( NameableObject.class.isAssignableFrom( clazz ) )
         {
-            Query query = sharingEnabled() ? getQueryAllLikeShortNameAcl( shortName ) : getQueryAllLikeShortName( shortName );
-            return query.list();
+            return getSharingCriteria()
+                .add( Restrictions.like( "shortName", "%" + shortName + "%" ).ignoreCase() )
+                .addOrder( Order.asc( "shortName" ) )
+                .list();
         }
 
         return getAllLikeName( shortName ); // Fallback to name
-    }
-
-    private Query getQueryAllLikeShortNameAcl( String shortName )
-    {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where lower(shortName) like :shortName and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " ) order by c.shortName";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setString( "shortName", "%" + shortName.toLowerCase() + "%" );
-
-        return query;
-    }
-
-    private Query getQueryAllLikeShortName( String shortName )
-    {
-        Query query = getQuery( "from " + clazz.getName() + " c where lower(shortName) like :shortName order by c.shortName" );
-        query.setString( "shortName", "%" + shortName.toLowerCase() + "%" );
-
-        return query;
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
     public List<T> getAllOrderedName()
     {
-        Query query = sharingEnabled() ? getQueryAllOrderedNameAcl() : getQueryAllOrderedName();
-
-        return query.list();
-    }
-
-    private Query getQueryAllOrderedNameAcl()
-    {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " order by c.name";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-
-        return query;
-    }
-
-    private Query getQueryAllOrderedName()
-    {
-        return getQuery( "from " + clazz.getName() + " c order by c.name" );
+        return getSharingCriteria()
+            .addOrder( Order.asc( "name" ) )
+            .list();
     }
 
     @Override
@@ -312,7 +255,17 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     public List<T> getAllOrderedName( int first, int max )
     {
         return getSharingCriteria()
+            .addOrder( Order.asc( "name" ) )
             .setFirstResult( first ).setMaxResults( max )
+            .list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public List<T> getAllOrderedLastUpdated()
+    {
+        return getSharingCriteria()
+            .addOrder( Order.desc( "lastUpdated" ) )
             .list();
     }
 
@@ -320,31 +273,10 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     @SuppressWarnings( "unchecked" )
     public List<T> getAllOrderedLastUpdated( int first, int max )
     {
-        Query query = sharingEnabled() ? getQueryAllOrderedLastUpdatedAcl() : getQueryAllOrderedLastUpdated();
-
-        query.setFirstResult( first );
-        query.setMaxResults( max );
-
-        return query.list();
-    }
-
-    private Query getQueryAllOrderedLastUpdatedAcl()
-    {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " order by c.lastUpdated desc";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-
-        return query;
-    }
-
-    private Query getQueryAllOrderedLastUpdated()
-    {
-        return getQuery( "from " + clazz.getName() + " c order by lastUpdated desc" );
+        return getSharingCriteria()
+            .addOrder( Order.desc( "lastUpdated" ) )
+            .setFirstResult( first ).setMaxResults( max )
+            .list();
     }
 
     @Override
