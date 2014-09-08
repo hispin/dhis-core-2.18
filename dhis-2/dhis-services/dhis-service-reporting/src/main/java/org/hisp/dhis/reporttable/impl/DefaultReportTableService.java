@@ -214,7 +214,7 @@ public class DefaultReportTableService
 
     public List<ReportTable> getReportTablesBetweenByName( String name, int first, int max )
     {
-        return reportTableStore.getAllLikeNameOrderedName( name, first, max );
+        return reportTableStore.getAllLikeName( name, first, max );
     }
 
     public int getReportTableCount()

@@ -105,7 +105,7 @@ public class DefaultDocumentService
 
     public List<Document> getDocumentsBetweenByName( String name, int first, int max )
     {
-        return documentStore.getAllLikeNameOrderedName( name, first, max );
+        return documentStore.getAllLikeName( name, first, max );
     }
     
     public List<Document> getDocumentsByUid( List<String> uids )

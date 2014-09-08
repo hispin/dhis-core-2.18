@@ -436,7 +436,9 @@ public class HibernateGenericStore<T>
     @Override
     public int getCount()
     {
-        return ((Number) getSharingCriteria().setProjection( Projections.countDistinct( "id" ) ).uniqueResult()).intValue();
+        return ((Number) getSharingCriteria()
+            .setProjection( Projections.countDistinct( "id" ) )
+            .uniqueResult()).intValue();
     }
 
     //----------------------------------------------------------------------------------------------------------------

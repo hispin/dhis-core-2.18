@@ -131,6 +131,6 @@ public class DefaultDataDictionaryService
 
     public List<DataDictionary> getDataDictionariesBetweenByName( String name, int first, int max )
     {
-        return new ArrayList<>( i18n( i18nService, dataDictionaryStore.getAllLikeNameOrderedName( name, first, max ) ) );
+        return new ArrayList<>( i18n( i18nService, dataDictionaryStore.getAllLikeName( name, first, max ) ) );
     }
 }

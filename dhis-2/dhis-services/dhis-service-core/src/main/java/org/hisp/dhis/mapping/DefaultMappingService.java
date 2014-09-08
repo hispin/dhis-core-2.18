@@ -277,7 +277,7 @@ public class DefaultMappingService
 
     public List<Map> getMapsBetweenLikeName( String name, int first, int max )
     {
-        return mapStore.getAllLikeNameOrderedName( name, first, max );
+        return mapStore.getAllLikeName( name, first, max );
     }
 
     // -------------------------------------------------------------------------
@@ -374,7 +374,7 @@ public class DefaultMappingService
 
     public Collection<MapView> getMapViewsBetweenByName( String name, int first, int max )
     {
-        return mapViewStore.getAllLikeNameOrderedName( name, first, max );
+        return mapViewStore.getAllLikeName( name, first, max );
     }
 
     // -------------------------------------------------------------------------

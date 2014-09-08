@@ -315,7 +315,7 @@ public class DefaultReportService
     @Override
     public List<Report> getReportsBetweenByName( String name, int first, int max )
     {
-        return reportStore.getAllLikeNameOrderedName( name, first, max );
+        return reportStore.getAllLikeName( name, first, max );
     }
 
     public List<Report> getReportByName( String name )

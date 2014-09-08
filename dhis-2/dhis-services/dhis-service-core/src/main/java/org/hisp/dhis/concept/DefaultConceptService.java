@@ -114,6 +114,6 @@ public class DefaultConceptService
     @Override
     public Collection<Concept> getConceptsBetweenByName( String name, int first, int max )
     {
-        return conceptStore.getAllLikeNameOrderedName( name, first, max );
+        return conceptStore.getAllLikeName( name, first, max );
     }
 }

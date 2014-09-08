@@ -117,7 +117,7 @@ public class DefaultTrackedEntityAttributeGroupService
     @Override
     public Collection<TrackedEntityAttributeGroup> getTrackedEntityAttributeGroupsBetweenByName( String name, int min, int max )
     {
-        return attributeGroupStore.getAllLikeNameOrderedName( name, min, max );
+        return attributeGroupStore.getAllLikeName( name, min, max );
     }
 
     @Override

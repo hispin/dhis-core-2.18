@@ -121,7 +121,7 @@ public class DefaultOptionService
 
     public Collection<OptionSet> getOptionSetsBetweenByName( String name, int first, int max )
     {
-        return new HashSet<>( i18n( i18nService, optionSetStore.getAllLikeNameOrderedName( name, first, max ) ) );
+        return new HashSet<>( i18n( i18nService, optionSetStore.getAllLikeName( name, first, max ) ) );
     }
 
     public Collection<OptionSet> getOptionSetsBetween( int first, int max )

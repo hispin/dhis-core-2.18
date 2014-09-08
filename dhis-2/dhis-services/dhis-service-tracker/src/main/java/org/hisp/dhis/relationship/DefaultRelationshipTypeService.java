@@ -110,7 +110,7 @@ public class DefaultRelationshipTypeService
     @Override
     public Collection<? extends RelationshipType> getRelationshipTypesBetweenByName( String name, int min, int max )
     {
-        return relationshipTypeStore.getAllLikeNameOrderedName( name, min, max );
+        return relationshipTypeStore.getAllLikeName( name, min, max );
     }
 
     @Override

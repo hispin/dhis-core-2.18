@@ -223,7 +223,7 @@ public class DefaultUserService
     @Override
     public List<User> getAllUsersBetweenByName( String name, int first, int max )
     {
-        return userStore.getAllLikeNameOrderedName( name, first, max );
+        return userStore.getAllLikeName( name, first, max );
     }
 
     @Override
@@ -317,7 +317,7 @@ public class DefaultUserService
             users.add( uidUser );
         }
 
-        users.addAll( userStore.getAllLikeNameOrderedName( query, 0, 1000 ) ); //TODO
+        users.addAll( userStore.getAllLikeName( query, 0, 1000 ) ); //TODO
 
         return users;
     }
@@ -418,7 +418,7 @@ public class DefaultUserService
 
     public Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max )
     {
-        return userAuthorityGroupStore.getAllLikeNameOrderedName( name, first, max );
+        return userAuthorityGroupStore.getAllLikeName( name, first, max );
     }
 
     public int getUserRoleCount()

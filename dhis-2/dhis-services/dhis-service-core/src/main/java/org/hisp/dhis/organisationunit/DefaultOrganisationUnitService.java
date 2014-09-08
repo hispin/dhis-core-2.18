@@ -643,7 +643,7 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitsBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, organisationUnitStore.getAllLikeNameOrderedName( name, first, max ) );
+        return i18n( i18nService, organisationUnitStore.getAllLikeName( name, first, max ) );
     }
 
     @Override

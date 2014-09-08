@@ -256,7 +256,7 @@ public class DefaultDataElementCategoryService
     @Override
     public Collection<DataElementCategory> getDataElementCategoryBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, categoryStore.getAllLikeNameOrderedName( name, first, max ) );
+        return i18n( i18nService, categoryStore.getAllLikeName( name, first, max ) );
     }
 
     public Collection<DataElementCategory> getDataElementCategoriesBetween( int first, int max )
@@ -266,7 +266,7 @@ public class DefaultDataElementCategoryService
 
     public Collection<DataElementCategory> getDataElementCategoriesBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, categoryStore.getAllLikeNameOrderedName( name, first, max ) );
+        return i18n( i18nService, categoryStore.getAllLikeName( name, first, max ) );
     }
 
     public int getDataElementCategoryCount()
@@ -352,7 +352,7 @@ public class DefaultDataElementCategoryService
     public Collection<DataElementCategoryOption> getDataElementCategoryOptionsBetweenByName( String name, int first,
         int max )
     {
-        return i18n( i18nService, categoryOptionStore.getAllLikeNameOrderedName( name, first, max ) );
+        return i18n( i18nService, categoryOptionStore.getAllLikeName( name, first, max ) );
     }
 
     @Override
@@ -449,7 +449,7 @@ public class DefaultDataElementCategoryService
     public Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetweenByName( String name, int first,
         int max )
     {
-        return i18n( i18nService, categoryComboStore.getAllLikeNameOrderedName( name, first, max ) );
+        return i18n( i18nService, categoryComboStore.getAllLikeName( name, first, max ) );
     }
 
     public Collection<DataElementCategoryCombo> getDisaggregationCategoryCombos()
@@ -815,7 +815,7 @@ public class DefaultDataElementCategoryService
 
     public Collection<CategoryOptionGroup> getCategoryOptionGroupsBetweenByName( int first, int max, String name )
     {
-        return categoryOptionGroupStore.getAllLikeNameOrderedName( name, first, max );
+        return categoryOptionGroupStore.getAllLikeName( name, first, max );
     }
 
     public Collection<CategoryOptionGroup> getAllCategoryOptionGroups()
@@ -902,7 +902,7 @@ public class DefaultDataElementCategoryService
 
     public Collection<CategoryOptionGroupSet> getCategoryOptionGroupSetsBetweenByName( int first, int max, String name )
     {
-        return categoryOptionGroupSetStore.getAllLikeNameOrderedName( name, first, max );
+        return categoryOptionGroupSetStore.getAllLikeName( name, first, max );
     }
 
     public Collection<CategoryOptionGroupSet> getAllCategoryOptionGroupSets()

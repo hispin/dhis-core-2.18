@@ -137,6 +137,6 @@ public class DefaultConstantService
 
     public Collection<Constant> getConstantsBetweenByName( String name, int first, int max )
     {
-        return constantStore.getAllLikeNameOrderedName( name, first, max );
+        return constantStore.getAllLikeName( name, first, max );
     }
 }

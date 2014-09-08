@@ -885,7 +885,7 @@ public class DefaultChartService
 
     public List<Chart> getChartsBetweenByName( String name, int first, int max )
     {
-        return chartStore.getAllLikeNameOrderedName( name, first, max );
+        return chartStore.getAllLikeName( name, first, max );
     }
 
     public Collection<Chart> getChartsByUser( User user )

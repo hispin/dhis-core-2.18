@@ -183,7 +183,7 @@ public class DefaultProgramService
     @Override
     public Collection<Program> getProgramBetweenByName( String name, int min, int max )
     {
-        return i18n( i18nService, programStore.getAllLikeNameOrderedName( name, min, max ));
+        return i18n( i18nService, programStore.getAllLikeName( name, min, max ));
     }
 
     @Override

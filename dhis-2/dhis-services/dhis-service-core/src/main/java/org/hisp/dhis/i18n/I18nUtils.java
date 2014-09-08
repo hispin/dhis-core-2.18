@@ -84,7 +84,7 @@ public class I18nUtils
         I18nService i18nService, GenericIdentifiableObjectStore<T> store, String name, int first, int max )
     {
         return i18nService.currentLocaleIsBase() ?
-            i18n( i18nService, store.getAllLikeNameOrderedName( name, first, max ) ) :
+            i18n( i18nService, store.getAllLikeName( name, first, max ) ) :
             Paging.getObjectsBetweenByName( i18n( i18nService, store.getAll() ), name, first, max );
     }
     

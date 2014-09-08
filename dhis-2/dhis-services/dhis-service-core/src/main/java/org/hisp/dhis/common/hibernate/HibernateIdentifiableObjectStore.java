@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -228,6 +229,18 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
 
     @Override
     @SuppressWarnings( "unchecked" )
+    public List<T> getAllLikeName( String name, int first, int max )
+    {
+        return getSharingCriteria()
+            .add( Restrictions.like( "name", "%" + name + "%" ).ignoreCase() )
+            .addOrder( Order.asc( "name" ) )
+            .setFirstResult( first )
+            .setMaxResults( max )
+            .list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllLikeShortName( String shortName )
     {
         if ( NameableObject.class.isAssignableFrom( clazz ) )
@@ -280,69 +293,21 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
-    public List<T> getAllLikeNameOrderedName( String name, int first, int max )
+    public int getCountLikeName( String name )
     {
-        Query query = sharingEnabled() ? getQueryAllLikeNameOrderedNameAcl( name ) : getQueryAllLikeNameOrderedName( name );
-
-        query.setFirstResult( first );
-        query.setMaxResults( max );
-
-        return query.list();
-    }
-
-    private Query getQueryAllLikeNameOrderedNameAcl( String name )
-    {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where lower(c.name) like :name and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " ) order by c.name";
-
-        Query query = getQuery( hql );
-        query.setString( "name", "%" + name.toLowerCase() + "%" );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-
-        return query;
-    }
-
-    private Query getQueryAllLikeNameOrderedName( String name )
-    {
-        Query query = getQuery( "from " + clazz.getName() + " c where lower(name) like :name order by name" );
-        query.setString( "name", "%" + name.toLowerCase() + "%" );
-
-        return query;
+        return ((Number) getSharingCriteria()
+            .add( Restrictions.like( "name", "%" + name + "%" ).ignoreCase() )
+            .setProjection( Projections.countDistinct( "id" ) )
+            .uniqueResult()).intValue();
     }
 
     @Override
-    public int getCountLikeName( String name )
+    public int getCountLikeShortName( String shortName )
     {
-        Query query = sharingEnabled() ? getQueryCountLikeNameAcl( name ) : getQueryCountLikeName( name );
-
-        return ((Long) query.uniqueResult()).intValue();
-    }
-
-    private Query getQueryCountLikeNameAcl( String name )
-    {
-        String hql = "select count(distinct c) from " + clazz.getName() + " c"
-            + " where lower(name) like :name and (c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " )";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setString( "name", "%" + name.toLowerCase() + "%" );
-
-        return query;
-    }
-
-    private Query getQueryCountLikeName( String name )
-    {
-        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where lower(name) like :name" );
-        query.setString( "name", "%" + name.toLowerCase() + "%" );
-
-        return query;
+        return ((Number) getSharingCriteria()
+            .add( Restrictions.like( "shortName", "%" + shortName + "%" ).ignoreCase() )
+            .setProjection( Projections.countDistinct( "id" ) )
+            .uniqueResult()).intValue();
     }
 
     @Override
