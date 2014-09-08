@@ -45,6 +45,14 @@ public interface SecurityService
      * @return true if the invitation was sent, otherwise false.
      */
     boolean prepareUserForInvite( User user );
+    
+    /**
+     * Validates whether a restore is allowed.
+     * 
+     * @param credentials the credentials for the user to send restore message.
+     * @param restoreOptions restore options, including type of restore.
+     */
+    boolean validateRestore( UserCredentials credentials, RestoreOptions restoreOptions );
 
     /**
      * Invokes the initRestore method and dispatches email messages with
