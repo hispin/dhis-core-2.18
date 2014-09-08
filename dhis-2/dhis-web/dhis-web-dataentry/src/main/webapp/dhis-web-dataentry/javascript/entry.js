@@ -56,7 +56,7 @@ dhis2.de.updateIndicators = function()
         
         if ( isDefined( formula ) )
         {        
-	        var expression = generateExpression( formula );
+	        var expression = dhis2.de.generateExpression( formula );
 	
 	        if ( expression )
 	        {
@@ -118,7 +118,7 @@ dhis2.de.getFieldValue = function( de, coc )
  * Parses the expression and substitutes the operand identifiers with the value
  * of the corresponding input entry field.
  */
-function generateExpression( expression )
+dhis2.de.generateExpression = function( expression )
 {
     var matcher = expression.match( FORMULA_PATTERN );
 
@@ -187,35 +187,35 @@ function saveVal( dataElementId, optionComboId, fieldId )
         {
             if ( value.length > 255 )
             {
-                return alertField( fieldId, i18n_value_too_long + '\n\n' + dataElementName );
+                return dhis2.de.alertField( fieldId, i18n_value_too_long + '\n\n' + dataElementName );
             }
             if ( type == 'int' && !dhis2.validation.isInt( value ) )
             {
-                return alertField( fieldId, i18n_value_must_integer + '\n\n' + dataElementName );
+                return dhis2.de.alertField( fieldId, i18n_value_must_integer + '\n\n' + dataElementName );
             }
             if ( type == 'number' && !dhis2.validation.isNumber( value ) )
             {
-                return alertField( fieldId, i18n_value_must_number + '\n\n' + dataElementName );
+                return dhis2.de.alertField( fieldId, i18n_value_must_number + '\n\n' + dataElementName );
             }
             if ( type == 'posInt' && !dhis2.validation.isPositiveInt( value ) )
             {
-                return alertField( fieldId, i18n_value_must_positive_integer + '\n\n' + dataElementName );
+                return dhis2.de.alertField( fieldId, i18n_value_must_positive_integer + '\n\n' + dataElementName );
             }
             if ( type == 'negInt' && !dhis2.validation.isNegativeInt( value ) )
             {
-                return alertField( fieldId, i18n_value_must_negative_integer + '\n\n' + dataElementName );
+                return dhis2.de.alertField( fieldId, i18n_value_must_negative_integer + '\n\n' + dataElementName );
             }
             if ( type == 'zeroPositiveInt' && !dhis2.validation.isZeroOrPositiveInt( value ) )
             {
-                return alertField( fieldId, i18n_value_must_zero_or_positive_integer + '\n\n' + dataElementName );
+                return dhis2.de.alertField( fieldId, i18n_value_must_zero_or_positive_integer + '\n\n' + dataElementName );
             }
             if ( type == 'unitInterval' && !dhis2.validation.isUnitInterval( value ) )
             {
-            	return alertField( fieldId, i18n_value_must_unit_interval + '\n\n' + dataElementName );
+            	return dhis2.de.alertField( fieldId, i18n_value_must_unit_interval + '\n\n' + dataElementName );
             }
             if ( type == 'percentage' && !dhis2.validation.isPercentage( value ) )
             {
-            	return alertField( fieldId, i18n_value_must_percentage + '\n\n' + dataElementName );
+            	return dhis2.de.alertField( fieldId, i18n_value_must_percentage + '\n\n' + dataElementName );
             }
             if ( !existing && dhis2.validation.isValidZeroNumber( value ) )
             {
@@ -298,7 +298,7 @@ function saveTrueOnly( dataElementId, optionComboId, fieldId )
 /**
  * Supportive method.
  */
-function alertField( fieldId, alertMessage )
+dhis2.de.alertField = function( fieldId, alertMessage )
 {
     var $field = $( fieldId );
     $field.css( 'background-color', COLOR_YELLOW );
