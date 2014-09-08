@@ -28,7 +28,6 @@ trackerCapture.controller('EnrollmentController',
         $scope.hasEnrollmentHistory = false;
         $scope.selectedEnrollment = null;
         $scope.newEnrollment = {};
-        $scope.eventsForRescheduling = [];
         var selections = CurrentSelection.get();
         $scope.selectedTei = angular.copy(selections.tei); 
         $scope.selectedEntity = selections.te;
@@ -40,6 +39,7 @@ trackerCapture.controller('EnrollmentController',
         if($scope.selectedProgram){             
             EnrollmentService.getByEntityAndProgram($scope.selectedTei.trackedEntityInstance, $scope.selectedProgram.id).then(function(data){
                 $scope.enrollments = data.enrollments;
+                console.log('List of enrollments:  ', $scope.enrollments);
                 $scope.loadEnrollmentDetails();                
             });
         }
@@ -109,6 +109,7 @@ trackerCapture.controller('EnrollmentController',
             }           
         }
         
+        console.log('The enrollment is:  ', $scope.selectedEnrollment);
         $scope.broadCastSelections('dashboardWidgets');
     };
         
@@ -240,7 +241,7 @@ trackerCapture.controller('EnrollmentController',
 
         ModalService.showModal({}, modalOptions).then(function(result){
             
-            EnrollmentService.cancelled($scope.selectedEnrollment).then(function(data){                
+            EnrollmentService.cancel($scope.selectedEnrollment).then(function(data){                
                 $scope.selectedEnrollment.status = 'CANCELLED';
                 $scope.loadEnrollmentDetails();                
             });
@@ -258,7 +259,7 @@ trackerCapture.controller('EnrollmentController',
 
         ModalService.showModal({}, modalOptions).then(function(result){
             
-            EnrollmentService.completed($scope.selectedEnrollment).then(function(data){                
+            EnrollmentService.complete($scope.selectedEnrollment).then(function(data){                
                 $scope.selectedEnrollment.status = 'COMPLETED';
                 $scope.loadEnrollmentDetails();                
             });
@@ -292,5 +293,10 @@ trackerCapture.controller('EnrollmentController',
                 });
             }
         }
+    };
+    
+    $scope.markForFollowup = function(){
+        EnrollmentService.update($scope.selectedEnrollment).then(function(data){         
+        });
     };
 });

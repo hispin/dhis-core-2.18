@@ -131,7 +131,7 @@
     "report": "Report",
     "_report": "report",     
     "visit_schedule": "Visit Schedule",
-    "lost_to_followup": "Lost to Follow-up",
+    "mark_for_followup": "Mark for followup",
     "registered_data": "Registered data",
     "no_data_found": "No data found",
     "no_data": "No data",

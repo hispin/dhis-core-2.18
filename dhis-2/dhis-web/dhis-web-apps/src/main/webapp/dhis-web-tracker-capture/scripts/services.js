@@ -236,13 +236,13 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });
             return promise;
         },
-        cancelled: function(enrollment){
+        cancel: function(enrollment){
             var promise = $http.put('../api/enrollments/' + enrollment.enrollment + '/cancelled').then(function(response){
                 return response.data;               
             });
             return promise;           
         },
-        completed: function(enrollment){
+        complete: function(enrollment){
             var promise = $http.put('../api/enrollments/' + enrollment.enrollment + '/completed').then(function(response){
                 return response.data;               
             });
