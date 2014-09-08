@@ -4,8 +4,8 @@
 <div id="leftBar">   
     <div class="left-bar-menu" ng-controller="LeftBarMenuController">
         <ul class="nav nav-pills nav-stacked">
-            <li><a href ng-click="showHome()">{{'registration_and_data_entry' | translate}}</a></li>
-            <li><a href ng-click="showReportTypes()">{{'reports' | translate}}</a></li>            
+            <li><a href ng-click="showHome()">{{'registration_and_data_entry'| translate}}</a></li>
+            <li><a href ng-click="showReportTypes()">{{'reports'| translate}}</a></li>            
         </ul>
     </div>  
     <div id="orgUnitTree" style="margin-top:20px">
@@ -18,12 +18,30 @@
     <!--- selected org unit ends  -->
 </div>
 
-<div id="mainPage" class="bordered-div">
-    <h2>{{'upcoming_events' | translate}}</h2>
+<div id="mainPage" class="page">
+    <!--<h2>{{'upcoming_events'| translate}}</h2>-->
+    <!-- top bar begins -->
+    <div class="row top-bar">        
+        <div class="col-sm-12">            
+            {{'upcoming_events'| translate}}
+            <div class="pull-right">
+                <div class="btn-group" dropdown is-open="status.isopen">
+                    <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="!teiList.length">
+                        <i class="fa fa-cog" title="{{'settings'| translate}}"></i>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li ng-show="teiList.length > 0"><a href ng-click="showHideColumns()">{{'show_hide_columns'| translate}}</a></li>
+                    </ul>
+                </div>
+            </div>            
+        </div>        
+    </div>
+    <!-- top bar ends -->
+    
     <form name="outerForm" novalidate>               
         <div ng-include="'components/report/reportForm.html'"></div>
     </form>    
-    <img src="../images/ajax-loader-bar.gif" ng-if="!dataReady && reportStarted"/>
+    <img src="../images/ajax-loader-bar.gif" ng-if="!dataReady && reportFinished"/>
     <div ng-if="dataReady">
         <div ng-switch="teiList.length">                    
             <div ng-switch-when="undefined">
@@ -39,36 +57,36 @@
             <div ng-switch-default> 
 
                 <!-- report begins -->
-                <div class="vertical-spacing">                    
-                    <table class="table table-compact table-striped">
-                        <thead>
+                <div class="vertical-spacing">   
+                    <table class="listTable dhis2-table-striped-border dhis2-table-hover">               
+                        <thead>                        
                             <tr>
-                                <th>{{selectedProgram.trackedEntity.name}}</th>
-                                <th>{{selectedProgram.name}} {{'upcoming_event'| translate}}</th>
-                            </tr>
+                                <th ng-show="gridColumn.show" ng-repeat="gridColumn in gridColumns" ng-click="sortTEIGrid(gridColumn)">
+                                    {{gridColumn.name}}
+                                    <i ng-if="sortHeader == gridColumn.id && reverse" class="fa fa-sort-desc"></i>
+                                    <i ng-if="sortHeader == gridColumn.id && !reverse" class="fa fa-sort-asc"></i>
+                                </th>
+                                <th>
+                                    {{'upcoming_event' | translate}}
+                                </th>                                
+                            </tr>                        
                         </thead>
-                        <tr ng-repeat="tei in teiList">
-                            <td>
-                                <span ng-repeat="attribute in attributes">
-                                    <span class="bold">{{attribute.name}}:</span> {{tei[attribute.id]}}<br>
-                                </span>
-                            </td>
-                            <td>
-                                <span class='bold inline-block' ng-if='!dhis2Events[tei.id]'>{{'no_visit_made'| translate}}</span>
-                                <span class="inline-block" ng-repeat="ev in dhis2Events[tei.id] | orderBy: 'dueDate'">                                    
-                                    <span class="block align-center">{{ev.orgUnitName}}</span>                   
-                                    <span class="stage-container" 
-                                         title="{{'reschedule'| translate}}"
-                                         ng-class="{'{{ev.statusColor}}': true}"
-                                         ng-click="showReschedule(ev, tei)">
-                                        {{ev.name}}<br/>
-                                        {{ev.dueDate}}<br>  
+                        <tbody id="list">
+                            <tr ng-repeat="tei in teiList | orderBy:sortHeader:reverse" 
+                                ng-click="showDashboard(trackedEntity)"
+                                title="{{'go_to_dashboard'| translate}}">
+                                <td ng-show="gridColumn.show"                                            
+                                    ng-repeat="gridColumn in gridColumns">                                                
+                                    {{tei[gridColumn.id]}}                                                
+                                </td>
+                                <td>
+                                    <span ng-repeat="ev in dhis2Events[tei.id] | orderBy: 'dueDate' | limitTo:1">                                    
+                                        {{ev.name}} / {{ev.dueDate}}
                                     </span>                                    
-                                    <i class="fa fa-arrow-right" ng-show="$index < dhis2Events[tei.id].length - 1"></i>
-                                </span>                                             
-                            </td>
-                        </tr>
-                    </table>
+                                </td>                                
+                            </tr>
+                        </tbody>        
+                    </table>                    
                 </div>
                 <!-- report ends -->
             </div>
