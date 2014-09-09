@@ -112,7 +112,12 @@ public class EventReport
     /**
      * Indicates rendering of sub-totals for the table.
      */
-    private boolean totals;
+    private boolean rowTotals;
+
+    /**
+     * Indicates rendering of sub-totals for the table.
+     */
+    private boolean colTotals;
 
     /**
      * Indicates rendering of sub-totals for the table.
@@ -306,16 +311,29 @@ public class EventReport
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isTotals()
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isRowTotals()
     {
-        return totals;
+        return rowTotals;
     }
 
-    public void setTotals( boolean totals )
+    public void setRowTotals( boolean rowTotals )
     {
-        this.totals = totals;
+        this.rowTotals = rowTotals;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isColTotals()
+    {
+        return colTotals;
+    }
+
+    public void setColTotals( boolean colTotals )
+    {
+        this.colTotals = colTotals;
     }
 
     @JsonProperty
@@ -423,7 +441,8 @@ public class EventReport
             programStage = eventReport.getProgramStage();
             startDate = eventReport.getStartDate();
             endDate = eventReport.getEndDate();
-            totals = eventReport.isTotals();
+            rowTotals = eventReport.isRowTotals();
+            colTotals = eventReport.isColTotals();
             subtotals = eventReport.isSubtotals();
             hideEmptyRows = eventReport.isHideEmptyRows();
             countType = eventReport.getCountType();

@@ -112,7 +112,9 @@
       <element type="string" column="dimension" />
     </list>
 
-    <property name="totals" />
+    <property name="rowTotals" />
+	  
+	<property name="colTotals" />
 
     <property name="subtotals" />
 

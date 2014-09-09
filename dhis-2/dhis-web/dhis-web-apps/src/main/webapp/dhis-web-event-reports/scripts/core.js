@@ -296,7 +296,9 @@ Ext.onReady( function() {
 
 				// filters: [Dimension]
 
-				// showTotals: boolean (true)
+				// showRowTotals: boolean (true)
+
+				// showColTotals: boolean (true)
 
 				// showSubTotals: boolean (true)
 
@@ -477,7 +479,8 @@ Ext.onReady( function() {
                     }
 
 					// properties
-					layout.showTotals = Ext.isBoolean(config.totals) ? config.totals : (Ext.isBoolean(config.showTotals) ? config.showTotals : true);
+					layout.showRowTotals = Ext.isBoolean(config.rowTotals) ? config.rowTotals : (Ext.isBoolean(config.showRowTotals) ? config.showRowTotals : true);
+					layout.showColTotals = Ext.isBoolean(config.colTotals) ? config.colTotals : (Ext.isBoolean(config.showColTotals) ? config.showColTotals : true);
 					layout.showSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showSubTotals) ? config.showSubTotals : true);
 					layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false;
 					layout.countType = Ext.isString(config.countType) && !Ext.isEmpty(config.countType) ? config.countType : 'events';
@@ -2029,7 +2032,9 @@ Ext.onReady( function() {
 				var getRoundedHtmlValue,
 					getTdHtml,
 					doSubTotals,
-					doTotals,
+					doRowTotals,
+                    doColTotals,
+                    doSortableColumnHeaders,
 					getColAxisHtmlArray,
 					getRowHtmlArray,
 					rowAxisHtmlArray,
@@ -2162,8 +2167,12 @@ Ext.onReady( function() {
 					return !!xLayout.showSubTotals && xAxis && xAxis.dims > 1;
 				};
 
-				doTotals = function() {
-					return !!xLayout.showTotals;
+				doRowTotals = function() {
+					return !!xLayout.showRowTotals;
+				};
+
+                doColTotals = function() {
+					return !!xLayout.showColTotals;
 				};
 
 				doSortableColumnHeaders = function() {
@@ -2270,7 +2279,7 @@ Ext.onReady( function() {
 								spanCount = 0;
 							}
 
-							if (i === 0 && (j === xColAxis.size - 1) && doTotals()) {
+							if (i === 0 && (j === xColAxis.size - 1) && doRowTotals()) {
 								totalId = doSortableColumnHeaders() ? 'total_' : null;
 
 								dimHtml.push(getTdHtml({
@@ -2413,7 +2422,7 @@ Ext.onReady( function() {
 					}
 
 					// totals
-					if (xColAxis && doTotals()) {
+					if (xColAxis && doRowTotals()) {
 						for (var i = 0, empty = [], total = 0; i < valueObjects.length; i++) {
 							for (j = 0, obj; j < valueObjects[i].length; j++) {
 								obj = valueObjects[i][j];
@@ -2454,17 +2463,17 @@ Ext.onReady( function() {
 								// if value row is empty
 								if (isValueRowEmpty) {
 
-									// Hide values by adding collapsed = true to all items
+									// hide values by adding collapsed = true to all items
 									for (var j = 0; j < valueRow.length; j++) {
 										valueRow[j].collapsed = true;
 									}
 
-									// Hide totals by adding collapsed = true to all items
-									if (doTotals()) {
+									// hide totals by adding collapsed = true to all items
+									if (doRowTotals()) {
 										totalValueObjects[i].collapsed = true;
 									}
 
-									// Hide/reduce parent dim span
+									// hide/reduce parent dim span
 									dimLeaf = axisAllObjects[i][xRowAxis.dims-1];
 									recursiveReduce(dimLeaf);
 								}
@@ -2661,7 +2670,7 @@ Ext.onReady( function() {
 				getColTotalHtmlArray = function() {
 					var a = [];
 
-					if (xRowAxis && doTotals()) {
+					if (xRowAxis && doColTotals()) {
 						var xTotalColObjects;
 
 						// Total col items
@@ -2729,7 +2738,7 @@ Ext.onReady( function() {
 						empty = [],
 						a = [];
 
-					if (doTotals()) {
+					if (doRowTotals() && doColTotals()) {
 						for (var i = 0, obj; i < totalColObjects.length; i++) {
 							obj = totalColObjects[i];
 
@@ -2758,7 +2767,7 @@ Ext.onReady( function() {
 						row,
 						a = [];
 
-					if (doTotals()) {
+					if (doColTotals()) {
 						if (xRowAxis) {
 							dimTotalArray = [getTdHtml({
 								type: 'dimensionSubtotal',
