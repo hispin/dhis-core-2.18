@@ -169,7 +169,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
             if ( name != null )
             {
-                int count = manager.getCountByName( getEntityClass(), name );
+                int count = manager.getCountLikeName( getEntityClass(), name );
 
                 Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
                 metaData.setPager( pager );

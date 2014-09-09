@@ -256,7 +256,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Collection<T> getAllByName( Class<T> clazz, String name )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -270,7 +270,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Collection<T> getAllByNameIgnoreCase( Class<T> clazz, String name )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -298,7 +298,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Collection<T> getAllSortedByLastUpdated( Class<T> clazz )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -326,7 +326,46 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
+    public <T extends IdentifiableObject> int getCount( Class<T> clazz )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store != null )
+        {
+            return store.getCount();
+        }
+
+        return 0;
+    }
+
+    @Override
     public <T extends IdentifiableObject> int getCountByName( Class<T> clazz, String name )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store != null )
+        {
+            return store.getCountEqName( name );
+        }
+
+        return 0;
+    }
+
+    @Override
+    public <T extends IdentifiableObject> int getCountByShortName( Class<T> clazz, String shortName )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store != null )
+        {
+            return store.getCountEqShortName( shortName );
+        }
+
+        return 0;
+    }
+
+    @Override
+    public <T extends IdentifiableObject> int getCountLikeName( Class<T> clazz, String name )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
 
@@ -339,7 +378,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    public <T extends IdentifiableObject> int getCountByShortName( Class<T> clazz, String shortName )
+    public <T extends IdentifiableObject> int getCountLikeShortName( Class<T> clazz, String shortName )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
 
@@ -587,19 +626,6 @@ public class DefaultIdentifiableObjectManager
         }
 
         return null;
-    }
-
-    @Override
-    public <T extends IdentifiableObject> int getCount( Class<T> clazz )
-    {
-        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
-
-        if ( store != null )
-        {
-            return store.getCount();
-        }
-
-        return 0;
     }
 
     @Override
