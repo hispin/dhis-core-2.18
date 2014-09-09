@@ -104,13 +104,13 @@ public class DefaultDashboardService
     {
         DashboardSearchResult result = new DashboardSearchResult();
 
-        result.setUsers( objectManager.getBetweenByName( User.class, query, 0, getMax( TYPE_USERS, maxTypes ) ) );
-        result.setCharts( objectManager.getBetweenByName( Chart.class, query, 0, getMax( TYPE_CHART, maxTypes ) ) );
-        result.setEventCharts( objectManager.getBetweenByName( EventChart.class, query, 0, getMax( TYPE_EVENT_CHART, maxTypes ) ) );
-        result.setMaps( objectManager.getBetweenByName( Map.class, query, 0, getMax( TYPE_MAP, maxTypes ) ) );
-        result.setReportTables( objectManager.getBetweenByName( ReportTable.class, query, 0, getMax( TYPE_REPORT_TABLE, maxTypes ) ) );
-        result.setReports( objectManager.getBetweenByName( Report.class, query, 0, getMax( TYPE_REPORTS, maxTypes ) ) );
-        result.setResources( objectManager.getBetweenByName( Document.class, query, 0, getMax( TYPE_RESOURCES, maxTypes ) ) );
+        result.setUsers( objectManager.getBetweenLikeName( User.class, query, 0, getMax( TYPE_USERS, maxTypes ) ) );
+        result.setCharts( objectManager.getBetweenLikeName( Chart.class, query, 0, getMax( TYPE_CHART, maxTypes ) ) );
+        result.setEventCharts( objectManager.getBetweenLikeName( EventChart.class, query, 0, getMax( TYPE_EVENT_CHART, maxTypes ) ) );
+        result.setMaps( objectManager.getBetweenLikeName( Map.class, query, 0, getMax( TYPE_MAP, maxTypes ) ) );
+        result.setReportTables( objectManager.getBetweenLikeName( ReportTable.class, query, 0, getMax( TYPE_REPORT_TABLE, maxTypes ) ) );
+        result.setReports( objectManager.getBetweenLikeName( Report.class, query, 0, getMax( TYPE_REPORTS, maxTypes ) ) );
+        result.setResources( objectManager.getBetweenLikeName( Document.class, query, 0, getMax( TYPE_RESOURCES, maxTypes ) ) );
 
         return result;
     }
