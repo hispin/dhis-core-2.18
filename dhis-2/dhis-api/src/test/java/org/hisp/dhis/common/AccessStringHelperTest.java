@@ -29,8 +29,10 @@ package org.hisp.dhis.common;
  */
 
 import org.hisp.dhis.acl.AccessStringHelper;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -43,8 +45,8 @@ public class AccessStringHelperTest
         String access = "r-------";
         String access_will_fail = "--------";
 
-        Assert.assertTrue( AccessStringHelper.canRead( access ) );
-        Assert.assertFalse( AccessStringHelper.canRead( access_will_fail ) );
+        assertTrue( AccessStringHelper.canRead( access ) );
+        assertFalse( AccessStringHelper.canRead( access_will_fail ) );
     }
 
     @Test
@@ -54,8 +56,29 @@ public class AccessStringHelperTest
         String access2 = "-w------";
         String access_will_fail = "--------";
 
-        Assert.assertTrue( AccessStringHelper.canWrite( access1 ) );
-        Assert.assertTrue( AccessStringHelper.canWrite( access2 ) );
-        Assert.assertFalse( AccessStringHelper.canWrite( access_will_fail ) );
+        assertTrue( AccessStringHelper.canWrite( access1 ) );
+        assertTrue( AccessStringHelper.canWrite( access2 ) );
+        assertFalse( AccessStringHelper.canWrite( access_will_fail ) );
+    }
+
+    @Test
+    public void staticRead()
+    {
+        assertTrue( AccessStringHelper.canRead( AccessStringHelper.READ ) );
+        assertFalse( AccessStringHelper.canWrite( AccessStringHelper.READ ) );
+    }
+
+    @Test
+    public void staticWrite()
+    {
+        assertFalse( AccessStringHelper.canRead( AccessStringHelper.WRITE ) );
+        assertTrue( AccessStringHelper.canWrite( AccessStringHelper.WRITE ) );
+    }
+
+    @Test
+    public void staticReadWrite()
+    {
+        assertTrue( AccessStringHelper.canRead( AccessStringHelper.READ_WRITE ) );
+        assertTrue( AccessStringHelper.canWrite( AccessStringHelper.READ_WRITE ) );
     }
 }
