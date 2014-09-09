@@ -1559,12 +1559,12 @@ Ext.onReady( function() {
 		var showTotals,
 			showSubTotals,
 			hideEmptyRows,
+			showDimensionLabels,
             limit,
             countType,
             aggregationType,
 			showHierarchy,
 			digitGroupSeparator,
-			showDimensionLabels,
 			displayDensity,
 			fontSize,
 			reportingPeriod,
@@ -1596,6 +1596,11 @@ Ext.onReady( function() {
 			boxLabel: NS.i18n.hide_empty_rows,
 			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
             checked: true
+		});
+
+		showDimensionLabels = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.show_dimension_labels,
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 		});
 
         limit = Ext.create('Ext.ux.container.LimitContainer', {
@@ -1631,14 +1636,9 @@ Ext.onReady( function() {
 			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 		});
 
-		showDimensionLabels = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.show_dimension_labels,
-			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
-		});
-
 		displayDensity = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-top:5px; margin-bottom:' + comboBottomMargin + 'px',
+			style: 'margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.display_density,
@@ -1699,19 +1699,6 @@ Ext.onReady( function() {
 			})
 		});
 
-		//legendSet = Ext.create('Ext.form.field.ComboBox', {
-			//cls: 'ns-combo',
-			//style: 'margin-bottom:3px',
-			//width: comboboxWidth,
-			//labelWidth: 130,
-			//fieldLabel: NS.i18n.legend_set,
-			//valueField: 'id',
-			//displayField: 'name',
-			//editable: false,
-			//value: 0,
-			//store: ns.app.stores.legendSet
-		//});
-
 		data = {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
@@ -1719,6 +1706,7 @@ Ext.onReady( function() {
 				showTotals,
 				showSubTotals,
 				hideEmptyRows,
+                showDimensionLabels,
                 limit,
                 countType
                 //aggregationType
@@ -1737,7 +1725,6 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
-                showDimensionLabels,
 				displayDensity,
 				fontSize,
 				digitGroupSeparator
