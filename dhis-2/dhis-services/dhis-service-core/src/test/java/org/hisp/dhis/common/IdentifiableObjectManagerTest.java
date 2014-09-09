@@ -232,13 +232,23 @@ public class IdentifiableObjectManagerTest
         assertEquals( "DataElementD", dataElements.get( 3 ).getName() );
     }
 
+    /**
+     * Fetch all in between creating data elements to avoid equal last updated date.
+     */
     @Test
     public void getAllOrderedLastUpdated()
     {
         identifiableObjectManager.save( createDataElement( 'A' ) );
+        assertNotNull( identifiableObjectManager.getAllSortedByLastUpdated( DataElement.class ) );
+        
         identifiableObjectManager.save( createDataElement( 'B' ) );
+        assertNotNull( identifiableObjectManager.getAllSortedByLastUpdated( DataElement.class ) );
+        
         identifiableObjectManager.save( createDataElement( 'C' ) );
+        assertNotNull( identifiableObjectManager.getAllSortedByLastUpdated( DataElement.class ) );
+        
         identifiableObjectManager.save( createDataElement( 'D' ) );
+        assertNotNull( identifiableObjectManager.getAllSortedByLastUpdated( DataElement.class ) );
 
         List<DataElement> dataElements = new ArrayList<>( identifiableObjectManager.getAllSortedByLastUpdated( DataElement.class ) );
 
