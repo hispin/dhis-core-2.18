@@ -1,6 +1,7 @@
 trackerCapture.controller('UpcomingEventsController',
          function($scope,
                 $modal,
+                $location,
                 orderByFilter,
                 DateUtils,
                 EventUtils,
@@ -10,6 +11,7 @@ trackerCapture.controller('UpcomingEventsController',
                 AttributesFactory,
                 ProgramFactory,
                 DHIS2EventFactory,
+                ContextMenuSelectedItem,
                 storage) {
 
     TranslationService.translate();
@@ -62,11 +64,11 @@ trackerCapture.controller('UpcomingEventsController',
         }
         
         $scope.reportFinished = false;
-        $scope.reportStarted = true;
-        
+        $scope.reportStarted = true;        
         $scope.programStages = [];
         $scope.filterTypes = {};
-        $scope.filterText = {}; 
+        $scope.filterText = {};
+        
         angular.forEach($scope.selectedProgram.programStages, function(stage){
             $scope.programStages[stage.id] = stage;
         });
@@ -74,8 +76,8 @@ trackerCapture.controller('UpcomingEventsController',
         AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){            
             $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);
 
-            $scope.gridColumns.push({name: 'upcoming_event', id: 'upcoming_event', type: 'string', displayInListNoProgram: false, showFilter: false, show: true});
-            $scope.filterTypes['upcoming_event'] = 'string';                
+            $scope.gridColumns.push({name: 'event_name', id: 'event_name', type: 'string', displayInListNoProgram: false, showFilter: false, show: true});
+            $scope.filterTypes['event_name'] = 'string';                
 
             $scope.gridColumns.push({name: 'due_date', id: 'due_date', type: 'date', displayInListNoProgram: false, showFilter: false, show: true});
             $scope.filterTypes['due_date'] = 'date';
@@ -137,7 +139,7 @@ trackerCapture.controller('UpcomingEventsController',
                 
                 //make upcoming event name and its due date part of the grid column
                 for(var i=0; i<$scope.teiList.length; i++){
-                    $scope.teiList[i].upcoming_event = $scope.dhis2Events[$scope.teiList[i].id][0].name;
+                    $scope.teiList[i].event_name = $scope.dhis2Events[$scope.teiList[i].id][0].name;
                     $scope.teiList[i].due_date = $scope.dhis2Events[$scope.teiList[i].id][0].dueDate;
                 }
                
@@ -207,5 +209,10 @@ trackerCapture.controller('UpcomingEventsController',
     
     $scope.removeEndFilterText = function(gridColumnId){
         $scope.filterText[gridColumnId].end = undefined;
+    };
+    
+    $scope.showDashboard = function(tei){
+        $location.path('/dashboard').search({tei: tei.id,                                            
+                                            program: $scope.selectedProgram ? $scope.selectedProgram.id: null});
     };
 });

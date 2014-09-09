@@ -38,8 +38,7 @@ trackerCapture.controller('EnrollmentController',
         
         if($scope.selectedProgram){             
             EnrollmentService.getByEntityAndProgram($scope.selectedTei.trackedEntityInstance, $scope.selectedProgram.id).then(function(data){
-                $scope.enrollments = data.enrollments;
-                console.log('List of enrollments:  ', $scope.enrollments);
+                $scope.enrollments = data.enrollments;                
                 $scope.loadEnrollmentDetails();                
             });
         }
@@ -108,8 +107,6 @@ trackerCapture.controller('EnrollmentController',
                 });                
             }           
         }
-        
-        console.log('The enrollment is:  ', $scope.selectedEnrollment);
         $scope.broadCastSelections('dashboardWidgets');
     };
         

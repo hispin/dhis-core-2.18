@@ -967,6 +967,19 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };
 })
 
+/* Context menu for grid*/
+.service('ContextMenuSelectedItem', function(){
+    this.selectedItem = '';
+    
+    this.setSelectedItem = function(selectedItem){  
+        this.selectedItem = selectedItem;        
+    };
+    
+    this.getSelectedItem = function(){
+        return this.selectedItem;
+    };
+})
+
 /* Translation service - gets logged in user profile for the server, 
  * and apply user's locale to translation
  */
