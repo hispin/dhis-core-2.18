@@ -144,6 +144,11 @@ public class EventReport
      */
     private String fontSize;
 
+    /**
+     * The font size of the text in the table.
+     */
+    private boolean showDimensionLabels;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -390,6 +395,19 @@ public class EventReport
     {
         this.fontSize = fontSize;
     }
+    
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isShowDimensionLabels()
+    {
+        return showDimensionLabels;
+    }
+
+    public void setShowDimensionLabels( boolean showDimensionLabels )
+    {
+        this.showDimensionLabels = showDimensionLabels;
+    }    
 
     @Override
     public void mergeWith( IdentifiableObject other )
@@ -410,6 +428,7 @@ public class EventReport
             hideEmptyRows = eventReport.isHideEmptyRows();
             countType = eventReport.getCountType();
             showHierarchy = eventReport.isShowHierarchy();
+            showDimensionLabels = eventReport.isShowDimensionLabels();
             displayDensity = eventReport.getDisplayDensity();
             fontSize = eventReport.getFontSize();
 

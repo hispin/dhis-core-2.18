@@ -122,6 +122,8 @@
 
     <property name="countType" />
 
+    <property name="showDimensionLabels" />
+
     <property name="digitGroupSeparator" />
 
     <property name="displayDensity" />

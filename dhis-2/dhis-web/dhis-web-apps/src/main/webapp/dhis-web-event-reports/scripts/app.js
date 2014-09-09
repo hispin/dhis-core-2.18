@@ -817,7 +817,7 @@ Ext.onReady( function() {
 
                 this.sortOrderCmp = Ext.create('Ext.form.field.ComboBox', {
                     cls: 'ns-combo',
-                    style: 'margin-bottom:2px',
+                    style: 'margin-bottom:' + container.comboBottomMargin + 'px',
                     width: sortWidth,
                     queryMode: 'local',
                     valueField: 'id',
@@ -834,7 +834,7 @@ Ext.onReady( function() {
 
                 this.topLimitCmp = Ext.create('Ext.form.field.Number', {
                     width: sortWidth - 1,
-                    style: 'margin-bottom:2px; margin-left:1px',
+                    style: 'margin-bottom:' + container.comboBottomMargin + 'px; margin-left:1px',
                     minValue: 1,
                     maxValue: 10000,
                     value: container.topLimit,
@@ -1564,6 +1564,7 @@ Ext.onReady( function() {
             aggregationType,
 			showHierarchy,
 			digitGroupSeparator,
+			showDimensionLabels,
 			displayDensity,
 			fontSize,
 			reportingPeriod,
@@ -1575,23 +1576,25 @@ Ext.onReady( function() {
 			parameters,
 
 			comboboxWidth = 280,
+            comboBottomMargin = 1,
+            checkboxBottomMargin = 2,
 			window;
 
 		showTotals = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_totals,
-			style: 'margin-bottom:4px',
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 			checked: true
 		});
 
 		showSubTotals = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_subtotals,
-			style: 'margin-bottom:4px',
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 			checked: true
 		});
 
 		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.hide_empty_rows,
-			style: 'margin-bottom:4px',
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
             checked: true
 		});
 
@@ -1599,12 +1602,13 @@ Ext.onReady( function() {
             boxLabel: NS.i18n.limit,
             sortOrder: 1,
             topLimit: 10,
-            comboboxWidth: comboboxWidth
+            comboboxWidth: comboboxWidth,
+            comboBottomMargin: comboBottomMargin
         });
 
         countType = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
+			style: 'margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.count_type,
@@ -1624,12 +1628,17 @@ Ext.onReady( function() {
 
 		showHierarchy = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_hierarchy,
-			style: 'margin-bottom:4px'
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
+		});
+
+		showDimensionLabels = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.show_dimension_labels,
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 		});
 
 		displayDensity = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
+			style: 'margin-top:5px; margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.display_density,
@@ -1650,7 +1659,7 @@ Ext.onReady( function() {
 
 		fontSize = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
+			style: 'margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.font_size,
@@ -1672,7 +1681,7 @@ Ext.onReady( function() {
 		digitGroupSeparator = Ext.create('Ext.form.field.ComboBox', {
 			labelStyle: 'color:#333',
 			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
+			style: 'margin-bottom:0',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.digit_group_separator,
@@ -1728,6 +1737,7 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
+                showDimensionLabels,
 				displayDensity,
 				fontSize,
 				digitGroupSeparator
@@ -1737,7 +1747,7 @@ Ext.onReady( function() {
 
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_options,
-			bodyStyle: 'background-color:#fff; padding:5px 5px 3px',
+			bodyStyle: 'background-color:#fff; padding:3px',
 			closeAction: 'hide',
 			autoShow: true,
 			modal: true,
@@ -1752,6 +1762,7 @@ Ext.onReady( function() {
                     topLimit: limit.getTopLimit(),
 					countType: countType.getValue(),
 					showHierarchy: showHierarchy.getValue(),
+                    showDimensionLabels: showDimensionLabels.getValue(),
 					displayDensity: displayDensity.getValue(),
 					fontSize: fontSize.getValue(),
 					digitGroupSeparator: digitGroupSeparator.getValue()
@@ -1766,6 +1777,7 @@ Ext.onReady( function() {
 				countType.setValue(Ext.isString(layout.countType) ? layout.countType : 'events');
                 //aggregationType.setValue(Ext.isString(layout.aggregationType) ? layout.aggregationType : 'default');
 				showHierarchy.setValue(Ext.isBoolean(layout.showHierarchy) ? layout.showHierarchy : false);
+				showDimensionLabels.setValue(Ext.isBoolean(layout.showDimensionLabels) ? layout.showDimensionLabels : true);
 				displayDensity.setValue(Ext.isString(layout.displayDensity) ? layout.displayDensity : 'normal');
 				fontSize.setValue(Ext.isString(layout.fontSize) ? layout.fontSize : 'normal');
 				digitGroupSeparator.setValue(Ext.isString(layout.digitGroupSeparator) ? layout.digitGroupSeparator : 'space');
@@ -1781,25 +1793,25 @@ Ext.onReady( function() {
 			items: [
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px; margin-left:2px',
+					style: 'margin-top:2px; margin-bottom:6px; margin-left:3px',
 					html: NS.i18n.data
 				},
 				data,
 				{
-					bodyStyle: 'border:0 none; padding:5px'
+					bodyStyle: 'border:0 none; padding:7px'
 				},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px; margin-left:2px',
+					style: 'margin-bottom:6px; margin-left:3px',
 					html: NS.i18n.organisation_units
 				},
 				organisationUnits,
 				{
-					bodyStyle: 'border:0 none; padding:5px'
+					bodyStyle: 'border:0 none; padding:7px'
 				},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px; margin-left:2px',
+					style: 'margin-bottom:6px; margin-left:3px',
 					html: NS.i18n.style
 				},
 				style
@@ -1849,6 +1861,7 @@ Ext.onReady( function() {
                     w.limit = limit;
 					w.countType = countType;
 					w.showHierarchy = showHierarchy;
+                    w.showDimensionLabels = showDimensionLabels;
 					w.displayDensity = displayDensity;
 					w.fontSize = fontSize;
 					w.digitGroupSeparator = digitGroupSeparator;
@@ -3465,7 +3478,7 @@ Ext.onReady( function() {
 			load = function(dataElements) {
                 var attributes = attributeStorage[programId],
                     data = Ext.Array.clean([].concat(attributes || [], dataElements || []));
-
+                    
 				dataElementsByStageStore.loadData(data);
 
                 if (layout) {
@@ -3617,11 +3630,10 @@ Ext.onReady( function() {
         });
 
         addUxFromDataElement = function(element, index) {
-			var getUxType,
+			var getUxType,            
 				ux;
 
             element.type = element.type || element.valueType;
-
 			index = index || dataElementSelected.items.items.length;
 
 			getUxType = function(element) {
@@ -6125,7 +6137,7 @@ Ext.onReady( function() {
 					},
 					success: function(r) {
 						var config = Ext.decode(r.responseText);
-
+                        
 						// sync
 						config.showTotals = config.totals;
 						delete config.totals;
@@ -6188,6 +6200,16 @@ Ext.onReady( function() {
 							web.mask.hide(ns.app.centerRegion);
 							return;
 						}
+
+                        // add to dimConf, TODO
+                        for (var i = 0, map = dimConf.objectNameMap, header; i < response.headers.length; i++) {
+                            header = response.headers[i];
+                            map[header.name] = map[header.name] || {
+                                id: header.name,
+                                dimensionName: header.name,
+                                name: header.column
+                            };
+                        }
 
                         web.mask.show(ns.app.centerRegion, 'Creating table..');
 
