@@ -65,7 +65,7 @@ public class Enrollment
     
     private List<Note> notes = new ArrayList<>();
     
-    protected Boolean followup;
+    private Boolean followup;
 
     public Enrollment()
     {

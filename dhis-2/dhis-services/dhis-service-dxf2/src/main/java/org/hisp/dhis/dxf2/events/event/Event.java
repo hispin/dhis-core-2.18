@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.event.EventStatus;
@@ -72,6 +73,8 @@ public class Event extends BaseLinkableObject
     private List<DataValue> dataValues = new ArrayList<>();
 
     private List<Note> notes = new ArrayList<>();
+    
+    private Boolean followup;
 
     public Event()
     {
@@ -245,6 +248,18 @@ public class Event extends BaseLinkableObject
     public void setNotes( List<Note> notes )
     {
         this.notes = notes;
+    }
+    
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public Boolean getFollowup()
+    {
+        return followup;
+    }
+
+    public void setFollowup( Boolean followup )
+    {
+        this.followup = followup;
     }
 
     @Override

@@ -21,6 +21,7 @@ trackerCapture.controller('UpcomingEventsController',
     $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];         
     $scope.selectedOuMode = $scope.ouModes[0];
     $scope.report = {};
+    $scope.displayMode = {};
     
     //watch for selection of org unit from tree
     $scope.$watch('selectedOrgUnit', function() {        
@@ -134,13 +135,14 @@ trackerCapture.controller('UpcomingEventsController',
                 //incase a TEI happens to have more than one overdue, sort using duedate
                 for(var tei in $scope.dhis2Events){                    
                     $scope.dhis2Events[tei] = orderByFilter($scope.dhis2Events[tei], '-dueDate');
-                    $scope.dhis2Events[tei].reverse();                    
+                    $scope.dhis2Events[tei].reverse();
                 }
                 
                 //make upcoming event name and its due date part of the grid column
                 for(var i=0; i<$scope.teiList.length; i++){
                     $scope.teiList[i].event_name = $scope.dhis2Events[$scope.teiList[i].id][0].name;
                     $scope.teiList[i].due_date = $scope.dhis2Events[$scope.teiList[i].id][0].dueDate;
+                    $scope.teiList[i].followup = $scope.dhis2Events[$scope.teiList[i].id][0].followup;
                 }
                
                 $scope.reportFinished = true;
