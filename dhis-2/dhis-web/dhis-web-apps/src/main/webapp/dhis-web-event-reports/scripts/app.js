@@ -1556,7 +1556,8 @@ Ext.onReady( function() {
 	};
 
     AggregateOptionsWindow = function() {
-		var showTotals,
+		var showColTotals,
+            showRowTotals,
 			showSubTotals,
 			hideEmptyRows,
 			showDimensionLabels,
@@ -1580,8 +1581,14 @@ Ext.onReady( function() {
             checkboxBottomMargin = 2,
 			window;
 
-		showTotals = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.show_totals,
+        showColTotals = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.show_col_totals,
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
+			checked: true
+		});
+
+		showRowTotals = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.show_row_totals,
 			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 			checked: true
 		});
@@ -1703,7 +1710,8 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
-				showTotals,
+				showColTotals,
+                showRowTotals,
 				showSubTotals,
 				hideEmptyRows,
                 showDimensionLabels,
@@ -1742,7 +1750,8 @@ Ext.onReady( function() {
 			hideOnBlur: true,
 			getOptions: function() {
 				return {
-					showTotals: showTotals.getValue(),
+					showColTotals: showColTotals.getValue(),
+					showRowTotals: showRowTotals.getValue(),
 					showSubTotals: showSubTotals.getValue(),
 					hideEmptyRows: hideEmptyRows.getValue(),
                     sortOrder: limit.getSortOrder(),
@@ -1757,7 +1766,8 @@ Ext.onReady( function() {
 				};
 			},
 			setOptions: function(layout) {
-				showTotals.setValue(Ext.isBoolean(layout.showTotals) ? layout.showTotals : true);
+				showColTotals.setValue(Ext.isBoolean(layout.showColTotals) ? layout.showColTotals : true);
+				showRowTotals.setValue(Ext.isBoolean(layout.showRowTotals) ? layout.showRowTotals : true);
 				showSubTotals.setValue(Ext.isBoolean(layout.showSubTotals) ? layout.showSubTotals : true);
 				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
 				limit.setValues(layout.sortOrder, layout.topLimit);
@@ -1842,7 +1852,8 @@ Ext.onReady( function() {
 					//}
 
 					// cmp
-					w.showTotals = showTotals;
+					w.showColTotals = showColTotals;
+					w.showRowTotals = showRowTotals;
 					w.showSubTotals = showSubTotals;
 					w.hideEmptyRows = hideEmptyRows;
                     w.limit = limit;
@@ -1985,7 +1996,8 @@ Ext.onReady( function() {
 			hideOnBlur: true,
 			getOptions: function() {
 				return {
-					showTotals: false,
+					showColTotals: false,
+					showRowTotals: false,
 					showSubTotals: false,
 					hideEmptyRows: false,
                     sortOrder: 0,
@@ -2135,8 +2147,11 @@ Ext.onReady( function() {
 				favorite = Ext.clone(ns.app.layout);
 
 				// sync
-				favorite.totals = favorite.showTotals;
-				delete favorite.showTotals;
+				favorite.rowTotals = favorite.showRowTotals;
+				delete favorite.showRowTotals;
+                
+				favorite.colTotals = favorite.showColTotals;
+				delete favorite.showColTotals;
 
 				favorite.subtotals = favorite.showSubTotals;
 				delete favorite.showSubTotals;
@@ -6126,8 +6141,11 @@ Ext.onReady( function() {
 						var config = Ext.decode(r.responseText);
                         
 						// sync
-						config.showTotals = config.totals;
-						delete config.totals;
+						config.showRowTotals = config.rowTotals;
+						delete config.rowTotals;
+                        
+						config.showColTotals = config.colTotals;
+						delete config.colTotals;
 
 						config.showSubTotals = config.subtotals;
 						delete config.subtotals;
