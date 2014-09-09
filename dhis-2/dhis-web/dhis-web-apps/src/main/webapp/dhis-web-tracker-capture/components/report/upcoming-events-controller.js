@@ -11,7 +11,6 @@ trackerCapture.controller('UpcomingEventsController',
                 AttributesFactory,
                 ProgramFactory,
                 DHIS2EventFactory,
-                ContextMenuSelectedItem,
                 storage) {
 
     TranslationService.translate();
@@ -46,10 +45,8 @@ trackerCapture.controller('UpcomingEventsController',
     
     //watch for selection of program
     $scope.$watch('selectedProgram', function() {   
-        if( angular.isObject($scope.selectedProgram)){            
-            $scope.reportFinished = false;
-            $scope.reportStarted = false;
-        }
+        $scope.reportFinished = false;
+        $scope.reportStarted = false;
     });
     
     $scope.generateReport = function(program, report, ouMode){
