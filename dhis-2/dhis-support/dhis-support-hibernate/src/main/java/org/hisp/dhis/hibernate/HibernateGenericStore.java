@@ -278,35 +278,29 @@ public class HibernateGenericStore<T>
     @Override
     public int save( T object )
     {
-        if ( IdentifiableObject.class.isAssignableFrom( object.getClass() ) )
-        {
-            ((BaseIdentifiableObject) object).setPublicAccess( AccessStringHelper.newInstance().build() );
-            ((BaseIdentifiableObject) object).setUserGroupAccesses( new HashSet<UserGroupAccess>() );
-        }
-
         User currentUser = currentUserService.getCurrentUser();
 
-        if ( !Interpretation.class.isAssignableFrom( clazz ) && currentUser != null && aclService.isShareable( clazz ) )
+        if ( IdentifiableObject.class.isAssignableFrom( object.getClass() ) )
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
-
-            // TODO we might want to allow setting sharing props on save, but for now we null them out
+            identifiableObject.setPublicAccess( AccessStringHelper.newInstance().build() );
+            identifiableObject.setUserGroupAccesses( new HashSet<UserGroupAccess>() );
 
             if ( identifiableObject.getUser() == null )
             {
                 identifiableObject.setUser( currentUser );
             }
+        }
+
+        if ( !Interpretation.class.isAssignableFrom( clazz ) && currentUser != null && aclService.isShareable( clazz ) )
+        {
+            BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
 
             if ( aclService.canCreatePublic( currentUser, identifiableObject.getClass() ) )
             {
                 if ( aclService.defaultPublic( identifiableObject.getClass() ) )
                 {
-                    String build = AccessStringHelper.newInstance()
-                        .enable( AccessStringHelper.Permission.READ )
-                        .enable( AccessStringHelper.Permission.WRITE )
-                        .build();
-
-                    identifiableObject.setPublicAccess( build );
+                    identifiableObject.setPublicAccess( AccessStringHelper.READ_WRITE );
                 }
             }
             else if ( aclService.canCreatePrivate( currentUser, identifiableObject.getClass() ) )

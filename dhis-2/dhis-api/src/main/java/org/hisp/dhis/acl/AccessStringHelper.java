@@ -35,8 +35,6 @@ package org.hisp.dhis.acl;
  */
 public class AccessStringHelper
 {
-    public static final String DEFAULT_ACCESS = "--------";
-
     public static enum Permission
     {
         READ( 'r', 0 ), WRITE( 'w', 1 );
@@ -62,7 +60,22 @@ public class AccessStringHelper
         }
     }
 
-    private char[] access = DEFAULT_ACCESS.toCharArray();
+    private char[] access = DEFAULT.toCharArray();
+
+    public static final String DEFAULT = "--------";
+
+    public static final String READ = AccessStringHelper.newInstance()
+        .enable( Permission.READ )
+        .build();
+
+    public static final String WRITE = AccessStringHelper.newInstance()
+        .enable( Permission.WRITE )
+        .build();
+
+    public static final String READ_WRITE = AccessStringHelper.newInstance()
+        .enable( Permission.READ )
+        .enable( Permission.WRITE )
+        .build();
 
     public AccessStringHelper()
     {
