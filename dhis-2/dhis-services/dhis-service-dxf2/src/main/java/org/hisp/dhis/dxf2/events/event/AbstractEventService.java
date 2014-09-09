@@ -556,6 +556,7 @@ public abstract class AbstractEventService
             event.setTrackedEntityInstance( programStageInstance.getProgramInstance().getEntityInstance().getUid() );
         }
 
+        event.setFollowup( programStageInstance.getProgramInstance().getFollowup() );
         event.setEnrollmentStatus( EventStatus.fromInt( programStageInstance.getProgramInstance().getStatus() ) );
         event.setStatus( programStageInstance.getStatus() );
         event.setEventDate( DateUtils.getLongDateString( programStageInstance.getExecutionDate() ) );

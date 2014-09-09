@@ -37,18 +37,94 @@
         </div>        
     </div>
     <!-- top bar ends -->
-    
+
     <!--input form begins -->
     <form name="outerForm" novalidate>               
-        <div ng-include="'components/report/reportForm.html'"></div>
+        <div class="row">
+            <div class="col-sm-8 col-md-6">
+                <table class="table table-borderless table-striped">
+                    <tr>
+                        <td class='col-sm-4 col-md-3 vertical-center'>
+                            {{'program'| translate}}
+                        </td>
+                        <td class='col-sm-4 col-md-3'>
+                            <select ng-model="selectedProgram"
+                                    class="form-control"
+                                    ng-options="program as program.name for program in programs | orderBy: 'name'" 
+                                    ng-disabled="programs.length < 1">
+                                <option value="">{{programs.length > 0 ? 'please_select_a_program' : 'no_program_exists'| translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='col-sm-4 col-md-3 vertical-center'>{{'org_unit'| translate}}</td>
+                        <td class='col-sm-4 col-md-3'>                 
+                            <label><input type="radio" ng-model="selectedOuMode.name" name="selected" value="SELECTED"> {{'SELECTED'| translate}}</label><br/>
+                            <label><input type="radio" ng-model="selectedOuMode.name" name="children" value="CHILDREN"> {{'CHILDREN'| translate}}</label><br/>
+                            <label><input type="radio" ng-model="selectedOuMode.name" name="descendants" value="DESCENDANTS"> {{'DESCENDANTS'| translate}}</label><br/>
+                            <label><input type="radio" ng-model="selectedOuMode.name" name="accessible" value="ACCESSIBLE"> {{'ACCESSIBLE'| translate}}</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <label>                    
+                            <td class='col-sm-4 col-md-3 vertical-center'>
+                                {{'filter'| translate}}
+                            </td>
+                            <td>
+                                <label>
+                                    <input type="checkbox" ng-change="markForFollowup()" ng-model="displayMode.onlyMarkedFollowup"/>  {{'only_marked_for_followup' | translate}}
+                                </label>                                
+                            </td>
+                        </label>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 col-md-6">
+                <table class="table-borderless">
+                    <tr>
+                        <td>
+                            <input type="text" 
+                                   name="reportStartDate" 
+                                   placeholder="{{'start_date'| translate}} (yyyy-mm-dd)" 
+                                   class="form-control" 
+                                   ng-date 
+                                   ng-model="report.startDate" 
+                                   max="today" 
+                                   ng-required="true"/> 
+                            <span ng-show="outerForm.submitted && outerForm.reportStartDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}} (yyyy-mm-dd)</span>
+                        </td>
+                        <td>
+                            <input type="text" name="reportEndDate" placeholder="{{'end_date'| translate}} (yyyy-mm-dd)" class="form-control" ng-date ng-model="report.endDate" max="today" ng-required="true"/>
+                            <span ng-show="outerForm.submitted && outerForm.reportEndDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}} (yyyy-mm-dd)</span>
+                        </td>
+                    </tr>
+                </table>                
+            </div>
+            <div class="col-md-6 trim">
+                <button type="button" class="btn btn-primary" ng-click="generateReport(selectedProgram, report, selectedOuMode)" ng-disabled="!selectedProgram">{{'go'| translate}}</button>               
+            </div>
+        </div>
+
+        <div class="row" ng-if="programs.length < 1">        
+            <div class="col-sm-8 col-md-6 vertical-spacing">
+                <div class="alert alert-warning">{{'no_program_exists_report'| translate}}</div> 
+            </div>
+        </div>
+        <div class="row" ng-if="programs.length > 0 && !selectedProgram">        
+            <div class="col-sm-8 col-md-6 vertical-spacing">
+                <div class="alert alert-warning">{{'please_select_program_report'| translate}}</div> 
+            </div>
+        </div>
     </form>    
     <!--input form ends -->
-    
+
     <img src="../images/ajax-loader-bar.gif" ng-if="reportStarted && !reportFinished"/>
-    
+
     <!-- upcoming events list begins -->
     <div ng-if="reportFinished">
-        
+
         <div ng-switch="teiList.length">                    
             <div ng-switch-when="undefined">
                 <div class="alert alert-warning vertical-spacing">
@@ -67,39 +143,39 @@
                         <thead>                        
                             <tr>
                                 <th ng-show="gridColumn.show" ng-repeat="gridColumn in gridColumns">
-                                    
+
                                     <!-- sort icon begins -->
                                     <span ng-click="sortTEIGrid(gridColumn)">
-                                        {{gridColumn.name | translate}}
+                                        {{gridColumn.name| translate}}
                                         <i ng-if="sortHeader == gridColumn.id && reverse" class="fa fa-sort-desc"></i>
                                         <i ng-if="sortHeader == gridColumn.id && !reverse" class="fa fa-sort-asc"></i>
                                     </span>
                                     <!-- sort icon ends -->
-                                    
+
                                     <!-- filter icon begins -->
                                     <span class='pull-right'>
-                                        <span ng-show="gridColumn.type !='date' && gridColumn.type !='int'">
-                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [filterText[gridColumn.id] == undefined || filterText[gridColumn.id] == '']"><i class="fa fa-search"></i></span></a>
+                                        <span ng-show="gridColumn.type != 'date' && gridColumn.type != 'int'">
+                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter - without - content', false: 'filter - with - content'} [filterText[gridColumn.id] == undefined || filterText[gridColumn.id] == '']"><i class="fa fa-search"></i></span></a>
                                         </span>
-                                        <span ng-show="gridColumn.type ==='date' || gridColumn.type ==='int'">
-                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [(filterText[gridColumn.id].start == undefined || filterText[gridColumn.id].start == '') && (filterText[gridColumn.id].end == undefined || filterText[gridColumn.id].end == '')]"><i class="fa fa-search"></i></span></a>
+                                        <span ng-show="gridColumn.type === 'date' || gridColumn.type === 'int'">
+                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter - without - content', false: 'filter - with - content'} [(filterText[gridColumn.id].start == undefined || filterText[gridColumn.id].start == '') && (filterText[gridColumn.id].end == undefined || filterText[gridColumn.id].end == '')]"><i class="fa fa-search"></i></span></a>
                                         </span>                                                    
                                     </span>
                                     <!-- filter icon ends -->
-                                    
-                                     <!-- filter input field begins -->
+
+                                    <!-- filter input field begins -->
                                     <span ng-show="gridColumn.showFilter">  
                                         <span ng-switch="gridColumn.type">
                                             <span ng-switch-when="int">
-                                                <input style="width: 45%;" placeholder="{{'lower_limit' | translate}}" type="number" ng-model="filterText[gridColumn.id].start" ng-blur="searchInGrid(gridColumn)">
-                                                <input style="width: 45%;" placeholder="{{'upper_limit' | translate}}" type="number" ng-model="filterText[gridColumn.id].end" ng-blur="searchInGrid(gridColumn)">
+                                                <input style="width: 45%;" placeholder="{{'lower_limit'| translate}}" type="number" ng-model="filterText[gridColumn.id].start" ng-blur="searchInGrid(gridColumn)">
+                                                <input style="width: 45%;" placeholder="{{'upper_limit'| translate}}" type="number" ng-model="filterText[gridColumn.id].end" ng-blur="searchInGrid(gridColumn)">
                                             </span>
                                             <span ng-switch-when="date">
-                                                <input style="width: 70%;" placeholder="{{'start_date' | translate}}" type="text" ng-model="filterText[gridColumn.id].start" data-ng-date readonly="readonly">
+                                                <input style="width: 70%;" placeholder="{{'start_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].start" data-ng-date readonly="readonly">
                                                 <span ng-hide="filterText[gridColumn.id].start == undefined || filterText[gridColumn.id].start == ''">
                                                     <a href ng-click='removeStartFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
                                                 </span>
-                                                <input style="width: 70%;" placeholder="{{'end_date' | translate}}" type="text" ng-model="filterText[gridColumn.id].end" data-ng-date readonly="readonly">
+                                                <input style="width: 70%;" placeholder="{{'end_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].end" data-ng-date readonly="readonly">
                                                 <span ng-hide="filterText[gridColumn.id].end == undefined || filterText[gridColumn.id].end == ''">
                                                     <a href ng-click='removeEndFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
                                                 </span> 
@@ -110,16 +186,16 @@
                                         </span>                                                    
                                     </span>
                                     <!-- filter input field ends -->
-                                    
+
                                 </th>
                             </tr>                        
                         </thead>
                         <tbody id="list">
-                            <tr ng-repeat="tei in teiList | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"
+                            <tr ng-repeat="tei in teiList| orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"
                                 ng-click="showDashboard(tei)"
                                 title="{{'go_to_dashboard'| translate}}">
                                 <td ng-show="gridColumn.show"                                            
-                                    ng-repeat="gridColumn in gridColumns">                                                
+                                    ng-repeat="gridColumn in gridColumns" ng-if='displayMode.onlyMarkedFollowup ? tei.followup:true'>                                                
                                     {{tei[gridColumn.id]}}                                                
                                 </td>                                
                             </tr>
