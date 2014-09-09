@@ -358,39 +358,73 @@ function enableBtn() {
 	} else {
 		hideById('enrollmentSelectTR');
 	}
+	
+	if( program!=""){
+		$.get("../api/programs/" + program + ".json?fields=programTrackedEntityAttributes", {}
+			, function(json) {
+				removeAttributeOption('advSearchBox0');
+				var attributeList = jQuery('#searchObjectId');
+				jQuery('input[name=clearSearchBtn]').each(function() {
+					jQuery(this).click();
+				});
 
-	$.postJSON("getAttributesByProgram.action", {
-		id : program,
-		entityInstanceId : getFieldValue('entityInstanceId')
-	}, function(json) {
-		removeAttributeOption('advSearchBox0');
-		var attributeList = jQuery('#searchObjectId');
-		jQuery('input[name=clearSearchBtn]').each(function() {
-			jQuery(this).click();
+				clearListById('searchObjectId');
+				clearListById('attributeIds');
+				for ( var i in json.programTrackedEntityAttributes) {
+					var progamAttribute = json.programTrackedEntityAttributes[i];
+					var attribute = progamAttribute.trackedEntityAttribute;
+					jQuery('#searchObjectId').append(
+						'<option value="' + attribute.id + '" >'
+							+ attribute.name + '</option>');
+					
+					if(json.programTrackedEntityAttributes[i].displayed=='true'){
+						jQuery('#attributeIds').append(
+							'<option value="' + attribute.id 
+							+ '" valueType="' + attribute.valueType  + '"></option>');
+					}
+				}
+				
+				if (getFieldValue('program') != '') {
+					jQuery('#searchObjectId').append(
+						'<option value="programDate" >' + i18n_enrollment_date
+							+ '</option>');
+				}
+
+				addAttributeOption();
 		});
+	}
+	else
+	{
+		$.get("../api/trackedEntityAttributes.json?fields=id,name&filter=displayInListNoProgram:eq:true", {}
+			, function(json) {
+				removeAttributeOption('advSearchBox0');
+				var attributeList = jQuery('#searchObjectId');
+				jQuery('input[name=clearSearchBtn]').each(function() {
+					jQuery(this).click();
+				});
 
-		clearListById('searchObjectId');
-		clearListById('attributeIds');
-		for ( var i in json.attributes) {
-			jQuery('#searchObjectId').append(
-				'<option value="' + json.attributes[i].id + '" >'
-					+ json.attributes[i].name + '</option>');
-			
-			if(json.attributes[i].displayed=='true'){
-				jQuery('#attributeIds').append(
-				'<option value="' + json.attributes[i].id 
-				+ '" valueType="' + json.attributes[i].valueType  + '"></option>');
-			}
-		}
-		
-		if (getFieldValue('program') != '') {
-			jQuery('#searchObjectId').append(
-				'<option value="programDate" >' + i18n_enrollment_date
-					+ '</option>');
-		}
+				clearListById('searchObjectId');
+				clearListById('attributeIds');
+				for ( var i in json.trackedEntityAttributes) {
+					var attribute = json.trackedEntityAttributes[i];
+					jQuery('#searchObjectId').append(
+						'<option value="' + attribute.id + '" >' + attribute.name + '</option>');
+					
+					jQuery('#attributeIds').append(
+						'<option value="' + attribute.id 
+						+ '" valueType="' + attribute.valueType  + '"></option>');
+				}
+				
+				if (getFieldValue('program') != '') {
+					jQuery('#searchObjectId').append(
+						'<option value="programDate" >' + i18n_enrollment_date
+							+ '</option>');
+				}
 
-		addAttributeOption();
-	});
+				addAttributeOption();
+		});
+	}
+	
 }
 
 function enableRadioButton(programId) {
