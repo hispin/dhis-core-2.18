@@ -431,6 +431,7 @@ public class TableAlteror
         executeSql( "update eventchart set hidetitle = false where hidetitle is null" );
         executeSql( "update eventchart set hidesubtitle = false where hidesubtitle is null" );
         executeSql( "update reporttable set showdimensionlabels = false where showdimensionlabels is null" );
+        executeSql( "update eventreport set showdimensionlabels = false where showdimensionlabels is null" );
 
         // move timelydays from system setting => dataset property
         executeSql( "update dataset set timelydays = 15 where timelydays is null" );
