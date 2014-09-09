@@ -329,130 +329,61 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    public long getCountGeLastUpdated( Date lastUpdated )
+    public int getCountGeLastUpdated( Date lastUpdated )
     {
-        Query query = sharingEnabled() ? getQueryCountGeLastUpdatedAcl( lastUpdated ) : getQueryCountGeLastUpdated( lastUpdated );
-
-        return ((Long) query.uniqueResult()).intValue();
-    }
-
-    private Query getQueryCountGeLastUpdatedAcl( Date lastUpdated )
-    {
-        String hql = "select count(distinct c) from " + clazz.getName() + " c"
-            + " where c.lastUpdated >= :lastUpdated and (c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " )";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setTimestamp( "lastUpdated", lastUpdated );
-
-        return query;
-    }
-
-    private Query getQueryCountGeLastUpdated( Date lastUpdated )
-    {
-        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where lastUpdated >= :lastUpdated" );
-        query.setTimestamp( "lastUpdated", lastUpdated );
-
-        return query;
+        return ((Number) getSharingCriteria()
+            .add( Restrictions.ge( "lastUpdated", lastUpdated ) )
+            .setProjection( Projections.countDistinct( "id" ) )
+            .uniqueResult()).intValue();
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
     public List<T> getAllGeLastUpdated( Date lastUpdated )
     {
-        Query query = sharingEnabled() ? getQueryAllGeLastUpdatedAcl( lastUpdated ) : getQueryAllGeLastUpdated( lastUpdated );
-
-        return query.list();
+        return getSharingCriteria()
+            .add( Restrictions.ge( "lastUpdated", lastUpdated ) )
+            .addOrder( Order.desc( "lastUpdated" ) )
+            .list();
     }
 
-    private Query getQueryAllGeLastUpdatedAcl( Date lastUpdated )
+    @Override
+    public int getCountGeCreated( Date created )
     {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.lastUpdated >= :lastUpdated and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " )";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setTimestamp( "lastUpdated", lastUpdated );
-
-        return query;
-    }
-
-    private Query getQueryAllGeLastUpdated( Date lastUpdated )
-    {
-        Query query = getQuery( "from " + clazz.getName() + " c where c.lastUpdated >= :lastUpdated" );
-        query.setTimestamp( "lastUpdated", lastUpdated );
-
-        return query;
+        return ((Number) getSharingCriteria()
+            .add( Restrictions.ge( "created", created ) )
+            .setProjection( Projections.countDistinct( "id" ) )
+            .uniqueResult()).intValue();
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
     public List<T> getAllGeCreated( Date created )
     {
-        Query query = sharingEnabled() ? getQueryAllGeCreatedAcl( created ) : getQueryAllGeCreated( created );
-
-        return query.list();
+        return getSharingCriteria()
+            .add( Restrictions.ge( "created", created ) )
+            .addOrder( Order.desc( "created" ) )
+            .list();
     }
 
-    private Query getQueryAllGeCreatedAcl( Date created )
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public List<T> getAllGeCreatedOrderedName( Date created )
     {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.created >= :created and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " ) order by c.name";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setTimestamp( "created", created );
-
-        return query;
-    }
-
-    private Query getQueryAllGeCreated( Date created )
-    {
-        Query query = getQuery( "from " + clazz.getName() + " c where c.created >= :created" );
-        query.setTimestamp( "created", created );
-
-        return query;
+        return getSharingCriteria()
+            .add( Restrictions.ge( "created", created ) )
+            .addOrder( Order.asc( "name" ) )
+            .list();
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
     public List<T> getAllGeLastUpdatedOrderedName( Date lastUpdated )
     {
-        Query query = sharingEnabled() ? getQueryAllGeLastUpdatedOrderedNameAcl( lastUpdated ) : getQueryAllGeLastUpdatedOrderedName( lastUpdated );
-
-        return query.list();
-    }
-
-    private Query getQueryAllGeLastUpdatedOrderedNameAcl( Date lastUpdated )
-    {
-        String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.lastUpdated >= :lastUpdated and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-            + " or exists "
-            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
-            + " ) order by c.name";
-
-        Query query = getQuery( hql );
-        query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setTimestamp( "lastUpdated", lastUpdated );
-
-        return query;
-    }
-
-    private Query getQueryAllGeLastUpdatedOrderedName( Date lastUpdated )
-    {
-        Query query = getQuery( "from " + clazz.getName() + " c where c.lastUpdated >= :lastUpdated order by c.name" );
-        query.setTimestamp( "lastUpdated", lastUpdated );
-
-        return query;
+        return getSharingCriteria()
+            .add( Restrictions.ge( "lastUpdated", lastUpdated ) )
+            .addOrder( Order.asc( "name" ) )
+            .list();
     }
 
     @Override

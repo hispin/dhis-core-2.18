@@ -46,6 +46,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -114,7 +115,7 @@ public class IdentifiableObjectManagerTest
     }
 
     @Test
-    public void getCountByName()
+    public void getCountLikeName()
     {
         identifiableObjectManager.save( createDataElement( 'A' ) );
         identifiableObjectManager.save( createDataElement( 'B' ) );
@@ -125,6 +126,20 @@ public class IdentifiableObjectManagerTest
         assertEquals( 1, identifiableObjectManager.getCountLikeName( DataElement.class, "DataElementB" ) );
         assertEquals( 1, identifiableObjectManager.getCountLikeName( DataElement.class, "DataElementC" ) );
         assertEquals( 1, identifiableObjectManager.getCountLikeName( DataElement.class, "DataElementD" ) );
+    }
+
+    @Test
+    public void getCountLikeShortName()
+    {
+        identifiableObjectManager.save( createDataElement( 'A' ) );
+        identifiableObjectManager.save( createDataElement( 'B' ) );
+        identifiableObjectManager.save( createDataElement( 'C' ) );
+        identifiableObjectManager.save( createDataElement( 'D' ) );
+
+        assertEquals( 1, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShortA" ) );
+        assertEquals( 1, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShortA" ) );
+        assertEquals( 1, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShortA" ) );
+        assertEquals( 1, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShortA" ) );
     }
 
     @Test
@@ -171,7 +186,7 @@ public class IdentifiableObjectManagerTest
     }
 
     @Test
-    public void getAllLikeName()
+    public void getLikeName()
     {
         identifiableObjectManager.save( createDataElement( 'A' ) );
         identifiableObjectManager.save( createDataElement( 'B' ) );
@@ -376,5 +391,59 @@ public class IdentifiableObjectManagerTest
 
         assertEquals( 4, identifiableObjectManager.getCount( DataElement.class ) );
         assertEquals( 4, identifiableObjectManager.getAll( DataElement.class ).size() );
+    }
+
+    @Test
+    public void getAllGeCreated()
+    {
+        DataElement dataElementA = createDataElement( 'A' );
+        DataElement dataElementB = createDataElement( 'B' );
+        DataElement dataElementC = createDataElement( 'C' );
+        DataElement dataElementD = createDataElement( 'D' );
+
+        identifiableObjectManager.save( dataElementA );
+        identifiableObjectManager.save( dataElementB );
+        identifiableObjectManager.save( dataElementC );
+        identifiableObjectManager.save( dataElementD );
+
+        dataElementA.setCreated( new GregorianCalendar( 2014, 0, 1 ).getTime() );
+        dataElementB.setCreated( new GregorianCalendar( 2013, 0, 1 ).getTime() );
+        dataElementC.setCreated( new GregorianCalendar( 2012, 0, 1 ).getTime() );
+        dataElementD.setCreated( new GregorianCalendar( 2011, 0, 1 ).getTime() );
+
+        sessionFactory.getCurrentSession().update( dataElementA );
+        sessionFactory.getCurrentSession().update( dataElementB );
+        sessionFactory.getCurrentSession().update( dataElementC );
+        sessionFactory.getCurrentSession().update( dataElementD );
+
+        assertEquals( 2, identifiableObjectManager.getCountByCreated( DataElement.class, new GregorianCalendar( 2012, 5, 1 ).getTime() ) );
+        assertEquals( 2, identifiableObjectManager.getByCreated( DataElement.class, new GregorianCalendar( 2012, 5, 1 ).getTime() ).size() );
+    }
+
+    @Test
+    public void getAllGeLastUpdated()
+    {
+        DataElement dataElementA = createDataElement( 'A' );
+        DataElement dataElementB = createDataElement( 'B' );
+        DataElement dataElementC = createDataElement( 'C' );
+        DataElement dataElementD = createDataElement( 'D' );
+
+        identifiableObjectManager.save( dataElementA );
+        identifiableObjectManager.save( dataElementB );
+        identifiableObjectManager.save( dataElementC );
+        identifiableObjectManager.save( dataElementD );
+
+        dataElementA.setLastUpdated( new GregorianCalendar( 2014, 0, 1 ).getTime() );
+        dataElementB.setLastUpdated( new GregorianCalendar( 2013, 0, 1 ).getTime() );
+        dataElementC.setLastUpdated( new GregorianCalendar( 2012, 0, 1 ).getTime() );
+        dataElementD.setLastUpdated( new GregorianCalendar( 2011, 0, 1 ).getTime() );
+
+        sessionFactory.getCurrentSession().update( dataElementA );
+        sessionFactory.getCurrentSession().update( dataElementB );
+        sessionFactory.getCurrentSession().update( dataElementC );
+        sessionFactory.getCurrentSession().update( dataElementD );
+
+        assertEquals( 2, identifiableObjectManager.getCountByLastUpdated( DataElement.class, new GregorianCalendar( 2012, 5, 1 ).getTime() ) );
+        assertEquals( 2, identifiableObjectManager.getByLastUpdated( DataElement.class, new GregorianCalendar( 2012, 5, 1 ).getTime() ).size() );
     }
 }

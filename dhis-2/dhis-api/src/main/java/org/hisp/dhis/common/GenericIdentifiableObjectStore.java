@@ -215,6 +215,8 @@ public interface GenericIdentifiableObjectStore<T>
      */
     List<T> getByUidNoAcl( Collection<String> uids );
 
+    int getCountGeCreated( Date created );
+
     /**
      * Returns all objects that are equal to or newer than given date.
      *
@@ -238,6 +240,15 @@ public interface GenericIdentifiableObjectStore<T>
      * @param lastUpdated Date to compare to.
      * @return All objects equal or newer than given date.
      */
+    List<T> getAllGeCreatedOrderedName( Date created );
+
+    /**
+     * Returns all objects that are equal to or newer than given date.
+     * (ordered by name)
+     *
+     * @param lastUpdated Date to compare to.
+     * @return All objects equal or newer than given date.
+     */
     List<T> getAllGeLastUpdatedOrderedName( Date lastUpdated );
 
     /**
@@ -246,7 +257,7 @@ public interface GenericIdentifiableObjectStore<T>
      * @param lastUpdated Date to compare to.
      * @return the number of objects equal or newer than given date.
      */
-    long getCountGeLastUpdated( Date lastUpdated );
+    int getCountGeLastUpdated( Date lastUpdated );
 
     /**
      * Retrieves objects associated with the given user.
