@@ -482,6 +482,11 @@ Ext.onReady( function() {
 			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 		});
 
+		showDimensionLabels = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.show_dimension_labels,
+			style: 'margin-bottom:' + comboBottomMargin + 'px'
+		});
+
 		aggregationType = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
 			style: 'margin-top:3px; margin-bottom:' + comboBottomMargin + 'px',
@@ -512,14 +517,9 @@ Ext.onReady( function() {
 			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 		});
 
-		showDimensionLabels = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.show_dimension_labels,
-			style: 'margin-bottom:' + comboBottomMargin + 'px'
-		});
-
 		displayDensity = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-top:5px; margin-bottom:' + comboBottomMargin + 'px',
+			style: 'margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.display_density,
@@ -672,6 +672,7 @@ Ext.onReady( function() {
 				showRowTotals,
 				showSubTotals,
 				hideEmptyRows,
+                showDimensionLabels,
                 aggregationType
 			]
 		};
@@ -688,7 +689,6 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
-                showDimensionLabels,
 				displayDensity,
 				fontSize,
 				digitGroupSeparator,

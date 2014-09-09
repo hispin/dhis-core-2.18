@@ -2181,15 +2181,15 @@ Ext.onReady( function() {
                             }
 
                             a.push(getEmptyNameTdConfig({
-                                cls: 'pivot-dim-label align-right',
-                                htmlValue: '&nbsp;&nbsp;' + dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
+                                cls: 'pivot-dim-label',
+                                htmlValue: dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
                             }));
                         }
                         else {
                             if (xRowAxis && xRowAxis.dims) {
                                 for (var j = 0; j < xRowAxis.dims - 1; j++) {
                                     a.push(getEmptyNameTdConfig({
-                                        cls: 'pivot-dim-label align-left',
+                                        cls: 'pivot-dim-label',
                                         htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[j]].name
                                     }));
                                 }
@@ -2197,9 +2197,7 @@ Ext.onReady( function() {
 
                             a.push(getEmptyNameTdConfig({
                                 cls: 'pivot-dim-label',
-                                htmlValue: '<span class="td-nobreak">' + dimConf.objectNameMap[xLayout.rowObjectNames[j]].name + '</span>' +
-                                           '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-                                           '<span class="td-nobreak" style="float:right">' + dimConf.objectNameMap[xLayout.columnObjectNames[i]].name + '</span>'
+                                htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[j]].name + ', ' + dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
                             }));
                         }
 
@@ -2213,10 +2211,6 @@ Ext.onReady( function() {
 					// for each col dimension
 					for (var i = 0, dimHtml; i < xColAxis.dims; i++) {
 						dimHtml = [];
-
-						//if (i === 0) {
-							//dimHtml.push(getEmptyHtmlArray());
-						//}
 
                         if (xLayout.showDimensionLabels) {
                             dimHtml = dimHtml.concat(getEmptyHtmlArray(i));
