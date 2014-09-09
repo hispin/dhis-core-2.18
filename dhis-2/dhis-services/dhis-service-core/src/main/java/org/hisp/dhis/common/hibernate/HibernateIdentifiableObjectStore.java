@@ -178,7 +178,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllEqName( String name )
     {
         return getSharingCriteria()
@@ -188,7 +188,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllEqNameIgnoreCase( String name )
     {
         return getSharingCriteria()
@@ -198,7 +198,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllEqShortName( String shortName )
     {
         return getSharingCriteria()
@@ -208,7 +208,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllEqShortNameIgnoreCase( String shortName )
     {
         return getSharingCriteria()
@@ -218,7 +218,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllLikeName( String name )
     {
         return getSharingCriteria()
@@ -228,7 +228,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllLikeName( String name, int first, int max )
     {
         return getSharingCriteria()
@@ -240,7 +240,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllLikeShortName( String shortName )
     {
         if ( NameableObject.class.isAssignableFrom( clazz ) )
@@ -255,7 +255,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllOrderedName()
     {
         return getSharingCriteria()
@@ -264,7 +264,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllOrderedName( int first, int max )
     {
         return getSharingCriteria()
@@ -274,7 +274,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllOrderedLastUpdated()
     {
         return getSharingCriteria()
@@ -283,7 +283,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllOrderedLastUpdated( int first, int max )
     {
         return getSharingCriteria()
@@ -360,7 +360,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllGeLastUpdated( Date lastUpdated )
     {
         Query query = sharingEnabled() ? getQueryAllGeLastUpdatedAcl( lastUpdated ) : getQueryAllGeLastUpdated( lastUpdated );
@@ -392,7 +392,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllGeCreated( Date created )
     {
         Query query = sharingEnabled() ? getQueryAllGeCreatedAcl( created ) : getQueryAllGeCreated( created );
@@ -424,7 +424,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllGeLastUpdatedOrderedName( Date lastUpdated )
     {
         Query query = sharingEnabled() ? getQueryAllGeLastUpdatedOrderedNameAcl( lastUpdated ) : getQueryAllGeLastUpdatedOrderedName( lastUpdated );
@@ -456,7 +456,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getByUser( User user )
     {
         Query query = getQuery( "from " + clazz.getName() + " c where user = :user" );
@@ -466,7 +466,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getByDataDimension( boolean dataDimension )
     {
         Query query = getQuery( "from " + clazz.getName() + " c where c.dataDimension = :dataDimension" );
