@@ -2199,7 +2199,7 @@ Ext.onReady( function() {
 
                             a.push(getEmptyNameTdConfig({
                                 cls: 'pivot-dim-label',
-                                htmlValue: '&nbsp;&nbsp;' + dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
+                                htmlValue: dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
                             }));
                         }
                         else {
