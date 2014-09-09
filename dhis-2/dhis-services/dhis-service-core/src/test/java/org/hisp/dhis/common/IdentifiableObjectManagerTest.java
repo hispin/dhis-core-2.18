@@ -46,11 +46,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -307,9 +305,8 @@ public class IdentifiableObjectManagerTest
         identifiableObjectManager.save( createDataElement( 'C' ) );
         identifiableObjectManager.save( createDataElement( 'D' ) );
 
-        Collection<DataElement> all = identifiableObjectManager.getAll( DataElement.class );
-
-        assertEquals( 4, all.size() );
+        assertEquals( 4, identifiableObjectManager.getCount( DataElement.class ) );
+        assertEquals( 4, identifiableObjectManager.getAll( DataElement.class ).size() );
     }
 
     @Test
@@ -337,6 +334,7 @@ public class IdentifiableObjectManagerTest
             sessionFactory.getCurrentSession().update( dataElement );
         }
 
+        assertEquals( 0, identifiableObjectManager.getCount( DataElement.class ) );
         assertEquals( 0, identifiableObjectManager.getAll( DataElement.class ).size() );
     }
 
@@ -356,6 +354,7 @@ public class IdentifiableObjectManagerTest
         identifiableObjectManager.save( createDataElement( 'C' ) );
         identifiableObjectManager.save( createDataElement( 'D' ) );
 
+        assertEquals( 4, identifiableObjectManager.getCount( DataElement.class ) );
         assertEquals( 4, identifiableObjectManager.getAll( DataElement.class ).size() );
 
         List<DataElement> dataElements = new ArrayList<>( identifiableObjectManager.getAll( DataElement.class ) );
@@ -375,6 +374,7 @@ public class IdentifiableObjectManagerTest
             sessionFactory.getCurrentSession().update( dataElement );
         }
 
+        assertEquals( 4, identifiableObjectManager.getCount( DataElement.class ) );
         assertEquals( 4, identifiableObjectManager.getAll( DataElement.class ).size() );
     }
 }
