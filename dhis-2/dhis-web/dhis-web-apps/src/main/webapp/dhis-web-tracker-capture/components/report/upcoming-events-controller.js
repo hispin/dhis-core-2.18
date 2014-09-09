@@ -1,6 +1,7 @@
 trackerCapture.controller('UpcomingEventsController',
          function($scope,
                 $modal,
+                orderByFilter,
                 DateUtils,
                 EventUtils,
                 TEIService,
@@ -44,7 +45,7 @@ trackerCapture.controller('UpcomingEventsController',
     $scope.$watch('selectedProgram', function() {   
         if( angular.isObject($scope.selectedProgram)){            
             $scope.reportFinished = false;
-            $scope.dataReady = false;
+            $scope.reportStarted = false;
         }
     });
     
@@ -61,15 +62,24 @@ trackerCapture.controller('UpcomingEventsController',
         }
         
         $scope.reportFinished = false;
-        $scope.dataReady = false;
+        $scope.reportStarted = true;
         
         $scope.programStages = [];
+        $scope.filterTypes = {};
+        $scope.filterText = {}; 
         angular.forEach($scope.selectedProgram.programStages, function(stage){
             $scope.programStages[stage.id] = stage;
         });
             
         AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){            
-            $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);            
+            $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);
+
+            $scope.gridColumns.push({name: 'upcoming_event', id: 'upcoming_event', type: 'string', displayInListNoProgram: false, showFilter: false, show: true});
+            $scope.filterTypes['upcoming_event'] = 'string';                
+
+            $scope.gridColumns.push({name: 'due_date', id: 'due_date', type: 'date', displayInListNoProgram: false, showFilter: false, show: true});
+            $scope.filterTypes['due_date'] = 'date';
+            $scope.filterText['due_date']= {};                
         });  
         
         //fetch TEIs for the selected program and orgunit/mode
@@ -118,8 +128,21 @@ trackerCapture.controller('UpcomingEventsController',
                         }                        
                     }
                 });
+                
+                //incase a TEI happens to have more than one overdue, sort using duedate
+                for(var tei in $scope.dhis2Events){                    
+                    $scope.dhis2Events[tei] = orderByFilter($scope.dhis2Events[tei], '-dueDate');
+                    $scope.dhis2Events[tei].reverse();                    
+                }
+                
+                //make upcoming event name and its due date part of the grid column
+                for(var i=0; i<$scope.teiList.length; i++){
+                    $scope.teiList[i].upcoming_event = $scope.dhis2Events[$scope.teiList[i].id][0].name;
+                    $scope.teiList[i].due_date = $scope.dhis2Events[$scope.teiList[i].id][0].dueDate;
+                }
+               
                 $scope.reportFinished = true;
-                $scope.dataReady = true;                
+                $scope.reportStarted = false;                
             });
         });
     };
@@ -160,5 +183,29 @@ trackerCapture.controller('UpcomingEventsController',
         }        
         $scope.sortHeader = gridHeader.id;
         $scope.reverse = false;    
+    };
+    
+    $scope.searchInGrid = function(gridColumn){
+        
+        $scope.currentFilter = gridColumn;
+       
+        for(var i=0; i<$scope.gridColumns.length; i++){
+            
+            //toggle the selected grid column's filter
+            if($scope.gridColumns[i].id === gridColumn.id){
+                $scope.gridColumns[i].showFilter = !$scope.gridColumns[i].showFilter;
+            }            
+            else{
+                $scope.gridColumns[i].showFilter = false;
+            }
+        }
+    };    
+    
+    $scope.removeStartFilterText = function(gridColumnId){
+        $scope.filterText[gridColumnId].start = undefined;
+    };
+    
+    $scope.removeEndFilterText = function(gridColumnId){
+        $scope.filterText[gridColumnId].end = undefined;
     };
 });

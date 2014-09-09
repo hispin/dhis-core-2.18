@@ -4,62 +4,70 @@
 
 var trackerCaptureFilters = angular.module('trackerCaptureFilters', [])
 
-.filter('gridFilter', function(){    
+.filter('gridFilter', function($filter){    
     
-    return function(data, filterText, currentFilter){
-        
+    return function(data, filters, filterTypes){
+
         if(!data ){
             return;
         }
         
-        if(!filterText){
+        if(!filters){
             return data;
         }        
         else{            
             
-            var keys = [];
-            var filteredData = data;
+            var dateFilter = {}, 
+                textFilter = {}, 
+                numberFilter = {},
+                filteredData = data;
             
-            for(var key in filterText){
-                keys.push(key);
+            for(var key in filters){
                 
-                for(var i=0; i<filteredData.length; i++){
-                    
-                    var val = filteredData[i][key];
-                    
-                    if( currentFilter.type === 'date'){
-                        
-                        if( filterText[key].start || filterText[key].end){
-                            var start = moment(filterText[key].start, 'YYYY-MM-DD');
-                            var end = moment(filterText[key].end, 'YYYY-MM-DD');  
-                            var date = moment(val, 'YYYY-MM-DD');                              
-                            
-                            if( ( Date.parse(date) > Date.parse(end) ) || (Date.parse(date) < Date.parse(start)) ){  
-                                filteredData.splice(i,1);
-                                i--;
-                            }                                                        
-                        }
-                        
+                if(filterTypes[key] === 'date'){
+                    if(filters[key].start || filters[key].end){
+                        dateFilter[key] = filters[key];
                     }
-                    else{
-                        if( currentFilter.type === 'int'){
-                            val = val.toString();
-                        }
-
-                        val = val.toLowerCase();
-                        if( val.indexOf(filterText[key].toLowerCase()) === -1 ){
-                            filteredData.splice(i,1);
-                            i--;
-                        }                        
-                    }
-                                        
                 }
-            }            
+                else if(filterTypes[key] === 'int'){
+                    if(filters[key].start || filters[key].end){
+                        numberFilter[key] = filters[key];
+                    }
+                }
+                else{
+                    textFilter[key] = filters[key];
+                }
+            }
+            
+            filteredData = $filter('filter')(filteredData, textFilter); 
+            filteredData = $filter('filter')(filteredData, dateFilter, dateComparator);            
+            filteredData = $filter('filter')(filteredData, numberFilter, numberComparator);
+                        
             return filteredData;
         } 
-    };    
+    }; 
+    
+    function dateComparator(data,filter){
+        var start = moment(filter.start, 'YYYY-MM-DD');
+        var end = moment(filter.end, 'YYYY-MM-DD');  
+        var date = moment(data, 'YYYY-MM-DD'); 
+        
+        if(filter.start && filter.end){
+            return ( Date.parse(date) <= Date.parse(end) ) && (Date.parse(date) >= Date.parse(start));
+        }        
+        return ( Date.parse(date) <= Date.parse(end) ) || (Date.parse(date) >= Date.parse(start));
+    }
+    
+    function numberComparator(data,filter){
+        var start = filter.start;
+        var end = filter.end;
+        
+        if(filter.start && filter.end){
+            return ( data <= end ) && ( data >= start );
+        }        
+        return ( data <= end ) || ( data >= start );
+    }
 })
-
 
 .filter('paginate', function(Paginator) {
     return function(input, rowsPerPage) {

@@ -1117,8 +1117,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             var columns = attributes ? angular.copy(attributes) : [];
        
             //also add extra columns which are not part of attributes (orgunit for example)
-            columns.push({id: 'orgUnitName', name: 'Registering unit', type: 'string', displayInListNoProgram: false});
-            columns.push({id: 'created', name: 'Registration date', type: 'string', displayInListNoProgram: false});
+            columns.push({id: 'orgUnitName', name: 'registering_unit', type: 'string', displayInListNoProgram: false});
+            columns.push({id: 'created', name: 'registration_date', type: 'date', displayInListNoProgram: false});
 
             //generate grid column for the selected program/attributes
             angular.forEach(columns, function(column){
@@ -1128,7 +1128,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 
                 if(column.displayInListNoProgram || column.displayInList){
                     column.show = true;
-                }           
+                }  
+                column.showFilter = false;
             });     
             
             return columns;  
