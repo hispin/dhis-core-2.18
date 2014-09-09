@@ -562,10 +562,6 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 	
-	<bean id="org.hisp.dhis.caseentry.action.trackedentity.GetAttributesByProgramAction"
-		class="org.hisp.dhis.caseentry.action.trackedentity.GetAttributesByProgramAction" scope="prototype">
-	</bean>
-	
 	<bean id="org.hisp.dhis.caseentry.action.trackedentity.GetVisitScheduleAttributesAction"
 		class="org.hisp.dhis.caseentry.action.trackedentity.GetVisitScheduleAttributesAction" scope="prototype">
 	</bean>
