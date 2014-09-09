@@ -48,6 +48,7 @@
     
     <!-- upcoming events list begins -->
     <div ng-if="reportFinished">
+        
         <div ng-switch="teiList.length">                    
             <div ng-switch-when="undefined">
                 <div class="alert alert-warning vertical-spacing">
@@ -59,8 +60,7 @@
                     {{'no_data_found'| translate}}
                 </div>
             </div>    
-            <div ng-switch-default> 
-
+            <div ng-switch-default>
                 <!-- report begins -->
                 <div class="vertical-spacing">   
                     <table class="listTable dhis2-table-striped-border dhis2-table-hover">               
@@ -116,7 +116,7 @@
                         </thead>
                         <tbody id="list">
                             <tr ng-repeat="tei in teiList | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"
-                                ng-click="showDashboard(trackedEntity)"
+                                ng-click="showDashboard(tei)"
                                 title="{{'go_to_dashboard'| translate}}">
                                 <td ng-show="gridColumn.show"                                            
                                     ng-repeat="gridColumn in gridColumns">                                                

@@ -266,6 +266,10 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     border-top: none; 
 }
 
+.listTable th {
+    height: 30px;
+}
+
 .dhis2-table>thead>tr>th, 
 .dhis2-table>tbody>tr>th, 
 .dhis2-table>tfoot>tr>th, 
