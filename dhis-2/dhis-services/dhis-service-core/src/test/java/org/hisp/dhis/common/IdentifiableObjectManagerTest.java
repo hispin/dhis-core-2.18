@@ -121,10 +121,10 @@ public class IdentifiableObjectManagerTest
         identifiableObjectManager.save( createDataElement( 'C' ) );
         identifiableObjectManager.save( createDataElement( 'D' ) );
 
-        assertEquals( 1, identifiableObjectManager.getCountByName( DataElement.class, "DataElementA" ) );
-        assertEquals( 1, identifiableObjectManager.getCountByName( DataElement.class, "DataElementB" ) );
-        assertEquals( 1, identifiableObjectManager.getCountByName( DataElement.class, "DataElementC" ) );
-        assertEquals( 1, identifiableObjectManager.getCountByName( DataElement.class, "DataElementD" ) );
+        assertEquals( 1, identifiableObjectManager.getCountLikeName( DataElement.class, "DataElementA" ) );
+        assertEquals( 1, identifiableObjectManager.getCountLikeName( DataElement.class, "DataElementB" ) );
+        assertEquals( 1, identifiableObjectManager.getCountLikeName( DataElement.class, "DataElementC" ) );
+        assertEquals( 1, identifiableObjectManager.getCountLikeName( DataElement.class, "DataElementD" ) );
     }
 
     @Test
@@ -178,8 +178,8 @@ public class IdentifiableObjectManagerTest
         identifiableObjectManager.save( createDataElement( 'C' ) );
         identifiableObjectManager.save( createDataElement( 'D' ) );
 
-        assertEquals( 4, identifiableObjectManager.getCountByName( DataElement.class, "DataElement" ) );
-        assertEquals( 4, identifiableObjectManager.getCountByName( DataElement.class, "dataElement" ) );
+        assertEquals( 4, identifiableObjectManager.getCountLikeName( DataElement.class, "DataElement" ) );
+        assertEquals( 4, identifiableObjectManager.getCountLikeName( DataElement.class, "dataElement" ) );
 
         assertEquals( 4, identifiableObjectManager.getLikeName( DataElement.class, "DataElement" ).size() );
         assertEquals( 4, identifiableObjectManager.getLikeName( DataElement.class, "dataElement" ).size() );
@@ -193,8 +193,8 @@ public class IdentifiableObjectManagerTest
         identifiableObjectManager.save( createDataElement( 'C' ) );
         identifiableObjectManager.save( createDataElement( 'D' ) );
 
-        assertEquals( 4, identifiableObjectManager.getCountByShortName( DataElement.class, "DataElementShort" ) );
-        assertEquals( 4, identifiableObjectManager.getCountByShortName( DataElement.class, "dataElementSHORT" ) );
+        assertEquals( 4, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShort" ) );
+        assertEquals( 4, identifiableObjectManager.getCountLikeShortName( DataElement.class, "dataElementSHORT" ) );
 
         assertEquals( 4, identifiableObjectManager.getLikeShortName( DataElement.class, "DataElementShort" ).size() );
         assertEquals( 4, identifiableObjectManager.getLikeShortName( DataElement.class, "dataElementSHORT" ).size() );
@@ -291,7 +291,7 @@ public class IdentifiableObjectManagerTest
         identifiableObjectManager.save( dataElement );
 
         dataElement.setUser( user );
-        dataElement.setPublicAccess( AccessStringHelper.newInstance().build() );
+        dataElement.setPublicAccess( AccessStringHelper.DEFAULT );
         sessionFactory.getCurrentSession().update( dataElement );
 
         identifiableObjectManager.delete( dataElement );
@@ -329,7 +329,7 @@ public class IdentifiableObjectManagerTest
         for ( DataElement dataElement : dataElements )
         {
             dataElement.setUser( user );
-            dataElement.setPublicAccess( AccessStringHelper.newInstance().build() );
+            dataElement.setPublicAccess( AccessStringHelper.DEFAULT );
 
             sessionFactory.getCurrentSession().update( dataElement );
         }
@@ -365,7 +365,7 @@ public class IdentifiableObjectManagerTest
             dataElement.setPublicAccess( AccessStringHelper.newInstance().build() );
 
             UserGroupAccess userGroupAccess = new UserGroupAccess();
-            userGroupAccess.setAccess( AccessStringHelper.newInstance().enable( AccessStringHelper.Permission.READ ).build() );
+            userGroupAccess.setAccess( AccessStringHelper.READ );
             userGroupAccess.setUserGroup( userGroup );
 
             sessionFactory.getCurrentSession().save( userGroupAccess );
