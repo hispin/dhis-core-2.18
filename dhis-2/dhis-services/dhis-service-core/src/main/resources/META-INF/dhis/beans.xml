@@ -907,6 +907,7 @@
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
     <property name="smsMessageSender" ref="org.hisp.dhis.sms.SmsMessageSender" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="incomingSmsService" ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
   </bean>
 
   <bean id="org.hisp.dhis.sms.SmsMessageSender" class="org.hisp.dhis.sms.SmsMessageSender">

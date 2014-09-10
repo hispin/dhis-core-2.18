@@ -19,6 +19,7 @@ function hideAll()
 	 hideById( "dataSetParser" ); 
 	 hideById( "alertParser" );
 	 hideById( "anonymousProgramParser" );
+	 hideById( "registrationParser" );
 }
 
 function generateSpecialCharactersForm()
