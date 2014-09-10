@@ -76,19 +76,24 @@ dhis2.de.multiOrganisationUnit = false;
 
 // "organisationUnits" object inherited from ouwt.js
 
-// Colors
-
-var COLOR_GREEN = '#b9ffb9';
-var COLOR_YELLOW = '#fffe8c';
-var COLOR_RED = '#ff8a8a';
-var COLOR_ORANGE = '#ff6600';
-var COLOR_WHITE = '#fff';
-var COLOR_GREY = '#ccc';
-var COLOR_BORDER_ACTIVE = '#73ad72';
-var COLOR_BORDER = '#aaa';
+// Constants
 
 dhis2.de.cst.defaultType = 'int';
 dhis2.de.cst.defaultName = '[unknown]';
+dhis2.de.cst.dropDownMaxItems = 30;
+dhis2.de.cst.formulaPattern = /#\{.+?\}/g;
+dhis2.de.cst.separator = '.';
+
+// Colors
+
+dhis2.de.cst.colorGreen = '#b9ffb9';
+dhis2.de.cst.colorYellow = '#fffe8c';
+dhis2.de.cst.colorRed = '#ff8a8a';
+dhis2.de.cst.colorOrange = '#ff6600';
+dhis2.de.cst.colorWhite = '#fff';
+dhis2.de.cst.colorGrey = '#ccc';
+dhis2.de.cst.colorBorderActive = '#73ad72';
+dhis2.de.cst.colorBorder = '#aaa';
 
 // Form types
 
@@ -119,8 +124,7 @@ dhis2.de.on = function( event, fn )
 }
 
 var EVENT_FORM_LOADED = "dhis-web-dataentry-form-loaded"; // Deprecated
-
-var MAX_DROPDOWN_DISPLAYED = 30;
+var EVENT_VALUE_SAVED = 'dhis-web-dataentry-value-saved'; // Deprecated
 
 var DAO = DAO || {};
 
@@ -1307,16 +1311,16 @@ function getAndInsertDataValues()
     $( '.entrytrueonly' ).removeAttr( 'checked' );
     $( '.entryoptionset' ).val( '' );
 
-    $( '.entryfield' ).css( 'background-color', COLOR_WHITE ).css( 'border', '1px solid ' + COLOR_BORDER );
-    $( '.entryselect' ).css( 'background-color', COLOR_WHITE ).css( 'border', '1px solid ' + COLOR_BORDER );
-    $( '.indicator' ).css( 'background-color', COLOR_WHITE ).css( 'border', '1px solid ' + COLOR_BORDER );
-    $( '.entrytrueonly' ).css( 'background-color', COLOR_WHITE );
-    $( '.entryoptionset' ).css( 'background-color', COLOR_WHITE );
+    $( '.entryfield' ).css( 'background-color', dhis2.de.cst.colorWhite ).css( 'border', '1px solid ' + dhis2.de.cst.colorBorder );
+    $( '.entryselect' ).css( 'background-color', dhis2.de.cst.colorWhite ).css( 'border', '1px solid ' + dhis2.de.cst.colorBorder );
+    $( '.indicator' ).css( 'background-color', dhis2.de.cst.colorWhite ).css( 'border', '1px solid ' + dhis2.de.cst.colorBorder );
+    $( '.entrytrueonly' ).css( 'background-color', dhis2.de.cst.colorWhite );
+    $( '.entryoptionset' ).css( 'background-color', dhis2.de.cst.colorWhite );
 
     $( '[name="min"]' ).html( '' );
     $( '[name="max"]' ).html( '' );
 
-    $( '.entryfield' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
+    $( '.entryfield' ).filter( ':disabled' ).css( 'background-color', dhis2.de.cst.colorGrey );
 
     var params = {
 		periodId : periodId,
@@ -1436,7 +1440,7 @@ function insertDataValues( json )
             }
             else if ( $( fieldId ).length > 0 )
             {
-                $( fieldId ).css( 'border-color', COLOR_BORDER_ACTIVE )
+                $( fieldId ).css( 'border-color', dhis2.de.cst.colorBorderActive )
             }	            		
         }
         
@@ -1459,7 +1463,7 @@ function insertDataValues( json )
             if ( dataValue && ( ( value.min && new Number( dataValue ) < new Number(
                 value.min ) ) || ( value.max && new Number( dataValue ) > new Number( value.max ) ) ) )
             {
-                $( valFieldId ).css( 'background-color', COLOR_ORANGE );
+                $( valFieldId ).css( 'background-color', dhis2.de.cst.colorOrange );
             }
 
             dhis2.de.currentMinMaxValueMap[minId] = value.min;
@@ -1885,7 +1889,7 @@ dhis2.de.validateCompulsoryCombinations = function()
                     if ( $.trim( $( this ).val() ).length == 0 )
                     {
                         violations = true;						
-                        $selector.css( 'background-color', COLOR_RED );						
+                        $selector.css( 'background-color', dhis2.de.cst.colorRed );						
                         return false;
                     }
                 } );
@@ -2580,7 +2584,7 @@ dhis2.de.searchOptionSet = function( uid, query, success )
                 var options = [];
 
                 if ( query == null || query == '' ) {
-                    options = obj.optionSet.options.slice( 0, MAX_DROPDOWN_DISPLAYED - 1 );
+                    options = obj.optionSet.options.slice( 0, dhis2.de.cst.dropDownMaxItems - 1 );
                 } 
                 else {
                     query = query.toLowerCase();
@@ -2588,7 +2592,7 @@ dhis2.de.searchOptionSet = function( uid, query, success )
                     for ( var idx=0, len = obj.optionSet.options.length; idx < len; idx++ ) {
                         var item = obj.optionSet.options[idx];
 
-                        if ( options.length >= MAX_DROPDOWN_DISPLAYED ) {
+                        if ( options.length >= dhis2.de.cst.dropDownMaxItems ) {
                             break;
                         }
 
