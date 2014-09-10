@@ -730,6 +730,7 @@ public class TableAlteror
         executeSql( "update expression set missingvaluestrategy = 'SKIP_IF_ANY_VALUE_MISSING' where nullifblank = true or nullifblank is null" );
         executeSql( "update expression set missingvaluestrategy = 'NEVER_SKIP' where nullifblank = false" );
         executeSql( "alter table expression alter column missingvaluestrategy set not null" );
+        executeSql( "alter table expression drop column nullifblank" );
 
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeCompleteDataSetRegistrationsWithAttributeOptionCombo();
