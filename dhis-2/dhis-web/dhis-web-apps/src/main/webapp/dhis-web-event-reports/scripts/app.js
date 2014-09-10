@@ -4791,7 +4791,7 @@ Ext.onReady( function() {
 					if (!r.data.leaf) {
 						v.menu.add({
 							id: 'treepanel-contextmenu-item',
-							text: NS.i18n.select_all_children,
+							text: NS.i18n.select_sub_units,
 							icon: 'images/node-select-child.png',
 							handler: function() {
 								r.expand(false, function() {

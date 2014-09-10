@@ -4834,14 +4834,12 @@ Ext.onReady( function() {
 						v.menu.destroy();
 					}
 					v.menu = Ext.create('Ext.menu.Menu', {
-						id: 'treepanel-contextmenu',
 						showSeparator: false,
 						shadow: false
 					});
 					if (!r.data.leaf) {
 						v.menu.add({
-							id: 'treepanel-contextmenu-item',
-							text: gis.i18n.select_all_children,
+							text: GIS.i18n.select_sub_units,
 							icon: 'images/node-select-child.png',
 							handler: function() {
 								r.expand(false, function() {
@@ -5546,14 +5544,12 @@ Ext.onReady( function() {
 						v.menu.destroy();
 					}
 					v.menu = Ext.create('Ext.menu.Menu', {
-						id: 'treepanel-contextmenu',
 						showSeparator: false,
 						shadow: false
 					});
 					if (!r.data.leaf) {
 						v.menu.add({
-							id: 'treepanel-contextmenu-item',
-							text: gis.i18n.select_all_children,
+							text: GIS.i18n.select_sub_units,
 							icon: 'images/node-select-child.png',
 							handler: function() {
 								r.expand(false, function() {
@@ -6302,14 +6298,12 @@ Ext.onReady( function() {
 						v.menu.destroy();
 					}
 					v.menu = Ext.create('Ext.menu.Menu', {
-						id: 'treepanel-contextmenu',
 						showSeparator: false,
 						shadow: false
 					});
 					if (!r.data.leaf) {
 						v.menu.add({
-							id: 'treepanel-contextmenu-item',
-							text: gis.i18n.select_all_children,
+							text: GIS.i18n.select_sub_units,
 							icon: 'images/node-select-child.png',
 							handler: function() {
 								r.expand(false, function() {
@@ -7639,14 +7633,12 @@ Ext.onReady( function() {
 						v.menu.destroy();
 					}
 					v.menu = Ext.create('Ext.menu.Menu', {
-						id: 'treepanel-contextmenu',
 						showSeparator: false,
 						shadow: false
 					});
 					if (!r.data.leaf) {
 						v.menu.add({
-							id: 'treepanel-contextmenu-item',
-							text: gis.i18n.select_all_children,
+							text: GIS.i18n.select_sub_units,
 							icon: 'images/node-select-child.png',
 							handler: function() {
 								r.expand(false, function() {
