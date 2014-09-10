@@ -37,6 +37,8 @@ public class NotAllowedException
 
     public static final NotAllowedException INVALID_PERIOD = new NotAllowedException( "INVALID_PERIOD" );
 
+    public static final NotAllowedException INVALID_FILTER = new NotAllowedException( "INVALID_FILTER");
+
     public static final NotAllowedException DATASET_LOCKED = new NotAllowedException( "DATASET_LOCKED" );
 
     public static final NotAllowedException NO_USER = new NotAllowedException( "NO_USER", "No user is logged in." );

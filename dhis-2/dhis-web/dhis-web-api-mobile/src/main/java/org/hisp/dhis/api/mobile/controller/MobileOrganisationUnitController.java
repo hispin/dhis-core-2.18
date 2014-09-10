@@ -366,7 +366,7 @@ public class MobileOrganisationUnitController
     String patientId )
         throws NotAllowedException
     {
-        return activityReportingService.findPatient( Integer.parseInt( patientId ) );
+        return activityReportingService.findPatient( patientId );
     }
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findPatients" )

@@ -57,7 +57,7 @@ public interface ActivityReportingService
     void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue, Integer programStageSectionId )
         throws NotAllowedException;
 
-    Patient findPatient( int patientId )
+    Patient findPatient( String patientId )
         throws NotAllowedException;
 
     PatientList findPatients( String patientIds )
