@@ -137,9 +137,9 @@ public class IdentifiableObjectManagerTest
         identifiableObjectManager.save( createDataElement( 'D' ) );
 
         assertEquals( 1, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShortA" ) );
-        assertEquals( 1, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShortA" ) );
-        assertEquals( 1, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShortA" ) );
-        assertEquals( 1, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShortA" ) );
+        assertEquals( 1, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShortB" ) );
+        assertEquals( 1, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShortC" ) );
+        assertEquals( 1, identifiableObjectManager.getCountLikeShortName( DataElement.class, "DataElementShortD" ) );
     }
 
     @Test
@@ -232,23 +232,28 @@ public class IdentifiableObjectManagerTest
         assertEquals( "DataElementD", dataElements.get( 3 ).getName() );
     }
 
-    /**
-     * Fetch all in between creating data elements to avoid equal last updated date.
-     */
     @Test
     public void getAllOrderedLastUpdated()
     {
-        identifiableObjectManager.save( createDataElement( 'A' ) );
-        assertNotNull( identifiableObjectManager.getAllSortedByLastUpdated( DataElement.class ) );
-        
-        identifiableObjectManager.save( createDataElement( 'B' ) );
-        assertNotNull( identifiableObjectManager.getAllSortedByLastUpdated( DataElement.class ) );
-        
-        identifiableObjectManager.save( createDataElement( 'C' ) );
-        assertNotNull( identifiableObjectManager.getAllSortedByLastUpdated( DataElement.class ) );
-        
-        identifiableObjectManager.save( createDataElement( 'D' ) );
-        assertNotNull( identifiableObjectManager.getAllSortedByLastUpdated( DataElement.class ) );
+        DataElement dataElementA = createDataElement( 'A' );
+        DataElement dataElementB = createDataElement( 'B' );
+        DataElement dataElementC = createDataElement( 'C' );
+        DataElement dataElementD = createDataElement( 'D' );
+
+        identifiableObjectManager.save( dataElementA );
+        identifiableObjectManager.save( dataElementB );
+        identifiableObjectManager.save( dataElementC );
+        identifiableObjectManager.save( dataElementD );
+
+        dataElementA.setLastUpdated( new GregorianCalendar( 2011, 0, 1 ).getTime() );
+        dataElementB.setLastUpdated( new GregorianCalendar( 2012, 0, 1 ).getTime() );
+        dataElementC.setLastUpdated( new GregorianCalendar( 2013, 0, 1 ).getTime() );
+        dataElementD.setLastUpdated( new GregorianCalendar( 2014, 0, 1 ).getTime() );
+
+        sessionFactory.getCurrentSession().update( dataElementA );
+        sessionFactory.getCurrentSession().update( dataElementB );
+        sessionFactory.getCurrentSession().update( dataElementC );
+        sessionFactory.getCurrentSession().update( dataElementD );
 
         List<DataElement> dataElements = new ArrayList<>( identifiableObjectManager.getAllSortedByLastUpdated( DataElement.class ) );
 
