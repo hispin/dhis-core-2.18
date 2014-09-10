@@ -12,10 +12,7 @@
         <ul>
         </ul>
     </div>
-    <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
-    <!--- selected org unit begins -->
-    <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
-    <!--- selected org unit ends  -->
+    <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>    
 </div>
 
 <div id="mainPage" class="page">
@@ -43,8 +40,14 @@
         <div class="row">
             <div class="col-sm-8 col-md-6">
                 <table class="table table-borderless table-striped">
+                    <tr ng-show='printMode'>
+                        <td class='col-sm-4 col-md-3 vertical-center'>{{'org_unit'| translate}}</td>
+                        <td class='col-sm-4 col-md-3'>                             
+                            <input type="text" selected-org-unit ng-model="selectedOrgUnit.name">                                                            
+                        </td>
+                    </tr>
                     <tr>
-                        <td class='col-sm-4 col-md-3 vertical-center'>
+                        <td class='col-sm-4 col-md-3'>
                             {{'program'| translate}}
                         </td>
                         <td class='col-sm-4 col-md-3'>
@@ -57,7 +60,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class='col-sm-4 col-md-3 vertical-center'>{{'org_unit'| translate}}</td>
+                        <td class='col-sm-4 col-md-3 vertical-center'>{{'org_unit_scope'| translate}}</td>
                         <td class='col-sm-4 col-md-3'>                 
                             <label><input type="radio" ng-model="selectedOuMode" name="selected" value="SELECTED"> {{'SELECTED'| translate}}</label><br/>
                             <label><input type="radio" ng-model="selectedOuMode" name="children" value="CHILDREN"> {{'CHILDREN'| translate}}</label><br/>
@@ -66,16 +69,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <label>                    
-                            <td class='col-sm-4 col-md-3 vertical-center'>
-                                {{'filter'| translate}}
-                            </td>
-                            <td>
-                                <label>
-                                    <input type="checkbox" ng-change="markForFollowup()" ng-model="displayMode.onlyMarkedFollowup"/>  {{'only_marked_for_followup' | translate}}
-                                </label>                                
-                            </td>
-                        </label>
+                    <label>                    
+                        <td class='col-sm-4 col-md-3 vertical-center'>
+                            {{'filter'| translate}}
+                        </td>
+                        <td class='col-sm-4 col-md-3'> 
+                            <label>
+                                <input type="checkbox" ng-change="markForFollowup()" ng-model="displayMode.onlyMarkedFollowup"/>  {{'only_marked_for_followup'| translate}}
+                            </label>                                
+                        </td>
+                    </label>
                     </tr>
                 </table>
             </div>

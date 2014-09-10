@@ -21,6 +21,7 @@ trackerCapture.controller('OverdueEventsController',
     $scope.selectedOuMode = 'SELECTED';
     $scope.report = {};
     $scope.displayMode = {};
+    $scope.printMode = false;
     
     //watch for selection of org unit from tree
     $scope.$watch('selectedOrgUnit', function() {

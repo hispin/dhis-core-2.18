@@ -146,6 +146,7 @@
     "visits": "Visits",
     "current_selections": "Current selections",
     "org_unit": "Org unit",
+    "org_unit_scope": "Org unit scope",
     "SELECTED": "Selected",
     "CHILDREN": "Immediate children",
     "DESCENDANTS": "All children",
