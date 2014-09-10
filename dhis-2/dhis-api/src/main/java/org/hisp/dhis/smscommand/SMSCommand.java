@@ -45,6 +45,8 @@ public class SMSCommand
     
     public static final String NO_USER_MESSAGE = "No user associated with this phone number. Please contact your supervisor.";
     
+    public static final String ALERT_FEEDBACK = "Your alert message sent";
+    
     //Completeness method code
     
     public static final int RECEIVE_ALL_DATAVALUE = 1;
