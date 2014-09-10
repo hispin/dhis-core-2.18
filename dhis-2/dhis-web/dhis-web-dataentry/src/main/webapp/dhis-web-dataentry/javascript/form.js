@@ -1,6 +1,7 @@
 
 dhis2.util.namespace( 'dhis2.de' );
 dhis2.util.namespace( 'dhis2.de.event' );
+dhis2.util.namespace( 'dhis2.de.cst' );
 
 // whether current user has any organisation units
 dhis2.de.emptyOrganisationUnits = false;
@@ -86,15 +87,15 @@ var COLOR_GREY = '#ccc';
 var COLOR_BORDER_ACTIVE = '#73ad72';
 var COLOR_BORDER = '#aaa';
 
-var DEFAULT_TYPE = 'int';
-var DEFAULT_NAME = '[unknown]';
+dhis2.de.cst.defaultType = 'int';
+dhis2.de.cst.defaultName = '[unknown]';
 
 // Form types
 
-var FORMTYPE_CUSTOM = 'custom';
-var FORMTYPE_SECTION = 'section';
-var FORMTYPE_MULTIORG_SECTION = 'multiorg_section';
-var FORMTYPE_DEFAULT = 'default';
+dhis2.de.cst.formTypeCustom = 'custom';
+dhis2.de.cst.formTypeSection = 'section';
+dhis2.de.cst.formTypeMultiOrgSection = 'multiorg_section';
+dhis2.de.cst.formTypeDefault = 'default';
 
 // Events
 
@@ -743,7 +744,7 @@ function getDataElementType( dataElementId )
 	}
 
 	console.log( 'Data element not present in data set, falling back to default type: ' + dataElementId );
-	return DEFAULT_TYPE;
+	return dhis2.de.cst.defaultType;
 }
 
 function getDataElementName( dataElementId )
@@ -756,7 +757,7 @@ function getDataElementName( dataElementId )
 	}
 
     console.log( 'Data element not present in form, falling back to default name: ' + dataElementId );
-	return DEFAULT_NAME;
+	return dhis2.de.cst.defaultName;
 }
 
 function getOptionComboName( optionComboId )
@@ -769,7 +770,7 @@ function getOptionComboName( optionComboId )
 	}
 
     console.log( 'Category option combo not present in form, falling back to default name: ' + optionComboId );
-	return DEFAULT_NAME;
+	return dhis2.de.cst.defaultName;
 }
 
 // ----------------------------------------------------------------------------
@@ -917,7 +918,7 @@ function getSortedDataSetListForOrgUnits( orgUnits )
             }
         } );
 
-        if ( !found && ( formType == FORMTYPE_SECTION || formType == FORMTYPE_DEFAULT ) )
+        if ( !found && ( formType == dhis2.de.cst.formTypeSection || formType == dhis2.de.cst.formTypeDefault ) )
         {
             filteredDataSetList.push(item);
         }
