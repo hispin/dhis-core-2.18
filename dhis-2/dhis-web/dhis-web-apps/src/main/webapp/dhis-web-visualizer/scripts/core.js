@@ -2829,7 +2829,7 @@ Ext.onReady( function() {
                         legend,
                         config,
                         chart;
-
+                        
                     axis = {
                         type: 'gauge',
                         position: 'gauge',
@@ -2845,7 +2845,7 @@ Ext.onReady( function() {
                         //donut: 5,
                         colorSet: ['#82B525', '#ddd']
                     };
-
+                    
                     chart = getDefaultChart({
                         axes: [axis],
                         series: [series],
@@ -2860,6 +2860,17 @@ Ext.onReady( function() {
                         }
                     });
 
+                    if (xLayout.showValues) {
+                        chart.items.push(Ext.create('Ext.draw.Sprite', {
+                            type: 'text',
+                            text: store.getRange()[0].data[columnIds[0]],
+                            font: 'normal 26px ' + conf.chart.style.fontFamily,
+                            fill: '#111',
+                            height: 40,
+                            y: 	60
+                        }));
+                    }
+
                     chart.setChartSize = function() {
 						this.animate = false;
                         this.setWidth(ns.app.centerRegion.getWidth());
@@ -2870,11 +2881,21 @@ Ext.onReady( function() {
                     chart.setTitlePosition = function() {
                         if (this.items) {
                             var title = this.items[0],
-                                titleX = (ns.app.centerRegion.getWidth() / 2) - (title.el.getWidth() / 2);
+                                subTitle = this.items[1];
 
-                            title.setAttributes({
-                                x: titleX
-                            }, true);
+                            if (title) {
+                                var titleX = (ns.app.centerRegion.getWidth() / 2) - (title.el.getWidth() / 2);
+                                title.setAttributes({
+                                    x: titleX
+                                }, true);
+                            }
+
+                            if (subTitle) {
+                                var subTitleX = (ns.app.centerRegion.getWidth() / 2) - (subTitle.el.getWidth() / 2);
+                                subTitle.setAttributes({
+                                    x: subTitleX
+                                }, true);
+                            }
                         }
                     };
 
