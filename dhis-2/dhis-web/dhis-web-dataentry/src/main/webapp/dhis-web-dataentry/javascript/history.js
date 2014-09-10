@@ -7,7 +7,7 @@ function saveComment()
 
     if ( commentValue.length > 360 )
     {
-        markComment( COLOR_YELLOW );
+        markComment( dhis2.de.cst.colorYellow );
         window.alert(i18n_value_too_long + " for comment field");
 
         return;
@@ -42,7 +42,7 @@ function CommentSaver( de, co, comment )
     
     this.save = function()
     {
-        markComment( COLOR_YELLOW );
+        markComment( dhis2.de.cst.colorYellow );
 
         $.ajax( {
             url: '../api/dataValues',
@@ -55,12 +55,12 @@ function CommentSaver( de, co, comment )
 
     function handleSuccess( json )
     {
-    	markComment( COLOR_GREEN );
+    	markComment( dhis2.de.cst.colorGreen );
     }
 
     function handleError( xhr, textStatus, errorThrown )
     {
-        markComment( COLOR_RED );
+        markComment( dhis2.de.cst.colorRed );
         window.alert( i18n_saving_comment_failed_error_code + '\n\n' + xhr.responseText );
     }
 }
@@ -84,8 +84,8 @@ function removeMinMaxLimit()
     		organisationUnitId: dhis2.de.currentOrganisationUnitId
     	},
     	success: function() {    		
-    		$( '#minLimit' ).css( 'background-color', COLOR_WHITE );
-    		$( '#maxLimit' ).css( 'background-color', COLOR_WHITE );
+    		$( '#minLimit' ).css( 'background-color', dhis2.de.cst.colorWhite );
+    		$( '#maxLimit' ).css( 'background-color', dhis2.de.cst.colorWhite );
     		
     		refreshChart()
     	}
@@ -153,14 +153,14 @@ function saveMinMaxLimit()
     	},
     	dataType: 'json',
     	success: function() {
-    		$( '#minLimit' ).css( 'background-color', COLOR_GREEN );
-    		$( '#maxLimit' ).css( 'background-color', COLOR_GREEN );
+    		$( '#minLimit' ).css( 'background-color', dhis2.de.cst.colorGreen );
+    		$( '#maxLimit' ).css( 'background-color', dhis2.de.cst.colorGreen );
     		refreshChart();
     	},
     	error: function() {
     		
-    		$( '#minLimit' ).css( 'background-color', COLOR_RED );
-    		$( '#maxLimit' ).css( 'background-color', COLOR_RED );
+    		$( '#minLimit' ).css( 'background-color', dhis2.de.cst.colorRed );
+    		$( '#maxLimit' ).css( 'background-color', dhis2.de.cst.colorRed );
     	}
     } );
 }
