@@ -104,6 +104,8 @@ dhis2.de.event.formReady = "dhis2.de.event.formReady";
 dhis2.de.event.dataValueSaved = "dhis2.de.event.dataValueSaved";
 dhis2.de.event.completed = "dhis2.de.event.completed";
 dhis2.de.event.uncompleted = "dhis2.de.event.uncompleted";
+dhis2.de.event.validationSucces = "dhis2.de.event.validationSuccess";
+dhis2.de.event.validationError = "dhis2.de.event.validationError";
 
 /**
  * Convenience method to be used from inside custom forms. When a function is
@@ -1615,7 +1617,7 @@ function registerCompleteDataSet()
 		return false;
     }
 	
-	validate( true, function() 
+	dhis2.de.validate( true, function() 
     {
         var params = dhis2.de.storageManager.getCurrentCompleteDataSetParams();
 
@@ -1751,7 +1753,14 @@ function displayUserDetails()
 // Validation
 // -----------------------------------------------------------------------------
 
-function validate( ignoreSuccessfulValidation, successCallback )
+/**
+ * Executes all validation checks.
+ * 
+ * @param ignoreValidationSuccess indicates whether no dialog should be display
+ *        if validation is successful.
+ * @param successCallback the function to execute if validation is successful.                                  
+ */
+dhis2.de.validate = function( ignoreValidationSuccess, successCallback )
 {
 	var compulsoryCombinationsValid = dhis2.de.validateCompulsoryCombinations();
 	
@@ -1788,7 +1797,7 @@ function validate( ignoreSuccessfulValidation, successCallback )
     $( '#validationDiv' ).load( 'validate.action', params, function( response, status, xhr ) {
     	var success = null;
     	
-        if ( status == 'error' && !ignoreSuccessfulValidation )
+        if ( status == 'error' && !ignoreValidationSuccess )
         {
             window.alert( i18n_operation_not_available_offline );
             success = true;  // Accept if offline
@@ -1802,7 +1811,7 @@ function validate( ignoreSuccessfulValidation, successCallback )
         	{
         		dhis2.de.displayValidationDialog( response, 500 );
         	}
-        	else if ( !ignoreSuccessfulValidation )
+        	else if ( !ignoreValidationSuccess )
         	{
         		dhis2.de.displayValidationDialog( successHtml, 200 );
         	}        	
@@ -1812,6 +1821,15 @@ function validate( ignoreSuccessfulValidation, successCallback )
         {
         	successCallback.call();
         }
+        
+        if ( success )
+        {
+        	$( document ).trigger( dhis2.de.event.validationSucces );
+        }
+        else
+    	{
+        	$( document ).trigger( dhis2.de.event.validationError );
+    	}
     } );
 }
 
