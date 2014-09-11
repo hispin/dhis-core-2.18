@@ -28,14 +28,10 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -60,7 +56,12 @@ import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -120,6 +121,9 @@ public class UpdateUserAction
     {
         this.attributeService = attributeService;
     }
+
+    @Autowired
+    private IdentifiableObjectManager manager;
 
     private I18n i18n;
 
@@ -239,6 +243,13 @@ public class UpdateUserAction
         return message;
     }
 
+    private String ouwtSelected;
+
+    public void setOuwtSelected( String ouwtSelected )
+    {
+        this.ouwtSelected = ouwtSelected;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -263,7 +274,7 @@ public class UpdateUserAction
         // ---------------------------------------------------------------------
 
         Boolean canManageGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
-        
+
         if ( canManageGroups && !currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
         {
             boolean groupFound = false;
@@ -382,7 +393,7 @@ public class UpdateUserAction
         // ---------------------------------------------------------------------
         // Update User
         // ---------------------------------------------------------------------
-        
+
         userService.updateUserCredentials( userCredentials );
         userService.updateUser( user );
 
@@ -390,13 +401,26 @@ public class UpdateUserAction
         // Update organisation unit trees if current user is being updated
         // ---------------------------------------------------------------------
 
-        if ( user.equals( currentUserService.getCurrentUser() ) && !dataCaptureOrgUnits.isEmpty() )
+        if ( user.equals( currentUser ) && !dataCaptureOrgUnits.isEmpty() )
         {
             selectionManager.setRootOrganisationUnits( dataCaptureOrgUnits );
             selectionManager.setSelectedOrganisationUnits( dataCaptureOrgUnits );
         }
-        
-        if ( user.equals( currentUserService.getCurrentUser() ) && !dataViewOrgUnits.isEmpty() )
+        else
+        {
+            selectionManager.setRootOrganisationUnits( currentUser.getOrganisationUnits() );
+
+            if ( ouwtSelected != null && manager.search( OrganisationUnit.class, ouwtSelected ) != null )
+            {
+                selectionManager.setSelectedOrganisationUnits( Lists.newArrayList( manager.search( OrganisationUnit.class, ouwtSelected ) ) );
+            }
+            else
+            {
+                selectionManager.setSelectedOrganisationUnits( currentUser.getOrganisationUnits() );
+            }
+        }
+
+        if ( user.equals( currentUser ) && !dataViewOrgUnits.isEmpty() )
         {
             selectionTreeManager.setRootOrganisationUnits( dataViewOrgUnits );
             selectionTreeManager.setSelectedOrganisationUnits( dataViewOrgUnits );

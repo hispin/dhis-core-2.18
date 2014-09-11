@@ -415,11 +415,19 @@ function Selection()
                 var selected = selection.getSelected();
 
                 if( multipleSelectionAllowed ) {
+                    var def = $.Deferred();
+                    var p = def.promise();
+
                     $.each( selected, function( i, item ) {
-                        $.post( organisationUnitTreePath + "addorgunit.action", {
-                            id: item
-                        } ).complete( fn );
+                        p = p.then(function() {
+                            return $.post(organisationUnitTreePath + "addorgunit.action", {
+                                id: item
+                            });
+                        });
                     } );
+
+                    p.done(fn);
+                    def.resolve();
                 } else {
                     selected = $.isArray( selected ) ? selected[0] : selected;
 

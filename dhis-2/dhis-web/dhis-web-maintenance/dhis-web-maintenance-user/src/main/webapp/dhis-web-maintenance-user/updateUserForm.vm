@@ -1,4 +1,6 @@
 <script type="text/javascript">
+  var ouwtSelected = [];
+
   jQuery(function() {
     var rules = getValidationRules("user");
     rules["rawPassword"].required = false;
@@ -13,6 +15,8 @@
       if( $('#orgUnitTree').find('.selected').size() == 0 ) {
         setHeaderDelayMessage('$encoder.jsEncode( $i18n.getString( "data_capture_organisation_unit_required_for_user" ) )');
       } else {
+        $('#ouwtSelected').val( ouwtSelected[0] );
+        selection.setSelected( ouwtSelected !== undefined ? ouwtSelected : [] );
         form.submit();
       }
     }, {
@@ -25,6 +29,7 @@
 
     checkValueIsExist("openId", "validateUser.action", { id: $userCredentials.id });
 
+    ouwtSelected = selection.getSelected();
     selection.clearSelected(); // Sync ouwt from server
     selection.setMultipleSelectionAllowed( true );
     selection.setUnselectAllowed( true );
@@ -71,6 +76,7 @@ div#orgUnitTree
 <h3>$i18n.getString( "edit_user" )</h3>
 
 <form id="updateUserForm" action="updateUser.action" method="post" class="inputForm">
+<input type="hidden" id="ouwtSelected" name="ouwtSelected" value=""/>
 <div><input type="hidden" id="id" name="id" value="$userCredentials.id"/></div>
 
 <table>
