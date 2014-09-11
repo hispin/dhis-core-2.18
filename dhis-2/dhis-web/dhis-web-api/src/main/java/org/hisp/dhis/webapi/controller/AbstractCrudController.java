@@ -335,6 +335,12 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( ImportStatus.SUCCESS.equals( summary.getStatus() ) )
         {
             postCreateEntity( parsed );
+
+            if ( summary.getImportCount().getImported() == 1 && summary.getLastImported() != null )
+            {
+                response.setHeader( "Location", contextService.getContextPath() + "/api" + getSchema().getApiEndpoint()
+                    + "/" + summary.getLastImported() );
+            }
         }
 
         renderService.toXml( response.getOutputStream(), summary );
@@ -354,6 +360,12 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( ImportStatus.SUCCESS.equals( summary.getStatus() ) )
         {
             postCreateEntity( parsed );
+
+            if ( summary.getImportCount().getImported() == 1 && summary.getLastImported() != null )
+            {
+                response.setHeader( "Location", contextService.getContextPath() + "/api" + getSchema().getApiEndpoint()
+                    + "/" + summary.getLastImported() );
+            }
         }
 
         renderService.toJson( response.getOutputStream(), summary );
