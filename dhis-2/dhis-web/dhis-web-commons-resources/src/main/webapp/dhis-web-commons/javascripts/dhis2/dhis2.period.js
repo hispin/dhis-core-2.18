@@ -339,7 +339,7 @@ dhis2.period.PeriodGenerator.prototype.filterFuturePeriods = function( periods )
   var today = this.calendar.today();
 
   $.each(periods, function() {
-    if( this['_endDate'].compareTo(today) <= 0 ) {
+    if( this['_endDate'].compareTo(today) < 0 ) {
       array.push(this);
     }
   });
@@ -442,8 +442,8 @@ $.extend(dhis2.period.DailyGenerator.prototype, {
       period['id'] = 'Daily_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymmdd");
 
-      period['_startDate'] = startDate;
-      period['_endDate'] = startDate;
+      period['_startDate'] = this.calendar.newDate(startDate);
+      period['_endDate'] = this.calendar.newDate(startDate);
 
       periods.push(period);
 
@@ -491,8 +491,8 @@ $.extend(dhis2.period.WeeklyGenerator.prototype, {
       period['id'] = 'Weekly_' + period['startDate'];
       period['iso'] = year + 'W' + week;
 
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
+      period['_startDate'] = this.calendar.newDate(startDate);
+      period['_endDate'] = this.calendar.newDate(endDate);
 
       periods.push(period);
 
@@ -538,8 +538,8 @@ $.extend(dhis2.period.MonthlyGenerator.prototype, {
       period['id'] = 'Monthly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymm");
 
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
+      period['_startDate'] = this.calendar.newDate(startDate);
+      period['_endDate'] = this.calendar.newDate(endDate);
 
       periods.push(period);
     }
@@ -580,8 +580,8 @@ $.extend(dhis2.period.BiMonthlyGenerator.prototype, {
       period['id'] = 'BiMonthly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymm") + 'B';
 
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
+      period['_startDate'] = this.calendar.newDate(startDate);
+      period['_endDate'] = this.calendar.newDate(endDate);
 
       periods.push(period);
     }
@@ -622,8 +622,8 @@ $.extend(dhis2.period.QuarterlyGenerator.prototype, {
       period['id'] = 'Quarterly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyy") + 'Q' + idx;
 
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
+      period['_startDate'] = this.calendar.newDate(startDate);
+      period['_endDate'] = this.calendar.newDate(endDate);
 
       periods.push(period);
     }
@@ -663,8 +663,8 @@ $.extend(dhis2.period.SixMonthlyGenerator.prototype, {
     period['id'] = 'SixMonthly_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'S1';
 
-    period['_startDate'] = startDate;
-    period['_endDate'] = endDate;
+    period['_startDate'] = this.calendar.newDate(startDate);
+    period['_endDate'] = this.calendar.newDate(endDate);
 
     periods.push(period);
 
@@ -679,8 +679,8 @@ $.extend(dhis2.period.SixMonthlyGenerator.prototype, {
     period['id'] = 'SixMonthly_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'S2';
 
-    period['_startDate'] = startDate;
-    period['_endDate'] = endDate;
+    period['_startDate'] = this.calendar.newDate(startDate);
+    period['_endDate'] = this.calendar.newDate(endDate);
 
     periods.push(period);
 
@@ -719,8 +719,8 @@ $.extend(dhis2.period.SixMonthlyAprilGenerator.prototype, {
     period['id'] = 'SixMonthlyApril_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'AprilS1';
 
-    period['_startDate'] = startDate;
-    period['_endDate'] = endDate;
+    period['_startDate'] = this.calendar.newDate(startDate);
+    period['_endDate'] = this.calendar.newDate(endDate);
 
     periods.push(period);
 
@@ -735,8 +735,8 @@ $.extend(dhis2.period.SixMonthlyAprilGenerator.prototype, {
     period['id'] = 'SixMonthlyApril_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'AprilS2';
 
-    period['_startDate'] = startDate;
-    period['_endDate'] = endDate;
+    period['_startDate'] = this.calendar.newDate(startDate);
+    period['_endDate'] = this.calendar.newDate(endDate);
 
     periods.push(period);
 
@@ -777,8 +777,8 @@ $.extend(dhis2.period.YearlyGenerator.prototype, {
       period['id'] = 'Yearly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyy");
 
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
+      period['_startDate'] = this.calendar.newDate(startDate);
+      period['_endDate'] = this.calendar.newDate(endDate);
 
       periods.push(period);
     }
@@ -828,8 +828,8 @@ $.extend(dhis2.period.FinancialBaseGenerator.prototype, {
       period['id'] = 'Financial' + this.monthShortName + '_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyy") + this.monthShortName;
 
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
+      period['_startDate'] = this.calendar.newDate(startDate);
+      period['_endDate'] = this.calendar.newDate(endDate);
 
       periods.push(period);
       startDate.add(1, 'y');
