@@ -163,6 +163,7 @@
     "close": "Close",
     "generate": "Generate",
     "print": "Print",
+    "excel_export": "Excel export",
     "list_programs": "List programs",
     "program_stage": "Program stage",
     "due_date": "Due date",

@@ -5,7 +5,8 @@
 var trackerCapture = angular.module('trackerCapture',
         ['ui.bootstrap', 
          'ngRoute', 
-         'ngCookies',  
+         'ngCookies',
+         'ngSanitize',
          'trackerCaptureServices',
          'trackerCaptureFilters',
          'trackerCaptureDirectives', 
@@ -13,6 +14,7 @@ var trackerCapture = angular.module('trackerCapture',
          'angularLocalStorage',
          'ui.select2',
          'd2Menu',
+         'ngCsv',
          'pascalprecht.translate'])
               
 .value('DHIS2URL', '..')

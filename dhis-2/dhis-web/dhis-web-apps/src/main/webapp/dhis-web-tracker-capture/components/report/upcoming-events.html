@@ -13,9 +13,6 @@
         </ul>
     </div>
     <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
-    <!--- selected org unit begins -->
-    <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
-    <!--- selected org unit ends  -->
 </div>
 
 <div id="mainPage" class="page">
@@ -26,11 +23,11 @@
             {{'upcoming_events'| translate}}
             <div class="pull-right">
                 <div class="btn-group" dropdown is-open="status.isopen">
-                    <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="!teiList.length">
+                    <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="!upcomingEvents.length">
                         <i class="fa fa-cog" title="{{'settings'| translate}}"></i>
                     </button>
                     <ul class="dropdown-menu pull-right" role="menu">
-                        <li ng-show="teiList.length > 0"><a href ng-click="showHideColumns()">{{'show_hide_columns'| translate}}</a></li>
+                        <li ng-show="upcomingEvents.length > 0"><a href ng-click="showHideColumns()">{{'show_hide_columns'| translate}}</a></li>
                     </ul>
                 </div>
             </div>            
@@ -42,12 +39,18 @@
     <form name="outerForm" novalidate>               
         <div class="row">
             <div class="col-sm-8 col-md-6">
-                <table class="table table-borderless table-striped">
+                <table class="table-borderless table-striped">
                     <tr>
-                        <td class='col-sm-4 col-md-3 vertical-center'>
+                        <td>{{'org_unit'| translate}}</td>
+                        <td>
+                            <input type="text" class="form-control" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name || 'please_select'| translate}}" ng-disabled="true">                                                                                        
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             {{'program'| translate}}
                         </td>
-                        <td class='col-sm-4 col-md-3'>
+                        <td>
                             <select ng-model="selectedProgram"
                                     class="form-control"
                                     ng-options="program as program.name for program in programs | orderBy: 'name'" 
@@ -57,25 +60,23 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class='col-sm-4 col-md-3 vertical-center'>{{'org_unit'| translate}}</td>
-                        <td class='col-sm-4 col-md-3'>                 
-                            <label><input type="radio" ng-model="selectedOuMode.name" name="selected" value="SELECTED"> {{'SELECTED'| translate}}</label><br/>
-                            <label><input type="radio" ng-model="selectedOuMode.name" name="children" value="CHILDREN"> {{'CHILDREN'| translate}}</label><br/>
-                            <label><input type="radio" ng-model="selectedOuMode.name" name="descendants" value="DESCENDANTS"> {{'DESCENDANTS'| translate}}</label><br/>
-                            <label><input type="radio" ng-model="selectedOuMode.name" name="accessible" value="ACCESSIBLE"> {{'ACCESSIBLE'| translate}}</label>
+                        <td>{{'org_unit_scope'| translate}}</td>
+                        <td>                 
+                            <label><input type="radio" ng-model="selectedOuMode" name="selected" value="SELECTED"> {{'SELECTED'| translate}}</label><br/>
+                            <label><input type="radio" ng-model="selectedOuMode" name="children" value="CHILDREN"> {{'CHILDREN'| translate}}</label><br/>
+                            <label><input type="radio" ng-model="selectedOuMode" name="descendants" value="DESCENDANTS"> {{'DESCENDANTS'| translate}}</label><br/>
+                            <label><input type="radio" ng-model="selectedOuMode" name="accessible" value="ACCESSIBLE"> {{'ACCESSIBLE'| translate}}</label>
                         </td>
                     </tr>
                     <tr>
-                        <label>                    
-                            <td class='col-sm-4 col-md-3 vertical-center'>
-                                {{'filter'| translate}}
-                            </td>
-                            <td>
-                                <label>
-                                    <input type="checkbox" ng-change="markForFollowup()" ng-model="displayMode.onlyMarkedFollowup"/>  {{'only_marked_for_followup' | translate}}
-                                </label>                                
-                            </td>
-                        </label>
+                        <td>
+                            {{'filter'| translate}}
+                        </td>
+                        <td> 
+                            <label>
+                                <input type="checkbox" ng-change="markForFollowup()" ng-model="displayMode.onlyMarkedFollowup"/>  {{'only_marked_for_followup'| translate}}
+                            </label>                                
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -103,7 +104,22 @@
                 </table>                
             </div>
             <div class="col-md-6 trim">
-                <button type="button" class="btn btn-primary" ng-click="generateReport(selectedProgram, report, selectedOuMode)" ng-disabled="!selectedProgram">{{'go'| translate}}</button>               
+                <button type="button" class="btn btn-primary" ng-click="generateReport(selectedProgram, report, selectedOuMode)" ng-disabled="!selectedProgram">{{'go'| translate}}</button>
+                <button type="button"
+                        class="btn btn-success small-horizonal-spacing"
+                        ng-if="upcomingEvents.length > 0"
+                        class="btn btn-primary"
+                        onclick="javascript:window.print()">
+                    {{'print'| translate}}
+                </button>
+                <button type="button" 
+                        class="btn btn-info small-horizonal-spacing"
+                        ng-if="upcomingEvents.length > 0"
+                        ng-csv="generateReportData()"
+                        csv-header="generateReportHeader()"
+                        filename="upcomingEvents.csv">
+                    {{'excel_export'| translate}}
+                </button>
             </div>
         </div>
 
@@ -124,8 +140,7 @@
 
     <!-- upcoming events list begins -->
     <div ng-if="reportFinished">
-
-        <div ng-switch="teiList.length">                    
+        <div ng-switch="upcomingEvents.length">                    
             <div ng-switch-when="undefined">
                 <div class="alert alert-warning vertical-spacing">
                     {{'no_data_found'| translate}}
@@ -145,7 +160,7 @@
                                 <th ng-show="gridColumn.show" ng-repeat="gridColumn in gridColumns">
 
                                     <!-- sort icon begins -->
-                                    <span ng-click="sortTEIGrid(gridColumn)">
+                                    <span ng-click="sortGrid(gridColumn)">
                                         {{gridColumn.name| translate}}
                                         <i ng-if="sortHeader == gridColumn.id && reverse" class="fa fa-sort-desc"></i>
                                         <i ng-if="sortHeader == gridColumn.id && !reverse" class="fa fa-sort-asc"></i>
@@ -191,12 +206,12 @@
                             </tr>                        
                         </thead>
                         <tbody id="list">
-                            <tr ng-repeat="tei in teiList| orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"
-                                ng-click="showDashboard(tei)"
+                            <tr ng-repeat="upcomingEvent in upcomingEvents| orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"
+                                ng-click="showDashboard(upcomingEvent)"
                                 title="{{'go_to_dashboard'| translate}}">
                                 <td ng-show="gridColumn.show"                                            
-                                    ng-repeat="gridColumn in gridColumns" ng-if='displayMode.onlyMarkedFollowup ? tei.followup:true'>                                                
-                                    {{tei[gridColumn.id]}}                                                
+                                    ng-repeat="gridColumn in gridColumns" ng-if='displayMode.onlyMarkedFollowup ? upcomingEvent.followup:true'>                                                
+                                    {{upcomingEvent[gridColumn.id]}}                                                
                                 </td>                                
                             </tr>
                         </tbody>        

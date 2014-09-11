@@ -2,9 +2,9 @@ trackerCapture.controller('OverdueEventsController',
          function($scope,
                 $modal,
                 $location,
+                $translate,
                 orderByFilter,
                 DateUtils,
-                EventUtils,
                 TEIService,
                 TEIGridService,
                 TranslationService,
@@ -17,7 +17,6 @@ trackerCapture.controller('OverdueEventsController',
     
     $scope.today = DateUtils.format(moment());
     
-    $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];         
     $scope.selectedOuMode = 'SELECTED';
     $scope.report = {};
     $scope.displayMode = {};
@@ -79,7 +78,7 @@ trackerCapture.controller('OverdueEventsController',
         if (angular.isObject($scope.selectedProgram)){
             $scope.generateReport();
         }
-    });
+    });    
     
     $scope.generateReport = function(){
         
@@ -98,12 +97,11 @@ trackerCapture.controller('OverdueEventsController',
             AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){            
                 $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode);
 
-                $scope.gridColumns.push({name: 'event_name', id: 'event_name', type: 'string', displayInListNoProgram: false, showFilter: false, show: true});
-                $scope.filterTypes['event_name'] = 'string';                
-
-                $scope.gridColumns.push({name: 'due_date', id: 'due_date', type: 'date', displayInListNoProgram: false, showFilter: false, show: true});
-                $scope.filterTypes['due_date'] = 'date';
-                $scope.filterText['due_date']= {};                
+                $scope.gridColumns.push({name: $translate('event_name'), id: 'eventName', type: 'string', displayInListNoProgram: false, showFilter: false, show: true});
+                $scope.filterTypes['eventName'] = 'string';
+                $scope.gridColumns.push({name: $translate('due_date'), id: 'dueDate', type: 'date', displayInListNoProgram: false, showFilter: false, show: true});
+                $scope.filterTypes['dueDate'] = 'date';
+                $scope.filterText['dueDate']= {};                
             });  
 
             //fetch TEIs for the selected program and orgunit/mode
@@ -116,61 +114,36 @@ trackerCapture.controller('OverdueEventsController',
                                 false).then(function(data){                     
 
                 //process tei grid
-                var teis = TEIGridService.format(data,true);     
-                $scope.teiList = [];            
+                var teis = TEIGridService.format(data,true);
+                $scope.overdueEvents = [];
                 DHIS2EventFactory.getByOrgUnitAndProgram($scope.selectedOrgUnit.id, $scope.selectedOuMode, $scope.selectedProgram.id, null, null).then(function(eventList){
-                    $scope.dhis2Events = [];
+                    
                     angular.forEach(eventList, function(ev){
                         if(ev.dueDate){
                             ev.dueDate = DateUtils.format(ev.dueDate);
-
                             if( ev.trackedEntityInstance && 
                                 !ev.eventDate && 
                                 ev.dueDate < $scope.today){
-
-                                ev.name = $scope.programStages[ev.programStage].name;
-                                ev.programName = $scope.selectedProgram.name;
-                                ev.statusColor = EventUtils.getEventStatusColor(ev); 
-                                ev.dueDate = DateUtils.format(ev.dueDate);
-
-                                if($scope.dhis2Events[ev.trackedEntityInstance]){
-                                    if(teis.rows[ev.trackedEntityInstance]){
-                                        $scope.teiList.push(teis.rows[ev.trackedEntityInstance]);
-                                        delete teis.rows[ev.trackedEntityInstance];
-                                    }                     
-                                    $scope.dhis2Events[ev.trackedEntityInstance].push(ev);
-                                }
-                                else{
-                                    if(teis.rows[ev.trackedEntityInstance]){
-                                        $scope.teiList.push(teis.rows[ev.trackedEntityInstance]);
-                                        delete teis.rows[ev.trackedEntityInstance];
-                                    }  
-                                    $scope.dhis2Events[ev.trackedEntityInstance] = [ev];
-                                }
-                                ev = EventUtils.setEventOrgUnitName(ev);
-                            }                        
+                                
+                                var overDue = {};
+                                angular.copy(teis.rows[ev.trackedEntityInstance],overDue);
+                                angular.extend(overDue,{eventName: $scope.programStages[ev.programStage].name, dueDate: ev.dueDate, followup: ev.followup});
+                                
+                                $scope.overdueEvents.push(overDue);
+                            }
                         }
                     });
-
-                    //incase a TEI happens to have more than one overdue, sort using duedate
-                    for(var tei in $scope.dhis2Events){                    
-                        $scope.dhis2Events[tei] = orderByFilter($scope.dhis2Events[tei], '-dueDate');
-                        $scope.dhis2Events[tei].reverse();
-                    }
-
-                    //make upcoming event name and its due date part of the grid column
-                    for(var i=0; i<$scope.teiList.length; i++){
-                        $scope.teiList[i].event_name = $scope.dhis2Events[$scope.teiList[i].id][0].name;
-                        $scope.teiList[i].due_date = $scope.dhis2Events[$scope.teiList[i].id][0].dueDate;
-                        $scope.teiList[i].followup = $scope.dhis2Events[$scope.teiList[i].id][0].followup;
-                    }
+                    
+                    //sort overdue events by their due dates - this is default
+                    $scope.overdueEvents = orderByFilter($scope.overdueEvents, '-dueDate');
+                    $scope.overdueEvents.reverse();
 
                     $scope.reportFinished = true;
-                    $scope.reportStarted = false;                
+                    $scope.reportStarted = false;
                 });
-            });            
-        }        
-    };
+            });
+        }
+    };    
     
     $scope.showHideColumns = function(){
         
@@ -201,13 +174,19 @@ trackerCapture.controller('OverdueEventsController',
         });
     };
     
-    $scope.sortTEIGrid = function(gridHeader){
+    $scope.sortGrid = function(gridHeader){
         if ($scope.sortHeader === gridHeader.id){
             $scope.reverse = !$scope.reverse;
             return;
         }        
         $scope.sortHeader = gridHeader.id;
-        $scope.reverse = false;    
+        $scope.reverse = false;
+        
+        $scope.overdueEvents = orderByFilter($scope.overdueEvents, $scope.sortHeader);
+        
+        if($scope.reverse){
+            $scope.overdueEvents.reverse();
+        }
     };
     
     $scope.searchInGrid = function(gridColumn){
@@ -237,5 +216,13 @@ trackerCapture.controller('OverdueEventsController',
     $scope.showDashboard = function(tei){
         $location.path('/dashboard').search({tei: tei.id,                                            
                                             program: $scope.selectedProgram ? $scope.selectedProgram.id: null});
+    };
+    
+    $scope.generateReportData = function(){
+        return TEIGridService.getData($scope.overdueEvents, $scope.gridColumns);
+    };
+    
+    $scope.generateReportHeader = function(){
+        return TEIGridService.getHeader($scope.gridColumns);
     };
 });
