@@ -388,22 +388,10 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public List<T> getByUser( User user )
-    {
-        Query query = getQuery( "from " + clazz.getName() + " c where user = :user" );
-        query.setEntity( "user", user );
-
-        return query.list();
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
     public List<T> getByDataDimension( boolean dataDimension )
     {
-        Query query = getQuery( "from " + clazz.getName() + " c where c.dataDimension = :dataDimension" );
-        query.setBoolean( "dataDimension", dataDimension );
-
-        return query.list();
+        return getSharingCriteria()
+            .add( Restrictions.eq( "dataDimension", dataDimension ) ).list();
     }
 
     @Override

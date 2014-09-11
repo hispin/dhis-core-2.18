@@ -65,8 +65,6 @@ public interface DashboardService
 
     Dashboard getDashboard( String uid );
 
-    List<Dashboard> getByUser( User user );
-
     int countMapDashboardItems( Map map );
 
     int countChartDashboardItems( Chart chart );

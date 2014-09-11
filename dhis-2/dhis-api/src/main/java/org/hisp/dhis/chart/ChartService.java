@@ -112,8 +112,6 @@ public interface ChartService
 
     int getChartCountByName( String name );
     
-    Collection<Chart> getChartsByUser( User user );
-
     int countDataSetCharts( DataSet dataSet );
 
     int countIndicatorCharts( Indicator indicator );

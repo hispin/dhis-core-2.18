@@ -35,7 +35,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 /**
  * @author Chau Thu Tran
  */
-@JacksonXmlRootElement(localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0 )
 public class TrackedEntity
     extends BaseNameableObject
 {
