@@ -17,8 +17,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
     };   
 })
 
-.directive('selectedOrgUnit', function() {        
-
+.directive('selectedOrgUnit', function() {
     return {        
         restrict: 'A',        
         link: function(scope, element, attrs){  

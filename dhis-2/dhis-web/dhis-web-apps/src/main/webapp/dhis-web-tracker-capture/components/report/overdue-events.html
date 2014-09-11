@@ -21,13 +21,13 @@
     <div class="row top-bar">        
         <div class="col-sm-12">            
             {{'overdue_events'| translate}}
-            <div class="pull-right">
+            <div class="pull-right not-printable">
                 <div class="btn-group" dropdown is-open="status.isopen">
-                    <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="!teiList.length">
+                    <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="!overdueEvents.length">
                         <i class="fa fa-cog" title="{{'settings'| translate}}"></i>
                     </button>
                     <ul class="dropdown-menu pull-right" role="menu">
-                        <li ng-show="teiList.length > 0"><a href ng-click="showHideColumns()">{{'show_hide_columns'| translate}}</a></li>
+                        <li ng-show="overdueEvents.length > 0"><a href ng-click="showHideColumns()">{{'show_hide_columns'| translate}}</a></li>
                     </ul>
                 </div>
             </div>            
@@ -39,18 +39,18 @@
     <form name="outerForm" novalidate>               
         <div class="row">
             <div class="col-sm-8 col-md-6">
-                <table class="table table-borderless table-striped">
-                    <tr ng-show='printMode'>
-                        <td class='col-sm-4 col-md-3 vertical-center'>{{'org_unit'| translate}}</td>
-                        <td class='col-sm-4 col-md-3'>                             
-                            <input type="text" selected-org-unit ng-model="selectedOrgUnit.name">                                                            
+                <table class="table-borderless table-striped">
+                    <tr>
+                        <td>{{'org_unit'| translate}}</td>
+                        <td>
+                            <input type="text" class="form-control" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name || 'please_select'| translate}}" ng-disabled="true">                                                                                        
                         </td>
                     </tr>
                     <tr>
-                        <td class='col-sm-4 col-md-3'>
+                        <td>
                             {{'program'| translate}}
                         </td>
-                        <td class='col-sm-4 col-md-3'>
+                        <td>
                             <select ng-model="selectedProgram"
                                     class="form-control"
                                     ng-options="program as program.name for program in programs | orderBy: 'name'" 
@@ -60,8 +60,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class='col-sm-4 col-md-3 vertical-center'>{{'org_unit_scope'| translate}}</td>
-                        <td class='col-sm-4 col-md-3'>                 
+                        <td>{{'org_unit_scope'| translate}}</td>
+                        <td>                 
                             <label><input type="radio" ng-model="selectedOuMode" name="selected" value="SELECTED"> {{'SELECTED'| translate}}</label><br/>
                             <label><input type="radio" ng-model="selectedOuMode" name="children" value="CHILDREN"> {{'CHILDREN'| translate}}</label><br/>
                             <label><input type="radio" ng-model="selectedOuMode" name="descendants" value="DESCENDANTS"> {{'DESCENDANTS'| translate}}</label><br/>
@@ -69,21 +69,18 @@
                         </td>
                     </tr>
                     <tr>
-                    <label>                    
-                        <td class='col-sm-4 col-md-3 vertical-center'>
+                        <td>
                             {{'filter'| translate}}
                         </td>
-                        <td class='col-sm-4 col-md-3'> 
+                        <td> 
                             <label>
                                 <input type="checkbox" ng-change="markForFollowup()" ng-model="displayMode.onlyMarkedFollowup"/>  {{'only_marked_for_followup'| translate}}
                             </label>                                
                         </td>
-                    </label>
                     </tr>
                 </table>
             </div>
-        </div>       
-
+        </div>
         <div class="row" ng-if="programs.length < 1">        
             <div class="col-sm-8 col-md-6 vertical-spacing">
                 <div class="alert alert-warning">{{'no_program_exists_report'| translate}}</div> 
@@ -101,8 +98,7 @@
 
     <!-- upcoming events list begins -->
     <div ng-if="reportFinished">
-
-        <div ng-switch="teiList.length">                    
+        <div ng-switch="overdueEvents.length">                    
             <div ng-switch-when="undefined">
                 <div class="alert alert-warning vertical-spacing">
                     {{'no_data_found'| translate}}
@@ -115,22 +111,42 @@
             </div>    
             <div ng-switch-default>
                 <!-- report begins -->
-                <div class="vertical-spacing">   
+
+                <div class='pull-right vertical-spacing not-printable'>
+                    <button type="button"
+                            class="btn btn-primary"
+                            onclick="javascript:window.print()">
+                        {{'print'| translate}}
+                    </button>
+                    <!--<button type="button" 
+                            class="btn btn-success small-horizonal-spacing" 
+                            ng-click="exportToExcel()">
+                        {{'excel_export'| translate}}
+                    </button>-->
+                    <button type="button" 
+                            class="btn btn-success small-horizonal-spacing" 
+                            ng-csv="generateReportData()"
+                            csv-header="generateReportHeader()"
+                            filename="overdueEvents.csv">
+                        {{'excel_export'| translate}}
+                    </button>
+                </div>
+                <div class="vertical-spacing">
                     <table class="listTable dhis2-table-striped-border dhis2-table-hover">               
                         <thead>                        
                             <tr>
                                 <th ng-show="gridColumn.show" ng-repeat="gridColumn in gridColumns">
 
                                     <!-- sort icon begins -->
-                                    <span ng-click="sortTEIGrid(gridColumn)">
-                                        {{gridColumn.name| translate}}
-                                        <i ng-if="sortHeader == gridColumn.id && reverse" class="fa fa-sort-desc"></i>
-                                        <i ng-if="sortHeader == gridColumn.id && !reverse" class="fa fa-sort-asc"></i>
+                                    <span ng-click="sortGrid(gridColumn)">
+                                        {{gridColumn.name}}
+                                        <i ng-if="sortHeader == gridColumn.id && reverse" class="fa fa-sort-desc not-printable"></i>
+                                        <i ng-if="sortHeader == gridColumn.id && !reverse" class="fa fa-sort-asc not-printable"></i>
                                     </span>
                                     <!-- sort icon ends -->
 
                                     <!-- filter icon begins -->
-                                    <span class='pull-right'>
+                                    <span class='pull-right not-printable'>
                                         <span ng-show="gridColumn.type != 'date' && gridColumn.type != 'int'">
                                             <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter - without - content', false: 'filter - with - content'} [filterText[gridColumn.id] == undefined || filterText[gridColumn.id] == '']"><i class="fa fa-search"></i></span></a>
                                         </span>
@@ -141,7 +157,7 @@
                                     <!-- filter icon ends -->
 
                                     <!-- filter input field begins -->
-                                    <span ng-show="gridColumn.showFilter">  
+                                    <span ng-show="gridColumn.showFilter" class="not-printable">  
                                         <span ng-switch="gridColumn.type">
                                             <span ng-switch-when="int">
                                                 <input style="width: 45%;" placeholder="{{'lower_limit'| translate}}" type="number" ng-model="filterText[gridColumn.id].start" ng-blur="searchInGrid(gridColumn)">
@@ -168,17 +184,18 @@
                             </tr>                        
                         </thead>
                         <tbody id="list">
-                            <tr ng-repeat="tei in teiList| orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"
-                                ng-click="showDashboard(tei)"
+                            <tr ng-repeat="overdueEvent in overdueEvents | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"
+                                ng-click="showDashboard(overdueEvent)"
                                 title="{{'go_to_dashboard'| translate}}">
                                 <td ng-show="gridColumn.show"                                            
-                                    ng-repeat="gridColumn in gridColumns" ng-if='displayMode.onlyMarkedFollowup ? tei.followup:true'>                                                
-                                    {{tei[gridColumn.id]}}                                                
+                                    ng-repeat="gridColumn in gridColumns" ng-if='displayMode.onlyMarkedFollowup ? overdueEvent.followup:true'>                                                
+                                    {{overdueEvent[gridColumn.id]}}                                                
                                 </td>                                
                             </tr>
                         </tbody>        
-                    </table>                    
+                    </table>
                 </div>
+
                 <!-- report ends -->
             </div>
         </div> 

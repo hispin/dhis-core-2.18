@@ -1070,7 +1070,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             
 })
 
-.service('TEIGridService', function(OrgUnitService, DateUtils){
+.service('TEIGridService', function(OrgUnitService, DateUtils, $translate){
     
     return {
         format: function(grid, map){
@@ -1130,8 +1130,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             var columns = attributes ? angular.copy(attributes) : [];
        
             //also add extra columns which are not part of attributes (orgunit for example)
-            columns.push({id: 'orgUnitName', name: 'registering_unit', type: 'string', displayInListNoProgram: false});
-            columns.push({id: 'created', name: 'registration_date', type: 'date', displayInListNoProgram: false});
+            columns.push({id: 'orgUnitName', name: $translate('registering_unit'), type: 'string', displayInListNoProgram: false});
+            columns.push({id: 'created', name: $translate('registration_date'), type: 'date', displayInListNoProgram: false});
 
             //generate grid column for the selected program/attributes
             angular.forEach(columns, function(column){
@@ -1146,6 +1146,28 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });     
             
             return columns;  
+        },
+        getData: function(rows, columns){
+            var data = [];
+            angular.forEach(rows, function(row){
+                var d = {};
+                angular.forEach(columns, function(col){
+                    if(col.show){
+                        d[col.name] = row[col.id];
+                    }                
+                });
+                data.push(d);            
+            });
+            return data;
+        },
+        getHeader: function(columns){
+            var header = []; 
+            angular.forEach(columns, function(col){
+                if(col.show){
+                    header.push($translate(col.name));
+                }
+            });        
+            return header;
         }
     };
 })
@@ -1230,7 +1252,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 OrgUnitService.open().then(function(){
                     OrgUnitService.get(dhis2Event.orgUnit).then(function(ou){
                         if(ou){
-                            dhis2Event.orgUnitName = ou.n;
+                            dhis2Event.eventOrgUnitName = ou.n;
                             return dhis2Event;                            
                         }                                                       
                     });                            
