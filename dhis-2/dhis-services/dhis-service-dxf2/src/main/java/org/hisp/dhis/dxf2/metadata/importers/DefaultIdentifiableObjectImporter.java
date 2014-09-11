@@ -649,6 +649,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             nonIdentifiableObjects.save( object );
         }
 
+        summaryType.setLastImported( object.getUid() );
+
         log.debug( "Save successful." );
 
         return true;
@@ -729,6 +731,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             nonIdentifiableObjects.save( persistedObject );
         }
+
+        summaryType.setLastImported( object.getUid() );
 
         log.debug( "Update successful." );
 
