@@ -28,8 +28,6 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.User;
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -215,8 +213,6 @@ public interface GenericIdentifiableObjectStore<T>
      */
     List<T> getByUidNoAcl( Collection<String> uids );
 
-    int getCountGeCreated( Date created );
-
     /**
      * Returns all objects that are equal to or newer than given date.
      *
@@ -237,7 +233,7 @@ public interface GenericIdentifiableObjectStore<T>
      * Returns all objects that are equal to or newer than given date.
      * (ordered by name)
      *
-     * @param lastUpdated Date to compare to.
+     * @param created Date to compare to.
      * @return All objects equal or newer than given date.
      */
     List<T> getAllGeCreatedOrderedName( Date created );
@@ -252,7 +248,7 @@ public interface GenericIdentifiableObjectStore<T>
     List<T> getAllGeLastUpdatedOrderedName( Date lastUpdated );
 
     /**
-     * Returns the number of objects that are equal to or newer than given date.
+     * Returns the number of objects that are equal to or newer than given last updated date.
      *
      * @param lastUpdated Date to compare to.
      * @return the number of objects equal or newer than given date.
@@ -260,10 +256,10 @@ public interface GenericIdentifiableObjectStore<T>
     int getCountGeLastUpdated( Date lastUpdated );
 
     /**
-     * Retrieves objects associated with the given user.
+     * Returns the number of objects that are equal to or newer than given created date.
      *
-     * @param user the user.
-     * @return list of objects.
+     * @param created Date to compare to.
+     * @return the number of objects equal or newer than given date.
      */
-    List<T> getByUser( User user );
+    int getCountGeCreated( Date created );
 }

@@ -888,11 +888,6 @@ public class DefaultChartService
         return chartStore.getAllLikeName( name, first, max );
     }
 
-    public Collection<Chart> getChartsByUser( User user )
-    {
-        return chartStore.getByUser( user );
-    }
-
     @Override
     public int countDataSetCharts( DataSet dataSet )
     {

@@ -279,12 +279,6 @@ public class DefaultDashboardService
     }
 
     @Override
-    public List<Dashboard> getByUser( User user )
-    {
-        return dashboardStore.getByUser( user );
-    }
-
-    @Override
     public int countMapDashboardItems( Map map )
     {
         return dashboardItemStore.countMapDashboardItems( map );
