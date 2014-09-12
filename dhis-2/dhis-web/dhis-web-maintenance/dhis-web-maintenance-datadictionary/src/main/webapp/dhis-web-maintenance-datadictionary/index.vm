@@ -5,6 +5,7 @@
 	#introListImgItem( "dataElementGroup.action" "data_element_group" "dataelement" )
     #introListImgItem( "dataElementGroupEditor.action" "data_element_group_editor" "dataelement" )
     #introListImgItem( "dataElementGroupSet.action" "data_element_group_set" "groupset" )
+    #introListImgItem( "categoryOptionCombo.action" "category_option_combo" "category" )
     #introListImgItem( "categoryOption.action" "category_option" "category" )
     #introListImgItem( "category.action" "category" "category" )
     #introListImgItem( "categoryCombo.action" "category_combo" "category" )

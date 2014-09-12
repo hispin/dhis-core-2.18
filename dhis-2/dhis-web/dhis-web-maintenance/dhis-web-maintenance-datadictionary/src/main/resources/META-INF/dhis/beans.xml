@@ -540,4 +540,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
   </bean>
   
+   <!-- CategoryOptionCombo -->
+
+  <bean id="org.hisp.dhis.dd.action.category.GetCategoryOptionComboListAction" class="org.hisp.dhis.dd.action.category.GetCategoryOptionComboListAction"
+    scope="prototype">
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dd.action.category.GetCategoryOptionComboAction" class="org.hisp.dhis.dd.action.category.GetCategoryOptionComboAction"
+    scope="prototype">
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dd.action.category.UpdateCategoryOptionComboAction" class="org.hisp.dhis.dd.action.category.UpdateCategoryOptionComboAction"
+    scope="prototype">
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dd.action.category.ValidateCategoryOptionComboAction" class="org.hisp.dhis.dd.action.category.ValidateCategoryOptionComboAction"
+    scope="prototype">
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+  
 </beans>

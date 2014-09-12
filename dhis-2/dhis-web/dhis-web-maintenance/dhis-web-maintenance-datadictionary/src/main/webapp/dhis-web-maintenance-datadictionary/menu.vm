@@ -5,6 +5,7 @@
     <li><a href="dataElementGroup.action">$i18n.getString( "data_element_group" )&nbsp;</a></li>
     <li><a href="dataElementGroupEditor.action">$i18n.getString( "data_element_group_editor" )&nbsp;</a></li>
 	<li><a href="dataElementGroupSet.action">$i18n.getString( "data_element_group_set" )&nbsp;</a></li>
+    <li><a href="categoryOptionCombo.action">$i18n.getString( "category_option_combo" )&nbsp;</a></li>
     <li><a href="categoryOption.action">$i18n.getString( "category_option" )&nbsp;</a></li>
     <li><a href="category.action">$i18n.getString( "category" )&nbsp;</a></li>
     <li><a href="categoryCombo.action">$i18n.getString( "category_combination" )&nbsp;</a></li>
