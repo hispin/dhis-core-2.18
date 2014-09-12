@@ -42,6 +42,7 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dashboard.Dashboard;
+import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
@@ -148,6 +149,8 @@ public class MetaData
     private List<CategoryOptionGroupSet> categoryOptionGroupSets = new ArrayList<>();
 
     private List<DataElementOperand> dataElementOperands = new ArrayList<>();
+
+    private List<DashboardItem> dashboardItems = new ArrayList<>();
 
     private List<Dashboard> dashboards = new ArrayList<>();
 
@@ -765,6 +768,19 @@ public class MetaData
     public void setConstants( List<Constant> constants )
     {
         this.constants = constants;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "dashboardItems", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dashboardItem", namespace = DxfNamespaces.DXF_2_0 )
+    public List<DashboardItem> getDashboardItems()
+    {
+        return dashboardItems;
+    }
+
+    public void setDashboardItems( List<DashboardItem> dashboardItems )
+    {
+        this.dashboardItems = dashboardItems;
     }
 
     @JsonProperty
