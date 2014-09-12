@@ -30,6 +30,7 @@ package org.hisp.dhis.option;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -37,6 +38,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -54,6 +56,7 @@ public class OptionSet
 {
     private static final Pattern OPTION_PATTERN = Pattern.compile( "\\[(.*)\\]" );
 
+    @Scanned
     private List<Option> options = new ArrayList<>();
 
     /**
@@ -76,6 +79,7 @@ public class OptionSet
     }
 
     @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "options", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "option", namespace = DxfNamespaces.DXF_2_0 )
@@ -129,10 +133,12 @@ public class OptionSet
     public List<String> getOptionValues()
     {
         List<String> result = new ArrayList<>();
+
         for( Option option : options )
         {
             result.add( option.getName() );
         }
+
         return result;
     }
 }

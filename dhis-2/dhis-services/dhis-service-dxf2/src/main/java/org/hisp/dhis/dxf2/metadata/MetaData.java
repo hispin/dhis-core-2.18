@@ -72,6 +72,7 @@ import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.message.MessageConversation;
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -129,6 +130,8 @@ public class MetaData
     private List<MessageConversation> messageConversations = new ArrayList<>();
 
     private List<Interpretation> interpretations = new ArrayList<>();
+
+    private List<Option> options = new ArrayList<>();
 
     private List<OptionSet> optionSets = new ArrayList<>();
 
@@ -359,6 +362,19 @@ public class MetaData
     public void setDataElements( List<DataElement> dataElements )
     {
         this.dataElements = dataElements;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "options", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "option", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Option> getOptions()
+    {
+        return options;
+    }
+
+    public void setOptions( List<Option> options )
+    {
+        this.options = options;
     }
 
     @JsonProperty
