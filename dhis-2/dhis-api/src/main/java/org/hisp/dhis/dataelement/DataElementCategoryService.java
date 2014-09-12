@@ -28,13 +28,13 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.hierarchy.HierarchyViolationException;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
 /**
  * @author Abyot Asalefew
@@ -382,6 +382,14 @@ public interface DataElementCategoryService
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( String uid );
 
     /**
+     * Retrieves the DataElementCategoryOptionCombo with the given uid.
+     * 
+     * @param code the code of the DataElementCategoryOptionCombo.
+     * @return the DataElementCategoryOptionCombo.
+     */
+    DataElementCategoryOptionCombo getDataElementCategoryOptionComboByCode( String code );
+
+    /**
      * Retrieves the DataElementCategoryOptionCombos with the given identifiers.
      * 
      * @param identifiers the identifiers of the
@@ -425,7 +433,22 @@ public interface DataElementCategoryService
      * @return a Collection of DataElementCategoryOptionCombos.
      */
     Collection<DataElementCategoryOptionCombo> getAllDataElementCategoryOptionCombos();
-
+    
+    /**
+     * Returns {@link DataElementCategoryOptionCombo} list with paging
+     *
+     * @param min  First result
+     * @param max  Maximum results
+     * 
+     * @return a collection of all category-option-combo
+     */
+    Collection<DataElementCategoryOptionCombo> getOptionCombosBetween( int min, int max );
+    
+    /**
+     * Returns The number of all DataElementCategoryOptionCombo available
+     */
+    Integer getOptionComboCount();
+    
     /**
      * Generates and persists a default DataElementCategory,
      * DataElementCategoryOption, DataElementCategoryCombo and

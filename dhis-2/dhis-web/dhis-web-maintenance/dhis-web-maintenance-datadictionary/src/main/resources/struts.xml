@@ -730,7 +730,43 @@
       <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
+    
+    <!-- CategoryOptionCombo -->
+    
+    <action name="categoryOptionCombo"
+      class="org.hisp.dhis.dd.action.category.GetCategoryOptionComboListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryOptionCombo.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+      <param name="anyAuthorities">F_CATEGORY_OPTION_COMBO_PUBLIC_ADD, F_CATEGORY_OPTION_COMBO_PRIVATE_ADD</param>
+    </action>
+    
+    <action name="showUpdateCategoryOptionComboForm"
+      class="org.hisp.dhis.dd.action.category.GetCategoryOptionComboAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateCategoryOptionCombo.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>      
+      <param name="anyAuthorities">F_CATEGORY_OPTION_COMBO_PUBLIC_ADD, F_CATEGORY_OPTION_COMBO_PRIVATE_ADD</param>
+    </action>
+    
+    <action name="updateCategoryOptionCombo"
+      class="org.hisp.dhis.dd.action.category.UpdateCategoryOptionComboAction">
+     <result name="success" type="redirect">categoryOptionCombo.action</result>
+      <param name="anyAuthorities">F_CATEGORY_OPTION_COMBO_PUBLIC_ADD, F_CATEGORY_OPTION_COMBO_PRIVATE_ADD</param>
+    </action>
 
+	<action name="validateCategoryOptionCombo"
+      class="org.hisp.dhis.dd.action.category.ValidateCategoryOptionComboAction">
+     <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+     <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+    </action>
+    
+    <action name="getCategoryOptionCombo"
+      class="org.hisp.dhis.dd.action.category.GetCategoryOptionComboAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonCategoryOptionCombo.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
   </package>
 
 </struts>

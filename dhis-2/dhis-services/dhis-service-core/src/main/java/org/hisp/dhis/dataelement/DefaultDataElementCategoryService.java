@@ -493,6 +493,11 @@ public class DefaultDataElementCategoryService
     {
         return categoryOptionComboStore.getByUid( uid );
     }
+    
+    public DataElementCategoryOptionCombo getDataElementCategoryOptionComboByCode( String code )
+    {
+        return categoryOptionComboStore.getByCode( code );
+    }
 
     public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos(
         final Collection<Integer> identifiers )
@@ -558,6 +563,16 @@ public class DefaultDataElementCategoryService
         return categoryOptionComboStore.getAll();
     }
 
+    public Collection<DataElementCategoryOptionCombo> getOptionCombosBetween( int min, int max )
+    {
+        return categoryOptionComboStore.getAllOrderedLastUpdated( min, max );
+    }
+    
+    public Integer getOptionComboCount()
+    {
+        return categoryOptionComboStore.getCount();
+    }
+    
     public void generateDefaultDimension()
     {
         // ---------------------------------------------------------------------
