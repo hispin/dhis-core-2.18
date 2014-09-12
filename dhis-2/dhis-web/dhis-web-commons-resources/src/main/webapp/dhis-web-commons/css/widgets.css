@@ -270,7 +270,7 @@ div#orgUnitTree a:hover
 
 div#orgUnitTree a.selected 
 {
-  color: #000;
+  color: orange !important;
   font-weight: bold;
 }
 
@@ -326,7 +326,8 @@ div#selectionTree a:hover
 
 div#selectionTree a.selected 
 {
-  color: orange;
+    color: orange !important;
+    font-weight: bold;
 }
 
 div#selectionTree a.locked 
