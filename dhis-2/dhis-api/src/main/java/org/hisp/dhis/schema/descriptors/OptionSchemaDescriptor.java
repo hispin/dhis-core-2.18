@@ -1,3 +1,5 @@
+package org.hisp.dhis.schema.descriptors;
+
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -26,29 +28,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.option;
-
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.DxfNamespaces;
-
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.google.common.collect.Lists;
+import org.hisp.dhis.option.Option;
+import org.hisp.dhis.schema.Authority;
+import org.hisp.dhis.schema.AuthorityType;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaDescriptor;
+import org.springframework.stereotype.Component;
 
 /**
- * @author Chau Thu Tran
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "option", namespace = DxfNamespaces.DXF_2_0 )
-public class Option
-    extends BaseIdentifiableObject
+@Component
+public class OptionSchemaDescriptor implements SchemaDescriptor
 {
-    public Option()
+    public static final String SINGULAR = "option";
+
+    public static final String PLURAL = "options";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
+    @Override
+    public Schema getSchema()
     {
-        setAutoFields();
-    }
-    
-    public Option( String name, String code )
-    {
-        setAutoFields();
-        this.name = name;
-        this.code = code;
+        Schema schema = new Schema( Option.class, SINGULAR, PLURAL );
+
+        // TODO should probably expose endpoint for option also
+        // schema.setApiEndpoint( API_ENDPOINT );
+
+        schema.setShareable( false );
+        schema.setOrder( 1040 );
+
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_OPTIONSET_PUBLIC_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_OPTIONSET_PRIVATE_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_OPTIONSET_DELETE" ) ) );
+
+        return schema;
     }
 }

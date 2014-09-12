@@ -1150,7 +1150,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 '}';
         }
 
-        return object.toString();
+        return object != null ? object.toString() : "object is null";
     }
 
     private void reportReferenceError( Object object, Object reference )
