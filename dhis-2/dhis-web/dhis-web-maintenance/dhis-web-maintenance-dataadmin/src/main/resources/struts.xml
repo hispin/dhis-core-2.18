@@ -310,10 +310,7 @@
     </action>
 
     <action name="addSqlView" class="org.hisp.dhis.dataadmin.action.sqlview.AddSqlViewAction">
-      <result name="success" type="redirect">
-        showSqlViewListForm.action
-      </result>
-      <result name="error" type="redirect">index.action</result>
+      <result name="success" type="redirect">sqlView.action</result>
       <param name="anyAuthorities">F_SQLVIEW_PUBLIC_ADD, F_SQLVIEW_PRIVATE_ADD</param>
     </action>
 
@@ -326,8 +323,7 @@
     </action>
 
     <action name="updateSqlViewInstance" class="org.hisp.dhis.dataadmin.action.sqlview.UpdateSqlViewAction">
-      <result name="success" type="redirect">showSqlViewListForm.action</result>
-      <result name="error" type="redirect">index.action</result>
+      <result name="success" type="redirect">sqlView.action</result>
       <param name="anyAuthorities">F_SQLVIEW_PUBLIC_ADD, F_SQLVIEW_PRIVATE_ADD</param>
     </action>
 
