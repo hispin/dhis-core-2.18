@@ -39,6 +39,7 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.eventchart.EventChart;
@@ -80,13 +81,17 @@ public class DashboardItem
     private Map map;
 
     private ReportTable reportTable;
-    
+
+    @Scanned
     private List<User> users = new ArrayList<>();
 
+    @Scanned
     private List<ReportTable> reportTables = new ArrayList<>();
 
+    @Scanned
     private List<Report> reports = new ArrayList<>();
 
+    @Scanned
     private List<Document> resources = new ArrayList<>();
 
     private Boolean messages;
