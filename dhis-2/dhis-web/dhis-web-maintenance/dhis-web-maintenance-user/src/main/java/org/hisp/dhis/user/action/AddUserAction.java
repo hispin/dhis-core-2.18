@@ -28,14 +28,11 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
+import com.opensymphony.xwork2.Action;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -49,8 +46,8 @@ import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.LocaleUtils;
-import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
@@ -58,10 +55,14 @@ import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserSettingService;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
@@ -125,6 +126,9 @@ public class AddUserAction
     {
         this.i18n = i18n;
     }
+
+    @Autowired
+    private IdentifiableObjectManager manager;
 
     @Autowired
     private CurrentUserService currentUserService;
@@ -266,6 +270,13 @@ public class AddUserAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
+    private String ouwtSelected;
+
+    public void setOuwtSelected( String ouwtSelected )
+    {
+        this.ouwtSelected = ouwtSelected;
+    }
+
     private String message;
 
     public String getMessage()
@@ -296,7 +307,7 @@ public class AddUserAction
         // ---------------------------------------------------------------------
 
         boolean canManageGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
-        
+
         if ( canManageGroups && !currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
         {
             boolean groupFound = false;
@@ -450,6 +461,15 @@ public class AddUserAction
             UserGroup userGroup = userGroupService.getUserGroup( id );
             userGroup.addUser( user );
             userGroupService.updateUserGroup( userGroup );
+        }
+
+        if ( ouwtSelected != null && manager.search( OrganisationUnit.class, ouwtSelected ) != null )
+        {
+            selectionManager.setSelectedOrganisationUnits( Lists.newArrayList( manager.search( OrganisationUnit.class, ouwtSelected ) ) );
+        }
+        else
+        {
+            selectionManager.setSelectedOrganisationUnits( currentUser.getOrganisationUnits() );
         }
 
         return SUCCESS;

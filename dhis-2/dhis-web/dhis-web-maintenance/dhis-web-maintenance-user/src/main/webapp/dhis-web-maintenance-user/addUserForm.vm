@@ -1,4 +1,6 @@
 <script type="text/javascript">
+  var ouwtSelected = [];
+
   jQuery(function() {
     validation2('addUserForm', function( form ) {
       jQuery("#urSelected").children().attr("selected", "selected");
@@ -8,6 +10,8 @@
       if( $('#orgUnitTree').find('.selected').size() == 0 ) {
         setHeaderDelayMessage('$encoder.jsEncode( $i18n.getString( "data_capture_organisation_unit_required_for_user" ) )');
       } else {
+        $('#ouwtSelected').val( ouwtSelected[0] );
+        selection.setSelected( ouwtSelected !== undefined ? ouwtSelected : [] );
         form.submit();
       }
     }, {
@@ -21,6 +25,7 @@
     checkValueIsExist("username", "validateUser.action");
     checkValueIsExist("openId", "validateUser.action");
 
+    ouwtSelected = selection.getSelected();
     selection.setMultipleSelectionAllowed( true );
     selection.setUnselectAllowed( true );
     selection.setAutoSelectRoot( false );
@@ -62,6 +67,7 @@ div#orgUnitTree
 
 <h3>$i18n.getString( "create_new_user" )</h3>
 <form id="addUserForm" action="addUser.action" method="post" class="inputForm">
+<input type="hidden" id="ouwtSelected" name="ouwtSelected" value=""/>
 
 <table>
     <col style="width: 120px"/>
