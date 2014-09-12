@@ -102,7 +102,7 @@ public class IndexController
                 complexNode.addChild( new SimpleNode( "displayName", beautify( schema.getPlural() ) ) );
                 complexNode.addChild( new SimpleNode( "singular", schema.getSingular() ) );
                 complexNode.addChild( new SimpleNode( "plural", schema.getPlural() ) );
-                complexNode.addChild( new SimpleNode( "href", contextService.getContextPath() + "/api" + schema.getApiEndpoint() ) );
+                complexNode.addChild( new SimpleNode( "href", contextService.getApiPath() + schema.getApiEndpoint() ) );
             }
         }
 
