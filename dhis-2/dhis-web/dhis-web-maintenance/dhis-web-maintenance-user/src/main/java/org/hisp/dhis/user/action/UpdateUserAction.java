@@ -236,18 +236,18 @@ public class UpdateUserAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
     private String ouwtSelected;
 
     public void setOuwtSelected( String ouwtSelected )
     {
         this.ouwtSelected = ouwtSelected;
+    }
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
     }
 
     // -------------------------------------------------------------------------
