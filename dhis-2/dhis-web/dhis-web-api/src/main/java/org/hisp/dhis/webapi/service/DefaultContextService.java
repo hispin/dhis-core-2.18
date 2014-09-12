@@ -46,8 +46,7 @@ public class DefaultContextService implements ContextService
     @Override
     public String getServletPath()
     {
-        HttpServletRequest request = getRequest();
-        return getContextPath() + request.getServletPath();
+        return getContextPath() + getRequest().getServletPath();
     }
 
     @Override
@@ -88,6 +87,12 @@ public class DefaultContextService implements ContextService
         builder.append( request.getContextPath() );
 
         return builder.toString();
+    }
+
+    @Override
+    public String getApiPath()
+    {
+        return getContextPath() + "/api";
     }
 
     @Override

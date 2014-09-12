@@ -53,6 +53,14 @@ public interface ContextService
     String getContextPath();
 
     /**
+     * Get HREF to Web-API.
+     *
+     * @return Full HREF to Web-API
+     * @see javax.servlet.http.HttpServletRequest
+     */
+    String getApiPath();
+
+    /**
      * Get active HttpServletRequest
      *
      * @return HttpServletRequest
