@@ -955,17 +955,21 @@ function dataSetSelected()
 
         var periodType = dhis2.de.dataSets[dataSetId].periodType;
 
-        if ( periodType != previousPeriodType )
+        var previousPeriodTypeValid = !!( previousPeriodType && previousPeriodType == periodType );
+        
+        if ( !previousPeriodTypeValid )
         {
             displayPeriods();
             clearSectionFilters();
         }
-
-        dhis2.de.currentCategories = dhis2.de.getCategories( dataSetId );
         
+        dhis2.de.currentCategories = dhis2.de.getCategories( dataSetId );
+
+        dhis2.de.setAttributesMarkup();   
+
         dhis2.de.multiOrganisationUnit = !!$( '#selectedDataSetId :selected' ).data( 'multiorg' );
 
-        if ( dhis2.de.inputSelected() && previousPeriodType && previousPeriodType == periodType )
+        if ( dhis2.de.inputSelected() && previousPeriodTypeValid )
         {
             showLoader();
             loadForm();
@@ -999,10 +1003,9 @@ function periodSelected()
     var periodName = $( '#selectedPeriodId :selected' ).text();
 
     $( '#currentPeriod' ).html( periodName );
-
-    var attributeMarkup = dhis2.de.getAttributesMarkup();
-    $( '#attributeComboDiv' ).html( attributeMarkup );
-
+    
+    dhis2.de.setAttributesMarkup();
+    
     if ( dhis2.de.inputSelected() )
     {    	
         showLoader();
@@ -1197,6 +1200,15 @@ dhis2.de.optionValidWithinPeriod = function( option, period )
 {
     return ( option.startDate == null || option.startDate <= dhis2.periodChoices[ period ].endDate )
         && ( option.endDate == null || option.endDate >= dhis2.periodChoices[ period ].startDate )
+}
+
+/**
+ * Sets the markup for attribute selections.
+ */
+dhis2.de.setAttributesMarkup = function()
+{
+    var attributeMarkup = dhis2.de.getAttributesMarkup();
+    $( '#attributeComboDiv' ).html( attributeMarkup );
 }
 
 /**
