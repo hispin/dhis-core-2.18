@@ -51,6 +51,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ExportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -94,6 +95,7 @@ public class DataValueSetController
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Set<String> orgUnit,
         @RequestParam( required = false ) boolean children,
+        ExportOptions exportOptions,
         HttpServletResponse response ) throws IOException
     {
         response.setContentType( CONTENT_TYPE_XML );
@@ -107,13 +109,13 @@ public class DataValueSetController
 
             log.info( "Get XML data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
 
-            dataValueSetService.writeDataValueSetXml( ds, period, ou, response.getOutputStream() );
+            dataValueSetService.writeDataValueSetXml( ds, period, ou, response.getOutputStream(), exportOptions );
         }
         else
         {
             log.info( "Get XML bulk data value set for start date: " + startDate + ", end date: " + endDate );
             
-            dataValueSetService.writeDataValueSetXml( dataSet, startDate, endDate, orgUnit, children, response.getOutputStream() );
+            dataValueSetService.writeDataValueSetXml( dataSet, startDate, endDate, orgUnit, children, response.getOutputStream(), exportOptions );
         }
     }
 
@@ -125,6 +127,7 @@ public class DataValueSetController
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Set<String> orgUnit,
         @RequestParam( required = false ) boolean children,
+        ExportOptions exportOptions,
         HttpServletResponse response ) throws IOException
     {
         response.setContentType( CONTENT_TYPE_JSON );
@@ -138,13 +141,13 @@ public class DataValueSetController
 
             log.info( "Get JSON data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
 
-            dataValueSetService.writeDataValueSetJson( ds, period, ou, response.getOutputStream() );
+            dataValueSetService.writeDataValueSetJson( ds, period, ou, response.getOutputStream(), exportOptions );
         }
         else
         {
             log.info( "Get JSON bulk data value set for start date: " + startDate + ", end date: " + endDate );
             
-            dataValueSetService.writeDataValueSetJson( dataSet, startDate, endDate, orgUnit, children, response.getOutputStream() );
+            dataValueSetService.writeDataValueSetJson( dataSet, startDate, endDate, orgUnit, children, response.getOutputStream(), exportOptions );
         }
     }
 
@@ -155,13 +158,14 @@ public class DataValueSetController
         @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Set<String> orgUnit,
         @RequestParam( required = false ) boolean children,
+        ExportOptions exportOptions,
         HttpServletResponse response ) throws IOException
     {
         log.info( "Get CSV bulk data value set for start date: " + startDate + ", end date: " + endDate );
 
         response.setContentType( CONTENT_TYPE_CSV );
         
-        dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, orgUnit, children, response.getWriter() );
+        dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, orgUnit, children, response.getWriter(), exportOptions );
     }
 
     // -------------------------------------------------------------------------

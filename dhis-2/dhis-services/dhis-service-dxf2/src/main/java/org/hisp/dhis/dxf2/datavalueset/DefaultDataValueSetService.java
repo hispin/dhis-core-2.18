@@ -71,6 +71,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ExportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.pdfform.PdfDataEntryFormUtil;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -146,7 +147,7 @@ public class DefaultDataValueSetService
     //--------------------------------------------------------------------------
 
     @Override
-    public void writeDataValueSetXml( String dataSet, String period, String orgUnit, OutputStream out )
+    public void writeDataValueSetXml( String dataSet, String period, String orgUnit, OutputStream out, ExportOptions exportOptions )
     {
         DataSet dataSet_ = dataSetService.getDataSet( dataSet );
         Period period_ = PeriodType.getPeriodFromIsoString( period );
@@ -177,12 +178,12 @@ public class DefaultDataValueSetService
         period_ = periodService.reloadPeriod( period_ );
 
         dataValueSetStore.writeDataValueSetXml( newHashSet( dataSet_ ), completeDate, period_, orgUnit_, wrap( period_ ),
-            wrap( orgUnit_ ), out );
+            wrap( orgUnit_ ), out, exportOptions );
     }
 
     @Override
     public void writeDataValueSetXml( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, 
-        boolean includeChildren, OutputStream out )
+        boolean includeChildren, OutputStream out, ExportOptions exportOptions )
     {
         Set<DataSet> ds = new HashSet<>( dataSetService.getDataSetsByUid( dataSets ) );
         Set<Period> pe = new HashSet<>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
@@ -208,11 +209,11 @@ public class DefaultDataValueSetService
             ou = new HashSet<>( organisationUnitService.getOrganisationUnitsWithChildren( IdentifiableObjectUtils.getUids( ou ) ) );
         }
         
-        dataValueSetStore.writeDataValueSetXml( ds, null, null, null, pe, ou, out );
+        dataValueSetStore.writeDataValueSetXml( ds, null, null, null, pe, ou, out, exportOptions );
     }
 
     @Override
-    public void writeDataValueSetJson( String dataSet, String period, String orgUnit, OutputStream outputStream )
+    public void writeDataValueSetJson( String dataSet, String period, String orgUnit, OutputStream outputStream, ExportOptions exportOptions )
     {
         DataSet dataSet_ = dataSetService.getDataSet( dataSet );
         Period period_ = PeriodType.getPeriodFromIsoString( period );
@@ -243,18 +244,18 @@ public class DefaultDataValueSetService
         period_ = periodService.reloadPeriod( period_ );
 
         dataValueSetStore.writeDataValueSetJson( newHashSet( dataSet_ ), completeDate, period_, orgUnit_, wrap( period_ ),
-            wrap( orgUnit_ ), outputStream );
+            wrap( orgUnit_ ), outputStream, exportOptions );
     }
 
     @Override
-    public void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream )
+    public void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream, ExportOptions exportOptions )
     {
-        dataValueSetStore.writeDataValueSetJson( lastUpdated, outputStream );
+        dataValueSetStore.writeDataValueSetJson( lastUpdated, outputStream, exportOptions );
     }
 
     @Override
     public void writeDataValueSetJson( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits,
-        boolean includeChildren, OutputStream outputStream )
+        boolean includeChildren, OutputStream outputStream, ExportOptions exportOptions )
     {
         Set<DataSet> ds = new HashSet<>( dataSetService.getDataSetsByUid( dataSets ) );
         Set<Period> pe = new HashSet<>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
@@ -280,12 +281,12 @@ public class DefaultDataValueSetService
             ou = new HashSet<>( organisationUnitService.getOrganisationUnitsWithChildren( IdentifiableObjectUtils.getUids( ou ) ) );
         }
 
-        dataValueSetStore.writeDataValueSetJson( ds, null, null, null, pe, ou, outputStream );
+        dataValueSetStore.writeDataValueSetJson( ds, null, null, null, pe, ou, outputStream, exportOptions );
     }
 
     @Override
     public void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits,
-        boolean includeChildren, Writer writer )
+        boolean includeChildren, Writer writer, ExportOptions exportOptions )
     {
         Set<DataSet> ds = new HashSet<>( dataSetService.getDataSetsByUid( dataSets ) );
         Set<Period> pe = new HashSet<>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
@@ -311,7 +312,7 @@ public class DefaultDataValueSetService
             ou = new HashSet<>( organisationUnitService.getOrganisationUnitsWithChildren( IdentifiableObjectUtils.getUids( ou ) ) );
         }
 
-        dataValueSetStore.writeDataValueSetCsv( ds, pe, ou, writer );
+        dataValueSetStore.writeDataValueSetCsv( ds, pe, ou, writer, exportOptions );
     }
 
     @Override

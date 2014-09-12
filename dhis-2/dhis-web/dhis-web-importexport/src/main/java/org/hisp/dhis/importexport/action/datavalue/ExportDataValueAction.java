@@ -36,16 +36,16 @@ import static org.hisp.dhis.util.ContextUtils.getZipOut;
 
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.dxf2.metadata.ExportOptions;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.util.ContextUtils;
@@ -108,6 +108,27 @@ public class ExportDataValueAction
         this.exportFormat = exportFormat;
     }
 
+    private IdentifiableProperty dataElementIdScheme;
+
+    public void setDataElementIdScheme( IdentifiableProperty dataElementIdScheme )
+    {
+        this.dataElementIdScheme = dataElementIdScheme;
+    }
+
+    private IdentifiableProperty orgUnitIdScheme;
+
+    public void setOrgUnitIdScheme( IdentifiableProperty orgUnitIdScheme )
+    {
+        this.orgUnitIdScheme = orgUnitIdScheme;
+    }
+
+    private IdentifiableProperty categoryOptionComboIdScheme;
+
+    public void setCategoryOptionComboIdScheme( IdentifiableProperty categoryOptionComboIdScheme )
+    {
+        this.categoryOptionComboIdScheme = categoryOptionComboIdScheme;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -116,6 +137,8 @@ public class ExportDataValueAction
         throws Exception
     {
         //TODO reimplement to use web api
+        
+        ExportOptions exportOptions = new ExportOptions( dataElementIdScheme, orgUnitIdScheme, categoryOptionComboIdScheme );
         
         Set<String> orgUnits = new HashSet<>( IdentifiableObjectUtils.getUids( selectionTreeManager.getSelectedOrganisationUnits() ) );
                 
@@ -127,13 +150,15 @@ public class ExportDataValueAction
             
             Writer writer = new OutputStreamWriter( getZipOut( response, getFileName( EXTENSION_CSV ) ) );
             
-            dataValueSetService.writeDataValueSetCsv( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, true, writer );
+            dataValueSetService.writeDataValueSetCsv( selectedDataSets, getMediumDate( startDate ), 
+                getMediumDate( endDate ), orgUnits, true, writer, exportOptions );
         }
         else
         {
             ContextUtils.configureResponse( response, CONTENT_TYPE_XML, true, getFileName( EXTENSION_XML_ZIP ), true );
             
-            dataValueSetService.writeDataValueSetXml( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, true, getZipOut( response, getFileName( EXTENSION_XML ) ) );
+            dataValueSetService.writeDataValueSetXml( selectedDataSets, getMediumDate( startDate ), 
+                getMediumDate( endDate ), orgUnits, true, getZipOut( response, getFileName( EXTENSION_XML ) ), exportOptions );
         }
         
         return SUCCESS;

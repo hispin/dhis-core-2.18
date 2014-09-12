@@ -211,7 +211,10 @@ public class JdbcAnalyticsTableManager
             "from dataapproval da " +
             "inner join dataapprovallevel dal on da.dataapprovallevelid = dal.dataapprovallevelid " +
             "inner join _dataelementstructure des on da.datasetid = des.datasetid and des.dataelementid = dv.dataelementid " +
-            "where da.periodid = dv.periodid and (";
+            "inner join dataset ds on des.datasetid = ds.datasetid " +
+            "where da.periodid = dv.periodid " +
+            "and ds.approvedata = true " +
+            "and (";
         
         for ( OrganisationUnitLevel level : levels )
         {
