@@ -46,6 +46,7 @@ import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dxf2.datavalue.DataValue;
+import org.hisp.dhis.dxf2.metadata.ExportOptions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -74,41 +75,47 @@ public class SpringDataValueSetStore
 
     @Override
     public void writeDataValueSetXml( Set<DataSet> dataSets, Date completeDate, Period period, OrganisationUnit orgUnit,
-        Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out )
+        Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out, ExportOptions exportOptions )
     {
         DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLWriter( out ) );
 
-        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits ), dataSets, completeDate, period, orgUnit, periods, orgUnits, dataValueSet );
+        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits, exportOptions ), dataSets, completeDate, period, orgUnit, periods, orgUnits, dataValueSet );
 
         StreamUtils.closeOutputStream( out );
     }
 
     @Override
     public void writeDataValueSetJson( Set<DataSet> dataSets, Date completeDate, Period period, OrganisationUnit orgUnit, 
-        Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream outputStream )
+        Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream outputStream, ExportOptions exportOptions )
     {
         DataValueSet dataValueSet = new StreamingJsonDataValueSet( outputStream );
 
-        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits ), dataSets, completeDate, period, orgUnit, periods, orgUnits, dataValueSet );
+        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits, exportOptions ), dataSets, completeDate, period, orgUnit, periods, orgUnits, dataValueSet );
 
         StreamUtils.closeOutputStream( outputStream );
     }
 
     @Override
-    public void writeDataValueSetCsv( Set<DataSet> dataSets, Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer )
+    public void writeDataValueSetCsv( Set<DataSet> dataSets, Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer, ExportOptions exportOptions )
     {
         DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CsvWriter( writer, CSV_DELIM ) );
 
-        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits ), dataSets, null, null, null, periods, orgUnits, dataValueSet );
+        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits, exportOptions ), dataSets, null, null, null, periods, orgUnits, dataValueSet );
     }
 
     @Override
-    public void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream )
+    public void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream, ExportOptions exportOptions )
     {
+        String deScheme = exportOptions.getDataElementIdSchemeFallback().toString().toLowerCase();
+        String ouScheme = exportOptions.getOrgUnitIdSchemeFallback().toString().toLowerCase();
+        String ocScheme = exportOptions.getCategoryOptionComboIdSchemeFallback().toString().toLowerCase();
+        
         DataValueSet dataValueSet = new StreamingJsonDataValueSet( outputStream );
 
         final String sql =
-            "select de.uid as deuid, pe.startdate as pestart, pt.name as ptname, ou.uid as ouuid, coc.uid as cocuid, aoc.uid as aocuid, dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
+            "select de." + deScheme + " as deid, pe.startdate as pestart, pt.name as ptname, ou." + ouScheme + " as ouid, " +
+            "coc." + ocScheme + " as cocid, aoc." + ocScheme + " as aocid, " + 
+            "dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
             "from datavalue dv " +
             "join dataelement de on (dv.dataelementid=de.dataelementid) " +
             "join period pe on (dv.periodid=pe.periodid) " +
@@ -138,11 +145,11 @@ public class SpringDataValueSetStore
                 DataValue dataValue = dataValueSet.getDataValueInstance();
                 PeriodType pt = PeriodType.getPeriodTypeByName( rs.getString( "ptname" ) );
 
-                dataValue.setDataElement( rs.getString( "deuid" ) );
+                dataValue.setDataElement( rs.getString( "deid" ) );
                 dataValue.setPeriod( pt.createPeriod( rs.getDate( "pestart" ), calendar ).getIsoDate() );
-                dataValue.setOrgUnit( rs.getString( "ouuid" ) );
-                dataValue.setCategoryOptionCombo( rs.getString( "cocuid" ) );
-                dataValue.setAttributeOptionCombo( rs.getString( "aocuid" ) );
+                dataValue.setOrgUnit( rs.getString( "ouid" ) );
+                dataValue.setCategoryOptionCombo( rs.getString( "cocid" ) );
+                dataValue.setAttributeOptionCombo( rs.getString( "aocid" ) );
                 dataValue.setValue( rs.getString( "value" ) );
                 dataValue.setStoredBy( rs.getString( "storedby" ) );
                 dataValue.setCreated( getLongDateString( rs.getDate( "created" ) ) );
@@ -160,10 +167,18 @@ public class SpringDataValueSetStore
     // DataValueSetStore implementation
     //--------------------------------------------------------------------------
 
-    private String getDataValueSql( Set<DataSet> dataSets, Collection<Period> periods, Collection<OrganisationUnit> orgUnits )
+    private String getDataValueSql( Set<DataSet> dataSets, Collection<Period> periods, Collection<OrganisationUnit> orgUnits, ExportOptions exportOptions )
     {
+        exportOptions = exportOptions != null ? exportOptions : new ExportOptions();
+        
+        String deScheme = exportOptions.getDataElementIdSchemeFallback().toString().toLowerCase();
+        String ouScheme = exportOptions.getOrgUnitIdSchemeFallback().toString().toLowerCase();
+        String ocScheme = exportOptions.getCategoryOptionComboIdSchemeFallback().toString().toLowerCase();
+        
         return
-            "select de.uid as deuid, pe.startdate as pestart, pt.name as ptname, ou.uid as ouuid, coc.uid as cocuid, aoc.uid as aocuid, dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
+            "select de." + deScheme + " as deid, pe.startdate as pestart, pt.name as ptname, ou." + ouScheme + " as ouid, " +
+            "coc." + ocScheme + " as cocid, aoc." + ocScheme + " as aocid, " +
+            "dv.value, dv.storedby, dv.created, dv.lastupdated, dv.comment, dv.followup " +
             "from datavalue dv " +
             "join dataelement de on (dv.dataelementid=de.dataelementid) " +
             "join period pe on (dv.periodid=pe.periodid) " +

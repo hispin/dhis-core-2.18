@@ -43,6 +43,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ExportOptions;
 import org.hisp.dhis.dxf2.utils.ImportSummaryResponseExtractor;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -205,7 +206,7 @@ public class DefaultSynchronizationManager
             {
                 request.getHeaders().setContentType( MediaType.APPLICATION_JSON );
                 request.getHeaders().add( HEADER_AUTHORIZATION, CodecUtils.getBasicAuthString( config.getRemoteServerUsername(), config.getRemoteServerPassword() ) );
-                dataValueSetService.writeDataValueSetJson( lastSuccessTime, request.getBody() );
+                dataValueSetService.writeDataValueSetJson( lastSuccessTime, request.getBody(), new ExportOptions() );
             }            
         };
         

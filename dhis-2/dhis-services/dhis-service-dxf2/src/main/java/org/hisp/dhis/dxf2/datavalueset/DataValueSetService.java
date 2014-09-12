@@ -37,6 +37,7 @@ import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ExportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.period.Period;
@@ -47,17 +48,17 @@ import org.hisp.dhis.scheduling.TaskId;
  */
 public interface DataValueSetService
 {
-    void writeDataValueSetXml( String dataSet, String period, String orgUnit, OutputStream out );
+    void writeDataValueSetXml( String dataSet, String period, String orgUnit, OutputStream out, ExportOptions exportOptions );
 
-    void writeDataValueSetXml( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, boolean includeChildren, OutputStream out );
+    void writeDataValueSetXml( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, boolean includeChildren, OutputStream out, ExportOptions exportOptions );
 
-    void writeDataValueSetJson( String ds, String period, String ou, OutputStream outputStream );
+    void writeDataValueSetJson( String ds, String period, String ou, OutputStream outputStream, ExportOptions exportOptions );
 
-    void writeDataValueSetJson( Set<String> dataSet, Date startDate, Date endDate, Set<String> ous, boolean includeChildren, OutputStream outputStream );
+    void writeDataValueSetJson( Set<String> dataSet, Date startDate, Date endDate, Set<String> ous, boolean includeChildren, OutputStream outputStream, ExportOptions exportOptions );
 
-    void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream );
+    void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream, ExportOptions exportOptions );
     
-    void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, boolean includeChildren, Writer writer );
+    void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, boolean includeChildren, Writer writer, ExportOptions exportOptions );
 
     RootNode getDataValueSetTemplate( DataSet dataSet, Period period, List<String> orgUnits,
         boolean writeComments, String ouScheme, String deScheme );

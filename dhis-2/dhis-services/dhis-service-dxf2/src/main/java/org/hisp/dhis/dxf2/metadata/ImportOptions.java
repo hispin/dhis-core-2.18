@@ -36,7 +36,7 @@ import org.hisp.dhis.importexport.ImportStrategy;
  */
 public class ImportOptions
 {
-    private IdentifiableProperty dataElementIdScheme;
+    private IdentifiableProperty dataElementIdScheme = IdentifiableProperty.UID;
 
     private IdentifiableProperty orgUnitIdScheme = IdentifiableProperty.UID;
 

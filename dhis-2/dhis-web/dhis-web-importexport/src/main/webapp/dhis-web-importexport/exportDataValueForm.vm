@@ -53,23 +53,7 @@
     <tr>
         <td colspan="3" height="15"></td>
     </tr>
-    	
-	<!-- Timespan -->
-	
-	<tr>
-		<th>$i18n.getString( "start_date" )</th>
-		<td></td>
-		<th>$i18n.getString( "end_date" )</th>
-	</tr>	
-    <tr>
-  		<td><input type="text" id="startDate" name="startDate" value="$!startDate" style="width:230px"></td>
-		<td></td>
-  		<td><input type="text" id="endDate" name="endDate" value="$!endDate" style="width:230px"></td>
-  	</tr>
-  	<tr>
-		<td colspan="3" height="15"></td>
-	</tr>
-  	  
+      	  
 	<!-- DataSets -->
 	
 	<tr>
@@ -90,13 +74,59 @@
 		<td>
 			<select multiple id="selectedDataSets" name="selectedDataSets" style="height: 200px; width: 100%; margin-top: 22px;"></select>
 		</td>
-	</tr>	
+	</tr>
+</table>
+
+<table style="padding-bottom: 15px">
+	<col width="140">
+	<col>
+	<tr>
+		<th colspan="2">$i18n.getString( "options" )</th>
+	</tr>
+	<tr>
+		<td>$i18n.getString( "start_date" )</td>
+		<td><input type="text" id="startDate" name="startDate" value="$!startDate" style="width:190px"></td>
+	</tr>
+	<tr>
+		<td>$i18n.getString( "end_date" )</td>
+		<td><input type="text" id="endDate" name="endDate" value="$!endDate" style="width:190px"></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><a href="javascript:toggleOptions()">$i18n.getString( "more_options" )</a></td>
+	</tr>
+	<tr class="moreOptions" style="display:none">
+		<td>$i18n.getString( "data_element_id_scheme" )</td>	
+		<td><select id="dataElementIdScheme" name="dataElementIdScheme" style="width:190px">
+			<option value="UID">$i18n.getString( "uid" )</option>
+			<option value="CODE">$i18n.getString( "code" )</option>
+			<option value="NAME">$i18n.getString( "name" )</option>
+	    </select></td>
+	</tr>
+	<tr class="moreOptions" style="display:none">
+		<td>$i18n.getString( "org_unit_id_scheme" )</td>	
+		<td><select id="orgUnitIdScheme" name="orgUnitIdScheme" style="width:190px">
+			<option value="UID">$i18n.getString( "uid" )</option>
+			<option value="CODE">$i18n.getString( "code" )</option>
+			<option value="NAME">$i18n.getString( "name" )</option>
+	    </select></td>
+	</tr>
+	<tr class="moreOptions" style="display:none">
+		<td>$i18n.getString( "category_id_scheme" )</td>	
+		<td><select id="categoryOptionComboIdScheme" name="categoryOptionComboIdScheme" style="width:190px">
+			<option value="UID">$i18n.getString( "uid" )</option>
+			<option value="CODE">$i18n.getString( "code" )</option>
+	    </select></td>
+	</tr>
+</table>
+
+<table>
 	
 	<!-- Submit -->
 	
 	<tr>		
-		<td><input type="button" value="$i18n.getString( 'export_as_xml' )" style="width:48%" onclick="exportDataValue( 'xml' )">
-		<input type="button" value="$i18n.getString( 'export_as_csv' )" style="width:48%" onclick="exportDataValue( 'csv' )"></td>
+		<td><input type="button" value="$i18n.getString( 'export_as_xml' )" style="width:120px" onclick="exportDataValue( 'xml' )">
+		<input type="button" value="$i18n.getString( 'export_as_csv' )" style="width:120px" onclick="exportDataValue( 'csv' )"></td>
 		<td></td>
 		<td></td>
 	</tr>
