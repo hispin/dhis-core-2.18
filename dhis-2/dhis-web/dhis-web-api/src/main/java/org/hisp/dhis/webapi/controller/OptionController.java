@@ -1,4 +1,4 @@
-package org.hisp.dhis.schema.descriptors;
+package org.hisp.dhis.webapi.controller;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,38 +28,17 @@ package org.hisp.dhis.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Lists;
 import org.hisp.dhis.option.Option;
-import org.hisp.dhis.schema.Authority;
-import org.hisp.dhis.schema.AuthorityType;
-import org.hisp.dhis.schema.Schema;
-import org.hisp.dhis.schema.SchemaDescriptor;
-import org.springframework.stereotype.Component;
+import org.hisp.dhis.schema.descriptors.OptionSchemaDescriptor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Component
-public class OptionSchemaDescriptor implements SchemaDescriptor
+@Controller
+@RequestMapping( value = OptionSchemaDescriptor.API_ENDPOINT )
+public class OptionController
+    extends AbstractCrudController<Option>
 {
-    public static final String SINGULAR = "option";
-
-    public static final String PLURAL = "options";
-
-    public static final String API_ENDPOINT = "/" + PLURAL;
-
-    @Override
-    public Schema getSchema()
-    {
-        Schema schema = new Schema( Option.class, SINGULAR, PLURAL );
-        schema.setApiEndpoint( API_ENDPOINT );
-        schema.setShareable( false );
-        schema.setOrder( 1040 );
-
-        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_OPTIONSET_PUBLIC_ADD" ) ) );
-        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_OPTIONSET_PRIVATE_ADD" ) ) );
-        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_OPTIONSET_DELETE" ) ) );
-
-        return schema;
-    }
 }
