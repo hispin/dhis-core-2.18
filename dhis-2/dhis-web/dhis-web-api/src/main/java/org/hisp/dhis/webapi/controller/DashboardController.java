@@ -34,11 +34,13 @@ import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.schema.descriptors.DashboardSchemaDescriptor;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +52,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -59,15 +62,15 @@ import static org.hisp.dhis.dashboard.Dashboard.MAX_ITEMS;
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = DashboardSchemaDescriptor.API_ENDPOINT )
+@RequestMapping(value = DashboardSchemaDescriptor.API_ENDPOINT)
 public class DashboardController
     extends AbstractCrudController<Dashboard>
 {
     @Autowired
     private DashboardService dashboardService;
 
-    @RequestMapping( value = "/q/{query}", method = RequestMethod.GET )
-    public String search( @PathVariable String query, @RequestParam( required = false ) Set<String> max,
+    @RequestMapping(value = "/q/{query}", method = RequestMethod.GET)
+    public String search( @PathVariable String query, @RequestParam(required = false) Set<String> max,
         Model model, HttpServletResponse response ) throws Exception
     {
         DashboardSearchResult result = dashboardService.search( query, max );
@@ -78,7 +81,7 @@ public class DashboardController
     }
 
     @Override
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         Dashboard dashboard = JacksonUtils.fromJson( input, Dashboard.class );
@@ -90,9 +93,9 @@ public class DashboardController
     }
 
     @Override
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid, InputStream input ) throws Exception
     {
         Dashboard dashboard = dashboardService.getDashboard( uid );
 
@@ -107,6 +110,27 @@ public class DashboardController
         dashboard.setName( newDashboard.getName() ); // TODO Name only for now
 
         dashboardService.updateDashboard( dashboard );
+    }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid )
+        throws Exception
+    {
+        List<Dashboard> objects = getEntity( uid );
+
+        if ( objects.isEmpty() )
+        {
+            ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
+            return;
+        }
+
+        if ( !aclService.canDelete( currentUserService.getCurrentUser(), objects.get( 0 ) ) )
+        {
+            throw new DeleteAccessDeniedException( "You don't have the proper permissions to delete this object." );
+        }
+
+        dashboardService.deleteDashboard( objects.get( 0 ) );
     }
 
     @RequestMapping( value = "/{uid}/items", method = RequestMethod.POST, consumes = "application/json" )

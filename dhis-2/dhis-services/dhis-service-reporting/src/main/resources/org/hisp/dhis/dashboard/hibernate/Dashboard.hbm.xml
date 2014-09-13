@@ -17,7 +17,7 @@
 
     <property name="name" column="name" not-null="true" unique="false" length="230" />
 
-    <list name="items" table="dashboard_items" cascade="all-delete-orphan">
+    <list name="items" table="dashboard_items" cascade="save-update">
       <key column="dashboardid" foreign-key="fk_dashboard_items_dashboardid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="dashboarditemid" class="org.hisp.dhis.dashboard.DashboardItem"
