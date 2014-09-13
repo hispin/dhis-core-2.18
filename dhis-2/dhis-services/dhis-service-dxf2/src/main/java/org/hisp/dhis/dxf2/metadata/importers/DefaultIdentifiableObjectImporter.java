@@ -158,14 +158,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return summaryType;
         }
 
-        sessionFactory.getCurrentSession().flush();
-
         if ( EventReport.class.isInstance( objects.get( 0 ) ) )
         {
             return summaryType;
         }
-
-        System.err.println( "Importing: " + objects.get( 0 ).getClass() );
 
         ObjectHandlerUtils.preObjectsHandlers( objects, objectHandlers );
 
