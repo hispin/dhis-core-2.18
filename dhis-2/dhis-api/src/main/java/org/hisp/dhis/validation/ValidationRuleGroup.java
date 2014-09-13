@@ -62,7 +62,8 @@ public class ValidationRuleGroup
 
     @Scanned
     private Set<ValidationRule> members = new HashSet<>();
-    
+
+    @Scanned
     private Set<UserGroup> userGroupsToAlert = new HashSet<>();
 
     private boolean alertByOrgUnits;

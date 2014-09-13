@@ -264,4 +264,14 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup" />
   </bean>
 
+  <bean id="dashboardImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter"
+    scope="prototype">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.dashboard.Dashboard" />
+  </bean>
+
+  <bean id="dashboardItemImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter"
+    scope="prototype">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.dashboard.DashboardItem" />
+  </bean>
+
 </beans>
