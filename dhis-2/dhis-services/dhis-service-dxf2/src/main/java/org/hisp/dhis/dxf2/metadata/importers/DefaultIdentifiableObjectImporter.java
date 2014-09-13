@@ -70,6 +70,7 @@ import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.validation.ValidationRule;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
@@ -142,391 +143,68 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     private final Class<T> importerClass;
 
     //-------------------------------------------------------------------------------------------------------
-    // Internal state
+    // Importer<T> Implementation
     //-------------------------------------------------------------------------------------------------------
 
-    protected ImportTypeSummary summaryType;
-
-    protected ImportOptions options;
-
-    // keeping this internal for now, might be split into several classes
-    private class NonIdentifiableObjects
+    @Override
+    public ImportTypeSummary importObjects( User user, List<T> objects, ImportOptions options )
     {
-        private Set<AttributeValue> attributeValues = Sets.newHashSet();
+        this.options = options;
+        this.summaryType = new ImportTypeSummary( importerClass.getSimpleName() );
+        this.summaryType.setDataValueCount( null );
 
-        private Expression leftSide;
-        private Expression rightSide;
-
-        private DataEntryForm dataEntryForm;
-
-        private Set<DataElementOperand> compulsoryDataElementOperands = Sets.newHashSet();
-        private Set<DataElementOperand> greyedFields = Sets.newHashSet();
-
-        private Collection<ProgramStageDataElement> programStageDataElements = Lists.newArrayList();
-        private List<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = new ArrayList<>();
-
-        public void extract( T object )
+        if ( objects.isEmpty() )
         {
-            attributeValues = extractAttributeValues( object );
-            leftSide = extractExpression( object, "leftSide" );
-            rightSide = extractExpression( object, "rightSide" );
-            dataEntryForm = extractDataEntryForm( object, "dataEntryForm" );
-            compulsoryDataElementOperands = extractDataElementOperands( object, "compulsoryDataElementOperands" );
-            greyedFields = extractDataElementOperands( object, "greyedFields" );
-            programStageDataElements = extractProgramStageDataElements( object );
-            programTrackedEntityAttributes = extractProgramTrackedEntityAttributes( object );
+            return summaryType;
         }
 
-        public void delete( T object )
+        sessionFactory.getCurrentSession().flush();
+
+        if ( EventReport.class.isInstance( objects.get( 0 ) ) )
         {
-            if ( !options.isDryRun() )
-            {
-                deleteAttributeValues( object );
-                deleteExpression( object, "leftSide" );
-                deleteExpression( object, "rightSide" );
-                deleteDataEntryForm( object, "dataEntryForm" );
-
-                if ( options.getImportStrategy().isDelete() )
-                {
-                    deleteDataElementOperands( object, "compulsoryDataElementOperands" );
-                }
-
-                deleteDataElementOperands( object, "greyedFields" );
-                deleteProgramStageDataElements( object );
-                deleteProgramTrackedEntityAttributes( object );
-            }
+            return summaryType;
         }
 
-        public void save( T object )
+        System.err.println( "Importing: " + objects.get( 0 ).getClass() );
+
+        ObjectHandlerUtils.preObjectsHandlers( objects, objectHandlers );
+
+        for ( T object : objects )
         {
-            saveAttributeValues( object, attributeValues );
-            saveExpression( object, "leftSide", leftSide );
-            saveExpression( object, "rightSide", rightSide );
-            saveDataEntryForm( object, "dataEntryForm", dataEntryForm );
-            saveDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
-            saveDataElementOperands( object, "greyedFields", greyedFields );
-            saveProgramStageDataElements( object, programStageDataElements );
-            saveProgramTrackedEntityAttributes( object, programTrackedEntityAttributes );
+            ObjectHandlerUtils.preObjectHandlers( object, objectHandlers );
+            importObjectLocal( user, object );
+            ObjectHandlerUtils.postObjectHandlers( object, objectHandlers );
         }
 
-        private void saveDataEntryForm( T object, String fieldName, DataEntryForm dataEntryForm )
+        ObjectHandlerUtils.postObjectsHandlers( objects, objectHandlers );
+
+        return summaryType;
+    }
+
+    @Override
+    public ImportTypeSummary importObject( User user, T object, ImportOptions options )
+    {
+        this.options = options;
+        this.summaryType = new ImportTypeSummary( importerClass.getSimpleName() );
+        this.summaryType.setDataValueCount( null );
+
+        if ( object == null )
         {
-            if ( dataEntryForm != null )
-            {
-                Map<Field, Collection<Object>> identifiableObjectCollections = detachCollectionFields( dataEntryForm );
-                reattachCollectionFields( dataEntryForm, identifiableObjectCollections );
-
-                dataEntryForm.setId( 0 );
-                dataEntryFormService.addDataEntryForm( dataEntryForm );
-
-                ReflectionUtils.invokeSetterMethod( fieldName, object, dataEntryForm );
-            }
+            summaryType.getImportCount().incrementIgnored();
+            return summaryType;
         }
 
-        private DataEntryForm extractDataEntryForm( T object, String fieldName )
-        {
-            DataEntryForm dataEntryForm = null;
+        ObjectHandlerUtils.preObjectHandlers( object, objectHandlers );
+        importObjectLocal( user, object );
+        ObjectHandlerUtils.postObjectHandlers( object, objectHandlers );
 
-            if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
-            {
-                dataEntryForm = ReflectionUtils.invokeGetterMethod( fieldName, object );
+        return summaryType;
+    }
 
-                if ( dataEntryForm != null )
-                {
-                    ReflectionUtils.invokeSetterMethod( fieldName, object, new Object[]{ null } );
-                }
-            }
-
-            return dataEntryForm;
-        }
-
-        private void deleteDataEntryForm( T object, String fieldName )
-        {
-            DataEntryForm dataEntryForm = extractDataEntryForm( object, fieldName );
-
-            if ( dataEntryForm != null )
-            {
-                dataEntryFormService.deleteDataEntryForm( dataEntryForm );
-                sessionFactory.getCurrentSession().flush();
-            }
-        }
-
-        private Expression extractExpression( T object, String fieldName )
-        {
-            Expression expression = null;
-
-            if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
-            {
-                expression = ReflectionUtils.invokeGetterMethod( fieldName, object );
-
-                if ( expression != null && Expression.class.isAssignableFrom( expression.getClass() ) )
-                {
-                    ReflectionUtils.invokeSetterMethod( fieldName, object, new Object[]{ null } );
-                }
-            }
-
-            return expression;
-        }
-
-        private Set<DataElementOperand> extractDataElementOperands( T object, String fieldName )
-        {
-            Set<DataElementOperand> dataElementOperands = Sets.newHashSet();
-
-            if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
-            {
-                Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
-                dataElementOperands = Sets.newHashSet( detachedDataElementOperands );
-
-                if ( detachedDataElementOperands.size() > 0 )
-                {
-                    detachedDataElementOperands.clear();
-                    ReflectionUtils.invokeSetterMethod( fieldName, object, Sets.newHashSet() );
-                }
-            }
-
-            return dataElementOperands;
-        }
-
-        private Set<AttributeValue> extractAttributeValues( T object )
-        {
-            Set<AttributeValue> attributeValues = Sets.newHashSet();
-
-            if ( ReflectionUtils.findGetterMethod( "attributeValues", object ) != null )
-            {
-                attributeValues = ReflectionUtils.invokeGetterMethod( "attributeValues", object );
-
-                if ( attributeValues.size() > 0 )
-                {
-                    ReflectionUtils.invokeSetterMethod( "attributeValues", object, Sets.newHashSet() );
-                }
-            }
-
-            return attributeValues;
-        }
-
-        private void saveExpression( T object, String fieldName, Expression expression )
-        {
-            if ( expression != null )
-            {
-                Map<Field, Collection<Object>> identifiableObjectCollections = detachCollectionFields( expression );
-                reattachCollectionFields( expression, identifiableObjectCollections );
-
-                expression.setId( 0 );
-                expressionService.addExpression( expression );
-
-                ReflectionUtils.invokeSetterMethod( fieldName, object, expression );
-            }
-        }
-
-        private void saveDataElementOperands( T object, String fieldName, Set<DataElementOperand> dataElementOperands )
-        {
-            if ( dataElementOperands.size() > 0 )
-            {
-                // need special handling for compulsoryDataElementOperands since they cascade with all-delete-orphan
-                if ( "compulsoryDataElementOperands".equals( fieldName ) )
-                {
-                    for ( DataElementOperand dataElementOperand : dataElementOperands )
-                    {
-                        Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
-                        reattachFields( dataElementOperand, identifiableObjects );
-                    }
-
-                    Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
-                    detachedDataElementOperands.clear();
-                    detachedDataElementOperands.addAll( dataElementOperands );
-                    sessionFactory.getCurrentSession().flush();
-                }
-                else
-                {
-                    for ( DataElementOperand dataElementOperand : dataElementOperands )
-                    {
-                        Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
-                        reattachFields( dataElementOperand, identifiableObjects );
-
-                        dataElementOperand.setId( 0 );
-                        dataElementOperandService.addDataElementOperand( dataElementOperand );
-                    }
-
-                    ReflectionUtils.invokeSetterMethod( fieldName, object, dataElementOperands );
-                }
-            }
-        }
-
-        private void deleteAttributeValues( T object )
-        {
-            if ( !Attribute.class.isAssignableFrom( object.getClass() ) )
-            {
-                Set<AttributeValue> attributeValues = extractAttributeValues( object );
-
-                for ( AttributeValue attributeValue : attributeValues )
-                {
-                    attributeService.deleteAttributeValue( attributeValue );
-                }
-            }
-        }
-
-        private void saveAttributeValues( T object, Collection<AttributeValue> attributeValues )
-        {
-            if ( attributeValues.size() > 0 )
-            {
-                for ( AttributeValue attributeValue : attributeValues )
-                {
-                    Attribute attribute = objectBridge.getObject( attributeValue.getAttribute() );
-
-                    if ( attribute == null )
-                    {
-                        log.debug( "Unknown reference to " + attributeValue.getAttribute() + " on object " + attributeValue );
-                        return;
-                    }
-
-                    attributeValue.setId( 0 );
-                    attributeValue.setAttribute( attribute );
-                }
-
-                for ( AttributeValue attributeValue : attributeValues )
-                {
-                    attributeService.addAttributeValue( attributeValue );
-                }
-
-                ReflectionUtils.invokeSetterMethod( "attributeValues", object, attributeValues );
-            }
-        }
-
-        private void deleteExpression( T object, String fieldName )
-        {
-            Expression expression = extractExpression( object, fieldName );
-
-            if ( expression != null )
-            {
-                expressionService.deleteExpression( expression );
-            }
-        }
-
-        private void deleteDataElementOperands( T object, String fieldName )
-        {
-            Set<DataElementOperand> dataElementOperands = extractDataElementOperands( object, fieldName );
-
-            for ( DataElementOperand dataElementOperand : dataElementOperands )
-            {
-                dataElementOperandService.deleteDataElementOperand( dataElementOperand );
-            }
-        }
-
-        private List<ProgramTrackedEntityAttribute> extractProgramTrackedEntityAttributes( T object )
-        {
-            List<ProgramTrackedEntityAttribute> programTrackedEntityAttributeSet = new ArrayList<>();
-
-            if ( ReflectionUtils.isCollection( "programAttributes", object, ProgramTrackedEntityAttribute.class ) )
-            {
-                List<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = ReflectionUtils.invokeGetterMethod( "programAttributes", object );
-
-                if ( programTrackedEntityAttributes == null )
-                {
-                    programTrackedEntityAttributes = new ArrayList<>();
-                    ReflectionUtils.invokeSetterMethod( "programAttributes", object, programTrackedEntityAttributes );
-                }
-
-                for ( ProgramTrackedEntityAttribute trackedEntityAttribute : programTrackedEntityAttributes )
-                {
-                    if ( sessionFactory.getCurrentSession().contains( trackedEntityAttribute ) )
-                    {
-                        sessionFactory.getCurrentSession().delete( trackedEntityAttribute );
-                    }
-
-                    programTrackedEntityAttributeSet.add( trackedEntityAttribute );
-                }
-
-                programTrackedEntityAttributes.clear();
-                sessionFactory.getCurrentSession().flush();
-            }
-
-            return programTrackedEntityAttributeSet;
-        }
-
-        private void deleteProgramTrackedEntityAttributes( T object )
-        {
-            extractProgramTrackedEntityAttributes( object );
-        }
-
-        private void saveProgramTrackedEntityAttributes( T object, Collection<ProgramTrackedEntityAttribute> programTrackedEntityAttributes )
-        {
-            for ( ProgramTrackedEntityAttribute programTrackedEntityAttribute : programTrackedEntityAttributes )
-            {
-                Map<Field, Object> identifiableObjects = detachFields( programTrackedEntityAttribute );
-                reattachFields( programTrackedEntityAttribute, identifiableObjects );
-                sessionFactory.getCurrentSession().persist( programTrackedEntityAttribute );
-            }
-
-            ReflectionUtils.invokeSetterMethod( "programAttributes", object, programTrackedEntityAttributes );
-        }
-
-        private Collection<ProgramStageDataElement> extractProgramStageDataElements( T object )
-        {
-            Method method = ReflectionUtils.findGetterMethod( "programStageDataElements", object );
-
-            if ( method != null )
-            {
-                Collection<ProgramStageDataElement> programStageDataElements = ReflectionUtils.invokeGetterMethod( "programStageDataElements", object );
-
-                for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
-                {
-                    if ( sessionFactory.getCurrentSession().contains( programStageDataElement ) )
-                    {
-                        programStageDataElementService.deleteProgramStageDataElement( programStageDataElement );
-                    }
-                }
-
-                sessionFactory.getCurrentSession().flush();
-                ReflectionUtils.invokeSetterMethod( "programStageDataElements", object,
-                    ReflectionUtils.newCollectionInstance( method.getReturnType() ) );
-                sessionFactory.getCurrentSession().flush();
-
-                return programStageDataElements;
-            }
-
-            return null;
-        }
-
-        private void saveProgramStageDataElements( T object, Collection<ProgramStageDataElement> programStageDataElements )
-        {
-            if ( programStageDataElements == null )
-            {
-                return;
-            }
-
-            Collection<ProgramStageDataElement> programStageDataElementCollection =
-                ReflectionUtils.newCollectionInstance( programStageDataElements.getClass() );
-
-            for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
-            {
-                Map<Field, Object> identifiableObjects = detachFields( programStageDataElement );
-                reattachFields( programStageDataElement, identifiableObjects );
-
-                if ( ProgramStage.class.isAssignableFrom( object.getClass() ) )
-                {
-                    programStageDataElement.setProgramStage( (ProgramStage) object );
-                }
-
-                ProgramStageDataElement persisted = programStageDataElementService.get( programStageDataElement.getProgramStage(), programStageDataElement.getDataElement() );
-
-                if ( persisted == null )
-                {
-                    programStageDataElementService.addProgramStageDataElement( programStageDataElement );
-                }
-                else
-                {
-                    programStageDataElementCollection.add( persisted );
-                }
-            }
-
-            ReflectionUtils.invokeSetterMethod( "programStageDataElements", object, programStageDataElementCollection );
-        }
-
-        private void deleteProgramStageDataElements( T object )
-        {
-            // deletion will be done in extractProgramStageDataElements
-            extractProgramStageDataElements( object );
-        }
+    @Override
+    public boolean canHandle( Class<?> clazz )
+    {
+        return importerClass.equals( clazz );
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -753,64 +431,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     }
 
     //-------------------------------------------------------------------------------------------------------
-    // Importer<T> Implementation
-    //-------------------------------------------------------------------------------------------------------
-
-    @Override
-    public ImportTypeSummary importObjects( User user, List<T> objects, ImportOptions options )
-    {
-        this.options = options;
-        this.summaryType = new ImportTypeSummary( importerClass.getSimpleName() );
-        this.summaryType.setDataValueCount( null );
-
-        if ( objects.isEmpty() )
-        {
-            return summaryType;
-        }
-
-        ObjectHandlerUtils.preObjectsHandlers( objects, objectHandlers );
-
-        for ( T object : objects )
-        {
-            ObjectHandlerUtils.preObjectHandlers( object, objectHandlers );
-            importObjectLocal( user, object );
-            ObjectHandlerUtils.postObjectHandlers( object, objectHandlers );
-        }
-
-        ObjectHandlerUtils.postObjectsHandlers( objects, objectHandlers );
-
-        return summaryType;
-    }
-
-    @Override
-    public ImportTypeSummary importObject( User user, T object, ImportOptions options )
-    {
-        this.options = options;
-        this.summaryType = new ImportTypeSummary( importerClass.getSimpleName() );
-        this.summaryType.setDataValueCount( null );
-
-        if ( object == null )
-        {
-            summaryType.getImportCount().incrementIgnored();
-            return summaryType;
-        }
-
-        ObjectHandlerUtils.preObjectHandlers( object, objectHandlers );
-        importObjectLocal( user, object );
-        ObjectHandlerUtils.postObjectHandlers( object, objectHandlers );
-
-        return summaryType;
-    }
-
-    @Override
-    public boolean canHandle( Class<?> clazz )
-    {
-        return importerClass.equals( clazz );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
     // Helpers
     //-------------------------------------------------------------------------------------------------------
+
     private void importObjectLocal( User user, T object )
     {
         if ( validateIdentifiableObject( object ) )
@@ -1165,5 +788,398 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         ImportConflict importConflict = new ImportConflict( ImportUtils.getDisplayName( object ), logMsg );
         summaryType.getImportConflicts().add( importConflict );
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // Internal state
+    //-------------------------------------------------------------------------------------------------------
+
+    protected ImportTypeSummary summaryType;
+
+    protected ImportOptions options;
+
+    // keeping this internal for now, might be split into several classes
+    private class NonIdentifiableObjects
+    {
+        private Set<AttributeValue> attributeValues = Sets.newHashSet();
+
+        private Expression leftSide;
+        private Expression rightSide;
+
+        private DataEntryForm dataEntryForm;
+
+        private Set<DataElementOperand> compulsoryDataElementOperands = Sets.newHashSet();
+        private Set<DataElementOperand> greyedFields = Sets.newHashSet();
+
+        private Collection<ProgramStageDataElement> programStageDataElements = Lists.newArrayList();
+        private List<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = new ArrayList<>();
+
+        public void extract( T object )
+        {
+            attributeValues = extractAttributeValues( object );
+            leftSide = extractExpression( object, "leftSide" );
+            rightSide = extractExpression( object, "rightSide" );
+            dataEntryForm = extractDataEntryForm( object, "dataEntryForm" );
+            compulsoryDataElementOperands = extractDataElementOperands( object, "compulsoryDataElementOperands" );
+            greyedFields = extractDataElementOperands( object, "greyedFields" );
+            programStageDataElements = extractProgramStageDataElements( object );
+            programTrackedEntityAttributes = extractProgramTrackedEntityAttributes( object );
+        }
+
+        public void delete( T object )
+        {
+            if ( !options.isDryRun() )
+            {
+                deleteAttributeValues( object );
+                deleteExpression( object, "leftSide" );
+                deleteExpression( object, "rightSide" );
+                deleteDataEntryForm( object, "dataEntryForm" );
+
+                if ( options.getImportStrategy().isDelete() )
+                {
+                    deleteDataElementOperands( object, "compulsoryDataElementOperands" );
+                }
+
+                deleteDataElementOperands( object, "greyedFields" );
+                deleteProgramStageDataElements( object );
+                deleteProgramTrackedEntityAttributes( object );
+            }
+        }
+
+        public void save( T object )
+        {
+            saveAttributeValues( object, attributeValues );
+            saveExpression( object, "leftSide", leftSide );
+            saveExpression( object, "rightSide", rightSide );
+            saveDataEntryForm( object, "dataEntryForm", dataEntryForm );
+            saveDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
+            saveDataElementOperands( object, "greyedFields", greyedFields );
+            saveProgramStageDataElements( object, programStageDataElements );
+            saveProgramTrackedEntityAttributes( object, programTrackedEntityAttributes );
+        }
+
+        private void saveDataEntryForm( T object, String fieldName, DataEntryForm dataEntryForm )
+        {
+            if ( dataEntryForm != null )
+            {
+                Map<Field, Collection<Object>> identifiableObjectCollections = detachCollectionFields( dataEntryForm );
+                reattachCollectionFields( dataEntryForm, identifiableObjectCollections );
+
+                dataEntryForm.setId( 0 );
+                dataEntryFormService.addDataEntryForm( dataEntryForm );
+
+                ReflectionUtils.invokeSetterMethod( fieldName, object, dataEntryForm );
+            }
+        }
+
+        private DataEntryForm extractDataEntryForm( T object, String fieldName )
+        {
+            DataEntryForm dataEntryForm = null;
+
+            if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
+            {
+                dataEntryForm = ReflectionUtils.invokeGetterMethod( fieldName, object );
+
+                if ( dataEntryForm != null )
+                {
+                    ReflectionUtils.invokeSetterMethod( fieldName, object, new Object[]{ null } );
+                }
+            }
+
+            return dataEntryForm;
+        }
+
+        private void deleteDataEntryForm( T object, String fieldName )
+        {
+            DataEntryForm dataEntryForm = extractDataEntryForm( object, fieldName );
+
+            if ( dataEntryForm != null )
+            {
+                dataEntryFormService.deleteDataEntryForm( dataEntryForm );
+                sessionFactory.getCurrentSession().flush();
+            }
+        }
+
+        private Expression extractExpression( T object, String fieldName )
+        {
+            if ( !ValidationRule.class.isInstance( object ) )
+            {
+                return null;
+            }
+
+            Expression expression = null;
+
+            if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
+            {
+                expression = ReflectionUtils.invokeGetterMethod( fieldName, object );
+
+                if ( expression != null && Expression.class.isAssignableFrom( expression.getClass() ) )
+                {
+                    ReflectionUtils.invokeSetterMethod( fieldName, object, new Object[]{ null } );
+                }
+            }
+
+            return expression;
+        }
+
+        private Set<DataElementOperand> extractDataElementOperands( T object, String fieldName )
+        {
+            Set<DataElementOperand> dataElementOperands = Sets.newHashSet();
+
+            if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
+            {
+                Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
+                dataElementOperands = Sets.newHashSet( detachedDataElementOperands );
+
+                if ( detachedDataElementOperands.size() > 0 )
+                {
+                    detachedDataElementOperands.clear();
+                    ReflectionUtils.invokeSetterMethod( fieldName, object, Sets.newHashSet() );
+                }
+            }
+
+            return dataElementOperands;
+        }
+
+        private Set<AttributeValue> extractAttributeValues( T object )
+        {
+            Set<AttributeValue> attributeValues = Sets.newHashSet();
+
+            if ( ReflectionUtils.findGetterMethod( "attributeValues", object ) != null )
+            {
+                attributeValues = ReflectionUtils.invokeGetterMethod( "attributeValues", object );
+
+                if ( attributeValues.size() > 0 )
+                {
+                    ReflectionUtils.invokeSetterMethod( "attributeValues", object, Sets.newHashSet() );
+                }
+            }
+
+            return attributeValues;
+        }
+
+        private void saveExpression( T object, String fieldName, Expression expression )
+        {
+            if ( expression != null )
+            {
+                Map<Field, Collection<Object>> identifiableObjectCollections = detachCollectionFields( expression );
+                reattachCollectionFields( expression, identifiableObjectCollections );
+
+                expression.setId( 0 );
+                expressionService.addExpression( expression );
+
+                ReflectionUtils.invokeSetterMethod( fieldName, object, expression );
+            }
+        }
+
+        private void saveDataElementOperands( T object, String fieldName, Set<DataElementOperand> dataElementOperands )
+        {
+            if ( dataElementOperands.size() > 0 )
+            {
+                // need special handling for compulsoryDataElementOperands since they cascade with all-delete-orphan
+                if ( "compulsoryDataElementOperands".equals( fieldName ) )
+                {
+                    for ( DataElementOperand dataElementOperand : dataElementOperands )
+                    {
+                        Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
+                        reattachFields( dataElementOperand, identifiableObjects );
+                    }
+
+                    Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
+                    detachedDataElementOperands.clear();
+                    detachedDataElementOperands.addAll( dataElementOperands );
+                    sessionFactory.getCurrentSession().flush();
+                }
+                else
+                {
+                    for ( DataElementOperand dataElementOperand : dataElementOperands )
+                    {
+                        Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
+                        reattachFields( dataElementOperand, identifiableObjects );
+
+                        dataElementOperand.setId( 0 );
+                        dataElementOperandService.addDataElementOperand( dataElementOperand );
+                    }
+
+                    ReflectionUtils.invokeSetterMethod( fieldName, object, dataElementOperands );
+                }
+            }
+        }
+
+        private void deleteAttributeValues( T object )
+        {
+            if ( !Attribute.class.isAssignableFrom( object.getClass() ) )
+            {
+                Set<AttributeValue> attributeValues = extractAttributeValues( object );
+
+                for ( AttributeValue attributeValue : attributeValues )
+                {
+                    attributeService.deleteAttributeValue( attributeValue );
+                }
+            }
+        }
+
+        private void saveAttributeValues( T object, Collection<AttributeValue> attributeValues )
+        {
+            if ( attributeValues.size() > 0 )
+            {
+                for ( AttributeValue attributeValue : attributeValues )
+                {
+                    Attribute attribute = objectBridge.getObject( attributeValue.getAttribute() );
+
+                    if ( attribute == null )
+                    {
+                        log.debug( "Unknown reference to " + attributeValue.getAttribute() + " on object " + attributeValue );
+                        return;
+                    }
+
+                    attributeValue.setId( 0 );
+                    attributeValue.setAttribute( attribute );
+                }
+
+                for ( AttributeValue attributeValue : attributeValues )
+                {
+                    attributeService.addAttributeValue( attributeValue );
+                }
+
+                ReflectionUtils.invokeSetterMethod( "attributeValues", object, attributeValues );
+            }
+        }
+
+        private void deleteExpression( T object, String fieldName )
+        {
+            Expression expression = extractExpression( object, fieldName );
+
+            if ( expression != null )
+            {
+                expressionService.deleteExpression( expression );
+            }
+        }
+
+        private void deleteDataElementOperands( T object, String fieldName )
+        {
+            Set<DataElementOperand> dataElementOperands = extractDataElementOperands( object, fieldName );
+
+            for ( DataElementOperand dataElementOperand : dataElementOperands )
+            {
+                dataElementOperandService.deleteDataElementOperand( dataElementOperand );
+            }
+        }
+
+        private List<ProgramTrackedEntityAttribute> extractProgramTrackedEntityAttributes( T object )
+        {
+            List<ProgramTrackedEntityAttribute> programTrackedEntityAttributeSet = new ArrayList<>();
+
+            if ( ReflectionUtils.isCollection( "programAttributes", object, ProgramTrackedEntityAttribute.class ) )
+            {
+                List<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = ReflectionUtils.invokeGetterMethod( "programAttributes", object );
+
+                if ( programTrackedEntityAttributes == null )
+                {
+                    programTrackedEntityAttributes = new ArrayList<>();
+                    ReflectionUtils.invokeSetterMethod( "programAttributes", object, programTrackedEntityAttributes );
+                }
+
+                for ( ProgramTrackedEntityAttribute trackedEntityAttribute : programTrackedEntityAttributes )
+                {
+                    if ( sessionFactory.getCurrentSession().contains( trackedEntityAttribute ) )
+                    {
+                        sessionFactory.getCurrentSession().delete( trackedEntityAttribute );
+                    }
+
+                    programTrackedEntityAttributeSet.add( trackedEntityAttribute );
+                }
+
+                programTrackedEntityAttributes.clear();
+                sessionFactory.getCurrentSession().flush();
+            }
+
+            return programTrackedEntityAttributeSet;
+        }
+
+        private void deleteProgramTrackedEntityAttributes( T object )
+        {
+            extractProgramTrackedEntityAttributes( object );
+        }
+
+        private void saveProgramTrackedEntityAttributes( T object, Collection<ProgramTrackedEntityAttribute> programTrackedEntityAttributes )
+        {
+            for ( ProgramTrackedEntityAttribute programTrackedEntityAttribute : programTrackedEntityAttributes )
+            {
+                Map<Field, Object> identifiableObjects = detachFields( programTrackedEntityAttribute );
+                reattachFields( programTrackedEntityAttribute, identifiableObjects );
+                sessionFactory.getCurrentSession().persist( programTrackedEntityAttribute );
+            }
+
+            ReflectionUtils.invokeSetterMethod( "programAttributes", object, programTrackedEntityAttributes );
+        }
+
+        private Collection<ProgramStageDataElement> extractProgramStageDataElements( T object )
+        {
+            Method method = ReflectionUtils.findGetterMethod( "programStageDataElements", object );
+
+            if ( method != null )
+            {
+                Collection<ProgramStageDataElement> programStageDataElements = ReflectionUtils.invokeGetterMethod( "programStageDataElements", object );
+
+                for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
+                {
+                    if ( sessionFactory.getCurrentSession().contains( programStageDataElement ) )
+                    {
+                        programStageDataElementService.deleteProgramStageDataElement( programStageDataElement );
+                    }
+                }
+
+                sessionFactory.getCurrentSession().flush();
+                ReflectionUtils.invokeSetterMethod( "programStageDataElements", object,
+                    ReflectionUtils.newCollectionInstance( method.getReturnType() ) );
+                sessionFactory.getCurrentSession().flush();
+
+                return programStageDataElements;
+            }
+
+            return null;
+        }
+
+        private void saveProgramStageDataElements( T object, Collection<ProgramStageDataElement> programStageDataElements )
+        {
+            if ( programStageDataElements == null )
+            {
+                return;
+            }
+
+            Collection<ProgramStageDataElement> programStageDataElementCollection =
+                ReflectionUtils.newCollectionInstance( programStageDataElements.getClass() );
+
+            for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
+            {
+                Map<Field, Object> identifiableObjects = detachFields( programStageDataElement );
+                reattachFields( programStageDataElement, identifiableObjects );
+
+                if ( ProgramStage.class.isAssignableFrom( object.getClass() ) )
+                {
+                    programStageDataElement.setProgramStage( (ProgramStage) object );
+                }
+
+                ProgramStageDataElement persisted = programStageDataElementService.get( programStageDataElement.getProgramStage(), programStageDataElement.getDataElement() );
+
+                if ( persisted == null )
+                {
+                    programStageDataElementService.addProgramStageDataElement( programStageDataElement );
+                }
+                else
+                {
+                    programStageDataElementCollection.add( persisted );
+                }
+            }
+
+            ReflectionUtils.invokeSetterMethod( "programStageDataElements", object, programStageDataElementCollection );
+        }
+
+        private void deleteProgramStageDataElements( T object )
+        {
+            // deletion will be done in extractProgramStageDataElements
+            extractProgramStageDataElements( object );
+        }
     }
 }

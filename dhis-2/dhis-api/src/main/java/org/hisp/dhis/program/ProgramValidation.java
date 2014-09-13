@@ -73,12 +73,13 @@ public class ProgramValidation
 
     public ProgramValidation()
     {
-
+        setAutoFields();
     }
 
     public ProgramValidation( String name, ProgramExpression leftSide, ProgramExpression rightSide,
         Program program )
     {
+        this();
         this.name = name;
         this.leftSide = leftSide;
         this.rightSide = rightSide;
