@@ -53,6 +53,7 @@ import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.dxf2.metadata.ObjectBridge;
 import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandler;
 import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandlerUtils;
+import org.hisp.dhis.eventchart.EventChart;
 import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
@@ -158,7 +159,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return summaryType;
         }
 
-        if ( EventReport.class.isInstance( objects.get( 0 ) ) )
+        if ( EventReport.class.isInstance( objects.get( 0 ) ) || EventChart.class.isInstance( objects.get( 0 ) ) )
         {
             return summaryType;
         }
