@@ -63,7 +63,6 @@ import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentNameGraph
 import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
 import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
 import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
-import static org.hisp.dhis.system.util.DateUtils.daysBetween;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -323,15 +322,13 @@ public class DefaultAnalyticsService
                     
                     Period period = filterPeriod != null ? filterPeriod : (Period) DimensionItem.getPeriodItem( options );
                     
-                    int days = daysBetween( period.getStartDate(), period.getEndDate() );
-                    
                     OrganisationUnit unit = (OrganisationUnit) DimensionItem.getOrganisationUnitItem( options );
                     
                     String ou = unit != null ? unit.getUid() : null;
                     
                     Map<String, Integer> orgUnitCountMap = permutationOrgUnitTargetMap != null ? permutationOrgUnitTargetMap.get( ou ) : null;
                     
-                    Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, orgUnitCountMap, days );
+                    Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, orgUnitCountMap, period.getDaysInPeriod() );
 
                     if ( value != null )
                     {
