@@ -5,8 +5,8 @@ dhis2.db.currentKey = undefined;
 
 dhis2.db.current = function() 
 {
-	var current = localStorage[dhis2.db.currentKey];
-	
+	var current = localStorage[dhis2.db.currentKey];	
+	current = ( current == "undefined" ) ? undefined : current;	
 	return current;
 }
 
@@ -350,7 +350,14 @@ dhis2.db.renderDashboardListLoadFirst = function()
 				dhis2.db.setCurrent( first );
 			}
 			
-			dhis2.db.renderDashboard( dhis2.db.current() );		
+			if ( undefined !== dhis2.db.current() )
+			{			
+				dhis2.db.renderDashboard( dhis2.db.current() );
+			}
+			else
+			{
+				dhis2.db.clearDashboard();
+			}
 		}
 		else
 		{
@@ -367,6 +374,11 @@ dhis2.db.clearDashboard = function()
 
 dhis2.db.renderDashboard = function( id )
 {
+	if ( !id )
+	{
+		return;
+	}
+	
 	$( "#dashboard-" + dhis2.db.current() ).removeClass( "currentDashboard" );
 	
 	dhis2.db.setCurrent( id );
@@ -379,11 +391,11 @@ dhis2.db.renderDashboard = function( id )
 		
         updateSharing( data );
 
-        if( undefined !== data.dashboardItems )
+        if ( data.dashboardItems && data.dashboardItems.length )
         {
 			$.each( data.dashboardItems, function( index, dashboardItem )
 			{
-				if ( null == dashboardItem || undefined === dashboardItem )
+				if ( !dashboardItem )
 				{
 					return true;
 				}
