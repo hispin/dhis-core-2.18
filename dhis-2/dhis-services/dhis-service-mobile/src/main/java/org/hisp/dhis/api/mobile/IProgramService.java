@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.api.mobile.model.Program;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.RelationshipType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 public interface IProgramService
@@ -45,5 +46,7 @@ public interface IProgramService
     org.hisp.dhis.api.mobile.model.LWUITmodel.Program getProgramLWUIT( int programId );
 
     List<Program> updateProgram( ModelList programsFromClient, String localeString, OrganisationUnit unit );
+    
+    List<RelationshipType> getAllRelationshipTypes();
 
 }

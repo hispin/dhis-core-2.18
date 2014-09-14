@@ -828,8 +828,7 @@ public class ActivityReportingServiceImpl
         patientModel.setCompletedPrograms( mobileCompletedProgramInstanceList );
 
         // Set Relationship
-        List<Relationship> relationships = new ArrayList<>(
-            relationshipService.getRelationshipsForTrackedEntityInstance( patient ) );
+        Collection<Relationship> relationships = relationshipService.getRelationshipsForTrackedEntityInstance( patient );
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship> relationshipList = new ArrayList<>();
 
         for ( Relationship eachRelationship : relationships )
@@ -839,15 +838,34 @@ public class ActivityReportingServiceImpl
             if ( eachRelationship.getEntityInstanceA().getId() == patient.getId() )
             {
                 relationshipMobile.setName( eachRelationship.getRelationshipType().getaIsToB() );
-                relationshipMobile.setPersonBName( eachRelationship.getEntityInstanceB().getName() );
+                relationshipMobile.setaIsToB( eachRelationship.getRelationshipType().getaIsToB() );
+                relationshipMobile.setbIsToA( eachRelationship.getRelationshipType().getbIsToA() );
                 relationshipMobile.setPersonBId( eachRelationship.getEntityInstanceB().getId() );
             }
             else
             {
                 relationshipMobile.setName( eachRelationship.getRelationshipType().getbIsToA() );
-                relationshipMobile.setPersonBName( eachRelationship.getEntityInstanceA().getName() );
+                relationshipMobile.setaIsToB( eachRelationship.getRelationshipType().getbIsToA() );
+                relationshipMobile.setbIsToA( eachRelationship.getRelationshipType().getaIsToB() );
                 relationshipMobile.setPersonBId( eachRelationship.getEntityInstanceA().getId() );
             }
+            
+            // get relative's name
+            TrackedEntityInstance relative = entityInstanceService.getTrackedEntityInstance( relationshipMobile
+                .getPersonBId() );
+            List<TrackedEntityAttributeValue> attributes = new ArrayList<TrackedEntityAttributeValue>(
+                relative.getAttributeValues() );
+
+            String relativeName = "";
+            for ( TrackedEntityAttributeValue value : attributes )
+            {
+                if ( value != null && value.getAttribute().getDisplayInListNoProgram() )
+                {
+                    relativeName += value.getValue() + " ";
+                }
+            }
+            relationshipMobile.setPersonBName( relativeName );
+            
             relationshipList.add( relationshipMobile );
         }
         patientModel.setRelationships( relationshipList );
@@ -1078,29 +1096,15 @@ public class ActivityReportingServiceImpl
         }
         else
         {
-            List<TrackedEntityInstance> patients = new ArrayList<>();
-
-            // remove the own searcher
-            patients = removeIfDuplicated( patients, enrollmentRelationship.getPersonAId() );
-
-            if ( patients.size() > 1 )
-            {
-                String patientsInfo = "";
-
-                for ( TrackedEntityInstance each : patients )
-                {
-                    patientsInfo += each.getId() + "/" + each.getName() + "$";
-                }
-
-                throw new NotAllowedException( patientsInfo );
-            }
-            else if ( patients.size() == 0 )
+            String instanceInfo = findPatientInAdvanced( enrollmentRelationship.getPersonBName(), orgUnitId,
+                0 );
+            if ( instanceInfo == null || instanceInfo.trim().length() == 0 )
             {
                 throw NotAllowedException.NO_BENEFICIARY_FOUND;
             }
             else
             {
-                patientB = patients.get( 0 );
+                throw new NotAllowedException( instanceInfo );
             }
         }
         TrackedEntityInstance patientA = entityInstanceService.getTrackedEntityInstance( enrollmentRelationship
@@ -1544,7 +1548,10 @@ public class ActivityReportingServiceImpl
             param.addAttribute( queryItem );
         }
 
-        param.setProgram( programService.getProgram( programId ) );
+        if ( programId != 0 )
+        {
+            param.setProgram( programService.getProgram( programId ) );
+        }
 
         if ( orgUnitId != 0 )
         {
@@ -1633,7 +1640,13 @@ public class ActivityReportingServiceImpl
                 instanceInfo += te.getDisplayName() + "$";
             }
 
-            instanceInfo += (String) row.get( instanceIndex ) + "/";
+            // NOTE: this line should be here but because the mobile client uses
+            // the int TEI id, we will temprarily get the int id for now.
+            // instanceInfo += (String) row.get( instanceIndex ) + "/";
+                        
+            TrackedEntityInstance tei = entityInstanceService.getTrackedEntityInstance( (String) row.get( instanceIndex ) );
+            instanceInfo += tei.getId() + "/";
+            //end of temproary fix
 
             String attText = "";
             for ( Integer attIndex : attributesIndex )
