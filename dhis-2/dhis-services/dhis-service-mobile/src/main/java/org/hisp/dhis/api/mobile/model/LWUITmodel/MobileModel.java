@@ -47,6 +47,8 @@ public class MobileModel
     private String clientVersion;
 
     private List<Program> programs;
+    
+    private List<RelationshipType> relationshipTypes;
 
     private Date serverCurrentDate;
 
@@ -68,6 +70,19 @@ public class MobileModel
         }
         // Write current server's date
         dout.writeLong( serverCurrentDate.getTime() );
+        
+        if(relationshipTypes == null)
+        {
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            dout.writeInt( relationshipTypes.size() );
+            for (RelationshipType relType:relationshipTypes)
+            {
+                relType.serialize( dout );
+            }
+        }
     }
 
     public List<Program> getPrograms()
@@ -98,6 +113,16 @@ public class MobileModel
     public void setClientVersion( String clientVersion )
     {
         this.clientVersion = clientVersion;
+    }
+    
+    public List<RelationshipType> getRelationshipTypes()
+    {
+        return relationshipTypes;
+    }
+    
+    public void setRelationshipTypes(List<RelationshipType> relationshipTypes)
+    {
+        this.relationshipTypes = relationshipTypes;
     }
 
     @Override

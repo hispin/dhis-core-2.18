@@ -45,7 +45,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
 public class DefaultProgramService
@@ -56,6 +59,9 @@ public class DefaultProgramService
     // -------------------------------------------------------------------------
 
     private org.hisp.dhis.program.ProgramService programService;
+
+    @Autowired
+    private RelationshipTypeService relationshipTypeService;
 
     // -------------------------------------------------------------------------
     // ProgramService
@@ -322,7 +328,7 @@ public class DefaultProgramService
             {
                 optionSet.setId( pa.getOptionSet().getId() );
                 optionSet.setName( pa.getOptionSet().getName() );
-//                optionSet.setOptions( pa.getOptionSet().getOptions() );
+                // optionSet.setOptions( pa.getOptionSet().getOptions() );
 
                 mobileAttribute.setOptionSet( optionSet );
             }
@@ -335,5 +341,32 @@ public class DefaultProgramService
     public void setProgramService( org.hisp.dhis.program.ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    @Override
+    public List<org.hisp.dhis.api.mobile.model.LWUITmodel.RelationshipType> getAllRelationshipTypes()
+    {
+        try
+        {
+            List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>(
+                relationshipTypeService.getAllRelationshipTypes() );
+
+            List<org.hisp.dhis.api.mobile.model.LWUITmodel.RelationshipType> mobileRelationshipTypes = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.RelationshipType>();
+            for ( RelationshipType relType : relationshipTypes )
+            {
+                org.hisp.dhis.api.mobile.model.LWUITmodel.RelationshipType mobileRelType = new org.hisp.dhis.api.mobile.model.LWUITmodel.RelationshipType();
+                mobileRelType.setId( relType.getId() );
+                mobileRelType.setName( relType.getName() );
+                mobileRelType.setAIsToB( relType.getaIsToB() );
+                mobileRelType.setBIsToA( relType.getbIsToA() );
+                mobileRelationshipTypes.add( mobileRelType );
+            }
+            return mobileRelationshipTypes;
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

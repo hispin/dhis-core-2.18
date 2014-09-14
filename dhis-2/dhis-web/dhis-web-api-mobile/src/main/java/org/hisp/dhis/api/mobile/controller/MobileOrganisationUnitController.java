@@ -56,8 +56,8 @@ import org.hisp.dhis.api.mobile.model.SMSCommand;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
-import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientIdentifierAndAttribute;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Program;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramInstance;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage;
@@ -65,6 +65,7 @@ import org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.smscommand.SMSCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -89,6 +90,9 @@ public class MobileOrganisationUnitController
 
     @Autowired
     private IProgramService programService;
+    
+    @Autowired
+    private RelationshipTypeService relationshipTypeService;
 
     @Autowired
     private FacilityReportingService facilityReportingService;
@@ -349,6 +353,7 @@ public class MobileOrganisationUnitController
         OrganisationUnit unit = getUnit( id );
         mobileModel.setPrograms( programService.getProgramsLWUIT( unit ) );
         mobileModel.setServerCurrentDate( new Date() );
+        mobileModel.setRelationshipTypes( programService.getAllRelationshipTypes() );
         return mobileModel;
     }
 
