@@ -169,6 +169,7 @@ public class DefaultAnalyticsTableService
         resourceTableService.dropAllSqlViews();
         resourceTableService.generateOrganisationUnitStructures();        
         resourceTableService.generateCategoryOptionComboNames();
+        resourceTableService.generateCategoryOptionGroupSetTable();
         resourceTableService.generateDataElementGroupSetTable();
         resourceTableService.generateIndicatorGroupSetTable();
         resourceTableService.generateOrganisationUnitGroupSetTable();
