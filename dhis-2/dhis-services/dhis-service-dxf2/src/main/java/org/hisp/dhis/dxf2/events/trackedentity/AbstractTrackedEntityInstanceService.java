@@ -502,7 +502,7 @@ public abstract class AbstractTrackedEntityInstanceService
         {
             importConflicts.add( new ImportConflict( "Attribute.value", "Value is not date for attribute: " + attribute ) );
         }
-        else if ( TrackedEntityAttribute.TYPE_TRUE_ONLY.equals( teAttribute.getValueType() ) && "true".equals( attribute.getValue() ) )
+        else if ( TrackedEntityAttribute.TYPE_TRUE_ONLY.equals( teAttribute.getValueType() ) && !"true".equals( attribute.getValue() ) )
         {
             importConflicts.add( new ImportConflict( "Attribute.value", "Value is not true (true-only value type) for attribute: " + attribute ) );
         }
