@@ -31,7 +31,9 @@ package org.hisp.dhis.system.util;
 import static org.hisp.dhis.system.util.DateUtils.dateIsValid;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
+import org.hisp.dhis.period.Cal;
 import org.junit.Test;
 
 /**
@@ -48,5 +50,11 @@ public class DateUtilsTest
         assertFalse( dateIsValid( "07-07-2000" ) );
         assertFalse( dateIsValid( "2000-03-40" ) );
         assertFalse( dateIsValid( "20d20-03-01" ) );
+    }
+    
+    @Test
+    public void testDaysBetween()
+    {
+        assertEquals( 6, DateUtils.daysBetween( new Cal( 2014, 3, 1 ).time(), new Cal( 2014, 3, 7 ).time() ) );
     }
 }
