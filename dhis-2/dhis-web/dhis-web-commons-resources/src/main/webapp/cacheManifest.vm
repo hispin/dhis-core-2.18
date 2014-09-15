@@ -5,6 +5,7 @@ CACHE MANIFEST
 NETWORK:
 *
 CACHE:
+../dhis-web-commons/font-awesome/css/font-awesome.min.css?_rev=$!{buildRevision}
 ../dhis-web-commons/css/light_blue/light_blue.css?_rev=$!{buildRevision}
 ../dhis-web-commons/css/light_blue/logo_banner.png
 ../dhis-web-commons/css/india/india.css?_rev=$!{buildRevision}
