@@ -28,6 +28,15 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
+import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertAggregationOperatorFromDhis14;
+import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertAggregationOperatorToDhis14;
+import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanToDhis14;
+import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertTypeToDhis14;
+
+import java.util.Collection;
+import java.util.Map;
+
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElement;
@@ -46,13 +55,6 @@ import org.hisp.dhis.importexport.dhis14.util.Dhis14ParsingUtils;
 import org.hisp.dhis.importexport.importer.DataElementImporter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 
-import java.util.Collection;
-import java.util.Map;
-
-import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
-import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.*;
-import static org.hisp.dhis.system.util.ConversionUtils.parseInt;
-
 /**
  * @author Lars Helge Overland
  * @version $Id: DataElementConverter.java 6455 2008-11-24 08:59:37Z larshelg $
@@ -66,8 +68,6 @@ public class DataElementConverter
     private static final String FIELD_ID = "DataElementID";
 
     private static final String FIELD_UID = "DataElementCode";
-
-    private static final String FIELD_SORT_ORDER = "SortOrder";
 
     private static final String FIELD_NAME = "DataElementName";
 
@@ -196,7 +196,6 @@ public class DataElementConverter
 
         if ( elements != null && elements.size() > 0 )
         {
-            int i = 0;
             for ( DataElement object : elements )
             {
                 String name = object.getName();
@@ -208,8 +207,6 @@ public class DataElementConverter
                 writer.openElement( ELEMENT_NAME );
 
                 writer.writeElement( FIELD_ID, String.valueOf( object.getId() ) );
-                writer.writeElement( FIELD_SORT_ORDER,
-                    object.getSortOrder() != null ? String.valueOf( object.getSortOrder() ) : String.valueOf( i++ ) );
                 writer.writeElement( FIELD_UID, object.getUid() );
                 writer.writeElement( FIELD_NAME, name );
                 writer.writeElement( FIELD_SHORT_NAME, shortName );
@@ -281,7 +278,6 @@ public class DataElementConverter
             Integer.parseInt( values.get( FIELD_DATA_TYPE ) ) ) );
         element
             .setAggregationOperator( convertAggregationOperatorFromDhis14( values.get( FIELD_AGGREGATION_OPERATOR ) ) );
-        element.setSortOrder( parseInt( values.get( FIELD_SORT_ORDER ) ) );
         element.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
 
         if ( values.get( FIELD_CALCULATED ).equals( "0" ) ) // Ignore calculated

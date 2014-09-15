@@ -102,7 +102,6 @@ public class IndicatorBatchHandler
         statementBuilder.setColumn( "numeratordescription" );
         statementBuilder.setColumn( "denominator" );
         statementBuilder.setColumn( "denominatordescription" );
-        statementBuilder.setColumn( "sortorder" );
     }
     
     protected void setValues( Indicator indicator )
@@ -118,6 +117,5 @@ public class IndicatorBatchHandler
         statementBuilder.setValue( indicator.getNumeratorDescription() );
         statementBuilder.setValue( indicator.getDenominator() );
         statementBuilder.setValue( indicator.getDenominatorDescription() );
-        statementBuilder.setValue( indicator.getSortOrder() );
     }
 }

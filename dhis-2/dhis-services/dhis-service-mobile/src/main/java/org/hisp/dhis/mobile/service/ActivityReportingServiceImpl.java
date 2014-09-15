@@ -1311,19 +1311,6 @@ public class ActivityReportingServiceImpl
         return anonymousProgramMobile;
     }
 
-    private List<TrackedEntityInstance> removeIfDuplicated( List<TrackedEntityInstance> patients, int patientId )
-    {
-        List<TrackedEntityInstance> result = new ArrayList<>( patients );
-        for ( int i = 0; i < patients.size(); i++ )
-        {
-            if ( patients.get( i ).getId() == patientId )
-            {
-                result.remove( i );
-            }
-        }
-        return result;
-    }
-
     private void saveDataValues( ActivityValue activityValue, ProgramStageInstance programStageInstance,
         Map<Integer, DataElement> dataElementMap )
     {

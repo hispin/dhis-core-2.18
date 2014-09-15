@@ -150,11 +150,6 @@ public class DataElement
     private DataElementCategoryCombo categoryCombo;
 
     /**
-     * Defines a custom sort order.
-     */
-    private Integer sortOrder;
-
-    /**
      * URL for lookup of additional information on the web.
      */
     private String url;
@@ -552,16 +547,6 @@ public class DataElement
         this.categoryCombo = categoryCombo;
     }
 
-    public Integer getSortOrder()
-    {
-        return sortOrder;
-    }
-
-    public void setSortOrder( Integer sortOrder )
-    {
-        this.sortOrder = sortOrder;
-    }
-
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -716,7 +701,6 @@ public class DataElement
             aggregationOperator = dataElement.getAggregationOperator() == null ? aggregationOperator : dataElement
                 .getAggregationOperator();
             categoryCombo = dataElement.getCategoryCombo() == null ? categoryCombo : dataElement.getCategoryCombo();
-            sortOrder = dataElement.getSortOrder() == null ? sortOrder : dataElement.getSortOrder();
             url = dataElement.getUrl() == null ? url : dataElement.getUrl();
             optionSet = dataElement.getOptionSet() == null ? optionSet : dataElement.getOptionSet();
 

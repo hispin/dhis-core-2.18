@@ -30,13 +30,11 @@ package org.hisp.dhis.mobile.action.smscommand;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.program.Program;
@@ -190,7 +188,6 @@ public class SMSCommandAction
             if ( d != null )
             {
                 dataElements = new ArrayList<>( d.getDataElements() );
-                Collections.sort( dataElements, new DataElementSortOrderComparator() );
                 return dataElements;
             }
         }

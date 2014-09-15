@@ -42,7 +42,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetSortOrderComparator;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
@@ -153,8 +152,8 @@ public class GetFilteredDataElementsAction
 
             List<DataSet> dataSets = new ArrayList<>( dataSetService.getDataSetsByPeriodType( periodType ) );
 
-            Collections.sort( dataSets, new DataSetSortOrderComparator() );
-
+            Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
+            
             // -----------------------------------------------------------------
             // Get available dataelements into the dataSets
             // -----------------------------------------------------------------

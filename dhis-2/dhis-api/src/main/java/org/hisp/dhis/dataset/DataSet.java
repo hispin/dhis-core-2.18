@@ -131,11 +131,6 @@ public class DataSet
     private DataElementCategoryCombo categoryCombo;
 
     /**
-     * Indicating position in the custom sort order.
-     */
-    private Integer sortOrder;
-
-    /**
      * Property indicating if the dataset could be collected using mobile data
      * entry.
      */
@@ -608,16 +603,6 @@ public class DataSet
         this.organisationUnitGroups = organisationUnitGroups;
     }
 
-    public Integer getSortOrder()
-    {
-        return sortOrder;
-    }
-
-    public void setSortOrder( Integer sortOrder )
-    {
-        this.sortOrder = sortOrder;
-    }
-
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, WithoutOrganisationUnitsView.class } )
@@ -893,7 +878,6 @@ public class DataSet
             DataSet dataSet = (DataSet) other;
 
             periodType = dataSet.getPeriodType() == null ? periodType : dataSet.getPeriodType();
-            sortOrder = dataSet.getSortOrder() == null ? sortOrder : dataSet.getSortOrder();
             mobile = dataSet.isMobile();
             dataEntryForm = dataSet.getDataEntryForm() == null ? dataEntryForm : dataSet.getDataEntryForm();
             version = dataSet.getVersion() == null ? version : dataSet.getVersion();

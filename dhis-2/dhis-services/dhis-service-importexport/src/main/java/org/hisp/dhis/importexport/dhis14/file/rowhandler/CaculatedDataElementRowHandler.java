@@ -94,7 +94,6 @@ public class CaculatedDataElementRowHandler
         indicator.setShortName( dhis14CalcDE.getDataElementShort() );
         indicator.setDescription( dhis14CalcDE.getDataElementDescription() );
         indicator.getIndicatorType().setId( 1151589 );
-        indicator.setSortOrder( dhis14CalcDE.getSortOrder() );
         indicator.setLastUpdated( dhis14CalcDE.getLastUpdated() );
         indicator.setUid( dhis14CalcDE.getUid() );
 

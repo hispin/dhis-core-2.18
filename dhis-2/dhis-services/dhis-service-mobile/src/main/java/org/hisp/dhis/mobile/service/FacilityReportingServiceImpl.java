@@ -56,7 +56,6 @@ import org.hisp.dhis.api.mobile.model.DataValue;
 import org.hisp.dhis.api.mobile.model.Section;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -79,8 +78,6 @@ public class FacilityReportingServiceImpl
     private static Log log = LogFactory.getLog( FacilityReportingServiceImpl.class );
 
     private static boolean DEBUG = log.isDebugEnabled();
-
-    private DataElementSortOrderComparator dataElementComparator = new DataElementSortOrderComparator();
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -263,8 +260,6 @@ public class FacilityReportingServiceImpl
         {
             List<org.hisp.dhis.dataelement.DataElement> dataElements = new ArrayList<>(
                 dataSet.getDataElements() );
-
-            Collections.sort( dataElements, dataElementComparator );
 
             // Fake section to store data elements
 
