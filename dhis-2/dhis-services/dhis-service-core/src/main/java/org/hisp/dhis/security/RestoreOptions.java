@@ -76,7 +76,7 @@ public enum RestoreOptions
 
     static public RestoreOptions getRestoreOptions( String token )
     {
-        for (RestoreOptions ro : RestoreOptions.values())
+        for ( RestoreOptions ro : RestoreOptions.values() )
         {
             if ( token.startsWith( ro.getTokenPrefix() ) )
             {
