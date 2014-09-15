@@ -52,7 +52,6 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageService;
-import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
 import org.hisp.dhis.program.comparator.ProgramStageSectionSortOrderComparator;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
@@ -296,7 +295,6 @@ public class LoadDataEntryAction
         // ---------------------------------------------------------------------
 
         programStageDataElements = new ArrayList<>( programStage.getProgramStageDataElements() );
-        Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
         DataEntryForm dataEntryForm = programStage.getDataEntryForm();
 

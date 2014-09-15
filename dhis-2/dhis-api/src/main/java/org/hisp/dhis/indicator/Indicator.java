@@ -77,8 +77,6 @@ public class Indicator
 
     private transient String explodedDenominator;
 
-    private Integer sortOrder;
-
     private String url;
 
     private Set<IndicatorGroup> groups = new HashSet<>();
@@ -269,16 +267,6 @@ public class Indicator
     public void setExplodedDenominator( String explodedDenominator )
     {
         this.explodedDenominator = explodedDenominator;
-    }
-
-    public Integer getSortOrder()
-    {
-        return sortOrder;
-    }
-
-    public void setSortOrder( Integer sortOrder )
-    {
-        this.sortOrder = sortOrder;
     }
 
     @JsonProperty

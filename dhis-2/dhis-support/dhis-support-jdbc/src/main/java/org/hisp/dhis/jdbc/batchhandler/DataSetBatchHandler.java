@@ -96,7 +96,6 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "shortname" );
         statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "periodtypeid" );
-        statementBuilder.setColumn( "sortorder" );
         statementBuilder.setColumn( "mobile" );
         statementBuilder.setColumn( "allowfutureperiods" );
         statementBuilder.setColumn( "dataentryform" );
@@ -121,7 +120,6 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.getShortName() );
         statementBuilder.setValue( dataSet.getCode() );
         statementBuilder.setValue( dataSet.getPeriodType().getId() );
-        statementBuilder.setValue( dataSet.getSortOrder() );
         statementBuilder.setValue( dataSet.isMobile() );
         statementBuilder.setValue( dataSet.isAllowFuturePeriods() );
         statementBuilder.setValue( dataSet.getDataEntryForm() != null ? dataSet.getDataEntryForm().getId() : null );

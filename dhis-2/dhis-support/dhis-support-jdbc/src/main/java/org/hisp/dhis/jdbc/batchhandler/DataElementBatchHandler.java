@@ -100,7 +100,6 @@ public class DataElementBatchHandler
         statementBuilder.setColumn( "domaintype" );
         statementBuilder.setColumn( "aggregationtype" );
         statementBuilder.setColumn( "categorycomboid" );
-        statementBuilder.setColumn( "sortorder" );
         statementBuilder.setColumn( "zeroissignificant" );
     }
     
@@ -115,7 +114,6 @@ public class DataElementBatchHandler
         statementBuilder.setValue( dataElement.getDomainType().name() );
         statementBuilder.setValue( dataElement.getAggregationOperator() );
         statementBuilder.setValue( dataElement.getCategoryCombo().getId() );
-        statementBuilder.setValue( dataElement.getSortOrder() );
         statementBuilder.setValue( dataElement.isZeroIsSignificant() );
     }
 }

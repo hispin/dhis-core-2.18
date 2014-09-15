@@ -36,8 +36,6 @@
       column="categorycomboid"
       foreign-key="fk_dataelement_categorycomboid" />
 
-    <property name="sortOrder" />
-
     <property name="url" />
 
     <set name="groups" table="dataelementgroupmembers" inverse="true">

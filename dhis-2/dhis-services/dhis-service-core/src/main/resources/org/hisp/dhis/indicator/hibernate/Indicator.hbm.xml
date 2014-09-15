@@ -34,8 +34,6 @@
 
     <property name="denominatorDescription" column="denominatordescription" type="text" />
 
-    <property name="sortOrder" />
-
     <property name="url" />
 
     <set name="groups" table="indicatorgroupmembers" inverse="true">
