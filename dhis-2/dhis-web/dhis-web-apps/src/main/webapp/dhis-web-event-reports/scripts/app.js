@@ -6135,7 +6135,12 @@ Ext.onReady( function() {
 					failure: function(r) {
 						web.mask.hide(ns.app.centerRegion);
 
-                        alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
+                        if (Ext.Array.contains([403], r.status)) {
+                            alert(NS.i18n.you_do_not_have_access_to_all_items_in_this_favorite);
+                        }
+                        else {
+                            alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
+                        }
 					},
 					success: function(r) {
 						var config = Ext.decode(r.responseText);

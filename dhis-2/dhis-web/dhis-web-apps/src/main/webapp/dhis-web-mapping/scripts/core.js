@@ -907,10 +907,15 @@ Ext.onReady( function() {
                 setMap();
             };
 
-            failure = function() {
+            failure = function(r) {
                 gis.olmap.mask.hide();
-                alert('Map id not recognized' + (gis.el ? ' (' + gis.el + ')' : ''));
-                return;
+
+                if (Ext.Array.contains([403], r.status)) {
+                    alert(NS.i18n.you_do_not_have_access_to_all_items_in_this_favorite);
+                }
+                else {
+                    alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
+                }
             };
 
             if (isPlugin) {
