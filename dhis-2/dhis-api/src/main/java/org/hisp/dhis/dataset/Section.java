@@ -42,6 +42,7 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.indicator.Indicator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -65,6 +66,9 @@ public class Section
 
     @Scanned
     private List<DataElement> dataElements = new ArrayList<>();
+
+    @Scanned
+    private List<Indicator> indicators = new ArrayList<>();
 
     private Set<DataElementOperand> greyedFields = new HashSet<>();
 
@@ -213,6 +217,21 @@ public class Section
     public void setDataElements( List<DataElement> dataElements )
     {
         this.dataElements = dataElements;
+    }
+
+    @JsonProperty
+    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlElementWrapper(localName = "indicators", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "indicator", namespace = DxfNamespaces.DXF_2_0)
+    public List<Indicator> getIndicators()
+    {
+        return indicators;
+    }
+
+    public void setIndicators( List<Indicator> indicators )
+    {
+        this.indicators = indicators;
     }
 
     public int getSortOrder()

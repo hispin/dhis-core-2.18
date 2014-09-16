@@ -385,6 +385,11 @@
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
+  
+  <bean id="org.hisp.dhis.commons.action.GetSectionIndicatorsAction" class="org.hisp.dhis.commons.action.GetSectionIndicatorsAction"
+    scope="prototype">
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+  </bean>
 
   <bean id="org.hisp.dhis.commons.action.GetDataElementCategoriesAction" class="org.hisp.dhis.commons.action.GetDataElementCategoriesAction"
     scope="prototype">

@@ -37,6 +37,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
+import org.hisp.dhis.indicator.Indicator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -84,6 +85,13 @@ public class GetSectionAction
         return sectionDataElements;
     }    
 
+    private List<Indicator> sectionIndicators;
+    
+    public void setSectionIndicators( List<Indicator> sectionIndicators )
+    {
+        this.sectionIndicators = sectionIndicators;
+    }
+
     private DataElementCategoryCombo categoryCombo;    
 
     public void setCategoryCombo( DataElementCategoryCombo categoryCombo )
@@ -107,9 +115,12 @@ public class GetSectionAction
 
         sectionDataElements = new ArrayList<>( section.getDataElements() );
 
+        sectionIndicators = new ArrayList<>( section.getIndicators() );
+        
         categoryCombo = section.getDataElements().iterator().next().getCategoryCombo();
 
         Collections.sort( sectionDataElements, new IdentifiableObjectNameComparator() );
+        Collections.sort( sectionIndicators, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }

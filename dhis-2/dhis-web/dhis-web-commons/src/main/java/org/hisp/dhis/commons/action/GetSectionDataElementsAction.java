@@ -30,10 +30,10 @@ package org.hisp.dhis.commons.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -64,13 +64,6 @@ public class GetSectionDataElementsAction
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
-    }
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
     }
 
     // -------------------------------------------------------------------------
@@ -136,7 +129,7 @@ public class GetSectionDataElementsAction
             }
         }
 
-        Collections.sort( dataElements, dataElementComparator );
+        Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
