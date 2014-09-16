@@ -56,6 +56,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.system.util.MathUtils;
 
 /**
@@ -86,6 +87,20 @@ public class ValidatorThread
      */
     @Override
     public void run()
+    {
+        try
+        {
+            runInternal();
+        }
+        catch ( RuntimeException ex )
+        {
+            log.error( DebugUtils.getStackTrace( ex ) );
+            
+            throw ex;
+        }
+    }
+    
+    private void runInternal()
     {
         if ( context.getValidationResults().size() < ( ValidationRunType.INTERACTIVE == context.getRunType() ?
             ValidationRuleService.MAX_INTERACTIVE_ALERTS : ValidationRuleService.MAX_SCHEDULED_ALERTS) )
