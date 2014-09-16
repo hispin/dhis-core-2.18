@@ -254,7 +254,7 @@ public class DefaultAclService implements AclService
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Class<? extends IdentifiableObject> classForType( String type )
     {
         Schema schema = schemaService.getSchemaBySingularName( type );
