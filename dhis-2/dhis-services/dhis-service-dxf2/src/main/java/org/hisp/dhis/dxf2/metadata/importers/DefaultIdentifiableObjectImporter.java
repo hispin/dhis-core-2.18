@@ -41,6 +41,7 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -220,9 +221,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         if ( !aclService.canDelete( user, persistedObject ) )
         {
             summaryType.getImportConflicts().add(
-                new ImportConflict( ImportUtils.getDisplayName( persistedObject ), "You do not have delete access to class type." ) );
+                new ImportConflict( ImportUtils.getDisplayName( persistedObject ), "Permission denied for deletion of object " + persistedObject.getUid() ) );
 
-            log.debug( "You do not have delete access to class type." );
+            log.debug( "Permission denied for deletion of object " + persistedObject.getUid() );
 
             return false;
         }
@@ -258,9 +259,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         if ( !aclService.canCreate( user, object.getClass() ) )
         {
             summaryType.getImportConflicts().add(
-                new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have create access to class type." ) );
+                new ImportConflict( ImportUtils.getDisplayName( object ), "Permission denied, you are not allowed to create objects of type " + object.getClass() ) );
 
-            log.debug( "You do not have create access to class type." );
+            log.debug( "Permission denied, you are not allowed to create objects of type " + object.getClass() );
 
             return false;
         }
@@ -344,7 +345,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         if ( !aclService.canUpdate( user, persistedObject ) )
         {
             summaryType.getImportConflicts().add(
-                new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have update access to object." ) );
+                new ImportConflict( ImportUtils.getDisplayName( persistedObject ), "Permission denied for update of object " + persistedObject.getUid() ) );
+
+            log.debug( "Permission denied for update of object " + persistedObject.getUid() );
 
             return false;
         }
@@ -514,7 +517,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return success;
         }
 
-        if ( object.getName() == null || object.getName().length() == 0 )
+        if ( (object.getName() == null || object.getName().length() == 0)
+            && !DashboardItem.class.isInstance( object ) )
         {
             conflict = new ImportConflict( ImportUtils.getDisplayName( object ), "Empty name for object " + object );
         }
@@ -526,7 +530,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             if ( (nameableObject.getShortName() == null || nameableObject.getShortName().length() == 0)
                 // this is nasty, but we have types in the system which have shortName, but which do -not- require not-null )
                 && !TrackedEntityAttribute.class.isAssignableFrom( object.getClass() )
-                && !TrackedEntity.class.isAssignableFrom( object.getClass() ) )
+                && !TrackedEntity.class.isAssignableFrom( object.getClass() )
+                && !DashboardItem.class.isAssignableFrom( object.getClass() ) )
             {
                 conflict = new ImportConflict( ImportUtils.getDisplayName( object ), "Empty shortName for object " + object );
             }
