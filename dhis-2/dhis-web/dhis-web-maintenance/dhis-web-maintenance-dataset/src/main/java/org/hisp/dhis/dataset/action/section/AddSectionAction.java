@@ -37,6 +37,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,6 +61,13 @@ public class AddSectionAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
+    }
+
+    private IndicatorService indicatorService;
+    
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
 
     private SectionService sectionService;
@@ -93,16 +102,24 @@ public class AddSectionAction
         this.description = description;
     }
 
-    private List<String> selectedList = new ArrayList<>();
+    private List<String> selectedDataElementList = new ArrayList<>();
 
-    public void setSelectedList( List<String> selectedList )
+    public void setSelectedDataElementList( List<String> selectedDataElementList )
     {
-        this.selectedList = selectedList;
+        this.selectedDataElementList = selectedDataElementList;
+    }
+
+    private List<String> selectedIndicatorList = new ArrayList<>();
+
+    public void setSelectedIndicatorList( List<String> selectedIndicatorList )
+    {
+        this.selectedIndicatorList = selectedIndicatorList;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
+
 
     public String execute()
         throws Exception
@@ -118,12 +135,20 @@ public class AddSectionAction
 
         List<DataElement> selectedDataElements = new ArrayList<>();
 
-        for ( String id : selectedList )
+        for ( String id : selectedDataElementList )
         {
             selectedDataElements.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
         }
+        
+        List<Indicator> selectedIndicators = new ArrayList<>();
+        
+        for ( String id : selectedIndicatorList )
+        {
+            selectedIndicators.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
+        }
 
         section.setDataElements( selectedDataElements );
+        section.setIndicators( selectedIndicators );
         dataSet.getSections().add( section );
         sectionService.addSection( section );
 

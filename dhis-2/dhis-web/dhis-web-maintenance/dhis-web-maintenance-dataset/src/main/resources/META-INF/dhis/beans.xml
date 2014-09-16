@@ -14,6 +14,7 @@
     <property name="sectionService" ref="org.hisp.dhis.dataset.SectionService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataset.action.section.GetSectionOptionsAction" class="org.hisp.dhis.dataset.action.section.GetSectionOptionsAction"
@@ -30,7 +31,6 @@
   <bean id="org.hisp.dhis.dataset.action.section.EditSectionAction" class="org.hisp.dhis.dataset.action.section.EditSectionAction"
     scope="prototype">
     <property name="sectionService" ref="org.hisp.dhis.dataset.SectionService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataset.action.section.UpdateSectionAction" class="org.hisp.dhis.dataset.action.section.UpdateSectionAction"
@@ -38,6 +38,7 @@
     <property name="sectionService" ref="org.hisp.dhis.dataset.SectionService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataset.action.section.RemoveSectionAction" class="org.hisp.dhis.dataset.action.section.RemoveSectionAction"

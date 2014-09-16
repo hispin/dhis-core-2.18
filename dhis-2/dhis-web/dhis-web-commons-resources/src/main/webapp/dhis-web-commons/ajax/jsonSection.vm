@@ -5,6 +5,7 @@
     "name": "$!encoder.jsonEncode( ${section.displayName} )",
     "dataSet": "$!encoder.jsonEncode( ${section.dataSet.name} )",
     "categoryCombo": "$!encoder.jsonEncode( ${categoryCombo.name} )",
-	"dataElementCount": "$!{sectionDataElements.size()}"
+	"dataElementCount": "$!{sectionDataElements.size()}",
+	"indicatorCount": "$!{sectionIndicators.size()}"
   }
 }

@@ -1,4 +1,15 @@
-package org.hisp.dhis.dataset.action.section;
+package org.hisp.dhis.commons.action;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,98 +39,61 @@ package org.hisp.dhis.dataset.action.section;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.Section;
-import org.hisp.dhis.dataset.SectionService;
-
-import com.opensymphony.xwork2.Action;
-
-public class EditSectionAction
-    implements Action
+public class GetSectionIndicatorsAction
+    extends ActionPagingSupport<Indicator>
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SectionService sectionService;
+    private DataSetService dataSetService;
 
-    public void setSectionService( SectionService sectionService )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.sectionService = sectionService;
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer sectionId;
+    private Integer dataSetId;
 
-    public Integer getSectionId()
+    public void setDataSetId( Integer dataSetId )
     {
-        return sectionId;
-    }
-    
-    public void setSectionId( Integer sectionId )
-    {
-        this.sectionId = sectionId;
+        this.dataSetId = dataSetId;
     }
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+    private List<Indicator> indicators = new ArrayList<>();
 
-    private Section section;
-
-    public Section getSection()
+    public List<Indicator> getIndicators()
     {
-        return section;
-    }
-
-    private DataSet dataSet;
-
-    public DataSet getDataSet()
-    {
-        return dataSet;
-    }
-
-    private DataElementCategoryCombo categoryCombo;
-
-    public DataElementCategoryCombo getCategoryCombo()
-    {
-        return categoryCombo;
-    }
-
-    private List<DataElement> dataElementOfDataSet;
-
-    public List<DataElement> getDataElementOfDataSet()
-    {
-        return dataElementOfDataSet;
-    }
-
-    private List<DataElementGroup> dataElementGroups;
-
-    public List<DataElementGroup> getDataElementGroups()
-    {
-        return dataElementGroups;
+        return indicators;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action Implementation
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public String execute()
         throws Exception
     {
-        section = sectionService.getSection( sectionId.intValue() );
-
-        dataSet = section.getDataSet();
-
-        categoryCombo = section.getCategoryCombo();
+        if ( dataSetId == null )
+        {
+            return SUCCESS;
+        }
+        
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        
+        indicators = new ArrayList<>( dataSet.getIndicators() );
+        
+        for ( Section section : dataSet.getSections() )
+        {
+            indicators.removeAll( section.getIndicators() );
+        }
+        
+        Collections.sort( indicators, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;
     }
