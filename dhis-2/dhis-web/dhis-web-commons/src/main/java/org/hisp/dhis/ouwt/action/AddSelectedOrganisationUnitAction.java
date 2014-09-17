@@ -28,13 +28,13 @@ package org.hisp.dhis.ouwt.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -65,11 +65,11 @@ public class AddSelectedOrganisationUnitAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private String id;
+    private List<String> id;
 
-    public void setId( String organisationUnitId )
+    public void setId( List<String> id )
     {
-        this.id = organisationUnitId;
+        this.id = id;
     }
 
     private Collection<OrganisationUnit> selectedUnits;
@@ -86,15 +86,20 @@ public class AddSelectedOrganisationUnitAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
+        selectedUnits = selectionManager.getSelectedOrganisationUnits();
 
-        if ( unit == null )
+        for ( String currentId : id )
         {
-            throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
+            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( currentId );
+
+            if ( unit == null )
+            {
+                throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
+            }
+
+            selectedUnits.add( unit );
         }
 
-        selectedUnits = selectionManager.getSelectedOrganisationUnits();
-        selectedUnits.add( unit );
         selectionManager.setSelectedOrganisationUnits( selectedUnits );
 
         return SUCCESS;
