@@ -28,18 +28,7 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -71,7 +60,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -109,7 +107,7 @@ public class AccountController
 
     @Autowired
     private SystemSettingManager systemSettingManager;
-    
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @RequestMapping( value = "/recovery", method = RequestMethod.POST )
@@ -133,7 +131,7 @@ public class AccountController
             ContextUtils.conflictResponse( response, "User does not exist: " + username );
             return;
         }
-        
+
         boolean recover = securityService.sendRestoreMessage( credentials, rootPath, RestoreOptions.RECOVER_PASSWORD_OPTION );
 
         if ( !recover )
@@ -181,7 +179,7 @@ public class AccountController
             ContextUtils.conflictResponse( response, "User does not exist: " + username );
             return;
         }
-        
+
         boolean restore = securityService.restore( credentials, token, code, password, RestoreType.RECOVER_PASSWORD );
 
         if ( !restore )
@@ -214,7 +212,7 @@ public class AccountController
     {
         UserCredentials credentials = null;
 
-        boolean invitedByEmail = ( inviteUsername != null && !inviteUsername.isEmpty() );
+        boolean invitedByEmail = (inviteUsername != null && !inviteUsername.isEmpty());
 
         boolean canChooseUsername = true;
 
@@ -314,7 +312,7 @@ public class AccountController
 
         if ( email == null || !ValidationUtils.emailIsValid( email ) )
         {
-            ContextUtils.badRequestResponse( response,  "Email is not specified or invalid" );
+            ContextUtils.badRequestResponse( response, "Email is not specified or invalid" );
             return;
         }
 
@@ -455,6 +453,15 @@ public class AccountController
 
         Map<String, String> result = new HashMap<>();
         result.put( "status", "OK" );
+
+        if ( credentials == null )
+        {
+            result.put( "status", "NON_EXPIRED" );
+            result.put( "message", "Username is not valid, redirecting to login." );
+
+            ContextUtils.badRequestResponse( response, objectMapper.writeValueAsString( result ) );
+            return;
+        }
 
         if ( userService.credentialsNonExpired( credentials ) )
         {
