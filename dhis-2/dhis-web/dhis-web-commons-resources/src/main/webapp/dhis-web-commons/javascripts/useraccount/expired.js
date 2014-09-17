@@ -59,9 +59,9 @@ function accountSubmitHandler()
 	$( "#submitButton" ).attr( "disabled", "disabled" );
 
 	$.ajax( {
-		url: '../../api/account',
+		url: '../../api/account/password',
 		data: $( "#accountForm" ).serialize(),
-		type: 'put',
+		type: 'POST',
 		success: function( data ) {
 			window.location.href = "../../dhis-web-commons-about/redirect.action";
 		},

@@ -441,7 +441,7 @@ public class AccountController
         ContextUtils.createdResponse( response, "Account created", null );
     }
 
-    @RequestMapping( method = RequestMethod.PUT )
+    @RequestMapping( value = "/password", method = RequestMethod.POST )
     public void updatePassword(
         @RequestParam String oldPassword,
         @RequestParam String password,
