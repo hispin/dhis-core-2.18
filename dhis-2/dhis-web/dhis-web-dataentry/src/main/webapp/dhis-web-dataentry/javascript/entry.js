@@ -360,7 +360,7 @@ function ValueSaver( de, pe, co, value, fieldId, resultColor )
     {
     	dhis2.de.storageManager.clearDataValueJSON( dataValue );
         markValue( fieldId, resultColor );
-        $( document ).trigger( dhis2.de.event.dataValueSaved, dataValue );
+        $( document ).trigger( dhis2.de.event.dataValueSaved, [ dhis2.de.currentDataSetId, dataValue ] );
     }
 
     function handleError( xhr, textStatus, errorThrown )
