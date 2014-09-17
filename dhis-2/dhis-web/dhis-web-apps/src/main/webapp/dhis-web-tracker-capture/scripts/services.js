@@ -591,6 +591,30 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };    
 })
 
+/* factory for handling event reports */
+.factory('EventReportService', function($http, $q) {   
+    
+    return {     
+        
+        getOverdueEvents: function(orgUnit, ouMode, program, status, pager){ 
+            var pgSize = pager ? pager.pageSize : 50;
+        	var pg = pager ? pager.page : 1;
+            var promise = $http.get( '../api/events/overdue.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&status=' + status + '&pageSize=' + pgSize + '&page=' + pg ).then(function(response){
+                return response.data;
+            });            
+            return promise;
+        },
+        getUpcomingEvents: function(orgUnit, ouMode, program, startDate, endDate, status, pager){
+            var pgSize = pager ? pager.pageSize : 50;
+        	var pg = pager ? pager.page : 1;
+            var promise = $http.get( '../api/events/overdue.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&startDate=' + startDate + '&endDate=' + endDate + '&status=' + status + '&pageSize=' + pgSize + '&page=' + pg ).then(function(response){
+                return response.data;
+            });            
+            return promise;
+        }
+    };    
+})
+
 .factory('OperatorFactory', function(){
     
     var defaultOperators = ['IS', 'RANGE' ];

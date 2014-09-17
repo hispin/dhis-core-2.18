@@ -85,16 +85,17 @@
                            class="form-control" 
                            ng-class="{'input-success': eventDateSaved}"
                            ng-date 
-                           ng-model="currentEvent.eventDate" 
+                           ng-model="currentEvent.eventDate"
+                           ng-disabled="currentEvent.status === 'SKIPPED'"    
                            ng-required="true" 
                            blur-or-change="saveEventDate()"/>
                     <span ng-if="invalidDate" class="error">{{'date_required'| translate}}</span>
                 </div>
                 <div class="col-md-6">
-                    <span ng-if="currentEvent.eventDate">
+                    <span ng-if="currentEvent.eventDate || currentEvent.status === 'SKIPPED'">
                         {{'due_date'| translate}}
                     </span>
-                    <span ng-if="!currentEvent.eventDate">
+                    <span ng-if="!currentEvent.eventDate && currentEvent.status !== 'SKIPPED'">
                         <a href ng-click="enableRescheduling()" title="{{ schedulingEnabled ? 'disable_rescheduling' : 'enable_rescheduling' | translate}}"><span class="text-primary bold">{{'due_date'| translate}}</span></a>                        
                     </span>                    
                     <input type="text" 
