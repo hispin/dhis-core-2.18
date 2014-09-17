@@ -45,7 +45,7 @@
   <input type="hidden" id="sectionId" name="sectionId" value="$section.id"/>
   <input type="hidden" id="categoryComboId" name="categoryComboId" value="$!categoryCombo.id"/>
   
-  <table id="detailsList">
+  <table id="detailsList" style="margin-bottom: 20px">>
     <col/> ## Labels
     <col/> ## Input
     <thead>
