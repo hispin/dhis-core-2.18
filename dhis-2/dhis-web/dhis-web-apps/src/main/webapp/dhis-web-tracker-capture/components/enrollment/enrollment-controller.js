@@ -171,7 +171,7 @@ trackerCapture.controller('EnrollmentController',
                         //enrollment has failed
                         var dialogOptions = {
                                 headerText: 'enrollment_error',
-                                bodyText: data.description
+                                bodyText: enrollmentResponse.description
                             };
                         DialogService.showDialog({}, dialogOptions);
                         return;

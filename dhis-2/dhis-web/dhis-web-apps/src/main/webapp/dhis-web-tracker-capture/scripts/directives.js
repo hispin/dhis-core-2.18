@@ -194,7 +194,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
                 changeYear: true,
                 changeMonth: true,
                 dateFormat: 'yy-mm-dd',
-                yearRange: '-120:+0',
+                yearRange: '-120:+30',
                 minDate: attrs.minDate,
                 maxDate: attrs.maxDate,
                 onSelect: function(date) {

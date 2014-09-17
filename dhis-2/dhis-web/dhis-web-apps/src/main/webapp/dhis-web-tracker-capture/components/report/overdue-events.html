@@ -118,11 +118,6 @@
                             onclick="javascript:window.print()">
                         {{'print'| translate}}
                     </button>
-                    <!--<button type="button" 
-                            class="btn btn-success small-horizonal-spacing" 
-                            ng-click="exportToExcel()">
-                        {{'excel_export'| translate}}
-                    </button>-->
                     <button type="button" 
                             class="btn btn-success small-horizonal-spacing" 
                             ng-csv="generateReportData()"
@@ -148,10 +143,10 @@
                                     <!-- filter icon begins -->
                                     <span class='pull-right not-printable'>
                                         <span ng-show="gridColumn.type != 'date' && gridColumn.type != 'int'">
-                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter - without - content', false: 'filter - with - content'} [filterText[gridColumn.id] == undefined || filterText[gridColumn.id] == '']"><i class="fa fa-search"></i></span></a>
+                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [filterText[gridColumn.id] == undefined || filterText[gridColumn.id] == '']"><i class="fa fa-search"></i></span></a>
                                         </span>
                                         <span ng-show="gridColumn.type === 'date' || gridColumn.type === 'int'">
-                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter - without - content', false: 'filter - with - content'} [(filterText[gridColumn.id].start == undefined || filterText[gridColumn.id].start == '') && (filterText[gridColumn.id].end == undefined || filterText[gridColumn.id].end == '')]"><i class="fa fa-search"></i></span></a>
+                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [(filterText[gridColumn.id].start == undefined || filterText[gridColumn.id].start == '') && (filterText[gridColumn.id].end == undefined || filterText[gridColumn.id].end == '')]"><i class="fa fa-search"></i></span></a>
                                         </span>                                                    
                                     </span>
                                     <!-- filter icon ends -->
@@ -185,7 +180,7 @@
                         </thead>
                         <tbody id="list">
                             <tr ng-repeat="overdueEvent in overdueEvents | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"
-                                ng-click="showDashboard(overdueEvent)"
+                                ng-click="showDashboard(overdueEvent.trackedEntityInstance)"
                                 title="{{'go_to_dashboard'| translate}}">
                                 <td ng-show="gridColumn.show"                                            
                                     ng-repeat="gridColumn in gridColumns" ng-if='displayMode.onlyMarkedFollowup ? overdueEvent.followup:true'>                                                
@@ -194,6 +189,7 @@
                             </tr>
                         </tbody>        
                     </table>
+                    <serverside-paginator></serverside-paginator>
                 </div>
 
                 <!-- report ends -->
