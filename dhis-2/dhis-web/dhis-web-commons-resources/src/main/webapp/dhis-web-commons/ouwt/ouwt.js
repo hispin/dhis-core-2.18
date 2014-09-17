@@ -151,14 +151,14 @@ function Selection()
     };
 
     this.isSelected = function() {
-    	var ou = selection.getSelected();    	
+    	var ou = selection.getSelected();
     	return ou && ou.length > 0;
     };
-    
+
     this.setSelected = function( selected ) {
         sessionStorage[ OU_SELECTED_KEY ] = JSON.stringify( selected );
     };
-    
+
     this.selectedExists = function() {
         return sessionStorage[ OU_SELECTED_KEY ] != null;
     };
@@ -415,19 +415,21 @@ function Selection()
                 var selected = selection.getSelected();
 
                 if( multipleSelectionAllowed ) {
-                    var def = $.Deferred();
-                    var p = def.promise();
+                    var q = '';
 
                     $.each( selected, function( i, item ) {
-                        p = p.then(function() {
-                            return $.post(organisationUnitTreePath + "addorgunit.action", {
-                                id: item
-                            });
-                        });
-                    } );
+                        q += "id=" + item;
 
-                    p.done(fn);
-                    def.resolve();
+                        if( i < (selected.length - 1) ) {
+                            q += '&';
+                        }
+                    });
+
+                    $.ajax({
+                        url: organisationUnitTreePath + "addorgunit.action",
+                        data: q,
+                        type: 'POST'
+                    });
                 } else {
                     selected = $.isArray( selected ) ? selected[0] : selected;
 
@@ -571,7 +573,7 @@ function Selection()
 
     this.scrollToSelected = function() {
     	var ou = selection.getSelected();
-    	
+
     	if ( ou && ou.length ) {
     		$( "#orgUnitTree" ).scrollTop( 0 );
     		var tagId = "#" + getTagId( ou[0] );
@@ -581,7 +583,7 @@ function Selection()
     		$( "#orgUnitTree" ).animate( { scrollTop: offset }, 300 );
     	}
     };
-    
+
     this.findByName = function() {
         var name = $( '#searchField' ).val();
         var match;
@@ -625,7 +627,7 @@ function Selection()
             } );
         }
     };
-    
+
     this.enable = function() {
         $( "#orgUnitTree" ).show();
     };
