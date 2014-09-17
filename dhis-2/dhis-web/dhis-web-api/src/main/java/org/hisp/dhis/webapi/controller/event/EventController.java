@@ -51,6 +51,8 @@ import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
 import org.hisp.dhis.dxf2.events.event.Events;
 import org.hisp.dhis.dxf2.events.event.ImportEventTask;
+import org.hisp.dhis.dxf2.events.report.EventRowService;
+import org.hisp.dhis.dxf2.events.report.EventRows;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
@@ -107,6 +109,9 @@ public class EventController
 
     @Autowired
     private EventService eventService;
+    
+    @Autowired
+    private EventRowService eventRowService;
 
     @Autowired
     private TrackedEntityInstanceService trackedEntityInstanceService;
@@ -198,6 +203,58 @@ public class EventController
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
         return "events";
+    }
+    
+    @RequestMapping( value = "/overdue", method = RequestMethod.GET )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_DATAVALUE_ADD')" )
+    public String getOverdueEvents(
+        @RequestParam( required = false ) String program,        
+        @RequestParam( required = false ) String orgUnit,
+        @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
+        @RequestParam( required = false ) EventStatus status,
+        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request )
+    {
+        WebOptions options = new WebOptions( parameters );
+
+        Program pr = manager.get( Program.class, program );
+        List<OrganisationUnit> organisationUnits = new ArrayList<>();
+        OrganisationUnit rootOrganisationUnit = null;
+
+        if ( orgUnit != null )
+        {
+            rootOrganisationUnit = manager.get( OrganisationUnit.class, orgUnit );
+        }
+
+        if ( rootOrganisationUnit != null )
+        {
+            if ( OrganisationUnitSelectionMode.DESCENDANTS.equals( ouMode ) )
+            {
+                organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( rootOrganisationUnit.getUid() ) );
+            }
+            else if ( OrganisationUnitSelectionMode.CHILDREN.equals( ouMode ) )
+            {
+                organisationUnits.add( rootOrganisationUnit );
+                organisationUnits.addAll( rootOrganisationUnit.getChildren() );
+            }
+            else // SELECTED
+            {
+                organisationUnits.add( rootOrganisationUnit );
+            }
+        }
+        
+        EventRows eventRows = eventRowService.getOverDueEventRows( pr, organisationUnits, status);
+        
+        if ( options.hasPaging() )
+        {
+            Pager pager = new Pager( options.getPage(), eventRows.getEventRows().size(), options.getPageSize() );
+            eventRows.setPager( pager );
+            eventRows.setEventRows( PagerUtils.pageCollection( eventRows.getEventRows(), pager ) );
+        }
+        
+        model.addAttribute( "model", eventRows );
+        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
+
+        return "eventRows";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )

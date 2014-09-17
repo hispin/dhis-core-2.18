@@ -117,6 +117,7 @@ public abstract class AbstractTrackedEntityInstanceService
         trackedEntityInstance.setTrackedEntityInstance( entityInstance.getUid() );
         trackedEntityInstance.setOrgUnit( entityInstance.getOrganisationUnit().getUid() );
         trackedEntityInstance.setTrackedEntity( entityInstance.getTrackedEntity().getUid() );
+        trackedEntityInstance.setCreated( entityInstance.getCreated().toString() );
 
         Collection<Relationship> relationships = relationshipService
             .getRelationshipsForTrackedEntityInstance( entityInstance );

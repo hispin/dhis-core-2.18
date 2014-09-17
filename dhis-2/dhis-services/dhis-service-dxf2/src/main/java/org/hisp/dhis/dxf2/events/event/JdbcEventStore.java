@@ -300,11 +300,11 @@ public class JdbcEventStore
             }
             else if ( status == EventStatus.SCHEDULE )
             {
-                sql += "and psi.executiondate is null and date(now()) <= date(psi.duedate) and psi.status = '" + EventStatus.ACTIVE.name() + "' ";
+                sql += "and psi.executiondate is null and date(now()) <= date(psi.duedate) and psi.status = '" + EventStatus.SCHEDULE.name() + "' ";
             }
             else if ( status == EventStatus.OVERDUE )
             {
-                sql += "and psi.executiondate is null and date(now()) > date(psi.duedate) and psi.status = '" + EventStatus.ACTIVE.name() + "' ";
+                sql += "and psi.executiondate is null and date(now()) > date(psi.duedate) and psi.status = '" + EventStatus.SCHEDULE.name() + "' ";
             }
             else
             {

@@ -415,7 +415,7 @@ public abstract class AbstractEventService
         programStageInstance.setDueDate( dueDate );
         programStageInstance.setOrganisationUnit( organisationUnit );
 
-        if( !singleValue )
+        if ( !singleValue )
         {
             if ( programStageInstance.getProgramStage().getCaptureCoordinates() && event.getCoordinate().isValid() )
             {
@@ -427,7 +427,7 @@ public abstract class AbstractEventService
                 programStageInstance.setLatitude( null );
                 programStageInstance.setLongitude( null );
             }
-        }        
+        }
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
@@ -498,19 +498,11 @@ public abstract class AbstractEventService
             executionDate = DateUtils.getMediumDate( event.getEventDate() );
         }
 
-        if ( event.getStatus() == EventStatus.ACTIVE )
-        {
-            programStageInstance.setStatus( EventStatus.VISITED );
-        }
-        else if ( event.getStatus() == EventStatus.COMPLETED )
+        if ( event.getStatus() == EventStatus.COMPLETED )
         {
             programStageInstance.setStatus( EventStatus.COMPLETED );
         }
-        else if ( event.getStatus() == EventStatus.SCHEDULE )
-        {
-            programStageInstance.setStatus( EventStatus.VISITED );
-        }
-        else if ( event.getStatus() == EventStatus.SKIPPED )
+        else
         {
             programStageInstance.setStatus( EventStatus.VISITED );
         }
