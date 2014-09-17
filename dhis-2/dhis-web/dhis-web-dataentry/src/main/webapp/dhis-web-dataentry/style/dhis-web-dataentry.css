@@ -153,6 +153,13 @@
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06);
 }
 
+.indicatorArea
+{
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #ddd;
+}
+
 /* jQuery UI tab style overrides for data value history view */
 
 #historyTabs

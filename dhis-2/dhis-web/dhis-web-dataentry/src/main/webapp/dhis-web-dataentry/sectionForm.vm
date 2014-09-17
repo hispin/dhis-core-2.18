@@ -17,23 +17,24 @@
         #foreach( $section in $sections )
             <div id="tab-${section.uid}">
                 #set( $categoryComboId = $sectionCombos.get( $section.id ) )
-                #renderSection( $categoryComboId $section.dataElements )
+                #renderSection( $categoryComboId $section.dataElements $section.indicators )
             </div>
         #end
     </div>
 #else
     #foreach( $section in $sections )
         #set( $categoryComboId = $sectionCombos.get( $section.id ) )
-        #renderSection( $categoryComboId $section.dataElements $section.displayName $section.description )
+        #renderSection( $categoryComboId $section.dataElements $section.indicators $section.displayName $section.description )
     #end
 #end
 
 #*
-    @param $categoryComboId
-    @param $dataElements Data Elements to be rendered in your section
-    @param $args.title Include if you want a title rendered in your section
+@param $categoryComboId category combo identifier.
+@param $dataElements data elements to be rendered in section.
+@param $indicators indicators to be rendered in section.
+@param $args.title include if you want a title rendered in section.
 *#
-#macro( renderSection $categoryComboId $dataElements $title $description )
+#macro( renderSection $categoryComboId $dataElements $indicators $title $description )
 <table class="formSection" style="margin-bottom: 20px;">
 #if( $!title )
 <tr>
@@ -54,6 +55,7 @@
     #set( $optionsMap = $orderedOptionsMap.get( $categoryComboId ) )
     #set( $colRepeat = $catColRepeat.get( $categoryComboId ) )
     #set( $hasFilterInSection = false )
+    #set( $mark = 0 )
 
     #foreach( $category in $categories )
     #set( $categoryOptions = $optionsMap.get( $category.id ) )
@@ -69,8 +71,6 @@
     </tr>
     #end
 
-    #set( $count = 0 )
-    #set( $mark = 0 )
     #set( $optionCombos = $orderedCategoryOptionCombos.get( $categoryComboId )  )
     #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.uid}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.displayName )}</span>
     #end
@@ -80,7 +80,6 @@
     #else
     #set( $mark = 1 )
     #end
-    #set( $count = $count + 1 )
     <tr>
     <td id="${dataElement.uid}-cell" #if( $mark == 1 )class="alt"#else class="reg"#end>
     <span id="${dataElement.uid}-dataelement" #if( $decoration && $dataElement.hasDescription() ) title="$!{dataElement.description}"#end >
@@ -115,6 +114,26 @@
     #end
 	</table>
     </div>
+    
+    #if( $indicators.size() > 0 )
+    #set( $mark = 0 )
+    <div class="indicatorArea">
+    <table>
+    #foreach( $indicator in $indicators )
+    #if( $mark == 1 )
+    #set( $mark = 0 )
+    #else
+    #set( $mark = 1 )
+    #end
+    <tr>
+      <td #if( $mark == 1 )class="alt"#else class="reg"#end><span>$indicator.displayName</span></td>
+      <td><input id="indicator${indicator.id}" indicatorid="${indicator.uid}" name="indicator" type="text" class="indicator"></td>
+    </tr>
+    #end
+    </table>
+    </div>
+    #end
+    
     </td>
   </tr>
 </table>

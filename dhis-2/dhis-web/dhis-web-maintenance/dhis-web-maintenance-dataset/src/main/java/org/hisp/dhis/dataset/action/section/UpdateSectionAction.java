@@ -145,7 +145,8 @@ public class UpdateSectionAction
 
         if ( dataSet != null ) // Check if version must be updated
         {
-            if ( !( equalsNullSafe( sectionName, section.getName() ) && dataElements.equals( section.getDataElements() ) ) )
+            if ( !( equalsNullSafe( sectionName, section.getName() ) && 
+                dataElements.equals( section.getDataElements() ) && indicators.equals( section.getIndicators() ) ) )
             {
                 dataSetService.updateDataSet( dataSet.increaseVersion() );
             }
