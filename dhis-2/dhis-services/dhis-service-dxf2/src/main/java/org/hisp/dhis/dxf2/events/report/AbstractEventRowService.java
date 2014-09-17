@@ -42,6 +42,7 @@ import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -71,7 +72,7 @@ public class AbstractEventRowService
         List<EventRow> eventRowList = new ArrayList<EventRow>();
         EventRows eventRows = new EventRows();
 
-        Events events = eventService.getEvents( program, null, null, null, organisationUnits, null, null, null, status );
+        Events events = eventService.getEvents( program, null, ProgramStatus.ACTIVE, null, organisationUnits, null, null, null, status );
 
         for ( Event event : events.getEvents() )
         {
