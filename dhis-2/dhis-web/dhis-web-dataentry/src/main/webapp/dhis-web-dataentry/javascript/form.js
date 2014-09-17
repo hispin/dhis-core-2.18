@@ -123,9 +123,6 @@ dhis2.de.on = function( event, fn )
     $( document ).off( event ).on( event, fn );
 }
 
-var EVENT_FORM_LOADED = "dhis-web-dataentry-form-loaded"; // Deprecated
-var EVENT_VALUE_SAVED = 'dhis-web-dataentry-value-saved'; // Deprecated
-
 var DAO = DAO || {};
 
 function getCurrentOrganisationUnit() 
@@ -1529,8 +1526,6 @@ function displayEntryFormCompleted()
     hideLoader();
     
     $( document ).trigger( dhis2.de.event.formReady );
-    
-    $( 'body' ).trigger( EVENT_FORM_LOADED ); // Deprecated
 }
 
 function valueFocus( e )
@@ -1613,14 +1608,6 @@ function getPreviousEntryField( field )
             return field;
         }
     }
-}
-
-/**
- * Convenience method which can be used in custom form scripts. Do not change.
- */
-function onFormLoad( fn )
-{
-	$( 'body' ).off( EVENT_FORM_LOADED ).on( EVENT_FORM_LOADED, fn );
 }
 
 // -----------------------------------------------------------------------------
