@@ -52,6 +52,7 @@
     <sec:intercept-url pattern="/api/account/username" access="permitAll()" />
     <sec:intercept-url pattern="/api/account/recovery" access="permitAll()" />
     <sec:intercept-url pattern="/api/account/restore" access="permitAll()" />
+    <sec:intercept-url pattern="/api/account/password" access="permitAll()" />
     <sec:intercept-url pattern="/api/account" access="permitAll()" />
     <sec:intercept-url pattern="/**" access="isAuthenticated()" />
     <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
