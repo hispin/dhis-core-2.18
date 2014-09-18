@@ -92,7 +92,7 @@ trackerCapture.controller('OverdueEventsController',
             $scope.reportFinished = false;
             $scope.reportStarted = true;            
             $scope.overdueEvents = [];
-            EventReportService.getOverdueEvents($scope.selectedOrgUnit.id, $scope.selectedOuMode, $scope.selectedProgram.id, 'OVERDUE', $scope.pager).then(function(data){                     
+            EventReportService.getEventReport($scope.selectedOrgUnit.id, $scope.selectedOuMode, $scope.selectedProgram.id, null, null, 'ACTIVE','OVERDUE', $scope.pager).then(function(data){                     
                 
                 if( data.pager ){
                     $scope.pager = data.pager;
@@ -129,8 +129,6 @@ trackerCapture.controller('OverdueEventsController',
 
                 $scope.reportFinished = true;
                 $scope.reportStarted = false;
-                    
-                console.log('The data is:  ',  $scope.overdueEvents);
             });
         }
     };    

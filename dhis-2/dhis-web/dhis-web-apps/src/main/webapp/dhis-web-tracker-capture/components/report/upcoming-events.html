@@ -104,7 +104,7 @@
                 </table>                
             </div>
             <div class="col-md-6 trim">
-                <button type="button" class="btn btn-primary" ng-click="generateReport(selectedProgram, report, selectedOuMode)" ng-disabled="!selectedProgram">{{'go'| translate}}</button>
+                <button type="button" class="btn btn-primary" ng-click="generateReport()" ng-disabled="!selectedProgram">{{'go'| translate}}</button>
                 <button type="button"
                         class="btn btn-success small-horizonal-spacing"
                         ng-if="upcomingEvents.length > 0"
@@ -207,7 +207,7 @@
                         </thead>
                         <tbody id="list">
                             <tr ng-repeat="upcomingEvent in upcomingEvents| orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"
-                                ng-click="showDashboard(upcomingEvent)"
+                                ng-click="showDashboard(upcomingEvent.trackedEntityInstance)"
                                 title="{{'go_to_dashboard'| translate}}">
                                 <td ng-show="gridColumn.show"                                            
                                     ng-repeat="gridColumn in gridColumns" ng-if='displayMode.onlyMarkedFollowup ? upcomingEvent.followup:true'>                                                
@@ -215,7 +215,8 @@
                                 </td>                                
                             </tr>
                         </tbody>        
-                    </table>                    
+                    </table>
+                    <serverside-paginator></serverside-paginator>
                 </div>
                 <!-- report ends -->
             </div>

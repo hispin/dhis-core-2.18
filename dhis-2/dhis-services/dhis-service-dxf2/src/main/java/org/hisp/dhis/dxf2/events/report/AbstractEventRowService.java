@@ -59,36 +59,39 @@ public class AbstractEventRowService
 
     @Autowired
     private EventService eventService;
-    
+
     @Autowired
     private IdentifiableObjectManager manager;
-    
+
     @Autowired
     private TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Override
-    public EventRows getOverDueEventRows( Program program, List<OrganisationUnit> organisationUnits, EventStatus status )
+    public EventRows getEventRows( Program program, List<OrganisationUnit> organisationUnits,
+        ProgramStatus programStatus, EventStatus eventStatus, Date startDate, Date endDate )
     {
         List<EventRow> eventRowList = new ArrayList<EventRow>();
         EventRows eventRows = new EventRows();
 
-        Events events = eventService.getEvents( program, null, ProgramStatus.ACTIVE, null, organisationUnits, null, null, null, status );
+        Events events = eventService.getEvents( program, null, programStatus, null, organisationUnits, null, startDate,
+            endDate, eventStatus );
 
         for ( Event event : events.getEvents() )
         {
             if ( event.getTrackedEntityInstance() != null )
             {
-                TrackedEntityInstance tei =  trackedEntityInstanceService.getTrackedEntityInstance( event.getTrackedEntityInstance() );
-                EventRow eventRow = new EventRow();   
+                TrackedEntityInstance tei = trackedEntityInstanceService.getTrackedEntityInstance( event
+                    .getTrackedEntityInstance() );
+                EventRow eventRow = new EventRow();
                 eventRow.setTrackedEntityInstance( event.getTrackedEntityInstance() );
-                eventRow.setAttributes( tei.getAttributes() );                
-                eventRow.setEvent( event.getEvent() );                
+                eventRow.setAttributes( tei.getAttributes() );
+                eventRow.setEvent( event.getEvent() );
                 eventRow.setProgram( program.getUid() );
                 eventRow.setProgramStage( event.getProgramStage() );
                 eventRow.setEventName( manager.get( ProgramStage.class, event.getProgramStage() ).getName() );
                 eventRow.setRegistrationOrgUnit( manager.get( OrganisationUnit.class, tei.getOrgUnit() ).getName() );
                 eventRow.setRegistrationDate( tei.getCreated() );
-                //eventRow.setOrgUnit( event.getOrgUnit() );
+                // eventRow.setOrgUnit( event.getOrgUnit() );
                 eventRow.setDueDate( event.getDueDate() );
                 eventRow.setFollowup( event.getFollowup() );
                 eventRowList.add( eventRow );
@@ -99,13 +102,4 @@ public class AbstractEventRowService
 
         return eventRows;
     }
-
-    @Override
-    public EventRows getUpcomingEventRows( Program program, List<OrganisationUnit> organisationUnits, Date startDate,
-        Date endDate, EventStatus eventStatus )
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

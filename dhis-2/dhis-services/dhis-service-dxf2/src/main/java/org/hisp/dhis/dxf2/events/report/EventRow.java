@@ -46,7 +46,7 @@ import java.util.List;
  *
  */
 
-@JacksonXmlRootElement( localName = "event", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement( localName = "eventRow", namespace = DxfNamespaces.DXF_2_0 )
 public class EventRow
     extends BaseLinkableObject
 {

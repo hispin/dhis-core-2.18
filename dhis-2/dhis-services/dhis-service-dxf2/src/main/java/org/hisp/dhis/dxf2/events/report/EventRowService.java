@@ -34,6 +34,7 @@ import java.util.List;
 import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStatus;
 
 /**
  * @author Abyot Asalefew Gizaw <abyota@gmail.com>
@@ -41,12 +42,12 @@ import org.hisp.dhis.program.Program;
  */
 public interface EventRowService
 {
-    
+
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
 
-    EventRows getOverDueEventRows( Program program, List<OrganisationUnit> organisationUnits, EventStatus status );
+    EventRows getEventRows( Program program, List<OrganisationUnit> organisationUnits, ProgramStatus programStatus,
+        EventStatus eventStatus, Date startDate, Date endDate );
 
-    EventRows getUpcomingEventRows( Program program, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate, EventStatus status );
 }
