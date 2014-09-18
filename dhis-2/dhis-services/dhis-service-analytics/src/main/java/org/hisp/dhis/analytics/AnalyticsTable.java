@@ -87,7 +87,6 @@ public class AnalyticsTable
         
         if ( period != null )
         {
-            // name += "_" + period.getIsoDate();
             name += "_" + PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) ).getYear();
         }
         
@@ -105,7 +104,6 @@ public class AnalyticsTable
 
         if ( period != null )
         {
-            // name += "_" + period.getIsoDate();
             name += "_" + PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) ).getYear();
         }
         
