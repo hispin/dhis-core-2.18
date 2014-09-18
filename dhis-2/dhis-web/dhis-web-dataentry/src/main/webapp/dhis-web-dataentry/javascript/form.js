@@ -121,7 +121,7 @@ dhis2.de.event.validationError = "dhis2.de.event.validationError";
 dhis2.de.on = function( event, fn )
 {
     $( document ).off( event ).on( event, fn );
-}
+};
 
 var DAO = DAO || {};
 
@@ -2080,7 +2080,11 @@ function StorageManager()
             if( typeof form !== 'undefined' ) {
                 def.resolve( form.data );
             } else {
-                def.resolve( "A form with that ID is not available. Please clear browser cache and try again." );
+                dhis2.de.storageManager.loadForm( dataSetId ).done(function( data ) {
+                    def.resolve( data );
+                }).error(function() {
+                    def.resolve( "A form with that ID is not available. Please clear browser cache and try again." );
+                });
             }
         });
 
@@ -2118,6 +2122,24 @@ function StorageManager()
         });
 
         return def.promise();
+    };
+
+    /**
+     * Loads a form directly from the server, does not try to save it in the
+     * browser (so that it doesn't interfere with any current downloads).
+     *
+     * @param dataSetId
+     * @returns {*}
+     */
+    this.loadForm = function( dataSetId )
+    {
+        return $.ajax({
+            url: 'loadForm.action',
+            data: {
+                dataSetId: dataSetId
+            },
+            dataType: 'text'
+        });
     };
 
     /**
