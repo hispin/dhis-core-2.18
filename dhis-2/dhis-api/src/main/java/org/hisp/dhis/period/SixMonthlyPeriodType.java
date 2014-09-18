@@ -80,12 +80,14 @@ public class SixMonthlyPeriodType
     @Override
     public String getIsoDate( DateTimeUnit dateTimeUnit )
     {
+        int month = dateTimeUnit.getMonth();
+
         if ( dateTimeUnit.isIso8601() )
         {
-            dateTimeUnit = getCalendar().fromIso( dateTimeUnit );
+            month = getCalendar().fromIso( dateTimeUnit ).getMonth();
         }
 
-        switch ( dateTimeUnit.getMonth() )
+        switch ( month )
         {
             case 1:
                 return dateTimeUnit.getYear() + "S1";

@@ -2082,7 +2082,7 @@ function StorageManager()
             } else {
                 dhis2.de.storageManager.loadForm( dataSetId ).done(function( data ) {
                     def.resolve( data );
-                }).error(function() {
+                }).fail(function() {
                     def.resolve( "A form with that ID is not available. Please clear browser cache and try again." );
                 });
             }
