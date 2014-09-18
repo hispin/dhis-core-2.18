@@ -5,14 +5,12 @@ trackerCapture.controller('UpcomingEventsController',
                 $translate,
                 orderByFilter,
                 DateUtils,                
-                TEIService,
                 Paginator,
                 EventReportService,
                 TEIGridService,
                 TranslationService,
                 AttributesFactory,
                 ProgramFactory,
-                DHIS2EventFactory,
                 storage) {
 
     TranslationService.translate();

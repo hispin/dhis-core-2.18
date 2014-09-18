@@ -34,7 +34,7 @@ trackerCapture.controller('NotesController',
                 if(!angular.isUndefined( $scope.selectedEnrollment.notes)){
                     $scope.selectedEnrollment.notes = orderByFilter($scope.selectedEnrollment.notes, '-storedDate');            
                     angular.forEach($scope.selectedEnrollment.notes, function(note){
-                        note.storedDate = moment(note.storedDate).format('YYYY-MM-DD @ hh:mm A');
+                        note.storedDate = DateUtils.formatToHrsMins(note.storedDate);
                     });
                 }
             });
