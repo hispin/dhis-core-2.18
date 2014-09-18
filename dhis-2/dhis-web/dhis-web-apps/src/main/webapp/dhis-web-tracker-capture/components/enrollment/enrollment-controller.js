@@ -83,11 +83,11 @@ trackerCapture.controller('EnrollmentController',
                 
                 var incidentDate = $scope.selectedEnrollment ? $scope.selectedEnrollment.dateOfIncident : new Date();
 
-                angular.forEach($scope.selectedProgram.programStages, function(stage){                
-                    stage.dueDate = moment(moment(incidentDate).add('d', stage.minDaysFromStart), 'YYYY-MM-DD')._d;
-                    stage.dueDate = Date.parse(stage.dueDate);
-                    stage.dueDate = DateUtils.format(stage.dueDate);//$filter('date')(stage.dueDate, 'yyyy-MM-dd');
-                    $scope.programStages.push(stage);               
+                angular.forEach($scope.selectedProgram.programStages, function(stage){                    
+                    
+                    stage.dueDate = DateUtils.format(incidentDate);
+                    stage.dueDate = moment(moment(incidentDate).add('d', stage.minDaysFromStart))._d;
+                    stage.dueDate = DateUtils.format(stage.dueDate);
                 });
             }
             else{//prepare for possible enrollment

@@ -234,7 +234,7 @@ trackerCapture.controller('DataEntryController',
                 
                 if($scope.currentEvent.notes){
                     angular.forEach($scope.currentEvent.notes, function(note){
-                        note.storedDate = moment(note.storedDate).format('YYYY-MM-DD @ hh:mm A');
+                        note.storedDate = DateUtils.formatToHrsMins(note.storedDate);
                     });
 
                     if($scope.currentEvent.notes.length > 0 ){
@@ -263,7 +263,7 @@ trackerCapture.controller('DataEntryController',
         if(!angular.isUndefined( $scope.currentEvent.notes)){
             $scope.currentEvent.notes = orderByFilter($scope.currentEvent.notes, '-storedDate');            
             angular.forEach($scope.currentEvent.notes, function(note){
-                note.storedDate = moment(note.storedDate).format('DD.MM.YYYY @ hh:mm A');
+                note.storedDate = DateUtils.formatToHrsMins(note.storedDate);
             });
         }
 
@@ -383,9 +383,8 @@ trackerCapture.controller('DataEntryController',
             return false;
         }
         else{
-            var rawDate = $filter('date')($scope.currentEvent.eventDate, 'yyyy-MM-dd'); 
-            var convertedDate = moment($scope.currentEvent.eventDate, 'YYYY-MM-DD')._d;
-            convertedDate = $filter('date')(convertedDate, 'yyyy-MM-dd'); 
+            var rawDate = angular.copy($scope.currentEvent.eventDate);
+            var convertedDate = DateUtils.format($scope.currentEvent.eventDate);
 
             if(rawDate !== convertedDate){
                 $scope.invalidDate = true;
@@ -430,9 +429,8 @@ trackerCapture.controller('DataEntryController',
             return false;
         }
         else{
-            var rawDate = $filter('date')($scope.currentEvent.dueDate, 'yyyy-MM-dd'); 
-            var convertedDate = moment($scope.currentEvent.dueDate, 'YYYY-MM-DD')._d;
-            convertedDate = $filter('date')(convertedDate, 'yyyy-MM-dd'); 
+            var rawDate = angular.copy($scope.currentEvent.dueDate);
+            var convertedDate = DateUtils.format($scope.currentEvent.dueDate);           
 
             if(rawDate !== convertedDate){
                 $scope.invalidDate = true;
