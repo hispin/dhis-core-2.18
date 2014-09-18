@@ -30,7 +30,9 @@ package org.hisp.dhis.analytics;
 
 import java.util.List;
 
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 
 /**
@@ -85,7 +87,8 @@ public class AnalyticsTable
         
         if ( period != null )
         {
-            name += "_" + period.getIsoDate();
+            // name += "_" + period.getIsoDate();
+            name += "_" + PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) ).getYear();
         }
         
         if ( program != null )
@@ -102,7 +105,8 @@ public class AnalyticsTable
 
         if ( period != null )
         {
-            name += "_" + period.getIsoDate();
+            // name += "_" + period.getIsoDate();
+            name += "_" + PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) ).getYear();
         }
         
         if ( program != null )
