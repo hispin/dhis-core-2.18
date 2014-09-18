@@ -285,6 +285,20 @@ function Selection()
         } );
     };
 
+    this.busy = function( busy ) {
+        if( busy ) {
+            $("#orgUnitTree").css("cursor", "wait")
+                .find("a").css("cursor", "wait");
+        } else {
+            $("#orgUnitTree").css("cursor", "auto")
+                .find("a").css("cursor", "auto");
+        }
+    };
+
+    this.isBusy = function() {
+        return $("#orgUnitTree").css("cursor") == "wait";
+    };
+
     this.load = function ()
     {
         function sync_and_reload()
@@ -411,6 +425,8 @@ function Selection()
                 subtree.reloadTree();
             } );
         } else {
+            selection.busy( true );
+
             $.post( organisationUnitTreePath + "clearselected.action", function() {
                 var selected = selection.getSelected();
 
@@ -429,13 +445,18 @@ function Selection()
                         url: organisationUnitTreePath + "addorgunit.action",
                         data: q,
                         type: 'POST'
+                    } ).complete( function() {
+                        selection.busy( false );
                     });
                 } else {
                     selected = $.isArray( selected ) ? selected[0] : selected;
 
                     $.post( organisationUnitTreePath + "setorgunit.action", {
                         id: selected
-                    } ).complete( fn );
+                    } ).complete( function() {
+                        selection.busy( false );
+                        fn();
+                    } );
                 }
             } );
         }
@@ -453,6 +474,10 @@ function Selection()
     };
 
     this.select = function( unitId ) {
+        if( selection.isBusy() ) {
+            return;
+        }
+
         var $linkTag = $( "#" + getTagId( unitId ) ).find( "a" ).eq( 0 );
 
         if( $linkTag.hasClass( "selected" ) && ( unselectAllowed || rootUnselectAllowed ) ) {
@@ -488,9 +513,14 @@ function Selection()
                 selection.clearSelected();
             }
 
+            selection.busy( true );
+
             $.post( organisationUnitTreePath + "removeorgunit.action", {
                 id: unitId
-            } ).complete( this.responseReceived );
+            } ).complete( function() {
+                selection.busy( false );
+                selection.responseReceived();
+            });
 
             $linkTag.removeClass( "selected" );
         } else {
@@ -504,15 +534,22 @@ function Selection()
                 selected.push( unitId );
                 selection.setSelected( selected );
 
+                selection.busy( true );
+
                 $.post( organisationUnitTreePath + "addorgunit.action", {
                     id: unitId
-                } ).complete( this.responseReceived );
+                } ).complete( function() {
+                    selection.busy( false );
+                    selection.responseReceived();
+                });
 
                 $linkTag.addClass( "selected" );
             }
             else
             {
                 selection.setSelected( unitId );
+
+                selection.busy( true );
 
                 $.ajax( {
                     url:organisationUnitTreePath + "setorgunit.action",
@@ -521,7 +558,10 @@ function Selection()
                     },
                     type:'POST',
                     timeout:10000,
-                    complete:this.responseReceived
+                    complete: function() {
+                        selection.busy(false);
+                        selection.responseReceived();
+                    }
                 } );
 
                 $( "#orgUnitTree" ).find( "a" ).removeClass( "selected" );
