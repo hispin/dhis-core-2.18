@@ -594,20 +594,15 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 /* factory for handling event reports */
 .factory('EventReportService', function($http, $q) {   
     
-    return {     
-        
-        getOverdueEvents: function(orgUnit, ouMode, program, status, pager){ 
+    return {        
+        getEventReport: function(orgUnit, ouMode, program, startDate, endDate, programStatus, eventStatus, pager){ 
             var pgSize = pager ? pager.pageSize : 50;
         	var pg = pager ? pager.page : 1;
-            var promise = $http.get( '../api/events/overdue.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&status=' + status + '&pageSize=' + pgSize + '&page=' + pg ).then(function(response){
-                return response.data;
-            });            
-            return promise;
-        },
-        getUpcomingEvents: function(orgUnit, ouMode, program, startDate, endDate, status, pager){
-            var pgSize = pager ? pager.pageSize : 50;
-        	var pg = pager ? pager.page : 1;
-            var promise = $http.get( '../api/events/overdue.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&startDate=' + startDate + '&endDate=' + endDate + '&status=' + status + '&pageSize=' + pgSize + '&page=' + pg ).then(function(response){
+            var url = '../api/events/overdue.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&programStatus=' + programStatus + '&eventStatus='+ eventStatus + '&pageSize=' + pgSize + '&page=' + pg;
+            if(startDate && endDate){
+                url = url + '&startDate=' + startDate + '&endDate=' + endDate ;
+            }
+            var promise = $http.get( url ).then(function(response){
                 return response.data;
             });            
             return promise;

@@ -211,7 +211,10 @@ public class EventController
         @RequestParam( required = false ) String program,        
         @RequestParam( required = false ) String orgUnit,
         @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
-        @RequestParam( required = false ) EventStatus status,
+        @RequestParam( required = false ) ProgramStatus programStatus,
+        @RequestParam( required = false ) EventStatus eventStatus,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request )
     {
         WebOptions options = new WebOptions( parameters );
@@ -241,8 +244,8 @@ public class EventController
                 organisationUnits.add( rootOrganisationUnit );
             }
         }
-        
-        EventRows eventRows = eventRowService.getOverDueEventRows( pr, organisationUnits, status);
+
+        EventRows eventRows = eventRowService.getEventRows( pr, organisationUnits, programStatus, eventStatus, startDate, endDate);
         
         if ( options.hasPaging() )
         {
