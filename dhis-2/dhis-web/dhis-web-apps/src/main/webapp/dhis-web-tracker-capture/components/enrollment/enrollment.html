@@ -72,12 +72,14 @@
                             {{selectedProgram.dateOfEnrollmentDescription}}
                         </td>
                         <td class="col-md-6">
-                            <span ng-if="selectedProgram.selectEnrollmentDatesInFuture">
-                                <input type="text" placeholder="yyyy-mm-dd" name="dateOfEnrollment" class="form-control" ng-date ng-model="newEnrollment.dateOfEnrollment" ng-required="true"/>
-                            </span>
-                            <span ng-if="!selectedProgram.selectEnrollmentDatesInFuture">
-                                <input type="text" placeholder="yyyy-mm-dd" name="dateOfEnrollment" class="form-control" ng-date ng-model="newEnrollment.dateOfEnrollment" max-date="today" ng-required="true"/>
-                            </span>
+                            <input type="text" 
+                                   placeholder="yyyy-mm-dd" 
+                                   name="dateOfEnrollment" 
+                                   class="form-control" 
+                                   ng-date 
+                                   max-date="selectedProgram.selectEnrollmentDatesInFuture ? '' : today"
+                                   ng-model="newEnrollment.dateOfEnrollment" 
+                                   ng-required="true"/>
                             <span ng-show="outerForm.submitted && outerForm.dateOfEnrollment.$invalid" class="red">{{'required'| translate}}</span>
                         </td>
                     </tr>     
@@ -86,12 +88,13 @@
                             {{selectedProgram.dateOfIncidentDescription}}
                         </td>
                         <td class="col-md-6">
-                            <span ng-if="selectedProgram.selectIncidentDatesInFuture">
-                                <input type="text" placeholder="yyyy-mm-dd" class="form-control" ng-date ng-model="newEnrollment.dateOfIncident" />                        
-                            </span>
-                            <span ng-if="!selectedProgram.selectIncidentDatesInFuture">
-                                <input type="text" placeholder="yyyy-mm-dd" class="form-control" ng-date ng-model="newEnrollment.dateOfIncident" max-date="today"/>                        
-                            </span>
+                            <input type="text" 
+                                   placeholder="yyyy-mm-dd" 
+                                   class="form-control" 
+                                   ng-date
+                                   max-date="selectedProgram.selectIncidentDatesInFuture ? '' : today"
+                                   ng-model="newEnrollment.dateOfIncident" 
+                                   max-date="today"/>
                         </td>
                     </tr>
                 </table>
