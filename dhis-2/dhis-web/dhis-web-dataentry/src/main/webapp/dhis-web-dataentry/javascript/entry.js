@@ -181,7 +181,7 @@ function saveVal( dataElementId, optionComboId, fieldId )
     {
         if ( type == 'string' || type == 'int' || type == 'number' || type == 'posInt' || type == 'negInt' || type == 'zeroPositiveInt' || type == 'unitInterval' || type == 'percentage' )
         {
-            if ( value.length > 255 )
+            if ( value.length > dhis2.de.cst.valueMaxLength )
             {
                 return dhis2.de.alertField( fieldId, i18n_value_too_long + '\n\n' + dataElementName );
             }

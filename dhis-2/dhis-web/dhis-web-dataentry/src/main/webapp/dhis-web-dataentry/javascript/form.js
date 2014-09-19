@@ -83,6 +83,7 @@ dhis2.de.cst.defaultName = '[unknown]';
 dhis2.de.cst.dropDownMaxItems = 30;
 dhis2.de.cst.formulaPattern = /#\{.+?\}/g;
 dhis2.de.cst.separator = '.';
+dhis2.de.cst.valueMaxLength = 50000;
 
 // Colors
 

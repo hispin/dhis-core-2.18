@@ -22,7 +22,7 @@
     <many-to-one name="categoryOptionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
                      column="categoryoptioncomboid" foreign-key="fk_datavalueaudit_categoryoptioncomboid" not-null="true"/>
 
-    <property name="value" length="255" />
+    <property name="value" length="50000" />
 
     <property name="timestamp" column="timestamp" type="timestamp" not-null="true" index="id_datavalueaudit_timestamp"/>
 

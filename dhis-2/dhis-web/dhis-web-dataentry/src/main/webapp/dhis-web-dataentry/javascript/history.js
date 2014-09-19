@@ -5,7 +5,7 @@ function saveComment()
 	
     var commentValue = $( '#commentTextArea' ).val();
 
-    if ( commentValue.length > 360 )
+    if ( commentValue.length > dhis2.de.cst.valueMaxLength )
     {
         markComment( dhis2.de.cst.colorYellow );
         window.alert(i18n_value_too_long + " for comment field");
