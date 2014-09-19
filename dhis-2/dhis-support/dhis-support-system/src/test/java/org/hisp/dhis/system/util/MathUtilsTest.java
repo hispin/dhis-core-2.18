@@ -215,6 +215,7 @@ public class MathUtilsTest
         assertFalse( MathUtils.isInteger( " 1" ) );
         assertFalse( MathUtils.isInteger( "1 " ) );
         assertFalse( MathUtils.isInteger( "1.2345" ) );
+        assertFalse( MathUtils.isInteger( "12147483647" ) );
     }
 
     @Test
