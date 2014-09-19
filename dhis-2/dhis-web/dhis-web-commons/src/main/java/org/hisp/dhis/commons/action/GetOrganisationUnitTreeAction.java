@@ -197,14 +197,14 @@ public class GetOrganisationUnitTreeAction
 
         User user = currentUserService.getCurrentUser();
 
-        if ( user.getOrganisationUnits() != null && user.getOrganisationUnits().size() > 0 )
+        if ( user != null && user.getOrganisationUnits() != null && user.getOrganisationUnits().size() > 0 )
         {
             userOrganisationUnits = new ArrayList<>( user.getOrganisationUnits() );
             rootOrganisationUnits = new ArrayList<>( user.getOrganisationUnits() );
         }
         else
         {
-            if ( user.getOrganisationUnits() != null && currentUserService.currentUserIsSuper() )
+            if ( user != null && user.getOrganisationUnits() != null && currentUserService.currentUserIsSuper() )
             {
                 userOrganisationUnits = new ArrayList<>( organisationUnitService.getRootOrganisationUnits() );
                 rootOrganisationUnits = new ArrayList<>( organisationUnitService.getRootOrganisationUnits() );

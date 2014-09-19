@@ -215,7 +215,7 @@ public class GetMetaDataAction
     {
         User user = currentUserService.getCurrentUser();
 
-        if ( user.getOrganisationUnits().isEmpty() )
+        if ( user != null && user.getOrganisationUnits().isEmpty() )
         {
             emptyOrganisationUnits = true;
 
