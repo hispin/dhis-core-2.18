@@ -34,7 +34,7 @@ $( document ).ready( function() {
     <tr>
 		<td valign="top">
 			<div id="commentOptionDiv" style="display:none;"><input type="text" id="commentOptionSet" style="width:240px"></div>
-			<textarea id="commentTextArea" maxlength="360" style="height:130px; width:240px;">$!encoder.htmlEncode( $dataValue.comment )</textarea><br>
+			<textarea id="commentTextArea" style="height:130px; width:240px;">$!encoder.htmlEncode( $dataValue.comment )</textarea><br>
 			<input type="button" value="$i18n.getString( 'save_comment' )" style="width:130px" onclick="saveComment()">
 		</td>		
         <td valign="top">

@@ -28,20 +28,28 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_DATE;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_NEGATIVE_INT;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_NUMBER;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_PERCENTAGE;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_POSITIVE_INT;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_TRUE_ONLY;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_UNIT_INTERVAL;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_ZERO_OR_POSITIVE_INT;
+
+import java.awt.geom.Point2D;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.validator.routines.DateValidator;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.datavalue.DataValue;
-
-import java.awt.geom.Point2D;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.hisp.dhis.dataelement.DataElement.*;
 
 /**
  * @author Lars Helge Overland
@@ -53,6 +61,7 @@ public class ValidationUtils
     private static Pattern DIGIT_PATTERN = Pattern.compile( ".*\\d.*" );
     private static Pattern UPPERCASE_PATTERN = Pattern.compile( ".*[A-Z].*" );
 
+    private static int VALUE_MAX_LENGTH = 50000;
     private static int LONG_MAX = 180;
     private static int LONG_MIN = -180;
     private static int LAT_MAX = 90;
@@ -272,12 +281,9 @@ public class ValidationUtils
             return "data_element_or_type_null_or_empty";
         }
 
-        List<String> types = Arrays.asList( VALUE_TYPE_STRING, VALUE_TYPE_INT, VALUE_TYPE_NUMBER, 
-            VALUE_TYPE_POSITIVE_INT, VALUE_TYPE_NEGATIVE_INT, VALUE_TYPE_ZERO_OR_POSITIVE_INT );
-
         String type = dataElement.getDetailedNumberType();
 
-        if ( types.contains( type ) && value.length() > 255 )
+        if ( value.length() > VALUE_MAX_LENGTH )
         {
             return "value_length_greater_than_max_length";
         }
@@ -366,7 +372,7 @@ public class ValidationUtils
             return null;
         }
         
-        if ( comment.length() > 360 )
+        if ( comment.length() > VALUE_MAX_LENGTH )
         {
             return "comment_too_long";
         }
