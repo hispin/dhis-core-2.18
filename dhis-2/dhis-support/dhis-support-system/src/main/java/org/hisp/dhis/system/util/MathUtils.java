@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import org.apache.commons.validator.routines.DoubleValidator;
+import org.apache.commons.validator.routines.IntegerValidator;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.expression.Operator;
 import org.nfunk.jep.JEP;
@@ -44,6 +46,9 @@ import org.nfunk.jep.JEP;
 public class MathUtils
 {
     public static final Double ZERO = new Double( 0 );
+    
+    private static DoubleValidator DOUBLE_VALIDATOR = new DoubleValidator();
+    private static IntegerValidator INT_VALIDATOR = new IntegerValidator();
     
     private static final double TOLERANCE = 0.01; 
     
@@ -301,7 +306,7 @@ public class MathUtils
      */
     public static boolean isNumeric( String value )
     {
-        return value != null && NUMERIC_PATTERN.matcher( value ).matches();
+        return value != null && DOUBLE_VALIDATOR.isValid( value ) && NUMERIC_PATTERN.matcher( value ).matches();
     }
 
     /**
@@ -313,7 +318,7 @@ public class MathUtils
      */
     public static boolean isNumericLenient( String value )
     {
-        return value != null && NUMERIC_LENIENT_PATTERN.matcher( value ).matches();
+        return value != null && DOUBLE_VALIDATOR.isValid( value ) && NUMERIC_LENIENT_PATTERN.matcher( value ).matches();
     }
     
     /**
@@ -363,7 +368,7 @@ public class MathUtils
      */
     public static boolean isInteger( String value )
     {
-        return value != null && INT_PATTERN.matcher( value ).matches();
+        return value != null && INT_VALIDATOR.isValid( value ) && INT_PATTERN.matcher( value ).matches();
     }
 
     /**
@@ -376,7 +381,7 @@ public class MathUtils
      */
     public static boolean isPositiveInteger( String value )
     {
-        return value != null && POSITIVE_INT_PATTERN.matcher( value ).matches();
+        return value != null && INT_VALIDATOR.isValid( value ) && POSITIVE_INT_PATTERN.matcher( value ).matches();
     }    
     
     /**
@@ -389,7 +394,7 @@ public class MathUtils
      */
     public static boolean isZeroOrPositiveInteger( String value )
     {
-        return value != null && POSITIVE_OR_ZERO_INT_PATTERN.matcher( value ).matches();
+        return value != null && INT_VALIDATOR.isValid( value ) && POSITIVE_OR_ZERO_INT_PATTERN.matcher( value ).matches();
     }
 
     /**
@@ -402,7 +407,7 @@ public class MathUtils
      */
     public static boolean isNegativeInteger( String value )
     {
-        return value != null && NEGATIVE_INT_PATTERN.matcher( value ).matches();
+        return value != null && INT_VALIDATOR.isValid( value ) && NEGATIVE_INT_PATTERN.matcher( value ).matches();
     }
 
     /**
