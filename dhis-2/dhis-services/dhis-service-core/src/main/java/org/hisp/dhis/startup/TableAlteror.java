@@ -736,9 +736,6 @@ public class TableAlteror
         executeSql( "alter table indicator drop column sortorder" );
         executeSql( "alter table dataset drop column sortorder" );
         
-        executeSql( "alter table datavalue alter column value type character varying" );
-        executeSql( "alter table datavalue alter column comment type character varying" );
-        
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeCompleteDataSetRegistrationsWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
