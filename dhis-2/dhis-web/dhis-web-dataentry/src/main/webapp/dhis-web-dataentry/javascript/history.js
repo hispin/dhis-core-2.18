@@ -5,14 +5,6 @@ function saveComment()
 	
     var commentValue = $( '#commentTextArea' ).val();
 
-    if ( commentValue.length > 360 )
-    {
-        markComment( dhis2.de.cst.colorYellow );
-        window.alert(i18n_value_too_long + " for comment field");
-
-        return;
-    }
-
     var commentSaver = new CommentSaver( currentDataElementId, currentOptionComboId, commentValue );
 
     commentSaver.save();
