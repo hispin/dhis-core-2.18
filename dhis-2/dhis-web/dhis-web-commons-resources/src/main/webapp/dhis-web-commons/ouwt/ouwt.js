@@ -427,7 +427,10 @@ function Selection()
         } else {
             selection.busy( true );
 
-            $.post( organisationUnitTreePath + "clearselected.action", function() {
+            $.ajax( {
+                url: organisationUnitTreePath + "clearselected.action",
+                type: 'POST'
+            }).done(function() {
                 var selected = selection.getSelected();
 
                 if( multipleSelectionAllowed ) {
@@ -458,7 +461,9 @@ function Selection()
                         fn();
                     } );
                 }
-            } );
+            }).always(function() {
+                selection.busy( false );
+            });
         }
     };
 
@@ -559,7 +564,7 @@ function Selection()
                     type:'POST',
                     timeout:10000,
                     complete: function() {
-                        selection.busy(false);
+                        selection.busy( false );
                         selection.responseReceived();
                     }
                 } );
