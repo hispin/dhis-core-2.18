@@ -398,7 +398,7 @@ public class DateTimeUnit
         if ( month != that.month ) return false;
         if ( second != that.second ) return false;
         if ( year != that.year ) return false;
-        if ( !timeZone.equals( that.timeZone ) ) return false;
+        // if ( !timeZone.equals( that.timeZone ) ) return false;
 
         return true;
     }
@@ -414,7 +414,7 @@ public class DateTimeUnit
         result = 31 * result + minute;
         result = 31 * result + second;
         result = 31 * result + millis;
-        result = 31 * result + timeZone.hashCode();
+        // result = 31 * result + timeZone.hashCode();
         return result;
     }
 
