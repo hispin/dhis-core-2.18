@@ -28,10 +28,9 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
@@ -44,9 +43,13 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
-import static org.hisp.dhis.reporttable.ReportTableService.*;
+import static org.hisp.dhis.reporttable.ReportTableService.MODE_REPORT;
+import static org.hisp.dhis.reporttable.ReportTableService.MODE_REPORT_TABLE;
 
 /**
  * @author Lars Helge Overland
@@ -106,7 +109,7 @@ public class GetReportParamsAction
     {
         this.mode = mode;
     }
-    
+
     private String type;
 
     public String getType()
@@ -129,10 +132,10 @@ public class GetReportParamsAction
     {
         return reportParams;
     }
-    
-    private List<Period> periods;
 
-    public List<Period> getPeriods()
+    private List<IdentifiableObject> periods = new ArrayList<>();
+
+    public List<IdentifiableObject> getPeriods()
     {
         return periods;
     }
@@ -147,53 +150,57 @@ public class GetReportParamsAction
         {
             return SUCCESS;
         }
-                    
+
         RelativePeriods relatives = null;
-        
+
         if ( MODE_REPORT_TABLE.equals( mode ) )
         {
             ReportTable reportTable = reportTableService.getReportTable( uid );
-        
+
             if ( reportTable != null )
             {
-                reportParams = reportTable.getReportParams();                                
+                reportParams = reportTable.getReportParams();
                 relatives = reportTable.getRelatives();
             }
         }
         else if ( MODE_REPORT.equals( mode ) )
         {
             Report report = reportService.getReport( uid );
-            
+
             if ( report != null && report.isTypeReportTable() )
             {
-                reportParams = report.getReportTable().getReportParams();                
+                reportParams = report.getReportTable().getReportParams();
                 relatives = report.getReportTable().getRelatives();
             }
-            else if ( report != null && ( report.isTypeJdbc() || report.isTypeHtml() ) )
+            else if ( report != null && (report.isTypeJdbc() || report.isTypeHtml()) )
             {
-                reportParams = report.getReportParams();                
+                reportParams = report.getReportParams();
                 relatives = report.getRelatives();
             }
-            
+
             if ( type == null && report != null )
             {
                 type = report.getType(); // Set type based on report
             }
         }
-        
+
         if ( reportParams != null && reportParams.isParamReportingMonth() && relatives != null )
         {
             CalendarPeriodType periodType = (CalendarPeriodType) relatives.getPeriodType();
-            periods = periodType.generateLast5Years( new Date() );
+            List<Period> periods = periodType.generateLast5Years( new Date() );
             Collections.reverse( periods );
             FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
-            
-            for ( Period period : periods )
+
+            for ( Period period_ : periods )
             {
-                period.setName( format.formatPeriod( period ) );
+                BaseIdentifiableObject period = new BaseIdentifiableObject();
+                period.setUid( period_.getIsoDate() );
+                period.setDisplayName( format.formatPeriod( period_ ) );
+
+                this.periods.add( period );
             }
         }
-        
+
         return SUCCESS;
     }
 }
