@@ -56,4 +56,10 @@ public class Iso8601Calendar extends ChronologyBasedCalendar
     {
         return "iso8601";
     }
+
+    @Override
+    public boolean isIso8601()
+    {
+        return true;
+    }
 }

@@ -56,4 +56,10 @@ public class GregorianCalendar extends ChronologyBasedCalendar
     {
         return "gregorian";
     }
+
+    @Override
+    public boolean isIso8601()
+    {
+        return true;
+    }
 }
