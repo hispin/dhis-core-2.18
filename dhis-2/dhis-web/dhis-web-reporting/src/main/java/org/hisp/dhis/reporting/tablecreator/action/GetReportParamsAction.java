@@ -29,11 +29,14 @@ package org.hisp.dhis.reporting.tablecreator.action;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
@@ -191,11 +194,23 @@ public class GetReportParamsAction
             Collections.reverse( periods );
             FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
 
+            Calendar calendar = PeriodType.getCalendar();
+
             for ( Period period_ : periods )
             {
                 BaseIdentifiableObject period = new BaseIdentifiableObject();
-                period.setUid( period_.getIsoDate() );
-                period.setDisplayName( format.formatPeriod( period_ ) );
+
+                if ( calendar.isIso8601() )
+                {
+                    period.setUid( period_.getIsoDate() );
+                    period.setDisplayName( format.formatPeriod( period_ ) );
+                }
+                else
+                {
+                    DateTimeUnit dateTimeUnit = calendar.fromIso( DateTimeUnit.fromJdkDate( period_.getStartDate() ) );
+                    period.setUid( period_.getPeriodType().getIsoDate( dateTimeUnit ) );
+                    period.setDisplayName( format.formatPeriod( period_ ) );
+                }
 
                 this.periods.add( period );
             }
