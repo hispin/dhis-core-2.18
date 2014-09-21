@@ -253,55 +253,55 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     public DateTimeUnit plusDays( DateTimeUnit dateTimeUnit, int days )
     {
         DateTime dateTime = dateTimeUnit.toJodaDateTime( chronology );
-        return DateTimeUnit.fromJodaDateTime( dateTime.plusDays( days ) );
+        return DateTimeUnit.fromJodaDateTime( dateTime.plusDays( days ), dateTimeUnit.isIso8601() );
     }
 
     @Override
     public DateTimeUnit minusDays( DateTimeUnit dateTimeUnit, int days )
     {
         DateTime dateTime = dateTimeUnit.toJodaDateTime( chronology );
-        return DateTimeUnit.fromJodaDateTime( dateTime.minusDays( days ) );
+        return DateTimeUnit.fromJodaDateTime( dateTime.minusDays( days ), dateTimeUnit.isIso8601() );
     }
 
     @Override
     public DateTimeUnit plusWeeks( DateTimeUnit dateTimeUnit, int weeks )
     {
         DateTime dateTime = dateTimeUnit.toJodaDateTime( chronology );
-        return DateTimeUnit.fromJodaDateTime( dateTime.plusWeeks( weeks ) );
+        return DateTimeUnit.fromJodaDateTime( dateTime.plusWeeks( weeks ), dateTimeUnit.isIso8601() );
     }
 
     @Override
     public DateTimeUnit minusWeeks( DateTimeUnit dateTimeUnit, int weeks )
     {
         DateTime dateTime = dateTimeUnit.toJodaDateTime( chronology );
-        return DateTimeUnit.fromJodaDateTime( dateTime.minusWeeks( weeks ) );
+        return DateTimeUnit.fromJodaDateTime( dateTime.minusWeeks( weeks ), dateTimeUnit.isIso8601() );
     }
 
     @Override
     public DateTimeUnit plusMonths( DateTimeUnit dateTimeUnit, int months )
     {
         DateTime dateTime = dateTimeUnit.toJodaDateTime( chronology );
-        return DateTimeUnit.fromJodaDateTime( dateTime.plusMonths( months ) );
+        return DateTimeUnit.fromJodaDateTime( dateTime.plusMonths( months ), dateTimeUnit.isIso8601() );
     }
 
     @Override
     public DateTimeUnit minusMonths( DateTimeUnit dateTimeUnit, int months )
     {
         DateTime dateTime = dateTimeUnit.toJodaDateTime( chronology );
-        return DateTimeUnit.fromJodaDateTime( dateTime.minusMonths( months ) );
+        return DateTimeUnit.fromJodaDateTime( dateTime.minusMonths( months ), dateTimeUnit.isIso8601() );
     }
 
     @Override
     public DateTimeUnit plusYears( DateTimeUnit dateTimeUnit, int years )
     {
         DateTime dateTime = dateTimeUnit.toJodaDateTime( chronology );
-        return DateTimeUnit.fromJodaDateTime( dateTime.plusYears( years ) );
+        return DateTimeUnit.fromJodaDateTime( dateTime.plusYears( years ), dateTimeUnit.isIso8601() );
     }
 
     @Override
     public DateTimeUnit minusYears( DateTimeUnit dateTimeUnit, int years )
     {
         DateTime dateTime = dateTimeUnit.toJodaDateTime( chronology );
-        return DateTimeUnit.fromJodaDateTime( dateTime.minusYears( years ) );
+        return DateTimeUnit.fromJodaDateTime( dateTime.minusYears( years ), dateTimeUnit.isIso8601() );
     }
 }

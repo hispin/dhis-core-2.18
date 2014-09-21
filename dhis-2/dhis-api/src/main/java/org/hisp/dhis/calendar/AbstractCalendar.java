@@ -249,4 +249,10 @@ public abstract class AbstractCalendar implements Calendar
 
         return DEFAULT_I18N_DAY_SHORT_NAMES[day - 1];
     }
+
+    @Override
+    public boolean isIso8601()
+    {
+        return false;
+    }
 }

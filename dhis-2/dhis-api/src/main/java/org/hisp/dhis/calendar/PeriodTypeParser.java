@@ -34,4 +34,6 @@ package org.hisp.dhis.calendar;
 public interface PeriodTypeParser
 {
     public DateInterval parse( String period );
+
+    public DateInterval parse( Calendar calendar, String period );
 }
