@@ -211,15 +211,13 @@ public class GetOrganisationUnitAction
 
         if ( organisationUnit.getOpeningDate() != null )
         {
-            DateTimeUnit dateTimeUnit = DateTimeUnit.fromJdkDate( organisationUnit.getOpeningDate() );
-            dateTimeUnit = calendarService.getSystemCalendar().fromIso( dateTimeUnit );
+            DateTimeUnit dateTimeUnit = calendarService.getSystemCalendar().fromIso( organisationUnit.getOpeningDate() );
             openingDate = calendarService.getSystemCalendar().formattedDate( dateTimeUnit );
         }
 
         if ( organisationUnit.getClosedDate() != null )
         {
-            DateTimeUnit dateTimeUnit = DateTimeUnit.fromJdkDate( organisationUnit.getClosedDate() );
-            dateTimeUnit = calendarService.getSystemCalendar().fromIso( dateTimeUnit );
+            DateTimeUnit dateTimeUnit = calendarService.getSystemCalendar().fromIso( organisationUnit.getClosedDate() );
             closedDate = calendarService.getSystemCalendar().formattedDate( dateTimeUnit );
         }
 

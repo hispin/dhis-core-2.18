@@ -78,8 +78,8 @@ public class PartitionUtils
 
         Partitions partitions = new Partitions();
 
-        int startYear = PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) ).getYear();
-        int endYear = PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( period.getEndDate() ) ).getYear();
+        int startYear = PeriodType.getCalendar().fromIso( period.getStartDate() ).getYear();
+        int endYear = PeriodType.getCalendar().fromIso( period.getEndDate() ).getYear();
 
         while ( startYear <= endYear )
         {

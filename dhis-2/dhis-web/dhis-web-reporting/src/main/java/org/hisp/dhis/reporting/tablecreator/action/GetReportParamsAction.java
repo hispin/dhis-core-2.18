@@ -207,7 +207,7 @@ public class GetReportParamsAction
                 }
                 else
                 {
-                    DateTimeUnit dateTimeUnit = calendar.fromIso( DateTimeUnit.fromJdkDate( period_.getStartDate() ) );
+                    DateTimeUnit dateTimeUnit = calendar.fromIso( period_.getStartDate() );
                     period.setUid( period_.getPeriodType().getIsoDate( dateTimeUnit ) );
                     period.setDisplayName( format.formatPeriod( period_ ) );
                 }
