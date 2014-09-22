@@ -36,6 +36,7 @@ import static org.hisp.dhis.chart.BaseChart.TYPE_PIE;
 import static org.hisp.dhis.chart.BaseChart.TYPE_RADAR;
 import static org.hisp.dhis.chart.BaseChart.TYPE_STACKED_BAR;
 import static org.hisp.dhis.chart.BaseChart.TYPE_STACKED_COLUMN;
+import static org.hisp.dhis.chart.BaseChart.TYPE_METER;
 import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
@@ -96,7 +97,10 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.DatasetRenderingOrder;
+import org.jfree.chart.plot.DialShape;
 import org.jfree.chart.plot.Marker;
+import org.jfree.chart.plot.MeterInterval;
+import org.jfree.chart.plot.MeterPlot;
 import org.jfree.chart.plot.MultiplePiePlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.Plot;
@@ -110,8 +114,11 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.renderer.category.StackedAreaRenderer;
 import org.jfree.chart.renderer.category.StackedBarRenderer;
 import org.jfree.chart.title.TextTitle;
+import org.jfree.data.Range;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultValueDataset;
+import org.jfree.data.general.ValueDataset;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.util.TableOrder;
 import org.springframework.transaction.annotation.Transactional;
@@ -135,6 +142,8 @@ public class DefaultChartService
         Color.decode( "#6a33cf" ), Color.decode( "#4a7833" ) };
 
     private static final Color COLOR_TRANSPARENT = new Color( 255, 255, 255, 0 );
+    private static final Color COLOR_LIGHT_GRAY = Color.decode( "#dddddd" );
+    private static final Color COLOR_LIGHTER_GRAY = Color.decode( "#eeeeee" );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -493,8 +502,6 @@ public class DefaultChartService
 
     /**
      * Returns a stacked area renderer.
-     * <p/>
-     * TODO centralize these renderer methods.
      */
     private AreaRenderer getStackedAreaRenderer()
     {
@@ -529,6 +536,7 @@ public class DefaultChartService
     private JFreeChart getJFreeChart( BaseChart chart )
     {
         final CategoryDataset[] dataSets = getCategoryDataSet( chart );
+        final CategoryDataset dataSet = dataSets[0];
 
         final BarRenderer barRenderer = getBarRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
@@ -541,22 +549,22 @@ public class DefaultChartService
 
         if ( chart.isType( TYPE_LINE ) )
         {
-            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), lineRenderer );
+            plot = new CategoryPlot( dataSet, new CategoryAxis(), new NumberAxis(), lineRenderer );
             plot.setOrientation( PlotOrientation.VERTICAL );
         }
         else if ( chart.isType( TYPE_COLUMN ) )
         {
-            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), barRenderer );
+            plot = new CategoryPlot( dataSet, new CategoryAxis(), new NumberAxis(), barRenderer );
             plot.setOrientation( PlotOrientation.VERTICAL );
         }
         else if ( chart.isType( TYPE_BAR ) )
         {
-            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), barRenderer );
+            plot = new CategoryPlot( dataSet, new CategoryAxis(), new NumberAxis(), barRenderer );
             plot.setOrientation( PlotOrientation.HORIZONTAL );
         }
         else if ( chart.isType( TYPE_AREA ) )
         {
-            return getStackedAreaChart( chart, dataSets[0] );
+            return getStackedAreaChart( chart, dataSet );
         }
         else if ( chart.isType( TYPE_PIE ) )
         {
@@ -564,15 +572,22 @@ public class DefaultChartService
         }
         else if ( chart.isType( TYPE_STACKED_COLUMN ) )
         {
-            return getStackedBarChart( chart, dataSets[0], false );
+            return getStackedBarChart( chart, dataSet, false );
         }
         else if ( chart.isType( TYPE_STACKED_BAR ) )
         {
-            return getStackedBarChart( chart, dataSets[0], true );
+            return getStackedBarChart( chart, dataSet, true );
         }
         else if ( chart.isType( TYPE_RADAR ) )
         {
-            return getRadarChart( chart, dataSets[0] );
+            return getRadarChart( chart, dataSet );
+        }
+        else if ( chart.isType( TYPE_METER ) )
+        {
+            Number number = dataSet.getValue( 0, 0 );
+            ValueDataset valueDataSet = new DefaultValueDataset( number );
+            
+            return getMeterChart( chart, valueDataSet );
         }
         else
         {
@@ -701,6 +716,40 @@ public class DefaultChartService
         }
 
         return multiplePieChart;
+    }
+    
+    private JFreeChart getMeterChart( BaseChart chart, ValueDataset dataSet )
+    {
+        MeterPlot meterPlot = new MeterPlot( dataSet );
+
+        meterPlot.setUnits( "" );
+        meterPlot.setRange( new Range( 0.0d, 100d ) );
+                
+        for ( int i = 0; i < 10; i++ )
+        {
+            double start = i * 10;
+            double end = start + 10;
+            String label = String.valueOf( start );
+            
+            meterPlot.addInterval( new MeterInterval( label, new Range( start, end ), COLOR_LIGHT_GRAY, null, COLOR_LIGHT_GRAY ) );
+        }
+        
+        meterPlot.setMeterAngle(180);
+        meterPlot.setDialBackgroundPaint( COLOR_LIGHT_GRAY );
+        meterPlot.setDialShape( DialShape.CHORD );
+        meterPlot.setNeedlePaint( COLORS[0] );
+        meterPlot.setTickLabelsVisible( true );
+        meterPlot.setTickLabelFont( LABEL_FONT );
+        meterPlot.setTickLabelPaint( Color.BLACK );
+        meterPlot.setTickPaint( COLOR_LIGHTER_GRAY );
+        meterPlot.setValueFont( TITLE_FONT );
+        meterPlot.setValuePaint( Color.BLACK );
+        
+        JFreeChart meterChart = new JFreeChart( chart.getName(), meterPlot );
+        setBasicConfig( meterChart, chart );
+        meterChart.removeLegend();
+        
+        return meterChart;
     }
 
     /**
