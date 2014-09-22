@@ -28,9 +28,14 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.Partitions;
-import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Cal;
@@ -38,12 +43,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.util.UniqueArrayList;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Lars Helge Overland

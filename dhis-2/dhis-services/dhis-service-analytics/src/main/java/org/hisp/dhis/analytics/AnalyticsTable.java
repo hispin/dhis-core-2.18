@@ -28,12 +28,11 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.calendar.DateTimeUnit;
+import java.util.List;
+
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
-
-import java.util.List;
 
 /**
  * @author Lars Helge Overland
