@@ -1,12 +1,108 @@
 
 function submitMessage()
 {
-	$( "#messageForm" ).submit();
+    $( "#messageForm" ).submit();
 }
 
 function removeMessage( id )
 {
     removeItem( id, "", i18n_confirm_delete_message, "removeMessage.action" );
+}
+
+function removeMessages( messages )
+{
+    if( typeof messages === "undefined" || messages.length < 1 )
+    {
+        return;
+    }
+
+    var confirmed = window.confirm( i18n_confirm_delete_all_selected_messages );
+
+    if ( confirmed )
+    {
+        setHeaderWaitMessage( i18n_deleting );
+
+        $.ajax(
+        {
+            url: "../../api/messageConversations?" + $.param( { mc: messages }, true ),
+            contentType: "application/json",
+            dataType: "json",
+            type: "DELETE",
+            success: function( response )
+            {
+                for( var i = 0 ; i < response.removed.length ; i++ )
+                {
+                    $( "#messages" ).find( "[name='" + response.removed[i] + "']" ).remove();
+                }
+                setHeaderDelayMessage( i18n_messages_were_deleted );
+            },
+            error: function( response )
+            {
+                showErrorMessage( response.message, 3 );
+            }
+        });
+    }
+}
+
+function markMessagesRead( messages )
+{
+    if( messages.length < 1 )
+    {
+        return;
+    }
+
+    $.ajax(
+    {
+        url: "../../api/messageConversations/read",
+        type: "PUT",
+        data: JSON.stringify( messages ),
+        contentType: "application/json",
+        dataType: "json",
+        success: function( response )
+        {
+            toggleMessagesRead( response.markedRead );
+        },
+        error: function( response )
+        {
+            showErrorMessage( response.message, 3 );
+        }
+    });
+}
+
+function markMessagesUnread( messages )
+{
+    if( messages.length < 1 )
+    {
+        return;
+    }
+
+    $.ajax(
+    {
+        url: "../../api/messageConversations/unread",
+        type: "PUT",
+        data: JSON.stringify( messages ),
+        contentType: "application/json",
+        dataType: "json",
+        success: function( response )
+        {
+            toggleMessagesRead( response.markedUnread );
+        },
+        error: function( response )
+        {
+            showErrorMessage( response.message, 3 );
+        }
+    });
+}
+
+function toggleMessagesRead( messageUids )
+{
+    var messages = $( "#messages" );
+
+    for( var i = 0 ; i < messageUids.length ; i++ )
+    {
+        messages.find( "[name='" + messageUids[i] + "']" ).toggleClass( "unread bold" );
+        messages.find( "input:checkbox" ).removeAttr( "checked" );
+    }
 }
 
 function read( id )

@@ -29,9 +29,11 @@ package org.hisp.dhis.message;
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -198,5 +200,32 @@ public class MessageServiceTest
         assertNotNull( message );
         assertEquals( "Subject", message.getSubject() );
         assertEquals( 2, message.getMessages().size() );       
+    }
+
+    @Test
+    public void testGetMessageConversations()
+    {
+        MessageConversation conversationA = new MessageConversation( "SubjectA", sender );
+        MessageConversation conversationB = new MessageConversation( "SubjectB", sender );
+        MessageConversation conversationC = new MessageConversation( "SubjectC", userA );
+
+        messageService.saveMessageConversation( conversationA );
+        messageService.saveMessageConversation( conversationB );
+        messageService.saveMessageConversation( conversationC );
+
+        String uidA = conversationA.getUid();
+        String uidB = conversationB.getUid();
+
+        messageService.saveMessageConversation( conversationA );
+        messageService.saveMessageConversation( conversationB );
+        messageService.saveMessageConversation( conversationC );
+
+        String[] uids = { uidA, uidB };
+
+        Collection<MessageConversation> conversations = messageService.getMessageConversations( uids );
+
+        assertTrue( conversations.contains( conversationA ) );
+        assertTrue( conversations.contains( conversationB ) );
+        assertFalse( conversations.contains( conversationC ) );
     }
 }

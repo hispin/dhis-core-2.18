@@ -28,6 +28,7 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -270,6 +271,11 @@ public class DefaultMessageService
     {
         return messageConversationStore.getMessageConversations( currentUserService.getCurrentUser(), followUpOnly,
             unreadOnly, first, max );
+    }
+
+    public Collection<MessageConversation> getMessageConversations( String[] messageConversationUids )
+    {
+        return messageConversationStore.getMessageConversations( messageConversationUids );
     }
 
     public int getMessageConversationCount()

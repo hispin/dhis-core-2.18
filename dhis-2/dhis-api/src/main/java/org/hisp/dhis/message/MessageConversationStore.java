@@ -31,6 +31,7 @@ package org.hisp.dhis.message;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.user.User;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -49,6 +50,14 @@ public interface MessageConversationStore
      * @return a list of MessageConversations.
      */
     List<MessageConversation> getMessageConversations( User user, boolean followUpOnly, boolean unreadOnly, Integer first, Integer max );
+
+    /**
+     * Returns the MessageConversations given by the supplied UIDs.
+     *
+     * @param messageConversationUids the UIDs of the MessageConversations to get.
+     * @return a collection of MessageConversations.
+     */
+    Collection<MessageConversation> getMessageConversations( String[] messageConversationUids );
     
     int getMessageConversationCount( User user, boolean followUpOnly, boolean unreadOnly );
     

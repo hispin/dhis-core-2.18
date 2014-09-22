@@ -89,9 +89,19 @@ public class ReadMessageAction
     public String execute()
         throws Exception
     {
+        if( id == null )
+        {
+            return ERROR;
+        }
+
         User user = currentUserService.getCurrentUser();
-        
+
         conversation = messageService.getMessageConversation( id );
+
+        if( conversation == null )
+        {
+            return ERROR;
+        }
                 
         if ( conversation.markRead( user ) )
         {        
