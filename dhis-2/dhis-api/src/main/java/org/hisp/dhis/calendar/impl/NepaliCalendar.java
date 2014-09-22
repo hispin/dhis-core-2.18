@@ -38,6 +38,7 @@ import org.joda.time.Days;
 import org.joda.time.chrono.ISOChronology;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,6 +92,12 @@ public class NepaliCalendar extends AbstractCalendar
         dateTime = dateTime.plusDays( totalDays );
 
         return new DateTimeUnit( DateTimeUnit.fromJodaDateTime( dateTime ), true );
+    }
+
+    @Override
+    public DateTimeUnit fromIso( Date date )
+    {
+        return fromIso( DateTimeUnit.fromJdkDate( date ) );
     }
 
     @Override
