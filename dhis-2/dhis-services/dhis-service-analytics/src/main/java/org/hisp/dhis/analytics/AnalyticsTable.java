@@ -28,12 +28,12 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
 import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
+
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -43,9 +43,9 @@ public class AnalyticsTable
     private String baseName;
 
     private List<String[]> dimensionColumns;
-    
+
     private Period period;
-    
+
     private Program program;
 
     // -------------------------------------------------------------------------
@@ -61,14 +61,14 @@ public class AnalyticsTable
         this.baseName = baseName;
         this.dimensionColumns = dimensionColumns;
     }
-    
+
     public AnalyticsTable( String baseName, List<String[]> dimensionColumns, Period period )
     {
         this.baseName = baseName;
         this.dimensionColumns = dimensionColumns;
         this.period = period;
     }
-    
+
     public AnalyticsTable( String baseName, List<String[]> dimensionColumns, Period period, Program program )
     {
         this.baseName = baseName;
@@ -84,34 +84,34 @@ public class AnalyticsTable
     public String getTableName()
     {
         String name = baseName;
-        
+
         if ( period != null )
         {
-            name += "_" + PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) ).getYear();
+            name += "_" + PeriodType.getCalendar().fromIso( period.getStartDate() ).getYear();
         }
-        
+
         if ( program != null )
         {
             name += "_" + program.getUid();
         }
-        
+
         return name;
     }
-    
+
     public String getTempTableName()
     {
         String name = baseName + AnalyticsTableManager.TABLE_TEMP_SUFFIX;
 
         if ( period != null )
         {
-            name += "_" + PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) ).getYear();
+            name += "_" + PeriodType.getCalendar().fromIso( period.getStartDate() ).getYear();
         }
-        
+
         if ( program != null )
         {
             name += "_" + program.getUid();
         }
-        
+
         return name;
     }
 
@@ -119,12 +119,12 @@ public class AnalyticsTable
     {
         return period != null;
     }
-    
+
     public boolean hasProgram()
     {
         return program != null;
     }
-    
+
     @Override
     public String toString()
     {

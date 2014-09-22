@@ -237,8 +237,8 @@ public class I18nFormat
         Date periodStartDate = period.getStartDate();
         Date periodEndDate = period.getEndDate();
 
-        DateTimeUnit start = PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( periodStartDate ) );
-        DateTimeUnit end = PeriodType.getCalendar().fromIso( DateTimeUnit.fromJdkDate( periodEndDate ) );
+        DateTimeUnit start = PeriodType.getCalendar().fromIso( periodStartDate );
+        DateTimeUnit end = PeriodType.getCalendar().fromIso( periodEndDate );
 
         String startDate;
         String endDate;
