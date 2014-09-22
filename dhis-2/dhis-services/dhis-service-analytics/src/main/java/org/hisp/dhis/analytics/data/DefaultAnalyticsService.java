@@ -338,13 +338,13 @@ public class DefaultAnalyticsService
             dataSourceParams.removeDimension( INDICATOR_DIM_ID );
             dataSourceParams.removeDimension( DATASET_DIM_ID );
 
-            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams );
+            Map<String, Object> aggregatedDataMap = getAggregatedDataValueMapObjectTyped( dataSourceParams );
 
-            for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
+            for ( Map.Entry<String, Object> entry : aggregatedDataMap.entrySet() )
             {
                 grid.addRow();
                 grid.addValues( entry.getKey().split( DIMENSION_SEP ) );
-                grid.addValue( params.isSkipRounding() ? entry.getValue() : MathUtils.getRounded( entry.getValue() ) );
+                grid.addValue( params.isSkipRounding() ? entry.getValue() : getRounded( entry.getValue() ) );
             }
         }
     }
@@ -648,6 +648,19 @@ public class DefaultAnalyticsService
      */
     private Map<String, Double> getAggregatedDataValueMap( DataQueryParams params )
     {
+        return getDoubleMap( getAggregatedValueMap( params, ANALYTICS_TABLE_NAME ) );
+    }
+
+    /**
+     * Generates aggregated values for the given query. Creates a mapping between
+     * a dimension key and the aggregated value. The dimension key is a
+     * concatenation of the identifiers of the dimension items separated by "-".
+     *
+     * @param params the data query parameters.
+     * @return a mapping between a dimension key and the aggregated value.
+     */
+    private Map<String, Object> getAggregatedDataValueMapObjectTyped( DataQueryParams params )
+    {
         return getAggregatedValueMap( params, ANALYTICS_TABLE_NAME );
     }
 
@@ -661,7 +674,7 @@ public class DefaultAnalyticsService
      */
     private Map<String, Double> getAggregatedCompletenessValueMap( DataQueryParams params )
     {
-        return getAggregatedValueMap( params, COMPLETENESS_TABLE_NAME );
+        return getDoubleMap( getAggregatedValueMap( params, COMPLETENESS_TABLE_NAME ) );
     }
 
     /**
@@ -674,7 +687,7 @@ public class DefaultAnalyticsService
      */
     private Map<String, Double> getAggregatedCompletenessTargetMap( DataQueryParams params )
     {
-        return getAggregatedValueMap( params, COMPLETENESS_TARGET_TABLE_NAME );
+        return getDoubleMap( getAggregatedValueMap( params, COMPLETENESS_TARGET_TABLE_NAME ) );
     }
 
     /**
@@ -688,7 +701,7 @@ public class DefaultAnalyticsService
      */
     private Map<String, Double> getAggregatedOrganisationUnitTargetMap( DataQueryParams params )
     {
-        return getAggregatedValueMap( params, ORGUNIT_TARGET_TABLE_NAME );
+        return getDoubleMap( getAggregatedValueMap( params, ORGUNIT_TARGET_TABLE_NAME ) );
     }
 
     /**
@@ -698,7 +711,7 @@ public class DefaultAnalyticsService
      *
      * @param params the data query parameters.
      */
-    private Map<String, Double> getAggregatedValueMap( DataQueryParams params, String tableName )
+    private Map<String, Object> getAggregatedValueMap( DataQueryParams params, String tableName )
     {
         queryPlanner.validateMaintenanceMode();
 
@@ -710,22 +723,22 @@ public class DefaultAnalyticsService
 
         t.getSplitTime( "Planned query, got: " + queryGroups.getLargestGroupSize() + " for optimal: " + optimalQueries );
 
-        Map<String, Double> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         for ( List<DataQueryParams> queries : queryGroups.getSequentialQueries() )
         {
-            List<Future<Map<String, Double>>> futures = new ArrayList<>();
+            List<Future<Map<String, Object>>> futures = new ArrayList<>();
 
             for ( DataQueryParams query : queries )
             {
                 futures.add( analyticsManager.getAggregatedDataValues( query ) );
             }
 
-            for ( Future<Map<String, Double>> future : futures )
+            for ( Future<Map<String, Object>> future : futures )
             {
                 try
                 {
-                    Map<String, Double> taskValues = future.get();
+                    Map<String, Object> taskValues = future.get();
 
                     if ( taskValues != null )
                     {
@@ -1230,7 +1243,7 @@ public class DefaultAnalyticsService
      * in the given grid. Returns an empty map if the grid or cocIndex parameters
      * are null.
      *
-     * @param grid     the grid.
+     * @param grid the grid.
      * @param cocIndex the category option combo index in the grid.
      */
     private Map<String, String> getCocNameMap( Grid grid, Integer cocIndex )
@@ -1262,5 +1275,37 @@ public class DefaultAnalyticsService
         Integer cores = (Integer) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_DATABASE_SERVER_CPUS );
 
         return (cores == null || cores == 0) ? SystemUtils.getCpuCores() : cores;
+    }
+    
+    /**
+     * Converts a String, Object map into a specific String, Double map.
+     * 
+     * @param map the map to convert.
+     */
+    private Map<String, Double> getDoubleMap( Map<String, Object> map )
+    {
+        Map<String, Double> typedMap = new HashMap<>();
+        
+        for ( Map.Entry<String, Object> entry : map.entrySet() )
+        {
+            final Object value = entry.getValue();
+            
+            if ( value != null && Double.class.equals( value.getClass() ) )
+            {
+                typedMap.put( entry.getKey(), (Double) entry.getValue() );
+            }
+        }
+        
+        return typedMap;
+    }
+    
+    /**
+     * Returns the given value. If of class Double the value is rounded.
+     * 
+     * @param value the value to return and potentially round.
+     */
+    private Object getRounded( Object value )
+    {
+        return value != null && Double.class.equals( value.getClass() ) ? MathUtils.getRounded( (Double) value ) : value;
     }
 }
