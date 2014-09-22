@@ -40,6 +40,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -122,6 +123,17 @@ public class HibernateMessageConversationStore
         } );
 
         return conversations;
+    }
+
+    @Override
+    public Collection<MessageConversation> getMessageConversations( String[] messageConversationUids )
+    {
+        String hql = ( "FROM MessageConversation where uid in :messageConversationUids" );
+
+        Query query = getQuery( hql );
+        query.setParameterList( "messageConversationUids", messageConversationUids );
+
+        return query.list();
     }
 
     public int getMessageConversationCount( User user, boolean followUpOnly, boolean unreadOnly )

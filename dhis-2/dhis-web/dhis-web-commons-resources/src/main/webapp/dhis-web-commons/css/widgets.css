@@ -742,6 +742,87 @@ ul.pageSizeSelection input
 }
 
 /*----------------------------------------------------------------------------*/
+/* Multi select/checkbox combo button                                         */
+/*----------------------------------------------------------------------------*/
+
+.multiSelectButton
+{
+    padding: 6px 12px;
+    height: 25px;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    margin-right: 4px;
+    font-weight: bold;
+    font-size: 13px;
+    background-color: #f3f3f3;
+    color: #606060 !important;
+    text-decoration: none !important;
+}
+
+.multiSelectButton:hover
+{
+    text-decoration: none;
+    background-color: #f8f8f8;
+}
+
+.multiSelectButton .downArrow
+{
+    border: thick;
+    border-color: #777777 transparent white;
+    border-style: solid dashed dashed;
+    margin-left: 5px;
+    position: relative;
+    top: 10px;
+}
+
+.multiSelectButton .downArrow:hover
+{
+    border-color: #999999 transparent white;
+}
+
+.multiSelectButton.disabled .downArrow
+{
+    border-color: #e2e2e2 transparent white;
+}
+
+.multiSelectButton input[type='checkbox']
+{
+    margin: 0;
+}
+
+.multiSelectMenu
+{
+    position: absolute;
+    margin-top: -15px;
+    z-index: 999;
+    padding: 1px 1px;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    margin-right: 4px;
+    font-weight: bold;
+    font-size: 13px;
+    background-color: #f3f3f3;
+    color: #606060 !important;
+    text-decoration: none !important;
+}
+
+.multiSelectMenu li
+{
+    float: none !important;
+    display: block;
+    text-decoration: none;
+    color: #606060;
+    padding: 6px 9px;
+}
+
+.multiSelectMenu li:hover
+{
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #f8f8f8;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Placeholders                                                               */
 /*----------------------------------------------------------------------------*/
 

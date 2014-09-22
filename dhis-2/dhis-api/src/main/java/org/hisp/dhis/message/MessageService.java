@@ -28,6 +28,7 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -92,6 +93,8 @@ public interface MessageService
     List<MessageConversation> getMessageConversations( int first, int max );
 
     List<MessageConversation> getMessageConversations( boolean followUpOnly, boolean unreadOnly, int first, int max );
+
+    Collection<MessageConversation> getMessageConversations( String[] messageConversationUids );
 
     int getMessageConversationCount();
 

@@ -213,7 +213,7 @@ public class MessageConversation
         this.setLastMessage( new Date() );
     }
 
-    public void remove( User user )
+    public boolean remove( User user )
     {
         Iterator<UserMessage> iterator = userMessages.iterator();
 
@@ -225,9 +225,10 @@ public class MessageConversation
             {
                 iterator.remove();
 
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     public Set<User> getUsers()
