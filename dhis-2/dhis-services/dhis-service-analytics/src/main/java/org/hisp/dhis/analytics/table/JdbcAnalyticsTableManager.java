@@ -117,7 +117,7 @@ public class JdbcAnalyticsTableManager
             sqlCreate += col[0] + " " + col[1] + ",";
         }
         
-        sqlCreate += "daysxvalue " + dbl + ", daysno integer not null, value " + dbl + ") ";
+        sqlCreate += "daysxvalue " + dbl + ", daysno integer not null, value " + dbl + ", textvalue varchar(50000)) ";
         
         sqlCreate += statementBuilder.getTableOptions( false );
         
@@ -144,13 +144,15 @@ public class JdbcAnalyticsTableManager
                 "dv.value " + statementBuilder.getRegexpMatch() + " '" + MathUtils.NUMERIC_LENIENT_REGEXP + "' " +
                 "and ( dv.value != '0' or de.aggregationtype = 'average' or de.zeroissignificant = true ) ";
             
-            populateTable( table, "cast(dv.value as " + dbl + ")", "int", intClause );
+            populateTable( table, "cast(dv.value as " + dbl + ")", "null", "int", intClause );
             
-            populateTable( table, "1" , DataElement.VALUE_TYPE_BOOL, "dv.value = 'true'" );
+            populateTable( table, "1", "null", DataElement.VALUE_TYPE_BOOL, "dv.value = 'true'" );
     
-            populateTable( table, "0" , DataElement.VALUE_TYPE_BOOL, "dv.value = 'false'" );
+            populateTable( table, "0", "null", DataElement.VALUE_TYPE_BOOL, "dv.value = 'false'" );
             
-            populateTable( table, "1" , DataElement.VALUE_TYPE_TRUE_ONLY, "dv.value = 'true'" );
+            populateTable( table, "1", "null", DataElement.VALUE_TYPE_TRUE_ONLY, "dv.value = 'true'" );
+            
+            populateTable( table, "null", "dv.value", DataElement.VALUE_TYPE_STRING, null );
         }
     
         return null;
@@ -158,7 +160,16 @@ public class JdbcAnalyticsTableManager
     
     // TODO join categoryoptiongroupsetstructure on both categoryoptioncomboid and attributeoptioncomboid
     
-    private void populateTable( AnalyticsTable table, String valueExpression, String valueType, String clause )
+    /**
+     * Populates the given analytics table.
+     * 
+     * @param table analytics table to populate.
+     * @param valueExpression numeric value expression.
+     * @param textValueExpression textual value expression.
+     * @param valueType data element value type to include data for.
+     * @param whereClause where clause to constrain data query.
+     */
+    private void populateTable( AnalyticsTable table, String valueExpression, String textValueExpression, String valueType, String whereClause )
     {
         final String start = DateUtils.getMediumDateString( table.getPeriod().getStartDate() );
         final String end = DateUtils.getMediumDateString( table.getPeriod().getEndDate() );
@@ -170,7 +181,7 @@ public class JdbcAnalyticsTableManager
             sql += col[0] + ",";
         }
         
-        sql += "daysxvalue, daysno, value) select ";
+        sql += "daysxvalue, daysno, value, textvalue) select ";
         
         for ( String[] col : getDimensionColumns( table ) )
         {
@@ -180,7 +191,8 @@ public class JdbcAnalyticsTableManager
         sql += 
             valueExpression + " * ps.daysno as daysxvalue, " +
             "ps.daysno as daysno, " +
-            valueExpression + " as value " +
+            valueExpression + " as value, " +
+            textValueExpression + " as textvalue " +
             "from datavalue dv " +
             "left join _dataelementgroupsetstructure degs on dv.dataelementid=degs.dataelementid " +
             "left join _organisationunitgroupsetstructure ougs on dv.sourceid=ougs.organisationunitid " +
@@ -196,8 +208,12 @@ public class JdbcAnalyticsTableManager
             "and de.domaintype = 'AGGREGATE' " +
             "and pe.startdate >= '" + start + "' " +
             "and pe.startdate <= '" + end + "' " +
-            "and dv.value is not null " + 
-            "and " + clause;
+            "and dv.value is not null ";
+        
+        if ( whereClause != null )
+        {
+            sql += "and " + whereClause;
+        }
 
         log.info( "Populate SQL: "+ sql );
         

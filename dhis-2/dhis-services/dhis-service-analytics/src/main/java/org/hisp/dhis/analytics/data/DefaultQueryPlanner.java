@@ -52,6 +52,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.DataQueryGroups;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.analytics.DataType;
 import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.analytics.partition.PartitionManager;
@@ -233,29 +234,34 @@ public class DefaultQueryPlanner
 
                 for ( DataQueryParams byPeriodType : groupedByPeriodType )
                 {
-                    List<DataQueryParams> groupedByAggregationType = groupByAggregationType( byPeriodType );
-
-                    for ( DataQueryParams byAggregationType : groupedByAggregationType )
+                    List<DataQueryParams> groupedByDataType = groupByDataType( byPeriodType );
+                    
+                    for ( DataQueryParams byDataType : groupedByDataType )
                     {
-                        if ( AVERAGE_INT_DISAGGREGATION.equals( byAggregationType.getAggregationType() ) )
+                        List<DataQueryParams> groupedByAggregationType = groupByAggregationType( byDataType );
+    
+                        for ( DataQueryParams byAggregationType : groupedByAggregationType )
                         {
-                            List<DataQueryParams> groupedByDataPeriodType = groupByDataPeriodType( byAggregationType );
-                            
-                            for ( DataQueryParams byDataPeriodType : groupedByDataPeriodType )
+                            if ( AVERAGE_INT_DISAGGREGATION.equals( byAggregationType.getAggregationType() ) )
                             {
-                                byDataPeriodType.setPartitions( byPartition.getPartitions() );
-                                byDataPeriodType.setPeriodType( byPeriodType.getPeriodType() );
-                                byDataPeriodType.setAggregationType( byAggregationType.getAggregationType() );
+                                List<DataQueryParams> groupedByDataPeriodType = groupByDataPeriodType( byAggregationType );
                                 
-                                queries.add( byDataPeriodType );
+                                for ( DataQueryParams byDataPeriodType : groupedByDataPeriodType )
+                                {
+                                    byDataPeriodType.setPartitions( byPartition.getPartitions() );
+                                    byDataPeriodType.setPeriodType( byPeriodType.getPeriodType() );
+                                    byDataPeriodType.setAggregationType( byAggregationType.getAggregationType() );
+                                    
+                                    queries.add( byDataPeriodType );
+                                }
                             }
-                        }
-                        else
-                        {
-                            byAggregationType.setPartitions( byPartition.getPartitions() );
-                            byAggregationType.setPeriodType( byPeriodType.getPeriodType() );
-                            
-                            queries.add( byAggregationType );
+                            else
+                            {
+                                byAggregationType.setPartitions( byPartition.getPartitions() );
+                                byAggregationType.setPeriodType( byPeriodType.getPeriodType() );
+                                
+                                queries.add( byAggregationType );
+                            }
                         }
                     }
                 }
@@ -500,7 +506,38 @@ public class DefaultQueryPlanner
         
         return queries;    
     }
-    
+
+    private List<DataQueryParams> groupByDataType( DataQueryParams params )
+    {
+        List<DataQueryParams> queries = new ArrayList<>();
+        
+        if ( params.getDataElements() != null && !params.getDataElements().isEmpty() )
+        {
+            ListMap<DataType, NameableObject> dataTypeDataElementMap = getDataTypeDataElementMap( params.getDataElements() );
+            
+            for ( DataType dataType : dataTypeDataElementMap.keySet() )
+            {
+                DataQueryParams query = params.instance();
+                query.setDataElements( dataTypeDataElementMap.get( dataType ) );
+                query.setDataType( dataType );
+                queries.add( query );
+            }
+        }
+        else
+        {
+            DataQueryParams query = params.instance();
+            query.setDataType( DataType.NUMERIC );
+            queries.add( query );
+        }
+
+        if ( queries.size() > 1 )
+        {
+            log.debug( "Split on data type: " + queries.size() );
+        }
+        
+        return queries;
+    }
+
     /**
      * Groups the given query in sub queries based on the aggregation type of its
      * data elements. The aggregation type can be sum, average aggregation or
@@ -578,7 +615,7 @@ public class DefaultQueryPlanner
         
         return queries;
     }
-    
+
     /**
      * Groups the given query in sub queries based on the period type of its
      * data elements. Sets the data period type on each query.
@@ -634,7 +671,26 @@ public class DefaultQueryPlanner
         
         return map;
     }
+    
+    /**
+     * Creates a mapping between data type and data element for the given data elements.
+     */
+    private ListMap<DataType, NameableObject> getDataTypeDataElementMap(  Collection<NameableObject> dataElements )
+    {
+        ListMap<DataType, NameableObject> map = new ListMap<>();
         
+        for ( NameableObject element : dataElements )
+        {
+            DataElement de = (DataElement) element;
+            
+            DataType dataType = DataElement.VALUE_TYPE_STRING.equals( de.getType() ) ? DataType.TEXT : DataType.NUMERIC;
+            
+            map.putValue( dataType, de );
+        }
+        
+        return map;
+    }
+    
     /**
      * Creates a mapping between the aggregation type and data element for the
      * given data elements and period type.
