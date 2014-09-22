@@ -594,9 +594,21 @@ public class HibernateCaseAggregationConditionStore
         {
             String[] ids = matcherMinus.group( 2 ).split( SEPARATOR_ID );
 
+            Integer programId = null;
+            Integer programStageId = null;
+            if( !ids[1].equals(IN_CONDITION_GET_ALL))
+            {
+                programId =  Integer.parseInt( ids[0] );
+            }
+            
+            if( !ids[1].equals(IN_CONDITION_GET_ALL))
+            {
+                programStageId =  Integer.parseInt( ids[1] );
+            }
+            
             minusSQLMap.put(
                 idx,
-                getConditionForMinusDataElement( orgunitIds, Integer.parseInt( ids[1] ), Integer.parseInt( ids[2] ),
+                getConditionForMinusDataElement( orgunitIds, programId, programStageId, Integer.parseInt( ids[2] ),
                     matcherMinus.group( 4 ) ) );
 
             caseExpression = caseExpression.replace( matcherMinus.group( 0 ), CaseAggregationCondition.MINUS_OPERATOR
@@ -956,18 +968,32 @@ public class HibernateCaseAggregationConditionStore
         return sql;
     }
 
-    private String getConditionForMinusDataElement( Collection<Integer> orgunitIds, Integer programStageId,
+    private String getConditionForMinusDataElement( Collection<Integer> orgunitIds, Integer programId, Integer programStageId,
         Integer dataElementId, String compareSide )
     {
-        return " EXISTS ( SELECT _pdv.value FROM trackedentitydatavalue _pdv inner join programstageinstance _psi "
+        String sql = " EXISTS ( SELECT _pdv.value FROM trackedentitydatavalue _pdv inner join programstageinstance _psi "
             + "                         ON _pdv.programstageinstanceid=_psi.programstageinstanceid "
             + "                 JOIN programinstance _pi ON _pi.programinstanceid=_psi.programinstanceid "
             + "           WHERE psi.programstageinstanceid=_pdv.programstageinstanceid "
             + "                  AND _pdv.dataelementid=" + dataElementId
             + "                 AND _psi.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds )
-            + ") " + "                 AND _psi.programstageid = " + programStageId
-            + " AND ( _psi.executionDate BETWEEN '" + PARAM_PERIOD_START_DATE + "' AND '" + PARAM_PERIOD_END_DATE
+            + ") ";
+        
+        
+        if (programId != null) 
+        {
+            sql += " AND_pi.programid ";
+        }
+ 
+        if (programId != null)
+        {
+            sql += " AND _psi.programstageid = " + programStageId;
+        }
+        
+       sql += " AND ( _psi.executionDate BETWEEN '" + PARAM_PERIOD_START_DATE + "' AND '" + PARAM_PERIOD_END_DATE
             + "') " + "                 AND ( DATE(_pdv.value) - DATE(" + compareSide + ") ) ";
+       
+       return sql;
     }
 
     private String getConditionForMisus2DataElement( Collection<Integer> orgunitIds, String programStageId1,
