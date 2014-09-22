@@ -457,28 +457,31 @@ public class DefaultResourceTableService
 
         for ( Period period : periods )
         {
-            final Date startDate = period.getStartDate();
-            final PeriodType rowType = period.getPeriodType();
-
-            List<Object> values = new ArrayList<>();
-
-            values.add( period.getId() );
-            values.add( period.getIsoDate() );
-            values.add( period.getDaysInPeriod() );
-
-            for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
+            if ( period != null && period.isValid() )
             {
-                if ( rowType.getFrequencyOrder() <= periodType.getFrequencyOrder() )
-                {                    
-                    values.add( periodType.createPeriod( startDate, calendar ).getIsoDate() );
-                }
-                else
+                final Date startDate = period.getStartDate();
+                final PeriodType rowType = period.getPeriodType();
+    
+                List<Object> values = new ArrayList<>();
+    
+                values.add( period.getId() );
+                values.add( period.getIsoDate() );
+                values.add( period.getDaysInPeriod() );
+    
+                for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
                 {
-                    values.add( null );
+                    if ( rowType.getFrequencyOrder() <= periodType.getFrequencyOrder() )
+                    {                    
+                        values.add( periodType.createPeriod( startDate, calendar ).getIsoDate() );
+                    }
+                    else
+                    {
+                        values.add( null );
+                    }
                 }
+    
+                batchArgs.add( values.toArray() );
             }
-
-            batchArgs.add( values.toArray() );
         }
 
         resourceTableStore.batchUpdate( PeriodType.PERIOD_TYPES.size() + 3, TABLE_NAME_PERIOD_STRUCTURE, batchArgs );

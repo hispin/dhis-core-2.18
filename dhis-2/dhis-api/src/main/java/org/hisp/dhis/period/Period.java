@@ -248,6 +248,24 @@ public class Period
         return days.getDays() + 1;
     }
     
+    /**
+     * Validates this period. TODO Make more comprehensive.
+     */
+    public boolean isValid()
+    {
+        if ( startDate == null || endDate == null || periodType == null )
+        {
+            return false;
+        }
+        
+        if ( !DailyPeriodType.NAME.equals( periodType.getName() ) && getDaysInPeriod() < 2 )
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
