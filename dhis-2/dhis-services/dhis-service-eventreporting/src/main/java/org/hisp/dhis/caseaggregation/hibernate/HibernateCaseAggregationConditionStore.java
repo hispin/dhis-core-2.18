@@ -327,17 +327,20 @@ public class HibernateCaseAggregationConditionStore
         try
         {
             int periodId = 0;
-            periodId = jdbcTemplate.queryForInt(  "select periodid from period where periodtypeid = ( select periodtypeid from periodtype where name='"
-                    + period.getPeriodType().getName()
-                    + "' )"
-                    + " and startdate='"
-                    + DateUtils.getMediumDateString( period.getStartDate() )
-                    + "' and enddate='"
-                    + DateUtils.getMediumDateString( period.getEndDate() ) + "'" );
+            
+            final String selectSql = "select periodid from period where periodtypeid = ( select periodtypeid from periodtype where name='"
+                + period.getPeriodType().getName()
+                + "' )"
+                + " and startdate='"
+                + DateUtils.getMediumDateString( period.getStartDate() )
+                + "' and enddate='"
+                + DateUtils.getMediumDateString( period.getEndDate() ) + "'";
+            
+            periodId = jdbcTemplate.queryForObject( selectSql, Integer.class );
             
             if ( periodId == 0 )
             {
-                String insertSql = "insert into period (periodid, periodtypeid,startdate,enddate) " + " VALUES " + "("
+                final String insertSql = "insert into period (periodid, periodtypeid,startdate,enddate) " + " VALUES " + "("
                     + statementBuilder.getAutoIncrementValue() + ","+ period.getPeriodType().getId() + ",'" + DateUtils.getMediumDateString( period.getStartDate() )
                     + "','" + DateUtils.getMediumDateString( period.getEndDate() ) + "' )";
                 
@@ -345,7 +348,7 @@ public class HibernateCaseAggregationConditionStore
             }
             else
             {
-                String deleteDataValueSql = "delete from datavalue where dataelementid=" + dataElementId
+                final String deleteDataValueSql = "delete from datavalue where dataelementid=" + dataElementId
                     + " and categoryoptioncomboid=" + optionComboId + " and sourceid in ("
                     + TextUtils.getCommaDelimitedString( orgunitIds ) + ") "
                         + "and periodid = " + periodId;
@@ -482,15 +485,15 @@ public class HibernateCaseAggregationConditionStore
             orgunitIds.retainAll( _orgunitIds );
         }
         
-        if(orgunitIds.size() > 0 )
+        if ( orgunitIds.size() > 0 )
         {
             String sql = "select caseaggregationconditionid, aggregationdataelementid, optioncomboid, "
-                + " cagg.aggregationexpression as caseexpression, cagg.operator as caseoperator, cagg.desum as desumid "
-                + "     from caseaggregationcondition cagg inner join datasetmembers dm "
-                + "             on cagg.aggregationdataelementid=dm.dataelementid inner join dataset ds "
-                + "             on ds.datasetid = dm.datasetid inner join periodtype pt "
-                + "             on pt.periodtypeid=ds.periodtypeid inner join dataelement de "
-                + "             on de.dataelementid=dm.dataelementid where ds.datasetid = " + dataSet.getDataSetId();
+                + "cagg.aggregationexpression as caseexpression, cagg.operator as caseoperator, cagg.desum as desumid "
+                + "from caseaggregationcondition cagg inner join datasetmembers dm "
+                + "on cagg.aggregationdataelementid=dm.dataelementid inner join dataset ds "
+                + "on ds.datasetid = dm.datasetid inner join periodtype pt "
+                + "on pt.periodtypeid=ds.periodtypeid inner join dataelement de "
+                + "on de.dataelementid=dm.dataelementid where ds.datasetid = " + dataSet.getDataSetId();
     
             SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
     
@@ -1175,6 +1178,7 @@ public class HibernateCaseAggregationConditionStore
                 String insertSql = "insert into period (periodid, periodtypeid,startdate,enddate) " + " VALUES " + "("
                     + statementBuilder.getAutoIncrementValue() + "," + periodTypeId + ",'" + start + "','" + end
                     + "' )";
+                
                 jdbcTemplate.execute( insertSql );
 
                 period.setId( jdbcTemplate.queryForObject( sql, Integer.class ) );
@@ -1253,7 +1257,6 @@ public class HibernateCaseAggregationConditionStore
 
         return false;
     }
-
    
     private String replacePeriodSql( String sql, Period period )
     {
@@ -1264,6 +1267,5 @@ public class HibernateCaseAggregationConditionStore
         sql = sql.replaceAll( PARAM_PERIOD_ISO_DATE, period.getIsoDate() );
 
         return sql;
-    }
-    
+    }    
 }
