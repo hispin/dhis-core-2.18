@@ -28,53 +28,6 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
-import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TABLE_NAME;
-import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TARGET_TABLE_NAME;
-import static org.hisp.dhis.analytics.AnalyticsTableManager.ORGUNIT_TARGET_TABLE_NAME;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_CATEGORYOPTIONCOMBO;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LATITUDE;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LONGITUDE;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_ORGUNIT;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_PERIOD;
-import static org.hisp.dhis.analytics.DataQueryParams.FIXED_DIMS;
-import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
-import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.LATITUDE_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.LONGITUDE_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
-import static org.hisp.dhis.common.NameableObjectUtils.asList;
-import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_GRANDCHILDREN;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentNameGraphMap;
-import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
-import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
-import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Future;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -142,6 +95,29 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Future;
+
+import static org.hisp.dhis.analytics.AnalyticsTableManager.*;
+import static org.hisp.dhis.analytics.DataQueryParams.*;
+import static org.hisp.dhis.common.DimensionalObject.*;
+import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.common.NameableObjectUtils.asList;
+import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.*;
+import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
+import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
+import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
 
 /**
  * @author Lars Helge Overland
@@ -276,7 +252,7 @@ public class DefaultAnalyticsService
      * parameters.
      *
      * @param params the data query parameters.
-     * @param grid the grid.
+     * @param grid   the grid.
      */
     private void addIndicatorValues( DataQueryParams params, Grid grid )
     {
@@ -352,7 +328,7 @@ public class DefaultAnalyticsService
      * parameters.
      *
      * @param params the data query parameters.
-     * @param grid the grid.
+     * @param grid   the grid.
      */
     private void addDataElementValues( DataQueryParams params, Grid grid )
     {
@@ -378,7 +354,7 @@ public class DefaultAnalyticsService
      * parameters.
      *
      * @param params the data query parameters.
-     * @param grid the grid.
+     * @param grid   the grid.
      */
     private void addDataSetValues( DataQueryParams params, Grid grid )
     {
@@ -452,7 +428,7 @@ public class DefaultAnalyticsService
      * data query parameters.
      *
      * @param params the data query parameters.
-     * @param grid the grid.
+     * @param grid   the grid.
      */
     private void addDynamicDimensionValues( DataQueryParams params, Grid grid )
     {
@@ -474,7 +450,7 @@ public class DefaultAnalyticsService
      * parameters.
      *
      * @param params the data query parameters.
-     * @param grid the grid.
+     * @param grid   the grid.
      */
     private void addMetaData( DataQueryParams params, Grid grid )
     {
@@ -503,7 +479,7 @@ public class DefaultAnalyticsService
                 for ( NameableObject nameableObject : params.getDimensionOrFilter( PERIOD_DIM_ID ) )
                 {
                     Period period = (Period) nameableObject;
-                    DateTimeUnit dateTimeUnit = calendar.fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) );
+                    DateTimeUnit dateTimeUnit = calendar.fromIso( period.getStartDate() );
                     periodUids.add( period.getPeriodType().getIsoDate( dateTimeUnit ) );
                 }
             }
@@ -605,9 +581,9 @@ public class DefaultAnalyticsService
      * Generates a mapping of permutations keys (organisation unit id or null)
      * and mappings of organisation unit group and counts.
      *
-     * @param params the data query parameters.
+     * @param params     the data query parameters.
      * @param indicators the indicators for which formulas to scan for organisation
-     *        unit groups.
+     *                   unit groups.
      * @return a map of maps.
      */
     private Map<String, Map<String, Integer>> getOrgUnitTargetMap( DataQueryParams params, Collection<Indicator> indicators )
@@ -694,7 +670,7 @@ public class DefaultAnalyticsService
      *
      * @param params the data query parameters.
      * @return a mapping between the the data set dimension key and the count of
-     *         expected data sets to report.
+     * expected data sets to report.
      */
     private Map<String, Double> getAggregatedCompletenessTargetMap( DataQueryParams params )
     {
@@ -708,7 +684,7 @@ public class DefaultAnalyticsService
      *
      * @param params the data query parameters.
      * @return a mapping between the the data set dimension key and the count of
-     *         expected data sets to report.
+     * expected data sets to report.
      */
     private Map<String, Double> getAggregatedOrganisationUnitTargetMap( DataQueryParams params )
     {
@@ -872,7 +848,8 @@ public class DefaultAnalyticsService
             List<NameableObject> dataSets = new ArrayList<>();
             List<NameableObject> operandDataElements = new ArrayList<>();
 
-            options : for ( String uid : items )
+            options:
+            for ( String uid : items )
             {
                 Indicator in = indicatorService.getIndicator( uid );
 
@@ -1140,7 +1117,7 @@ public class DefaultAnalyticsService
      * Replaces the indicator dimension including items with the data elements
      * part of the indicator expressions.
      *
-     * @param params the data query parameters.
+     * @param params         the data query parameters.
      * @param indicatorIndex the index of the indicator dimension in the given query.
      */
     private DataQueryParams replaceIndicatorsWithDataElements( DataQueryParams params, int indicatorIndex )
@@ -1174,9 +1151,9 @@ public class DefaultAnalyticsService
      * Returns a mapping between identifiers and names for the given dimensional
      * objects.
      *
-     * @param dimensions the dimensional objects.
+     * @param dimensions    the dimensional objects.
      * @param hierarchyMeta indicates whether to include meta data of the
-     *        organisation unit hierarchy.
+     *                      organisation unit hierarchy.
      */
     private Map<String, String> getUidNameMap( List<DimensionalObject> dimensions, boolean hierarchyMeta )
     {
@@ -1223,7 +1200,7 @@ public class DefaultAnalyticsService
                 if ( !calendar.isIso8601() && Period.class.isInstance( idObject ) )
                 {
                     Period period = (Period) idObject;
-                    DateTimeUnit dateTimeUnit = calendar.fromIso( DateTimeUnit.fromJdkDate( period.getStartDate() ) );
+                    DateTimeUnit dateTimeUnit = calendar.fromIso( period.getStartDate() );
                     map.put( period.getPeriodType().getIsoDate( dateTimeUnit ), idObject.getDisplayName() );
                 }
                 else
@@ -1253,7 +1230,7 @@ public class DefaultAnalyticsService
      * in the given grid. Returns an empty map if the grid or cocIndex parameters
      * are null.
      *
-     * @param grid the grid.
+     * @param grid     the grid.
      * @param cocIndex the category option combo index in the grid.
      */
     private Map<String, String> getCocNameMap( Grid grid, Integer cocIndex )
@@ -1284,6 +1261,6 @@ public class DefaultAnalyticsService
     {
         Integer cores = (Integer) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_DATABASE_SERVER_CPUS );
 
-        return ( cores == null || cores == 0 ) ? SystemUtils.getCpuCores() : cores;
+        return (cores == null || cores == 0) ? SystemUtils.getCpuCores() : cores;
     }
 }

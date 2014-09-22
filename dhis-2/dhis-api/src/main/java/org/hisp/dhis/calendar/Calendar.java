@@ -28,6 +28,7 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -119,7 +120,7 @@ public interface Calendar
     DateTimeUnit toIso( DateTimeUnit dateTimeUnit );
 
     /**
-     * Convert from local to ISO 8601 DateUnit.
+     * Convert from ISO 8601 to local DateUnit.
      *
      * @param year  ISO 8601 year
      * @param month ISO 8601 month
@@ -130,13 +131,22 @@ public interface Calendar
     DateTimeUnit fromIso( int year, int month, int day );
 
     /**
-     * Convert from local to ISO 8601 DateUnit.
+     * Convert from ISO 8601 to local DateUnit.
      *
      * @param dateTimeUnit DateUnit representing ISO 8601 year, month, day
      * @return DateUnit representing ISO 8601 in local
      * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
      */
     DateTimeUnit fromIso( DateTimeUnit dateTimeUnit );
+
+    /**
+     * Convert from ISO 8601 Jdk Date to local DateUnit.
+     *
+     * @param date Date to convert from
+     * @return DateUnit representing ISO 8601 in local
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     */
+    DateTimeUnit fromIso( Date date );
 
     /**
      * Gets interval of type based on DateUnit

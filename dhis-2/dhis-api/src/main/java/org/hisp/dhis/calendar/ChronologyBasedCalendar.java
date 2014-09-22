@@ -33,6 +33,8 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.chrono.ISOChronology;
 
+import java.util.Date;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -57,6 +59,12 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
         dateTime = dateTime.withChronology( ISOChronology.getInstance() );
 
         return new DateTimeUnit( DateTimeUnit.fromJodaDateTime( dateTime ), true );
+    }
+
+    @Override
+    public DateTimeUnit fromIso( Date date )
+    {
+        return fromIso( DateTimeUnit.fromJdkDate( date ) );
     }
 
     @Override
