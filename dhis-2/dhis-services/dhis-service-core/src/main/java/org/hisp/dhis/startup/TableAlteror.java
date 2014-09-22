@@ -736,9 +736,9 @@ public class TableAlteror
         executeSql( "alter table indicator drop column sortorder" );
         executeSql( "alter table dataset drop column sortorder" );
 
-        executeSql( "alter table datavalue alter column value type character varying(50000)" );
-        executeSql( "alter table datavalue alter column comment type character varying(50000)" );
-        executeSql( "alter table datavalueaudit alter column value type character varying(50000)" );
+        executeSql( "alter table datavalue alter column value type varchar(50000)" );
+        executeSql( "alter table datavalue alter column comment type varchar(50000)" );
+        executeSql( "alter table datavalueaudit alter column value type varchar(50000)" );
         
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeCompleteDataSetRegistrationsWithAttributeOptionCombo();
