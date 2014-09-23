@@ -1822,6 +1822,22 @@ Ext.onReady( function() {
 
                 return response;
             };
+
+            service.response.getValue = function(responseValue) {
+                if (Ext.isNumber(parseFloat(responseValue))) {
+                    return parseFloat(responseValue);
+                }
+
+                if (Ext.isBoolean(responseValue)) {
+                    return !!responseValue ? 1 : 0;
+                }
+
+                if (Ext.isString(responseValue)) {
+                    return 0;
+                }
+
+                return;
+            };
         }());
 
 		// web
@@ -2072,7 +2088,24 @@ Ext.onReady( function() {
 						isNumeric = Ext.isObject(config) && Ext.isString(config.type) && config.type.substr(0,5) === 'value' && !config.empty,
 						isValue = isNumeric && config.type === 'value',
 						cls = '',
-						html = '';
+						html = '',
+                        getHtmlValue;
+
+                    getHtmlValue = function(config) {
+                        if (config.collapsed) {
+                            return '';
+                        }
+
+                        if (config.htmlValue || Ext.isBoolean(config.htmlValue)) {
+                            return config.htmlValue;
+                        }
+
+                        if (config.value) {
+                            return value;
+                        }
+
+                        return '';
+                    };
 
 					if (!Ext.isObject(config)) {
 						return '';
@@ -2099,7 +2132,7 @@ Ext.onReady( function() {
 
 					colSpan = config.colSpan ? 'colspan="' + config.colSpan + '" ' : '';
 					rowSpan = config.rowSpan ? 'rowspan="' + config.rowSpan + '" ' : '';
-					htmlValue = config.collapsed ? '' : config.htmlValue || config.value || '';
+                    htmlValue = getHtmlValue(config);
 					htmlValue = config.type !== 'dimension' ? support.prototype.number.prettyPrint(htmlValue, xLayout.digitGroupSeparator) : htmlValue;
 					displayDensity = conf.pivot.displayDensity[config.displayDensity] || conf.pivot.displayDensity[xLayout.displayDensity];
 					fontSize = conf.pivot.fontSize[config.fontSize] || conf.pivot.fontSize[xLayout.fontSize];
@@ -2329,7 +2362,7 @@ Ext.onReady( function() {
 						valueItemsRow = [];
 						valueObjectsRow = [];
 
-						for (var j = 0, id, value, htmlValue, empty, uuid, uuids; j < colAxisSize; j++) {
+						for (var j = 0, id, value, responseValue, htmlValue, empty, uuid, uuids; j < colAxisSize; j++) {
 							empty = false;
 							uuids = [];
 
@@ -2347,9 +2380,12 @@ Ext.onReady( function() {
 								uuids = uuids.concat(xRowAxis.objects.all[xRowAxis.dims - 1][i].uuids);
 							}
 
-							if (idValueMap[id]) {
-								value = parseFloat(idValueMap[id]);
-								htmlValue = value.toString();
+                            // value, htmlValue
+                            responseValue = idValueMap[id];
+
+							if (Ext.isDefined(responseValue)) {
+                                value = service.response.getValue(responseValue);
+                                htmlValue = responseValue;
 							}
 							else {
 								value = 0;
