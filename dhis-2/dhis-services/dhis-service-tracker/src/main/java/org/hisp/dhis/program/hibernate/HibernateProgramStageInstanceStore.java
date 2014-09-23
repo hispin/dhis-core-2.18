@@ -132,8 +132,6 @@ public class HibernateProgramStageInstanceStore
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
 
-        int cols = rs.getMetaData().getColumnCount();
-
         Collection<SchedulingProgramObject> schedulingProgramObjects = new HashSet<>();
 
         while ( rs.next() )
@@ -156,17 +154,17 @@ public class HibernateProgramStageInstanceStore
                 message = message.replaceAll( key, value );
             }  
                           
-                String organisationunitName = rs.getString( "orgunitName" );
-                String programName = rs.getString( "programName" );
-                String programStageName = rs.getString( "programStageName" );
-                String daysSinceDueDate = rs.getString( "days_since_due_date" );
-                String dueDate = rs.getString( "duedate" ).split( " " )[0];
+            String organisationunitName = rs.getString( "orgunitName" );
+            String programName = rs.getString( "programName" );
+            String programStageName = rs.getString( "programStageName" );
+            String daysSinceDueDate = rs.getString( "days_since_due_date" );
+            String dueDate = rs.getString( "duedate" ).split( " " )[0];
 
-                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
-                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME, programStageName );
-                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DUE_DATE, dueDate );
-                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
-                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
+            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
+            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME, programStageName );
+            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DUE_DATE, dueDate );
+            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
+            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
             
 
             SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
