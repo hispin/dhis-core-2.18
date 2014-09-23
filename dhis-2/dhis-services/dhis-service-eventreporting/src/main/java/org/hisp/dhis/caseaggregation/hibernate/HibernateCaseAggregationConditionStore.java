@@ -982,7 +982,7 @@ public class HibernateCaseAggregationConditionStore
         
         if (programId != null) 
         {
-            sql += " AND_pi.programid ";
+            sql += " AND _pi.programid = " + programId;
         }
  
         if (programId != null)
