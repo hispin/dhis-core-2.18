@@ -34,7 +34,7 @@ package org.hisp.dhis.analytics;
 public enum AggregationType
 {
     SUM( "sum" ), 
-    AVERAGE_INT( "avg_int" ), 
+    AVERAGE_SUM_INT( "avg_int" ), // Sum in organisation unit hierarchy
     AVERAGE_INT_DISAGGREGATION( "avg_int_disaggregation" ), 
     AVERAGE_BOOL( "avg" ), 
     COUNT( "count" ), 

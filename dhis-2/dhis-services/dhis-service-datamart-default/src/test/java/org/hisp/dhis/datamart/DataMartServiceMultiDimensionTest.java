@@ -293,7 +293,7 @@ public class DataMartServiceMultiDimensionTest
     public void testAverageIntDataElementDataMart()
     {
         dataElementA.setType( DataElement.VALUE_TYPE_INT );
-        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );        
+        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM );        
         dataElementService.updateDataElement( dataElementA );
         
         // ---------------------------------------------------------------------
@@ -401,7 +401,7 @@ public class DataMartServiceMultiDimensionTest
     public void testAverageBoolDataElement()
     {
         dataElementA.setType( DataElement.VALUE_TYPE_BOOL );
-        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );        
+        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM );        
         dataElementService.updateDataElement( dataElementA );
         
         // ---------------------------------------------------------------------

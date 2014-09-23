@@ -366,7 +366,7 @@ public class ExcelUtils
     {
         Map<String, String> map = new HashMap<>();
         map.put( DataElement.AGGREGATION_OPERATOR_SUM, "Sum" );
-        map.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, "Average" );
+        map.put( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM, "Average" );
         map.put( DataElement.AGGREGATION_OPERATOR_COUNT, "Count" );
         return map;
     }

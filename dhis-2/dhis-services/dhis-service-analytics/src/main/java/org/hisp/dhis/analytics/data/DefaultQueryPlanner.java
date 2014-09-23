@@ -29,7 +29,7 @@ package org.hisp.dhis.analytics.data;
  */
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.SUM;
 import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
@@ -39,7 +39,7 @@ import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 
 import java.util.ArrayList;
@@ -720,7 +720,7 @@ public class DefaultQueryPlanner
     {
         AggregationType aggregationType = null;
         
-        if ( AGGREGATION_OPERATOR_AVERAGE.equals( aggregationOperator ) )
+        if ( AGGREGATION_OPERATOR_AVERAGE_SUM.equals( aggregationOperator ) )
         {
             if ( VALUE_TYPE_BOOL.equals( valueType ) )
             {
@@ -730,7 +730,7 @@ public class DefaultQueryPlanner
             {
                 if ( dataPeriodType == null || aggregationPeriodType == null || aggregationPeriodType.getFrequencyOrder() >= dataPeriodType.getFrequencyOrder() )
                 {
-                    aggregationType = AVERAGE_INT;
+                    aggregationType = AVERAGE_SUM_INT;
                 }
                 else
                 {

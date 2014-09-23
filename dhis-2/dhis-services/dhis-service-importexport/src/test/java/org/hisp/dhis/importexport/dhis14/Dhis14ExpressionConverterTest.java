@@ -29,7 +29,7 @@ package org.hisp.dhis.importexport.dhis14;
  */
 
 import static org.junit.Assert.assertEquals;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14ExpressionConverter.convertExpressionFromDhis14;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14ExpressionConverter.convertExpressionToDhis14;
@@ -72,7 +72,7 @@ public class Dhis14ExpressionConverterTest
         Map<Object, String> mapping = new HashMap<>();
         mapping.put( 43, AGGREGATION_OPERATOR_SUM );
         mapping.put( 53, AGGREGATION_OPERATOR_SUM );
-        mapping.put( 63, AGGREGATION_OPERATOR_AVERAGE ); 
+        mapping.put( 63, AGGREGATION_OPERATOR_AVERAGE_SUM ); 
 
         String expected = "((Sum([R43])*1)+(Sum([R53])*1)+(Sum([S63])*1))";
         

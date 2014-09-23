@@ -292,7 +292,7 @@ public class DataMartServiceTest
     @Test
     public void testAverageIntDataElementDataMart()
     {
-        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM );
         
         dataElementService.updateDataElement( dataElementA );
         
@@ -348,7 +348,7 @@ public class DataMartServiceTest
     @Test
     public void testAverageBoolDataElementDataMart()
     {
-        dataElementB.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        dataElementB.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM );
         
         dataElementService.updateDataElement( dataElementB );
         
@@ -382,8 +382,8 @@ public class DataMartServiceTest
 
         DataElement dataElementC = createDataElement( 'C', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
         DataElement dataElementD = createDataElement( 'D', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-        DataElement dataElementE = createDataElement( 'E', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
-        DataElement dataElementF = createDataElement( 'F', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
+        DataElement dataElementE = createDataElement( 'E', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM, categoryCombo );
+        DataElement dataElementF = createDataElement( 'F', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM, categoryCombo );
         
         dataElementService.addDataElement( dataElementC );
         dataElementService.addDataElement( dataElementD );
@@ -490,8 +490,8 @@ public class DataMartServiceTest
 
         DataElement dataElementC = createDataElement( 'C', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
         DataElement dataElementD = createDataElement( 'D', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-        DataElement dataElementE = createDataElement( 'E', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
-        DataElement dataElementF = createDataElement( 'F', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
+        DataElement dataElementE = createDataElement( 'E', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM, categoryCombo );
+        DataElement dataElementF = createDataElement( 'F', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM, categoryCombo );
         
         dataElementService.addDataElement( dataElementC );
         dataElementService.addDataElement( dataElementD );

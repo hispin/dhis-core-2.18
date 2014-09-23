@@ -28,7 +28,7 @@ package org.hisp.dhis.importexport.dhis14.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_COUNT;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
@@ -93,7 +93,7 @@ public class Dhis14TypeHandler
         {
             return DHIS14_AGGREGATION_OPERATOR_SUM;
         }
-        if ( value.equals( AGGREGATION_OPERATOR_AVERAGE ) )
+        if ( value.equals( AGGREGATION_OPERATOR_AVERAGE_SUM ) )
         {
             return DHIS14_AGGREGATION_OPERATOR_AVERAGE;
         }
@@ -113,7 +113,7 @@ public class Dhis14TypeHandler
         }
         if ( value.equals( DHIS14_AGGREGATION_OPERATOR_AVERAGE ) )
         {
-            return AGGREGATION_OPERATOR_AVERAGE;            
+            return AGGREGATION_OPERATOR_AVERAGE_SUM;            
         }
         if ( value.equals( DHIS14_AGGREGATION_OPERATOR_COUNT ) )
         {

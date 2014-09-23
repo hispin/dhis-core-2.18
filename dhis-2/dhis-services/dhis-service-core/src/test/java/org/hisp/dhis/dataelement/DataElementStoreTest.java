@@ -271,12 +271,12 @@ public class DataElementStoreTest
     public void testGetDataElementsByAggregationOperator()
     {
         assertEquals( 0, dataElementStore.getDataElementsByAggregationOperator(
-            DataElement.AGGREGATION_OPERATOR_AVERAGE ).size() );
+            DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM ).size() );
         assertEquals( 0, dataElementStore.getDataElementsByAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM )
             .size() );
 
         DataElement dataElementA = createDataElement( 'A' );
-        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM );
         DataElement dataElementB = createDataElement( 'B' );
         dataElementB.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         DataElement dataElementC = createDataElement( 'C' );
@@ -290,7 +290,7 @@ public class DataElementStoreTest
         dataElementStore.save( dataElementD );
 
         assertEquals( 1, dataElementStore.getDataElementsByAggregationOperator(
-            DataElement.AGGREGATION_OPERATOR_AVERAGE ).size() );
+            DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM ).size() );
         assertEquals( 3, dataElementStore.getDataElementsByAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM )
             .size() );
     }

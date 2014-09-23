@@ -70,7 +70,7 @@ public class AggregationOperatorTypeHandler
             }
             else if ( result.equalsIgnoreCase( JDBC_AVERAGE ) )
             {
-                return DataElement.AGGREGATION_OPERATOR_AVERAGE;
+                return DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM;
             }
             else if ( result.equalsIgnoreCase( JDBC_COUNT ) )
             {
@@ -109,7 +109,7 @@ public class AggregationOperatorTypeHandler
         }
         else if ( result.equalsIgnoreCase( JDBC_AVERAGE ) )
         {
-            return DataElement.AGGREGATION_OPERATOR_AVERAGE;
+            return DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM;
         }
         else if ( result.equalsIgnoreCase( JDBC_COUNT ) )
         {

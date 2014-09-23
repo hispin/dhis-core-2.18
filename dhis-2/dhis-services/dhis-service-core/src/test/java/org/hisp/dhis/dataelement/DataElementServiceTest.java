@@ -308,12 +308,12 @@ public class DataElementServiceTest
         throws Exception
     {
         assertEquals( 0, dataElementService.getDataElementsByAggregationOperator(
-            DataElement.AGGREGATION_OPERATOR_AVERAGE ).size() );
+            DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM ).size() );
         assertEquals( 0, dataElementService.getDataElementsByAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM )
             .size() );
 
         DataElement dataElementA = createDataElement( 'A' );
-        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM );
         DataElement dataElementB = createDataElement( 'B' );
         dataElementB.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         DataElement dataElementC = createDataElement( 'C' );
@@ -327,7 +327,7 @@ public class DataElementServiceTest
         dataElementService.addDataElement( dataElementD );
 
         assertEquals( 1, dataElementService.getDataElementsByAggregationOperator(
-            DataElement.AGGREGATION_OPERATOR_AVERAGE ).size() );
+            DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM ).size() );
         assertEquals( 3, dataElementService.getDataElementsByAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM )
             .size() );
     }

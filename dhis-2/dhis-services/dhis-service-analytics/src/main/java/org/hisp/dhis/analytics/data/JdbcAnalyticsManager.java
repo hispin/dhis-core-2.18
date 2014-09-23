@@ -29,7 +29,7 @@ package org.hisp.dhis.analytics.data;
  */
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.COUNT;
 import static org.hisp.dhis.analytics.AggregationType.MAX;
@@ -225,7 +225,7 @@ public class JdbcAnalyticsManager
     {
         String sql = "";
         
-        if ( params.isAggregationType( AVERAGE_INT ) )
+        if ( params.isAggregationType( AVERAGE_SUM_INT ) )
         {
             int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
             
@@ -255,7 +255,7 @@ public class JdbcAnalyticsManager
         {
             sql += "max(value)";
         }
-        else // SUM, AVERAGE_DISAGGREGATION and undefined //TODO
+        else // SUM, AVERAGE_INT_DISAGGREGATION and undefined //TODO
         {
             sql += "sum(value)";
         }
@@ -275,7 +275,7 @@ public class JdbcAnalyticsManager
         {
             sql += "select " + getCommaDelimitedQuotedColumns( params.getQueryDimensions() ) + ", ";
             
-            if ( params.isAggregationType( AVERAGE_INT ) )
+            if ( params.isAggregationType( AVERAGE_SUM_INT ) )
             {
                 sql += "daysxvalue";
             }

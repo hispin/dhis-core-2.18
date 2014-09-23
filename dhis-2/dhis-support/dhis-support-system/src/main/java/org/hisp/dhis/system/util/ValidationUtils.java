@@ -28,7 +28,7 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_DATE;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
@@ -351,7 +351,7 @@ public class ValidationUtils
     public static boolean dataValueIsZeroAndInsignificant( String value, DataElement dataElement )
     {
         return VALUE_TYPE_INT.equals( dataElement.getType() ) && MathUtils.isZero( value ) &&
-            !dataElement.isZeroIsSignificant() && !AGGREGATION_OPERATOR_AVERAGE.equals( dataElement.getAggregationOperator() );
+            !dataElement.isZeroIsSignificant() && !AGGREGATION_OPERATOR_AVERAGE_SUM.equals( dataElement.getAggregationOperator() );
     }
     
     /**

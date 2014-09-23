@@ -652,11 +652,12 @@ public class DataQueryParams
      * Replaces the periods of this query with the corresponding data periods.
      * Sets the period type to the data period type. This method is relevant only 
      * when then the data period type has lower frequency than the aggregation 
-     * period type.
+     * period type. This is valid because disaggregation is allowed for data
+     * with average aggregation operator.
      */
     public void replaceAggregationPeriodsWithDataPeriods( ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap )
     {
-        if ( isAggregationType( AVERAGE_INT_DISAGGREGATION ) &&  dataPeriodType != null )
+        if ( isAggregationType( AVERAGE_INT_DISAGGREGATION ) && dataPeriodType != null )
         {
             this.periodType = this.dataPeriodType.getName();
             
