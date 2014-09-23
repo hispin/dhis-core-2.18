@@ -30,7 +30,7 @@ package org.hisp.dhis.analytics.data;
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.COUNT;
 import static org.hisp.dhis.analytics.AggregationType.MAX;
 import static org.hisp.dhis.analytics.AggregationType.MIN;
@@ -161,7 +161,7 @@ public class JdbcAnalyticsManager
     
     public void replaceDataPeriodsWithAggregationPeriods( Map<String, Object> dataValueMap, DataQueryParams params, ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap )
     {
-        if ( params.isAggregationType( AVERAGE_INT_DISAGGREGATION ) )
+        if ( params.isAggregationType( AVERAGE_SUM_INT_DISAGGREGATION ) )
         {
             int periodIndex = params.getPeriodDimensionIndex();
             

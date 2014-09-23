@@ -30,7 +30,7 @@ package org.hisp.dhis.analytics.data;
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.SUM;
 import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
 import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
@@ -242,7 +242,7 @@ public class DefaultQueryPlanner
     
                         for ( DataQueryParams byAggregationType : groupedByAggregationType )
                         {
-                            if ( AVERAGE_INT_DISAGGREGATION.equals( byAggregationType.getAggregationType() ) )
+                            if ( AVERAGE_SUM_INT_DISAGGREGATION.equals( byAggregationType.getAggregationType() ) )
                             {
                                 List<DataQueryParams> groupedByDataPeriodType = groupByDataPeriodType( byAggregationType );
                                 
@@ -734,7 +734,7 @@ public class DefaultQueryPlanner
                 }
                 else
                 {
-                    aggregationType = AVERAGE_INT_DISAGGREGATION;
+                    aggregationType = AVERAGE_SUM_INT_DISAGGREGATION;
                 }
             }
         }
