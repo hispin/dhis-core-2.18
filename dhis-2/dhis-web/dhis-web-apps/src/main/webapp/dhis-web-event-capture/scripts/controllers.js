@@ -240,11 +240,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
                                 delete $scope.dhis2Events[i].dataValues;
                             }
-                            else{//event is empty, remove from grid
+                            /*else{//event is empty, remove from grid
                                 var index = $scope.dhis2Events.indexOf($scope.dhis2Events[i]);                           
                                 $scope.dhis2Events.splice(index,1);
                                 i--;                           
-                            }
+                            }*/
                         }  
                         
                         if($scope.noteExists){
@@ -406,10 +406,26 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         }
         
         //the form is valid, get the values
+        //but there could be a case where all dataelements are non-mandatory and
+        //the event form comes empty, in this case enforce at least one value
+        var valueExists = false;
         var dataValues = [];        
         for(var dataElement in $scope.programStageDataElements){
+            if($scope.currentEvent[dataElement]){
+                valueExists = true;
+            }
             dataValues.push({dataElement: dataElement, value: $scope.currentEvent[dataElement]});
         }
+        
+        if(!valueExists){
+            var dialogOptions = {
+                headerText: 'empty_form',
+                bodyText: 'please_fill_at_least_one_dataelement'
+            };
+
+            DialogService.showDialog({}, dialogOptions);
+            return false;
+        }        
         
         var newEvent = angular.copy($scope.currentEvent);        
         

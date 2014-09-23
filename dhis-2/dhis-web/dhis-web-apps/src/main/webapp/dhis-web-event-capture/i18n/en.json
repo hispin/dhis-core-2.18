@@ -33,6 +33,8 @@
     "done": "Done",
     "remove": "Remove",
     "are_you_sure_to_remove": "Are you sure you want to remove the selected item?",
+    "empty_form": "Empty form",
+    "please_fill_at_least_one_dataelement": "Your form is empty. Please fill at least one dataelement.",
     "use_custom_form": "Custom form",
     "use_default_form": "Default form",
     "print_list": "Print list",
