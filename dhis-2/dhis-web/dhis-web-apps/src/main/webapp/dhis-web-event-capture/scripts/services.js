@@ -249,13 +249,22 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "string"){
-                            newInputField = '<input type="text" ' +
+                            if(programStageDataElements[deId].dataElement.optionSet){
+                        		newInputField = '<input type="text" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '" ' +
                                             ' ng-disabled="currentEvent[uid] == \'uid\'" ' +
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory"' +
                                             ' typeahead="option.code as option.name for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
                                             ' typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory">';
+                        	}
+                        	else{
+                        		newInputField = '<input type="text" ' +
+                                            this.getAttributesAsString(attributes) +
+                                            ' ng-model="currentEvent.' + deId + '" ' +
+                                            ' ng-disabled="currentEvent[uid] == \'uid\'" ' +
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">';
+                        	}
                         }
                         if(programStageDataElements[deId].dataElement.type == "bool"){
                             newInputField = '<select ' +

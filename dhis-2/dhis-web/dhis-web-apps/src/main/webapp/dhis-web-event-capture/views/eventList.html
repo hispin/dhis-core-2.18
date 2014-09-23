@@ -135,53 +135,66 @@
                                             <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red"><em title="{{'required'| translate}}" class="required">*</em></span>
                                         </div>
                                         <div ng-switch-when="string">                                        
-                            
-                                            <div class="container-fluid">
-                                                <span ng-if="eventGridColumn.id == 'uid'">
-                                                    <input type="text"
-                                                           ng-model="currentEvent[eventGridColumn.id]"                                                                    
-                                                           ng-disabled=true
-                                                           name="foo" 
-                                                           style="width:99%;"/>                                                    
-                                                </span>
-                                                <span ng-if="eventGridColumn.id !== 'uid' && !selectedProgram.dataEntryMethod || programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length > 7">
-                                                    <input type="text" 
-                                                       ng-model="dhis2Event[eventGridColumn.id]" 
-                                                       ng-change="updateEventDataValue(dhis2Event, eventGridColumn.id)" 
-                                                       typeahead="option.code as option.name for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
-                                                       typeahead-open-on-focus
-                                                       ng-required={{eventGridColumn.compulsory}}
-                                                       ng-disabled="eventGridColumn.id == 'uid'"
+                                            <div ng-if="eventGridColumn.id == 'uid'">
+                                                <input type="text"
+                                                       ng-model="currentEvent[eventGridColumn.id]"                                                                    
+                                                       ng-disabled=true
                                                        name="foo" 
-                                                       style="width:98%;"
-                                                       ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
-                                                       ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"
-                                                       />
+                                                       style="width:99%;"/>                                                    
+                                            </div>
+                                            <div ng-if="eventGridColumn.id !== 'uid'">
+                                                <div class="container-fluid" ng-if="programStageDataElements[eventGridColumn.id].dataElement.optionSet">                                                
+                                                    <span ng-if="!selectedProgram.dataEntryMethod || programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length > 7">
+                                                        <input type="text" 
+                                                           ng-model="dhis2Event[eventGridColumn.id]" 
+                                                           ng-change="updateEventDataValue(dhis2Event, eventGridColumn.id)" 
+                                                           typeahead="option.code as option.name for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                                           typeahead-open-on-focus
+                                                           ng-required={{eventGridColumn.compulsory}}
+                                                           ng-disabled="eventGridColumn.id == 'uid'"
+                                                           name="foo" 
+                                                           style="width:98%;"
+                                                           ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
+                                                           ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"
+                                                           />
+                                                        <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red"><em title="{{'required'| translate}}" class="required">*</em></span>
+                                                    </span>
+                                                    <span ng-if="selectedProgram.dataEntryMethod && programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length < 7">                                    
+                                                        <label>
+                                                            <input type="radio" 
+                                                                   name="foo" 
+                                                                   ng-required={{eventGridColumn.compulsory}}
+                                                                   ng-model="dhis2Event[eventGridColumn.id]" 
+                                                                   ng-change="updateEventDataValue(dhis2Event, eventGridColumn.id)" 
+                                                                   value=""> {{'no_value' | translate}}<br>                                     
+                                                        </label>                                    
+                                                        <label ng-repeat="option in  programStageDataElements[eventGridColumn.id].dataElement.optionSet.options">
+                                                            <input type="radio" 
+                                                                   name={{eventGridColumn.id}}   
+                                                                   ng-required={{eventGridColumn.compulsory}}
+                                                                   ng-model="dhis2Event[eventGridColumn.id]" 
+                                                                   ng-change="updateEventDataValue(dhis2Event, eventGridColumn.id)"
+                                                                   ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
+                                                                   ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"
+                                                                   value={{option.code}}> {{option.name}}<br>                                    
+                                                        </label>                                    
+                                                        <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>                                    
+                                                    </span>                                                
+                                                </div>
+                                                <div ng-if="!programStageDataElements[eventGridColumn.id].dataElement.optionSet">
+                                                    <input type="text" 
+                                                        ng-model="dhis2Event[eventGridColumn.id]" 
+                                                        ng-blur="updateEventDataValue(dhis2Event, eventGridColumn.id)" 
+                                                        ng-required={{eventGridColumn.compulsory}}
+                                                        ng-disabled="eventGridColumn.id == 'uid'"
+                                                        name="foo" 
+                                                        style="width:98%;"
+                                                        ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
+                                                        ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"
+                                                        />
                                                     <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red"><em title="{{'required'| translate}}" class="required">*</em></span>
-                                                </span>
-                                                <span ng-if="eventGridColumn.id !== 'uid' && selectedProgram.dataEntryMethod && programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length < 7">                                    
-                                                    <label>
-                                                        <input type="radio" 
-                                                               name="foo" 
-                                                               ng-required={{eventGridColumn.compulsory}}
-                                                               ng-model="dhis2Event[eventGridColumn.id]" 
-                                                               ng-change="updateEventDataValue(dhis2Event, eventGridColumn.id)" 
-                                                               value=""> {{'no_value' | translate}}<br>                                     
-                                                    </label>                                    
-                                                    <label ng-repeat="option in  programStageDataElements[eventGridColumn.id].dataElement.optionSet.options">
-                                                        <input type="radio" 
-                                                               name={{eventGridColumn.id}}   
-                                                               ng-required={{eventGridColumn.compulsory}}
-                                                               ng-model="dhis2Event[eventGridColumn.id]" 
-                                                               ng-change="updateEventDataValue(dhis2Event, eventGridColumn.id)"
-                                                               ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
-                                                               ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"
-                                                               value={{option.code}}> {{option.name}}<br>                                    
-                                                    </label>                                    
-                                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>                                    
-                                                </span>
-                                                
-                                            </div>                            
+                                                </div>
+                                            </div>
                                         </div>                                        
                                         <div ng-switch-when="bool">
                                             <select ng-model="dhis2Event[eventGridColumn.id]" 
