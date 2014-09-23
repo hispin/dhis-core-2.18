@@ -28,11 +28,14 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.regex.Pattern;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -50,6 +53,10 @@ public class TrackedEntityInstanceReminder
 {
     private static final long serialVersionUID = 3101502417481903219L;
 
+    public static final String ATTRIBUTE = "attributeid";
+     
+    public static final Pattern ATTRIBUTE_PATTERN = Pattern.compile( "\\{(" + ATTRIBUTE + ")=(\\w+)\\}" );
+    
     public static final String DUE_DATE_TO_COMPARE = "duedate";
 
     public static final String ENROLLEMENT_DATE_TO_COMPARE = "enrollmentdate";

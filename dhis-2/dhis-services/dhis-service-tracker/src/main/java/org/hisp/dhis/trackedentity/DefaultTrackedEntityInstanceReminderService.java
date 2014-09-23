@@ -28,22 +28,22 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder.ATTRIBUTE;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder.ATTRIBUTE_PATTERN;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
-import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
-import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -57,10 +57,6 @@ import org.hisp.dhis.user.UserService;
 public class DefaultTrackedEntityInstanceReminderService
     implements TrackedEntityInstanceReminderService
 {
-    private static final String ATTRIBUTE = "attributeid";
-
-    private static final Pattern ATTRIBUTE_PATTERN = Pattern.compile( "\\{(" + ATTRIBUTE + ")=(\\w+)\\}" );
-
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -194,6 +190,25 @@ public class DefaultTrackedEntityInstanceReminderService
         }
 
         return templateMessage;
+    }
+    
+    @Override
+    public List<String> getAttributeUids( String message )
+    {
+        List<String> atttributeUids = new ArrayList<String>();
+
+        Matcher matcher = ATTRIBUTE_PATTERN.matcher( message );
+
+        while ( matcher.find() )
+        {
+            if ( matcher.group( 1 ).equals( ATTRIBUTE ) )
+            {
+                String uid = matcher.group( 2 );
+                atttributeUids.add( uid );
+            }
+        }
+
+        return atttributeUids;
     }
 
     @Override

@@ -28,6 +28,7 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.i18n.I18nFormat;
@@ -107,4 +108,6 @@ public interface TrackedEntityInstanceReminderService
      * @return The list of DHIS users
      */
     Set<User> getUsers( TrackedEntityInstanceReminder instanceReminder, TrackedEntityInstance instance );
+    
+    List<String> getAttributeUids( String message );
 }
