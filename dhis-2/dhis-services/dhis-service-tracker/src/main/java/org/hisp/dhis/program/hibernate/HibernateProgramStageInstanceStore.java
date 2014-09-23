@@ -153,7 +153,7 @@ public class HibernateProgramStageInstanceStore
                 String key = "\\{(" + TrackedEntityInstanceReminder.ATTRIBUTE + ")=(" + uid + ")\\}";
                 message = message.replaceAll( key, value );
             }  
-                          
+            
             String organisationunitName = rs.getString( "orgunitName" );
             String programName = rs.getString( "programName" );
             String programStageName = rs.getString( "programStageName" );

@@ -28,6 +28,12 @@ package org.hisp.dhis.program.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -38,14 +44,12 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceStore;
 import org.hisp.dhis.program.SchedulingProgramObject;
+import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
 
 /**
  * @author Abyot Asalefew
@@ -54,6 +58,9 @@ public class HibernateProgramInstanceStore
     extends HibernateIdentifiableObjectStore<ProgramInstance>
     implements ProgramInstanceStore
 {
+    @Autowired
+    private TrackedEntityInstanceReminderService reminderService;
+    
     // -------------------------------------------------------------------------
     // Implemented methods
     // -------------------------------------------------------------------------
@@ -258,27 +265,41 @@ public class HibernateProgramInstanceStore
 
         while ( rs.next() )
         {
-            String message = "";
-            for ( int i = 1; i <= cols; i++ )
-            {
-                message = rs.getString( "templatemessage" );
-                String organisationunitName = rs.getString( "orgunitName" );
-                String programName = rs.getString( "programName" );
-                String incidentDate = rs.getString( "dateofincident" ).split( " " )[0];
-                String daysSinceIncidentDate = rs.getString( "days_since_incident_date" );
-                String erollmentDate = rs.getString( "enrollmentdate" ).split( " " )[0];
-                String daysSinceEnrollementDate = rs.getString( "days_since_erollment_date" );
+             String message = rs.getString( "templatemessage" );
 
-                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
-                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
-                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_INCIDENT_DATE, incidentDate );
-                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ENROLLMENT_DATE, erollmentDate );
-                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_ENROLLMENT_DATE,
-                    daysSinceEnrollementDate );
-                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE,
-                    daysSinceIncidentDate );
+            List<String> attributeUids = reminderService.getAttributeUids( message );
+            SqlRowSet attributeValueRow = jdbcTemplate
+                .queryForRowSet( "select tea.uid ,teav.value from trackedentityattributevalue teav "
+                    + " INNER JOIN trackedentityattribute tea on tea.trackedentityattributeid=teav.trackedentityattributeid "
+                    + " INNER JOIN programinstance ps on teav.trackedentityinstanceid=ps.trackedentityinstanceid "
+                    + " INNER JOIN programstageinstance psi on ps.programinstanceid=psi.programinstanceid "
+                    + " where tea.uid in ( " + TextUtils.getQuotedCommaDelimitedString( attributeUids ) + ") " );
+
+            while ( attributeValueRow.next() )
+            {
+                String uid = attributeValueRow.getString( "uid" );
+                String value = attributeValueRow.getString( "value" );
+                String key = "\\{(" + TrackedEntityInstanceReminder.ATTRIBUTE + ")=(" + uid + ")\\}";
+                message = message.replaceAll( key, value );
             }
 
+            String organisationunitName = rs.getString( "orgunitName" );
+            String programName = rs.getString( "programName" );
+            String incidentDate = rs.getString( "dateofincident" ).split( " " )[0];
+            String daysSinceIncidentDate = rs.getString( "days_since_incident_date" );
+            String erollmentDate = rs.getString( "enrollmentdate" ).split( " " )[0];
+            String daysSinceEnrollementDate = rs.getString( "days_since_erollment_date" );
+
+            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
+            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME,
+                organisationunitName );
+            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_INCIDENT_DATE, incidentDate );
+            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ENROLLMENT_DATE, erollmentDate );
+            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_ENROLLMENT_DATE,
+                daysSinceEnrollementDate );
+            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE,
+                daysSinceIncidentDate );
+            
             SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
             schedulingProgramObject.setProgramInstanceId( rs.getInt( "programinstanceid" ) );
             schedulingProgramObject.setPhoneNumber( rs.getString( "phonenumber" ) );
