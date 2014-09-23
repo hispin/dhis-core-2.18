@@ -66,6 +66,8 @@ public class JacksonEventService extends AbstractEventService
     @Autowired
     private SessionFactory sessionFactory;
 
+    private final int FLUSH_FREQUENCY = 20;
+
     // -------------------------------------------------------------------------
     // EventService Impl
     // -------------------------------------------------------------------------
@@ -141,7 +143,7 @@ public class JacksonEventService extends AbstractEventService
             {
                 importSummaries.addImportSummary( addEvent( event, importOptions ) );
 
-                if ( counter % 100 == 0 )
+                if ( counter % FLUSH_FREQUENCY == 0 )
                 {
                     sessionFactory.getCurrentSession().flush();
                     sessionFactory.getCurrentSession().clear();
@@ -217,7 +219,7 @@ public class JacksonEventService extends AbstractEventService
             {
                 importSummaries.addImportSummary( addEvent( event, importOptions ) );
 
-                if ( counter % 100 == 0 )
+                if ( counter % FLUSH_FREQUENCY == 0 )
                 {
                     sessionFactory.getCurrentSession().flush();
                     sessionFactory.getCurrentSession().clear();
