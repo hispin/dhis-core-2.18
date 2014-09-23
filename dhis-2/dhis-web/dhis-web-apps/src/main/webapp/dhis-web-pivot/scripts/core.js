@@ -2096,15 +2096,19 @@ Ext.onReady( function() {
                             return '';
                         }
 
-                        if (config.htmlValue || Ext.isBoolean(config.htmlValue)) {
+                        if (Ext.isBoolean(config.htmlValue)) {
                             return config.htmlValue;
                         }
 
-                        if (config.value) {
-                            return value;
+                        if (config.htmlValue && isValue) {
+                            return Ext.isNumber(parseFloat(config.htmlValue)) ? parseFloat(config.htmlValue).toString() : config.htmlValue;
                         }
 
-                        return '';
+                        if (config.value && isValue) {
+                            return Ext.isNumber(parseFloat(config.value)) ? parseFloat(config.value).toString() : config.value;
+                        }
+
+                        return config.htmlValue || '';
                     };
 
 					if (!Ext.isObject(config)) {
