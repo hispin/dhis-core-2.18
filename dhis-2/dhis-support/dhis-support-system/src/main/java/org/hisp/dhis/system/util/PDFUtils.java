@@ -704,7 +704,7 @@ public class PDFUtils
     {
         Map<String, String> map = new HashMap<>();
         map.put( DataElement.AGGREGATION_OPERATOR_SUM, "sum" );
-        map.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, "average" );
+        map.put( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM, "average" );
         map.put( DataElement.AGGREGATION_OPERATOR_COUNT, "count" );
         return map;
     }

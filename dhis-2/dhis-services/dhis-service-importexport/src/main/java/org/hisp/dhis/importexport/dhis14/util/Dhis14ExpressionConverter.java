@@ -154,7 +154,7 @@ public class Dhis14ExpressionConverter
                     throw new IllegalArgumentException( "Data element with id: " + dataElementId + " does not exist / have an aggregation operator" );
                 }
                 
-                char type = aggregationOperator.equals( DataElement.AGGREGATION_OPERATOR_AVERAGE ) ? 'S' : 'R';
+                char type = aggregationOperator.equals( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM ) ? 'S' : 'R';
                 
                 match = "Sum([" + type + dataElementId + "])";
                 

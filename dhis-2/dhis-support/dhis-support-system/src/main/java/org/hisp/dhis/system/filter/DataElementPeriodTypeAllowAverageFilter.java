@@ -57,7 +57,7 @@ public class DataElementPeriodTypeAllowAverageFilter
             return true;
         }
         
-        if ( DataElement.AGGREGATION_OPERATOR_AVERAGE.equals( dataElement.getAggregationOperator() ) && 
+        if ( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM.equals( dataElement.getAggregationOperator() ) && 
             dataElement.getPeriodType().getFrequencyOrder() >= type.getFrequencyOrder() )
         {
             return true;

@@ -239,7 +239,7 @@ public class DataMartServiceAggregationLevelsTest
     @Test
     public void testAverageIntDataElementDataMart()
     {
-        dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM );
         dataElement.setType( DataElement.VALUE_TYPE_INT );
         dataElement.setAggregationLevels( Arrays.asList( 3, 5 ) );        
         

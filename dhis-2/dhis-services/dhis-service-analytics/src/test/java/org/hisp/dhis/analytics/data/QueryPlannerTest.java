@@ -34,7 +34,7 @@ import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.NameableObjectUtils.getList;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_NONE;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
@@ -142,8 +142,8 @@ public class QueryPlannerTest
         
         deA = createDataElement( 'A', VALUE_TYPE_INT, AGGREGATION_OPERATOR_SUM );
         deB = createDataElement( 'B', VALUE_TYPE_INT, AGGREGATION_OPERATOR_SUM );
-        deC = createDataElement( 'C', VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE );
-        deD = createDataElement( 'D', VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE );
+        deC = createDataElement( 'C', VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE_SUM );
+        deD = createDataElement( 'D', VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE_SUM );
         deE = createDataElement( 'E', VALUE_TYPE_STRING, AGGREGATION_OPERATOR_NONE );
         deF = createDataElement( 'F', VALUE_TYPE_STRING, AGGREGATION_OPERATOR_NONE );
         

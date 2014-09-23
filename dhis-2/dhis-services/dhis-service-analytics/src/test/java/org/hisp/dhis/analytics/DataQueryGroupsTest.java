@@ -29,7 +29,7 @@ package org.hisp.dhis.analytics;
  */
 
 import static org.hisp.dhis.common.NameableObjectUtils.getList;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 import static org.junit.Assert.assertEquals;
@@ -81,8 +81,8 @@ public class DataQueryGroupsTest
         deC = createDataElement( 'C', VALUE_TYPE_INT, AGGREGATION_OPERATOR_SUM );
         deD = createDataElement( 'D', VALUE_TYPE_INT, AGGREGATION_OPERATOR_SUM );
         deE = createDataElement( 'E', VALUE_TYPE_INT, AGGREGATION_OPERATOR_SUM );
-        deF = createDataElement( 'F', VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE );
-        deG = createDataElement( 'G', VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE );
+        deF = createDataElement( 'F', VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE_SUM );
+        deG = createDataElement( 'G', VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE_SUM );
                 
         ouA = createOrganisationUnit( 'A' );
         ouB = createOrganisationUnit( 'B' );
@@ -116,7 +116,7 @@ public class DataQueryGroupsTest
         paramsD.setDataElements( getList( deF, deG ) );
         paramsD.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
         paramsD.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000Q3" ), createPeriod( "2000Q4" ), createPeriod(  "2001Q1" ), createPeriod( "2001Q2" ) ) );
-        paramsD.setAggregationType( AggregationType.AVERAGE_INT );
+        paramsD.setAggregationType( AggregationType.AVERAGE_SUM_INT );
         
         List<DataQueryParams> queries = new ArrayList<>();
         queries.add( paramsA );

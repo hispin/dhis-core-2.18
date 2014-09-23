@@ -119,7 +119,7 @@ public class ValidationUtilsTest
       
         assertTrue( dataValueIsZeroAndInsignificant( "0", de ) );
         
-        de.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        de.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM );
 
         assertFalse( dataValueIsZeroAndInsignificant( "0", de ) );
     }
