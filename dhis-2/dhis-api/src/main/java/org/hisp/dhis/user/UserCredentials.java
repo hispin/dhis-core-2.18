@@ -342,13 +342,21 @@ public class UserCredentials
     }
 
     /**
-     * Tests whether the given input arguments can perform a valid restore of the
-     * user account for these credentials. Returns false if any of the input arguments
-     * are null, or any of the properties on the credentials are null. Returns false
-     * if the expiry date argument is after the expiry date of the credentials.
-     * Returns false if any of the given token or code arguments are not equal to
-     * the respective properties the the credentials. Returns true otherwise.
-     *
+     * Tests whether the given input arguments can perform a valid restore of
+     * the user account for these credentials.
+     * <p>
+     * If fail, returns one of the following error strings:
+     * <ul>
+     *     <li>account_restoreToken_is_null</li>
+     *     <li>account_restoreCode_is_null</li>
+     *     <li>account_restoreExpiry_is_null</li>
+     *     <li>token_parameter_is_null</li>
+     *     <li>code_parameter_is_null</li>
+     *     <li>date_parameter_is_null</li>
+     *     <li>token_does_not_match_restoreToken ...</li>
+     *     <li>code_does_not_match_restoreCode ...</li>
+     *     <li>date_is_after_expiry ...</li>
+     * </ul>
      * @param token the restore token.
      * @param code  the restore code.
      * @param date  the expiry date.
@@ -358,47 +366,47 @@ public class UserCredentials
     {
         if ( this.restoreToken == null )
         {
-            return "account restoreToken is null";
+            return "account_restoreToken_is_null";
         }
 
         if ( this.restoreCode == null )
         {
-            return "account restoreCode is null";
+            return "account_restoreCode_is_null";
         }
 
         if ( this.restoreExpiry == null )
         {
-            return "account restoreExpiry is null";
+            return "account_restoreExpiry_is_null";
         }
 
         if ( token == null )
         {
-            return "canRestore() token parameter is null";
+            return "token_parameter_is_null";
         }
 
         if ( code == null )
         {
-            return "canRestore() code parameter is null";
+            return "code_parameter_is_null";
         }
 
         if ( date == null )
         {
-            return "canRestore() date parameter is null";
+            return "date_parameter_is_null";
         }
 
         if ( !token.equals ( this.restoreToken ) )
         {
-            return ( "token '" + token + "' does not match restoreToken '" + restoreToken + "'" );
+            return ( "token_does_not_match_restoreToken - token: '" + token + "' restoreToken: '" + restoreToken + "'" );
         }
 
         if ( !code.equals ( this.restoreCode ) )
         {
-            return ( "code '" + code + "' does not match restoreCode '" + restoreCode + "'" );
+            return ( "code_does_not_match_restoreCode - code: '" + code + "' restoreCode: '" + restoreCode + "'" );
         }
 
         if ( date.after( this.restoreExpiry ) )
         {
-            return "date " + date.toString() + " is after " + this.restoreExpiry.toString();
+            return "date_is_after_expiry - date: " + date.toString() + " expiry: " + this.restoreExpiry.toString();
         }
 
         return null; // Success.
