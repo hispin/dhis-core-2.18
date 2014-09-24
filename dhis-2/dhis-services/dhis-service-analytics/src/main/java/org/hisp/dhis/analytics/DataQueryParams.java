@@ -29,6 +29,7 @@ package org.hisp.dhis.analytics;
  */
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT_DISAGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.common.DimensionType.DATASET;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT_GROUPSET;
@@ -649,6 +650,14 @@ public class DataQueryParams
     }
     
     /**
+     * Indicates whether the aggregation type is of type disaggregation.
+     */
+    public boolean isDisaggregation()
+    {
+        return isAggregationType( AVERAGE_SUM_INT_DISAGGREGATION ) || isAggregationType( AVERAGE_INT_DISAGGREGATION );
+    }
+    
+    /**
      * Replaces the periods of this query with the corresponding data periods.
      * Sets the period type to the data period type. This method is relevant only 
      * when then the data period type has lower frequency than the aggregation 
@@ -657,7 +666,7 @@ public class DataQueryParams
      */
     public void replaceAggregationPeriodsWithDataPeriods( ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap )
     {
-        if ( isAggregationType( AVERAGE_SUM_INT_DISAGGREGATION ) && dataPeriodType != null )
+        if ( isDisaggregation() && dataPeriodType != null )
         {
             this.periodType = this.dataPeriodType.getName();
             

@@ -128,6 +128,7 @@
 			<select id="aggregationOperatorSelect" name="aggregationOperator">
 				<option value="sum" #if( $!dataElement.aggregationOperator == 'sum' ) selected="selected" #end>$i18n.getString( "sum" )</option>
 				<option value="average" #if( $!dataElement.aggregationOperator == 'average' ) selected="selected" #end>$i18n.getString( "average_sum_in_org_unit_hierarchy" )</option>
+				<option value="avg" #if( $!dataElement.aggregationOperator == 'avg' ) selected="selected" #end>$i18n.getString( "average" )</option>
                 <option value="count" #if( $!dataElement.aggregationOperator == 'count' ) selected="selected" #end>$i18n.getString( "count" )</option>
                 <option value="stddev" #if( $!dataElement.aggregationOperator == 'stddev' ) selected="selected" #end>$i18n.getString( "stddev" )</option>
                 <option value="variance" #if( $!dataElement.aggregationOperator == 'variance' ) selected="selected" #end>$i18n.getString( "variance" )</option>
