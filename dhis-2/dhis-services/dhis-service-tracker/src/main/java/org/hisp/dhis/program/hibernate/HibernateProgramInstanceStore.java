@@ -259,8 +259,6 @@ public class HibernateProgramInstanceStore
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
 
-        int cols = rs.getMetaData().getColumnCount();
-
         Collection<SchedulingProgramObject> schedulingProgramObjects = new HashSet<>();
 
         while ( rs.next() )

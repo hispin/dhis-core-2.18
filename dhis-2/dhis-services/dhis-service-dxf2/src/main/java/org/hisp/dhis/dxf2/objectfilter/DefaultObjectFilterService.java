@@ -164,9 +164,11 @@ public class DefaultObjectFilterService implements ObjectFilterService
         return true;
     }
 
+    /**
+     * Filters through every operator treating multiple of same operator as OR.
+     */
     private boolean evaluateFilterOps( Object value, FilterOps filterOps )
     {
-        // filter through every operator treating multiple of same operator as OR
         for ( String operator : filterOps.getFilters().keySet() )
         {
             boolean include = false;
