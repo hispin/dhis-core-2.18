@@ -1,8 +1,8 @@
 jQuery( document ).ready( function()
 {
     function preSubmit() {
-        var $selectedDataElements = $('#selectedDataElements');
-        var $selectedIndicators = $('#selectedIndicators');
+        var $selectedDataElements = $('#deSelected');
+        var $selectedIndicators = $('#inSelected');
 
         var hasDataElements = $selectedDataElements.val() != null && $selectedDataElements.val().length > 0;
         var hasIndicators = $selectedIndicators.val() != null && $selectedIndicators.val().length > 0;
@@ -22,8 +22,10 @@ jQuery( document ).ready( function()
     }, {
         'beforeValidateHandler' : function()
         {
-            listValidator( 'memberValidator', 'selectedDataElements' );
-            listValidator( 'memberValidatorIn', 'selectedIndicators' );
+            listValidator( 'deValidator', 'deSelected' );
+            listValidator( 'inValidator', 'inSelected' );
+            $("#deSelected").find("option").attr("selected", "selected");
+            $("#inSelected").find("option").attr("selected", "selected");
         },
         'rules' : getValidationRules( "dataDictionary" )
     } );

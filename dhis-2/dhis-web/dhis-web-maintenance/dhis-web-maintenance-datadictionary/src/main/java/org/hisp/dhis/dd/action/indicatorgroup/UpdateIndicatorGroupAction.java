@@ -28,22 +28,20 @@ package org.hisp.dhis.dd.action.indicatorgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.system.util.AttributeUtils;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: UpdateIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z
- *          larshelg $
  */
 public class UpdateIndicatorGroupAction
     implements Action
@@ -84,11 +82,11 @@ public class UpdateIndicatorGroupAction
         this.name = name;
     }
 
-    private Set<String> groupMembers = new HashSet<>();
+    private List<String> inSelected = Lists.newArrayList();
 
-    public void setGroupMembers( Set<String> groupMembers )
+    public void setInSelected( List<String> inSelected )
     {
-        this.groupMembers = groupMembers;
+        this.inSelected = inSelected;
     }
 
     private IndicatorGroup indicatorGroup;
@@ -120,9 +118,9 @@ public class UpdateIndicatorGroupAction
 
         Set<Indicator> members = new HashSet<>();
 
-        for ( String memberId : groupMembers )
+        for ( String id : inSelected )
         {
-            members.add( indicatorService.getIndicator( Integer.parseInt( memberId ) ) );
+            members.add( indicatorService.getIndicator( id ) );
         }
 
         if ( jsonAttributeValues != null )

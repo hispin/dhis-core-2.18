@@ -83,11 +83,11 @@ public class ShowUpdateIndicatorGroupFormAction
         return indicatorGroup;
     }
 
-    private List<Indicator> groupMembers = new ArrayList<>();
+    private List<Indicator> indicators = new ArrayList<>();
 
-    public List<Indicator> getGroupMembers()
+    public List<Indicator> getIndicators()
     {
-        return groupMembers;
+        return indicators;
     }
 
     private List<Attribute> attributes;
@@ -112,13 +112,13 @@ public class ShowUpdateIndicatorGroupFormAction
     {
         indicatorGroup = indicatorService.getIndicatorGroup( id, true );
 
-        groupMembers = new ArrayList<>( indicatorGroup.getMembers() );
+        indicators = new ArrayList<>( indicatorGroup.getMembers() );
 
         attributes = new ArrayList<>( attributeService.getIndicatorGroupAttributes() );
 
         attributeValues = AttributeUtils.getAttributeValueMap( indicatorGroup.getAttributeValues() );
 
-        Collections.sort( groupMembers, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( indicators, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;

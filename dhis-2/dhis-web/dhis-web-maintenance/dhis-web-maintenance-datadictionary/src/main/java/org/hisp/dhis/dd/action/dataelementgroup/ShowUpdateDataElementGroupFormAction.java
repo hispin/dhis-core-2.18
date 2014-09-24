@@ -101,11 +101,11 @@ public class ShowUpdateDataElementGroupFormAction
         return dataElementGroup;
     }
 
-    private List<DataElement> groupMembers = new ArrayList<>();
+    private List<DataElement> dataElements = new ArrayList<>();
 
-    public List<DataElement> getGroupMembers()
+    public List<DataElement> getDataElements()
     {
-        return groupMembers;
+        return dataElements;
     }
 
     // -------------------------------------------------------------------------
@@ -120,13 +120,13 @@ public class ShowUpdateDataElementGroupFormAction
 
         dataElementGroup = dataElementService.getDataElementGroup( id, true );
 
-        groupMembers = new ArrayList<>( dataElementGroup.getMembers() );
+        dataElements = new ArrayList<>( dataElementGroup.getMembers() );
 
         attributes = new ArrayList<>( attributeService.getDataElementGroupAttributes() );
 
         attributeValues = AttributeUtils.getAttributeValueMap( dataElementGroup.getAttributeValues() );
 
-        Collections.sort( groupMembers, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;

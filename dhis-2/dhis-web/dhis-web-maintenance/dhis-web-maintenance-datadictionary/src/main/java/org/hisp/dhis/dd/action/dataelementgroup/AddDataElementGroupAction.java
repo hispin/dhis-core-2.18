@@ -28,16 +28,14 @@ package org.hisp.dhis.dd.action.dataelementgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.system.util.AttributeUtils;
+
+import java.util.List;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -90,11 +88,11 @@ public class AddDataElementGroupAction
         this.code = code;
     }
 
-    private Set<String> groupMembers = new HashSet<>();
+    private List<String> deSelected = Lists.newArrayList();
 
-    public void setGroupMembers( Set<String> groupMembers )
+    public void setDeSelected( List<String> deSelected )
     {
-        this.groupMembers = groupMembers;
+        this.deSelected = deSelected;
     }
 
     private List<String> jsonAttributeValues;
@@ -121,15 +119,16 @@ public class AddDataElementGroupAction
 
     public String execute()
     {
-        code = ( code != null && code.trim().length() == 0 ) ? null : code;
-        
+        code = (code != null && code.trim().length() == 0) ? null : code;
+
         dataElementGroup = new DataElementGroup( name );
         dataElementGroup.setShortName( shortName );
         dataElementGroup.setCode( code );
-        
-        for ( String id : groupMembers )
+
+        for ( String id : deSelected )
         {
-            dataElementGroup.addDataElement( dataElementService.getDataElement( Integer.parseInt( id ) ) );
+            System.err.println( "id: " + id );
+            dataElementGroup.addDataElement( dataElementService.getDataElement( id ) );
         }
 
         if ( jsonAttributeValues != null )
