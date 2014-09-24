@@ -270,71 +270,94 @@ public class DefaultSecurityService
 
     public boolean canRestoreNow( UserCredentials credentials, String token, String code, RestoreType restoreType )
     {
+        String logInfoPrefix = "Restore User " + credentials.getUid() + " " + credentials.getUsername();
+
         String errorMessage = verifyToken( credentials, token, restoreType );
-
-        if ( errorMessage == null )
-        {
-            String username = credentials.getUsername();
-
-            String encodedToken = passwordManager.encodePassword( username, token );
-            String encodedCode = passwordManager.encodePassword( username, code );
-
-            Date date = new Cal().now().time();
-
-            errorMessage = credentials.canRestore( encodedToken, encodedCode, date );
-        }
-
-        String messageInfo = "Restore User " + credentials.getUid() + " " + credentials.getUsername();
 
         if ( errorMessage != null )
         {
-            log.info( messageInfo + " fail because " + errorMessage + "." );
+            log.info( logInfoPrefix + " verifyToken() failed: " + errorMessage );
             return false;
         }
 
-        log.info( messageInfo + " success." );
+        String username = credentials.getUsername();
+
+        String encodedToken = passwordManager.encodePassword( username, token );
+        String encodedCode = passwordManager.encodePassword( username, code );
+
+        Date date = new Cal().now().time();
+
+        errorMessage = credentials.canRestore( encodedToken, encodedCode, date );
+
+        if ( errorMessage != null )
+        {
+            log.info( logInfoPrefix + " canRestore() failed: " + errorMessage + "." );
+            return false;
+        }
+
+        log.info( logInfoPrefix + " success." );
         return true;
     }
 
+    /**
+     * Verify the token given for a user invite or password restore operation.
+     * <p>
+     * If error, returns one of the following strings:
+     *
+     * <ul>
+     *     <li>credentials_parameter_is_null</li>
+     *     <li>token_parameter_is_null</li>
+     *     <li>restoreType_parameter_is_null</li>
+     *     <li>cannnot_parse_restore_options ...</li>
+     *     <li>wrong_prefix_for_restore_type ...</li>
+     *     <li>could_not_verify_token ...</li>
+     *     <li>restoreToken_does_not_match_supplied_token</li>
+     * </ul>
+     *
+     * @param credentials the user credentials.
+     * @param token the token.
+     * @param restoreType type of restore operation.
+     * @return null if success, otherwise error string.
+     */
     public String verifyToken( UserCredentials credentials, String token, RestoreType restoreType )
     {
         if ( credentials == null )
         {
-            return "verifyToken() - credentials parameter is null";
+            return "credentials_parameter_is_null";
         }
 
         if ( token == null )
         {
-            return "verifyToken() - token parameter is null";
+            return "token_parameter_is_null";
         }
 
         if ( restoreType == null )
         {
-            return "verifyToken() - restoreType parameter is null";
+            return "restoreType_parameter_is_null";
         }
 
         RestoreOptions restoreOptions = RestoreOptions.getRestoreOptions( token );
 
         if ( restoreOptions == null )
         {
-            return "can't parse restore options for " + restoreType.name() + " from token " + token;
+            return "cannnot_parse_restore_options for " + restoreType.name() + " from token " + token;
         }
 
         if ( restoreType != restoreOptions.getRestoreType() )
         {
-            return "wrong prefix for restore type " + restoreType.name() + " on token " + token;
+            return "wrong_prefix_for_restore_type " + restoreType.name() + " on token " + token;
         }
 
         if ( credentials.getRestoreToken() == null )
         {
-            return "could not verify token for " + restoreType.name() + " because user has no token";
+            return "could_not_verify_token for " + restoreType.name() + " because user has no token";
         }
 
         String encodedToken = passwordManager.encodePassword( credentials.getUsername(), token );
 
         if ( !credentials.getRestoreToken().equals( encodedToken ) )
         {
-            return "supplied token " + token + " does not mach account restoreToken";
+            return "restoreToken_does_not_match_supplied_token " + token;
         }
 
         return null; // Success.
