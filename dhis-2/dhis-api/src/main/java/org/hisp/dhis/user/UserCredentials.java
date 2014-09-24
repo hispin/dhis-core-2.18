@@ -345,33 +345,63 @@ public class UserCredentials
      * Tests whether the given input arguments can perform a valid restore of the
      * user account for these credentials. Returns false if any of the input arguments
      * are null, or any of the properties on the credentials are null. Returns false
-     * if the expiry date arguement is after the expiry date of the credentials.
+     * if the expiry date argument is after the expiry date of the credentials.
      * Returns false if any of the given token or code arguments are not equal to
      * the respective properties the the credentials. Returns true otherwise.
      *
      * @param token the restore token.
      * @param code  the restore code.
      * @param date  the expiry date.
-     * @return true or false.
+     * @return null if success, or error message if fail.
      */
-    public boolean canRestore( String token, String code, Date date )
+    public String canRestore( String token, String code, Date date )
     {
-        if ( this.restoreToken == null || this.restoreCode == null || this.restoreExpiry == null )
+        if ( this.restoreToken == null )
         {
-            return false;
+            return "account restoreToken is null";
         }
 
-        if ( token == null || code == null || date == null )
+        if ( this.restoreCode == null )
         {
-            return false;
+            return "account restoreCode is null";
+        }
+
+        if ( this.restoreExpiry == null )
+        {
+            return "account restoreExpiry is null";
+        }
+
+        if ( token == null )
+        {
+            return "canRestore() token parameter is null";
+        }
+
+        if ( code == null )
+        {
+            return "canRestore() code parameter is null";
+        }
+
+        if ( date == null )
+        {
+            return "canRestore() date parameter is null";
+        }
+
+        if ( !token.equals ( this.restoreToken ) )
+        {
+            return ( "token '" + token + "' does not match restoreToken '" + restoreToken + "'" );
+        }
+
+        if ( !code.equals ( this.restoreCode ) )
+        {
+            return ( "code '" + code + "' does not match restoreCode '" + restoreCode + "'" );
         }
 
         if ( date.after( this.restoreExpiry ) )
         {
-            return false;
+            return "date " + date.toString() + " is after " + this.restoreExpiry.toString();
         }
 
-        return token.equals( this.restoreToken ) && code.equals( this.restoreCode );
+        return null; // Success.
     }
 
     /**

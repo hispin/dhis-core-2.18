@@ -105,13 +105,13 @@ public class SecurityServiceTest
         //
         // verifyToken()
         //
-        assertFalse( securityService.verifyToken( otherCredentials, token, RestoreType.RECOVER_PASSWORD ) );
+        assertNotNull( securityService.verifyToken( otherCredentials, token, RestoreType.RECOVER_PASSWORD ) );
 
-        assertFalse( securityService.verifyToken( credentials, "wrongToken", RestoreType.RECOVER_PASSWORD ) );
+        assertNotNull( securityService.verifyToken( credentials, "wrongToken", RestoreType.RECOVER_PASSWORD ) );
 
-        assertFalse( securityService.verifyToken( credentials, token, RestoreType.INVITE ) );
+        assertNotNull( securityService.verifyToken( credentials, token, RestoreType.INVITE ) );
 
-        assertTrue( securityService.verifyToken( credentials, token, RestoreType.RECOVER_PASSWORD ) );
+        assertNull( securityService.verifyToken( credentials, token, RestoreType.RECOVER_PASSWORD ) );
 
         //
         // canRestoreNow()
@@ -174,13 +174,13 @@ public class SecurityServiceTest
         //
         // verifyToken()
         //
-        assertFalse( securityService.verifyToken( otherCredentials, token, RestoreType.INVITE ) );
+        assertNotNull( securityService.verifyToken( otherCredentials, token, RestoreType.INVITE ) );
 
-        assertFalse( securityService.verifyToken( credentials, "wrongToken", RestoreType.INVITE ) );
+        assertNotNull( securityService.verifyToken( credentials, "wrongToken", RestoreType.INVITE ) );
 
-        assertFalse( securityService.verifyToken( credentials, token, RestoreType.RECOVER_PASSWORD ) );
+        assertNotNull( securityService.verifyToken( credentials, token, RestoreType.RECOVER_PASSWORD ) );
 
-        assertTrue( securityService.verifyToken( credentials, token, RestoreType.INVITE ) );
+        assertNull( securityService.verifyToken( credentials, token, RestoreType.INVITE ) );
 
         //
         // canRestoreNow()
