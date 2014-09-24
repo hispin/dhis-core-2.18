@@ -169,12 +169,18 @@ public class DataValue
         return getCategoryOptionCombo();
     }
     
+    /**
+     * Indicates whether the value is a zero.
+     */
     public boolean isZero()
     {
         return dataElement != null && dataElement.getType().equals( DataElement.VALUE_TYPE_INT )
             && value != null && ZERO_PATTERN.matcher( value ).find();
     }
 
+    /**
+     * Indicates whether the value is null.
+     */
     public boolean isNullValue()
     {
         return value == null && comment == null;

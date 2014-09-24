@@ -696,7 +696,7 @@ public class DefaultDataValueSetService
             {
                 if ( strategy.isCreateAndUpdate() || strategy.isCreate() )
                 {
-                    if ( !dryRun )
+                    if ( !dryRun && !internalValue.isNullValue() )
                     {
                         batchHandler.addObject( internalValue );
                     }
