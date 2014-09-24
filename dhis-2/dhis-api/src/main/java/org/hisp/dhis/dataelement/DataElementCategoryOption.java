@@ -230,6 +230,11 @@ public class DataElementCategoryOption
         this.categoryOptionCombos = categoryOptionCombos;
     }
 
+    @JsonProperty
+    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
+    @JsonView({ DetailedView.class })
+    @JacksonXmlElementWrapper(localName = "categoryOptionGroups", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "categoryOptionGroup", namespace = DxfNamespaces.DXF_2_0)
     public Set<CategoryOptionGroup> getGroups()
     {
         return groups;
