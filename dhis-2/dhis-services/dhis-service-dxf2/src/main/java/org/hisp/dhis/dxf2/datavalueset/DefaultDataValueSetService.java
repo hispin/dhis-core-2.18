@@ -686,7 +686,14 @@ public class DefaultDataValueSetService
                 {
                     if ( !dryRun )
                     {
-                        batchHandler.updateObject( internalValue );
+                        if ( !internalValue.isNullValue() )
+                        {
+                            batchHandler.updateObject( internalValue );
+                        }
+                        else
+                        {
+                            batchHandler.deleteObject( internalValue );
+                        }
                     }
 
                     updateCount++;
