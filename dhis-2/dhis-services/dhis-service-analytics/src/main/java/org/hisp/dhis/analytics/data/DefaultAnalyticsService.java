@@ -861,8 +861,7 @@ public class DefaultAnalyticsService
             List<NameableObject> dataSets = new ArrayList<>();
             List<NameableObject> operandDataElements = new ArrayList<>();
 
-            options:
-            for ( String uid : items )
+            options: for ( String uid : items )
             {
                 Indicator in = indicatorService.getIndicator( uid );
 
@@ -944,7 +943,8 @@ public class DefaultAnalyticsService
                 if ( RelativePeriodEnum.contains( isoPeriod ) )
                 {
                     RelativePeriodEnum relativePeriod = RelativePeriodEnum.valueOf( isoPeriod );
-                    periods.addAll( RelativePeriods.getRelativePeriodsFromEnum( relativePeriod, relativePeriodDate, format, true ) );
+                    List<Period> relativePeriods = RelativePeriods.getRelativePeriodsFromEnum( relativePeriod, relativePeriodDate, format, true );
+                    periods.addAll( relativePeriods );
                 }
                 else
                 {

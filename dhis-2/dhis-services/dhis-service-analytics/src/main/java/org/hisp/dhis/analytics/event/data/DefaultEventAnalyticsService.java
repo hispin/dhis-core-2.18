@@ -334,8 +334,6 @@ public class DefaultEventAnalyticsService
     {
         EventQueryParams params = new EventQueryParams();
 
-        Date date = new Date();
-
         Program pr = programService.getProgram( program );
 
         if ( pr == null )
@@ -372,7 +370,7 @@ public class DefaultEventAnalyticsService
             {
                 String dimensionId = getDimensionFromParam( dim );
                 List<String> items = getDimensionItemsFromParam( dim );                
-                List<DimensionalObject> dimObj = analyticsService.getDimension( dimensionId, items, date, format, true );
+                List<DimensionalObject> dimObj = analyticsService.getDimension( dimensionId, items, null, format, true );
                 
                 if ( dimObj != null )
                 {
@@ -391,7 +389,7 @@ public class DefaultEventAnalyticsService
             {
                 String dimensionId = getDimensionFromParam( dim );
                 List<String> items = getDimensionItemsFromParam( dim );                
-                List<DimensionalObject> dimObj = analyticsService.getDimension( dimensionId, items, date, format, true );
+                List<DimensionalObject> dimObj = analyticsService.getDimension( dimensionId, items, null, format, true );
                 
                 if ( dimObj != null )
                 {
