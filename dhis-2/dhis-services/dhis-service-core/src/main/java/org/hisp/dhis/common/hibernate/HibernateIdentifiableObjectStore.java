@@ -127,12 +127,16 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
         sessionFactory.getCurrentSession().update( object );
     }
 
+    /**
+     * Uses query since name property might not be unique.
+     */
     @Override
-    @Deprecated
     public final T getByName( String name )
     {
-        T object = getObject( Restrictions.eq( "name", name ) );
-
+        List<T> list = getList( Restrictions.eq( "name", name ) );
+        
+        T object = list != null && !list.isEmpty() ? list.get( 0 ) : null;
+        
         if ( !isReadAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
@@ -142,12 +146,16 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
         return object;
     }
 
+    /**
+     * Uses query since name property might not be unique.
+     */
     @Override
-    @Deprecated
     public final T getByShortName( String shortName )
     {
-        T object = getObject( Restrictions.eq( "shortName", shortName ) );
+        List<T> list = getList( Restrictions.eq( "shortName", shortName ) );
 
+        T object = list != null && !list.isEmpty() ? list.get( 0 ) : null;
+        
         if ( !isReadAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
