@@ -29,8 +29,9 @@ package org.hisp.dhis.analytics.data;
  */
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.COUNT;
 import static org.hisp.dhis.analytics.AggregationType.MAX;
 import static org.hisp.dhis.analytics.AggregationType.MIN;
@@ -161,7 +162,7 @@ public class JdbcAnalyticsManager
     
     public void replaceDataPeriodsWithAggregationPeriods( Map<String, Object> dataValueMap, DataQueryParams params, ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap )
     {
-        if ( params.isAggregationType( AVERAGE_SUM_INT_DISAGGREGATION ) )
+        if ( params.isDisaggregation() )
         {
             int periodIndex = params.getPeriodDimensionIndex();
             
@@ -231,6 +232,10 @@ public class JdbcAnalyticsManager
             
             sql += "sum(daysxvalue) / " + days;
         }
+        else if ( params.isAggregationType( AVERAGE_INT ) || params.isAggregationType( AVERAGE_INT_DISAGGREGATION ) )
+        {
+            sql += "avg(value)";
+        }
         else if ( params.isAggregationType( AVERAGE_BOOL ) )
         {
             sql += "sum(daysxvalue) / sum(daysno) * 100";
@@ -255,7 +260,7 @@ public class JdbcAnalyticsManager
         {
             sql += "max(value)";
         }
-        else // SUM, AVERAGE_INT_DISAGGREGATION and undefined //TODO
+        else // SUM, AVERAGE_SUM_INT_DISAGGREGATION and undefined //TODO
         {
             sql += "sum(value)";
         }

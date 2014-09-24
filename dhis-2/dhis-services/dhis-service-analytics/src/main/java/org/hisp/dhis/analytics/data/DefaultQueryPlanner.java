@@ -28,9 +28,6 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.SUM;
 import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
 import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
@@ -39,10 +36,13 @@ import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -81,6 +81,8 @@ public class DefaultQueryPlanner
     implements QueryPlanner
 {
     private static final Log log = LogFactory.getLog( DefaultQueryPlanner.class );
+
+    private static final List<String> AVERAGE_AGG_OPERATORS = Arrays.asList( AGGREGATION_OPERATOR_AVERAGE_SUM, AGGREGATION_OPERATOR_AVERAGE );
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -242,7 +244,7 @@ public class DefaultQueryPlanner
     
                         for ( DataQueryParams byAggregationType : groupedByAggregationType )
                         {
-                            if ( AVERAGE_SUM_INT_DISAGGREGATION.equals( byAggregationType.getAggregationType() ) )
+                            if ( byAggregationType.isDisaggregation() )
                             {
                                 List<DataQueryParams> groupedByDataPeriodType = groupByDataPeriodType( byAggregationType );
                                 
@@ -719,7 +721,37 @@ public class DefaultQueryPlanner
         PeriodType aggregationPeriodType, PeriodType dataPeriodType )
     {
         AggregationType aggregationType = null;
+
+        boolean disaggregation = isDisaggregation( aggregationOperator, aggregationPeriodType, dataPeriodType );
+        boolean number = VALUE_TYPE_INT.equals( valueType );
         
+        if ( AVERAGE_AGG_OPERATORS.contains( aggregationOperator ) && VALUE_TYPE_BOOL.equals( valueType ) )
+        {
+            aggregationType = AggregationType.AVERAGE_BOOL;
+        }
+        else if ( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM.equals( aggregationOperator ) && number && disaggregation )
+        {
+            aggregationType = AggregationType.AVERAGE_SUM_INT_DISAGGREGATION;
+        }
+        else if ( DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM.equals( aggregationOperator ) && number )
+        {
+            aggregationType = AggregationType.AVERAGE_SUM_INT;
+        }
+        else if ( DataElement.AGGREGATION_OPERATOR_AVERAGE.equals( aggregationOperator ) && number && disaggregation )
+        {
+            aggregationType = AggregationType.AVERAGE_INT_DISAGGREGATION;
+        }
+        else if ( DataElement.AGGREGATION_OPERATOR_AVERAGE.equals( aggregationOperator ) && number )
+        {
+            aggregationType = AggregationType.AVERAGE_INT;
+        }
+        else
+        {
+            aggregationType = AggregationType.fromValue( aggregationOperator );
+        }
+        
+        //
+        /*
         if ( AGGREGATION_OPERATOR_AVERAGE_SUM.equals( aggregationOperator ) )
         {
             if ( VALUE_TYPE_BOOL.equals( valueType ) )
@@ -741,11 +773,20 @@ public class DefaultQueryPlanner
         else
         {
             aggregationType = AggregationType.fromValue( aggregationOperator );
-        }
+        }*/
         
         return aggregationType;
     }
 
+    /**
+     * Indicates whether disaggregation is allowed for the given input.
+     */
+    private boolean isDisaggregation( String aggregationOperator, 
+        PeriodType aggregationPeriodType, PeriodType dataPeriodType )
+    {
+        return dataPeriodType != null && aggregationPeriodType != null && aggregationPeriodType.getFrequencyOrder() < dataPeriodType.getFrequencyOrder();
+    }
+    
     /**
      * Creates a mapping between the period type and the data element for the
      * given data elements.
