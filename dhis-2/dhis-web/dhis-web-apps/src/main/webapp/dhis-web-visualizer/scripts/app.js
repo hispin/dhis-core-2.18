@@ -5889,6 +5889,11 @@ Ext.onReady( function() {
 				}
 			}
 
+            // add data as dimension
+            if (!ns.app.layoutWindow.hasDimension(dimConf.data.dimensionName)) {
+                ns.app.stores.dimension.add({id: dimConf.data.dimensionName, name: dimConf.data.name});
+            }
+
             // add orgunit as dimension
             if (!ns.app.layoutWindow.hasDimension(dimConf.organisationUnit.dimensionName)) {
                 ns.app.stores.dimension.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
