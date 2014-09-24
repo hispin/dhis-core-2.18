@@ -92,6 +92,8 @@ public class HibernateUserCredentialsStore
         User persistedUser = userService.getUser( userCredentials.getUser().getUid() );
 
         if ( persistedUser != null && persistedUser.getUserCredentials() != null
+            && persistedUser.getUserCredentials().getPassword() != null
+            && userCredentials.getPassword() != null
             && !persistedUser.getUserCredentials().getPassword().equals( userCredentials.getPassword() ) )
         {
             userCredentials.setPasswordLastUpdated( new Date() );

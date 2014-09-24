@@ -145,9 +145,9 @@ public class DefaultSecurityService
         return true;
     }
 
-    public boolean validateRestore( UserCredentials credentials, RestoreOptions restoreOptions )
+    public boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreOptions restoreOptions )
     {
-        if ( credentials == null || restoreOptions == null )
+        if ( credentials == null || rootPath == null )
         {
             return false;
         }
@@ -174,24 +174,7 @@ public class DefaultSecurityService
 
         if ( credentials.hasAnyAuthority( Arrays.asList( UserAuthorityGroup.CRITICAL_AUTHS ) ) )
         {
-            log.info( "Not allowed to " + restoreType.name() + " users with critical authorities" );
-            return false;
-        }
-
-        return true;
-    }
-    
-    public boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreOptions restoreOptions )
-    {
-        if ( credentials == null || rootPath == null || restoreOptions == null )
-        {
-            return false;
-        }
-
-        RestoreType restoreType = restoreOptions.getRestoreType();
-
-        if ( validateRestore( credentials, restoreOptions ) == false )
-        {
+            log.info( "Not allowed to  " + restoreType.name() + " users with critical authorities" );
             return false;
         }
 
@@ -287,51 +270,74 @@ public class DefaultSecurityService
 
     public boolean canRestoreNow( UserCredentials credentials, String token, String code, RestoreType restoreType )
     {
-        if ( !verifyToken( credentials, token, restoreType ) )
+        String errorMessage = verifyToken( credentials, token, restoreType );
+
+        if ( errorMessage == null )
         {
+            String username = credentials.getUsername();
+
+            String encodedToken = passwordManager.encodePassword( username, token );
+            String encodedCode = passwordManager.encodePassword( username, code );
+
+            Date date = new Cal().now().time();
+
+            errorMessage = credentials.canRestore( encodedToken, encodedCode, date );
+        }
+
+        String messageInfo = "Restore User " + credentials.getUid() + " " + credentials.getUsername();
+
+        if ( errorMessage != null )
+        {
+            log.info( messageInfo + " fail because " + errorMessage + "." );
             return false;
         }
 
-        String username = credentials.getUsername();
-
-        String encodedToken = passwordManager.encodePassword( username, token );
-        String encodedCode = passwordManager.encodePassword( username, code );
-
-        Date date = new Cal().now().time();
-
-        return credentials.canRestore( encodedToken, encodedCode, date );
+        log.info( messageInfo + " success." );
+        return true;
     }
 
-    public boolean verifyToken( UserCredentials credentials, String token, RestoreType restoreType )
+    public String verifyToken( UserCredentials credentials, String token, RestoreType restoreType )
     {
-        if ( credentials == null || token == null || restoreType == null )
+        if ( credentials == null )
         {
-            return false;
+            return "verifyToken() - credentials parameter is null";
+        }
+
+        if ( token == null )
+        {
+            return "verifyToken() - token parameter is null";
+        }
+
+        if ( restoreType == null )
+        {
+            return "verifyToken() - restoreType parameter is null";
         }
 
         RestoreOptions restoreOptions = RestoreOptions.getRestoreOptions( token );
 
         if ( restoreOptions == null )
         {
-            log.info( "Can't parse restore options for " + restoreType.name() + " from token " + token + " for user " + credentials );
-            return false;
+            return "can't parse restore options for " + restoreType.name() + " from token " + token;
         }
 
         if ( restoreType != restoreOptions.getRestoreType() )
         {
-            log.info( "Wrong prefix for restore type " + restoreType.name() + " on token " + token + " for user " + credentials );
-            return false;
+            return "wrong prefix for restore type " + restoreType.name() + " on token " + token;
         }
 
         if ( credentials.getRestoreToken() == null )
         {
-            log.info( "Could not verify token for " + restoreType.name() + " as user has no token: " + credentials );
-            return false;
+            return "could not verify token for " + restoreType.name() + " because user has no token";
         }
 
-        token = passwordManager.encodePassword( credentials.getUsername(), token );
+        String encodedToken = passwordManager.encodePassword( credentials.getUsername(), token );
 
-        return credentials.getRestoreToken().equals( token );
+        if ( !credentials.getRestoreToken().equals( encodedToken ) )
+        {
+            return "supplied token " + token + " does not mach account restoreToken";
+        }
+
+        return null; // Success.
     }
 
     @Override

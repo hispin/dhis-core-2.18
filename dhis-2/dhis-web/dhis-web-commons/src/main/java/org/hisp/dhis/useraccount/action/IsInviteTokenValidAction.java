@@ -140,8 +140,8 @@ public class IsInviteTokenValidAction
             usernameChoice = Boolean.toString( restoreOptions.isUsernameChoice() );
         }
 
-        boolean verified = securityService.verifyToken( userCredentials, token, RestoreType.INVITE );
+        String errorMessage = securityService.verifyToken( userCredentials, token, RestoreType.INVITE );
 
-        return verified ? SUCCESS : ERROR;
+        return errorMessage == null ? SUCCESS : ERROR;
     }
 }
