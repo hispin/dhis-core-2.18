@@ -670,6 +670,16 @@ public class DefaultDataValueSetService
             internalValue.setComment( trimToNull( dataValue.getComment() ) );
             internalValue.setFollowup( dataValue.getFollowup() );
 
+            String valid = ValidationUtils.dataValueIsValid( internalValue.getValue(), dataElement );
+
+            boolean zeroInsignificant = ValidationUtils.dataValueIsZeroAndInsignificant( internalValue.getValue(), dataElement );
+            
+            if ( valid != null || zeroInsignificant )
+            {
+                summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), internalValue.getValue() ) );
+                continue;
+            }
+            
             if ( !skipExistingCheck && batchHandler.objectExists( internalValue ) )
             {
                 if ( strategy.isCreateAndUpdate() || strategy.isUpdate() )
