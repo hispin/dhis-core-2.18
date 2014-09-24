@@ -2825,16 +2825,16 @@ Ext.onReady( function() {
 
 			web.report.query.format = function(str) {
 				var n = parseFloat(str);
-
-				if (!Ext.isNumber(n)) {
+                
+                // return string if
+                // - parsefloat(string) is not a number
+                // - string is just starting with a number
+                // - string is a valid date
+				if (!Ext.isNumber(n) || n != str || new Date(str).toString() !== 'Invalid Date') {
 					return str;
 				}
 
-				if (new Date(str).toString() === 'Invalid Date') {
-					return n;
-				}
-
-				return str;
+                return n;
 			};
 
 			web.report.query.getHtml = function(layout, xResponse) {

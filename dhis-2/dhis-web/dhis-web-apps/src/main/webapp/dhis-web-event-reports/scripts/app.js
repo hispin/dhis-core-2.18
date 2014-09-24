@@ -6323,10 +6323,10 @@ Ext.onReady( function() {
 					var xResponse = service.response.query.getExtendedResponse(layout, response),
                         table = web.report.query.getHtml(layout, xResponse);
 
-					if (layout.sorting) {
-						xResponse = web.report.query.sort(layout, xResponse);
-						table = web.report.query.getHtml(layout, xResponse);
-					}
+					//if (layout.sorting) {
+						//xResponse = web.report.query.sort(layout, xResponse);
+						//table = web.report.query.getHtml(layout, xResponse);
+					//}
 
 					ns.app.centerRegion.removeAll(true);
 					ns.app.centerRegion.update(table.html);
