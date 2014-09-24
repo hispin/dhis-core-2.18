@@ -88,16 +88,19 @@ public class AddSelectedOrganisationUnitAction
     {
         selectedUnits = selectionManager.getSelectedOrganisationUnits();
 
-        for ( String currentId : id )
+        if ( id != null )
         {
-            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( currentId );
-
-            if ( unit == null )
+            for ( String currentId : id )
             {
-                throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
+                OrganisationUnit unit = organisationUnitService.getOrganisationUnit( currentId );
+    
+                if ( unit == null )
+                {
+                    throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
+                }
+    
+                selectedUnits.add( unit );
             }
-
-            selectedUnits.add( unit );
         }
 
         selectionManager.setSelectedOrganisationUnits( selectedUnits );

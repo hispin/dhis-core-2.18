@@ -28,7 +28,7 @@
 
 <table>
 
-#if( $accountAction == "invited" )
+	#if( $accountAction == "invited" )
     <tr>
         <td style="width:140px"><label for="code">$i18n.getString( "code_from_email" )</label></td>
         <td>
@@ -37,7 +37,7 @@
             <input type="hidden" id="inviteToken" name="inviteToken" value="$token">
         </td>
     </tr>
-#end
+	#end
 
     <tr>
         <td style="width:140px"><label id="label_firstName" for="firstName">$i18n.getString( "name" )</label></td>
@@ -48,14 +48,13 @@
     </tr>
     <tr>
         <td><label id="label_username" for="username">$i18n.getString( "user_name" )</label></td>
+        #if( $usernameChoice == "false" )
+        <td><input type="hidden" id="username" name="username" value="RpuECtIlVoRKTpYmEkYrAHmPtX4m1U">
+        	<input type="text" id="assignedUsername" name="assignedUsername" disabled="disabled" value="${username}"></td>
+        #else
+        <td><input type="text" id="username" name="username" autocomplete="off"></td>
+        #end
         <td>
-            <input type="text" id="username" name="username" autocomplete="off" #if( $usernameChoice == "false" ) style="display:none" value="nonExistingUserName_RpuECtIlVoRKTpYmEkYrAHmPtX4m1U" #end>
-
-#if( $usernameChoice == "false" )
-            <input type="text" id="assignedUsername" name="assignedUsername" disabled="disabled" value="$username">
-#end
-
-        </td>
     </tr>
     <tr>
         <td><label id="label_password" for="password">$i18n.getString( "password" )</label></td>
