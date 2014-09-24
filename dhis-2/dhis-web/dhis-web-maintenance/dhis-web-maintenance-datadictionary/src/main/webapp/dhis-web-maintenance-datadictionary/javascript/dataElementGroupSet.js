@@ -7,10 +7,10 @@ $(function() {
 });
 
 function beforeSubmit() {
-  memberValidator = jQuery("#memberValidator");
+  memberValidator = jQuery("#degValidator");
   memberValidator.children().remove();
 
-  jQuery.each(jQuery("#groupMembers").children(), function( i, item ) {
+  jQuery.each(jQuery("#degSelected").children(), function( i, item ) {
     item.selected = 'selected';
     memberValidator.append('<option value="' + item.value + '" selected="selected">' + item.value + '</option>');
   });

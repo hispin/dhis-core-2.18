@@ -27,17 +27,15 @@ package org.hisp.dhis.dd.action.dataelementgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Tran Thanh Tri
- * @version $Id$
  */
 public class GetDataElementGroupSetAction
-   implements Action
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -49,7 +47,7 @@ public class GetDataElementGroupSetAction
     {
         this.dataElementService = dataElementService;
     }
-       
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -60,20 +58,22 @@ public class GetDataElementGroupSetAction
     {
         this.id = id;
     }
-    
+
     private DataElementGroupSet dataElementGroupSet;
-    
+
     public DataElementGroupSet getDataElementGroupSet()
     {
         return dataElementGroupSet;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
-
-        dataElementGroupSet = dataElementService.getDataElementGroupSet( id  );       
-       
+        dataElementGroupSet = dataElementService.getDataElementGroupSet( id );
 
         return SUCCESS;
     }

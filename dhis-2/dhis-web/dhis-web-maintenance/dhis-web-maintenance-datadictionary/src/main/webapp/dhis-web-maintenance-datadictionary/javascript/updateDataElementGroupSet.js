@@ -4,7 +4,10 @@ jQuery( document ).ready( function()
     {
         form.submit();
     }, {
-        'beforeValidateHandler' : beforeSubmit,
+        'beforeValidateHandler' : function() {
+            beforeSubmit();
+            $("#degSelected").find("option").attr("selected", "selected");
+        },
         'rules' : getValidationRules( "dataElementGroupSet" )
     } );
 

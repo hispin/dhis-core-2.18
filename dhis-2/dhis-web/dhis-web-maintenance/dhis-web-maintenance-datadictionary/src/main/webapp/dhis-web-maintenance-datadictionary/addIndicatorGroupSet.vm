@@ -1,21 +1,12 @@
 <script type="text/javascript" src="javascript/addIndicatorGroupSet.js"></script>
 <script>
 	jQuery(function() {
-		jQuery("#availableIndicatorGroupsList").dhisAjaxSelect({
-			source: "../dhis-web-commons-ajax-json/getIndicatorGroups.action",
-			iterator: "indicatorGroups",
-			connectedTo: 'groupMembers',
-			handler: function(item) {
-				var option = jQuery("<option />");
-				option.text( item.name );
-				option.attr( "value", item.id );
-
-				return option;
-			},
-			params: {
-				filterNoGroupSet: true
-			}
-		});
+        $('#ingAvailable').selected({
+          url: '../api/indicatorGroups.json?filter=indicatorGroupSet:null',
+          target: $('#ingSelected'),
+          search: $('#ingAvailableSearch'),
+          iterator: 'indicatorGroups'
+        });
 	});
 </script>
 
@@ -55,36 +46,11 @@
 	</tr>
 </table>
 
-<table>
-    <colgroup>
-      <col style="width: 500px;"/>
-      <col/>
-      <col style="width: 500px;"/>
-    </colgroup>
-
-	<tr>
-		<th>$i18n.getString( "available_indicatorgroup" )</th>
-		<th></th>
-		<th>$i18n.getString( "group_members" )</th>
-	</tr>
-
-	<tr>
-		<td>
-			<select id="availableIndicatorGroupsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
-		</td>
-
-        <td style="text-align:center">          
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableIndicatorGroupsList' );"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'groupMembers' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableIndicatorGroupsList' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'groupMembers' );"/>
-        </td>
-
-		<td>
-			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;" class="{validate:{required:true}}"></select>
-		</td>
-	</tr>
-</table>
+#jqSelected({
+  "prefix": "ing",
+  "i18n_available": "available_indicatorgroup",
+  "i18n_selected": "selected_indicatorgroup"
+})
 
 <p>
 	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em" />

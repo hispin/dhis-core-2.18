@@ -6,7 +6,8 @@ jQuery( document ).ready( function()
     }, {
         'beforeValidateHandler' : function()
         {
-            listValidator( 'memberValidator', 'groupMembers' );
+            $("#ingSelected").find("option").attr("selected", "selected");
+            listValidator( 'ingValidator', 'ingSelected' );
         },
         'rules' : getValidationRules( "indicatorGroupSet" )
     } );

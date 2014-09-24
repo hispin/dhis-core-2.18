@@ -29,7 +29,6 @@ package org.hisp.dhis.dd.action.dataelementgroupset;
  */
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 
@@ -38,7 +37,6 @@ import java.util.List;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id$
  */
 public class UpdateDataElementGroupSetAction
     implements Action
@@ -93,11 +91,11 @@ public class UpdateDataElementGroupSetAction
         this.dataDimension = dataDimension;
     }
 
-    private List<String> groupMembers = new ArrayList<>();
+    private List<String> degSelected = new ArrayList<>();
 
-    public void setGroupMembers( List<String> groupMembers )
+    public void setDegSelected( List<String> degSelected )
     {
-        this.groupMembers = groupMembers;
+        this.degSelected = degSelected;
     }
 
     // -------------------------------------------------------------------------
@@ -116,11 +114,9 @@ public class UpdateDataElementGroupSetAction
 
         dataElementGroupSet.getMembers().clear();
 
-        for ( String id : groupMembers )
+        for ( String id : degSelected )
         {
-            DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( Integer.parseInt( id ) );
-
-            dataElementGroupSet.getMembers().add( dataElementGroup );
+            dataElementGroupSet.getMembers().add( dataElementService.getDataElementGroup( id ) );
         }
 
         dataElementService.updateDataElementGroupSet( dataElementGroupSet );

@@ -1,12 +1,13 @@
-jQuery( document ).ready( function()
-{
-    validation2( 'addDataElementGroupSet', function( form )
-    {
+jQuery(document).ready(function() {
+    validation2('addDataElementGroupSet', function( form ) {
         form.submit();
     }, {
-        'beforeValidateHandler' : beforeSubmit,
-        'rules' : getValidationRules( "dataElementGroupSet" )
-    } );
+        'beforeValidateHandler': function() {
+            beforeSubmit();
+            $("#degSelected").find("option").attr("selected", "selected");
+        },
+        'rules': getValidationRules("dataElementGroupSet")
+    });
 
-    checkValueIsExist( "name", "validateDataElementGroupSet.action" );
-} );
+    checkValueIsExist("name", "validateDataElementGroupSet.action");
+});

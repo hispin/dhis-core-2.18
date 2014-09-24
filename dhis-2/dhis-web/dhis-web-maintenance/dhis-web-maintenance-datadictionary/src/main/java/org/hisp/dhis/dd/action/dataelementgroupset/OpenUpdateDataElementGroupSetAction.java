@@ -28,15 +28,14 @@ package org.hisp.dhis.dd.action.dataelementgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collections;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Tran Thanh Tri
@@ -73,22 +72,22 @@ public class OpenUpdateDataElementGroupSetAction
         return dataElementGroupSet;
     }
 
-    private List<DataElementGroup> selectedGroups;
+    private List<DataElementGroup> dataElementGroups;
 
-    public List<DataElementGroup> getSelectedGroups()
+    public List<DataElementGroup> getDataElementGroups()
     {
-        return selectedGroups;
+        return dataElementGroups;
     }
 
     public String execute()
         throws Exception
     {
-        dataElementGroupSet = dataElementService.getDataElementGroupSet( id, true );       
-        
-        selectedGroups = dataElementGroupSet.getMembers();
-        
-        Collections.sort( selectedGroups, IdentifiableObjectNameComparator.INSTANCE );
-        
+        dataElementGroupSet = dataElementService.getDataElementGroupSet( id, true );
+
+        dataElementGroups = dataElementGroupSet.getMembers();
+
+        Collections.sort( dataElementGroups, IdentifiableObjectNameComparator.INSTANCE );
+
         return SUCCESS;
     }
 }
