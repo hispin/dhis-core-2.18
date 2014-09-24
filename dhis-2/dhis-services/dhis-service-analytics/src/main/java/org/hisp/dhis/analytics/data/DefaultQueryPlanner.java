@@ -750,31 +750,6 @@ public class DefaultQueryPlanner
             aggregationType = AggregationType.fromValue( aggregationOperator );
         }
         
-        //
-        /*
-        if ( AGGREGATION_OPERATOR_AVERAGE_SUM.equals( aggregationOperator ) )
-        {
-            if ( VALUE_TYPE_BOOL.equals( valueType ) )
-            {
-                aggregationType = AVERAGE_BOOL;
-            }
-            else
-            {
-                if ( dataPeriodType == null || aggregationPeriodType == null || aggregationPeriodType.getFrequencyOrder() >= dataPeriodType.getFrequencyOrder() )
-                {
-                    aggregationType = AVERAGE_SUM_INT;
-                }
-                else
-                {
-                    aggregationType = AVERAGE_SUM_INT_DISAGGREGATION;
-                }
-            }
-        }
-        else
-        {
-            aggregationType = AggregationType.fromValue( aggregationOperator );
-        }*/
-        
         return aggregationType;
     }
 
