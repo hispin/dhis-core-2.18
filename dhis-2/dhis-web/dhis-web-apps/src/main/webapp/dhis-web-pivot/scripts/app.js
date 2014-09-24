@@ -4319,6 +4319,7 @@ Ext.onReady( function() {
 							text: NS.i18n.prev_year,
 							style: 'margin-left:1px; border-radius:2px',
 							height: 24,
+                            width: 62,
 							handler: function() {
 								if (periodType.getValue()) {
 									periodType.periodOffset--;
@@ -4331,6 +4332,7 @@ Ext.onReady( function() {
 							text: NS.i18n.next_year,
 							style: 'margin-left:1px; border-radius:2px',
 							height: 24,
+                            width: 62,
 							handler: function() {
 								if (periodType.getValue()) {
 									periodType.periodOffset++;

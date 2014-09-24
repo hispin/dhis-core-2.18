@@ -1487,29 +1487,27 @@ Ext.onReady( function() {
 						var store = this,
 							params = {};
 
-						params['max'] = pageSize || 15;
+                        optionSetId = optionSetId || container.dataElement.optionSet.id;
 
 						if (key) {
 							params['key'] = key;
 						}
+
+						params['max'] = pageSize || 15;
 
 						Ext.Ajax.request({
 							url: gis.init.contextPath + '/api/optionSets/' + optionSetId + '/options.json',
 							params: params,
 							disableCaching: false,
 							success: function(r) {
-								var options = Ext.decode(r.responseText).options,
-									data = [];
+								var options = Ext.decode(r.responseText).options;
 
-								Ext.each(options, function(option) {
-									data.push({
-										id: option,
-										name: option
-									});
-								});
-
+                                for (var i = 0; i < options.length; i++) {
+                                    options[i].id = options[i].name;
+                                }
+                                    
 								store.removeAll();
-								store.add(data);
+                                store.loadData(options);
 							}
 						});
 					},
@@ -1577,27 +1575,7 @@ Ext.onReady( function() {
                             container.valueStore.add(Ext.clone(b.storage));
                         }
                         else {
-                            Ext.Ajax.request({
-                                url: gis.init.contextPath + '/api/optionSets/' + container.dataElement.optionSet.id + '/options.json',
-                                params: {
-                                    'max': 14
-                                },
-                                success: function(r) {
-                                    var options = Ext.decode(r.responseText).options,
-                                        data = [];
-
-                                    Ext.each(options, function(option) {
-                                        data.push({
-                                            id: option,
-                                            name: option
-                                        });
-                                    });
-
-                                    b.storage = Ext.clone(data);
-									container.valueStore.removeAll();
-                                    container.valueStore.add(data);
-                                }
-                            });
+                            container.valueStore.loadOptionSet();
                         }
                     }
                 });
@@ -4198,7 +4176,7 @@ Ext.onReady( function() {
             }
             else {
                 Ext.Ajax.request({
-                    url: gis.init.contextPath + '/api/programs.json?filter=id:eq:' + programId + '&fields=programStages[id,name],programTrackedEntityAttributes[attribute[id,name,valueType,optionSet[id,name]]]&paging=false',
+                    url: gis.init.contextPath + '/api/programs.json?filter=id:eq:' + programId + '&fields=programStages[id,name],programTrackedEntityAttributes[trackedEntityAttribute[id,name,valueType,optionSet[id,name]]]&paging=false',
                     success: function(r) {
                         var program = Ext.decode(r.responseText).programs[0],
                             stages,
@@ -4210,7 +4188,7 @@ Ext.onReady( function() {
                         }
 
                         stages = program.programStages;
-                        attributes = Ext.Array.pluck(program.programTrackedEntityAttributes, 'attribute');
+                        attributes = Ext.Array.pluck(program.programTrackedEntityAttributes, 'trackedEntityAttribute');
 
                         // attributes cache
                         if (Ext.isArray(attributes) && attributes.length) {
