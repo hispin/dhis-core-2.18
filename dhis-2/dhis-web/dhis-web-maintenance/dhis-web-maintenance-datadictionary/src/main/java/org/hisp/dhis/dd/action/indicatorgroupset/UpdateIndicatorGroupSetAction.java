@@ -28,18 +28,15 @@ package org.hisp.dhis.dd.action.indicatorgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.indicator.IndicatorGroup;
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id$
  */
 public class UpdateIndicatorGroupSetAction
     implements Action
@@ -87,12 +84,12 @@ public class UpdateIndicatorGroupSetAction
     {
         this.compulsory = compulsory;
     }
-    
-    private List<String> groupMembers = new ArrayList<>();
 
-    public void setGroupMembers( List<String> groupMembers )
+    private List<String> ingSelected = new ArrayList<>();
+
+    public void setIngSelected( List<String> ingSelected )
     {
-        this.groupMembers = groupMembers;
+        this.ingSelected = ingSelected;
     }
 
     // -------------------------------------------------------------------------
@@ -108,14 +105,12 @@ public class UpdateIndicatorGroupSetAction
         indicatorGroupSet.setName( name.trim() );
         indicatorGroupSet.setDescription( description );
         indicatorGroupSet.setCompulsory( compulsory );
-        
+
         indicatorGroupSet.getMembers().clear();
 
-        for ( String id : groupMembers )
+        for ( String id : ingSelected )
         {
-            IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( Integer.parseInt( id ) );
-
-            indicatorGroupSet.getMembers().add( indicatorGroup );
+            indicatorGroupSet.getMembers().add( indicatorService.getIndicatorGroup( id ) );
         }
 
         indicatorService.updateIndicatorGroupSet( indicatorGroupSet );
