@@ -28,17 +28,17 @@ package org.hisp.dhis.dd.action.dataelementgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.system.util.AttributeUtils;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -98,11 +98,11 @@ public class UpdateDataElementGroupAction
         this.code = code;
     }
 
-    private Set<String> groupMembers = new HashSet<>();
+    private List<String> deSelected = Lists.newArrayList();
 
-    public void setGroupMembers( Set<String> groupMembers )
+    public void setDeSelected( List<String> deSelected )
     {
-        this.groupMembers = groupMembers;
+        this.deSelected = deSelected;
     }
 
     private List<String> jsonAttributeValues;
@@ -129,12 +129,12 @@ public class UpdateDataElementGroupAction
 
     public String execute()
     {
-        code = ( code != null && code.trim().length() == 0 ) ? null : code;
-        
+        code = (code != null && code.trim().length() == 0) ? null : code;
+
         dataElementGroup = dataElementService.getDataElementGroup( id );
         dataElementGroup.setShortName( shortName );
         dataElementGroup.setCode( code );
-        
+
         if ( name != null && name.trim().length() > 0 )
         {
             dataElementGroup.setName( name );
@@ -142,9 +142,9 @@ public class UpdateDataElementGroupAction
 
         Set<DataElement> members = new HashSet<>();
 
-        for ( String id : groupMembers )
+        for ( String id : deSelected )
         {
-            members.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
+            members.add( dataElementService.getDataElement( id ) );
         }
 
         if ( jsonAttributeValues != null )

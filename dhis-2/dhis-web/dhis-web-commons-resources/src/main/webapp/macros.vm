@@ -431,7 +431,6 @@ jQuery.each(attributes, function(i, item) {
       <th>$i18n.getString( $args.i18n_selected )
           #if( $required )
             <em title="$i18n.getString( 'required' )" class="required">*</em>
-            <select id="${args.prefix}Validator" style="display:none"></select>
           #end
       </th>
     </tr>
@@ -466,4 +465,7 @@ jQuery.each(attributes, function(i, item) {
     </tr>
     </tbody>
 </table>
+
+<select id="${args.prefix}Validator" style="display:none"></select>
+
 #end

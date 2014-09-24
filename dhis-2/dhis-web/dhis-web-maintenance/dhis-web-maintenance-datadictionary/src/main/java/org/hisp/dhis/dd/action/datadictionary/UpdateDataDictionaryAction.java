@@ -36,8 +36,9 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
@@ -106,18 +107,18 @@ public class UpdateDataDictionaryAction
         this.region = region;
     }
 
-    private Collection<String> selectedDataElements;
+    private List<String> deSelected = new ArrayList<>();
 
-    public void setSelectedDataElements( Collection<String> groupMembers )
+    public void setDeSelected( List<String> deSelected )
     {
-        this.selectedDataElements = groupMembers;
+        this.deSelected = deSelected;
     }
 
-    private Collection<String> selectedIndicators;
+    private List<String> inSelected = new ArrayList<>();
 
-    public void setSelectedIndicators( Collection<String> indicators )
+    public void setInSelected( List<String> indicators )
     {
-        this.selectedIndicators = indicators;
+        this.inSelected = indicators;
     }
 
     // -------------------------------------------------------------------------
@@ -132,13 +133,13 @@ public class UpdateDataDictionaryAction
         dictionary.setDescription( nullIfEmpty( description ) );
         dictionary.setRegion( nullIfEmpty( region ) );
 
-        if ( selectedDataElements != null )
+        if ( deSelected != null )
         {
-            Set<DataElement> members = new HashSet<>( selectedDataElements.size() );
+            Set<DataElement> members = new HashSet<>( deSelected.size() );
 
-            for ( String id : selectedDataElements )
+            for ( String id : deSelected )
             {
-                members.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
+                members.add( dataElementService.getDataElement( id ) );
             }
 
             dictionary.setDataElements( members );
@@ -148,13 +149,13 @@ public class UpdateDataDictionaryAction
             dictionary.setDataElements( new HashSet<DataElement>() );
         }
 
-        if ( selectedIndicators != null )
+        if ( inSelected != null )
         {
-            Set<Indicator> members = new HashSet<>( selectedIndicators.size() );
+            Set<Indicator> members = new HashSet<>( inSelected.size() );
 
-            for ( String id : selectedIndicators )
+            for ( String id : inSelected )
             {
-                members.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
+                members.add( indicatorService.getIndicator( id ) );
             }
 
             dictionary.setIndicators( members );

@@ -7,6 +7,7 @@
             'beforeValidateHandler' : function() {
                 beforeSubmit();
                 #tblDynamicAttributesJavascript()
+                $("#deSelected").find("option").attr("selected", "selected");
             },
             'rules' : getValidationRules( "dataElementGroup" )
         } );
@@ -23,18 +24,12 @@
             id : getFieldValue( 'id' )
         } );
 
-		jQuery("#availableDataElementsList").dhisAjaxSelect({
-			source: "../dhis-web-commons-ajax-json/getDataElements.action",
-			iterator: "dataElements",
-			connectedTo: 'groupMembers',
-			handler: function(item) {
-				var option = jQuery("<option data-id='" + item.groups + "' />");
-				option.text( item.name );
-				option.attr( "value", item.id );
-
-				return option;
-			}
-		});
+        $('#deAvailable').selected({
+          url: '../api/dataElements.json',
+          target: $('#deSelected'),
+          search: $('#deAvailableSearch'),
+          iterator: 'dataElements'
+        });
 	});
 </script>
 
@@ -68,40 +63,12 @@
 
 #tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
 
-<table>
-    <colgroup>
-      <col style="width: 500px;"/>
-      <col/>
-      <col style="width: 500px;"/>
-    </colgroup>
-
-	<tr>
-		<th>$i18n.getString( "available_data_elements" )</th>
-		<th></th>
-		<th>$i18n.getString( "group_members" )</th>
-	</tr>
-
-	<tr>
-		<td>
-			<select id="availableDataElementsList" name="availableDataElementsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
-		</td>
-
-        <td style="text-align:center">          
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableDataElementsList' );"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'groupMembers' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableDataElementsList' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'groupMembers' );"/>
-        </td>
-
-		<td>
-			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
-				#foreach( $dataElement in $groupMembers )
-					<option value="$dataElement.id">$encoder.htmlEncode( $dataElement.displayName )</option>
-				#end
-			</select>
-		</td>
-	</tr>
-</table>
+#jqSelected({
+    "prefix": "de",
+    "i18n_available": "available_data_elements",
+    "i18n_selected": "selected_data_elements",
+    "objects": $dataElements
+})
 
 <p>
 	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
