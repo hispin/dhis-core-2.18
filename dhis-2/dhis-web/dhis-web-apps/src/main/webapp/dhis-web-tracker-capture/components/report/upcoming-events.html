@@ -108,7 +108,6 @@
                 <button type="button"
                         class="btn btn-success small-horizonal-spacing"
                         ng-if="upcomingEvents.length > 0"
-                        class="btn btn-primary"
                         onclick="javascript:window.print()">
                     {{'print'| translate}}
                 </button>
@@ -162,18 +161,18 @@
                                     <!-- sort icon begins -->
                                     <span ng-click="sortGrid(gridColumn)">
                                         {{gridColumn.name| translate}}
-                                        <i ng-if="sortHeader == gridColumn.id && reverse" class="fa fa-sort-desc"></i>
-                                        <i ng-if="sortHeader == gridColumn.id && !reverse" class="fa fa-sort-asc"></i>
+                                        <i ng-if="sortHeader === gridColumn.id && reverse" class="fa fa-sort-desc"></i>
+                                        <i ng-if="sortHeader === gridColumn.id && !reverse" class="fa fa-sort-asc"></i>
                                     </span>
                                     <!-- sort icon ends -->
 
                                     <!-- filter icon begins -->
                                     <span class='pull-right'>
-                                        <span ng-show="gridColumn.type != 'date' && gridColumn.type != 'int'">
-                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter - without - content', false: 'filter - with - content'} [filterText[gridColumn.id] == undefined || filterText[gridColumn.id] == '']"><i class="fa fa-search"></i></span></a>
+                                        <span ng-show="gridColumn.type !== 'date' && gridColumn.type !== 'int'">
+                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [filterText[gridColumn.id] === undefined || filterText[gridColumn.id] === '']"><i class="fa fa-search"></i></span></a>
                                         </span>
                                         <span ng-show="gridColumn.type === 'date' || gridColumn.type === 'int'">
-                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter - without - content', false: 'filter - with - content'} [(filterText[gridColumn.id].start == undefined || filterText[gridColumn.id].start == '') && (filterText[gridColumn.id].end == undefined || filterText[gridColumn.id].end == '')]"><i class="fa fa-search"></i></span></a>
+                                            <a href ng-click="searchInGrid(gridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [(filterText[gridColumn.id].start === undefined || filterText[gridColumn.id].start === '') && (filterText[gridColumn.id].end === undefined || filterText[gridColumn.id].end === '')]"><i class="fa fa-search"></i></span></a>
                                         </span>                                                    
                                     </span>
                                     <!-- filter icon ends -->
@@ -187,11 +186,11 @@
                                             </span>
                                             <span ng-switch-when="date">
                                                 <input style="width: 70%;" placeholder="{{'start_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].start" data-ng-date readonly="readonly">
-                                                <span ng-hide="filterText[gridColumn.id].start == undefined || filterText[gridColumn.id].start == ''">
+                                                <span ng-hide="filterText[gridColumn.id].start === undefined || filterText[gridColumn.id].start === ''">
                                                     <a href ng-click='removeStartFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
                                                 </span>
                                                 <input style="width: 70%;" placeholder="{{'end_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].end" data-ng-date readonly="readonly">
-                                                <span ng-hide="filterText[gridColumn.id].end == undefined || filterText[gridColumn.id].end == ''">
+                                                <span ng-hide="filterText[gridColumn.id].end === undefined || filterText[gridColumn.id].end === ''">
                                                     <a href ng-click='removeEndFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
                                                 </span> 
                                             </span>
