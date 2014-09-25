@@ -30,31 +30,24 @@ dhis2.util.namespace("dhis2.coc");
 
 dhis2.coc = {
     clearAndSetAjaxSelect: function( type, clearSelected ) {
-        var source = "../dhis-web-commons-ajax-json/getDataElementCategories.action";
+        var source = "../api/categories.json";
 
         if( type !== undefined ) {
-            source += "?type=" + type;
+            source += "?filter=dataDimensionType:eq:" + type;
         }
 
         if( clearSelected ) {
             $('#selectedList').children().empty();
         }
 
-        jQuery("#availableList").dhisAjaxSelect({
-            source: source,
-            iterator: 'dataElementCategories',
-            sortSelected: false,
-            connectedTo: 'selectedList',
-            handler: function( item ) {
-                var option = jQuery("<option />");
-                option.text(item.name);
-                option.attr("value", item.id);
-
-                return option;
-            }
+        $('#caAvailable').selected({
+          url: source,
+          target: $('#caSelected'),
+          search: $('#caAvailableSearch'),
+          iterator: 'categories'
         });
     },
     getType: function () {
-        return $('#dimensionType').val().toUpperCase();
+        return $('#dimensionType').val().toLowerCase();
     }
 };

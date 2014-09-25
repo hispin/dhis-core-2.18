@@ -10,7 +10,10 @@
         validation2( 'addDataElementCategoryComboForm', function( form ){
 			validateSelectedCategories( form );
 		}, {
-			'beforeValidateHandler': function() { listValidator( 'selectedCategories', 'selectedList' ); },
+			'beforeValidateHandler': function() {
+                $("#caSelected").find("option").attr("selected", "selected");
+                listValidator( 'caValidator', 'caSelected' );
+            },
 			'rules': getValidationRules("dateElementCategoryCombo")
 		});
 
@@ -54,53 +57,11 @@
     </tbody>
   </table>
 
-  <table id="dataElementCategorySelectionArea">
-      <colgroup>
-        <col style="width: 500px;"/>
-        <col/>
-        <col style="width: 500px;"/>
-        <col/>
-      </colgroup>
-
-    <thead>
-      <tr>        
-		<th>$i18n.getString( "available_categories" )</th>
-		<th></th>
-		<th>$i18n.getString( "selected_categories" )</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr>
-        <td>
-            <select id="availableList" name="availableList" multiple="multiple" style="height: 200px; width: 100%;"></select>
-        </td>
-
-        <td style="text-align:center">
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableList' );"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedList' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableList' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedList' );"/>
-        </td>
-
-		<td>
-            <select id="selectedList" name="selectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;"></select>
-        </td>
-
-		<td>
-		  <a onclick="moveUpSelectedOption('selectedList')" title="$i18n.getString( 'move_up' )"><img src="../images/move_up.png" style="border:0;cursor:pointer" alt="$i18n.getString( 'move_up' )"/></a><br/><br/>
-		  <a onclick="moveDownSelectedOption('selectedList')" title="$i18n.getString( 'move_down' )"><img src="../images/move_down.png" style="border:0;cursor:pointer" alt="$i18n.getString( 'move_down' )"/></a>
-		</td>
-      </tr>
-
-	  <tr>
-		<td colspan="4">
-			<select id="selectedCategories" name="selectedCategories" style="display:none"></select>
-		</td>
-      </tr>
-
-    </tbody>
-  </table>
+  #jqSelected({
+    "prefix": "ca",
+    "i18n_available": "available_categories",
+    "i18n_selected": "selected_categories"
+  })
 
 	<p>
 		<input type="submit" name="add" value="$i18n.getString( 'add' )" style="width:10em" />

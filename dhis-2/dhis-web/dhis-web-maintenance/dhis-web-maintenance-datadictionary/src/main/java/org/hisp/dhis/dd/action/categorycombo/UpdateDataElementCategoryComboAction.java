@@ -28,20 +28,16 @@ package org.hisp.dhis.dd.action.categorycombo;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 public class UpdateDataElementCategoryComboAction
     implements Action
@@ -76,17 +72,17 @@ public class UpdateDataElementCategoryComboAction
     }
 
     private boolean skipTotal;
-    
+
     public void setSkipTotal( boolean skipTotal )
     {
         this.skipTotal = skipTotal;
     }
 
-    private Collection<String> selectedList = new HashSet<>();
+    private List<String> caSelected = new ArrayList<>();
 
-    public void setSelectedList( Collection<String> selectedList )
+    public void setCaSelected( List<String> caSelected )
     {
-        this.selectedList = selectedList;
+        this.caSelected = caSelected;
     }
 
     // -------------------------------------------------------------------------
@@ -100,20 +96,18 @@ public class UpdateDataElementCategoryComboAction
 
         categoryCombo.setName( name );
         categoryCombo.setSkipTotal( skipTotal );
-        
+
         List<DataElementCategory> updatedCategories = new ArrayList<>();
 
-        for ( String id : selectedList )
+        for ( String id : caSelected )
         {
-            DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( Integer
-                .parseInt( id ) );
-
+            DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( id );
             updatedCategories.add( dataElementCategory );
         }
 
         categoryCombo.setCategories( updatedCategories );
 
-        dataElementCategoryService.updateDataElementCategoryCombo( categoryCombo );       
+        dataElementCategoryService.updateDataElementCategoryCombo( categoryCombo );
 
         return SUCCESS;
     }
