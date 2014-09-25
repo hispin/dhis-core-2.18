@@ -4399,6 +4399,10 @@ Ext.onReady( function() {
 				},
 				afterrender: function() {
 					this.getSelectionModel().select(0);
+                    
+                    Ext.defer(function() {
+                        data.expand();
+                    }, 20);
 				},
 				itemcontextmenu: function(v, r, h, i, e) {
 					v.getSelectionModel().select(r, false);
@@ -5190,7 +5194,7 @@ Ext.onReady( function() {
             expandInitPanels: function() {
                 organisationUnit.expand();
                 //period.expand();
-                data.expand();
+                //data.expand();
             },
 			map: layer ? layer.map : null,
 			layer: layer ? layer : null,
