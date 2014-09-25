@@ -80,6 +80,24 @@ public class ListUtils
     }
     
     /**
+     * Retains only elements in the give list that are part of the given retain
+     * list.
+     * 
+     * @param list the target list.
+     * @param retain the elements to retain in the target list.
+     */
+    public static <T> List<T> retainAll( List<T> list, List<T> retain )
+    {
+        if ( list == null || retain == null )
+        {
+            return list;
+        }
+        
+        list.retainAll( retain );
+        return list;
+    }
+    
+    /**
      * Returns a sublist of the given list with the elements at the given indexes.
      * 
      * @param list the list to select from.
