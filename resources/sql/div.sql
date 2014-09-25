@@ -92,18 +92,6 @@ from users u
 join userinfo ui on u.userid=ui.userinfoid
 order by u.username;
 
--- Explore report tables
-
-select rt.name, rt.paramleafparentorganisationunit as leaf, 
-rt.paramgrandparentorganisationunit as grand, rt.paramparentorganisationunit as parent,
-(select count(*) from reporttable_dataelements where reporttableid=rt.reporttableid) as de,
-(select count(*) from reporttable_datasets where reporttableid=rt.reporttableid) as ds,
-(select count(*) from reporttable_indicators where reporttableid=rt.reporttableid) as in,
-(select count(*) from reporttable_organisationunits where reporttableid=rt.reporttableid) as ou, 
-(select count(*) from reporttable_orgunitgroups where reporttableid=rt.reporttableid) as oug,
-(select count(*) from reporttable_periods where reporttableid=rt.reporttableid) as pe
-from reporttable rt;
-
 -- Turn longitude/latitude around for organisationunit coordinates (adjust the like clause)
 
 update organisationunit set coordinates=regexp_replace(coordinates,'\[(.+?\..+?),(.+?\..+?)\]','[\2,\1]')
@@ -172,6 +160,18 @@ where dv.periodid in (
   from period pe
   where pe.startdate < '1950-01-01'
   or pe.enddate > '2050-01-01');
+
+-- Data value exploded view
+
+select de.name as dename, de.uid as deuid, pe.startdate as pestart, pe.enddate as peend, pt.name as ptname, ou.name as ouname, ou.uid as ouuid, coc.uid as cocuid, aoc.uid as aocuid, dv.value as dvval
+from datavalue dv
+inner join dataelement de on (dv.dataelementid=de.dataelementid)
+inner join period pe on (dv.periodid=pe.periodid)
+inner join periodtype pt on (pe.periodtypeid=pt.periodtypeid)
+inner join organisationunit ou on (dv.sourceid=ou.organisationunitid)
+inner join categoryoptioncombo coc on (dv.categoryoptioncomboid=coc.categoryoptioncomboid)
+inner join categoryoptioncombo aoc on (dv.attributeoptioncomboid=aoc.categoryoptioncomboid)
+limit 10000;
 
 -- (Write) Populate dashboards for all users (7666 is userinfoid for target dashboard, replace with preferred id)
 
