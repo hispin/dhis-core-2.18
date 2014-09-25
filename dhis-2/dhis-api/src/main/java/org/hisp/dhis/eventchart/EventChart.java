@@ -134,7 +134,7 @@ public class EventChart
         DimensionalObject object = getDimensionalObject( series, relativePeriodDate, user, true,
             organisationUnitsAtLevel, organisationUnitsInGroups, format );
 
-        DimensionalObjectUtils.setDimensionItemsForFilters( object, dataItemGrid );
+        DimensionalObjectUtils.setDimensionItemsForFilters( object, dataItemGrid, true );
         
         return object != null ? object.getItems() : null;
     }
@@ -146,7 +146,7 @@ public class EventChart
         DimensionalObject object = getDimensionalObject( category, relativePeriodDate, user, true,
             organisationUnitsAtLevel, organisationUnitsInGroups, format );
 
-        DimensionalObjectUtils.setDimensionItemsForFilters( object, dataItemGrid );
+        DimensionalObjectUtils.setDimensionItemsForFilters( object, dataItemGrid, true );
         
         return object != null ? object.getItems() : null;
     }

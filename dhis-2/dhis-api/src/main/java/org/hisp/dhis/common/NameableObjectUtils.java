@@ -40,6 +40,8 @@ import java.util.Map;
  */
 public class NameableObjectUtils
 {
+    public static final String NULL_REPLACEMENT = "[n/a]";
+    
     /**
      * Returns a list of NameableObjects.
      *
@@ -115,14 +117,21 @@ public class NameableObjectUtils
      * the value of each list item.
      * 
      * @param values the list of object values.
+     * @param naForNull indicates whether a [n/a] string should be used as
+     *        replacement for null values.
      * @return a list of BaseNameableObejcts.
      */
-    public static List<NameableObject> getNameableObjects( Collection<Object> values )
+    public static List<NameableObject> getNameableObjects( Collection<Object> values, boolean naForNull )
     {
         List<NameableObject> objects = new ArrayList<>();
         
         for ( Object value : values )
         {
+            if ( value == null && naForNull )
+            {
+                value = NULL_REPLACEMENT;
+            }
+            
             if ( value != null )
             {
                 String val = String.valueOf( value );

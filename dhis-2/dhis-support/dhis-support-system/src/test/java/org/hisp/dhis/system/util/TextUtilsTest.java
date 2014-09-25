@@ -116,4 +116,14 @@ public class TextUtilsTest
         assertEquals( "tom, john", TextUtils.removeLastComma( "tom, john, " ) );
         assertEquals( "tom, john", TextUtils.removeLastComma( "tom, john,  " ) );
     }
+    
+    @Test
+    public void testJoinReplaceNull()
+    {
+        assertEquals( "green-red-blue", TextUtils.join( Arrays.asList( "green", "red", "blue" ), "-", "[n/a]" ) );
+        assertEquals( "green-[n/a]-blue", TextUtils.join( Arrays.asList( "green", null, "blue" ), "-", "[n/a]" ) );
+        assertEquals( "green-red-[n/a]", TextUtils.join( Arrays.asList( "green", "red", null ), "-", "[n/a]" ) );
+        assertEquals( "greenred[n/a]", TextUtils.join( Arrays.asList( "green", "red", null ), null, "[n/a]" ) );
+        assertEquals( "greenred", TextUtils.join( Arrays.asList( "green", "red", null ), null, null ) );
+    }
 }
