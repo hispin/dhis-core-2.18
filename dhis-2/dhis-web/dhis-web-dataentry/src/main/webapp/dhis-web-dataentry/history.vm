@@ -132,7 +132,7 @@ $( document ).ready( function() {
                             </tbody>
                         </table>
                     #else
-                        $encoder.htmlEncode( $i18n.getString( "there_is_no_audit_trail_for_this_value" ) )
+                        <div class="tipText">$encoder.htmlEncode( $i18n.getString( "there_is_no_audit_trail_for_this_value" ) )</div>
                     #end
                 </div>
             </div>
