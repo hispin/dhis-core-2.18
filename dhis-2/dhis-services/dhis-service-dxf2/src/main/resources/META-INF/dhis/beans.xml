@@ -56,6 +56,10 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.attribute.Attribute" />
   </bean>
 
+  <bean id="optionImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.option.Option" />
+  </bean>
+
   <bean id="optionSetImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.option.OptionSet" />
   </bean>
