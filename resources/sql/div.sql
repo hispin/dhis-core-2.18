@@ -92,6 +92,15 @@ from users u
 join userinfo ui on u.userid=ui.userinfoid
 order by u.username;
 
+-- Users in user role
+
+select u.userid, u.username, ui.firstname, ui.surname from users u 
+inner join userinfo ui on u.userid=ui.userinfoid 
+inner join userrolemembers urm on u.userid=urm.userid 
+inner join userrole ur on urm.userroleid=ur.userroleid 
+where ur.name='UserRoleName';
+
+
 -- Turn longitude/latitude around for organisationunit coordinates (adjust the like clause)
 
 update organisationunit set coordinates=regexp_replace(coordinates,'\[(.+?\..+?),(.+?\..+?)\]','[\2,\1]')
