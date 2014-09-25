@@ -111,7 +111,7 @@ public interface SecurityService
      * @param restoreType type of restore operation (e.g. pw recovery, invite).
      * @return true or false.
      */
-    boolean canRestoreNow( UserCredentials credentials, String token, String code, RestoreType restoreType );
+    boolean canRestore( UserCredentials credentials, String token, String code, RestoreType restoreType );
 
     /**
      * Tests whether the given token in combination with the given user name is

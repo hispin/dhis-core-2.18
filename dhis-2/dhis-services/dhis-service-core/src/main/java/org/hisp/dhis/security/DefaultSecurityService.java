@@ -248,7 +248,7 @@ public class DefaultSecurityService
     public boolean restore( UserCredentials credentials, String token, String code, String newPassword, RestoreType restoreType )
     {
         if ( credentials == null || token == null || code == null || newPassword == null
-            || !canRestoreNow( credentials, token, code, restoreType ) )
+            || !canRestore( credentials, token, code, restoreType ) )
         {
             return false;
         }
@@ -268,15 +268,15 @@ public class DefaultSecurityService
         return true;
     }
 
-    public boolean canRestoreNow( UserCredentials credentials, String token, String code, RestoreType restoreType )
+    public boolean canRestore( UserCredentials credentials, String token, String code, RestoreType restoreType )
     {
-        String logInfoPrefix = "Restore User " + credentials.getUid() + " " + credentials.getUsername();
+        String logPrefix = "Restore user: " + credentials.getUid() + ", username: " + credentials.getUsername();
 
         String errorMessage = verifyToken( credentials, token, restoreType );
 
         if ( errorMessage != null )
         {
-            log.info( logInfoPrefix + " verifyToken() failed: " + errorMessage );
+            log.info( logPrefix + " verifyToken() failed: " + errorMessage );
             return false;
         }
 
@@ -291,11 +291,11 @@ public class DefaultSecurityService
 
         if ( errorMessage != null )
         {
-            log.info( logInfoPrefix + " canRestore() failed: " + errorMessage + "." );
+            log.info( logPrefix + " canRestore() failed: " + errorMessage );
             return false;
         }
 
-        log.info( logInfoPrefix + " success." );
+        log.info( logPrefix + " success" );
         return true;
     }
 
@@ -307,11 +307,11 @@ public class DefaultSecurityService
      * <ul>
      *     <li>credentials_parameter_is_null</li>
      *     <li>token_parameter_is_null</li>
-     *     <li>restoreType_parameter_is_null</li>
+     *     <li>restore_type_parameter_is_null</li>
      *     <li>cannnot_parse_restore_options ...</li>
      *     <li>wrong_prefix_for_restore_type ...</li>
      *     <li>could_not_verify_token ...</li>
-     *     <li>restoreToken_does_not_match_supplied_token</li>
+     *     <li>restore_token_does_not_match_supplied_token</li>
      * </ul>
      *
      * @param credentials the user credentials.
@@ -333,7 +333,7 @@ public class DefaultSecurityService
 
         if ( restoreType == null )
         {
-            return "restoreType_parameter_is_null";
+            return "restore_type_parameter_is_null";
         }
 
         RestoreOptions restoreOptions = RestoreOptions.getRestoreOptions( token );
@@ -357,10 +357,10 @@ public class DefaultSecurityService
 
         if ( !credentials.getRestoreToken().equals( encodedToken ) )
         {
-            return "restoreToken_does_not_match_supplied_token " + token;
+            return "restore_token_does_not_match_supplied_token " + token;
         }
 
-        return null; // Success.
+        return null;
     }
 
     @Override

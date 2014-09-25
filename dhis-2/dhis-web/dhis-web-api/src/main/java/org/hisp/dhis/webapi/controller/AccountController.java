@@ -232,7 +232,7 @@ public class AccountController
                 return;
             }
 
-            boolean canRestore = securityService.canRestoreNow( credentials, inviteToken, inviteCode, RestoreType.INVITE );
+            boolean canRestore = securityService.canRestore( credentials, inviteToken, inviteCode, RestoreType.INVITE );
 
             if ( !canRestore )
             {
