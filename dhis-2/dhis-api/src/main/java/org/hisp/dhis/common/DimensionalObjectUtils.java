@@ -284,9 +284,11 @@ public class DimensionalObjectUtils
      * analytics type must be equal to EVENT.
      * 
      * @param dimension the dimension.
+     * @param naForNull indicates whether a [n/a] string should be used as
+     *        replacement for null values.
      * @param grid the grid with data values.
      */
-    public static void setDimensionItemsForFilters( DimensionalObject dimension, Grid grid )
+    public static void setDimensionItemsForFilters( DimensionalObject dimension, Grid grid, boolean naForNull )
     {
         if ( dimension == null || grid == null || !AnalyticsType.EVENT.equals( dimension.getAnalyticsType() ) )
         {
@@ -295,7 +297,7 @@ public class DimensionalObjectUtils
             
         BaseDimensionalObject dim = (BaseDimensionalObject) dimension;
         Set<Object> values = grid.getUniqueValues( dim.getDimension() );
-        List<NameableObject> items = NameableObjectUtils.getNameableObjects( values );
+        List<NameableObject> items = NameableObjectUtils.getNameableObjects( values, naForNull );
         dim.setItems( items );
     }
     

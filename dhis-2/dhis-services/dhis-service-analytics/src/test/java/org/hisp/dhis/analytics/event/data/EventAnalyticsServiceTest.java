@@ -232,12 +232,13 @@ public class EventAnalyticsServiceTest
         grid.addRow().addValue( "1" );
         grid.addRow().addValue( "2" );
         grid.addRow().addValue( "3" );
+        grid.addRow().addValue( null );
         
         chart.populateAnalyticalProperties();
         
         DimensionalObject dim = chart.getColumns().get( 0 );
         
-        DimensionalObjectUtils.setDimensionItemsForFilters( dim, grid );
+        DimensionalObjectUtils.setDimensionItemsForFilters( dim, grid, true );
         
         assertNotNull( dim );
         assertEquals( tea.getDimension(), dim.getDimension() );
@@ -246,7 +247,7 @@ public class EventAnalyticsServiceTest
         assertEquals( tead.getFilter(), dim.getFilter() );
         
         List<NameableObject> items = dim.getItems();
-        assertEquals( 3, items.size() );
+        assertEquals( 4, items.size() );
         assertNotNull( items.get( 0 ).getUid() );
         assertNotNull( items.get( 0 ).getName() );
         assertNotNull( items.get( 0 ).getCode() );

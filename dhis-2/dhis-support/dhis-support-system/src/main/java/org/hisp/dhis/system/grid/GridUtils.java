@@ -28,6 +28,7 @@ package org.hisp.dhis.system.grid;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.trimToEmpty;
 import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.system.util.CsvUtils.NEWLINE;
 import static org.hisp.dhis.system.util.CsvUtils.SEPARATOR_B;
@@ -41,7 +42,6 @@ import static org.hisp.dhis.system.util.PDFUtils.getTextCell;
 import static org.hisp.dhis.system.util.PDFUtils.getTitleCell;
 import static org.hisp.dhis.system.util.PDFUtils.openDocument;
 import static org.hisp.dhis.system.util.PDFUtils.resetPaddings;
-import static org.apache.commons.lang.StringUtils.*;
 
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -72,6 +72,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.VelocityContext;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.Encoder;
@@ -79,6 +80,7 @@ import org.hisp.dhis.system.util.ExcelUtils;
 import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.StreamUtils;
+import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.system.velocity.VelocityManager;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
@@ -101,8 +103,7 @@ public class GridUtils
 {
     private static final Log log = LogFactory.getLog( GridUtils.class );
     
-    private static final String EMPTY = "";
-    
+    private static final String EMPTY = "";    
     private static final String XLS_SHEET_PREFIX = "Sheet ";
     
     private static final NodeFilter HTML_ROW_FILTER = new OrFilter( new TagNameFilter( "td" ), new TagNameFilter( "th" ) );    
@@ -615,7 +616,9 @@ public class GridUtils
 
         for ( List<Object> row : grid.getRows() )
         {
-            String key = StringUtils.join( ListUtils.getAtIndexes( row, metaIndexes ), DIMENSION_SEP );
+            List<Object> metaDataRowItems = ListUtils.getAtIndexes( row, metaIndexes );
+            
+            String key = TextUtils.join( metaDataRowItems, DIMENSION_SEP, NameableObjectUtils.NULL_REPLACEMENT );
             
             map.put( key, Double.parseDouble( trimToEmpty( String.valueOf( row.get( valueIndex ) ) ) ) );
         }
