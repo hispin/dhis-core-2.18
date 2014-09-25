@@ -809,11 +809,14 @@ public class DefaultChartService
 
         BaseAnalyticalObject.sortKeys( valueMap );
         
-        for ( NameableObject series : chart.series() )
+        List<NameableObject> seriez = chart.series();
+        List<NameableObject> categories = chart.category();
+        
+        for ( NameableObject series : seriez )
         {
             double categoryIndex = 0;
-
-            for ( NameableObject category : chart.category() )
+            
+            for ( NameableObject category : categories )
             {
                 categoryIndex++;
 
@@ -823,7 +826,7 @@ public class DefaultChartService
 
                 key = chart.isAnalyticsType( AnalyticsType.AGGREGATE ) ? key.replace( DataElementOperand.SEPARATOR, DIMENSION_SEP ) : key; 
                 
-                //TODO fix issue with keys including -
+                // TODO fix issue with keys including -
                 
                 // Sort key on components to remove significance of column order
                 
