@@ -29,6 +29,7 @@ package org.hisp.dhis.common;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hisp.dhis.common.view.DimensionalView;
@@ -158,6 +159,26 @@ public class BaseDimensionalObject
             AnalyticsType.EVENT : AnalyticsType.AGGREGATE;
     }
     
+    /**
+     * Returns the items in the filter as a list. Order of items are preserved.
+     * Requires that the filter has the IN operator and that at least one item
+     * is specified in the filter, returns null if not.
+     */
+    public List<String> getFilterItemsAsList()
+    {
+        final String inOp = QueryOperator.IN.getValue().toLowerCase();
+        final int opLen = inOp.length() + 1;
+        
+        if ( filter == null || !filter.toLowerCase().startsWith( inOp ) || filter.length() < opLen )
+        {
+            return null;
+        }
+        
+        String filterItems = filter.substring( opLen, filter.length() );
+        
+        return new ArrayList<>( Arrays.asList( filterItems.split( DimensionalObjectUtils.OPTION_SEP ) ) );
+    }
+    
     //--------------------------------------------------------------------------
     // Getters and setters
     //--------------------------------------------------------------------------
@@ -244,6 +265,6 @@ public class BaseDimensionalObject
     @Override
     public String toString()
     {
-        return "[" + uid + ", type: " + dimensionType + ", items: " + items + "]";
+        return "[" + uid + ", type: " + dimensionType + ", items: " + items + ", filter: " + filter + "]";
     }
 }

@@ -121,7 +121,7 @@ public class NameableObjectUtils
      *        replacement for null values.
      * @return a list of BaseNameableObejcts.
      */
-    public static List<NameableObject> getNameableObjects( Collection<Object> values, boolean naForNull )
+    public static List<NameableObject> getNameableObjects( Collection<?> values, boolean naForNull )
     {
         List<NameableObject> objects = new ArrayList<>();
         
