@@ -116,15 +116,15 @@ public class SecurityServiceTest
         //
         // canRestoreNow()
         //
-        assertFalse( securityService.canRestoreNow( otherCredentials, token, code, RestoreType.RECOVER_PASSWORD ) );
+        assertFalse( securityService.canRestore( otherCredentials, token, code, RestoreType.RECOVER_PASSWORD ) );
 
-        assertFalse( securityService.canRestoreNow( credentials, "wrongToken", code, RestoreType.RECOVER_PASSWORD ) );
+        assertFalse( securityService.canRestore( credentials, "wrongToken", code, RestoreType.RECOVER_PASSWORD ) );
 
-        assertFalse( securityService.canRestoreNow( credentials, token, "wrongCode", RestoreType.RECOVER_PASSWORD ) );
+        assertFalse( securityService.canRestore( credentials, token, "wrongCode", RestoreType.RECOVER_PASSWORD ) );
 
-        assertFalse( securityService.canRestoreNow( credentials, token, code, RestoreType.INVITE ) );
+        assertFalse( securityService.canRestore( credentials, token, code, RestoreType.INVITE ) );
 
-        assertTrue( securityService.canRestoreNow( credentials, token, code, RestoreType.RECOVER_PASSWORD ) );
+        assertTrue( securityService.canRestore( credentials, token, code, RestoreType.RECOVER_PASSWORD ) );
 
         //
         // restore()
@@ -185,15 +185,15 @@ public class SecurityServiceTest
         //
         // canRestoreNow()
         //
-        assertFalse( securityService.canRestoreNow( otherCredentials, token, code, RestoreType.INVITE ) );
+        assertFalse( securityService.canRestore( otherCredentials, token, code, RestoreType.INVITE ) );
 
-        assertFalse( securityService.canRestoreNow( credentials, "wrongToken", code, RestoreType.INVITE ) );
+        assertFalse( securityService.canRestore( credentials, "wrongToken", code, RestoreType.INVITE ) );
 
-        assertFalse( securityService.canRestoreNow( credentials, token, "wrongCode", RestoreType.INVITE ) );
+        assertFalse( securityService.canRestore( credentials, token, "wrongCode", RestoreType.INVITE ) );
 
-        assertFalse( securityService.canRestoreNow( credentials, token, code, RestoreType.RECOVER_PASSWORD ) );
+        assertFalse( securityService.canRestore( credentials, token, code, RestoreType.RECOVER_PASSWORD ) );
 
-        assertTrue( securityService.canRestoreNow( credentials, token, code, RestoreType.INVITE ) );
+        assertTrue( securityService.canRestore( credentials, token, code, RestoreType.INVITE ) );
 
         //
         // restore()
