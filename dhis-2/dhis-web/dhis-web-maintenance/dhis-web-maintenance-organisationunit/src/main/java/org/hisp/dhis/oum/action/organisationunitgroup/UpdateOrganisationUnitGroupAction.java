@@ -38,6 +38,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -128,11 +129,11 @@ public class UpdateOrganisationUnitGroupAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
-    private Collection<String> selectedDataSetsList;
+    private List<String> dsSelected = new ArrayList<>();
 
-    public void setSelectedDataSetsList( Collection<String> selectedDataSetsList )
+    public void setDsSelected( List<String> dsSelected )
     {
-        this.selectedDataSetsList = selectedDataSetsList;
+        this.dsSelected = dsSelected;
     }
 
     // -------------------------------------------------------------------------
@@ -162,13 +163,13 @@ public class UpdateOrganisationUnitGroupAction
                 jsonAttributeValues, attributeService );
         }
 
-        if ( selectedDataSetsList != null )
+        if ( dsSelected != null )
         {
             Set<DataSet> dataSets = new HashSet<>();
 
-            for ( String id : selectedDataSetsList )
+            for ( String id : dsSelected )
             {
-                dataSets.add( dataSetService.getDataSet( Integer.parseInt( id ) ) );
+                dataSets.add( dataSetService.getDataSet( id ) );
             }
 
             organisationUnitGroup.updateDataSets( dataSets );

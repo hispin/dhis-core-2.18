@@ -28,9 +28,7 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.List;
-
+import com.opensymphony.xwork2.ActionSupport;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -39,7 +37,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -119,11 +119,11 @@ public class AddOrganisationUnitGroupAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
-    private Collection<String> selectedDataSetsList;
+    private List<String> dsSelected = new ArrayList<>();
 
-    public void setSelectedDataSetsList( Collection<String> selectedDataSetsList )
+    public void setDsSelected( List<String> dsSelected )
     {
-        this.selectedDataSetsList = selectedDataSetsList;
+        this.dsSelected = dsSelected;
     }
 
     // -------------------------------------------------------------------------
@@ -157,11 +157,11 @@ public class AddOrganisationUnitGroupAction
                 jsonAttributeValues, attributeService );
         }
 
-        if ( selectedDataSetsList != null )
+        if ( dsSelected != null )
         {
-            for ( String id : selectedDataSetsList )
+            for ( String id : dsSelected )
             {
-                organisationUnitGroup.addDataSet( dataSetService.getDataSet( Integer.parseInt( id ) ) );
+                organisationUnitGroup.addDataSet( dataSetService.getDataSet( id ) );
             }
         }
 

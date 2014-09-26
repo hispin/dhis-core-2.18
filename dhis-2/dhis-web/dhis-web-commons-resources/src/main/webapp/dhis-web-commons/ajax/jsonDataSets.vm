@@ -2,7 +2,7 @@
 { "dataSets": [
 #foreach( $dataSet in $dataSets )
   {
-    "id": $!{dataSet.id},
+    "id": "$!encoder.jsonEncode( ${dataSet.uid} )",
     "name": "$!encoder.jsonEncode( ${dataSet.displayName} )",
     "shortName": "$!encoder.jsonEncode( ${dataSet.displayShortName} )",
     "periodTypeId": "$!{dataSet.periodTypeId}",
