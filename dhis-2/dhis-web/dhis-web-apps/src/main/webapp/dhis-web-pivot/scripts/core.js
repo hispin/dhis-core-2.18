@@ -577,6 +577,10 @@ Ext.onReady( function() {
 						console.log('Response: headers.length !== rows[0].length');
 					}
 
+for (var i = 0; i < config.rows.length; i++) {
+    config.rows[i][2] = '2text';
+}
+
 					return config;
 				}();
 			};
@@ -1823,21 +1827,23 @@ Ext.onReady( function() {
                 return response;
             };
 
-            service.response.getValue = function(responseValue) {
-                if (Ext.isNumber(parseFloat(responseValue))) {
-                    return parseFloat(responseValue);
+            service.response.getValue = function(str) {
+				var n = parseFloat(str);
+
+                if (Ext.isBoolean(str)) {
+                    return 1;
                 }
 
-                if (Ext.isBoolean(responseValue)) {
-                    return !!responseValue ? 1 : 0;
-                }
+                // return string if
+                // - parsefloat(string) is not a number
+                // - string is just starting with a number
+                // - string is a valid date
+				if (!Ext.isNumber(n) || n != str || new Date(str).toString() !== 'Invalid Date') {
+					return 0;
+				}
 
-                if (Ext.isString(responseValue)) {
-                    return 0;
-                }
-
-                return;
-            };
+                return n;
+			};
         }());
 
 		// web
@@ -2092,24 +2098,38 @@ Ext.onReady( function() {
                         getHtmlValue;
 
                     getHtmlValue = function(config) {
+                        var str = config.htmlValue,
+                            n = parseFloat(config.htmlValue);
+
                         if (config.collapsed) {
                             return '';
                         }
 
-                        if (Ext.isBoolean(config.htmlValue)) {
-                            return config.htmlValue;
+                        if (isValue) {
+                            if (Ext.isBoolean(str)) {
+                                return str;
+                            }
+
+                            if (!Ext.isNumber(n) || n != str || new Date(str).toString() !== 'Invalid Date') {
+                                return str;
+                            }
+
+                            return n;
                         }
 
-                        if (config.htmlValue && isValue) {
-                            return Ext.isNumber(parseFloat(config.htmlValue)) ? parseFloat(config.htmlValue).toString() : config.htmlValue;
-                        }
+                        return str || '';
+                    }
 
-                        if (config.value && isValue) {
-                            return Ext.isNumber(parseFloat(config.value)) ? parseFloat(config.value).toString() : config.value;
-                        }
+                        //if (config.htmlValue && isValue) {
+                            //return Ext.isNumber(parseFloat(config.htmlValue)) ? parseFloat(config.htmlValue).toString() : config.htmlValue;
+                        //}
 
-                        return config.htmlValue || '';
-                    };
+                        //if (config.value && isValue) {
+                            //return Ext.isNumber(parseFloat(config.value)) ? parseFloat(config.value).toString() : config.value;
+                        //}
+
+                        //return config.htmlValue || '';
+                    //};
 
 					if (!Ext.isObject(config)) {
 						return '';

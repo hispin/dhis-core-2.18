@@ -473,8 +473,8 @@ Ext.onReady( function() {
 			baseLineValue,
 			baseLineTitle,
 
-            rangeAxisMaxValue,
             rangeAxisMinValue,
+            rangeAxisMaxValue,
             rangeAxisSteps,
             rangeAxisDecimals,
 			rangeAxisTitle,
@@ -551,13 +551,13 @@ Ext.onReady( function() {
 			style: 'margin-bottom:4px'
 		});
 
-		rangeAxisMaxValue = Ext.create('Ext.form.field.Number', {
+		rangeAxisMinValue = Ext.create('Ext.form.field.Number', {
 			width: numberWidth,
 			height: 18,
 			labelWidth: 125
 		});
 
-		rangeAxisMinValue = Ext.create('Ext.form.field.Number', {
+		rangeAxisMaxValue = Ext.create('Ext.form.field.Number', {
 			width: numberWidth,
 			height: 18,
 			labelWidth: 125,
@@ -568,6 +568,7 @@ Ext.onReady( function() {
 			width: labelWidth + 5 + numberWidth,
 			height: 18,
 			fieldLabel: 'Range axis tick steps',
+			labelStyle: 'color:#333',
 			labelWidth: 125,
 			minValue: 1
 		});
@@ -576,6 +577,7 @@ Ext.onReady( function() {
 			width: labelWidth + 5 + numberWidth,
 			height: 18,
 			fieldLabel: 'Range axis decimals',
+			labelStyle: 'color:#333',
 			labelWidth: 125,
 			minValue: 0
 		});
@@ -709,7 +711,7 @@ Ext.onReady( function() {
 
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.chart_options,
-			bodyStyle: 'background-color:#fff; padding:5px 5px 3px',
+			bodyStyle: 'background-color:#fff; padding:3px',
 			closeAction: 'hide',
 			autoShow: true,
 			modal: true,
