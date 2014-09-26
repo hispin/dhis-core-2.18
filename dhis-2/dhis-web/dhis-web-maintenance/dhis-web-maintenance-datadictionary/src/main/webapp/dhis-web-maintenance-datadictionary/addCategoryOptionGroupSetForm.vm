@@ -3,26 +3,20 @@
         validation('addCategoryOptionGroupSetForm', function ( form ) {
             form.submit();
         },function(){
-			selectAllById('groupMembers');
-			if(jQuery("#groupMembers option").length > 0 ){
+            $("#cogSelected").find("option").attr("selected", "selected");
+			if(jQuery("#cogSelected option").length > 0 ){
 				setFieldValue('hasOptions', 'true');
 			}
 		});
 
         checkValueIsExist("name", "validateCategoryOptionGroupSet.action");
 		
-		jQuery("#availableCategoryOptionsList").dhisAjaxSelect({
-			source: "../dhis-web-commons-ajax-json/getCategoryOptionGroups.action",
-			iterator: "categoryOptionGroups",
-			connectedTo: 'groupMembers',
-			handler: function(item) {
-				var option = jQuery("<option data-id='" + item.groups + "' />");
-				option.text( item.name );
-				option.attr( "value", item.id );
-
-				return option;
-			}
-		});
+        $('#cogAvailable').selected({
+          url: '../api/categoryOptionGroups.json',
+          target: $('#cogSelected'),
+          search: $('#cogAvailableSearch'),
+          iterator: 'categoryOptionGroups'
+        });
 	});
 </script>
 
@@ -54,38 +48,11 @@
 	</tr>
 </table>
 
-<table>
-    <colgroup>
-      <col style="width: 500px;"/>
-      <col/>
-      <col style="width: 500px;"/>
-    </colgroup>
-
-	<tr>
-		<th>$i18n.getString( "available_category_option_groups" )</th>
-		<th></th>
-		<th>$i18n.getString( "group_members" )
-			<input type='hidden' id='hasOptions' name='hasOptions' class="{validate:{required:true}}">
-		</th>
-	</tr>
-
-	<tr>
-		<td>
-			<select id="availableCategoryOptionsList" name="availableCategoryOptionsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
-		</td>
-		
-		<td style="text-align:center">
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableCategoryOptionsList' );"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'groupMembers' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableCategoryOptionsList' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'groupMembers' );"/>
-		</td>
-
-		<td>
-			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;"></select>
-		</td>
-	</tr>
-</table>
+#jqSelected({
+  "prefix": "cog",
+  "i18n_available": "available_category_option_groups",
+  "i18n_selected": "selected_category_option_groups"
+})
 
 <p>
 	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>

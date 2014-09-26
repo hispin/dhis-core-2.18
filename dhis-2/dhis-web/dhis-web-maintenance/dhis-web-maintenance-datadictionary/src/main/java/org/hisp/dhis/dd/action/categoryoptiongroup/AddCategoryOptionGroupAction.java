@@ -28,19 +28,16 @@ package org.hisp.dhis.dd.action.categoryoptiongroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $ AddCategoryOptionGroupAction.java Feb 12, 2014 11:20:01 PM $
  */
 public class AddCategoryOptionGroupAction
     implements Action
@@ -77,11 +74,11 @@ public class AddCategoryOptionGroupAction
         this.code = code;
     }
 
-    private Set<String> groupMembers = new HashSet<>();
+    private Set<String> coSelected = new HashSet<>();
 
-    public void setGroupMembers( Set<String> groupMembers )
+    public void setCoSelected( Set<String> coSelected )
     {
-        this.groupMembers = groupMembers;
+        this.coSelected = coSelected;
     }
 
     // -------------------------------------------------------------------------
@@ -96,10 +93,9 @@ public class AddCategoryOptionGroupAction
         categoryOptionGroup.setShortName( shortName );
         categoryOptionGroup.setCode( code );
 
-        for ( String id : groupMembers )
+        for ( String id : coSelected )
         {
-            categoryOptionGroup.addCategoryOption( dataElementCategoryService.getDataElementCategoryOption( 
-                Integer.parseInt( id ) ) );
+            categoryOptionGroup.addCategoryOption( dataElementCategoryService.getDataElementCategoryOption( id ) );
         }
 
         dataElementCategoryService.saveCategoryOptionGroup( categoryOptionGroup );

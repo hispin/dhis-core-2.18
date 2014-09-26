@@ -28,20 +28,16 @@ package org.hisp.dhis.dd.action.categoryoptiongroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $ UpdateCategoryOptionGroupSetAction.java Feb 12, 2014 11:25:01 PM $
  */
 public class UpdateCategoryOptionGroupSetAction
     implements Action
@@ -85,11 +81,11 @@ public class UpdateCategoryOptionGroupSetAction
         this.dataDimension = dataDimension;
     }
 
-    private List<String> groupMembers = new ArrayList<>();
+    private Set<String> cogSelected = new HashSet<>();
 
-    public void setGroupMembers( List<String> groupMembers )
+    public void setCogSelected( Set<String> cogSelected )
     {
-        this.groupMembers = groupMembers;
+        this.cogSelected = cogSelected;
     }
 
     // -------------------------------------------------------------------------
@@ -105,12 +101,10 @@ public class UpdateCategoryOptionGroupSetAction
         categoryOptionGroupSet.setDescription( description );
         categoryOptionGroupSet.setDataDimension( dataDimension );
         categoryOptionGroupSet.getMembers().clear();
-        
-        for ( String id : groupMembers )
+
+        for ( String id : cogSelected )
         {
-            CategoryOptionGroup group = dataElementCategoryService.getCategoryOptionGroup( Integer.parseInt( id ) );
-            
-            categoryOptionGroupSet.getMembers().add( group );
+            categoryOptionGroupSet.getMembers().add( dataElementCategoryService.getCategoryOptionGroup( id ) );
         }
 
         dataElementCategoryService.updateCategoryOptionGroupSet( categoryOptionGroupSet );
