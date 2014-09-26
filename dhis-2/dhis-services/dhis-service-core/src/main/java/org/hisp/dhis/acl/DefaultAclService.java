@@ -213,6 +213,11 @@ public class DefaultAclService implements AclService
     {
         Schema schema = schemaService.getSchema( klass );
 
+        if ( schema == null )
+        {
+            return false;
+        }
+
         if ( !schema.isShareable() )
         {
             return canAccess( user, schema.getAuthorityByType( AuthorityType.CREATE ) );
