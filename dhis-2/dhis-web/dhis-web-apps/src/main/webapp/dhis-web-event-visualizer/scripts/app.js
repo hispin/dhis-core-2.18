@@ -5839,7 +5839,7 @@ Ext.onReady( function() {
 
                 xLayout = getXLayout(layout);
                 xResponse = service.response.aggregate.getExtendedResponse(xLayout, response);
-                xLayout = getSXLayout(xLayout, xResponse);
+                xLayout = getSXLayout(layout, xLayout, xResponse);
 
                 if (!xLayout) {
                     web.mask.hide(ns.app.centerRegion);
