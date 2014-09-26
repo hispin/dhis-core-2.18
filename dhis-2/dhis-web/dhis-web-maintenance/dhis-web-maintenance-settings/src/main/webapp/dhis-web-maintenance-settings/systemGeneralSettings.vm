@@ -54,7 +54,11 @@
 <select id="databaseServerCpus" name="databaseServerCpus">
 	<option value="0">$i18n.getString( "automatic" ) ($i18n.getString( "detect_based_on_web_server" ))</option>
 	<option value="2" #if( $keyDatabaseServerCpus == "2" )selected="selected"#end>2</option>
+	<option value="3" #if( $keyDatabaseServerCpus == "3" )selected="selected"#end>3</option>
 	<option value="4" #if( $keyDatabaseServerCpus == "4" )selected="selected"#end>4</option>
+	<option value="5" #if( $keyDatabaseServerCpus == "5" )selected="selected"#end>5</option>
+	<option value="6" #if( $keyDatabaseServerCpus == "6" )selected="selected"#end>6</option>
+	<option value="7" #if( $keyDatabaseServerCpus == "7" )selected="selected"#end>7</option>
 	<option value="8" #if( $keyDatabaseServerCpus == "8" )selected="selected"#end>8</option>
 	<option value="16" #if( $keyDatabaseServerCpus == "16" )selected="selected"#end>16</option>
 	<option value="32" #if( $keyDatabaseServerCpus == "32" )selected="selected"#end>32</option>
