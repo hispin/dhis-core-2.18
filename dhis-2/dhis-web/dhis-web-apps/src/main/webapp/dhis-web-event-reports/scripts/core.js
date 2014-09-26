@@ -1115,10 +1115,11 @@ Ext.onReady( function() {
 				return xLayout;
 			};
 
-			service.layout.getSyncronizedXLayout = function(xLayout, xResponse) {
+			service.layout.getSyncronizedXLayout = function(layout, xLayout, xResponse) {
 				var removeDimensionFromXLayout,
 					getHeaderNames,
-					dimensions = Ext.Array.clean([].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || []));
+					dimensions = Ext.Array.clean([].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || [])),
+                    originalDimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || []));
 
 				removeDimensionFromXLayout = function(objectName) {
 					var getUpdatedAxis;
@@ -1162,7 +1163,7 @@ Ext.onReady( function() {
 				};
 
 				return function() {
-
+                    
 					// items
 					for (var i = 0, dim, header; i < dimensions.length; i++) {
 						dim = dimensions[i];
@@ -1180,6 +1181,47 @@ Ext.onReady( function() {
 							}
 						}
 					}
+
+                    // restore order for options
+                    for (var i = 0, orgDim; i < originalDimensions.length; i++) {
+                        orgDim = originalDimensions[i];
+
+                        // if sorting and row dim, dont restore order
+                        if (layout.sorting && Ext.Array.contains(xLayout.rowDimensionNames, orgDim.dimension)) {
+                            continue;
+                        }
+
+                        if (Ext.isString(orgDim.filter)) {
+                            var a = orgDim.filter.split(':');
+
+                            if (a[0] === 'IN' && a.length > 1 && Ext.isString(a[1])) {
+                                var options = a[1].split(';'),
+                                    items = [];
+
+                                for (var j = 0, dim; j < dimensions.length; j++) {
+                                    dim = dimensions[j];
+
+                                    if (dim.dimension === orgDim.dimension && dim.items && dim.items.length) {
+                                        var items = [];
+                                        
+                                        for (var k = 0, option; k < options.length; k++) {
+                                            option = options[k];
+
+                                            for (var l = 0, item; l < dim.items.length; l++) {
+                                                item = dim.items[l];
+
+                                                if (item.name === option) {
+                                                    items.push(item);
+                                                }
+                                            }
+                                        }
+
+                                        dim.items = items;
+                                    }
+                                }
+                            }
+                        }
+                    }
 
 					// Re-layout
 					layout = api.layout.Layout(xLayout);
