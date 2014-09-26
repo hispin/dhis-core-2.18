@@ -28,18 +28,17 @@ package org.hisp.dhis.oum.action.organisationunitgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.system.util.AttributeUtils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -104,11 +103,11 @@ public class UpdateGroupSetAction
         this.dataDimension = dataDimension;
     }
 
-    private Collection<String> selectedGroups;
+    private List<String> ougSelected = new ArrayList<>();
 
-    public void setSelectedGroups( Collection<String> selectedGroups )
+    public void setOugSelected( List<String> ougSelected )
     {
-        this.selectedGroups = selectedGroups;
+        this.ougSelected = ougSelected;
     }
 
     private List<String> jsonAttributeValues;
@@ -134,11 +133,11 @@ public class UpdateGroupSetAction
 
         Set<OrganisationUnitGroup> selectedMembers = new HashSet<>();
 
-        if ( selectedGroups != null )
+        if ( ougSelected != null )
         {
-            for ( String groupId : selectedGroups )
+            for ( String groupId : ougSelected )
             {
-                selectedMembers.add( organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( groupId ) ) );
+                selectedMembers.add( organisationUnitGroupService.getOrganisationUnitGroup( groupId ) );
             }
         }
 

@@ -28,6 +28,7 @@ package org.hisp.dhis.oum.action.organisationunitgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -98,11 +99,11 @@ public class AddGroupSetAction
         this.dataDimension = dataDimension;
     }
 
-    private Collection<String> selectedGroups;
+    private List<String> ougSelected = new ArrayList<>();
 
-    public void setSelectedGroups( Collection<String> selectedGroups )
+    public void setOugSelected( List<String> ougSelected )
     {
-        this.selectedGroups = selectedGroups;
+        this.ougSelected = ougSelected;
     }
 
     private List<String> jsonAttributeValues;
@@ -123,11 +124,11 @@ public class AddGroupSetAction
 
         Set<OrganisationUnitGroup> selectedMembers = new HashSet<>();
 
-        if ( selectedGroups != null )
+        if ( ougSelected != null )
         {
-            for ( String groupId : selectedGroups )
+            for ( String groupId : ougSelected )
             {
-                selectedMembers.add( organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( groupId ) ) );
+                selectedMembers.add( organisationUnitGroupService.getOrganisationUnitGroup( groupId ) );
             }
         }
 

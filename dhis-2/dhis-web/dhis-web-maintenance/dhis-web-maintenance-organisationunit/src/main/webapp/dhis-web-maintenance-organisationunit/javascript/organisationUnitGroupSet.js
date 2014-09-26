@@ -39,25 +39,25 @@ function removeOrganisationUnitGroupSet( context )
 function changeCompulsory( value )
 {
 	if( value == 'true' ){
-		addValidatorRulesById( 'selectedGroups', {required:true} );
+		addValidatorRulesById( 'ougSelected', {required:true} );
 	}else{
-		removeValidatorRulesById( 'selectedGroups' );
+		removeValidatorRulesById( 'ougSelected' );
 	}
 }
 
 function validateAddOrganisationGroupSet( form )
 {
 	var url = "validateOrganisationUnitGroupSet.action?";
-		url += getParamString( 'selectedGroups', 'selectedGroups' );
+		url += getParamString( 'ougSelected', 'selectedGroups' );
 
 	jQuery.postJSON( url, function( json )
 	{
 		if( json.response == 'success' ){
-			markValid( 'selectedGroups' );
-			selectAllById( 'selectedGroups' );
+			markValid( 'ougSelected' );
+			selectAllById( 'ougSelected' );
 			form.submit();
 		}else{
-			markInvalid( 'selectedGroups', json.message );				
+			markInvalid( 'ougSelected', json.message );
 		}
 	});		
 }

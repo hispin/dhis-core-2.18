@@ -1,10 +1,10 @@
 <script type="text/javascript">
-	jQuery(function() {
+    jQuery(document).ready(function() {
         validation2('updateOrganisationUnitGroupSetForm', function(form) {
      	    form.submit();
      	}, {
      		'beforeValidateHandler' : function() {
-     			selectAllById('selectedGroups');
+                $("#ougSelected").find("option").attr("selected", "selected");
                 #tblDynamicAttributesJavascript()
      		},
      		'rules' : getValidationRules("organisationUnitGroupSet")
@@ -12,21 +12,12 @@
 
      	changeCompulsory(getFieldValue('compulsory'));
 
-		jQuery("#availableGroups").dhisAjaxSelect({
-			source: "../dhis-web-commons-ajax-json/getOrganisationUnitGroups.action",
-			iterator: "organisationUnitGroups",
-			connectedTo: 'selectedGroups',
-			handler: function(item) {
-				var option = jQuery("<option />");
-				option.text( item.name );
-				option.attr( "value", item.id );
-
-				return option;
-			},
-			params: {
-				filterNoGroupSet: true
-			}
-		});
+        $('#ougAvailable').selected({
+          url: '../api/organisationUnitGroups.json?filter=organisationUnitGroupSet:null',
+          target: $('#ougSelected'),
+          search: $('#ougAvailableSearch'),
+          iterator: 'organisationUnitGroups'
+        });
 
 		checkValueIsExist("name", "validateOrganisationUnitGroupSet.action", {
 			id : $organisationUnitGroupSet.id
@@ -84,40 +75,12 @@
 
 #tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
 
-<table>
-    <colgroup>
-      <col style="width: 500px;"/>
-      <col/>
-      <col style="width: 500px;"/>
-    </colgroup>
-	
-  	<tr>
-  		<th>$i18n.getString( "available_groups" )</th>
-  		<th></th>
-  		<th>$i18n.getString( "selected_groups" )</th>
-	</tr>
-
-	<tr>
-		<td>
-			<select id="availableGroups" name="availableGroups" multiple="multiple" style="height: 200px; width: 100%;"></select>
-		</td>
-
-		<td style="text-align:center">
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableGroups' );"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedGroups' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableGroups' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedGroups' );"/>
-		</td>
-
-		<td>
-			<select id="selectedGroups" name="selectedGroups" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
-				#foreach ( $group in $selectedGroups )
-    				<option value="$group.id">$group.displayName</option>
-    			#end
-			</select>
-		</td>
-	</tr>
-</table>
+#jqSelected({
+  "prefix": "oug",
+  "i18n_available": "available_groups",
+  "i18n_selected": "selected_groups",
+  "objects": $selectedGroups
+})
 
 <p>
 	<input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:10em"/>
