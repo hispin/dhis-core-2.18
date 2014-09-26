@@ -6335,9 +6335,9 @@ Ext.onReady( function() {
 			}
 		});
 
-		interpretationItem = Ext.create('Ext.menu.Item', {
-			text: 'Write interpretation' + '&nbsp;&nbsp;',
-			iconCls: 'ns-menu-item-tablelayout',
+        favoriteUrlItem = Ext.create('Ext.menu.Item', {
+			text: 'Favorite link' + '&nbsp;&nbsp;',
+			iconCls: 'ns-menu-item-datasource',
 			disabled: true,
 			xable: function() {
 				if (ns.app.layout.id) {
@@ -6347,69 +6347,23 @@ Ext.onReady( function() {
 					this.disable();
 				}
 			},
-			handler: function() {
-				if (ns.app.interpretationWindow) {
-					ns.app.interpretationWindow.destroy();
-					ns.app.interpretationWindow = null;
-				}
+            handler: function() {
+                var url = ns.core.init.contextPath + '/dhis-web-event-visualizer/index.html?id=' + ns.app.layout.id,
+                    textField,
+                    window;
 
-				ns.app.interpretationWindow = InterpretationWindow();
-				ns.app.interpretationWindow.show();
-			}
-		});
-
-		pluginItem = Ext.create('Ext.menu.Item', {
-			text: 'Embed in web page' + '&nbsp;&nbsp;',
-			iconCls: 'ns-menu-item-datasource',
-			disabled: true,
-			xable: function() {
-				if (ns.app.layout) {
-					this.enable();
-				}
-				else {
-					this.disable();
-				}
-			},
-			handler: function() {
-				var textArea,
-					window,
-					text = '';
-
-				text += '<html>\n<head>\n';
-				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/v214/ext/resources/css/ext-plugin-gray.css" />\n';
-				text += '<script src="http://dhis2-cdn.org/v214/ext/ext-all.js"></script>\n';
-				text += '<script src="http://dhis2-cdn.org/v214/plugin/table.js"></script>\n';
-				text += '</head>\n\n<body>\n';
-				text += '<div id="table1"></div>\n\n';
-				text += '<script>\n\n';
-				text += 'DHIS.getTable(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'table1'), null, 2) + ');\n\n';
-				text += '</script>\n\n';
-				text += '</body>\n</html>';
-
-				textArea = Ext.create('Ext.form.field.TextArea', {
-					width: 700,
-					height: 400,
-					readOnly: true,
-					cls: 'ns-textarea monospaced',
-					value: text
-				});
+                textField = Ext.create('Ext.form.field.Text', {
+                    html: '<a class="user-select td-nobreak" target="_blank" href="' + url + '">' + url + '</a>'
+                });
 
 				window = Ext.create('Ext.window.Window', {
-					title: 'Plugin configuration',
+					title: 'Favorite link',
 					layout: 'fit',
 					modal: true,
 					resizable: false,
-					items: textArea,
 					destroyOnBlur: true,
-					bbar: [
-						'->',
-						{
-							text: 'Select',
-							handler: function() {
-								textArea.selectText();
-							}
-						}
-					],
+                    bodyStyle: 'padding: 12px 18px; background-color: #fff; font-size: 11px',
+                    html: '<a class="user-select td-nobreak" target="_blank" href="' + url + '">' + url + '</a>',
 					listeners: {
 						show: function(w) {
 							ns.core.web.window.setAnchorPosition(w, ns.app.shareButton);
@@ -6427,42 +6381,85 @@ Ext.onReady( function() {
 				});
 
 				window.show();
-			}
-		});
+            }
+        });
+
+        apiUrlItem = Ext.create('Ext.menu.Item', {
+			text: 'API link' + '&nbsp;&nbsp;',
+			iconCls: 'ns-menu-item-datasource',
+			disabled: true,
+			xable: function() {
+				if (ns.app.layout.id) {
+					this.enable();
+				}
+				else {
+					this.disable();
+				}
+			},
+            handler: function() {
+                var url = ns.core.init.contextPath + '/api/eventCharts/' + ns.app.layout.id + '/data',
+                    textField,
+                    window;
+
+                textField = Ext.create('Ext.form.field.Text', {
+                    html: '<a class="user-select td-nobreak" target="_blank" href="' + url + '">' + url + '</a>'
+                });
+
+				window = Ext.create('Ext.window.Window', {
+					title: 'API link',
+					layout: 'fit',
+					modal: true,
+					resizable: false,
+					destroyOnBlur: true,
+                    bodyStyle: 'padding: 12px 18px; background-color: #fff; font-size: 11px',
+                    html: '<a class="user-select td-nobreak" target="_blank" href="' + url + '">' + url + '</a>',
+					listeners: {
+						show: function(w) {
+							ns.core.web.window.setAnchorPosition(w, ns.app.shareButton);
+
+							document.body.oncontextmenu = true;
+
+							if (!w.hasDestroyOnBlurHandler) {
+								ns.core.web.window.addDestroyOnBlurHandler(w);
+							}
+						},
+						hide: function() {
+							document.body.oncontextmenu = function(){return false;};
+						}
+					}
+				});
+
+				window.show();
+            }
+        });
 
 		shareButton = Ext.create('Ext.button.Button', {
 			text: NS.i18n.share,
-			disabled: true,
+            disabled: true,
 			xableItems: function() {
-				interpretationItem.xable();
+				//interpretationItem.xable();
 				//pluginItem.xable();
+				favoriteUrlItem.xable();
+				apiUrlItem.xable();
 			},
-			//menu: {
-				//cls: 'ns-menu',
-				//shadow: false,
-				//showSeparator: false,
-				//items: [
+			menu: {
+				cls: 'ns-menu',
+				shadow: false,
+				showSeparator: false,
+				items: [
 					//interpretationItem,
-					//pluginItem
-				//],
-				//listeners: {
-					//afterrender: function() {
-						//this.getEl().addCls('ns-toolbar-btn-menu');
-					//},
-					//show: function() {
-						//shareButton.xableItems();
-					//}
-				//}
-			//},
-			menu: {},
-			handler: function() {
-				if (ns.app.interpretationWindow) {
-					ns.app.interpretationWindow.destroy();
-					ns.app.interpretationWindow = null;
+					//pluginItem,
+                    favoriteUrlItem,
+                    apiUrlItem
+				],
+				listeners: {
+					afterrender: function() {
+						this.getEl().addCls('ns-toolbar-btn-menu');
+					},
+					show: function() {
+						shareButton.xableItems();
+					}
 				}
-
-				ns.app.interpretationWindow = InterpretationWindow();
-				ns.app.interpretationWindow.show();
 			},
 			listeners: {
 				added: function() {
@@ -6470,7 +6467,7 @@ Ext.onReady( function() {
 				}
 			}
 		});
-
+        
 		defaultButton = Ext.create('Ext.button.Button', {
 			text: NS.i18n.chart,
 			iconCls: 'ns-button-icon-chart',
