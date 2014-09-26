@@ -24,6 +24,13 @@
 	</tr>
 </table>
 
+#jqSelected({
+  "prefix": "tea",
+  "i18n_available": "availableAttribute",
+  "i18n_selected": "selectedAttribute",
+  "objects": $attributeGroup.attributes
+})
+
 <table>
 	<colgroup>
 		<col style='width:500px'/>
@@ -31,44 +38,11 @@
 		<col style='width:500px'/>
 	</colgroup>
 	<tr>
-		<th>$i18n.getString( "availableAttribute" )</th>
-		<th>$i18n.getString( "filter" )</th>
-		<td class='class-th'>$i18n.getString( "selectedAttribute" )
-			<input type='hidden' id='attributeList' name='attributeList' >
-		</td>
-	</tr>
-	
-	<tr>
-		<td>
-			<select style="height: 200px; width: 100%;" multiple id="availableAttributes" name="availableAttributes" size="15"></select>
-		</td>
-		<td>
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="dhisAjaxSelect_moveAllSelected( 'availableAttributes', 'selectedAttributes' )" class='filterButton'/><br/>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="dhisAjaxSelect_moveAllSelected( 'selectedAttributes', 'availableAttributes' )" class='filterButton'/><br/>
-			<input type="button" value="&gt;&gt;" onclick="moveAllById( 'availableAttributes', 'selectedAttributes' )" class='filterButton' /><br/>
-			<input type="button" value="&lt;&lt;" onclick="moveAllById( 'selectedAttributes', 'availableAttributes' )" class='filterButton' />
-		</td>
-		<td>
-			<select style="height: 200px; width: 100%; margin-top: 22px;" multiple id="selectedAttributes" name="selectedAttributes" size="15">
-			#foreach($attribute in $attributeGroup.attributes)
-			#if($!attribute)
-				<option value='$attribute.id'>$attribute.name</option>
-			#end
-			#end
-			</select>
-		</td>
-		<td>
-			<a href="javascript:moveUpSelectedOption( 'selectedAttributes')" title="$i18n.getString( 'move_up' )"><img src="../images/move_up.png" alt="$i18n.getString( 'move_up' )"/></a><br/><br/>
-			<a href="javascript:moveDownSelectedOption( 'selectedAttributes' )" title="$i18n.getString( 'move_down' )"><img src="../images/move_down.png" alt="$i18n.getString( 'move_up' )"/></a>
-		</td>
-	</tr>  
-
-	<tr>
 		<td colspan='2'>
 			<input type="submit" value="$i18n.getString( 'update' )" style="width:10em" />
 			<input type="button" value="$i18n.getString( 'cancel' )" style="width:10em" onclick="window.location.href='attributeGroup.action'" />
 		</td>
 	</tr>
-</table> 
+</table>
 
 </form>
