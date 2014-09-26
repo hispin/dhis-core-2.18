@@ -1884,6 +1884,8 @@ Ext.onReady( function() {
 			parameters,
 
 			comboboxWidth = 280,
+            comboBottomMargin = 1,
+            checkboxBottomMargin = 2,
 			window;
 
 		//showHierarchy = Ext.create('Ext.form.field.Checkbox', {
@@ -1893,7 +1895,7 @@ Ext.onReady( function() {
 
 		displayDensity = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
+			style: 'margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.display_density,
@@ -1914,7 +1916,7 @@ Ext.onReady( function() {
 
 		fontSize = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
+			style: 'margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.font_size,
@@ -1936,7 +1938,7 @@ Ext.onReady( function() {
 		digitGroupSeparator = Ext.create('Ext.form.field.ComboBox', {
 			labelStyle: 'color:#333',
 			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
+			style: 'margin-bottom:0',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.digit_group_separator,
@@ -1988,7 +1990,7 @@ Ext.onReady( function() {
 
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_options,
-			bodyStyle: 'background-color:#fff; padding:5px 5px 3px',
+			bodyStyle: 'background-color:#fff; padding:3px',
 			closeAction: 'hide',
 			autoShow: true,
 			modal: true,
@@ -2028,7 +2030,7 @@ Ext.onReady( function() {
 				//},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px; margin-left:2px',
+					style: 'margin-top:2px; margin-bottom:6px; margin-left:3px',
 					html: NS.i18n.style
 				},
 				style
