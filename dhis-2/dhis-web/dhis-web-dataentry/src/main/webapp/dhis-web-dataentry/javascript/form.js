@@ -597,7 +597,27 @@ function loadForm()
 	                loadDataValues();
 	                dhis2.de.insertOptionSets();
 	            } );
-	        } 
+	        } else {
+                dhis2.de.storageManager.formExistsRemotely( dataSetId ).done( function( value ) {
+                    console.log( 'Loading form remotely: ' + dataSetId );
+
+       	            dhis2.de.storageManager.getForm( dataSetId ).done( function( html )
+       	            {
+       	                $( '#contentDiv' ).html( html );
+
+       	                if ( dhis2.de.dataSets[dataSetId].renderAsTabs )
+       	                {
+       	                    $( "#tabs" ).tabs();
+       	                }
+
+       	                enableSectionFilter();
+       	                $( document ).trigger( dhis2.de.event.formLoaded, dhis2.de.currentDataSetId );
+
+       	                loadDataValues();
+       	                dhis2.de.insertOptionSets();
+       	            } );
+                });
+            }
         } );
     }
     else
@@ -2120,6 +2140,29 @@ function StorageManager()
 
         DAO.store.contains( "forms", dataSetId ).done( function( found ) {
             def.resolve( found );
+        });
+
+        return def.promise();
+    };
+
+    /**
+     * Indicates whether a form exists remotely.
+     *
+     * @param dataSetId the identifier of the data set of the form.
+     * @return true if a form exists, false otherwise.
+     */
+    this.formExistsRemotely = function( dataSetId )
+    {
+        var def = $.Deferred();
+
+        $.ajax({
+            url: '../api/dataSets/' + dataSetId,
+            accept: 'application/json',
+            type: 'GET'
+        }).done(function() {
+            def.resolve( true );
+        }).fail(function() {
+            def.resolve( false );
         });
 
         return def.promise();
