@@ -99,9 +99,12 @@ public class DefaultAppManager
         InputStream inputStream = zip.getInputStream( entry );
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+        
         App app = mapper.readValue( inputStream, App.class );
 
+        // ---------------------------------------------------------------------
         // Delete if app is already installed
+        // ---------------------------------------------------------------------
 
         if ( getApps().contains( app ) )
         {
@@ -115,7 +118,9 @@ public class DefaultAppManager
         unzip.setDest( new File( dest ) );
         unzip.execute();
 
-        // Updating dhis server location
+        // ---------------------------------------------------------------------
+        // Set dhis server location
+        // ---------------------------------------------------------------------
 
         File updateManifest = new File( dest + File.separator + "manifest.webapp" );
         App installedApp = mapper.readValue( updateManifest, App.class );
