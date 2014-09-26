@@ -111,8 +111,7 @@ public class DefaultAnalyticsTableService
         
         final List<AnalyticsTable> tables = tableManager.getTables( lastYears );
         
-        clock.logTime( "Partition tables: " + tables + ", last years: " + lastYears );
-        
+        clock.logTime( "Partition tables: " + tables + ", last years: " + lastYears );        
         notifier.notify( taskId, "Creating analytics tables, processes: " + processNo );
         
         createTables( tables );
@@ -147,8 +146,11 @@ public class DefaultAnalyticsTableService
         
         swapTables( tables );
         
+        clock.logTime( "Partition tables: " + tables + ", last years: " + lastYears );
+        notifier.notify( taskId, "Clearing caches" );
+
         partitionManager.clearCaches();
-        
+
         clock.logTime( "Table update done" );
         notifier.notify( taskId, "Table update done" );
     }
