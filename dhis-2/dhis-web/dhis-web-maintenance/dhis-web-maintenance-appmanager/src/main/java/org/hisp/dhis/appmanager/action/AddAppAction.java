@@ -31,6 +31,7 @@ package org.hisp.dhis.appmanager.action;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -143,6 +144,12 @@ public class AddAppAction
             {
                 message = i18n.getString( "appmanager_invalid_json" );
                 log.error( "Error parsing JSON in manifest", ex );
+                return FAILURE;
+            }
+            catch ( IOException ex )
+            {
+                message = i18n.getString( "appmanager_could_not_read_file_check_server_permissions" );
+                log.error( "App could not not be read, check server permissions" );
                 return FAILURE;
             }
         }
