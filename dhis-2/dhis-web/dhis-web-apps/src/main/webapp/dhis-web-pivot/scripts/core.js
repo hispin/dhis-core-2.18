@@ -577,10 +577,6 @@ Ext.onReady( function() {
 						console.log('Response: headers.length !== rows[0].length');
 					}
 
-for (var i = 0; i < config.rows.length; i++) {
-    config.rows[i][2] = '2text';
-}
-
 					return config;
 				}();
 			};
