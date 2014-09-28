@@ -86,8 +86,9 @@ public class CollectionUtils
     {
         return collection != null ? collection : new HashSet<T>();
     }
-    
-    public static <T> Set<T> asSet( T... items )
+
+    @SafeVarargs
+    public static final <T> Set<T> asSet( final T... items )
     {
         Set<T> set = new HashSet<>();
         
@@ -117,7 +118,8 @@ public class CollectionUtils
      * @param entries any number of (key, value) pairs
      * @return Map of the entries
      */
-    public static <K, V> Map<K, V> asMap( AbstractMap.SimpleEntry<K, V>... entries )
+    @SafeVarargs
+    public static final <K, V> Map<K, V> asMap( final AbstractMap.SimpleEntry<K, V>... entries )
     {
         Map<K, V> map = new HashMap<>();
 

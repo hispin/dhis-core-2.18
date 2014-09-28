@@ -50,7 +50,8 @@ public class SetBuilder<E>
         return this;
     }
     
-    public SetBuilder<E> add( E... elements )
+    @SafeVarargs
+    public final SetBuilder<E> add( final E... elements )
     {
         for ( E element : elements )
         {

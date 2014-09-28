@@ -228,9 +228,10 @@ public class ConversionUtils
      * @param objects the array of objects.
      * @return a List of objects.
      */
-    public static <T> List<T> getList( T... objects )
+    @SafeVarargs
+    public static final <T> List<T> getList( final T... objects )
     {
-        List<T> list = new ArrayList<>();
+        final List<T> list = new ArrayList<>();
 
         for ( T object : objects )
         {

@@ -29,7 +29,6 @@ package org.hisp.dhis.oum.action.organisationunitgroupset;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,9 +37,9 @@ import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.system.util.AttributeUtils;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.system.util.AttributeUtils;
 
 /**
  * @author Lars Helge Overland

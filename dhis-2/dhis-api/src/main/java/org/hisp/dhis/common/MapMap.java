@@ -58,8 +58,9 @@ public class MapMap<T, U, V>
     {
         return this.get( key ) == null ? null : this.get( key ).get( valueKey );
     }
-
-    public static <T, U, V> MapMap<T, U, V> asMapMap( AbstractMap.SimpleEntry<T, Map<U, V>>... entries )
+    
+    @SafeVarargs
+    public static final <T, U, V> MapMap<T, U, V> asMapMap( final AbstractMap.SimpleEntry<T, Map<U, V>>... entries )
     {
         MapMap<T, U, V> map = new MapMap<>();
 
