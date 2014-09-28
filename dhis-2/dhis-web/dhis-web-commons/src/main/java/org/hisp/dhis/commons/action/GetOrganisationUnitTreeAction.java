@@ -28,24 +28,23 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.configuration.ConfigurationService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.util.CollectionUtils;
-import org.hisp.dhis.system.util.functional.Predicate;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.version.Version;
-import org.hisp.dhis.version.VersionService;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.version.Version;
+import org.hisp.dhis.version.VersionService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author mortenoh
@@ -218,48 +217,15 @@ public class GetOrganisationUnitTreeAction
 
         if ( !versionOnly && !rootOrganisationUnits.isEmpty() )
         {
+            OrganisationUnitLevel offlineOrgUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
+
+            List<OrganisationUnitLevel> orgUnitLevels = organisationUnitService.getOrganisationUnitLevels();
+            
+            final Integer maxLevels = ( offlineOrgUnitLevel != null && !orgUnitLevels.isEmpty() ) ? offlineOrgUnitLevel.getLevel() : null;
+            
             for ( OrganisationUnit unit : userOrganisationUnits )
             {
-                organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
-            }
-
-            // only try OU-level filtering if there are any levels available
-            if ( !organisationUnitService.getOrganisationUnitLevels().isEmpty() )
-            {
-                OrganisationUnitLevel offlineOrganisationUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
-
-                int size = organisationUnitService.getOrganisationUnitLevels().size();
-
-                if ( offlineOrganisationUnitLevel == null )
-                {
-                    offlineOrganisationUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size );
-                }
-
-                int minLevel = rootOrganisationUnits.get( 0 ).getLevel();
-                int maxLevel = Integer.MAX_VALUE;
-
-                if ( organisationUnitService.getOrganisationUnitLevelByLevel( size ) != null )
-                {
-                    maxLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size ).getLevel();
-                }
-
-                int total = minLevel + offlineOrganisationUnitLevel.getLevel() - 1;
-
-                if ( total > offlineOrganisationUnitLevel.getLevel() )
-                {
-                    total = maxLevel;
-                }
-
-                final int finalTotal = total;
-
-                CollectionUtils.filter( organisationUnits, new Predicate<OrganisationUnit>()
-                {
-                    @Override
-                    public boolean evaluate( OrganisationUnit organisationUnit )
-                    {
-                        return organisationUnit.getLevel() <= finalTotal;
-                    }
-                } );
+                organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId(), maxLevels ) );
             }
         }
 
