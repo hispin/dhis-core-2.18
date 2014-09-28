@@ -151,6 +151,64 @@ public class OrganisationUnitServiceTest
     }
 
     @Test
+    public void testGetOrganisationUnitWithChildrenMaxLevel()
+    {
+        OrganisationUnit unit1 = createOrganisationUnit( 'A' );
+        OrganisationUnit unit2 = createOrganisationUnit( 'B', unit1 );
+        OrganisationUnit unit3 = createOrganisationUnit( 'C', unit1 );
+        OrganisationUnit unit4 = createOrganisationUnit( 'D', unit2 );
+        OrganisationUnit unit5 = createOrganisationUnit( 'E', unit2 );
+        OrganisationUnit unit6 = createOrganisationUnit( 'F', unit3 );
+        OrganisationUnit unit7 = createOrganisationUnit( 'G', unit3 );
+
+        unit1.getChildren().add( unit2 );
+        unit1.getChildren().add( unit3 );
+        unit2.getChildren().add( unit4 );
+        unit2.getChildren().add( unit5 );
+        unit3.getChildren().add( unit6 );
+        unit3.getChildren().add( unit7 );
+        
+        int id1 = organisationUnitService.addOrganisationUnit( unit1 );        
+        int id2 = organisationUnitService.addOrganisationUnit( unit2 );
+        organisationUnitService.addOrganisationUnit( unit3 );
+        int id4 = organisationUnitService.addOrganisationUnit( unit4 );
+        organisationUnitService.addOrganisationUnit( unit5 );
+        organisationUnitService.addOrganisationUnit( unit6 );
+        organisationUnitService.addOrganisationUnit( unit7 );
+
+        List<OrganisationUnit> actual = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id1, 0 ) );
+        assertEquals( 0, actual.size() );
+        
+        actual = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id1, 1 ) );
+        assertEquals( 1, actual.size() );
+        assertTrue( actual.contains( unit1 ) );
+
+        actual = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id1, 2 ) );
+        assertEquals( 3, actual.size() );
+        assertTrue( actual.contains( unit1 ) );
+        assertTrue( actual.contains( unit2 ) );
+        assertTrue( actual.contains( unit3 ) );
+
+        actual = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id1, 3 ) );
+        assertEquals( 7, actual.size() );
+        
+        actual = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id1, 8 ) );
+        assertEquals( 7, actual.size() );
+        
+        actual = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id2, 1 ) );
+        assertEquals( 1, actual.size() );
+
+        actual = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id2, 2 ) );
+        assertEquals( 3, actual.size() );
+
+        actual = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id4, 1 ) );
+        assertEquals( 1, actual.size() );
+        
+        actual = new ArrayList<>( organisationUnitService.getOrganisationUnitWithChildren( id4, 8 ) );
+        assertEquals( 1, actual.size() );
+    }
+
+    @Test
     public void testGetOrganisationUnitWithChildrenWithCorrectLevel()
         throws Exception
     {
