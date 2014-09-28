@@ -192,27 +192,19 @@ public class GetOrganisationUnitTreeAction
             return "partial";
         }
 
-        Collection<OrganisationUnit> userOrganisationUnits;
+        Collection<OrganisationUnit> userOrganisationUnits = new ArrayList<>();
 
         User user = currentUserService.getCurrentUser();
 
-        if ( user != null && user.getOrganisationUnits() != null && user.getOrganisationUnits().size() > 0 )
+        if ( user != null && user.hasOrganisationUnit() )
         {
             userOrganisationUnits = new ArrayList<>( user.getOrganisationUnits() );
             rootOrganisationUnits = new ArrayList<>( user.getOrganisationUnits() );
         }
-        else
+        else if ( currentUserService.currentUserIsSuper() || user == null )
         {
-            if ( user != null && user.getOrganisationUnits() != null && currentUserService.currentUserIsSuper() )
-            {
-                userOrganisationUnits = new ArrayList<>( organisationUnitService.getRootOrganisationUnits() );
-                rootOrganisationUnits = new ArrayList<>( organisationUnitService.getRootOrganisationUnits() );
-            }
-            else
-            {
-                userOrganisationUnits = new ArrayList<>();
-                rootOrganisationUnits = new ArrayList<>();
-            }
+            userOrganisationUnits = new ArrayList<>( organisationUnitService.getRootOrganisationUnits() );
+            rootOrganisationUnits = new ArrayList<>( organisationUnitService.getRootOrganisationUnits() );
         }
 
         if ( !versionOnly && !rootOrganisationUnits.isEmpty() )
