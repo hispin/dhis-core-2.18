@@ -610,10 +610,9 @@ function setRadioValue( radioName, value )
  */
 function setMessage( message )
 {
-	if ( message && message != '' )
+	if ( message )
 	{
-		$( '#message' ).html( message );
-		$( '#message' ).show();
+		$( '#message' ).html( message ).show();
 	}
 }
 

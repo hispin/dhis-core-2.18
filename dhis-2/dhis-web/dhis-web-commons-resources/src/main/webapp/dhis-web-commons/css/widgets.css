@@ -339,7 +339,7 @@ div#selectionTree a.locked
 /* Message field                                                              */
 /*----------------------------------------------------------------------------*/
 
-span#message 
+#message
 {
   display: none;
   padding: 1em;
@@ -350,7 +350,7 @@ span#message
   border-radius: 3px;
 }
 
-span#info
+#info
 {
   display: block;
   padding: 1em;

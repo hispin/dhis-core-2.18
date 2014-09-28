@@ -5,7 +5,7 @@ jQuery(document).ready(	function(){
 	validation( 'saveOrganisationUnitLevelsForm', function( form ){ form.submit() } );
 	
 	jQuery.getJSON( '../api/organisationUnitLevels.json?paging=false', function( data ) {
-		if ( !data || !data.organisationUnitLevels || !data.organisationUnitLevels ) {
+		if ( !data || !data.organisationUnitLevels || !data.organisationUnitLevels.length ) {
 			setMessage( 'Organisation unit level is not yet saved, please save' );
 		}
 	} );
@@ -39,4 +39,4 @@ jQuery(document).ready(	function(){
 </table>
 </form>
 
-<span id="message"></span>
+<div id="message"></div>
