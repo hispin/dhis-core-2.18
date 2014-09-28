@@ -259,19 +259,6 @@ public class DefaultOrganisationUnitService
         return getOrganisationUnit( id ).getOrganisationUnitLevel();
     }
 
-    public Collection<OrganisationUnit> getLeafOrganisationUnits( int id )
-    {
-        Collection<OrganisationUnit> units = getOrganisationUnitWithChildren( id );
-
-        return FilterUtils.filter( units, new Filter<OrganisationUnit>()
-        {
-            public boolean retain( OrganisationUnit object )
-            {
-                return object != null && object.getChildren().isEmpty();
-            }
-        } );
-    }
-
     public Collection<OrganisationUnit> getOrganisationUnits( Collection<OrganisationUnitGroup> groups, Collection<OrganisationUnit> parents )
     {
         Set<OrganisationUnit> members = new HashSet<>();
