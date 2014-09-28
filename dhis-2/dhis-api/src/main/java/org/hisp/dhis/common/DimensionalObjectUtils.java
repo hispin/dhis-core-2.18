@@ -34,6 +34,7 @@ import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.common.comparator.ObjectStringValueComparator;
 
 /**
  * @author Lars Helge Overland
@@ -301,6 +303,8 @@ public class DimensionalObjectUtils
         List<String> filterItems = dim.getFilterItemsAsList();
         
         List<Object> values = new ArrayList<>( grid.getUniqueValues( dim.getDimension() ) );
+        
+        Collections.sort( values, ObjectStringValueComparator.INSTANCE );
         
         // Use order of items in filter if specified
         
