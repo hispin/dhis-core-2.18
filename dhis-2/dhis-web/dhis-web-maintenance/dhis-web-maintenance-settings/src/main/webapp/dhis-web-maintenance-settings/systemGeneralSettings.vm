@@ -96,7 +96,7 @@
 </select>
 </div>
 
-<div class="settingLabel">$i18n.getString( "max_levels_to_offline" )</div>
+<div class="settingLabel">$i18n.getString( "max_levels_to_offline" ) <span class="tipText">($i18n.getString( "relative_to_current_user" ))</div>
 
 <div class="setting">
 <select id="offlineOrganisationUnitLevel" name="offlineOrganisationUnitLevel">
