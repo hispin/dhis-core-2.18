@@ -40,7 +40,8 @@ public class CombinationGenerator<T>
     private int[] indexes; // Current index for each array
     private int no; // No of arrays
     
-    public CombinationGenerator( T[]... objects )
+    @SafeVarargs
+    public CombinationGenerator( final T[]... objects )
     {
         this.objects = objects;
         this.indexes = new int[objects.length];

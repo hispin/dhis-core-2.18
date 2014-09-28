@@ -177,7 +177,8 @@ public class ListUtils
      * @param items the items which should be included in the Collection.
      * @return a Collection.
      */
-    public static <T> Collection<T> getCollection( T... items )
+    @SafeVarargs
+    public static final <T> Collection<T> getCollection( final T... items )
     {
         List<T> list = new ArrayList<>();
         
@@ -195,7 +196,8 @@ public class ListUtils
      * @param items the items which should be included in the List.
      * @return a List.
      */
-    public static <T> List<T> getList( T... items )
+    @SafeVarargs
+    public static final <T> List<T> getList( final T... items )
     {
         List<T> list = new ArrayList<>();
         
@@ -255,7 +257,7 @@ public class ListUtils
      * @return a union of the given lists.
      */
     @SafeVarargs
-    public static <T> List<T> union( final List<T>... lists )
+    public static final <T> List<T> union( final List<T>... lists )
     {
         final List<T> union = new ArrayList<>();
         
