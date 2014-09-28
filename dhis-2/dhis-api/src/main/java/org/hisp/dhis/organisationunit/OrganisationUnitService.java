@@ -40,7 +40,6 @@ import java.util.Set;
  * Defines methods for working with OrganisationUnits.
  *
  * @author Torgeir Lorange Ostby
- * @version $Id: OrganisationUnitService.java 5951 2008-10-16 17:41:34Z larshelg $
  */
 public interface OrganisationUnitService
 {
@@ -215,15 +214,6 @@ public interface OrganisationUnitService
      * @return the level of the organisation unit with the given identifier.
      */
     int getLevelOfOrganisationUnit( int id );
-
-    /**
-     * Returns all OrganisationUnits which are part of the subtree of the
-     * OrganisationUnit with the given identifier and have no children.
-     *
-     * @param id the identifier of the parent OrganisationUnit.
-     * @return a collection of OrganisationUnits.
-     */
-    Collection<OrganisationUnit> getLeafOrganisationUnits( int id );
 
     /**
      * Returns the intersection of the members of the given OrganisationUnitGroups
