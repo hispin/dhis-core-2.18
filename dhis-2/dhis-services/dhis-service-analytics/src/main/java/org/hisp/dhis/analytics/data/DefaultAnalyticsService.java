@@ -45,6 +45,7 @@ import org.hisp.dhis.common.AnalyticalObject;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.CombinationGenerator;
+import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionalObjectUtils;
@@ -172,6 +173,9 @@ public class DefaultAnalyticsService
 
     @Autowired
     private DataElementOperandService operandService;
+    
+    @Autowired
+    private DimensionService dimensionService;
 
     @Autowired
     private SystemSettingManager systemSettingManager;
@@ -1184,22 +1188,9 @@ public class DefaultAnalyticsService
 
             if ( !FIXED_DIMS.contains( dimension.getDimension() ) && items.isEmpty() )
             {
-                if ( DimensionType.ORGANISATIONUNIT_GROUPSET.equals( dimension.getDimensionType() ) )
-                {
-                    items = asList( organisationUnitGroupService.getOrganisationUnitGroupSet( dimension.getDimension() ).getOrganisationUnitGroups() );
-                }
-                else if ( DimensionType.DATAELEMENT_GROUPSET.equals( dimension.getDimensionType() ) )
-                {
-                    items = asList( dataElementService.getDataElementGroupSet( dimension.getDimension() ).getMembers() );
-                }
-                else if ( DimensionType.CATEGORYOPTION_GROUPSET.equals( dimension.getDimensionType() ) )
-                {
-                    items = asList( categoryService.getCategoryOptionGroupSet( dimension.getDimension() ).getMembers() );
-                }
-                else if ( DimensionType.CATEGORY.equals( dimension.getDimensionType() ) )
-                {
-                    items = asList( categoryService.getDataElementCategory( dimension.getDimension() ).getCategoryOptions() );
-                }
+                DimensionalObject dynamicDim = dimensionService.getDimension( dimension.getDimension(), dimension.getDimensionType() );
+                
+                items = dynamicDim != null ? dynamicDim.getItems() : items;
             }
 
             // -----------------------------------------------------------------
