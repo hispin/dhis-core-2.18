@@ -28,7 +28,6 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -65,16 +64,6 @@ public class OrganisationUnitGroupDeletionHandler
         for ( OrganisationUnitGroup group : unit.getGroups() )
         {
             group.getMembers().remove( unit );
-            organisationUnitGroupService.updateOrganisationUnitGroup( group );
-        }
-    }
-    
-    @Override
-    public void deleteDataSet( DataSet dataSet )
-    {
-        for ( OrganisationUnitGroup group : dataSet.getOrganisationUnitGroups() )
-        {
-            group.getDataSets().remove( dataSet );
             organisationUnitGroupService.updateOrganisationUnitGroup( group );
         }
     }

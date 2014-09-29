@@ -128,6 +128,7 @@ public class TableAlteror
         executeSql( "DROP TABLE categoryoptioncombousergroupaccesses" );
         executeSql( "DROP TABLE validationrulegroupuserrolestoalert" );
         executeSql( "DROP TABLE expressionoptioncombo" );
+        executeSql( "DROP TABLE orgunitgroupdatasets" );
         executeSql( "ALTER TABLE categoryoptioncombo drop column userid" );
         executeSql( "ALTER TABLE categoryoptioncombo drop column publicaccess" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );

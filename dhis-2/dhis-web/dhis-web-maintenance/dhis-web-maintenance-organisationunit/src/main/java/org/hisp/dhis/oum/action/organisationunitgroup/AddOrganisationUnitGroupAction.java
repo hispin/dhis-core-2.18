@@ -28,23 +28,21 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.ActionSupport;
+import java.util.Collection;
+import java.util.List;
+
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
  */
-@SuppressWarnings( "serial" )
 public class AddOrganisationUnitGroupAction
     extends ActionSupport
 {
@@ -71,13 +69,6 @@ public class AddOrganisationUnitGroupAction
     public void setAttributeService( AttributeService attributeService )
     {
         this.attributeService = attributeService;
-    }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -119,13 +110,6 @@ public class AddOrganisationUnitGroupAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
-    private List<String> dsSelected = new ArrayList<>();
-
-    public void setDsSelected( List<String> dsSelected )
-    {
-        this.dsSelected = dsSelected;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -155,14 +139,6 @@ public class AddOrganisationUnitGroupAction
         {
             AttributeUtils.updateAttributeValuesFromJson( organisationUnitGroup.getAttributeValues(),
                 jsonAttributeValues, attributeService );
-        }
-
-        if ( dsSelected != null )
-        {
-            for ( String id : dsSelected )
-            {
-                organisationUnitGroup.addDataSet( dataSetService.getDataSet( id ) );
-            }
         }
 
         organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );

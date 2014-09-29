@@ -28,21 +28,17 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.ActionSupport;
+import java.util.Collection;
+import java.util.List;
+
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -74,13 +70,6 @@ public class UpdateOrganisationUnitGroupAction
     public void setAttributeService( AttributeService attributeService )
     {
         this.attributeService = attributeService;
-    }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -129,13 +118,6 @@ public class UpdateOrganisationUnitGroupAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
-    private List<String> dsSelected = new ArrayList<>();
-
-    public void setDsSelected( List<String> dsSelected )
-    {
-        this.dsSelected = dsSelected;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -161,22 +143,6 @@ public class UpdateOrganisationUnitGroupAction
         {
             AttributeUtils.updateAttributeValuesFromJson( organisationUnitGroup.getAttributeValues(),
                 jsonAttributeValues, attributeService );
-        }
-
-        if ( dsSelected != null )
-        {
-            Set<DataSet> dataSets = new HashSet<>();
-
-            for ( String id : dsSelected )
-            {
-                dataSets.add( dataSetService.getDataSet( id ) );
-            }
-
-            organisationUnitGroup.updateDataSets( dataSets );
-        }
-        else
-        {
-            organisationUnitGroup.getDataSets().clear();
         }
 
         organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );

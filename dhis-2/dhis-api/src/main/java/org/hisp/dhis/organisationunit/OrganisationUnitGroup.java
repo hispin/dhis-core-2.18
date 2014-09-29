@@ -39,7 +39,6 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.dataset.DataSet;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -64,9 +63,6 @@ public class OrganisationUnitGroup
 
     @Scanned
     private Set<OrganisationUnit> members = new HashSet<>();
-
-    @Scanned
-    private Set<DataSet> dataSets = new HashSet<>();
 
     private OrganisationUnitGroupSet groupSet;
 
@@ -130,44 +126,6 @@ public class OrganisationUnitGroup
         for ( OrganisationUnit unit : updates )
         {
             addOrganisationUnit( unit );
-        }
-    }
-
-    public void addDataSet( DataSet dataSet )
-    {
-        dataSets.add( dataSet );
-        dataSet.getOrganisationUnitGroups().add( this );
-    }
-
-    public void removeDataSet( DataSet dataSet )
-    {
-        dataSets.remove( dataSet );
-        dataSet.getOrganisationUnitGroups().remove( this );
-    }
-    
-    public void removeAllDataSets()
-    {
-        for ( DataSet ds : dataSets )
-        {
-            ds.getOrganisationUnitGroups().remove( this );
-        }
-        
-        dataSets.clear();
-    }
-
-    public void updateDataSets( Set<DataSet> updates )
-    {
-        for ( DataSet ds : new HashSet<>( dataSets ) )
-        {
-            if ( !updates.contains( ds ) )
-            {
-                removeDataSet( ds );
-            }
-        }
-
-        for ( DataSet ds : updates )
-        {
-            addDataSet( ds );
         }
     }
     
@@ -234,20 +192,6 @@ public class OrganisationUnitGroup
     public void setAttributeValues( Set<AttributeValue> attributeValues )
     {
         this.attributeValues = attributeValues;
-    }
-
-    @JsonProperty( value = "dataSets" )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "dataSets", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "dataSet", namespace = DxfNamespaces.DXF_2_0 )
-    public Set<DataSet> getDataSets()
-    {
-        return dataSets;
-    }
-
-    public void setDataSets( Set<DataSet> dataSets )
-    {
-        this.dataSets = dataSets;
     }
 
     @Override

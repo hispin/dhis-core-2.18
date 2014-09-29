@@ -671,18 +671,6 @@ public class OrganisationUnit
         return builder.toString();
     }
 
-    public Set<DataSet> getAllDataSets()
-    {
-        Set<DataSet> allDataSets = new HashSet<>( dataSets );
-
-        for ( OrganisationUnitGroup organisationUnitGroup : groups )
-        {
-            allDataSets.addAll( organisationUnitGroup.getDataSets() );
-        }
-
-        return allDataSets;
-    }
-
     /**
      * Returns a mapping between the uid and the uid parent graph of the given
      * organisation units.
