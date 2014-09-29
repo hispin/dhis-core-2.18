@@ -278,11 +278,16 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitsWithChildren( Collection<String> parentUids )
     {
+        return getOrganisationUnitsWithChildren( parentUids, null );
+    }
+
+    public Collection<OrganisationUnit> getOrganisationUnitsWithChildren( Collection<String> parentUids, Integer maxLevels )
+    {
         Set<OrganisationUnit> units = new HashSet<>();
 
         for ( String uid : parentUids )
         {
-            units.addAll( getOrganisationUnitWithChildren( uid ) );
+            units.addAll( getOrganisationUnitWithChildren( uid, maxLevels ) );
         }
 
         return units;
@@ -290,11 +295,16 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitWithChildren( String uid )
     {
+        return getOrganisationUnitWithChildren( uid, null );
+    }
+
+    public Collection<OrganisationUnit> getOrganisationUnitWithChildren( String uid, Integer maxLevels )
+    {
         OrganisationUnit unit = getOrganisationUnit( uid );
         
         int id = unit != null ? unit.getId() : -1;
         
-        return getOrganisationUnitWithChildren( id );
+        return getOrganisationUnitWithChildren( id, maxLevels );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitWithChildren( int id )

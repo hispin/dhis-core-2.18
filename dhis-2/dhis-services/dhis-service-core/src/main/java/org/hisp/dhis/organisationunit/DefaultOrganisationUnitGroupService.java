@@ -355,7 +355,7 @@ public class DefaultOrganisationUnitGroupService
 
         for ( OrganisationUnit organisationUnit : currentUserService.getCurrentUser().getOrganisationUnits() )
         {
-            userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
+            userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getUid() ) );
         }
 
         organisationUnits.removeAll( userOrganisationUnits );
