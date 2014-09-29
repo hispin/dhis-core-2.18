@@ -162,7 +162,7 @@ public class EmailMessageSender
         email.setHostName( hostName );
         email.setFrom( defaultIfEmpty( sender, FROM_ADDRESS ), FROM_NAME );
         email.setSmtpPort( port );
-        email.setTLS( tls );
+        email.setStartTLSEnabled( tls );
         
         if ( username != null && password != null )
         {
