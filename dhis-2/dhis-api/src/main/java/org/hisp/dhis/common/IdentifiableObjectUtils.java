@@ -39,9 +39,12 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
@@ -104,6 +107,28 @@ public class IdentifiableObjectUtils
         }
 
         return uids;
+    }
+    
+    /**
+     * Returns a list of iso period identifiers for the given collection of 
+     * periods and calendar.
+     * 
+     * @param periods the list of periods.
+     * @param calendar the calendar to use for generation of iso periods.
+     * @return a list of iso period identifiers.
+     */
+    public static <T extends IdentifiableObject> List<String> getIsoPeriods( Collection<T> periods, Calendar calendar )
+    {
+        List<String> isoPeriods = new ArrayList<>();
+        
+        for ( IdentifiableObject object : periods )
+        {
+            Period period = (Period) object;
+            DateTimeUnit dateTimeUnit = calendar.fromIso( period.getStartDate() );
+            isoPeriods.add( period.getPeriodType().getIsoDate( dateTimeUnit ) );
+        }
+        
+        return isoPeriods;
     }
 
     /**

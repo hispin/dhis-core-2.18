@@ -173,7 +173,14 @@ public class DefaultDimensionService
             return null;
         }
         
-        return identifiableObjectManager.get( DimensionalObject.DIMENSION_TYPE_CLASS_MAP.get( dimensionType ), uid );
+        Class<? extends DimensionalObject> clazz = DimensionalObject.DYNAMIC_DIMENSION_TYPE_CLASS_MAP.get( dimensionType );
+        
+        if ( clazz == null )
+        {
+            return null;
+        }
+        
+        return identifiableObjectManager.get( clazz, uid );
     }
     
     public List<NameableObject> getCanReadDimensionItems( String uid )

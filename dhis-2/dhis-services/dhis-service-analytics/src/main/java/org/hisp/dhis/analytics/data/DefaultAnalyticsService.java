@@ -28,6 +28,54 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TABLE_NAME;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TARGET_TABLE_NAME;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.ORGUNIT_TARGET_TABLE_NAME;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_CATEGORYOPTIONCOMBO;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LATITUDE;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LONGITUDE;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_ORGUNIT;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_PERIOD;
+import static org.hisp.dhis.analytics.DataQueryParams.FIXED_DIMS;
+import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
+import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.LATITUDE_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.LONGITUDE_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getIsoPeriods;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.common.NameableObjectUtils.asList;
+import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_GRANDCHILDREN;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentNameGraphMap;
+import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
+import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
+import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Future;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,9 +97,9 @@ import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionalObjectUtils;
+import org.hisp.dhis.common.DisplayProperty;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.NameableObject;
@@ -96,29 +144,6 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Future;
-
-import static org.hisp.dhis.analytics.AnalyticsTableManager.*;
-import static org.hisp.dhis.analytics.DataQueryParams.*;
-import static org.hisp.dhis.common.DimensionalObject.*;
-import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
-import static org.hisp.dhis.common.NameableObjectUtils.asList;
-import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.*;
-import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
-import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
-import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
 
 /**
  * @author Lars Helge Overland
@@ -480,12 +505,7 @@ public class DefaultAnalyticsService
             }
             else
             {
-                for ( NameableObject nameableObject : params.getDimensionOrFilter( PERIOD_DIM_ID ) )
-                {
-                    Period period = (Period) nameableObject;
-                    DateTimeUnit dateTimeUnit = calendar.fromIso( period.getStartDate() );
-                    periodUids.add( period.getPeriodType().getIsoDate( dateTimeUnit ) );
-                }
+                periodUids = getIsoPeriods( params.getDimensionOrFilter( PERIOD_DIM_ID ), calendar );
             }
 
             metaData.put( PERIOD_DIM_ID, periodUids );
@@ -772,7 +792,8 @@ public class DefaultAnalyticsService
 
     @Override
     public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, AggregationType aggregationType,
-        String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, boolean hideEmptyRows, boolean showHierarchy, I18nFormat format )
+        String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, 
+        boolean hideEmptyRows, boolean showHierarchy, DisplayProperty displayProperty, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
 
@@ -817,6 +838,7 @@ public class DefaultAnalyticsService
         params.setHierarchyMeta( hierarchyMeta );
         params.setHideEmptyRows( hideEmptyRows );
         params.setShowHierarchy( showHierarchy );
+        params.setDisplayProperty( displayProperty );
 
         return params;
     }
@@ -1134,7 +1156,7 @@ public class DefaultAnalyticsService
      * Replaces the indicator dimension including items with the data elements
      * part of the indicator expressions.
      *
-     * @param params         the data query parameters.
+     * @param params the data query parameters.
      * @param indicatorIndex the index of the indicator dimension in the given query.
      */
     private DataQueryParams replaceIndicatorsWithDataElements( DataQueryParams params, int indicatorIndex )
@@ -1157,8 +1179,8 @@ public class DefaultAnalyticsService
     private Map<String, String> getUidNameMap( DataQueryParams params )
     {
         Map<String, String> map = new HashMap<>();
-        map.putAll( getUidNameMap( params.getDimensions(), params.isHierarchyMeta() ) );
-        map.putAll( getUidNameMap( params.getFilters(), params.isHierarchyMeta() ) );
+        map.putAll( getUidNameMap( params.getDimensions(), params.isHierarchyMeta(), params.getDisplayProperty() ) );
+        map.putAll( getUidNameMap( params.getFilters(), params.isHierarchyMeta(), params.getDisplayProperty() ) );
         map.put( DATA_X_DIM_ID, DISPLAY_NAME_DATA_X );
 
         return map;
@@ -1168,11 +1190,11 @@ public class DefaultAnalyticsService
      * Returns a mapping between identifiers and names for the given dimensional
      * objects.
      *
-     * @param dimensions    the dimensional objects.
+     * @param dimensions the dimensional objects.
      * @param hierarchyMeta indicates whether to include meta data of the
-     *                      organisation unit hierarchy.
+     *        organisation unit hierarchy.
      */
-    private Map<String, String> getUidNameMap( List<DimensionalObject> dimensions, boolean hierarchyMeta )
+    private Map<String, String> getUidNameMap( List<DimensionalObject> dimensions, boolean hierarchyMeta, DisplayProperty displayProperty )
     {
         Map<String, String> map = new HashMap<>();
 
@@ -1180,7 +1202,7 @@ public class DefaultAnalyticsService
         {
             List<NameableObject> items = new ArrayList<>( dimension.getItems() );
 
-            boolean hierarchy = hierarchyMeta && DimensionType.ORGANISATIONUNIT.equals( dimension.getDimensionType() );
+            boolean orgUnitHierarchy = hierarchyMeta && DimensionType.ORGANISATIONUNIT.equals( dimension.getDimensionType() );
 
             // -----------------------------------------------------------------
             // If dimension is not fixed and has no options, insert all options
@@ -1199,7 +1221,7 @@ public class DefaultAnalyticsService
 
             Calendar calendar = PeriodType.getCalendar();
 
-            for ( IdentifiableObject idObject : items )
+            for ( NameableObject idObject : items )
             {
                 if ( !calendar.isIso8601() && Period.class.isInstance( idObject ) )
                 {
@@ -1209,10 +1231,17 @@ public class DefaultAnalyticsService
                 }
                 else
                 {
-                    map.put( idObject.getUid(), idObject.getDisplayName() );
+                    if ( DisplayProperty.SHORTNAME.equals( displayProperty ) )
+                    {
+                        map.put( idObject.getUid(), idObject.getDisplayShortName() );
+                    }
+                    else // NAME is default
+                    {
+                        map.put( idObject.getUid(), idObject.getDisplayName() );
+                    }
                 }
 
-                if ( hierarchy )
+                if ( orgUnitHierarchy )
                 {
                     OrganisationUnit unit = (OrganisationUnit) idObject;
 

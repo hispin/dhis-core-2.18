@@ -63,6 +63,7 @@ import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionalObjectUtils;
+import org.hisp.dhis.common.DisplayProperty;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
@@ -146,6 +147,11 @@ public class DataQueryParams
      */
     private boolean showHierarchy;
     
+    /**
+     * Indicates which property to display for meta-data.
+     */
+    private DisplayProperty displayProperty;
+    
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -213,6 +219,7 @@ public class DataQueryParams
         params.skipPartitioning = this.skipPartitioning;
         params.organisationUnits = new ArrayList<>( this.organisationUnits );
         params.dataApprovalLevels = new HashMap<>( this.dataApprovalLevels );
+        params.displayProperty = this.displayProperty;
         
         return params;
     }
@@ -1169,6 +1176,16 @@ public class DataQueryParams
     public void setShowHierarchy( boolean showHierarchy )
     {
         this.showHierarchy = showHierarchy;
+    }
+
+    public DisplayProperty getDisplayProperty()
+    {
+        return displayProperty;
+    }
+
+    public void setDisplayProperty( DisplayProperty displayProperty )
+    {
+        this.displayProperty = displayProperty;
     }
 
     // -------------------------------------------------------------------------
