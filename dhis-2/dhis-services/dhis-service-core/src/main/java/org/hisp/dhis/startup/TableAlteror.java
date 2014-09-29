@@ -742,6 +742,9 @@ public class TableAlteror
         executeSql( "alter table expression alter column missingvaluestrategy set not null" );
         executeSql( "alter table expression drop column nullifblank" );
 
+        executeSql( "alter table dataelementcategoryoption alter column startdate type date" );
+        executeSql( "alter table dataelementcategoryoption alter column enddate type date" );
+        
         executeSql( "alter table dataelement drop column sortorder" );
         executeSql( "alter table indicator drop column sortorder" );
         executeSql( "alter table dataset drop column sortorder" );
