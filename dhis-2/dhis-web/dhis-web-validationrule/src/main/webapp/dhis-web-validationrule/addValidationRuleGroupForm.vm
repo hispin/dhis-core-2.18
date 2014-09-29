@@ -12,6 +12,7 @@
 				return option;
 			}
 		});
+
 		jQuery("#availableUserGroupsToAlert").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getUserGroups.action",
 			iterator: "userGroups",
