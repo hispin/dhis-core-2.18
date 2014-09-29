@@ -235,7 +235,7 @@ public interface OrganisationUnitService
      *         and all its children, or an empty collection if no
      *         OrganisationUnits match.
      */
-    Collection<OrganisationUnit> getOrganisationUnitsWithChildren( String uid );
+    Collection<OrganisationUnit> getOrganisationUnitWithChildren( String uid );
 
     /**
      * Returns an OrganisationUnit and all its children.

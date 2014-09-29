@@ -164,7 +164,7 @@ public class EventController
         {
             if ( OrganisationUnitSelectionMode.DESCENDANTS.equals( ouMode ) )
             {
-                organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( rootOrganisationUnit.getUid() ) );
+                organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( rootOrganisationUnit.getUid() ) );
             }
             else if ( OrganisationUnitSelectionMode.CHILDREN.equals( ouMode ) )
             {
@@ -232,7 +232,7 @@ public class EventController
         {
             if ( OrganisationUnitSelectionMode.DESCENDANTS.equals( ouMode ) )
             {
-                organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( rootOrganisationUnit.getUid() ) );
+                organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( rootOrganisationUnit.getUid() ) );
             }
             else if ( OrganisationUnitSelectionMode.CHILDREN.equals( ouMode ) )
             {

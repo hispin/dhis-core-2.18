@@ -433,7 +433,7 @@ public class CurrentUserController
 
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
-                children.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
+                children.addAll( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getUid() ) );
             }
 
             userOrganisationUnits.addAll( children );
@@ -494,7 +494,7 @@ public class CurrentUserController
 
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
-                children.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
+                children.addAll( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getUid() ) );
             }
 
             userOrganisationUnits.addAll( children );
@@ -610,7 +610,7 @@ public class CurrentUserController
 
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
-                children.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
+                children.addAll( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getUid() ) );
             }
 
             userOrganisationUnits.addAll( children );
