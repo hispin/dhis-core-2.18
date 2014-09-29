@@ -98,7 +98,7 @@ public class GeoFeatureController
         Set<String> set = new HashSet<>();
         set.add( ou );
 
-        DataQueryParams params = analyticsService.getFromUrl( set, null, AggregationType.SUM, null, false, false, false, false, false, false, null );
+        DataQueryParams params = analyticsService.getFromUrl( set, null, AggregationType.SUM, null, false, false, false, false, false, false, null, null );
 
         DimensionalObject dim = params.getDimension( DimensionalObject.ORGUNIT_DIM_ID );
 

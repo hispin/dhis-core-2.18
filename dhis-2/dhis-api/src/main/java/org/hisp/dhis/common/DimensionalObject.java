@@ -76,7 +76,7 @@ public interface DimensionalObject
         PERIOD_DIM_ID, "Period",
         ORGUNIT_DIM_ID, "Organisation unit" );
     
-    final Map<DimensionType, Class<? extends DimensionalObject>> DIMENSION_TYPE_CLASS_MAP = new HashMap<DimensionType, Class<? extends DimensionalObject>>() { {
+    final Map<DimensionType, Class<? extends DimensionalObject>> DYNAMIC_DIMENSION_TYPE_CLASS_MAP = new HashMap<DimensionType, Class<? extends DimensionalObject>>() { {
         put( DimensionType.CATEGORY, DataElementCategory.class );
         put( DimensionType.DATAELEMENT_GROUPSET, DataElementGroupSet.class );
         put( DimensionType.ORGANISATIONUNIT_GROUPSET, OrganisationUnitGroupSet.class );
