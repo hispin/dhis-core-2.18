@@ -162,12 +162,6 @@ public class TableAlteror
         executeSql( "DELETE FROM period WHERE periodtypeid=(select periodtypeid from periodtype where name in ( 'Survey', 'OnChange', 'Relative' ))" );
         executeSql( "DELETE FROM periodtype WHERE name in ( 'Survey', 'OnChange', 'Relative' )" );
 
-        // upgrade reporttable and eventreport totals
-        executeSql( "UPDATE reporttable SET rowtotals = totals, coltotals = totals" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN totals" );
-        executeSql( "UPDATE eventreport SET rowtotals = totals, coltotals = totals" );
-        executeSql( "ALTER TABLE eventreport DROP COLUMN totals" );
-
         // mapping
         executeSql( "DROP TABLE maporganisationunitrelation" );
         executeSql( "ALTER TABLE mapview DROP COLUMN mapid" );
@@ -463,7 +457,6 @@ public class TableAlteror
         executeSql( "update reporttable set userorganisationunit = false where userorganisationunit is null" );
         executeSql( "update reporttable set userorganisationunitchildren = false where userorganisationunitchildren is null" );
         executeSql( "update reporttable set userorganisationunitgrandchildren = false where userorganisationunitgrandchildren is null" );
-        executeSql( "update reporttable set totals = true where totals is null" );
         executeSql( "update reporttable set subtotals = true where subtotals is null" );
         executeSql( "update reporttable set hideemptyrows = false where hideemptyrows is null" );
         executeSql( "update reporttable set displaydensity = 'normal' where displaydensity is null" );
@@ -473,6 +466,14 @@ public class TableAlteror
         executeSql( "update reporttable set toplimit = 0 where toplimit is null" );
         executeSql( "update reporttable set showhierarchy = false where showhierarchy is null" );
         executeSql( "update reporttable set aggregationtype = 'default' where aggregationtype is null" );
+
+        // reporttable col/rowtotals = keep existing || copy from totals || true
+        executeSql( "update reporttable set totals = true where totals is null" );
+        executeSql( "update reporttable set coltotals = totals where coltotals is null" );
+        executeSql( "update reporttable set coltotals = true where coltotals is null" );
+        executeSql( "update reporttable set rowtotals = totals where rowtotals is null" );
+        executeSql( "update reporttable set rowtotals = true where rowtotals is null" );        
+        executeSql( "alter table reporttable drop column totals" );
 
         executeSql( "update chart set reportingmonth = false where reportingmonth is null" );
         executeSql( "update chart set reportingbimonth = false where reportingbimonth is null" );
@@ -496,9 +497,17 @@ public class TableAlteror
         executeSql( "update chart set userorganisationunitchildren = false where userorganisationunitchildren is null" );
         executeSql( "update chart set userorganisationunitgrandchildren = false where userorganisationunitgrandchildren is null" );
         executeSql( "update chart set hidetitle = false where hidetitle is null" );
-
+        
         executeSql( "update eventreport set showhierarchy = false where showhierarchy is null" );
         executeSql( "update eventreport set counttype = 'events' where counttype is null" );
+
+        // eventreport col/rowtotals = keep existing || copy from totals || true
+        executeSql( "update eventreport set totals = true where totals is null" );
+        executeSql( "update eventreport set coltotals = totals where coltotals is null" );
+        executeSql( "update eventreport set coltotals = true where coltotals is null" );
+        executeSql( "update eventreport set rowtotals = totals where rowtotals is null" );
+        executeSql( "update eventreport set rowtotals = true where rowtotals is null" );        
+        executeSql( "alter table eventreport drop column totals" );
 
         // Move chart filters to chart_filters table
 
