@@ -80,7 +80,6 @@ function Selection()
     var autoSelectRoot = true;
     var realRoot = true;
     var includeChildren = false;
-    var blockedLevels = [];
 
     this.setListenerFunction = function( listenerFunction_, skipInitialCall ) {
         listenerFunction = listenerFunction_;
@@ -90,32 +89,6 @@ function Selection()
                 selection.responseReceived();
             } );
         }
-    };
-
-    this.addBlockedLevel = function(level) {
-        if( $.isArray(level) ) {
-            $.each(level, function(idx, item) {
-                blockedLevels.push(item);
-            });
-        } else {
-            blockedLevels.push(level);
-        }
-
-        this.updateBlockedLevels();
-    };
-
-    this.getBlockedLevels = function() {
-        return blockedLevels;
-    };
-
-    this.updateBlockedLevels = function() {
-        $('#orgUnitTree').find('a').css('color', 'black');
-
-        $.each(blockedLevels, function( idx, item ) {
-            $('#orgUnitTree li[level=' + item + '] > a').css({
-                cursor: 'not-allowed'
-            }).removeAttr('href');
-        })
     };
 
     this.setMultipleSelectionAllowed = function( allowed ) {
@@ -677,27 +650,8 @@ function Selection()
         $( "#orgUnitTree" ).show();
     };
 
-    this.unblock = function() {
-        $( "#orgUnitTree" ).unblock();
-    };
-
     this.disable = function() {
         $( "#orgUnitTree" ).hide();
-    };
-
-    this.block = function( message ) {
-        if( message === undefined ) {
-            $( "#orgUnitTree" ).block( {message: null} );
-        }
-        else {
-            $( "#orgUnitTree" ).block( {
-                message: message,
-                css: {
-                    border: '1px solid black',
-                    margin: '4px 10px'
-                }
-            } );
-        }
     };
 }
 
@@ -790,8 +744,6 @@ function Subtree() {
         expandTreeAtOrgUnits( selected );
 
         selectOrgUnits( selected );
-
-        selection.updateBlockedLevels();
     };
 
     // force reload
@@ -872,7 +824,6 @@ function Subtree() {
         if( 'undefined' !== typeof organisationUnits[parent.c[0]] ) {
             createChildren( parentTag, parent );
             def.resolve();
-            selection.updateBlockedLevels();
         }
         else {
             selection.getOrganisationUnit( parent.c[0] ).done(function(item) {
@@ -880,13 +831,11 @@ function Subtree() {
                     $.extend( organisationUnits, item );
                     createChildren( parentTag, parent );
                     def.resolve();
-                    selection.updateBlockedLevels();
                 } else {
                     subtree.getChildren( parent.id ).done( function() {
                         createChildren( parentTag, parent );
                         def.resolve();
                     }).always(function() {
-                        selection.updateBlockedLevels();
                     });
                 }
             });
