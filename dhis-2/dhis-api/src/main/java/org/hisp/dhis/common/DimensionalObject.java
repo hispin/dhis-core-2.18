@@ -100,13 +100,7 @@ public interface DimensionalObject
      * tables.
      */
     String getDimensionName();
-    
-    /**
-     * Gets the dimension display name, which is a readable name describing the
-     * dimension.
-     */
-    String getDisplayName();
-        
+     
     /**
      * Dimension items.
      */

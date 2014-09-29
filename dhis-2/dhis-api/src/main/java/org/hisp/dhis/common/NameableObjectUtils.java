@@ -186,4 +186,26 @@ public class NameableObjectUtils
 
         return map;
     }
+
+    /**
+     * Returns a mapping between the uid and the short name of the given nameable
+     * objects.
+     *
+     * @param objects the v objects.
+     * @return mapping between the uid and the short name of the given objects.
+     */
+    public static Map<String, String> getUidShortNameMap( Collection<? extends NameableObject> objects )
+    {
+        Map<String, String> map = new HashMap<>();
+
+        if ( objects != null )
+        {
+            for ( NameableObject object : objects )
+            {
+                map.put( object.getUid(), object.getDisplayShortName() );
+            }
+        }
+
+        return map;
+    }
 }
