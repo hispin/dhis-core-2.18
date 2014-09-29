@@ -40,6 +40,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.DimensionService;
+import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -153,6 +154,14 @@ public class DimensionServiceTest
         ouGroupSetA.getOrganisationUnitGroups().add( ouGroupC );
         
         organisationUnitGroupService.updateOrganisationUnitGroupSet( ouGroupSetA );
+    }
+    
+    @Test
+    public void testGetDimensionalObjectByType()
+    {
+        String dim = ouGroupSetA.getUid();
+        
+        assertEquals( ouGroupSetA, dimensionService.getDimension( dim, DimensionType.ORGANISATIONUNIT_GROUPSET ) );
     }
     
     @Test

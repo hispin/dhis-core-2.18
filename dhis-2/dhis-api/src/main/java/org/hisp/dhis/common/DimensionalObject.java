@@ -29,8 +29,16 @@ package org.hisp.dhis.common;
  */
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 
 /**
 * @author Lars Helge Overland
@@ -67,6 +75,15 @@ public interface DimensionalObject
         CATEGORYOPTIONCOMBO_DIM_ID, "Data details",
         PERIOD_DIM_ID, "Period",
         ORGUNIT_DIM_ID, "Organisation unit" );
+    
+    final Map<DimensionType, Class<? extends DimensionalObject>> DIMENSION_TYPE_CLASS_MAP = new HashMap<DimensionType, Class<? extends DimensionalObject>>() { {
+        put( DimensionType.CATEGORY, DataElementCategory.class );
+        put( DimensionType.DATAELEMENT_GROUPSET, DataElementGroupSet.class );
+        put( DimensionType.ORGANISATIONUNIT_GROUPSET, OrganisationUnitGroupSet.class );
+        put( DimensionType.CATEGORYOPTION_GROUPSET, CategoryOptionGroupSet.class );
+        put( DimensionType.TRACKED_ENTITY_ATTRIBUTE, TrackedEntityAttribute.class );
+        put( DimensionType.TRACKED_ENTITY_DATAELEMENT, DataElement.class );        
+    } };
     
     /**
      * Gets the dimension identifier.

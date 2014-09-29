@@ -39,6 +39,8 @@ public interface DimensionService
 {
     DimensionalObject getDimension( String uid );
     
+    DimensionalObject getDimension( String uid, DimensionType dimensionType );
+    
     List<NameableObject> getCanReadDimensionItems( String uid );
     
     <T extends IdentifiableObject> List<T> getCanReadObjects( List<T> objects );
