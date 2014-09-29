@@ -150,7 +150,7 @@ public class DataQueryParams
     /**
      * Indicates which property to display for meta-data.
      */
-    private DisplayProperty displayProperty;
+    protected DisplayProperty displayProperty;
     
     // -------------------------------------------------------------------------
     // Transient properties

@@ -108,6 +108,7 @@ public class EventQueryParams
         params.dimensions = new ArrayList<>( this.dimensions );
         params.filters = new ArrayList<>( this.filters );
         params.aggregationType = this.aggregationType;
+        params.displayProperty = this.displayProperty;
 
         params.partitions = new Partitions( this.partitions );
         params.periodType = this.periodType;
