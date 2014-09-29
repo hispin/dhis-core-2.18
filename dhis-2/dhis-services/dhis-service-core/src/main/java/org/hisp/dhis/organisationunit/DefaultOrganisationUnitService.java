@@ -282,7 +282,7 @@ public class DefaultOrganisationUnitService
 
         for ( String uid : parentUids )
         {
-            units.addAll( getOrganisationUnitsWithChildren( uid ) );
+            units.addAll( getOrganisationUnitWithChildren( uid ) );
         }
 
         return units;
