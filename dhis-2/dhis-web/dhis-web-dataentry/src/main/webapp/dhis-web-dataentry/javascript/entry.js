@@ -323,7 +323,7 @@ dhis2.de.alertField = function( fieldId, alertMessage )
  */
 function ValueSaver( de, pe, co, value, fieldId, resultColor )
 {
-	var ou = getCurrentOrganisationUnit();
+	var ou = dhis2.de.getCurrentOrganisationUnit();
 	
     var dataValue = {
         'de' : de,
