@@ -1213,11 +1213,13 @@ dhis2.de.getCurrentCategoryOptionsQueryValue = function()
 
 /**
  * Tests to see if a category option is valid during a period.
+ * 
+ * TODO properly check validity period
+ * TODO option.startDate == null || option.startDate <= dhis2.de.periodChoices[ period ].endDate
  */
 dhis2.de.optionValidWithinPeriod = function( option, period )
 {
-    return ( option.startDate == null || option.startDate <= dhis2.de.periodChoices[ period ].endDate )
-        && ( option.endDate == null || option.endDate >= dhis2.de.periodChoices[ period ].startDate )
+    return true;
 }
 
 /**
