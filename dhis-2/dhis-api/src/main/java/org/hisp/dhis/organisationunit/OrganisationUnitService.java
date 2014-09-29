@@ -240,6 +240,28 @@ public interface OrganisationUnitService
     /**
      * Returns an OrganisationUnit and all its children.
      *
+     * @param uid the uid of the parent OrganisationUnit in the subtree.
+     * @param maxLevels the max number of levels to return relative to 
+     *        the given root, inclusive.
+     * @return a collection containing the OrganisationUnit with the given id
+     *         and all its children, or an empty collection if no
+     *         OrganisationUnits match.
+     */
+    Collection<OrganisationUnit> getOrganisationUnitWithChildren( String uid, Integer maxLevels );
+
+    /**
+     * Returns an OrganisationUnit and all its children.
+     *
+     * @param id the id of the parent OrganisationUnit in the subtree.
+     * @return a collection containing the OrganisationUnit with the given id
+     *         and all its children, or an empty collection if no
+     *         OrganisationUnits match.
+     */
+    Collection<OrganisationUnit> getOrganisationUnitWithChildren( int id );
+
+    /**
+     * Returns an OrganisationUnit and all its children.
+     *
      * @param id the id of the parent OrganisationUnit in the subtree.
      * @param maxLevels the max number of levels to return relative to 
      *        the given root, inclusive.
@@ -258,17 +280,19 @@ public interface OrganisationUnitService
      *         OrganisationUnits match.
      */
     Collection<OrganisationUnit> getOrganisationUnitsWithChildren( Collection<String> uids );
-    
+
     /**
-     * Returns an OrganisationUnit and all its children.
+     * Returns the OrganisationUnits and all their children.
      *
-     * @param id the id of the parent OrganisationUnit in the subtree.
+     * @param uids the uids of the parent OrganisationUnits.
+     * @param maxLevels the max number of levels to return relative to 
+     *        the given root, inclusive.
      * @return a collection containing the OrganisationUnit with the given id
      *         and all its children, or an empty collection if no
      *         OrganisationUnits match.
      */
-    Collection<OrganisationUnit> getOrganisationUnitWithChildren( int id );
-
+    Collection<OrganisationUnit> getOrganisationUnitsWithChildren( Collection<String> uids, Integer maxLevels );
+    
     /**
      * Returns the branch of OrganisationUnits from a root to a given
      * OrganisationUnit. Both root and target OrganisationUnits are included in
