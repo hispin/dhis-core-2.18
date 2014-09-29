@@ -1221,29 +1221,29 @@ public class DefaultAnalyticsService
 
             Calendar calendar = PeriodType.getCalendar();
 
-            for ( NameableObject idObject : items )
+            for ( NameableObject object : items )
             {
-                if ( !calendar.isIso8601() && Period.class.isInstance( idObject ) )
+                if ( !calendar.isIso8601() && Period.class.isInstance( object ) )
                 {
-                    Period period = (Period) idObject;
+                    Period period = (Period) object;
                     DateTimeUnit dateTimeUnit = calendar.fromIso( period.getStartDate() );
-                    map.put( period.getPeriodType().getIsoDate( dateTimeUnit ), idObject.getDisplayName() );
+                    map.put( period.getPeriodType().getIsoDate( dateTimeUnit ), period.getDisplayName() );
                 }
                 else
                 {
                     if ( DisplayProperty.SHORTNAME.equals( displayProperty ) )
                     {
-                        map.put( idObject.getUid(), idObject.getDisplayShortName() );
+                        map.put( object.getUid(), object.getDisplayShortName() );
                     }
                     else // NAME
                     {
-                        map.put( idObject.getUid(), idObject.getDisplayName() );
+                        map.put( object.getUid(), object.getDisplayName() );
                     }
                 }
 
                 if ( orgUnitHierarchy )
                 {
-                    OrganisationUnit unit = (OrganisationUnit) idObject;
+                    OrganisationUnit unit = (OrganisationUnit) object;
 
                     if ( DisplayProperty.SHORTNAME.equals( displayProperty ) )
                     {
