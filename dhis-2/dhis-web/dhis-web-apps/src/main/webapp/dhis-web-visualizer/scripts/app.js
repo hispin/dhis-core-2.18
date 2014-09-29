@@ -2519,7 +2519,7 @@ Ext.onReady( function() {
             chartType: ns.core.conf.finals.chart.gauge,
             icon: 'images/gauge.png',
             name: ns.core.conf.finals.chart.gauge,
-            tooltipText: NS.i18n.gauge_chart,
+            tooltipText: NS.i18n.meter_chart,
             listeners: {
                 added: buttonAddedListener
             }
