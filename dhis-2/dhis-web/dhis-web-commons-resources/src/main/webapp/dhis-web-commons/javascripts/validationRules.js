@@ -617,7 +617,7 @@ var validationRules = {
 		},
 		"aggregationCondition" : {
 			"required" : true,
-			"rangelength" : [2,254]
+			"rangelength" : [2,1000]
 		}
 	},
 	"programStageSection" : {
