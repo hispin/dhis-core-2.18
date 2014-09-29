@@ -124,7 +124,7 @@ public class JdbcEventAnalyticsManager
         {
             sql += "limit " + params.getLimit();
         }
-        else
+        else if ( maxLimit > 0 )
         {
             sql += "limit " + ( maxLimit + 1 );
         }
@@ -223,7 +223,7 @@ public class JdbcEventAnalyticsManager
         {
             sql += "limit " + params.getPageSizeWithDefault() + " offset " + params.getOffset();
         }
-        else
+        else if ( maxLimit > 0 )
         {
             sql += "limit " + ( maxLimit + 1 );
         }
