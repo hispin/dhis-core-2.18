@@ -126,7 +126,7 @@ dhis2.de.on = function( event, fn )
 
 var DAO = DAO || {};
 
-function getCurrentOrganisationUnit() 
+dhis2.de.getCurrentOrganisationUnit = function() 
 {
     if ( $.isArray( dhis2.de.currentOrganisationUnitId ) ) 
     {
@@ -172,7 +172,7 @@ $( document ).ready( function()
     $( '#orgUnitTree' ).one( 'ouwtLoaded', function()
     {
         console.log( 'Ouwt loaded' );
-        loadMetaData();
+        dhis2.de.loadMetaData();
     } );
 
     $( document ).bind( 'dhis2.online', function( event, loggedIn )
@@ -211,7 +211,7 @@ $( document ).ready( function()
             ].join('');
 
             setHeaderMessage( form );
-	        ajax_login();
+            dhis2.de.ajaxLogin();
 	    }
 	} );
 
@@ -228,7 +228,7 @@ $( document ).ready( function()
     dhis2.availability.startAvailabilityCheck();
 } );
 
-function ajax_login()
+dhis2.de.ajaxLogin = function()
 {
     $( '#login_button' ).bind( 'click', function()
     {
@@ -250,7 +250,7 @@ function ajax_login()
     } );
 }
 
-function loadMetaData()
+dhis2.de.loadMetaData = function()
 {
     var KEY_METADATA = 'metadata';
 
@@ -627,7 +627,7 @@ function loadForm()
         $( '#contentDiv' ).load( 'loadForm.action', 
         {
             dataSetId : dataSetId,
-            multiOrganisationUnit: dhis2.de.multiOrganisationUnit ? getCurrentOrganisationUnit() : ''
+            multiOrganisationUnit: dhis2.de.multiOrganisationUnit ? dhis2.de.getCurrentOrganisationUnit() : ''
         }, 
         function() 
         {
@@ -744,7 +744,7 @@ function splitFieldId( id )
     }
     else
     {
-        split.organisationUnitId = getCurrentOrganisationUnit();
+        split.organisationUnitId = dhis2.de.getCurrentOrganisationUnit();
         split.dataElementId = id.split( '-' )[0];
         split.optionComboId = id.split( '-' )[1];
     }
@@ -889,7 +889,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
  */
 function getSortedDataSetList( orgUnit )
 {
-    var associationSet = orgUnit !== undefined ? dhis2.de.organisationUnitAssociationSetMap[orgUnit] : dhis2.de.organisationUnitAssociationSetMap[getCurrentOrganisationUnit()];
+    var associationSet = orgUnit !== undefined ? dhis2.de.organisationUnitAssociationSetMap[orgUnit] : dhis2.de.organisationUnitAssociationSetMap[dhis2.de.getCurrentOrganisationUnit()];
     var orgUnitDataSets = dhis2.de.dataSetAssociationSets[associationSet];
 
     var dataSetList = [];
@@ -1355,7 +1355,7 @@ function getAndInsertDataValues()
     var params = {
 		periodId : periodId,
         dataSetId : dataSetId,
-        organisationUnitId : getCurrentOrganisationUnit(),
+        organisationUnitId : dhis2.de.getCurrentOrganisationUnit(),
         multiOrganisationUnit: dhis2.de.multiOrganisationUnit
     };
 
@@ -1562,7 +1562,7 @@ function valueFocus( e )
 
     var dataElementName = getDataElementName( dataElementId );
     var optionComboName = getOptionComboName( optionComboId );
-    var organisationUnitName = organisationUnits[getCurrentOrganisationUnit()].n;
+    var organisationUnitName = organisationUnits[dhis2.de.getCurrentOrganisationUnit()].n;
 
     $( '#currentOrganisationUnit' ).html( organisationUnitName );
     $( '#currentDataElement' ).html( dataElementName + ' ' + optionComboName );
@@ -1953,7 +1953,7 @@ function viewHist( dataElementId, optionComboId )
     		dataElementId : dataElementId,
 	        optionComboId : optionComboId,
 	        periodId : periodId,
-	        organisationUnitId : getCurrentOrganisationUnit()
+	        organisationUnitId : dhis2.de.getCurrentOrganisationUnit()
 	    };
 
 	    var cc = dhis2.de.getCurrentCategoryCombo();
@@ -2475,7 +2475,7 @@ function StorageManager()
         var params = {
             'ds': $( '#selectedDataSetId' ).val(),
             'pe': $( '#selectedPeriodId').val(),
-            'ou': getCurrentOrganisationUnit(),
+            'ou': dhis2.de.getCurrentOrganisationUnit(),
             'multiOu': dhis2.de.multiOrganisationUnit
         };
 
