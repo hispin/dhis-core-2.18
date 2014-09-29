@@ -1235,7 +1235,7 @@ public class DefaultAnalyticsService
                     {
                         map.put( idObject.getUid(), idObject.getDisplayShortName() );
                     }
-                    else // NAME is default
+                    else // NAME
                     {
                         map.put( idObject.getUid(), idObject.getDisplayName() );
                     }
@@ -1245,11 +1245,22 @@ public class DefaultAnalyticsService
                 {
                     OrganisationUnit unit = (OrganisationUnit) idObject;
 
-                    map.putAll( IdentifiableObjectUtils.getUidNameMap( unit.getAncestors() ) );
+                    if ( DisplayProperty.SHORTNAME.equals( displayProperty ) )
+                    {
+                        map.putAll( NameableObjectUtils.getUidShortNameMap( unit.getAncestors() ) );
+                    }
+                    else // NAME
+                    {
+                        map.putAll( IdentifiableObjectUtils.getUidNameMap( unit.getAncestors() ) );
+                    }
                 }
             }
 
-            if ( dimension.getDisplayName() != null )
+            if ( dimension.getDisplayShortName() != null && DisplayProperty.SHORTNAME.equals( displayProperty ) )
+            {
+                map.put( dimension.getDimension(), dimension.getDisplayShortName() );
+            }
+            else if ( dimension.getDisplayName() != null ) // NAME
             {
                 map.put( dimension.getDimension(), dimension.getDisplayName() );
             }

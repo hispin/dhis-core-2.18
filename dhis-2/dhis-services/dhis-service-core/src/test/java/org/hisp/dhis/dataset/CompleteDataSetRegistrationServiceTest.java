@@ -87,16 +87,6 @@ public class CompleteDataSetRegistrationServiceTest
 
     private Date onTimeA;
 
-    private Date onTimeB;
-
-    private Date deadlineA;
-
-    private Date deadlineB;
-
-    private Date tooLateA;
-
-    private Date tooLateB;
-
     private DataElementCategoryOptionCombo optionCombo;
 
     // -------------------------------------------------------------------------
@@ -148,11 +138,6 @@ public class CompleteDataSetRegistrationServiceTest
         optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         onTimeA = getDate( 2000, 1, 10 );
-        onTimeB = getDate( 2000, 2, 10 );
-        deadlineA = getDate( 2000, 1, 15 );
-        deadlineB = getDate( 2000, 2, 15 );
-        tooLateA = getDate( 2000, 1, 25 );
-        tooLateB = getDate( 2000, 2, 25 );
     }
 
     // -------------------------------------------------------------------------
