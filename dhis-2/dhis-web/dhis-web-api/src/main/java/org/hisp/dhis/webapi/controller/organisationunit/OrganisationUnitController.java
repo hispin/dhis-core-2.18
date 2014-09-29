@@ -183,7 +183,7 @@ public class OrganisationUnitController
         else if ( options.contains( "includeDescendants" ) )
         {
             options.getOptions().put( "useWrapper", "true" );
-            organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( uid ) );
+            organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( uid ) );
         }
         else if ( options.contains( "level" ) )
         {

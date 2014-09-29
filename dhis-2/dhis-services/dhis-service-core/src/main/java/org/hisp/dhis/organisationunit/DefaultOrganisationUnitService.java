@@ -288,7 +288,7 @@ public class DefaultOrganisationUnitService
         return units;
     }
 
-    public Collection<OrganisationUnit> getOrganisationUnitsWithChildren( String uid )
+    public Collection<OrganisationUnit> getOrganisationUnitWithChildren( String uid )
     {
         OrganisationUnit unit = getOrganisationUnit( uid );
         
