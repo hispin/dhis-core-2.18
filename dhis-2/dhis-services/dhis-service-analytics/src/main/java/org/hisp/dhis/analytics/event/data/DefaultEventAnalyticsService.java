@@ -43,6 +43,7 @@ import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,13 +58,14 @@ import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.common.AnalyticalObject;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.DisplayProperty;
 import org.hisp.dhis.common.EventAnalyticalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
@@ -560,13 +562,13 @@ public class DefaultEventAnalyticsService
             map.put( item.getItem().getUid(), item.getItem().getDisplayName() );
         }
 
-        map.putAll( getUidNameMap( params.getDimensions(), params.isHierarchyMeta() ) );
-        map.putAll( getUidNameMap( params.getFilters(), params.isHierarchyMeta() ) );
+        map.putAll( getUidNameMap( params.getDimensions(), params.isHierarchyMeta(), params.getDisplayProperty() ) );
+        map.putAll( getUidNameMap( params.getFilters(), params.isHierarchyMeta(), params.getDisplayProperty() ) );
 
         return map;
     }
 
-    private Map<String, String> getUidNameMap( List<DimensionalObject> dimensions, boolean hierarchyMeta )
+    private Map<String, String> getUidNameMap( List<DimensionalObject> dimensions, boolean hierarchyMeta, DisplayProperty displayProperty )
     {
         Map<String, String> map = new HashMap<>();
 
@@ -574,16 +576,26 @@ public class DefaultEventAnalyticsService
         {
             boolean hierarchy = hierarchyMeta && DimensionType.ORGANISATIONUNIT.equals( dimension.getDimensionType() );
 
-            for ( IdentifiableObject idObject : dimension.getItems() )
+            for ( NameableObject object : dimension.getItems() )
             {
-                map.put( idObject.getUid(), idObject.getDisplayName() );
-
+                Set<NameableObject> objects = new HashSet<>();
+                objects.add( object );
+                
                 if ( hierarchy )
                 {
-                    OrganisationUnit unit = (OrganisationUnit) idObject;
-
-                    map.putAll( IdentifiableObjectUtils.getUidNameMap( unit.getAncestors() ) );
+                    OrganisationUnit unit = (OrganisationUnit) object;
+                    objects.addAll( unit.getAncestors() );
                 }
+                
+                if ( DisplayProperty.SHORTNAME.equals( displayProperty ) )
+                {
+                    map.putAll( NameableObjectUtils.getUidShortNameMap( objects ) );
+                }
+                else // NAME
+                {
+                    map.putAll( IdentifiableObjectUtils.getUidNameMap( objects ) );
+                }
+
             }
         }
 
