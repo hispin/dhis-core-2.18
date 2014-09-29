@@ -1667,7 +1667,7 @@ Ext.onReady( function() {
 			service.response.aggregate = {};
 
 			service.response.aggregate.getExtendedResponse = function(xLayout, response) {
-				var emptyId = 'N/A',
+				var emptyId = '[N/A]',
                     meta = ['ou', 'pe'],
                     ouHierarchy,
                     names,
