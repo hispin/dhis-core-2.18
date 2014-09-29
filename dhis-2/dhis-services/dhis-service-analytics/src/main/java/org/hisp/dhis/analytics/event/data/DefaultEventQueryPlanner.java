@@ -128,7 +128,7 @@ public class DefaultEventQueryPlanner
             violation = "Page size must be zero or positive: " + params.getPageSize();
         }
         
-        if ( params.hasLimit() && params.getLimit() > getMaxLimit() )
+        if ( params.hasLimit() && getMaxLimit() > 0 && params.getLimit() > getMaxLimit() )
         {
             violation = "Limit of: " + params.getLimit() + " is larger than max limit: " + getMaxLimit();
         }
