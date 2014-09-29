@@ -1,12 +1,4 @@
 ﻿
--- Delete all data values for category combo
-
-delete from datavalue where categoryoptioncomboid in (
-select cc.categoryoptioncomboid from categoryoptioncombo cc
-join categorycombos_optioncombos co
-on (cc.categoryoptioncomboid=co.categoryoptioncomboid)
-where categorycomboid=12414 );
-
 -- Data elements and frequency with average agg operator (higher than yearly negative for data mart performance)
 
 select d.dataelementid, d.name as dataelement, pt.name as periodtype from dataelement d 
@@ -100,6 +92,16 @@ inner join userrolemembers urm on u.userid=urm.userid
 inner join userrole ur on urm.userroleid=ur.userroleid 
 where ur.name='UserRoleName';
 
+-- Users with ALL authority
+
+select u.userid, u.username, ui.firstname, ui.surname from users u 
+inner join userinfo ui on u.userid=ui.userinfoid
+where u.userid in (
+  select urm.userid from userrolemembers urm 
+  inner join userrole ur on urm.userroleid=ur.userroleid
+  inner join userroleauthorities ura on ur.userroleid=ura.userroleid 
+  where ura.authority = 'ALL'
+);
 
 -- Turn longitude/latitude around for organisationunit coordinates (adjust the like clause)
 
@@ -182,21 +184,15 @@ inner join organisationunit ou on (dv.sourceid=ou.organisationunitid)
 inner join categoryoptioncombo coc on (dv.categoryoptioncomboid=coc.categoryoptioncomboid)
 inner join categoryoptioncombo aoc on (dv.attributeoptioncomboid=aoc.categoryoptioncomboid)
 limit 10000;
-
--- (Write) Populate dashboards for all users (7666 is userinfoid for target dashboard, replace with preferred id)
-
-insert into usersetting (userinfoid, name, value)
-select userinfoid, 'dashboardConfig', (
-  select value
-  from usersetting
-  where userinfoid=7666
-  and name='dashboardConfig') as value
-from userinfo
-where userinfoid not in (
-  select userinfoid
-  from usersetting
-  where name='dashboardConfig')
   
+-- (Write) Delete all data values for category combo
+
+delete from datavalue where categoryoptioncomboid in (
+select cc.categoryoptioncomboid from categoryoptioncombo cc
+join categorycombos_optioncombos co
+on (cc.categoryoptioncomboid=co.categoryoptioncomboid)
+where categorycomboid=12414 );
+
 -- (Write) Reset password to "district" for account with given username
 
 update users set password='48e8f1207baef1ef7fe478a57d19f2e5' where username='admin';
