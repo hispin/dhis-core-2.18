@@ -391,7 +391,7 @@ public interface OrganisationUnitService
      */
     Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent, boolean limit );
 
-    OrganisationUnitDataSetAssociationSet getOrganisationUnitDataSetAssociationSet();
+    OrganisationUnitDataSetAssociationSet getOrganisationUnitDataSetAssociationSet( Integer maxlevels );
 
     void filterOrganisationUnitsWithoutData( Collection<OrganisationUnit> organisationUnits );
 
