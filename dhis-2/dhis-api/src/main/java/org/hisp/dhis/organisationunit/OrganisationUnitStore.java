@@ -123,8 +123,6 @@ public interface OrganisationUnitStore
 
     Map<String, Set<String>> getOrganisationUnitDataSetAssocationMap();
 
-    Map<String, Set<String>> getOrganisationUnitGroupDataSetAssocationMap();
-
     Set<Integer> getOrganisationUnitIdsWithoutData();
 
 

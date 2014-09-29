@@ -7,18 +7,10 @@ jQuery( document ).ready( function()
     }, {
         'beforeValidateHandler' : function()
         {
-            $("#dsSelected").find("option").attr("selected", "selected");
             #tblDynamicAttributesJavascript()
         },
         'rules' : getValidationRules( "organisationUnitGroup" )
     } );
-
-    $('#dsAvailable').selected({
-        url: '../dhis-web-commons-ajax-json/getDataSets.action',
-        target: $('#dsSelected'),
-        search: $('#dsAvailableSearch'),
-        iterator: 'dataSets'
-    });
 
     checkValueIsExist( "name", "validateOrganisationUnitGroup.action" );
 	checkValueIsExist( "shortName", "validateOrganisationUnitGroup.action" );
@@ -67,12 +59,6 @@ jQuery( document ).ready( function()
 		</td>
 	</tr>
 </table>
-
-#jqSelected({
-  "prefix": "ds",
-  "i18n_available": "available_data_sets",
-  "i18n_selected": "selected_data_sets"
-})
 
 <p>
 	<input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:10em"/>

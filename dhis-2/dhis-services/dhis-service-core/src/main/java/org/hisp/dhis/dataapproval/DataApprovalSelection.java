@@ -749,7 +749,7 @@ class DataApprovalSelection
     {
         log.debug( "isUnapprovedBelow( " + orgUnit.getName() + " )" );
 
-        if ( dataSetAssignedAtOrBelowLevel == false && orgUnit.getAllDataSets().contains( dataSet ) )
+        if ( dataSetAssignedAtOrBelowLevel == false && orgUnit.getDataSets().contains( dataSet ) )
         {
             dataSetAssignedAtOrBelowLevel = true;
         }

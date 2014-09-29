@@ -28,13 +28,9 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
@@ -56,12 +52,16 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroup;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * This class is used for defining the standardized DataSets. A DataSet consists
@@ -114,11 +114,6 @@ public class DataSet
      */
     @Scanned
     private Set<OrganisationUnit> sources = new HashSet<>();
-
-    /**
-     * All OrganisationUnitGroup that register data with this DataSet.
-     */
-    private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<>();
 
     /**
      * The Sections associated with the DataSet.
@@ -311,44 +306,6 @@ public class DataSet
         }
     }
 
-    public void addOrganisationUnitGroup( OrganisationUnitGroup group )
-    {
-        organisationUnitGroups.add( group );
-        group.getDataSets().add( this );
-    }
-
-    public boolean removeOrganisationUnitGroup( OrganisationUnitGroup group )
-    {
-        organisationUnitGroups.remove( group );
-        return group.getDataSets().remove( this );
-    }
-
-    public void removeAllOrganisationUnitGroups()
-    {
-        for ( OrganisationUnitGroup group : organisationUnitGroups )
-        {
-            group.getDataSets().remove( this );
-        }
-
-        organisationUnitGroups.clear();
-    }
-
-    public void updateOrganisationUnitGroups( Set<OrganisationUnitGroup> updates )
-    {
-        for ( OrganisationUnitGroup group : new HashSet<>( organisationUnitGroups ) )
-        {
-            if ( !updates.contains( group ) )
-            {
-                removeOrganisationUnitGroup( group );
-            }
-        }
-
-        for ( OrganisationUnitGroup group : updates )
-        {
-            addOrganisationUnitGroup( group );
-        }
-    }
-
     public void addDataElement( DataElement dataElement )
     {
         dataElements.add( dataElement );
@@ -397,24 +354,6 @@ public class DataSet
     public void removeCompulsoryDataElementOperand( DataElementOperand dataElementOperand )
     {
         compulsoryDataElementOperands.remove( dataElementOperand );
-    }
-
-    /**
-     * Returns all organisation units assigned to this data set, including
-     * org units assigned directly and organisation units assigned through groups.
-     */
-    public Set<OrganisationUnit> getAllOrganisationUnits()
-    {
-        Set<OrganisationUnit> units = new HashSet<>();
-
-        units.addAll( sources );
-
-        for ( OrganisationUnitGroup group : organisationUnitGroups )
-        {
-            units.addAll( group.getMembers() );
-        }
-
-        return units;
     }
 
     public boolean hasDataEntryForm()
@@ -586,21 +525,6 @@ public class DataSet
     public void setSources( Set<OrganisationUnit> sources )
     {
         this.sources = sources;
-    }
-
-    @JsonProperty( value = "organisationUnitGroups" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
-    @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "organisationUnitGroup", namespace = DxfNamespaces.DXF_2_0 )
-    public Set<OrganisationUnitGroup> getOrganisationUnitGroups()
-    {
-        return organisationUnitGroups;
-    }
-
-    public void setOrganisationUnitGroups( Set<OrganisationUnitGroup> organisationUnitGroups )
-    {
-        this.organisationUnitGroups = organisationUnitGroups;
     }
 
     @JsonProperty

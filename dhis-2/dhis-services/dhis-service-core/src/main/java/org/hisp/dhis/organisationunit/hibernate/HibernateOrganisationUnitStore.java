@@ -33,7 +33,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -46,6 +45,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.AuditLogUtil;
+import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -194,7 +194,7 @@ public class HibernateOrganisationUnitStore
             "left join organisationunit ou on ou.organisationunitid=d.sourceid " +
             "left join dataset ds on ds.datasetid=d.datasetid";
 
-        final Map<String, Set<String>> map = new HashMap<>();
+        final SetMap<String, String> map = new SetMap<>();        
 
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {
@@ -202,48 +202,7 @@ public class HibernateOrganisationUnitStore
             {
                 String dataSetId = rs.getString( "ds_uid" );
                 String organisationUnitId = rs.getString( "ou_uid" );
-
-                Set<String> dataSets = map.get( organisationUnitId );
-
-                if ( dataSets == null )
-                {
-                    dataSets = new HashSet<>();
-                    map.put( organisationUnitId, dataSets );
-                }
-
-                dataSets.add( dataSetId );
-            }
-        } );
-
-        return map;
-    }
-
-    @Override
-    public Map<String, Set<String>> getOrganisationUnitGroupDataSetAssocationMap()
-    {
-        final String sql = "select ds.uid as ds_uid, ou.uid as ou_uid from orgunitgroupdatasets ougds " +
-            "left join orgunitgroupmembers ougm on ougds.orgunitgroupid=ougm.orgunitgroupid " +
-            "left join organisationunit ou on ou.organisationunitid=ougm.organisationunitid " +
-            "left join dataset ds on ds.datasetid=ougds.datasetid";
-
-        final Map<String, Set<String>> map = new HashMap<>();
-
-        jdbcTemplate.query( sql, new RowCallbackHandler()
-        {
-            public void processRow( ResultSet rs ) throws SQLException
-            {
-                String dataSetId = rs.getString( "ds_uid" );
-                String organisationUnitId = rs.getString( "ou_uid" );
-
-                Set<String> dataSets = map.get( organisationUnitId );
-
-                if ( dataSets == null )
-                {
-                    dataSets = new HashSet<>();
-                    map.put( organisationUnitId, dataSets );
-                }
-
-                dataSets.add( dataSetId );
+                map.putValue( organisationUnitId, dataSetId );
             }
         } );
 
