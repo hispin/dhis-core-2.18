@@ -29,9 +29,11 @@ package org.hisp.dhis.de.action;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -44,6 +46,7 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -119,6 +122,9 @@ public class GetMetaDataAction
     @Autowired
     protected AclService aclService;
 
+    @Autowired
+    private ConfigurationService configurationService;
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -238,7 +244,11 @@ public class GetMetaDataAction
 
         expressionService.substituteExpressions( indicators, null );
 
-        OrganisationUnitDataSetAssociationSet organisationUnitSet = organisationUnitService.getOrganisationUnitDataSetAssociationSet();
+        OrganisationUnitLevel offlineOrgUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
+        
+        Integer level = offlineOrgUnitLevel != null ? offlineOrgUnitLevel.getLevel() : null;
+        
+        OrganisationUnitDataSetAssociationSet organisationUnitSet = organisationUnitService.getOrganisationUnitDataSetAssociationSet( null ); //TODO change null > "level"
 
         dataSetAssociationSets = organisationUnitSet.getDataSetAssociationSets();
 

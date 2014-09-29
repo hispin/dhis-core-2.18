@@ -29,6 +29,7 @@ package org.hisp.dhis.organisationunit;
  */
 
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -564,12 +565,12 @@ public class DefaultOrganisationUnitService
             : intersection;
     }
 
-    public OrganisationUnitDataSetAssociationSet getOrganisationUnitDataSetAssociationSet()
+    public OrganisationUnitDataSetAssociationSet getOrganisationUnitDataSetAssociationSet( Integer maxLevels )
     {
         Map<String, Set<String>> associationSet = Maps.newHashMap( organisationUnitStore.getOrganisationUnitDataSetAssocationMap() );
 
         filterUserDataSets( associationSet );
-        filterChildOrganisationUnits( associationSet );
+        filterChildOrganisationUnits( associationSet, maxLevels );
 
         OrganisationUnitDataSetAssociationSet set = new OrganisationUnitDataSetAssociationSet();
 
@@ -613,21 +614,21 @@ public class DefaultOrganisationUnitService
     /**
      * Retains only the organisation units in the sub-tree of the current user.
      * 
-     * TODO use offline levels
-     * 
      * @param associationMap the associations between organisation unit and data sets.
+     * @param maxLevels the maximum number of levels to include relative to 
+     *        current user, inclusive.
      */
-    private void filterChildOrganisationUnits( Map<String, Set<String>> associationMap )
+    private void filterChildOrganisationUnits( Map<String, Set<String>> associationMap, Integer maxLevels )
     {
         User currentUser = currentUserService.getCurrentUser();
 
         if ( currentUser != null && currentUser.getOrganisationUnits() != null )
         {
-            Collection<String> parentIds = IdentifiableObjectUtils.getUids( currentUser.getOrganisationUnits() );
+            Collection<String> parentIds = getUids( currentUser.getOrganisationUnits() );
 
-            Collection<OrganisationUnit> organisationUnitsWithChildren = getOrganisationUnitsWithChildren( parentIds );
+            Collection<OrganisationUnit> organisationUnitsWithChildren = getOrganisationUnitsWithChildren( parentIds, maxLevels );
             
-            Collection<String> children = IdentifiableObjectUtils.getUids( organisationUnitsWithChildren );
+            Collection<String> children = getUids( organisationUnitsWithChildren );
 
             associationMap.keySet().retainAll( children );
         }
