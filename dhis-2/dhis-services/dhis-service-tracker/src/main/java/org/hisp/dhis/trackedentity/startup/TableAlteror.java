@@ -257,8 +257,6 @@ public class TableAlteror
             + "where trackedentityattribute.mandatory is not null" );
         executeSql( "ALTER TABLE trackedentityattribute DROP COLUMN mandatory" );
 
-        executeSql( "update datavalue set storedby='aggregated_from_tracker' where storedby='DHIS-System'" );
-
         executeSql( "ALTER TABLE trackedentityattribute DROP COLUMN groupBy" );
 
         executeSql( "update trackedentityattribute set valuetype='string' where valuetype='combo' and optionsetid is null" );
