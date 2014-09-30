@@ -156,10 +156,9 @@ public class UpdateUserAccountAction
 
         UserCredentials userCredentials = userService.getUserCredentials( user );
 
-        String encodeOldPassword = passwordManager.encodePassword( userCredentials.getUsername(), oldPassword );
         String currentPassword = userCredentials.getPassword();
         
-        if ( !encodeOldPassword.equals( currentPassword ) )
+        if ( !passwordManager.matches( oldPassword, currentPassword ) )
         {
             message = i18n.getString( "wrong_password" );
             return INPUT;
@@ -179,7 +178,7 @@ public class UpdateUserAccountAction
 
         if ( rawPassword != null )
         {
-            userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getUsername(), rawPassword ) );
+            userCredentials.setPassword( passwordManager.encodePassword( rawPassword ) );
 
             userService.updateUserCredentials( userCredentials );
         }

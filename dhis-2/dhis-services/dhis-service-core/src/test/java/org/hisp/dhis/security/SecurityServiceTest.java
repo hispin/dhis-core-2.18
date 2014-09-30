@@ -144,9 +144,8 @@ public class SecurityServiceTest
         //
         // check password
         //
-        String hashedPassword = passwordManager.encodePassword( credentials.getUsername(), password );
 
-        assertEquals( hashedPassword, credentials.getPassword() );
+        assertTrue( passwordManager.matches( password, credentials.getPassword() ) );
     }
 
     @Test
@@ -213,9 +212,8 @@ public class SecurityServiceTest
         //
         // check password
         //
-        String hashedPassword = passwordManager.encodePassword( credentials.getUsername(), password );
 
-        assertEquals( hashedPassword, credentials.getPassword() );
+        assertTrue( passwordManager.matches( password, credentials.getPassword() ) );
     }
 
     @Test

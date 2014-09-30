@@ -342,71 +342,26 @@ public class UserCredentials
     }
 
     /**
-     * Tests whether the given input arguments can perform a valid restore of
-     * the user account for these credentials.
-     * <p>
-     * If fail, returns one of the following error strings:
-     * <ul>
-     *     <li>account_restoreToken_is_null</li>
-     *     <li>account_restoreCode_is_null</li>
-     *     <li>account_restoreExpiry_is_null</li>
-     *     <li>token_parameter_is_null</li>
-     *     <li>code_parameter_is_null</li>
-     *     <li>date_parameter_is_null</li>
-     *     <li>token_does_not_match_restoreToken ...</li>
-     *     <li>code_does_not_match_restoreCode ...</li>
-     *     <li>date_is_after_expiry ...</li>
-     * </ul>
-     * @param token the restore token.
-     * @param code  the restore code.
-     * @param date  the expiry date.
-     * @return null if success, or error message if fail.
+     * Tests whether the credentials contain all needed parameters to
+     * perform an account restore.
+     * If a parameter is missing a descriptive error string is returned.
+     * @return null on success, a descriptive error string on failure.
      */
-    public String canRestore( String token, String code, Date date )
+    public String isRestorable()
     {
-        if ( this.restoreToken == null )
+        if ( restoreToken == null )
         {
             return "account_restoreToken_is_null";
         }
 
-        if ( this.restoreCode == null )
+        if ( restoreCode == null )
         {
             return "account_restoreCode_is_null";
         }
 
-        if ( this.restoreExpiry == null )
+        if ( restoreExpiry == null )
         {
             return "account_restoreExpiry_is_null";
-        }
-
-        if ( token == null )
-        {
-            return "token_parameter_is_null";
-        }
-
-        if ( code == null )
-        {
-            return "code_parameter_is_null";
-        }
-
-        if ( date == null )
-        {
-            return "date_parameter_is_null";
-        }
-
-        if ( !token.equals ( this.restoreToken ) )
-        {
-            return ( "token_does_not_match_restoreToken - token: '" + token + "' restoreToken: '" + restoreToken + "'" );
-        }
-
-        if ( !code.equals ( this.restoreCode ) )
-        {
-            return ( "code_does_not_match_restoreCode - code: '" + code + "' restoreCode: '" + restoreCode + "'" );
-        }
-
-        if ( date.after( this.restoreExpiry ) )
-        {
-            return "date_is_after_expiry - date: " + date.toString() + " expiry: " + this.restoreExpiry.toString();
         }
 
         return null; // Success.

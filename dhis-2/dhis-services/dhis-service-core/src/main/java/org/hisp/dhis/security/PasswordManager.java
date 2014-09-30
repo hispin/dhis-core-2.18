@@ -30,11 +30,34 @@ package org.hisp.dhis.security;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: PasswordManager.java 3109 2007-03-19 17:05:21Z torgeilo $
+ * @author Halvdan Hoem Grelland
  */
 public interface PasswordManager
 {
     String ID = PasswordManager.class.getName();
 
-    String encodePassword( String username, String password );
+    /**
+     * Cryptographically hash a password.
+     * Salting (as well as the salt storage scheme) must be handled by the implementation.
+     *
+     * @param password password to encode.
+     * @return the hashed password.
+     */
+    String encodePassword( String password );
+
+    /**
+     * Determines whether the supplied password equals the encoded password or not.
+     * Fetching and handling of any required salt value must be done by the implementation.
+     *
+     * @param rawPassword the raw, unencoded password.
+     * @param encodedPassword the encoded password to match against.
+     * @return true if the passwords match, false otherwise.
+     */
+    boolean matches( String rawPassword, String encodedPassword );
+
+    /**
+     * Returns the class name of the password encoder used by this instance.
+     * @return the name of the password encoder class.
+     */
+    String getPasswordEncoderClassName();
 }

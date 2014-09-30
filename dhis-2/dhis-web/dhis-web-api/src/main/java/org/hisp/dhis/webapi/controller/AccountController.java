@@ -399,7 +399,7 @@ public class AccountController
                 username = credentials.getUsername();
             }
 
-            credentials.setPassword( passwordManager.encodePassword( username, password ) );
+            credentials.setPassword( passwordManager.encodePassword( password ) );
 
             userService.updateUser( user );
             userService.updateUserCredentials( credentials );
@@ -421,7 +421,7 @@ public class AccountController
 
             credentials = new UserCredentials();
             credentials.setUsername( username );
-            credentials.setPassword( passwordManager.encodePassword( username, password ) );
+            credentials.setPassword( passwordManager.encodePassword( password ) );
             credentials.setSelfRegistered( true );
             credentials.setUser( user );
             credentials.getUserAuthorityGroups().add( userRole );
@@ -472,7 +472,7 @@ public class AccountController
             return;
         }
 
-        String oldPasswordEncoded = passwordManager.encodePassword( username, oldPassword );
+        String oldPasswordEncoded = passwordManager.encodePassword( oldPassword );
 
         if ( !credentials.getPassword().equals( oldPasswordEncoded ) )
         {
@@ -501,7 +501,7 @@ public class AccountController
             return;
         }
 
-        String passwordEncoded = passwordManager.encodePassword( username, password );
+        String passwordEncoded = passwordManager.encodePassword( password );
 
         credentials.setPassword( passwordEncoded );
         credentials.setPasswordLastUpdated( new Date() );

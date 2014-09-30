@@ -363,13 +363,12 @@ public class AddUserAction
             user.setEmail( email );
             user.setPhoneNumber( phoneNumber );
 
-            userCredentials.setPassword( passwordManager.encodePassword( username, rawPassword ) );
+            userCredentials.setPassword( passwordManager.encodePassword( rawPassword ) );
         }
 
         if ( jsonAttributeValues != null )
         {
-            AttributeUtils.updateAttributeValuesFromJson( user.getAttributeValues(), jsonAttributeValues,
-                attributeService );
+            AttributeUtils.updateAttributeValuesFromJson( user.getAttributeValues(), jsonAttributeValues, attributeService );
         }
 
         // ---------------------------------------------------------------------

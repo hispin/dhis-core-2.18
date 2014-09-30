@@ -29,12 +29,11 @@ package org.hisp.dhis.security.spring;
  */
 
 import org.hisp.dhis.security.PasswordManager;
-import org.hisp.dhis.security.UsernameSaltSource;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: AcegiPasswordManager.java 3109 2007-03-19 17:05:21Z torgeilo $
+ * @author Halvdan Hoem Grelland
  */
 public class SpringSecurityPasswordManager
     implements PasswordManager
@@ -43,26 +42,32 @@ public class SpringSecurityPasswordManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private Md5PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    public void setPasswordEncoder( Md5PasswordEncoder passwordEncoder )
+    public void setPasswordEncoder( PasswordEncoder passwordEncoder )
     {
         this.passwordEncoder = passwordEncoder;
-    }
-
-    private UsernameSaltSource usernameSaltSource;
-
-    public void setUsernameSaltSource( UsernameSaltSource saltSource )
-    {
-        this.usernameSaltSource = saltSource;
     }
 
     // -------------------------------------------------------------------------
     // PasswordManager implementation
     // -------------------------------------------------------------------------
 
-    public final String encodePassword( String username, String password )
+    @Override
+    public final String encodePassword( String password )
     {
-        return passwordEncoder.encodePassword( password, usernameSaltSource.getSalt( username ) );
+        return passwordEncoder.encode( password );
+    }
+
+    @Override
+    public boolean matches( String rawPassword, String encodedPassword )
+    {
+        return passwordEncoder.matches( rawPassword, encodedPassword );
+    }
+
+    @Override
+    public String getPasswordEncoderClassName()
+    {
+        return passwordEncoder.getClass().getName();
     }
 }
