@@ -33,6 +33,7 @@ import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.schema.descriptors.DataElementOperandSchemaDescriptor;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
@@ -43,6 +44,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -55,7 +57,8 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
     @Autowired
     private DataElementCategoryService categoryService;
 
-    protected List<DataElementOperand> getEntityList( WebMetaData metaData, WebOptions options )
+    @Override
+    protected List<DataElementOperand> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
         List<DataElementOperand> dataElementOperands;
 
@@ -65,8 +68,31 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
         }
         else
         {
-            List<DataElement> dataElements = new ArrayList<>( manager.getAllSorted( DataElement.class ) );
-            dataElementOperands = new ArrayList<>( categoryService.getFullOperands( dataElements ) );
+            Iterator<String> iterator = filters.iterator();
+            String deGroup = null;
+
+            while ( iterator.hasNext() )
+            {
+                String filter = iterator.next();
+
+                if ( filter.startsWith( "dataElement.dataElementGroup.id:eq:" ) )
+                {
+                    deGroup = filter.substring( "dataElement.dataElementGroup.id:eq:".length() );
+                    iterator.remove();
+                    break;
+                }
+            }
+
+            if ( deGroup != null )
+            {
+                DataElementGroup dataElementGroup = manager.get( DataElementGroup.class, deGroup );
+                dataElementOperands = new ArrayList<>( categoryService.getFullOperands( dataElementGroup.getMembers() ) );
+            }
+            else
+            {
+                List<DataElement> dataElements = new ArrayList<>( manager.getAllSorted( DataElement.class ) );
+                dataElementOperands = new ArrayList<>( categoryService.getFullOperands( dataElements ) );
+            }
         }
 
         if ( options.hasPaging() )
