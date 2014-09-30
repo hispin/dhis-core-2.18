@@ -357,6 +357,19 @@ public class ReflectionUtils
         return fields;
     }
 
+    public static List<String> getAllFieldNames( Class<?> klass )
+    {
+        List<Field> fields = getAllFields( klass );
+        List<String> fieldNames = new ArrayList<>();
+
+        for ( Field field : fields )
+        {
+            fieldNames.add( field.getName() );
+        }
+
+        return fieldNames;
+    }
+
     private static Method _findMethod( Class<?> clazz, String name )
     {
         return _findMethod( clazz, name, new Class[0] );
@@ -426,7 +439,7 @@ public class ReflectionUtils
         }
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static <T> T getFieldObject( Field field, T target )
     {
         return (T) invokeGetterMethod( field.getName(), target );

@@ -85,10 +85,10 @@ public class Property implements Ordered
 
     /**
      * Is this property persisted somewhere. This property will be used to create criteria queries
-     * on demand (default: true)
+     * on demand (default: false)
      */
     @NodeSimple
-    private boolean persisted = true;
+    private boolean persisted;
 
     /**
      * Name of collection wrapper.

@@ -32,6 +32,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.OrderComparator;
@@ -58,12 +59,21 @@ public class DefaultSchemaService implements SchemaService
     @Autowired
     private List<SchemaDescriptor> descriptors = Lists.newArrayList();
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @PostConstruct
     public void init()
     {
         for ( SchemaDescriptor descriptor : descriptors )
         {
             Schema schema = descriptor.getSchema();
+
+            if ( sessionFactory.getClassMetadata( schema.getKlass() ) != null )
+            {
+                schema.setPersisted( true );
+            }
+
             schema.setDisplayName( beautify( schema.getName() ) );
 
             if ( schema.getProperties().isEmpty() )
