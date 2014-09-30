@@ -451,7 +451,7 @@ function addEventListeners()
 
         if ( type == 'date' )
         {
-            datePicker( id );
+            dhis2.period.picker.createInstance( '#' + id );
         }
     } );
     
