@@ -67,13 +67,13 @@ public class DefaultFieldFilterService implements FieldFilterService
     @Autowired
     private SchemaService schemaService;
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private Set<PresetProvider> presetProviders = Sets.newHashSet();
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private Set<NodePropertyConverter> nodePropertyConverters = Sets.newHashSet();
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private Set<NodeTransformer> nodeTransformers = Sets.newHashSet();
 
     private ImmutableMap<String, PresetProvider> presets = ImmutableMap.of();
@@ -322,6 +322,20 @@ public class DefaultFieldFilterService implements FieldFilterService
                     if ( !fieldMap.containsKey( mapKey ) )
                     {
                         fieldMap.put( mapKey, new FieldMap() );
+                    }
+                }
+
+                cleanupFields.add( fieldKey );
+            }
+            else if ( ":persisted".equals( fieldKey ) )
+            {
+                List<Property> properties = schema.getProperties();
+
+                for ( Property property : properties )
+                {
+                    if ( property.isPersisted() )
+                    {
+                        fieldMap.put( property.getName(), new FieldMap() );
                     }
                 }
 
