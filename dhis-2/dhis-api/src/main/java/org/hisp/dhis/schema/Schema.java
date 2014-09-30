@@ -117,6 +117,11 @@ public class Schema implements Ordered
     private boolean metadata;
 
     /**
+     * Are any properties on this class being persisted, if false, this file does not have any hbm file attached to it.
+     */
+    private boolean persisted;
+
+    /**
      * List of authorities required for doing operations on this class.
      */
     private List<Authority> authorities = Lists.newArrayList();
@@ -281,6 +286,18 @@ public class Schema implements Ordered
     public void setMetadata( boolean metadata )
     {
         this.metadata = metadata;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isPersisted()
+    {
+        return persisted;
+    }
+
+    public void setPersisted( boolean persisted )
+    {
+        this.persisted = persisted;
     }
 
     @JsonProperty
