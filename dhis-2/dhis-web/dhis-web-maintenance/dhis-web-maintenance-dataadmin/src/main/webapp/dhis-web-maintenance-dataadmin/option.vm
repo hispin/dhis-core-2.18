@@ -46,21 +46,22 @@
 				</tr>		
 			</table>
       <table class="listTable">
-      <col/>
+      <col width="60%"/>
+      <col width="40%"/>
       <thead>
       <tr>
           <th>$i18n.getString( "name" )</th>
+          <th>$i18n.getString( "code" )</th>
       </tr>
       </thead>
       <tbody id="list">
       #foreach( $option in $options )
-      <tr id="tr${option.id}">
-        <td data-id="$!option.id" data-uid="$!option.uid" data-type="Option" data-name="$encoder.htmlEncode( $!option.displayName )"
+      <tr id="tr${option.id}" data-id="$!option.id" data-uid="$!option.uid" data-type="Option" data-name="$encoder.htmlEncode( $!option.displayName )"
           data-can-manage="$security.canManage( $option )"
           data-can-update="$security.canUpdate( $option )"
           data-can-delete="$security.canDelete( $option )">
-          $encoder.htmlEncode( $!option.displayName )
-        </td>
+          <td>$encoder.htmlEncode( $!option.displayName )</td>
+          <td>$encoder.htmlEncode( $!option.code )</td>
       </tr>
       #end
       </tbody>
