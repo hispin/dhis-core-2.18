@@ -49,13 +49,11 @@
       </thead>
       <tbody id="list">
       #foreach( $optionSet in $optionSets )
-      <tr id="tr${optionSet.id}">
-        <td data-id="$!optionSet.id" data-uid="$!optionSet.uid" data-type="OptionSet" data-name="$encoder.htmlEncode( $!optionSet.displayName )"
+      <tr id="tr${optionSet.id}" data-id="$!optionSet.id" data-uid="$!optionSet.uid" data-type="OptionSet" data-name="$encoder.htmlEncode( $!optionSet.displayName )"
           data-can-manage="$security.canManage( $optionSet )"
           data-can-update="$security.canUpdate( $optionSet )"
           data-can-delete="$security.canDelete( $optionSet )">
-          $encoder.htmlEncode( $!optionSet.displayName )
-        </td>
+          <td>$encoder.htmlEncode( $!optionSet.displayName )</td>
       </tr>
       #end
       </tbody>
