@@ -28,9 +28,11 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -123,6 +125,21 @@ public class DataSetDeletionHandler
             dataSet.getSections().remove( section );
             dataSetService.updateDataSet( dataSet );
         }
+    }
+    
+    @Override
+    public void deleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
+    {
+        Collection<DataSet> dataSets = dataSetService.getAllDataSets();
+
+        for ( DataSet dataSet : dataSets )
+        {            
+            if ( dataSet != null && categoryCombo.equals( dataSet.getCategoryCombo() ) )
+            {
+                dataSet.setCategoryCombo( null );
+                dataSetService.updateDataSet( dataSet );
+            }
+        }        
     }
 
     @Override
