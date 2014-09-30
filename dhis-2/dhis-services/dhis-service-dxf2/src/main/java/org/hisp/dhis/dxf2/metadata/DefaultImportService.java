@@ -144,7 +144,7 @@ public class DefaultImportService
         log.info( "User '" + username + "' started import at " + new Date() );
 
         notifier.clear( taskId ).notify( taskId, "Importing meta-data" );
-        Timer timer = new SystemNanoTimer().start();
+        Timer<Long> timer = new SystemNanoTimer().start();
 
         ImportSummary importSummary = new ImportSummary();
 
