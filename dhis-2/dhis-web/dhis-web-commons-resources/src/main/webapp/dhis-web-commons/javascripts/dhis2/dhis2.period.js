@@ -79,8 +79,8 @@ dhis2.period.DatePicker = function( calendar, format ) {
  * Creates a date picker.
  *
  * @param {jQuery|String|Object} el Element to select on, can be any kind of jQuery selector, or a jqEl
- * @param fromIso Convert field from ISO 8601 to local calendar
- * @param options Additional options, will be merged with the defaults
+ * @param {*} [fromIso] Convert field from ISO 8601 to local calendar
+ * @param {*} [options] Additional options, will be merged with the defaults
  */
 dhis2.period.DatePicker.prototype.createInstance = function( el, fromIso, options ) {
   var $el = $(el);
