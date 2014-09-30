@@ -48,6 +48,7 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,13 @@ public class Jackson2PropertyIntrospectorService extends AbstractPropertyIntrosp
     {
         Map<String, Property> propertyMap = Maps.newHashMap();
         ClassMetadata classMetadata = sessionFactory.getClassMetadata( clazz );
-        List<String> classPropertyNames = Lists.newArrayList( classMetadata.getPropertyNames() );
+        List<String> classPropertyNames = new ArrayList<>();
+
+        if ( classMetadata != null )
+        {
+            classPropertyNames = Lists.newArrayList( classMetadata.getPropertyNames() );
+        }
+
         List<String> classFieldNames = ReflectionUtils.getAllFieldNames( clazz );
 
         // TODO this is quite nasty, should find a better way of exposing properties at class-level
