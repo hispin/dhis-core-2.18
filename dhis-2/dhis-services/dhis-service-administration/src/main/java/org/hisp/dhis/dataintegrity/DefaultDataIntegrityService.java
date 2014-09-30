@@ -36,10 +36,12 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -62,6 +64,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.filter.OrganisationUnitGroupWithoutGroupSetFilter;
 import org.hisp.dhis.system.util.Filter;
@@ -160,6 +164,13 @@ public class DefaultDataIntegrityService
         this.constantService = constantService;
     }
 
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }    
+    
     // -------------------------------------------------------------------------
     // DataIntegrityService implementation
     // -------------------------------------------------------------------------
@@ -297,7 +308,7 @@ public class DefaultDataIntegrityService
         
         for ( Section section : sectionService.getAllSections() )
         {
-            if ( section.categorComboIsInvalid() )
+            if ( section != null && section.categorComboIsInvalid() )
             {
                 sections.add( section );
             }
@@ -424,6 +435,40 @@ public class DefaultDataIntegrityService
         return targets;
     }
 
+    // -------------------------------------------------------------------------
+    // Period
+    // -------------------------------------------------------------------------
+
+    public List<Period> getDuplicatePeriods()
+    {
+        Collection<Period> periods = periodService.getAllPeriods();
+        
+        List<Period> duplicates = new ArrayList<>();
+        
+        ListMap<String, Period> map = new ListMap<>();
+        
+        for ( Period period : periods )
+        {
+            String key = period.getPeriodType().getName() + period.getStartDate().toString();
+            
+            period.setName( period.toString() );
+            
+            map.putValue( key, period );
+        }
+        
+        for ( String key : map.keySet() )
+        {
+            List<Period> values = map.get( key );
+            
+            if ( values != null && values.size() > 1 )
+            {
+                duplicates.addAll( values );
+            }
+        }
+        
+        return duplicates;
+    }
+    
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -580,5 +625,4 @@ public class DefaultDataIntegrityService
 
         return invalids;
     }
-
 }

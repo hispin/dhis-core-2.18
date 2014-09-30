@@ -27,6 +27,7 @@ function populateIntegrityItems( json )
     displayViolationList( json.organisationUnitsWithoutGroups, "organisationUnitsWithoutGroups" );
     displayViolationList( json.organisationUnitsViolatingExclusiveGroupSets, "organisationUnitsViolatingExclusiveGroupSets" );
     displayViolationList( json.organisationUnitGroupsWithoutGroupSets, "organisationUnitGroupsWithoutGroupSets" );
+    displayViolationList( json.duplicatePeriods, "duplicatePeriods" );
     displayViolationList( json.validationRulesWithoutGroups, "validationRulesWithoutGroups" );
     displayViolationList( json.invalidValidationRuleLeftSideExpressions, "invalidValidationRuleLeftSideExpressions" );
     displayViolationList( json.invalidValidationRuleRightSideExpressions, "invalidValidationRuleRightSideExpressions" );

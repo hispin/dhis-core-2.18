@@ -150,12 +150,15 @@ public class Section
 
             for ( DataElement element : dataElements )
             {
-                if ( categoryCombo != null && !categoryCombo.equals( element.getCategoryCombo() ) )
+                if ( element != null )
                 {
-                    return true;
+                    if ( categoryCombo != null && !categoryCombo.equals( element.getCategoryCombo() ) )
+                    {
+                        return true;
+                    }
+    
+                    categoryCombo = element.getCategoryCombo();
                 }
-
-                categoryCombo = element.getCategoryCombo();
             }
         }
 

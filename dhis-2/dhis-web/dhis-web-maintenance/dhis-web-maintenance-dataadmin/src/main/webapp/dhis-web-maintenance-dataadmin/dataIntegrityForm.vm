@@ -24,6 +24,7 @@
 #integrityItem( $i18n.getString( "invalid_indicator_numerators" ) "invalidIndicatorNumerators" )
 #integrityItem( $i18n.getString( "invalid_indicator_denominators" ) "invalidIndicatorDenominators" )
 #integrityItem( $i18n.getString( "indicators_violating_exclusive_group_sets" ) "indicatorsViolatingExclusiveGroupSets" )
+#integrityItem( $i18n.getString( "duplicate_periods" ) "duplicatePeriods" )
 #integrityItem( $i18n.getString( "organisation_units_with_cyclic_references" ) "organisationUnitsWithCyclicReferences" )
 #integrityItem( $i18n.getString( "orphaned_organisation_units" ) "orphanedOrganisationUnits" )
 #integrityItem( $i18n.getString( "organisation_units_without_groups" ) "organisationUnitsWithoutGroups" )
