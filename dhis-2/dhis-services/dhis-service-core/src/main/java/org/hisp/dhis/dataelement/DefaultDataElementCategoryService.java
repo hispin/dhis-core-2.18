@@ -694,10 +694,10 @@ public class DefaultDataElementCategoryService
             {
                 for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getOptionCombos() )
                 {
-                    DataElementOperand operand = new DataElementOperand( dataElement, categoryOptionCombo );
-                    operand.updateProperties( dataElement, categoryOptionCombo );
+                    DataElementOperand dataElementOperand = new DataElementOperand( dataElement, categoryOptionCombo );
+                    dataElementOperand.updateProperties( dataElement, categoryOptionCombo );
     
-                    operands.add( operand );
+                    operands.add( dataElementOperand );
                 }
             }
         }
