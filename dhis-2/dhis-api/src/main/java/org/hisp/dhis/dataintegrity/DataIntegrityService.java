@@ -29,6 +29,7 @@ package org.hisp.dhis.dataintegrity;
  */
 
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedMap;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -39,11 +40,11 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.validation.ValidationRule;
 
 /**
  * @author Fredrik Fjeld
- * @version $Id$
  */
 public interface DataIntegrityService
 {
@@ -159,6 +160,16 @@ public interface DataIntegrityService
      */
     SortedMap<OrganisationUnit, Collection<OrganisationUnitGroup>> getOrganisationUnitsViolatingExclusiveGroupSets();
 
+    // -------------------------------------------------------------------------
+    // Period
+    // -------------------------------------------------------------------------
+
+    /**
+     * Lists all Periods which are duplicates, based on the period type and start date.
+     * @return
+     */
+    List<Period> getDuplicatePeriods();
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitGroup
     // -------------------------------------------------------------------------

@@ -34,6 +34,7 @@
 	<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 	<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+	<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
   
   <!-- Maintenance -->

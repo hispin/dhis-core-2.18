@@ -47,6 +47,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.validation.ValidationRule;
 
 import com.opensymphony.xwork2.Action;
@@ -159,6 +160,13 @@ public class GetDataIntegrityAction
         return indicatorsViolatingExclusiveGroupSets;
     }
 
+    private List<Period> duplicatePeriods;
+    
+    public List<Period> getDuplicatePeriods()
+    {
+        return duplicatePeriods;
+    }
+
     private List<OrganisationUnit> organisationUnitsWithCyclicReferences;
 
     public List<OrganisationUnit> getOrganisationUnitsWithCyclicReferences()
@@ -241,6 +249,10 @@ public class GetDataIntegrityAction
         indicatorsViolatingExclusiveGroupSets = dataIntegrityService.getIndicatorsViolatingExclusiveGroupSets();
 
         log.info( "Checked indicators" );
+        
+        duplicatePeriods = dataIntegrityService.getDuplicatePeriods();
+
+        log.info( "Checked periods" );
         
         organisationUnitsWithCyclicReferences = new ArrayList<>( dataIntegrityService
             .getOrganisationUnitsWithCyclicReferences() );
