@@ -1213,13 +1213,11 @@ dhis2.de.getCurrentCategoryOptionsQueryValue = function()
 
 /**
  * Tests to see if a category option is valid during a period.
- * 
- * TODO properly check validity period
- * TODO option.startDate == null || option.startDate <= dhis2.de.periodChoices[ period ].endDate
  */
 dhis2.de.optionValidWithinPeriod = function( option, period )
 {
-    return true;
+    return ( option.startDate == null || option.startDate <= dhis2.de.periodChoices[ period ].endDate )
+        && ( option.endDate == null || option.endDate >= dhis2.de.periodChoices[ period ].startDate )
 }
 
 /**
@@ -1233,7 +1231,9 @@ dhis2.de.setAttributesMarkup = function()
 
 /**
 * Returns markup for drop down boxes to be put in the selection box for the
-* given categories. The empty string is returned if no categories are given. 
+* given categories. The empty string is returned if no categories are given.
+*
+* TODO check for category option validity for selected organisation unit.
 */
 dhis2.de.getAttributesMarkup = function()
 {
