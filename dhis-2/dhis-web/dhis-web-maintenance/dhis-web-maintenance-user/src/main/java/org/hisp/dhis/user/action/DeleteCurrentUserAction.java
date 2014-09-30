@@ -122,10 +122,8 @@ public class DeleteCurrentUserAction
         {
             return INPUT;
         }
-        
-        String oldEncodedPassword = passwordManager.encodePassword( userCredentials.getUsername(), oldPassword ) ;
-        
-        if ( !oldEncodedPassword.equals( oldPasswordFromDB ) )
+
+        if( !passwordManager.matches( oldPassword, oldPasswordFromDB ) )
         {
             message = i18n.getString( "wrong_password" );
             return INPUT;

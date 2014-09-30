@@ -97,12 +97,22 @@
   <!-- Security : Authentication providers -->
 
   <sec:authentication-manager alias="authenticationManager">
+    <sec:authentication-provider ref="migrationAuthenticationProvider" />
+  </sec:authentication-manager>
+
+  <!--
+  As of 2.17 user password hashes are being migrated from MD5(password, username) to bCrypt(password).
+  The migration is implemented in the migrationAuthenticationProvider configured above.
+  Once migration is complete, the authentication-manager configuration above can be
+  replaced by the one given below (commented). At that point the system will no longer accept
+  authentication request from users which are still stored with an MD5 hash in the database.
+
+  <sec:authentication-manager alias="authenticationManager">
     <sec:authentication-provider user-service-ref="userDetailsService">
-      <sec:password-encoder hash="md5">
-        <sec:salt-source ref="usernameSaltSource" />
-      </sec:password-encoder>
+      <sec:password-encoder ref="bCryptPasswordEncoder" />
     </sec:authentication-provider>
   </sec:authentication-manager>
+  -->
 
   <!-- Security : AccessProvider -->
 

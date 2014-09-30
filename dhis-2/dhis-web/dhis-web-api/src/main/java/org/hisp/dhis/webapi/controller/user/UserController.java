@@ -213,9 +213,8 @@ public class UserController
 
         if ( parsed.getUserCredentials().getPassword() != null )
         {
-            String encodePassword = passwordManager.encodePassword( parsed.getUsername(),
-                parsed.getUserCredentials().getPassword() );
-            parsed.getUserCredentials().setPassword( encodePassword );
+            String encodedPassword = passwordManager.encodePassword( parsed.getUserCredentials().getPassword() );
+            parsed.getUserCredentials().setPassword( encodedPassword );
         }
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
@@ -245,9 +244,8 @@ public class UserController
 
         if ( parsed.getUserCredentials().getPassword() != null )
         {
-            String encodePassword = passwordManager.encodePassword( parsed.getUsername(),
-                parsed.getUserCredentials().getPassword() );
-            parsed.getUserCredentials().setPassword( encodePassword );
+            String encodedPassword = passwordManager.encodePassword( parsed.getUserCredentials().getPassword() );
+            parsed.getUserCredentials().setPassword( encodedPassword );
         }
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
@@ -305,9 +303,8 @@ public class UserController
         user.getUserCredentials().getCatDimensionConstraints().addAll(
             currentUserService.getCurrentUser().getUserCredentials().getCatDimensionConstraints() );
 
-        String encodePassword = passwordManager.encodePassword( user.getUsername(),
-            user.getUserCredentials().getPassword() );
-        user.getUserCredentials().setPassword( encodePassword );
+        String encodedPassword = passwordManager.encodePassword( user.getUserCredentials().getPassword() );
+        user.getUserCredentials().setPassword( encodedPassword );
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), user, ImportStrategy.CREATE );
 
