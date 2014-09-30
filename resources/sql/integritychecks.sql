@@ -1,4 +1,14 @@
 ﻿
+-- Get periods with equal period type and start date (not valid)
+
+select p1.periodtypeid, p1.startdate, p1.enddate 
+from period p1
+inner join period p2
+on p1.periodtypeid = p2.periodtypeid
+and p1.startdate = p2.startdate
+where p1.periodid != p2.periodid
+order by p1.periodtypeid, p1.startdate, p1.enddate;
+
 -- Get name of datasets for a dataelement
 
 select ds.name from dataset ds
