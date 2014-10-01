@@ -293,8 +293,8 @@ trackerCapture.controller('DataEntryController',
                 $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
                 if(prStDe.allowProvidedElsewhere){
                     $scope.allowProvidedElsewhereExists = true;
-                    $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = '';   
-                }                
+                    $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = false;
+                }
             });
 
             angular.forEach($scope.currentEvent.dataValues, function(dataValue){
@@ -306,6 +306,10 @@ trackerCapture.controller('DataEntryController',
                         dataValue.value = val;
                     }
                     $scope.currentEvent[dataValue.dataElement] = val;
+                    
+                    if(dataValue.providedElsewhere){
+                        $scope.currentEvent.providedElsewhere[dataValue.dataElement] = dataValue.providedElsewhere;
+                    }
                 }                    
             });
 
@@ -346,7 +350,7 @@ trackerCapture.controller('DataEntryController',
                                             {
                                                 dataElement: prStDe.dataElement.id, 
                                                 value: value, 
-                                                providedElseWhere: $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] ? $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] : false
+                                                providedElsewhere: $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] ? true : false
                                             }
                                         ]
                          };
@@ -359,6 +363,7 @@ trackerCapture.controller('DataEntryController',
     
     $scope.saveDatavalueLocation = function(prStDe){
         
+        console.log('I am called:  ',$scope.currentEvent.providedElsewhere[prStDe.dataElement.id] );
         $scope.updateSuccess = false;
         
         if(!angular.isUndefined($scope.currentEvent.providedElsewhere[prStDe.dataElement.id])){
@@ -375,7 +380,7 @@ trackerCapture.controller('DataEntryController',
                                         {
                                             dataElement: prStDe.dataElement.id, 
                                             value: value, 
-                                            providedElseWhere: $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] ? $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] : false
+                                            providedElsewhere: $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] ? true : false
                                         }
                                     ]
                      };

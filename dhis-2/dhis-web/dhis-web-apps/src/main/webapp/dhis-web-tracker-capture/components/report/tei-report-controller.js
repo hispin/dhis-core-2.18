@@ -113,7 +113,7 @@ trackerCapture.controller('TeiReportController',
         });
         
         //get program stage for the selected program
-        //they are needed assign data element names for event data values
+        //they are needed to assign data element names for event data values
         $scope.programStages = [];  
         $scope.allowProvidedElsewhereExists = [];
         angular.forEach($scope.selectedProgram.programStages, function(st){
@@ -134,6 +134,7 @@ trackerCapture.controller('TeiReportController',
         angular.forEach(Object.keys($scope.selectedReport.enrollments), function(enr){        
             //format report data values
             angular.forEach($scope.selectedReport.enrollments[enr], function(ev){
+
                 angular.forEach(ev.notes, function(note){
                     note.storedDate = DateUtils.formatToHrsMins(note.storedDate);
                 }); 

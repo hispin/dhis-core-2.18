@@ -6,13 +6,13 @@
         <span class="bold">
             {{entityName}}
         </span>
-        <table class="table-borderless table-striped">
+        <table class="table table-bordered table-compact">
             <tr class="col-md-12" ng-repeat="gridColumn in gridColumns">
                 <td class="col-md-6">
                     {{gridColumn.name}}
                 </td>
                 <td class="col-md-6">
-                    <input type="text" ng-model="selectedTei[gridColumn.id]" ng-disabled='true'/>                       
+                    {{selectedTei[gridColumn.id]}}                      
                 </td>                
             </tr>
         </table>
@@ -20,9 +20,9 @@
     <div class='row' ng-if='currentEvent'>      
         <hr ng-if="reportMode === 'PROGRAM'">
         <span class="bold">
-            <span ng-if="reportMode === 'TEI'">{{currentEvent.programName}}  |  </span>{{currentEvent.name}}  |  {{currentEvent.orgUnitName}}  |  {{currentEvent.eventDate}}
+            <span ng-if="reportMode === 'TEI'">{{currentEvent.programName}}    |    </span>{{currentEvent.name}}    |    {{currentEvent.eventOrgUnitName}}  |  {{currentEvent.eventDate}}
         </span>
-        <table class="table-borderless table-striped">
+        <table class="table table-bordered table-compact">
             <thead>
                 <tr class="col-md-12">
                     <th class="col-md-5">
@@ -41,11 +41,11 @@
                     {{prStDe.dataElement.formName ? prStDe.dataElement.formName : prStDe.dataElement.name}}
                 </td>
                 <td class="col-md-5">
-                    <input type="text" ng-model="currentEvent[prStDe.dataElement.id]" ng-disabled='true'/>                       
+                    {{currentEvent[prStDe.dataElement.id].value}}
                 </td>
                 <td class="col-md-2" ng-if="allowProvidedElsewhereExists">                    
                     <div class="align-center" ng-show="prStDe.allowProvidedElsewhere">
-                        <input type="checkbox" ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]" ng-disabled='true'/>
+                        <span ng-if="currentEvent[prStDe.dataElement.id].providedElsewhere"><i class="fa fa-check"></i></span>
                     </div>
                 </td>
             </tr>

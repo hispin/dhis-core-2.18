@@ -185,15 +185,9 @@ trackerCapture.controller('ProgramSummaryController',
             }                
         });
         angular.forEach($scope.currentEvent.dataValues, function(dataValue){
-            var val = dataValue.value;
-            if(val){
-                var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
-                if( de && de.type === 'int' && val){
-                    val = parseInt(val);
-                    dataValue.value = val;
-                }
-                $scope.currentEvent[dataValue.dataElement] = val;
-            }                    
+            if(dataValue.dataElement){
+                $scope.currentEvent[dataValue.dataElement] = dataValue;
+            }            
         });
     });
     
