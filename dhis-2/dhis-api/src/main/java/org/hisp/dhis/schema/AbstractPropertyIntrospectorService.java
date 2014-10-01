@@ -31,6 +31,8 @@ package org.hisp.dhis.schema;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.hisp.dhis.common.AnalyticalObject;
+import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
@@ -51,6 +53,7 @@ public abstract class AbstractPropertyIntrospectorService implements PropertyInt
         .put( IdentifiableObject.class, BaseIdentifiableObject.class )
         .put( NameableObject.class, BaseNameableObject.class )
         .put( DimensionalObject.class, BaseDimensionalObject.class )
+        .put( AnalyticalObject.class, BaseAnalyticalObject.class )
         .build();
 
     private Map<Class<?>, Map<String, Property>> classMapCache = Maps.newHashMap();
