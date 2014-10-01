@@ -385,14 +385,9 @@ public class IndicatorServiceTest
         assertNotNull( indicatorService.getIndicator( idA ) );
         assertNotNull( indicatorService.getIndicator( idB ) );
 
-        indicatorService.deleteIndicator( indicatorA );
-
-        assertNull( indicatorService.getIndicator( idA ) );
-        assertNotNull( indicatorService.getIndicator( idB ) );
-
         indicatorService.deleteIndicator( indicatorB );
 
-        assertNull( indicatorService.getIndicator( idA ) );
+        assertNotNull( indicatorService.getIndicator( idA ) );
         assertNull( indicatorService.getIndicator( idB ) );
     }
 
