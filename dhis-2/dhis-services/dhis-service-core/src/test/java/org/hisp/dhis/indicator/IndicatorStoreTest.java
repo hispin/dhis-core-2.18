@@ -234,22 +234,22 @@ public class IndicatorStoreTest
 
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
+        Indicator indicatorC = createIndicator( 'C', type );
 
         int idA = indicatorStore.save( indicatorA );
         int idB = indicatorStore.save( indicatorB );
+        int idC = indicatorStore.save( indicatorC );
 
         assertNotNull( indicatorStore.get( idA ) );
         assertNotNull( indicatorStore.get( idB ) );
+        assertNotNull( indicatorStore.get( idC ) );
 
         indicatorStore.delete( indicatorA );
+        indicatorStore.delete( indicatorC );
 
         assertNull( indicatorStore.get( idA ) );
         assertNotNull( indicatorStore.get( idB ) );
-
-        indicatorStore.delete( indicatorB );
-
-        assertNull( indicatorStore.get( idA ) );
-        assertNull( indicatorStore.get( idB ) );
+        assertNull( indicatorStore.get( idC ) );
     }
 
     @Test
