@@ -67,22 +67,13 @@ public class UserSettingServiceTest
     }
 
     @Test
-    public void testSaveUserPreferences()
-        throws Exception
+    public void testShouldGetUserSettings()
     {
-        userSettingService.saveUserSetting( "mykey", "myvalue", "username" );
-        UserSetting setting = userCredentialStore.getUserSetting( testUser, "mykey" );
-        assertEquals( "myvalue", setting.getValue() );
-        assertEquals( "mykey", setting.getName() );
+        UserCredentials userCredentials = testUser.getUserCredentials();
+        userCredentials.setUser( testUser );
+        userCredentialStore.addUserCredentials( userCredentials );
+        userSettingService.saveUserSetting( "mykey", "value", "username" );
+        Serializable preference = userSettingService.getUserSetting( "mykey", "username" );
+        assertEquals( preference, "value" );
     }
-
-   @Test
-   public void testShouldGetUserSettings() {
-       UserCredentials userCredentials = testUser.getUserCredentials();
-       userCredentials.setUser( testUser );
-       userCredentialStore.addUserCredentials( userCredentials );
-       userSettingService.saveUserSetting("mykey", "value", "username");
-       Serializable preference = userSettingService.getUserSetting("mykey", "username");
-       assertEquals(preference, "value");
-   }
 }

@@ -28,6 +28,11 @@ package org.hisp.dhis.user.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -41,12 +46,6 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserCredentialsStore;
 import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.user.UserSetting;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 /**
  * TODO extend BaseIdentifiableObjectStore
@@ -275,8 +274,7 @@ public class HibernateUserCredentialsStore
 
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max )
     {
-        return getBlockUser( findByName( toUserCredentials( userService.getUsersWithoutOrganisationUnit() ), name ),
-            first, max );
+        return getBlockUser( findByName( toUserCredentials( userService.getUsersWithoutOrganisationUnit() ), name ), first, max );
     }
 
     public int getUsersWithoutOrganisationUnitCount()
@@ -354,64 +352,6 @@ public class HibernateUserCredentialsStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    // -------------------------------------------------------------------------
-    // UserSettings
-    // -------------------------------------------------------------------------
-
-    public void addUserSetting( UserSetting userSetting )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.save( userSetting );
-    }
-
-    public void updateUserSetting( UserSetting userSetting )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( userSetting );
-    }
-
-    public UserSetting getUserSetting( User user, String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from UserSetting us where us.user = :user and us.name = :name" );
-
-        query.setEntity( "user", user );
-        query.setString( "name", name );
-        query.setCacheable( true );
-
-        return (UserSetting) query.uniqueResult();
-    }
-
-    @SuppressWarnings("unchecked")
-    public Collection<UserSetting> getAllUserSettings( User user )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery( "from UserSetting us where us.user = :user" );
-        query.setEntity( "user", user );
-
-        return query.list();
-    }
-
-    @SuppressWarnings("unchecked")
-    public Collection<UserSetting> getUserSettings( String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery( "from UserSetting us where us.name = :name" );
-        query.setString( "name", name );
-
-        return query.list();
-    }
-
-    public void deleteUserSetting( UserSetting userSetting )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( userSetting );
-    }
-
     @SuppressWarnings("unchecked")
     public Collection<String> getUsernames( String key, Integer max )
     {
@@ -433,7 +373,7 @@ public class HibernateUserCredentialsStore
 
         return query.list();
     }
-
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
