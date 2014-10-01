@@ -77,7 +77,8 @@ public class ProgramController
         }
     }
 
-    protected List<Program> getEntityList( WebMetaData metaData, WebOptions options )
+    @Override
+    protected List<Program> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
         String type = options.getOptions().get( "type" );
         String orgUnit = options.getOptions().get( "orgUnit" );
