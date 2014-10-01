@@ -88,13 +88,14 @@
     <script type="text/javascript" src="../api/files/script.js?_rev=$!{buildRevision}"></script>
     <!-- Create global system calendar -->
     <script>
+      dhis2.period.format = '$dateFormat.js';
       #if( $keyCalendar == 'iso8601')
       dhis2.period.calendar = $.calendars.instance('gregorian');
       #else
       dhis2.period.calendar = $.calendars.instance('$keyCalendar');
       #end
-      dhis2.period.generator = new dhis2.period.PeriodGenerator( dhis2.period.calendar, '$dateFormat.js' );
-      dhis2.period.picker = new dhis2.period.DatePicker( dhis2.period.calendar, '$dateFormat.js' );
+      dhis2.period.generator = new dhis2.period.PeriodGenerator( dhis2.period.calendar, dhis2.period.format );
+      dhis2.period.picker = new dhis2.period.DatePicker( dhis2.period.calendar, dhis2.period.format );
     </script>
   </head>
 
