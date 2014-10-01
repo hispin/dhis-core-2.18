@@ -1159,6 +1159,17 @@ public abstract class DhisConvenienceTest
 
         return userGroup;
     }
+    
+    public static UserAuthorityGroup createUserAuthorityGroup( char uniqueCharacter )
+    {
+        UserAuthorityGroup role = new UserAuthorityGroup();
+        role.setAutoFields();
+
+        role.setUid( BASE_UID + uniqueCharacter );
+        role.setName( "UserAuthorityGroup" + uniqueCharacter );
+        
+        return role;
+    }
 
     public static Program createProgram( char uniqueCharacter, List<ProgramStage> programStages,
         OrganisationUnit unit )
