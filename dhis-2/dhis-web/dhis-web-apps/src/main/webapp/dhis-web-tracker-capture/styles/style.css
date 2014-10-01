@@ -92,7 +92,8 @@ textarea {
 }
 
 .vertical-center {
-    vertical-align: middle;
+    //vertical-align: middle;
+    line-height: inherit;
 }
 
 .empty-stage-container {
@@ -171,6 +172,12 @@ div.paging a.active
 
 .input-success {
     background-color: #b9ffb9;
+}
+
+.alert-default {
+	color: #55514d;
+	background-color: #D5CBC1;
+	border-color: #aaa29a;
 }
 
 .red {

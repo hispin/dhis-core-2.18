@@ -32,7 +32,17 @@ trackerCapture.controller('DataEntryController',
     
     //note
     $scope.note = '';
-     
+    
+    //event color legend
+    $scope.eventColors = [
+                            {color: 'alert-success', description: 'completed'},
+                            {color: 'alert-info', description: 'executed'},
+                            {color: 'alert-warning', description: 'ontime'},
+                            {color: 'alert-danger', description: 'overdue'},
+                            {color: 'alert-default', description: 'skipped'}
+                         ];
+    $scope.showEventColors = false;
+    
     //listen for the selected items
     $scope.$on('dashboardWidgets', function(event, args) {  
         $scope.showDataEntryDiv = false;
@@ -640,5 +650,9 @@ trackerCapture.controller('DataEntryController',
                 }
             });
         });
+    };
+    
+    $scope.toggleLegend = function(){
+        $scope.showEventColors = !$scope.showEventColors;
     };
 });
