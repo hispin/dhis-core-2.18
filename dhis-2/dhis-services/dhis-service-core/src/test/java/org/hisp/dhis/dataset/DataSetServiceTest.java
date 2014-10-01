@@ -168,11 +168,6 @@ public class DataSetServiceTest
 
         assertNull( dataSetService.getDataSet( idA ) );
         assertNotNull( dataSetService.getDataSet( idB ) );
-
-        dataSetService.deleteDataSet( dataSetService.getDataSet( idB ) );
-
-        assertNull( dataSetService.getDataSet( idA ) );
-        assertNull( dataSetService.getDataSet( idB ) );
     }
 
     @Test

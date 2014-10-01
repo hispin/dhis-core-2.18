@@ -96,10 +96,7 @@ public class OrganisationUnitServiceTest
 
         organisationUnitService.deleteOrganisationUnit( organisationUnitService.getOrganisationUnit( id2 ) );
 
-        organisationUnitService.deleteOrganisationUnit( organisationUnitService.getOrganisationUnit( id1 ) );
-
-        // assert delOrganisationUnit
-        assertNull( organisationUnitService.getOrganisationUnit( id1 ) );
+        assertNotNull( organisationUnitService.getOrganisationUnit( id1 ) );
         assertNull( organisationUnitService.getOrganisationUnit( id2 ) );
     }
 
