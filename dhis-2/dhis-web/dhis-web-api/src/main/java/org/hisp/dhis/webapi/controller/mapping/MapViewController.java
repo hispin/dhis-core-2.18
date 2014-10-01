@@ -117,7 +117,7 @@ public class MapViewController
     //--------------------------------------------------------------------------
 
     @Override
-    protected List<MapView> getEntityList( WebMetaData metaData, WebOptions options )
+    protected List<MapView> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
         List<MapView> entityList;
 

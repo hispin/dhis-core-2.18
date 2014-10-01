@@ -129,7 +129,7 @@ public class MessageConversationController
     }
 
     @Override
-    protected List<MessageConversation> getEntityList( WebMetaData metaData, WebOptions options )
+    protected List<MessageConversation> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
         List<MessageConversation> entityList;
 

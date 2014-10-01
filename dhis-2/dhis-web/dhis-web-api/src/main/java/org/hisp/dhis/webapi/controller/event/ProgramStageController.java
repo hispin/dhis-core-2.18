@@ -61,7 +61,7 @@ public class ProgramStageController
     }
 
     @Override
-    protected List<ProgramStage> getEntityList( WebMetaData metaData, WebOptions options )
+    protected List<ProgramStage> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
         List<ProgramStage> entityList = new ArrayList<>();
 

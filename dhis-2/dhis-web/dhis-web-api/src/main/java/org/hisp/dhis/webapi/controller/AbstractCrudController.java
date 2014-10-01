@@ -197,7 +197,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
                     }
                 }
 
-                entityList = getEntityList( metaData, options );
+                entityList = getEntityList( metaData, options, filters );
             }
         }
 
@@ -522,11 +522,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
     // Helpers
     //--------------------------------------------------------------------------
-
-    protected List<T> getEntityList( WebMetaData metaData, WebOptions options )
-    {
-        return getEntityList( metaData, options, null );
-    }
 
     protected List<T> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {

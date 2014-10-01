@@ -52,9 +52,9 @@ public class UserRoleController
     private UserService userService;
 
     @Override
-    protected List<UserAuthorityGroup> getEntityList( WebMetaData metaData, WebOptions options )
+    protected List<UserAuthorityGroup> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
-        List<UserAuthorityGroup> entityList = super.getEntityList( metaData, options );
+        List<UserAuthorityGroup> entityList = super.getEntityList( metaData, options, filters );
 
         if ( options.getOptions().containsKey( "canIssue" ) && Boolean.parseBoolean( options.getOptions().get( "canIssue" ) ) )
         {

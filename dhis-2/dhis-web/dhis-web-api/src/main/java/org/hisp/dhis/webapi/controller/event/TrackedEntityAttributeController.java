@@ -69,7 +69,7 @@ public class TrackedEntityAttributeController
     private ProgramService programService;
 
     @Override
-    protected List<TrackedEntityAttribute> getEntityList( WebMetaData metaData, WebOptions options )
+    protected List<TrackedEntityAttribute> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
         List<TrackedEntityAttribute> entityList = new ArrayList<>();
 

@@ -96,7 +96,7 @@ public class InterpretationController
     private CurrentUserService currentUserService;
 
     @Override
-    protected List<Interpretation> getEntityList( WebMetaData metaData, WebOptions options )
+    protected List<Interpretation> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
         List<Interpretation> entityList;
 
