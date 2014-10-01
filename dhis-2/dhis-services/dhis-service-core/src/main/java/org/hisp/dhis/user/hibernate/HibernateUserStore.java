@@ -28,7 +28,6 @@ package org.hisp.dhis.user.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -41,7 +40,6 @@ import org.hisp.dhis.user.UserStore;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 
 /**
  * @author Nguyen Hong Duc

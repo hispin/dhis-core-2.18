@@ -138,34 +138,11 @@ public class DataElementServiceTest
         assertNotNull( dataElementService.getDataElement( idC ) );
         assertNotNull( dataElementService.getDataElement( idD ) );
 
-        dataElementA = dataElementService.getDataElement( idA );
-        dataElementB = dataElementService.getDataElement( idB );
-        dataElementC = dataElementService.getDataElement( idC );
-        dataElementD = dataElementService.getDataElement( idD );
-
-        dataElementService.deleteDataElement( dataElementA );
-        assertNull( dataElementService.getDataElement( idA ) );
-        assertNotNull( dataElementService.getDataElement( idB ) );
-        assertNotNull( dataElementService.getDataElement( idC ) );
-        assertNotNull( dataElementService.getDataElement( idD ) );
-
         dataElementService.deleteDataElement( dataElementB );
-        assertNull( dataElementService.getDataElement( idA ) );
+        assertNotNull( dataElementService.getDataElement( idA ) );
         assertNull( dataElementService.getDataElement( idB ) );
         assertNotNull( dataElementService.getDataElement( idC ) );
         assertNotNull( dataElementService.getDataElement( idD ) );
-
-        dataElementService.deleteDataElement( dataElementC );
-        assertNull( dataElementService.getDataElement( idA ) );
-        assertNull( dataElementService.getDataElement( idB ) );
-        assertNull( dataElementService.getDataElement( idC ) );
-        assertNotNull( dataElementService.getDataElement( idD ) );
-
-        dataElementService.deleteDataElement( dataElementD );
-        assertNull( dataElementService.getDataElement( idA ) );
-        assertNull( dataElementService.getDataElement( idB ) );
-        assertNull( dataElementService.getDataElement( idC ) );
-        assertNull( dataElementService.getDataElement( idD ) );
     }
 
     @Test
