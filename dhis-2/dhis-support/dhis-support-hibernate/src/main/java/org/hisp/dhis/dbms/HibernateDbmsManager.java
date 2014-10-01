@@ -211,11 +211,6 @@ public class HibernateDbmsManager
         log.debug( "Cleared Hibernate cache" );
     }
 
-    public void flushSession()
-    {
-        sessionFactory.getCurrentSession().flush();
-    }
-
     public void clearSession()
     {
         sessionFactory.getCurrentSession().clear();
