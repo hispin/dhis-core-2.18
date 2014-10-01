@@ -293,6 +293,7 @@ trackerCapture.controller('EnrollmentController',
     };
     
     $scope.markForFollowup = function(){
+        $scope.selectedEnrollment.followup = !$scope.selectedEnrollment.followup; 
         EnrollmentService.update($scope.selectedEnrollment).then(function(data){         
         });
     };

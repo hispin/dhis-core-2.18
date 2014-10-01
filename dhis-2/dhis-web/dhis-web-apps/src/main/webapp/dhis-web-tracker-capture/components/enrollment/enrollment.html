@@ -47,17 +47,25 @@
                     {{'complete'| translate}}
                 </button>
                 <button type="button" 
-                        class="btn btn-danger"
+                        class="btn btn-warning"
                         ng-click="terminateEnrollment()">
                     {{'terminate'| translate}}
+                </button>   
+                
+                <button type="button"
+                        title="{{'unmark_for_followup' | translate}}"
+                        class="btn btn-danger horizonal-spacing"
+                        ng-if="selectedEnrollment.followup"
+                        ng-click="markForFollowup()">
+                    <i class="fa fa-star"></i>
                 </button>
-   
-
-                <span class='small-horizonal-spacing'>
-                    <label>
-                        {{'mark_for_followup' | translate}}  <input type="checkbox" ng-change="markForFollowup()" ng-model="selectedEnrollment.followup"/>
-                    </label>
-                </span>  
+                <button type="button" 
+                        title="{{'mark_for_followup' | translate}}"
+                        class="btn btn-default horizonal-spacing"
+                        ng-if="!selectedEnrollment.followup"
+                        ng-click="markForFollowup()">
+                    <i class="fa fa-star"></i>
+                </button>
                 
             </div>
         </div>
