@@ -24,7 +24,7 @@ function removeMessages( messages )
 
         $.ajax(
         {
-            url: "../../api/messageConversations?" + $.param( { mc: messages }, true ),
+            url: "../api/messageConversations?" + $.param( { mc: messages }, true ),
             contentType: "application/json",
             dataType: "json",
             type: "DELETE",
@@ -53,8 +53,8 @@ function markMessagesRead( messages )
 
     $.ajax(
     {
-        url: "../../api/messageConversations/read",
-        type: "PUT",
+        url: "../api/messageConversations/read",
+        type: "POST",
         data: JSON.stringify( messages ),
         contentType: "application/json",
         dataType: "json",
@@ -78,8 +78,8 @@ function markMessagesUnread( messages )
 
     $.ajax(
     {
-        url: "../../api/messageConversations/unread",
-        type: "PUT",
+        url: "../api/messageConversations/unread",
+        type: "POST",
         data: JSON.stringify( messages ),
         contentType: "application/json",
         dataType: "json",
