@@ -31,8 +31,9 @@ package org.hisp.dhis.user;
 import java.io.Serializable;
 
 /**
+ * TODO make IdentifiableObject
+ * 
  * @author Nguyen Hong Duc
- * @version $Id: UserSetting.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class UserSetting
     implements Serializable

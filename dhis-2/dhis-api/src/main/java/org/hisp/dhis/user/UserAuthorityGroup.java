@@ -69,6 +69,15 @@ public class UserAuthorityGroup
 
     @Scanned
     private Set<DataSet> dataSets = new HashSet<>();
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    public UserAuthorityGroup()
+    {
+        setAutoFields();
+    }
     
     // -------------------------------------------------------------------------
     // Logic

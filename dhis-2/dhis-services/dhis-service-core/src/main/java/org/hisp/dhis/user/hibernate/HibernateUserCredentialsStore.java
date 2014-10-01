@@ -49,6 +49,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * TODO extend BaseIdentifiableObjectStore
+ * 
  * @author Lars Helge Overland
  */
 public class HibernateUserCredentialsStore
