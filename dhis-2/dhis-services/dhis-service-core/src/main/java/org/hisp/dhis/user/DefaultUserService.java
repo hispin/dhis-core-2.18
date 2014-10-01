@@ -93,6 +93,13 @@ public class DefaultUserService
     {
         this.userAuthorityGroupStore = userAuthorityGroupStore;
     }
+    
+    private UserSettingStore userSettingStore;
+
+    public void setUserSettingStore( UserSettingStore userSettingStore )
+    {
+        this.userSettingStore = userSettingStore;
+    }
 
     private CurrentUserService currentUserService;
 
@@ -622,7 +629,7 @@ public class DefaultUserService
 
     public void addUserSetting( UserSetting userSetting )
     {
-        userCredentialsStore.addUserSetting( userSetting );
+        userSettingStore.addUserSetting( userSetting );
     }
 
     public void addOrUpdateUserSetting( UserSetting userSetting )
@@ -642,27 +649,27 @@ public class DefaultUserService
 
     public void updateUserSetting( UserSetting userSetting )
     {
-        userCredentialsStore.updateUserSetting( userSetting );
+        userSettingStore.updateUserSetting( userSetting );
     }
 
     public void deleteUserSetting( UserSetting userSetting )
     {
-        userCredentialsStore.deleteUserSetting( userSetting );
+        userSettingStore.deleteUserSetting( userSetting );
     }
 
     public Collection<UserSetting> getAllUserSettings( User user )
     {
-        return userCredentialsStore.getAllUserSettings( user );
+        return userSettingStore.getAllUserSettings( user );
     }
 
     public Collection<UserSetting> getUserSettings( String name )
     {
-        return userCredentialsStore.getUserSettings( name );
+        return userSettingStore.getUserSettings( name );
     }
 
     public UserSetting getUserSetting( User user, String name )
     {
-        return userCredentialsStore.getUserSetting( user, name );
+        return userSettingStore.getUserSetting( user, name );
     }
 
     public Serializable getUserSettingValue( User user, String name, Serializable defaultValue )
@@ -676,7 +683,7 @@ public class DefaultUserService
     {
         Map<User, Serializable> map = new HashMap<>();
 
-        for ( UserSetting setting : userCredentialsStore.getUserSettings( name ) )
+        for ( UserSetting setting : userSettingStore.getUserSettings( name ) )
         {
             map.put( setting.getUser(), setting.getValue() != null ? setting.getValue() : defaultValue );
         }
