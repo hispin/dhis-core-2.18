@@ -41,7 +41,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodStore;
 
 /**
  * @author Lars Helge Overland
@@ -61,46 +61,27 @@ public class HibernateCompleteDataSetRegistrationStore
         this.sessionFactory = sessionFactory;
     }
 
-    private PeriodService periodService;
+    private PeriodStore periodStore;
 
-    public void setPeriodService( PeriodService periodService )
+    public void setPeriodStore( PeriodStore periodStore )
     {
-        this.periodService = periodService;
+        this.periodStore = periodStore;
     }
 
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Period reloadPeriod( Period period )
-    {
-        Period persistedPeriod = periodService.getPeriod( 
-            period.getStartDate(), period.getEndDate(), period.getPeriodType() );
-        
-        if ( persistedPeriod != null )
-        {
-            return persistedPeriod;
-        }
-        
-        periodService.addPeriod( period );
-        
-        return period;
-    }
-    
     // -------------------------------------------------------------------------
     // DataSetCompleteRegistrationStore implementation
     // -------------------------------------------------------------------------
 
     public void saveCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
-        registration.setPeriod( reloadPeriod( registration.getPeriod() ) );
+        registration.setPeriod( periodStore.reloadForceAddPeriod( registration.getPeriod() ) );
         
         sessionFactory.getCurrentSession().save( registration );
     }
 
     public void updateCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
-        registration.setPeriod( reloadPeriod( registration.getPeriod() ) );
+        registration.setPeriod( periodStore.reloadForceAddPeriod( registration.getPeriod() ) );
         
         sessionFactory.getCurrentSession().update( registration );
     }
@@ -108,12 +89,17 @@ public class HibernateCompleteDataSetRegistrationStore
     public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, 
         OrganisationUnit source, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        period = reloadPeriod( period );
-        
+        Period storedPeriod = periodStore.reloadPeriod( period );
+
+        if ( storedPeriod == null )
+        {
+            return null;
+        }
+
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
         
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
-        criteria.add( Restrictions.eq( "period", period ) );
+        criteria.add( Restrictions.eq( "period", storedPeriod ) );
         criteria.add( Restrictions.eq( "source", source ) );
         criteria.add( Restrictions.eq( "attributeOptionCombo", attributeOptionCombo ) );
         
@@ -123,21 +109,24 @@ public class HibernateCompleteDataSetRegistrationStore
     public void deleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
         sessionFactory.getCurrentSession().delete( registration );
-        
-        sessionFactory.getCurrentSession().flush();
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
         DataSet dataSet, Collection<OrganisationUnit> sources, Period period )
     {
-        period = reloadPeriod( period );
-        
+        Period storedPeriod = periodStore.reloadPeriod( period );
+
+        if ( storedPeriod == null )
+        {
+            return null;
+        }
+
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
         
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
+        criteria.add( Restrictions.eq( "period", storedPeriod ) );
         criteria.add( Restrictions.in( "source", sources ) );
-        criteria.add( Restrictions.eq( "period", period ) );
         
         return criteria.list();
     }
@@ -154,7 +143,7 @@ public class HibernateCompleteDataSetRegistrationStore
     {
         for ( Period period : periods )
         {
-            period = reloadPeriod( period );
+            period = periodStore.reloadPeriod( period );
         }        
         
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
@@ -170,8 +159,13 @@ public class HibernateCompleteDataSetRegistrationStore
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
         DataSet dataSet, Collection<OrganisationUnit> sources, Period period, Date deadline )
     {
-        period = reloadPeriod( period );
-        
+        Period storedPeriod = periodStore.reloadPeriod( period );
+
+        if ( storedPeriod == null )
+        {
+            return null;
+        }
+
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
         
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );

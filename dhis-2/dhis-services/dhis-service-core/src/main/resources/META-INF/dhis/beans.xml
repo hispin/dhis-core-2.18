@@ -143,7 +143,7 @@
   <bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationStore"
     class="org.hisp.dhis.dataset.hibernate.HibernateCompleteDataSetRegistrationStore">
     <property name="sessionFactory" ref="sessionFactory" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
   </bean>
 
   <bean id="org.hisp.dhis.minmax.MinMaxDataElementStore" class="org.hisp.dhis.minmax.hibernate.HibernateMinMaxDataElementStore">
