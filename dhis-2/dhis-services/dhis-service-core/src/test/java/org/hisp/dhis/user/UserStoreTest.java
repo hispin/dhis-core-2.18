@@ -143,10 +143,10 @@ public class UserStoreTest
         UserCredentials credentialsA = createUserCredentials( 'A', userA );
         UserCredentials credentialsB = createUserCredentials( 'B', userB );
         
-        User user1 = userCredentialsStore.addUserCredentials( credentialsA );
-        User user2 = userCredentialsStore.addUserCredentials( credentialsB );
+        int idA = userCredentialsStore.addUserCredentials( credentialsA );
+        int idB = userCredentialsStore.addUserCredentials( credentialsB );
         
-        assertEquals( userA, user1 );
-        assertEquals( userB, user2 );
+        assertEquals( credentialsA, userCredentialsStore.getUserCredentials( idA ) );
+        assertEquals( credentialsB, userCredentialsStore.getUserCredentials( idB ) );
     }
 }

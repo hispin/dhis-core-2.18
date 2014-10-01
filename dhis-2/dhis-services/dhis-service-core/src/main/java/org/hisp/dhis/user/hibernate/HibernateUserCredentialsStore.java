@@ -77,13 +77,9 @@ public class HibernateUserCredentialsStore
     // UserCredentials
     // -------------------------------------------------------------------------
 
-    public User addUserCredentials( UserCredentials userCredentials )
+    public int addUserCredentials( UserCredentials userCredentials )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        int id = (Integer) session.save( userCredentials );
-
-        return userService.getUser( id );
+        return (Integer) sessionFactory.getCurrentSession().save( userCredentials );
     }
 
     public void updateUserCredentials( UserCredentials userCredentials )
@@ -113,6 +109,11 @@ public class HibernateUserCredentialsStore
         Session session = sessionFactory.getCurrentSession();
 
         return (UserCredentials) session.get( UserCredentials.class, user.getId() );
+    }
+    
+    public UserCredentials getUserCredentials( int id )
+    {
+        return (UserCredentials) sessionFactory.getCurrentSession().get( UserCredentials.class, id );
     }
 
     public UserCredentials getUserCredentialsByUsername( String username )

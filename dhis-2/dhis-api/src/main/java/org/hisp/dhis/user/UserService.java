@@ -181,7 +181,7 @@ public interface UserService
      * @param userCredentials the UserCredentials to add.
      * @return the User which the UserCredentials is associated with.
      */
-    User addUserCredentials( UserCredentials userCredentials );
+    int addUserCredentials( UserCredentials userCredentials );
 
     /**
      * Updates a UserCredentials.
