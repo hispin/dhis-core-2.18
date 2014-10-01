@@ -335,14 +335,7 @@ public class DefaultFieldFilterService implements FieldFilterService
                 {
                     if ( property.isPersisted() )
                     {
-                        if ( property.isCollection() )
-                        {
-                            fieldMap.put( property.getCollectionName(), new FieldMap() );
-                        }
-                        else
-                        {
-                            fieldMap.put( property.getName(), new FieldMap() );
-                        }
+                        fieldMap.put( property.key(), new FieldMap() );
                     }
                 }
 

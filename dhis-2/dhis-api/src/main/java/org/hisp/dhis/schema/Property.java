@@ -410,6 +410,11 @@ public class Property implements Ordered
         this.writable = writable;
     }
 
+    public String key()
+    {
+        return isCollection() ? collectionName : name;
+    }
+
     @Override
     public int getOrder()
     {
