@@ -38,6 +38,8 @@ public interface DbmsManager
     
     void emptyDatabase();
     
+    void flushSession();
+    
     void clearSession();
     
     void emptyTable( String table );
