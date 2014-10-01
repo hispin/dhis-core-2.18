@@ -468,7 +468,7 @@ public class DefaultUserService
     // UserCredentials
     // -------------------------------------------------------------------------
 
-    public User addUserCredentials( UserCredentials userCredentials )
+    public int addUserCredentials( UserCredentials userCredentials )
     {
         return userCredentialsStore.addUserCredentials( userCredentials );
     }

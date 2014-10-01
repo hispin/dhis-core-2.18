@@ -50,7 +50,7 @@ public interface UserCredentialsStore
      * @param userCredentials the UserCredentials to add.
      * @return the User which the UserCredentials is associated with.
      */
-    User addUserCredentials( UserCredentials userCredentials );
+   int addUserCredentials( UserCredentials userCredentials );
 
     /**
      * Updates a UserCredentials.
@@ -66,6 +66,14 @@ public interface UserCredentialsStore
      * @return the UserCredentials.
      */
     UserCredentials getUserCredentials( User user );
+
+    /**
+     * Retrieves the UserCredentials with given identifier.
+     *
+     * @param id the identifier.
+     * @return the UserCredentials.
+     */
+    UserCredentials getUserCredentials( int id );
     
     /**
      * Retrieves the UserCredentials associated with the User with the given
