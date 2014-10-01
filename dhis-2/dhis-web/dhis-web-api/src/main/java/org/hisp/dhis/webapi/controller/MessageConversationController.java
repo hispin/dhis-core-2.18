@@ -274,14 +274,14 @@ public class MessageConversationController
     // Mark conversations read
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/read", method = RequestMethod.PUT, produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } )
+    @RequestMapping( value = "/read", method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } )
     public @ResponseBody RootNode markMessageConversationsRead(
         @RequestParam( value = "user", required = false ) String userUid, @RequestBody String[] uids, HttpServletResponse response )
     {
         RootNode responseNode = new RootNode( "response" );
 
         User currentUser = currentUserService.getCurrentUser();
-        User user = userUid != null ? userService.getUser( userUid ) : currentUserService.getCurrentUser();
+        User user = userUid != null ? userService.getUser( userUid ) : currentUser;
 
         if( user == null )
         {
@@ -325,7 +325,7 @@ public class MessageConversationController
     // Mark conversations unread
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/unread", method = RequestMethod.PUT, produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } )
+    @RequestMapping( value = "/unread", method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } )
     public @ResponseBody RootNode markMessageConversationsUnread(
         @RequestParam( value = "user", required = false ) String userUid, @RequestBody String[] uids, HttpServletResponse response )
     {
