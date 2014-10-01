@@ -32,9 +32,11 @@ import java.lang.reflect.Method;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hisp.dhis.dbms.DbmsManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.hibernate4.SessionFactoryUtils;
@@ -54,6 +56,9 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 public abstract class DhisTest
     extends DhisConvenienceTest implements ApplicationContextAware
 {
+    @Autowired
+    protected DbmsManager dbmsManager;
+
     // -------------------------------------------------------------------------
     // ApplicationContextAware implementation
     // -------------------------------------------------------------------------

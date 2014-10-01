@@ -81,7 +81,6 @@ import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueAuditService;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.dbms.DbmsManager;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.expression.Operator;
@@ -131,7 +130,6 @@ import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -218,9 +216,6 @@ public abstract class DhisConvenienceTest
     protected MessageService messageService;
 
     protected IdentifiableObjectManager identifiableObjectManager;
-
-    @Autowired
-    protected DbmsManager dbmsManager;
 
     static
     {
@@ -1629,9 +1624,6 @@ public abstract class DhisConvenienceTest
         Authentication authentication = new UsernamePasswordAuthenticationToken( userDetails, "", authorities );
         SecurityContextHolder.getContext().setAuthentication( authentication );
 
-        dbmsManager.flushSession();
-        dbmsManager.clearSession();
-        
         return user;
     }
 
