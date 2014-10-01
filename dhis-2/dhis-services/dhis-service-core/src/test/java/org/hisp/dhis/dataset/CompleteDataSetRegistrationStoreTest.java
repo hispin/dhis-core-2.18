@@ -158,12 +158,7 @@ public class CompleteDataSetRegistrationStoreTest
         registrationStore.deleteCompleteDataSetRegistration( registrationA );
         
         assertNull( registrationStore.getCompleteDataSetRegistration( dataSetA, periodA, sourceA, optionCombo ) );
-        assertNotNull( registrationStore.getCompleteDataSetRegistration( dataSetB, periodB, sourceA, optionCombo ) );
-
-        registrationStore.deleteCompleteDataSetRegistration( registrationB );
-        
-        assertNull( registrationStore.getCompleteDataSetRegistration( dataSetA, periodA, sourceA, optionCombo ) );
-        assertNull( registrationStore.getCompleteDataSetRegistration( dataSetB, periodB, sourceA, optionCombo ) );        
+        assertNotNull( registrationStore.getCompleteDataSetRegistration( dataSetB, periodB, sourceA, optionCombo ) );  
     }
 
     @Test

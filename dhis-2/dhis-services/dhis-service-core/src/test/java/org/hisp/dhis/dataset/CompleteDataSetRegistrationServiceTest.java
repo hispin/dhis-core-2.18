@@ -175,11 +175,6 @@ public class CompleteDataSetRegistrationServiceTest
 
         assertNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodA, sourceA, optionCombo ) );
         assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetB, periodB, sourceA, optionCombo ) );
-
-        completeDataSetRegistrationService.deleteCompleteDataSetRegistration( registrationB );
-
-        assertNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodA, sourceA, optionCombo ) );
-        assertNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetB, periodB, sourceA, optionCombo ) );
     }
 
     @Test
