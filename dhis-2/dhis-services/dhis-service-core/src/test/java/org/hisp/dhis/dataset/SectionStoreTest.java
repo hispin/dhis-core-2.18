@@ -71,7 +71,7 @@ public class SectionStoreTest
         dataSet = createDataSet( 'A', new MonthlyPeriodType() );
         dataSetService.addDataSet( dataSet );
         
-        DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        DataElementCategoryCombo categoryCombo = categoryService.getDefaultDataElementCategoryCombo();
         
         DataElement dataElementA = createDataElement( 'A', categoryCombo );
         DataElement dataElementB = createDataElement( 'B', categoryCombo );
