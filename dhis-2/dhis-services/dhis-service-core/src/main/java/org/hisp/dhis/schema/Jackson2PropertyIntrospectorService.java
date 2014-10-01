@@ -160,25 +160,13 @@ public class Jackson2PropertyIntrospectorService extends AbstractPropertyIntrosp
                 property.setAttribute( jacksonXmlProperty.isAttribute() );
             }
 
-            if ( method.isAnnotationPresent( JacksonXmlElementWrapper.class ) )
-            {
-                JacksonXmlElementWrapper jacksonXmlElementWrapper = method.getAnnotation( JacksonXmlElementWrapper.class );
-
-                // TODO what if element-wrapper have different namespace?
-                if ( !StringUtils.isEmpty( jacksonXmlElementWrapper.localName() ) )
-                {
-                    property.setCollectionName( jacksonXmlElementWrapper.localName() );
-                }
-            }
-
-            propertyMap.put( property.getName(), property );
-
             Class<?> returnType = method.getReturnType();
             property.setKlass( returnType );
 
             if ( Collection.class.isAssignableFrom( returnType ) )
             {
                 property.setCollection( true );
+                property.setCollectionName( property.getName() );
 
                 Type type = method.getGenericReturnType();
 
@@ -210,6 +198,26 @@ public class Jackson2PropertyIntrospectorService extends AbstractPropertyIntrosp
                 {
                     property.setSimple( true );
                 }
+            }
+
+            if ( property.isCollection() )
+            {
+                if ( method.isAnnotationPresent( JacksonXmlElementWrapper.class ) )
+                {
+                    JacksonXmlElementWrapper jacksonXmlElementWrapper = method.getAnnotation( JacksonXmlElementWrapper.class );
+
+                    // TODO what if element-wrapper have different namespace?
+                    if ( !StringUtils.isEmpty( jacksonXmlElementWrapper.localName() ) )
+                    {
+                        property.setCollectionName( jacksonXmlElementWrapper.localName() );
+                    }
+                }
+
+                propertyMap.put( property.getCollectionName(), property );
+            }
+            else
+            {
+                propertyMap.put( property.getName(), property );
             }
         }
 
