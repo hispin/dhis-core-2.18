@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -51,38 +51,26 @@ import org.junit.Test;
  * @author Lars Helge Overland
  */
 public class CompleteDataSetRegistrationServiceTest
-    extends DhisSpringTest
+    extends DhisTest
 {
     private CompleteDataSetRegistration registrationA;
-
     private CompleteDataSetRegistration registrationB;
-
     private CompleteDataSetRegistration registrationC;
-
     private CompleteDataSetRegistration registrationD;
-
     private CompleteDataSetRegistration registrationE;
-
     private CompleteDataSetRegistration registrationF;
-
     private CompleteDataSetRegistration registrationG;
-
     private CompleteDataSetRegistration registrationH;
 
     private DataSet dataSetA;
-
     private DataSet dataSetB;
-
     private DataSet dataSetC;
 
     private Period periodA;
-
     private Period periodB;
 
     private OrganisationUnit sourceA;
-
     private OrganisationUnit sourceB;
-
     private OrganisationUnit sourceC;
 
     private Date onTimeA;
@@ -138,6 +126,12 @@ public class CompleteDataSetRegistrationServiceTest
         optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         onTimeA = getDate( 2000, 1, 10 );
+    }
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
     }
 
     // -------------------------------------------------------------------------
