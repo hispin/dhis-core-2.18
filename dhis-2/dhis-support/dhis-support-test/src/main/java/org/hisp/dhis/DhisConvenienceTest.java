@@ -1149,6 +1149,18 @@ public abstract class DhisConvenienceTest
         return user;
     }
 
+    public static UserCredentials createUserCredentials( char uniqueCharacter, User user )
+    {
+        UserCredentials credentials = new UserCredentials();
+        credentials.setName( "UserCredentials" + uniqueCharacter );
+        credentials.setUsername( "Username" + uniqueCharacter );
+        credentials.setPassword( "Password" + uniqueCharacter );
+        credentials.setUser( user );
+        user.setUserCredentials( credentials );
+        
+        return credentials;
+    }
+    
     public static UserGroup createUserGroup( char uniqueCharacter, Set<User> users )
     {
         UserGroup userGroup = new UserGroup();

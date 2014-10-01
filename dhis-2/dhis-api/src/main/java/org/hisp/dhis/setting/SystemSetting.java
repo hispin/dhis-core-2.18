@@ -31,6 +31,8 @@ package org.hisp.dhis.setting;
 import java.io.Serializable;
 
 /**
+ * TODO make IdentifiableObject
+ * 
  * @author Stian Strandli
  */
 public class SystemSetting

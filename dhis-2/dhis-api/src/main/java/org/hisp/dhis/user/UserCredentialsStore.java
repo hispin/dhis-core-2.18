@@ -66,7 +66,7 @@ public interface UserCredentialsStore
      * @return the UserCredentials.
      */
     UserCredentials getUserCredentials( User user );
-
+    
     /**
      * Retrieves the UserCredentials associated with the User with the given
      * name.

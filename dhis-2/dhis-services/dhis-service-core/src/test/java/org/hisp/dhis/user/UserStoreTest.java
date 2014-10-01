@@ -32,7 +32,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,6 +52,9 @@ public class UserStoreTest
     private UserCredentialsStore userCredentialsStore;
 
     private OrganisationUnitService organisationUnitService;
+    
+    private OrganisationUnit unit1;
+    private OrganisationUnit unit2;
 
     @Override
     public void setUpTest()
@@ -63,179 +65,88 @@ public class UserStoreTest
         userCredentialsStore = (UserCredentialsStore) getBean( UserCredentialsStore.ID );
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-    }
-
-    @Test
-    public void testBasicUser()
-        throws Exception
-    {
-        OrganisationUnit unit1 = new OrganisationUnit( "name1", "shortName1", "organisationUnitCode1", new Date(),
-            new Date(), true, "comment" );
-        OrganisationUnit unit2 = new OrganisationUnit( "name2", "shortName2", "organisationUnitCode2", new Date(),
-            new Date(), true, "comment" );
         
-        Set<OrganisationUnit> units1 = new HashSet<>();
-        
-        units1.add(unit1);
-        units1.add(unit2);
+        unit1 = createOrganisationUnit( 'A' );
+        unit2 = createOrganisationUnit( 'B' );
 
         organisationUnitService.addOrganisationUnit( unit1 );
-        organisationUnitService.addOrganisationUnit( unit2 );
-        
-        String userName = "User";
-        User user = new User();
-        user.setSurname( userName );
-        user.setFirstName( userName );
-
-        // Test addUser
-        int id = userStore.save( user );
-        assertEquals( userStore.get( id ).getSurname(), userName );
-        assertEquals( userStore.get( id ).getFirstName(), userName );
-        assertEquals( 1, userStore.getAll().size(), 1 );
-        assertEquals( 1, userStore.getUsersWithoutOrganisationUnit().size() );
-
-        // Test updateUser
-        user.setSurname( "User1" );
-        user.setOrganisationUnits( units1 );
-        userStore.update( user );
-        
-        assertEquals( userStore.get( id ).getSurname(), "User1" );
-        assertEquals( 0, userStore.getUsersWithoutOrganisationUnit().size() );
-
-        // Test getUser
-        assertEquals( userStore.get( user.getId() ).getSurname(), "User1" );
-        assertEquals( userStore.get( user.getId() ).getFirstName(), userName );
-        assertEquals( 2, userStore.get( user.getId() ).getOrganisationUnits().size() );
-        assertEquals( userStore.get( user.getId() ).getId(), id );
-
-        // Test getAllUsers
-        User user2 = new User();
-        Set<OrganisationUnit> units2 = new HashSet<>();
-        units2.add(unit2);
-        
-        user2.setSurname( "User2" );
-        user2.setFirstName( "User2" );
-        user2.setOrganisationUnits( units2 );
-        userStore.save( user2 );
-
-        assertEquals( userStore.getAll().size(), 2 );
-        
-        assertEquals( 0, userStore.getUsersWithoutOrganisationUnit().size() );
-
-        // Test deleteUser
-        User user3 = new User();
-        user3.setSurname( "User3" );
-        user3.setFirstName( "User3" );
-        OrganisationUnit unit3 = new OrganisationUnit( "name3", "shortName3", "organisationUnitCode3", new Date(),
-            new Date(), true, "comment" );        
-        organisationUnitService.addOrganisationUnit( unit3 );
-        Set<OrganisationUnit> units3 = new HashSet<>();
-        units3.add(unit3);
-        
-        user.setOrganisationUnits( units3 );
-        userStore.save( user3 );
-
-        assertEquals( userStore.getAll().size(), 3 );
-        // delete User3
-        assertEquals( userStore.get( user3.getId() ).getSurname(), "User3" );
-        userStore.delete( user3 );
-        assertEquals( userStore.getAll().size(), 2 );
+        organisationUnitService.addOrganisationUnit( unit2 );        
     }
 
     @Test
-    public void testBasicUserCredentials()
-        throws Exception
-    {
-        // Test addUserCredentials
-        String username = "user";
-        String password = "password";
-        String someone = "someone";
-        String iloveyou = "iloveyou";
+    public void testAddGetUser()
+    {        
+        Set<OrganisationUnit> units = new HashSet<>();
+        
+        units.add( unit1 );
+        units.add( unit2 );
 
-        User user = new User();
-        user.setSurname( username );
-        user.setFirstName( username );
-        userStore.save( user );
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
+        
+        userA.setOrganisationUnits( units );
+        userB.setOrganisationUnits( units );
 
-        UserCredentials userCredentials = new UserCredentials();
-        userCredentials.setUser( user );
-        userCredentials.setUsername( username );
-        userCredentials.setPassword( password );
-
-        userCredentialsStore.addUserCredentials( userCredentials );
-
-        assertEquals( userCredentialsStore.getUserCredentials( user ).getUser().getId(), user.getId() );
-        assertEquals( userCredentialsStore.getUserCredentials( user ).getUsername(), username );
-        assertEquals( userCredentialsStore.getUserCredentials( user ).getPassword(), password );
-
-        // Test updateUserCredentials
-        userCredentials.setUser( user );
-        userCredentials.setUsername( someone );
-        userCredentials.setPassword( iloveyou );
-
-        userCredentialsStore.updateUserCredentials( userCredentials );
-        assertEquals( userCredentialsStore.getUserCredentials( user ).getUsername(), someone );
-        assertEquals( userCredentialsStore.getUserCredentials( user ).getPassword(), iloveyou );
-
-        // Test getUserCredentials
-        assertEquals( userCredentialsStore.getUserCredentials( user ).getUsername(), someone );
-        assertEquals( userCredentialsStore.getUserCredentials( user ).getPassword(), iloveyou );
-
-        // Test getUserCredentialsByUsername
-        assertEquals( userCredentialsStore.getUserCredentialsByUsername( someone ).getPassword(), userCredentials.getPassword() );
-        assertEquals( userCredentialsStore.getUserCredentialsByUsername( someone ).getClass(), userCredentials.getClass() );
-
-        // Test deleteUserCredentials
-        // Before delete
-        assertNotNull( userCredentialsStore.getUserCredentials( user ) );
-        userCredentialsStore.deleteUserCredentials( userCredentialsStore.getUserCredentials( user ) );
-        // After delete
-        assertNull( userCredentialsStore.getUserCredentials( user ) );
+        int idA = userStore.save( userA );
+        int idB = userStore.save( userB );
+        
+        assertEquals( userA, userStore.get( idA ) );
+        assertEquals( userB, userStore.get( idB ) );
+        
+        assertEquals( units, userStore.get( idA ).getOrganisationUnits() );
+        assertEquals( units, userStore.get( idB ).getOrganisationUnits() );
     }
 
     @Test
-    public void testBasicUserSettings()
-        throws Exception
+    public void testUpdateUser()
     {
-        String name = "name";
-        String value = "value";
-        String value1 = "value1";
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
 
-        // Test addUserSetting
-        String userName = "User";
-        User user = new User();
-        user.setSurname( userName );
-        user.setFirstName( userName );
-        userStore.save( user );
+        int idA = userStore.save( userA );
+        int idB = userStore.save( userB );
 
-        UserSetting userSetting = new UserSetting();
-        userSetting.setUser( user );
-        userSetting.setName( name );
-        userSetting.setValue( value );
+        assertEquals( userA, userStore.get( idA ) );
+        assertEquals( userB, userStore.get( idB ) );
+        
+        userA.setSurname( "UpdatedSurnameA" );
+        
+        userStore.update( userA );
+        
+        assertEquals( userStore.get( idA ).getSurname(), "UpdatedSurnameA" );
+    }
+    
+    @Test
+    public void testDeleteUser()
+    {
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
 
-        userCredentialsStore.addUserSetting( userSetting );
-        assertEquals( userCredentialsStore.getUserSetting( user, name ).getName(), userSetting.getName() );
+        int idA = userStore.save( userA );
+        int idB = userStore.save( userB );
 
-        // Test updateUserSetting
-        userSetting.setValue( value1 );
-        userCredentialsStore.updateUserSetting( userSetting );
-        assertEquals( value1, userCredentialsStore.getUserSetting( user, name ).getValue() );
+        assertEquals( userA, userStore.get( idA ) );
+        assertEquals( userB, userStore.get( idB ) );
+        
+        userStore.delete( userA );
+        
+        assertNull( userStore.get( idA ) );
+        assertNotNull( userStore.get( idB ) );
+    }
 
-        // Test getUserSetting
-        assertEquals( userCredentialsStore.getUserSetting( userSetting.getUser(), name ).getName(), name );
-        assertEquals( userCredentialsStore.getUserSetting( userSetting.getUser(), name ).getUser().getId(), user.getId() );
-        assertEquals( userCredentialsStore.getUserSetting( userSetting.getUser(), name ).getValue(), value1 );
-
-        // Test getAllUserSettings
-        assertEquals( userCredentialsStore.getAllUserSettings( user ).size(), 1 );
-        for ( int i = 1; i <= userCredentialsStore.getAllUserSettings( user ).size(); i++ )
-        {
-            assertEquals( userCredentialsStore.getUserSetting( user, name ).getValue(), "value" + i );
-        }
-
-        // Test deleteUserSetting
-        assertEquals( userCredentialsStore.getAllUserSettings( user ).size(), 1 );
-        userCredentialsStore.deleteUserSetting( userCredentialsStore.getUserSetting( user, name ) );
-        assertEquals( userCredentialsStore.getAllUserSettings( user ).size(), 0 );
+    @Test
+    public void testAddGetUserCredentials()
+    {
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
+        
+        UserCredentials credentialsA = createUserCredentials( 'A', userA );
+        UserCredentials credentialsB = createUserCredentials( 'B', userB );
+        
+        User user1 = userCredentialsStore.addUserCredentials( credentialsA );
+        User user2 = userCredentialsStore.addUserCredentials( credentialsB );
+        
+        assertEquals( userA, user1 );
+        assertEquals( userB, user2 );
     }
 }
