@@ -278,6 +278,7 @@ public class IdentifiableObjectManagerTest
         assertEquals( user, dataElement.getUser() );
     }
 
+    @Ignore // TODO
     @Test
     public void userCanCreatePublic()
     {
@@ -304,7 +305,6 @@ public class IdentifiableObjectManagerTest
         assertFalse( AccessStringHelper.canWrite( dataElement.getPublicAccess() ) );
     }
 
-    @Ignore // TODO
     @Test( expected = CreateAccessDeniedException.class )
     public void userDeniedCreateObject()
     {
@@ -312,7 +312,6 @@ public class IdentifiableObjectManagerTest
         identifiableObjectManager.save( createDataElement( 'A' ) );
     }
 
-    @Ignore // TODO
     @Test( expected = DeleteAccessDeniedException.class )
     public void userDeniedDeleteObject()
     {
@@ -343,7 +342,6 @@ public class IdentifiableObjectManagerTest
         assertEquals( 4, identifiableObjectManager.getAll( DataElement.class ).size() );
     }
 
-    @Ignore // TODO
     @Test
     public void readPrivateObjects()
     {
