@@ -75,9 +75,9 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
             {
                 String filter = iterator.next();
 
-                if ( filter.startsWith( "dataElement.dataElementGroup.id:eq:" ) )
+                if ( filter.startsWith( "dataElement.dataElementGroups.id:eq:" ) )
                 {
-                    deGroup = filter.substring( "dataElement.dataElementGroup.id:eq:".length() );
+                    deGroup = filter.substring( "dataElement.dataElementGroups.id:eq:".length() );
                     iterator.remove();
                     break;
                 }
@@ -87,6 +87,8 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
             {
                 DataElementGroup dataElementGroup = manager.get( DataElementGroup.class, deGroup );
                 dataElementOperands = new ArrayList<>( categoryService.getFullOperands( dataElementGroup.getMembers() ) );
+
+                System.err.println( "operands:" + dataElementOperands );
             }
             else
             {
