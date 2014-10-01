@@ -109,7 +109,7 @@ public class UserController
     }
 
     @Override
-    protected List<User> getEntityList( WebMetaData metaData, WebOptions options )
+    protected List<User> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
         List<User> entityList;
 

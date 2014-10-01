@@ -54,7 +54,7 @@ public class CategoryOptionComboController
     // name (clashes with getAllOrderedName)
     // FIXME add paging also for this?
     @Override
-    protected List<DataElementCategoryOptionCombo> getEntityList( WebMetaData metaData, WebOptions options )
+    protected List<DataElementCategoryOptionCombo> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
         List<DataElementCategoryOptionCombo> entityList;
 

@@ -71,7 +71,7 @@ public class OrganisationUnitController
     private CurrentUserService currentUserService;
 
     @Override
-    protected List<OrganisationUnit> getEntityList( WebMetaData metaData, WebOptions options )
+    protected List<OrganisationUnit> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
         List<OrganisationUnit> entityList;
 
