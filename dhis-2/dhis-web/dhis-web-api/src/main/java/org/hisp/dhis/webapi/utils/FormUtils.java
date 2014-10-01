@@ -63,7 +63,8 @@ public class FormUtils
     private static final String KEY_PERIOD_TYPE = "periodType";
     private static final String KEY_ALLOW_FUTURE_PERIODS = "allowFuturePeriods";
     private static final String KEY_DATA_ELEMENTS = "dataElements";
-    
+    private static final String KEY_EXPIRY_DAYS = "expiryDays";
+
     public static Form fromDataSet( DataSet dataSet, boolean metaData )
     {
         Form form = new Form();
@@ -72,6 +73,7 @@ public class FormUtils
 
         form.getOptions().put( KEY_PERIOD_TYPE, dataSet.getPeriodType().getName() );
         form.getOptions().put( KEY_ALLOW_FUTURE_PERIODS, dataSet.isAllowFuturePeriods() );
+        form.getOptions().put( KEY_EXPIRY_DAYS, dataSet.getExpiryDays() );
 
         if ( dataSet.getSections().size() > 0 )
         {
