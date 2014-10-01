@@ -83,12 +83,11 @@
                     </div>
                 </ng-form>                            
             </td>
-            <td class="col-md-2" ng-if="allowProvidedElsewhereExists">                    
+            <td class="col-md-2" ng-if="allowProvidedElsewhereExists">                
                 <div class="align-center" ng-show="prStDe.allowProvidedElsewhere">
                     <input type="checkbox" 
                            ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]"
-                           ng-change="saveDatavalueLocation(prStDe)"/>
-                </div>
+                           ng-change="saveDatavalueLocation(prStDe)"/>                </div>
             </td>
         </tr>
     </table>

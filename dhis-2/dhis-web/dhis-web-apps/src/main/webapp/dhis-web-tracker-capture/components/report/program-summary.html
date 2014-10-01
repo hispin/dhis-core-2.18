@@ -62,8 +62,7 @@
                                          ng-class="{'{{ev.statusColor}}': true}"
                                          ng-if='!ev.dataValues'>
                                         {{ev.name}}<br/>
-                                        {{ev.eventDate}}<br>
-                                        {{'no_data'| translate}}
+                                        {{ev.eventDate}}
                                     </span>
                                     <span class="stage-container" 
                                          title="{{'details'| translate}}"
@@ -71,8 +70,7 @@
                                          ng-if='ev.dataValues'
                                          ng-click="showEventDetails(ev, tei)">
                                         {{ev.name}}<br/>
-                                        {{ev.eventDate}}<br>  
-                                        <!--{{'data_exists'| translate}}-->
+                                        {{ev.eventDate}}
                                     </span>                                    
                                     <i class="fa fa-arrow-right" ng-show="$index < dhis2Events[tei.id].length - 1"></i>
                                 </span>                                             

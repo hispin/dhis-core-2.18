@@ -15,7 +15,7 @@
                             {{attribute.displayName}}
                         </td>
                         <td>
-                            {{attribute.value}}<!--<input type="text" class="form-control" ng-model="attribute.value" ng-disabled='true'/>                       -->
+                            {{attribute.value}}
                         </td>                
                     </tr>
                 </table>
@@ -30,7 +30,7 @@
                 <span class="bold">{{selectedProgram.dateOfIncidentDescription}}:</span>    {{enrollment.dateOfIncident}}            
             </div>
             <div class="col-sm-4">
-                <span class="bold">{{'status'| translate}}:</span>  {{enrollment.status}}           
+                <span class="bold">{{'status'| translate}}:</span>  {{enrollment.status}}
             </div>
             <div class='row vertical-spacing'></div>
             <div ng-if="enrollment.notes">
@@ -48,16 +48,15 @@
             </div>
 
             <h2 class='col-sm-12'>{{'visits'| translate}}</h2>
-            <div class='vertical-spacing' ng-repeat="dhis2Event in report.enrollments[enrollment.enrollment]| orderBy:'sortingDate':reverse">
-                <!--<h3 class='col-sm-12'>{{'visits'| translate}}</h3>-->
+            <div class='vertical-spacing' ng-repeat="dhis2Event in selectedReport.enrollments[enrollment.enrollment]| orderBy:'sortingDate':reverse">
                 <div class="col-sm-2">
                     <span class="bold">{{'name'| translate}}:</span>    {{dhis2Event.name}}                
                 </div>
                 <div class="col-sm-2">
-                    <span class="bold">{{'org_unit'| translate}}:</span> {{dhis2Event.orgUnitName}}                
+                    <span class="bold">{{'org_unit'| translate}}:</span> {{dhis2Event.eventOrgUnitName}}                
                 </div>
                 <div class="col-sm-2">
-                    <span class="bold">{{'due_date'| translate}}:</span>    {{dhis2Event.dueDate}}
+                    <span class="bold">{{dhis2Event.eventDate ? 'event_date' : 'due_date'| translate}}:</span>    {{dhis2Event.dueDate}}
                 </div>
                 <div class="col-sm-2">
                     <span class="bold">{{'visit'| translate}} {{'_date'| translate}}:</span>    {{dhis2Event.eventDate ? dhis2Event.eventDate : 'no_visit_made'| translate}}
@@ -87,13 +86,13 @@
                                 {{dhis2Event[prStDe.dataElement.id].value}}          
                             </td>
                             <td ng-if="allowProvidedElsewhereExists[dhis2Event.programStage]">
-                                {{dhis2Event[prStDe.dataElement.id].providedElsewhere ? 'provided_elsewhere' : ''| translate}}
+                                <span ng-if="dhis2Event[prStDe.dataElement.id].providedElsewhere"><i class="fa fa-check"></i></span>
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div class="alert alert-warning visit-details col-sm-6" ng-if="!dhis2Event.visited">{{'visit_not_made'| translate}}</div>
-                <div class="alert alert-warning visit-details col-sm-6" ng-if="!dhis2Event.dataValues">{{'no_data'| translate}}</div>
+                <div class="alert alert-warning visit-details col-sm-6" ng-if="dhis2Event.visited && !dhis2Event.dataValues">{{'no_data'| translate}}</div>
                 <div class='row vertical-spacing'></div>
                 <div ng-if="dhis2Event.notes">
                     <h4 class='col-sm-12'>{{'notes'| translate}}</h4>
