@@ -29,6 +29,8 @@ package org.hisp.dhis.user;
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
@@ -47,37 +49,40 @@ public class UserAuthorityGroupTest
     }
     
     @Test
-    public void testBasicUserAuthorityGroup()
-        throws Exception
+    public void testAddGetUserAuthorityGroup()
     {
-        String name = "UserAuthorityGroup";
-        String name1 = "UserAuthorityGroup1";
-        String name2 = "UserAuthorityGroup2";
+        UserAuthorityGroup roleA = createUserAuthorityGroup( 'A' );
+        UserAuthorityGroup roleB = createUserAuthorityGroup( 'B' );
+        UserAuthorityGroup roleC = createUserAuthorityGroup( 'C' );
+        
+        int idA = userAuthorityGroupStore.save( roleA );
+        int idB = userAuthorityGroupStore.save( roleB );
+        int idC = userAuthorityGroupStore.save( roleC );
+        
+        assertEquals( roleA, userAuthorityGroupStore.get( idA ) );
+        assertEquals( roleB, userAuthorityGroupStore.get( idB ) );
+        assertEquals( roleC, userAuthorityGroupStore.get( idC ) );
+    }
 
-        // Test addUserAuthorityGroup
-        UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
-        userAuthorityGroup.setName( name );
-        userAuthorityGroupStore.save( userAuthorityGroup );
-        assertEquals( userAuthorityGroupStore.get( userAuthorityGroup.getId() ).getName(), name );
-
-        // Test updateUserAuthorityGroup
-        userAuthorityGroup.setName( name1 );
-        userAuthorityGroupStore.update( userAuthorityGroup );
-        assertEquals( userAuthorityGroup.getName(), name1 );
-
-        // Test getUserAuthorityGroup
-        assertEquals( userAuthorityGroupStore.get( userAuthorityGroup.getId() ).getName(), name1 );
-        assertEquals( userAuthorityGroupStore.get( userAuthorityGroup.getId() ).getClass(), userAuthorityGroup
-            .getClass() );
-
-        // Test getAllUserAuthorityGroups
-        UserAuthorityGroup userAuthorityGroup2 = new UserAuthorityGroup();
-        userAuthorityGroup2.setName( name2 );
-        userAuthorityGroupStore.save( userAuthorityGroup2 );
-
-        // Test deleteUserAuthorityGroup
-        assertEquals( userAuthorityGroupStore.getAll().size(), 2 );
-        userAuthorityGroupStore.delete( userAuthorityGroup2 );
-        assertEquals( userAuthorityGroupStore.getAll().size(), 1 );
+    @Test
+    public void testDeleteUserAuthorityGroup()
+    {
+        UserAuthorityGroup roleA = createUserAuthorityGroup( 'A' );
+        UserAuthorityGroup roleB = createUserAuthorityGroup( 'B' );
+        UserAuthorityGroup roleC = createUserAuthorityGroup( 'C' );
+        
+        int idA = userAuthorityGroupStore.save( roleA );
+        int idB = userAuthorityGroupStore.save( roleB );
+        int idC = userAuthorityGroupStore.save( roleC );
+        
+        assertEquals( roleA, userAuthorityGroupStore.get( idA ) );
+        assertEquals( roleB, userAuthorityGroupStore.get( idB ) );
+        assertEquals( roleC, userAuthorityGroupStore.get( idC ) );
+        
+        userAuthorityGroupStore.delete( roleB );
+        
+        assertNotNull( userAuthorityGroupStore.get( idA ) );
+        assertNull( userAuthorityGroupStore.get( idB ) );
+        assertNotNull( userAuthorityGroupStore.get( idA ) );
     }
 }
