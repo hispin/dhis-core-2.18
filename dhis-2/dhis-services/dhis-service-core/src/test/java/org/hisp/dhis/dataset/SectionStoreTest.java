@@ -33,15 +33,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.junit.Test;
@@ -71,10 +67,8 @@ public class SectionStoreTest
         dataSet = createDataSet( 'A', new MonthlyPeriodType() );
         dataSetService.addDataSet( dataSet );
         
-        DataElementCategoryCombo categoryCombo = categoryService.getDefaultDataElementCategoryCombo();
-        
-        DataElement dataElementA = createDataElement( 'A', categoryCombo );
-        DataElement dataElementB = createDataElement( 'B', categoryCombo );
+        DataElement dataElementA = createDataElement( 'A' );
+        DataElement dataElementB = createDataElement( 'B' );
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
         
@@ -82,12 +76,9 @@ public class SectionStoreTest
         dataElements.add( dataElementA );
         dataElements.add( dataElementB );
 
-        Set<DataElementOperand> operands = new HashSet<>();
-        operands.add( new DataElementOperand( dataElementA, categoryCombo.getOptionCombos().iterator().next() ) );
-                
-        sectionA = new Section( "SectionA", dataSet, dataElements, operands );
-        sectionB = new Section( "SectionB", dataSet, dataElements, operands );
-        sectionC = new Section( "SectionC", dataSet, dataElements, operands );        
+        sectionA = new Section( "SectionA", dataSet, dataElements, null );
+        sectionB = new Section( "SectionB", dataSet, dataElements, null );
+        sectionC = new Section( "SectionC", dataSet, dataElements, null );        
     }
     
     @Test
@@ -104,8 +95,6 @@ public class SectionStoreTest
         assertEquals( dataSet, sectionStore.get( idA ).getDataSet() );
         assertNotNull( sectionStore.get( idA ).getDataElements() );
         assertEquals( 2, sectionStore.get( idA ).getDataElements().size() );
-        assertNotNull( sectionStore.get( idA ).getGreyedFields() );
-        assertEquals( 1, sectionStore.get( idA ).getGreyedFields().size() );
     }
     
     @Test
