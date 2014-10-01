@@ -30,7 +30,8 @@
                             <span ng-show="dataEntryOuterForm.submitted && dataEntryInnerForm.foo.$invalid" class="error">{{'number_required'| translate}}</span>
                         </div>
                         <div ng-switch-when="string">    
-                            <input type="text"
+                            <span ng-if="prStDe.dataElement.optionSet">
+                                <input type="text"
                                    ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
                                    ng-model="currentEvent[prStDe.dataElement.id]" 
                                    ng-required={{prStDe.compulsory}} 
@@ -38,6 +39,15 @@
                                    typeahead-open-on-focus    
                                    ng-blur="saveDatavalue(prStDe)" 
                                    name="foo"/>
+                            </span>
+                            <span ng-if="!prStDe.dataElement.optionSet">
+                                <input type="text"
+                                   ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
+                                   ng-model="currentEvent[prStDe.dataElement.id]" 
+                                   ng-required={{prStDe.compulsory}}
+                                   ng-blur="saveDatavalue(prStDe)" 
+                                   name="foo"/>
+                            </span>                            
                         </div>
                         <div ng-switch-when="bool">
                             <select ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'

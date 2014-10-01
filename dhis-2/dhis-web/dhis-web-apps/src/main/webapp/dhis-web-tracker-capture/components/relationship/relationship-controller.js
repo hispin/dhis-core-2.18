@@ -30,8 +30,7 @@ trackerCapture.controller('RelationshipController',
     
     $scope.showAddRelationship = function() {
         $rootScope.showAddRelationshipDiv = !$rootScope.showAddRelationshipDiv;
-        
-        console.log('It is me relationship:  ', $rootScope.showAddRelationshipDiv);
+       
         if($rootScope.showAddRelationshipDiv){
             var modalInstance = $modal.open({
                 templateUrl: 'components/relationship/add-relationship.html',
@@ -319,6 +318,7 @@ trackerCapture.controller('RelationshipController',
     
     $scope.assignRelationship = function(relativeTei){
         $scope.teiForRelationship = relativeTei;
+        $rootScope.showAddRelationshipDiv = !$rootScope.showAddRelationshipDiv;
     };
     
     $scope.addRelationship = function(){

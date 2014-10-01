@@ -133,6 +133,7 @@
     "_report": "report",     
     "visit_schedule": "Visit Schedule",
     "mark_for_followup": "Mark for followup",
+    "unmark_for_followup": "Remove from followup",
     "only_marked_for_followup": "Only marked for followup",
     "registered_data": "Registered data",
     "no_data_found": "No data found",
