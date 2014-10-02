@@ -28,13 +28,15 @@ package org.hisp.dhis.about.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_START_MODULE;
-
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.List;
+
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_START_MODULE;
 
 /**
  * @author Lars Helge Overland
@@ -49,7 +51,7 @@ public class RedirectAction
     private AppManager appManager;
 
     private String redirectUrl;
-    
+
     public String getRedirectUrl()
     {
         return redirectUrl;
@@ -60,16 +62,31 @@ public class RedirectAction
         throws Exception
     {
         String startModule = (String) systemSettingManager.getSystemSetting( KEY_START_MODULE );
-        
+
         if ( startModule != null )
         {
-            redirectUrl = "../" + startModule + "/index.action";
+            if ( startModule.startsWith( "app:" ) )
+            {
+                List<App> apps = appManager.getApps();
+
+                for ( App app : apps )
+                {
+                    if ( app.getName().equals( startModule.substring( "app:".length() ) ) )
+                    {
+                        redirectUrl = app.getLaunchUrl();
+                        return SUCCESS;
+                    }
+                }
+            }
+            else
+            {
+                redirectUrl = "../" + startModule + "/index.action";
+                return SUCCESS;
+            }
         }
-        else
-        {
-            redirectUrl = "../dhis-web-dashboard-integration/index.action";
-        }
-        
+
+        redirectUrl = "../dhis-web-dashboard-integration/index.action";
+
         return SUCCESS;
-    }  
+    }
 }
