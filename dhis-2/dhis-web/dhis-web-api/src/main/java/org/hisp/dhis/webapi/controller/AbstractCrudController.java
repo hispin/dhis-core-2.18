@@ -481,7 +481,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}/{property}/{itemId}", method = RequestMethod.GET )
-    @SuppressWarnings( "unchecked" )
     public @ResponseBody RootNode getCollectionItem(
         @PathVariable( "uid" ) String pvUid,
         @PathVariable( "property" ) String pvProperty,
