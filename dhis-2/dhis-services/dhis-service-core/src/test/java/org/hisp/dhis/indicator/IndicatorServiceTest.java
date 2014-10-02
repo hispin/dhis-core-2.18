@@ -28,14 +28,17 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisSpringTest;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
@@ -385,9 +388,14 @@ public class IndicatorServiceTest
         assertNotNull( indicatorService.getIndicator( idA ) );
         assertNotNull( indicatorService.getIndicator( idB ) );
 
+        indicatorService.deleteIndicator( indicatorA );
+
+        assertNull( indicatorService.getIndicator( idA ) );
+        assertNotNull( indicatorService.getIndicator( idB ) );
+
         indicatorService.deleteIndicator( indicatorB );
 
-        assertNotNull( indicatorService.getIndicator( idA ) );
+        assertNull( indicatorService.getIndicator( idA ) );
         assertNull( indicatorService.getIndicator( idB ) );
     }
 

@@ -139,10 +139,25 @@ public class DataElementServiceTest
         assertNotNull( dataElementService.getDataElement( idD ) );
 
         dataElementService.deleteDataElement( dataElementB );
+        
         assertNotNull( dataElementService.getDataElement( idA ) );
         assertNull( dataElementService.getDataElement( idB ) );
         assertNotNull( dataElementService.getDataElement( idC ) );
         assertNotNull( dataElementService.getDataElement( idD ) );
+
+        dataElementService.deleteDataElement( dataElementC );
+        
+        assertNotNull( dataElementService.getDataElement( idA ) );
+        assertNull( dataElementService.getDataElement( idB ) );
+        assertNull( dataElementService.getDataElement( idC ) );
+        assertNotNull( dataElementService.getDataElement( idD ) );
+
+        dataElementService.deleteDataElement( dataElementD );
+        
+        assertNotNull( dataElementService.getDataElement( idA ) );
+        assertNull( dataElementService.getDataElement( idB ) );
+        assertNull( dataElementService.getDataElement( idC ) );
+        assertNull( dataElementService.getDataElement( idD ) );
     }
 
     @Test
