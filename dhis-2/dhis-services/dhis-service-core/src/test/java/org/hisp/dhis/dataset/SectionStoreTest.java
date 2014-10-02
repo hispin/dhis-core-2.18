@@ -41,6 +41,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -48,6 +49,16 @@ import org.junit.Test;
 public class SectionStoreTest
     extends DhisSpringTest
 {
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+    
+    @Autowired
     private SectionStore sectionStore;
     
     private DataSet dataSet;
@@ -59,11 +70,6 @@ public class SectionStoreTest
     @Override
     public void setUpTest()
     {
-        sectionStore = (SectionStore) getBean( SectionStore.ID );
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
         dataSet = createDataSet( 'A', new MonthlyPeriodType() );
         dataSetService.addDataSet( dataSet );
         

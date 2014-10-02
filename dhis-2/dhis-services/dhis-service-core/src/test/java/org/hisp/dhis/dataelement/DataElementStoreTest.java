@@ -43,6 +43,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -51,25 +52,12 @@ import org.junit.Test;
 public class DataElementStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private DataElementStore dataElementStore;
     
+    @Autowired
     private DataSetService dataSetService;
-    
-    // -------------------------------------------------------------------------
-    // Fixture
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-        throws Exception
-    {
-        dataElementStore = (DataElementStore) getBean( DataElementStore.ID );
         
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-    }
-    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------

@@ -31,6 +31,7 @@ package org.hisp.dhis.indicator;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 
@@ -44,6 +45,7 @@ import static org.junit.Assert.*;
 public class IndicatorStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private IndicatorStore indicatorStore;
 
     private GenericIdentifiableObjectStore<IndicatorType> indicatorTypeStore;
@@ -56,11 +58,7 @@ public class IndicatorStoreTest
     public void setUpTest()
         throws Exception
     {
-        indicatorStore = (IndicatorStore) getBean( IndicatorStore.ID );
-
         indicatorTypeStore = (GenericIdentifiableObjectStore<IndicatorType>) getBean( "org.hisp.dhis.indicator.IndicatorTypeStore" );
-
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
     }
 
     // -------------------------------------------------------------------------

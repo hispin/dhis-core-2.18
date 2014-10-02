@@ -39,6 +39,7 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -47,18 +48,8 @@ import org.junit.Test;
 public class IndicatorServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private IndicatorService indicatorService;
-
-    // -------------------------------------------------------------------------
-    // Set up/tear down
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-        throws Exception
-    {
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-    }
 
     // -------------------------------------------------------------------------
     // Support methods
