@@ -28,20 +28,23 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-import java.util.Locale;
-import java.util.SortedMap;
-
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.appmanager.App;
+import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.setting.StyleManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.webportal.module.Module;
 import org.hisp.dhis.webportal.module.ModuleManager;
 import org.hisp.dhis.webportal.module.StartableModuleFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.SortedMap;
 
 /**
  * @author Lars Helge Overland
@@ -55,50 +58,44 @@ public class GetAppearanceSettingsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SystemSettingManager systemSettingManager;
 
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
+    @Autowired
     private ModuleManager moduleManager;
 
-    public void setModuleManager( ModuleManager moduleManager )
-    {
-        this.moduleManager = moduleManager;
-    }
-
+    @Autowired
     private StyleManager styleManager;
 
-    public void setStyleManager( StyleManager styleManager )
-    {
-        this.styleManager = styleManager;
-    }
-
+    @Autowired
     private LocaleManager localeManager;
 
-    public void setLocaleManager( LocaleManager localeManager )
-    {
-        this.localeManager = localeManager;
-    }
-    
+    @Autowired
+    private AppManager appManager;
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<String> flags;
+    private List<String> flags = new ArrayList<>();
 
     public List<String> getFlags()
     {
         return flags;
     }
 
-    private List<Module> modules;
+    private List<Module> modules = new ArrayList<>();
 
     public List<Module> getModules()
     {
         return modules;
+    }
+
+    private List<App> apps = new ArrayList<>();
+
+    public List<App> getApps()
+    {
+        return apps;
     }
 
     private SortedMap<String, String> styles;
@@ -115,7 +112,7 @@ public class GetAppearanceSettingsAction
         return currentStyle;
     }
 
-    private List<Locale> availableLocales;
+    private List<Locale> availableLocales = new ArrayList<>();
 
     public List<Locale> getAvailableLocales()
     {
@@ -131,12 +128,14 @@ public class GetAppearanceSettingsAction
         availableLocales = localeManager.getAvailableLocales();
 
         styles = styleManager.getStyles();
-        
+
         currentStyle = styleManager.getSystemStyle();
-        
+
         flags = systemSettingManager.getFlags();
 
         modules = moduleManager.getMenuModules();
+
+        apps = appManager.getApps();
 
         FilterUtils.filter( modules, startableFilter );
 
