@@ -17,10 +17,11 @@
 
     <div ng-show="dataentryWidget.expand" class="panel-body dashboard-widget-container">
         <div ng-if="showEventColors">
-           <table class="table table-bordered" style="width: 100%;">
+            <span class='bold'>{{'legend' | translate}}</span>
+            <table class="table table-bordered" style="width: 100%;">               
                 <tr>
                     <td ng-class="eventColor.color" ng-repeat="eventColor in eventColors">
-                        {{eventColor.description | translate}}
+                        <span class="bold">{{eventColor.description | translate}}</span>
                     </td>
                 </tr>                    
             </table>

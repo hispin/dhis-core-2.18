@@ -67,9 +67,17 @@ trackerCapture.controller('DataEntryController',
                 $scope.selectedEntity && 
                 $scope.selectedEnrollment){
             
-            angular.forEach($scope.selectedProgram.programStages, function(stage){
-                $scope.selectedProgramWithStage[stage.id] = stage;
+            angular.forEach($scope.selectedProgram.programStages, function(st){                
+                
+                ProgramStageFactory.get(st.id).then(function(stage){
+                    $scope.selectedProgramWithStage[stage.id] = stage;
+                });
             });
+            
+            setTimeout(function () {
+                $scope.getEvents();
+            }, 100);
+            
             $scope.getEvents();
         }
     });
@@ -84,7 +92,6 @@ trackerCapture.controller('DataEntryController',
                     
                     if(dhis2Event.enrollment === $scope.selectedEnrollment.enrollment){
                         var eventStage = $scope.selectedProgramWithStage[dhis2Event.programStage];
-
                         if(angular.isObject(eventStage)){
 
                             dhis2Event.name = eventStage.name; 
@@ -103,7 +110,6 @@ trackerCapture.controller('DataEntryController',
                             dhis2Event = EventUtils.setEventOrgUnitName(dhis2Event);
                         } 
                     }
-
                 });
             }
             
@@ -216,32 +222,32 @@ trackerCapture.controller('DataEntryController',
                 }
                 else{
                     $scope.dhis2Events.splice(0,0,newEvent);
-                    /*$scope.dhis2Events = orderByFilter($scope.dhis2Events, '-sortingDate');
-                    $scope.dhis2Events.reverse();*/
-                }                
+                }
+                
                 $scope.showDataEntry(newEvent);
             }
         });
     };   
     
-    $scope.showDataEntry = function(event){        
-        $scope.dueDateSaved = false;
-        $scope.eventDateSaved = false;
+    $scope.showDataEntry = function(event){
+        
+        //$scope.dueDateSaved = false;
+        //$scope.eventDateSaved = false;
         if(event){
 
             if($scope.currentEvent && $scope.currentEvent.event === event.event){
                 //clicked on the same stage, do toggling
-                $scope.currentEvent = null;
+                $scope.currentEvent = {};
                 $scope.currentElement = {id: '', saved: false};
                 $scope.showDataEntryDiv = !$scope.showDataEntryDiv;      
             }
             else{
                 $scope.currentElement = {};
-                $scope.currentEvent = event;                
+                $scope.currentEvent = event;
                 $scope.showDataEntryDiv = true;   
                 $scope.showDummyEventDiv = false;
                 $scope.showEventCreationDiv = false;
-                
+
                 if($scope.currentEvent.notes){
                     angular.forEach($scope.currentEvent.notes, function(note){
                         note.storedDate = DateUtils.formatToHrsMins(note.storedDate);
@@ -277,45 +283,42 @@ trackerCapture.controller('DataEntryController',
             });
         }
 
-        ProgramStageFactory.get($scope.currentEvent.programStage).then(function(stage){
-            $scope.currentStage = stage;
+        
+        $scope.currentStage = $scope.selectedProgramWithStage[$scope.currentEvent.programStage];
 
-            $scope.programStageDataElements = [];                  
-            angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
-                $scope.programStageDataElements[prStDe.dataElement.id] = prStDe; 
-            }); 
+        $scope.programStageDataElements = [];                  
+        angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
+            $scope.programStageDataElements[prStDe.dataElement.id] = prStDe; 
+        }); 
 
-            $scope.customForm = $scope.currentStage.dataEntryForm ? $scope.currentStage.dataEntryForm.htmlCode : null; 
-            $scope.displayCustomForm = $scope.customForm ? true:false;
+        $scope.customForm = $scope.currentStage.dataEntryForm ? $scope.currentStage.dataEntryForm.htmlCode : null; 
+        $scope.displayCustomForm = $scope.customForm ? true:false;
 
-            $scope.allowProvidedElsewhereExists = false;
-            angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
-                $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
-                if(prStDe.allowProvidedElsewhere){
-                    $scope.allowProvidedElsewhereExists = true;
-                    $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = false;
-                }
-            });
-
-            angular.forEach($scope.currentEvent.dataValues, function(dataValue){
-                var val = dataValue.value;
-                if(val){
-                    var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
-                    if( de && de.type === 'int' && val){
-                        val = parseInt(val);
-                        dataValue.value = val;
-                    }
-                    $scope.currentEvent[dataValue.dataElement] = val;
-                    
-                    if(dataValue.providedElsewhere){
-                        $scope.currentEvent.providedElsewhere[dataValue.dataElement] = dataValue.providedElsewhere;
-                    }
-                }                    
-            });
-
-            $scope.currentEvent.dataValues = [];
-            $scope.currentEventOriginal = angular.copy($scope.currentEvent);
+        $scope.allowProvidedElsewhereExists = false;
+        angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
+            $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
+            if(prStDe.allowProvidedElsewhere){
+                $scope.allowProvidedElsewhereExists = true;                
+            }
         });
+        
+        angular.forEach($scope.currentEvent.dataValues, function(dataValue){
+            var val = dataValue.value;
+            if(val){
+                var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
+                if( de && de.type === 'int' && val){
+                    val = parseInt(val);
+                    //dataValue.value = val;
+                }                    
+            }    
+            $scope.currentEvent[dataValue.dataElement] = val;
+            if(dataValue.providedElsewhere){
+                $scope.currentEvent.providedElsewhere[dataValue.dataElement] = dataValue.providedElsewhere;
+                
+            }
+        });
+
+        $scope.currentEventOriginal = angular.copy($scope.currentEvent);        
     };
     
     $scope.saveDatavalue = function(prStDe){
@@ -362,8 +365,7 @@ trackerCapture.controller('DataEntryController',
     };
     
     $scope.saveDatavalueLocation = function(prStDe){
-        
-        console.log('I am called:  ',$scope.currentEvent.providedElsewhere[prStDe.dataElement.id] );
+                
         $scope.updateSuccess = false;
         
         if(!angular.isUndefined($scope.currentEvent.providedElsewhere[prStDe.dataElement.id])){
