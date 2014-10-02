@@ -39,6 +39,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -62,6 +63,18 @@ public class DataSetServiceTest
     private OrganisationUnit unitE;
     private OrganisationUnit unitF;
     
+    @Autowired
+    private DataSetService dataSetService;
+    
+    @Autowired
+    private DataElementService dataElementService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private PeriodService periodService;
+    
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -70,14 +83,6 @@ public class DataSetServiceTest
     public void setUpTest()
         throws Exception
     {
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
         periodType = new MonthlyPeriodType();
 
         period = createPeriod( periodType, getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) );

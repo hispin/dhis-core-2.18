@@ -39,6 +39,7 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kristian Nordal
@@ -46,19 +47,9 @@ import org.junit.Test;
 public class DataElementServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private DataElementService dataElementService;
 
-    // -------------------------------------------------------------------------
-    // Fixture
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-        throws Exception
-    {
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-    }
-    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
