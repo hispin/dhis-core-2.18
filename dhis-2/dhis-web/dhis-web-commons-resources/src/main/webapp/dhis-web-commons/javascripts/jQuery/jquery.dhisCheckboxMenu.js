@@ -102,12 +102,7 @@
 
         var $menu = $( this ).find( "ul" );
         $menu.addClass( options.menuClass );
-        $menu.css( "visibility", "hidden" );
-        $menu.position({
-            my: "left top",
-            at: "left bottom",
-            of: $button
-        });
+        $menu.css( { "visibility" : "hidden", "margin-top" : "6px" } );
 
         $button.click( function ( event ) {
             $( document ).one( "click", function() {
