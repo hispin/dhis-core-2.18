@@ -28,7 +28,6 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.node.exception.InvalidTypeException;
@@ -38,6 +37,7 @@ import org.springframework.core.Ordered;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -151,6 +151,15 @@ public abstract class AbstractNode implements Node
     }
 
     @Override
+    public <T extends Node> void removeChild( T child )
+    {
+        if ( children.contains( child ) )
+        {
+            children.remove( child );
+        }
+    }
+
+    @Override
     public <T extends Node> void addChildren( Iterable<T> children )
     {
         for ( Node child : children )
@@ -192,28 +201,36 @@ public abstract class AbstractNode implements Node
     }
 
     @Override
-    public boolean equals( Object o )
+    public int hashCode()
     {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
-
-        AbstractNode that = (AbstractNode) o;
-
-        if ( name != null ? !name.equals( that.name ) : that.name != null ) return false;
-
-        return true;
+        return Objects.hash( name, nodeType, parent, namespace, comment, children );
     }
 
     @Override
-    public int hashCode()
+    public boolean equals( Object obj )
     {
-        return name != null ? name.hashCode() : 0;
+        if ( this == obj )
+        {
+            return true;
+        }
+        if ( obj == null || getClass() != obj.getClass() )
+        {
+            return false;
+        }
+
+        final AbstractNode other = (AbstractNode) obj;
+
+        return Objects.equals( this.name, other.name ) &&
+            Objects.equals( this.nodeType, other.nodeType ) &&
+            Objects.equals( this.namespace, other.namespace ) &&
+            Objects.equals( this.comment, other.comment ) &&
+            Objects.equals( this.children, other.children );
     }
 
     @Override
     public String toString()
     {
-        return Objects.toStringHelper( this )
+        return com.google.common.base.Objects.toStringHelper( this )
             .add( "name", name )
             .add( "nodeType", nodeType )
             .add( "parent", (parent != null ? parent.getName() : null) )

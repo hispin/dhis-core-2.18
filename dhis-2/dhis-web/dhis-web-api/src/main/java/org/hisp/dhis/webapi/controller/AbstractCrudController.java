@@ -49,6 +49,7 @@ import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.node.Node;
 import org.hisp.dhis.node.config.InclusionStrategy;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
@@ -251,7 +252,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public @ResponseBody RootNode getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+    public @ResponseBody RootNode getObject(
+        @PathVariable( "uid" ) String pvUid,
+        @RequestParam Map<String, String> parameters,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         List<String> fields = Lists.newArrayList( contextService.getParameterValues( "fields" ) );
@@ -262,14 +265,16 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             fields.add( ":all" );
         }
 
-        return getObjectInternal( uid, parameters, filters, fields );
+        return getObjectInternal( pvUid, parameters, filters, fields );
     }
 
     @RequestMapping( value = "/{uid}/{property}", method = RequestMethod.GET )
-    public @ResponseBody RootNode getObjectProperty( @PathVariable( "uid" ) String uid, @PathVariable( "property" ) String property,
+    public @ResponseBody RootNode getObjectProperty(
+        @PathVariable( "uid" ) String uid,
+        @PathVariable( "property" ) String pvProperty,
         @RequestParam Map<String, String> parameters, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        return getObjectInternal( uid, parameters, Lists.<String>newArrayList(), Lists.newArrayList( property ) );
+        return getObjectInternal( uid, parameters, Lists.<String>newArrayList(), Lists.newArrayList( pvProperty + "[:all]" ) );
     }
 
     private RootNode getObjectInternal( String uid, Map<String, String> parameters,
@@ -475,7 +480,42 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // Identifiable object collections add, delete
     //--------------------------------------------------------------------------
 
+    @RequestMapping( value = "/{uid}/{property}/{itemId}", method = RequestMethod.GET )
+    @SuppressWarnings( "unchecked" )
+    public @ResponseBody RootNode getCollectionItem(
+        @PathVariable( "uid" ) String pvUid,
+        @PathVariable( "property" ) String pvProperty,
+        @PathVariable( "itemId" ) String pvItemId,
+        @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws Exception
+    {
+        RootNode rootNode = getObjectInternal( pvUid, parameters, Lists.<String>newArrayList(), Lists.newArrayList( pvProperty + "[:all]" ) );
+
+        // TODO optimize this using field filter (collection filtering)
+        if ( !rootNode.getChildren().isEmpty() && rootNode.getChildren().get( 0 ).isCollection() )
+        {
+            for ( Node node : rootNode.getChildren().get( 0 ).getChildren() )
+            {
+                if ( node.isComplex() )
+                {
+                    for ( Node child : node.getChildren() )
+                    {
+                        if ( child.isSimple() && child.getName().equals( "id" ) )
+                        {
+                            if ( !((SimpleNode) child).getValue().equals( pvItemId ) )
+                            {
+                                rootNode.getChildren().get( 0 ).removeChild( node );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return rootNode;
+    }
+
     @RequestMapping( value = "/{uid}/{property}/{itemId}", method = { RequestMethod.POST, RequestMethod.PUT } )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @SuppressWarnings( "unchecked" )
     public void addCollectionItem(
         @PathVariable( "uid" ) String pvUid,
@@ -533,6 +573,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( value = "/{uid}/{property}/{itemId}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @SuppressWarnings( "unchecked" )
     public void deleteCollectionItem(
         @PathVariable( "uid" ) String pvUid,

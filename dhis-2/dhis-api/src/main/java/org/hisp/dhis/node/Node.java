@@ -54,6 +54,7 @@ public interface Node extends Ordered
 
     /**
      * Get parent node, or null if this is a top-level node.
+     *
      * @return parent or null if node does not have parent
      */
     Node getParent();
@@ -114,6 +115,13 @@ public interface Node extends Ordered
      * @return Child node that was added
      */
     <T extends Node> T addChild( T child );
+
+    /**
+     * Remove a child from this node.
+     *
+     * @param child Child node to add
+     */
+    <T extends Node> void removeChild( T child );
 
     /**
      * Adds a collection of children to this node.
