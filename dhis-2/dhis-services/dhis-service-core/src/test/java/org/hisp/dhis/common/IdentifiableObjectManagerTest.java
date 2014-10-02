@@ -174,17 +174,17 @@ public class IdentifiableObjectManagerTest
     @Test
     public void getAllEqualToNameIgnoreCase()
     {
-        OrganisationUnit organisationUnitA1 = createOrganisationUnit( 'A' );
-        organisationUnitA1.setCode( null );
-        identifiableObjectManager.save( organisationUnitA1 );
+        OrganisationUnit organisationUnitC1 = createOrganisationUnit( 'C' );
+        organisationUnitC1.setCode( null );
+        identifiableObjectManager.save( organisationUnitC1 );
 
-        OrganisationUnit organisationUnitA2 = createOrganisationUnit( 'B' );
-        organisationUnitA2.setName( "OrganisationUnitA" );
-        organisationUnitA2.setCode( null );
-        identifiableObjectManager.save( organisationUnitA2 );
+        OrganisationUnit organisationUnitC2 = createOrganisationUnit( 'D' );
+        organisationUnitC2.setName( "OrganisationUnitC" );
+        organisationUnitC2.setCode( null );
+        identifiableObjectManager.save( organisationUnitC2 );
 
-        assertEquals( 2, identifiableObjectManager.getAllByNameIgnoreCase( OrganisationUnit.class, "OrganisationUnitA" ).size() );
-        assertEquals( 2, identifiableObjectManager.getAllByNameIgnoreCase( OrganisationUnit.class, "organisationunita" ).size() );
+        assertEquals( 2, identifiableObjectManager.getAllByNameIgnoreCase( OrganisationUnit.class, "OrganisationUnitC" ).size() );
+        assertEquals( 2, identifiableObjectManager.getAllByNameIgnoreCase( OrganisationUnit.class, "organisationunitc" ).size() );
     }
 
     @Test
