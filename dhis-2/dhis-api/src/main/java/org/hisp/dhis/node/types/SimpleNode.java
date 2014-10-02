@@ -28,11 +28,12 @@ package org.hisp.dhis.node.types;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Objects;
 import org.hisp.dhis.node.AbstractNode;
 import org.hisp.dhis.node.Node;
 import org.hisp.dhis.node.NodeType;
 import org.hisp.dhis.node.exception.InvalidTypeException;
+
+import java.util.Objects;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -92,7 +93,7 @@ public class SimpleNode extends AbstractNode
     @Override
     public int hashCode()
     {
-        return 31 * super.hashCode() + Objects.hashCode( value, attribute );
+        return 31 * super.hashCode() + Objects.hash( value, attribute );
     }
 
     @Override
@@ -113,6 +114,6 @@ public class SimpleNode extends AbstractNode
 
         final SimpleNode other = (SimpleNode) obj;
 
-        return Objects.equal( this.value, other.value ) && Objects.equal( this.attribute, other.attribute );
+        return Objects.equals( this.value, other.value ) && Objects.equals( this.attribute, other.attribute );
     }
 }

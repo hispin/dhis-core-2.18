@@ -28,9 +28,10 @@ package org.hisp.dhis.node.types;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Objects;
 import org.hisp.dhis.node.AbstractNode;
 import org.hisp.dhis.node.NodeType;
+
+import java.util.Objects;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -60,7 +61,7 @@ public class CollectionNode extends AbstractNode
     @Override
     public int hashCode()
     {
-        return 31 * super.hashCode() + Objects.hashCode( wrapping );
+        return 31 * super.hashCode() + Objects.hash( wrapping );
     }
 
     @Override
@@ -70,17 +71,18 @@ public class CollectionNode extends AbstractNode
         {
             return true;
         }
+
         if ( obj == null || getClass() != obj.getClass() )
         {
             return false;
         }
+
         if ( !super.equals( obj ) )
         {
             return false;
         }
 
         final CollectionNode other = (CollectionNode) obj;
-
-        return Objects.equal( this.wrapping, other.wrapping );
+        return Objects.equals( this.wrapping, other.wrapping );
     }
 }
