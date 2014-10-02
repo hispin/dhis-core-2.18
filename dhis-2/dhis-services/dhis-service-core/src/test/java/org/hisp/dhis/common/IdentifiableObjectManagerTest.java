@@ -28,7 +28,15 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Sets;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.DhisSpringTest;
@@ -43,15 +51,10 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
 import org.hisp.dhis.user.UserService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import com.google.common.collect.Sets;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -278,7 +281,6 @@ public class IdentifiableObjectManagerTest
         assertEquals( user, dataElement.getUser() );
     }
 
-    @Ignore // TODO
     @Test
     public void userCanCreatePublic()
     {
@@ -305,7 +307,6 @@ public class IdentifiableObjectManagerTest
         assertFalse( AccessStringHelper.canWrite( dataElement.getPublicAccess() ) );
     }
 
-    @Ignore // TODO
     @Test( expected = CreateAccessDeniedException.class )
     public void userDeniedCreateObject()
     {
@@ -313,7 +314,6 @@ public class IdentifiableObjectManagerTest
         identifiableObjectManager.save( createDataElement( 'A' ) );
     }
 
-    @Ignore // TODO
     @Test( expected = DeleteAccessDeniedException.class )
     public void userDeniedDeleteObject()
     {
@@ -344,7 +344,6 @@ public class IdentifiableObjectManagerTest
         assertEquals( 4, identifiableObjectManager.getAll( DataElement.class ).size() );
     }
 
-    @Ignore // TODO
     @Test
     public void readPrivateObjects()
     {
@@ -374,7 +373,6 @@ public class IdentifiableObjectManagerTest
         assertEquals( 0, identifiableObjectManager.getAll( DataElement.class ).size() );
     }
 
-    @Ignore // TODO
     @Test
     public void readUserGroupSharedObjects()
     {
