@@ -177,6 +177,20 @@ public class ReportTableController
         GridUtils.toHtml( grid, response.getWriter() );
     }
 
+    @RequestMapping( value = "/{uid}/data.html+css", method = RequestMethod.GET )
+    public void getReportTableHtmlCss( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        HttpServletResponse response ) throws Exception
+    {
+        Grid grid = getReportTableGrid( uid, organisationUnitUid, date );
+
+        String filename = filenameEncode( grid.getTitle() ) + ".html";
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
+
+        GridUtils.toHtmlCss( grid, response.getWriter() );
+    }
+
     @RequestMapping( value = "/{uid}/data.xml", method = RequestMethod.GET )
     public void getReportTableXml( @PathVariable( "uid" ) String uid,
         @RequestParam( value = "ou", required = false ) String organisationUnitUid,

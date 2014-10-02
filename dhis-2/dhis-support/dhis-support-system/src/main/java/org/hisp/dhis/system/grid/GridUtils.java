@@ -124,6 +124,7 @@ public class GridUtils
     private static final String KEY_PARAMS = "params";
     private static final String JASPER_TEMPLATE = "grid.vm";
     private static final String HTML_TEMPLATE = "grid-html.vm";
+    private static final String HTML_CSS_TEMPLATE = "grid-html-css.vm";
 
     private static final String ATTR_GRID = "grid";
     private static final String ATTR_TITLE = "title";
@@ -395,12 +396,21 @@ public class GridUtils
     }
 
     /**
-     * Writes a JRXML (Jasper Reports XML) representation of the given Grid to the given Writer.
+     * Writes a HTML representation of the given Grid to the given Writer.
      */
     public static void toHtml( Grid grid, Writer writer )
         throws Exception
     {
         render( grid, null, writer, HTML_TEMPLATE );
+    }
+
+    /**
+     * Writes a HTML representation of the given Grid to the given Writer.
+     */
+    public static void toHtmlCss( Grid grid, Writer writer )
+        throws Exception
+    {
+        render( grid, null, writer, HTML_CSS_TEMPLATE );
     }
     
     /**

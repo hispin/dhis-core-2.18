@@ -1,10 +1,11 @@
+<div class="gridDiv">
 <h3>$!encoder.htmlEncode( $grid.title )</h3>
 <h4>$!encoder.htmlEncode( $grid.subtitle )</h4>
 <table class="listTable gridTable">
 <thead>
 <tr>
 #foreach( $header in $grid.getVisibleHeaders() )
-<th #if( $header.meta )style="text-align:left"#end>$!encoder.htmlEncode( $header.name )</th>
+<th#if( $header.meta ) style="text-align:left"#end>$!encoder.htmlEncode( $header.name )</th>
 #end
 </tr>
 </thead>
@@ -23,3 +24,4 @@
 #end
 </tbody>
 </table>
+</div>

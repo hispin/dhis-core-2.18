@@ -130,6 +130,19 @@ public class SqlViewController
         GridUtils.toHtml( grid, response.getWriter() );
     }
 
+    @RequestMapping( value = "/{uid}/data.html+css", method = RequestMethod.GET )
+    public void getViewHtmlCss( @PathVariable( "uid" ) String uid, 
+        @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
+    {
+        SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
+        
+        Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
+        
+        GridUtils.toHtmlCss( grid, response.getWriter() );
+    }
+
     @RequestMapping( value = "/{uid}/data.pdf", method = RequestMethod.GET )
     public void getViewPdf( @PathVariable( "uid" ) String uid, 
         @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
