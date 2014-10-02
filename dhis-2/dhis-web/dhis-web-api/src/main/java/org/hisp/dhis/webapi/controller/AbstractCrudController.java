@@ -471,6 +471,67 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         manager.delete( objects.get( 0 ) );
     }
 
+    //--------------------------------------------------------------------------
+    // Identifiable object collections add, delete
+    //--------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{uid}/{property}/{itemId}", method = { RequestMethod.POST, RequestMethod.PUT } )
+    @SuppressWarnings( "unchecked" )
+    public void addCollectionItem(
+        @PathVariable( "uid" ) String pvUid,
+        @PathVariable( "property" ) String pvProperty,
+        @PathVariable( "itemId" ) String pvItemId, HttpServletResponse response ) throws Exception
+    {
+        List<T> objects = getEntity( pvUid );
+
+        if ( objects.isEmpty() )
+        {
+            ContextUtils.notFoundResponse( response, getEntityName() + " does not exist: " + pvUid );
+        }
+
+        if ( !getSchema().getPropertyMap().containsKey( pvProperty ) )
+        {
+            ContextUtils.notFoundResponse( response, "Property " + pvProperty + " does not exist on " + getEntityName() );
+        }
+
+        Property property = getSchema().getPropertyMap().get( pvProperty );
+
+        if ( !property.isCollection() || !property.isIdentifiableObject() )
+        {
+            ContextUtils.conflictResponse( response, "Only adds within identifiable collection are allowed." );
+        }
+
+        if ( !property.isOwner() )
+        {
+            ContextUtils.conflictResponse( response, getEntityName() + " is not the owner of this relationship." );
+        }
+
+        Collection<IdentifiableObject> identifiableObjects =
+            (Collection<IdentifiableObject>) property.getGetterMethod().invoke( objects.get( 0 ) );
+
+        IdentifiableObject candidate = manager.getNoAcl( (Class<? extends IdentifiableObject>) property.getItemKlass(), pvItemId );
+
+        if ( candidate == null )
+        {
+            ContextUtils.notFoundResponse( response, "Collection " + pvProperty + " does not have an item with ID: " + pvItemId );
+        }
+
+        // if it already contains this object, don't add it. It might be a list and not set, and we don't want duplicates.
+        if ( identifiableObjects.contains( candidate ) )
+        {
+            return; // nothing to do, just return with OK
+        }
+
+        identifiableObjects.add( candidate );
+
+        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), objects.get( 0 ) ) )
+        {
+            throw new DeleteAccessDeniedException( "You don't have the proper permissions to delete this object." );
+        }
+
+        manager.update( objects.get( 0 ) );
+    }
+
     @RequestMapping( value = "/{uid}/{property}/{itemId}", method = RequestMethod.DELETE )
     @SuppressWarnings( "unchecked" )
     public void deleteCollectionItem(
@@ -657,6 +718,21 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
     }
 
+    private InclusionStrategy.Include getInclusionStrategy( String inclusionStrategy )
+    {
+        if ( inclusionStrategy != null )
+        {
+            Optional<InclusionStrategy.Include> optional = Enums.getIfPresent( InclusionStrategy.Include.class, inclusionStrategy );
+
+            if ( optional.isPresent() )
+            {
+                return optional.get();
+            }
+        }
+
+        return InclusionStrategy.Include.NON_NULL;
+    }
+
     //--------------------------------------------------------------------------
     // Reflection helpers
     //--------------------------------------------------------------------------
@@ -710,20 +786,5 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             throw new RuntimeException( ex );
         }
-    }
-
-    private InclusionStrategy.Include getInclusionStrategy( String inclusionStrategy )
-    {
-        if ( inclusionStrategy != null )
-        {
-            Optional<InclusionStrategy.Include> optional = Enums.getIfPresent( InclusionStrategy.Include.class, inclusionStrategy );
-
-            if ( optional.isPresent() )
-            {
-                return optional.get();
-            }
-        }
-
-        return InclusionStrategy.Include.NON_NULL;
     }
 }
