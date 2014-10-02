@@ -30,6 +30,7 @@ package org.hisp.dhis.about.action;
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_START_MODULE;
 
+import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,6 +44,9 @@ public class RedirectAction
 {
     @Autowired
     private SystemSettingManager systemSettingManager;
+
+    @Autowired
+    private AppManager appManager;
 
     private String redirectUrl;
     

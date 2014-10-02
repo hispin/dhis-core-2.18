@@ -71,7 +71,7 @@
     #if( $apps.size() > 0 )
     <optgroup label="Apps">
         #foreach ( $app in $apps )
-        <option value="$app.name" #if( $app.name == $startModule )selected="selected"#end>$i18n.getString( "$app.name" )</option>
+        <option value="app:${app.name}" #if( "app:${app.name}" == $startModule )selected="selected"#end>$i18n.getString( "$app.name" )</option>
         #end
     </optgroup>
     #end
