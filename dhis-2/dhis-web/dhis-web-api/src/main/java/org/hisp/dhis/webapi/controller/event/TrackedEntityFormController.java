@@ -1,4 +1,4 @@
-package org.hisp.dhis.trackedentity;
+package org.hisp.dhis.webapi.controller.event;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,29 +28,18 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.program.Program;
+import org.hisp.dhis.schema.descriptors.TrackedEntityFormSchemaDescriptor;
+import org.hisp.dhis.trackedentity.TrackedEntityForm;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * @author Chau Thu Tran
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface TrackedEntityFormStore
-    extends GenericIdentifiableObjectStore<TrackedEntityForm>
+@Controller
+@RequestMapping( value = TrackedEntityFormSchemaDescriptor.API_ENDPOINT )
+public class TrackedEntityFormController
+    extends AbstractCrudController<TrackedEntityForm>
 {
-    String ID = TrackedEntityFormStore.class.getName();
-
-    /**
-     * Get tracked entity form of a program
-     *
-     * @param program Program
-     * @return TrackedEntityForm
-     */
-    TrackedEntityForm get( Program program );
-
-    /**
-     * Get tracked entity form which doesn't belong to any program
-     *
-     * @return TrackedEntityForm
-     */
-    TrackedEntityForm getFormsWithoutProgram();
 }

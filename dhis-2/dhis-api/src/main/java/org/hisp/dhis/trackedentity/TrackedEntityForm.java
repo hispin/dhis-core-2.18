@@ -28,18 +28,29 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.program.Program;
+
+import java.util.Objects;
 
 /**
  * @author Chau Thu Tran
  */
+@JacksonXmlRootElement( localName = "trackedEntityForm", namespace = DxfNamespaces.DXF_2_0 )
 public class TrackedEntityForm
     extends BaseIdentifiableObject
 {
     private static final long serialVersionUID = -6000530171659755186L;
-    
+
     private Program program;
 
     private DataEntryForm dataEntryForm;
@@ -63,12 +74,14 @@ public class TrackedEntityForm
         this.dataEntryForm = dataEntryForm;
     }
 
-    // TODO implement hashCode and equals
-
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( localName = "program", namespace = DxfNamespaces.DXF_2_0 )
     public Program getProgram()
     {
         return program;
@@ -79,6 +92,9 @@ public class TrackedEntityForm
         this.program = program;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( localName = "dataEntryForm", namespace = DxfNamespaces.DXF_2_0 )
     public DataEntryForm getDataEntryForm()
     {
         return dataEntryForm;
@@ -89,4 +105,30 @@ public class TrackedEntityForm
         this.dataEntryForm = dataEntryForm;
     }
 
+    @Override
+    public int hashCode()
+    {
+        return 31 * super.hashCode() + Objects.hash( program, dataEntryForm );
+    }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( this == obj )
+        {
+            return true;
+        }
+        if ( obj == null || getClass() != obj.getClass() )
+        {
+            return false;
+        }
+        if ( !super.equals( obj ) )
+        {
+            return false;
+        }
+
+        final TrackedEntityForm other = (TrackedEntityForm) obj;
+
+        return Objects.equals( this.program, other.program ) && Objects.equals( this.dataEntryForm, other.dataEntryForm );
+    }
 }

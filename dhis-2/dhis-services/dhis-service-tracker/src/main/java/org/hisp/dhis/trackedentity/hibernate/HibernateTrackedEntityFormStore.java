@@ -29,7 +29,7 @@ package org.hisp.dhis.trackedentity.hibernate;
  */
 
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.trackedentity.TrackedEntityForm;
 import org.hisp.dhis.trackedentity.TrackedEntityFormStore;
@@ -38,7 +38,7 @@ import org.hisp.dhis.trackedentity.TrackedEntityFormStore;
  * @author Chau Thu Tran
  */
 public class HibernateTrackedEntityFormStore
-    extends HibernateGenericStore<TrackedEntityForm>
+    extends HibernateIdentifiableObjectStore<TrackedEntityForm>
     implements TrackedEntityFormStore
 {
     @Override
