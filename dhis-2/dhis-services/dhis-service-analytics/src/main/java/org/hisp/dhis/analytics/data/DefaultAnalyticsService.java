@@ -578,6 +578,8 @@ public class DefaultAnalyticsService
 
         Map<String, Double> valueMap = getAggregatedDataValueMapping( grid );
 
+        log.info( "Got aggregated values for table layout" );
+        
         return reportTable.getGrid( new ListGrid( grid.getMetaData() ), valueMap, false );
     }
 
