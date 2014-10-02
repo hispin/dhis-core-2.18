@@ -35,6 +35,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
@@ -43,17 +45,11 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@SuppressWarnings( "unchecked" )
 public class DataElementGroupStoreTest
     extends DhisSpringTest
 {
+    @Resource(name="org.hisp.dhis.dataelement.DataElementGroupStore")
     private GenericIdentifiableObjectStore<DataElementGroup> dataElementGroupStore;
-    
-    @Override
-    public void setUpTest()
-    {
-        dataElementGroupStore = (GenericIdentifiableObjectStore<DataElementGroup>) getBean( "org.hisp.dhis.dataelement.DataElementGroupStore" );
-    }
     
     @Test
     public void testAddDataElementGroup()
