@@ -1,4 +1,4 @@
-package org.hisp.dhis.trackedentity;
+package org.hisp.dhis.schema.descriptors;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,29 +28,38 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.program.Program;
+import com.google.common.collect.Lists;
+import org.hisp.dhis.schema.Authority;
+import org.hisp.dhis.schema.AuthorityType;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaDescriptor;
+import org.hisp.dhis.trackedentity.TrackedEntityForm;
+import org.springframework.stereotype.Component;
 
 /**
- * @author Chau Thu Tran
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface TrackedEntityFormStore
-    extends GenericIdentifiableObjectStore<TrackedEntityForm>
+@Component
+public class TrackedEntityFormSchemaDescriptor implements SchemaDescriptor
 {
-    String ID = TrackedEntityFormStore.class.getName();
+    public static final String SINGULAR = "trackedEntityForm";
 
-    /**
-     * Get tracked entity form of a program
-     *
-     * @param program Program
-     * @return TrackedEntityForm
-     */
-    TrackedEntityForm get( Program program );
+    public static final String PLURAL = "trackedEntityForms";
 
-    /**
-     * Get tracked entity form which doesn't belong to any program
-     *
-     * @return TrackedEntityForm
-     */
-    TrackedEntityForm getFormsWithoutProgram();
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
+    @Override
+    public Schema getSchema()
+    {
+        Schema schema = new Schema( TrackedEntityForm.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 1490 );
+        schema.setMetadata( false );
+
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_ADD_TRACKED_ENTITY_FORM" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.UPDATE, Lists.newArrayList( "F_ADD_TRACKED_ENTITY_FORM" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_ADD_TRACKED_ENTITY_FORM" ) ) );
+
+        return schema;
+    }
 }
