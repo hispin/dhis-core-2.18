@@ -20,7 +20,7 @@ function validateAddUpdateSqlView( mode ) {
         byId("updateSqlViewForm").submit();
       }
       else if( json.response == "input" ) {
-        setMessage(json.message);
+        setHeaderDelayMessage(json.message);
       }
     }
   );
@@ -56,7 +56,7 @@ function runSqlViewQuery( context ) {
       if( json.response == "success" ) {
         setHeaderDelayMessage(json.message);
       } else {
-        setMessage(json.message);
+    	  setHeaderDelayMessage(json.message);
       }
     }
   );
