@@ -28,26 +28,51 @@
                                    ng-blur="saveDatavalue(prStDe)" 
                                    name="foo"/>
                             <span ng-show="dataEntryOuterForm.submitted && dataEntryInnerForm.foo.$invalid" class="error">{{'number_required'| translate}}</span>
-                        </div>
-                        <div ng-switch-when="string">    
-                            <span ng-if="prStDe.dataElement.optionSet">
+                        </div>                        
+                        <div ng-switch-when="string">                            
+                            <div ng-if="prStDe.dataElement.optionSet">
+                                <div ng-if="!selectedProgram.dataEntryMethod || prStDe.dataElement.optionSet.options.length >= 7">
+                                    <input type="text"
+                                        ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
+                                        ng-model="currentEvent[prStDe.dataElement.id]" 
+                                        ng-required={{prStDe.compulsory}} 
+                                        typeahead="option.code as option.name for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                        typeahead-open-on-focus    
+                                        ng-blur="saveDatavalue(prStDe)" 
+                                        name="foo"/>
+                                </div>
+                                <div ng-if="selectedProgram.dataEntryMethod && prStDe.dataElement.optionSet.options.length < 7">
+                                    <label>                                        
+                                        <input type="radio"
+                                            ng-class='getInputNotifcationClass(prStDe.dataElement.id,true)'
+                                            name={{currentEvent[prStDe.dataElement.id]}}
+                                            ng-required={{prStDe.compulsory}} 
+                                            ng-model="currentEvent[prStDe.dataElement.id]"
+                                            ng-change="saveDatavalue(prStDe)" 
+                                            value=""> {{'no_value' | translate}}<br>                                       
+                                    </label><br>
+                                    <span ng-repeat="option in  prStDe.dataElement.optionSet.options">
+                                        <label>
+                                            <input type="radio"
+                                                ng-class='getInputNotifcationClass(prStDe.dataElement.id,true)'
+                                                name={{currentEvent[prStDe.dataElement.id]}}
+                                                ng-required={{prStDe.compulsory}} 
+                                                ng-model="currentEvent[prStDe.dataElement.id]"
+                                                ng-change="saveDatavalue(prStDe)" 
+                                                value={{option.code}}> {{option.name}}
+                                        </label><br>
+                                    </span>
+                                </div>                                    
+                            </div>
+                            <div ng-if="!prStDe.dataElement.optionSet">
                                 <input type="text"
-                                   ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
-                                   ng-model="currentEvent[prStDe.dataElement.id]" 
-                                   ng-required={{prStDe.compulsory}} 
-                                   typeahead="option.code as option.name for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
-                                   typeahead-open-on-focus    
-                                   ng-blur="saveDatavalue(prStDe)" 
-                                   name="foo"/>
-                            </span>
-                            <span ng-if="!prStDe.dataElement.optionSet">
-                                <input type="text"
-                                   ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
-                                   ng-model="currentEvent[prStDe.dataElement.id]" 
-                                   ng-required={{prStDe.compulsory}}
-                                   ng-blur="saveDatavalue(prStDe)" 
-                                   name="foo"/>
-                            </span>                            
+                                    ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
+                                    ng-model="currentEvent[prStDe.dataElement.id]" 
+                                    ng-required={{prStDe.compulsory}}
+                                    ng-blur="saveDatavalue(prStDe)" 
+                                    name="foo"/>
+                            </div>
+                           
                         </div>
                         <div ng-switch-when="bool">
                             <select ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
@@ -78,7 +103,6 @@
                                    ng-required={{prStDe.compulsory}}
                                    ng-change="saveDatavalue(prStDe)" 
                                    name="foo"/>
-                            <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
                         </div>
                     </div>
                 </ng-form>                            
@@ -87,7 +111,8 @@
                 <div class="align-center" ng-show="prStDe.allowProvidedElsewhere">
                     <input type="checkbox" 
                            ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]"
-                           ng-change="saveDatavalueLocation(prStDe)"/>                </div>
+                           ng-change="saveDatavalueLocation(prStDe)"/>                
+                </div>
             </td>
         </tr>
     </table>
