@@ -30,6 +30,7 @@ package org.hisp.dhis.dataelement;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,6 +54,9 @@ public class DataElementCategoryServiceTest
 
     private List<DataElementCategoryOption> categoryOptions;
 
+    @Autowired
+    private DataElementCategoryService categoryService;
+    
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -60,8 +64,6 @@ public class DataElementCategoryServiceTest
     @Override
     public void setUpTest()
     {
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
         categoryOptionA = createCategoryOption( 'A' );
         categoryOptionB = createCategoryOption( 'B' );
         categoryOptionC = createCategoryOption( 'C' );
