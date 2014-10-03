@@ -165,5 +165,8 @@
                 $checkbox.attr( "checked", "checked" );
             }
         });
+
+        // Cross-browser/OS checkbox alignment fix
+        $checkbox.css( { "vertical-align": "middle", "position": "relative", "bottom" : "1px" } );
     };
 })( jQuery );
