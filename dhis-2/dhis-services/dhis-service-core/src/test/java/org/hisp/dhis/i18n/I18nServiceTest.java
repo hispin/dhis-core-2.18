@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.junit.Before;
@@ -49,7 +49,7 @@ import org.junit.Test;
  * @author Lars Helge Overland
  */
 public class I18nServiceTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private I18nService i18nService;
 
@@ -64,12 +64,6 @@ public class I18nServiceTest
         i18nService = (I18nService) getBean( I18nService.ID );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-    }
-
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
     }
     
     // -------------------------------------------------------------------------
