@@ -2118,17 +2118,6 @@ Ext.onReady( function() {
                         return str || '';
                     }
 
-                        //if (config.htmlValue && isValue) {
-                            //return Ext.isNumber(parseFloat(config.htmlValue)) ? parseFloat(config.htmlValue).toString() : config.htmlValue;
-                        //}
-
-                        //if (config.value && isValue) {
-                            //return Ext.isNumber(parseFloat(config.value)) ? parseFloat(config.value).toString() : config.value;
-                        //}
-
-                        //return config.htmlValue || '';
-                    //};
-
 					if (!Ext.isObject(config)) {
 						return '';
 					}
