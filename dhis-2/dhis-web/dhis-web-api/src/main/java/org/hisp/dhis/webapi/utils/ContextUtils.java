@@ -201,6 +201,7 @@ public class ContextUtils
     {
         response.setStatus( statusCode );
         response.setContentType( CONTENT_TYPE_TEXT );
+        response.setHeader( HEADER_CACHE_CONTROL, "no-cache, no-store" );
 
         PrintWriter writer = null;
 

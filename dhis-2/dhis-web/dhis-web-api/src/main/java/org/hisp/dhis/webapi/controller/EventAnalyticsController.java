@@ -39,6 +39,7 @@ import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.webapi.utils.ContextUtils;
@@ -46,6 +47,7 @@ import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -348,5 +350,15 @@ public class EventAnalyticsController
         }
 
         return grid;
+    }
+
+    // -------------------------------------------------------------------------
+    // Exception handlers
+    // -------------------------------------------------------------------------
+
+    @ExceptionHandler( IllegalQueryException.class )
+    public void illegalQueryExceptionHandler( IllegalQueryException ex, HttpServletResponse response )
+    {
+        ContextUtils.conflictResponse( response, ex.getMessage() );
     }
 }
