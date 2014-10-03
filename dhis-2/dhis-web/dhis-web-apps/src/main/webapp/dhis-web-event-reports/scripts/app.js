@@ -381,37 +381,50 @@ Ext.onReady( function() {
             }
         });
 
-		Ext.define('Ext.ux.panel.DataElementOptionContainer', {
+		Ext.define('Ext.ux.panel.OrganisationUnitGroupSetContainer', {
 			extend: 'Ext.container.Container',
-			alias: 'widget.dataelementoptionpanel',
+			alias: 'widget.organisationunitgroupsetpanel',
 			layout: 'column',
             bodyStyle: 'border:0 none',
             style: 'margin: ' + margin,
+            addCss: function() {
+                var css = '.optionselector .x-boundlist-selected { background-color: #fff; border-color: #fff } \n';
+                css += '.optionselector .x-boundlist-selected.x-boundlist-item-over { background-color: #ddd; border-color: #ddd } \n';
+
+                Ext.util.CSS.createStyleSheet(css);
+            },
             getRecord: function() {
-				var valueArray = this.valueCmp.getValue().split(';'),
-					record = {};
+                var items = this.valueCmp.getValue(),
+					record = {
+                        dimension: this.dataElement.id,
+                        name: this.dataElement.name
+                    };
 
-				for (var i = 0; i < valueArray.length; i++) {
-					valueArray[i] = Ext.String.trim(valueArray[i]);
-				}
+                // array or object
+                for (var i = 0; i < items.length; i++) {
+                    if (Ext.isObject(items[i])) {
+                        items[i] = items[i].code;
+                    }
+                }
 
-				record.dimension = this.dataElement.id;
-				record.name = this.dataElement.name;
-
-				if (Ext.Array.clean(valueArray).length) {
-					record.filter = this.operatorCmp.getValue() + ':' + valueArray.join(';');
-				}
-
-				return record;
+                if (items.length) {
+                    record.filter = 'IN:' + items.join(';');
+                }
+                
+                return record;
             },
             setRecord: function(record) {
-				if (Ext.isString(record.filter) && record.filter) {
+				if (Ext.isString(record.filter) && record.filter.length) {
 					var a = record.filter.split(':');
 					this.valueCmp.setOptionValues(a[1].split(';'));
 				}
             },
             initComponent: function() {
-                var container = this;
+                var container = this,
+                    idProperty = 'code',
+                    nameProperty = 'name';
+
+                this.addCss();
 
                 this.nameCmp = Ext.create('Ext.form.Label', {
                     text: this.dataElement.name,
@@ -435,8 +448,8 @@ Ext.onReady( function() {
                     }
                 });
 
-                this.valueStore = Ext.create('Ext.data.Store', {
-					fields: ['id', 'name'],
+                this.searchStore = Ext.create('Ext.data.Store', {
+					fields: [idProperty, 'name'],
 					data: [],
 					loadOptionSet: function(optionSetId, key, pageSize) {
 						var store = this,
@@ -444,25 +457,28 @@ Ext.onReady( function() {
 
                         optionSetId = optionSetId || container.dataElement.optionSet.id;
 
-						if (key) {
-							params['key'] = key;
-						}
-                        
+						//if (key) {
+							//params['key'] = key;
+						//}
+
 						params['max'] = pageSize || 15;
 
 						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/optionSets/' + optionSetId + '/options.json',
+							url: ns.core.init.contextPath + '/api/optionSets/' + optionSetId + '.json?fields=options[' + idProperty + ',' + nameProperty + ']',
 							params: params,
 							disableCaching: false,
 							success: function(r) {
-								var options = Ext.decode(r.responseText).options;
+								var options = Ext.decode(r.responseText).options,
+                                    data = [];
 
-                                for (var i = 0; i < options.length; i++) {
-                                    options[i].id = options[i].name;
+                                for (var i = 0; i < options.length; i++) {
+                                    if (container.valueStore.findExact(idProperty, options[i][idProperty]) === -1) {
+                                        data.push(options[i]);
+                                    }
                                 }
-                                    
+
 								store.removeAll();
-                                store.loadData(options);
+                                store.loadData(data);
 
                                 container.triggerCmp.storage = Ext.clone(options);
 							}
@@ -477,12 +493,24 @@ Ext.onReady( function() {
 					}
 				});
 
+                // function
+                this.filterSearchStore = function() {
+                    var selected = container.valueCmp.getValue();
+
+                    container.searchStore.clearFilter();
+
+                    container.searchStore.filterBy(function(record) {
+                        return !Ext.Array.contains(selected, record.data[idProperty]);
+                    });
+                };
+
                 this.searchCmp = Ext.create('Ext.form.field.ComboBox', {
+                    multiSelect: true,
                     width: 62,
                     style: 'margin-bottom:0',
                     emptyText: 'Search..',
-                    valueField: 'id',
-                    displayField: 'name',
+                    valueField: idProperty,
+                    displayField: nameProperty,
                     hideTrigger: true,
                     delimiter: '; ',
                     enableKeyEvents: true,
@@ -490,15 +518,15 @@ Ext.onReady( function() {
                     listConfig: {
                         minWidth: 304
                     },
-                    store: this.valueStore,
+                    store: this.searchStore,
                     listeners: {
 						keyup: {
-							fn: function(cb) {
-								var value = cb.getValue(),
+							fn: function() {
+								var value = this.getValue(),
 									optionSetId = container.dataElement.optionSet.id;
 
 								// search
-								container.valueStore.loadOptionSet(optionSetId, value);
+								container.searchStore.loadOptionSet(optionSetId, value);
 
                                 // trigger
                                 if (!value || (Ext.isString(value) && value.length === 1)) {
@@ -506,17 +534,26 @@ Ext.onReady( function() {
 								}
 							}
 						},
-						select: function(cb) {
+						select: function() {
+                            var id = Ext.Array.from(this.getValue())[0];
 
                             // value
-							container.valueCmp.addOptionValue(cb.getValue());
+                            if (container.valueStore.findExact(idProperty, id) === -1) {
+                                container.valueStore.add(container.searchStore.getAt(container.searchStore.findExact(idProperty, id)).data);
+                            }
 
                             // search
-							cb.clearValue();
+                            this.select([]);
+
+                            // filter
+                            container.filterSearchStore();
 
                             // trigger
                             container.triggerCmp.enable();
-						}
+						},
+                        expand: function() {
+                            container.filterSearchStore();
+                        }
 					}
                 });
 
@@ -528,46 +565,68 @@ Ext.onReady( function() {
                     storage: [],
                     handler: function(b) {
                         if (b.storage.length) {
-							container.valueStore.removeAll();
-                            container.valueStore.add(Ext.clone(b.storage));
+							container.searchStore.removeAll();
+                            container.searchStore.add(Ext.clone(b.storage));
                         }
                         else {
-                            container.valueStore.loadOptionSet();
+                            container.searchStore.loadOptionSet();
                         }
                     }
                 });
 
-                this.valueCmp = Ext.create('Ext.form.field.Text', {
-					width: 226,
+                this.valueStore = Ext.create('Ext.data.Store', {
+					fields: ['id', 'name'],
+                    listeners: {
+                        add: function() {
+                            container.valueCmp.select(this.getRange());
+                        },
+                        remove: function() {
+                            container.valueCmp.select(this.getRange());
+                        }
+                    }
+                });
+
+                this.valueCmp = Ext.create('Ext.form.field.ComboBox', {
+                    multiSelect: true,
                     style: 'margin-bottom:0',
-					addOptionValue: function(option) {
-						var value = this.getValue();
-
-						if (value) {
-							var a = value.split(';');
-
-							for (var i = 0; i < a.length; i++) {
-								a[i] = Ext.String.trim(a[i]);
-							};
-
-							a = Ext.Array.clean(a);
-
-							value = a.join('; ');
-							value += '; ';
-						}
-
-						this.setValue(value += option);
-					},
+					width: 226,
+                    valueField: idProperty,
+                    displayField: nameProperty,
+                    emptyText: 'No selected items',
+                    editable: false,
+                    hideTrigger: true,
+                    store: container.valueStore,
+                    queryMode: 'local',
+                    listConfig: {
+                        cls: 'optionselector'
+                    },
                     setOptionValues: function(optionArray) {
-                        var value = '';
-
+                        var options = [];
+                        
                         for (var i = 0; i < optionArray.length; i++) {
-                            value += optionArray[i] + (i < (optionArray.length - 1) ? '; ' : '');
+                            options.push({
+                                code: optionArray[i],
+                                name: optionArray[i]
+                            });
                         }
 
-                        this.setValue(value);
+                        container.valueStore.removeAll();
+                        container.valueStore.loadData(options);
+
+                        this.setValue(options);
+                    },                            
+					listeners: {
+                        change: function(cmp, newVal, oldVal) {
+                            newVal = Ext.Array.from(newVal);
+                            oldVal = Ext.Array.from(oldVal);
+
+                            if (newVal.length < oldVal.length) {
+                                var id = Ext.Array.difference(oldVal, newVal)[0];
+                                container.valueStore.removeAt(container.valueStore.findExact(idProperty, id));
+                            }
+                        }
                     }
-				});
+                });
 
                 this.addCmp = Ext.create('Ext.button.Button', {
                     text: '+',
@@ -599,7 +658,8 @@ Ext.onReady( function() {
                 this.callParent();
             }
         });
-	}());
+
+    }());
 
 		// toolbar
     (function() {
@@ -2151,7 +2211,7 @@ Ext.onReady( function() {
 				// sync
 				favorite.rowTotals = favorite.showRowTotals;
 				delete favorite.showRowTotals;
-                
+
 				favorite.colTotals = favorite.showColTotals;
 				delete favorite.showColTotals;
 
@@ -3482,7 +3542,7 @@ Ext.onReady( function() {
 			load = function(dataElements) {
                 var attributes = attributeStorage[programId],
                     data = Ext.Array.clean([].concat(attributes || [], dataElements || []));
-                    
+
 				dataElementsByStageStore.loadData(data);
 
                 if (layout) {
@@ -3634,7 +3694,7 @@ Ext.onReady( function() {
         });
 
         addUxFromDataElement = function(element, index) {
-			var getUxType,            
+			var getUxType,
 				ux;
 
             element.type = element.type || element.valueType;
@@ -3642,7 +3702,7 @@ Ext.onReady( function() {
 
 			getUxType = function(element) {
 				if (Ext.isObject(element.optionSet) && Ext.isString(element.optionSet.id)) {
-					return 'Ext.ux.panel.DataElementOptionContainer';
+					return 'Ext.ux.panel.OrganisationUnitGroupSetContainer';
 				}
 
 				if (element.type === 'int' || element.type === 'number') {
@@ -3918,7 +3978,7 @@ Ext.onReady( function() {
                 dateFormat: ns.core.init.systemInfo.dateFormat
             });
         };
-        
+
         startDate = Ext.create('Ext.form.field.Text', {
 			fieldLabel: 'Start date',
 			labelAlign: 'top',
@@ -4780,7 +4840,7 @@ Ext.onReady( function() {
 				},
 				afterrender: function() {
 					this.getSelectionModel().select(0);
-                    
+
                     Ext.defer(function() {
                         data.expand();
                     }, 20);
@@ -6152,11 +6212,11 @@ Ext.onReady( function() {
 					},
 					success: function(r) {
 						var config = Ext.decode(r.responseText);
-                        
+
 						// sync
 						config.showRowTotals = config.rowTotals;
 						delete config.rowTotals;
-                        
+
 						config.showColTotals = config.colTotals;
 						delete config.colTotals;
 
@@ -6196,14 +6256,14 @@ Ext.onReady( function() {
 
                 // timing
                 ns.app.dateData = new Date();
-                
+
 				Ext.Ajax.request({
 					url: ns.core.init.contextPath + paramString,
 					disableCaching: false,
 					scope: this,
 					failure: function(r) {
 						//ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
-                        
+
 						web.mask.hide(ns.app.centerRegion);
 
                         alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
@@ -6814,7 +6874,7 @@ Ext.onReady( function() {
 				}
 			}
 		});
-        
+
         statusBar = Ext.create('Ext.ux.toolbar.StatusBar', {
             height: 27,
             listeners: {
