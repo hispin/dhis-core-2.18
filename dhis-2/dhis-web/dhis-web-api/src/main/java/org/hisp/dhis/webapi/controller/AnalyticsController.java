@@ -41,6 +41,7 @@ import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.DisplayProperty;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.webapi.utils.ContextUtils;
@@ -48,6 +49,7 @@ import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -278,5 +280,15 @@ public class AnalyticsController
         }
 
         return grid;
+    }
+
+    // -------------------------------------------------------------------------
+    // Exception handlers
+    // -------------------------------------------------------------------------
+
+    @ExceptionHandler( IllegalQueryException.class )
+    public void illegalQueryExceptionHandler( IllegalQueryException ex, HttpServletResponse response )
+    {
+        ContextUtils.conflictResponse( response, ex.getMessage() );
     }
 }
