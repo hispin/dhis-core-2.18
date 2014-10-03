@@ -5320,7 +5320,7 @@ Ext.onReady( function() {
                                 text: 'HTML (.html)',
                                 iconCls: 'ns-menu-item-tablelayout',
                                 handler: function() {
-                                    openTableLayoutTab('html', true);
+                                    openTableLayoutTab('html+css', true);
                                 }
                             },
                             {
