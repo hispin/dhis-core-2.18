@@ -422,7 +422,6 @@ public class TableAlteror
         executeSql( "update dataelement set zeroissignificant = false where zeroissignificant is null" );
         executeSql( "update organisationunit set haspatients = false where haspatients is null" );
         executeSql( "update dataset set expirydays = 0 where expirydays is null" );
-        executeSql( "update expression set nullifblank = true where nullifblank is null" );
         executeSql( "update eventchart set hidelegend = false where hidelegend is null" );
         executeSql( "update eventchart set regression = false where regression is null" );
         executeSql( "update eventchart set hidetitle = false where hidetitle is null" );
@@ -737,8 +736,8 @@ public class TableAlteror
         // validation rule group, new column alertbyorgunits
         executeSql( "UPDATE validationrulegroup SET alertbyorgunits=false WHERE alertbyorgunits IS NULL" );
         
-        executeSql( "update expression set missingvaluestrategy = 'SKIP_IF_ANY_VALUE_MISSING' where nullifblank = true or nullifblank is null" );
-        executeSql( "update expression set missingvaluestrategy = 'NEVER_SKIP' where nullifblank = false" );
+        executeSql( "update expression set missingvaluestrategy = 'SKIP_IF_ANY_VALUE_MISSING' where missingvaluestrategy is null and (nullifblank is true or nullifblank is null)" );
+        executeSql( "update expression set missingvaluestrategy = 'NEVER_SKIP' where missingvaluestrategy is null nullifblank is false" );
         executeSql( "alter table expression alter column missingvaluestrategy set not null" );
         executeSql( "alter table expression drop column nullifblank" );
 
