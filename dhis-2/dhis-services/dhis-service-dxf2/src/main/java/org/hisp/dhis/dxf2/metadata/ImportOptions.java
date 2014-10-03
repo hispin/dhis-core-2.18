@@ -32,10 +32,16 @@ import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.importexport.ImportStrategy;
 
 /**
+ * The idScheme is a general setting which will apply to all objects. The idSchemes
+ * can also be defined for specific objects such as dataElementIdScheme. The
+ * general setting will override specific settings.
+ * 
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class ImportOptions
 {
+    private IdentifiableProperty idScheme;
+    
     private IdentifiableProperty dataElementIdScheme = IdentifiableProperty.UID;
 
     private IdentifiableProperty orgUnitIdScheme = IdentifiableProperty.UID;
@@ -80,16 +86,21 @@ public class ImportOptions
     // Get methods
     //--------------------------------------------------------------------------
 
+    public IdentifiableProperty getIdScheme()
+    {
+        return idScheme != null ? idScheme : IdentifiableProperty.UID;
+    }
+
     public IdentifiableProperty getDataElementIdScheme()
     {
-        return dataElementIdScheme != null ? dataElementIdScheme : IdentifiableProperty.UID;
+        return idScheme != null ? idScheme : ( dataElementIdScheme != null ? dataElementIdScheme : IdentifiableProperty.UID );
     }
 
     public IdentifiableProperty getOrgUnitIdScheme()
     {
-        return orgUnitIdScheme != null ? orgUnitIdScheme : IdentifiableProperty.UID;
+        return idScheme != null ? idScheme : ( orgUnitIdScheme != null ? orgUnitIdScheme : IdentifiableProperty.UID );
     }
-
+    
     public boolean isDryRun()
     {
         return dryRun;
@@ -113,6 +124,11 @@ public class ImportOptions
     //--------------------------------------------------------------------------
     // Set methods
     //--------------------------------------------------------------------------
+
+    public void setIdScheme( String scheme )
+    {
+        this.idScheme = scheme != null ? IdentifiableProperty.valueOf( scheme.toUpperCase() ) : null;
+    }
 
     public void setDataElementIdScheme( String scheme )
     {
@@ -162,7 +178,7 @@ public class ImportOptions
     @Override
     public String toString()
     {
-        return "[data element id scheme: " + dataElementIdScheme + ", org unit id scheme: " +
+        return "[General id scheme: " + idScheme + ", data element id scheme: " + dataElementIdScheme + ", org unit id scheme: " +
             orgUnitIdScheme + ", dry run: " + dryRun + ", async: " + async + ", strategy: " + importStrategy + ", skip check: " + skipExistingCheck + "]";
     }
 }

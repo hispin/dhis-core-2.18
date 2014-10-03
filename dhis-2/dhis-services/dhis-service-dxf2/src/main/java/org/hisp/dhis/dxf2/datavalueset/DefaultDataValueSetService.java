@@ -508,13 +508,16 @@ public class DefaultDataValueSetService
 
         importOptions = importOptions != null ? importOptions : ImportOptions.getDefaultImportOptions();
 
-        IdentifiableProperty dataElementIdScheme = dataValueSet.getDataElementIdScheme() != null ?
-            IdentifiableProperty.valueOf( dataValueSet.getDataElementIdScheme().toUpperCase() ) :
-            importOptions.getDataElementIdScheme();
+        IdentifiableProperty dataElementIdScheme = dataValueSet.getDataElementIdSchemeProperty() != null ?
+            dataValueSet.getDataElementIdSchemeProperty() : importOptions.getDataElementIdScheme();
             
-        IdentifiableProperty orgUnitIdScheme = dataValueSet.getOrgUnitIdScheme() != null ?
-            IdentifiableProperty.valueOf( dataValueSet.getOrgUnitIdScheme().toUpperCase() ) :
-            importOptions.getOrgUnitIdScheme();
+        IdentifiableProperty orgUnitIdScheme = dataValueSet.getOrgUnitIdSchemeProperty() != null ?
+            dataValueSet.getOrgUnitIdSchemeProperty() : importOptions.getOrgUnitIdScheme();
+            
+        IdentifiableProperty idScheme = dataValueSet.getIdSchemeProperty() != null ?
+            dataValueSet.getIdSchemeProperty() : importOptions.getIdScheme();
+        
+        log.info( "Data element scheme: " + dataElementIdScheme + ", org unit scheme: " + orgUnitIdScheme + ", scheme: " + idScheme );
             
         boolean dryRun = dataValueSet.getDryRun() != null ? dataValueSet.getDryRun() : importOptions.isDryRun();
         
@@ -526,10 +529,10 @@ public class DefaultDataValueSetService
 
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
         Map<String, OrganisationUnit> orgUnitMap = orgUnitIdScheme == UUID ? getUuidOrgUnitMap() : identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
-        Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID );
+        Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, idScheme );
         Map<String, Period> periodMap = new HashMap<>();
 
-        DataSet dataSet = dataValueSet.getDataSet() != null ? identifiableObjectManager.getObject( DataSet.class, IdentifiableProperty.UID, dataValueSet.getDataSet() ) : null;
+        DataSet dataSet = dataValueSet.getDataSet() != null ? identifiableObjectManager.getObject( DataSet.class, idScheme, dataValueSet.getDataSet() ) : null;
         Date completeDate = getDefaultDate( dataValueSet.getCompleteDate() );
 
         Period outerPeriod = PeriodType.getPeriodFromIsoString( trimToNull( dataValueSet.getPeriod() ) );
@@ -548,7 +551,7 @@ public class DefaultDataValueSetService
         }
 
         DataElementCategoryOptionCombo outerAttrOptionCombo = dataValueSet.getAttributeOptionCombo() != null ?
-            identifiableObjectManager.getObject( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID, trimToNull( dataValueSet.getAttributeOptionCombo() ) ) : null;
+            identifiableObjectManager.getObject( DataElementCategoryOptionCombo.class, idScheme, trimToNull( dataValueSet.getAttributeOptionCombo() ) ) : null;
 
         if ( dataSet != null && completeDate != null )
         {
