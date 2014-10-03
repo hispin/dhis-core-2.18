@@ -366,6 +366,11 @@ a.alert, .alert
   background-color: #ebf0f6;
 }
 
+.list-row-selected td
+{
+  background-color: #fff4cb;
+}
+
 .recipientsDiv
 { 
   width: 660px;

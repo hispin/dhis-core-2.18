@@ -130,23 +130,18 @@
             }
 
             el.click( function() {
-                var checked = getCheckedValues( $checkboxContainer );
-
-                $checkbox.removeAttr( "checked" );
-                $slaveCheckboxes.removeAttr( "checked" );
-
-                return window[ el.action ]( checked );
+                return window[ el.action ]( getCheckedValues( $checkboxContainer ) );
             });
         });
 
         $checkbox.click( function( event ) {
             if( this.checked )
             {
-                $slaveCheckboxes.attr( "checked", "checked" );
+                $slaveCheckboxes.attr( "checked", "checked" ).trigger( "change" );
             }
             else
             {
-                $slaveCheckboxes.removeAttr( "checked" );
+                $slaveCheckboxes.removeAttr( "checked" ).trigger( "change" );
             }
             event.stopPropagation();
         });
@@ -156,14 +151,17 @@
 
             if( checked.length < 1 )
             {
+                $checkbox.prop( "indeterminate", false );
                 $checkbox.removeAttr( "checked" );
             }
             else if( checked.length > 0 && checked.length < $slaveCheckboxes.length )
             {
                 $checkbox.removeAttr( "checked" );
+                $checkbox.prop( "indeterminate", true );
             }
             else
             {
+                $checkbox.prop( "indeterminate", false );
                 $checkbox.attr( "checked", "checked" );
             }
         });
