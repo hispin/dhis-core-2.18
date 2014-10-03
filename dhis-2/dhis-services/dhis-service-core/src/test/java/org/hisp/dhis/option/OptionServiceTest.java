@@ -34,14 +34,14 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  */
 public class OptionServiceTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private OptionService optionService;
 
@@ -77,12 +77,6 @@ public class OptionServiceTest
         optionSetB.setOptions( options );
     }
     
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
-
     @Test
     public void testSaveGet()
     {

@@ -75,7 +75,6 @@ import org.junit.Test;
 /**
  * @author Lars Helge Overland
  * @author Jim Grace
- * @version $Id$
  */
 public class ValidationRuleServiceTest
     extends DhisTest
@@ -443,9 +442,9 @@ public class ValidationRuleServiceTest
     {
         return true;
     }
-
+    
     // -------------------------------------------------------------------------
-    // Local convenience routines
+    // Local convenience methods
     // -------------------------------------------------------------------------
 
     /**

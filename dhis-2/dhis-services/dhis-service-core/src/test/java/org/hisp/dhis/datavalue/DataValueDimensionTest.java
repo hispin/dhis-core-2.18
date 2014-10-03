@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -55,7 +55,7 @@ import org.junit.Test;
  * @author Lars Helge Overland
  */
 public class DataValueDimensionTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private DataElementCategoryOption male;
     private DataElementCategoryOption female;
@@ -133,13 +133,7 @@ public class DataValueDimensionTest
             dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "10", categoryOptionCombo, defaultOptionCombo ) );
         }
     }
-    
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
-    
+        
     @Test
     public void testGetDimensions()
     {

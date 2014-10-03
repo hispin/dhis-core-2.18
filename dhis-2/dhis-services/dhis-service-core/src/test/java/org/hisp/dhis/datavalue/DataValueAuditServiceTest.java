@@ -28,7 +28,15 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisTest;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
+import java.util.Date;
+
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.AuditType;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -40,19 +48,11 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.junit.Test;
 
-import java.util.Collection;
-import java.util.Date;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
 /**
  * Created by Halvdan Hoem Grelland
  */
 public class DataValueAuditServiceTest
-        extends DhisTest
+    extends DhisSpringTest
 {
     // -------------------------------------------------------------------------
     // Supporting data
@@ -158,12 +158,6 @@ public class DataValueAuditServiceTest
         dataValueService.addDataValue( dataValueB );
         dataValueService.addDataValue( dataValueC );
         dataValueService.addDataValue( dataValueD );
-    }
-
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
     }
 
     // -------------------------------------------------------------------------
