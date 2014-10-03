@@ -9,7 +9,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     var store = new dhis2.storage.Store({
         name: "dhis2tc",
         adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-        objectStores: ['trackerCapturePrograms', 'programStages', 'trackedEntities','attributes','optionSets']
+        objectStores: ['trackerCapturePrograms', 'programStages', 'trackedEntities', 'trackedEntityForms', 'attributes','optionSets']
     });
     return{
         currentStore: store
@@ -251,7 +251,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };   
 })
 
-/* Service for getting tracked entity instances */
+/* Service for getting tracked entity */
 .factory('TEService', function(StorageService, $q, $rootScope) {
 
     return {
@@ -273,6 +273,25 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             
             StorageService.currentStore.open().done(function(){
                 StorageService.currentStore.get('trackedEntities', uid).done(function(te){                    
+                    $rootScope.$apply(function(){
+                        def.resolve(te);
+                    });
+                });
+            });                        
+            return def.promise;            
+        }
+    };
+})
+
+/* Service for getting tracked entity Form */
+.factory('TEFormService', function(StorageService, $q, $rootScope) {
+
+    return {
+        getByProgram: function(programUid){            
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.get('trackedEntityForms', programUid).done(function(te){                    
                     $rootScope.$apply(function(){
                         def.resolve(te);
                     });
