@@ -100,8 +100,12 @@ function toggleMessagesRead( messageUids )
     for( var i = 0; i < messageUids.length; i++ )
     {
         messages.find( "[name='" + messageUids[i] + "']" ).toggleClass( "unread bold" );
-        messages.find( "input:checkbox" ).removeAttr( "checked" );
     }
+}
+
+function toggleRowSelected( element )
+{
+    $( element ).closest( "tr" ).toggleClass( "list-row-selected", element.checked );
 }
 
 function read( id )
