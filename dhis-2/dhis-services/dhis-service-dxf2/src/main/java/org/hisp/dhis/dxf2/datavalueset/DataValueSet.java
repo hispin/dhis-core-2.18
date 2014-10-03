@@ -28,21 +28,27 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.dxf2.datavalue.DataValue;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.dxf2.datavalue.DataValue;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+/**
+ * @author Lars Helge Overland
+ */
 @JacksonXmlRootElement(localName = "dataValueSet", namespace = DxfNamespaces.DXF_2_0)
 public class DataValueSet
 {
@@ -50,6 +56,8 @@ public class DataValueSet
     // Options
     //--------------------------------------------------------------------------
 
+    protected String idScheme;
+    
     protected String dataElementIdScheme;
 
     protected String orgUnitIdScheme;
@@ -85,6 +93,19 @@ public class DataValueSet
     //--------------------------------------------------------------------------
     // Getters and setters
     //--------------------------------------------------------------------------
+
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    public String getIdScheme()
+    {
+        return idScheme;
+    }
+
+    public void setIdScheme( String idScheme )
+    {
+        this.idScheme = idScheme;
+    }
 
     @JsonProperty
     @JsonView({ DetailedView.class, ExportView.class })
@@ -256,6 +277,29 @@ public class DataValueSet
     public void close()
     {
     }
+
+    public IdentifiableProperty getIdSchemeProperty()
+    {
+        return idScheme != null ? IdentifiableProperty.valueOf( idScheme.toUpperCase() ) : null;
+    }
+    
+    public IdentifiableProperty getDataElementIdSchemeProperty()
+    {
+        String scheme = defaultIfEmpty( idScheme, dataElementIdScheme );
+        
+        return scheme != null ? IdentifiableProperty.valueOf( scheme.toUpperCase() ) : null;
+    }
+
+    public IdentifiableProperty getOrgUnitIdSchemeProperty()
+    {
+        String scheme = defaultIfEmpty( idScheme, orgUnitIdScheme );
+        
+        return scheme != null ? IdentifiableProperty.valueOf( scheme.toUpperCase() ) : null;
+    }
+
+    //--------------------------------------------------------------------------
+    // toString
+    //--------------------------------------------------------------------------
 
     @Override
     public String toString()

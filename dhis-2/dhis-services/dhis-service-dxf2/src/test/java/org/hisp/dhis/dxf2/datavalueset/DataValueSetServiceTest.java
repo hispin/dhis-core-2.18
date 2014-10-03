@@ -64,6 +64,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 
+/**
+ * @author Lars Helge Overland
+ */
 public class DataValueSetServiceTest
     extends DhisTest
 {

@@ -64,6 +64,7 @@ public class DefaultExportService
     implements ExportService
 {
     private static final Log log = LogFactory.getLog( DefaultExportService.class );
+    
     //-------------------------------------------------------------------------------------------------------
     // Dependencies
     //-------------------------------------------------------------------------------------------------------
