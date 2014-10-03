@@ -10,6 +10,7 @@ trackerCapture.controller('EnrollmentController',
                 AttributesFactory,
                 CurrentSelection,
                 TEIService,
+                TEFormService,
                 EnrollmentService,
                 TranslationService,
                 ModalService,
@@ -122,7 +123,22 @@ trackerCapture.controller('EnrollmentController',
            $scope.broadCastSelections('mainDashboard');
         }
         $scope.showEnrollmentDiv = !$scope.showEnrollmentDiv;
-    };    
+        
+        if($scope.showEnrollmentDiv){
+            
+            $scope.selectedProgram.hasCustomForm = false;
+            $scope.registrationForm = '';
+            TEFormService.getByProgram($scope.selectedProgram.id).then(function(teForm){
+                if(angular.isObject(teForm)){
+                    $scope.selectedProgram.hasCustomForm = true;
+                    $scope.registrationForm = teForm;
+                }                
+                $scope.selectedProgram.displayCustomForm = $scope.selectedProgram.hasCustomForm ? true:false;
+                
+                console.log('The program is:  ', $scope.selectedProgram);
+            });
+        }
+    };
        
     $scope.showReScheduling = function(){        
         $scope.showReSchedulingDiv = !$scope.showReSchedulingDiv;

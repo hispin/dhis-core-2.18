@@ -23,7 +23,7 @@ var TRACKER_VALUES = 'TRACKER_VALUES';
 dhis2.tc.store = new dhis2.storage.Store({
     name: TC_STORE_NAME,
     adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-    objectStores: ['trackerCapturePrograms', 'programStages', 'trackedEntities', 'attributes', 'relationshipTypes', 'optionSets']
+    objectStores: ['trackerCapturePrograms', 'programStages', 'trackedEntities', 'trackedEntityForms', 'attributes', 'relationshipTypes', 'optionSets']
 });
 
 (function($) {
@@ -66,7 +66,9 @@ $(document).ready(function()
         promise = promise.then( getMetaPrograms );     
         promise = promise.then( getPrograms );     
         promise = promise.then( getProgramStages );    
-        promise = promise.then( getOptionSetsForPrograms );    
+        promise = promise.then( getOptionSetsForPrograms );
+        promise = promise.then( getMetaTrackedEntityForms );
+        promise = promise.then( getTrackedEntityForms );        
         promise.done(function() {
             selection.responseReceived();
         });
@@ -520,6 +522,102 @@ function getOptionSet( id )
         }).done( function( response ){            
             _.each( _.values( response.optionSets ), function( optionSet ) {                
                 dhis2.tc.store.set( 'optionSets', optionSet );
+            });
+        });
+    };
+}
+
+
+function getMetaTrackedEntityForms()
+{
+    var def = $.Deferred();
+
+    $.ajax({
+        url: '../api/trackedEntityForms.json',
+        type: 'GET',
+        data:'paging=false&fields=id,program[id]'
+    }).done( function(response) {          
+        var trackedEntityForms = [];
+        _.each( _.values( response.trackedEntityForms ), function ( trackedEntityForm ) { 
+            if( trackedEntityForm &&
+                trackedEntityForm.id &&
+                trackedEntityForm.program &&
+                trackedEntityForm.program.id ) {
+            
+                trackedEntityForms.push( trackedEntityForm );
+            }  
+            
+        });
+        
+        def.resolve( trackedEntityForms );
+    });
+    
+    return def.promise(); 
+    
+}
+
+function getTrackedEntityForms( trackedEntityForms )
+{
+    if( !trackedEntityForms ){
+        return;
+    }
+    
+    var mainDef = $.Deferred();
+    var mainPromise = mainDef.promise();
+
+    var def = $.Deferred();
+    var promise = def.promise();
+
+    var builder = $.Deferred();
+    var build = builder.promise();
+
+    _.each( _.values( trackedEntityForms ), function ( trackedEntityForm ) {
+        build = build.then(function() {
+            var d = $.Deferred();
+            var p = d.promise();
+            dhis2.tc.store.get('trackedEntityForms', trackedEntityForm.program.id).done(function(obj) {
+                if(!obj) {
+                    promise = promise.then( getTrackedEntityForm( trackedEntityForm.id ) );
+                }
+                d.resolve();
+            });
+
+            return p;
+        });
+    });
+
+    build.done(function() {
+        def.resolve();
+
+        promise = promise.done( function () {
+            mainDef.resolve();
+        } );
+    });
+
+    builder.resolve();
+
+    return mainPromise;
+}
+
+function getTrackedEntityForm( id )
+{
+    return function() {
+        return $.ajax( {
+            url: '../api/trackedEntityForms.json',
+            type: 'GET',
+            data: 'paging=false&filter=id:eq:' + id +'&fields=id,program[id,name],dataEntryForm[name,htmlCode]'
+        }).done( function( response ){
+            
+            _.each( _.values( response.trackedEntityForms ), function ( trackedEntityForm ) { 
+                
+                if( trackedEntityForm &&
+                    trackedEntityForm.id &&
+                    trackedEntityForm.program &&
+                    trackedEntityForm.program.id ) {
+
+                    trackedEntityForm.id = trackedEntityForm.program.id;
+                    dhis2.tc.store.set( 'trackedEntityForms', trackedEntityForm );
+                }
             });
         });
     };
