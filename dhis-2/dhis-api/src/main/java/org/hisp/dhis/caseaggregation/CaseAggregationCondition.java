@@ -86,14 +86,24 @@ public class CaseAggregationCondition
 
     public static String OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE = "enrollmentDate";
 
-    public static String OBJECT_PROGRAM_PROPERTY_REPORT_DATE_DATE = "executionDate";
+    public static String OBJECT_PROGRAM_PROPERTY_REPORT_DATE = "executionDate";
 
     public static String MINUS_OPERATOR = "DATEDIFF";
-
-    public static String MINUS_DATAELEMENT_OPERATOR = "DEDATEDIFF";
     
-    public static String MINUS_ATTRIBUTE_OPERATOR = "ATTRDATEDIFF";
+    public static String MINUS_DATAELEMENT_OPERATOR_TYPE_ONE = "DEDATEDIFF_TYPE_ONE";
+    
+    public static String MINUS_DATAELEMENT_OPERATOR_TYPE_TWO = "DEDATEDIFF_TYPE_TWO";
+    
+    public static String MINUS_2DATAELEMENT_OPERATOR = "DE2DATEDIFF";
+    
+    public static String MINUS_2ATTRIBUTE_OPERATOR = "ATTR2DATEDIFF";
 
+    public static String MINUS_ATTRIBUTE_OPERATOR_TYPE_ONE = "ATTRDATEDIFF_TYPE_ONE";
+    
+    public static String MINUS_ATTRIBUTE_OPERATOR_TYPE_TWO = "ATTRDATEDIFF_TYPE_TWO";
+    
+    public static String CURRENT_DATE = "current_date";
+    
     public static String AUTO_STORED_BY = "aggregated_from_tracker";
     
     public static final String PARAM_PERIOD_START_DATE = "PERIOD_START_DATE";
@@ -102,24 +112,48 @@ public class CaseAggregationCondition
     public static final String PARAM_PERIOD_ISO_DATE = "PERIOD_ISO_DATE";
 
     public static final String regExp = "\\[(" + OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE + "|" + OBJECT_PROGRAM + "|"
-        + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PROGRAM_STAGE + "|" + OBJECT_TRACKED_ENTITY_PROGRAM_STAGE_PROPERTY
-        + "|" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_TRACKED_ENTITY_ATTRIBUTE + "|" + OBJECT_PROGRAM_PROPERTY + ")"
-        + SEPARATOR_OBJECT + "([a-zA-Z0-9@#\\- ]+[" + SEPARATOR_ID + "[a-zA-Z0-9]*]*)" + "\\]";
+        + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PROGRAM_STAGE + "|"
+        + OBJECT_TRACKED_ENTITY_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|"
+        + OBJECT_TRACKED_ENTITY_ATTRIBUTE + "|" + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT
+        + "([a-zA-Z0-9@#\\- ]+[" + SEPARATOR_ID + "[a-zA-Z0-9]*]*)" + "\\]";
 
-    public static final String dataelementRegExp = MINUS_OPERATOR + "{1}\\s*\\(\\s*(\\["
-        + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([0-9\\*]+" + SEPARATOR_ID + "[0-9\\*]+" + SEPARATOR_ID
-        + "[0-9]+)+\\])\\s*(,)+\\s*(" + OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE + "|"
-        + OBJECT_PROGRAM_PROPERTY_REPORT_DATE_DATE + "|" + OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE + ")+\\s*\\)\\s*";
+    // Date dataElement - currentDate/dateOfIncident/executionDate/enrollmentDate
+    public static final String minusDataelementRegExp1 = MINUS_OPERATOR + "{1}\\s*\\(\\s*\\["
+        + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([0-9]+)+" + SEPARATOR_ID + "([0-9]+)+" + SEPARATOR_ID
+        + "([0-9]+)+\\]\\s*(,)\\s*" + "(" + CURRENT_DATE + "|" + OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE + "|"
+        + OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE + "|" + OBJECT_PROGRAM_PROPERTY_REPORT_DATE
+        + ")\\s*\\)\\s*(>=|<=|!=|>|<|=){1}\\s*([0-9]+){1}";
 
-    public static final String minusDataelementRegExp = MINUS_DATAELEMENT_OPERATOR + "{1}\\s*\\(\\s*(\\["
+    // currentDate/dateOfIncident/executionDate/enrollmentDate - Date dataElement
+    public static final String minusDataelementRegExp2 = MINUS_OPERATOR + "{1}\\s*\\(\\s*(" + CURRENT_DATE + "|"
+        + OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE + "|" + OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE + "|"
+        + OBJECT_PROGRAM_PROPERTY_REPORT_DATE + ")\\s*(,)\\s*\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT
+        + "([0-9]+)+" + SEPARATOR_ID + "([0-9]+)+" + SEPARATOR_ID
+        + "([0-9]+)+\\]\\s*\\)\\s*(>=|<=|!=|>|<|=){1}\\s*([0-9]+){1}";
+
+    // Date dataElement - Date dataElement
+    public static final String minus2DataelementRegExp = MINUS_OPERATOR + "{1}\\s*\\(\\s*(\\["
         + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([0-9]+" + SEPARATOR_ID + "[0-9]+" + SEPARATOR_ID
         + "[0-9]+)+\\])\\s*(,)\\s*(\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([0-9]+"
         + SEPARATOR_ID + "[0-9]+" + SEPARATOR_ID + "[0-9]+)+\\])\\s*\\)\\s*(>=|<=|!=|>|<|=){1}\\s*([0-9]+)";
-    public static final String minusAttributeRegExp = MINUS_ATTRIBUTE_OPERATOR + "{1}\\s*\\(\\s*(\\["
-        + OBJECT_TRACKED_ENTITY_ATTRIBUTE + SEPARATOR_OBJECT + "([0-9]+)+\\])\\s*(,)\\s*(\\[" 
+
+    // currentDate/ dateOfIncident/executionDate/enrollmentDate - Date attribute
+    public static final String minusAttributeRegExp1 = MINUS_OPERATOR + "{1}\\s*\\(\\s*(" + CURRENT_DATE + "|"
+        + OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE + "|" + OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE + "|"
+        + OBJECT_PROGRAM_PROPERTY_REPORT_DATE + ")\\s*(,)\\s*\\[" + OBJECT_TRACKED_ENTITY_ATTRIBUTE + SEPARATOR_OBJECT
+        + "([0-9]+)+\\]\\s*\\)\\s(>=|<=|!=|>|<|=){1}\\s*([0-9]+){1}";
+
+    // Date attribute - currentDate/ dateOfIncident/executionDate/enrollmentDate
+    public static final String minusAttributeRegExp2 = MINUS_OPERATOR + "{1}\\s*\\(\\s*\\["
+        + OBJECT_TRACKED_ENTITY_ATTRIBUTE + SEPARATOR_OBJECT + "([0-9]+)+\\]\\s*(,)\\s*(" + CURRENT_DATE + "|"
+        + OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE + "|" + OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE + "|"
+        + OBJECT_PROGRAM_PROPERTY_REPORT_DATE + ")\\s*\\)\\s*(>=|<=|!=|>|<|=){1}\\s*([0-9]+){1}";
+
+    // Date attribute - Date attribute
+    public static final String minus2AttributeRegExp = MINUS_OPERATOR + "{1}\\s*\\(\\s*(\\["
+        + OBJECT_TRACKED_ENTITY_ATTRIBUTE + SEPARATOR_OBJECT + "([0-9]+)+\\])\\s*(,)\\s*(\\["
         + OBJECT_TRACKED_ENTITY_ATTRIBUTE + SEPARATOR_OBJECT + "([0-9]+)+\\])\\s*\\)\\s*(>=|<=|!=|>|<|=){1}\\s*([0-9]+)";
-
-
+    
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------

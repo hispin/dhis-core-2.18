@@ -294,6 +294,8 @@ public class TableAlteror
         updateProgramStageList();
         updateProgramAttributeList();
         
+        updateFixedAttributeInCaseAggregate( "DEDATEDIFF", CaseAggregationCondition.MINUS_OPERATOR );
+        
     }
 
     // -------------------------------------------------------------------------
@@ -359,7 +361,7 @@ public class TableAlteror
             holder.close();
         }
     }
-
+    
     private void updateProgramInstanceStatus()
     {
         // Set active status for events
@@ -506,7 +508,7 @@ public class TableAlteror
             holder.close();
         }
     }
-
+    
     private int executeSql( String sql )
     {
         try
