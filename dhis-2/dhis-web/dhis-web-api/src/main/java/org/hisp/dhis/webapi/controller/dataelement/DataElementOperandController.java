@@ -87,8 +87,6 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
             {
                 DataElementGroup dataElementGroup = manager.get( DataElementGroup.class, deGroup );
                 dataElementOperands = new ArrayList<>( categoryService.getFullOperands( dataElementGroup.getMembers() ) );
-
-                System.err.println( "operands:" + dataElementOperands );
             }
             else
             {
