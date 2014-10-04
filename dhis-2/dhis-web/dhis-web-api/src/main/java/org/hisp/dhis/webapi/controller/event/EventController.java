@@ -163,6 +163,12 @@ public class EventController
         if ( orgUnit != null )
         {
             rootOrganisationUnit = manager.get( OrganisationUnit.class, orgUnit );
+
+            if ( rootOrganisationUnit == null )
+            {
+                ContextUtils.conflictResponse( response, "Invalid orgUnit ID." );
+                return null;
+            }
         }
 
         if ( rootOrganisationUnit != null )
