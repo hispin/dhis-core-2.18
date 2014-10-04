@@ -466,7 +466,7 @@ public class HibernateCaseAggregationConditionStore
             sql += "GROUP BY ou.organisationunitid, ou.name";
             
         }
-
+        
         return sql;
     }
 
@@ -539,84 +539,165 @@ public class HibernateCaseAggregationConditionStore
         StringBuffer sqlResult = new StringBuffer();
 
         String sqlOrgunitCompleted = "";
+        
+        // Date dataElement - dateOfIncident/executionDate/enrollmentDate
 
-        // Get minus(DATE dataelement, DATE dataelement) out from the expression
-        // and run them later
+        Map<Integer, String> minusDe1SQLMap = new HashMap<>();
+        int idxDe1 = 0;
+        Pattern patternMinus = Pattern.compile( CaseAggregationCondition.minusDataelementRegExp1 );
+        Matcher matcherMinus = patternMinus.matcher( caseExpression );
+        while ( matcherMinus.find() )
+        {
+            String programIdStr = matcherMinus.group( 1 );
+            String programStageIdStr = matcherMinus.group( 2 );
+            String dataElementId = matcherMinus.group( 3 );
+            String dateProperty = matcherMinus.group( 5 );
+            String compareSide =  matcherMinus.group( 6 ) +  matcherMinus.group( 7 );
 
-        Map<Integer, String> minus2SQLMap = new HashMap<>();
-        int idx2 = 0;
-        Pattern patternMinus2 = Pattern.compile( CaseAggregationCondition.minusDataelementRegExp );
+            Integer programId = null;
+            Integer programStageId = null;
+            if( !programIdStr.equals(IN_CONDITION_GET_ALL))
+            {
+                programId =  Integer.parseInt( programIdStr );
+            }
+            
+            if( !programStageIdStr.equals(IN_CONDITION_GET_ALL))
+            {
+                programStageId =  Integer.parseInt( programStageIdStr );
+            }
+
+            minusDe1SQLMap.put(
+                idxDe1,
+                getConditionForMinusDataElement1( orgunitIds, programId, programStageId, Integer.parseInt( dataElementId ),
+                    dateProperty, compareSide ) );
+
+            caseExpression = caseExpression.replace( matcherMinus.group( 0 ), CaseAggregationCondition.MINUS_DATAELEMENT_OPERATOR_TYPE_ONE
+                + "_" + idxDe1 );
+
+            idxDe1++;
+        }
+        
+        // dateOfIncident/executionDate/enrollmentDate - Date dataElement
+
+        Map<Integer, String> minusDe2SQLMap = new HashMap<>();
+        int idxDe2 = 0;
+        Pattern patternDE1Map = Pattern.compile( CaseAggregationCondition.minusDataelementRegExp2 );
+        Matcher matcherMinusDE1 = patternDE1Map.matcher( caseExpression );
+        while ( matcherMinusDE1.find() )
+        {
+            String dateProperty = matcherMinusDE1.group( 1 );
+            String programIdStr = matcherMinusDE1.group( 3 );
+            String programStageIdStr = matcherMinusDE1.group( 4 );
+            String dataElementId = matcherMinusDE1.group( 5 );
+            String compareSide =  matcherMinusDE1.group( 6 ) +  matcherMinusDE1.group( 7 );
+            
+            Integer programId = null;
+            Integer programStageId = null;
+            if ( !programIdStr.equals( IN_CONDITION_GET_ALL ) )
+            {
+                programId = Integer.parseInt(programIdStr );
+            }
+
+            if ( !programStageIdStr.equals( IN_CONDITION_GET_ALL ) )
+            {
+                programStageId = Integer.parseInt( programStageIdStr );
+            }
+
+            minusDe2SQLMap.put(
+                idxDe2,
+                getConditionForMinusDataElement2( orgunitIds, programId, programStageId, Integer.parseInt( dataElementId ),
+                    dateProperty, compareSide ) );
+
+            caseExpression = caseExpression.replace( matcherMinusDE1.group( 0 ),
+                CaseAggregationCondition.MINUS_DATAELEMENT_OPERATOR_TYPE_TWO + "_" + idxDe2 );
+
+            idxDe2++;
+        }
+           
+        // Date dataElement - Date dataElement
+
+        Map<Integer, String> minus2DeSQLMap = new HashMap<>();
+        int idx2De = 0;
+        Pattern patternMinus2 = Pattern.compile( CaseAggregationCondition.minus2DataelementRegExp );
         Matcher matcherMinus2 = patternMinus2.matcher( caseExpression );
+        
         while ( matcherMinus2.find() )
         {
             String[] ids1 = matcherMinus2.group( 2 ).split( SEPARATOR_ID );
             String[] ids2 = matcherMinus2.group( 5 ).split( SEPARATOR_ID );
 
-            minus2SQLMap.put(
-                idx2,
+            minus2DeSQLMap.put(
+                idx2De,
                 getConditionForMisus2DataElement( orgunitIds, ids1[1], ids1[2], ids2[1], ids2[2],
                     matcherMinus2.group( 6 ) + matcherMinus2.group( 7 ) ) );
-
             caseExpression = caseExpression.replace( matcherMinus2.group( 0 ),
-                CaseAggregationCondition.MINUS_DATAELEMENT_OPERATOR + "_" + idx2 );
-
-            idx2++;
+                CaseAggregationCondition.MINUS_2DATAELEMENT_OPERATOR + "_" + idx2De );
+            
+            idx2De++;
         }
+        
+        // currentDate/ dateOfIncident/executionDate/enrollmentDate - Date attribute
 
-        // Get minus(DATE attribute, DATE attribute) out from the expression
-        // and run them later
+        Map<Integer, String> minusAttr1SQLMap = new HashMap<>();
+        int idxAttr1 = 0;
+        Pattern patternMinus3 = Pattern.compile( CaseAggregationCondition.minusAttributeRegExp1 );
+        Matcher matcherMinus3 = patternMinus3.matcher( caseExpression );
+        while ( matcherMinus3.find() )
+        {
+            String property = matcherMinus3.group( 1 );
+            String attributeId = matcherMinus3.group( 3 );
+            String compareSide = matcherMinus3.group( 4 ) + matcherMinus3.group( 5 );
+            minusAttr1SQLMap.put(
+                idxAttr1,
+                getConditionForMisusAttribute1( attributeId, property , compareSide ) );
 
-        Map<Integer, String> minus2AttributeSQLMap = new HashMap<>();
-        int idx1 = 0;
-        Pattern patternAttrMinus2 = Pattern.compile( CaseAggregationCondition.minusAttributeRegExp );
+            caseExpression = caseExpression.replace( matcherMinus3.group( 0 ),
+                CaseAggregationCondition.MINUS_ATTRIBUTE_OPERATOR_TYPE_ONE + "_" + idxAttr1 );
+
+            idxAttr1++;
+        }
+        
+        
+        // Date attribute - currentDate/ dateOfIncident/executionDate/enrollmentDate
+
+        Map<Integer, String> minusAttr2SQLMap = new HashMap<>();
+        int idxAttr2 = 0;
+        Pattern patternAttr2Minus = Pattern.compile( CaseAggregationCondition.minusAttributeRegExp2 );
+       
+        Matcher matcherAttr2Minus = patternAttr2Minus.matcher( caseExpression );
+        while ( matcherAttr2Minus.find() )
+        {
+            minusAttr2SQLMap.put(
+                idxAttr2,
+                getConditionForMisusAttribute2( matcherAttr2Minus.group( 1 ), matcherAttr2Minus.group( 3 ), matcherAttr2Minus.group( 4 ) + matcherAttr2Minus.group( 5 ) ) );
+
+            caseExpression = caseExpression.replace( matcherAttr2Minus.group( 0 ),
+                CaseAggregationCondition.MINUS_ATTRIBUTE_OPERATOR_TYPE_TWO + "_" + idxAttr2 );
+
+            idxAttr2++;
+        }
+        
+        
+        //  Date attribute - Date attribute
+
+        Map<Integer, String> minus2AttrSQLMap = new HashMap<>();
+        int idx2Attr = 0;
+        Pattern patternAttrMinus2 = Pattern.compile( CaseAggregationCondition.minus2AttributeRegExp );
         Matcher matcherAttrMinus2 = patternAttrMinus2.matcher( caseExpression );
         while ( matcherAttrMinus2.find() )
         {
             String attribute1 = matcherAttrMinus2.group( 2 );
             String attribute2 = matcherAttrMinus2.group( 5 );
             String compareSide = matcherAttrMinus2.group( 6 ) + matcherAttrMinus2.group( 7 );
-            minus2AttributeSQLMap.put( idx1, getConditionForMisus2Attribute( attribute1, attribute2, compareSide ) );
+            minus2AttrSQLMap.put( idx2Attr, getConditionForMisus2Attribute( attribute1, attribute2, compareSide ) );
 
             caseExpression = caseExpression.replace( matcherAttrMinus2.group( 0 ),
-                CaseAggregationCondition.MINUS_ATTRIBUTE_OPERATOR + "_" + idx1 );
+                CaseAggregationCondition.MINUS_2ATTRIBUTE_OPERATOR + "_" + idx2Attr );
 
-            idx1++;
+            idx2Attr++;
         }
 
-        // Get minus(date dataelement, date) out from the expression and run
-        // them later
-
-        Map<Integer, String> minusSQLMap = new HashMap<>();
-        int idx = 0;
-        Pattern patternMinus = Pattern.compile( CaseAggregationCondition.dataelementRegExp );
-        Matcher matcherMinus = patternMinus.matcher( caseExpression );
-        while ( matcherMinus.find() )
-        {
-            String[] ids = matcherMinus.group( 2 ).split( SEPARATOR_ID );
-
-            Integer programId = null;
-            Integer programStageId = null;
-            if( !ids[1].equals(IN_CONDITION_GET_ALL))
-            {
-                programId =  Integer.parseInt( ids[0] );
-            }
-            
-            if( !ids[1].equals(IN_CONDITION_GET_ALL))
-            {
-                programStageId =  Integer.parseInt( ids[1] );
-            }
-            
-            minusSQLMap.put(
-                idx,
-                getConditionForMinusDataElement( orgunitIds, programId, programStageId, Integer.parseInt( ids[2] ),
-                    matcherMinus.group( 4 ) ) );
-
-            caseExpression = caseExpression.replace( matcherMinus.group( 0 ), CaseAggregationCondition.MINUS_OPERATOR
-                + "_" + idx );
-
-            idx++;
-        }
-
+        
         // Run nornal expression
         String[] expression = caseExpression.split( "(AND|OR)" );
         caseExpression = caseExpression.replaceAll( "AND", " ) AND " );
@@ -722,24 +803,44 @@ public class HibernateCaseAggregationConditionStore
         sql = sql.replaceAll( IN_CONDITION_START_SIGN, "(" );
         sql = sql.replaceAll( IN_CONDITION_END_SIGN, ")" );
         sql = sql.replaceAll( IS_NULL, " " );
-
-        for ( int key = 0; key < idx; key++ )
+        for ( int i = 0; i < idxDe1; i++ )
         {
-            sql = sql.replace( CaseAggregationCondition.MINUS_OPERATOR + "_" + key, minusSQLMap.get( key ) );
+            sql = sql.replace( CaseAggregationCondition.MINUS_DATAELEMENT_OPERATOR_TYPE_ONE + "_" + i, minusDe1SQLMap.get( i ) );
         }
 
-        for ( int key = 0; key < idx2; key++ )
+
+        for ( int i = 0; i < idxDe2; i++ )
+        {
+            sql = sql.replace( CaseAggregationCondition.MINUS_DATAELEMENT_OPERATOR_TYPE_TWO + "_" + i,
+                minusDe2SQLMap.get( i ) );
+        }
+
+        for ( int i = 0; i < idx2De; i++ )
         {
             sql = sql
-                .replace( CaseAggregationCondition.MINUS_DATAELEMENT_OPERATOR + "_" + key, minus2SQLMap.get( key ) );
+                .replace( CaseAggregationCondition.MINUS_2DATAELEMENT_OPERATOR + "_" + i, minus2DeSQLMap.get( i ) );
         }
-
-        for ( int key = 0; key < idx1; key++ )
+        
+        for ( int i = 0; i < idxAttr1; i++ )
         {
-            sql = sql.replace( CaseAggregationCondition.MINUS_ATTRIBUTE_OPERATOR + "_" + key,
-                minus2AttributeSQLMap.get( key ) );
+            sql = sql
+                .replace( CaseAggregationCondition.MINUS_ATTRIBUTE_OPERATOR_TYPE_ONE + "_" + i, minusAttr1SQLMap.get( i ) );
         }
-
+        
+        for ( int i = 0; i < idxAttr2; i++ )
+        {
+            sql = sql
+                .replace( CaseAggregationCondition.MINUS_ATTRIBUTE_OPERATOR_TYPE_TWO + "_" + i, minusAttr2SQLMap.get( i ) );
+        }
+        
+        for ( int i = 0; i < idx2Attr; i++ )
+        {
+            sql = sql
+                .replace( CaseAggregationCondition.MINUS_2ATTRIBUTE_OPERATOR + "_" + i, minus2AttrSQLMap.get( i ) );
+        }
+        
+        sql = sql.replaceAll( CaseAggregationCondition.CURRENT_DATE, "now()");
+        
         return sql + " ) ";
     }
 
@@ -968,8 +1069,36 @@ public class HibernateCaseAggregationConditionStore
         return sql;
     }
 
-    private String getConditionForMinusDataElement( Collection<Integer> orgunitIds, Integer programId, Integer programStageId,
-        Integer dataElementId, String compareSide )
+    private String getConditionForMinusDataElement1( Collection<Integer> orgunitIds, Integer programId, Integer programStageId,
+        Integer dataElementId, String dateProperty, String compareSide )
+    {
+        String sql = " EXISTS ( SELECT _pdv.value FROM trackedentitydatavalue _pdv inner join programstageinstance _psi "
+            + "                         ON _pdv.programstageinstanceid=_psi.programstageinstanceid "
+            + "                 JOIN programinstance _pi ON _pi.programinstanceid=_psi.programinstanceid "
+            + "           WHERE psi.programstageinstanceid=_pdv.programstageinstanceid "
+            + "                  AND _pdv.dataelementid=" + dataElementId
+            + "                 AND _psi.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds )
+            + ") ";
+        
+        
+        if (programId != null) 
+        {
+            sql += " AND _pi.programid = " + programId;
+        }
+ 
+        if (programId != null)
+        {
+            sql += " AND _psi.programstageid = " + programStageId;
+        }
+               
+        sql += " AND ( _psi.executionDate BETWEEN '" + PARAM_PERIOD_START_DATE + "' AND '" + PARAM_PERIOD_END_DATE
+            + "') " + "                 AND ( DATE(_pdv.value) - DATE(" + dateProperty + ") " + compareSide + "  ) ";
+       
+       return sql;
+    }
+    
+    private String getConditionForMinusDataElement2( Collection<Integer> orgunitIds, Integer programId, Integer programStageId,
+        Integer dataElementId, String dateProperty, String compareSide )
     {
         String sql = " EXISTS ( SELECT _pdv.value FROM trackedentitydatavalue _pdv inner join programstageinstance _psi "
             + "                         ON _pdv.programstageinstanceid=_psi.programstageinstanceid "
@@ -991,7 +1120,7 @@ public class HibernateCaseAggregationConditionStore
         }
         
        sql += " AND ( _psi.executionDate BETWEEN '" + PARAM_PERIOD_START_DATE + "' AND '" + PARAM_PERIOD_END_DATE
-            + "') " + "                 AND ( DATE(_pdv.value) - DATE(" + compareSide + ") ) ";
+            + "') " + "                 AND ( DATE(" + dateProperty + ") - DATE(_pdv.value) " + compareSide + "  ) ";
        
        return sql;
     }
@@ -1002,7 +1131,7 @@ public class HibernateCaseAggregationConditionStore
         return " EXISTS ( SELECT * FROM ( SELECT _pdv.value FROM trackedentitydatavalue _pdv "
             + "                 INNER JOIN programstageinstance _psi ON _pdv.programstageinstanceid=_psi.programstageinstanceid "
             + "                 JOIN programinstance _pi ON _pi.programinstanceid=_psi.programinstanceid "
-            + "           WHERE psi.programstageinstanceid=_pdv.programstageinstanceid AND _pdv.dataelementid= "
+            + "           WHERE _pi.programinstanceid=pi.programinstanceid AND _pdv.dataelementid= "
             + dataElementId1
             + "                 AND _psi.organisationunitid in ("
             + TextUtils.getCommaDelimitedString( orgunitIds )
@@ -1018,7 +1147,7 @@ public class HibernateCaseAggregationConditionStore
             + "         (  SELECT _pdv.value FROM trackedentitydatavalue _pdv INNER JOIN programstageinstance _psi "
             + "                        ON _pdv.programstageinstanceid=_psi.programstageinstanceid "
             + "                  JOIN programinstance _pi ON _pi.programinstanceid=_psi.programinstanceid "
-            + "           WHERE psi.programstageinstanceid=_pdv.programstageinstanceid and _pdv.dataelementid= "
+            + "           WHERE _pi.programinstanceid=pi.programinstanceid and _pdv.dataelementid= "
             + dataElementId2
             + "                 AND _psi.organisationunitid in ("
             + TextUtils.getCommaDelimitedString( orgunitIds )
@@ -1042,6 +1171,48 @@ public class HibernateCaseAggregationConditionStore
             + " WHERE _teav.trackedentityinstanceid=p.trackedentityinstanceid  "
             + " and  _teav.trackedentityattributeid =  " + attribute2 + " ) as a2 "
             + " WHERE DATE(a1.value ) - DATE(a2.value) " + compareSide;
+    }
+    
+    private String getConditionForMisusAttribute1( String attribute, String dateProperty, String compareSide )
+    {
+        if( dateProperty.equals( CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE ) 
+            ||  dateProperty.equals( CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE ) )
+    {
+       return " EXISTS ( select * from trackedentityattributevalue _teav "
+           + "inner join programinstance _pi on _teav.trackedentityinstanceid=_pi.trackedentityinstanceid "
+           + "where _teav.trackedentityattributeid=" + attribute + " and date(" + dateProperty + ") - date(_teav.value) " + compareSide ;
+    }
+    else if( dateProperty.equals( CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY_REPORT_DATE ) )
+    {
+        return " EXISTS ( select * from trackedentityattributevalue _teav "
+            + "inner join programinstance _pi on _teav.trackedentityinstanceid=_pi.trackedentityinstanceid "
+            + "inner join programstageinstance _psi on _psi.programinstanceid=_pi.programinstanceid "
+            + "where _teav.trackedentityattributeid=" + attribute + " and date(" + dateProperty + ") - date(_teav.value) " + compareSide ;
+    }
+    
+     return " EXISTS (select * from trackedentityattributevalue _teav where _teav.trackedentityattributeid="
+        + attribute + " and date(now()) - date(_teav.value)  " + compareSide;
+    }
+    
+    private String getConditionForMisusAttribute2( String attribute, String dateProperty, String compareSide )
+    {
+        if( dateProperty.equals( CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE ) 
+                ||  dateProperty.equals( CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE ) )
+        {
+           return " EXISTS ( select * from trackedentityattributevalue _teav "
+               + "inner join programinstance _pi on _teav.trackedentityinstanceid=_pi.trackedentityinstanceid "
+               + "where _teav.trackedentityattributeid=" + attribute + " and date(_teav.value) - date(" + dateProperty + ") " + compareSide ;
+        }
+        else if( dateProperty.equals( CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY_REPORT_DATE ) )
+        {
+            return " EXISTS ( select * from trackedentityattributevalue _teav "
+                + "inner join programinstance _pi on _teav.trackedentityinstanceid=_pi.trackedentityinstanceid "
+                + "inner join programstageinstance _psi on _psi.programinstanceid=_pi.programinstanceid "
+                + "where _teav.trackedentityattributeid=" + attribute + " and date(_teav.value) - date(" + dateProperty + ") " + compareSide ;
+        }
+        
+         return " EXISTS (select * from trackedentityattributevalue _teav where _teav.trackedentityattributeid="
+            + attribute + " and date(_teav.value) - date(now()) " + compareSide;
     }
 
     /**

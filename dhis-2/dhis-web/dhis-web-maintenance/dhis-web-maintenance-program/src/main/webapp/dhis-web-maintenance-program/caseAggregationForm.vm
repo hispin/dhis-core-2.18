@@ -134,17 +134,18 @@
 			<tr>
 				<td>
 					<select id="programProperty" name="programProperty" size="10" ondblclick="insertInfo(this, false);" disabled>
+						<option value="enrollmentDate">$i18n.getString( "date_of_enrollment" )</option>
+						<option value="dateOfIncident">$i18n.getString( "date_of_incident" )</option>
 						<option value="[PG:*]">$i18n.getString( "program_enrollment" )</option>
-						<option value="[PG:*] AND [PP:DATE@enrollmentdate#-DATE@dateofincident#]">$i18n.getString( "date_of_enrollment" ) - $i18n.getString( "date_of_incident" )</option>
 					</select>
 				</td>
 				<td>
 					<select multiple id="programStageProperty" size="10" name="programStageProperty" ondblclick="insertInfo(this, true);" disabled >
+						<option value="executionDate">$i18n.getString( "report_date" )</option>
 						<option value="[PS:*]">$i18n.getString( "visit_selected_program_stage" )</option>
 						<option value="[PSIC:*]">$i18n.getString( "completed" )</option>
 						<option value="[PS:*.COUNT]" name="multiProgram">$i18n.getString( "visit_selected_program_stage_x_th_time" )</option>
 						<option value="[PS:*] AND [PSP:DATE@executionDate#-DATE@dueDate#]" name="multiProgram">$i18n.getString( "report_date" ) - $i18n.getString( "due_date" )</option>
-					</select>
 					</select>
 				</td>
 			</tr>
@@ -153,7 +154,7 @@
 </div>
 
 <p></p>
-<table>
+<table width='100%'>
 	<tr>
 		<td>
 			<input type='button' class="small-button" onclick='insertOperator( "(" );' value="(" />
@@ -169,20 +170,15 @@
 				<input type='button' class="nornal-button" onclick='insertBoolValue( "false" );' value="$i18n.getString( 'no' )" />
 				<input type='button' class="nornal-button" onclick='insertOperator( "is null" );' value="==NULL" />
 				<input type='button' class="nornal-button" onclick='insertOperator( "is not null" );' value="!=NULL" />
-			</span>
-			<span style='padding-left:10px'>
-				<input type='button' style="width:54px;" onclick='insertOperator( "AND" );' value="$i18n.getString( 'and_operator' )" />
-				<input type='button' style="width:54px;" onclick='insertOperator( "OR" );' value="$i18n.getString( 'or_operator' )" />
-				<input type='button' style="width:80px;" onclick='insertOperator( "COMBINE" );' value="$i18n.getString( 'combine_operator' )" />
+				<input type='button' style="width:100px;" onclick='insertOperator( "current_date" );' value="$i18n.getString('current_date')" />
 			</span>
 			<br><br>
-			<input type='button' style="width:175px;" onclick='insertOperator( "DATEDIFF( , dateOfIncident) " );' value="$i18n.getString('minus_with_dateOfIncident')" />
-			<input type='button' style="width:175px;" onclick='insertOperator( "DATEDIFF( , enrollmentDate) " );' value="$i18n.getString('minus_with_enrollmentDate')" />
-			<input type='button' style="width:175px;" onclick='insertOperator( "DATEDIFF( , executionDate) " );' value="$i18n.getString('minus_with_executionDate')" />
-			<input type='button' style="width:175px;" onclick='insertOperator( "DEDATEDIFF( , ) " );' value="$i18n.getString('minus_with_dataelement')" />
-			<input type='button' style="width:175px;" onclick='insertOperator( "ATTRDATEDIFF( , ) " );' value="$i18n.getString('minus_with_attribute')" />
-			<span style='padding-left:110px'>
-				<input type='button' style="width:45px;" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" value="$i18n.getString('clear')" />
+			<span>
+				<input type='button' class="nornal-button" onclick='insertOperator( "AND" );' value="$i18n.getString( 'and_operator' )" />
+				<input type='button' class="nornal-button" onclick='insertOperator( "OR" );' value="$i18n.getString( 'or_operator' )" />
+				<input type='button' style="width:100px;" onclick='insertOperator( "DATEDIFF( , ) " );' value="$i18n.getString('date_diff')" />
+				<input type='button' style="width:100px;" onclick='insertOperator( "COMBINE" );' value="$i18n.getString( 'combine_operator' )" />
+				|<input type='button' class="nornal-button" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" value="$i18n.getString('clear')" />
 			</span>
 		</td>
 	</tr>
