@@ -255,3 +255,12 @@ end;
 $$ language plpgsql;
 
 select setrandomcode();
+
+-- (Write) Remove data elements from data sets which are not part of sections
+
+delete from datasetmembers dsm
+where dataelementid not in (
+  select dataelementid from sectiondataelements ds
+  inner join section s on (ds.sectionid=s.sectionid)
+  where s.datasetid=dsm.datasetid)
+and dsm.datasetid=1979200;
