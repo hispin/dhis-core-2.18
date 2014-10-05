@@ -149,11 +149,12 @@ order by type,name;
 
 -- Display overview of data elements and related category option combos
 
-select de.uid as deuid, de.name as dename, coc.uid as cocuid, con.categoryoptioncomboname
-from dataelement de
-join categorycombos_optioncombos cc using(categorycomboid)
-join categoryoptioncombo coc using(categoryoptioncomboid)
-join _categoryoptioncomboname con using(categoryoptioncomboid);
+select de.uid as dataelement_uid, de.name as dataelement_name, de.code as dataelement_code, coc.uid as optioncombo_uid, cocn.categoryoptioncomboname as optioncombo_name 
+from _dataelementcategoryoptioncombo dcoc 
+inner join dataelement de on dcoc.dataelementuid=de.uid 
+inner join categoryoptioncombo coc on dcoc.categoryoptioncombouid=coc.uid 
+inner join _categoryoptioncomboname cocn on coc.categoryoptioncomboid=cocn.categoryoptioncomboid 
+order by de.name;
 
 -- Display category option combo identifier and name
 
@@ -161,6 +162,16 @@ select cc.categoryoptioncomboid as id, uid, categoryoptioncomboname as name, cod
 from categoryoptioncombo cc
 join _categoryoptioncomboname cn
 on (cc.categoryoptioncomboid=cn.categoryoptioncomboid);
+
+-- Display overview of category option combo
+
+select coc.categoryoptioncomboid as coc_id, coc.uid as coc_uid, co.categoryoptionid as co_id, co.name as co_name, cc.categorycomboid as cc_id, cc.name as cc_name
+from categoryoptioncombo coc 
+inner join categoryoptioncombos_categoryoptions coo on coc.categoryoptioncomboid=coo.categoryoptioncomboid
+inner join dataelementcategoryoption co on coo.categoryoptionid=co.categoryoptionid
+inner join categorycombos_optioncombos cco on coc.categoryoptioncomboid=cco.categoryoptioncomboid
+inner join categorycombo cc on cco.categorycomboid=cc.categorycomboid
+where coc.categoryoptioncomboid=2118430;
 
 -- Display data out of reasonable time range
 
