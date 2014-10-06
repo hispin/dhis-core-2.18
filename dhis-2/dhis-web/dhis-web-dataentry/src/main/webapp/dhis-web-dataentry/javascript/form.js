@@ -884,6 +884,59 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
 }
 
 /**
+ * Fetch data-sets for a orgUnit + data-sets for its children.
+ *
+ * @param {String} ou Organisation Unit ID to fetch data-sets for
+ * @returns {$.Deferred}
+ */
+dhis2.de.fetchDataSets = function( ou )
+{
+    var def = $.Deferred();
+
+    var dataSetFields = 'id,name,periodType,categoryCombo[id],allowFuturePeriods,skipOffline,version,dataSetType' +
+        ',expiryDays,fieldCombinationRequired,validCompleteOnly,renderAsTabs,renderHorizontally';
+
+    $.ajax({
+        type: 'GET',
+        url: '../api/organisationUnits/' + ou,
+        data: {
+            fields: 'dataSets[' + dataSetFields + '],children[id,name,dataSets[' + dataSetFields + ']]'
+        }
+    }).done(function(data) {
+        var dataSets = [];
+
+        data.dataSets.forEach(function( item ) {
+            dataSets.push(item.id);
+            dhis2.de.dataSets[item.id] = {
+                name: item.name,
+                periodType: item.periodType,
+                categoryCombo: item.categoryCombo.id,
+                allowFuturePeriods: item.allowFuturePeriods,
+                skipOffline: item.skipOffline,
+                version: item.version,
+                type: item.dataSetType,
+                expiryDays: item.expiryDays,
+                fieldCombinationRequired: item.fieldCombinationRequired,
+                validCompleteOnly: item.validCompleteOnly,
+                renderAsTabs: item.renderAsTabs,
+                renderHorizontally: item.renderHorizontally
+            }
+        });
+
+        dhis2.de.dataSetAssociationSets[Object.keys(dhis2.de.dataSetAssociationSets).length] = dataSets;
+        dhis2.de.organisationUnitAssociationSetMap[ou] = Object.keys(dhis2.de.dataSetAssociationSets).length -1;
+
+        data.children.forEach(function( item ) {
+            console.log(item);
+        });
+
+        def.resolve(data);
+    });
+
+    return def.promise();
+};
+
+/**
  * Returns an array containing associative array elements with id and name
  * properties. The array is sorted on the element name property.
  */
