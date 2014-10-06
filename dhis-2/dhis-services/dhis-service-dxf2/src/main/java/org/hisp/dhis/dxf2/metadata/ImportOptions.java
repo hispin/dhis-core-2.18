@@ -40,6 +40,9 @@ import org.hisp.dhis.importexport.ImportStrategy;
  */
 public class ImportOptions
 {
+    private static final ImportOptions DEFAULT_OPTIONS = new ImportOptions( 
+        IdentifiableProperty.UID, IdentifiableProperty.UID, false, true, ImportStrategy.NEW_AND_UPDATES, false );
+
     private IdentifiableProperty idScheme;
     
     private IdentifiableProperty dataElementIdScheme = IdentifiableProperty.UID;
@@ -56,12 +59,9 @@ public class ImportOptions
 
     private boolean skipExistingCheck;
 
-    private static final ImportOptions DEFAULT_OPTIONS = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, false, true, ImportStrategy.NEW_AND_UPDATES, false );
-
-    public static ImportOptions getDefaultImportOptions()
-    {
-        return DEFAULT_OPTIONS;
-    }
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     public ImportOptions()
     {
@@ -72,7 +72,8 @@ public class ImportOptions
         this.importStrategy = importStrategy;
     }
 
-    public ImportOptions( IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, boolean preheatCache, ImportStrategy importStrategy, boolean skipExistingCheck )
+    public ImportOptions( IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, 
+        boolean dryRun, boolean preheatCache, ImportStrategy importStrategy, boolean skipExistingCheck )
     {
         this.dataElementIdScheme = dataElementIdScheme;
         this.orgUnitIdScheme = orgUnitIdScheme;
@@ -80,6 +81,15 @@ public class ImportOptions
         this.dryRun = dryRun;
         this.importStrategy = importStrategy;
         this.skipExistingCheck = skipExistingCheck;
+    }
+
+    //--------------------------------------------------------------------------
+    // Logic
+    //--------------------------------------------------------------------------
+
+    public static ImportOptions getDefaultImportOptions()
+    {
+        return DEFAULT_OPTIONS;
     }
 
     //--------------------------------------------------------------------------

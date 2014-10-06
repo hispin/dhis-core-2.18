@@ -52,6 +52,20 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JacksonXmlRootElement(localName = "dataValueSet", namespace = DxfNamespaces.DXF_2_0)
 public class DataValueSet
 {
+    protected static final String FIELD_IDSCHEME = "idScheme";
+    protected static final String FIELD_DATAELEMENTIDSCHEME = "dataElementIdScheme";
+    protected static final String FIELD_ORGUNITIDSCHEME = "orgUnitIdScheme";
+    protected static final String FIELD_DRYRUN = "dryRun";
+    protected static final String FIELD_IMPORTSTRATEGY = "importStrategy";
+
+    protected static final String FIELD_DATAVALUESET = "dataValueSet";
+    protected static final String FIELD_DATAVALUE = "dataValue";
+    protected static final String FIELD_DATASET = "dataSet";
+    protected static final String FIELD_COMPLETEDATE = "completeDate";
+    protected static final String FIELD_PERIOD = "period";
+    protected static final String FIELD_ORGUNIT = "orgUnit";
+    protected static final String FIELD_ATTRIBUTE_OPTION_COMBO = "attributeOptionCombo";
+
     //--------------------------------------------------------------------------
     // Options
     //--------------------------------------------------------------------------
@@ -280,20 +294,25 @@ public class DataValueSet
 
     public IdentifiableProperty getIdSchemeProperty()
     {
-        return idScheme != null ? IdentifiableProperty.valueOf( idScheme.toUpperCase() ) : null;
+        String scheme = getIdScheme();
+        return scheme != null ? IdentifiableProperty.valueOf( scheme.toUpperCase() ) : null;
     }
     
     public IdentifiableProperty getDataElementIdSchemeProperty()
     {
-        String scheme = defaultIfEmpty( idScheme, dataElementIdScheme );
+        String scheme = getIdScheme();
+        String dataElementScheme = getDataElementIdScheme();
         
+        scheme = defaultIfEmpty( scheme, dataElementScheme );        
         return scheme != null ? IdentifiableProperty.valueOf( scheme.toUpperCase() ) : null;
     }
 
     public IdentifiableProperty getOrgUnitIdSchemeProperty()
     {
-        String scheme = defaultIfEmpty( idScheme, orgUnitIdScheme );
+        String scheme = getIdScheme();
+        String orgUnitScheme = getOrgUnitIdScheme();
         
+        scheme = defaultIfEmpty( scheme, orgUnitScheme );        
         return scheme != null ? IdentifiableProperty.valueOf( scheme.toUpperCase() ) : null;
     }
 
