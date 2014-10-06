@@ -29,14 +29,12 @@ package org.hisp.dhis.trackedentity.action.programstage;
  */
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramIndicator;
 import org.hisp.dhis.program.ProgramIndicatorService;
 import org.hisp.dhis.program.ProgramService;
@@ -44,7 +42,6 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
-import org.hisp.dhis.program.comparator.ProgramStageMinDaysComparator;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
@@ -413,13 +410,6 @@ public class UpdateProgramStageAction
         }
         programStage.setReminders( reminders );
         programStageService.updateProgramStage( programStage );
-
-        Program program  = programStage.getProgram();
-        List<ProgramStage> programStages = new ArrayList<>( program.getProgramStages() );
-        Collections.sort( programStages, new ProgramStageMinDaysComparator() );
-        program.getProgramStages().clear();
-        program.setProgramStages(programStages);
-        programService.updateProgram( program );
         
         Set<ProgramStageDataElement> programStageDataElements = new HashSet<>(
             programStage.getProgramStageDataElements() );

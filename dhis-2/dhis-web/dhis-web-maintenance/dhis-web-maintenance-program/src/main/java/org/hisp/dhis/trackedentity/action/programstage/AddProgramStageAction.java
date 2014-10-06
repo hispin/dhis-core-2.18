@@ -29,7 +29,6 @@ package org.hisp.dhis.trackedentity.action.programstage;
  */
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +43,6 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
-import org.hisp.dhis.program.comparator.ProgramStageMinDaysComparator;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
@@ -377,7 +375,8 @@ public class AddProgramStageAction
         programStage.setOpenAfterEnrollment( openAfterEnrollment );
         programStage.setReportDateToUse( reportDateToUse );
         programStage.setPreGenerateUID( preGenerateUID );
-
+        programStage.setSortOrder( program.getProgramStages().size() + 1 );
+        
         // Program indicators
 
         List<ProgramIndicator> programIndicators = new ArrayList<>();
@@ -416,13 +415,7 @@ public class AddProgramStageAction
         program.getProgramStages().add( programStage );
 
         programStageService.saveProgramStage( programStage );
-        
-        List<ProgramStage> programStages = new ArrayList<>( program.getProgramStages() );
-        Collections.sort( programStages, new ProgramStageMinDaysComparator() );
-        program.getProgramStages().clear();
-        program.setProgramStages( programStages );
-        programService.updateProgram( program );
-
+       
         // Data elements
 
         for ( int i = 0; i < this.selectedDataElementsValidator.size(); i++ )

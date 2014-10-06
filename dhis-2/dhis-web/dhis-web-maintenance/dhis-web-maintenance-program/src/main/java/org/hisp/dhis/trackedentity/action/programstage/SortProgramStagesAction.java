@@ -1,5 +1,3 @@
-package org.hisp.dhis.system.database;
-
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -27,39 +25,73 @@ package org.hisp.dhis.system.database;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.trackedentity.action.programstage;
 
-import static org.junit.Assert.assertNotNull;
+import java.util.List;
 
-import org.hisp.dhis.DhisSpringTest;
-import org.junit.Test;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.opensymphony.xwork2.Action;
+
 /**
- * @author Lars Helge Overland
- * @version $Id$
+ * @author Chau Thu Tran
+ *
+ * @version $ SortProgramStagesAction.java Oct 6, 2014 2:16:00 PM $
  */
-public class DatabaseInfoProviderTest
-    extends DhisSpringTest
+public class SortProgramStagesAction
+    implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     @Autowired
-    private DatabaseInfoProvider databaseInfoProvider;
+    private ProgramStageService programStageService;
 
     // -------------------------------------------------------------------------
-    // Tests
+    // Getters & setters
     // -------------------------------------------------------------------------
 
-    @Test
-    public void testGetDatabaseInfo()
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        DatabaseInfo info = databaseInfoProvider.getDatabaseInfo();
+        this.id = id;
+    }
+
+    public Integer getId()
+    {
+        return id;
+    }
+
+    private List<Integer> programStageIds;
+
+    public void setProgramStageIds( List<Integer> programStageIds )
+    {
+        this.programStageIds = programStageIds;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    public String execute()
+        throws Exception
+    {
+        int index = 1;
         
-        assertNotNull( info );
-        assertNotNull( info.getType() );
-        assertNotNull( info.getName() );
-        assertNotNull( info.getUser() );
-        assertNotNull( info.getPassword() );
-        assertNotNull( info.getDialect() );
-        assertNotNull( info.getDriverClass() );
-        assertNotNull( info.getUrl() );
+        for ( Integer id : programStageIds )
+        {
+            ProgramStage programStage = programStageService.getProgramStage( id );
+            programStage.setSortOrder( index );
+            programStageService.updateProgramStage( programStage );
+
+            index++;
+        }
+
+        return SUCCESS;
     }
 }

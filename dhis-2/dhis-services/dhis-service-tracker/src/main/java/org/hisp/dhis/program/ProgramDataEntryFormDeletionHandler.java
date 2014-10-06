@@ -28,7 +28,7 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
@@ -79,7 +79,7 @@ public class ProgramDataEntryFormDeletionHandler
         {
             boolean flag = false;
             
-            List<ProgramStage> programStages = programStage.getProgram().getProgramStages();
+            Set<ProgramStage> programStages = programStage.getProgram().getProgramStages();
             
             programStages.remove( programStage );
             

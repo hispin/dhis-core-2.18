@@ -1183,7 +1183,7 @@ public abstract class DhisConvenienceTest
         return role;
     }
 
-    public static Program createProgram( char uniqueCharacter, List<ProgramStage> programStages,
+    public static Program createProgram( char uniqueCharacter, Set<ProgramStage> programStages,
         OrganisationUnit unit )
     {
         Set<OrganisationUnit> units = new HashSet<>();
@@ -1192,7 +1192,7 @@ public abstract class DhisConvenienceTest
         return createProgram( uniqueCharacter, programStages, null, units );
     }
     
-    public static Program createProgram( char uniqueCharacter, List<ProgramStage> programStages,
+    public static Program createProgram( char uniqueCharacter, Set<ProgramStage> programStages,
         Set<TrackedEntityAttribute> attributes, Set<OrganisationUnit> organisationUnits )
     {
         Program program = new Program();
