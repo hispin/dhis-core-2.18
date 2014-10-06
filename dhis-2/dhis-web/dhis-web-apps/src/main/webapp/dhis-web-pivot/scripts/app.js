@@ -803,10 +803,12 @@ Ext.onReady( function() {
                                 },
                                 {
                                     xtype: 'button',
-                                    text: 'Show',
+                                    text: NS.i18n.show,
                                     height: 19,
                                     handler: function() {
                                         parameters.setVisible(!parameters.isVisible());
+
+                                        this.setText(parameters.isVisible() ? NS.i18n.hide : NS.i18n.show);
                                     }
                                 }
                             ]
