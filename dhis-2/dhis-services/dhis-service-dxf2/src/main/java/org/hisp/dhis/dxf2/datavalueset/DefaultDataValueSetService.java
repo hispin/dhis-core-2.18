@@ -508,15 +508,15 @@ public class DefaultDataValueSetService
 
         importOptions = importOptions != null ? importOptions : ImportOptions.getDefaultImportOptions();
 
+        IdentifiableProperty idScheme = dataValueSet.getIdSchemeProperty() != null ?
+            dataValueSet.getIdSchemeProperty() : importOptions.getIdScheme();
+                    
         IdentifiableProperty dataElementIdScheme = dataValueSet.getDataElementIdSchemeProperty() != null ?
             dataValueSet.getDataElementIdSchemeProperty() : importOptions.getDataElementIdScheme();
-            
+                
         IdentifiableProperty orgUnitIdScheme = dataValueSet.getOrgUnitIdSchemeProperty() != null ?
             dataValueSet.getOrgUnitIdSchemeProperty() : importOptions.getOrgUnitIdScheme();
             
-        IdentifiableProperty idScheme = dataValueSet.getIdSchemeProperty() != null ?
-            dataValueSet.getIdSchemeProperty() : importOptions.getIdScheme();
-        
         log.info( "Data element scheme: " + dataElementIdScheme + ", org unit scheme: " + orgUnitIdScheme + ", scheme: " + idScheme );
             
         boolean dryRun = dataValueSet.getDryRun() != null ? dataValueSet.getDryRun() : importOptions.isDryRun();

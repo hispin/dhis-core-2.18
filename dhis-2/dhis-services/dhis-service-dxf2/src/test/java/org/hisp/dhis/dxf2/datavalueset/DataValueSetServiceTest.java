@@ -175,7 +175,7 @@ public class DataValueSetServiceTest
         periodService.addPeriod( peA );
         periodService.addPeriod( peB );        
     }
-    
+
     @Test
     public void testImportDataValueSetXml()
         throws Exception
@@ -201,7 +201,33 @@ public class DataValueSetServiceTest
         assertEquals( ouA, registration.getSource() );
         assertEquals( getDate( 2012, 1, 9 ), registration.getDate() );
     }
-    
+
+    @Test
+    public void testImportDataValuesXmlWithCodeA()
+        throws Exception
+    {
+        ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetACode.xml" ).getInputStream() );
+        
+        assertNotNull( summary );
+        assertNotNull( summary.getDataValueCount() );
+        
+        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+        
+        assertNotNull( dataValues );
+        assertEquals( 3, dataValues.size() );
+        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, ocDef, ocDef ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, ocDef, ocDef ) ) );
+        
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dsA, peA, ouA, ocDef );
+        
+        assertNotNull( registration );
+        assertEquals( dsA, registration.getDataSet() );
+        assertEquals( peA, registration.getPeriod() );
+        assertEquals( ouA, registration.getSource() );
+        assertEquals( getDate( 2012, 1, 9 ), registration.getDate() );
+    }
+
     @Test
     public void testImportDataValuesXml()
         throws Exception
@@ -210,9 +236,9 @@ public class DataValueSetServiceTest
         
         assertImportDataValues( summary );
     }
-    
+
     @Test
-    public void testImportDataValuesXmlWithCode()
+    public void testImportDataValuesXmlWithCodeB()
         throws Exception
     {
         ImportOptions options = new ImportOptions( CODE, CODE, false, true, NEW_AND_UPDATES, false );

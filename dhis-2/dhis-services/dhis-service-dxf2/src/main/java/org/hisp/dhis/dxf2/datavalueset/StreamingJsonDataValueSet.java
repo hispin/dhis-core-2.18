@@ -62,41 +62,43 @@ public class StreamingJsonDataValueSet extends DataValueSet
     @Override
     public void setDataElementIdScheme( String dataElementIdScheme )
     {
+        writeObjectField( FIELD_DATAELEMENTIDSCHEME, dataElementIdScheme );
     }
 
     @Override
     public void setOrgUnitIdScheme( String orgUnitIdScheme )
     {
+        writeObjectField( FIELD_ORGUNITIDSCHEME, orgUnitIdScheme );
     }
 
     @Override
     public void setDataSet( String dataSet )
     {
-        writeObjectField( "dataSet", dataSet );
+        writeObjectField( FIELD_DATASET, dataSet );
     }
 
     @Override
     public void setCompleteDate( String completeDate )
     {
-        writeObjectField( "completeDate", completeDate );
+        writeObjectField( FIELD_COMPLETEDATE, completeDate );
     }
 
     @Override
     public void setPeriod( String period )
     {
-        writeObjectField( "period", period );
+        writeObjectField( FIELD_PERIOD, period );
     }
 
     @Override
     public void setOrgUnit( String orgUnit )
     {
-        writeObjectField( "orgUnit", orgUnit );
+        writeObjectField( FIELD_ORGUNIT, orgUnit );
     }
 
     @Override
     public void setAttributeOptionCombo( String attributeOptionCombo )
     {
-        writeObjectField( "attributeOptionCombo", attributeOptionCombo );
+        writeObjectField( FIELD_ATTRIBUTE_OPTION_COMBO, attributeOptionCombo );
     }
 
     @Override

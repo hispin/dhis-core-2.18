@@ -165,7 +165,7 @@ on (cc.categoryoptioncomboid=cn.categoryoptioncomboid);
 
 -- Display overview of category option combo
 
-select coc.categoryoptioncomboid as coc_id, coc.uid as coc_uid, co.categoryoptionid as co_id, co.name as co_name, cc.categorycomboid as cc_id, cc.name as cc_name
+select coc.categoryoptioncomboid as coc_id, coc.uid as coc_uid, co.categoryoptionid as co_id, co.name as co_name, ca.categoryid as ca_id, ca.name as ca_name, cc.categorycomboid as cc_id, cc.name as cc_name
 from categoryoptioncombo coc 
 inner join categoryoptioncombos_categoryoptions coo on coc.categoryoptioncomboid=coo.categoryoptioncomboid
 inner join dataelementcategoryoption co on coo.categoryoptionid=co.categoryoptionid
