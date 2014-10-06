@@ -140,6 +140,15 @@ function getUserGroupAccesses() {
   return v;
 }
 
+function setCreatedBy( user ) {
+	if ( user && user.name ) {
+		$('#sharingUser').text(user.name);
+	}
+	else {
+		$('#sharingUser').text("[None]");
+	}
+}
+
 function showSharingDialogWithContext( context ) {
   // context always give type which starts with UpperCase
   var type = context.type.charAt(0).toLowerCase() + context.type.slice(1);
@@ -148,6 +157,7 @@ function showSharingDialogWithContext( context ) {
 
 function showSharingDialog( type, uid ) {
   loadSharingSettings(type, uid).done(function( data ) {
+	setCreatedBy(data.object.user);
     setPublicAccess(data.object.publicAccess);
     setExternalAccess(data.object.externalAccess);
     setUserGroupAccesses(data.object.userGroupAccesses);
@@ -170,7 +180,7 @@ function showSharingDialog( type, uid ) {
       modal: true,
       resizable: false,
       width: 485,
-      height: 480,
+      height: 500,
       buttons: {
         'Cancel': function() {
           $(this).dialog('close');
