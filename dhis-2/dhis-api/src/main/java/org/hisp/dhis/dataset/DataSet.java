@@ -366,6 +366,10 @@ public class DataSet
         return sections != null && sections.size() > 0;
     }
 
+
+    @JsonProperty
+    @JsonView( { DetailedView.class })
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDataSetType()
     {
         if ( hasDataEntryForm() )
