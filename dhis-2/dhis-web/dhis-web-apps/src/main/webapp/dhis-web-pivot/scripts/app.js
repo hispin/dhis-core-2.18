@@ -2672,6 +2672,8 @@ Ext.onReady( function() {
             },
             loadStore: function(data, pager, append) {
                 this.loadData(data, append);
+                this.sortStore();
+                
                 this.lastPage = this.nextPage;
 
                 if (pager.pageCount > this.nextPage) {
@@ -2848,6 +2850,8 @@ Ext.onReady( function() {
 			},
             loadStore: function(data, pager, append) {
                 this.loadData(data, append);
+                this.sortStore();
+                
                 this.lastPage = this.nextPage;
 
                 if (pager.pageCount > this.nextPage) {
@@ -2950,6 +2954,8 @@ Ext.onReady( function() {
             },
             loadStore: function(data, pager, append) {
                 this.loadData(data, append);
+                this.sortStore();
+                
                 this.lastPage = this.nextPage;
 
                 if (pager.pageCount > this.nextPage) {
