@@ -553,7 +553,7 @@
       <param name="page">/dhis-web-maintenance-program/trackedEntityForm.vm</param>
       <param name="menu">/dhis-web-maintenance-program/menu.vm</param>
       <param name="javascripts">javascript/trackedEntityForm.js</param>
-      <param name="requiredAuthorities">F_ADD_TRACKED_ENTITY_FORM</param>
+      <param name="requiredAuthorities">F_TRACKED_ENTITY_FORM_MANAGEMENT</param>
     </action>
 
     <action name="viewTrackedEntityForm"
@@ -566,12 +566,14 @@
         javascript/viewTrackedEntityForm.js
       </param>
       <param name="stylesheets">style/basic.css</param>
+      <param name="requiredAuthorities">F_TRACKED_ENTITY_FORM_ADD</param>
     </action>
 
     <action name="saveTrackedEntityForm"
       class="org.hisp.dhis.trackedentity.action.dataentryform.SaveTrackedEntityFormAction">
       <result name="success" type="redirect">trackedEntityForm.action
       </result>
+      <param name="requiredAuthorities">F_TRACKED_ENTITY_FORM_ADD</param>
     </action>
 
     <action name="autoSaveTrackedEntityForm"
@@ -579,6 +581,7 @@
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
+      <param name="requiredAuthorities">F_TRACKED_ENTITY_FORM_ADD</param>
     </action>
 
     <action name="removeDataEntryForm"
@@ -592,6 +595,7 @@
       class="org.hisp.dhis.trackedentity.action.dataentryform.RemoveTrackedEntityFormAction">
       <result name="success" type="redirect">trackedEntityForm.action
       </result>
+      <param name="requiredAuthorities">F_TRACKED_ENTITY_FORM_DELETE</param>
     </action>
 
     <action name="showTrackedEntityForm"
@@ -599,6 +603,7 @@
       <result name="success" type="velocity">
         /dhis-web-maintenance-program/dataEntryFormCode.vm
       </result>
+      <param name="requiredAuthorities">F_TRACKED_ENTITY_FORM_ADD</param>
     </action>
 
     <action name="setAutoSaveTrackedEntityFormSetting"
@@ -606,6 +611,7 @@
       <result name="success" type="velocity-json">
         ../dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
+      <param name="requiredAuthorities">F_TRACKED_ENTITY_FORM_ADD</param>
     </action>
 
     <!-- Tracked Entity Attribute Group -->
