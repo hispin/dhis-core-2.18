@@ -151,19 +151,24 @@ public class ReportTable
     private ReportParams reportParams;
 
     /**
-     * Indicates rendering of sub-totals for the table.
+     * Indicates rendering of row totals for the table.
      */
     private boolean rowTotals;
 
     /**
-     * Indicates rendering of sub-totals for the table.
+     * Indicates rendering of column totals for the table.
      */
     private boolean colTotals;
 
     /**
-     * Indicates rendering of sub-totals for the table.
+     * Indicates rendering of row sub-totals for the table.
      */
-    private boolean subtotals;
+    private boolean rowSubtotals;
+
+    /**
+     * Indicates rendering of column sub-totals for the table.
+     */
+    private boolean colSubtotals;
 
     /**
      * Indicates rendering of empty rows for the table.
@@ -907,14 +912,27 @@ public class ReportTable
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public boolean isSubtotals()
+    public boolean isRowSubtotals()
     {
-        return subtotals;
+        return rowSubtotals;
     }
 
-    public void setSubtotals( boolean subtotals )
+    public void setRowSubtotals( boolean rowSubtotals )
     {
-        this.subtotals = subtotals;
+        this.rowSubtotals = rowSubtotals;
+    }    
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isColSubtotals()
+    {
+        return colSubtotals;
+    }
+
+    public void setColSubtotals( boolean colSubtotals )
+    {
+        this.colSubtotals = colSubtotals;
     }
 
     @JsonProperty
@@ -924,6 +942,7 @@ public class ReportTable
     {
         return hideEmptyRows;
     }
+
 
     public void setHideEmptyRows( boolean hideEmptyRows )
     {
@@ -1074,7 +1093,8 @@ public class ReportTable
             topLimit = reportTable.getTopLimit();
             rowTotals = reportTable.isRowTotals();
             colTotals = reportTable.isColTotals();
-            subtotals = reportTable.isSubtotals();
+            rowSubtotals = reportTable.isRowSubtotals();
+            colSubtotals = reportTable.isColSubtotals();
             hideEmptyRows = reportTable.isHideEmptyRows();
             showHierarchy = reportTable.isShowHierarchy();
             aggregationType = reportTable.getAggregationType();

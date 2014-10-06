@@ -467,13 +467,17 @@ public class TableAlteror
         executeSql( "update reporttable set showhierarchy = false where showhierarchy is null" );
         executeSql( "update reporttable set aggregationtype = 'default' where aggregationtype is null" );
 
-        // reporttable col/rowtotals = keep existing || copy from totals || true
+        // reporttable col/row totals = keep existing || copy from totals || true
         executeSql( "update reporttable set totals = true where totals is null" );
         executeSql( "update reporttable set coltotals = totals where coltotals is null" );
         executeSql( "update reporttable set coltotals = true where coltotals is null" );
         executeSql( "update reporttable set rowtotals = totals where rowtotals is null" );
         executeSql( "update reporttable set rowtotals = true where rowtotals is null" );        
         executeSql( "alter table reporttable drop column totals" );
+
+        // reporttable col/row subtotals
+        executeSql( "update reporttable set colsubtotals = subtotals where colsubtotals is null" );
+        executeSql( "update reporttable set rowsubtotals = subtotals where rowsubtotals is null" );
 
         executeSql( "update chart set reportingmonth = false where reportingmonth is null" );
         executeSql( "update chart set reportingbimonth = false where reportingbimonth is null" );
