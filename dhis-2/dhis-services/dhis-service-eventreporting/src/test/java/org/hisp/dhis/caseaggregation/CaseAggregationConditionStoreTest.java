@@ -31,11 +31,9 @@ package org.hisp.dhis.caseaggregation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -62,9 +60,9 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
@@ -233,7 +231,7 @@ public class CaseAggregationConditionStoreTest
         // Program && Program stages
         // ---------------------------------------------------------------------
 
-        program = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnit );
+        program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         int programId = programService.addProgram( program );
 
         ProgramStage stageA = new ProgramStage( "Stage-A", program );
@@ -242,7 +240,7 @@ public class CaseAggregationConditionStoreTest
         ProgramStage stageB = new ProgramStage( "Stage-B", program );
         stageBId = programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<>();
+        Set<ProgramStage> programStages = new HashSet<>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );

@@ -31,8 +31,8 @@ package org.hisp.dhis.dxf2.events;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hamcrest.CoreMatchers;
@@ -121,7 +121,7 @@ public class EnrollmentServiceTest
         programStage.setGeneratedByEnrollmentDate( true );
         manager.save( programStage );
 
-        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnitA );
+        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
         programA.setType( Program.SINGLE_EVENT_WITH_REGISTRATION );
         manager.save( programA );
 

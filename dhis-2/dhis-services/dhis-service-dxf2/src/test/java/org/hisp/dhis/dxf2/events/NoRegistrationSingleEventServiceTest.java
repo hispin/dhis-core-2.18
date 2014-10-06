@@ -32,8 +32,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -95,7 +95,7 @@ public class NoRegistrationSingleEventServiceTest
         programStageA = createProgramStage( 'A', 0 );
         identifiableObjectManager.save( programStageA );
 
-        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnitA );
+        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
         programA.setType( Program.SINGLE_EVENT_WITHOUT_REGISTRATION );
         identifiableObjectManager.save( programA );
 

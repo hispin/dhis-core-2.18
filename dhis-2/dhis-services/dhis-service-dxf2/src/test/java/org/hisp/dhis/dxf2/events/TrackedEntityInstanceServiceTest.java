@@ -33,7 +33,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -100,7 +100,7 @@ public class TrackedEntityInstanceServiceTest
         femaleA.setTrackedEntity( trackedEntity );
         femaleB.setTrackedEntity( trackedEntity );
 
-        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnitA );
+        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
         manager.save( organisationUnitA );
         manager.save( organisationUnitB );
         manager.save( maleA );

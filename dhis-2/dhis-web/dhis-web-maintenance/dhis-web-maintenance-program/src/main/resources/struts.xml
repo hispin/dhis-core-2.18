@@ -368,6 +368,21 @@
       <param name="page">/dhis-web-maintenance-program/programStageList.vm</param>
       <param name="javascripts">javascript/programStage.js</param>
     </action>
+    
+    <action name="sortProgramStagesForm"
+      class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-program/sortProgramStagesForm.vm</param>
+      <param name="javascripts">javascript/programStage.js</param>
+      <param name="stylesheets">style/basic.css</param>
+      <param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
+    </action>
+    
+    <action name="sortProgramStages"
+      class="org.hisp.dhis.trackedentity.action.programstage.SortProgramStagesAction">
+      <result name="success" type="redirect">programStage.action?id=${id}</result>
+      <param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
+    </action>
 
     <!-- Program stage section -->
 

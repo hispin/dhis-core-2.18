@@ -88,7 +88,7 @@ public class ProgramStageSectionStoreTest
         organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
-        Program program = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnit );
+        Program program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         programService.addProgram( program );
 
         stageA = new ProgramStage( "A", program );
@@ -113,7 +113,7 @@ public class ProgramStageSectionStoreTest
         stageB = new ProgramStage( "B", program );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<>();
+        Set<ProgramStage> programStages = new HashSet<>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );

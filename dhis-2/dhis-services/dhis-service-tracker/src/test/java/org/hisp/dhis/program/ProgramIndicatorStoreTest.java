@@ -31,9 +31,9 @@ package org.hisp.dhis.program;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -88,22 +88,24 @@ public class ProgramIndicatorStoreTest
         OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
-        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnit );
+        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         programService.addProgram( programA );
 
         ProgramStage stageA = new ProgramStage( "StageA", programA );
+        stageA.setSortOrder( 1 );
         programStageService.saveProgramStage( stageA );
 
         ProgramStage stageB = new ProgramStage( "StageB", programA );
+        stageB.setSortOrder( 2 );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<>();
+        Set<ProgramStage> programStages = new HashSet<>();
         programStages.add( stageA );
         programStages.add( stageB );
         programA.setProgramStages( programStages );
         programService.updateProgram( programA );
 
-        programB = createProgram( 'B', new ArrayList<ProgramStage>(), organisationUnit );
+        programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnit );
         programService.addProgram( programB );
 
         indicatorDate = new ProgramIndicator( "IndicatorA", "IndicatorDesA", ProgramIndicator.VALUE_TYPE_INT, "( "

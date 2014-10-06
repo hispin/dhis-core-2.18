@@ -33,8 +33,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -90,10 +90,10 @@ public class TrackedEntityFormServiceTest
         OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
-        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnit );
+        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         programService.addProgram( programA );
 
-        programB = createProgram( 'B', new ArrayList<ProgramStage>(), organisationUnit );
+        programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnit );
         programService.addProgram( programB );
 
         DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A" );

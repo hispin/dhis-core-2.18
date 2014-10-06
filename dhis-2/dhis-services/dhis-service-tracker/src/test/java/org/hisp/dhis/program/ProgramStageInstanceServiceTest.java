@@ -33,7 +33,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -184,11 +183,12 @@ public class ProgramStageInstanceServiceTest
         /**
          * Program A
          */
-        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnitA );
+        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
         programService.addProgram( programA );
 
         stageA = new ProgramStage( "A", programA );
-
+        stageA.setSortOrder( 1 );
+        
         TrackedEntityInstanceReminder reminderA = new TrackedEntityInstanceReminder( "A", 0,
             "Test program stage message template", TrackedEntityInstanceReminder.DUE_DATE_TO_COMPARE,
             TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE, null, TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH );
@@ -206,6 +206,7 @@ public class ProgramStageInstanceServiceTest
         programStageService.saveProgramStage( stageA );
 
         stageB = new ProgramStage( "B", programA );
+        stageB.setSortOrder( 2 );
         TrackedEntityInstanceReminder reminderC = new TrackedEntityInstanceReminder( "C", 0,
             "Test program stage message template", TrackedEntityInstanceReminder.DUE_DATE_TO_COMPARE,
             TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE, TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
@@ -216,7 +217,7 @@ public class ProgramStageInstanceServiceTest
         stageB.setReminders( reminders );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<>();
+        Set<ProgramStage> programStages = new HashSet<>();
         programStages.add( stageA );
         programStages.add( stageB );
         programA.setProgramStages( programStages );
@@ -242,17 +243,19 @@ public class ProgramStageInstanceServiceTest
          * Program B
          */
 
-        Program programB = createProgram( 'B', new ArrayList<ProgramStage>(), organisationUnitB );
+        Program programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnitB );
         programService.addProgram( programB );
 
         stageC = new ProgramStage( "C", programB );
+        stageC.setSortOrder( 1 );
         programStageService.saveProgramStage( stageC );
 
         stageD = new ProgramStage( "D", programB );
+        stageB.setSortOrder( 2 );
         stageC.setIrregular( true );
         programStageService.saveProgramStage( stageD );
 
-        programStages = new ArrayList<>();
+        programStages = new HashSet<>();
         programStages.add( stageC );
         programStages.add( stageD );
         programB.setProgramStages( programStages );

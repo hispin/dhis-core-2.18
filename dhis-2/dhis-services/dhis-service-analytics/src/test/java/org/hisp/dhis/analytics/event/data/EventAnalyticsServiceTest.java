@@ -32,7 +32,6 @@ import static org.hisp.dhis.system.util.CollectionUtils.asSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -135,7 +134,7 @@ public class EventAnalyticsServiceTest
         attributeService.addTrackedEntityAttribute( atB );
 
                 
-        prA = createProgram( 'A', new ArrayList<ProgramStage>(), asSet( atA, atB ), asSet( ouA, ouB ) );
+        prA = createProgram( 'A', new HashSet<ProgramStage>(), asSet( atA, atB ), asSet( ouA, ouB ) );
         programService.addProgram( prA );
         
         psA = createProgramStage( 'A', asSet( deA, deB ) );

@@ -28,7 +28,7 @@ package org.hisp.dhis.trackedentity.action.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
@@ -109,7 +109,7 @@ public class RemoveDataEntryFormAction
 
         programId = currentProgram.getId();
 
-        List<ProgramStage> programStages = currentProgram.getProgramStages();
+        Set<ProgramStage> programStages = currentProgram.getProgramStages();
 
         for ( ProgramStage programStage : programStages )
         {

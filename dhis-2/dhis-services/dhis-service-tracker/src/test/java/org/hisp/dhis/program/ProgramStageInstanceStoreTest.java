@@ -31,12 +31,10 @@ package org.hisp.dhis.program;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -154,7 +152,7 @@ public class ProgramStageInstanceStoreTest
         /**
          * Program A
          */
-        programA = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnitA );
+        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
         programService.addProgram( programA );
 
         stageA = new ProgramStage( "A", programA );
@@ -184,7 +182,7 @@ public class ProgramStageInstanceStoreTest
         stageB.setReminders( reminders );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<>();
+        Set<ProgramStage> programStages = new HashSet<>();
         programStages.add( stageA );
         programStages.add( stageB );
         programA.setProgramStages( programStages );
@@ -210,7 +208,7 @@ public class ProgramStageInstanceStoreTest
          * Program B
          */
 
-        Program programB = createProgram( 'B', new ArrayList<ProgramStage>(), organisationUnitB );
+        Program programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnitB );
         programService.addProgram( programB );
 
         stageC = new ProgramStage( "C", programB );
@@ -220,7 +218,7 @@ public class ProgramStageInstanceStoreTest
         stageC.setIrregular( true );
         programStageService.saveProgramStage( stageD );
 
-        programStages = new ArrayList<>();
+        programStages = new HashSet<>();
         programStages.add( stageC );
         programStages.add( stageD );
         programB.setProgramStages( programStages );

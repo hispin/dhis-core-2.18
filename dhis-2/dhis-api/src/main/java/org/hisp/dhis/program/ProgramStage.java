@@ -115,6 +115,8 @@ public class ProgramStage
     private Boolean openAfterEnrollment = false;
 
     private String reportDateToUse;
+    
+    private Integer sortOrder;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -453,6 +455,19 @@ public class ProgramStage
         this.preGenerateUID = preGenerateUID;
     }
     
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {

@@ -30,8 +30,8 @@ package org.hisp.dhis.program;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -89,17 +89,19 @@ public class ProgramDataEntryServiceTest
         DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A" );
         dataEntryFormService.addDataEntryForm( dataEntryFormA );
 
-        Program program = createProgram( 'A', new ArrayList<ProgramStage>(), organisationUnit );
+        Program program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         programService.addProgram( program );
 
         stageA = new ProgramStage( "A", program );
         stageA.setUid( "StageA" );
+        stageA.setSortOrder( 1 );
         programStageService.saveProgramStage( stageA );
 
         ProgramStage stageB = new ProgramStage( "B", program );
+        stageB.setSortOrder( 2 );
         programStageService.saveProgramStage( stageB );
 
-        List<ProgramStage> programStages = new ArrayList<>();
+        Set<ProgramStage> programStages = new HashSet<>();
         programStages.add( stageA );
         programStages.add( stageB );
         program.setProgramStages( programStages );

@@ -318,6 +318,12 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
+	<bean
+		id="org.hisp.dhis.trackedentity.action.programstage.SortProgramStagesAction"
+		class="org.hisp.dhis.trackedentity.action.programstage.SortProgramStagesAction"
+		scope="prototype">
+	</bean>
+	
 	<!-- Program Stage Section -->
 
 	<bean
