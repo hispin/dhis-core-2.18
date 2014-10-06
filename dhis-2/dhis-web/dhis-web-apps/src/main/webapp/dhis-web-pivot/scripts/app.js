@@ -436,9 +436,10 @@ Ext.onReady( function() {
 	};
 
 	OptionsWindow = function() {
-		var showRowTotals,
-            showColTotals,
-			showSubTotals,
+		var showColTotals,
+            showRowTotals,
+			showColSubTotals,
+            showRowSubTotals,
 			showDimensionLabels,
 			hideEmptyRows,
             aggregationType,
@@ -457,6 +458,7 @@ Ext.onReady( function() {
 			comboboxWidth = 262,
             comboBottomMargin = 1,
             checkboxBottomMargin = 2,
+            separatorTopMargin = 6,
 			window;
 
         showColTotals = Ext.create('Ext.form.field.Checkbox', {
@@ -471,9 +473,21 @@ Ext.onReady( function() {
 			checked: true
 		});
 
-		showSubTotals = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.show_subtotals,
+		showColSubTotals = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.show_col_subtotals,
+			style: 'margin-top:' + separatorTopMargin + 'px; margin-bottom:' + checkboxBottomMargin + 'px',
+			checked: true
+		});
+
+		showRowSubTotals = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.show_row_subtotals,
 			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
+			checked: true
+		});
+
+		showDimensionLabels = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.show_dimension_labels,
+			style: 'margin-top:' + separatorTopMargin + 'px; margin-bottom:' + comboBottomMargin + 'px',
 			checked: true
 		});
 
@@ -482,14 +496,9 @@ Ext.onReady( function() {
 			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
 		});
 
-		showDimensionLabels = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.show_dimension_labels,
-			style: 'margin-bottom:' + comboBottomMargin + 'px'
-		});
-
 		aggregationType = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-top:3px; margin-bottom:' + comboBottomMargin + 'px',
+			style: 'margin-top:' + (separatorTopMargin + 1) + 'px; margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.aggregation_type,
@@ -670,9 +679,10 @@ Ext.onReady( function() {
 			items: [
                 showColTotals,
 				showRowTotals,
-				showSubTotals,
-				hideEmptyRows,
+				showColSubTotals,
+                showRowSubTotals,
                 showDimensionLabels,
+				hideEmptyRows,
                 aggregationType
 			]
 		};
@@ -713,7 +723,7 @@ Ext.onReady( function() {
 
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_options,
-			bodyStyle: 'background-color:#fff; padding:3px',
+			bodyStyle: 'background-color:#fff; padding:2px',
 			closeAction: 'hide',
 			autoShow: true,
 			modal: true,
@@ -723,7 +733,8 @@ Ext.onReady( function() {
 				return {
 					showRowTotals: showRowTotals.getValue(),
                     showColTotals: showColTotals.getValue(),
-					showSubTotals: showSubTotals.getValue(),
+					showColSubTotals: showColSubTotals.getValue(),
+                    showRowSubTotals: showRowSubTotals.getValue(),
                     showDimensionLabels: showDimensionLabels.getValue(),
 					hideEmptyRows: hideEmptyRows.getValue(),
                     aggregationType: aggregationType.getValue(),
@@ -744,7 +755,8 @@ Ext.onReady( function() {
 			setOptions: function(layout) {
 				showRowTotals.setValue(Ext.isBoolean(layout.showRowTotals) ? layout.showRowTotals : true);
 				showColTotals.setValue(Ext.isBoolean(layout.showColTotals) ? layout.showColTotals : true);
-				showSubTotals.setValue(Ext.isBoolean(layout.showSubTotals) ? layout.showSubTotals : true);
+				showColSubTotals.setValue(Ext.isBoolean(layout.showColSubTotals) ? layout.showColSubTotals : true);
+				showRowSubTotals.setValue(Ext.isBoolean(layout.showRowSubTotals) ? layout.showRowSubTotals : true);
 				showDimensionLabels.setValue(Ext.isBoolean(layout.showDimensionLabels) ? layout.showDimensionLabels : true);
 				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
                 aggregationType.setValue(Ext.isString(layout.aggregationType) ? layout.aggregationType : 'default');
@@ -764,7 +776,7 @@ Ext.onReady( function() {
 			items: [
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-top:2px; margin-bottom:6px; margin-left:3px',
+					style: 'margin-top:4px; margin-bottom:6px; margin-left:5px',
 					html: NS.i18n.data
 				},
 				data,
@@ -773,7 +785,7 @@ Ext.onReady( function() {
 				},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px; margin-left:3px',
+					style: 'margin-bottom:6px; margin-left:5px',
 					html: NS.i18n.organisation_units
 				},
 				organisationUnits,
@@ -782,7 +794,7 @@ Ext.onReady( function() {
 				},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px; margin-left:3px',
+					style: 'margin-bottom:6px; margin-left:5px',
 					html: NS.i18n.style
 				},
 				style,
@@ -861,9 +873,10 @@ Ext.onReady( function() {
 					}
 
 					// cmp
-					w.showRowTotals = showRowTotals;
                     w.showColTotals = showColTotals;
-					w.showSubTotals = showSubTotals;
+					w.showRowTotals = showRowTotals;
+					w.showColSubTotals = showColSubTotals
+					w.showRowSubTotals = showRowSubTotals;
                     w.showDimensionLabels = showDimensionLabels;
 					w.hideEmptyRows = hideEmptyRows;
                     w.aggregationType = aggregationType;
@@ -947,9 +960,6 @@ Ext.onReady( function() {
 
                 favorite.colTotals = favorite.showColTotals;
 				delete favorite.showColTotals;
-
-				favorite.subtotals = favorite.showSubTotals;
-				delete favorite.showSubTotals;
 
 				favorite.reportParams = {
 					paramReportingPeriod: favorite.reportingPeriod,

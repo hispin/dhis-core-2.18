@@ -310,7 +310,9 @@ Ext.onReady( function() {
 
 				// showColTotals: boolean (true)
 
-				// showSubTotals: boolean (true)
+				// showColSubTotals: boolean (true)
+
+				// showRowSubTotals: boolean (true)
 
                 // showDimensionLabels: boolean (false)
 
@@ -477,9 +479,10 @@ Ext.onReady( function() {
 					layout.filters = config.filters;
 
 					// properties
-					layout.showRowTotals = Ext.isBoolean(config.rowTotals) ? config.rowTotals : (Ext.isBoolean(config.showRowTotals) ? config.showRowTotals : true);
 					layout.showColTotals = Ext.isBoolean(config.colTotals) ? config.colTotals : (Ext.isBoolean(config.showColTotals) ? config.showColTotals : true);
-					layout.showSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showSubTotals) ? config.showSubTotals : true);
+					layout.showRowTotals = Ext.isBoolean(config.rowTotals) ? config.rowTotals : (Ext.isBoolean(config.showRowTotals) ? config.showRowTotals : true);
+					layout.showColSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showColSubTotals) ? config.showColSubTotals : true);
+					layout.showRowSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showRowSubTotals) ? config.showRowSubTotals : true);
 					layout.showDimensionLabels = Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : (Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : true);
 					layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false;
                     layout.aggregationType = Ext.isString(config.aggregationType) ? config.aggregationType : 'default';
@@ -1630,8 +1633,12 @@ Ext.onReady( function() {
 					delete layout.showColTotals;
 				}
 
-				if (layout.showSubTotals) {
-					delete layout.showSubTotals;
+				if (layout.showColSubTotals) {
+					delete layout.showColSubTotals;
+				}
+
+				if (layout.showRowSubTotals) {
+					delete layout.showRowSubTotals;
 				}
 
 				if (!layout.hideEmptyRows) {
@@ -2183,16 +2190,20 @@ Ext.onReady( function() {
 					return html;
 				};
 
-				doSubTotals = function(xAxis) {
-					return !!xLayout.showSubTotals && xAxis && xAxis.dims > 1;
+				doColSubTotals = function() {
+					return !!xLayout.showColSubTotals && xRowAxis && xRowAxis.dims > 1;
 				};
 
-				doRowTotals = function() {
-					return !!xLayout.showRowTotals;
+				doRowSubTotals = function() {
+					return !!xLayout.showRowSubTotals && xColAxis && xColAxis.dims > 1;
 				};
 
                 doColTotals = function() {
 					return !!xLayout.showColTotals;
+				};
+
+				doRowTotals = function() {
+					return !!xLayout.showRowTotals;
 				};
 
 				doSortableColumnHeaders = function() {
@@ -2243,7 +2254,7 @@ Ext.onReady( function() {
 
                             a.push(getEmptyNameTdConfig({
                                 cls: 'pivot-dim-label',
-                                htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[j]].name + ', ' + dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
+                                htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[j]].name + '&nbsp;/&nbsp;' + dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
                             }));
                         }
 
@@ -2289,7 +2300,7 @@ Ext.onReady( function() {
 
 							dimHtml.push(getTdHtml(obj, condoId));
 
-							if (i === 0 && spanCount === xColAxis.span[i] && doSubTotals(xColAxis) ) {
+							if (i === 0 && spanCount === xColAxis.span[i] && doRowSubTotals() ) {
 								dimHtml.push(getTdHtml({
 									type: 'dimensionSubtotal',
 									cls: 'pivot-dim-subtotal cursor-default',
@@ -2486,7 +2497,7 @@ Ext.onReady( function() {
                     xValueObjects = valueObjects;
 
 					// col subtotals
-					if (doSubTotals(xColAxis)) {
+					if (doRowSubTotals()) {
 						var tmpValueObjects = [];
 
 						for (var i = 0, row, rowSubTotal, colCount; i < xValueObjects.length; i++) {
@@ -2528,7 +2539,7 @@ Ext.onReady( function() {
 					}
 
 					// row subtotals
-					if (doSubTotals(xRowAxis)) {
+					if (doColSubTotals()) {
 						var tmpAxisAllObjects = [],
 							tmpValueObjects = [],
 							tmpTotalValueObjects = [],
@@ -2699,7 +2710,7 @@ Ext.onReady( function() {
 
 						xTotalColObjects = totalColObjects;
 
-						if (xColAxis && doSubTotals(xColAxis)) {
+						if (xColAxis && doRowSubTotals()) {
 							var tmp = [];
 
 							for (var i = 0, item, subTotal = 0, empty = [], colCount = 0; i < xTotalColObjects.length; i++) {
