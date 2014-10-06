@@ -3103,7 +3103,11 @@ Ext.onReady( function() {
 			deleteLegend,
 			getRequestBody,
 			reset,
-			validateLegends;
+			validateLegends,
+
+            windowWidth = 450,
+            windowBorder = 12,
+            bodyPadding = 2;
 
 		legendSetStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
@@ -3287,6 +3291,7 @@ Ext.onReady( function() {
 					xtype: 'panel',
 					layout: 'hbox',
 					cls: 'gis-container-inner',
+                    bodyStyle: 'padding: 0',
 					style: 'margin-bottom: 1px',
 					items: [
 						addButton
@@ -3302,7 +3307,11 @@ Ext.onReady( function() {
 			var panel,
 				addLegend,
 				reset,
-				data = [];
+				data = [],
+                legendBodyBorder = 1,
+                legendBodyPadding = 1,
+                fieldLabelWidth = 105,
+                gridPadding = 1;
 
 			tmpLegendStore = Ext.create('Ext.data.ArrayStore', {
 				fields: ['id', 'name', 'startValue', 'endValue', 'color']
@@ -3310,41 +3319,42 @@ Ext.onReady( function() {
 
 			legendSetName = Ext.create('Ext.form.field.Text', {
 				cls: 'gis-textfield',
-				width: 428,
+				width: windowWidth - windowBorder - bodyPadding,
 				height: 25,
-				fieldStyle: 'padding-left: 6px; border-color: #bbb',
-				fieldLabel: GIS.i18n.legend_set_name
+				fieldStyle: 'padding-left: 5px; border-color: #bbb',
+                labelStyle: 'padding-top: 5px; padding-left: 3px',
+				fieldLabel: GIS.i18n.legend_set_name,
+                style: 'margin-bottom: 6px'
 			});
 
 			legendName = Ext.create('Ext.form.field.Text', {
 				cls: 'gis-textfield',
-				fieldStyle: 'padding-left: 6px',
-				width: 415,
+				width: windowWidth - windowBorder - bodyPadding - (2 * legendBodyBorder) - (2 * legendBodyPadding),
 				height: 23,
+				fieldStyle: 'padding-left: 3px; border-color: #bbb',
+                labelStyle: 'padding-top: 5px; padding-left: 3px',
 				fieldLabel: GIS.i18n.legend_name
 			});
 
 			startValue = Ext.create('Ext.form.field.Number', {
-				width: 153,
+				width: 163,
 				height: 23,
 				allowDecimals: true,
-				fieldStyle: 'padding-left: 6px; border-radius: 1px',
+                style: 'margin-bottom: 0px',
 				value: 0
 			});
 
 			endValue = Ext.create('Ext.form.field.Number', {
-				width: 154,
+				width: 163,
 				height: 23,
 				allowDecimals: true,
-				fieldStyle: 'padding-left: 6px; border-radius: 1px',
-				value: 0,
-				style: 'padding-left: 3px'
+                style: 'margin-bottom: 0px; margin-left: 1px',
+				value: 0
 			});
 
 			color = Ext.create('Ext.ux.button.ColorButton', {
-				width: 310,
+				width: windowWidth - windowBorder - bodyPadding - (2 * legendBodyBorder) - (2 * legendBodyPadding) - fieldLabelWidth,
 				height: 23,
-				fieldLabel: GIS.i18n.legend_symbolizer,
 				style: 'border-radius: 1px',
 				value: 'e1e1e1'
 			});
@@ -3394,7 +3404,7 @@ Ext.onReady( function() {
 			legendGrid = Ext.create('Ext.grid.Panel', {
 				cls: 'gis-grid',
 				bodyStyle: 'border-top: 0 none',
-				width: 428,
+				width: windowWidth - windowBorder - bodyPadding - (2 * gridPadding),
 				height: 235,
 				scroll: 'vertical',
 				hideHeaders: true,
@@ -3481,22 +3491,19 @@ Ext.onReady( function() {
 
 			panel = Ext.create('Ext.panel.Panel', {
 				cls: 'gis-container-inner',
+				bodyStyle: 'padding:0px',
 				legendSetId: id,
-				bodyStyle: 'padding:3px',
 				items: [
 					legendSetName,
 					{
-						cls: 'gis-panel-html-separator'
-					},
-					{
+                        xtype: 'container',
 						html: GIS.i18n.add_legend,
-						cls: 'gis-panel-html-title'
-					},
+						cls: 'gis-panel-html-title',
+                        style: 'padding-left: 2px; margin-bottom: 3px'
+                    },
 					{
-						cls: 'gis-panel-html-separator'
-					},
-					{
-						bodyStyle: 'background-color:#f1f1f1; border:1px solid #ccc; border-radius:1px; padding:5px',
+						bodyStyle: 'background-color:#f1f1f1; border:1px solid #ccc; border-radius:1px; padding:' + legendBodyPadding + 'px',
+                        style: 'margin-bottom: 1px',
 						items: [
 							legendName,
 							{
@@ -3505,8 +3512,8 @@ Ext.onReady( function() {
 								items: [
 									{
 										html: GIS.i18n.start_end_value + ':',
-										width: 105,
-										bodyStyle: 'background:transparent; padding-top:3px'
+										width: fieldLabelWidth,
+										bodyStyle: 'background:transparent; padding-top:3px; padding-left:3px'
 									},
 									startValue,
 									endValue
@@ -3518,38 +3525,38 @@ Ext.onReady( function() {
 								bodyStyle: 'background: transparent',
 								items: [
 									{
-										cls: 'gis-panel-html-label',
-										html: GIS.i18n.legend_symbolizer,
-										bodyStyle: 'background: transparent',
-										width: gis.conf.layout.widget.itemlabel_width + 10
+										html: GIS.i18n.legend_symbolizer + ':',
+										width: fieldLabelWidth,
+										bodyStyle: 'background:transparent; padding-top:3px; padding-left:3px'
 									},
 									color
 								]
-							},
+							}
 						]
-					},
-					{
-						cls: 'gis-panel-html-separator'
 					},
 					{
 						cls: 'gis-container-inner',
 						bodyStyle: 'text-align: right',
-						width: 428,
+						width: windowWidth - windowBorder - bodyPadding,
 						items: addLegend
 					},
 					{
+                        xtype: 'container',
 						html: GIS.i18n.current_legends,
-						cls: 'gis-panel-html-title'
-					},
-					{
-						cls: 'gis-panel-html-separator'
-					},
-					legendGrid
+						cls: 'gis-panel-html-title',
+                        style: 'padding-left: 2px; margin-bottom: 3px'
+                    },
+                    {
+                        xtype: 'container',
+                        cls: 'gis-container-inner',
+                        style: 'padding:' + gridPadding + 'px',
+                        items: legendGrid
+                    }
 				]
 			});
 
 			if (id) {
-				legendStore.proxy.url = gis.init.contextPath + gis.conf.finals.url.path_api +  'mapLegendSets/' + id + '.json?links=false&paging=false';
+				legendStore.proxy.url = gis.init.contextPath + '/api/mapLegendSets/' + id + '.json?links=false&paging=false';                
 				legendStore.load();
 
 				legendSetName.setValue(legendSetStore.getById(id).data.name);
@@ -3730,7 +3737,7 @@ Ext.onReady( function() {
 			iconCls: 'gis-window-title-icon-legendset', //todo
             bodyStyle: 'padding:1px; background-color:#fff',
 			resizable: false,
-			width: 450,
+			width: windowWidth,
 			modal: true,
 			items: new LegendSetPanel(),
 			bbar: {
@@ -8673,7 +8680,7 @@ Ext.onReady( function() {
 
 					if (gis.init.user.isAdmin) {
 						a.push({
-							text: GIS.i18n.legend,
+							text: GIS.i18n.legends,
 							menu: {},
 							handler: function() {
 								if (viewport.legendSetWindow && viewport.legendSetWindow.destroy) {
