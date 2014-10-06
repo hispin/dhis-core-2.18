@@ -596,33 +596,33 @@ Ext.onReady( function() {
 
 		reportingPeriod = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.reporting_period,
-			style: 'margin-bottom:4px',
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px'
 		});
 
 		organisationUnit = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.organisation_unit,
-			style: 'margin-bottom:4px',
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px'
 		});
 
 		parentOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.parent_organisation_unit,
-			style: 'margin-bottom:4px',
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px'
 		});
 
 		regression = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.include_regression,
-			style: 'margin-bottom:4px',
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px'
 		});
 
 		cumulative = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.include_cumulative,
-			style: 'margin-bottom:6px',
+			style: 'margin-bottom:6px'
 		});
 
 		sortOrder = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:3px',
-			width: 250,
+			style: 'margin-bottom:1px',
+			width: 254,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.sort_order,
 			labelStyle: 'color:#333',
@@ -642,8 +642,8 @@ Ext.onReady( function() {
 
 		topLimit = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:0',
-			width: 250,
+			style: 'margin-bottom:3px',
+			width: 254,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.top_limit,
 			labelStyle: 'color:#333',
@@ -696,7 +696,7 @@ Ext.onReady( function() {
 			]
 		};
 
-		parameters = {
+		parameters = Ext.create('Ext.panel.Panel', {
 			bodyStyle: 'border:0 none; background:transparent',
 			style: 'margin-left:14px',
 			items: [
@@ -707,8 +707,9 @@ Ext.onReady( function() {
 				cumulative,
 				sortOrder,
 				topLimit
-			]
-		};
+			],
+            hidden: true
+		});
 
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_options,
@@ -789,14 +790,34 @@ Ext.onReady( function() {
 					bodyStyle: 'border:0 none; padding:3px'
 				},
 				{
-					bodyStyle: 'border:1px solid #d5d5d5; padding:5px; background-color:#f0f0f0',
+					bodyStyle: 'border:1px solid #d5d5d5; padding:3px 3px 0 3px; background-color:#f0f0f0',
 					items: [
-						{
-							bodyStyle: 'border:0 none; padding:0 5px 6px 2px; background-color:transparent; color:#222; font-size:12px',
-							html: '<b>' + NS.i18n.parameters + '</b> <span style="font-size:11px"> (' + NS.i18n.for_standard_reports_only + ')</span>'
-						},
-						parameters
-					]
+                        {
+                            xtype: 'container',
+                            layout: 'column',
+                            items: [
+                                {
+                                    bodyStyle: 'border:0 none; padding:2px 5px 6px 2px; background-color:transparent; color:#222; font-size:12px',
+                                    html: '<b>' + NS.i18n.parameters + '</b> <span style="font-size:11px"> (' + NS.i18n.for_standard_reports_only + ')</span>',
+                                    columnWidth: 1
+                                },
+                                {
+                                    xtype: 'button',
+                                    text: 'Show',
+                                    height: 19,
+                                    handler: function() {
+                                        parameters.setVisible(!parameters.isVisible());
+                                    }
+                                }
+                            ]
+                        },
+                        parameters
+					],
+                    listeners: {
+                        collapse: function() {
+                            this.setHeight(100);
+                        }
+                    }
 				}
 			],
 			bbar: [
