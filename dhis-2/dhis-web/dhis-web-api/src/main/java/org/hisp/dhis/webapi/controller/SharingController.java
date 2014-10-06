@@ -83,7 +83,7 @@ public class SharingController
     @Autowired
     private AclService aclService;
 
-    @RequestMapping( value = "", produces = { "application/json", "text/*" } )
+    @RequestMapping( method = RequestMethod.GET, produces = { "application/json" } )
     public void getSharing( @RequestParam String type, @RequestParam String id, HttpServletResponse response ) throws IOException
     {
         if ( !aclService.isShareable( type ) )
@@ -154,7 +154,7 @@ public class SharingController
         JacksonUtils.toJson( response.getOutputStream(), sharing );
     }
 
-    @RequestMapping( value = "", method = { RequestMethod.POST, RequestMethod.PUT }, consumes = "application/json" )
+    @RequestMapping( method = { RequestMethod.POST, RequestMethod.PUT }, consumes = "application/json" )
     public void setSharing( @RequestParam String type, @RequestParam String id, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
         Class<? extends IdentifiableObject> sharingClass = aclService.classForType( type );
@@ -251,7 +251,7 @@ public class SharingController
         ContextUtils.okResponse( response, "Access control set" );
     }
 
-    @RequestMapping( value = "/search", produces = { "application/json", "text/*" } )
+    @RequestMapping( value = "/search", method = RequestMethod.GET, produces = { "application/json" } )
     public void searchUserGroups( @RequestParam String key, HttpServletResponse response ) throws IOException
     {
         SharingUserGroups sharingUserGroups = new SharingUserGroups();
