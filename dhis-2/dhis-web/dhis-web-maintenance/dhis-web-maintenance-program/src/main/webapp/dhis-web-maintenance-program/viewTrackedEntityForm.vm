@@ -57,8 +57,8 @@
 <input type="hidden" name="programId" id="programId" value="$!program.id"/>
 <input type="hidden" name="dataEntryFormId" id="dataEntryFormId" value="$!registrationForm.dataEntryForm.id"/>
 
-<h3>$i18n.getString( "tracked_entity_registration_form_manegement" )</h3>
-<h4>$!program.displayName</h4>
+<h3>$i18n.getString( "tracked_entity_form" )</h3>
+<h4>$program.displayName</h4>
 
 <div class="container" >
 	<table id="detailsList" width="100%">
