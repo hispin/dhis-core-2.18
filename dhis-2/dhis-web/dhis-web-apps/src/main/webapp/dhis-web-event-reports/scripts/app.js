@@ -410,7 +410,7 @@ Ext.onReady( function() {
                 if (items.length) {
                     record.filter = 'IN:' + items.join(';');
                 }
-                
+
                 return record;
             },
             setRecord: function(record) {
@@ -602,7 +602,7 @@ Ext.onReady( function() {
                     },
                     setOptionValues: function(optionArray) {
                         var options = [];
-                        
+
                         for (var i = 0; i < optionArray.length; i++) {
                             options.push({
                                 code: optionArray[i],
@@ -614,7 +614,7 @@ Ext.onReady( function() {
                         container.valueStore.loadData(options);
 
                         this.setValue(options);
-                    },                            
+                    },
 					listeners: {
                         change: function(cmp, newVal, oldVal) {
                             newVal = Ext.Array.from(newVal);
