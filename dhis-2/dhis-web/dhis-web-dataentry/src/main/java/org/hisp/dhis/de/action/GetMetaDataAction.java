@@ -29,7 +29,6 @@ package org.hisp.dhis.de.action;
  */
 
 import com.opensymphony.xwork2.Action;
-
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -124,7 +123,7 @@ public class GetMetaDataAction
 
     @Autowired
     private ConfigurationService configurationService;
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -245,16 +244,23 @@ public class GetMetaDataAction
         expressionService.substituteExpressions( indicators, null );
 
         OrganisationUnitLevel offlineOrgUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
-        
+
         Integer level = offlineOrgUnitLevel != null ? offlineOrgUnitLevel.getLevel() : null;
-        
-        OrganisationUnitDataSetAssociationSet organisationUnitSet = organisationUnitService.getOrganisationUnitDataSetAssociationSet( null ); //TODO change null > "level"
+
+        OrganisationUnitDataSetAssociationSet organisationUnitSet = organisationUnitService.getOrganisationUnitDataSetAssociationSet( level );
 
         dataSetAssociationSets = organisationUnitSet.getDataSetAssociationSets();
 
         organisationUnitAssociationSetMap = organisationUnitSet.getOrganisationUnitAssociationSetMap();
 
-        dataSets = new ArrayList<>( dataSetService.getDataSetsByUidNoAcl( organisationUnitSet.getDistinctDataSets() ) );
+        if ( currentUserService.currentUserIsSuper() )
+        {
+            dataSets = new ArrayList<>( dataSetService.getAllDataSets() );
+        }
+        else
+        {
+            dataSets = new ArrayList<>( currentUserService.getCurrentUser().getUserCredentials().getAllDataSets() );
+        }
 
         Set<DataElementCategoryCombo> categoryComboSet = new HashSet<>();
         Set<DataElementCategory> categorySet = new HashSet<>();
