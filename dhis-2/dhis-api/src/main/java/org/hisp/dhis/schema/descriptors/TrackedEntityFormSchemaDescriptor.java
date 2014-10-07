@@ -56,9 +56,9 @@ public class TrackedEntityFormSchemaDescriptor implements SchemaDescriptor
         schema.setOrder( 1490 );
         schema.setMetadata( false );
 
-        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_ADD_TRACKED_ENTITY_FORM" ) ) );
-        schema.getAuthorities().add( new Authority( AuthorityType.UPDATE, Lists.newArrayList( "F_ADD_TRACKED_ENTITY_FORM" ) ) );
-        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_ADD_TRACKED_ENTITY_FORM" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_TRACKED_ENTITY_FORM_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.UPDATE, Lists.newArrayList( "F_TRACKED_ENTITY_FORM_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_TRACKED_ENTITY_FORM_DELETE" ) ) );
 
         return schema;
     }
