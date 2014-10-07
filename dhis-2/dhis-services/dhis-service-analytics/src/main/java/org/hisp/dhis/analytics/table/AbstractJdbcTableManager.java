@@ -50,6 +50,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -68,8 +69,8 @@ public abstract class AbstractJdbcTableManager
     public static final String PREFIX_ORGUNITLEVEL = "uidlevel";
     public static final String PREFIX_INDEX = "in_";
     
-    private static Date MIN_EARLIEST_DATE = new Cal().set( 1800, 1, 1 ).time();
-    private static Date MAX_LATEST_DATE = new Cal().set( 2100, 1, 1 ).time();
+    private static Date MIN_EARLIEST_DATE = new DateTime( 1800, 1, 1, 0, 0 ).toDate();
+    private static Date MAX_LATEST_DATE = new DateTime( 2100, 1, 1, 0, 0 ).toDate();
     
     @Autowired
     protected OrganisationUnitService organisationUnitService;

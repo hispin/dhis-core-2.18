@@ -121,7 +121,11 @@ public class Cal
             case Calendar.MONTH:
                 dateTimeUnit = getCalendar().plusMonths( dateTimeUnit, amount );
             case Calendar.DAY_OF_MONTH:
+            case Calendar.DAY_OF_YEAR:
                 dateTimeUnit = getCalendar().plusDays( dateTimeUnit, amount );
+            break;
+            default:
+                throw new UnsupportedOperationException();
         }
 
         return this;
@@ -142,7 +146,11 @@ public class Cal
             case Calendar.MONTH:
                 dateTimeUnit = getCalendar().minusMonths( dateTimeUnit, amount );
             case Calendar.DAY_OF_MONTH:
+            case Calendar.DAY_OF_YEAR:
                 dateTimeUnit = getCalendar().minusDays( dateTimeUnit, amount );
+            break;
+            default:
+                throw new UnsupportedOperationException();
         }
 
         return this;
