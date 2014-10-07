@@ -32,6 +32,7 @@ import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
 import static org.hisp.dhis.util.ContextUtils.CONTENT_TYPE_CSV;
 import static org.hisp.dhis.util.ContextUtils.CONTENT_TYPE_XML;
+import static org.hisp.dhis.util.ContextUtils.CONTENT_TYPE_JSON;
 import static org.hisp.dhis.util.ContextUtils.getZipOut;
 
 import java.io.OutputStreamWriter;
@@ -62,10 +63,13 @@ public class ExportDataValueAction
     private final static String FILE_PREFIX = "Export";
     private final static String FILE_SEPARATOR = "_";
     private final static String EXTENSION_XML_ZIP = ".xml.zip";
+    private final static String EXTENSION_JSON_ZIP = ".json.zip";
     private final static String EXTENSION_CSV_ZIP = ".csv.zip";
     private final static String EXTENSION_XML = ".xml";
+    private final static String EXTENSION_JSON = ".json";
     private final static String EXTENSION_CSV = ".csv";
     private final static String FORMAT_CSV = "csv";
+    private final static String FORMAT_JSON = "json";
 
     @Autowired
     private SelectionTreeManager selectionTreeManager;
@@ -152,6 +156,13 @@ public class ExportDataValueAction
             
             dataValueSetService.writeDataValueSetCsv( selectedDataSets, getMediumDate( startDate ), 
                 getMediumDate( endDate ), orgUnits, true, writer, exportOptions );
+        }
+        else if ( FORMAT_JSON.equals( exportFormat ) )
+        {
+            ContextUtils.configureResponse( response, CONTENT_TYPE_JSON, true, getFileName( EXTENSION_JSON_ZIP ), true );
+            
+            dataValueSetService.writeDataValueSetJson( selectedDataSets, getMediumDate( startDate ), 
+                getMediumDate( endDate ), orgUnits, true, getZipOut( response, getFileName( EXTENSION_JSON ) ), exportOptions );
         }
         else
         {
