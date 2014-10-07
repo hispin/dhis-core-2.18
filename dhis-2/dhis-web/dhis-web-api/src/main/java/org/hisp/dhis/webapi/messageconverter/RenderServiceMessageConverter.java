@@ -63,11 +63,11 @@ public class RenderServiceMessageConverter extends AbstractHttpMessageConverter<
     {
         MediaType mediaType = inputMessage.getHeaders().getContentType();
 
-        if ( mediaType.getSubtype().equals( "json" ) )
+        if ( isJson( mediaType ) )
         {
             return renderService.fromJson( inputMessage.getBody(), clazz );
         }
-        else if ( mediaType.getSubtype().equals( "xml" ) )
+        else if ( isXml( mediaType ) )
         {
             return renderService.fromXml( inputMessage.getBody(), clazz );
         }
@@ -80,13 +80,24 @@ public class RenderServiceMessageConverter extends AbstractHttpMessageConverter<
     {
         MediaType mediaType = outputMessage.getHeaders().getContentType();
 
-        if ( mediaType.getSubtype().equals( "json" ) )
+        if ( isJson( mediaType ) )
         {
             renderService.toJson( outputMessage.getBody(), object );
         }
-        else if ( mediaType.getSubtype().equals( "xml" ) )
+        else if ( isXml( mediaType ) )
         {
             renderService.toXml( outputMessage.getBody(), object );
         }
+    }
+
+    private boolean isXml( MediaType mediaType )
+    {
+        return (mediaType.getType().equals( "application" ) || mediaType.getType().equals( "text" ))
+            && mediaType.getSubtype().equals( "xml" );
+    }
+
+    private boolean isJson( MediaType mediaType )
+    {
+        return mediaType.getType().equals( "application" ) && mediaType.getSubtype().equals( "json" );
     }
 }
