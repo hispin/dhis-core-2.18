@@ -532,7 +532,7 @@ hr.app-separator
 /*
  * Media queries for the menu
  */
-@media only screen and (max-width: 580px)
+@media (max-width: 700px), (max-device-width: 700px)
 {
     #headerText
     {
