@@ -31,6 +31,7 @@ package org.hisp.dhis.settings.action.system;
 import com.opensymphony.xwork2.Action;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -40,6 +41,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.hisp.dhis.setting.SystemSettingManager.*;
 
@@ -95,6 +97,9 @@ public class SetGeneralSettingsAction
     {
         this.organisationUnitService = organisationUnitService;
     }
+    
+    @Autowired
+    private CalendarService calendarService;
 
     // -------------------------------------------------------------------------
     // Output
@@ -240,11 +245,12 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_PHONE_NUMBER_AREA_CODE, phoneNumberAreaCode );
         systemSettingManager.saveSystemSetting( KEY_MULTI_ORGANISATION_UNIT_FORMS, multiOrganisationUnitForms );
         systemSettingManager.saveSystemSetting( KEY_GOOGLE_ANALYTICS_UA, googleAnalyticsUA );
-        systemSettingManager.saveSystemSetting( KEY_CALENDAR, calendar );
-        systemSettingManager.saveSystemSetting( KEY_DATE_FORMAT, dateFormat );
         systemSettingManager.saveSystemSetting( KEY_ANALYTICS_MAINTENANCE_MODE, analyticsMaintenanceMode );
         systemSettingManager.saveSystemSetting( KEY_HELP_PAGE_LINK, StringUtils.trimToNull( helpPageLink ) );
 
+        calendarService.setSystemCalendarKey( calendar );
+        calendarService.setSystemDateFormatKey( dateFormat );
+        
         Configuration configuration = configurationService.getConfiguration();
 
         if ( feedbackRecipients != null )
