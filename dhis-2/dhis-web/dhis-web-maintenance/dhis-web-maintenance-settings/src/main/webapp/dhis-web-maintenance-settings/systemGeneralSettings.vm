@@ -53,6 +53,7 @@
 <div class="setting">
 <select id="databaseServerCpus" name="databaseServerCpus">
 	<option value="0">$i18n.getString( "automatic" ) ($i18n.getString( "detect_based_on_web_server" ))</option>
+	<option value="1" #if( $keyDatabaseServerCpus == "1" )selected="selected"#end>1</option>
 	<option value="2" #if( $keyDatabaseServerCpus == "2" )selected="selected"#end>2</option>
 	<option value="3" #if( $keyDatabaseServerCpus == "3" )selected="selected"#end>3</option>
 	<option value="4" #if( $keyDatabaseServerCpus == "4" )selected="selected"#end>4</option>
