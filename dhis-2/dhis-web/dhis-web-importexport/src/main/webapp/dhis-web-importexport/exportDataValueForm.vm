@@ -126,6 +126,7 @@
 	
 	<tr>		
 		<td><input type="button" value="$i18n.getString( 'export_as_xml' )" style="width:120px" onclick="exportDataValue( 'xml' )">
+		<td><input type="button" value="$i18n.getString( 'export_as_json' )" style="width:120px" onclick="exportDataValue( 'json' )">
 		<input type="button" value="$i18n.getString( 'export_as_csv' )" style="width:120px" onclick="exportDataValue( 'csv' )"></td>
 		<td></td>
 		<td></td>
