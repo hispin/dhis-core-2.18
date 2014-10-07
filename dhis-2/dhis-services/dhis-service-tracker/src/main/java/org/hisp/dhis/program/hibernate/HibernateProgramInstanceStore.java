@@ -260,19 +260,22 @@ public class HibernateProgramInstanceStore
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
 
         Collection<SchedulingProgramObject> schedulingProgramObjects = new HashSet<>();
-
+        
+        
         while ( rs.next() )
         {
-             String message = rs.getString( "templatemessage" );
-
+            String message = rs.getString( "templatemessage" );
+  
+            int programInstanceId = rs.getInt( "programinstanceid" ) ;
+            
             List<String> attributeUids = reminderService.getAttributeUids( message );
             SqlRowSet attributeValueRow = jdbcTemplate
                 .queryForRowSet( "select tea.uid ,teav.value from trackedentityattributevalue teav "
                     + " INNER JOIN trackedentityattribute tea on tea.trackedentityattributeid=teav.trackedentityattributeid "
                     + " INNER JOIN programinstance ps on teav.trackedentityinstanceid=ps.trackedentityinstanceid "
                     + " INNER JOIN programstageinstance psi on ps.programinstanceid=psi.programinstanceid "
-                    + " where tea.uid in ( " + TextUtils.getQuotedCommaDelimitedString( attributeUids ) + ") " );
-
+                    + " where tea.uid in ( " + TextUtils.getQuotedCommaDelimitedString( attributeUids ) + ") "
+                    + " and ps.programinstanceid=" + programInstanceId );
             while ( attributeValueRow.next() )
             {
                 String uid = attributeValueRow.getString( "uid" );
@@ -299,7 +302,7 @@ public class HibernateProgramInstanceStore
                 daysSinceIncidentDate );
             
             SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
-            schedulingProgramObject.setProgramInstanceId( rs.getInt( "programinstanceid" ) );
+            schedulingProgramObject.setProgramInstanceId( programInstanceId );
             schedulingProgramObject.setPhoneNumber( rs.getString( "phonenumber" ) );
             schedulingProgramObject.setMessage( message );
 

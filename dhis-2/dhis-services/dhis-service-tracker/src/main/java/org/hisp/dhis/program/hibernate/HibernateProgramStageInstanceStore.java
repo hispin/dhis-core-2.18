@@ -139,12 +139,14 @@ public class HibernateProgramStageInstanceStore
             String message = rs.getString( "templatemessage" );
             
             List<String> attributeUids = reminderService.getAttributeUids( message );
+            int programstageinstanceid = rs.getInt( "programstageinstanceid" );
             SqlRowSet attributeValueRow = jdbcTemplate
                 .queryForRowSet( "select tea.uid ,teav.value from trackedentityattributevalue teav "
                     + " INNER JOIN trackedentityattribute tea on tea.trackedentityattributeid=teav.trackedentityattributeid "
                     + " INNER JOIN programinstance ps on teav.trackedentityinstanceid=ps.trackedentityinstanceid "
                     + " INNER JOIN programstageinstance psi on ps.programinstanceid=psi.programinstanceid "
-                    + " where tea.uid in ( " + TextUtils.getQuotedCommaDelimitedString( attributeUids ) + ") " );
+                    + " where tea.uid in ( " + TextUtils.getQuotedCommaDelimitedString( attributeUids ) + ")  "
+                    + " and psi.programstageinstanceid=" + programstageinstanceid );
 
             while ( attributeValueRow.next() )
             {
@@ -168,7 +170,7 @@ public class HibernateProgramStageInstanceStore
             
 
             SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
-            schedulingProgramObject.setProgramStageInstanceId( rs.getInt( "programstageinstanceid" ) );
+            schedulingProgramObject.setProgramStageInstanceId( programstageinstanceid );
             schedulingProgramObject.setPhoneNumber( rs.getString( "phonenumber" ) );
             schedulingProgramObject.setMessage( message );
 
