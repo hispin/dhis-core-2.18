@@ -728,7 +728,7 @@ public abstract class BaseAnalyticalObject
 
         for ( NameableObject item : dimensions )
         {
-            if ( item.getClass().isAssignableFrom( DataElementOperand.class ) )
+            if ( item.getClass().equals( DataElementOperand.class ) )
             {
                 ids.add( ((DataElementOperand) item).getDataElement().getUid() );
                 ids.add( ((DataElementOperand) item).getCategoryOptionCombo().getUid() );
