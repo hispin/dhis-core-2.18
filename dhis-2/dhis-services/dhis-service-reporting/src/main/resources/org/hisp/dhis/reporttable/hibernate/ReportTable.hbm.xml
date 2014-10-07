@@ -155,9 +155,9 @@
 	  
 	<property name="colTotals" />
 
-    <property name="rowSubtotals" />
+    <property name="rowSubTotals" />
 	  
-	<property name="colSubtotals" />
+	<property name="colSubTotals" />
 
     <property name="hideEmptyRows" />
 

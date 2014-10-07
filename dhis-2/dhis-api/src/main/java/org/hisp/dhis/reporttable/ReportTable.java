@@ -163,12 +163,12 @@ public class ReportTable
     /**
      * Indicates rendering of row sub-totals for the table.
      */
-    private boolean rowSubtotals;
+    private boolean rowSubTotals;
 
     /**
      * Indicates rendering of column sub-totals for the table.
      */
-    private boolean colSubtotals;
+    private boolean colSubTotals;
 
     /**
      * Indicates rendering of empty rows for the table.
@@ -912,27 +912,27 @@ public class ReportTable
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public boolean isRowSubtotals()
+    public boolean isRowSubTotals()
     {
-        return rowSubtotals;
+        return rowSubTotals;
     }
 
-    public void setRowSubtotals( boolean rowSubtotals )
+    public void setRowSubTotals( boolean rowSubTotals )
     {
-        this.rowSubtotals = rowSubtotals;
+        this.rowSubTotals = rowSubTotals;
     }    
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public boolean isColSubtotals()
+    public boolean isColSubTotals()
     {
-        return colSubtotals;
+        return colSubTotals;
     }
 
-    public void setColSubtotals( boolean colSubtotals )
+    public void setColSubTotals( boolean colSubTotals )
     {
-        this.colSubtotals = colSubtotals;
+        this.colSubTotals = colSubTotals;
     }
 
     @JsonProperty
@@ -1093,8 +1093,8 @@ public class ReportTable
             topLimit = reportTable.getTopLimit();
             rowTotals = reportTable.isRowTotals();
             colTotals = reportTable.isColTotals();
-            rowSubtotals = reportTable.isRowSubtotals();
-            colSubtotals = reportTable.isColSubtotals();
+            rowSubTotals = reportTable.isRowSubTotals();
+            colSubTotals = reportTable.isColSubTotals();
             hideEmptyRows = reportTable.isHideEmptyRows();
             showHierarchy = reportTable.isShowHierarchy();
             aggregationType = reportTable.getAggregationType();

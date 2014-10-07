@@ -956,6 +956,12 @@ Ext.onReady( function() {
                 favorite.colTotals = favorite.showColTotals;
 				delete favorite.showColTotals;
 
+				favorite.rowSubTotals = favorite.showRowSubTotals;
+				delete favorite.showRowSubTotals;
+
+				favorite.colSubTotals = favorite.showColSubTotals;
+				delete favorite.showColSubTotals;
+
 				favorite.reportParams = {
 					paramReportingPeriod: favorite.reportingPeriod,
 					paramOrganisationUnit: favorite.organisationUnit,

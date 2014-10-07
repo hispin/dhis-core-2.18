@@ -120,9 +120,14 @@ public class EventReport
     private boolean colTotals;
 
     /**
-     * Indicates rendering of sub-totals for the table.
+     * Indicates rendering of row sub-totals for the table.
      */
-    private boolean subtotals;
+    private boolean rowSubTotals;
+
+    /**
+     * Indicates rendering of column sub-totals for the table.
+     */
+    private boolean colSubTotals;
 
     /**
      * Indicates count type.
@@ -337,16 +342,29 @@ public class EventReport
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isSubtotals()
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isRowSubTotals()
     {
-        return subtotals;
+        return rowSubTotals;
     }
 
-    public void setSubtotals( boolean subtotals )
+    public void setRowSubTotals( boolean rowSubTotals )
     {
-        this.subtotals = subtotals;
+        this.rowSubTotals = rowSubTotals;
+    }    
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isColSubTotals()
+    {
+        return colSubTotals;
+    }
+
+    public void setColSubTotals( boolean colSubTotals )
+    {
+        this.colSubTotals = colSubTotals;
     }
 
     @JsonProperty
@@ -443,7 +461,8 @@ public class EventReport
             endDate = eventReport.getEndDate();
             rowTotals = eventReport.isRowTotals();
             colTotals = eventReport.isColTotals();
-            subtotals = eventReport.isSubtotals();
+            rowSubTotals = eventReport.isRowSubTotals();
+            colSubTotals = eventReport.isColSubTotals();
             hideEmptyRows = eventReport.isHideEmptyRows();
             countType = eventReport.getCountType();
             showHierarchy = eventReport.isShowHierarchy();
