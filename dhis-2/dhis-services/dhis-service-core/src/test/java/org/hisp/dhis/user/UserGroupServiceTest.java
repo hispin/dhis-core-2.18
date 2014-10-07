@@ -30,6 +30,7 @@ package org.hisp.dhis.user;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -45,8 +46,12 @@ import static org.junit.Assert.*;
 public class UserGroupServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private UserGroupService userGroupService;
 
+    @Autowired
+    private  UserService userService;
+    
     private User user1;
     private User user2;
     private User user3;
@@ -55,9 +60,6 @@ public class UserGroupServiceTest
     public void setUpTest()
         throws Exception
     {
-        userService = (UserService) getBean( UserService.ID );
-        userGroupService = (UserGroupService) getBean( UserGroupService.ID );
-
         user1 = createUser( 'A' );
         user2 = createUser( 'B' );
         user3 = createUser( 'C' );

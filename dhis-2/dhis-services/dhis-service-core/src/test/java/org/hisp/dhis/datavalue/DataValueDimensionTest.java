@@ -50,6 +50,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -57,6 +58,21 @@ import org.junit.Test;
 public class DataValueDimensionTest
     extends DhisSpringTest
 {
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+    
     private DataElementCategoryOption male;
     private DataElementCategoryOption female;
     private DataElementCategoryOption under15;    
@@ -78,13 +94,6 @@ public class DataValueDimensionTest
     @Override
     public void setUpTest()
     {
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-        periodService = (PeriodService) getBean( PeriodService.ID );
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
         male = new DataElementCategoryOption( "Male" );
         female = new DataElementCategoryOption( "Female" );
         under15 = new DataElementCategoryOption( "<15" );

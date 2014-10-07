@@ -35,6 +35,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
@@ -43,10 +45,10 @@ import org.junit.Test;
  * @author Chau Thu Tran
  * @version ValidationCriteriaStoreTest.java May 25, 201011:38:25 AM
  */
-@SuppressWarnings( "unchecked" )
 public class ValidationCriteriaStoreTest
     extends DhisSpringTest
 {
+    @Resource(name="org.hisp.dhis.validation.ValidationCriteriaStore")
     private GenericIdentifiableObjectStore<ValidationCriteria> validationCriteriaStore;
 
     private String propertyA;
@@ -65,8 +67,6 @@ public class ValidationCriteriaStoreTest
     public void setUpTest()
         throws Exception
     {
-        validationCriteriaStore = (GenericIdentifiableObjectStore<ValidationCriteria>) getBean( "org.hisp.dhis.validation.ValidationCriteriaStore" );
-
         propertyA = "name";
         propertyB = "name";
         

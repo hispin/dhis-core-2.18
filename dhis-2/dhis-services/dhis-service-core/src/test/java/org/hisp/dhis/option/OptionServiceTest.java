@@ -36,6 +36,7 @@ import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -43,6 +44,7 @@ import org.junit.Test;
 public class OptionServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private OptionService optionService;
 
     private List<Option> options = new ArrayList<>();
@@ -61,8 +63,6 @@ public class OptionServiceTest
     @Override
     public void setUpTest()
     {
-        optionService = (OptionService) getBean( OptionService.ID );
-
         option1 = new Option("OptA1","OptA1");
         option2 = new Option("OptA2","OptA2");
         option3 = new Option("OptB1","OptB1");

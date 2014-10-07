@@ -29,6 +29,8 @@ package org.hisp.dhis.attribute;
  */
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.junit.Assert.*;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -39,6 +41,7 @@ import org.hisp.dhis.DhisSpringTest;
 public class AttributeValueServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private AttributeService attributeService;
 
     private AttributeValue attributeValue1;
@@ -48,8 +51,6 @@ public class AttributeValueServiceTest
     @Override
     protected void setUpTest()
     {
-        attributeService = (AttributeService) getBean( "org.hisp.dhis.attribute.AttributeService" );
-
         attributeValue1 = new AttributeValue( "value 1" );
         attributeValue2 = new AttributeValue( "value 2" );
 

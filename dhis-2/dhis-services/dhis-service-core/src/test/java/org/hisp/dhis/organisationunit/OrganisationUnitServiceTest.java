@@ -45,6 +45,7 @@ import java.util.List;
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kristian Nordal
@@ -52,18 +53,11 @@ import org.junit.Test;
 public class OrganisationUnitServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private OrganisationUnitService organisationUnitService;
 
+    @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
-
-    @Override
-    public void setUpTest()
-        throws Exception
-    {
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
-    }
 
     // -------------------------------------------------------------------------
     // OrganisationUnit

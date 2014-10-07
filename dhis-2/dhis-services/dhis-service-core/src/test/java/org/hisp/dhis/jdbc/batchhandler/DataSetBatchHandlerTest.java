@@ -52,7 +52,13 @@ public class DataSetBatchHandlerTest
 {
     @Autowired
     private BatchHandlerFactory batchHandlerFactory;
-
+    
+    @Autowired
+    private DataSetService dataSetService;
+    
+    @Autowired
+    private PeriodService periodService;
+    
     private BatchHandler<DataSet> batchHandler;
 
     private DataSet dataSetA;
@@ -66,10 +72,6 @@ public class DataSetBatchHandlerTest
     @Override
     public void setUpTest()
     {
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
         batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
 
         batchHandler.init();

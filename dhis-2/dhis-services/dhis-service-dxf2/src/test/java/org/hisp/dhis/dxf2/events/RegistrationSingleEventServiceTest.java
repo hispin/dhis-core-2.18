@@ -79,7 +79,13 @@ public class RegistrationSingleEventServiceTest
 
     @Autowired
     private EnrollmentService enrollmentService;
-
+    
+    @Autowired 
+    private IdentifiableObjectManager _identifiableObjectManager;
+    
+    @Autowired
+    private UserService _userService;
+    
     private org.hisp.dhis.trackedentity.TrackedEntityInstance maleA;
     private org.hisp.dhis.trackedentity.TrackedEntityInstance maleB;
     private org.hisp.dhis.trackedentity.TrackedEntityInstance femaleA;
@@ -96,8 +102,8 @@ public class RegistrationSingleEventServiceTest
     @Override
     protected void setUpTest() throws Exception
     {
-        identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
-        userService = (UserService) getBean( UserService.ID );
+        identifiableObjectManager = _identifiableObjectManager;
+        userService = _userService;
 
         organisationUnitA = createOrganisationUnit( 'A' );
         organisationUnitB = createOrganisationUnit( 'B' );

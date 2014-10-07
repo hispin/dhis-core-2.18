@@ -50,6 +50,7 @@ import org.hisp.dhis.mock.MockI18n;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Bharath
@@ -58,6 +59,18 @@ import org.junit.Test;
 public class DataEntryFormServiceTest
     extends DhisSpringTest
 {
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private DataEntryFormService dataEntryFormService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+    
     private PeriodType periodType;
     
     private DataElement dataElement;
@@ -78,14 +91,6 @@ public class DataEntryFormServiceTest
     public void setUpTest()
         throws Exception
     {
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        dataEntryFormService = (DataEntryFormService) getBean( DataEntryFormService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
         periodType = new MonthlyPeriodType();
         
         dataElement = createDataElement( 'A' );

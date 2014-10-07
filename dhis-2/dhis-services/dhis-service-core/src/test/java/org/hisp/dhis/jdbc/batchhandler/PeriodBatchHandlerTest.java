@@ -57,6 +57,9 @@ public class PeriodBatchHandlerTest
     @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
+    @Autowired
+    private PeriodService periodService;
+    
     private BatchHandler<Period> batchHandler;
     
     private PeriodType periodType;
@@ -76,9 +79,7 @@ public class PeriodBatchHandlerTest
 
     @Override
     public void setUpTest()
-    {
-        periodService = (PeriodService) getBean( PeriodService.ID );
-        
+    {        
         periodType = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
         
         Calendar calendar = Calendar.getInstance();

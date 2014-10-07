@@ -28,28 +28,31 @@ package org.hisp.dhis.attribute;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import javax.annotation.Resource;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericStore;
+import org.junit.Test;
 
 public class AttributeValueStoreTest
     extends DhisSpringTest
 {
+    @Resource(name="org.hisp.dhis.attribute.AttributeValueStore")
     private GenericStore<AttributeValue> attributeValueStore;
-
+    
+    @Resource(name="org.hisp.dhis.attribute.AttributeStore")
+    private AttributeStore attributeStore;
+    
     private AttributeValue attributeValue1;
 
     private AttributeValue attributeValue2;
 
     @Override
-    @SuppressWarnings("unchecked")
     protected void setUpTest()
     {
-        AttributeStore attributeStore = (AttributeStore) getBean( "org.hisp.dhis.attribute.AttributeStore" );
-        attributeValueStore = (GenericStore<AttributeValue>) getBean( "org.hisp.dhis.attribute.AttributeValueStore" );
-
         Attribute attribute1 = new Attribute();
         attribute1.setName( "attribute_simple" );
         attribute1.setValueType( "string" );

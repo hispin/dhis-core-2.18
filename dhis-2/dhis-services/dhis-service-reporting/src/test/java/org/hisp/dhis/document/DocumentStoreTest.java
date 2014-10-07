@@ -35,6 +35,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
@@ -43,10 +45,10 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@SuppressWarnings( "unchecked" )
 public class DocumentStoreTest
     extends DhisSpringTest
 {
+    @Resource(name="org.hisp.dhis.document.DocumentStore")
     private GenericIdentifiableObjectStore<Document> documentStore;
     
     private Document documentA;
@@ -55,9 +57,7 @@ public class DocumentStoreTest
     
     @Override
     public void setUpTest()
-    {
-        documentStore = (GenericIdentifiableObjectStore<Document>) getBean( "org.hisp.dhis.document.DocumentStore" );
-        
+    {  
         documentA = new Document( "DocumentA", "UrlA", true, null );
         documentB = new Document( "DocumentB", "UrlB", true, null );
         documentC = new Document( "DocumentC", "UrlC", false, null );

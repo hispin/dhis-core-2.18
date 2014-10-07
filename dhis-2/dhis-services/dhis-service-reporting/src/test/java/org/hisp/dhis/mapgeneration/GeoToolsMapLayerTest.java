@@ -52,6 +52,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kenneth Solbø Andersen <kennetsa@ifi.uio.no>
@@ -59,11 +60,24 @@ import org.junit.Test;
 public class GeoToolsMapLayerTest
     extends DhisSpringTest
 {
-    private InternalMapLayer internalMapLayer;
-
+    @Autowired
     private MappingService mappingService;
 
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private IndicatorService indicatorService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private PeriodService periodService;
+
     private OrganisationUnit organisationUnit;
+    
+    private InternalMapLayer internalMapLayer;
 
     private OrganisationUnitLevel organisationUnitLevel;
 
@@ -86,16 +100,6 @@ public class GeoToolsMapLayerTest
     @Override
     public void setUpTest()
     {
-        mappingService = (MappingService) getBean( MappingService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
         organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitLevel = new OrganisationUnitLevel( 1, "Level" );
 

@@ -36,6 +36,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Stian Strandli
@@ -43,6 +44,7 @@ import org.junit.Test;
 public class SystemSettingStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private SystemSettingStore systemSettingStore;
 
     private SystemSetting settingA;
@@ -53,8 +55,6 @@ public class SystemSettingStoreTest
     public void setUpTest()
         throws Exception
     {
-        systemSettingStore = (SystemSettingStore) getBean( "org.hisp.dhis.setting.SystemSettingStore" );
-
         settingA = new SystemSetting();
         settingA.setName( "Setting1" );
         settingA.setValue( new String( "Value1" ) );

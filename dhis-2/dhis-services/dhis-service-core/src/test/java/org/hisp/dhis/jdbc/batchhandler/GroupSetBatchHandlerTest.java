@@ -53,6 +53,9 @@ public class GroupSetBatchHandlerTest
     @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
+    @Autowired
+    private OrganisationUnitGroupService  organisationUnitGroupService;
+    
     private BatchHandler<OrganisationUnitGroupSet> batchHandler;
     
     private OrganisationUnitGroupSet groupSetA;
@@ -65,9 +68,7 @@ public class GroupSetBatchHandlerTest
 
     @Override
     public void setUpTest()
-    {
-        organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
-        
+    {        
         batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class );
 
         batchHandler.init();

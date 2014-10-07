@@ -33,9 +33,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.period.PeriodService;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author joakibj, briane, eivinhb
@@ -46,17 +46,15 @@ import org.junit.Test;
 public class DataBrowserServiceTest
     extends DataBrowserTest
 {
+    @Autowired
     private DataBrowserGridService dataBrowserService;
-
+  
     private boolean isZeroAdded;
 
     @Override
     public void setUpTest()
         throws Exception
     {
-        dataBrowserService = (DataBrowserGridService) getBean( DataBrowserGridService.ID );
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
         super.setUpDataBrowserTest();
     }
 

@@ -37,19 +37,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-@SuppressWarnings( "unchecked" )
 public class DataElementCategoryComboStoreTest
     extends DhisSpringTest
 {
+    @Resource(name="org.hisp.dhis.dataelement.CategoryComboStore")
     private GenericIdentifiableObjectStore<DataElementCategoryCombo> categoryComboStore;
+    
+    @Autowired
+    private DataElementCategoryService categoryService;
     
     private DataElementCategoryCombo categoryComboA;
     private DataElementCategoryCombo categoryComboB;
@@ -68,10 +74,6 @@ public class DataElementCategoryComboStoreTest
     @Override
     public void setUpTest()
     {
-        categoryComboStore = (GenericIdentifiableObjectStore<DataElementCategoryCombo>) getBean( "org.hisp.dhis.dataelement.CategoryComboStore" );
-        
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
         categories = new ArrayList<>();
         
         categoryA = new DataElementCategory( "CategoryA" );

@@ -51,6 +51,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -59,14 +60,30 @@ import org.junit.Test;
 public class DataMartServiceAggregationLevelsTest
     extends DhisTest
 {
+    @Autowired
     private DataMartEngine dataMartEngine;
-    
+
+    @Autowired
     private AggregatedDataValueService aggregatedDataValueService;
 
-    private DataElementCategoryCombo categoryCombo;
-    
-    private DataElementCategoryOptionCombo categoryOptionCombo;
+    @Autowired
+    private DataElementCategoryService categoryService;
 
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataValueService dataValueService;
+   
     private Collection<Integer> dataElementIds;
     private Collection<Integer> periodIds;
     private Collection<Integer> organisationUnitIds;
@@ -88,6 +105,10 @@ public class DataMartServiceAggregationLevelsTest
     private OrganisationUnit unitK;
     private OrganisationUnit unitL;
     private OrganisationUnit unitM;     
+    
+    private DataElementCategoryCombo categoryCombo;
+
+    private DataElementCategoryOptionCombo categoryOptionCombo;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -96,26 +117,10 @@ public class DataMartServiceAggregationLevelsTest
     @Override
     public void setUpTest()
     {
-        dataMartEngine = (DataMartEngine) getBean( DataMartEngine.ID );
-        
-        aggregatedDataValueService = (AggregatedDataValueService) getBean( AggregatedDataValueService.ID );
-        
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-        
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
         categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        
+     
         // ---------------------------------------------------------------------
         // Setup identifier Collections
         // ---------------------------------------------------------------------

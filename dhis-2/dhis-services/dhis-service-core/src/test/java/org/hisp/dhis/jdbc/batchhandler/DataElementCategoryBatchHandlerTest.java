@@ -54,6 +54,9 @@ public class DataElementCategoryBatchHandlerTest
     @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
+    @Autowired
+    private DataElementCategoryService  categoryService;
+    
     private BatchHandler<DataElementCategory> batchHandler;
     
     private DataElementCategory categoryA;
@@ -67,8 +70,6 @@ public class DataElementCategoryBatchHandlerTest
     @Override
     public void setUpTest()
     {
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
         batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryBatchHandler.class );
         
         batchHandler.init();

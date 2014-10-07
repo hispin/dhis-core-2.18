@@ -30,6 +30,7 @@ package org.hisp.dhis.document;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 
@@ -42,6 +43,7 @@ import static org.junit.Assert.*;
 public class DocumentServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private DocumentService documentService;
 
     private Document documentA;
@@ -51,8 +53,6 @@ public class DocumentServiceTest
     @Override
     public void setUpTest()
     {
-        documentService = (DocumentService) getBean( DocumentService.ID );
-
         documentA = new Document( "DocumentA", "UrlA", true, null );
         documentB = new Document( "DocumentB", "UrlB", true, null );
         documentC = new Document( "DocumentC", "UrlC", false, null );

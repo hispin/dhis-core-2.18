@@ -51,6 +51,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -59,8 +60,24 @@ import org.junit.Test;
 public class DataIntegrityServiceTest
     extends DhisTest
 {
+    @Autowired
     private DataIntegrityService dataIntegrityService;
-    
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private IndicatorService indicatorService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
     private DataElement elementA;
     private DataElement elementB;
     private DataElement elementC;
@@ -98,17 +115,6 @@ public class DataIntegrityServiceTest
     @Override
     public void setUpTest()
     {
-        // ---------------------------------------------------------------------
-        // Services
-        // ---------------------------------------------------------------------
-
-        dataIntegrityService = (DataIntegrityService) getBean( DataIntegrityService.ID );        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );        
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );        
-        dataSetService = (DataSetService) getBean( DataSetService.ID );        
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );        
-        organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
-
         // ---------------------------------------------------------------------
         // Objects
         // ---------------------------------------------------------------------

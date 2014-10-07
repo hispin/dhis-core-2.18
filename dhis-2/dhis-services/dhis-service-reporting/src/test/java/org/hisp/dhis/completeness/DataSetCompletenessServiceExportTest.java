@@ -38,6 +38,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.*;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,10 +54,22 @@ import static org.junit.Assert.assertEquals;
 public class DataSetCompletenessServiceExportTest
     extends DhisSpringTest
 {
+    @Autowired
     private DataSetCompletenessEngine completenessEngine;
 
+    @Autowired
     private DataSetCompletenessStore completenessStore;
 
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
     private CompleteDataSetRegistrationService registrationService;
 
     private PeriodType monthly;
@@ -87,19 +100,7 @@ public class DataSetCompletenessServiceExportTest
 
     @Override
     public void setUpTest()
-    {
-        completenessEngine = (DataSetCompletenessEngine) getBean( DataSetCompletenessEngine.ID );
-
-        completenessStore = (DataSetCompletenessStore) getBean( DataSetCompletenessStore.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        registrationService = (CompleteDataSetRegistrationService) getBean( CompleteDataSetRegistrationService.ID );
-
+    { 
         dataSets = new ArrayList<>();
         periods = new ArrayList<>();
         units = new ArrayList<>();

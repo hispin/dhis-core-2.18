@@ -29,7 +29,10 @@ package org.hisp.dhis.version;
  */
 
 import java.util.Collection;
+
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.junit.Assert.*;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -37,6 +40,7 @@ import org.hisp.dhis.DhisSpringTest;
 public class VersionServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private VersionService versionService;
 
     private Version versionA;
@@ -46,8 +50,6 @@ public class VersionServiceTest
     @Override
     protected void setUpTest()
     {
-        versionService = (VersionService) getBean( "org.hisp.dhis.version.VersionService" );
-
         versionA = new Version();
         versionA.setKey( "keyA" );
         versionA.setValue( "valueA" );

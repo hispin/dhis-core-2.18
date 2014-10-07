@@ -53,6 +53,7 @@ public class DataElementGroupBatchHandlerTest
     @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
+    @Autowired
     private DataElementService dataElementService;
     
     private BatchHandler<DataElementGroup> batchHandler;
@@ -68,8 +69,6 @@ public class DataElementGroupBatchHandlerTest
     @Override
     public void setUpTest()
     {
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
         batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class );
 
         batchHandler.init();

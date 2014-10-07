@@ -43,6 +43,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Bharath
@@ -51,10 +52,13 @@ import org.junit.Test;
 public class DataEntryFormStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private PeriodStore periodStore;
 
+    @Autowired
     private DataSetService dataSetService;
 
+    @Autowired
     private DataEntryFormStore dataEntryFormStore;
 
     private PeriodType periodType;
@@ -63,12 +67,6 @@ public class DataEntryFormStoreTest
     public void setUpTest()
         throws Exception
     {
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        periodStore = (PeriodStore) getBean( PeriodStore.ID );
-
-        dataEntryFormStore = (DataEntryFormStore) getBean( DataEntryFormStore.ID );
-
         periodType = periodStore.getAllPeriodTypes().iterator().next();
     }
 

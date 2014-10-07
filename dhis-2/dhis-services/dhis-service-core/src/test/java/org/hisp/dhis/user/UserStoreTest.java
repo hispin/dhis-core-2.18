@@ -39,6 +39,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Nguyen Hong Duc
@@ -47,25 +48,22 @@ import org.junit.Test;
 public class UserStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private UserStore userStore;
-    
+
+    @Autowired
     private UserCredentialsStore userCredentialsStore;
 
+    @Autowired
     private OrganisationUnitService organisationUnitService;
-    
+
     private OrganisationUnit unit1;
     private OrganisationUnit unit2;
 
     @Override
     public void setUpTest()
         throws Exception
-    {
-        userStore = (UserStore) getBean( UserStore.ID );
-        
-        userCredentialsStore = (UserCredentialsStore) getBean( UserCredentialsStore.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
+    { 
         unit1 = createOrganisationUnit( 'A' );
         unit2 = createOrganisationUnit( 'B' );
 

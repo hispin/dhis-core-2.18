@@ -54,6 +54,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author joakibj, briane, eivinhb
@@ -113,33 +114,42 @@ public abstract class DataBrowserTest
     
     protected MockI18nFormat mockFormat; 
 
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    @Autowired
+    private IndicatorService indicatorService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private DataSetService dataSetService;
+     
     public void setUpDataBrowserTest()
         throws Exception
     {
         mockI18n = new MockI18n();
         
         mockFormat = new MockI18nFormat();
-        
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
-
+       
         categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
+      
         // ---------------------------------------------------------------------
         // Setup identifier Collections
         // ---------------------------------------------------------------------

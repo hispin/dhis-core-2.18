@@ -29,6 +29,8 @@ package org.hisp.dhis.attribute;
  */
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.junit.Assert.*;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -36,6 +38,7 @@ import org.hisp.dhis.DhisSpringTest;
 public class AttributeStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private AttributeStore attributeStore;
 
     private Attribute attribute1;
@@ -45,8 +48,6 @@ public class AttributeStoreTest
     @Override
     protected void setUpTest()
     {
-        attributeStore = (AttributeStore) getBean( "org.hisp.dhis.attribute.AttributeStore" );
-
         attribute1 = new Attribute();
         attribute1.setName( "attribute_simple" );
         attribute1.setValueType( "string" );

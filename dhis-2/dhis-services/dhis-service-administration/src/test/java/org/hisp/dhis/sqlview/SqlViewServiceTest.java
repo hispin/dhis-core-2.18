@@ -38,6 +38,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.DhisTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Dang Duy Hieu
@@ -46,6 +47,7 @@ import org.junit.Test;
 public class SqlViewServiceTest
     extends DhisTest
 {
+    @Autowired
     private SqlViewService sqlViewService;
 
     protected static final String SQL1 = "SELECT   *  FROM     _categorystructure;;  ; ;;;  ;; ; ";
@@ -59,13 +61,7 @@ public class SqlViewServiceTest
     protected static final String SQL4 = "SELECT de.name, dv.sourceid, dv.value, p.startdate "
         + "FROM dataelement AS de, datavalue AS dv, period AS p " + "WHERE de.dataelementid=dv.dataelementid "
         + "AND dv.periodid=p.periodid LIMIT 10";
-
-    @Override
-    public void setUpTest()
-    {
-        sqlViewService = (SqlViewService) getBean( SqlViewService.ID );
-    }
-
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

@@ -40,6 +40,7 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -48,6 +49,9 @@ import org.junit.Test;
 public class DataElementCategoryComboServiceTest
     extends DhisSpringTest
 {
+    @Autowired
+    private DataElementCategoryService categoryService;
+    
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
     private DataElementCategoryOption categoryOptionC;
@@ -72,9 +76,7 @@ public class DataElementCategoryComboServiceTest
 
     @Override
     public void setUpTest()
-    {
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
+    {  
         categories = new ArrayList<>();
         
         categoryOptionA = new DataElementCategoryOption( "OptionA" );

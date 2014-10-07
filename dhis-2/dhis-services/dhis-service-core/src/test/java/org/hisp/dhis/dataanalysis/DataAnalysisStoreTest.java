@@ -48,6 +48,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -55,7 +56,26 @@ import org.junit.Test;
 public class DataAnalysisStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private DataAnalysisStore dataAnalysisStore;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    @Autowired
+    private  PeriodService  periodService;
     
     private DataElement dataElementA;
     private DataElement dataElementB;
@@ -87,20 +107,6 @@ public class DataAnalysisStoreTest
     @Override
     public void setUpTest()
     {
-        dataAnalysisStore = (DataAnalysisStore) getBean( DataAnalysisStore.ID );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
         categoryCombo = categoryService.getDefaultDataElementCategoryCombo();
         
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();

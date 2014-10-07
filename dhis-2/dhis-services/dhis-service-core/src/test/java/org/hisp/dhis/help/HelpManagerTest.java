@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Locale;
@@ -44,13 +45,8 @@ public class HelpManagerTest
 {
     private static final Log log = LogFactory.getLog( HelpManagerTest.class );
 
+    @Autowired
     private HelpManager helpManager;
-
-    @Override
-    public void setUpTest()
-    {
-        helpManager = (HelpManager) getBean( HelpManager.ID );
-    }
 
     @Test
     public void testGetEmbeddedHelpContent()

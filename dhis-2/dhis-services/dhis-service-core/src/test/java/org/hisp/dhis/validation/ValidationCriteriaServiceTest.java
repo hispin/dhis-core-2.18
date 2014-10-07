@@ -37,6 +37,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Chau Thu Tran
@@ -45,6 +46,7 @@ import org.junit.Test;
 public class ValidationCriteriaServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private ValidationCriteriaService validationCriteriaService;
 
     private String propertyA;
@@ -67,8 +69,6 @@ public class ValidationCriteriaServiceTest
     public void setUpTest()
         throws Exception
     {
-        validationCriteriaService = (ValidationCriteriaService) getBean( ValidationCriteriaService.ID );
-
         propertyA = "name";
         propertyB = "name";
 

@@ -36,6 +36,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -53,6 +55,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.ListUtils;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -61,14 +64,37 @@ import org.junit.Test;
 public class StdDevOutlierAnalysisServiceTest
     extends DhisSpringTest
 {
+    @Resource( name = "org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" )
     private DataAnalysisService stdDevOutlierAnalysisService;
 
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    @Autowired
+    private PeriodService periodService;
+
     private DataElement dataElementA;
+
     private DataElement dataElementB;
+
     private DataElement dataElementC;
+
     private DataElement dataElementD;
 
     private DataValue dataValueA;
+
     private DataValue dataValueB;
 
     private Set<DataElement> dataElementsA = new HashSet<>();
@@ -78,18 +104,27 @@ public class StdDevOutlierAnalysisServiceTest
     private DataElementCategoryOptionCombo categoryOptionCombo;
 
     private Period periodA;
+
     private Period periodB;
-    private Period periodC;    
-    private Period periodD;    
-    private Period periodE;    
-    private Period periodF;    
+
+    private Period periodC;
+
+    private Period periodD;
+
+    private Period periodE;
+
+    private Period periodF;
+
     private Period periodG;
+
     private Period periodH;
+
     private Period periodI;
+
     private Period periodJ;
 
     private OrganisationUnit organisationUnitA;
-    
+
     // ----------------------------------------------------------------------
     // Fixture
     // ----------------------------------------------------------------------
@@ -97,20 +132,6 @@ public class StdDevOutlierAnalysisServiceTest
     @Override
     public void setUpTest()
     {
-        stdDevOutlierAnalysisService = (DataAnalysisService) getBean( "org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
         categoryCombo = categoryService.getDefaultDataElementCategoryCombo();
 
         dataElementA = createDataElement( 'A', categoryCombo );
@@ -143,7 +164,7 @@ public class StdDevOutlierAnalysisServiceTest
 
         organisationUnitService.addOrganisationUnit( organisationUnitA );
     }
-    
+
     // ----------------------------------------------------------------------
     // Business logic tests
     // ----------------------------------------------------------------------
@@ -154,14 +175,22 @@ public class StdDevOutlierAnalysisServiceTest
         dataValueA = createDataValue( dataElementA, periodI, organisationUnitA, "71", categoryOptionCombo );
         dataValueB = createDataValue( dataElementA, periodJ, organisationUnitA, "-71", categoryOptionCombo );
 
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, organisationUnitA, "5", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, organisationUnitA, "-5", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, organisationUnitA, "5", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodD, organisationUnitA, "-5", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodE, organisationUnitA, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodF, organisationUnitA, "-10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodG, organisationUnitA, "13", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodH, organisationUnitA, "-13", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, organisationUnitA, "5",
+            categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, organisationUnitA, "-5",
+            categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, organisationUnitA, "5",
+            categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodD, organisationUnitA, "-5",
+            categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodE, organisationUnitA, "10",
+            categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodF, organisationUnitA, "-10",
+            categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodG, organisationUnitA, "13",
+            categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodH, organisationUnitA, "-13",
+            categoryOptionCombo ) );
         dataValueService.addDataValue( dataValueA );
         dataValueService.addDataValue( dataValueB );
 
@@ -172,14 +201,15 @@ public class StdDevOutlierAnalysisServiceTest
         periods.add( periodA );
         periods.add( periodE );
 
-        Collection<DeflatedDataValue> values = stdDevOutlierAnalysisService.analyse( ListUtils.getCollection( organisationUnitA ), dataElementsA, periods, stdDevFactor );
+        Collection<DeflatedDataValue> values = stdDevOutlierAnalysisService.analyse(
+            ListUtils.getCollection( organisationUnitA ), dataElementsA, periods, stdDevFactor );
 
         double lowerBound = -34.51 * stdDevFactor;
         double upperBound = 34.51 * stdDevFactor;
 
         DeflatedDataValue valueA = new DeflatedDataValue( dataValueA );
         DeflatedDataValue valueB = new DeflatedDataValue( dataValueB );
-        
+
         assertEquals( 1, values.size() );
         assertTrue( values.contains( valueA ) );
     }

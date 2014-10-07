@@ -38,6 +38,7 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -45,7 +46,11 @@ import org.junit.Test;
 public class DataElementCategoryOptionComboStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private CategoryOptionComboStore categoryOptionComboStore;
+    
+    @Autowired
+    private DataElementCategoryService categoryService;
     
     private DataElementCategory categoryA;
     private DataElementCategory categoryB;
@@ -69,11 +74,7 @@ public class DataElementCategoryOptionComboStoreTest
     @Override
     public void setUpTest()
         throws Exception
-    {
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
-        categoryOptionComboStore = (CategoryOptionComboStore) getBean( "org.hisp.dhis.dataelement.CategoryOptionComboStore" );
-        
+    {  
         categoryOptionA = new DataElementCategoryOption( "Male" );
         categoryOptionB = new DataElementCategoryOption( "Female" );
         categoryOptionC = new DataElementCategoryOption( "0-20" );

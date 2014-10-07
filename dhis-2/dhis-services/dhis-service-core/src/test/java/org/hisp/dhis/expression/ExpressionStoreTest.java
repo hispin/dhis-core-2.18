@@ -37,6 +37,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
@@ -45,16 +47,23 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-@SuppressWarnings( "unchecked" )
 public class ExpressionStoreTest
     extends DhisSpringTest
 {
+    @Resource( name = "org.hisp.dhis.expression.ExpressionStore" )
     private GenericStore<Expression> expressionStore;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
 
     private int dataElementIdA;
 
@@ -84,10 +93,6 @@ public class ExpressionStoreTest
     public void setUpTest()
         throws Exception
     {
-        expressionStore = (GenericStore<Expression>) getBean( "org.hisp.dhis.expression.ExpressionStore" );
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
         DataElement dataElementC = createDataElement( 'C' );

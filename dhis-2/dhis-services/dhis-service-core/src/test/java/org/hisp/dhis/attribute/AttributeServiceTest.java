@@ -29,6 +29,8 @@ package org.hisp.dhis.attribute;
  */
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.junit.Assert.*;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -39,13 +41,8 @@ import org.hisp.dhis.DhisSpringTest;
 public class AttributeServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private AttributeService attributeService;
-
-    @Override
-    protected void setUpTest()
-    {
-        attributeService = (AttributeService) getBean( "org.hisp.dhis.attribute.AttributeService" );
-    }
 
     @Test
     public void testAddAttribute()

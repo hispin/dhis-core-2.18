@@ -35,6 +35,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.List;
@@ -48,7 +49,14 @@ import static org.junit.Assert.*;
 public class DataDictionaryServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private DataDictionaryService dataDictionaryService;
+    
+    @Autowired
+    private DataElementService dataElementService;
+    
+    @Autowired
+    private IndicatorService indicatorService;
 
     private DataDictionary dataDictionaryA;
     private DataDictionary dataDictionaryB;
@@ -69,12 +77,6 @@ public class DataDictionaryServiceTest
     public void setUpTest()
         throws Exception
     {
-        dataDictionaryService = (DataDictionaryService) getBean( DataDictionaryService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-
         dataDictionaryA = createDataDictionary( 'A' );
         dataDictionaryB = createDataDictionary( 'B' );
 

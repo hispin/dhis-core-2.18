@@ -40,6 +40,7 @@ import java.util.Iterator;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -48,18 +49,8 @@ import org.junit.Test;
 public class PeriodStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private PeriodStore periodStore;
-    
-    // -------------------------------------------------------------------------
-    // Set up/tear down
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-        throws Exception
-    {
-        periodStore = (PeriodStore) getBean( PeriodStore.ID );
-    }
     
     // -------------------------------------------------------------------------
     // Period

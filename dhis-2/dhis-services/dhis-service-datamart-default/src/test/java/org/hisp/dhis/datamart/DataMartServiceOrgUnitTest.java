@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -58,6 +59,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Note: Test using the default org unit level for org unit data mart which is 2. 
@@ -68,10 +70,44 @@ import org.junit.Test;
 public class DataMartServiceOrgUnitTest
     extends DhisTest
 {    
+    @Autowired
+    private DataMartEngine dataMartEngine;
+
+    @Autowired
+    private AggregatedDataValueService aggregatedDataValueService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataValueService dataValueService;
+    
+    @Autowired
+    private IndicatorService indicatorService;
+    
+    @Autowired
+    private AggregatedOrgUnitDataValueService aggregatedOrgUnitDataValueService; 
+    
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    @Autowired
+    private  ExpressionService  expressionService;
+    
     private final String T = "true";
     private final String F = "false";
-    
-    private DataMartEngine dataMartEngine;
     
     private DataElementCategoryCombo categoryCombo;
     
@@ -112,28 +148,6 @@ public class DataMartServiceOrgUnitTest
     @Override
     public void setUpTest()
     {
-        dataMartEngine = (DataMartEngine) getBean( DataMartEngine.ID );
-        
-        aggregatedOrgUnitDataValueService = (AggregatedOrgUnitDataValueService) getBean( AggregatedOrgUnitDataValueService.ID );
-        
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-        
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
-        organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
-
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
-        expressionService = (ExpressionService) getBean( ExpressionService.ID );
-        
         categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
