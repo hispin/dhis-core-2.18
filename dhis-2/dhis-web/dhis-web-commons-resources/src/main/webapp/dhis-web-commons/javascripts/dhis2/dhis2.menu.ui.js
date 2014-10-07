@@ -946,17 +946,19 @@
  */
 (function () {
     dhis2.menu.ui.initMenu = function () {
+        var helpPageLink = "";
+        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
         try {
-		var helpPageLink = "";
-		$.ajax({
-			type : "GET",
-			url : "../dhis-web-commons/menu/getHelpPageLinkModule.action",
-			dataType : "json",
-			async : false,
-			success : function(json) {
-				helpPageLink = json;
-			}
-		});
+            $.ajax({
+                type : "GET",
+                url : "../dhis-web-commons/menu/getHelpPageLinkModule.action",
+                dataType : "json",
+                async : false,
+                success : function(json) {
+                    helpPageLink = json;
+                }
+            });
             dhis2.menu.ui.createMenu("profile", [
                 {
                     name: "settings",
@@ -1010,7 +1012,7 @@
             dhis2.menu.mainAppMenu = dhis2.menu.ui.createMenu("applications",
                 "/dhis-web-commons/menu/getModules.action",
                 {
-                    searchable: true,
+                    searchable: !isMobile,
                     scrollable: true,
                     extraLink: {
                         text: 'more_applications',
