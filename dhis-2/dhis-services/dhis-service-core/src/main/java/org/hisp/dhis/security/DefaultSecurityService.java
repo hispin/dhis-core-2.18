@@ -47,6 +47,7 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSettingService;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
@@ -314,7 +315,7 @@ public class DefaultSecurityService
             return errorMessage;
         }
 
-        Date currentTime = new Cal().now().time();
+        Date currentTime = new DateTime().toDate();
         Date restoreExpiry = credentials.getRestoreExpiry();
 
         if ( currentTime.after( restoreExpiry ) )

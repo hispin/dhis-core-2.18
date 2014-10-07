@@ -35,8 +35,8 @@ import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.NameableObjectUtils.getList;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_NONE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_STRING;
 import static org.junit.Assert.assertEquals;
@@ -70,12 +70,12 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -714,11 +714,11 @@ public class QueryPlannerTest
     {
         Iterator<NameableObject> periods = new ArrayList<>( isoPeriods ).iterator();
         
-        int year = new Cal().set( ((Period) periods.next()).getStartDate() ).getYear();
+        int year = new DateTime( ((Period) periods.next()).getStartDate() ).getYear();
         
         while ( periods.hasNext() )
         {
-            int next = new Cal().set( ((Period) periods.next()).getStartDate() ).getYear();
+            int next = new DateTime( ((Period) periods.next()).getStartDate() ).getYear();
             
             if ( year != next )
             {   

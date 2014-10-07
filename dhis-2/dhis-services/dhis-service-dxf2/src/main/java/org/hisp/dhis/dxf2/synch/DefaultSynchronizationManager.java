@@ -32,7 +32,6 @@ import static org.apache.commons.lang.StringUtils.trimToNull;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_LAST_SUCCESSFUL_DATA_SYNC;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -45,9 +44,9 @@ import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ExportOptions;
 import org.hisp.dhis.dxf2.utils.ImportSummaryResponseExtractor;
-import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.CodecUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -214,7 +213,7 @@ public class DefaultSynchronizationManager
         
         ImportSummary summary = restTemplate.execute( url, HttpMethod.POST, requestCallback, responseExtractor );
         
-        log.info( summary );
+        log.info( "Synch summary: " + summary );
         
         if ( summary != null && ImportStatus.SUCCESS.equals( summary.getStatus() ) )
         {
@@ -240,7 +239,7 @@ public class DefaultSynchronizationManager
      */
     private Date getLastSynchSuccessFallback()
     {
-        Date fallback = new Cal().subtract( Calendar.DAY_OF_YEAR, 3 ).time();
+        Date fallback = new DateTime().minusDays( 3 ).toDate();
         
         return (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_DATA_SYNC, fallback );
     }

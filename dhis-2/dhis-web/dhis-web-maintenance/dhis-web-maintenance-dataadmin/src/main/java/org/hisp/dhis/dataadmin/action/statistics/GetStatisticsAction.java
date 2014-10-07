@@ -28,17 +28,16 @@ package org.hisp.dhis.dataadmin.action.statistics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.period.Cal;
-import org.hisp.dhis.statistics.StatisticsProvider;
 import org.hisp.dhis.common.Objects;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.statistics.StatisticsProvider;
 import org.hisp.dhis.system.util.EnumMapWrapper;
 import org.hisp.dhis.user.UserService;
+import org.joda.time.DateTime;
 
 import com.opensymphony.xwork2.Action;
 
@@ -107,7 +106,7 @@ public class GetStatisticsAction
     {
         Map<Objects, Integer> counts = statisticsProvider.getObjectCounts();
         
-        Date lastHour = new Cal().now().subtract( Calendar.HOUR_OF_DAY, 1 ).time();
+        Date lastHour = new DateTime().minusHours( 1 ).toDate();
         
         objects = new EnumMapWrapper<>( Objects.class, counts );
         
