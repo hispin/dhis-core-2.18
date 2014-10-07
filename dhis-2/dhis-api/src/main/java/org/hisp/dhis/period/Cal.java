@@ -117,11 +117,11 @@ public class Cal
         switch ( field )
         {
             case Calendar.YEAR:
-                getCalendar().plusYears( dateTimeUnit, amount );
+                dateTimeUnit = getCalendar().plusYears( dateTimeUnit, amount );
             case Calendar.MONTH:
-                getCalendar().plusMonths( dateTimeUnit, amount );
+                dateTimeUnit = getCalendar().plusMonths( dateTimeUnit, amount );
             case Calendar.DAY_OF_MONTH:
-                getCalendar().plusDays( dateTimeUnit, amount );
+                dateTimeUnit = getCalendar().plusDays( dateTimeUnit, amount );
         }
 
         return this;
@@ -138,11 +138,11 @@ public class Cal
         switch ( field )
         {
             case Calendar.YEAR:
-                getCalendar().minusYears( dateTimeUnit, amount );
+                dateTimeUnit = getCalendar().minusYears( dateTimeUnit, amount );
             case Calendar.MONTH:
-                getCalendar().minusMonths( dateTimeUnit, amount );
+                dateTimeUnit = getCalendar().minusMonths( dateTimeUnit, amount );
             case Calendar.DAY_OF_MONTH:
-                getCalendar().minusDays( dateTimeUnit, amount );
+                dateTimeUnit = getCalendar().minusDays( dateTimeUnit, amount );
         }
 
         return this;
