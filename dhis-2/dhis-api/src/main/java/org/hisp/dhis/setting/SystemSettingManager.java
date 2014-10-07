@@ -28,6 +28,7 @@ package org.hisp.dhis.setting;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
@@ -51,8 +52,6 @@ public interface SystemSettingManager
     final String KEY_APPLICATION_INTRO = "keyApplicationIntro";
     final String KEY_APPLICATION_NOTIFICATION = "keyApplicationNotification";
     final String KEY_APPLICATION_FOOTER = "keyApplicationFooter";
-    final String KEY_CALENDAR = "keyCalendar";
-    final String KEY_DATE_FORMAT = "keyDateFormat";
     final String KEY_FLAG = "keyFlag";
     final String KEY_FLAG_IMAGE = "keyFlagImage";
     final String KEY_START_MODULE = "startModule";
@@ -128,8 +127,8 @@ public interface SystemSettingManager
         {
             put( KEY_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY, DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY );
             put( KEY_FLAG, DEFAULT_FLAG );
-            put( KEY_CALENDAR, DEFAULT_CALENDAR );
-            put( KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT );
+            put( CalendarService.KEY_CALENDAR, DEFAULT_CALENDAR );
+            put( CalendarService.KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT );
             put( KEY_FACTOR_OF_DEVIATION, DEFAULT_FACTOR_OF_DEVIATION );
             put( KEY_ORGUNITGROUPSET_AGG_LEVEL, DEFAULT_ORGUNITGROUPSET_AGG_LEVEL );
             put( KEY_START_MODULE, DEFAULT_START_MODULE );
