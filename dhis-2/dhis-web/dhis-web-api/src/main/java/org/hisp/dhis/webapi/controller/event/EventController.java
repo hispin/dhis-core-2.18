@@ -38,6 +38,7 @@ import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
 import org.hisp.dhis.dxf2.events.event.Events;
 import org.hisp.dhis.dxf2.events.event.ImportEventTask;
+import org.hisp.dhis.dxf2.events.event.csv.CsvEventUtils;
 import org.hisp.dhis.dxf2.events.report.EventRowService;
 import org.hisp.dhis.dxf2.events.report.EventRows;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
@@ -124,6 +125,81 @@ public class EventController
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
+
+    @RequestMapping( value = "", method = RequestMethod.GET, produces = { "application/csv", "text/csv" } )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_DATAVALUE_ADD')" )
+    public void getCsvEvents(
+        @RequestParam( required = false ) String program,
+        @RequestParam( required = false ) String programStage,
+        @RequestParam( required = false ) ProgramStatus programStatus,
+        @RequestParam( required = false ) Boolean followUp,
+        @RequestParam( required = false ) String trackedEntityInstance,
+        @RequestParam( required = false ) String orgUnit,
+        @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
+        @RequestParam( required = false ) EventStatus status,
+        @RequestParam( required = false, defaultValue = "true") boolean withHeaders,
+        @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request ) throws IOException
+    {
+        WebOptions options = new WebOptions( parameters );
+
+        Program pr = manager.get( Program.class, program );
+        ProgramStage prs = manager.get( ProgramStage.class, programStage );
+        List<OrganisationUnit> organisationUnits = new ArrayList<>();
+        TrackedEntityInstance tei = null;
+        OrganisationUnit rootOrganisationUnit = null;
+
+        if ( trackedEntityInstance != null )
+        {
+            tei = trackedEntityInstanceService.getTrackedEntityInstance( trackedEntityInstance );
+
+            if ( tei == null )
+            {
+                ContextUtils.conflictResponse( response, "Invalid trackedEntityInstance ID." );
+                return;
+            }
+        }
+
+        if ( orgUnit != null )
+        {
+            rootOrganisationUnit = manager.get( OrganisationUnit.class, orgUnit );
+
+            if ( rootOrganisationUnit == null )
+            {
+                ContextUtils.conflictResponse( response, "Invalid orgUnit ID." );
+                return;
+            }
+        }
+
+        if ( rootOrganisationUnit != null )
+        {
+            if ( OrganisationUnitSelectionMode.DESCENDANTS.equals( ouMode ) )
+            {
+                organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( rootOrganisationUnit.getUid() ) );
+            }
+            else if ( OrganisationUnitSelectionMode.CHILDREN.equals( ouMode ) )
+            {
+                organisationUnits.add( rootOrganisationUnit );
+                organisationUnits.addAll( rootOrganisationUnit.getChildren() );
+            }
+            else // SELECTED
+            {
+                organisationUnits.add( rootOrganisationUnit );
+            }
+        }
+
+        Events events = eventService.getEvents( pr, prs, programStatus, followUp, organisationUnits, tei, startDate, endDate, status );
+
+        if ( options.hasPaging() )
+        {
+            Pager pager = new Pager( options.getPage(), events.getEvents().size(), options.getPageSize() );
+            events.setPager( pager );
+            events.setEvents( PagerUtils.pageCollection( events.getEvents(), pager ) );
+        }
+
+        CsvEventUtils.writeEvents( response.getOutputStream(), events, withHeaders );
+    }
 
     @RequestMapping( value = "", method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_DATAVALUE_ADD')" )
