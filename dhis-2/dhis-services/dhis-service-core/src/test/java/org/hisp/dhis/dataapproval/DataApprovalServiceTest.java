@@ -84,6 +84,12 @@ public class DataApprovalServiceTest
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
+   
+    @Autowired 
+    protected IdentifiableObjectManager _identifiableObjectManager;
+    
+    @Autowired
+    protected UserService _userService;
     
     // -------------------------------------------------------------------------
     // Supporting data
@@ -218,12 +224,12 @@ public class DataApprovalServiceTest
     // -------------------------------------------------------------------------
     // Set up/tear down
     // -------------------------------------------------------------------------
-
+    
     @Override
     public void setUpTest() throws Exception
     {
-        identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
-        userService = (UserService) getBean( UserService.ID );
+        identifiableObjectManager = _identifiableObjectManager;
+        userService = _userService;
         
         // ---------------------------------------------------------------------
         // Add supporting data

@@ -41,6 +41,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -49,6 +50,7 @@ import org.junit.Test;
 public class ImportAnalyserTest
     extends DhisTest
 {
+    @Autowired
     private ExpressionService expressionService;
     
     private ImportAnalyser analyser;
@@ -60,8 +62,6 @@ public class ImportAnalyserTest
     @Override
     public void setUpTest()
     {
-        expressionService = (ExpressionService) getBean( ExpressionService.ID );
-        
         analyser = new DefaultImportAnalyser( expressionService );
     }
 

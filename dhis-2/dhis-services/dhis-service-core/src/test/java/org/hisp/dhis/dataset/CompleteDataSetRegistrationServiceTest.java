@@ -46,6 +46,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -53,6 +54,21 @@ import org.junit.Test;
 public class CompleteDataSetRegistrationServiceTest
     extends DhisSpringTest
 {
+    @Autowired
+    private CompleteDataSetRegistrationService completeDataSetRegistrationService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+  
     private CompleteDataSetRegistration registrationA;
     private CompleteDataSetRegistration registrationB;
     private CompleteDataSetRegistration registrationC;
@@ -84,16 +100,6 @@ public class CompleteDataSetRegistrationServiceTest
     @Override
     public void setUpTest()
     {
-        completeDataSetRegistrationService = (CompleteDataSetRegistrationService) getBean( CompleteDataSetRegistrationService.ID );
-
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
         sourceA = createOrganisationUnit( 'A' );
         sourceB = createOrganisationUnit( 'B' );
         sourceC = createOrganisationUnit( 'C' );

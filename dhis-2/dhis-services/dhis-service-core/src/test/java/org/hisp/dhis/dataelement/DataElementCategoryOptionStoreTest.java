@@ -35,6 +35,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
@@ -42,26 +44,17 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@SuppressWarnings( "unchecked" )
 public class DataElementCategoryOptionStoreTest
     extends DhisSpringTest
 {
+    @Resource(name="org.hisp.dhis.dataelement.CategoryOptionStore")
     private GenericIdentifiableObjectStore<DataElementCategoryOption> categoryOptionStore;
     
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
     private DataElementCategoryOption categoryOptionC;
 
-    // -------------------------------------------------------------------------
-    // Fixture
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-    {
-        categoryOptionStore = (GenericIdentifiableObjectStore<DataElementCategoryOption>) getBean( "org.hisp.dhis.dataelement.CategoryOptionStore" );    
-    }
-
+   
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------

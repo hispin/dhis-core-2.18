@@ -36,14 +36,16 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class CrossTabStoreTest
     extends DhisTest
 {
+    @Autowired
     private CrossTabStore crossTabStore;
-    
+
     private List<DataElementOperand> operands;
-    
+
     private String key = RandomStringUtils.randomAlphanumeric( 8 );
 
     // -------------------------------------------------------------------------
@@ -53,13 +55,11 @@ public class CrossTabStoreTest
     @Override
     public void setUpTest()
     {
-        crossTabStore = (CrossTabStore) getBean( CrossTabStore.ID );
-        
         operands = new ArrayList<>();
         operands.add( new DataElementOperand( "a", "a" ) );
         operands.add( new DataElementOperand( "a", "b" ) );
         operands.add( new DataElementOperand( "b", "a" ) );
-        operands.add( new DataElementOperand( "b", "b" ) );        
+        operands.add( new DataElementOperand( "b", "b" ) );
     }
 
     @Override
@@ -71,20 +71,20 @@ public class CrossTabStoreTest
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
     @Test
     public void testDropCrossTabTable()
     {
         crossTabStore.createCrossTabTable( operands, key );
-        
+
         crossTabStore.dropCrossTabTable( key );
     }
-    
+
     @Test
     public void testDropAggregatedDataCache()
     {
         crossTabStore.createAggregatedDataCache( operands, key );
-        
+
         crossTabStore.dropAggregatedDataCache( key );
     }
 }

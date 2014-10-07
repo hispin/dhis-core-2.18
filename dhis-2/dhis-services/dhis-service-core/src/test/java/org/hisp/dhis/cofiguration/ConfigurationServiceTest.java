@@ -36,6 +36,7 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.*;
 
@@ -45,21 +46,14 @@ import static org.junit.Assert.*;
 public class ConfigurationServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private UserService userService;
     
+    @Autowired
     private UserGroupService userGroupService;
     
+    @Autowired
     private ConfigurationService configurationService;
-    
-    @Override
-    public void setUpTest()
-    {
-        userService = (UserService) getBean( UserService.ID );
-        
-        userGroupService = (UserGroupService) getBean( UserGroupService.ID );
-        
-        configurationService = (ConfigurationService) getBean( ConfigurationService.ID );
-    }
     
     @Test
     public void testConfiguration()

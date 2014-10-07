@@ -60,6 +60,21 @@ public class CompleteDataSetRegistrationBatchHandlerTest
     @Autowired
     private BatchHandlerFactory batchHandlerFactory;
 
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private CompleteDataSetRegistrationService completeDataSetRegistrationService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
     private BatchHandler<CompleteDataSetRegistration> batchHandler;
 
     private DataSet dataSetA;
@@ -93,13 +108,6 @@ public class CompleteDataSetRegistrationBatchHandlerTest
     @Override
     public void setUpTest()
     {
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-        periodService = (PeriodService) getBean( PeriodService.ID );
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        completeDataSetRegistrationService = (CompleteDataSetRegistrationService) getBean(
-            CompleteDataSetRegistrationService.ID );
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
         batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
 
         dataSetA = createDataSet( 'A', new MonthlyPeriodType() );

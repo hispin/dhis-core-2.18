@@ -38,6 +38,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Dang Duy Hieu
@@ -46,11 +47,9 @@ import org.junit.Test;
 public class ConstantServiceTest
     extends DhisSpringTest
 {
-    public void setUpTest()
-    {
-        constantService = (ConstantService) getBean( ConstantService.ID );
-    }
-
+    @Autowired
+    private ConstantService constantService;
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

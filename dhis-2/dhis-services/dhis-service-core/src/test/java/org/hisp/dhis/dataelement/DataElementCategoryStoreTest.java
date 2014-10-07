@@ -37,20 +37,26 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-@SuppressWarnings( "unchecked" )
 public class DataElementCategoryStoreTest
     extends DhisSpringTest
 {
+    @Resource(name="org.hisp.dhis.dataelement.CategoryStore")
     private GenericIdentifiableObjectStore<DataElementCategory> categoryStore;
-
+    
+    @Autowired
+    private DataElementCategoryService categoryService;
+    
     private DataElementCategoryOption categoryOptionA;
 
     private DataElementCategoryOption categoryOptionB;
@@ -72,10 +78,6 @@ public class DataElementCategoryStoreTest
     @Override
     public void setUpTest()
     {
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
-        categoryStore = (GenericIdentifiableObjectStore<DataElementCategory>) getBean( "org.hisp.dhis.dataelement.CategoryStore" );
-
         categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
         categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );
         categoryOptionC = new DataElementCategoryOption( "CategoryOptionC" );

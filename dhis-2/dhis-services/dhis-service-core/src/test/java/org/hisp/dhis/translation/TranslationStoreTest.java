@@ -40,6 +40,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Oyvind Brucker
@@ -48,18 +49,9 @@ import org.junit.Test;
 public class TranslationStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private TranslationStore translationStore;
 
-    // -------------------------------------------------------------------------
-    // Set up/tear down
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-    {
-        translationStore = (TranslationStore) getBean( TranslationStore.ID );
-    }
-    
     // -------------------------------------------------------------------------
     // Testdata
     // -------------------------------------------------------------------------

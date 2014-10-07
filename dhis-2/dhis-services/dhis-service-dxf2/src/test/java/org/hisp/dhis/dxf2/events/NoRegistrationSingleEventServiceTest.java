@@ -74,6 +74,12 @@ public class NoRegistrationSingleEventServiceTest
     @Autowired
     private ProgramStageInstanceService programStageInstanceService;
 
+    @Autowired 
+    private IdentifiableObjectManager _identifiableObjectManager;
+    
+    @Autowired
+    private UserService _userService;
+    
     private OrganisationUnit organisationUnitA;
     private DataElement dataElementA;
     private Program programA;
@@ -82,8 +88,8 @@ public class NoRegistrationSingleEventServiceTest
     @Override
     protected void setUpTest() throws Exception
     {
-        identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
-        userService = (UserService) getBean( UserService.ID );
+        identifiableObjectManager = _identifiableObjectManager;
+        userService = _userService;
 
         organisationUnitA = createOrganisationUnit( 'A' );
         identifiableObjectManager.save( organisationUnitA );

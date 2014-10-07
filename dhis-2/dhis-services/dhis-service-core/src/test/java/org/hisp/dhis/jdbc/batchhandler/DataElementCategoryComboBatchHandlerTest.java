@@ -52,6 +52,9 @@ public class DataElementCategoryComboBatchHandlerTest
 {
     @Autowired
     private BatchHandlerFactory batchHandlerFactory;
+
+    @Autowired
+    private DataElementCategoryService  categoryService;
     
     private BatchHandler<DataElementCategoryCombo> batchHandler;
     
@@ -65,9 +68,7 @@ public class DataElementCategoryComboBatchHandlerTest
 
     @Override
     public void setUpTest()
-    {
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
+    { 
         batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryComboBatchHandler.class );
 
         batchHandler.init();

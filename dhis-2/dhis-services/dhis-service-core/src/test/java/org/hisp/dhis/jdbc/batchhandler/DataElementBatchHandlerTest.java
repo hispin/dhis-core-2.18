@@ -58,7 +58,13 @@ public class DataElementBatchHandlerTest
     
     @Autowired
     private HibernateCacheManager cacheManager;
-	
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private DataElementService dataElementService;
+    
     private BatchHandler<DataElement> batchHandler;
     
     private DataElementCategoryCombo categoryCombo;
@@ -74,11 +80,7 @@ public class DataElementBatchHandlerTest
     @Override
     public void setUpTest()
     {
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
         batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         

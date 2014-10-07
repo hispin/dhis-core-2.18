@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisSpringTest;
@@ -76,6 +78,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -83,12 +86,37 @@ import org.junit.Test;
 public class ReportTableGridTest
     extends DhisSpringTest
 {
+    @Autowired
     private ReportTableService reportTableService;
     
-    private BatchHandlerFactory batchHandlerFactory;
-    
+    @Autowired
     private AnalyticsService analyticsService;
         
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private IndicatorService indicatorService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+     OrganisationUnitGroupService organisationUnitGroupService;
+
+    @Resource( name = "batchHandlerFactory" )
+    private BatchHandlerFactory batchHandlerFactory;
+    
+    
     private Map<String, Double> valueMap;
     
     private List<DataElement> dataElements;
@@ -156,20 +184,6 @@ public class ReportTableGridTest
     public void setUpTest()
         throws Exception
     {
-        reportTableService = (ReportTableService) getBean( ReportTableService.ID );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );        
-        
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-        periodService = (PeriodService) getBean( PeriodService.ID );
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
-        
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
-        
         dataElements = new ArrayList<>();
         categoryOptionCombos = new ArrayList<>();
         indicators = new ArrayList<>();

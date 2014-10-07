@@ -67,12 +67,18 @@ public class IdentifiableObjectManagerTest
 
     @Autowired
     private DataElementService dataElementService;
-
+    
+    @Autowired 
+    private IdentifiableObjectManager _identifiableObjectManager;
+    
+    @Autowired
+    private UserService _userService;
+    
     @Override
     protected void setUpTest() throws Exception
     {
-        identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
-        userService = (UserService) getBean( UserService.ID );
+        this.identifiableObjectManager = _identifiableObjectManager;
+        this.userService = _userService;
     }
 
     @Test

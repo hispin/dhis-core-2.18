@@ -71,6 +71,7 @@ import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -79,6 +80,30 @@ import org.junit.Test;
 public class ValidationRuleServiceTest
     extends DhisTest
 {
+    @Autowired
+    private ValidationRuleService validationRuleService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private ExpressionService expressionService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private PeriodService periodService;
+    
     private DataElement dataElementA;
 
     private DataElement dataElementB;
@@ -227,24 +252,6 @@ public class ValidationRuleServiceTest
     public void setUpTest()
         throws Exception
     {
-        validationRuleService = (ValidationRuleService) getBean( ValidationRuleService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
-        expressionService = (ExpressionService) getBean( ExpressionService.ID );
-
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
         CurrentUserService currentUserService = new MockCurrentUserService( allSources, null );
         setDependency( validationRuleService, "currentUserService", currentUserService, CurrentUserService.class );
 

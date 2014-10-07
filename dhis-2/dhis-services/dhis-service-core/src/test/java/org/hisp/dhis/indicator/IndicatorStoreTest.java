@@ -35,31 +35,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 
+import javax.annotation.Resource;
+
 import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: IndicatorStoreTest.java 3286 2007-05-07 18:05:21Z larshelg $
  */
-@SuppressWarnings( "unchecked" )
 public class IndicatorStoreTest
     extends DhisSpringTest
 {
     @Autowired
     private IndicatorStore indicatorStore;
 
+    @Resource(name="org.hisp.dhis.indicator.IndicatorTypeStore")
     private GenericIdentifiableObjectStore<IndicatorType> indicatorTypeStore;
-
-    // -------------------------------------------------------------------------
-    // Set up/tear down
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-        throws Exception
-    {
-        indicatorTypeStore = (GenericIdentifiableObjectStore<IndicatorType>) getBean( "org.hisp.dhis.indicator.IndicatorTypeStore" );
-    }
 
     // -------------------------------------------------------------------------
     // Support methods

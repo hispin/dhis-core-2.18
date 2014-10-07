@@ -37,6 +37,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -45,13 +46,8 @@ import org.junit.Test;
 public class OrganisationUnitStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private OrganisationUnitLevelStore organisationUnitLevelStore;
-
-    @Override
-    public void setUpTest()
-    {
-        organisationUnitLevelStore = (OrganisationUnitLevelStore) getBean( OrganisationUnitLevelStore.ID );
-    }
 
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel

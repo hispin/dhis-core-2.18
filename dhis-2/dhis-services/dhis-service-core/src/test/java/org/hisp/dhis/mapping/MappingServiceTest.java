@@ -53,6 +53,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -61,12 +62,21 @@ import org.junit.Test;
 public class MappingServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private MappingService mappingService;
 
-    private OrganisationUnit organisationUnit;
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
-    private OrganisationUnitLevel organisationUnitLevel;
+    @Autowired
+    private IndicatorService indicatorService;
 
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private PeriodService periodService;
+    
     private IndicatorGroup indicatorGroup;
 
     private IndicatorType indicatorType;
@@ -90,18 +100,8 @@ public class MappingServiceTest
     @Override
     public void setUpTest()
     {
-        mappingService = (MappingService) getBean( MappingService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        organisationUnit = createOrganisationUnit( 'A' );
-        organisationUnitLevel = new OrganisationUnitLevel( 1, "Level" );
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        OrganisationUnitLevel organisationUnitLevel = new OrganisationUnitLevel( 1, "Level" );
 
         organisationUnitService.addOrganisationUnit( organisationUnit );
         organisationUnitService.addOrganisationUnitLevel( organisationUnitLevel );

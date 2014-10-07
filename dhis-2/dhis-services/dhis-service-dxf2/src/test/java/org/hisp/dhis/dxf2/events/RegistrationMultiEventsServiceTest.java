@@ -82,7 +82,13 @@ public class RegistrationMultiEventsServiceTest
 
     @Autowired
     private SessionFactory sessionFactory;
-
+    
+    @Autowired 
+    private IdentifiableObjectManager _identifiableObjectManager;
+    
+    @Autowired
+    private UserService _userService;
+    
     private org.hisp.dhis.trackedentity.TrackedEntityInstance maleA;
 
     private org.hisp.dhis.trackedentity.TrackedEntityInstance maleB;
@@ -111,8 +117,8 @@ public class RegistrationMultiEventsServiceTest
     protected void setUpTest()
         throws Exception
     {
-        identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
-        userService = (UserService) getBean( UserService.ID );
+        identifiableObjectManager = _identifiableObjectManager;
+        userService = _userService;
 
         organisationUnitA = createOrganisationUnit( 'A' );
         organisationUnitB = createOrganisationUnit( 'B' );

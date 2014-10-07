@@ -41,6 +41,7 @@ import java.util.Iterator;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kristian Nordal
@@ -49,17 +50,8 @@ import org.junit.Test;
 public class PeriodServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private PeriodService periodService;
-        
-    // -------------------------------------------------------------------------
-    // Set up/tear down
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-    {
-        periodService = (PeriodService) getBean( PeriodService.ID );
-    }
     
     // -------------------------------------------------------------------------
     // Period

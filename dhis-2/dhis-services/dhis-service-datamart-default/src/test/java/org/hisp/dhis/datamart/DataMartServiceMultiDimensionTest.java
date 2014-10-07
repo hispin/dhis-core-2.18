@@ -60,6 +60,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -68,13 +69,36 @@ import org.junit.Test;
 public class DataMartServiceMultiDimensionTest
     extends DhisTest
 {
+    @Autowired
+    private DataMartEngine dataMartEngine;
+
+    @Autowired
+    private AggregatedDataValueService aggregatedDataValueService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataValueService dataValueService;
+    
+    @Autowired
+    private IndicatorService indicatorService;
+    
     private final String T = "true";
     private final String F = "false";
     
-    private DataMartEngine dataMartEngine;
-
-    private AggregatedDataValueService aggregatedDataValueService;
-
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
     
@@ -104,31 +128,7 @@ public class DataMartServiceMultiDimensionTest
     
     @Override
     public void setUpTest()
-    {   
-        // ---------------------------------------------------------------------
-        // Dependencies
-        // ---------------------------------------------------------------------
-
-        dataMartEngine = (DataMartEngine) getBean( DataMartEngine.ID );
-
-        aggregatedDataValueService = (AggregatedDataValueService) getBean( AggregatedDataValueService.ID );
-        
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-        
-        periodService = (PeriodService) getBean( PeriodService.ID );
-        
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
+    {  
         // ---------------------------------------------------------------------
         // Setup identifier Collections
         // ---------------------------------------------------------------------

@@ -51,6 +51,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -59,9 +60,29 @@ import org.junit.Test;
 public class DataMartServiceTimeDimensionTest
     extends DhisTest
 {
+    @Autowired
     private DataMartEngine dataMartEngine;
-
+    
+    @Autowired
     private AggregatedDataValueService aggregatedDataValueService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataValueService dataValueService;
 
     private DataElementCategoryCombo categoryCombo;
     
@@ -75,22 +96,6 @@ public class DataMartServiceTimeDimensionTest
     @Override
     public void setUpTest()
     {
-        dataMartEngine = (DataMartEngine) getBean( DataMartEngine.ID );
-
-        aggregatedDataValueService = (AggregatedDataValueService) getBean( AggregatedDataValueService.ID );
-        
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-        
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
         categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();        

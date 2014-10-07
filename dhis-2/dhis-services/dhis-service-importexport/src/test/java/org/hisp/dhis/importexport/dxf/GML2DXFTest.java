@@ -30,6 +30,8 @@ package org.hisp.dhis.importexport.dxf;
 
 import java.io.InputStream;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
@@ -37,6 +39,7 @@ import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.util.ImportExportUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.*;
 
@@ -46,8 +49,10 @@ import static org.junit.Assert.*;
 public class GML2DXFTest
     extends DhisTest
 {
+    @Resource(name="org.hisp.dhis.importexport.ImportService")
     private ImportService importService;
 
+    @Autowired
     private OrganisationUnitService organisationUnitService;
     
     private InputStream inputStream;
@@ -57,10 +62,6 @@ public class GML2DXFTest
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-        importService = (ImportService) getBean( "org.hisp.dhis.importexport.ImportService" );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
         inputStream = classLoader.getResourceAsStream( "polygon.gml" );        
     }
     

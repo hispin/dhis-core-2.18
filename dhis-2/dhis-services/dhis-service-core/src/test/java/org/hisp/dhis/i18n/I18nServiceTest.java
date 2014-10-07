@@ -44,6 +44,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -51,21 +52,12 @@ import org.junit.Test;
 public class I18nServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private I18nService i18nService;
-
-    // -------------------------------------------------------------------------
-    // Set up/tear down
-    // -------------------------------------------------------------------------
-
-    @Before
-    public void setUpTest()
-        throws Exception
-    {
-        i18nService = (I18nService) getBean( I18nService.ID );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-    }
     
+    @Autowired
+    private DataElementService dataElementService;
+
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------

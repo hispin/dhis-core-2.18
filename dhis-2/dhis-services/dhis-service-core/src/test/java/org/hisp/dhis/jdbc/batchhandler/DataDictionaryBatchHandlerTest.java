@@ -52,6 +52,9 @@ public class DataDictionaryBatchHandlerTest
 {
     @Autowired
     private BatchHandlerFactory batchHandlerFactory;
+
+    @Autowired
+    private DataDictionaryService   dataDictionaryService ;
     
     private BatchHandler<DataDictionary> batchHandler;
     
@@ -66,7 +69,6 @@ public class DataDictionaryBatchHandlerTest
     @Override
     public void setUpTest()
     {
-        dataDictionaryService = (DataDictionaryService) getBean( DataDictionaryService.ID );
         
         batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryBatchHandler.class );
 

@@ -35,6 +35,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
@@ -43,17 +45,11 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@SuppressWarnings("unchecked")
 public class IndicatorGroupStoreTest
     extends DhisSpringTest
 {
+    @Resource(name="org.hisp.dhis.indicator.IndicatorGroupStore")
     private GenericIdentifiableObjectStore<IndicatorGroup> indicatorGroupStore;
-
-    @Override
-    public void setUpTest()
-    {
-        indicatorGroupStore = (GenericIdentifiableObjectStore<IndicatorGroup>) getBean( "org.hisp.dhis.indicator.IndicatorGroupStore" );
-    }
 
     @Test
     public void testAddIndicatorGroup()

@@ -37,10 +37,13 @@ import org.hisp.dhis.importexport.util.ImportExportUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+
+import javax.annotation.Resource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -53,7 +56,11 @@ public class DXFOrganisationUnitsTest
 {
     private InputStream inputStream;
 
+    @Resource(name="org.hisp.dhis.importexport.ImportService")
     private ImportService importService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     @Override
     public void setUpTest() throws LocationManagerException, IOException
@@ -61,8 +68,6 @@ public class DXFOrganisationUnitsTest
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         inputStream = classLoader.getResourceAsStream( "dxfOrganisationUnits.xml" );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
     }
 
     @Override
@@ -81,8 +86,6 @@ public class DXFOrganisationUnitsTest
     @Test
     public void testImportOrganisationUnits() throws Exception
     {
-        importService = (ImportService) getBean( "org.hisp.dhis.importexport.ImportService" );
-
         ImportParams params = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
 
         importService.importData( params, inputStream );

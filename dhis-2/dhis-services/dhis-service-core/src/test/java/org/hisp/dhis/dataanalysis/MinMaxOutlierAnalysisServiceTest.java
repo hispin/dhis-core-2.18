@@ -35,6 +35,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -54,6 +56,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.ListUtils;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author eirikmi
@@ -62,10 +65,30 @@ import org.junit.Test;
 public class MinMaxOutlierAnalysisServiceTest
     extends DhisSpringTest
 {
+    @Resource( name = "org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" )
     private DataAnalysisService minMaxOutlierAnalysisService;
 
+    @Autowired
     private MinMaxDataElementService minMaxDataElementService;
 
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    @Autowired
+    private PeriodService periodService;
+    
     private DataElement dataElementA;
     private DataElement dataElementB;
     private DataElement dataElementC;
@@ -105,22 +128,6 @@ public class MinMaxOutlierAnalysisServiceTest
     public void setUpTest()
         throws Exception
     {
-        minMaxOutlierAnalysisService = (DataAnalysisService) getBean( "org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        minMaxDataElementService = (MinMaxDataElementService) getBean( MinMaxDataElementService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
         categoryCombo = categoryService.getDefaultDataElementCategoryCombo();
         
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();

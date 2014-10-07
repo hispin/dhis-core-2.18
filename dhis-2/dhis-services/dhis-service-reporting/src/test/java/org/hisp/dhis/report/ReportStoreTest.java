@@ -28,29 +28,33 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.report.Report.TYPE_JASPER_REPORT_TABLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.hisp.dhis.report.Report.TYPE_JASPER_REPORT_TABLE;
 
 import java.util.Collection;
+
+import javax.annotation.Resource;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  */
-@SuppressWarnings( "unchecked" )
 public class ReportStoreTest
     extends DhisSpringTest
 {
+    @Resource(name="org.hisp.dhis.report.ReportStore")
     private GenericStore<Report> reportStore;
     
+    @Autowired
     private ReportTableService reportTableService;
     
     private ReportTable reportTableA;
@@ -62,10 +66,6 @@ public class ReportStoreTest
     @Override
     public void setUpTest()
     {
-        reportStore = (GenericStore<Report>) getBean( "org.hisp.dhis.report.ReportStore" );
-        
-        reportTableService = (ReportTableService) getBean( ReportTableService.ID );
-        
         reportTableA = new ReportTable();
         reportTableA.setName( "ReportTableA" );
 

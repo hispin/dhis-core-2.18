@@ -43,11 +43,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.*;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.annotation.Resource;
 
 import static org.junit.Assert.*;
 
@@ -59,12 +62,42 @@ import static org.junit.Assert.*;
 public class DataSetCompletenessServiceTest
     extends DhisSpringTest
 {
-    private LocationManager locationManager;
-    
+    @Autowired
+    private DataSetCompletenessEngine completenessEngine;
+
+    @Autowired
+    private DataSetCompletenessStore completenessStore;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
     private CompleteDataSetRegistrationService registrationService;
     
-    private DataSetCompletenessService registrationCompletenessService;
+    @Resource(name="locationManager")
+    LocationManager  locationManager;
     
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    @Autowired
+    private DataSetCompletenessService registrationCompletenessService;
+
     private PeriodType periodType;
     
     private Period periodA;
@@ -117,28 +150,8 @@ public class DataSetCompletenessServiceTest
     @Override
     public void setUpTest()
     {
-        locationManager = (LocationManager) getBean( "locationManager" );
-        
         setExternalTestDir( locationManager );
-        
-        periodService = (PeriodService) getBean( PeriodService.ID );
-        
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
-        organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
-        
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-        
-        registrationService = (CompleteDataSetRegistrationService) getBean( CompleteDataSetRegistrationService.ID );
-        
-        registrationCompletenessService = (DataSetCompletenessService) getBean( "registrationDataCompletenessService" );
-        
+    
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         periodType = new MonthlyPeriodType();

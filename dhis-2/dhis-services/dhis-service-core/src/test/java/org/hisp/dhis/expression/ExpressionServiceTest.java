@@ -61,6 +61,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -68,6 +69,27 @@ import org.junit.Test;
 public class ExpressionServiceTest
     extends DhisSpringTest
 {
+    @Autowired
+    private ExpressionService expressionService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private ConstantService constantService;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
     private DataElementCategoryOption categoryOptionC;
@@ -120,20 +142,6 @@ public class ExpressionServiceTest
     public void setUpTest()
         throws Exception
     {
-        expressionService = (ExpressionService) getBean( ExpressionService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
-        constantService = (ConstantService) getBean( ConstantService.ID );
-        
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
-        organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
-
         categoryOptionA = new DataElementCategoryOption( "Under 5" );
         categoryOptionB = new DataElementCategoryOption( "Over 5" );
         categoryOptionC = new DataElementCategoryOption( "Male" );

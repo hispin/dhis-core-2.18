@@ -42,6 +42,7 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -49,6 +50,12 @@ import org.junit.Test;
 public class MessageServiceTest
     extends DhisSpringTest
 {
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private UserService _userService;
+    
     private User sender;
     private User userA;
     private User userB;
@@ -63,8 +70,7 @@ public class MessageServiceTest
     @Before
     public void setUpTest()
     {
-        messageService = (MessageService) getBean( MessageService.ID );
-        userService = (UserService) getBean( UserService.ID );
+        userService = _userService;
         
         sender = createUser( 'S' );
         userA = createUser( 'A' );

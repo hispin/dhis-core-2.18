@@ -48,6 +48,7 @@ import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -55,8 +56,16 @@ import org.junit.Test;
 public class ValidationRuleStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private ValidationRuleStore validationRuleStore;
 
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
     private ExpressionService expressionService;
 
     private DataElement dataElementA;
@@ -85,14 +94,7 @@ public class ValidationRuleStoreTest
     public void setUpTest()
         throws Exception
     {
-        validationRuleStore = (ValidationRuleStore) getBean( ValidationRuleStore.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
-        expressionService = (ExpressionService) getBean( ExpressionService.ID );
-
+      
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );
         dataElementC = createDataElement( 'C' );

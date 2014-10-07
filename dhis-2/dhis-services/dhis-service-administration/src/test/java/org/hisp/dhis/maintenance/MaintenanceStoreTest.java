@@ -31,6 +31,7 @@ package org.hisp.dhis.maintenance;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -39,7 +40,11 @@ import org.junit.Test;
 public class MaintenanceStoreTest
     extends DhisSpringTest
 {
+    @Autowired
     private MaintenanceService maintenanceService;
+
+    @Autowired
+    private DataElementService dataElementService;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -48,11 +53,7 @@ public class MaintenanceStoreTest
     @Override
     public void setUpTest()
     {
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        maintenanceService = (MaintenanceService) getBean( MaintenanceService.ID );
-        
-        dataElementService.addDataElement( createDataElement( 'A' ) );        
+        dataElementService.addDataElement( createDataElement( 'A' ) );
     }
 
     // -------------------------------------------------------------------------

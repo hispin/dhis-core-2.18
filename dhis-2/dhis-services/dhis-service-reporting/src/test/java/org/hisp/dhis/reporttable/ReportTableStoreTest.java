@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
@@ -54,16 +56,32 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-@SuppressWarnings( "unchecked" )
 public class ReportTableStoreTest
     extends DhisSpringTest
 {
+    @Resource( name = "org.hisp.dhis.reporttable.ReportTableStore" )
     private GenericIdentifiableObjectStore<ReportTable> reportTableStore;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private IndicatorService indicatorService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService  organisationUnitService ;
     
     private IndicatorType indicatorType;
 
@@ -103,19 +121,7 @@ public class ReportTableStoreTest
         dataSets = new ArrayList<>();
         periods = new ArrayList<>();
         units = new ArrayList<>();
-        
-        reportTableStore = (GenericIdentifiableObjectStore<ReportTable>) getBean( "org.hisp.dhis.reporttable.ReportTableStore" );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-        
-        periodService = (PeriodService) getBean( PeriodService.ID );
-        
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
+       
         indicatorType = createIndicatorType( 'A' );
         
         indicatorService.addIndicatorType( indicatorType );

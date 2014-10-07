@@ -62,6 +62,21 @@ public class DataValueBatchHandlerTest
 {
     @Autowired
     private BatchHandlerFactory batchHandlerFactory;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private  OrganisationUnitService  organisationUnitService;
     
     private BatchHandler<DataValue> batchHandler;
     
@@ -89,16 +104,6 @@ public class DataValueBatchHandlerTest
     @Override
     public void setUpTest()
     {
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
-        periodService = (PeriodService) getBean( PeriodService.ID );
-        
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
         batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
         
         dataElementA = createDataElement( 'A' );

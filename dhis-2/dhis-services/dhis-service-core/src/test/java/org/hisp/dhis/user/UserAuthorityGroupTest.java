@@ -32,6 +32,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
@@ -39,15 +41,9 @@ import org.junit.Test;
 public class UserAuthorityGroupTest
     extends DhisSpringTest
 {
+    @Resource(name="org.hisp.dhis.user.UserAuthorityGroupStore")
     private GenericIdentifiableObjectStore<UserAuthorityGroup> userAuthorityGroupStore;
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void setUpTest() throws Exception
-    {
-        userAuthorityGroupStore = (GenericIdentifiableObjectStore<UserAuthorityGroup>) getBean( "org.hisp.dhis.user.UserAuthorityGroupStore" );
-    }
-    
     @Test
     public void testAddGetUserAuthorityGroup()
     {

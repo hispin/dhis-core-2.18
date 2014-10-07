@@ -30,6 +30,7 @@ package org.hisp.dhis.resourcetable;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -38,15 +39,8 @@ import org.junit.Test;
 public class ResourceTableServiceTest
     extends DhisSpringTest
 {
-    // -------------------------------------------------------------------------
-    // Fixture
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-    {
-        resourceTableService = (ResourceTableService) getBean( ResourceTableService.ID );
-    }
+    @Autowired
+    private ResourceTableService resourceTableService;
 
     // -------------------------------------------------------------------------
     // Tests

@@ -52,6 +52,9 @@ public class IndicatorGroupBatchHandlerTest
 {
     @Autowired
     private BatchHandlerFactory batchHandlerFactory;
+
+    @Autowired
+    private IndicatorService indicatorService;
     
     private BatchHandler<IndicatorGroup> batchHandler;
     
@@ -66,8 +69,6 @@ public class IndicatorGroupBatchHandlerTest
     @Override
     public void setUpTest()
     {
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        
         batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class );
 
         batchHandler.init();

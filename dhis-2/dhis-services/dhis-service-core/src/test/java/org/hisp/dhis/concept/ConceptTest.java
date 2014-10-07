@@ -35,6 +35,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Dang Duy Hieu
@@ -43,8 +44,12 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 public abstract class ConceptTest
     extends DhisSpringTest
 {
+    @Autowired
     protected ConceptService conceptService;
-
+    
+    @Autowired
+    protected DataElementCategoryService categoryService;
+    
     protected DataElementCategoryOption categoryOptionA;
 
     protected DataElementCategoryOption categoryOptionB;
@@ -66,10 +71,6 @@ public abstract class ConceptTest
     public void setUpConceptTest()
         throws Exception
     {
-        conceptService = (ConceptService) getBean( ConceptService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
         // ---------------------------------------------------------------------
         // Setup Default Concept
         // ---------------------------------------------------------------------

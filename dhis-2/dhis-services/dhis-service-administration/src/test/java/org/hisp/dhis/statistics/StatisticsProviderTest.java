@@ -37,6 +37,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.Objects;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -45,7 +46,11 @@ import org.junit.Test;
 public class StatisticsProviderTest
     extends DhisSpringTest
 {
+    @Autowired
     private StatisticsProvider statisticsProvider;
+
+    @Autowired
+    private DataElementService dataElementService;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -54,14 +59,10 @@ public class StatisticsProviderTest
     @Override
     public void setUpTest()
     {
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        statisticsProvider = (StatisticsProvider) getBean( StatisticsProvider.ID );
-        
         dataElementService.addDataElement( createDataElement( 'A' ) );
         dataElementService.addDataElement( createDataElement( 'B' ) );
         dataElementService.addDataElement( createDataElement( 'C' ) );
-        
+
         dataElementService.addDataElementGroup( createDataElementGroup( 'A' ) );
         dataElementService.addDataElementGroup( createDataElementGroup( 'B' ) );
     }
@@ -74,7 +75,7 @@ public class StatisticsProviderTest
     public void testGetDataElementObjectCount()
     {
         Map<Objects, Integer> counts = statisticsProvider.getObjectCounts();
-        
+
         assertNotNull( counts );
         assertEquals( new Integer( 3 ), counts.get( Objects.DATAELEMENT ) );
     }
@@ -83,7 +84,7 @@ public class StatisticsProviderTest
     public void testGetDataElementGroupObjectCounts()
     {
         Map<Objects, Integer> counts = statisticsProvider.getObjectCounts();
-        
+
         assertNotNull( counts );
         assertEquals( new Integer( 2 ), counts.get( Objects.DATAELEMENTGROUP ) );
     }

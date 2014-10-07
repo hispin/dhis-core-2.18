@@ -47,6 +47,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by Halvdan Hoem Grelland
@@ -54,6 +55,24 @@ import org.junit.Test;
 public class DataValueAuditServiceTest
     extends DhisSpringTest
 {
+    @Autowired
+    private DataValueAuditService dataValueAuditService;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private  OrganisationUnitService organisationUnitService ;
+ 
     // -------------------------------------------------------------------------
     // Supporting data
     // -------------------------------------------------------------------------
@@ -100,18 +119,6 @@ public class DataValueAuditServiceTest
     public void setUpTest()
         throws Exception
     {
-        dataValueAuditService = (DataValueAuditService) getBean( DataValueAuditService.ID );
-
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
         // ---------------------------------------------------------------------
         // Add supporting data
         // ---------------------------------------------------------------------

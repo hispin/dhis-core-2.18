@@ -28,6 +28,16 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.indicator.Indicator;
@@ -40,11 +50,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -53,8 +59,19 @@ import static org.junit.Assert.*;
 public class ChartStoreTest
     extends DhisSpringTest
 {
+    @Resource(name="org.hisp.dhis.chart.ChartStore")
     private GenericIdentifiableObjectStore<Chart> chartStore;
+    
+    @Autowired
+    private IndicatorService indicatorService;
 
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    
     private Indicator indicatorA;
     private Indicator indicatorB;
     private Indicator indicatorC;
@@ -75,17 +92,8 @@ public class ChartStoreTest
     // -------------------------------------------------------------------------
 
     @Override
-    @SuppressWarnings("unchecked")
     public void setUpTest()
     {
-        chartStore = (GenericIdentifiableObjectStore<Chart>) getBean( "org.hisp.dhis.chart.ChartStore" );
-
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
         // ---------------------------------------------------------------------
         // Indicator
         // ---------------------------------------------------------------------

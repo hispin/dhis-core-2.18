@@ -57,7 +57,10 @@ public class IndicatorBatchHandlerTest
     
     @Autowired
     private HibernateCacheManager cacheManager;
-
+    
+    @Autowired
+    private IndicatorService indicatorService;
+    
     private BatchHandler<Indicator> batchHandler;
     
     private Indicator indicatorA;
@@ -70,9 +73,7 @@ public class IndicatorBatchHandlerTest
 
     @Override
     public void setUpTest()
-    {
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        
+    { 
         batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
 
         batchHandler.init();

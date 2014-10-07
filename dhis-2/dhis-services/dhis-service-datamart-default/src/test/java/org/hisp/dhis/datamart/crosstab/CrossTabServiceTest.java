@@ -38,6 +38,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.lang.RandomStringUtils;
@@ -61,6 +63,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -69,8 +72,25 @@ import org.junit.Test;
 public class CrossTabServiceTest
     extends DhisTest
 {
+    @Autowired
     private CrossTabService crossTabService;
     
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataValueService dataValueService;
+   
+    @Resource(name="inMemoryBatchHandlerFactory")
     private BatchHandlerFactory batchHandlerFactory;
     
     private Iterator<Period> generatedPeriods;
@@ -87,21 +107,7 @@ public class CrossTabServiceTest
 
     @Override
     public void setUpTest()
-    {
-        crossTabService = (CrossTabService) getBean( CrossTabService.ID );
-        
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "inMemoryBatchHandlerFactory" );
-        
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        periodService = (PeriodService) getBean( PeriodService.ID );
-        
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-        
+    { 
         Calendar calendar = Calendar.getInstance();
         
         calendar.set( 2007, 0, 1 );

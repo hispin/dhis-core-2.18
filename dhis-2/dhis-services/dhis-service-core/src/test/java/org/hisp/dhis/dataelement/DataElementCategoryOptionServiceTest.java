@@ -37,6 +37,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -45,20 +46,13 @@ import org.junit.Test;
 public class DataElementCategoryOptionServiceTest
     extends DhisSpringTest
 {
+    @Autowired
+    private DataElementCategoryService categoryService;
+   
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
     private DataElementCategoryOption categoryOptionC;
-
-    // -------------------------------------------------------------------------
-    // Fixture
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-    {
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );    
-    }
-
+  
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------

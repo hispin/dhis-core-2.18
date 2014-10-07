@@ -39,6 +39,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -46,22 +47,14 @@ import org.junit.Test;
 public class OrgUnitDistributionServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private OrganisationUnitService organisationUnitService;
 
+    @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
     
+    @Autowired
     private OrgUnitDistributionService distributionService;
-
-    @Override
-    public void setUpTest()
-        throws Exception
-    {
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
-        
-        distributionService = (OrgUnitDistributionService) getBean( OrgUnitDistributionService.ID );
-    }
 
     @Test
     public void testGetOrganisationUnitsByNameAndGroups()

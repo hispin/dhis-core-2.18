@@ -35,6 +35,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
+import javax.annotation.Resource;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
@@ -43,17 +45,24 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-@SuppressWarnings( "unchecked" )
 public class DataDictionaryStoreTest
     extends DhisSpringTest
 {
+    @Resource( name = "org.hisp.dhis.datadictionary.DataDictionaryStore" )
     private GenericIdentifiableObjectStore<DataDictionary> dataDictionaryStore;
 
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private IndicatorService indicatorService;
+    
     private DataElement dataElementA;
     private DataElement dataElementB;
     
@@ -73,12 +82,6 @@ public class DataDictionaryStoreTest
     public void setUpTest()
         throws Exception
     {
-        dataDictionaryStore = (GenericIdentifiableObjectStore<DataDictionary>) getBean( "org.hisp.dhis.datadictionary.DataDictionaryStore" );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        
         dataDictionaryA = createDataDictionary( 'A' );
         dataDictionaryB = createDataDictionary( 'B' );
         

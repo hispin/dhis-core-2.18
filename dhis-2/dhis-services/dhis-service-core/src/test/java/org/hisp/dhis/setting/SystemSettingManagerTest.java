@@ -40,6 +40,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.setting.SystemSetting;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Stian Strandli
@@ -49,14 +50,8 @@ import org.junit.Test;
 public class SystemSettingManagerTest
     extends DhisSpringTest
 {
+    @Autowired
     private SystemSettingManager systemSettingManager;
-
-    @Override
-    public void setUpTest()
-        throws Exception
-    {
-        systemSettingManager = (SystemSettingManager) getBean( SystemSettingManager.ID );
-    }
 
     @Test
     public void testSaveGetSystemSetting()

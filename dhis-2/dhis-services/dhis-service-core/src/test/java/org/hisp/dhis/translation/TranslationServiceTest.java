@@ -31,6 +31,7 @@ package org.hisp.dhis.translation;
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Locale;
 
@@ -42,6 +43,7 @@ import static org.junit.Assert.*;
 public class TranslationServiceTest
     extends DhisSpringTest
 {
+    @Autowired
     private TranslationService translationService;
 
     // -------------------------------------------------------------------------
@@ -71,8 +73,6 @@ public class TranslationServiceTest
     @Override
     public void setUpTest()
     {
-        translationService = (TranslationService) getBean( TranslationService.ID );
-
         translation1a = new Translation( className1, locale1, "name", "cheers", uid1 );
         translation1b = new Translation( className1, locale1, "shortName", "goodbye", uid1 );
         translation2a = new Translation( className1, locale2, "name", "hello", uid1 );

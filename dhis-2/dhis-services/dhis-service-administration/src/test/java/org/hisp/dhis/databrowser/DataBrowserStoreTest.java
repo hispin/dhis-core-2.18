@@ -35,6 +35,7 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.*;
 
@@ -45,6 +46,7 @@ import static org.junit.Assert.*;
 public class DataBrowserStoreTest
     extends DataBrowserTest
 {
+    @Autowired
     private DataBrowserGridStore dataBrowserStore;
 
     private boolean isZeroAdded;
@@ -53,8 +55,6 @@ public class DataBrowserStoreTest
     public void setUpTest()
         throws Exception
     {
-        dataBrowserStore = (DataBrowserGridStore) getBean( DataBrowserGridStore.ID );
-
         super.setUpDataBrowserTest();
     }
 
