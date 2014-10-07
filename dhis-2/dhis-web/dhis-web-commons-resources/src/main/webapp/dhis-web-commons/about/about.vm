@@ -15,6 +15,7 @@
   <dt>$i18n.getString( "database_name" ):</dt><dd>$!info.databaseInfo.name</dd>
   <dt>$i18n.getString( "database_user" ):</dt><dd>$!info.databaseInfo.user</dd>
   <dt>$i18n.getString( "java_opts" ):</dt><dd>$!info.javaOpts</dd>
+  <dt>$i18n.getString( "java_home" ):</dt><dd>$!info.javaHome</dd>
   <dt>$i18n.getString( "java_tmp_dir" ):</dt><dd>$!info.javaIoTmpDir</dd>
   <dt>$i18n.getString( "java_version" ):</dt><dd>$!info.javaVersion</dd>
   <dt>$i18n.getString( "java_vendor" ):</dt><dd>$!info.javaVendor</dd>

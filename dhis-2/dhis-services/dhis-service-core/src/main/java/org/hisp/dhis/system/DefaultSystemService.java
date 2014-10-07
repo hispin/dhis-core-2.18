@@ -164,6 +164,7 @@ public class DefaultSystemService
 
         Properties props = System.getProperties();
 
+        systemInfo.setJavaHome( props.getProperty( "java.home" ) );
         systemInfo.setJavaIoTmpDir( props.getProperty( "java.io.tmpdir" ) );
         systemInfo.setJavaVersion( props.getProperty( "java.version" ) );
         systemInfo.setJavaVendor( props.getProperty( "java.vendor" ) );

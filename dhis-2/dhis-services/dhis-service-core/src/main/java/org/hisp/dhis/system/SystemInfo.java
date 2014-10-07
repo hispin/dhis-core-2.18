@@ -64,6 +64,8 @@ public class SystemInfo
 
     private String javaVendor;
 
+    private String javaHome;
+    
     private String javaIoTmpDir;
 
     private String javaOpts;
@@ -93,6 +95,7 @@ public class SystemInfo
         this.revision = null;
         this.javaVersion = null;
         this.javaVendor = null;
+        this.javaHome = null;
         this.javaIoTmpDir = null;
         this.javaOpts = null;
         this.osName = null;
@@ -239,6 +242,18 @@ public class SystemInfo
     public void setJavaVendor( String javaVendor )
     {
         this.javaVendor = javaVendor;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getJavaHome()
+    {
+        return javaHome;
+    }
+
+    public void setJavaHome( String javaHome )
+    {
+        this.javaHome = javaHome;
     }
 
     @JsonProperty
