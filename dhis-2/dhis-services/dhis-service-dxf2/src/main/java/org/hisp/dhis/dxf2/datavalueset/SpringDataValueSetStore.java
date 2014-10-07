@@ -79,7 +79,7 @@ public class SpringDataValueSetStore
     {
         DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLWriter( out ) );
 
-        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits, exportOptions ), dataSets, completeDate, period, orgUnit, periods, orgUnits, dataValueSet );
+        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits, exportOptions ), dataSets, completeDate, period, orgUnit, dataValueSet );
 
         StreamUtils.closeOutputStream( out );
     }
@@ -90,7 +90,7 @@ public class SpringDataValueSetStore
     {
         DataValueSet dataValueSet = new StreamingJsonDataValueSet( outputStream );
 
-        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits, exportOptions ), dataSets, completeDate, period, orgUnit, periods, orgUnits, dataValueSet );
+        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits, exportOptions ), dataSets, completeDate, period, orgUnit, dataValueSet );
 
         StreamUtils.closeOutputStream( outputStream );
     }
@@ -100,7 +100,7 @@ public class SpringDataValueSetStore
     {
         DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CsvWriter( writer, CSV_DELIM ) );
 
-        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits, exportOptions ), dataSets, null, null, null, periods, orgUnits, dataValueSet );
+        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits, exportOptions ), dataSets, null, null, null, dataValueSet );
     }
 
     @Override
@@ -125,13 +125,13 @@ public class SpringDataValueSetStore
             "join categoryoptioncombo aoc on (dv.attributeoptioncomboid=aoc.categoryoptioncomboid) " +
             "where dv.lastupdated >= '" + DateUtils.getLongDateString( lastUpdated ) + "'";
 
-        writeDataValueSet( sql, null, null, null, null, null, null, dataValueSet );
+        writeDataValueSet( sql, null, null, null, null, dataValueSet );
     }
 
     private void writeDataValueSet( String sql, Set<DataSet> dataSets, Date completeDate, Period period,
-        OrganisationUnit orgUnit, Set<Period> periods, Set<OrganisationUnit> orgUnits, final DataValueSet dataValueSet )
+        OrganisationUnit orgUnit, final DataValueSet dataValueSet )
     {
-        dataValueSet.setDataSet( dataSets.size() == 1 ? dataSets.iterator().next().getUid() : null );
+        dataValueSet.setDataSet( ( dataSets != null && dataSets.size() == 1 ) ? dataSets.iterator().next().getUid() : null );
         dataValueSet.setCompleteDate( getLongDateString( completeDate ) );
         dataValueSet.setPeriod( period != null ? period.getIsoDate() : null );
         dataValueSet.setOrgUnit( orgUnit != null ? orgUnit.getUid() : null );
