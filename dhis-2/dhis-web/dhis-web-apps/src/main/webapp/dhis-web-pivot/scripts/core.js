@@ -481,8 +481,8 @@ Ext.onReady( function() {
 					// properties
 					layout.showColTotals = Ext.isBoolean(config.colTotals) ? config.colTotals : (Ext.isBoolean(config.showColTotals) ? config.showColTotals : true);
 					layout.showRowTotals = Ext.isBoolean(config.rowTotals) ? config.rowTotals : (Ext.isBoolean(config.showRowTotals) ? config.showRowTotals : true);
-					layout.showColSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showColSubTotals) ? config.showColSubTotals : true);
-					layout.showRowSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showRowSubTotals) ? config.showRowSubTotals : true);
+					layout.showColSubTotals = Ext.isBoolean(config.colSubTotals) ? config.colSubTotals : (Ext.isBoolean(config.showColSubTotals) ? config.showColSubTotals : true);
+					layout.showRowSubTotals = Ext.isBoolean(config.rowSubTotals) ? config.rowSubTotals : (Ext.isBoolean(config.showRowSubTotals) ? config.showRowSubTotals : true);
 					layout.showDimensionLabels = Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : (Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : true);
 					layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false;
                     layout.aggregationType = Ext.isString(config.aggregationType) ? config.aggregationType : 'default';
@@ -2190,20 +2190,20 @@ Ext.onReady( function() {
 					return html;
 				};
 
-				doColSubTotals = function() {
-					return !!xLayout.showColSubTotals && xRowAxis && xRowAxis.dims > 1;
-				};
-
-				doRowSubTotals = function() {
-					return !!xLayout.showRowSubTotals && xColAxis && xColAxis.dims > 1;
-				};
-
                 doColTotals = function() {
 					return !!xLayout.showColTotals;
 				};
 
 				doRowTotals = function() {
 					return !!xLayout.showRowTotals;
+				};
+
+				doColSubTotals = function() {
+					return !!xLayout.showColSubTotals && xRowAxis && xRowAxis.dims > 1;
+				};
+
+				doRowSubTotals = function() {
+					return !!xLayout.showRowSubTotals && xColAxis && xColAxis.dims > 1;
 				};
 
 				doSortableColumnHeaders = function() {

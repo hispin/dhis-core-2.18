@@ -513,6 +513,10 @@ public class TableAlteror
         executeSql( "update eventreport set rowtotals = true where rowtotals is null" );        
         executeSql( "alter table eventreport drop column totals" );
 
+        // eventreport col/row subtotals
+        executeSql( "update eventreport set colsubtotals = subtotals where colsubtotals is null" );
+        executeSql( "update eventreport set rowsubtotals = subtotals where rowsubtotals is null" );
+
         // Move chart filters to chart_filters table
 
         executeSql( "insert into chart_filters (chartid, sort_order, filter) select chartid, 0, filter from chart" );

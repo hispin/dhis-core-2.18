@@ -300,7 +300,11 @@ Ext.onReady( function() {
 
 				// showColTotals: boolean (true)
 
-				// showSubTotals: boolean (true)
+				// showColSubTotals: boolean (true)
+
+				// showRowSubTotals: boolean (true)
+
+                // showDimensionLabels: boolean (false)
 
 				// hideEmptyRows: boolean (false)
 
@@ -309,8 +313,6 @@ Ext.onReady( function() {
                 // aggregationType: string ('default') - 'default', 'count', 'sum'
 
 				// showHierarchy: boolean (false)
-
-                // showDimensionLabels: boolean (false)
 
 				// displayDensity: string ('normal') - 'compact', 'normal', 'comfortable'
 
@@ -479,16 +481,17 @@ Ext.onReady( function() {
                     }
 
 					// properties
-					layout.showRowTotals = Ext.isBoolean(config.rowTotals) ? config.rowTotals : (Ext.isBoolean(config.showRowTotals) ? config.showRowTotals : true);
 					layout.showColTotals = Ext.isBoolean(config.colTotals) ? config.colTotals : (Ext.isBoolean(config.showColTotals) ? config.showColTotals : true);
-					layout.showSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showSubTotals) ? config.showSubTotals : true);
+					layout.showRowTotals = Ext.isBoolean(config.rowTotals) ? config.rowTotals : (Ext.isBoolean(config.showRowTotals) ? config.showRowTotals : true);
+					layout.showColSubTotals = Ext.isBoolean(config.colSubTotals) ? config.colSubTotals : (Ext.isBoolean(config.showColSubTotals) ? config.showColSubTotals : true);
+					layout.showRowSubTotals = Ext.isBoolean(config.rowSubTotals) ? config.rowSubTotals : (Ext.isBoolean(config.showRowSubTotals) ? config.showRowSubTotals : true);
+					layout.showDimensionLabels = Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : (Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : true);
 					layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false;
 					layout.countType = Ext.isString(config.countType) && !Ext.isEmpty(config.countType) ? config.countType : 'events';
                     layout.aggregationType = Ext.isString(config.aggregationType) ? config.aggregationType : 'default';
 
 					layout.showHierarchy = Ext.isBoolean(config.showHierarchy) ? config.showHierarchy : false;
 
-					layout.showDimensionLabels = Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : (Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : true);
 					layout.displayDensity = Ext.isString(config.displayDensity) && !Ext.isEmpty(config.displayDensity) ? config.displayDensity : 'normal';
 					layout.fontSize = Ext.isString(config.fontSize) && !Ext.isEmpty(config.fontSize) ? config.fontSize : 'normal';
 					layout.digitGroupSeparator = Ext.isString(config.digitGroupSeparator) && !Ext.isEmpty(config.digitGroupSeparator) ? config.digitGroupSeparator : 'space';
@@ -1163,7 +1166,7 @@ Ext.onReady( function() {
 				};
 
 				return function() {
-                    
+
 					// items
 					for (var i = 0, dim, header; i < dimensions.length; i++) {
 						dim = dimensions[i];
@@ -1203,7 +1206,7 @@ Ext.onReady( function() {
 
                                     if (dim.dimension === orgDim.dimension && dim.items && dim.items.length) {
                                         var items = [];
-                                        
+
                                         for (var k = 0, option; k < options.length; k++) {
                                             option = options[k];
 
@@ -2108,7 +2111,7 @@ Ext.onReady( function() {
 					htmlArray;
 
 				xResponse.sortableIdObjects = [];
-                
+
 				getRoundedHtmlValue = function(value, dec) {
 					dec = dec || 2;
 					return parseFloat(support.prototype.number.roundIf(value, 2)).toString();
@@ -2205,16 +2208,20 @@ Ext.onReady( function() {
 					return html;
 				};
 
-				doSubTotals = function(xAxis) {
-					return !!xLayout.showSubTotals && xAxis && xAxis.dims > 1;
-				};
-
 				doRowTotals = function() {
 					return !!xLayout.showRowTotals;
 				};
 
                 doColTotals = function() {
 					return !!xLayout.showColTotals;
+				};
+
+				doColSubTotals = function() {
+					return !!xLayout.showColSubTotals && xRowAxis && xRowAxis.dims > 1;
+				};
+
+				doRowSubTotals = function() {
+					return !!xLayout.showRowSubTotals && xColAxis && xColAxis.dims > 1;
 				};
 
 				doSortableColumnHeaders = function() {
@@ -2254,7 +2261,7 @@ Ext.onReady( function() {
                             }));
                         }
                         else {
-                            if (xRowAxis && xRowAxis.dims) {                                
+                            if (xRowAxis && xRowAxis.dims) {
                                 for (var j = 0; j < xRowAxis.dims - 1; j++) {
                                     a.push(getEmptyNameTdConfig({
                                         cls: 'pivot-dim-label',
@@ -2265,7 +2272,7 @@ Ext.onReady( function() {
 
                             a.push(getEmptyNameTdConfig({
                                 cls: 'pivot-dim-label',
-                                htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[j]].name + ', ' + dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
+                                htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[j]].name + ' / ' + dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
                             }));
                         }
 
@@ -2310,7 +2317,7 @@ Ext.onReady( function() {
 
 							dimHtml.push(getTdHtml(obj, condoId));
 
-							if (i === 0 && spanCount === xColAxis.span[i] && doSubTotals(xColAxis) ) {
+							if (i === 0 && spanCount === xColAxis.span[i] && doRowSubTotals() ) {
 								dimHtml.push(getTdHtml({
 									type: 'dimensionSubtotal',
 									cls: 'pivot-dim-subtotal cursor-default',
@@ -2526,7 +2533,7 @@ Ext.onReady( function() {
 					xValueObjects = valueObjects;
 
 					// col subtotals
-					if (doSubTotals(xColAxis)) {
+					if (doRowSubTotals()) {
 						var tmpValueObjects = [];
 
 						for (var i = 0, row, rowSubTotal, colCount; i < xValueObjects.length; i++) {
@@ -2568,7 +2575,7 @@ Ext.onReady( function() {
 					}
 
 					// row subtotals
-					if (doSubTotals(xRowAxis)) {
+					if (doColSubTotals()) {
 						var tmpAxisAllObjects = [],
 							tmpValueObjects = [],
 							tmpTotalValueObjects = [],
@@ -2739,7 +2746,7 @@ Ext.onReady( function() {
 
 						xTotalColObjects = totalColObjects;
 
-						if (xColAxis && doSubTotals(xColAxis)) {
+						if (xColAxis && doRowSubTotals()) {
 							var tmp = [];
 
 							for (var i = 0, item, subTotal = 0, empty = [], colCount = 0; i < xTotalColObjects.length; i++) {
@@ -2867,7 +2874,7 @@ Ext.onReady( function() {
 
 			web.report.query.format = function(str) {
 				var n = parseFloat(str);
-                
+
                 // return string if
                 // - parsefloat(string) is not a number
                 // - string is just starting with a number
@@ -2887,14 +2894,14 @@ Ext.onReady( function() {
                     count = pager.page * pager.pageSize - pager.pageSize
 					tableCls = 'pivot',
 					html = '';
-                    
+
 				xResponse.sortableIdObjects = [];
 
 				tableCls += layout.displayDensity ? ' ' + layout.displayDensity : '';
 				tableCls += layout.fontSize ? ' ' + layout.fontSize : '';
 
 				html += '<table class="' + tableCls + '"><tr>';
-                html += '<td class="pivot-dim pivot-dim-subtotal">' + '#' + '</td>';                
+                html += '<td class="pivot-dim pivot-dim-subtotal">' + '#' + '</td>';
 
 				// get header indexes
 				for (var i = 0, header, uuid; i < dimensionHeaders.length; i++) {
@@ -2915,7 +2922,7 @@ Ext.onReady( function() {
 				for (var i = 0, row; i < rows.length; i++) {
 					row = rows[i];
 					html += '<tr>';
-                    html += '<td class="pivot-value align-right">' + (count + (i + 1)) + '</td>';                    
+                    html += '<td class="pivot-value align-right">' + (count + (i + 1)) + '</td>';
 
 					for (var j = 0, str, header, name; j < dimensionHeaders.length; j++) {
 						header = dimensionHeaders[j];
