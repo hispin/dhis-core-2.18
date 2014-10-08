@@ -71,6 +71,10 @@ public interface EventService
 
     ImportSummary addEvent( Event event, ImportOptions importOptions );
 
+    ImportSummaries addEvents( List<Event> events, ImportOptions importOptions );
+
+    ImportSummaries addEvents( List<Event> events, ImportOptions importOptions, TaskId taskId );
+
     ImportSummary addEventXml( InputStream inputStream ) throws IOException;
 
     ImportSummary addEventXml( InputStream inputStream, ImportOptions importOptions ) throws IOException;
@@ -98,9 +102,9 @@ public interface EventService
     void updateEvent( Event event, boolean singleValue );
 
     void updateEvent( Event event, boolean singleValue, ImportOptions importOptions );
-    
+
     void updateEventForNote( Event event );
-    
+
     void updateEventForEventDate( Event event );
 
     // -------------------------------------------------------------------------

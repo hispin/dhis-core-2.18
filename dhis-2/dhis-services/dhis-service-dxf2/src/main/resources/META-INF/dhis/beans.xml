@@ -3,6 +3,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=
   "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
+  <bean id="org.hisp.dhis.dxf2.events.event.csv.CsvEventService" class="org.hisp.dhis.dxf2.events.event.csv.DefaultCsvEventService" />
+
   <bean id="org.hisp.dhis.dxf2.csv.CsvImportService" class="org.hisp.dhis.dxf2.csv.DefaultCsvImportService" />
 
   <bean id="org.hisp.dhis.dxf2.render.RenderService" class="org.hisp.dhis.dxf2.render.DefaultRenderService" />
@@ -28,7 +30,7 @@
   <bean id="org.hisp.dhis.dxf2.events.event.EventStore" class="org.hisp.dhis.dxf2.events.event.JdbcEventStore" />
 
   <bean id="org.hisp.dhis.dxf2.events.event.EventService" class="org.hisp.dhis.dxf2.events.event.JacksonEventService" />
-  
+
   <bean id="org.hisp.dhis.dxf2.events.report.EventRowService" class="org.hisp.dhis.dxf2.events.report.AbstractEventRowService" />
 
   <bean id="org.hisp.dhis.dxf2.events.person.PersonService"

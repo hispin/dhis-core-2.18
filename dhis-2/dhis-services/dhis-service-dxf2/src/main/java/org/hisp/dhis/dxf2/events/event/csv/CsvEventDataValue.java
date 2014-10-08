@@ -40,6 +40,8 @@ import java.util.Objects;
 @JsonPropertyOrder( {
     "event",
     "status",
+    "program",
+    "programStage",
     "enrollment",
     "eventDate",
     "dueDate",
@@ -55,6 +57,10 @@ public class CsvEventDataValue
     private String event;
 
     private String status;
+
+    private String program;
+
+    private String programStage;
 
     private String enrollment;
 
@@ -84,6 +90,8 @@ public class CsvEventDataValue
 
         this.event = dataValue.getEvent();
         this.status = dataValue.getStatus();
+        this.program = dataValue.getProgram();
+        this.programStage = dataValue.getProgramStage();
         this.enrollment = dataValue.getEnrollment();
         this.eventDate = dataValue.getEventDate();
         this.dueDate = dataValue.getDueDate();
@@ -115,6 +123,28 @@ public class CsvEventDataValue
     public void setStatus( String status )
     {
         this.status = status;
+    }
+
+    @JsonProperty
+    public String getProgram()
+    {
+        return program;
+    }
+
+    public void setProgram( String program )
+    {
+        this.program = program;
+    }
+
+    @JsonProperty
+    public String getProgramStage()
+    {
+        return programStage;
+    }
+
+    public void setProgramStage( String programStage )
+    {
+        this.programStage = programStage;
     }
 
     @JsonProperty
@@ -219,11 +249,11 @@ public class CsvEventDataValue
     @Override
     public int hashCode()
     {
-        return Objects.hash( event, status, enrollment, eventDate, dueDate, latitude, longitude, dataElement, value, providedElsewhere, storedBy );
+        return Objects.hash( event, status, program, programStage, enrollment, eventDate, dueDate, latitude, longitude, dataElement,
+            value, storedBy, providedElsewhere );
     }
 
-    @Override
-    public boolean equals( Object obj )
+    @Override public boolean equals( Object obj )
     {
         if ( this == obj )
         {
@@ -236,17 +266,13 @@ public class CsvEventDataValue
 
         final CsvEventDataValue other = (CsvEventDataValue) obj;
 
-        return Objects.equals( this.event, other.event )
-            && Objects.equals( this.status, other.status )
-            && Objects.equals( this.enrollment, other.enrollment )
-            && Objects.equals( this.eventDate, other.eventDate )
-            && Objects.equals( this.dueDate, other.dueDate )
-            && Objects.equals( this.latitude, other.latitude )
-            && Objects.equals( this.longitude, other.longitude )
-            && Objects.equals( this.dataElement, other.dataElement )
-            && Objects.equals( this.value, other.value )
-            && Objects.equals( this.storedBy, other.storedBy )
-            && Objects.equals( this.providedElsewhere, other.providedElsewhere );
+        return Objects.equals( this.event, other.event ) && Objects.equals( this.status, other.status ) && Objects.equals( this.program,
+            other.program ) && Objects.equals( this.programStage, other.programStage ) && Objects.equals( this.enrollment,
+            other.enrollment ) && Objects.equals( this.eventDate, other.eventDate ) && Objects.equals( this.dueDate,
+            other.dueDate ) && Objects.equals( this.latitude, other.latitude ) && Objects.equals( this.longitude,
+            other.longitude ) && Objects.equals( this.dataElement, other.dataElement ) && Objects.equals( this.value,
+            other.value ) && Objects.equals( this.storedBy, other.storedBy ) && Objects.equals( this.providedElsewhere,
+            other.providedElsewhere );
     }
 
     @Override
@@ -255,6 +281,8 @@ public class CsvEventDataValue
         return com.google.common.base.Objects.toStringHelper( this )
             .add( "event", event )
             .add( "status", status )
+            .add( "program", program )
+            .add( "programStage", programStage )
             .add( "enrollment", enrollment )
             .add( "eventDate", eventDate )
             .add( "dueDate", dueDate )

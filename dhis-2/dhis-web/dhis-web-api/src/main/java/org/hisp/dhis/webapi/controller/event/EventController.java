@@ -38,7 +38,8 @@ import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
 import org.hisp.dhis.dxf2.events.event.Events;
 import org.hisp.dhis.dxf2.events.event.ImportEventTask;
-import org.hisp.dhis.dxf2.events.event.csv.CsvEventUtils;
+import org.hisp.dhis.dxf2.events.event.ImportEventsTask;
+import org.hisp.dhis.dxf2.events.event.csv.CsvEventService;
 import org.hisp.dhis.dxf2.events.report.EventRowService;
 import org.hisp.dhis.dxf2.events.report.EventRows;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
@@ -109,6 +110,9 @@ public class EventController
 
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private CsvEventService csvEventService;
 
     @Autowired
     private EventRowService eventRowService;
@@ -198,7 +202,7 @@ public class EventController
             events.setEvents( PagerUtils.pageCollection( events.getEvents(), pager ) );
         }
 
-        CsvEventUtils.writeEvents( response.getOutputStream(), events, !skipHeader );
+        csvEventService.writeEvents( response.getOutputStream(), events, !skipHeader );
     }
 
     @RequestMapping( value = "", method = RequestMethod.GET )
@@ -492,7 +496,20 @@ public class EventController
         @RequestParam( required = false, defaultValue = "false" ) boolean skipFirst,
         HttpServletResponse response, HttpServletRequest request, ImportOptions importOptions ) throws IOException
     {
-        CsvEventUtils.readEvents( request.getInputStream(), skipFirst );
+        Events events = csvEventService.readEvents( request.getInputStream(), skipFirst );
+
+        if ( !importOptions.isAsync() )
+        {
+            ImportSummaries importSummaries = eventService.addEvents( events.getEvents(), importOptions );
+            JacksonUtils.toJson( response.getOutputStream(), importSummaries );
+        }
+        else
+        {
+            TaskId taskId = new TaskId( TaskCategory.EVENT_IMPORT, currentUserService.getCurrentUser() );
+            scheduler.executeTask( new ImportEventsTask( events.getEvents(), eventService, importOptions, taskId ) );
+            response.setHeader( "Location", ContextUtils.getRootPath( request ) + "/system/tasks/" + TaskCategory.EVENT_IMPORT );
+            response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+        }
     }
 
     // -------------------------------------------------------------------------

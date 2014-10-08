@@ -34,11 +34,13 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.event.Coordinate;
 import org.hisp.dhis.dxf2.events.event.DataValue;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.Events;
 import org.hisp.dhis.event.EventStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -50,30 +52,24 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public final class CsvEventUtils
+public class DefaultCsvEventService implements CsvEventService
 {
     private static CsvMapper csvMapper = new CsvMapper();
 
     private static CsvSchema csvSchema = csvMapper.schemaFor( CsvEventDataValue.class ).withLineSeparator( "\n" );
+
+    @Autowired
+    private IdentifiableObjectManager manager;
 
     static
     {
         csvMapper.enable( CsvParser.Feature.WRAP_AS_ARRAY );
     }
 
-    public static CsvMapper getCsvMapper()
+    @Override
+    public void writeEvents( OutputStream outputStream, Events events, boolean withHeader ) throws IOException
     {
-        return csvMapper;
-    }
-
-    public static CsvSchema getCsvSchema()
-    {
-        return csvSchema;
-    }
-
-    public static void writeEvents( OutputStream outputStream, Events events, boolean withHeader ) throws IOException
-    {
-        ObjectWriter writer = getCsvMapper().writer( getCsvSchema().withUseHeader( withHeader ) );
+        ObjectWriter writer = csvMapper.writer( csvSchema.withUseHeader( withHeader ) );
 
         List<CsvEventDataValue> dataValues = new ArrayList<>();
 
@@ -82,6 +78,8 @@ public final class CsvEventUtils
             CsvEventDataValue templateDataValue = new CsvEventDataValue();
             templateDataValue.setEvent( event.getEvent() );
             templateDataValue.setStatus( event.getStatus() != null ? event.getStatus().name() : null );
+            templateDataValue.setProgram( event.getProgram() );
+            templateDataValue.setProgramStage( event.getProgramStage() );
             templateDataValue.setEnrollment( event.getEnrollment() );
             templateDataValue.setEventDate( event.getEventDate() );
             templateDataValue.setDueDate( event.getDueDate() );
@@ -112,12 +110,13 @@ public final class CsvEventUtils
         writer.writeValue( outputStream, dataValues );
     }
 
-    public static Events readEvents( InputStream inputStream, boolean skipFirst ) throws IOException
+    @Override
+    public Events readEvents( InputStream inputStream, boolean skipFirst ) throws IOException
     {
         Events events = new Events();
 
-        ObjectReader reader = getCsvMapper()
-            .reader( CsvEventDataValue.class ).with( getCsvSchema().withSkipFirstDataRow( skipFirst ) );
+        ObjectReader reader = csvMapper
+            .reader( CsvEventDataValue.class ).with( csvSchema.withSkipFirstDataRow( skipFirst ) );
 
         MappingIterator<CsvEventDataValue> iterator = reader.readValues( inputStream );
         Event event = new Event();
@@ -132,6 +131,8 @@ public final class CsvEventUtils
                 event = new Event();
                 event.setEvent( dataValue.getEvent() );
                 event.setStatus( StringUtils.isEmpty( dataValue.getStatus() ) ? EventStatus.ACTIVE : Enum.valueOf( EventStatus.class, dataValue.getStatus() ) );
+                event.setProgram( dataValue.getProgram() );
+                event.setProgramStage( dataValue.getProgramStage() );
                 event.setEnrollment( dataValue.getEnrollment() );
                 event.setEventDate( event.getEventDate() );
                 event.setDueDate( event.getDueDate() );
@@ -152,9 +153,5 @@ public final class CsvEventUtils
         }
 
         return events;
-    }
-
-    private CsvEventUtils()
-    {
     }
 }
