@@ -34,13 +34,11 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.event.Coordinate;
 import org.hisp.dhis.dxf2.events.event.DataValue;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.Events;
 import org.hisp.dhis.event.EventStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -57,9 +55,6 @@ public class DefaultCsvEventService implements CsvEventService
     private static CsvMapper csvMapper = new CsvMapper();
 
     private static CsvSchema csvSchema = csvMapper.schemaFor( CsvEventDataValue.class ).withLineSeparator( "\n" );
-
-    @Autowired
-    private IdentifiableObjectManager manager;
 
     static
     {
@@ -131,7 +126,8 @@ public class DefaultCsvEventService implements CsvEventService
             {
                 event = new Event();
                 event.setEvent( dataValue.getEvent() );
-                event.setStatus( StringUtils.isEmpty( dataValue.getStatus() ) ? EventStatus.ACTIVE : Enum.valueOf( EventStatus.class, dataValue.getStatus() ) );
+                event.setStatus( StringUtils.isEmpty( dataValue.getStatus() ) ? EventStatus.ACTIVE : Enum.valueOf( EventStatus.class,
+                    dataValue.getStatus() ) );
                 event.setProgram( dataValue.getProgram() );
                 event.setProgramStage( dataValue.getProgramStage() );
                 event.setEnrollment( dataValue.getEnrollment() );
