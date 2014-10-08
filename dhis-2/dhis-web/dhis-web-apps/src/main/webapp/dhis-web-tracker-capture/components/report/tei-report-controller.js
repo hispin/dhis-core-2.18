@@ -37,7 +37,7 @@ trackerCapture.controller('TeiReportController',
         $scope.selectedProgram = selections.pr;        
         $scope.selectedEnrollment = selections.enrollment; 
     
-        if($scope.selectedTei){            
+        if($scope.selectedTei && $scope.selectedOrgUnit){            
             $scope.getEvents();
         }       
     });
@@ -46,7 +46,7 @@ trackerCapture.controller('TeiReportController',
         
         $scope.dataFetched = false;
         $scope.dataExists = false;
-        var programId = null, orgUnitId = null;
+        var programId = null;
         
         if($scope.selectedProgram){
             programId = $scope.selectedProgram.id;
@@ -57,7 +57,7 @@ trackerCapture.controller('TeiReportController',
             $scope.report[pr.id] = {};
         });
         
-        DHIS2EventFactory.getEventsByProgram($scope.selectedTei.trackedEntityInstance, orgUnitId, programId).then(function(eventList){
+        DHIS2EventFactory.getEventsByProgram($scope.selectedTei.trackedEntityInstance, $scope.selectedOrgUnit.id, programId).then(function(eventList){
             angular.forEach(eventList, function(ev){
                 if(ev.program){       
                     ev.visited = true;
