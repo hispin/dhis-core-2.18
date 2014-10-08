@@ -449,9 +449,6 @@ public abstract class AbstractEventService
             dueDate = DateUtils.parseDate( event.getDueDate() );
         }
 
-        System.err.println( "ed: " + executionDate );
-        System.err.println( "dd: " + dueDate );
-
         String storedBy = getStoredBy( event, null );
 
         if ( event.getStatus() == EventStatus.ACTIVE )
