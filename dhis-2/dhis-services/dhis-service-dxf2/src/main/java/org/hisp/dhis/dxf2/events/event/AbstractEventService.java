@@ -415,8 +415,7 @@ public abstract class AbstractEventService
     @Override
     public void updateEvent( Event event, boolean singleValue, ImportOptions importOptions )
     {
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
-            .getEvent() );
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event.getEvent() );
 
         if ( programStageInstance == null )
         {
@@ -439,7 +438,7 @@ public abstract class AbstractEventService
 
         if ( event.getEventDate() != null )
         {
-            executionDate = DateUtils.getMediumDate( event.getEventDate() );
+            executionDate = DateUtils.parseDate( event.getEventDate() );
             programStageInstance.setExecutionDate( executionDate );
         }
 
@@ -447,8 +446,11 @@ public abstract class AbstractEventService
 
         if ( event.getDueDate() != null )
         {
-            dueDate = DateUtils.getMediumDate( event.getDueDate() );
+            dueDate = DateUtils.parseDate( event.getDueDate() );
         }
+
+        System.err.println( "ed: " + executionDate );
+        System.err.println( "dd: " + dueDate );
 
         String storedBy = getStoredBy( event, null );
 
@@ -545,14 +547,14 @@ public abstract class AbstractEventService
         {
             return;
         }
+
         saveTrackedEntityComment( programStageInstance, event, getStoredBy( event, null ) );
 
     }
 
     public void updateEventForEventDate( Event event )
     {
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
-            .getEvent() );
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event.getEvent() );
 
         if ( programStageInstance == null )
         {
@@ -563,7 +565,7 @@ public abstract class AbstractEventService
 
         if ( event.getEventDate() != null )
         {
-            executionDate = DateUtils.getMediumDate( event.getEventDate() );
+            executionDate = DateUtils.parseDate( event.getEventDate() );
         }
 
         if ( event.getStatus() == EventStatus.COMPLETED )
@@ -574,6 +576,8 @@ public abstract class AbstractEventService
         {
             programStageInstance.setStatus( EventStatus.VISITED );
         }
+
+        System.err.println( "updateEventForEventDate.ed: " + executionDate );
 
         programStageInstance.setExecutionDate( executionDate );
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
@@ -587,8 +591,7 @@ public abstract class AbstractEventService
     @Override
     public void deleteEvent( Event event )
     {
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
-            .getEvent() );
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event.getEvent() );
 
         if ( programStageInstance != null )
         {
@@ -804,7 +807,6 @@ public abstract class AbstractEventService
     }
 
     private void updateProgramStageInstance( ProgramStage programStage, ProgramInstance programInstance,
-
         OrganisationUnit organisationUnit, Date dueDate, Date executionDate, int status, Coordinate coordinate,
         String storedBy, ProgramStageInstance programStageInstance )
     {
@@ -835,8 +837,7 @@ public abstract class AbstractEventService
             programStageInstance.setStatus( EventStatus.COMPLETED );
             programStageInstance.setCompletedDate( new Date() );
             programStageInstance.setCompletedUser( storedBy );
-            programStageInstanceService
-                .completeProgramStageInstance( programStageInstance, i18nManager.getI18nFormat() );
+            programStageInstanceService.completeProgramStageInstance( programStageInstance, i18nManager.getI18nFormat() );
         }
     }
 
@@ -852,9 +853,9 @@ public abstract class AbstractEventService
         importSummary.setStatus( ImportStatus.SUCCESS );
         boolean dryRun = importOptions != null && importOptions.isDryRun();
 
-        Date eventDate = DateUtils.getMediumDate( event.getEventDate() );
+        Date eventDate = DateUtils.parseDate( event.getEventDate() );
 
-        Date dueDate = DateUtils.getMediumDate( event.getDueDate() );
+        Date dueDate = DateUtils.parseDate( event.getDueDate() );
 
         String storedBy = getStoredBy( event, importSummary );
 
