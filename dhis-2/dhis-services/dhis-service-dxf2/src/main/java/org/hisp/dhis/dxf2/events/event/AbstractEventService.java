@@ -77,8 +77,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -491,8 +493,8 @@ public abstract class AbstractEventService
 
         saveTrackedEntityComment( programStageInstance, event, storedBy );
 
-        Set<TrackedEntityDataValue> dataValues = new HashSet<>(
-            dataValueService.getTrackedEntityDataValues( programStageInstance ) );
+        Set<TrackedEntityDataValue> dataValues = new HashSet<>( dataValueService.getTrackedEntityDataValues( programStageInstance ) );
+        Map<String, TrackedEntityDataValue> existingDataValues = getDataElementDataValueMap( dataValues );
 
         for ( DataValue value : event.getDataValues() )
         {
@@ -510,8 +512,10 @@ public abstract class AbstractEventService
             }
             else
             {
+                TrackedEntityDataValue existingDataValue = existingDataValues.get( value.getDataElement() );
+
                 saveDataValue( programStageInstance, event.getStoredBy(), dataElement, value.getValue(),
-                    value.getProvidedElsewhere() );
+                    value.getProvidedElsewhere(), existingDataValue );
             }
         }
 
@@ -527,7 +531,7 @@ public abstract class AbstractEventService
 
     public void updateEventForNote( Event event )
     {
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( 
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
             event.getEvent() );
 
         if ( programStageInstance == null )
@@ -729,22 +733,19 @@ public abstract class AbstractEventService
                     new ImportConflict( "stored by", storedBy
                         + " is more than 31 characters, using current username instead" ) );
             }
-            
+
             storedBy = currentUserService.getCurrentUsername();
         }
         return storedBy;
     }
 
     private void saveDataValue( ProgramStageInstance programStageInstance, String storedBy, DataElement dataElement,
-        String value, Boolean providedElsewhere )
+        String value, Boolean providedElsewhere, TrackedEntityDataValue dataValue )
     {
         if ( value != null && value.trim().length() == 0 )
         {
             value = null;
         }
-
-        TrackedEntityDataValue dataValue = dataValueService.getTrackedEntityDataValue( programStageInstance,
-            dataElement );
 
         if ( value != null )
         {
@@ -772,7 +773,7 @@ public abstract class AbstractEventService
         }
     }
 
-    private ProgramStageInstance createProgramStageInstance( ProgramStage programStage, ProgramInstance programInstance, 
+    private ProgramStageInstance createProgramStageInstance( ProgramStage programStage, ProgramInstance programInstance,
         OrganisationUnit organisationUnit, Date dueDate, Date executionDate, int status,
         Coordinate coordinate, String storedBy, String programStageInstanceUid )
     {
@@ -860,34 +861,53 @@ public abstract class AbstractEventService
             importSummary.setReference( programStageInstance.getUid() );
         }
 
+        Collection<TrackedEntityDataValue> existingDataValues = dataValueService.getTrackedEntityDataValues( programStageInstance );
+        Map<String, TrackedEntityDataValue> dataElementValueMap = getDataElementDataValueMap( existingDataValues );
+
         for ( DataValue dataValue : event.getDataValues() )
         {
-            DataElement dataElement = dataElementService.getDataElement( dataValue.getDataElement() );
+            DataElement dataElement;
 
-            if ( dataElement == null )
+            if ( dataElementValueMap.containsKey( dataValue.getDataElement() ) )
             {
-                importSummary.getConflicts().add(
-                    new ImportConflict( "dataElement", dataValue.getDataElement() + " is not a valid data element" ) );
-                importSummary.getDataValueCount().incrementIgnored();
-            }
-            else
-            {
+                dataElement = dataElementValueMap.get( dataValue.getDataElement() ).getDataElement();
+
                 if ( validateDataValue( dataElement, dataValue.getValue(), importSummary ) )
                 {
                     String dataValueStoredBy = dataValue.getStoredBy() != null ? dataValue.getStoredBy() : storedBy;
 
                     if ( !dryRun )
                     {
+                        TrackedEntityDataValue existingDataValue = dataElementValueMap.get( dataValue.getDataElement() );
+
                         saveDataValue( programStageInstance, dataValueStoredBy, dataElement, dataValue.getValue(),
-                            dataValue.getProvidedElsewhere() );
+                            dataValue.getProvidedElsewhere(), existingDataValue );
                     }
 
                     importSummary.getDataValueCount().incrementImported();
                 }
             }
+            else
+            {
+                importSummary.getConflicts().add(
+                    new ImportConflict( "dataElement", dataValue.getDataElement() + " is not a valid data element" ) );
+                importSummary.getDataValueCount().incrementIgnored();
+            }
         }
 
         return importSummary;
+    }
+
+    private Map<String, TrackedEntityDataValue> getDataElementDataValueMap( Collection<TrackedEntityDataValue> dataValues )
+    {
+        Map<String, TrackedEntityDataValue> map = new HashMap<>();
+
+        for ( TrackedEntityDataValue value : dataValues )
+        {
+            map.put( value.getDataElement().getUid(), value );
+        }
+
+        return map;
     }
 
     private void saveTrackedEntityComment( ProgramStageInstance programStageInstance, Event event, String storedBy )
