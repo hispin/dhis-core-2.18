@@ -28,10 +28,13 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -43,10 +46,7 @@ import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.hisp.dhis.validation.comparator.ValidationResultComparator;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Margrethe Store
@@ -155,13 +155,6 @@ public class RunValidationAction
         return validationResults;
     }
 
-    private Grid aggregateResults;
-
-    public Grid getAggregateResults()
-    {
-        return aggregateResults;
-    }
-
     private boolean maxExceeded;
 
     public boolean isMaxExceeded()
@@ -215,6 +208,10 @@ public class RunValidationAction
         return SUCCESS;
     }
 
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
     private void computeShowAttributeCombos()
     {
         showAttributeCombos = false;
@@ -224,7 +221,6 @@ public class RunValidationAction
             if ( !result.getAttributeOptionCombo().isDefault() )
             {
                 showAttributeCombos = true;
-
                 break;
             }
         }
