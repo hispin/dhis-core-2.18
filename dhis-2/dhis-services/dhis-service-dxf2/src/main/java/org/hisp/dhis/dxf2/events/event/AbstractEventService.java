@@ -184,7 +184,7 @@ public abstract class AbstractEventService
         }
         else
         {
-            log.info( "Import done. Completed in " + timer.toString() + "." );
+            log.info( "Import done, completed in " + timer.toString() );
         }
 
         return importSummaries;
@@ -230,7 +230,7 @@ public abstract class AbstractEventService
         if ( verifyProgramAccess( program ) )
         {
             return new ImportSummary( ImportStatus.ERROR,
-                "Current user does not have permission to access this program." );
+                "Current user does not have permission to access this program" );
         }
 
         if ( program.isRegistration() )
@@ -238,7 +238,7 @@ public abstract class AbstractEventService
             if ( event.getTrackedEntityInstance() == null )
             {
                 return new ImportSummary( ImportStatus.ERROR,
-                    "No Event.trackedEntityInstance was provided for registration based program." );
+                    "No Event.trackedEntityInstance was provided for registration based program" );
             }
 
             org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService
@@ -247,7 +247,7 @@ public abstract class AbstractEventService
             if ( entityInstance == null )
             {
                 return new ImportSummary( ImportStatus.ERROR,
-                    "Event.trackedEntityInstance does not point to a valid trackedEntityInstance." );
+                    "Event.trackedEntityInstance does not point to a valid tracked entity instance" );
             }
 
             List<ProgramInstance> programInstances = new ArrayList<>( programInstanceService.getProgramInstances(
@@ -261,8 +261,7 @@ public abstract class AbstractEventService
             else if ( programInstances.size() > 1 )
             {
                 return new ImportSummary( ImportStatus.ERROR, "TrackedEntityInstance " + entityInstance.getUid()
-                    + " have multiple active enrollments into program " + program.getUid()
-                    + " please check and correct your database." );
+                    + " have multiple active enrollments in program " + program.getUid() );
             }
 
             programInstance = programInstances.get( 0 );
@@ -275,13 +274,12 @@ public abstract class AbstractEventService
                 if ( programStageInstances.isEmpty() )
                 {
                     return new ImportSummary( ImportStatus.ERROR, "TrackedEntityInstance " + entityInstance.getUid()
-                        + " is not enrolled in programStage " + programStage.getUid() );
+                        + " is not enrolled in program stage " + programStage.getUid() );
                 }
                 else if ( programStageInstances.size() > 1 )
                 {
                     return new ImportSummary( ImportStatus.ERROR, "TrackedEntityInstance " + entityInstance.getUid()
-                        + " have multiple active enrollments into programStage " + programStage.getUid()
-                        + " please check and correct your database for multiple active stages." );
+                        + " have multiple active enrollments in program stage " + programStage.getUid() );
                 }
 
                 programStageInstance = programStageInstances.get( 0 );
@@ -319,14 +317,12 @@ public abstract class AbstractEventService
             if ( programInstances.isEmpty() )
             {
                 return new ImportSummary( ImportStatus.ERROR,
-                    "No active event exists for single event no registration program " + program.getUid()
-                        + ", please check and correct your database." );
+                    "No active event exists for single event no registration program " + program.getUid() );
             }
             else if ( programInstances.size() > 1 )
             {
                 return new ImportSummary( ImportStatus.ERROR,
-                    "Multiple active events exists for single event no registration program " + program.getUid()
-                        + ", please check and correct your database." );
+                    "Multiple active events exists for single event no registration program " + program.getUid() );
             }
 
             programInstance = programInstances.get( 0 );
@@ -349,12 +345,12 @@ public abstract class AbstractEventService
 
         if ( organisationUnit == null )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Event.orgUnit does not point to a valid organisation unit." );
+            return new ImportSummary( ImportStatus.ERROR, "Event.orgUnit does not point to a valid organisation unit" );
         }
 
         if ( verifyProgramOrganisationUnitAssociation( program, organisationUnit ) )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Program is not assigned to this organisation unit." );
+            return new ImportSummary( ImportStatus.ERROR, "Program is not assigned to this organisation unit" );
         }
 
         return saveEvent( program, programInstance, programStage, programStageInstance, organisationUnit, event,
@@ -531,8 +527,8 @@ public abstract class AbstractEventService
 
     public void updateEventForNote( Event event )
     {
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
-            .getEvent() );
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( 
+            event.getEvent() );
 
         if ( programStageInstance == null )
         {
@@ -540,7 +536,6 @@ public abstract class AbstractEventService
         }
 
         saveTrackedEntityComment( programStageInstance, event, getStoredBy( event, null ) );
-
     }
 
     public void updateEventForEventDate( Event event )
@@ -568,11 +563,8 @@ public abstract class AbstractEventService
             programStageInstance.setStatus( EventStatus.VISITED );
         }
 
-        System.err.println( "updateEventForEventDate.ed: " + executionDate );
-
         programStageInstance.setExecutionDate( executionDate );
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
-
     }
 
     // -------------------------------------------------------------------------
@@ -734,9 +726,10 @@ public abstract class AbstractEventService
             if ( importSummary != null )
             {
                 importSummary.getConflicts().add(
-                    new ImportConflict( "storedBy", storedBy
-                        + " is more than 31 characters, using current username instead." ) );
+                    new ImportConflict( "stored by", storedBy
+                        + " is more than 31 characters, using current username instead" ) );
             }
+            
             storedBy = currentUserService.getCurrentUsername();
         }
         return storedBy;
@@ -779,9 +772,8 @@ public abstract class AbstractEventService
         }
     }
 
-    private ProgramStageInstance createProgramStageInstance( ProgramStage programStage,
-
-        ProgramInstance programInstance, OrganisationUnit organisationUnit, Date dueDate, Date executionDate, int status,
+    private ProgramStageInstance createProgramStageInstance( ProgramStage programStage, ProgramInstance programInstance, 
+        OrganisationUnit organisationUnit, Date dueDate, Date executionDate, int status,
         Coordinate coordinate, String storedBy, String programStageInstanceUid )
     {
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
@@ -861,7 +853,6 @@ public abstract class AbstractEventService
             {
                 updateProgramStageInstance( programStage, programInstance, organisationUnit, dueDate, eventDate, event
                     .getStatus().getValue(), event.getCoordinate(), storedBy, programStageInstance );
-
             }
 
             saveTrackedEntityComment( programStageInstance, event, storedBy );
@@ -876,7 +867,7 @@ public abstract class AbstractEventService
             if ( dataElement == null )
             {
                 importSummary.getConflicts().add(
-                    new ImportConflict( "dataElement", dataValue.getDataElement() + " is not a valid dataElementId." ) );
+                    new ImportConflict( "dataElement", dataValue.getDataElement() + " is not a valid data element" ) );
                 importSummary.getDataValueCount().incrementIgnored();
             }
             else
