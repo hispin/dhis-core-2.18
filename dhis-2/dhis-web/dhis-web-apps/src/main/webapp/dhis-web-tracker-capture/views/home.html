@@ -73,8 +73,6 @@
                 <button class="btn btn-primary trim" type="button" title="{{'search'| translate}}" ng-disabled="showRegistrationDiv || showReportDiv" ng-click="search(searchMode.freeText)"><i class="fa fa-search"></i></button>
                 <div id="searchDropDown" class="dropdown-menu dropdown-menu-right">
                     <form ng-submit="search(searchMode.attributeBased)">
-                        <!-- had to disable ng-include to avoid dealing with a separate controller/scope issue-->
-                        <!--<div ng-include="'views/search.html'"></div>-->
                         <div class="search-container-main">
                             <div class="search-container">    
                                 <table data-stop-propagation="true" class="table-borderless table-striped">
