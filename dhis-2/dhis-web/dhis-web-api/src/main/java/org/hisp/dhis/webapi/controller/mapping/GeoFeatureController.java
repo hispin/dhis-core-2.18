@@ -100,7 +100,7 @@ public class GeoFeatureController
 
         DataQueryParams params = analyticsService.getFromUrl( set, null, AggregationType.SUM, null, false, false, false, false, false, false, null, null );
 
-        DimensionalObject dim = params.getDimension( DimensionalObject.ORGUNIT_DIM_ID );
+        DimensionalObject dim = params.getDimension( DimensionalObject.ORGUNIT_DIM_ID );       
 
         List<OrganisationUnit> organisationUnits = NameableObjectUtils.asTypedList( dim.getItems() );
 

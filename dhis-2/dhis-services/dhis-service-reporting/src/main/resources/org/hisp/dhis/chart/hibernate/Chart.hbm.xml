@@ -169,6 +169,8 @@
     <property name="rangeAxisSteps" />
 
     <property name="rangeAxisDecimals" />
+    
+    <property name="sortOrder" />
 
     <!-- Access properties -->
     <property name="externalAccess" />

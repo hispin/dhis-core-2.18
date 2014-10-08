@@ -523,13 +523,28 @@ Ext.onReady( function() {
 			general,
 			window,
 
+            comboBottomMargin = 1,
+            checkboxBottomMargin = 2,
+            separatorTopMargin = 6,
 			cmpWidth = 340,
 			labelWidth = 125,
 			numberWidth = 80;
 
+        // data
+		showValues = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.show_values,
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px',
+			checked: true
+		});
+
+		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.hide_empty_category_items,
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px'
+		});
+
 		showTrendLine = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.trend_line,
-			style: 'margin-bottom:6px'
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px'
 		});
 
 		targetLineValue = Ext.create('Ext.form.field.Number', {
@@ -567,7 +582,6 @@ Ext.onReady( function() {
 		});
 
 		baseLineTitle = Ext.create('Ext.form.field.Text', {
-			//cls: 'ns-textfield-alt1',
 			style: 'margin-left:1px; margin-bottom:1px',
 			fieldStyle: 'padding-left:3px',
 			emptyText: NS.i18n.base,
@@ -580,11 +594,28 @@ Ext.onReady( function() {
 			}
 		});
 
-		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.hide_empty_category_items,
-			style: 'margin-bottom:4px'
+		sortOrder = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'ns-combo',
+			style: 'margin-bottom:' + comboBottomMargin + 'px',
+			width: cmpWidth,
+			labelWidth: 125,
+			fieldLabel: NS.i18n.sort_order,
+			labelStyle: 'color:#333',
+			queryMode: 'local',
+			valueField: 'id',
+			editable: false,
+			value: 0,
+			store: Ext.create('Ext.data.Store', {
+				fields: ['id', 'text'],
+				data: [
+					{id: 0, text: NS.i18n.none},
+					{id: -1, text: NS.i18n.low_to_high},
+					{id: 1, text: NS.i18n.high_to_low}
+				]
+			})
 		});
 
+        // axes
 		rangeAxisMinValue = Ext.create('Ext.form.field.Number', {
 			width: numberWidth,
 			height: 18,
@@ -616,15 +647,10 @@ Ext.onReady( function() {
 			minValue: 0
 		});
 
-		showValues = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.show_values,
-			style: 'margin-bottom:4px',
-			checked: true
-		});
-
+        // general
 		hideLegend = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.hide_legend,
-			style: 'margin-bottom:4px'
+			style: 'margin-bottom:' + checkboxBottomMargin + 'px'
 		});
 
 		hideTitle = Ext.create('Ext.form.field.Checkbox', {
@@ -638,7 +664,7 @@ Ext.onReady( function() {
 		});
 
 		title = Ext.create('Ext.form.field.Text', {
-			style: 'margin-bottom:2px',
+			style: 'margin-bottom:0',
 			width: cmpWidth,
 			fieldLabel: NS.i18n.chart_title,
 			labelStyle: 'color:#333',
@@ -682,6 +708,7 @@ Ext.onReady( function() {
 					xtype: 'container',
 					layout: 'column',
 					bodyStyle: 'border:0 none',
+                    style: 'margin-top:' + (separatorTopMargin + 1) + 'px',
 					items: [
 						{
 							bodyStyle: 'border:0 none; padding-top:3px; margin-right:5px; color:#333',
@@ -705,7 +732,8 @@ Ext.onReady( function() {
 						baseLineValue,
 						baseLineTitle
 					]
-				}
+				},
+                sortOrder
 			]
 		};
 
@@ -760,6 +788,7 @@ Ext.onReady( function() {
 					targetLineTitle: targetLineTitle.getValue(),
 					baseLineValue: baseLineValue.getValue(),
 					baseLineTitle: baseLineTitle.getValue(),
+                    sortOrder: sortOrder.getValue(),
 					rangeAxisMaxValue: rangeAxisMaxValue.getValue(),
 					rangeAxisMinValue: rangeAxisMinValue.getValue(),
 					rangeAxisSteps: rangeAxisSteps.getValue(),
@@ -805,6 +834,8 @@ Ext.onReady( function() {
 				else {
 					baseLineTitle.reset();
 				}
+
+                sortOrder.setValue(Ext.isNumber(layout.sortOrder) ? layout.sortOrder : 0);
 
 				// rangeAxisMaxValue
 				if (Ext.isNumber(layout.rangeAxisMaxValue)) {
@@ -926,6 +957,7 @@ Ext.onReady( function() {
 					w.targetLineTitle = targetLineTitle;
 					w.baseLineValue = baseLineValue;
 					w.baseLineTitle = baseLineTitle;
+                    w.sortOrder = sortOrder;
 
 					w.rangeAxisMaxValue = rangeAxisMaxValue;
 					w.rangeAxisMinValue = rangeAxisMinValue;
