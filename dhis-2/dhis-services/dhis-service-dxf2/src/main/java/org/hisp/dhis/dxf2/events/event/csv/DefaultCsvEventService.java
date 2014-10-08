@@ -120,8 +120,8 @@ public class DefaultCsvEventService implements CsvEventService
     {
         Events events = new Events();
 
-        ObjectReader reader = csvMapper
-            .reader( CsvEventDataValue.class ).with( csvSchema.withSkipFirstDataRow( skipFirst ) );
+        ObjectReader reader = csvMapper.reader( CsvEventDataValue.class )
+            .with( csvSchema.withSkipFirstDataRow( skipFirst ) );
 
         MappingIterator<CsvEventDataValue> iterator = reader.readValues( inputStream );
         Event event = new Event();
@@ -135,14 +135,14 @@ public class DefaultCsvEventService implements CsvEventService
             {
                 event = new Event();
                 event.setEvent( dataValue.getEvent() );
-                event.setStatus( StringUtils.isEmpty( dataValue.getStatus() ) ? EventStatus.ACTIVE : Enum.valueOf( EventStatus.class,
-                    dataValue.getStatus() ) );
+                event.setStatus( StringUtils.isEmpty( dataValue.getStatus() )
+                    ? EventStatus.ACTIVE : Enum.valueOf( EventStatus.class, dataValue.getStatus() ) );
                 event.setProgram( dataValue.getProgram() );
                 event.setProgramStage( dataValue.getProgramStage() );
                 event.setEnrollment( dataValue.getEnrollment() );
                 event.setOrgUnit( dataValue.getOrgUnit() );
-                event.setEventDate( event.getEventDate() );
-                event.setDueDate( event.getDueDate() );
+                event.setEventDate( dataValue.getEventDate() );
+                event.setDueDate( dataValue.getDueDate() );
 
                 if ( dataValue.getLongitude() != null && dataValue.getLatitude() != null )
                 {
