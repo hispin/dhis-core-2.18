@@ -43,6 +43,7 @@ import java.util.Objects;
     "program",
     "programStage",
     "enrollment",
+    "orgUnit",
     "eventDate",
     "dueDate",
     "latitude",
@@ -61,6 +62,8 @@ public class CsvEventDataValue
     private String program;
 
     private String programStage;
+
+    private String orgUnit;
 
     private String enrollment;
 
@@ -93,6 +96,7 @@ public class CsvEventDataValue
         this.program = dataValue.getProgram();
         this.programStage = dataValue.getProgramStage();
         this.enrollment = dataValue.getEnrollment();
+        this.orgUnit = dataValue.getOrgUnit();
         this.eventDate = dataValue.getEventDate();
         this.dueDate = dataValue.getDueDate();
         this.latitude = dataValue.getLatitude();
@@ -156,6 +160,17 @@ public class CsvEventDataValue
     public void setEnrollment( String enrollment )
     {
         this.enrollment = enrollment;
+    }
+
+    @JsonProperty
+    public String getOrgUnit()
+    {
+        return orgUnit;
+    }
+
+    public void setOrgUnit( String orgUnit )
+    {
+        this.orgUnit = orgUnit;
     }
 
     @JsonProperty
@@ -249,11 +264,12 @@ public class CsvEventDataValue
     @Override
     public int hashCode()
     {
-        return Objects.hash( event, status, program, programStage, enrollment, eventDate, dueDate, latitude, longitude, dataElement,
-            value, storedBy, providedElsewhere );
+        return Objects.hash( event, status, program, programStage, orgUnit, enrollment, eventDate, dueDate, latitude, longitude,
+            dataElement, value, storedBy, providedElsewhere );
     }
 
-    @Override public boolean equals( Object obj )
+    @Override
+    public boolean equals( Object obj )
     {
         if ( this == obj )
         {
@@ -267,12 +283,12 @@ public class CsvEventDataValue
         final CsvEventDataValue other = (CsvEventDataValue) obj;
 
         return Objects.equals( this.event, other.event ) && Objects.equals( this.status, other.status ) && Objects.equals( this.program,
-            other.program ) && Objects.equals( this.programStage, other.programStage ) && Objects.equals( this.enrollment,
-            other.enrollment ) && Objects.equals( this.eventDate, other.eventDate ) && Objects.equals( this.dueDate,
-            other.dueDate ) && Objects.equals( this.latitude, other.latitude ) && Objects.equals( this.longitude,
-            other.longitude ) && Objects.equals( this.dataElement, other.dataElement ) && Objects.equals( this.value,
-            other.value ) && Objects.equals( this.storedBy, other.storedBy ) && Objects.equals( this.providedElsewhere,
-            other.providedElsewhere );
+            other.program ) && Objects.equals( this.programStage, other.programStage ) && Objects.equals( this.orgUnit,
+            other.orgUnit ) && Objects.equals( this.enrollment, other.enrollment ) && Objects.equals( this.eventDate,
+            other.eventDate ) && Objects.equals( this.dueDate, other.dueDate ) && Objects.equals( this.latitude,
+            other.latitude ) && Objects.equals( this.longitude, other.longitude ) && Objects.equals( this.dataElement,
+            other.dataElement ) && Objects.equals( this.value, other.value ) && Objects.equals( this.storedBy,
+            other.storedBy ) && Objects.equals( this.providedElsewhere, other.providedElsewhere );
     }
 
     @Override
@@ -284,6 +300,7 @@ public class CsvEventDataValue
             .add( "program", program )
             .add( "programStage", programStage )
             .add( "enrollment", enrollment )
+            .add( "orgUnit", orgUnit )
             .add( "eventDate", eventDate )
             .add( "dueDate", dueDate )
             .add( "latitude", latitude )
