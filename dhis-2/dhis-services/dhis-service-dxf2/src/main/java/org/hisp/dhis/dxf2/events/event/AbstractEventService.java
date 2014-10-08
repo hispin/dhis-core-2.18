@@ -871,7 +871,14 @@ public abstract class AbstractEventService
             if ( dataElementValueMap.containsKey( dataValue.getDataElement() ) )
             {
                 dataElement = dataElementValueMap.get( dataValue.getDataElement() ).getDataElement();
+            }
+            else
+            {
+                dataElement = dataElementService.getDataElement( dataValue.getDataElement() );
+            }
 
+            if ( dataElement != null )
+            {
                 if ( validateDataValue( dataElement, dataValue.getValue(), importSummary ) )
                 {
                     String dataValueStoredBy = dataValue.getStoredBy() != null ? dataValue.getStoredBy() : storedBy;
