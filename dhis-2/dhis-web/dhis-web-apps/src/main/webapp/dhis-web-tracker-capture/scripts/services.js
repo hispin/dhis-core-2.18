@@ -647,7 +647,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         
         angular.forEach(attributes, function(attribute){           
 
-            if(attribute.valueType === 'date' || attribute.valueType === 'number'){
+            if(attribute.type === 'date' || attribute.type === 'number'){
                 var q = '';
                 
                 if(attribute.operator === OperatorFactory.defaultOperators[0]){

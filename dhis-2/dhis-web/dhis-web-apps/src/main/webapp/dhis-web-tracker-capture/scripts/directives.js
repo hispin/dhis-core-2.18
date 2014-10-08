@@ -23,7 +23,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
         link: function(scope, element, attrs){  
             
             //when tree has loaded, get selected orgunit - if there is any - and inform angular           
-            $(function() {                 
+            /*$(function() {                 
                 
                 var adapters = [];
                 var partial_adapters = [];
@@ -63,7 +63,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
                     });
                     
                 });
-            });
+            });*/
             
             //listen to user selection, and inform angular         
             selection.setListenerFunction( organisationUnitSelected );

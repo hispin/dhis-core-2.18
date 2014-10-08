@@ -70,6 +70,11 @@
         <filter-name>Struts</filter-name>
         <url-pattern>*.action</url-pattern>
     </filter-mapping>
+    
+    <mime-mapping>
+		<extension>woff</extension>
+		<mime-type>application/font-woff</mime-type>
+    </mime-mapping>
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
