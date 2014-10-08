@@ -28,14 +28,21 @@ package org.hisp.dhis.dxf2.events.event.csv;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import org.hisp.dhis.dxf2.events.event.Coordinate;
 import org.hisp.dhis.dxf2.events.event.DataValue;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.Events;
+import org.hisp.dhis.event.EventStatus;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +54,12 @@ public final class CsvEventUtils
 {
     private static CsvMapper csvMapper = new CsvMapper();
 
-    private static CsvSchema csvSchema = csvMapper.schemaFor( CsvEventDataValue.class );
+    private static CsvSchema csvSchema = csvMapper.schemaFor( CsvEventDataValue.class ).withLineSeparator( "\n" );
+
+    static
+    {
+        csvMapper.enable( CsvParser.Feature.WRAP_AS_ARRAY );
+    }
 
     public static CsvMapper getCsvMapper()
     {
@@ -59,9 +71,9 @@ public final class CsvEventUtils
         return csvSchema;
     }
 
-    public static void writeEvents( OutputStream outputStream, Events events, boolean withHeaders ) throws IOException
+    public static void writeEvents( OutputStream outputStream, Events events, boolean withHeader ) throws IOException
     {
-        ObjectWriter writer = getCsvMapper().writer( getCsvSchema().withUseHeader( withHeaders ) );
+        ObjectWriter writer = getCsvMapper().writer( getCsvSchema().withUseHeader( withHeader ) );
 
         List<CsvEventDataValue> dataValues = new ArrayList<>();
 
@@ -69,13 +81,8 @@ public final class CsvEventUtils
         {
             CsvEventDataValue templateDataValue = new CsvEventDataValue();
             templateDataValue.setEvent( event.getEvent() );
-            templateDataValue.setProgram( event.getProgram() == null ? events.getProgram() : event.getProgram() );
-            templateDataValue.setProgramInstance( events.getProgramInstance() );
-            templateDataValue.setProgramStage( event.getProgramStage() );
+            templateDataValue.setStatus( event.getStatus() != null ? event.getStatus().name() : null );
             templateDataValue.setEnrollment( event.getEnrollment() );
-            templateDataValue.setEnrollmentStatus( event.getEnrollmentStatus() );
-            templateDataValue.setOrgUnit( event.getOrgUnit() );
-            templateDataValue.setTrackedEntityInstance( event.getTrackedEntityInstance() );
             templateDataValue.setEventDate( event.getEventDate() );
             templateDataValue.setDueDate( event.getDueDate() );
             templateDataValue.setStoredBy( event.getStoredBy() );
@@ -85,8 +92,6 @@ public final class CsvEventUtils
                 templateDataValue.setLatitude( event.getCoordinate().getLatitude() );
                 templateDataValue.setLongitude( event.getCoordinate().getLongitude() );
             }
-
-            templateDataValue.setFollowup( event.getFollowup() );
 
             for ( DataValue value : event.getDataValues() )
             {
@@ -105,6 +110,48 @@ public final class CsvEventUtils
         }
 
         writer.writeValue( outputStream, dataValues );
+    }
+
+    public static Events readEvents( InputStream inputStream, boolean skipFirst ) throws IOException
+    {
+        Events events = new Events();
+
+        ObjectReader reader = getCsvMapper()
+            .reader( CsvEventDataValue.class ).with( getCsvSchema().withSkipFirstDataRow( skipFirst ) );
+
+        MappingIterator<CsvEventDataValue> iterator = reader.readValues( inputStream );
+        Event event = new Event();
+        event.setEvent( "not_valid" );
+
+        while ( iterator.hasNext() )
+        {
+            CsvEventDataValue dataValue = iterator.next();
+
+            if ( !event.getEvent().equals( dataValue.getEvent() ) )
+            {
+                event = new Event();
+                event.setEvent( dataValue.getEvent() );
+                event.setStatus( StringUtils.isEmpty( dataValue.getStatus() ) ? EventStatus.ACTIVE : Enum.valueOf( EventStatus.class, dataValue.getStatus() ) );
+                event.setEnrollment( dataValue.getEnrollment() );
+                event.setEventDate( event.getEventDate() );
+                event.setDueDate( event.getDueDate() );
+
+                if ( dataValue.getLongitude() != null && dataValue.getLatitude() != null )
+                {
+                    event.setCoordinate( new Coordinate( dataValue.getLongitude(), dataValue.getLatitude() ) );
+                }
+
+                events.getEvents().add( event );
+            }
+
+            DataValue value = new DataValue( dataValue.getDataElement(), dataValue.getValue() );
+            value.setStoredBy( dataValue.getStoredBy() );
+            value.setProvidedElsewhere( dataValue.getProvidedElsewhere() );
+
+            event.getDataValues().add( value );
+        }
+
+        return events;
     }
 
     private CsvEventUtils()

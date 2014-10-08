@@ -139,7 +139,7 @@ public class EventController
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam( required = false ) EventStatus status,
-        @RequestParam( required = false, defaultValue = "true") boolean withHeaders,
+        @RequestParam( required = false, defaultValue = "false" ) boolean skipHeader,
         @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
         WebOptions options = new WebOptions( parameters );
@@ -198,7 +198,7 @@ public class EventController
             events.setEvents( PagerUtils.pageCollection( events.getEvents(), pager ) );
         }
 
-        CsvEventUtils.writeEvents( response.getOutputStream(), events, withHeaders );
+        CsvEventUtils.writeEvents( response.getOutputStream(), events, !skipHeader );
     }
 
     @RequestMapping( value = "", method = RequestMethod.GET )
@@ -483,6 +483,16 @@ public class EventController
             response.setHeader( "Location", ContextUtils.getRootPath( request ) + "/system/tasks/" + TaskCategory.EVENT_IMPORT );
             response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         }
+    }
+
+
+    @RequestMapping( method = RequestMethod.POST, consumes = { "application/csv", "text/csv" } )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_DATAVALUE_ADD')" )
+    public void postCsvEvents(
+        @RequestParam( required = false, defaultValue = "false" ) boolean skipFirst,
+        HttpServletResponse response, HttpServletRequest request, ImportOptions importOptions ) throws IOException
+    {
+        CsvEventUtils.readEvents( request.getInputStream(), skipFirst );
     }
 
     // -------------------------------------------------------------------------
