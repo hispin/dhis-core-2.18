@@ -81,6 +81,7 @@ public class DefaultCsvEventService implements CsvEventService
             templateDataValue.setProgram( event.getProgram() );
             templateDataValue.setProgramStage( event.getProgramStage() );
             templateDataValue.setEnrollment( event.getEnrollment() );
+            templateDataValue.setOrgUnit( event.getOrgUnit() );
             templateDataValue.setEventDate( event.getEventDate() );
             templateDataValue.setDueDate( event.getDueDate() );
             templateDataValue.setStoredBy( event.getStoredBy() );
@@ -134,6 +135,7 @@ public class DefaultCsvEventService implements CsvEventService
                 event.setProgram( dataValue.getProgram() );
                 event.setProgramStage( dataValue.getProgramStage() );
                 event.setEnrollment( dataValue.getEnrollment() );
+                event.setOrgUnit( dataValue.getOrgUnit() );
                 event.setEventDate( event.getEventDate() );
                 event.setDueDate( event.getDueDate() );
 
