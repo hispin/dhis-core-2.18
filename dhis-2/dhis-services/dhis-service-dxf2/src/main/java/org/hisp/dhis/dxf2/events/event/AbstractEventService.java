@@ -502,8 +502,7 @@ public abstract class AbstractEventService
         {
             DataElement dataElement = dataElementService.getDataElement( value.getDataElement() );
 
-            TrackedEntityDataValue dataValue = dataValueService.getTrackedEntityDataValue( programStageInstance,
-                dataElement );
+            TrackedEntityDataValue dataValue = dataValueService.getTrackedEntityDataValue( programStageInstance, dataElement );
 
             if ( dataValue != null )
             {
