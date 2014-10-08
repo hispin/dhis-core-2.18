@@ -77,13 +77,10 @@ trackerCapture.controller('DataEntryController',
             setTimeout(function () {
                 $scope.getEvents();
             }, 100);
-            
-            $scope.getEvents();
         }
     });
     
-    $scope.getEvents = function(){
-        
+    $scope.getEvents = function(){        
         $scope.dhis2Events = '';
         DHIS2EventFactory.getEventsByStatus($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id, 'ACTIVE').then(function(data){
             $scope.dhis2Events = data;            
@@ -216,6 +213,8 @@ trackerCapture.controller('DataEntryController',
                 newEvent.reportDateDescription = $scope.currentDummyEvent.reportDateDescription;
                 newEvent.sortingDate = $scope.currentDummyEvent.dueDate,
                 newEvent.statusColor = $scope.currentDummyEvent.statusColor;
+                
+                $scope.dummyEvents = $scope.checkForEventCreation($scope.dhis2Events, $scope.selectedProgram);
                 
                 if(!angular.isObject($scope.dhis2Events)){
                     $scope.dhis2Events = [newEvent];
