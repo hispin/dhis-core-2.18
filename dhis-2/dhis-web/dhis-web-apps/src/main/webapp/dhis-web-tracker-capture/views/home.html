@@ -107,12 +107,12 @@
                                             </div>                
                                         </td>
                                     </tr>
-                                    <tr ng-repeat="attribute in attributes">
+                                    <tr ng-repeat="attribute in attributesLighter">
                                         <td>
                                             {{attribute.name}}
                                         </td>
                                         <td>
-                                            <div ng-switch="attribute.valueType">
+                                            <div ng-switch="attribute.type">
                                                 <div ng-switch-when="number">
                                                     <div class="dataelement-filter">                                                
                                                         <div class="filter-operator">
@@ -153,11 +153,11 @@
                                                 </div>                        
                                                 <div ng-switch-when="optionSet">
                                                     <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
-                                                        <option ng-repeat="option in attribute.optionSet.options" value="{{option.code}}">{{option.name}}</option>
+                                                        <option ng-repeat="option in attributes[attribute.id].optionSet.options | filter:$viewValue | limitTo:100" value="{{option.code}}">{{option.name}}</option>
                                                     </select>
                                                 </div>
                                                 <div ng-switch-when="bool">
-                                                    <select ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
+                                                    <select ui-select2 multiple ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
                                                         <option ng-repeat="option in boolOperators" value="{{option}}">{{option| translate}}</option>
                                                     </select>
                                                 </div> 
