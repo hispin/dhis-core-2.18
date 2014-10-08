@@ -3594,7 +3594,7 @@ Ext.onReady( function() {
                         xtype: 'container',
 						html: GIS.i18n.add_legend,
 						cls: 'gis-panel-html-title',
-                        style: 'padding-left: 2px; margin-bottom: 3px'
+                        style: 'padding-left: 3px; margin-bottom: 3px'
                     },
 					{
 						bodyStyle: 'background-color:#f1f1f1; border:1px solid #ccc; border-radius:1px; padding:' + legendBodyPadding + 'px',
@@ -3639,7 +3639,7 @@ Ext.onReady( function() {
                         xtype: 'container',
 						html: GIS.i18n.current_legends,
 						cls: 'gis-panel-html-title',
-                        style: 'padding-left: 2px; margin-bottom: 3px'
+                        style: 'padding-left: 3px; margin-bottom: 3px'
                     },
                     {
                         xtype: 'container',
@@ -3651,7 +3651,7 @@ Ext.onReady( function() {
 			});
 
 			if (id) {
-				legendStore.proxy.url = gis.init.contextPath + '/api/mapLegendSets/' + id + '.json?links=false&paging=false';                
+				legendStore.proxy.url = gis.init.contextPath + '/api/mapLegendSets/' + id + '.json?fields=mapLegends[id,name,startValue,endValue,color]';                
 				legendStore.load();
 
 				legendSetName.setValue(legendSetStore.getById(id).data.name);
