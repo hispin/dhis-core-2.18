@@ -28,7 +28,7 @@
                         <input type="text" placeholder="yyyy-mm-dd" class="form-control" ng-date ng-model="selectedEnrollment.dateOfEnrollment" ng-disabled="true"/>
                     </td>
                 </tr>
-                <tr class="col-md-12">                    
+                <tr class="col-md-12" ng-if="selectedProgram.displayIncidentDate">                    
                     <td class="col-md-6">
                         {{selectedProgram.dateOfIncidentDescription}}
                     </td>
