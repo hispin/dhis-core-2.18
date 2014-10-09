@@ -980,7 +980,7 @@ public abstract class AbstractEventService
     }
 
     private static Cache<String, Program> programCache = CacheBuilder.newBuilder()
-        .expireAfterAccess( 5, TimeUnit.MINUTES )
+        .expireAfterAccess( 30, TimeUnit.SECONDS )
         .initialCapacity( 10 )
         .maximumSize( 50 )
         .build();
