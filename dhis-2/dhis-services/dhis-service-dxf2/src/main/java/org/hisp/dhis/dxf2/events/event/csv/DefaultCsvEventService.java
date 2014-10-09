@@ -34,15 +34,11 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.event.Coordinate;
 import org.hisp.dhis.dxf2.events.event.DataValue;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.Events;
 import org.hisp.dhis.event.EventStatus;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.system.util.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -65,9 +61,6 @@ public class DefaultCsvEventService implements CsvEventService
         csvMapper.enable( CsvParser.Feature.WRAP_AS_ARRAY );
     }
 
-    @Autowired
-    private IdentifiableObjectManager manager;
-
     @Override
     public void writeEvents( OutputStream outputStream, Events events, boolean withHeader ) throws IOException
     {
@@ -77,8 +70,6 @@ public class DefaultCsvEventService implements CsvEventService
 
         for ( Event event : events.getEvents() )
         {
-            ProgramStageInstance psi = manager.get( ProgramStageInstance.class, event.getEvent() );
-
             CsvEventDataValue templateDataValue = new CsvEventDataValue();
             templateDataValue.setEvent( event.getEvent() );
             templateDataValue.setStatus( event.getStatus() != null ? event.getStatus().name() : null );
@@ -86,8 +77,8 @@ public class DefaultCsvEventService implements CsvEventService
             templateDataValue.setProgramStage( event.getProgramStage() );
             templateDataValue.setEnrollment( event.getEnrollment() );
             templateDataValue.setOrgUnit( event.getOrgUnit() );
-            templateDataValue.setEventDate( DateUtils.getLongDateString( psi.getExecutionDate() ) );
-            templateDataValue.setDueDate( DateUtils.getLongDateString( psi.getDueDate() ) );
+            templateDataValue.setEventDate( event.getEventDate() );
+            templateDataValue.setDueDate( event.getDueDate() );
             templateDataValue.setStoredBy( event.getStoredBy() );
 
             if ( event.getCoordinate() != null )

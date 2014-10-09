@@ -39,6 +39,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStatus;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,10 +133,14 @@ public class JdbcEventStore
 
                 event.setStoredBy( rowSet.getString( "psi_completeduser" ) );
                 event.setOrgUnit( rowSet.getString( "ou_uid" ) );
+
                 event.setDueDate( StringUtils.defaultIfEmpty(
-                    rowSet.getString( "psi_duedate" ), rowSet.getString( "psi_duedate" ) ) );
+                    DateUtils.getLongDateString( rowSet.getDate( "psi_duedate" ) ), DateUtils.getLongDateString( rowSet.getDate(
+                        "psi_duedate" ) ) ) );
+
                 event.setEventDate( StringUtils.defaultIfEmpty(
-                    rowSet.getString( "psi_executiondate" ), rowSet.getString( "psi_executiondate" ) ) );
+                    DateUtils.getLongDateString( rowSet.getDate( "psi_executiondate" ) ), DateUtils.getLongDateString( rowSet.getDate(
+                        "psi_executiondate" ) ) ) );
 
                 if ( rowSet.getBoolean( "ps_capturecoordinates" ) )
                 {
@@ -204,9 +209,13 @@ public class JdbcEventStore
         SqlHelper hlp = new SqlHelper();
 
         String sql =
-            "select pa.uid as tei_uid, pi.uid as pi_uid, pi.status as pi_status, pi.followup as pi_followup, p.uid as p_uid, p.type as p_type, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, " +
-                "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude, " +
-                "psinote.trackedentitycommentid as psinote_id, psinote.commenttext as psinote_value, psinote.createddate as psinote_soreddate, psinote.creator as psinote_storedby, " +
+            "select pa.uid as tei_uid, pi.uid as pi_uid, pi.status as pi_status, pi.followup as pi_followup, p.uid as p_uid, " +
+                "p.type as p_type, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, " +
+                "psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, " +
+                "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, " +
+                "psi.longitude as psi_longitude, psi.latitude as psi_latitude, " +
+                "psinote.trackedentitycommentid as psinote_id, psinote.commenttext as psinote_value, " +
+                "psinote.createddate as psinote_soreddate, psinote.creator as psinote_storedby, " +
                 "pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid " +
                 "from program p " +
                 "left join programstage ps on ps.programid=p.programid " +
@@ -300,11 +309,13 @@ public class JdbcEventStore
             }
             else if ( status == EventStatus.SCHEDULE )
             {
-                sql += "and psi.executiondate is null and date(now()) <= date(psi.duedate) and psi.status = '" + EventStatus.SCHEDULE.name() + "' ";
+                sql += "and psi.executiondate is null and date(now()) <= date(psi.duedate) and psi.status = '" + EventStatus.SCHEDULE
+                    .name() + "' ";
             }
             else if ( status == EventStatus.OVERDUE )
             {
-                sql += "and psi.executiondate is null and date(now()) > date(psi.duedate) and psi.status = '" + EventStatus.SCHEDULE.name() + "' ";
+                sql += "and psi.executiondate is null and date(now()) > date(psi.duedate) and psi.status = '" + EventStatus.SCHEDULE.name
+                    () + "' ";
             }
             else
             {
