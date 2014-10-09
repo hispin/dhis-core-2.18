@@ -10,7 +10,7 @@ trackerCapture.controller('ProfileController',
     TranslationService.translate();
     
     //attributes for profile    
-    $scope.attributes = {};    
+    $scope.attributes = [];    
     $scope.editProfile = false;    
     
     AttributesFactory.getAll().then(function(atts){
@@ -27,10 +27,10 @@ trackerCapture.controller('ProfileController',
         $scope.selectedProgram = selections.pr;   
         $scope.selectedEnrollment = selections.enrollment;  
         
-        //display only those attributes that belong the selected program
+        //display only those attributes that belong to the selected program
         //if no program, display attributesInNoProgram
         TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.selectedEnrollment).then(function(tei){
-            $scope.selectedTei = tei; 
+            $scope.selectedTei = tei;
         });
     });
     

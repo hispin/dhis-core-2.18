@@ -123,6 +123,5 @@ trackerCapture.controller('DashboardController',
 
         modalInstance.result.then(function () {
         });
-    };   
-
+    };
 });

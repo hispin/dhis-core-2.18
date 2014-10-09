@@ -23,9 +23,9 @@ trackerCapture.controller('RegistrationController',
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
     $scope.enrollment = {enrollmentDate: '', incidentDate: ''};   
     
-    AttributesFactory.getWithoutProgram().then(function(atts){
+    /*AttributesFactory.getWithoutProgram().then(function(atts){
         $scope.attributes = atts;
-    });
+    });*/
             
     $scope.trackedEntities = {available: []};
     TEService.getAll().then(function(entities){
@@ -35,14 +35,40 @@ trackerCapture.controller('RegistrationController',
     
     //watch for selection of program
     $scope.$watch('selectedProgram', function() {        
-        if( angular.isObject($scope.selectedProgram)){
+        /*if( angular.isObject($scope.selectedProgram)){
             $scope.trackedEntityList = [];
             AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
                 $scope.attributes = atts;
             });
-        }
+        }*/
+        
+        $scope.getAttributes();
     });    
-            
+        
+    $scope.getAttributes = function(){
+
+        if($scope.selectedProgram){
+            AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
+                $scope.attributesLighter = [];
+                $scope.attributes = [];
+                angular.forEach(atts, function(att){
+                    $scope.attributesLighter.push({id: att.id, name: att.name, type: att.valueType, displayInListNoProgram: att.displayInListNoProgram});
+                    $scope.attributes[att.id] = att;
+                });
+            });           
+        }
+        else{            
+            AttributesFactory.getWithoutProgram().then(function(atts){
+                $scope.attributesLighter = [];
+                $scope.attributes = [];
+                angular.forEach(atts, function(att){
+                    $scope.attributesLighter.push({id: att.id, name: att.name, type: att.valueType, displayInListNoProgram: att.displayInListNoProgram});
+                    $scope.attributes[att.id] = att;
+                });
+            });
+        }
+    };
+    
     $scope.registerEntity = function(destination){
         
         //check for form validity
@@ -63,7 +89,7 @@ trackerCapture.controller('RegistrationController',
         //registration form comes empty, in this case enforce at least one value
         $scope.valueExists = false;
         var registrationAttributes = [];    
-        angular.forEach($scope.attributes, function(attribute){
+        angular.forEach($scope.attributesLighter, function(attribute){
             if(!angular.isUndefined(attribute.value)){
                 var att = {attribute: attribute.id, value: attribute.value};
                 registrationAttributes.push(att);
@@ -124,7 +150,7 @@ trackerCapture.controller('RegistrationController',
             
             $timeout(function() { 
                 //reset form
-                angular.forEach($scope.attributes, function(attribute){
+                angular.forEach($scope.attributesLighter, function(attribute){
                     delete attribute.value;                
                 });            
 
@@ -187,6 +213,5 @@ trackerCapture.controller('RegistrationController',
                 });
             }
         }
-    };       
-    
+    };    
 });
