@@ -126,7 +126,13 @@ public class UpdateRoleAction
 
         for ( String id : selectedList )
         {
-            DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
+            DataSet dataSet = dataSetService.getDataSet( id );
+
+            if ( dataSet == null )
+            {
+                //TODO fix this better. Currently some are UID, some ID. Should all be the same.
+                dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
+            }
 
             group.getDataSets().add( dataSet );
         }
