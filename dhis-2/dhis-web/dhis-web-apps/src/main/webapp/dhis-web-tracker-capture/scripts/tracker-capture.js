@@ -58,6 +58,7 @@ $(document).ready(function()
         
         promise = promise.then( dhis2.tc.store.open );
         promise = promise.then( getUserProfile );
+        promise = promise.then( getCalendarSetting );
         promise = promise.then( getLoginDetails );
         promise = promise.then( getRelationships );
         promise = promise.then( getAttributes );
@@ -179,7 +180,6 @@ function ajax_login()
     });
 }
 
-
 function getUserProfile()
 {
     var def = $.Deferred();
@@ -189,6 +189,21 @@ function getUserProfile()
         type: 'GET'
     }).done(function(response) {
         localStorage['USER_PROFILE'] = JSON.stringify(response);
+        def.resolve();
+    });
+
+    return def.promise();
+}
+
+function getCalendarSetting()
+{
+    var def = $.Deferred();
+
+    $.ajax({
+        url: '../api/systemSettings?key=keyCalendar&key=keyDateFormat',
+        type: 'GET'
+    }).done(function(response) {
+        localStorage['CALENDAR_SETTING'] = JSON.stringify(response);
         def.resolve();
     });
 

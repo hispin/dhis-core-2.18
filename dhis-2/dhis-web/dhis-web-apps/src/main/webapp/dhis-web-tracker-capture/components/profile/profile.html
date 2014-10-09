@@ -26,7 +26,7 @@
                         <ng-form name="innerForm">
                             <div ng-switch="attribute.type">
                                 <div ng-switch-when="date">
-                                    <input type="text" placeholder="yyyy-mm-dd" name="foo" class="form-control" ng-date ng-model="attribute.value"  value="attribute.value | date:'yyyy-MM-dd" ng-disabled="!editProfile" ng-required="attribute.mandatory"/>
+                                    <input type="text" placeholder="{{dhis2CalendarFormat.keyDateFormat}}" name="foo" class="form-control" ng-date ng-model="attribute.value"  value="attribute.value | date:'yyyy-MM-dd" ng-disabled="!editProfile" ng-required="attribute.mandatory"/>
                                     <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}} - {{attribute.type}}</span>
                                 </div>
                                 <div ng-switch-when="trueOnly">

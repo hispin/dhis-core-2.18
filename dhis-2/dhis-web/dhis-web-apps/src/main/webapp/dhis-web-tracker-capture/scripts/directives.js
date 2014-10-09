@@ -185,15 +185,20 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
     };
 })
 
-.directive('ngDate', function($filter) {
+.directive('ngDate', function(DateUtils, $rootScope) {
     return {
         restrict: 'A',
         require: 'ngModel',        
         link: function(scope, element, attrs, ctrl) {
+
+            var dateFormat = 'yy-mm-dd';
+            if($rootScope.keyDateFormat === 'dd-MM-yyyy'){
+                dateFormat = 'dd-mm-yy';
+            }
             element.datepicker({
                 changeYear: true,
                 changeMonth: true,
-                dateFormat: 'yy-mm-dd',
+                dateFormat: dateFormat,
                 yearRange: '-120:+30',
                 minDate: attrs.minDate,
                 maxDate: attrs.maxDate,
@@ -202,13 +207,11 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
                     ctrl.$setViewValue(date);
                     $(this).change();                    
                     scope.$apply();
-                }                
+                }
             })
             .change(function() {
-                //var rawDate = $filter('date')(this.value, 'yyyy-MM-dd'); 
                 var rawDate = this.value;
-                var convertedDate = moment(this.value, 'YYYY-MM-DD')._d;
-                convertedDate = $filter('date')(convertedDate, 'yyyy-MM-dd');       
+                var convertedDate = DateUtils.format(this.value);
 
                 if(rawDate != convertedDate){
                     scope.invalidDate = true;

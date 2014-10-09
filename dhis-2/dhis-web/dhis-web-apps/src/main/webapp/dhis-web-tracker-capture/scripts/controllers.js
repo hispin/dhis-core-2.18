@@ -48,7 +48,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
    
     //watch for selection of org unit from tree
     $scope.$watch('selectedOrgUnit', function() {           
-        
+
         if( angular.isObject($scope.selectedOrgUnit)){   
             
             storage.set('SELECTED_OU', $scope.selectedOrgUnit);
@@ -66,14 +66,13 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     if($scope.dashboardProgramId && $scope.dashboardProgramId !== 'null'){
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');            
         ProgramFactory.get($scope.dashboardProgramId).then(function(program){
-            $scope.selectedProgram = program;
-            $scope.processAttributes();           
+            $scope.selectedProgram = program;        
         });
     }
     
     //load programs associated with the selected org unit.
     $scope.loadPrograms = function(orgUnit) {        
-                
+  
         $scope.selectedOrgUnit = orgUnit;
         
         if (angular.isObject($scope.selectedOrgUnit)) {   
