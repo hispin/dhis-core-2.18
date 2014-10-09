@@ -500,7 +500,7 @@ public class EventController
 
         if ( !importOptions.isAsync() )
         {
-            ImportSummaries importSummaries = eventService.addEvents( events.getEvents(), importOptions );
+            ImportSummaries importSummaries = eventService.addEvents( events.getEvents(), importOptions, null );
             JacksonUtils.toJson( response.getOutputStream(), importSummaries );
         }
         else
