@@ -37,6 +37,9 @@ import java.util.List;
 
 import static org.hisp.dhis.system.util.TextUtils.valueOf;
 
+/**
+ * @author Lars Helge Overland
+ */
 public class StreamingCsvDataValue
     extends DataValue
 {
