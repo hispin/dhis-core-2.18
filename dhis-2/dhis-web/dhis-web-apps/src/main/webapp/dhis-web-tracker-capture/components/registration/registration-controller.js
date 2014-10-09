@@ -42,7 +42,7 @@ trackerCapture.controller('RegistrationController',
             });
         }
     });    
-    
+            
     $scope.registerEntity = function(destination){
         
         //check for form validity

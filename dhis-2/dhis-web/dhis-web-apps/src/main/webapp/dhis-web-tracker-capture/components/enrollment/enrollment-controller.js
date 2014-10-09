@@ -134,8 +134,6 @@ trackerCapture.controller('EnrollmentController',
                     $scope.registrationForm = teForm;
                 }                
                 $scope.selectedProgram.displayCustomForm = $scope.selectedProgram.hasCustomForm ? true:false;
-                
-                console.log('The program is:  ', $scope.selectedProgram);
             });
         }
     };
