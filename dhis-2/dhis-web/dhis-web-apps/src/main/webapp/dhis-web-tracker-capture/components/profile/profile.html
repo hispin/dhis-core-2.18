@@ -55,6 +55,10 @@
                                     <input type="number" name="foo" class="form-control" ng-model="attribute.value" ng-disabled="!editProfile" ng-required="attribute.mandatory"/>
                                     <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}} - {{attribute.type}}</span>
                                 </div>
+                                <div ng-switch-when="email">
+                                    <input type="email" name="foo" class="form-control" ng-model="attribute.value" ng-disabled="!editProfile" ng-required="attribute.mandatory"/>
+                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
+                                </div>
                                 <div ng-switch-default>
                                     <input type="text" name="foo" class="form-control" ng-model="attribute.value" ng-disabled="!editProfile" ng-required="attribute.mandatory"/>
                                     <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}} - {{attribute.type}}</span>

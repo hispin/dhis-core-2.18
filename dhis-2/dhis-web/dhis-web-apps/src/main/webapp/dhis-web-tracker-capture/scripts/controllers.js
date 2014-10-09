@@ -60,8 +60,22 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             
             $scope.loadPrograms($scope.selectedOrgUnit);                                
         }
-    });
+    });    
     
+    //watch for changes in ou mode - mode could be selected without notifcation to grid column generator
+    $scope.$watch('selectedOuMode.name', function() {           
+
+        if( $scope.selectedOuMode.name && angular.isObject($scope.gridColumns)){
+            var continueLoop = true;
+            for(var i=0; i<$scope.gridColumns.length && continueLoop; i++){
+                if($scope.gridColumns[i].id === 'orgUnitName' && $scope.selectedOuMode.name !== 'SELECTED'){
+                    $scope.gridColumns[i].show = true;
+                    continueLoop = false;
+                }
+            }           
+        }
+    });
+        
     //watch for program feedback (this is when coming back from dashboard)
     if($scope.dashboardProgramId && $scope.dashboardProgramId !== 'null'){
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');            
@@ -103,6 +117,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                     }
                 }                
                 $scope.processAttributes();
+                
                 $scope.search($scope.searchMode.listAll);
             });
         }        
@@ -130,6 +145,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
                 $scope.attributesLighter = [];
                 $scope.attributes = [];
+                
                 setTimeout(function () {
                     $scope.$apply(function () {                        
                         angular.forEach(atts, function(att){
@@ -146,6 +162,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             AttributesFactory.getWithoutProgram().then(function(atts){
                 $scope.attributesLighter = [];
                 $scope.attributes = [];
+                
                 setTimeout(function () {
                     $scope.$apply(function () {
                         angular.forEach(atts, function(att){
@@ -160,8 +177,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }
     };
    
-    $scope.searchParam = {bools: []};
-    $scope.search = function(mode){ 
+    //$scope.searchParam = {bools: []};
+    $scope.search = function(mode){
         
         $scope.teiFetched = false;
         $scope.selectedSearchMode = mode;
@@ -213,7 +230,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         if( $scope.selectedSearchMode === $scope.searchMode.listAll ){
             $scope.searchText = '';
             
-            $scope.attributes = EntityQueryFactory.resetAttributesQuery($scope.attributes, $scope.enrollment);
+            $scope.attributesLighter = EntityQueryFactory.resetAttributesQuery($scope.attributesLighter, $scope.enrollment);
         }
         
         $scope.fetchTeis();
@@ -272,8 +289,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             if(attribute.type === 'number' || attribute.type === 'date'){
                 attribute.operator = $scope.defaultOperators[0];
             }
-        });
-                    
+        });                    
         return attributes;
     };
     

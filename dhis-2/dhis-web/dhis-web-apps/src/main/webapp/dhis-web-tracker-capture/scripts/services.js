@@ -1182,7 +1182,6 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 }  
                 column.showFilter = false;
             });
-            
             return columns;  
         },
         getData: function(rows, columns){

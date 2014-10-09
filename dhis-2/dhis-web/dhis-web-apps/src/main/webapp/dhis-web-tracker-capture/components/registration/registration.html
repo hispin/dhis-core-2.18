@@ -19,13 +19,13 @@
 
         <h3>{{'profile' | translate}}</h3>
         <table class="table-borderless table-striped">
-            <tr ng-repeat="attribute in attributes">
+            <tr ng-repeat="attribute in attributesLighter">
                 <td>
                     {{attribute.name}}
                 </td>
                 <td>
                     <ng-form name="innerForm">     
-                        <div ng-switch="attribute.valueType">
+                        <div ng-switch="attribute.type">
                             <div ng-switch-when="date">
                                 <input type="text" placeholder="{{dhis2CalendarFormat.keyDateFormat}}" name="foo" class="form-control" ng-date ng-model="attribute.value" ng-required="attribute.mandatory" />
                                 <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
@@ -48,7 +48,7 @@
                                        name="foo"
                                        class="form-control"
                                        ng-model="attribute.value"                                                 
-                                       typeahead="option.code as option.name for option in attribute.optionSet.options | filter:$viewValue | limitTo:20" 
+                                       typeahead="option.code as option.name for option in attributes[attribute.id].optionSet.options | filter:$viewValue | limitTo:20" 
                                        typeahead-open-on-focus
                                        ng-required="attribute.mandatory"/>
                                 </div>
@@ -58,7 +58,7 @@
                                            name="foo"
                                            class="form-control"
                                            ng-model="attribute.value"                                                 
-                                           typeahead="option.code as option.name for option in attribute.optionSet.options | filter:$viewValue | limitTo:20" 
+                                           typeahead="option.code as option.name for option in attributes[attribute.id].optionSet.options | filter:$viewValue | limitTo:20" 
                                            typeahead-open-on-focus
                                            ng-required="attribute.mandatory"/>
                                     </div>
@@ -85,6 +85,10 @@
                             </div>
                             <div ng-switch-when="number">
                                 <input type="number" name="foo" class="form-control" ng-model="attribute.value" ng-required="attribute.mandatory"/>
+                                <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
+                            </div>
+                            <div ng-switch-when="email">
+                                <input type="email" name="foo" class="form-control" ng-model="attribute.value" ng-required="attribute.mandatory"/>
                                 <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
                             </div>
                             <div ng-switch-default>
