@@ -201,9 +201,9 @@ public abstract class AbstractEventService
     @Override
     public ImportSummary addEvent( Event event, ImportOptions importOptions )
     {
-        Program program = programService.getProgram( event.getProgram() );
+        Program program = getProgram( event.getProgram() );
         ProgramInstance programInstance;
-        ProgramStage programStage = programStageService.getProgramStage( event.getProgramStage() );
+        ProgramStage programStage = getProgramStage( event.getProgramStage() );
         ProgramStageInstance programStageInstance = null;
 
         if ( importOptions == null )
@@ -961,5 +961,33 @@ public abstract class AbstractEventService
         }
 
         return organisationUnit;
+    }
+
+    private Map<String, Program> programMap = new HashMap<>();
+
+    private Program getProgram( String id )
+    {
+        Program program;
+
+        if ( programMap.containsKey( id ) )
+        {
+            program = programMap.get( id );
+        }
+        else
+        {
+            program = programService.getProgram( id );
+
+            if ( program != null )
+            {
+                programMap.put( id, program );
+            }
+        }
+
+        return program;
+    }
+
+    private ProgramStage getProgramStage( String id )
+    {
+        return programStageService.getProgramStage( id );
     }
 }
