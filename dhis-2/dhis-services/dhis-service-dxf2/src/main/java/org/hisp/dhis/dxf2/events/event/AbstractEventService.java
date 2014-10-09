@@ -30,6 +30,8 @@ package org.hisp.dhis.dxf2.events.event;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
@@ -82,6 +84,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -651,8 +656,7 @@ public abstract class AbstractEventService
             }
         }
 
-        Collection<TrackedEntityDataValue> dataValues = dataValueService
-            .getTrackedEntityDataValues( programStageInstance );
+        Collection<TrackedEntityDataValue> dataValues = dataValueService.getTrackedEntityDataValues( programStageInstance );
 
         for ( TrackedEntityDataValue dataValue : dataValues )
         {
@@ -963,27 +967,30 @@ public abstract class AbstractEventService
         return organisationUnit;
     }
 
-    private Map<String, Program> programMap = new HashMap<>();
+    private static Cache<String, Program> programCache = CacheBuilder.newBuilder()
+        .expireAfterAccess( 5, TimeUnit.MINUTES )
+        .initialCapacity( 10 )
+        .maximumSize( 50 )
+        .build();
 
-    private Program getProgram( String id )
+    private Program getProgram( final String id )
     {
-        Program program;
-
-        if ( programMap.containsKey( id ) )
+        try
         {
-            program = programMap.get( id );
-        }
-        else
-        {
-            program = programService.getProgram( id );
-
-            if ( program != null )
+            return programCache.get( id, new Callable<Program>()
             {
-                programMap.put( id, program );
-            }
+                @Override
+                public Program call() throws Exception
+                {
+                    return programService.getProgram( id );
+                }
+            } );
+        }
+        catch ( ExecutionException ignored )
+        {
         }
 
-        return program;
+        return null;
     }
 
     private ProgramStage getProgramStage( String id )
