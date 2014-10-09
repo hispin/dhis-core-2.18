@@ -377,10 +377,15 @@ public abstract class AbstractEventService
         List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate,
         Date endDate, EventStatus status )
     {
+        Timer<Long> timer = new SystemNanoTimer().start();
+
         List<Event> eventList = eventStore.getAll( program, programStage, programStatus, followUp, organisationUnits,
             trackedEntityInstance, startDate, endDate, status );
         Events events = new Events();
         events.setEvents( eventList );
+
+        timer.stop();
+        log.info( "Export done, completed in " + timer.toString() );
 
         return events;
     }
