@@ -516,7 +516,9 @@ public class TableAlteror
 
         // eventreport col/row subtotals
         executeSql( "update eventreport set colsubtotals = subtotals where colsubtotals is null" );
-        executeSql( "update eventreport set rowsubtotals = subtotals where rowsubtotals is null" );
+        executeSql( "update eventreport set rowsubtotals = subtotals where rowsubtotals is null" );        
+
+        executeSql( "update eventchart set sortorder = 0 where sortorder is null" );
 
         // Move chart filters to chart_filters table
 

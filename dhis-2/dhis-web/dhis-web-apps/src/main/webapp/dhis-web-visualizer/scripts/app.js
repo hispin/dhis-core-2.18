@@ -506,6 +506,7 @@ Ext.onReady( function() {
 			targetLineTitle,
 			baseLineValue,
 			baseLineTitle,
+            sortOrder,
 
             rangeAxisMinValue,
             rangeAxisMaxValue,

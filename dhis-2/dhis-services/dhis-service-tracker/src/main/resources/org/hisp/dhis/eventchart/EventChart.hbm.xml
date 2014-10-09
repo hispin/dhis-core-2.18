@@ -148,6 +148,8 @@
 
     <property name="baseLineLabel" />
 
+    <property name="sortOrder" />
+
     <!-- Access properties -->
     <property name="externalAccess" />
 
