@@ -308,8 +308,7 @@ public abstract class AbstractEventService
                         {
                             if ( !CodeGenerator.isValidCode( event.getEvent() ) )
                             {
-                                return new ImportSummary( ImportStatus.ERROR,
-                                    "Event.event did not point to a valid event" );
+                                return new ImportSummary( ImportStatus.ERROR, "Event.event did not point to a valid event" );
                             }
                         }
                     }
@@ -520,7 +519,7 @@ public abstract class AbstractEventService
                 TrackedEntityDataValue existingDataValue = existingDataValues.get( value.getDataElement() );
 
                 saveDataValue( programStageInstance, event.getStoredBy(), dataElement, value.getValue(),
-                    value.getProvidedElsewhere(), existingDataValue );
+                    value.getProvidedElsewhere(), existingDataValue, null );
             }
         }
 
@@ -744,7 +743,7 @@ public abstract class AbstractEventService
     }
 
     private void saveDataValue( ProgramStageInstance programStageInstance, String storedBy, DataElement dataElement,
-        String value, Boolean providedElsewhere, TrackedEntityDataValue dataValue )
+        String value, Boolean providedElsewhere, TrackedEntityDataValue dataValue, ImportSummary importSummary )
     {
         if ( value != null && value.trim().length() == 0 )
         {
@@ -760,6 +759,11 @@ public abstract class AbstractEventService
                 dataValue.setProvidedElsewhere( providedElsewhere );
 
                 dataValueService.saveTrackedEntityDataValue( dataValue );
+
+                if ( importSummary != null )
+                {
+                    importSummary.getDataValueCount().incrementImported();
+                }
             }
             else
             {
@@ -769,11 +773,21 @@ public abstract class AbstractEventService
                 dataValue.setProvidedElsewhere( providedElsewhere );
 
                 dataValueService.updateTrackedEntityDataValue( dataValue );
+
+                if ( importSummary != null )
+                {
+                    importSummary.getDataValueCount().incrementUpdated();
+                }
             }
         }
         else if ( dataValue != null )
         {
             dataValueService.deleteTrackedEntityDataValue( dataValue );
+
+            if ( importSummary != null )
+            {
+                importSummary.getDataValueCount().incrementDeleted();
+            }
         }
     }
 
@@ -892,10 +906,8 @@ public abstract class AbstractEventService
                         TrackedEntityDataValue existingDataValue = dataElementValueMap.get( dataValue.getDataElement() );
 
                         saveDataValue( programStageInstance, dataValueStoredBy, dataElement, dataValue.getValue(),
-                            dataValue.getProvidedElsewhere(), existingDataValue );
+                            dataValue.getProvidedElsewhere(), existingDataValue, importSummary );
                     }
-
-                    importSummary.getDataValueCount().incrementImported();
                 }
             }
             else
