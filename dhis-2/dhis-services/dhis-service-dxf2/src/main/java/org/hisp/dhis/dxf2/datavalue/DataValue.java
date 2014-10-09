@@ -37,6 +37,9 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
+/**
+ * @author Lars Helge Overland
+ */
 @JacksonXmlRootElement( localName = "dataValue", namespace = DxfNamespaces.DXF_2_0)
 public class DataValue
 {

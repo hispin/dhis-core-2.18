@@ -33,6 +33,9 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dxf2.datavalue.DataValue;
 import org.hisp.dhis.dxf2.datavalue.StreamingDataValue;
 
+/**
+ * @author Lars Helge Overland
+ */
 public class StreamingDataValueSet
     extends DataValueSet
 {

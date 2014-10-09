@@ -33,6 +33,9 @@ import org.amplecode.staxwax.writer.XMLWriter;
 
 import static org.hisp.dhis.system.util.TextUtils.valueOf;
 
+/**
+ * @author Lars Helge Overland
+ */
 public class StreamingDataValue
     extends DataValue
 {
