@@ -59,7 +59,6 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-
     <repository>
       <id>UK</id>
       <name>UK Central</name>
@@ -343,11 +342,6 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-support-xml</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-support-test</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>
@@ -559,6 +553,11 @@
         <artifactId>quick</artifactId>
         <version>1.8</version>
       </dependency>
+	  <dependency>
+	    <groupId>org.amplecode</groupId>
+	    <artifactId>staxwax</artifactId>
+	    <version>1.1</version>
+	  </dependency>
       <dependency>
         <groupId>com.lowagie</groupId>
         <artifactId>itext</artifactId>
