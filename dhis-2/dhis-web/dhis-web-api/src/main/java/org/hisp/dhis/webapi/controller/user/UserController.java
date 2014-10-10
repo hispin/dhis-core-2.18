@@ -45,6 +45,7 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.Users;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
@@ -77,6 +78,8 @@ public class UserController
     extends AbstractCrudController<User>
 {
     public static final String INVITE_PATH = "/invite";
+
+    public static final String BULK_INVITE_PATH = "/invites";
 
     @Autowired
     private UserService userService;
@@ -186,6 +189,28 @@ public class UserController
         inviteUser( user, request, response );
     }
 
+    @RequestMapping( value = BULK_INVITE_PATH, method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    public void postXmlInvites( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    {
+        Users users = renderService.fromXml( request.getInputStream(), Users.class );
+
+        for ( User user : users.getUsers() )
+        {
+            inviteUser( user, request, response );
+        }
+    }
+
+    @RequestMapping( value = BULK_INVITE_PATH, method = RequestMethod.POST, consumes = "application/json" )
+    public void postJsonInvites( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    {
+        Users users = renderService.fromJson( request.getInputStream(), Users.class );
+
+        for ( User user : users.getUsers() )
+        {
+            inviteUser( user, request, response );
+        }
+    }
+
     //--------------------------------------------------------------------------
     // PUT
     //--------------------------------------------------------------------------
@@ -211,7 +236,8 @@ public class UserController
         User parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
         parsed.setUid( uid );
 
-        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed,
+            ImportStrategy.UPDATE );
         renderService.toXml( response.getOutputStream(), summary );
     }
 
@@ -236,7 +262,8 @@ public class UserController
         User parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
         parsed.setUid( uid );
 
-        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed,
+            ImportStrategy.UPDATE );
         renderService.toJson( response.getOutputStream(), summary );
     }
 
