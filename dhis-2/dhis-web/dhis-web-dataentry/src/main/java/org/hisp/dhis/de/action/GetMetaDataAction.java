@@ -257,9 +257,9 @@ public class GetMetaDataAction
         {
             dataSets = new ArrayList<>( dataSetService.getAllDataSets() );
         }
-        else
+        else if ( user != null )
         {
-            dataSets = new ArrayList<>( currentUserService.getCurrentUser().getUserCredentials().getAllDataSets() );
+            dataSets = new ArrayList<>( user.getUserCredentials().getAllDataSets() );
         }
 
         Set<DataElementCategoryCombo> categoryComboSet = new HashSet<>();
