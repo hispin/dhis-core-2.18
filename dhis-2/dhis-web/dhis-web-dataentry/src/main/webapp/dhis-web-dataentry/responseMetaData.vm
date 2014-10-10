@@ -35,11 +35,9 @@
 "dataSets": {
 #set( $size = $dataSets.size() )
 #foreach( $dataSet in $dataSets )
-"${dataSet.uid}":{"name":"$encoder.jsonEncode( ${dataSet.displayName} )","periodType":"$encoder.jsonEncode( ${dataSet.periodType.name} )",
-"categoryCombo":"${dataSet.categoryCombo.uid}","version":"${dataSet.version}","type":"${dataSet.getDataSetType()}","expiryDays":"${dataSet.expiryDays}",
-"allowFuturePeriods":${dataSet.allowFuturePeriods},"fieldCombinationRequired":${dataSet.fieldCombinationRequired},"validCompleteOnly":${dataSet.validCompleteOnly},
-"skipOffline":${dataSet.skipOffline}, "renderAsTabs":${dataSet.renderAsTabs}, "renderHorizontally":${dataSet.renderHorizontally}
-}#if( $velocityCount < $size ),#end
+"${dataSet.uid}":{"name":"$encoder.jsonEncode( ${dataSet.displayName} )","periodType":"$encoder.jsonEncode( ${dataSet.periodType.name} )","categoryCombo":"${dataSet.categoryCombo.uid}","version":"${dataSet.version}",
+"type":"${dataSet.getDataSetType()}","expiryDays":"${dataSet.expiryDays}","allowFuturePeriods":${dataSet.allowFuturePeriods},"fieldCombinationRequired":${dataSet.fieldCombinationRequired},
+"validCompleteOnly":${dataSet.validCompleteOnly},"skipOffline":${dataSet.skipOffline}, "renderAsTabs":${dataSet.renderAsTabs}, "renderHorizontally":${dataSet.renderHorizontally}}#if( $velocityCount < $size ),#end
 #end },
 
 "dataSetAssociationSets": {
@@ -69,8 +67,7 @@
 #set( $size2 = $categoryCombo.categories.size() )
 #foreach( $category in $categoryCombo.categories )
 "${category.uid}"#if( $velocityCount < $size2 ),#end
-#end
-] }#if( $velocityCount < $size1 ),#end
+#end ] }#if( $velocityCount < $size1 ),#end
 #end
 },
 
@@ -81,10 +78,8 @@
 #set( $categoryOptions = $categoryOptionMap.get( $category.uid ) )
 #set( $size2 = $categoryOptions.size() )
 #foreach( $option in $categoryOptions )
-{"id":"${option.uid}","name":"$encoder.jsonEncode( ${option.displayName} )"
-#if( ${option.startDate} ),"startDate":"${option.startDate}"#end
+{"id":"${option.uid}","name":"$encoder.jsonEncode( ${option.displayName} )"#if( ${option.startDate} ),"startDate":"${option.startDate}"#end
 #if( ${option.endDate} ),"endDate":"${option.endDate}"#end}#if( $velocityCount < $size2 ),#end
-#end
-] }#if( $velocityCount < $size1 ),#end
+#end ] }#if( $velocityCount < $size1 ),#end
 #end }
 } }
