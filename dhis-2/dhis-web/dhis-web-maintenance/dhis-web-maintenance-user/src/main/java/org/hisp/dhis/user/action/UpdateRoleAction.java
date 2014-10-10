@@ -28,15 +28,14 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author Thanh Nguyen
@@ -127,13 +126,6 @@ public class UpdateRoleAction
         for ( String id : selectedList )
         {
             DataSet dataSet = dataSetService.getDataSet( id );
-
-            if ( dataSet == null )
-            {
-                //TODO fix this better. Currently some are UID, some ID. Should all be the same.
-                dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
-            }
-
             group.getDataSets().add( dataSet );
         }
 
