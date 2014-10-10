@@ -197,9 +197,9 @@ public class GetAnalysisAction
 
             periods = periodService.getPeriodsBetweenDates( format.parseDate( fromDate ), format.parseDate( toDate ) );
 
-            for ( String id : dataSets )
+            for ( String uid : dataSets )
             {
-                dataElements.addAll( dataSetService.getDataSet( Integer.parseInt( id ) ).getDataElements() );
+                dataElements.addAll( dataSetService.getDataSet( uid ).getDataElements() );
             }
 
             log.info( "From date: " + fromDate + ", To date: " + toDate + ", Organisation unit: " + unit
