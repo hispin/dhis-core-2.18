@@ -67,6 +67,7 @@ import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.schema.SchemaService;
+import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
@@ -130,8 +131,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SchemaService schemaService;
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private List<ObjectHandler<T>> objectHandlers;
+
+    @Autowired
+    private PasswordManager passwordManager;
 
     //-------------------------------------------------------------------------------------------------------
     // Constructor
@@ -221,14 +225,16 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         if ( !aclService.canDelete( user, persistedObject ) )
         {
             summaryType.getImportConflicts().add(
-                new ImportConflict( ImportUtils.getDisplayName( persistedObject ), "Permission denied for deletion of object " + persistedObject.getUid() ) );
+                new ImportConflict( ImportUtils.getDisplayName( persistedObject ), "Permission denied for deletion of object " +
+                    persistedObject.getUid() ) );
 
             log.debug( "Permission denied for deletion of object " + persistedObject.getUid() );
 
             return false;
         }
 
-        log.debug( "Trying to delete object => " + ImportUtils.getDisplayName( persistedObject ) + " (" + persistedObject.getClass().getSimpleName() + ")" );
+        log.debug( "Trying to delete object => " + ImportUtils.getDisplayName( persistedObject ) + " (" + persistedObject.getClass()
+            .getSimpleName() + ")" );
 
         try
         {
@@ -259,7 +265,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         if ( !aclService.canCreate( user, object.getClass() ) )
         {
             summaryType.getImportConflicts().add(
-                new ImportConflict( ImportUtils.getDisplayName( object ), "Permission denied, you are not allowed to create objects of type " + object.getClass() ) );
+                new ImportConflict( ImportUtils.getDisplayName( object ), "Permission denied, you are not allowed to create objects of " +
+                    "type " + object.getClass() ) );
 
             log.debug( "Permission denied, you are not allowed to create objects of type " + object.getClass() );
 
@@ -294,7 +301,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         reattachFields( object, fields );
 
-        log.debug( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
+        log.debug( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" +
+            "" );
         objectBridge.saveObject( object );
 
         updatePeriodTypes( object );
@@ -306,6 +314,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             userCredentials.setUser( (User) object );
             userCredentials.setId( object.getId() );
+
+            if ( userCredentials.getPassword() != null )
+            {
+                userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getPassword() ) );
+            }
 
             Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
 
@@ -345,7 +358,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         if ( !aclService.canUpdate( user, persistedObject ) )
         {
             summaryType.getImportConflicts().add(
-                new ImportConflict( ImportUtils.getDisplayName( persistedObject ), "Permission denied for update of object " + persistedObject.getUid() ) );
+                new ImportConflict( ImportUtils.getDisplayName( persistedObject ), "Permission denied for update of object " +
+                    persistedObject.getUid() ) );
 
             log.debug( "Permission denied for update of object " + persistedObject.getUid() );
 
@@ -400,6 +414,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             if ( object instanceof User )
             {
                 Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
+
+                if ( userCredentials != null && userCredentials.getPassword() != null )
+                {
+                    userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getPassword() ) );
+                }
 
                 ((User) persistedObject).getUserCredentials().mergeWith( userCredentials );
                 reattachCollectionFields( ((User) persistedObject).getUserCredentials(), collectionFieldsUserCredentials );
@@ -730,7 +749,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    if ( schemaService.getSchema( idObject.getClass() ) != null || UserCredentials.class.isAssignableFrom( idObject.getClass() ) )
+                    if ( schemaService.getSchema( idObject.getClass() ) != null ||
+                        UserCredentials.class.isAssignableFrom( idObject.getClass() ) )
                     {
                         reportReferenceError( idObject, object );
                     }
@@ -1074,7 +1094,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( ReflectionUtils.isCollection( "programAttributes", object, ProgramTrackedEntityAttribute.class ) )
             {
-                List<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = ReflectionUtils.invokeGetterMethod( "programAttributes", object );
+                List<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = ReflectionUtils.invokeGetterMethod(
+                    "programAttributes", object );
 
                 if ( programTrackedEntityAttributes == null )
                 {
@@ -1104,7 +1125,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             extractProgramTrackedEntityAttributes( object );
         }
 
-        private void saveProgramTrackedEntityAttributes( T object, Collection<ProgramTrackedEntityAttribute> programTrackedEntityAttributes )
+        private void saveProgramTrackedEntityAttributes( T object, Collection<ProgramTrackedEntityAttribute>
+            programTrackedEntityAttributes )
         {
             for ( ProgramTrackedEntityAttribute programTrackedEntityAttribute : programTrackedEntityAttributes )
             {
@@ -1122,7 +1144,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( method != null )
             {
-                Collection<ProgramStageDataElement> programStageDataElements = ReflectionUtils.invokeGetterMethod( "programStageDataElements", object );
+                Collection<ProgramStageDataElement> programStageDataElements = ReflectionUtils.invokeGetterMethod(
+                    "programStageDataElements", object );
 
                 for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
                 {
@@ -1163,7 +1186,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     programStageDataElement.setProgramStage( (ProgramStage) object );
                 }
 
-                ProgramStageDataElement persisted = programStageDataElementService.get( programStageDataElement.getProgramStage(), programStageDataElement.getDataElement() );
+                ProgramStageDataElement persisted = programStageDataElementService.get( programStageDataElement.getProgramStage(),
+                    programStageDataElement.getDataElement() );
 
                 if ( persisted == null )
                 {

@@ -211,12 +211,6 @@ public class UserController
         User parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
         parsed.setUid( uid );
 
-        if ( parsed.getUserCredentials().getPassword() != null )
-        {
-            String encodedPassword = passwordManager.encodePassword( parsed.getUserCredentials().getPassword() );
-            parsed.getUserCredentials().setPassword( encodedPassword );
-        }
-
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
         renderService.toXml( response.getOutputStream(), summary );
     }
@@ -241,12 +235,6 @@ public class UserController
 
         User parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
         parsed.setUid( uid );
-
-        if ( parsed.getUserCredentials().getPassword() != null )
-        {
-            String encodedPassword = passwordManager.encodePassword( parsed.getUserCredentials().getPassword() );
-            parsed.getUserCredentials().setPassword( encodedPassword );
-        }
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
         renderService.toJson( response.getOutputStream(), summary );
