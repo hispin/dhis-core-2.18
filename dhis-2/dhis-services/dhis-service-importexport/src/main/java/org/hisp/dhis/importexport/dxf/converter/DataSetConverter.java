@@ -126,8 +126,8 @@ public class DataSetConverter
 
                 writer.writeElement( FIELD_ID, String.valueOf( dataSet.getId() ) );
                 writer.writeElement( FIELD_UID, dataSet.getUid() );
-                writer.writeCData( FIELD_NAME, dataSet.getName() );
-                writer.writeCData( FIELD_SHORT_NAME, dataSet.getShortName() );
+                writer.writeElement( FIELD_NAME, dataSet.getName() );
+                writer.writeElement( FIELD_SHORT_NAME, dataSet.getShortName() );
                 writer.writeElement( FIELD_CODE, dataSet.getCode() );
                 writer.writeElement( FIELD_PERIOD_TYPE, dataSet.getPeriodType().getName() );
 
