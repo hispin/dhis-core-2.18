@@ -28,10 +28,6 @@ package org.hisp.dhis.importexport.dxf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
-
-import javax.xml.namespace.QName;
-
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.reader.XMLReader;
@@ -308,9 +304,8 @@ public class DXFConverter
         {
             throw new RuntimeException( "Couldn't find dxf root element" );
         }
-        QName rootName = reader.getElementQName();
 
-        params.setNamespace( defaultIfEmpty( rootName.getNamespaceURI(), NAMESPACE_10 ) );
+        params.setNamespace( NAMESPACE_10 );
         String version = reader.getAttributeValue( ATTRIBUTE_MINOR_VERSION );
         params.setMinorVersion( version != null ? version : MINOR_VERSION_10 );
         log.debug( "Importing dxf1 minor version " + version );
