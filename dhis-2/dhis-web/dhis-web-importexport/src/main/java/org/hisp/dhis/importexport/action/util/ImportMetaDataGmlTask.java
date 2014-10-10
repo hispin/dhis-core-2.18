@@ -28,29 +28,31 @@ package org.hisp.dhis.importexport.action.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dxf2.gml.GmlImportService;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+
+import org.hisp.dhis.scheduling.TaskId;
+
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dxf2.csv.CsvImportService;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.dxf2.metadata.ImportService;
-import org.hisp.dhis.dxf2.metadata.MetaData;
-import org.hisp.dhis.scheduling.TaskId;
-
 /**
- * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @author Halvdan Hoem Grelland
  */
-public class ImportMetaDataCsvTask
+public class ImportMetaDataGmlTask
     implements Runnable
 {
-    private static final Log log = LogFactory.getLog( ImportMetaDataTask.class );
+    private static final Log log = LogFactory.getLog( ImportMetaDataGmlTask.class );
 
-    private ImportService importService;
-    
-    private CsvImportService csvImportService;
-    
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private GmlImportService gmlImportService;
+
     private ImportOptions importOptions;
 
     private InputStream inputStream;
@@ -58,21 +60,19 @@ public class ImportMetaDataCsvTask
     private TaskId taskId;
 
     private String userUid;
-    
-    private Class<?> clazz;
 
-    public ImportMetaDataCsvTask( String userUid, ImportService importService, 
-        CsvImportService csvImportService,
-        ImportOptions importOptions, InputStream inputStream,
-        TaskId taskId, Class<?> clazz )
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    public ImportMetaDataGmlTask( String userUid, GmlImportService gmlImportService,
+        ImportOptions importOptions, InputStream inputStream, TaskId taskId )
     {
         this.userUid = userUid;
-        this.importService = importService;
-        this.csvImportService = csvImportService;
+        this.gmlImportService = gmlImportService;
         this.importOptions = importOptions;
         this.inputStream = inputStream;
         this.taskId = taskId;
-        this.clazz = clazz;
     }
 
     // -------------------------------------------------------------------------
@@ -82,18 +82,15 @@ public class ImportMetaDataCsvTask
     @Override
     public void run()
     {
-        MetaData metaData = null;
+        importOptions.setImportStrategy( "update" ); // Force update only for GML import
 
         try
         {
-            metaData = csvImportService.fromCsv( inputStream, clazz );
+            gmlImportService.importGml( inputStream, userUid, importOptions, taskId );
         }
-        catch ( IOException ex )
+        catch ( IOException | TransformerException e)
         {
-            log.error( "Unable to read meta-data while reading input stream", ex );
-            return;
+            log.error( "Unable to read GML data from input stream", e );
         }
-
-        importService.importMetaData( userUid, metaData, importOptions, taskId );
     }
 }

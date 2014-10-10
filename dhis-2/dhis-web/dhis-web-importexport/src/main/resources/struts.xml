@@ -328,6 +328,23 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <!-- GML import -->
+
+    <action name="importGml" class="org.hisp.dhis.importexport.action.dxf2.MetaDataImportAction">
+      <param name="importFormat">gml</param>
+      <param name="strategy">update</param>
+      <result name="success" type="redirect">gmlImport.action</result>
+      <interceptor-ref name="fileUploadStack" />
+    </action>
+
+    <action name="gmlImport" class="org.hisp.dhis.importexport.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+      <param name="page">/dhis-web-importexport/gmlImport.vm</param>
+      <param name="javascripts">javascript/importMetaData.js</param>
+      <param name="requiredAuthorities">F_METADATA_IMPORT</param>
+    </action>
+
     <!-- Detailed meta-data export -->
 
     <action name="dxf2FilteredMetaDataExport" class="org.hisp.dhis.importexport.action.dxf2.FilterListAction">

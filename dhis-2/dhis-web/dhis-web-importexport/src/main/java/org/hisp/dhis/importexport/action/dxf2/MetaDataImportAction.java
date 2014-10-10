@@ -39,10 +39,12 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dxf2.csv.CsvImportService;
+import org.hisp.dhis.dxf2.gml.GmlImportService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.action.util.ImportMetaDataCsvTask;
+import org.hisp.dhis.importexport.action.util.ImportMetaDataGmlTask;
 import org.hisp.dhis.importexport.action.util.ImportMetaDataTask;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -85,6 +87,9 @@ public class MetaDataImportAction
     
     @Autowired
     private CsvImportService csvImportService;
+
+    @Autowired
+    private GmlImportService gmlImportService;
     
     @Autowired
     private CurrentUserService currentUserService;
@@ -162,15 +167,22 @@ public class MetaDataImportAction
         importOptions.setDryRun( dryRun );
 
         String userId = user != null ? user.getUid() : null;
-        
-        if ( "csv".equals( importFormat ) && classKey != null && KEY_CLASS_MAP.get( classKey ) != null )
+
+        switch( importFormat )
         {
-            scheduler.executeTask( new ImportMetaDataCsvTask( userId, importService, csvImportService,
-                importOptions, in, taskId, KEY_CLASS_MAP.get( classKey ) ) );
-        }
-        else
-        {
-            scheduler.executeTask( new ImportMetaDataTask( userId, importService, importOptions, in, taskId ) );
+            case "csv":
+                if( classKey != null && KEY_CLASS_MAP.get( classKey ) != null )
+                {
+                    scheduler.executeTask( new ImportMetaDataCsvTask( userId, importService, csvImportService,
+                        importOptions, in, taskId, KEY_CLASS_MAP.get( classKey ) ) );
+                }
+                break;
+            case "gml":
+                scheduler.executeTask( new ImportMetaDataGmlTask( userId, gmlImportService, importOptions, in, taskId ) );
+                break;
+            default:
+                scheduler.executeTask( new ImportMetaDataTask( userId, importService, importOptions, in, taskId ) );
+                break;
         }
         
         return SUCCESS;

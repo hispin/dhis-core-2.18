@@ -200,6 +200,14 @@ public interface OrganisationUnitService
     Collection<OrganisationUnit> getOrganisationUnitByNameIgnoreCase( String name );
 
     /**
+     * Returns all OrganisationUnits exactly matching the given names.
+     *
+     * @param names names of OrganisationUnits to return.
+     * @return the OrganisationUnits matching the given names.
+     */
+    Collection<OrganisationUnit> getOrganisationUnitsByNames( Collection<String> names );
+
+    /**
      * Returns all root OrganisationUnits. A root OrganisationUnit is an
      * OrganisationUnit with no parent/the parent set to null.
      *

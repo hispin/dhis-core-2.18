@@ -90,6 +90,7 @@ public class OrganisationUnit
 
     private static final Comparator<IdentifiableObject> COMPARATOR = new IdentifiableObjectNameComparator();
 
+    private static final Pattern JSON_POINT_PATTERN = Pattern.compile( "(\\[.*?\\])" );
     private static final Pattern JSON_COORDINATE_PATTERN = Pattern.compile( "(\\[{3}.*?\\]{3})" );
     private static final Pattern COORDINATE_PATTERN = Pattern.compile( "([\\-0-9.]+,[\\-0-9.]+)" );
 
@@ -400,7 +401,8 @@ public class OrganisationUnit
 
         if ( coordinates != null && !coordinates.trim().isEmpty() )
         {
-            Matcher jsonMatcher = JSON_COORDINATE_PATTERN.matcher( coordinates );
+            Matcher jsonMatcher = isPoint() ?
+                JSON_POINT_PATTERN.matcher( coordinates ) : JSON_COORDINATE_PATTERN.matcher( coordinates );
 
             while ( jsonMatcher.find() )
             {

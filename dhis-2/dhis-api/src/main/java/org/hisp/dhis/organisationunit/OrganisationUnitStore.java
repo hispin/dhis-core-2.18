@@ -59,6 +59,14 @@ public interface OrganisationUnitStore
     OrganisationUnit getByUuid( String uuid );
 
     /**
+     * Retrieves all OrganisationUnits matching the given names.
+     *
+     * @param names names of the OrganisationUnits to return.
+     * @return all OrganisationUnits matching the given names.
+     */
+    Collection<OrganisationUnit> getByNames( Collection<String> names );
+
+    /**
      * Returns all OrganisationUnits by status.
      *
      * @param active Get active or inactive
