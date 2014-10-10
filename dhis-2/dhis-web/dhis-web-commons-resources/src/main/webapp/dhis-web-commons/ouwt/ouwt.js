@@ -15,7 +15,7 @@
  * selection.setMultipleSelectionAllowed function to change this.
  */
 
-var organisationUnitTreePath = '../dhis-web-commons/ouwt/';
+var organisationUnitTreePath = "../dhis-web-commons/ouwt/";
 var organisationUnits = {};
 
 var selection = new Selection();
@@ -23,6 +23,7 @@ var subtree = new Subtree();
 
 var dhis2 = dhis2 || {};
 dhis2.ou = dhis2.ou || {};
+dhis2.ou.event = dhis2.ou.event || {};
 
 var OU_STORE_NAME = "dhis2ou";
 var OU_KEY = "ou";
@@ -31,6 +32,8 @@ var OU_ROOTS_KEY = "ouRoots";
 var OU_VERSION_KEY = "ouVersion";
 var OU_USERNAME_KEY = "ouUsername";
 var OU_SELECTED_KEY = "ouSelected";
+
+dhis2.ou.event.orgUnitSelected = "dhis2.ou.event.orgUnitSelected";
 
 dhis2.ou.store = null;
 dhis2.ou.memoryOnly = $('html').hasClass('ie7') || $('html').hasClass('ie8');
@@ -549,10 +552,6 @@ function Selection()
     };
 
     this.responseReceived = function() {
-        if( typeof listenerFunction !== 'function') {
-            return;
-        }
-
         var children = [];
         var ids = [];
         var names = [];
@@ -565,7 +564,11 @@ function Selection()
                 names.push( name );
             } );
 
-            listenerFunction( ids, names, children );
+            $( "#orgUnitTree" ).trigger( dhis2.ou.event.orgUnitSelected, [ids, names, children] );
+            
+            if( typeof listenerFunction === 'function') {
+            	listenerFunction( ids, names, children );
+            }
         } else {
             selected = selected[0];
 
@@ -579,7 +582,11 @@ function Selection()
                 ids.push( selected );
                 names.push( name );
 
-                listenerFunction( ids, names, children );
+                $( "#orgUnitTree" ).trigger( dhis2.ou.event.orgUnitSelected, [ids, names, children] );
+                
+                if( typeof listenerFunction === 'function') {
+                	listenerFunction( ids, names, children );
+                }                
             }
         }
     };
