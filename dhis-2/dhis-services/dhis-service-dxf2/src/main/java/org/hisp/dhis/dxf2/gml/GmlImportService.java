@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.render;
+package org.hisp.dhis.dxf2.gml;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,26 +28,24 @@ package org.hisp.dhis.dxf2.render;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.scheduling.TaskId;
 
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
- * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @author Halvdan Hoem Grelland
  */
-public interface RenderService
+public interface GmlImportService
 {
-    <T> void toJson( OutputStream output, T value ) throws IOException;
+    String ID = GmlImportService.class.getName();
 
-    <T> void toJson( OutputStream output, T value, Class<?> klass ) throws IOException;
+    MetaData fromGml( InputStream inputStream )
+        throws IOException, TransformerException;
 
-    <T> T fromJson( InputStream input, Class<T> klass ) throws IOException;
-
-    <T> void toXml( OutputStream output, T value ) throws IOException;
-
-    <T> void toXml( OutputStream output, T value, Class<?> klass ) throws IOException;
-
-    <T> T fromXml( InputStream input, Class<T> klass ) throws IOException;
+    public void importGml( InputStream inputStream, String userUid, ImportOptions importOptions, TaskId taskId )
+        throws IOException, TransformerException;
 }

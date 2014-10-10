@@ -102,6 +102,7 @@ public class OrganisationUnitTest
     {   
         OrganisationUnit unit = new OrganisationUnit();
         unit.setCoordinates( multiPolygonCoordinates );
+        unit.setFeatureType( "MultiPolygon" );
         
         assertEquals( 3, unit.getCoordinatesAsList().size() );
         

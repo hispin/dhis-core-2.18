@@ -7,6 +7,7 @@
     #introListImgItem( "displayImportDataValueForm.action?importFormat=csv" "csv_data_import" "import" )
     #introListImgItem( "displayImportDataValueForm.action?importFormat=pdf" "pdf_data_import" "import" )
     #introListImgItem( "displayEventImportForm.action" "event_data_import" "import" )
+    #introListImgItem( "gmlImport.action" "gml_import" "import" )
     #introListImgItem( "displayExternalImportMenu.action" "dhis14_import" "import" )
 
     #introListImgItem( "dxf2MetaDataExport.action" "metadata_export" "export" )

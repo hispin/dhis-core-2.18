@@ -3,6 +3,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=
   "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
+  <bean id="org.hisp.dhis.dxf2.gml.GmlImportService" class="org.hisp.dhis.dxf2.gml.DefaultGmlImportService" />
+
   <bean id="org.hisp.dhis.dxf2.events.event.csv.CsvEventService" class="org.hisp.dhis.dxf2.events.event.csv.DefaultCsvEventService" />
 
   <bean id="org.hisp.dhis.dxf2.csv.CsvImportService" class="org.hisp.dhis.dxf2.csv.DefaultCsvImportService" />
