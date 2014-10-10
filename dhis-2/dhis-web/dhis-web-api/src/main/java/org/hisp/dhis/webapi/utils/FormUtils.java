@@ -63,7 +63,9 @@ public class FormUtils
     private static final String KEY_PERIOD_TYPE = "periodType";
     private static final String KEY_ALLOW_FUTURE_PERIODS = "allowFuturePeriods";
     private static final String KEY_DATA_ELEMENTS = "dataElements";
+    private static final String KEY_INDICATORS = "indicators";
     private static final String KEY_EXPIRY_DAYS = "expiryDays";
+    private static final String SEP = "-";
 
     public static Form fromDataSet( DataSet dataSet, boolean metaData )
     {
@@ -75,7 +77,7 @@ public class FormUtils
         form.getOptions().put( KEY_ALLOW_FUTURE_PERIODS, dataSet.isAllowFuturePeriods() );
         form.getOptions().put( KEY_EXPIRY_DAYS, dataSet.getExpiryDays() );
 
-        if ( dataSet.getSections().size() > 0 )
+        if ( dataSet.hasSections() )
         {
             List<Section> sections = new ArrayList<>( dataSet.getSections() );
             Collections.sort( sections, SectionOrderComparator.INSTANCE );
@@ -93,6 +95,7 @@ public class FormUtils
                 if ( metaData )
                 {
                     group.getMetaData().put( KEY_DATA_ELEMENTS, NameableObjectUtils.getAsNameableObjects( section.getDataElements() ) );
+                    group.getMetaData().put( KEY_INDICATORS, NameableObjectUtils.getAsNameableObjects( section.getIndicators() ) );
                 }
                 
                 form.getGroups().add( group );
@@ -340,7 +343,7 @@ public class FormUtils
         {
             for ( Field field : group.getFields() )
             {
-                cacheMap.put( field.getDataElement() + "-" + field.getCategoryOptionCombo(), field );
+                cacheMap.put( field.getDataElement() + SEP + field.getCategoryOptionCombo(), field );
             }
         }
 
