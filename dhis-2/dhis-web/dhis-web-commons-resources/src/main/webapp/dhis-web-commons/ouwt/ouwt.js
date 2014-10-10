@@ -564,7 +564,7 @@ function Selection()
                 names.push( name );
             } );
 
-            $( "#orgUnitTree" ).trigger( dhis2.ou.event.orgUnitSelected, [ids, names, children] );
+            $( document ).trigger( dhis2.ou.event.orgUnitSelected, [ids, names, children] );
             
             if( typeof listenerFunction === 'function') {
             	listenerFunction( ids, names, children );
@@ -582,7 +582,7 @@ function Selection()
                 ids.push( selected );
                 names.push( name );
 
-                $( "#orgUnitTree" ).trigger( dhis2.ou.event.orgUnitSelected, [ids, names, children] );
+                $( document ).trigger( dhis2.ou.event.orgUnitSelected, [ids, names, children] );
                 
                 if( typeof listenerFunction === 'function') {
                 	listenerFunction( ids, names, children );
