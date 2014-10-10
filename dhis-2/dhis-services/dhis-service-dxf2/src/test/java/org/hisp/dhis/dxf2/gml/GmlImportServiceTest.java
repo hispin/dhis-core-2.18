@@ -28,18 +28,17 @@ package org.hisp.dhis.dxf2.gml;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisTest;
-import org.hisp.dhis.dxf2.metadata.MetaData;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.junit.Test;
 
 /**
  * @author Halvdan Hoem Grelland
