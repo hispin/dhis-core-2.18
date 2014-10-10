@@ -870,29 +870,6 @@
         <version>1.7</version>
       </dependency>
 
-      <!-- Relaxng schema validation -->
-      <dependency>
-        <groupId>net.java.dev.msv</groupId>
-        <artifactId>msv</artifactId>
-        <version>20081113</version>
-        <scope>test</scope>
-        <type>jar</type>
-      </dependency>
-      <dependency>
-        <groupId>net.java.dev.msv</groupId>
-        <artifactId>relaxngDatatype</artifactId>
-        <version>20081113</version>
-        <scope>test</scope>
-        <type>jar</type>
-      </dependency>
-      <dependency>
-        <groupId>net.java.dev.msv</groupId>
-        <artifactId>xsdlib</artifactId>
-        <version>20081113</version>
-        <scope>test</scope>
-        <type>jar</type>
-      </dependency>
-
       <!-- Jackson JSON Mapper -->
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
