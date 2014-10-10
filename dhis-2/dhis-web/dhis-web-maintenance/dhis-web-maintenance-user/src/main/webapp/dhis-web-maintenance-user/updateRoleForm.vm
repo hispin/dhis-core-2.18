@@ -81,7 +81,7 @@
         	<td>
 				<select id="selectedList" name="selectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
             	#foreach ( $selectedDataSet in $roleDataSets )
-              		<option value="$selectedDataSet.id">$encoder.htmlEncode( $selectedDataSet.name )</option>
+              		<option value="$selectedDataSet.uid">$encoder.htmlEncode( $selectedDataSet.name )</option>
             	#end
 				</select>
         	</td>
