@@ -79,15 +79,10 @@
       <name>FreeHEP</name>
       <url>http://java.freehep.org/maven2</url>
     </repository>
-    <repository>
-      <id>dhis.uio.no</id>
-      <name>Dhis2 External Dependencies Repository</name>
-      <url>http://dhis.uio.no/maven/external</url>
-    </repository>
   </repositories>
 
   <issueManagement>
-    <system>Trac</system>
+    <system>Launchpad</system>
     <url>https://launchpad.net/dhis2</url>
   </issueManagement>
   <scm>
