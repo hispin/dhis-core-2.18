@@ -14,7 +14,7 @@
 <div id="critiera" class="inputCriteria" style="width:660px; height:auto; padding:20px;">
 <div style="width:320px; float:left;">
 	<label>$i18n.getString( "organisation_unit" )</label>
-	<div id="selectionTree" style="width:290px; height:228px"></div>
+	<div id="selectionTree" style="width:290px; height:202px"></div>
 </div>
 <div>
     <input type="radio" name="criteria" id="registrationRadio" value="registration" checked="checked"/>
