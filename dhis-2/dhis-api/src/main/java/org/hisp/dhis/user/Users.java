@@ -53,7 +53,7 @@ public class Users
 
     @JsonProperty
     @JacksonXmlElementWrapper( useWrapping = false, namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "users", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "user", namespace = DxfNamespaces.DXF_2_0 )
     public List<User> getUsers()
     {
         return users;
