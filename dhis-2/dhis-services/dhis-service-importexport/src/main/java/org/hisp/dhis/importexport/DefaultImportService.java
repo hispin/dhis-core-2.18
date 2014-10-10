@@ -31,17 +31,11 @@ package org.hisp.dhis.importexport;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipFile;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.reader.XMLReader;
@@ -49,7 +43,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.importexport.dxf.converter.DXFConverter;
-import org.hisp.dhis.importexport.xml.XMLPreConverter;
 import org.hisp.dhis.importexport.zip.ZipAnalyzer;
 import org.hisp.dhis.system.process.OutputHolderState;
 import org.hisp.dhis.system.util.StreamUtils;
@@ -68,13 +61,6 @@ public class DefaultImportService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private XMLPreConverter preConverter;
-
-    public void setPreConverter( XMLPreConverter preConverter )
-    {
-        this.preConverter = preConverter;
-    }
 
     private DXFConverter converter;
 
@@ -145,47 +131,15 @@ public class DefaultImportService
             throw new ImportException( "Error processing input stream", ex );
         }
 
-        QName documentRootName = preConverter.getDocumentRoot( xmlDataStream );
-
         XMLReader dxfReader = null;
-        File transformOutput = null;
-        BufferedInputStream dxfInStream = null;
 
         try
         {
-            String rootLocalName = documentRootName.getLocalPart();
-            String rootNameSpace = documentRootName.getNamespaceURI();
-
-            if ( rootLocalName.equals( DXFConverter.DXFROOT ) )
-            {                
-                log.info( "Importing DXF native stream" ); // Native DXF stream, no transform required
-                dxfReader = XMLFactory.getXMLReader( xmlDataStream );
-            }
-            else
-            {
-                log.info( "Transforming stream" );
-                transformOutput = File.createTempFile( "TRANSFORM_", ".xml" );
-                Source source = new StreamSource( xmlDataStream );
-                FileOutputStream transformOutStream = new FileOutputStream( transformOutput );
-                StreamResult result = new StreamResult( transformOutStream );
-                String xsltIdentifierTag = documentRootName.toString();
-                log.debug( "Tag for transformer: " + xsltIdentifierTag );
-
-                preConverter.transform( source, result, xsltIdentifierTag, tempZipFile, null );
-                transformOutStream.flush();
-                transformOutStream.close();
-
-                log.info( "Transform successful" );
-                dxfInStream = 
-                    new BufferedInputStream(new FileInputStream( transformOutput ));
-                rootNameSpace = preConverter.getDocumentRoot( dxfInStream ).getNamespaceURI();
-                dxfReader = XMLFactory.getXMLReader( dxfInStream );                
-            }
-
-            log.debug( "Sending DXFv1 to converter, root local name: " + rootLocalName + ", name space: " + rootNameSpace );
+            dxfReader = XMLFactory.getXMLReader( xmlDataStream );
+            
             converter.read( dxfReader, params, state );
         }
-        catch ( IOException ex )
+        catch ( Exception ex )
         {
             log.error( ex );
             
@@ -197,10 +151,6 @@ public class DefaultImportService
             {
                 dxfReader.closeReader();
             }
-            if ( transformOutput != null )
-            {
-                transformOutput.delete();
-            }
             if ( tempZipFile != null )
             {
                 tempZipFile.delete();
@@ -208,10 +158,6 @@ public class DefaultImportService
 
             try
             {
-                if ( dxfInStream != null )
-                {
-                    dxfInStream.close();
-                }
                 if ( zipFile != null )
                 {
                     zipFile.close();
