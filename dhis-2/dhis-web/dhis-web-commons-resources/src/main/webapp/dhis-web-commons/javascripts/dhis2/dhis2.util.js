@@ -166,16 +166,6 @@ dhis2.util.normalizeArguments = function( args ) {
 };
 
 /**
- * Convenience method to be used from inside custom forms. When a function is
- * registered inside a form it will be loaded every time the form is loaded,
- * hence the need to unregister and the register the function.
- */
-dhis2.util.on = function( event, fn )
-{
-    $( document ).off( event ).on( event, fn );
-};
-
-/**
  * adds ':containsNC' to filtering.
  * $(sel).find(':containsNC(key)').doSomething();
  */
