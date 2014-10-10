@@ -83,7 +83,7 @@ dhis2.de.getDataElementTotalValue = function( de )
 		var key = $( this ).attr( 'id' );
 		var entryFieldId = key.substring( 0, key.indexOf( '-' ) );
 		
-		if ( de && $( this ).attr( 'value' ) && de == entryFieldId )
+		if ( de && de == entryFieldId && $( this ).attr( 'value' ) )
 		{
 			sum += new Number( $( this ).attr( 'value' ) );
 		}

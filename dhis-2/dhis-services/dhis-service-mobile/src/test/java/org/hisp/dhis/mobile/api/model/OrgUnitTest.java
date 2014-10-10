@@ -41,7 +41,6 @@ import org.junit.Test;
 
 public class OrgUnitTest
 {
-
     @Test
     public void testSerialization()
         throws IOException
@@ -95,6 +94,5 @@ public class OrgUnitTest
 
         assertEquals( unit.getName(), unit2.getName() );
         assertEquals( unit.getId(), unit2.getId() );
-
     }
 }
