@@ -1000,8 +1000,13 @@ public class HibernateCaseAggregationConditionStore
     private String getConditionForProgramStage( String programStageId, Collection<Integer> orgunitIds )
     {
         String sql = " EXISTS ( SELECT _psi.programstageinstanceid FROM programstageinstance _psi "
-            + "WHERE _psi.programstageinstanceid=psi.programstageinstanceid " + "AND _psi.programstageid="
-            + programStageId + "  AND _psi.executiondate >= '" + PARAM_PERIOD_START_DATE
+            + "WHERE _psi.programstageinstanceid=psi.programstageinstanceid ";
+        if ( !programStageId.equals( IN_CONDITION_GET_ALL ) )
+        {
+            sql += "AND _psi.programstageid=" + programStageId;
+        }
+        
+        sql+= "  AND _psi.executiondate >= '" + PARAM_PERIOD_START_DATE
             + "' AND _psi.executiondate <= '" + PARAM_PERIOD_END_DATE + "' AND _psi.organisationunitid in ("
             + TextUtils.getCommaDelimitedString( orgunitIds ) + ")  ";
 
