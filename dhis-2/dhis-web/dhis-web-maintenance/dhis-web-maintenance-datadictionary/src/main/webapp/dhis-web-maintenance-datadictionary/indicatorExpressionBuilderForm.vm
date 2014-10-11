@@ -58,7 +58,7 @@ jQuery( document ).ready( function(){
 	</tr>
 	<tr>
 		<td valign="top">
-		<textarea id="expression" name="expression" style="width:100%; height:160px; margin-top:2px;" wrap="virtual" onchange="cleanExpression()" class="{validate:{required:true}}"></textarea><br/>
+		<textarea id="expression" name="expression" style="width:100%; min-width: 250px; height:160px; margin-top:2px;" wrap="virtual" onchange="cleanExpression()" class="{validate:{required:true}}"></textarea><br/>
 		<div style="margin-bottom:2px">
 			<a href="javascript:insertText( 'expression', '(' )"><img src="../images/left_parent.png" title="$i18n.getString( 'left_brackets' )"/></a>
 			<a href="javascript:insertText( 'expression', ')' )"><img src="../images/right_parent.png" title="$i18n.getString( 'right_brackets' )"/></a>
