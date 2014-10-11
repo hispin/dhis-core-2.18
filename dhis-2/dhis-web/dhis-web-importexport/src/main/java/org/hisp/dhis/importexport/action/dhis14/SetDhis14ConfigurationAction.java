@@ -28,7 +28,6 @@ package org.hisp.dhis.importexport.action.dhis14;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.importexport.IbatisConfiguration;
 import org.hisp.dhis.importexport.IbatisConfigurationManager;
 
 import com.opensymphony.xwork2.Action;
@@ -90,14 +89,7 @@ public class SetDhis14ConfigurationAction
     public String execute()
         throws Exception
     {
-        IbatisConfiguration configuration = new IbatisConfiguration();
-        
-        configuration.setDataFile( dataFile );
-        configuration.setUserName( userName );
-        configuration.setPassword( password );
-        configuration.setLevels( levels );
-        
-        configurationManager.setIbatisConfiguration( configuration );
+        configurationManager.setConfiguration( dataFile, userName, password, levels );
         
         return SUCCESS;
     }

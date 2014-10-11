@@ -32,8 +32,6 @@ import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcess
 
 import java.util.Collection;
 
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
-import org.hisp.dhis.importexport.IbatisConfigurationManager;
 import org.hisp.dhis.importexport.ImportObjectService;
 
 import com.opensymphony.xwork2.Action;
@@ -85,13 +83,6 @@ public class DiscardObjectAction
         this.importObjectService = importObjectService;
     }
 
-    private IbatisConfigurationManager configurationManager;
-
-    public void setConfigurationManager( IbatisConfigurationManager configurationManager )
-    {
-        this.configurationManager = configurationManager;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -113,18 +104,6 @@ public class DiscardObjectAction
             message = String.valueOf( count );
 
             importFormat = getCurrentRunningProcessImportFormat();
-
-            if ( importFormat != null && importFormat.equals( "DHIS14FILE" ) )
-            {
-                try
-                {
-                    configurationManager.getIbatisConfiguration();
-                }
-                catch ( NoConfigurationFoundException ex )
-                {
-                    return "dhis14";
-                }
-            }
 
             return SUCCESS;
         }

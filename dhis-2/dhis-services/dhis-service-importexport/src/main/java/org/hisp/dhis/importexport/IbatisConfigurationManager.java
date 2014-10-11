@@ -30,8 +30,6 @@ package org.hisp.dhis.importexport;
 
 import java.util.Properties;
 
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
-
 /**
  * @author Lars Helge Overland
  * @version $Id: IbatisConfigurationManager.java 6270 2008-11-13 11:49:21Z larshelg $
@@ -42,10 +40,7 @@ public interface IbatisConfigurationManager
     
     Properties getPropertiesConfiguration();
     
-    IbatisConfiguration getIbatisConfiguration()
-        throws NoConfigurationFoundException;
-    
-    void setIbatisConfiguration( IbatisConfiguration config );
+    void setConfiguration( String connectionUrl, String username, String password, String levels );
     
     boolean fileIsValid( String path );
 }

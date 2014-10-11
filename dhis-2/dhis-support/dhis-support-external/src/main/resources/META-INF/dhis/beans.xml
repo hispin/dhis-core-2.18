@@ -10,8 +10,6 @@
 
   <task:annotation-driven />
 
-  <bean id="configurationManager" class="org.hisp.dhis.external.configuration.DefaultConfigurationManager" />
-
   <bean id="dhisResolver" class="org.hisp.dhis.external.location.DefaultLocationManagerResolver">
     <property name="locationManager" ref="locationManager" />
   </bean>

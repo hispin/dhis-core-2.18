@@ -28,11 +28,6 @@ package org.hisp.dhis.importexport.action.dhis14;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.importexport.IbatisConfiguration;
-import org.hisp.dhis.importexport.IbatisConfigurationManager;
-
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -43,61 +38,11 @@ public class GetDhis14ConfigurationAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-    
-    private IbatisConfigurationManager configurationManager;
-
-    public void setConfigurationManager( IbatisConfigurationManager configurationManager )
-    {
-        this.configurationManager = configurationManager;
-    }
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private IbatisConfiguration configuration;
-
-    public IbatisConfiguration getConfiguration()
-    {
-        return configuration;
-    }
-    
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-    
-    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
-    {
-        try
-        {
-            configuration = configurationManager.getIbatisConfiguration();
-            
-            if ( !configurationManager.fileIsValid( configuration.getDataFile() ) )
-            {
-                message = i18n.getString( "data_file_is_not_valid" );
-            }
-        }
-        catch ( NoConfigurationFoundException ex )
-        {
-            message = i18n.getString( "set_configuration" );
-        }
-        
+    {        
         return SUCCESS;
     }
 }

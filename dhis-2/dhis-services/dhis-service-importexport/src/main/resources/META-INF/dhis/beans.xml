@@ -176,12 +176,7 @@
     <property name="sqlMapClientProvider" ref="org.hisp.dhis.importexport.dhis14.file.sqlmap.SqlMapClientProvider" />
   </bean>
 
-  <bean id="org.hisp.dhis.importexport.IbatisConfigurationManager" class="org.hisp.dhis.importexport.dhis14.file.configuration.DefaultIbatisConfigurationManager">
-    <property name="configDir" value="importexport" />
-    <property name="configFile" value="ibatisConfiguration.xml" />
-    <property name="locationManager" ref="locationManager" />
-    <property name="configurationManager" ref="configurationManager" />
-  </bean>
+  <bean id="org.hisp.dhis.importexport.IbatisConfigurationManager" class="org.hisp.dhis.importexport.dhis14.file.configuration.DefaultIbatisConfigurationManager"/>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- DXF Import                                                    -->

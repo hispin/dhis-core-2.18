@@ -32,13 +32,11 @@
     scope="prototype">
     <property name="processCoordinator" ref="processCoordinator" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="configurationManager" ref="org.hisp.dhis.importexport.IbatisConfigurationManager" />
   </bean>
 
   <bean id="org.hisp.dhis.importexport.action.imp.GetImportOptionsAction"
     class="org.hisp.dhis.importexport.action.imp.GetImportOptionsAction"
     scope="prototype">
-    <property name="configurationManager" ref="org.hisp.dhis.importexport.IbatisConfigurationManager" />
   </bean>
 
   <bean id="org.hisp.dhis.importexport.action.imp.GetImportStatusAction"
@@ -50,7 +48,6 @@
   <bean id="org.hisp.dhis.importexport.action.imp.SetImportTypeAction"
     class="org.hisp.dhis.importexport.action.imp.SetImportTypeAction"
     scope="prototype">
-    <property name="configurationManager" ref="org.hisp.dhis.importexport.IbatisConfigurationManager" />
   </bean>
 
   <bean id="org.hisp.dhis.importexport.action.imp.GetImportAnalysisAction"
@@ -65,14 +62,12 @@
     class="org.hisp.dhis.importexport.action.object.MatchObjectAction"
     scope="prototype">
     <property name="importObjectService" ref="org.hisp.dhis.importexport.ImportObjectService" />
-    <property name="configurationManager" ref="org.hisp.dhis.importexport.IbatisConfigurationManager" />
   </bean>
 
   <bean id="org.hisp.dhis.importexport.action.object.DiscardObjectAction"
     class="org.hisp.dhis.importexport.action.object.DiscardObjectAction"
     scope="prototype">
     <property name="importObjectService" ref="org.hisp.dhis.importexport.ImportObjectService" />
-    <property name="configurationManager" ref="org.hisp.dhis.importexport.IbatisConfigurationManager" />
   </bean>
 
   <bean id="org.hisp.dhis.importexport.action.object.DiscardObjectsOfTypeAction"
@@ -189,9 +184,7 @@
 
   <bean id="org.hisp.dhis.importexport.action.dhis14.GetDhis14ConfigurationAction"
     class="org.hisp.dhis.importexport.action.dhis14.GetDhis14ConfigurationAction"
-    scope="prototype">
-    <property name="configurationManager" ref="org.hisp.dhis.importexport.IbatisConfigurationManager" />
-  </bean>
+    scope="prototype"/>
 
   <bean id="org.hisp.dhis.importexport.action.dhis14.SetDhis14ConfigurationAction"
     class="org.hisp.dhis.importexport.action.dhis14.SetDhis14ConfigurationAction"
