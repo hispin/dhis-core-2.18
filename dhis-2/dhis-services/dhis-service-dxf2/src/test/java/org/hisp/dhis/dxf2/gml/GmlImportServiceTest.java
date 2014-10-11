@@ -37,7 +37,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.junit.Test;
