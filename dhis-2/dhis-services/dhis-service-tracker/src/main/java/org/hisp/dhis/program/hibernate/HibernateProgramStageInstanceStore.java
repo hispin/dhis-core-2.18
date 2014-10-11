@@ -168,7 +168,6 @@ public class HibernateProgramStageInstanceStore
             message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
             message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
             
-
             SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
             schedulingProgramObject.setProgramStageInstanceId( programstageinstanceid );
             schedulingProgramObject.setPhoneNumber( rs.getString( "phonenumber" ) );
