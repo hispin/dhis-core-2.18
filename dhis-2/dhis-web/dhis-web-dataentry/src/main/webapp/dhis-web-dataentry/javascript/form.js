@@ -597,7 +597,8 @@ function loadForm()
 	                loadDataValues();
 	                dhis2.de.insertOptionSets();
 	            } );
-	        } else {
+	        } 
+	    	else {
                 dhis2.de.storageManager.formExistsRemotely( dataSetId ).done( function( value ) {
                     console.log( 'Loading form remotely: ' + dataSetId );
 
