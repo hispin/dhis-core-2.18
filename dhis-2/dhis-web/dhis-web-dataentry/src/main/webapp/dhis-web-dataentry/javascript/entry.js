@@ -77,13 +77,12 @@ dhis2.de.updateIndicators = function()
 dhis2.de.getDataElementTotalValue = function( de )
 {
 	var sum = new Number();
-	
-	$( 'input[name="entryfield"]' ).each( function( index )
-	{	
-		var key = $( this ).attr( 'id' );
-		var entryFieldId = key.substring( 0, key.indexOf( '-' ) );
 		
-		if ( de && de == entryFieldId && $( this ).attr( 'value' ) )
+	$( '[id^="' + de + '"]' ).each( function( index )
+	{
+		var val = $( this ).attr( 'value' );
+		
+		if ( val && dhis2.validation.isNumber( val ) )
 		{
 			sum += new Number( $( this ).attr( 'value' ) );
 		}
