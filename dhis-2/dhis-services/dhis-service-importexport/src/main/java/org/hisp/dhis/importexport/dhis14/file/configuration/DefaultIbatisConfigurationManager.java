@@ -29,16 +29,11 @@ package org.hisp.dhis.importexport.dhis14.file.configuration;
  */
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Properties;
 
-import org.hisp.dhis.external.configuration.ConfigurationManager;
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
-import org.hisp.dhis.external.location.LocationManager;
-import org.hisp.dhis.external.location.LocationManagerException;
-import org.hisp.dhis.importexport.IbatisConfiguration;
 import org.hisp.dhis.importexport.IbatisConfigurationManager;
+import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -54,96 +49,32 @@ public class DefaultIbatisConfigurationManager
     
     private static final String ACCESS_EXTENSION = ".mdb";
 
-    // -------------------------------------------------------------------------
-    // Properties
-    // -------------------------------------------------------------------------
-
-    private String configDir;
-
-    public void setConfigDir( String configDir )
-    {
-        this.configDir = configDir;
-    }
+    @Autowired
+    private SystemSettingManager systemSettingManager;    
     
-    private String configFile;
-
-    public void setConfigFile( String configFile )
-    {
-        this.configFile = configFile;
-    }
-
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private LocationManager locationManager;
-
-    public void setLocationManager( LocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
-
-    private ConfigurationManager<IbatisConfiguration> configurationManager;
-
-    public void setConfigurationManager( ConfigurationManager<IbatisConfiguration> configurationManager )
-    {
-        this.configurationManager = configurationManager;
-    }
-
     // -------------------------------------------------------------------------
     // IbatisConfigurationManager implementation
     // -------------------------------------------------------------------------
 
     public Properties getPropertiesConfiguration()
     {
-        try
-        {
-            IbatisConfiguration configuration = getIbatisConfiguration();
-            
-            Properties properties = new Properties();
-            
-            properties.put( KEY_CONNECTION_URL_DATABASE, configuration.getDataFile() );
-            properties.put( KEY_USERNAME, configuration.getUserName() );
-            properties.put( KEY_PASSWORD, configuration.getPassword() );
-            properties.put( KEY_LEVELS, configuration.getLevels() );
-            
-            return properties;
-        }
-        catch ( NoConfigurationFoundException ex )
-        {
-            throw new RuntimeException( "No configuration found for Ibatis", ex );
-        }
+        Properties properties = new Properties();
+        
+        properties.put( KEY_CONNECTION_URL_DATABASE, systemSettingManager.getSystemSetting( KEY_CONNECTION_URL_DATABASE ) );
+        properties.put( KEY_USERNAME, systemSettingManager.getSystemSetting( KEY_USERNAME ) );
+        properties.put( KEY_PASSWORD, systemSettingManager.getSystemSetting( KEY_PASSWORD ) );
+        properties.put( KEY_LEVELS, systemSettingManager.getSystemSetting( KEY_LEVELS ) );
+        
+        return properties;
     }
     
-    public IbatisConfiguration getIbatisConfiguration()
-        throws NoConfigurationFoundException
+    public void setConfiguration( String connectionUrl, String username, String password, String levels )
     {
-        try
-        {
-            InputStream in = locationManager.getInputStream( configFile, configDir );
-            
-            return configurationManager.getConfiguration( in, IbatisConfiguration.class );
-        }
-        catch ( LocationManagerException ex )
-        {
-            throw new NoConfigurationFoundException( "No configuration file found" );
-        }
+        systemSettingManager.saveSystemSetting( KEY_CONNECTION_URL_DATABASE, connectionUrl );
+        systemSettingManager.saveSystemSetting( KEY_USERNAME, username );
+        systemSettingManager.saveSystemSetting( KEY_PASSWORD, password );
+        systemSettingManager.saveSystemSetting( KEY_LEVELS, levels );
     }
-
-    public void setIbatisConfiguration( IbatisConfiguration configuration )
-    {
-        try
-        {
-            OutputStream out = locationManager.getOutputStream( configFile, configDir );
-            
-            configurationManager.setConfiguration( configuration, out );
-        }
-        catch ( LocationManagerException ex )
-        {
-            throw new RuntimeException( "Failed to set configuration", ex );
-        }
-    }
-    
 
     public boolean fileIsValid( String path )
     {

@@ -28,11 +28,7 @@ package org.hisp.dhis.importexport.action.imp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.*;
-
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
-import org.hisp.dhis.importexport.IbatisConfiguration;
-import org.hisp.dhis.importexport.IbatisConfigurationManager;
+import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.setCurrentRunningProcessImportFormat;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,21 +39,6 @@ import com.opensymphony.xwork2.Action;
 public class SetImportTypeAction
     implements Action
 {
-    //TODO rename to SetImportFormatAction
-    
-    private static final String CONFIG_DHIS14 = "configDhis14";
-    
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-    
-    private IbatisConfigurationManager configurationManager;
-
-    public void setConfigurationManager( IbatisConfigurationManager configurationManager )
-    {
-        this.configurationManager = configurationManager;
-    }
-    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -75,27 +56,6 @@ public class SetImportTypeAction
 
     public String execute()
     {
-        // ---------------------------------------------------------------------
-        // Verify configuration if dhis14 file format
-        // ---------------------------------------------------------------------
-
-        if ( importFormat != null && importFormat.equalsIgnoreCase( "DHIS14FILE" ) )
-        {
-            try
-            {
-                IbatisConfiguration config = configurationManager.getIbatisConfiguration();
-                        
-                if ( config == null || !configurationManager.fileIsValid( config.getDataFile() ) )
-                {
-                    return CONFIG_DHIS14;
-                }
-            }
-            catch ( NoConfigurationFoundException ex )
-            {
-                return CONFIG_DHIS14;
-            }
-        }
-
         // ---------------------------------------------------------------------
         // Set current format
         // ---------------------------------------------------------------------

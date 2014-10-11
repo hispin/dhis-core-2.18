@@ -45,9 +45,7 @@ import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.importexport.IbatisConfigurationManager;
 import org.hisp.dhis.importexport.ImportInternalProcess;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportStrategy;
@@ -88,13 +86,6 @@ public class ImportAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
-    }
-
-    private IbatisConfigurationManager configurationManager;
-
-    public void setConfigurationManager( IbatisConfigurationManager configurationManager )
-    {
-        this.configurationManager = configurationManager;
     }
 
     private I18n i18n;
@@ -268,22 +259,6 @@ public class ImportAction
         setCurrentRunningProcess( PROCESS_KEY_IMPORT, executor.getId() );
         setCurrentRunningProcessType( type );
         setCurrentImportFileName( fileName );
-
-        // ---------------------------------------------------------------------
-        // Verify import configuration
-        // ---------------------------------------------------------------------
-
-        if ( importFormat != null && importFormat.equals( "DHIS14FILE" ) )
-        {
-            try
-            {
-                configurationManager.getIbatisConfiguration();
-            }
-            catch ( NoConfigurationFoundException ex )
-            {
-                return "dhis14";
-            }
-        }
         
         return SUCCESS;
     }
