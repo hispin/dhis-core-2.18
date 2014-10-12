@@ -167,7 +167,7 @@ public class CompleteDataSetRegistrationController
         dataSets.addAll( manager.getByUid( DataSet.class, dataSet ) );
 
         CompleteDataSetRegistrations completeDataSetRegistrations = new CompleteDataSetRegistrations();
-        completeDataSetRegistrations.setCompleteDataSetRegistrationList( new ArrayList<>(
+        completeDataSetRegistrations.setCompleteDataSetRegistrations( new ArrayList<>(
             registrationService.getCompleteDataSetRegistrations( dataSets, organisationUnits, periods ) ) );
 
         return completeDataSetRegistrations;
