@@ -33,17 +33,19 @@ import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.schema.Schemas;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/schemas", method = RequestMethod.GET )
+@RequestMapping(value = "/schemas", method = RequestMethod.GET)
 public class SchemaController
 {
     @Autowired
@@ -55,10 +57,17 @@ public class SchemaController
         return new Schemas( schemaService.getSortedSchemas() );
     }
 
-    @RequestMapping( value = "/{type}" )
+    @RequestMapping(value = "/{type}")
     public @ResponseBody Schema getSchema( @PathVariable String type )
     {
-        return schemaService.getSchemaBySingularName( type );
+        Schema schema = schemaService.getSchemaBySingularName( type );
+
+        if ( schema != null )
+        {
+            return schema;
+        }
+
+        throw new HttpClientErrorException( HttpStatus.NOT_FOUND, "Type " + type + " does not exist." );
     }
 
     @RequestMapping( value = "/{type}/{property}" )
@@ -71,6 +80,6 @@ public class SchemaController
             return schema.getPropertyMap().get( property );
         }
 
-        return null;
+        throw new HttpClientErrorException( HttpStatus.NOT_FOUND, "Property " + property + " does not exist on type " + type + "." );
     }
 }
