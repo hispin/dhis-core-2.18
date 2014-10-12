@@ -30,6 +30,8 @@
 
 dhis2.util.namespace('dhis2.validation');
 
+dhis2.validation.INT_MAX_VALUE = parseInt('2147483647');
+
 /**
  * Checks if the given value is valid zero.
  */
@@ -43,22 +45,19 @@ dhis2.validation.isValidZeroNumber = function(value) {
  */
 dhis2.validation.isInt = function(value) {
   var regex = /^(0|-?[1-9]\d*)$/;
-  return regex.test(value);
+  var patternTest = regex.test(value);
+  var rangeTest = value && 
+  	parseInt(value) < dhis2.validation.INT_MAX_VALUE &&
+  	parseInt(value) > ( dhis2.validation.INT_MAX_VALUE * -1 );
+  return patternTest && rangeTest;
 };
-
-/**
- * Allow only integers inclusive between 0 and 100. 
- */
-dhis2.validation.isPercentage = function(value) {
-  return dhis2.validation.isInt(value) && parseInt(value) >= 0 && parseInt(value) <= 100;
-}
 
 /**
  * Allow only positive integers, not zero, no thousands separators.
  */
 dhis2.validation.isPositiveInt = function(value) {
   var regex = /^[1-9]\d*$/;
-  return regex.test(value);
+  return regex.test(value) && dhis2.validation.isInt(value);
 };
 
 /**
@@ -66,7 +65,7 @@ dhis2.validation.isPositiveInt = function(value) {
  */
 dhis2.validation.isZeroOrPositiveInt = function(value) {
   var regex = /(^0$)|(^[1-9]\d*$)/;
-  return regex.test(value);
+  return regex.test(value) && dhis2.validation.isInt(value);
 };
 
 /**
@@ -74,7 +73,7 @@ dhis2.validation.isZeroOrPositiveInt = function(value) {
  */
 dhis2.validation.isNegativeInt = function(value) {
   var regex = /^-[1-9]\d*$/;
-  return regex.test(value);
+  return regex.test(value) && dhis2.validation.isInt(value);
 };
 
 /**
@@ -99,6 +98,13 @@ dhis2.validation.isPositiveNumber = function(value) {
 dhis2.validation.isNegativeNumber = function(value) {
   return dhis2.validation.isNumber(value) && parseFloat(value) < 0;
 };
+
+/**
+ * Allow only integers inclusive between 0 and 100. 
+ */
+dhis2.validation.isPercentage = function(value) {
+  return dhis2.validation.isInt(value) && parseInt(value) >= 0 && parseInt(value) <= 100;
+}
 
 /**
  * Returns true if the provided string argument is to be considered a unit
