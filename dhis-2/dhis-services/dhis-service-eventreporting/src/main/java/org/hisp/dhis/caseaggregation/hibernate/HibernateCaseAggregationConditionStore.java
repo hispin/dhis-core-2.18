@@ -49,6 +49,7 @@ import static org.hisp.dhis.scheduling.CaseAggregateConditionSchedulingManager.T
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -326,35 +327,12 @@ public class HibernateCaseAggregationConditionStore
     {
         try
         {
-            int periodId = 0;
+            period = periodService.reloadPeriod( period );
+            final String deleteDataValueSql = "delete from datavalue where dataelementid=" + dataElementId
+                + " and categoryoptioncomboid=" + optionComboId + " and sourceid in ("
+                + TextUtils.getCommaDelimitedString( orgunitIds ) + ") " + "and periodid = " + period.getId();
+            jdbcTemplate.update( deleteDataValueSql );
             
-            final String selectSql = "select periodid from period where periodtypeid = ( select periodtypeid from periodtype where name='"
-                + period.getPeriodType().getName()
-                + "' )"
-                + " and startdate='"
-                + DateUtils.getMediumDateString( period.getStartDate() )
-                + "' and enddate='"
-                + DateUtils.getMediumDateString( period.getEndDate() ) + "'";
-            
-            periodId = jdbcTemplate.queryForObject( selectSql, Integer.class );
-            
-            if ( periodId == 0 )
-            {
-                final String insertSql = "insert into period (periodid, periodtypeid,startdate,enddate) " + " VALUES " + "("
-                    + statementBuilder.getAutoIncrementValue() + ","+ period.getPeriodType().getId() + ",'" + DateUtils.getMediumDateString( period.getStartDate() )
-                    + "','" + DateUtils.getMediumDateString( period.getEndDate() ) + "' )";
-                
-               jdbcTemplate.update( insertSql );
-            }
-            else
-            {
-                final String deleteDataValueSql = "delete from datavalue where dataelementid=" + dataElementId
-                    + " and categoryoptioncomboid=" + optionComboId + " and sourceid in ("
-                    + TextUtils.getCommaDelimitedString( orgunitIds ) + ") "
-                        + "and periodid = " + periodId;
-               jdbcTemplate.update( deleteDataValueSql );
-            }
-
             jdbcTemplate.update( sql );
 
         }
@@ -1356,41 +1334,9 @@ public class HibernateCaseAggregationConditionStore
         Date endDate = calEndDate.getTime();
 
         CalendarPeriodType periodType = (CalendarPeriodType) PeriodType.getPeriodTypeByName( periodTypeName );
-        String sql = "select periodtypeid from periodtype where name='" + periodTypeName + "'";
-        int periodTypeId = jdbcTemplate.queryForObject( sql, Integer.class );
-
-        Collection<Period> periods = periodType.generatePeriods( startDate, endDate );
-
-        for ( Period period : periods )
-        {
-            String start = DateUtils.getMediumDateString( period.getStartDate() );
-            String end = DateUtils.getMediumDateString( period.getEndDate() );
-
-            sql = "select periodid from period where periodtypeid=" + periodTypeId + " and startdate='" + start
-                + "' and enddate='" + end + "'";
-            Integer periodid = null;
-            SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
-            if ( rs.next() )
-            {
-                periodid = rs.getInt( "periodid" );
-            }
-
-            if ( periodid == null )
-            {
-                String insertSql = "insert into period (periodid, periodtypeid,startdate,enddate) " + " VALUES " + "("
-                    + statementBuilder.getAutoIncrementValue() + "," + periodTypeId + ",'" + start + "','" + end
-                    + "' )";
-                
-                jdbcTemplate.execute( insertSql );
-
-                period.setId( jdbcTemplate.queryForObject( sql, Integer.class ) );
-            }
-            else
-            {
-                period.setId( periodid );
-            }
-        }
-
+        List<Period> periods = new ArrayList<Period>( periodType.generatePeriods( startDate, endDate ) );
+        periods = periodService.reloadPeriods(periods );
+       
         return periods;
     }
 
