@@ -77,6 +77,21 @@ public class DataValue
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Logic
+    //--------------------------------------------------------------------------
+
+    public boolean hasLastUpdated()
+    {
+        String updated = getLastUpdated();
+        return updated != null && !updated.isEmpty();
+    }
+    
+    public boolean hasCreated()
+    {
+        String creat = getCreated();
+        return creat != null && !creat.isEmpty();
+    }
 
     //--------------------------------------------------------------------------
     // Getters and setters
