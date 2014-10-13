@@ -34,7 +34,7 @@
     </list>
 
     <many-to-one name="relatives" unique="true" class="org.hisp.dhis.period.RelativePeriods" column="relativeperiodsid"
-      cascade="all-delete-orphan" foreign-key="fk_report_relativeperiodsid" />
+      cascade="all-delete-orphan" foreign-key="fk_eventreport_relativeperiodsid" />
 
     <list name="organisationUnitGroups" table="eventreport_orgunitgroups">
       <cache usage="read-write" />
