@@ -575,6 +575,8 @@ public class DefaultDataValueSetService
         // Data values
         // ---------------------------------------------------------------------
 
+        Date now = new Date();
+        
         notifier.notify( id, "Importing data values" );
         log.info( "importing data values" );
 
@@ -668,8 +670,8 @@ public class DefaultDataValueSetService
                 internalValue.setStoredBy( dataValue.getStoredBy() );
             }
 
-            internalValue.setCreated( parseDate( dataValue.getCreated() ) );
-            internalValue.setLastUpdated( parseDate( dataValue.getLastUpdated() ) );
+            internalValue.setCreated( dataValue.hasCreated() ? parseDate( dataValue.getCreated() ) : now );
+            internalValue.setLastUpdated( dataValue.hasLastUpdated() ? parseDate( dataValue.getLastUpdated() ) : now );
             internalValue.setComment( trimToNull( dataValue.getComment() ) );
             internalValue.setFollowup( dataValue.getFollowup() );
 
