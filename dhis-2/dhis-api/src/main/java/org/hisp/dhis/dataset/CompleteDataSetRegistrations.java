@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.google.common.base.Objects;
 import org.hisp.dhis.common.DxfNamespaces;
 
 import java.util.ArrayList;
@@ -60,5 +61,13 @@ public class CompleteDataSetRegistrations
     public void setCompleteDataSetRegistrations( List<CompleteDataSetRegistration> completeDataSetRegistrations )
     {
         this.completeDataSetRegistrations = completeDataSetRegistrations;
+    }
+
+    @Override
+    public String toString()
+    {
+        return Objects.toStringHelper( this )
+            .add( "completeDataSetRegistrations", completeDataSetRegistrations )
+            .toString();
     }
 }
