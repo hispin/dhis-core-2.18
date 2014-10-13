@@ -84,7 +84,8 @@ public class NoRegistrationSingleEventServiceTest
     private ProgramStage programStageA;
 
     @Override
-    protected void setUpTest() throws Exception
+    protected void setUpTest() 
+        throws Exception
     {
         identifiableObjectManager = _identifiableObjectManager;
         userService = _userService;

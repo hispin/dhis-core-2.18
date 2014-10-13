@@ -90,7 +90,8 @@ public class EnrollmentServiceTest
     private ProgramStage programStage;
 
     @Override
-    protected void setUpTest() throws Exception
+    protected void setUpTest() 
+        throws Exception
     {
         organisationUnitA = createOrganisationUnit( 'A' );
         organisationUnitB = createOrganisationUnit( 'B' );
@@ -347,7 +348,6 @@ public class EnrollmentServiceTest
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getTrackedEntityInstance( maleA );
-        // person.setName( "Changed Name" );
         trackedEntityInstanceService.updateTrackedEntityInstance( trackedEntityInstance );
 
         List<Enrollment> enrollments = enrollmentService.getEnrollments( trackedEntityInstance ).getEnrollments();

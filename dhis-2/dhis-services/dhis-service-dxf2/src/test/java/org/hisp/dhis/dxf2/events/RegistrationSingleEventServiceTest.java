@@ -156,12 +156,6 @@ public class RegistrationSingleEventServiceTest
         createUserAndInjectSecurityContext( true );
     }
 
-    // @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
-
     @Test
     public void testSaveWithoutEnrollmentShouldFail()
     {

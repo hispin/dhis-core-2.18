@@ -191,12 +191,6 @@ public class RegistrationMultiEventsServiceTest
         createUserAndInjectSecurityContext( true );
     }
 
-    // @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
-
     @Test
     public void testSaveWithoutProgramStageShouldFail()
     {

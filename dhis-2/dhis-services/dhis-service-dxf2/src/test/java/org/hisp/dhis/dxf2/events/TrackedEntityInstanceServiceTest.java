@@ -113,12 +113,6 @@ public class TrackedEntityInstanceServiceTest
         programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA );
     }
 
-    // @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
-
     @Test
     public void getPersonByUid()
     {
