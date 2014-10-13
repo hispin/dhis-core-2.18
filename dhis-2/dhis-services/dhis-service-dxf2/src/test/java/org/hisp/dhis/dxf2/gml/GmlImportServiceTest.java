@@ -36,9 +36,11 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.apache.commons.io.IOUtils;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.junit.After;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
@@ -60,6 +62,16 @@ public class GmlImportServiceTest
 
         inputStream = new ClassPathResource( "gmlOrgUnits.gml" ).getInputStream();        
     }
+    
+    @After
+    public void after()
+    {
+        IOUtils.closeQuietly( inputStream );
+    }
+
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
 
     @Test
     public void fromGmlTest()
