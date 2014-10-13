@@ -110,7 +110,7 @@
     </set>
 
     <many-to-one name="legendSet" class="org.hisp.dhis.mapping.MapLegendSet" column="legendsetid"
-      foreign-key="fk_indicator_legendset" />
+      foreign-key="fk_dataset_legendset" />
 
     <!-- Dynamic attribute values -->
 
