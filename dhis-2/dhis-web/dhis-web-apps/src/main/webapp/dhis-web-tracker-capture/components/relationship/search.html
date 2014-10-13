@@ -33,14 +33,14 @@
                             </select>
                         </div>
                         <div class="filter-value" ng-show="enrollment.operator === defaultOperators[0]">
-                            <input type="text" placeholder="{{'exact_date'| translate}}" class="form-control-select2" ng-date ng-model="enrollment.programExactDate"/>
+                            <input type="text" placeholder="{{'exact_date'| translate}}" class="form-control-select2" d2-date ng-model="enrollment.programExactDate"/>
                         </div>
                         <div class="filter-value" ng-show="enrollment.operator === defaultOperators[1]">
                             <div class="container-1-2">
-                                <input type="text" placeholder="{{'start_date'| translate}}" class="form-control-select2" ng-date ng-model="enrollment.programStartDate"/>
+                                <input type="text" placeholder="{{'start_date'| translate}}" class="form-control-select2" d2-date ng-model="enrollment.programStartDate"/>
                             </div>
                             <div class="container-1-2">
-                                <input type="text" placeholder="{{'end_date'| translate}}" class="form-control-select2" ng-date ng-model="enrollment.programEndDate"/>                
+                                <input type="text" placeholder="{{'end_date'| translate}}" class="form-control-select2" d2-date ng-model="enrollment.programEndDate"/>                
                             </div>
                         </div>                    
                     </div>                
@@ -78,14 +78,14 @@
                                     </select>
                                 </div>
                                 <div class="filter-value" ng-show="attribute.operator === defaultOperators[0]">
-                                    <input type="text" placeholder="{{'exact_date'| translate}}" class="form-control-select2" ng-date ng-model="attribute.exactValue"/>
+                                    <input type="text" placeholder="{{'exact_date'| translate}}" class="form-control-select2" d2-date ng-model="attribute.exactValue"/>
                                 </div>
                                 <div class="filter-value" ng-show="attribute.operator === defaultOperators[1]">
                                     <div class="container-1-2">
-                                        <input type="text" placeholder="{{'start_date'| translate}}" class="form-control-select2" ng-date ng-model="attribute.startValue"/>
+                                        <input type="text" placeholder="{{'start_date'| translate}}" class="form-control-select2" d2-date ng-model="attribute.startValue"/>
                                     </div>
                                     <div class="container-1-2">
-                                        <input type="text" placeholder="{{'end_date'| translate}}" class="form-control-select2" ng-date ng-model="attribute.endValue"/>                
+                                        <input type="text" placeholder="{{'end_date'| translate}}" class="form-control-select2" d2-date ng-model="attribute.endValue"/>                
                                     </div>
                                 </div>                            
                             </div> 

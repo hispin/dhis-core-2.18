@@ -27,7 +27,7 @@
                     <ng-form name="innerForm">     
                         <div ng-switch="attribute.type">
                             <div ng-switch-when="date">
-                                <input type="text" placeholder="{{dhis2CalendarFormat.keyDateFormat}}" name="foo" class="form-control" ng-date ng-model="attribute.value" ng-required="attribute.mandatory" />
+                                <input type="text" placeholder="{{dhis2CalendarFormat.keyDateFormat}}" name="foo" class="form-control" d2-date ng-model="attribute.value" ng-required="attribute.mandatory" />
                                 <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
                             </div>
                             <div ng-switch-when="trueOnly">
@@ -114,7 +114,7 @@
                                placeholder="{{dhis2CalendarFormat.keyDateFormat}}" 
                                name="dateOfEnrollment" 
                                class="form-control" 
-                               ng-date 
+                               d2-date 
                                ng-model="enrollment.dateOfEnrollment" 
                                max-date="selectedProgram.selectEnrollmentDatesInFuture ? '' : 0"
                                min-date=""
@@ -131,7 +131,7 @@
                                placeholder="{{dhis2CalendarFormat.keyDateFormat}}"
                                name="dateOfIncident"
                                class="form-control" 
-                               ng-date 
+                               d2-date 
                                max-date="selectedProgram.selectIncidentDatesInFuture ? '' : 0"
                                min-date=""
                                ng-model="enrollment.dateOfIncident"/>

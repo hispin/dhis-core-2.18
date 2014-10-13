@@ -185,52 +185,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
     };
 })
 
-/*.directive('ngDate', function(DateUtils, $rootScope) {
-    return {
-        restrict: 'A',
-        require: 'ngModel',        
-        link: function(scope, element, attrs, ctrl) {
-
-            var dateFormat = 'yy-mm-dd';
-            if($rootScope.dhis2CalendarFormat.keyDateFormat === 'dd-MM-yyyy'){
-                dateFormat = 'dd-mm-yy';
-            }
-            element.datepicker({
-                changeYear: true,
-                changeMonth: true,
-                dateFormat: dateFormat,
-                yearRange: '-120:+30',
-                minDate: attrs.minDate,
-                maxDate: attrs.maxDate,
-                onSelect: function(date) {
-                    //scope.date = date;
-                    ctrl.$setViewValue(date);
-                    $(this).change();                    
-                    scope.$apply();
-                }
-            })
-            .change(function() {
-                var rawDate = this.value;
-                var convertedDate = DateUtils.format(this.value);
-
-                if(rawDate != convertedDate){
-                    scope.invalidDate = true;
-                    ctrl.$setViewValue(this.value);                                   
-                    ctrl.$setValidity('foo', false);                    
-                    scope.$apply();     
-                }
-                else{
-                    scope.invalidDate = false;
-                    ctrl.$setViewValue(this.value);                                   
-                    ctrl.$setValidity('foo', true);                    
-                    scope.$apply();     
-                }
-            });    
-        }      
-    };   
-})*/
-
-.directive('ngDate', function(DateUtils, CalendarService, storage, $parse) {
+.directive('d2Date', function(DateUtils, CalendarService, storage, $parse) {
     return {
         restrict: 'A',
         require: 'ngModel',        

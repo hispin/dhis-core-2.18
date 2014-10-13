@@ -843,7 +843,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '"' +
                                             ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
-                                            ' ng-date' +
+                                            ' d2-date' +
                                             ' blur-or-change="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
