@@ -66,7 +66,6 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };
 })
 
-
 /* Factory to fetch programs */
 .factory('ProgramFactory', function($q, $rootScope, StorageService) { 
     return {
@@ -429,7 +428,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 StorageService.currentStore.getAll('attributes').done(function(attributes){
                     angular.forEach(attributes, function(att){
                         if(att.optionSet){
-                           StorageService.currentStore.get('optionSets', att.optionSet.id).done(function(optionSet){
+                            StorageService.currentStore.get('optionSets', att.optionSet.id).done(function(optionSet){
                                 att.optionSet = optionSet;
                             });
                         }
@@ -1209,31 +1208,61 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };
 })
 
-.service('DateUtils', function($filter, storage, $rootScope){
+.service('DateUtils', function($filter, CalendarService){
     
     return {
         format: function(dateValue) {            
-            dateValue = Date.parse(dateValue);
-            dateValue = $filter('date')(dateValue, $rootScope.dhis2CalendarFormat.keyDateFormat);            
+            if(!dateValue){
+                return;
+            }            
+            var calendarSetting = CalendarService.getSetting();
+            dateValue = $filter('date')(dateValue, calendarSetting.keyDateFormat);            
             return dateValue;
         },
-        formatToHrsMins: function(dateValue) {          
+        formatToHrsMins: function(dateValue) {
+            var calendarSetting = CalendarService.getSetting();
             var dateFormat = 'YYYY-MM-DD @ hh:mm A';
-            if($rootScope.dhis2CalendarFormat.keyDateFormat === 'dd-MM-yyyy'){
+            if(calendarSetting.keyDateFormat === 'dd-MM-yyyy'){
                 dateFormat = 'DD-MM-YYYY @ hh:mm A';
             }            
             return moment(dateValue).format(dateFormat);
+        },
+        getToday: function(){  
+            var calendarSetting = CalendarService.getSetting();
+            var tdy = $.calendars.instance(calendarSetting.keyCalendar).newDate();            
+            var today = moment(tdy._year + '-' + tdy._month + '-' + tdy._day, 'YYYY-MM-DD')._d;            
+            today = Date.parse(today);     
+            today = $filter('date')(today,  calendarSetting.keyDateFormat);
+            return today;
+        },
+        formatFromUserToApi: function(dateValue){            
+            if(!dateValue){
+                return;
+            }
+            var calendarSetting = CalendarService.getSetting();            
+            dateValue = moment(dateValue, calendarSetting.momentFormat)._d;
+            dateValue = Date.parse(dateValue);     
+            dateValue = $filter('date')(dateValue, 'yyyy-MM-dd'); 
+            return dateValue;            
+        },
+        formatFromApiToUser: function(dateValue){            
+            if(!dateValue){
+                return;
+            }            
+            var calendarSetting = CalendarService.getSetting();
+            dateValue = moment(dateValue, 'YYYY-MM-DD')._d;
+            dateValue = Date.parse(dateValue);     
+            dateValue = $filter('date')(dateValue, calendarSetting.keyDateFormat); 
+            return dateValue;
         }
     };
 })
 
-.service('EventUtils', function(DateUtils, OrgUnitService){
+.service('EventUtils', function(DateUtils, CalendarService, OrgUnitService, $filter, orderByFilter){
     return {
-        createDummyEvent: function(programStage, orgUnit, enrollment){
-            
-            var today = DateUtils.format(moment());
-    
-            var dueDate = this.getEventDueDate(programStage, enrollment);
+        createDummyEvent: function(events, programStage, orgUnit, enrollment){            
+            var today = DateUtils.getToday();    
+            var dueDate = this.getEventDueDate(events, programStage, enrollment);
             var dummyEvent = {programStage: programStage.id, 
                               orgUnit: orgUnit.id,
                               orgUnitName: orgUnit.name,
@@ -1249,8 +1278,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             return dummyEvent;        
         },
         getEventStatusColor: function(dhis2Event){    
-            var today = DateUtils.format(moment());
-            var eventDate = today;
+            var eventDate = DateUtils.getToday();
+            var calendarSetting = CalendarService.getSetting();
             
             if(dhis2Event.eventDate){
                 eventDate = dhis2Event.eventDate;
@@ -1267,17 +1296,34 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                     return 'alert alert-info'; //'stage-executed';
                 }
                 else{
-                    if(moment(eventDate).isAfter(dhis2Event.dueDate)){
+                    if(moment(eventDate, calendarSetting.momentFormat).isAfter(dhis2Event.dueDate)){
                         return 'alert alert-danger';//'stage-overdue';
                     }                
                     return 'alert alert-warning';//'stage-on-time';
                 }               
             }            
         },
-        getEventDueDate: function(programStage, enrollment){
-            //var dueDate = DateUtils.format(enrollment.dateOfIncident);
-            var dueDate = moment(enrollment.dateOfIncident).add('d', programStage.minDaysFromStart);
-            dueDate = DateUtils.format(dueDate);            
+        getEventDueDate: function(events, programStage, enrollment){
+            var referenceDate = enrollment.dateOfIncident ? enrollment.dateOfIncident : enrollment.dateOfEnrollment;
+            var offset = programStage.minDaysFromStart;
+            
+            if(programStage.repeatable){
+                var eventsPerStage = [];
+                angular.forEach(events, function(event){
+                    if(event.programStage === programStage.id){
+                        eventsPerStage.push(event);
+                    }
+                });
+
+                if(eventsPerStage.length > 0){
+                    eventsPerStage = orderByFilter(eventsPerStage, '-eventDate');
+                    referenceDate = eventsPerStage[0].eventDate;
+                    offset = programStage.standardInterval;
+                }                
+            }
+            var calendarSetting = CalendarService.getSetting();
+            var dueDate = moment(referenceDate, calendarSetting.momentFormat).add('d', offset)._d;
+            dueDate = $filter('date')(dueDate, calendarSetting.keyDateFormat); 
             return dueDate;
         },
         getEventOrgUnitName: function(orgUnitId){            
@@ -1328,4 +1374,30 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             return e;
         }
     }; 
+})
+
+/* service for getting calendar setting */
+.service('CalendarService', function(storage, $rootScope){    
+
+    return {
+        getSetting: function() {
+            
+            var dhis2CalendarFormat = {keyDateFormat: 'yyyy-MM-dd', keyCalendar: 'gregorian', momentFormat: 'YYYY-MM-DD'};                
+            var storedFormat = storage.get('CALENDAR_SETTING');
+            if(angular.isObject(storedFormat) && storedFormat.keyDateFormat && storedFormat.keyCalendar){
+                if(storedFormat.keyCalendar === 'iso8601'){
+                    storedFormat.keyCalendar = 'gregorian';
+                }
+
+                if(storedFormat.keyDateFormat === 'dd-MM-yyyy'){
+                    dhis2CalendarFormat.momentFormat = 'DD-MM-YYYY';
+                }
+                
+                dhis2CalendarFormat.keyCalendar = storedFormat.keyCalendar;
+                dhis2CalendarFormat.keyDateFormat = storedFormat.keyDateFormat;
+            }
+            $rootScope.dhis2CalendarFormat = dhis2CalendarFormat;
+            return dhis2CalendarFormat;
+        }
+    };            
 });

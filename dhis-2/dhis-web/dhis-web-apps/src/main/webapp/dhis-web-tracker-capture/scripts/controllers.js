@@ -60,7 +60,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             
             $scope.loadPrograms($scope.selectedOrgUnit);                                
         }
-    });    
+    });
     
     //watch for changes in ou mode - mode could be selected without notifcation to grid column generator
     $scope.$watch('selectedOuMode.name', function() {           
@@ -85,8 +85,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     }
     
     //load programs associated with the selected org unit.
-    $scope.loadPrograms = function(orgUnit) {        
-  
+    $scope.loadPrograms = function(orgUnit) {
+        
         $scope.selectedOrgUnit = orgUnit;
         
         if (angular.isObject($scope.selectedOrgUnit)) {   

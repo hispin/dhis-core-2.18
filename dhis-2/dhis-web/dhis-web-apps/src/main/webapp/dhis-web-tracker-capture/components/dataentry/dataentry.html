@@ -31,7 +31,7 @@
             <table class="table-borderless">
                 <tbody>
                     <tr>
-                        <td class="inline-block" ng-repeat="dhis2Event in dhis2Events| orderBy:'sortingDate':reverse">
+                        <td class="inline-block" ng-repeat="dhis2Event in dhis2Events | orderBy:'sortingDate':reverse">
                             <span class="block align-center">{{dhis2Event.eventOrgUnitName}}</span>                                              
                             <span class="stage-container"                                                     
                                   ng-class="{'current-stage': currentEvent && currentEvent.event == dhis2Event.event, '{{dhis2Event.statusColor}}': true}"                                                      
@@ -84,7 +84,7 @@
                         <button type="button" class="btn btn-default small-horizonal-spacing" ng-click="closeEventCreation()">{{'cancel'| translate}}</button>
                     </div>                        
                 </div>
-            </form>            
+            </form>
         </div>        
 
         <div ng-if="currentEvent && !showEventCreationDiv">
@@ -92,14 +92,13 @@
                 <div class="col-md-6">
                     {{currentEvent.reportDateDescription}}
                     <input type="text"
-                           name="eventDate" 
                            placeholder="{{dhis2CalendarFormat.keyDateFormat}}"
                            class="form-control" 
                            ng-class="{'input-success': eventDateSaved}"
                            ng-date 
                            ng-model="currentEvent.eventDate"
                            ng-disabled="currentEvent.status === 'SKIPPED'"    
-                           ng-required="true" 
+                           ng-required="true"
                            blur-or-change="saveEventDate()"/>
                     <span ng-if="invalidDate" class="error">{{'date_required'| translate}}</span>
                 </div>
@@ -111,12 +110,11 @@
                         <a href ng-click="enableRescheduling()" title="{{ schedulingEnabled ? 'disable_rescheduling' : 'enable_rescheduling' | translate}}"><span class="text-primary bold">{{'due_date'| translate}}</span></a>                        
                     </span>                    
                     <input type="text" 
-                           name="dueDate" 
                            placeholder="{{dhis2CalendarFormat.keyDateFormat}}"
                            class="form-control"
                            ng-class="{'input-success': dueDateSaved}"
                            ng-date 
-                           ng-model="currentEvent.dueDate" 
+                           ng-model="currentEvent.dueDate"
                            blur-or-change="saveDueDate()" 
                            ng-disabled="currentEvent.eventDate || !schedulingEnabled"/>
                     <span ng-if="invalidDate" class="error">{{'date_required'| translate}}</span>

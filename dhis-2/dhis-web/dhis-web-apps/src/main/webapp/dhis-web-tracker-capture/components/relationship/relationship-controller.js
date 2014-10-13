@@ -458,8 +458,8 @@ trackerCapture.controller('RelationshipController',
                     var enrollment = {trackedEntityInstance: teiId,
                                 program: $scope.selectedProgramForRelative.id,
                                 status: 'ACTIVE',
-                                dateOfEnrollment: $scope.enrollment.enrollmentDate,
-                                dateOfIncident: $scope.enrollment.incidentDate
+                                dateOfEnrollment: DateUtils.formatFromUserToApi($scope.enrollment.enrollmentDate),
+                                dateOfIncident: $scope.enrollment.incidentDate == '' ? DateUtils.formatFromUserToApi($scope.enrollment.enrollmentDate) : DateUtils.formatFromUserToApi($scope.enrollment.incidentDate)
                             };
                     EnrollmentService.enroll(enrollment).then(function(data){
                         if(data.status !== 'SUCCESS'){
@@ -513,7 +513,7 @@ trackerCapture.controller('RelationshipController',
             });
 
             $scope.tei.orgUnitName = $scope.selectedOrgUnit.name;
-            $scope.tei.created = DateUtils.format(new Date());
+            $scope.tei.created = DateUtils.formatFromApiToUser(new Date());
             
             CurrentSelection.setRelationshipInfo({tei: $scope.tei, src: $scope.selectedRelationshipSource});
             

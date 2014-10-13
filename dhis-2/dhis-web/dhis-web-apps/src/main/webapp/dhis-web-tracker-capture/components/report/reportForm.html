@@ -38,12 +38,19 @@
                            class="form-control" 
                            ng-date 
                            ng-model="report.startDate" 
-                           max="today" 
+                           max="today"
                            ng-required="true"/> 
                     <span ng-show="outerForm.submitted && outerForm.reportStartDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}} ({{dhis2CalendarFormat.keyDateFormat}})</span>
                 </td>
                 <td>
-                    <input type="text" name="reportEndDate" placeholder="{{'end_date'| translate}} ({{dhis2CalendarFormat.keyDateFormat}})" class="form-control" ng-date ng-model="report.endDate" max="today" ng-required="true"/>
+                    <input type="text" 
+                           name="reportEndDate" 
+                           placeholder="{{'end_date'| translate}} ({{dhis2CalendarFormat.keyDateFormat}})" 
+                           class="form-control" 
+                           ng-date 
+                           ng-model="report.endDate" 
+                           max="today" 
+                           ng-required="true"/>
                     <span ng-show="outerForm.submitted && outerForm.reportEndDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}} ({{dhis2CalendarFormat.keyDateFormat}})</span>
                 </td>
             </tr>

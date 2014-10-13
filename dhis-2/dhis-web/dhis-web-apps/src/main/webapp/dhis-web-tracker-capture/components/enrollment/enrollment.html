@@ -85,7 +85,7 @@
                                    name="dateOfEnrollment" 
                                    class="form-control" 
                                    ng-date 
-                                   max-date="selectedProgram.selectEnrollmentDatesInFuture ? '' : today"
+                                   max-date="selectedProgram.selectEnrollmentDatesInFuture ? '' : 0"
                                    ng-model="newEnrollment.dateOfEnrollment" 
                                    ng-required="true"/>
                             <span ng-show="outerForm.submitted && outerForm.dateOfEnrollment.$invalid" class="red">{{'required'| translate}}</span>
@@ -100,7 +100,7 @@
                                    placeholder="{{dhis2CalendarFormat.keyDateFormat}}" 
                                    class="form-control" 
                                    ng-date
-                                   max-date="selectedProgram.selectIncidentDatesInFuture ? '' : today"
+                                   max-date="selectedProgram.selectIncidentDatesInFuture ? '' : 0"
                                    ng-model="newEnrollment.dateOfIncident" 
                                    max-date="today"/>
                         </td>

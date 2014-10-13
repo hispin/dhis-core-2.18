@@ -17,7 +17,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
     };   
 })
 
-.directive('selectedOrgUnit', function() {
+.directive('selectedOrgUnit', function(storage) {
     return {        
         restrict: 'A',        
         link: function(scope, element, attrs){  
@@ -69,8 +69,8 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
             selection.setListenerFunction( organisationUnitSelected );
             selection.responseReceived();
             
-            function organisationUnitSelected( orgUnits, orgUnitNames ) {
-                scope.selectedOrgUnit = {id: orgUnits[0], name: orgUnitNames[0]};                    
+            function organisationUnitSelected( orgUnits, orgUnitNames ) {                
+                scope.selectedOrgUnit = {id: orgUnits[0], name: orgUnitNames[0]};
                 scope.$apply();
             }            
         }  
@@ -185,14 +185,14 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
     };
 })
 
-.directive('ngDate', function(DateUtils, $rootScope) {
+/*.directive('ngDate', function(DateUtils, $rootScope) {
     return {
         restrict: 'A',
         require: 'ngModel',        
         link: function(scope, element, attrs, ctrl) {
 
             var dateFormat = 'yy-mm-dd';
-            if($rootScope.keyDateFormat === 'dd-MM-yyyy'){
+            if($rootScope.dhis2CalendarFormat.keyDateFormat === 'dd-MM-yyyy'){
                 dateFormat = 'dd-mm-yy';
             }
             element.datepicker({
@@ -228,12 +228,64 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
             });    
         }      
     };   
+})*/
+
+.directive('ngDate', function(DateUtils, CalendarService, storage, $parse) {
+    return {
+        restrict: 'A',
+        require: 'ngModel',        
+        link: function(scope, element, attrs, ctrl) {    
+            
+            var calendarSetting = CalendarService.getSetting();            
+            var dateFormat = 'yyyy-mm-dd';
+            if(calendarSetting.keyDateFormat === 'dd-MM-yyyy'){
+                dateFormat = 'dd-mm-yyyy';
+            }            
+            
+            var minDate = $parse(attrs.minDate)(scope), 
+                maxDate = $parse(attrs.maxDate)(scope),
+                calendar = $.calendars.instance(calendarSetting.keyCalendar);
+            
+            element.calendarsPicker({
+                changeMonth: true,
+                dateFormat: dateFormat,
+                yearRange: '-120:+30',
+                minDate: minDate,
+                maxDate: maxDate,
+                calendar: calendar, 
+                renderer: $.calendars.picker.themeRollerRenderer,
+                onSelect: function(date) {
+                    //scope.date = date;
+                    ctrl.$setViewValue(date);
+                    $(this).change();                    
+                    scope.$apply();
+                }
+            })
+            .change(function() {                
+                var rawDate = this.value;
+                var convertedDate = DateUtils.format(this.value);
+
+                if(rawDate != convertedDate){
+                    scope.invalidDate = true;
+                    ctrl.$setViewValue(this.value);                                   
+                    ctrl.$setValidity('foo', false);                    
+                    scope.$apply();     
+                }
+                else{
+                    scope.invalidDate = false;
+                    ctrl.$setViewValue(this.value);                                   
+                    ctrl.$setValidity('foo', true);                    
+                    scope.$apply();     
+                }
+            });    
+        }      
+    };   
 })
 
 .directive('blurOrChange', function() {
     
     return function( scope, elem, attrs) {
-        elem.datepicker({
+        elem.calendarsPicker({
             onSelect: function() {
                 scope.$apply(attrs.blurOrChange);
                 $(this).change();                                        
