@@ -87,16 +87,6 @@ public class DefaultExportServiceTest
     @Autowired
     private CompleteDataSetRegistrationService registrationService;
 
-    public ExportService getExportService()
-    {
-        return exportService;
-    }
-
-    public void setExportService( ExportService exportService )
-    {
-        this.exportService = exportService;
-    }
-
     private DataElement deA;
 
     private DataElement deB;
