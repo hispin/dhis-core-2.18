@@ -28,9 +28,12 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.Weighted;
@@ -41,17 +44,13 @@ import org.hisp.dhis.common.view.ExportView;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author Kristian Nordal
  */
-@JacksonXmlRootElement( localName = "period", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "period", namespace = DxfNamespaces.DXF_2_0 )
 public class Period
     extends BaseNameableObject
     implements Weighted
@@ -77,7 +76,7 @@ public class Period
      * Required. Must be unique together with startDate.
      */
     private Date endDate;
-    
+
     /**
      * Transient string holding the ISO representation of the period.
      */
@@ -126,12 +125,17 @@ public class Period
         return getIsoDate();
     }
 
+    public String getRealUid()
+    {
+        return uid;
+    }
+
     @Override
     public String getCode()
     {
         return getIsoDate();
     }
-    
+
     @Override
     public String getName()
     {
@@ -195,7 +199,7 @@ public class Period
     {
         return getMediumDateString( startDate );
     }
-    
+
     /**
      * Returns end date formatted as string.
      *
@@ -227,7 +231,7 @@ public class Period
      *
      * @param type the period type.
      * @return the potential number of periods of the given period type spanned
-     *         by this period.
+     * by this period.
      */
     public int getPeriodSpan( PeriodType type )
     {
@@ -239,7 +243,7 @@ public class Period
     /**
      * Returns the number of days in the period, i.e. the days between the start
      * and end date.
-     * 
+     *
      * @return number of days in period.
      */
     public int getDaysInPeriod()
@@ -247,7 +251,7 @@ public class Period
         Days days = Days.daysBetween( new DateTime( startDate ), new DateTime( endDate ) );
         return days.getDays() + 1;
     }
-    
+
     /**
      * Validates this period. TODO Make more comprehensive.
      */
@@ -257,15 +261,15 @@ public class Period
         {
             return false;
         }
-        
+
         if ( !DailyPeriodType.NAME.equals( periodType.getName() ) && getDaysInPeriod() < 2 )
         {
             return false;
         }
-        
+
         return true;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -319,7 +323,21 @@ public class Period
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Date getStartDate()
+    {
+        return startDate;
+    }
+
+    public void setStartDate( Date startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getEndDate()
     {
         return endDate;
@@ -333,8 +351,7 @@ public class Period
     @JsonProperty
     @JsonSerialize( using = JacksonPeriodTypeSerializer.class )
     @JsonDeserialize( using = JacksonPeriodTypeDeserializer.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public PeriodType getPeriodType()
     {
         return periodType;
@@ -343,17 +360,5 @@ public class Period
     public void setPeriodType( PeriodType periodType )
     {
         this.periodType = periodType;
-    }
-
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    public Date getStartDate()
-    {
-        return startDate;
-    }
-
-    public void setStartDate( Date startDate )
-    {
-        this.startDate = startDate;
     }
 }

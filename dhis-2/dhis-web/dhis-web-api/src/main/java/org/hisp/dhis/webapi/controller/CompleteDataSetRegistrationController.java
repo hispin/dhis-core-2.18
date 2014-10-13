@@ -29,6 +29,7 @@ package org.hisp.dhis.webapi.controller;
  */
 
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.datacompletion.CompleteDataSetRegistrationRequest;
@@ -53,18 +54,22 @@ import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.utils.InputUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -140,6 +145,7 @@ public class CompleteDataSetRegistrationController
         response.setContentType( CONTENT_TYPE_JSON );
         CompleteDataSetRegistrations completeDataSetRegistrations = getCompleteDataSetRegistrations( dataSet, period,
             startDate, endDate, orgUnit, children );
+
         JacksonUtils.toJsonWithView( response.getOutputStream(), completeDataSetRegistrations, BasicView.class );
     }
 
@@ -199,6 +205,44 @@ public class CompleteDataSetRegistrationController
 
     private void saveCompleteDataSetRegistrations( CompleteDataSetRegistrations completeDataSetRegistrations )
     {
+        for ( CompleteDataSetRegistration completeDataSetRegistration : completeDataSetRegistrations.getCompleteDataSetRegistrations() )
+        {
+            Period period = getObject( completeDataSetRegistration.getPeriod() );
+            DataSet dataSet = getObject( completeDataSetRegistration.getDataSet() );
+            DataElementCategoryOptionCombo attributeOptionCombo = getObject( completeDataSetRegistration.getAttributeOptionCombo() );
+            OrganisationUnit organisationUnit = getObject( completeDataSetRegistration.getSource() );
+
+            Date date = completeDataSetRegistration.getDate();
+            String storedBy = completeDataSetRegistration.getStoredBy();
+
+            registerCompleteDataSet( dataSet, period, organisationUnit, attributeOptionCombo, storedBy, date );
+        }
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private <TT extends IdentifiableObject> TT getObject( TT object )
+    {
+        if ( object == null )
+        {
+            return null;
+        }
+
+        if ( Period.class.isInstance( object ) )
+        {
+            return (TT) periodService.reloadIsoPeriod( ((Period) object).getRealUid() );
+        }
+
+        if ( object.getUid() != null )
+        {
+            return (TT) manager.get( object.getClass(), object.getUid() );
+        }
+
+        if ( object.getCode() != null )
+        {
+            return (TT) manager.get( object.getClass(), object.getCode() );
+        }
+
+        return null;
     }
 
     @RequestMapping( method = RequestMethod.POST, produces = "text/plain" )
@@ -329,8 +373,7 @@ public class CompleteDataSetRegistrationController
 
             String cc = completeDataSetRegistrationRequest.getCc();
             String cp = completeDataSetRegistrationRequest.getCp();
-            DataElementCategoryOptionCombo attributeOptionCombo = inputUtils
-                .getAttributeOptionCombo( response, cc, cp );
+            DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
 
             if ( attributeOptionCombo == null )
             {
@@ -465,29 +508,63 @@ public class CompleteDataSetRegistrationController
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+
     private CompleteDataSetRegistration registerCompleteDataSet( DataSet dataSet, Period period,
-        OrganisationUnit orgUnit, DataElementCategoryOptionCombo attributeOptionCombo, String storedBy,
-        Date completionDate )
+        OrganisationUnit orgUnit, DataElementCategoryOptionCombo attributeOptionCombo, String storedBy, Date completionDate )
     {
         I18nFormat format = i18nManager.getI18nFormat();
 
-        if ( registrationService.getCompleteDataSetRegistration( dataSet, period, orgUnit, attributeOptionCombo ) ==
-            null )
+        if ( dataSet == null )
         {
-            CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
+            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "DataSet can not be null." );
+        }
+
+        if ( period == null )
+        {
+            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "period can not be null." );
+        }
+
+        if ( orgUnit == null )
+        {
+            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "organisationUnit can not be null" );
+        }
+
+        if ( attributeOptionCombo == null )
+        {
+            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "attributeOptionCombo can not be null" );
+        }
+
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
+            orgUnit, attributeOptionCombo );
+
+        if ( registration == null )
+        {
+            registration = new CompleteDataSetRegistration();
 
             registration.setDataSet( dataSet );
             registration.setPeriod( period );
             registration.setSource( orgUnit );
             registration.setAttributeOptionCombo( attributeOptionCombo );
-            registration.setDate( completionDate );
-            registration.setStoredBy( storedBy );
+
+            registration.setDate( completionDate != null ? completionDate : new Date() );
+            registration.setStoredBy( storedBy != null ? storedBy : currentUserService.getCurrentUsername() );
             registration.setPeriodName( format.formatPeriod( registration.getPeriod() ) );
 
-            return registration;
+            System.err.println( "saveCompleteDataSetRegistration" );
+            registrationService.saveCompleteDataSetRegistration( registration );
+        }
+        else
+        {
+            registration.setDate( completionDate != null ? completionDate : new Date() );
+            registration.setStoredBy( storedBy != null ? storedBy : currentUserService.getCurrentUsername() );
+            registration.setPeriodName( format.formatPeriod( registration.getPeriod() ) );
+
+            System.err.println( "updateCompleteDataSetRegistration" );
+            registrationService.updateCompleteDataSetRegistration( registration );
         }
 
-        return null;
+
+        return registration;
     }
 
     private void unRegisterCompleteDataSet( Set<DataSet> dataSets, Period period,
