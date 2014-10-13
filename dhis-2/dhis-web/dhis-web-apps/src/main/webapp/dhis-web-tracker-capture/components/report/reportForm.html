@@ -36,7 +36,7 @@
                            name="reportStartDate" 
                            placeholder="{{'start_date'| translate}} ({{dhis2CalendarFormat.keyDateFormat}})" 
                            class="form-control" 
-                           ng-date 
+                           d2-date 
                            ng-model="report.startDate" 
                            max="today"
                            ng-required="true"/> 
@@ -47,7 +47,7 @@
                            name="reportEndDate" 
                            placeholder="{{'end_date'| translate}} ({{dhis2CalendarFormat.keyDateFormat}})" 
                            class="form-control" 
-                           ng-date 
+                           d2-date 
                            ng-model="report.endDate" 
                            max="today" 
                            ng-required="true"/>

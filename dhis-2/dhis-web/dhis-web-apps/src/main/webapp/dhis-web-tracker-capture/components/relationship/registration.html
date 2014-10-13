@@ -34,7 +34,7 @@
                     <ng-form name="innerForm">     
                         <div ng-switch="attribute.valueType">
                             <div ng-switch-when="date">
-                                <input type="text" name="foo" class="form-control" ng-date ng-model="attribute.value" ng-required="attribute.mandatory" />
+                                <input type="text" name="foo" class="form-control" d2-date ng-model="attribute.value" ng-required="attribute.mandatory" />
                                 <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
                             </div>
                             <div ng-switch-when="trueOnly">
@@ -83,7 +83,7 @@
                         {{selectedProgramForRelative.dateOfEnrollmentDescription}}
                     </td>
                     <td>
-                        <input type="text" name="dateOfEnrollment" class="form-control" ng-date ng-model="enrollment.incidentDate" ng-required="true"/>
+                        <input type="text" name="dateOfEnrollment" class="form-control" d2-date ng-model="enrollment.incidentDate" ng-required="true"/>
                         <span ng-show="outerForm.submitted && outerForm.dateOfEnrollment.$invalid" class="error">{{'required'| translate}}</span>
                     </td>
                 </tr>     
@@ -92,7 +92,7 @@
                         {{selectedProgramForRelative.dateOfIncidentDescription}}
                     </td>
                     <td>
-                        <input type="text" class="form-control" ng-date ng-model="enrollment.enrollmentDate" />
+                        <input type="text" class="form-control" d2-date ng-model="enrollment.enrollmentDate" />
                     </td>
                 </tr>
             </table>
