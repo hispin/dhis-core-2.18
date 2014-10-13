@@ -26,6 +26,7 @@
     
     <property name="last5Years" />
     <property name="last12Months" />
+    <property name="last6Months" />
     <property name="last3Months" />
     <property name="last6BiMonths" />
     <property name="last4Quarters" />

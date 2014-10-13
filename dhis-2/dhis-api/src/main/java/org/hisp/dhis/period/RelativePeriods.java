@@ -176,6 +176,8 @@ public class RelativePeriods
     private boolean last5Years = false;
 
     private boolean last12Months = false;
+
+    private boolean last6Months = false;
     
     private boolean last3Months = false;
 
@@ -235,7 +237,7 @@ public class RelativePeriods
     public RelativePeriods( boolean reportingMonth, boolean reportingBimonth, boolean reportingQuarter, boolean lastSixMonth,
                             boolean monthsThisYear, boolean quartersThisYear, boolean thisYear,
                             boolean monthsLastYear, boolean quartersLastYear, boolean lastYear, boolean last5Years,
-                            boolean last12Months, boolean last3Months, boolean last6BiMonths, boolean last4Quarters, boolean last2SixMonths,
+                            boolean last12Months, boolean last6Months, boolean last3Months, boolean last6BiMonths, boolean last4Quarters, boolean last2SixMonths,
                             boolean thisFinancialYear, boolean lastFinancialYear, boolean last5FinancialYears, 
                             boolean lastWeek, boolean last4Weeks, boolean last12Weeks, boolean last52Weeks )
     {
@@ -251,6 +253,7 @@ public class RelativePeriods
         this.lastYear = lastYear;
         this.last5Years = last5Years;
         this.last12Months = last12Months;
+        this.last6Months = last6Months;
         this.last3Months = last3Months;
         this.last6BiMonths = last6BiMonths;
         this.last4Quarters = last4Quarters;
@@ -285,6 +288,7 @@ public class RelativePeriods
         this.lastYear = false;
         this.last5Years = false;
         this.last12Months = false;
+        this.last6Months = false;
         this.last3Months = false;
         this.last6BiMonths = false;
         this.last4Quarters = false;
@@ -320,7 +324,7 @@ public class RelativePeriods
             return PeriodType.getPeriodTypeByName( WeeklyPeriodType.NAME );
         }
         
-        if ( isReportingMonth() || isLast12Months() || isLast3Months() )
+        if ( isReportingMonth() || isLast12Months() || isLast6Months() || isLast3Months() )
         {
             return PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
         }
@@ -508,6 +512,11 @@ public class RelativePeriods
             periods.addAll( getRollingRelativePeriodList( new MonthlyPeriodType(), MONTHS_LAST_12, monthDate, dynamicNames, format ) );
         }
 
+        if ( isLast6Months() )
+        {
+            periods.addAll( getRollingRelativePeriodList( new MonthlyPeriodType(), MONTHS_LAST_12, monthDate, dynamicNames, format ).subList( 6, 12 ) );
+        }
+        
         if ( isLast3Months() )
         {
             periods.addAll( getRollingRelativePeriodList( new MonthlyPeriodType(), MONTHS_LAST_12, monthDate, dynamicNames, format ).subList( 9, 12 ) );
@@ -749,6 +758,7 @@ public class RelativePeriods
         map.put( RelativePeriodEnum.LAST_YEAR, new RelativePeriods().setLastYear( true ) );
         map.put( RelativePeriodEnum.LAST_5_YEARS, new RelativePeriods().setLast5Years( true ) );
         map.put( RelativePeriodEnum.LAST_12_MONTHS, new RelativePeriods().setLast12Months( true ) );
+        map.put( RelativePeriodEnum.LAST_6_MONTHS, new RelativePeriods().setLast6Months( true ) );
         map.put( RelativePeriodEnum.LAST_3_MONTHS, new RelativePeriods().setLast3Months( true ) );
         map.put( RelativePeriodEnum.LAST_6_BIMONTHS, new RelativePeriods().setLast6BiMonths( true ) );
         map.put( RelativePeriodEnum.LAST_4_QUARTERS, new RelativePeriods().setLast4Quarters( true ) );
@@ -785,6 +795,7 @@ public class RelativePeriods
         add( list, RelativePeriodEnum.LAST_YEAR, lastYear );
         add( list, RelativePeriodEnum.LAST_5_YEARS, last5Years );
         add( list, RelativePeriodEnum.LAST_12_MONTHS, last12Months );
+        add( list, RelativePeriodEnum.LAST_6_MONTHS, last6Months );
         add( list, RelativePeriodEnum.LAST_3_MONTHS, last3Months );
         add( list, RelativePeriodEnum.LAST_6_BIMONTHS, last6BiMonths );
         add( list, RelativePeriodEnum.LAST_4_QUARTERS, last4Quarters );
@@ -816,6 +827,7 @@ public class RelativePeriods
             lastYear = relativePeriods.contains( RelativePeriodEnum.LAST_YEAR );
             last5Years = relativePeriods.contains( RelativePeriodEnum.LAST_5_YEARS );
             last12Months = relativePeriods.contains( RelativePeriodEnum.LAST_12_MONTHS );
+            last6Months = relativePeriods.contains( RelativePeriodEnum.LAST_6_MONTHS );
             last3Months = relativePeriods.contains( RelativePeriodEnum.LAST_3_MONTHS );
             last6BiMonths = relativePeriods.contains( RelativePeriodEnum.LAST_6_BIMONTHS );
             last4Quarters = relativePeriods.contains( RelativePeriodEnum.LAST_4_QUARTERS );
@@ -1009,7 +1021,20 @@ public class RelativePeriods
         this.last12Months = last12Months;
         return this;
     }
-    
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isLast6Months()
+    {
+        return last6Months;
+    }
+
+    public RelativePeriods setLast6Months( boolean last6Months )
+    {
+        this.last6Months = last6Months;
+        return this;
+    }
+
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public boolean isLast3Months()
@@ -1176,6 +1201,7 @@ public class RelativePeriods
         result = prime * result + (lastYear ? 1 : 0);
         result = prime * result + (last5Years ? 1 : 0);
         result = prime * result + (last12Months ? 1 : 0);
+        result = prime * result + (last6Months ? 1 : 0);
         result = prime * result + (last3Months ? 1 : 0);
         result = prime * result + (last6BiMonths ? 1 : 0);
         result = prime * result + (last4Quarters ? 1 : 0);
@@ -1266,6 +1292,11 @@ public class RelativePeriods
         }
 
         if ( !last12Months == other.last12Months )
+        {
+            return false;
+        }
+
+        if ( !last6Months == other.last6Months )
         {
             return false;
         }

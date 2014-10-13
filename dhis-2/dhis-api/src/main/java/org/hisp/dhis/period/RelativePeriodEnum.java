@@ -46,6 +46,7 @@ public enum RelativePeriodEnum
     LAST_YEAR,
     LAST_5_YEARS,
     LAST_12_MONTHS,
+    LAST_6_MONTHS,
     LAST_3_MONTHS,
     LAST_6_BIMONTHS,
     LAST_4_QUARTERS,
@@ -61,7 +62,7 @@ public enum RelativePeriodEnum
     public static Set<String> OPTIONS = new HashSet<String>() { {
         addAll( Arrays.asList( LAST_MONTH.toString(), LAST_BIMONTH.toString(), LAST_QUARTER.toString(), LAST_SIX_MONTH.toString(),
             MONTHS_THIS_YEAR.toString(), QUARTERS_THIS_YEAR.toString(), THIS_YEAR.toString(), MONTHS_LAST_YEAR.toString(), QUARTERS_LAST_YEAR.toString(),
-            LAST_YEAR.toString(), LAST_5_YEARS.toString(), LAST_12_MONTHS.toString(), LAST_3_MONTHS.toString(), LAST_6_BIMONTHS.toString(), 
+            LAST_YEAR.toString(), LAST_5_YEARS.toString(), LAST_12_MONTHS.toString(), LAST_6_MONTHS.toString(), LAST_3_MONTHS.toString(), LAST_6_BIMONTHS.toString(), 
             LAST_4_QUARTERS.toString(), LAST_2_SIXMONTHS.toString(), THIS_FINANCIAL_YEAR.toString(), LAST_FINANCIAL_YEAR.toString(), 
             LAST_5_FINANCIAL_YEARS.toString(), LAST_WEEK.toString(), LAST_4_WEEKS.toString(), LAST_12_WEEKS.toString(), LAST_52_WEEKS.toString() ) );
     } };
