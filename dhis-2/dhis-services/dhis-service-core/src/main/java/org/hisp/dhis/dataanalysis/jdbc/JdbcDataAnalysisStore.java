@@ -42,6 +42,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataanalysis.DataAnalysisStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -256,7 +257,8 @@ public class JdbcDataAnalysisStore
             "join periodtype pt on pe.periodtypeid = pt.periodtypeid " +
             "left join organisationunit ou on ou.organisationunitid = dv.sourceid " +
             "left join _categoryoptioncomboname cc on dv.categoryoptioncomboid = cc.categoryoptioncomboid " +
-            "where dv.followup = true";
+            "where dv.followup = true " +
+            statementBuilder.limitRecord( 0, DataAnalysisService.MAX_OUTLIERS );
         
         return jdbcTemplate.query( sql, new DeflatedDataValueNameMinMaxRowMapper() );        
     }
