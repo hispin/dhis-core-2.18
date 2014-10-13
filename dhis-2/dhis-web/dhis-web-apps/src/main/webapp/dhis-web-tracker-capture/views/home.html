@@ -31,7 +31,7 @@
             <span ng-if='showReportDiv'>
                 {{selectedProgram.name}} {{'report'| translate}}
             </span>
-            <div class="pull-right">
+            <div class="pull-right not-printable">
                 <div class="btn-group" dropdown is-open="status.isopen">
                     <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="trackedEntityList.rows.length <= 0">
                         <i class="fa fa-cog" title="{{'settings'| translate}}"></i>
@@ -50,6 +50,14 @@
     <!--- selected org unit ends  -->
 
     <!--- search, registration and reporting menu begins -->
+    <div class="row vertical-spacing not-for-screen">
+        <div class="col-md-4">
+            <h4>{{'org_unit' | translate}}</h4>
+        </div>
+        <div class="col-md-4">
+            <input type="text" class="form-control" ng-disabled='true' value="{{selectedOrgUnit.name}}">
+        </div>
+    </div>
     <div class="row"> 
         <div id="selectDropDownParent" class="input-group col-md-4">            
             <button type="button" class="select-dropdown-button form-control" ng-show="programs.length > 0">{{selectedProgram ? selectedProgram.name : 'please_select_a_program'| translate}}</button>
@@ -66,7 +74,7 @@
                 </ul>
             </div>                
         </div>
-        <div id="searchDropDownParent" class="input-group col-md-4">
+        <div id="searchDropDownParent" class="input-group col-md-4 not-printable">
             <input type="text" placeholder="{{'type_here_for_simple_search'| translate}}" ng-model="searchText" class="form-control expanded" d2-enter="search(searchMode.freeText)" ng-class="{true: 'invalid-input'} [!searchText && emptySearchText]" ng-focus="showHideSearch()" ng-disabled="showRegistrationDiv || showReportDiv">
             <div class="input-group-btn">
                 <button class="btn btn-default search-dropdown-button trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-click="showHideSearch()" ng-disabled="showRegistrationDiv || showReportDiv"><i class="fa fa-caret-down"></i></button>
@@ -187,7 +195,7 @@
                 </div>
             </div>                
         </div>        
-        <div class="col-md-4 trim">            
+        <div class="col-md-4 trim not-printable">            
             <button type="button" 
                     class="btn btn-success"
                     ng-disabled="showRegistrationDiv || showReportDiv"
@@ -199,6 +207,12 @@
                     ng-disabled="showReportDiv"
                     ng-click="showRegistration()">                    
                 {{'register'| translate}}
+            </button>
+            <button type="button" 
+                    class="btn btn-info"
+                    ng-if="teiCount > 0"
+                    onclick="javascript:window.print()">                    
+                {{'print'| translate}}
             </button>
         </div>
     </div>
