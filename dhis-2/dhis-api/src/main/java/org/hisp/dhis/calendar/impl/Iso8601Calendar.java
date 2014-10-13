@@ -30,6 +30,7 @@ package org.hisp.dhis.calendar.impl;
 
 import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.ChronologyBasedCalendar;
+import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.ISOChronology;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +49,7 @@ public class Iso8601Calendar extends ChronologyBasedCalendar
 
     protected Iso8601Calendar()
     {
-        super( ISOChronology.getInstance() );
+        super( ISOChronology.getInstance( DateTimeZone.getDefault() ) );
     }
 
     @Override

@@ -30,6 +30,7 @@ package org.hisp.dhis.calendar.impl;
 
 import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.ChronologyBasedCalendar;
+import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.IslamicChronology;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +49,7 @@ public class IslamicCalendar extends ChronologyBasedCalendar
 
     protected IslamicCalendar()
     {
-        super( IslamicChronology.getInstance() );
+        super( IslamicChronology.getInstance( DateTimeZone.getDefault() ) );
     }
 
     @Override

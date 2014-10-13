@@ -30,6 +30,7 @@ package org.hisp.dhis.calendar.impl;
 
 import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.ChronologyBasedCalendar;
+import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.BuddhistChronology;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +49,7 @@ public class ThaiCalendar extends ChronologyBasedCalendar
 
     protected ThaiCalendar()
     {
-        super( BuddhistChronology.getInstance() );
+        super( BuddhistChronology.getInstance( DateTimeZone.getDefault() ) );
     }
 
     @Override
