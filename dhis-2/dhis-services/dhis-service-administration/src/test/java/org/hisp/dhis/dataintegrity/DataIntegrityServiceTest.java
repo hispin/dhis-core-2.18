@@ -34,7 +34,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.Map;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -58,7 +58,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version $Id$
  */
 public class DataIntegrityServiceTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     @Autowired
     private DataIntegrityService dataIntegrityService;
@@ -224,12 +224,6 @@ public class DataIntegrityServiceTest
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupB );
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupC );
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupD );
-    }
-
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
     }
     
     // -------------------------------------------------------------------------
