@@ -35,7 +35,7 @@ import java.text.ParseException;
 import java.util.Locale;
 
 /**
- * Methods to parse various GML coordinate formats and output the DHIS 2 internal representation
+ * Methods to parse various GML coordinate formats and output the DHIS 2 internal representation.
  * @author Halvdan Hoem Grelland
  */
 public class GmlConversionUtils

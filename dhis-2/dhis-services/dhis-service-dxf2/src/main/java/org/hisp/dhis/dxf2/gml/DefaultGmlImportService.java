@@ -38,7 +38,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.transform.TransformerException;
@@ -59,7 +59,6 @@ public class DefaultGmlImportService
     implements GmlImportService
 {
     private static final String GML_TO_DXF_TRANSFORM = "gml/gml2dxf2.xsl";
-    private static final ClassLoader CL = new DefaultResourceLoader().getClassLoader();
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -145,7 +144,7 @@ public class DefaultGmlImportService
         throws IOException, TransformerException
     {
         StreamSource gml = new StreamSource( input );
-        StreamSource xsl = new StreamSource( CL.getResourceAsStream( GML_TO_DXF_TRANSFORM ) );
+        StreamSource xsl = new StreamSource( new ClassPathResource( GML_TO_DXF_TRANSFORM ).getInputStream() );
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 
@@ -156,5 +155,4 @@ public class DefaultGmlImportService
 
         return new ByteArrayInputStream( output.toByteArray() );
     }
-
 }
