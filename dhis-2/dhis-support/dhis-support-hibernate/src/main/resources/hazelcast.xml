@@ -26,6 +26,7 @@
   <properties>
     <property name="hazelcast.rest.enabled">false</property>
     <property name="hazelcast.socket.bind.any">false</property>
+    <property name="hazelcast.logging.type">log4j</property>
   </properties>
   <network>
     <interfaces enabled="true">
