@@ -54,7 +54,6 @@ import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -147,11 +146,9 @@ public class JdbcEventAnalyticsManager
     
     private void getAggregatedEventData( Grid grid, EventQueryParams params, String sql )
     {
-        Timer t = new Timer().start();
-                
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
-        t.getTime( "Analytics event aggregate SQL: " + sql );
+        log.debug( "Analytics event aggregate SQL: " + sql );
         
         while ( rowSet.next() )
         {
@@ -246,13 +243,11 @@ public class JdbcEventAnalyticsManager
 
     private void getEvents( Grid grid, EventQueryParams params, String sql )
     {
-        Timer t = new Timer().start();
-
         int rowLength = grid.getHeaders().size();
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
-        t.getTime( "Analytics event query SQL: " + sql );
+        log.debug( "Analytics event query SQL: " + sql );
         
         while ( rowSet.next() )
         {
@@ -296,11 +291,9 @@ public class JdbcEventAnalyticsManager
     
     private int getEventCount( String sql )
     {
-        Timer t = new Timer().start();
-        
         int count = jdbcTemplate.queryForObject( sql, Integer.class );
 
-        t.getTime( "Analytics event count SQL: " + sql );
+        log.debug( "Analytics event count SQL: " + sql );
         
         return count;
     }

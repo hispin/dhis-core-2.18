@@ -747,7 +747,7 @@ public class DefaultAnalyticsService
 
         DataQueryGroups queryGroups = queryPlanner.planQuery( params, optimalQueries, tableName );
 
-        t.getSplitTime( "Planned query, got: " + queryGroups.getLargestGroupSize() + " for optimal: " + optimalQueries );
+        t.getSplitTime( "Planned analytics query, got: " + queryGroups.getLargestGroupSize() + " for optimal: " + optimalQueries );
 
         Map<String, Object> map = new HashMap<>();
 
@@ -779,11 +779,9 @@ public class DefaultAnalyticsService
                     throw new RuntimeException( "Error during execution of aggregation query task", ex );
                 }
             }
-
-            t.getSplitTime( "Got aggregated values for query group" );
         }
 
-        t.getTime( "Got aggregated values" );
+        t.getTime( "Got analytics values" );
 
         return map;
     }
