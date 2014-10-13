@@ -201,7 +201,6 @@ public class CompleteDataSetRegistration
     }
 
     @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Period getPeriod()
     {
@@ -215,7 +214,7 @@ public class CompleteDataSetRegistration
 
     @JsonProperty( value = "organisationUnit" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0 )
     public OrganisationUnit getSource()
     {
         return source;
