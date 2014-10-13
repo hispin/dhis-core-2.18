@@ -39,8 +39,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.InputStream;
 import java.util.Collection;
 
-import org.apache.commons.io.IOUtils;
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -53,9 +52,11 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
+import org.hisp.dhis.mock.batchhandler.MockBatchHandler;
+import org.hisp.dhis.mock.batchhandler.MockBatchHandlerFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -70,7 +71,7 @@ import org.springframework.core.io.ClassPathResource;
  * @author Lars Helge Overland
  */
 public class DataValueSetServiceTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     @Autowired
     private DataElementService dataElementService;
@@ -89,9 +90,6 @@ public class DataValueSetServiceTest
     
     @Autowired
     private DataValueSetService dataValueSetService;
-    
-    @Autowired
-    private DataValueService dataValueService;
     
     @Autowired
     private CompleteDataSetRegistrationService registrationService;
@@ -115,16 +113,18 @@ public class DataValueSetServiceTest
     private Period peB;
     
     private InputStream in;
-    
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
+
+    private MockBatchHandler<DataValue> mockDataValueBatchHandler = null;
+    private MockBatchHandlerFactory mockBatchHandlerFactory = null;
     
     @Override
     public void setUpTest()
     {
+        mockDataValueBatchHandler = new MockBatchHandler<>();
+        mockBatchHandlerFactory = new MockBatchHandlerFactory();
+        mockBatchHandlerFactory.registerBatchHandler( DataValueBatchHandler.class, mockDataValueBatchHandler );
+        setDependency( dataValueSetService, "batchHandlerFactory", mockBatchHandlerFactory );
+        
         categoryOptionA = createCategoryOption( 'A' );
         categoryOptionB = createCategoryOption( 'B' );
         categoryA = createDataElementCategory( 'A', categoryOptionA, categoryOptionB );
@@ -180,12 +180,6 @@ public class DataValueSetServiceTest
         periodService.addPeriod( peB );        
     }
 
-    @Override
-    public void tearDownTest()
-    {
-        IOUtils.closeQuietly( in );
-    }
-
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
@@ -201,7 +195,7 @@ public class DataValueSetServiceTest
         assertNotNull( summary );
         assertNotNull( summary.getDataValueCount() );
         
-        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+        Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
         assertNotNull( dataValues );
         assertEquals( 3, dataValues.size() );
@@ -228,8 +222,8 @@ public class DataValueSetServiceTest
         
         assertNotNull( summary );
         assertNotNull( summary.getDataValueCount() );
-        
-        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+
+        Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
         assertNotNull( dataValues );
         assertEquals( 3, dataValues.size() );
@@ -289,8 +283,8 @@ public class DataValueSetServiceTest
         ImportOptions options = new ImportOptions( UID, UID, true, true, NEW_AND_UPDATES, false );
         
         dataValueSetService.saveDataValueSet( in, options );
-        
-        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+
+        Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
         assertNotNull( dataValues );
         assertEquals( 0, dataValues.size() );
@@ -305,8 +299,8 @@ public class DataValueSetServiceTest
         ImportOptions options = new ImportOptions( UID, UID, false, true, UPDATES, false );
         
         dataValueSetService.saveDataValueSet( in, options );
-        
-        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+
+        Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
         assertNotNull( dataValues );
         assertEquals( 0, dataValues.size() );
@@ -317,8 +311,8 @@ public class DataValueSetServiceTest
         throws Exception
     {
         dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetC.xml" ).getInputStream() );
-        
-        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+
+        Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
         assertNotNull( dataValues );
         assertEquals( 3, dataValues.size() );
@@ -331,8 +325,8 @@ public class DataValueSetServiceTest
         in = new ClassPathResource( "datavalueset/dataValueSetD.xml" ).getInputStream();
         
         dataValueSetService.saveDataValueSet( in );
-        
-        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+
+        Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
         assertNotNull( dataValues );
         assertEquals( 3, dataValues.size() );
@@ -350,8 +344,8 @@ public class DataValueSetServiceTest
         assertNotNull( summary );
         assertNotNull( summary.getDataValueCount() );
 
-        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
-
+        Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
+        
         assertNotNull( dataValues );
         assertEquals( 12, dataValues.size() );
         assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, ocDef, ocDef ) ) );
@@ -367,5 +361,4 @@ public class DataValueSetServiceTest
         assertTrue( dataValues.contains( new DataValue( deC, peB, ouA, ocDef, ocDef ) ) );
         assertTrue( dataValues.contains( new DataValue( deC, peB, ouB, ocDef, ocDef ) ) );        
     }
-    
 }

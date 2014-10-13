@@ -142,6 +142,11 @@ public class DefaultDataValueSetService
     @Autowired
     private Notifier notifier;
 
+    public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
+    {
+        this.batchHandlerFactory = batchHandlerFactory; // Test purpose
+    }
+
     //--------------------------------------------------------------------------
     // DataValueSet implementation
     //--------------------------------------------------------------------------
