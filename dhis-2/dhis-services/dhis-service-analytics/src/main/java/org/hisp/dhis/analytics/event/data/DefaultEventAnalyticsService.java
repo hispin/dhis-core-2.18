@@ -173,12 +173,18 @@ public class DefaultEventAnalyticsService
         // Data
         // ---------------------------------------------------------------------
 
+        Timer t = new Timer().start();
+
         List<EventQueryParams> queries = queryPlanner.planAggregateQuery( params );
+
+        t.getSplitTime( "Planned event query, got partitions: " + params.getPartitions() );
 
         for ( EventQueryParams query : queries )
         {
             analyticsManager.getAggregatedEventData( query, grid, maxLimit );
         }
+        
+        t.getTime( "Got aggregated events" );
         
         if ( maxLimit > 0 && grid.getHeight() > maxLimit )
         {
@@ -272,7 +278,7 @@ public class DefaultEventAnalyticsService
 
         params = queryPlanner.planEventQuery( params );
 
-        t.getSplitTime( "Planned query, got partitions: " + params.getPartitions() );
+        t.getSplitTime( "Planned event query, got partitions: " + params.getPartitions() );
 
         int count = 0;
 
@@ -285,7 +291,7 @@ public class DefaultEventAnalyticsService
     
             analyticsManager.getEvents( params, grid, queryPlanner.getMaxLimit() );
     
-            t.getTime( "Queried events, got: " + grid.getHeight() );
+            t.getTime( "Got events " + grid.getHeight() );
         }
         
         // ---------------------------------------------------------------------
