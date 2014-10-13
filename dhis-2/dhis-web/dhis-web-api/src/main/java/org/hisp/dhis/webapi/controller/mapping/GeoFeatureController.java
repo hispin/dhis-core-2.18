@@ -72,15 +72,12 @@ public class GeoFeatureController
 {
     public static final String RESOURCE_PATH = "/geoFeatures";
 
-    private static final Map<String, Integer> FEATURE_TYPE_MAP = new HashMap<String, Integer>()
-    {
-        {
-            put( OrganisationUnit.FEATURETYPE_POINT, GeoFeature.TYPE_POINT );
-            put( OrganisationUnit.FEATURETYPE_MULTIPOLYGON, GeoFeature.TYPE_POLYGON );
-            put( OrganisationUnit.FEATURETYPE_POLYGON, GeoFeature.TYPE_POLYGON );
-            put( null, 0 );
-        }
-    };
+    private static final Map<String, Integer> FEATURE_TYPE_MAP = new HashMap<String, Integer>() { {
+        put( OrganisationUnit.FEATURETYPE_POINT, GeoFeature.TYPE_POINT );
+        put( OrganisationUnit.FEATURETYPE_MULTIPOLYGON, GeoFeature.TYPE_POLYGON );
+        put( OrganisationUnit.FEATURETYPE_POLYGON, GeoFeature.TYPE_POLYGON );
+        put( null, 0 );
+    } };
 
     @Autowired
     private AnalyticsService analyticsService;
@@ -121,7 +118,7 @@ public class GeoFeatureController
         {
             GeoFeature feature = new GeoFeature();
             feature.setId( unit.getUid() );
-            feature.setNa( unit.getDisplayName() );
+            feature.setNa( unit.getDisplayName() ); //TODO short name
             feature.setHcd( unit.hasChildrenWithCoordinates() );
             feature.setHcu( unit.hasCoordinatesUp() );
             feature.setLe( unit.getLevel() );

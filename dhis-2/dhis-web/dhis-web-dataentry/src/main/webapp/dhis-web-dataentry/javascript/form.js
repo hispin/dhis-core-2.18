@@ -1288,6 +1288,8 @@ dhis2.de.getCurrentCategoryOptionsQueryValue = function()
 
 /**
  * Tests to see if a category option is valid during a period.
+ * 
+ * TODO proper date comparison
  */
 dhis2.de.optionValidWithinPeriod = function( option, period )
 {

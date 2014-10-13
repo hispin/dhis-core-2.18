@@ -206,9 +206,13 @@ join categorycombos_optioncombos co
 on (cc.categoryoptioncomboid=co.categoryoptioncomboid)
 where categorycomboid=12414 );
 
--- (Write) Reset password to "district" for account with given username
+-- (Write) MD5 set password to "district" for admin user
 
 update users set password='48e8f1207baef1ef7fe478a57d19f2e5' where username='admin';
+
+-- (Write) Bcrypt set password to "district" for admin user
+
+update users set password='$2a$10$wjLPViry3bkYEcjwGRqnYO1bT2Kl.ZY0kO.fwFDfMX53hitfx5.3C' where username='admin';
 
 -- (Write) Generate random coordinates based on org unit location for events
 
