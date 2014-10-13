@@ -30,6 +30,7 @@ package org.hisp.dhis.calendar;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.chrono.ISOChronology;
 
@@ -56,7 +57,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
         }
 
         DateTime dateTime = dateTimeUnit.toJodaDateTime( chronology );
-        dateTime = dateTime.withChronology( ISOChronology.getInstance() );
+        dateTime = dateTime.withChronology( ISOChronology.getInstance( DateTimeZone.forTimeZone( dateTimeUnit.getTimeZone() ) ) );
 
         return new DateTimeUnit( DateTimeUnit.fromJodaDateTime( dateTime ), true );
     }
@@ -75,7 +76,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
             return dateTimeUnit;
         }
 
-        DateTime dateTime = dateTimeUnit.toJodaDateTime( ISOChronology.getInstance() );
+        DateTime dateTime = dateTimeUnit.toJodaDateTime( ISOChronology.getInstance( DateTimeZone.forTimeZone( dateTimeUnit.getTimeZone() ) ) );
         dateTime = dateTime.withChronology( chronology );
 
         return DateTimeUnit.fromJodaDateTime( dateTime );
@@ -247,7 +248,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     public int isoWeekday( DateTimeUnit dateTimeUnit )
     {
         DateTime dateTime = dateTimeUnit.toJodaDateTime( chronology );
-        dateTime = dateTime.withChronology( ISOChronology.getInstance() );
+        dateTime = dateTime.withChronology( ISOChronology.getInstance( DateTimeZone.getDefault() ) );
         return dateTime.getDayOfWeek();
     }
 

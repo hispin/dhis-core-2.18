@@ -30,6 +30,7 @@ package org.hisp.dhis.calendar.impl;
 
 import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.ChronologyBasedCalendar;
+import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.CopticChronology;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +49,7 @@ public class CopticCalendar extends ChronologyBasedCalendar
 
     protected CopticCalendar()
     {
-        super( CopticChronology.getInstance() );
+        super( CopticChronology.getInstance( DateTimeZone.getDefault() ) );
     }
 
     @Override

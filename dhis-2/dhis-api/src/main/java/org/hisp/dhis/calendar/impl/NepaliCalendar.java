@@ -34,6 +34,7 @@ import org.hisp.dhis.calendar.DateInterval;
 import org.hisp.dhis.calendar.DateIntervalType;
 import org.hisp.dhis.calendar.DateTimeUnit;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.joda.time.chrono.ISOChronology;
 import org.springframework.stereotype.Component;
@@ -233,14 +234,14 @@ public class NepaliCalendar extends AbstractCalendar
     @Override
     public int weeksInYear( int year )
     {
-        DateTime dateTime = new DateTime( year, 1, 1, 0, 0, ISOChronology.getInstance() );
+        DateTime dateTime = new DateTime( year, 1, 1, 0, 0, ISOChronology.getInstance( DateTimeZone.getDefault() ) );
         return dateTime.weekOfWeekyear().getMaximumValue();
     }
 
     @Override
     public int isoWeek( DateTimeUnit dateTimeUnit )
     {
-        DateTime dateTime = toIso( dateTimeUnit ).toJodaDateTime( ISOChronology.getInstance() );
+        DateTime dateTime = toIso( dateTimeUnit ).toJodaDateTime( ISOChronology.getInstance( DateTimeZone.getDefault() ) );
         return dateTime.getWeekyear();
     }
 
@@ -253,7 +254,7 @@ public class NepaliCalendar extends AbstractCalendar
     @Override
     public int isoWeekday( DateTimeUnit dateTimeUnit )
     {
-        DateTime dateTime = toIso( dateTimeUnit ).toJodaDateTime( ISOChronology.getInstance() );
+        DateTime dateTime = toIso( dateTimeUnit ).toJodaDateTime( ISOChronology.getInstance( DateTimeZone.getDefault() ) );
         return dateTime.getDayOfWeek();
     }
 

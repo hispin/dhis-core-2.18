@@ -30,6 +30,7 @@ package org.hisp.dhis.calendar.impl;
 
 import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.ChronologyBasedCalendar;
+import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.JulianChronology;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +49,7 @@ public class JulianCalendar extends ChronologyBasedCalendar
 
     protected JulianCalendar()
     {
-        super( JulianChronology.getInstance() );
+        super( JulianChronology.getInstance( DateTimeZone.getDefault() ) );
     }
 
     @Override
