@@ -29,7 +29,7 @@
     </set>
 
     <!-- Access properties -->
-    <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_indicator_userid" />
+    <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_orgunitgroup_userid" />
 
     <property name="publicAccess" length="8" />
 
