@@ -54,10 +54,8 @@ var trackerCapture = angular.module('trackerCapture',
     $translateProvider.preferredLanguage('en');
 })
 
-.run(function($rootScope, storage){
-    $rootScope.dhis2CalendarFormat = {keyDateFormat: 'yyyy-MM-dd', keyCalendar: 'iso8601'};
-    var storedFormat = storage.get('CALENDAR_SETTING');
-    if(angular.isObject(storedFormat) && storedFormat.keyDateFormat && storedFormat.keyCalendar){
-        $rootScope.dhis2CalendarFormat = storedFormat;
-    }    
+.run(function($rootScope){    
+    setTimeout(function () {
+        $rootScope.$apply(function () {});
+    }, 1000);
 });

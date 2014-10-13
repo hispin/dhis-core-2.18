@@ -15,7 +15,7 @@ trackerCapture.controller('OverdueEventsController',
 
     TranslationService.translate();
     
-    $scope.today = DateUtils.format(moment());
+    $scope.today = DateUtils.getToday();
     
     $scope.selectedOuMode = 'SELECTED';
     $scope.report = {};
@@ -110,7 +110,7 @@ trackerCapture.controller('OverdueEventsController',
                         overdueEvent[att.attribute] = att.value;
                     });
                     
-                    overdueEvent.dueDate = DateUtils.format(row.dueDate);
+                    overdueEvent.dueDate = DateUtils.formatFromApiToUser(row.dueDate);
                     overdueEvent.event = row.event;
                     overdueEvent.eventName = row.eventName;
                     overdueEvent.followup = row.followup;
@@ -118,7 +118,7 @@ trackerCapture.controller('OverdueEventsController',
                     overdueEvent.programStage = row.programStage;
                     overdueEvent.trackedEntityInstance = row.trackedEntityInstance;
                     overdueEvent.orgUnitName = row.registrationOrgUnit;
-                    overdueEvent.created = DateUtils.format(row.registrationDate);;
+                    overdueEvent.created = DateUtils.formatFromApiToUser(row.registrationDate);;
                     $scope.overdueEvents.push(overdueEvent);
                     
                 });

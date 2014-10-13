@@ -16,7 +16,7 @@ trackerCapture.controller('NotesController',
         storedBy = loginDetails.userCredentials.username;
     }
     
-    var today = DateUtils.format(moment());
+    var today = DateUtils.getToday();
     
     $scope.showMessagingDiv = false;
     $scope.showNotesDiv = true;
@@ -66,11 +66,11 @@ trackerCapture.controller('NotesController',
             var newNote = {value: $scope.note};
 
             if(angular.isUndefined( $scope.selectedEnrollment.notes) ){
-                $scope.selectedEnrollment.notes = [{value: $scope.note, storedDate: today, storedBy: storedBy}];
+                $scope.selectedEnrollment.notes = [{value: $scope.note, storedDate: DateUtils.formatFromUserToApi(today), storedBy: storedBy}];
                 
             }
             else{
-                $scope.selectedEnrollment.notes.splice(0,0,{value: $scope.note, storedDate: today, storedBy: storedBy});
+                $scope.selectedEnrollment.notes.splice(0,0,{value: $scope.note, storedDate: DateUtils.formatFromUserToApi(today), storedBy: storedBy});
             }
 
             var e = angular.copy($scope.selectedEnrollment);

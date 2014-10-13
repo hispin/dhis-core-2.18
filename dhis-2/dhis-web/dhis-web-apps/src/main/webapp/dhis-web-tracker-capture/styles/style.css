@@ -796,6 +796,11 @@ a:active {
     cursor: pointer;
 }
 
+.ui-datepicker-group .ui-datepicker-header {
+	//height: 1.5em; 
+    height: inherit;  //this is to make it play nice with bootstrap
+}
+
 @media print {
     #header, #leftBar, .not-printable {
         display: none;

@@ -17,7 +17,7 @@ trackerCapture.controller('EnrollmentController',
                 DialogService) {
     TranslationService.translate();
     
-    $scope.today = DateUtils.format(moment());
+    $scope.today = DateUtils.getToday();
     
     //listen for the selected items
     $scope.$on('selectedItems', function(event, args) {   
@@ -77,19 +77,12 @@ trackerCapture.controller('EnrollmentController',
             }); 
             
             if($scope.selectedEnrollment){//enrollment exists
-                $scope.selectedEnrollment.dateOfIncident = DateUtils.format($scope.selectedEnrollment.dateOfIncident);
-                $scope.selectedEnrollment.dateOfEnrollment = DateUtils.format($scope.selectedEnrollment.dateOfEnrollment);
+                $scope.selectedEnrollment.dateOfIncident = DateUtils.formatFromApiToUser($scope.selectedEnrollment.dateOfIncident);
+                $scope.selectedEnrollment.dateOfEnrollment = DateUtils.formatFromApiToUser($scope.selectedEnrollment.dateOfEnrollment);
                 
-                $scope.programStages = [];   
-                
-                var incidentDate = $scope.selectedEnrollment ? $scope.selectedEnrollment.dateOfIncident : new Date();
-
-                angular.forEach($scope.selectedProgram.programStages, function(stage){                    
-                    
-                    stage.dueDate = DateUtils.format(incidentDate);
-                    stage.dueDate = moment(moment(incidentDate).add('d', stage.minDaysFromStart))._d;
-                    stage.dueDate = DateUtils.format(stage.dueDate);
-                });
+                /*angular.forEach($scope.selectedProgram.programStages, function(stage){                    
+                    stage.dueDate = EventUtils.getEventDueDate(stage, $scope.selectedEnrollment);
+                });*/
             }
             else{//prepare for possible enrollment
                 AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
@@ -171,8 +164,8 @@ trackerCapture.controller('EnrollmentController',
         var enrollment = {trackedEntityInstance: tei.trackedEntityInstance,
                             program: $scope.selectedProgram.id,
                             status: 'ACTIVE',
-                            dateOfEnrollment: $scope.newEnrollment.dateOfEnrollment,
-                            dateOfIncident: $scope.newEnrollment.dateOfIncident ? $scope.newEnrollment.dateOfIncident : $scope.newEnrollment.dateOfEnrollment
+                            dateOfEnrollment: DateUtils.formatFromUserToApi($scope.newEnrollment.dateOfEnrollment),
+                            dateOfIncident: $scope.newEnrollment.dateOfIncident ? DateUtils.formatFromUserToApi($scope.newEnrollment.dateOfIncident) : DateUtils.formatFromUserToApi($scope.newEnrollment.dateOfEnrollment)
                         };
                         
         TEIService.update(tei).then(function(updateResponse){
@@ -284,7 +277,7 @@ trackerCapture.controller('EnrollmentController',
         
     $scope.autoGenerateEvents = function(){
         if($scope.selectedTei && $scope.selectedProgram && $scope.selectedOrgUnit && $scope.selectedEnrollment){            
-            $scope.dhis2Events = {events: []};
+            var dhis2Events = {events: []};
             angular.forEach($scope.selectedProgram.programStages, function(stage){
                 if(stage.autoGenerateEvent){
                     var newEvent = {
@@ -292,15 +285,15 @@ trackerCapture.controller('EnrollmentController',
                             program: $scope.selectedProgram.id,
                             programStage: stage.id,
                             orgUnit: $scope.selectedOrgUnit.id,                        
-                            dueDate: EventUtils.getEventDueDate(stage, $scope.selectedEnrollment),
+                            dueDate: DateUtils.formatFromUserToApi( EventUtils.getEventDueDate(dhis2Events.events, stage, $scope.selectedEnrollment) ),
                             status: 'SCHEDULE'
                         };
-                    $scope.dhis2Events.events.push(newEvent);    
+                    dhis2Events.events.push(newEvent);    
                 }
             });
             
-            if($scope.dhis2Events.events.length > 0){
-                DHIS2EventFactory.create($scope.dhis2Events).then(function(data) {
+            if(dhis2Events.events.length > 0){
+                DHIS2EventFactory.create(dhis2Events).then(function(data) {
                 });
             }
         }

@@ -15,7 +15,7 @@ trackerCapture.controller('UpcomingEventsController',
 
     TranslationService.translate();
     
-    $scope.today = DateUtils.format(moment());
+    $scope.today = DateUtils.getToday();
     
     $scope.selectedOuMode = 'SELECTED';
     $scope.report = {};
@@ -85,7 +85,14 @@ trackerCapture.controller('UpcomingEventsController',
         $scope.reportStarted = true;        
         
         $scope.upcomingEvents = [];
-        EventReportService.getEventReport($scope.selectedOrgUnit.id, $scope.selectedOuMode, $scope.selectedProgram.id, $scope.report.startDate, $scope.report.endDate, 'ACTIVE','SCHEDULE', $scope.pager).then(function(data){                     
+        EventReportService.getEventReport($scope.selectedOrgUnit.id, 
+                                        $scope.selectedOuMode, 
+                                        $scope.selectedProgram.id, 
+                                        DateUtils.formatFromUserToApi($scope.report.startDate), 
+                                        DateUtils.formatFromUserToApi($scope.report.endDate), 
+                                        'ACTIVE',
+                                        'SCHEDULE', 
+                                        $scope.pager).then(function(data){                     
                 
             if( data.pager ){
                 $scope.pager = data.pager;
@@ -103,7 +110,7 @@ trackerCapture.controller('UpcomingEventsController',
                     upcomingEvent[att.attribute] = att.value;
                 });
 
-                upcomingEvent.dueDate = DateUtils.format(row.dueDate);
+                upcomingEvent.dueDate = DateUtils.formatFromApiToUser(row.dueDate);
                 upcomingEvent.event = row.event;
                 upcomingEvent.eventName = row.eventName;
                 upcomingEvent.followup = row.followup;
@@ -111,7 +118,7 @@ trackerCapture.controller('UpcomingEventsController',
                 upcomingEvent.programStage = row.programStage;
                 upcomingEvent.trackedEntityInstance = row.trackedEntityInstance;
                 upcomingEvent.orgUnitName = row.registrationOrgUnit;
-                upcomingEvent.created = DateUtils.format(row.registrationDate);;
+                upcomingEvent.created = DateUtils.formatFromApiToUser(row.registrationDate);;
                 $scope.upcomingEvents.push(upcomingEvent);
 
             });
