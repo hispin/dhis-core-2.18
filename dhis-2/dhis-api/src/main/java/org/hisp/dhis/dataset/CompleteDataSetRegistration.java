@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.google.common.base.Objects;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.ImportableObject;
@@ -177,12 +178,6 @@ public class CompleteDataSetRegistration
         return true;
     }
 
-    @Override
-    public String toString()
-    {
-        return "[" + dataSet + ", " + period + ", " + source + ", " + attributeOptionCombo + ", " + date + "]";
-    }
-
     public String getName()
     {
         throw new UnsupportedOperationException();
@@ -277,5 +272,19 @@ public class CompleteDataSetRegistration
     public void setPeriodName( String periodName )
     {
         this.periodName = periodName;
+    }
+
+    @Override
+    public String toString()
+    {
+        return Objects.toStringHelper( this )
+            .add( "dataSet", dataSet )
+            .add( "period", period )
+            .add( "source", source )
+            .add( "attributeOptionCombo", attributeOptionCombo )
+            .add( "date", date )
+            .add( "storedBy", storedBy )
+            .add( "periodName", periodName )
+            .toString();
     }
 }

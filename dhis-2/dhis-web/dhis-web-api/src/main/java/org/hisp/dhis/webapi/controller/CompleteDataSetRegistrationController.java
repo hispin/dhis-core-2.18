@@ -39,6 +39,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrations;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dxf2.render.RenderService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
@@ -52,12 +53,14 @@ import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.utils.InputUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,6 +106,9 @@ public class CompleteDataSetRegistrationController
 
     @Autowired
     private I18nManager i18nManager;
+
+    @Autowired
+    private RenderService renderService;
 
     @RequestMapping( method = RequestMethod.GET, produces = CONTENT_TYPE_XML )
     public void getCompleteDataSetRegistrationsXml(
@@ -171,6 +177,28 @@ public class CompleteDataSetRegistrationController
             registrationService.getCompleteDataSetRegistrations( dataSets, organisationUnits, periods ) ) );
 
         return completeDataSetRegistrations;
+    }
+
+    @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
+    public void saveCompleteDataSetRegistrationsJson( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        CompleteDataSetRegistrations completeDataSetRegistrations = renderService.fromJson( request.getInputStream(),
+            CompleteDataSetRegistrations.class );
+
+        saveCompleteDataSetRegistrations( completeDataSetRegistrations );
+    }
+
+    @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE )
+    public void saveCompleteDataSetRegistrationsXml( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        CompleteDataSetRegistrations completeDataSetRegistrations = renderService.fromXml( request.getInputStream(),
+            CompleteDataSetRegistrations.class );
+
+        saveCompleteDataSetRegistrations( completeDataSetRegistrations );
+    }
+
+    private void saveCompleteDataSetRegistrations( CompleteDataSetRegistrations completeDataSetRegistrations )
+    {
     }
 
     @RequestMapping( method = RequestMethod.POST, produces = "text/plain" )
@@ -268,7 +296,6 @@ public class CompleteDataSetRegistrationController
         @RequestBody CompleteDataSetRegistrationRequests completeDataSetRegistrationRequests,
         HttpServletResponse response )
     {
-
         List<CompleteDataSetRegistration> registrations = new ArrayList<>();
 
         for ( CompleteDataSetRegistrationRequest completeDataSetRegistrationRequest : completeDataSetRegistrationRequests )

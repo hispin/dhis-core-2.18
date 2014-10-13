@@ -53,7 +53,7 @@ import java.util.Set;
 /**
  * @author Abyot Aselefew
  */
-@JacksonXmlRootElement(localName = "categoryOptionCombo", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "categoryOptionCombo", namespace = DxfNamespaces.DXF_2_0 )
 public class DataElementCategoryOptionCombo
     extends BaseNameableObject
 {
@@ -364,9 +364,9 @@ public class DataElementCategoryOptionCombo
     }
 
     @JsonProperty
-    @JsonSerialize(as = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
@@ -378,10 +378,10 @@ public class DataElementCategoryOptionCombo
     }
 
     @JsonProperty
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "categoryOptions", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "categoryOption", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "categoryOptions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "categoryOption", namespace = DxfNamespaces.DXF_2_0 )
     public Set<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;
@@ -401,7 +401,8 @@ public class DataElementCategoryOptionCombo
         {
             DataElementCategoryOptionCombo dataElementCategoryOptionCombo = (DataElementCategoryOptionCombo) other;
 
-            categoryCombo = dataElementCategoryOptionCombo.getCategoryCombo() == null ? categoryCombo : dataElementCategoryOptionCombo.getCategoryCombo();
+            categoryCombo = dataElementCategoryOptionCombo.getCategoryCombo() == null ? categoryCombo : dataElementCategoryOptionCombo
+                .getCategoryCombo();
 
             removeAllCategoryOptions();
 
