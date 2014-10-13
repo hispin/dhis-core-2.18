@@ -550,7 +550,6 @@ public class CompleteDataSetRegistrationController
             registration.setStoredBy( storedBy != null ? storedBy : currentUserService.getCurrentUsername() );
             registration.setPeriodName( format.formatPeriod( registration.getPeriod() ) );
 
-            System.err.println( "saveCompleteDataSetRegistration" );
             registrationService.saveCompleteDataSetRegistration( registration );
         }
         else
@@ -559,7 +558,6 @@ public class CompleteDataSetRegistrationController
             registration.setStoredBy( storedBy != null ? storedBy : currentUserService.getCurrentUsername() );
             registration.setPeriodName( format.formatPeriod( registration.getPeriod() ) );
 
-            System.err.println( "updateCompleteDataSetRegistration" );
             registrationService.updateCompleteDataSetRegistration( registration );
         }
 
