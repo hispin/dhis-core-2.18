@@ -36,7 +36,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -53,7 +53,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version $Id: DataValueServiceTest.java 5715 2008-09-17 14:05:28Z larshelg $
  */
 public class DataValueServiceTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     @Autowired
     private DataElementCategoryService categoryService;
@@ -140,12 +140,6 @@ public class DataValueServiceTest
         optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
     }
     
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
-
     // -------------------------------------------------------------------------
     // Basic DataValue
     // -------------------------------------------------------------------------
