@@ -33,6 +33,20 @@ public interface MigrationPasswordManager
      */
     public boolean legacyMatches( String encodedPassword, String password, String username );
 
+
+    /**
+     * Determines whether encodedToken is a valid hash of token.
+     * This method is a wrapper for passwordManager.matches() in order to support
+     * authenticating tokens which were generated using the legacy hash implementation in addition
+     * to the current hashing scheme.
+     *
+     * @param token the unencoded token as supplied from the user.
+     * @param encodedToken the encoded token to match against.
+     * @param username the username associated with the token (used for salting by the legacy password encoder).
+     * @return true if the token matches for either the legacy or current hashing scheme, false otherwise.
+     */
+    public boolean tokenMatches( String token, String encodedToken, String username );
+
     /**
      * Return the class name of the legacy password encoder.
      * @return the name of the legacy password encoder class.

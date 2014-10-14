@@ -49,6 +49,12 @@ public class MigrationSpringSecurityPasswordManager
     }
 
     @Override
+    public boolean tokenMatches( String token, String encodedToken, String username )
+    {
+        return legacyMatches( encodedToken, token, username ) || super.matches( token, encodedToken );
+    }
+
+    @Override
     public String getLegacyPasswordEncoderClassName()
     {
         return legacyPasswordEncoder.getClass().getName();
