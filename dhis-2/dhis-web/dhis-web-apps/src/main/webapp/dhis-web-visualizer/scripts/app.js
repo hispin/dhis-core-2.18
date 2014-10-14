@@ -2339,7 +2339,39 @@ Ext.onReady( function() {
 				var xResponse,
 					xColAxis,
 					xRowAxis,
-					config;
+					config,
+                    ind = dimConf.indicator.objectName,
+                    legendSet,
+                    fn;
+
+                fn = function() {
+                    
+                    // create chart
+                    ns.app.chart = ns.core.web.chart.createChart(ns ,legendSet);
+
+                    // update viewport
+                    ns.app.centerRegion.update();
+                    ns.app.centerRegion.removeAll();
+                    ns.app.centerRegion.add(ns.app.chart);
+
+                    // after render
+                    if (NS.isSessionStorage) {
+                        web.storage.session.set(layout, 'chart');
+                    }
+
+                    ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
+
+                    web.mask.hide(ns.app.centerRegion);
+
+                    if (NS.isDebug) {
+                        console.log("layout", ns.app.layout);
+                        console.log("xLayout", ns.app.xLayout);
+                        console.log("response", ns.app.response);
+                        console.log("xResponse", ns.app.xResponse);
+                        console.log("core", ns.core);
+                        console.log("app", ns.app);
+                    }
+                };
 
 				if (!xLayout) {
 					xLayout = service.layout.getExtendedLayout(layout);
@@ -2354,31 +2386,22 @@ Ext.onReady( function() {
 				ns.app.response = response;
 				ns.app.xResponse = xResponse;
 
-				// create chart
-				ns.app.chart = ns.core.web.chart.createChart(ns);
-
-				// update viewport
-                ns.app.centerRegion.update();
-				ns.app.centerRegion.removeAll();
-				ns.app.centerRegion.add(ns.app.chart);
-
-				// after render
-				if (NS.isSessionStorage) {
-					web.storage.session.set(layout, 'chart');
-				}
-
-				ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
-
-				web.mask.hide(ns.app.centerRegion);
-
-				if (NS.isDebug) {
-                    console.log("layout", ns.app.layout);
-                    console.log("xLayout", ns.app.xLayout);
-                    console.log("response", ns.app.response);
-                    console.log("xResponse", ns.app.xResponse);
-					console.log("core", ns.core);
-					console.log("app", ns.app);
-				}
+                // legend set
+                if (xLayout.type === 'gauge' && Ext.Array.contains(xLayout.axisObjectNames, ind) && xLayout.objectNameIdsMap[ind].length) {
+                    Ext.Ajax.request({
+                        url: ns.core.init.contextPath + '/api/indicators/' + xLayout.objectNameIdsMap[ind][0] + '.json?fields=legendSet[mapLegends[id,name,startValue,endValue,color]]',
+                        disableCaching: false,
+                        success: function(r) {
+                            legendSet = Ext.decode(r.responseText).legendSet;
+                        },
+                        callback: function() {
+                            fn();
+                        }
+                    });
+                }
+                else {
+                    fn();
+                }
 			};
 		}());
     };
