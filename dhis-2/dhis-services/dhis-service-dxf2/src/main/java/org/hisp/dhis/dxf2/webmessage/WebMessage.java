@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.message;
+package org.hisp.dhis.dxf2.webmessage;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -38,24 +38,29 @@ import org.hisp.dhis.common.DxfNamespaces;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "message", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement( localName = "webMessage", namespace = DxfNamespaces.DXF_2_0 )
 @JsonPropertyOrder( {
-    "status", "code", "message", "devMessage", "response"
+    "status", "code", "httpStatusCode", "message", "devMessage", "response"
 } )
-public class Message
+public class WebMessage
 {
     /**
      * Message status, currently two statuses are available: OK, ERROR.
      *
-     * @see org.hisp.dhis.dxf2.message.MessageStatus
+     * @see WebMessageStatus
      */
-    protected MessageStatus status;
+    protected WebMessageStatus status;
 
     /**
      * Internal code for this message. Should be used to help with third party clients which
      * should not have to resort to string parsing of message to know what is happening.
      */
     protected Integer code;
+
+    /**
+     * HTTP status code.
+     */
+    protected Integer httpStatusCode;
 
     /**
      * Non-technical message, should be simple and could possibly be used to display message
@@ -73,34 +78,34 @@ public class Message
      * When a simple text feedback is not enough, you can use this interface to implement your
      * own message responses.
      *
-     * @see org.hisp.dhis.dxf2.message.MessageResponse
+     * @see WebMessageResponse
      */
-    protected MessageResponse response;
+    protected WebMessageResponse response;
 
-    public Message()
+    public WebMessage()
     {
-        this.status = MessageStatus.OK;
+        this.status = WebMessageStatus.OK;
     }
 
-    public Message( MessageStatus status )
+    public WebMessage( WebMessageStatus status )
     {
         this.status = status;
     }
 
-    public Message( MessageStatus status, String message )
+    public WebMessage( WebMessageStatus status, Integer httpStatusCode )
     {
         this.status = status;
-        this.message = message;
+        this.httpStatusCode = httpStatusCode;
     }
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public MessageStatus getStatus()
+    public WebMessageStatus getStatus()
     {
         return status;
     }
 
-    public void setStatus( MessageStatus status )
+    public void setStatus( WebMessageStatus status )
     {
         this.status = status;
     }
@@ -115,6 +120,18 @@ public class Message
     public void setCode( Integer code )
     {
         this.code = code;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public Integer getHttpStatusCode()
+    {
+        return httpStatusCode;
+    }
+
+    public void setHttpStatusCode( Integer httpStatusCode )
+    {
+        this.httpStatusCode = httpStatusCode;
     }
 
     @JsonProperty
@@ -143,12 +160,12 @@ public class Message
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public MessageResponse getResponse()
+    public WebMessageResponse getResponse()
     {
         return response;
     }
 
-    public void setResponse( MessageResponse response )
+    public void setResponse( WebMessageResponse response )
     {
         this.response = response;
     }
@@ -159,6 +176,7 @@ public class Message
         return Objects.toStringHelper( this )
             .add( "status", status )
             .add( "code", code )
+            .add( "httpStatusCode", httpStatusCode )
             .add( "message", message )
             .add( "devMessage", devMessage )
             .add( "response", response )

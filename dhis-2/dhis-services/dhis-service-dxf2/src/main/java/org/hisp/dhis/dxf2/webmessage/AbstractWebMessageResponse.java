@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.message;
+package org.hisp.dhis.dxf2.webmessage;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -34,21 +34,22 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class AbstractMessageResponse implements MessageResponse
+public class AbstractWebMessageResponse implements WebMessageResponse
 {
     /**
      * Optional type property. Since we are using the somewhat generic name 'response' for the data
      * part of the message, this can be used to signal what kind of response this is.
      * <p/>
-     * Some examples might be 'importCount', 'importSummary', etc.
+     * Some examples might be 'ImportCount', 'ImportSummary', etc.
      */
     private String type;
 
-    public AbstractMessageResponse()
+    public AbstractWebMessageResponse()
     {
+        this.type = getClass().getSimpleName().replaceFirst( "WebMessageResponse", "" );
     }
 
-    public AbstractMessageResponse( String type )
+    public AbstractWebMessageResponse( String type )
     {
         this.type = type;
     }

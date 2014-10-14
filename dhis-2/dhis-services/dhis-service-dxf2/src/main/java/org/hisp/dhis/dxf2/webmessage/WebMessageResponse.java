@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.message.responses;
+package org.hisp.dhis.dxf2.webmessage;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,68 +28,9 @@ package org.hisp.dhis.dxf2.message.responses;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.dxf2.message.AbstractMessageResponse;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JsonPropertyOrder( {
-    "type", "created", "updated", "deleted"
-} )
-public class ImportCountResponse extends AbstractMessageResponse
+public interface WebMessageResponse
 {
-    private int created;
-
-    private int updated;
-
-    private int deleted;
-
-    public ImportCountResponse( int created, int updated, int deleted )
-    {
-        setType( "importCount" );
-        this.created = created;
-        this.updated = updated;
-        this.deleted = deleted;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public int getCreated()
-    {
-        return created;
-    }
-
-    public void setCreated( int created )
-    {
-        this.created = created;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public int getUpdated()
-    {
-        return updated;
-    }
-
-    public void setUpdated( int updated )
-    {
-        this.updated = updated;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public int getDeleted()
-    {
-        return deleted;
-    }
-
-    public void setDeleted( int deleted )
-    {
-        this.deleted = deleted;
-    }
 }

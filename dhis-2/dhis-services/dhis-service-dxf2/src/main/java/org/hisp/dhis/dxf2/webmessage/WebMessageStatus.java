@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.message;
+package org.hisp.dhis.dxf2.webmessage;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,63 +28,10 @@ package org.hisp.dhis.dxf2.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.google.common.base.Objects;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JsonPropertyOrder( {
-    "status", "code", "httpStatusCode", "message", "devMessage", "response"
-} )
-public class HttpMessage extends Message
+public enum WebMessageStatus
 {
-    /**
-     * HTTP status code.
-     */
-    protected Integer httpStatusCode;
-
-    public HttpMessage( MessageStatus status )
-    {
-        super( status );
-    }
-
-    public HttpMessage( MessageStatus status, Integer httpStatusCode )
-    {
-        super( status );
-        this.httpStatusCode = httpStatusCode;
-    }
-
-    public HttpMessage( MessageStatus status, Integer httpStatusCode, String message )
-    {
-        this( status, httpStatusCode );
-        this.message = message;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public Integer getHttpStatusCode()
-    {
-        return httpStatusCode;
-    }
-
-    public void setHttpStatusCode( Integer httpStatusCode )
-    {
-        this.httpStatusCode = httpStatusCode;
-    }
-
-    @Override
-    public String toString()
-    {
-        return Objects.toStringHelper( this )
-            .add( "status", status )
-            .add( "code", code )
-            .add( "httpStatusCode", httpStatusCode )
-            .add( "message", message )
-            .add( "devMessage", devMessage )
-            .add( "response", response )
-            .toString();
-    }
+    OK, ERROR
 }
