@@ -28,10 +28,11 @@ package org.hisp.dhis.datamart.crosstab;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -62,6 +63,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.WeeklyPeriodType;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -108,13 +110,11 @@ public class CrossTabServiceTest
     @Override
     public void setUpTest()
     { 
-        Calendar calendar = Calendar.getInstance();
-        
-        calendar.set( 2007, 0, 1 );
+        DateTime testDate = new DateTime(2007, 1, 1, 0 , 0);
         
         WeeklyPeriodType periodType = (WeeklyPeriodType) periodService.getPeriodTypeByName( WeeklyPeriodType.NAME );
         
-        Period period = createPeriod( periodType, calendar.getTime(), calendar.getTime() );
+        Period period = createPeriod( periodType, testDate.toDate(), testDate.toDate() );
 
         generatedPeriods = periodType.generatePeriods( period ).iterator();
         

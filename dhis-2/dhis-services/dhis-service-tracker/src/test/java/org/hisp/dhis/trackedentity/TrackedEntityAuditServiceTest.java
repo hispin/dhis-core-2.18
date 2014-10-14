@@ -33,14 +33,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.PeriodType;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -85,9 +84,9 @@ public class TrackedEntityAuditServiceTest
         entityInstanceB = createTrackedEntityInstance( 'B', organisationUnit );
         entityInstanceService.addTrackedEntityInstance( entityInstanceB );
 
-        Calendar cal = Calendar.getInstance();
-        PeriodType.clearTimeOfDay( cal );
-        today = cal.getTime();
+        DateTime testDate = DateTime.now();
+        testDate.withTimeAtStartOfDay();
+        today = testDate.toDate();
 
         auditA = new TrackedEntityAudit( entityInstanceA, "test", today, TrackedEntityAudit.MODULE_ENTITY_INSTANCE_DASHBOARD );
         auditB = new TrackedEntityAudit( entityInstanceB, "test", today, TrackedEntityAudit.MODULE_ENTITY_INSTANCE_DASHBOARD );

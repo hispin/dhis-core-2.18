@@ -33,7 +33,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -69,6 +68,7 @@ import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -253,10 +253,9 @@ public class CaseAggregationConditionServiceTest
         // Program Instance && data values
         // ---------------------------------------------------------------------
 
-        Calendar today = Calendar.getInstance();
-        PeriodType.clearTimeOfDay( today );
+        DateTime today = DateTime.now();
         ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program,
-            today.getTime(), today.getTime(), organisationUnit );
+            today.toDate(), today.toDate(), organisationUnit );
 
         ProgramStageInstance stageInstanceA = programStageInstanceService.getProgramStageInstance( programInstance,
             stageA );
@@ -280,8 +279,8 @@ public class CaseAggregationConditionServiceTest
         PeriodType periodType = periodService.getPeriodTypeByName( DailyPeriodType.NAME );
         period = new Period();
         period.setPeriodType( periodType );
-        period.setStartDate( today.getTime() );
-        period.setEndDate( today.getTime() );
+        period.setStartDate( today.toDate() );
+        period.setEndDate( today.toDate() );
         periodService.addPeriod( period );
 
         // ---------------------------------------------------------------------
