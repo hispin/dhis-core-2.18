@@ -4110,7 +4110,7 @@ Ext.onReady( function() {
             bodyStyle: 'border-style:none; padding:0 0 0 8px',
             defaults: {
                 labelSeparator: '',
-                style: 'margin-bottom:2px',
+                style: 'margin-bottom:0',
                 listeners: intervalListeners
             },
             items: [
@@ -4133,6 +4133,11 @@ Ext.onReady( function() {
                     xtype: 'checkbox',
                     relativePeriodId: 'LAST_12_WEEKS',
                     boxLabel: NS.i18n.last_12_weeks
+                },
+                {
+                    xtype: 'checkbox',
+                    relativePeriodId: 'LAST_52_WEEKS',
+                    boxLabel: NS.i18n.last_52_weeks
                 }
             ]
         });
@@ -4142,7 +4147,7 @@ Ext.onReady( function() {
             bodyStyle: 'border-style:none',
             defaults: {
                 labelSeparator: '',
-                style: 'margin-bottom:2px',
+                style: 'margin-bottom:0',
                 listeners: intervalListeners
             },
             items: [
@@ -4163,6 +4168,11 @@ Ext.onReady( function() {
                 },
                 {
                     xtype: 'checkbox',
+                    relativePeriodId: 'LAST_6_MONTHS',
+                    boxLabel: NS.i18n.last_6_months
+                },
+                {
+                    xtype: 'checkbox',
                     relativePeriodId: 'LAST_12_MONTHS',
                     boxLabel: NS.i18n.last_12_months,
                     checked: true
@@ -4175,7 +4185,7 @@ Ext.onReady( function() {
             bodyStyle: 'border-style:none',
             defaults: {
                 labelSeparator: '',
-                style: 'margin-bottom:2px',
+                style: 'margin-bottom:0',
                 listeners: intervalListeners
             },
             items: [
@@ -4202,7 +4212,7 @@ Ext.onReady( function() {
             bodyStyle: 'border-style:none; padding:5px 0 0 8px',
             defaults: {
                 labelSeparator: '',
-                style: 'margin-bottom:2px',
+                style: 'margin-bottom:0',
                 listeners: intervalListeners
             },
             items: [
@@ -4229,7 +4239,7 @@ Ext.onReady( function() {
             bodyStyle: 'border-style:none; padding:5px 0 0',
             defaults: {
                 labelSeparator: '',
-                style: 'margin-bottom:2px',
+                style: 'margin-bottom:0',
                 listeners: intervalListeners
             },
             items: [
@@ -4256,7 +4266,7 @@ Ext.onReady( function() {
             bodyStyle: 'border-style:none; padding:5px 0 0',
             defaults: {
                 labelSeparator: '',
-                style: 'margin-bottom:2px',
+                style: 'margin-bottom:0',
                 listeners: intervalListeners
             },
             items: [
@@ -4283,7 +4293,7 @@ Ext.onReady( function() {
             bodyStyle: 'border-style:none; padding:5px 0 0 8px',
             defaults: {
                 labelSeparator: '',
-                style: 'margin-bottom:2px',
+                style: 'margin-bottom:0',
                 listeners: intervalListeners
             },
             items: [

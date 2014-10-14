@@ -7349,7 +7349,7 @@ Ext.onReady( function() {
             var type = periodType.getValue(),
                 periodOffset = periodType.periodOffset,
                 generator = gis.init.periodGenerator,
-                periods = generator.generateReversedPeriods(type, type === 'Yearly' ? periodOffset - 5 : periodOffset);
+                periods;
                 
             if (type === 'relativePeriods') {
                 periodsByTypeStore.loadData(gis.conf.period.relativePeriods);
@@ -7358,6 +7358,8 @@ Ext.onReady( function() {
                 periodNext.disable();
             }
             else {
+                periods = generator.generateReversedPeriods(type, type === 'Yearly' ? periodOffset - 5 : periodOffset);
+                
                 for (var i = 0; i < periods.length; i++) {
                     periods[i].id = periods[i].iso;
                 }

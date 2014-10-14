@@ -2467,6 +2467,7 @@ Ext.onReady( function() {
             dataSetSelected,
             dataSet,
 			rewind,
+            relativePeriodDefaults,
             relativePeriod,
             fixedPeriodAvailable,
             fixedPeriodSelected,
@@ -3883,6 +3884,19 @@ Ext.onReady( function() {
 			}
 		});
 
+        relativePeriodDefaults = {
+            labelSeparator: '',
+            style: 'margin-bottom:0',
+            listeners: {
+                added: function(chb) {
+                    if (chb.xtype === 'checkbox') {
+                        period.checkboxes.push(chb);
+                        relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
+                    }
+                }
+            }
+        };
+
 		relativePeriod = {
 			xtype: 'panel',
 			hideCollapseTool: true,
@@ -3899,21 +3913,7 @@ Ext.onReady( function() {
 							xtype: 'panel',
 							columnWidth: 0.34,
 							bodyStyle: 'border-style:none; padding:0 0 0 8px',
-							defaults: {
-								labelSeparator: '',
-								style: 'margin-bottom:2px',
-								listeners: {
-									added: function(chb) {
-										if (chb.xtype === 'checkbox') {
-											period.checkboxes.push(chb);
-											relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
-										}
-									},
-									change: function() {
-										//rewind.xable();
-									}
-								}
-							},
+							defaults: relativePeriodDefaults,
 							items: [
 								{
 									xtype: 'label',
@@ -3934,6 +3934,11 @@ Ext.onReady( function() {
 									xtype: 'checkbox',
 									relativePeriodId: 'LAST_12_WEEKS',
 									boxLabel: NS.i18n.last_12_weeks
+								},
+								{
+									xtype: 'checkbox',
+									relativePeriodId: 'LAST_52_WEEKS',
+									boxLabel: NS.i18n.last_52_weeks
 								}
 							]
 						},
@@ -3941,21 +3946,7 @@ Ext.onReady( function() {
 							xtype: 'panel',
 							columnWidth: 0.33,
 							bodyStyle: 'border-style:none',
-							defaults: {
-								labelSeparator: '',
-								style: 'margin-bottom:2px',
-								listeners: {
-									added: function(chb) {
-										if (chb.xtype === 'checkbox') {
-											period.checkboxes.push(chb);
-											relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
-										}
-									},
-									change: function() {
-										//rewind.xable();
-									}
-								}
-							},
+							defaults: relativePeriodDefaults,
 							items: [
 								{
 									xtype: 'label',
@@ -3974,6 +3965,11 @@ Ext.onReady( function() {
 								},
 								{
 									xtype: 'checkbox',
+									relativePeriodId: 'LAST_6_MONTHS',
+									boxLabel: NS.i18n.last_6_months
+								},
+								{
+									xtype: 'checkbox',
 									relativePeriodId: 'LAST_12_MONTHS',
 									boxLabel: NS.i18n.last_12_months,
 									checked: true
@@ -3984,21 +3980,7 @@ Ext.onReady( function() {
 							xtype: 'panel',
 							columnWidth: 0.33,
 							bodyStyle: 'border-style:none',
-							defaults: {
-								labelSeparator: '',
-								style: 'margin-bottom:2px',
-								listeners: {
-									added: function(chb) {
-										if (chb.xtype === 'checkbox') {
-											period.checkboxes.push(chb);
-											relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
-										}
-									},
-									change: function() {
-										//rewind.xable();
-									}
-								}
-							},
+							defaults: relativePeriodDefaults,
 							items: [
 								{
 									xtype: 'label',
@@ -4028,21 +4010,7 @@ Ext.onReady( function() {
 							xtype: 'panel',
 							columnWidth: 0.34,
 							bodyStyle: 'border-style:none; padding:5px 0 0 8px',
-							defaults: {
-								labelSeparator: '',
-								style: 'margin-bottom:2px',
-								listeners: {
-									added: function(chb) {
-										if (chb.xtype === 'checkbox') {
-											period.checkboxes.push(chb);
-											relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
-										}
-									},
-									change: function() {
-										//rewind.xable();
-									}
-								}
-							},
+							defaults: relativePeriodDefaults,
 							items: [
 								{
 									xtype: 'label',
@@ -4065,21 +4033,7 @@ Ext.onReady( function() {
 							xtype: 'panel',
 							columnWidth: 0.33,
 							bodyStyle: 'border-style:none; padding:5px 0 0',
-							defaults: {
-								labelSeparator: '',
-								style: 'margin-bottom:2px',
-								listeners: {
-									added: function(chb) {
-										if (chb.xtype === 'checkbox') {
-											period.checkboxes.push(chb);
-											relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
-										}
-									},
-									change: function() {
-										//rewind.xable();
-									}
-								}
-							},
+							defaults: relativePeriodDefaults,
 							items: [
 								{
 									xtype: 'label',
@@ -4102,21 +4056,7 @@ Ext.onReady( function() {
 							xtype: 'panel',
 							columnWidth: 0.33,
 							bodyStyle: 'border-style:none; padding:5px 0 0',
-							defaults: {
-								labelSeparator: '',
-								style: 'margin-bottom:2px',
-								listeners: {
-									added: function(chb) {
-										if (chb.xtype === 'checkbox') {
-											period.checkboxes.push(chb);
-											relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
-										}
-									},
-									change: function() {
-										//rewind.xable();
-									}
-								}
-							},
+							defaults: relativePeriodDefaults,
 							items: [
 								{
 									xtype: 'label',
@@ -4135,24 +4075,6 @@ Ext.onReady( function() {
 								}
 							]
 						}
-
-						//{
-							//xtype: 'panel',
-							//layout: 'anchor',
-							//bodyStyle: 'border-style:none; padding:5px 0 0 46px',
-							//defaults: {
-								//labelSeparator: '',
-								//style: 'margin-bottom:2px',
-							//},
-							//items: [
-								//{
-									//xtype: 'label',
-									//text: 'Options',
-									//cls: 'ns-label-period-heading-options'
-								//},
-								//rewind
-							//]
-						//}
 					]
 				},
 				{
@@ -4164,21 +4086,7 @@ Ext.onReady( function() {
 							xtype: 'panel',
 							columnWidth: 0.35,
 							bodyStyle: 'border-style:none; padding:5px 0 0 8px',
-							defaults: {
-								labelSeparator: '',
-								style: 'margin-bottom:2px',
-								listeners: {
-									added: function(chb) {
-										if (chb.xtype === 'checkbox') {
-											period.checkboxes.push(chb);
-											relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
-										}
-									},
-									change: function() {
-										//rewind.xable();
-									}
-								}
-							},
+							defaults: relativePeriodDefaults,
 							items: [
 								{
 									xtype: 'label',
