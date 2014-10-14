@@ -39,8 +39,8 @@ import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.program.Program;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -81,8 +81,8 @@ public class EventQueryPlannerTest
     {        
         EventQueryParams params = new EventQueryParams();
         params.setProgram( prA );
-        params.setStartDate( new Cal( 2010, 6, 1 ).time() );
-        params.setEndDate( new Cal( 2012, 3, 20 ).time() );
+        params.setStartDate( new DateTime( 2010, 6, 1, 0, 0 ).toDate() );
+        params.setEndDate( new DateTime( 2012, 3, 20, 0, 0 ).toDate() );
         params.setOrganisationUnits( Arrays.asList( ouA ) );
         
         List<EventQueryParams> queries = queryPlanner.planAggregateQuery( params );
@@ -91,8 +91,8 @@ public class EventQueryPlannerTest
         
         EventQueryParams query = queries.get( 0 );
         
-        assertEquals( new Cal( 2010, 6, 1 ).time(), query.getStartDate() );
-        assertEquals( new Cal( 2012, 3, 20 ).time(), query.getEndDate() );
+        assertEquals( new DateTime( 2010, 6, 1, 0, 0 ).toDate(), query.getStartDate() );
+        assertEquals( new DateTime( 2012, 3, 20, 0, 0 ).toDate(), query.getEndDate() );
         
         Partitions partitions = query.getPartitions();
         
@@ -107,8 +107,8 @@ public class EventQueryPlannerTest
     {        
         EventQueryParams params = new EventQueryParams();
         params.setProgram( prA );
-        params.setStartDate( new Cal( 2010, 3, 1 ).time() );
-        params.setEndDate( new Cal( 2010, 9, 20 ).time() );
+        params.setStartDate( new DateTime( 2010, 3, 1, 0, 0 ).toDate() );
+        params.setEndDate( new DateTime( 2010, 9, 20, 0, 0 ).toDate() );
         params.setOrganisationUnits( Arrays.asList( ouA ) );
         
         List<EventQueryParams> queries = queryPlanner.planAggregateQuery( params );
@@ -117,8 +117,8 @@ public class EventQueryPlannerTest
 
         EventQueryParams query = queries.get( 0 );
         
-        assertEquals( new Cal( 2010, 3, 1 ).time(), query.getStartDate() );
-        assertEquals( new Cal( 2010, 9, 20 ).time(), query.getEndDate() );
+        assertEquals( new DateTime( 2010, 3, 1, 0, 0 ).toDate(), query.getStartDate() );
+        assertEquals( new DateTime( 2010, 9, 20, 0, 0 ).toDate(), query.getEndDate() );
 
         Partitions partitions = query.getPartitions();
 
@@ -131,8 +131,8 @@ public class EventQueryPlannerTest
     {        
         EventQueryParams params = new EventQueryParams();
         params.setProgram( prA );
-        params.setStartDate( new Cal( 2010, 6, 1 ).time() );
-        params.setEndDate( new Cal( 2012, 3, 20 ).time() );
+        params.setStartDate( new DateTime( 2010, 6, 1, 0, 0 ).toDate() );
+        params.setEndDate( new DateTime( 2012, 3, 20, 0, 0 ).toDate() );
         params.setOrganisationUnits( Arrays.asList( ouA, ouB ) );
         
         List<EventQueryParams> queries = queryPlanner.planAggregateQuery( params );
@@ -147,14 +147,14 @@ public class EventQueryPlannerTest
     {        
         EventQueryParams params = new EventQueryParams();
         params.setProgram( prA );
-        params.setStartDate( new Cal( 2010, 6, 1 ).time() );
-        params.setEndDate( new Cal( 2012, 3, 20 ).time() );
+        params.setStartDate( new DateTime( 2010, 6, 1, 0, 0 ).toDate() );
+        params.setEndDate( new DateTime( 2012, 3, 20, 0, 0 ).toDate() );
         params.setOrganisationUnits( Arrays.asList( ouA ) );
         
         params = queryPlanner.planEventQuery( params );
         
-        assertEquals( new Cal( 2010, 6, 1 ).time(), params.getStartDate() );
-        assertEquals( new Cal( 2012, 3, 20 ).time(), params.getEndDate() );
+        assertEquals( new DateTime( 2010, 6, 1, 0, 0 ).toDate(), params.getStartDate() );
+        assertEquals( new DateTime( 2012, 3, 20, 0, 0 ).toDate(), params.getEndDate() );
         
         Partitions partitions = params.getPartitions();
         
@@ -169,14 +169,14 @@ public class EventQueryPlannerTest
     {        
         EventQueryParams params = new EventQueryParams();
         params.setProgram( prA );
-        params.setStartDate( new Cal( 2010, 3, 1 ).time() );
-        params.setEndDate( new Cal( 2010, 9, 20 ).time() );
+        params.setStartDate( new DateTime( 2010, 3, 1, 0, 0 ).toDate() );
+        params.setEndDate( new DateTime( 2010, 9, 20, 0, 0 ).toDate() );
         params.setOrganisationUnits( Arrays.asList( ouA ) );
         
         params = queryPlanner.planEventQuery( params );
 
-        assertEquals( new Cal( 2010, 3, 1 ).time(), params.getStartDate() );
-        assertEquals( new Cal( 2010, 9, 20 ).time(), params.getEndDate() );
+        assertEquals( new DateTime( 2010, 3, 1, 0, 0 ).toDate(), params.getStartDate() );
+        assertEquals( new DateTime( 2010, 9, 20, 0, 0 ).toDate(), params.getEndDate() );
 
         Partitions partitions = params.getPartitions();
 

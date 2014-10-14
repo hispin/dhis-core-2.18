@@ -29,11 +29,11 @@ package org.hisp.dhis.system.util;
  */
 
 import static org.hisp.dhis.system.util.DateUtils.dateIsValid;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
-import org.hisp.dhis.period.Cal;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 /**
@@ -55,6 +55,6 @@ public class DateUtilsTest
     @Test
     public void testDaysBetween()
     {
-        assertEquals( 6, DateUtils.daysBetween( new Cal( 2014, 3, 1 ).time(), new Cal( 2014, 3, 7 ).time() ) );
+        assertEquals( 6, DateUtils.daysBetween( new DateTime( 2014, 3, 1, 0, 0 ).toDate(), new DateTime( 2014, 3, 7, 0, 0 ).toDate() ) );
     }
 }
