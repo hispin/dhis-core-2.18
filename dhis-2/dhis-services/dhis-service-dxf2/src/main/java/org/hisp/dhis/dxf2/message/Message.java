@@ -71,9 +71,9 @@ public class Message
 
     /**
      * When a simple text feedback is not enough, you can use this interface to implement your
-     * own message bodies.
+     * own message responses.
      *
-     * @see MessageResponse
+     * @see org.hisp.dhis.dxf2.message.MessageResponse
      */
     protected MessageResponse response;
 
