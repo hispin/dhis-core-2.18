@@ -62,8 +62,8 @@
 				onkeyup='setRealDays();' style="width:100px;" />
 				$i18n.getString('days')
 				<select id='time' name='time' onchange='setRealDays();' style="width:100px;">
-					<option value='1' >$i18n.getString('before')</option>
-					<option value='-1' >$i18n.getString('after')</option>
+					<option value='-1' >$i18n.getString('before')</option>
+					<option value='1' >$i18n.getString('after')</option>
 				</select>
 				$i18n.getString('scheduled_date')
 				<input type="hidden" id="daysAllowedSendMessage" name="daysAllowedSendMessage" />
