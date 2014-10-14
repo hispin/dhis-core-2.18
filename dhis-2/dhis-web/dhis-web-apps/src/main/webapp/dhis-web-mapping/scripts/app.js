@@ -3733,7 +3733,7 @@ Ext.onReady( function() {
 				prevItem;
 
 			if (items.length === 0) {
-				alert('No legend set name');
+				alert('At least one legend is required');
 				return false;
 			}
 
