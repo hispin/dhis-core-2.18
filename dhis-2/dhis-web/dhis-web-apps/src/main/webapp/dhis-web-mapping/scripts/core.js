@@ -697,45 +697,6 @@ Ext.onReady( function() {
 		selectHandlers.activate();
 	};
 
-	GIS.core.OrganisationUnitLevelStore = function(gis) {
-        var isPlugin = GIS.plugin && !GIS.app;
-
-		return Ext.create('Ext.data.Store', {
-			fields: ['id', 'name', 'level'],
-			proxy: {
-				type: isPlugin ? 'jsonp' : 'ajax',
-				url: gis.init.contextPath + '/api/organisationUnitLevels.' + (isPlugin ? 'jsonp' : 'json') + '?fields=id,name,level&paging=false',
-				reader: {
-					type: 'json',
-					root: 'organisationUnitLevels'
-				}
-			},
-			autoLoad: true,
-			cmp: [],
-			isLoaded: false,
-			loadFn: function(fn) {
-				if (this.isLoaded) {
-					fn.call();
-				}
-				else {
-					this.load(fn);
-				}
-			},
-			getRecordByLevel: function(level) {
-				return this.getAt(this.findExact('level', level));
-			},
-			listeners: {
-				load: function() {
-					if (!this.isLoaded) {
-						this.isLoaded = true;
-						gis.util.gui.combo.setQueryMode(this.cmp, 'local');
-					}
-					this.sort('level', 'ASC');
-				}
-			}
-		});
-	};
-
 	GIS.core.StyleMap = function(labelConfig) {
 		var defaults = {
 				fillOpacity: 1,
@@ -3205,11 +3166,6 @@ Ext.onReady( function() {
 					return response;
 				}();
 			};
-		}());
-
-		// store
-		(function() {
-			store.organisationUnitLevels = GIS.core.OrganisationUnitLevelStore(gis);
 		}());
 
 		gis.api = api;
