@@ -320,7 +320,7 @@ public class DefaultSecurityService
 
         if ( currentTime.after( restoreExpiry ) )
         {
-            return "date_is_after_expiry - date: " + currentTime.toString() + " expiry: " + restoreExpiry.toString();
+            return "date_is_after_expiry";
         }
 
         return null; // Success;
@@ -361,10 +361,10 @@ public class DefaultSecurityService
      *     <li>credentials_parameter_is_null</li>
      *     <li>token_parameter_is_null</li>
      *     <li>restore_type_parameter_is_null</li>
-     *     <li>cannot_parse_restore_options ...</li>
-     *     <li>wrong_prefix_for_restore_type ...</li>
-     *     <li>could_not_verify_token ...</li>
-     *     <li>restore_token_does_not_match_supplied_token ...</li>
+     *     <li>cannot_parse_restore_options</li>
+     *     <li>wrong_prefix_for_restore_type</li>
+     *     <li>could_not_verify_token</li>
+     *     <li>restore_token_does_not_match_supplied_token</li>
      * </ul>
      *
      * @param credentials the user credentials.
@@ -393,24 +393,24 @@ public class DefaultSecurityService
 
         if ( restoreOptions == null )
         {
-            return "cannot_parse_restore_options for " + restoreType.name() + " from token " + token;
+            return "cannot_parse_restore_options";
         }
 
         if ( restoreType != restoreOptions.getRestoreType() )
         {
-            return "wrong_prefix_for_restore_type " + restoreType.name() + " on token " + token;
+            return "wrong_prefix_for_restore_type";
         }
 
         String restoreToken = credentials.getRestoreToken();
 
         if ( restoreToken == null )
         {
-            return "could_not_verify_token for " + restoreType.name() + " because user has no token";
+            return "could_not_verify_token";
         }
 
         boolean validToken = passwordManager.matches( token, restoreToken );
 
-        return validToken ? null : "restore_token_does_not_match_supplied_token " + token;
+        return validToken ? null : "restore_token_does_not_match_supplied_token";
     }
 
     @Override
