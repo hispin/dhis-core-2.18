@@ -127,8 +127,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
                 placeholder: "ui-state-highlight",
                 tolerance: "pointer",
                 handle: '.handle'
-            }).disableSelection();  
-            //scope.$apply();
+            });
         }  
     };
 })
