@@ -47,6 +47,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -228,14 +229,14 @@ public class ProgramStageInstanceStoreTest
          * Program Instance and Program Stage Instance
          */
 
-        Calendar calIncident = Calendar.getInstance();
-        PeriodType.clearTimeOfDay( calIncident );
-        calIncident.add( Calendar.DATE, -70 );
-        incidenDate = calIncident.getTime();
-
-        Calendar calEnrollment = Calendar.getInstance();
-        PeriodType.clearTimeOfDay( calEnrollment );
-        enrollmentDate = calEnrollment.getTime();
+        DateTime testDate1 = DateTime.now();
+        testDate1.withTimeAtStartOfDay();
+        testDate1 = testDate1.minusDays( 70  );
+        incidenDate = testDate1.toDate();
+        
+        DateTime testDate2 = DateTime.now();
+        testDate2.withTimeAtStartOfDay();
+        enrollmentDate = testDate2.toDate();
 
         programInstanceA = new ProgramInstance( enrollmentDate, incidenDate, entityInstanceA, programA );
         programInstanceA.setUid( "UID-PIA" );

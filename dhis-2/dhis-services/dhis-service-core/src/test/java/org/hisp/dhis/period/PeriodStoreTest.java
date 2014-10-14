@@ -65,8 +65,8 @@ public class PeriodStoreTest
         PeriodType periodTypeA = it.next();
         PeriodType periodTypeB = it.next();
 
-        Period periodA = new Period( periodTypeA, getDay( 0 ), getDay( 1 ) );
-        Period periodB = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodA = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodB = new Period( periodTypeA, getDay( 2 ), getDay( 3 ) );
         Period periodC = new Period( periodTypeB, getDay( 2 ), getDay( 3 ) );
         int idA = periodStore.addPeriod( periodA );
         int idB = periodStore.addPeriod( periodB );
@@ -76,15 +76,15 @@ public class PeriodStoreTest
         assertNotNull( periodA );
         assertEquals( idA, periodA.getId() );
         assertEquals( periodTypeA, periodA.getPeriodType() );
-        assertEquals( getDay( 0 ), periodA.getStartDate() );
-        assertEquals( getDay( 1 ), periodA.getEndDate() );
+        assertEquals( getDay( 1 ), periodA.getStartDate() );
+        assertEquals( getDay( 2 ), periodA.getEndDate() );
 
         periodB = periodStore.get( idB );
         assertNotNull( periodB );
         assertEquals( idB, periodB.getId() );
         assertEquals( periodTypeA, periodB.getPeriodType() );
-        assertEquals( getDay( 1 ), periodB.getStartDate() );
-        assertEquals( getDay( 2 ), periodB.getEndDate() );
+        assertEquals( getDay( 2 ), periodB.getStartDate() );
+        assertEquals( getDay( 3 ), periodB.getEndDate() );
 
         periodC = periodStore.get( idC );
         assertNotNull( periodC );
@@ -103,8 +103,8 @@ public class PeriodStoreTest
         PeriodType periodTypeA = it.next();
         PeriodType periodTypeB = it.next();
 
-        Period periodA = new Period( periodTypeA, getDay( 0 ), getDay( 1 ) );
-        Period periodB = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodA = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodB = new Period( periodTypeA, getDay( 2 ), getDay( 3 ) );
         Period periodC = new Period( periodTypeB, getDay( 2 ), getDay( 3 ) );
         Period periodD = new Period( periodTypeB, getDay( 3 ), getDay( 4 ) );
         int idA = periodStore.addPeriod( periodA );
@@ -151,8 +151,8 @@ public class PeriodStoreTest
         PeriodType periodTypeA = it.next();
         PeriodType periodTypeB = it.next();
 
-        Period periodA = new Period( periodTypeA, getDay( 0 ), getDay( 1 ) );
-        Period periodB = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodA = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodB = new Period( periodTypeA, getDay( 2 ), getDay( 3 ) );
         Period periodC = new Period( periodTypeB, getDay( 2 ), getDay( 3 ) );
         Period periodD = new Period( periodTypeB, getDay( 3 ), getDay( 4 ) );
         Period periodE = new Period( periodTypeA, getDay( 3 ), getDay( 4 ) );
@@ -162,19 +162,19 @@ public class PeriodStoreTest
         int idD = periodStore.addPeriod( periodD );
         int idE = periodStore.addPeriod( periodE );
 
-        periodA = periodStore.getPeriod( getDay( 0 ), getDay( 1 ), periodTypeA );
+        periodA = periodStore.getPeriod( getDay( 1 ), getDay( 2 ), periodTypeA );
         assertNotNull( periodA );
         assertEquals( idA, periodA.getId() );
         assertEquals( periodTypeA, periodA.getPeriodType() );
-        assertEquals( getDay( 0 ), periodA.getStartDate() );
-        assertEquals( getDay( 1 ), periodA.getEndDate() );
+        assertEquals( getDay( 1 ), periodA.getStartDate() );
+        assertEquals( getDay( 2 ), periodA.getEndDate() );
         
-        periodB = periodStore.getPeriod( getDay( 1 ), getDay( 2 ), periodTypeA );
+        periodB = periodStore.getPeriod( getDay( 2 ), getDay( 3 ), periodTypeA );
         assertNotNull( periodB );
         assertEquals( idB, periodB.getId() );
         assertEquals( periodTypeA, periodB.getPeriodType() );
-        assertEquals( getDay( 1 ), periodB.getStartDate() );
-        assertEquals( getDay( 2 ), periodB.getEndDate() );
+        assertEquals( getDay( 2 ), periodB.getStartDate() );
+        assertEquals( getDay( 3 ), periodB.getEndDate() );
 
         periodC = periodStore.getPeriod( getDay( 2 ), getDay( 3 ), periodTypeB );
         assertNotNull( periodC );
@@ -198,8 +198,8 @@ public class PeriodStoreTest
         assertEquals( getDay( 4 ), periodE.getEndDate() );
         
         assertNull( periodStore.getPeriod( getDay( 1 ), getDay( 2 ), periodTypeB ) );
-        assertNull( periodStore.getPeriod( getDay( 2 ), getDay( 3 ), periodTypeA ) );
-        assertNull( periodStore.getPeriod( getDay( 0 ), getDay( 5 ), periodTypeB ) );
+        assertNull( periodStore.getPeriod( getDay( 1 ), getDay( 3 ), periodTypeA ) );
+        assertNull( periodStore.getPeriod( getDay( 1 ), getDay( 5 ), periodTypeB ) );
         assertNull( periodStore.getPeriod( getDay( 4 ), getDay( 3 ), periodTypeB ) );
         assertNull( periodStore.getPeriod( getDay( 5 ), getDay( 6 ), periodTypeA ) );
     }
@@ -210,7 +210,7 @@ public class PeriodStoreTest
     {
         PeriodType periodType = periodStore.getAllPeriodTypes().iterator().next();
 
-        Period periodA = new Period( periodType, getDay( 0 ), getDay( 1 ) );
+        Period periodA = new Period( periodType, getDay( 1 ), getDay( 1 ) );
         Period periodB = new Period( periodType, getDay( 1 ), getDay( 2 ) );
         Period periodC = new Period( periodType, getDay( 2 ), getDay( 3 ) );
         
@@ -236,8 +236,8 @@ public class PeriodStoreTest
         PeriodType periodTypeA = it.next();
         PeriodType periodTypeB = it.next();
 
-        Period periodA = new Period( periodTypeA, getDay( 0 ), getDay( 1 ) );
-        Period periodB = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodA = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodB = new Period( periodTypeA, getDay( 2 ), getDay( 3 ) );
         Period periodC = new Period( periodTypeB, getDay( 2 ), getDay( 3 ) );
         Period periodD = new Period( periodTypeB, getDay( 3 ), getDay( 4 ) );
         periodStore.addPeriod( periodA );
@@ -245,23 +245,23 @@ public class PeriodStoreTest
         periodStore.addPeriod( periodC );
         periodStore.addPeriod( periodD );
 
-        Collection<Period> periods = periodStore.getPeriodsBetweenDates( getDay( 0 ), getDay( 0 ) );
+        Collection<Period> periods = periodStore.getPeriodsBetweenDates( getDay( 1 ), getDay( 1 ) );
         assertNotNull( periods );
         assertEquals( 0, periods.size() );
 
-        periods = periodStore.getPeriodsBetweenDates( getDay( 0 ), getDay( 1 ) );
+        periods = periodStore.getPeriodsBetweenDates( getDay( 1), getDay( 2 ) );
         assertNotNull( periods );
         assertEquals( 1, periods.size() );
         assertEquals( periodA, periods.iterator().next() );
 
-        periods = periodStore.getPeriodsBetweenDates( getDay( 1 ), getDay( 4 ) );
+        periods = periodStore.getPeriodsBetweenDates( getDay( 2 ), getDay( 4 ) );
         assertNotNull( periods );
         assertEquals( 3, periods.size() );
         assertTrue( periods.contains( periodB ) );
         assertTrue( periods.contains( periodC ) );
         assertTrue( periods.contains( periodD ) );
 
-        periods = periodStore.getPeriodsBetweenDates( getDay( 0 ), getDay( 5 ) );
+        periods = periodStore.getPeriodsBetweenDates( getDay( 1 ), getDay( 5 ) );
         assertNotNull( periods );
         assertEquals( 4, periods.size() );
         assertTrue( periods.contains( periodA ) );
@@ -279,37 +279,37 @@ public class PeriodStoreTest
         PeriodType periodTypeA = it.next();
         PeriodType periodTypeB = it.next();
 
-        Period periodA = new Period( periodTypeA, getDay( 0 ), getDay( 1 ) );
-        Period periodB = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodA = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodB = new Period( periodTypeA, getDay( 2 ), getDay( 3 ) );
         Period periodC = new Period( periodTypeB, getDay( 2 ), getDay( 3 ) );
         Period periodD = new Period( periodTypeB, getDay( 3 ), getDay( 4 ) );
-        Period periodE = new Period( periodTypeB, getDay( 0 ), getDay( 4 ) );
+        Period periodE = new Period( periodTypeB, getDay( 1 ), getDay( 4 ) );
         periodStore.addPeriod( periodA );
         periodStore.addPeriod( periodB );
         periodStore.addPeriod( periodC );
         periodStore.addPeriod( periodD );
         periodStore.addPeriod( periodE );
 
-        Collection<Period> periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 0 ), getDay( 0 ) );
+        Collection<Period> periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 1 ), getDay( 1 ) );
         assertNotNull( periods );
         assertEquals( 2, periods.size() );
         assertTrue( periods.contains( periodA ) );
         assertTrue( periods.contains( periodE ) );
 
-        periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 0 ), getDay( 1 ) );
+        periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 1 ), getDay( 2 ) );
         assertNotNull( periods );
         assertEquals( 2, periods.size() );
         assertTrue( periods.contains( periodA ) );
         assertTrue( periods.contains( periodE ) );
 
-        periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 1 ), getDay( 3 ) );
+        periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 2 ), getDay( 3 ) );
         assertNotNull( periods );
         assertEquals( 3, periods.size() );
         assertTrue( periods.contains( periodB ) );
         assertTrue( periods.contains( periodC ) );
         assertTrue( periods.contains( periodE ) );
 
-        periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 1 ), getDay( 4 ) );
+        periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 2 ), getDay( 4 ) );
         assertNotNull( periods );
         assertEquals( 4, periods.size() );
         assertTrue( periods.contains( periodB ) );
@@ -402,7 +402,7 @@ public class PeriodStoreTest
     {
         PeriodType type = periodStore.getAllPeriodTypes().iterator().next();
         
-        Period periodA = new Period( type, getDay( 0 ), getDay( 2 ) );
+        Period periodA = new Period( type, getDay( 1 ), getDay( 2 ) );
         Period periodB = new Period( type, getDay( 2 ), getDay( 4 ) );
         Period periodC = new Period( type, getDay( 4 ), getDay( 6 ) );
         Period periodD = new Period( type, getDay( 6 ), getDay( 8 ) );
@@ -448,9 +448,9 @@ public class PeriodStoreTest
         PeriodType periodTypeB = it.next();
         PeriodType periodTypeC = it.next();
 
-        Period periodA = new Period( periodTypeA, getDay( 0 ), getDay( 1 ) );
-        Period periodB = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
-        Period periodC = new Period( periodTypeA, getDay( 2 ), getDay( 3 ) );
+        Period periodA = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodB = new Period( periodTypeA, getDay( 2 ), getDay( 3 ) );
+        Period periodC = new Period( periodTypeA, getDay( 3 ), getDay( 4 ) );
         Period periodD = new Period( periodTypeB, getDay( 3 ), getDay( 4 ) );
         periodStore.addPeriod( periodA );
         periodStore.addPeriod( periodB );

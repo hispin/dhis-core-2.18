@@ -28,15 +28,18 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * @author Bob Jolliffe
@@ -56,16 +59,18 @@ public class WeeklyPeriodTypeTest
     @Ignore
     public void testGeneratePeriods()
     {
-        Calendar testCal = Calendar.getInstance();
+        DateTime testDate = new DateTime();
+        
         WeeklyPeriodType wpt = new WeeklyPeriodType();
 
         for ( int year = 1990; year < 2020; year++ )
         {
             for ( int day = -7; day < 7; day++ )
-            {
-                testCal.set( year, 0, 1 ); // 1st day of year
-                testCal.add( Calendar.DATE, day );
-                Period p1 = wpt.createPeriod( testCal.getTime() );
+            { 
+                testDate = new DateTime( year, 1, 1, 0, 0); // 1st day of year
+                testDate = testDate.minusDays( day );
+                
+                Period p1 = wpt.createPeriod( testDate.toDate() );
                 List<Period> generatedPeriods = wpt.generatePeriods( p1 );
                 assertTrue( "Period " + p1 + " in generated set", generatedPeriods.contains( p1 ) );
             }
@@ -74,56 +79,49 @@ public class WeeklyPeriodTypeTest
 
     @Test
     public void testCreatePeriod()
-    {
-        Calendar testCal = Calendar.getInstance();
-        Calendar startCal = Calendar.getInstance();
-        Calendar endCal = Calendar.getInstance();
-
-        // arbitrary instance - should increase coverage
-        testCal.set( 2009, 4, 27 ); // Wednesday
+    {   
+        DateTime testDate = new DateTime( 2009, 4, 27, 0, 0 );
         WeeklyPeriodType wpt = new WeeklyPeriodType();
+        Period p = wpt.createPeriod( testDate.toDate() );
+        
+        DateTime startDate = new DateTime( 2009, 4, 27, 0, 0 );
+        DateTime endDate = new DateTime( 2009, 5, 3, 0, 0 );
 
-        Period p = wpt.createPeriod( testCal.getTime() );
-        startCal.setTime( p.getStartDate() );
-        endCal.setTime( p.getEndDate() );
+        assertFalse( "start date after given date", startDate.isAfter(  p.getStartDate().getTime() ) );
+        assertFalse( "end date before given date", endDate.isAfter( p.getEndDate().getTime() ) );
+        
 
-        assertFalse( "start date after given date", startCal.after( testCal ) );
-        assertFalse( "end date before given date", endCal.before( testCal ) );
-
-        assertTrue( startCal.get( Calendar.DAY_OF_WEEK ) == Calendar.MONDAY );
-        assertTrue( endCal.get( Calendar.DAY_OF_WEEK ) == Calendar.SUNDAY );
-
+      assertTrue( startDate.getDayOfWeek() == DateTimeConstants.MONDAY );
+      assertTrue( endDate.getDayOfWeek() == DateTimeConstants.SUNDAY  );
     }
 
     @Test
     public void isoDates()
     {
-        Calendar cal = Calendar.getInstance();
-        cal.clear();
-
-        cal.set( 2008, 11, 29 );
+        DateTime testDate = new DateTime( 2008, 12, 29, 0, 0 );
+        
         Period period = periodType.createPeriod( "2009W1" );
-        assertEquals( cal.getTime(), period.getStartDate() );
+        assertEquals( testDate.toDate(), period.getStartDate() );
 
-        cal.set( 2011, 0, 3 );
+        testDate = new DateTime( 2011, 1, 3, 0, 0 );
         period = periodType.createPeriod( "2011W1" );
-        assertEquals( cal.getTime(), period.getStartDate() );
+        assertEquals( testDate.toDate(), period.getStartDate() );
 
+        testDate = new DateTime( 2011, 3, 14, 0, 0 );
         period = periodType.createPeriod( "2011W11" );
-        cal.set( 2011, 2, 14 );
-        assertEquals( cal.getTime(), period.getStartDate() );
+        assertEquals( testDate.toDate(), period.getStartDate() );
     }
 
     @Test
     public void getIsoDate()
     {
-        Calendar cal = Calendar.getInstance();
-        cal.set( 2011, 0, 3 ); // Wednesday
-        Period p = periodType.createPeriod( cal.getTime() );
+        DateTime testDate = new DateTime( 2011, 1, 3, 0, 0 );
+        
+        Period p = periodType.createPeriod( testDate.toDate() );
         assertEquals( "2011W1", p.getIsoDate() );
 
-        cal.set( 2012, 11, 31 ); // Monday
-        p = periodType.createPeriod( cal.getTime() );
+        testDate = new DateTime( 2012, 12, 31, 0, 0 ); // Monday
+        p = periodType.createPeriod( testDate.toDate() );
         assertEquals( "2013W1", p.getIsoDate() );
     }
 
@@ -172,18 +170,19 @@ public class WeeklyPeriodTypeTest
     @Test
     public void testGetIsoDate()
     {
-        Calendar calendar = Calendar.getInstance();
+//        Calendar calendar = Calendar.getInstance();
+        
+        DateTime testDate = new DateTime(2012, 12, 31, 0, 0);
 
-        calendar.set( 2012, Calendar.DECEMBER, 31 );
-        assertEquals( "2013W1", periodType.getIsoDate( new Period( periodType, calendar.getTime(), calendar.getTime() ) ) );
+        assertEquals( "2013W1", periodType.getIsoDate( new Period( periodType, testDate.toDate(), testDate.toDate() ) ) );
 
-        calendar.set( 2012, Calendar.DECEMBER, 30 );
-        assertEquals( "2012W52", periodType.getIsoDate( new Period( periodType, calendar.getTime(), calendar.getTime() ) ) );
+        testDate = new DateTime(2012, 12, 30, 0, 0);
+        assertEquals( "2012W52", periodType.getIsoDate( new Period( periodType, testDate.toDate(), testDate.toDate() ) ) );
 
-        calendar.set( 2009, Calendar.DECEMBER, 29 );
-        assertEquals( "2009W53", periodType.getIsoDate( new Period( periodType, calendar.getTime(), calendar.getTime() ) ) );
+        testDate = new DateTime(2009, 12, 29, 0, 0);
+        assertEquals( "2009W53", periodType.getIsoDate( new Period( periodType, testDate.toDate(), testDate.toDate() ) ) );
 
-        calendar.set( 2010, Calendar.JANUARY, 4 );
-        assertEquals( "2010W1", periodType.getIsoDate( new Period( periodType, calendar.getTime(), calendar.getTime() ) ) );
+        testDate = new DateTime(2010, 1, 4, 0, 0);
+        assertEquals( "2010W1", periodType.getIsoDate( new Period( periodType, testDate.toDate(), testDate.toDate() ) ) );
     }
 }
