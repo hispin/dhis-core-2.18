@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.message;
+package org.hisp.dhis.webapi.webdomain;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -48,7 +48,7 @@ import java.util.Set;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @JacksonXmlRootElement( localName = "message", namespace = DxfNamespaces.DXF_2_0 )
-public class Message
+public class MessageConversation
 {
     private String subject;
 
@@ -60,11 +60,11 @@ public class Message
 
     private Set<UserGroup> userGroups = new HashSet<>();
 
-    public Message()
+    public MessageConversation()
     {
     }
 
-    public Message( String subject, String text )
+    public MessageConversation( String subject, String text )
     {
         this.subject = subject;
         this.text = text;

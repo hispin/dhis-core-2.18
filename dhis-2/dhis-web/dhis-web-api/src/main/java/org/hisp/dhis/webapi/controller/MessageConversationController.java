@@ -31,11 +31,10 @@ package org.hisp.dhis.webapi.controller;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.dxf2.message.Message;
+import org.hisp.dhis.webapi.webdomain.MessageConversation;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
-import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.RootNode;
@@ -77,7 +76,7 @@ import java.util.Map;
 @Controller
 @RequestMapping( value = MessageConversationSchemaDescriptor.API_ENDPOINT )
 public class MessageConversationController
-    extends AbstractCrudController<MessageConversation>
+    extends AbstractCrudController<org.hisp.dhis.message.MessageConversation>
 {
     @Autowired
     private MessageService messageService;
@@ -95,7 +94,7 @@ public class MessageConversationController
     private CurrentUserService currentUserService;
 
     @Override
-    public void postProcessEntity( MessageConversation entity, WebOptions options, Map<String, String> parameters ) throws Exception
+    public void postProcessEntity( org.hisp.dhis.message.MessageConversation entity, WebOptions options, Map<String, String> parameters ) throws Exception
     {
         Boolean markRead = Boolean.parseBoolean( parameters.get( "markRead" ) );
 
@@ -110,9 +109,9 @@ public class MessageConversationController
     public RootNode getObject( @PathVariable String uid, Map<String, String> parameters, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
-        MessageConversation messageConversation = messageService.getMessageConversation( uid );
+        org.hisp.dhis.message.MessageConversation messageConversationConversation = messageService.getMessageConversation( uid );
 
-        if( messageConversation == null )
+        if( messageConversationConversation == null )
         {
             response.setStatus( HttpServletResponse.SC_NOT_FOUND );
             RootNode responseNode = new RootNode( "reply" );
@@ -120,7 +119,7 @@ public class MessageConversationController
             return responseNode;
         }
 
-        if( !canReadMessageConversation( currentUserService.getCurrentUser(), messageConversation ) )
+        if( !canReadMessageConversation( currentUserService.getCurrentUser(), messageConversationConversation ) )
         {
             throw new AccessDeniedException( "Not authorized to access this conversation." );
         }
@@ -129,9 +128,9 @@ public class MessageConversationController
     }
 
     @Override
-    protected List<MessageConversation> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
+    protected List<org.hisp.dhis.message.MessageConversation> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
-        List<MessageConversation> entityList;
+        List<org.hisp.dhis.message.MessageConversation> entityList;
 
         if ( options.getOptions().containsKey( "query" ) )
         {
@@ -161,23 +160,23 @@ public class MessageConversationController
     @Override
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
-        Message message = JacksonUtils.fromXml( input, Message.class );
-        postObject( response, request, message );
+        MessageConversation messageConversation = JacksonUtils.fromXml( input, MessageConversation.class );
+        postObject( response, request, messageConversation );
     }
 
     @Override
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
-        Message message = JacksonUtils.fromJson( input, Message.class );
-        postObject( response, request, message );
+        MessageConversation messageConversation = JacksonUtils.fromJson( input, MessageConversation.class );
+        postObject( response, request, messageConversation );
     }
 
-    public void postObject( HttpServletResponse response, HttpServletRequest request, Message message )
+    public void postObject( HttpServletResponse response, HttpServletRequest request, MessageConversation messageConversation )
     {
-        List<User> users = new ArrayList<>( message.getUsers() );
-        message.getUsers().clear();
+        List<User> users = new ArrayList<>( messageConversation.getUsers() );
+        messageConversation.getUsers().clear();
 
-        for ( OrganisationUnit ou : message.getOrganisationUnits() )
+        for ( OrganisationUnit ou : messageConversation.getOrganisationUnits() )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou.getUid() );
 
@@ -187,7 +186,7 @@ public class MessageConversationController
                 return;
             }
 
-            message.getUsers().addAll( organisationUnit.getUsers() );
+            messageConversation.getUsers().addAll( organisationUnit.getUsers() );
         }
 
         for ( User u : users )
@@ -200,10 +199,10 @@ public class MessageConversationController
                 return;
             }
 
-            message.getUsers().add( user );
+            messageConversation.getUsers().add( user );
         }
 
-        for ( UserGroup ug : message.getUserGroups() )
+        for ( UserGroup ug : messageConversation.getUserGroups() )
         {
             UserGroup userGroup = userGroupService.getUserGroup( ug.getUid() );
 
@@ -213,10 +212,10 @@ public class MessageConversationController
                 return;
             }
 
-            message.getUsers().addAll( userGroup.getMembers() );
+            messageConversation.getUsers().addAll( userGroup.getMembers() );
         }
 
-        if ( message.getUsers().isEmpty() )
+        if ( messageConversation.getUsers().isEmpty() )
         {
             ContextUtils.conflictResponse( response, "No recipients selected." );
             return;
@@ -224,9 +223,9 @@ public class MessageConversationController
 
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
-        int id = messageService.sendMessage( message.getSubject(), message.getText(), metaData, message.getUsers() );
+        int id = messageService.sendMessage( messageConversation.getSubject(), messageConversation.getText(), metaData, messageConversation.getUsers() );
 
-        MessageConversation conversation = messageService.getMessageConversation( id );
+        org.hisp.dhis.message.MessageConversation conversation = messageService.getMessageConversation( id );
 
         ContextUtils.createdResponse( response, "Message conversation created", MessageConversationSchemaDescriptor.API_ENDPOINT + "/" + conversation.getUid() );
     }
@@ -241,7 +240,7 @@ public class MessageConversationController
     {
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
-        MessageConversation conversation = messageService.getMessageConversation( uid );
+        org.hisp.dhis.message.MessageConversation conversation = messageService.getMessageConversation( uid );
 
         if ( conversation == null )
         {
@@ -295,9 +294,9 @@ public class MessageConversationController
             throw new UpdateAccessDeniedException( "Not authorized to modify this object." );
         }
 
-        Collection<MessageConversation> messageConversations = messageService.getMessageConversations( uids );
+        Collection<org.hisp.dhis.message.MessageConversation> messageConversationConversations = messageService.getMessageConversations( uids );
 
-        if ( messageConversations.isEmpty() )
+        if ( messageConversationConversations.isEmpty() )
         {
             response.setStatus( HttpServletResponse.SC_NOT_FOUND );
             responseNode.addChild( new SimpleNode( "message", "No MessageConversations found for the given UIDs." ) );
@@ -307,7 +306,7 @@ public class MessageConversationController
         CollectionNode marked = responseNode.addChild( new CollectionNode( "markedRead" ) );
         marked.setWrapping( false );
 
-        for( MessageConversation conversation : messageConversations )
+        for( org.hisp.dhis.message.MessageConversation conversation : messageConversationConversations )
         {
             if( conversation.markRead( user ) )
             {
@@ -346,9 +345,9 @@ public class MessageConversationController
             throw new UpdateAccessDeniedException( "Not authorized to modify this object." );
         }
 
-        Collection<MessageConversation> messageConversations = messageService.getMessageConversations( uids );
+        Collection<org.hisp.dhis.message.MessageConversation> messageConversationConversations = messageService.getMessageConversations( uids );
 
-        if ( messageConversations.isEmpty() )
+        if ( messageConversationConversations.isEmpty() )
         {
             response.setStatus( HttpServletResponse.SC_NOT_FOUND );
             responseNode.addChild( new SimpleNode( "message", "No MessageConversations found for the given UIDs." ) );
@@ -358,7 +357,7 @@ public class MessageConversationController
         CollectionNode marked = responseNode.addChild( new CollectionNode( "markedUnread" ) );
         marked.setWrapping( false );
 
-        for( MessageConversation conversation : messageConversations )
+        for( org.hisp.dhis.message.MessageConversation conversation : messageConversationConversations )
         {
             if( conversation.markUnread( user ) )
             {
@@ -418,9 +417,9 @@ public class MessageConversationController
             throw new DeleteAccessDeniedException( "Not authorized to modify user: " + user.getUid() );
         }
 
-        MessageConversation messageConversation = messageService.getMessageConversation( mcUid );
+        org.hisp.dhis.message.MessageConversation messageConversationConversation = messageService.getMessageConversation( mcUid );
 
-        if( messageConversation == null )
+        if( messageConversationConversation == null )
         {
             responseNode.addChild( new SimpleNode( "message", "No messageConversation with uid: " + mcUid ) );
             response.setStatus( HttpServletResponse.SC_NOT_FOUND );
@@ -429,10 +428,10 @@ public class MessageConversationController
 
         CollectionNode removed = responseNode.addChild( new CollectionNode( "removed" ) );
 
-        if( messageConversation.remove( user ) )
+        if( messageConversationConversation.remove( user ) )
         {
-            messageService.updateMessageConversation( messageConversation );
-            removed.addChild( new SimpleNode( "uid", messageConversation.getUid() ) );
+            messageService.updateMessageConversation( messageConversationConversation );
+            removed.addChild( new SimpleNode( "uid", messageConversationConversation.getUid() ) );
         }
 
         response.setStatus( HttpServletResponse.SC_OK );
@@ -467,9 +466,9 @@ public class MessageConversationController
             throw new DeleteAccessDeniedException( "Not authorized to modify user: " + user.getUid() );
         }
 
-        Collection<MessageConversation> messageConversations = messageService.getMessageConversations( mcUids );
+        Collection<org.hisp.dhis.message.MessageConversation> messageConversationConversations = messageService.getMessageConversations( mcUids );
 
-        if( messageConversations.isEmpty() )
+        if( messageConversationConversations.isEmpty() )
         {
             response.setStatus( HttpServletResponse.SC_NOT_FOUND );
             responseNode.addChild( new SimpleNode( "message", "No MessageConversations found for the given UIDs." ) );
@@ -478,7 +477,7 @@ public class MessageConversationController
 
         CollectionNode removed = responseNode.addChild( new CollectionNode( "removed" ) );
 
-        for( MessageConversation mc : messageConversations )
+        for( org.hisp.dhis.message.MessageConversation mc : messageConversationConversations )
         {
             if( mc.remove( user ) )
             {
@@ -517,11 +516,11 @@ public class MessageConversationController
      * Determines whether the given user has permission to read the MessageConversation.
      *
      * @param user the user to check permission for.
-     * @param messageConversation the MessageConversation to access.
+     * @param messageConversationConversation the MessageConversation to access.
      * @return true if the user can read the MessageConversation, false otherwise.
      */
-    private boolean canReadMessageConversation( User user, MessageConversation messageConversation )
+    private boolean canReadMessageConversation( User user, org.hisp.dhis.message.MessageConversation messageConversationConversation )
     {
-        return messageConversation.getUsers().contains( user ) || user.getUserCredentials().hasAnyAuthority( AclService.ACL_OVERRIDE_AUTHORITIES );
+        return messageConversationConversation.getUsers().contains( user ) || user.getUserCredentials().hasAnyAuthority( AclService.ACL_OVERRIDE_AUTHORITIES );
     }
 }
