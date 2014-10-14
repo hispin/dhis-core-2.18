@@ -28,6 +28,7 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,52 +41,49 @@ import static org.junit.Assert.assertEquals;
  */
 public class QuarterlyPeriodTypeTest
 {
-    private Cal startCal;
-    private Cal endCal;
-    private Cal testCal;
+    private DateTime startDate;
+    private DateTime endDate;
+    private DateTime testDate;
     private QuarterlyPeriodType periodType;
 
     @Before
     public void before()
     {
-        startCal = new Cal();
-        endCal = new Cal();
-        testCal = new Cal();
-        periodType = new QuarterlyPeriodType();
+       periodType = new QuarterlyPeriodType();
     }
 
     @Test
     public void testCreatePeriod()
     {
-        testCal.set( 2009, 8, 15 );
+        testDate = new DateTime(  2009, 8, 15, 0, 0 );
 
-        startCal.set( 2009, 7, 1 );
-        endCal.set( 2009, 9, 30 );
+        startDate = new DateTime(  2009, 7, 1, 0, 0 );
+        endDate = new DateTime(  2009, 9, 30, 0, 0 );
 
-        Period period = periodType.createPeriod( testCal.time() );
+        Period period = periodType.createPeriod( testDate.toDate() );
 
-        assertEquals( startCal.time(), period.getStartDate() );
-        assertEquals( endCal.time(), period.getEndDate() );
+        assertEquals( startDate.toDate(), period.getStartDate() );
+        assertEquals( endDate.toDate(), period.getEndDate() );
 
-        testCal.set( 2009, 4, 15 );
+        testDate = new DateTime(  2009, 4, 15, 0, 0 );
 
-        startCal.set( 2009, 4, 1 );
-        endCal.set( 2009, 6, 30 );
+        startDate = new DateTime(  2009, 4, 1, 0, 0 );
+        endDate = new DateTime(  2009, 6, 30, 0, 0 );
 
-        period = periodType.createPeriod( testCal.time() );
+        period = periodType.createPeriod( testDate.toDate() );
 
-        assertEquals( startCal.time(), period.getStartDate() );
-        assertEquals( endCal.time(), period.getEndDate() );
+        assertEquals( startDate.toDate(), period.getStartDate() );
+        assertEquals( endDate.toDate(), period.getEndDate() );
 
-        testCal.set( 2014, 11, 20 );
+        testDate = new DateTime(  2014, 11, 20, 0, 0 );
 
-        startCal.set( 2014, 10, 1 );
-        endCal.set( 2014, 12, 31 );
+        startDate = new DateTime(  2014, 10, 1, 0, 0 );
+        endDate = new DateTime(  2014, 12, 31, 0, 0 );
 
-        period = periodType.createPeriod( testCal.time() );
+        period = periodType.createPeriod( testDate.toDate() );
 
-        assertEquals( startCal.time(), period.getStartDate() );
-        assertEquals( endCal.time(), period.getEndDate() );
+        assertEquals( startDate.toDate(), period.getStartDate() );
+        assertEquals( endDate.toDate(), period.getEndDate() );
     }
 
     @Test
@@ -97,89 +95,89 @@ public class QuarterlyPeriodTypeTest
     @Test
     public void testGetNextPeriod()
     {
-        testCal.set( 2009, 8, 15 );
+        testDate = new DateTime(  2009, 8, 15, 0, 0 );
 
-        Period period = periodType.createPeriod( testCal.time() );
+        Period period = periodType.createPeriod( testDate.toDate() );
 
         period = periodType.getNextPeriod( period );
 
-        startCal.set( 2009, 10, 1 );
-        endCal.set( 2009, 12, 31 );
+        startDate = new DateTime(  2009, 10, 1, 0, 0 );
+        endDate = new DateTime(  2009, 12, 31, 0, 0 );
 
-        assertEquals( startCal.time(), period.getStartDate() );
-        assertEquals( endCal.time(), period.getEndDate() );
+        assertEquals( startDate.toDate(), period.getStartDate() );
+        assertEquals( endDate.toDate(), period.getEndDate() );
     }
 
     @Test
     public void testGetPreviousPeriod()
     {
-        testCal.set( 2009, 8, 15 );
+        testDate = new DateTime(  2009, 8, 15, 0, 0 );
 
-        Period period = periodType.createPeriod( testCal.time() );
+        Period period = periodType.createPeriod( testDate.toDate() );
 
         period = periodType.getPreviousPeriod( period );
 
-        startCal.set( 2009, 4, 1 );
-        endCal.set( 2009, 6, 30 );
+        startDate = new DateTime(  2009, 4, 1, 0, 0 );
+        endDate = new DateTime(  2009, 6, 30, 0, 0 );
 
-        assertEquals( startCal.time(), period.getStartDate() );
-        assertEquals( endCal.time(), period.getEndDate() );
+        assertEquals( startDate.toDate(), period.getStartDate() );
+        assertEquals( endDate.toDate(), period.getEndDate() );
     }
 
     @Test
     public void testGeneratePeriods()
     {
-        testCal.set( 2009, 8, 15 );
+        testDate = new DateTime(  2009, 8, 15, 0, 0 );
 
-        List<Period> periods = periodType.generatePeriods( testCal.time() );
+        List<Period> periods = periodType.generatePeriods( testDate.toDate() );
 
         assertEquals( 4, periods.size() );
-        assertEquals( periodType.createPeriod( new Cal( 2009, 1, 1 ).time() ), periods.get( 0 ) );
-        assertEquals( periodType.createPeriod( new Cal( 2009, 4, 1 ).time() ), periods.get( 1 ) );
-        assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 2 ) );
-        assertEquals( periodType.createPeriod( new Cal( 2009, 10, 1 ).time() ), periods.get( 3 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2009, 1, 1, 0, 0 ).toDate() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2009, 4, 1, 0, 0 ).toDate() ), periods.get( 1 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2009, 7, 1, 0, 0 ).toDate() ), periods.get( 2 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2009, 10, 1, 0, 0 ).toDate() ), periods.get( 3 ) );
     }
 
     @Test
     public void testGenerateRollingPeriods()
     {
-        testCal.set( 2009, 8, 15 );
+        testDate = new DateTime(  2009, 8, 15, 0, 0 );
 
-        List<Period> periods = periodType.generateRollingPeriods( testCal.time() );
+        List<Period> periods = periodType.generateRollingPeriods( testDate.toDate() );
 
         assertEquals( 4, periods.size() );
-        assertEquals( periodType.createPeriod( new Cal( 2008, 10, 1 ).time() ), periods.get( 0 ) );
-        assertEquals( periodType.createPeriod( new Cal( 2009, 1, 1 ).time() ), periods.get( 1 ) );
-        assertEquals( periodType.createPeriod( new Cal( 2009, 4, 1 ).time() ), periods.get( 2 ) );
-        assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 3 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2008, 10, 1, 0, 0 ).toDate() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2009, 1, 1, 0, 0 ).toDate() ), periods.get( 1 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2009, 4, 1, 0, 0 ).toDate() ), periods.get( 2 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2009, 7, 1, 0, 0 ).toDate() ), periods.get( 3 ) );
     }
 
     @Test
     public void testGenerateLast5Years()
     {
-        testCal.set( 2009, 8, 15 );
+        testDate = new DateTime(  2009, 8, 15, 0, 0 );
 
-        List<Period> periods = periodType.generateLast5Years( testCal.time() );
+        List<Period> periods = periodType.generateLast5Years( testDate.toDate() );
 
         assertEquals( 20, periods.size() );
-        assertEquals( periodType.createPeriod( new Cal( 2005, 1, 1 ).time() ), periods.get( 0 ) );
-        assertEquals( periodType.createPeriod( new Cal( 2005, 4, 1 ).time() ), periods.get( 1 ) );
-        assertEquals( periodType.createPeriod( new Cal( 2005, 7, 1 ).time() ), periods.get( 2 ) );
-        assertEquals( periodType.createPeriod( new Cal( 2005, 10, 1 ).time() ), periods.get( 3 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2005, 1, 1, 0, 0 ).toDate() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2005, 4, 1, 0, 0 ).toDate() ), periods.get( 1 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2005, 7, 1, 0, 0 ).toDate() ), periods.get( 2 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2005, 10, 1, 0, 0 ).toDate() ), periods.get( 3 ) );
     }
 
     @Test
     public void testGeneratePeriodsBetweenDates()
     {
-        startCal.set( 2009, 8, 15 );
-        endCal.set( 2010, 2, 20 );
+        startDate = new DateTime(  2009, 8, 15, 0, 0 );
+        endDate = new DateTime(  2010, 2, 20, 0, 0 );
 
-        List<Period> periods = periodType.generatePeriods( startCal.time(), endCal.time() );
+        List<Period> periods = periodType.generatePeriods( startDate.toDate(), endDate.toDate() );
 
         assertEquals( 3, periods.size() );
-        assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 0 ) );
-        assertEquals( periodType.createPeriod( new Cal( 2009, 10, 1 ).time() ), periods.get( 1 ) );
-        assertEquals( periodType.createPeriod( new Cal( 2010, 1, 1 ).time() ), periods.get( 2 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2009, 7, 1, 0, 0 ).toDate() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2009, 10, 1, 0, 0 ).toDate() ), periods.get( 1 ) );
+        assertEquals( periodType.createPeriod( new DateTime(  2010, 1, 1, 0, 0 ).toDate() ), periods.get( 2 ) );
     }
 
     @Test
