@@ -1648,6 +1648,26 @@ Ext.onReady( function() {
                     //return response;
 			};
 
+            // legend set
+            service.mapLegend = {};
+
+            service.mapLegend.getColorByValue = function(legendSet, value) {
+                var color;
+                
+                if (!(legendSet && value)) {
+                    return;
+                }
+                
+                for (var i = 0, legend; i < legendSet.mapLegends.length; i++) {
+                    legend = legendSet.mapLegends[i];
+
+                    if (value >= parseFloat(legend.startValue) && value < parseFloat(legend.endValue)) {
+                        return legend.color;
+                    }
+                }
+
+                return;
+            };
 		}());
 
 		// web
@@ -1773,7 +1793,7 @@ Ext.onReady( function() {
 			// chart
 			web.chart = {};
 
-			web.chart.createChart = function(ns) {
+			web.chart.createChart = function(ns, legendSet) {
                 var dataTotalKey = Ext.data.IdGenerator.get('uuid').generate(),
                     xLayout = ns.app.xLayout,
                     xResponse = ns.app.xResponse,
@@ -1795,7 +1815,6 @@ Ext.onReady( function() {
                         return ids;
                     }(),
                     replacedFilterIds = support.prototype.str.replaceAll(Ext.clone(filterIds), '.', ''),
-
                     replacedIdMap = function() {
                         var map = {},
                             names = xResponse.metaData.names,
@@ -1808,7 +1827,6 @@ Ext.onReady( function() {
 
                         return map;
                     }(),
-
                     addDataTotals = function(data, ids) {
                         for (var i = 0, obj, total; i < data.length; i++) {
                             obj = data[i];
@@ -1840,15 +1858,11 @@ Ext.onReady( function() {
                     getDefaultChartSizeHandler,
                     getDefaultChartTitlePositionHandler,
                     getDefaultChart,
-
+                    
                     generator = {};
 
                 getDefaultStore = function(isStacked) {
-                    var pe = conf.finals.dimension.period.dimensionName,
-                        columnDimensionName = xLayout.columns[0].dimensionName,
-                        rowDimensionName = xLayout.rows[0].dimensionName,
-
-                        data = [],
+                    var data = [],
                         trendLineFields = [],
                         targetLineFields = [],
                         baseLineFields = [],
@@ -1859,8 +1873,7 @@ Ext.onReady( function() {
                         obj = {};
                         category = rowIds[i];
                         rowValues = [];
-                        isEmpty = false;
-                        
+                        isEmpty = false;                        
 
                         obj[conf.finals.data.domain] = xResponse.metaData.names[category];
                         
@@ -2872,13 +2885,24 @@ Ext.onReady( function() {
                 };
 
                 generator.gauge = function() {
-                    var store = getDefaultStore(),
+                    var valueColor = '#aaa',
+                        store,
                         axis,
                         series,
                         legend,
                         config,
                         chart;
-                        
+
+                    // overwrite items
+                    columnIds = [columnIds[0]];
+                    replacedColumnIds = [replacedColumnIds[0]];
+                    rowIds = [rowIds[0]];
+                    replacedRowIds = [replacedRowIds[0]];
+
+                    // store
+                    store = getDefaultStore();
+                    
+                    // axis
                     axis = {
                         type: 'gauge',
                         position: 'gauge',
@@ -2888,11 +2912,16 @@ Ext.onReady( function() {
                         margin: -7
                     };
 
+                    // series, legendset
+                    if (legendSet) {
+                        valueColor = service.mapLegend.getColorByValue(legendSet, store.getRange()[0].data[columnIds[0]]) || valueColor;
+                    }
+                        
                     series = {
                         type: 'gauge',
                         field: store.rangeFields[0],
                         //donut: 5,
-                        colorSet: ['#82B525', '#ddd']
+                        colorSet: [valueColor, '#ddd']
                     };
                     
                     chart = getDefaultChart({
