@@ -3077,14 +3077,13 @@ Ext.onReady( function() {
 			}
 		});
 		ns.app.stores.fixedPeriodAvailable = fixedPeriodAvailableStore;
-nissa1 = fixedPeriodAvailableStore;       
 
 		fixedPeriodSelectedStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name', 'index'],
 			data: []
 		});
 		ns.app.stores.fixedPeriodSelected = fixedPeriodSelectedStore;
-nissa2 = fixedPeriodSelectedStore;
+        
 		chartStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name', 'lastUpdated', 'access'],
 			proxy: {
@@ -5359,12 +5358,13 @@ nissa2 = fixedPeriodSelectedStore;
 			handler: function() {
 				var textArea,
 					window,
-					text = '';
+					text = '',
+                    version = 'v' + parseFloat(ns.core.init.systemInfo.version.split('.').join(''));
 
 				text += '<html>\n<head>\n';
-				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/v215/ext/resources/css/ext-plugin-gray.css" />\n';
-				text += '<script src="http://dhis2-cdn.org/v215/ext/ext-all.js"></script>\n';
-				text += '<script src="http://dhis2-cdn.org/v215/plugin/chart.js"></script>\n';
+				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/' + version + '/ext/resources/css/ext-plugin-gray.css" />\n';
+				text += '<script src="http://dhis2-cdn.org/' + version + '/ext/ext-all.js"></script>\n';
+				text += '<script src="http://dhis2-cdn.org/' + version + '/plugin/chart.js"></script>\n';
 				text += '</head>\n\n<body>\n';
 				text += '<div id="chart1" style="width:700px; height:400px"></div>\n\n';
 				text += '<script>\n\n';

@@ -8516,7 +8516,8 @@ Ext.onReady( function() {
 					window,
 					text = '',
                     el = 'table1',
-                    layout = gis.util.map.map2plugin(gis.util.layout.getPluginConfig());
+                    layout = gis.util.map.map2plugin(gis.util.layout.getPluginConfig()),
+                    version = 'v' + parseFloat(gis.init.systemInfo.version.split('.').join(''));
 
                 layout.el = el;
 
@@ -8541,9 +8542,9 @@ Ext.onReady( function() {
                 }
 
 				text += '<html>\n<head>\n';
-				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/v215/ext/resources/css/ext-plugin-gray.css" />\n';
-				text += '<script src="http://dhis2-cdn.org/v215/ext/ext-all.js"></script>\n';
-				text += '<script src="http://dhis2-cdn.org/v215/plugin/table.js"></script>\n';
+				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/' + version + '/ext/resources/css/ext-plugin-gray.css" />\n';
+				text += '<script src="http://dhis2-cdn.org/' + version + '/ext/ext-all.js"></script>\n';
+				text += '<script src="http://dhis2-cdn.org/' + version + '/plugin/table.js"></script>\n';
 				text += '</head>\n\n<body>\n';
 				text += '<div id="' + el + '"></div>\n\n';
 				text += '<script>\n\n';
