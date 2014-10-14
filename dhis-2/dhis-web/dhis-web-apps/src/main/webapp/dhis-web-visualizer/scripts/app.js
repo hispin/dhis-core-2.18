@@ -1969,7 +1969,7 @@ Ext.onReady( function() {
 				if (selected.length) {
 					var array = [];
 					Ext.Array.each(selected, function(item) {
-						array.push({id: item, name: a.store.getAt(a.store.findExact('id', item)).data.name});
+                        array.push(a.store.getAt(a.store.findExact('id', item)));
 					});
 					s.store.add(array);
 				}
@@ -1977,10 +1977,7 @@ Ext.onReady( function() {
 			};
 
 			web.multiSelect.selectAll = function(a, s, isReverse) {
-				var array = [];
-				a.store.each( function(r) {
-					array.push({id: r.data.id, name: r.data.name});
-				});
+                var array = a.store.getRange();
 				if (isReverse) {
 					array.reverse();
 				}
@@ -3080,13 +3077,14 @@ Ext.onReady( function() {
 			}
 		});
 		ns.app.stores.fixedPeriodAvailable = fixedPeriodAvailableStore;
+nissa1 = fixedPeriodAvailableStore;       
 
 		fixedPeriodSelectedStore = Ext.create('Ext.data.Store', {
-			fields: ['id', 'name'],
+			fields: ['id', 'name', 'index'],
 			data: []
 		});
 		ns.app.stores.fixedPeriodSelected = fixedPeriodSelectedStore;
-
+nissa2 = fixedPeriodSelectedStore;
 		chartStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name', 'lastUpdated', 'access'],
 			proxy: {
