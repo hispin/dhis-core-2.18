@@ -747,7 +747,7 @@ public class DefaultAnalyticsService
 
         DataQueryGroups queryGroups = queryPlanner.planQuery( params, optimalQueries, tableName );
 
-        t.getSplitTime( "Planned analytics query, got: " + queryGroups.getLargestGroupSize() + " for optimal: " + optimalQueries );
+        log.debug( "Planned analytics query, got: " + queryGroups.getLargestGroupSize() + " for optimal: " + optimalQueries );
 
         Map<String, Object> map = new HashMap<>();
 
