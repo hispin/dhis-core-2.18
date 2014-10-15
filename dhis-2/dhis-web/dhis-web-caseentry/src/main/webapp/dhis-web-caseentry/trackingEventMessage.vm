@@ -37,7 +37,7 @@
 				<td>$format.formatDateTime($!sms.date)</td>
 				<td>$encoder.htmlEncode($programStageInstance.programStage.displayName)</td>
 				<td>$encoder.htmlEncode($sms.sender)</td>
-				<td>$i18n.getString('message')</td>
+				<td>$i18n.getString('sms')</td>
 				<td #if( $sms.status=='ERROR') style="color:red" #end >$sms.status</td>
 				<td>$encoder.htmlEncode($sms.message)</td>
 				<td>

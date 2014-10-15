@@ -261,54 +261,57 @@ public class HibernateProgramInstanceStore
 
         Collection<SchedulingProgramObject> schedulingProgramObjects = new HashSet<>();
         
-        
-        while ( rs.next() )
+        if ( rs.getRow() > 0 )
         {
-            String message = rs.getString( "templatemessage" );
-  
-            int programInstanceId = rs.getInt( "programinstanceid" ) ;
-            
-            List<String> attributeUids = reminderService.getAttributeUids( message );
-            SqlRowSet attributeValueRow = jdbcTemplate
-                .queryForRowSet( "select tea.uid ,teav.value from trackedentityattributevalue teav "
-                    + " INNER JOIN trackedentityattribute tea on tea.trackedentityattributeid=teav.trackedentityattributeid "
-                    + " INNER JOIN programinstance ps on teav.trackedentityinstanceid=ps.trackedentityinstanceid "
-                    + " INNER JOIN programstageinstance psi on ps.programinstanceid=psi.programinstanceid "
-                    + " where tea.uid in ( " + TextUtils.getQuotedCommaDelimitedString( attributeUids ) + ") "
-                    + " and ps.programinstanceid=" + programInstanceId );
-            while ( attributeValueRow.next() )
+            while ( rs.next() )
             {
-                String uid = attributeValueRow.getString( "uid" );
-                String value = attributeValueRow.getString( "value" );
-                String key = "\\{(" + TrackedEntityInstanceReminder.ATTRIBUTE + ")=(" + uid + ")\\}";
-                message = message.replaceAll( key, value );
+                String message = rs.getString( "templatemessage" );
+
+                int programInstanceId = rs.getInt( "programinstanceid" );
+
+                List<String> attributeUids = reminderService.getAttributeUids( message );
+                SqlRowSet attributeValueRow = jdbcTemplate
+                    .queryForRowSet( "select tea.uid ,teav.value from trackedentityattributevalue teav "
+                        + " INNER JOIN trackedentityattribute tea on tea.trackedentityattributeid=teav.trackedentityattributeid "
+                        + " INNER JOIN programinstance ps on teav.trackedentityinstanceid=ps.trackedentityinstanceid "
+                        + " INNER JOIN programstageinstance psi on ps.programinstanceid=psi.programinstanceid "
+                        + " where tea.uid in ( " + TextUtils.getQuotedCommaDelimitedString( attributeUids ) + ") "
+                        + " and ps.programinstanceid=" + programInstanceId );
+                while ( attributeValueRow.next() )
+                {
+                    String uid = attributeValueRow.getString( "uid" );
+                    String value = attributeValueRow.getString( "value" );
+                    String key = "\\{(" + TrackedEntityInstanceReminder.ATTRIBUTE + ")=(" + uid + ")\\}";
+                    message = message.replaceAll( key, value );
+                }
+
+                String organisationunitName = rs.getString( "orgunitName" );
+                String programName = rs.getString( "programName" );
+                String incidentDate = rs.getString( "dateofincident" ).split( " " )[0];
+                String daysSinceIncidentDate = rs.getString( "days_since_incident_date" );
+                String erollmentDate = rs.getString( "enrollmentdate" ).split( " " )[0];
+                String daysSinceEnrollementDate = rs.getString( "days_since_erollment_date" );
+
+                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
+                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME,
+                    organisationunitName );
+                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_INCIDENT_DATE, incidentDate );
+                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ENROLLMENT_DATE,
+                    erollmentDate );
+                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_ENROLLMENT_DATE,
+                    daysSinceEnrollementDate );
+                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE,
+                    daysSinceIncidentDate );
+
+                SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
+                schedulingProgramObject.setProgramInstanceId( programInstanceId );
+                schedulingProgramObject.setPhoneNumber( rs.getString( "phonenumber" ) );
+                schedulingProgramObject.setMessage( message );
+
+                schedulingProgramObjects.add( schedulingProgramObject );
             }
-
-            String organisationunitName = rs.getString( "orgunitName" );
-            String programName = rs.getString( "programName" );
-            String incidentDate = rs.getString( "dateofincident" ).split( " " )[0];
-            String daysSinceIncidentDate = rs.getString( "days_since_incident_date" );
-            String erollmentDate = rs.getString( "enrollmentdate" ).split( " " )[0];
-            String daysSinceEnrollementDate = rs.getString( "days_since_erollment_date" );
-
-            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
-            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME,
-                organisationunitName );
-            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_INCIDENT_DATE, incidentDate );
-            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ENROLLMENT_DATE, erollmentDate );
-            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_ENROLLMENT_DATE,
-                daysSinceEnrollementDate );
-            message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE,
-                daysSinceIncidentDate );
-            
-            SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
-            schedulingProgramObject.setProgramInstanceId( programInstanceId );
-            schedulingProgramObject.setPhoneNumber( rs.getString( "phonenumber" ) );
-            schedulingProgramObject.setMessage( message );
-
-            schedulingProgramObjects.add( schedulingProgramObject );
         }
-
+        
         return schedulingProgramObjects;
     }
 

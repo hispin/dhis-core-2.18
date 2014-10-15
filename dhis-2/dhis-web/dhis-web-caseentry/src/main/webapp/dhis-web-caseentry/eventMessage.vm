@@ -84,7 +84,7 @@
 					<td>$format.formatDateTime($!sms.date)</td>
 					<td>$programStageInstance.programStage.displayName</td>
 					<td>$sms.sender</td>
-					<td>$i18n.getString('message')</td>
+					<td>$i18n.getString('sms')</td>
 					<td #if( $sms.status=='ERROR') style="color:red" #end >$sms.status</td>
 					<td>$sms.message</td>
 					<td>
