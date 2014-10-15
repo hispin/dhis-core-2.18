@@ -65,12 +65,12 @@ public abstract class SixMonthlyAbstractPeriodType
     public Period createPeriod( DateTimeUnit dateTimeUnit, Calendar calendar )
     {
         int year = calendar.monthsInYear() * dateTimeUnit.getYear();
-        int yearMonth = year + dateTimeUnit.getMonth() - getBaseMonth();
+        int yearMonth = year + dateTimeUnit.getMonth() - getBaseMonth() - 1;
 
         // TODO how should we handle years with odd number of months? (Ethiopian)
         
         int months = (((yearMonth % 12) / 6) * 6) + getBaseMonth();
-
+        
         DateTimeUnit start = new DateTimeUnit( dateTimeUnit );
         start.setDay( 1 );
         start.setMonth( 1 );

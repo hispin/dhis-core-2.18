@@ -55,7 +55,7 @@ public class SixMonthlyPeriodTypeTest
     @Test
     public void testCreatePeriod()
     {
-        testDate = new DateTime(  2009, 8, 15, 0, 0 );
+        testDate = new DateTime( 2009, 8, 15, 0, 0 );
         
         startDate = new DateTime( 2009, 7, 1, 0, 0 );
         endDate = new DateTime( 2009, 12, 31, 0, 0 );
@@ -65,13 +65,33 @@ public class SixMonthlyPeriodTypeTest
         assertEquals( startDate.toDate(), period.getStartDate() );
         assertEquals( endDate.toDate(), period.getEndDate() );
         
-        testDate = new DateTime(  2009, 4, 15, 0, 0 );
+        testDate = new DateTime( 2009, 4, 15, 0, 0 );
         
-        startDate = new DateTime(  2009, 1, 1, 0, 0 );
-        endDate = new DateTime(  2009, 6, 30, 0, 0 );
+        startDate = new DateTime( 2009, 1, 1, 0, 0 );
+        endDate = new DateTime( 2009, 6, 30, 0, 0 );
 
         period = periodType.createPeriod( testDate.toDate() );
         
+        assertEquals( startDate.toDate(), period.getStartDate() );
+        assertEquals( endDate.toDate(), period.getEndDate() );
+
+        testDate = new DateTime( 2014, 6, 1, 0, 0 );
+
+        startDate = new DateTime( 2014, 1, 1, 0, 0 );
+        endDate = new DateTime( 2014, 6, 30, 0, 0 );
+        
+        period = periodType.createPeriod( testDate.toDate() );
+
+        assertEquals( startDate.toDate(), period.getStartDate() );
+        assertEquals( endDate.toDate(), period.getEndDate() );
+        
+        testDate = new DateTime( 2014, 7, 1, 0, 0 );
+
+        startDate = new DateTime( 2014, 7, 1, 0, 0 );
+        endDate = new DateTime( 2014, 12, 31, 0, 0 );
+        
+        period = periodType.createPeriod( testDate.toDate() );
+
         assertEquals( startDate.toDate(), period.getStartDate() );
         assertEquals( endDate.toDate(), period.getEndDate() );
     }
