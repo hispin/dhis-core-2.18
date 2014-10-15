@@ -2004,6 +2004,9 @@ Ext.onReady( function() {
                     paramString += view.paging.page ? '&page=' + view.paging.page : '';
                 }
 
+                // display property
+                paramString += '&displayProperty=' + init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+
                 return paramString;
             };
 

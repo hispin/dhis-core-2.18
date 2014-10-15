@@ -1968,6 +1968,9 @@ Ext.onReady( function() {
                     paramString += '&aggregationType=' + aggTypes[xLayout.aggregationType];
                 }
 
+                // display property
+                paramString += '&displayProperty=' + init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+
 				return paramString;
 			};
 

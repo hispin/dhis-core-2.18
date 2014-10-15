@@ -2030,6 +2030,9 @@ Ext.onReady( function() {
 				paramString += i < peItems.length - 1 ? ';' : '';
 			}
 
+            // display property
+            paramString += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+
 			success = function(json) {
 				var response = gis.api.response.Response(json),
 					featureMap = {},
