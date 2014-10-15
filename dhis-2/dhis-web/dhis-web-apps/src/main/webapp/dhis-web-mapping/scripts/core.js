@@ -1308,10 +1308,13 @@ Ext.onReady( function() {
                 isPlugin = GIS.plugin && !GIS.app,
                 url = function() {
                     var params = '?ou=ou:';
+
                     for (var i = 0; i < items.length; i++) {
                         params += items[i].id;
                         params += i !== items.length - 1 ? ';' : '';
                     }
+
+                    params += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
 
                     return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params + '&viewClass=detailed';
                 }(),
@@ -1577,10 +1580,14 @@ Ext.onReady( function() {
                 isPlugin = GIS.plugin && !GIS.app,
                 url = function() {
                     var params = '?ou=ou:';
+
                     for (var i = 0; i < items.length; i++) {
                         params += items[i].id;
                         params += i !== items.length - 1 ? ';' : '';
                     }
+
+                    params += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+
                     return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params;
                 }(),
                 success,
@@ -1921,10 +1928,14 @@ Ext.onReady( function() {
                 isPlugin = GIS.plugin && !GIS.app,
                 url = function() {
                     var params = '?ou=ou:';
+
                     for (var i = 0; i < items.length; i++) {
                         params += items[i].id;
                         params += i !== items.length - 1 ? ';' : '';
                     }
+
+                    params += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+
                     return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params;
                 }(),
                 success,
