@@ -30,8 +30,11 @@ package org.hisp.dhis.scheduling;
 
 import static org.hisp.dhis.sms.outbound.OutboundSms.DHIS_SYSTEM_SENDER;
 import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
+
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.SchedulingProgramObject;
@@ -143,9 +146,7 @@ public class SendScheduledMessageTask
 
             scheduleProgramStageInstanceMessage();
             scheduleProgramInstanceMessage();
-
-            sendMessage();
-
+            
             clock.logTime( "Preparing reminder messages completed" );
             notifier.notify( taskId, INFO, "Preparing reminder messages completed", true );
         }
@@ -255,6 +256,7 @@ public class SendScheduledMessageTask
         {
             for ( OutboundSms outboundSms : outboundSmsList )
             {
+                outboundSms.setDate( new Date() );
                 outboundSms.setStatus( OutboundSmsStatus.SENT );
                 smsSender.sendMessage( outboundSms, null );
             }
