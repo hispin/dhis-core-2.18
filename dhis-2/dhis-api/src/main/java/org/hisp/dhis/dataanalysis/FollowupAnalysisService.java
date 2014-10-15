@@ -28,38 +28,15 @@ package org.hisp.dhis.dataanalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
+
+import java.util.Collection;
 
 /**
- * @author Lars Helge Overland
+ * @author Halvdan Hoem Grelland
  */
-public class FollowupAnalysisService
-    implements DataAnalysisService
+public interface FollowupAnalysisService
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataAnalysisStore dataAnalysisStore;
-    
-    public void setDataAnalysisStore( DataAnalysisStore dataAnalysisStore )
-    {
-        this.dataAnalysisStore = dataAnalysisStore;
-    }
-
-    // -------------------------------------------------------------------------
-    // DataAnalysisService implementation
-    // -------------------------------------------------------------------------
-
-    @Override
-    public Collection<DeflatedDataValue> analyse( Collection<OrganisationUnit> organisationUnits,
-        Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
-    {
-        return dataAnalysisStore.getDataValuesMarkedForFollowup();
-    }
+    public Collection<DeflatedDataValue> getFollowupDataValues( OrganisationUnit organisationUnit, int limit );
 }
