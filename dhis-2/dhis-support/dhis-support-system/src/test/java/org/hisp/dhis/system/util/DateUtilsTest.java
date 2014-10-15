@@ -50,6 +50,14 @@ public class DateUtilsTest
         assertFalse( dateIsValid( "07-07-2000" ) );
         assertFalse( dateIsValid( "2000-03-40" ) );
         assertFalse( dateIsValid( "20d20-03-01" ) );
+        assertTrue( dateIsValid( "0000-12-32" ) );
+        assertTrue( dateIsValid( "2014-01-01" ) );
+        assertFalse( dateIsValid( "2014-12-33" ) );
+        assertFalse( dateIsValid( "2014-13-32" ) );
+        assertFalse( dateIsValid( "2014-ab-cd" ) );
+        assertFalse( dateIsValid( "201-01-01" ) );
+        assertFalse( dateIsValid( "01-01-01" ) );
+        assertFalse( dateIsValid( "abcd-01-01" ) );
     }
     
     @Test
