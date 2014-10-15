@@ -41,8 +41,6 @@ import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
-import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -73,9 +71,6 @@ import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHan
 import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ConceptBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ConstantBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataDictionaryDataElementBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataDictionaryIndicatorBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryComboBatchHandler;
@@ -183,13 +178,6 @@ public class DXFConverter
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
-    }
-
-    private DataDictionaryService dataDictionaryService;
-
-    public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
-    {
-        this.dataDictionaryService = dataDictionaryService;
     }
 
     private DataSetService dataSetService;
@@ -655,62 +643,6 @@ public class DXFConverter
                 batchHandler.flush();
 
                 log.info( "Imported IndicatorGroupSet members" );
-            }
-            else if ( reader.isStartElement( DataDictionaryConverter.COLLECTION_NAME ) )
-            {
-                log.debug("Starting DataDictionaries import");
-
-                state.setMessage( "importing_data_dictionaries" );
-
-                BatchHandler<DataDictionary> batchHandler = batchHandlerFactory.createBatchHandler(
-                    DataDictionaryBatchHandler.class ).init();
-
-                XMLConverter converter = new DataDictionaryConverter( batchHandler, importObjectService,
-                    dataDictionaryService );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported DataDictionaries" );
-            }
-            else if ( reader.isStartElement( DataDictionaryDataElementConverter.COLLECTION_NAME ) )
-            {
-                log.debug("Starting DataDictionary DataElements import");
-
-                state.setMessage( "importing_data_dictionary_data_elements" );
-
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler(
-                    DataDictionaryDataElementBatchHandler.class ).init();
-
-                XMLConverter converter = new DataDictionaryDataElementConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getDataDictionaryMapping( params.skipMapping() ), objectMappingGenerator
-                        .getDataElementMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported DataDictionary DataElements" );
-            }
-            else if ( reader.isStartElement( DataDictionaryIndicatorConverter.COLLECTION_NAME ) )
-            {
-                log.debug("Starting DataDictionary Indicators import");
-
-                state.setMessage( "importing_data_dictionary_indicators" );
-
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler(
-                    DataDictionaryIndicatorBatchHandler.class ).init();
-
-                XMLConverter converter = new DataDictionaryIndicatorConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getDataDictionaryMapping( params.skipMapping() ), objectMappingGenerator
-                        .getIndicatorMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported DataDictionary Indicators" );
             }
             else if ( reader.isStartElement( DataSetConverter.COLLECTION_NAME ) )
             {

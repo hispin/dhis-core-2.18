@@ -337,42 +337,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
   </bean>
 
-  <!-- DataDictionary -->
-
-  <bean id="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction" class="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction"
-    scope="prototype">
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction"
-    scope="prototype">
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryListAction" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryListAction"
-    scope="prototype">
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryMembersAction" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryMembersAction"
-    scope="prototype">
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.datadictionary.RemoveDataDictionaryAction" class="org.hisp.dhis.dd.action.datadictionary.RemoveDataDictionaryAction"
-    scope="prototype">
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction" class="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction"
-    scope="prototype">
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-  </bean>
-
   <!-- Category -->
 
   <bean id="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction"

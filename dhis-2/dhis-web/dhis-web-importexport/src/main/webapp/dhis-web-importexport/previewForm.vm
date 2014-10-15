@@ -51,7 +51,6 @@
 	#displayObjects( "indicator" "Indicator" $newIndicators $updateIndicators )
 	#displayObjects( "indicator_group" "IndicatorGroup" $newIndicatorGroups $updateIndicatorGroups )
 	#displayObjects( "indicator_group_set" "IndicatorGroupSet" $newIndicatorGroupSets $updateIndicatorGroupSets )
-	#displayObjects( "data_dictionary" "DataDictionary" $newDataDictionaries $updateDataDictionaries )
 	#displayObjects( "dataset" "DataSet" $newDataSets $updateDataSets )
 	#displayObjects( "organisation_unit" "OrganisationUnit" $newOrganisationUnits $updateOrganisationUnits )
 	#displayObjects( "organisation_unit_group" "OrganisationUnitGroup" $newOrganisationUnitGroups $updateOrganisationUnitGroups )

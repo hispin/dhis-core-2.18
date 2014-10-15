@@ -296,18 +296,6 @@ var validationRules = {
             "rangelength" : [ 2, 255 ]
         }
     },
-    "dataDictionary" : {
-        "name" : {
-            "required" : true,
-            "rangelength" : [ 2, 160 ]
-        },
-        "description" : {
-            "rangelength" : [ 0, 255 ]
-        },
-        "region" : {
-            "rangelength" : [ 0, 255 ]
-        }
-    },
     "indicator" : {
         "name" : {
             "required" : true,

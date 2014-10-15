@@ -130,10 +130,6 @@ public class HibernateDbmsManager
         emptyTable( "orgunitgroupmembers" );
         emptyTable( "orgunitgroup" );
 
-        emptyTable( "datadictionarydataelements" );
-        emptyTable( "datadictionaryindicators" );
-        emptyTable( "datadictionary" );
-
         emptyTable( "validationrulegroupusergroupstoalert" );
         emptyTable( "validationrulegroupmembers" );
         emptyTable( "validationrulegroup" );

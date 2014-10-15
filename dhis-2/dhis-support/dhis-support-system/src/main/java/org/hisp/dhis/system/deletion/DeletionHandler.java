@@ -36,7 +36,6 @@ import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
-import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
@@ -161,15 +160,6 @@ public abstract class DeletionHandler
     }
 
     public String allowDeleteDataApprovalLevel( DataApprovalLevel dataApprovalLevel )
-    {
-        return null;
-    }
-
-    public void deleteDataDictionary( DataDictionary dataDictionary )
-    {
-    }
-
-    public String allowDeleteDataDictionary( DataDictionary dataDictionary )
     {
         return null;
     }

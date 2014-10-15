@@ -69,14 +69,8 @@ public interface ImportObjectManager
     void importIndicatorGroupSets();
     
     void importIndicatorGroupSetMembers();
-    
-    void importDataDictionaries();
-    
+        
     void importDataSets();
-    
-    void importDataDictionaryDataElements();
-    
-    void importDataDictionaryIndicators();
     
     void importDataSetMembers();
     

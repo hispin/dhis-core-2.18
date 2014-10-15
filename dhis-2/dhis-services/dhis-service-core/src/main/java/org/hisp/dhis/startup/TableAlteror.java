@@ -254,7 +254,6 @@ public class TableAlteror
         // set varchar to text
         executeSql( "ALTER TABLE dataelement ALTER description TYPE text" );
         executeSql( "ALTER TABLE indicator ALTER description TYPE text" );
-        executeSql( "ALTER TABLE datadictionary ALTER description TYPE text" );
         executeSql( "ALTER TABLE validationrule ALTER description TYPE text" );
         executeSql( "ALTER TABLE expression ALTER expression TYPE text" );
         executeSql( "ALTER TABLE translation ALTER value TYPE text" );
@@ -385,7 +384,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart DROP COLUMN uuid" );
         executeSql( "ALTER TABLE concept DROP COLUMN uuid" );
         executeSql( "ALTER TABLE constant DROP COLUMN uuid" );
-        executeSql( "ALTER TABLE datadictionary DROP COLUMN uuid" );
         executeSql( "ALTER TABLE dataelement DROP COLUMN uuid" );
         executeSql( "ALTER TABLE dataelementcategory DROP COLUMN uuid" );
         executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN uuid" );
@@ -580,7 +578,6 @@ public class TableAlteror
         executeSql( "UPDATE userroleauthorities SET authority='F_REPORT_PUBLIC_ADD' WHERE authority='F_REPORT_ADD'" );
         executeSql( "UPDATE userroleauthorities SET authority='F_REPORTTABLE_PUBLIC_ADD' WHERE authority='F_REPORTTABLE_ADD'" );
         executeSql( "UPDATE userroleauthorities SET authority='F_DATASET_PUBLIC_ADD' WHERE authority='F_DATASET_ADD'" );
-        executeSql( "UPDATE userroleauthorities SET authority='F_DATADICTIONARY_PUBLIC_ADD' WHERE authority='F_DATADICTIONARY_ADD'" );
 
         executeSql( "UPDATE userroleauthorities SET authority='F_DATAELEMENT_PUBLIC_ADD' WHERE authority='F_DATAELEMENT_ADD'" );
         executeSql( "UPDATE userroleauthorities SET authority='F_DATAELEMENTGROUP_PUBLIC_ADD' WHERE authority='F_DATAELEMENTGROUP_ADD'" );
@@ -610,7 +607,6 @@ public class TableAlteror
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_DATAELEMENT_UPDATE'" );
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_DATAELEMENTGROUP_UPDATE'" );
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_DATAELEMENTGROUPSET_UPDATE'" );
-        executeSql( "DELETE FROM userroleauthorities WHERE authority='F_DATADICTIONARY_UPDATE'" );
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_DATAELEMENT_MINMAX_UPDATE'" );
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_DATASET_UPDATE'" );
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_SECTION_UPDATE'" );
@@ -658,7 +654,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE reporttable DROP CONSTRAINT reporttable_name_key" );
         executeSql( "ALTER TABLE report DROP CONSTRAINT report_name_key" );
         executeSql( "ALTER TABLE usergroup DROP CONSTRAINT usergroup_name_key" );
-        executeSql( "ALTER TABLE datadictionary DROP CONSTRAINT datadictionary_name_key" );
 
         executeSql( "update relativeperiods set lastweek = false where lastweek is null" );
         executeSql( "update relativeperiods set last4weeks = false where last4weeks is null" );

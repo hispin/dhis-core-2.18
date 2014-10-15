@@ -21,7 +21,6 @@ function updateZeroIsSignificant() {
 
 function exportPDF( type ) {
   var params = "type=" + type;
-  params += "&dataDictionaryId=" + jQuery('#dataDictionaryList').val();
 
   exportPdfByType(type, params);
 }

@@ -53,7 +53,6 @@ public class NameMappingUtil
     private static ThreadLocal<Map<Object, String>> indicatorGroupMap = new ThreadLocal<>();
     private static ThreadLocal<Map<Object, String>> indicatorGroupSetMap = new ThreadLocal<>();
     private static ThreadLocal<Map<Object, String>> indicatorTypeMap = new ThreadLocal<>();
-    private static ThreadLocal<Map<Object, String>> dataDictionaryMap = new ThreadLocal<>();
     private static ThreadLocal<Map<Object, Period>> periodMap = new ThreadLocal<>();
     private static ThreadLocal<Map<Object, String>> dataSetMap = new ThreadLocal<>();
     private static ThreadLocal<Map<Object, String>> organisationUnitMap = new ThreadLocal<>();
@@ -82,7 +81,6 @@ public class NameMappingUtil
         indicatorGroupMap.remove();
         indicatorGroupSetMap.remove();
         indicatorTypeMap.remove();
-        dataDictionaryMap.remove();
         periodMap.remove();
         dataSetMap.remove();
         organisationUnitMap.remove();
@@ -346,26 +344,6 @@ public class NameMappingUtil
     public static Map<Object, String> getIndicatorTypeMap()
     {
         return indicatorTypeMap.get() != null ? new HashMap<>( indicatorTypeMap.get() ) : new HashMap<Object, String>();
-    }
-
-    // -------------------------------------------------------------------------
-    // DataDictionary
-    // -------------------------------------------------------------------------
-
-    /**
-     * Adds a map entry with DataDictionary identifier as key and name as value.
-     */
-    public static void addDataDictionaryMapping( Object dictionaryId, String dictionaryName )
-    {
-        put( dataDictionaryMap, dictionaryId, dictionaryName );
-    }
-    
-    /**
-     * Returns a map with all DataDictionary identifier and name entries.
-     */
-    public static Map<Object, String> getDataDictionaryMap()
-    {
-        return dataDictionaryMap.get() != null ? new HashMap<>( dataDictionaryMap.get() ) : new HashMap<Object, String>();
     }
     
     // -------------------------------------------------------------------------

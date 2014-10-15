@@ -418,51 +418,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <!-- DataDictionary -->
-
-    <action name="dataDictionary" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryListAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-datadictionary/dataDictionary.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="javascripts">javascript/dataDictionary.js</param>
-    </action>
-
-    <action name="getDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction">
-      <result name="success" type="velocity-json">/dhis-web-maintenance-datadictionary/jsonDataDictionary.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="removeDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.RemoveDataDictionaryAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_DATADICTIONARY_DELETE</param>
-    </action>
-
-    <action name="showAddDataDictionaryForm" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryMembersAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-datadictionary/addDataDictionaryForm.vm</param>
-      <param name="javascripts">javascript/dataDictionary.js</param>
-      <param name="anyAuthorities">F_DATADICTIONARY_PUBLIC_ADD, F_DATADICTIONARY_PRIVATE_ADD</param>
-    </action>
-
-    <action name="addDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction">
-      <result name="success" type="redirect">dataDictionary.action</result>
-      <param name="anyAuthorities">F_DATADICTIONARY_PUBLIC_ADD, F_DATADICTIONARY_PRIVATE_ADD</param>
-    </action>
-
-    <action name="showUpdateDataDictionaryForm" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryMembersAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-datadictionary/updateDataDictionaryForm.vm</param>
-      <param name="javascripts">javascript/dataDictionary.js</param>
-      <param name="anyAuthorities">F_DATADICTIONARY_PUBLIC_ADD, F_DATADICTIONARY_PRIVATE_ADD</param>
-    </action>
-
-    <action name="updateDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction">
-      <result name="success" type="redirect">dataDictionary.action?currentPage=${keyCurrentPage}</result>
-      <param name="anyAuthorities">F_DATADICTIONARY_PUBLIC_ADD, F_DATADICTIONARY_PRIVATE_ADD</param>
-    </action>
-
     <!-- Category -->
 
     <action name="showAddDataElementCategoryForm" class="org.hisp.dhis.dd.action.NoAction">

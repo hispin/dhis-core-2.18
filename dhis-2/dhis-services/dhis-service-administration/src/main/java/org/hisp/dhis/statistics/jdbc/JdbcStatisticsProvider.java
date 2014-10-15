@@ -67,7 +67,6 @@ public class JdbcStatisticsProvider
         objectCounts.put( Objects.INDICATOR, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM indicator", Integer.class ) );
         objectCounts.put( Objects.INDICATORGROUP, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM indicatorgroup", Integer.class ) );
         objectCounts.put( Objects.DATASET, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM dataset", Integer.class ) );
-        objectCounts.put( Objects.DATADICTIONARY, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM datadictionary", Integer.class ) );
         objectCounts.put( Objects.SOURCE, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM organisationunit", Integer.class ) );
         objectCounts.put( Objects.VALIDATIONRULE, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM validationrule", Integer.class ) );
         objectCounts.put( Objects.PERIOD, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM period", Integer.class ) );

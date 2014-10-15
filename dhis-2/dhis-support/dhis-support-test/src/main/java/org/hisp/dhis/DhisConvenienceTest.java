@@ -55,7 +55,6 @@ import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
-import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
@@ -600,21 +599,6 @@ public abstract class DhisConvenienceTest
         groupSet.setName( "DataElementGroupSet" + uniqueCharacter );
 
         return groupSet;
-    }
-
-    /**
-     * @param uniqueCharacter A unique character to identify the object.
-     */
-    public static DataDictionary createDataDictionary( char uniqueCharacter )
-    {
-        DataDictionary dictionary = new DataDictionary();
-        dictionary.setAutoFields();
-
-        dictionary.setName( "DataDictionary" + uniqueCharacter );
-        dictionary.setDescription( "Description" + uniqueCharacter );
-        dictionary.setRegion( "Region" + uniqueCharacter );
-
-        return dictionary;
     }
 
     /**

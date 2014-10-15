@@ -105,7 +105,6 @@
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
@@ -164,14 +163,12 @@
     class="org.hisp.dhis.importexport.action.exp.GetDataElementListAction"
     scope="prototype">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
   </bean>
 
   <bean id="org.hisp.dhis.importexport.action.exp.GetIndicatorListAction"
     class="org.hisp.dhis.importexport.action.exp.GetIndicatorListAction"
     scope="prototype">
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
   </bean>
 
   <bean id="org.hisp.dhis.importexport.action.exp.ValidateAggregatedExportAction"

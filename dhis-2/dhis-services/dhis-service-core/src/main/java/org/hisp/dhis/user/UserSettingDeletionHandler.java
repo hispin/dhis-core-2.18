@@ -28,7 +28,6 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,8 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserSettingDeletionHandler
     extends DeletionHandler
 {   
-    private static final String SETTING_NAME_DATADICTIONARY = "currentDataDictionary";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -56,18 +53,6 @@ public class UserSettingDeletionHandler
     public String getClassName()
     {
         return User.class.getSimpleName();
-    }
-    
-    @Override
-    public void deleteDataDictionary( DataDictionary dataDictionary )
-    {
-        for ( UserSetting setting : userService.getUserSettings( SETTING_NAME_DATADICTIONARY ) )
-        {
-            if ( setting.getValue() != null && (Integer) setting.getValue() == dataDictionary.getId() )
-            {
-                userService.deleteUserSetting( setting );
-            }
-        }
     }
     
     @Override

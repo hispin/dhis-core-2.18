@@ -11,7 +11,6 @@
     <li><a href="categoryCombo.action">$i18n.getString( "category_combination" )&nbsp;</a></li>
     <li><a href="categoryOptionGroup.action">$i18n.getString( "category_option_group" )&nbsp;</a></li>
     <li><a href="categoryOptionGroupSet.action">$i18n.getString( "category_option_group_set" )&nbsp;</a></li>
-    <li><a href="dataDictionary.action">$i18n.getString( "data_dictionary" )&nbsp;</a></li>
 </ul>
 
 <h2>$i18n.getString( "indicator" )&nbsp;</h2>
