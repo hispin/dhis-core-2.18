@@ -415,7 +415,6 @@ function addEventListeners()
 {
     $( '.entryfield' ).each( function( i )
     {
-        var self = this;
         var id = $( this ).attr( 'id' );
 
         var split = splitFieldId( id );
