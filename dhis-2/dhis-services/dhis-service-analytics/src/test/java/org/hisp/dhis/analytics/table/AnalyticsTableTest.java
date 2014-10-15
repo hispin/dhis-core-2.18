@@ -28,14 +28,14 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.junit.Assert.assertEquals;
+
 import org.hisp.dhis.analytics.AnalyticsTable;
-import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.program.Program;
+import org.joda.time.DateTime;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -48,7 +48,7 @@ public class AnalyticsTableTest
         Program program = new Program( "ProgramA", "DescriptionA" );
         program.setUid( "UIDA" );
         
-        Period period = new YearlyPeriodType().createPeriod( new DateTimeUnit( 2014, 1, 1 ).toJdkDate() );
+        Period period = new YearlyPeriodType().createPeriod( new DateTime( 2014, 1, 1, 0, 0 ).toDate() );
         
         AnalyticsTable tableA = new AnalyticsTable( "analytics_event", null, period, program );
         
