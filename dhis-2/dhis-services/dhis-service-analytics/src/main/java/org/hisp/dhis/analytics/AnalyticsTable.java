@@ -91,7 +91,7 @@ public class AnalyticsTable
 
         if ( program != null )
         {
-            name += "_" + program.getUid();
+            name += "_" + program.getUid().toLowerCase();
         }
 
         return name;
@@ -108,7 +108,7 @@ public class AnalyticsTable
 
         if ( program != null )
         {
-            name += "_" + program.getUid();
+            name += "_" + program.getUid().toLowerCase();
         }
 
         return name;
