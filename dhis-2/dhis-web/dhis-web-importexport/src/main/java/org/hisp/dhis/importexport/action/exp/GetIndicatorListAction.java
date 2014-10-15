@@ -29,13 +29,10 @@ package org.hisp.dhis.importexport.action.exp;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 
@@ -60,13 +57,6 @@ public class GetIndicatorListAction
         this.indicatorService = indicatorService;
     }
 
-    private DataDictionaryService dataDictionaryService;
-
-    public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
-    {
-        this.dataDictionaryService = dataDictionaryService;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -82,13 +72,6 @@ public class GetIndicatorListAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer dataDictionaryId;
-
-    public void setDataDictionaryId( Integer dataDictionaryId )
-    {
-        this.dataDictionaryId = dataDictionaryId;
-    }
-
     private Integer indicatorGroupId;
 
     public void setIndicatorGroupId( Integer indicatorGroupId )
@@ -100,24 +83,11 @@ public class GetIndicatorListAction
     // Action implemantation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     public String execute()
     {   
-        if ( dataDictionaryId != null && indicatorGroupId == null )
-        {
-            indicators = new ArrayList<>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getIndicators() );
-        }
-        else if ( dataDictionaryId == null && indicatorGroupId != null )
+        if ( indicatorGroupId != null )
         {
             indicators = new ArrayList<>( indicatorService.getIndicatorGroup( indicatorGroupId ).getMembers() );
-        }
-        else if ( dataDictionaryId != null && indicatorGroupId != null )
-        {
-            Collection<Indicator> dictionary = dataDictionaryService.getDataDictionary( dataDictionaryId ).getIndicators();
-
-            Collection<Indicator> members = indicatorService.getIndicatorGroup( indicatorGroupId ).getMembers();
-
-            indicators = new ArrayList<Indicator>( CollectionUtils.intersection( dictionary, members ) );
         }
         else
         {

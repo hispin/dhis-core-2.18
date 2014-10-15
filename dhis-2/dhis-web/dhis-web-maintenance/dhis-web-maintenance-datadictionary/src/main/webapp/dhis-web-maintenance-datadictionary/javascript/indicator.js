@@ -7,9 +7,7 @@ $(function() {
 
 function exportPDF( type )
 {
-	var params = "type=" + type;
-	params += "&dataDictionaryId=" + jQuery( '#dataDictionaryList' ).val();
-	
+	var params = "type=" + type;	
 	exportPdfByType( type, params );
 }
 
@@ -41,9 +39,7 @@ function indicatorTypeChanged()
 
 function criteriaChanged()
 {
-    var dataDictionaryId = getListValue( "dataDictionaryList" );
-
-    var url = "indicator.action?&dataDictionaryId=" + dataDictionaryId;
+    var url = "indicator.action";
 
     window.location.href = url;
 }

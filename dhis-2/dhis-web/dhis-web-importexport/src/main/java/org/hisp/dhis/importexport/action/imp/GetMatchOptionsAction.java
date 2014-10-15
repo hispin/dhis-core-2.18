@@ -30,7 +30,6 @@ package org.hisp.dhis.importexport.action.imp;
 
 import static org.hisp.dhis.common.Objects.CHART;
 import static org.hisp.dhis.common.Objects.CONSTANT;
-import static org.hisp.dhis.common.Objects.DATADICTIONARY;
 import static org.hisp.dhis.common.Objects.DATAELEMENT;
 import static org.hisp.dhis.common.Objects.DATAELEMENTGROUP;
 import static org.hisp.dhis.common.Objects.DATAELEMENTGROUPSET;
@@ -51,7 +50,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.constant.ConstantService;
-import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -149,13 +147,6 @@ public class GetMatchOptionsAction
         this.indicatorService = indicatorService;
     }
 
-    private DataDictionaryService dataDictionaryService;
-
-    public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
-    {
-        this.dataDictionaryService = dataDictionaryService;
-    }
-
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -245,10 +236,6 @@ public class GetMatchOptionsAction
         else if ( objectType.equals( INDICATORGROUPSET.name() ) )
         {
             objects = indicatorService.getAllIndicatorGroupSets();
-        }
-        else if ( objectType.equals( DATADICTIONARY.name() ) )
-        {
-            objects = dataDictionaryService.getAllDataDictionaries();
         }
         else if ( objectType.equals( DATASET.name() ) )
         {

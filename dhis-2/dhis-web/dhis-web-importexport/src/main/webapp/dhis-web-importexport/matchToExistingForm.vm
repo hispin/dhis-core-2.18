@@ -93,13 +93,6 @@
 	#displayAggregationOperatorProperty( "denominator_aggregation_operator" $importObject.object.denominatorAggregationOperator )
 	
 	#end
-	    
-	#if ( $objectType == "DATADICTIONARY" )
-		
-	#displayProperty( "description" $importObject.object.description )
-	#displayProperty( "region" $importObject.object.region )
-		
-	#end
 	
 	#if ( $objectType == "ORGANISATIONUNIT" )
 	

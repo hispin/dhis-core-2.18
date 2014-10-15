@@ -35,7 +35,6 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
-import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -51,7 +50,6 @@ import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.ConceptBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ConstantBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryComboBatchHandler;
@@ -258,18 +256,6 @@ public class DefaultObjectMappingGenerator
             .createBatchHandler( IndicatorTypeBatchHandler.class );
 
         return getMapping( batchHandler, NameMappingUtil.getIndicatorTypeMap(), skipMapping );
-    }
-
-    // -------------------------------------------------------------------------
-    // DataDictionary
-    // -------------------------------------------------------------------------
-
-    public Map<Object, Integer> getDataDictionaryMapping( boolean skipMapping )
-    {
-        BatchHandler<DataDictionary> batchHandler = batchHandlerFactory
-            .createBatchHandler( DataDictionaryBatchHandler.class );
-
-        return getMapping( batchHandler, NameMappingUtil.getDataDictionaryMap(), skipMapping );
     }
 
     // -------------------------------------------------------------------------

@@ -101,13 +101,6 @@
 	#compareAggregationOperatorProperty( $importObject.object.denominatorAggregationOperator $importObject.compareObject.denominatorAggregationOperator "denominator_aggregation_operator" )
 			
 	#end
-	
-	#if ( $objectType == "DATADICTIONARY" )
-		
-	#compareProperty( $importObject.object.description $importObject.compareObject.description "description" )		
-	#compareProperty( $importObject.object.region $importObject.compareObject.region "region" )
-				
-	#end
 		
 	#if ( $objectType == "ORGANISATIONUNIT" )
 	

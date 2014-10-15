@@ -41,8 +41,6 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
-import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -71,7 +69,6 @@ import org.hisp.dhis.importexport.ImportType;
 import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.importer.ChartImporter;
 import org.hisp.dhis.importexport.importer.ConstantImporter;
-import org.hisp.dhis.importexport.importer.DataDictionaryImporter;
 import org.hisp.dhis.importexport.importer.DataElementCategoryComboImporter;
 import org.hisp.dhis.importexport.importer.DataElementCategoryImporter;
 import org.hisp.dhis.importexport.importer.DataElementCategoryOptionImporter;
@@ -103,9 +100,6 @@ import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ConstantBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataDictionaryDataElementBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataDictionaryIndicatorBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryComboBatchHandler;
@@ -202,13 +196,6 @@ public class DefaultImportObjectManager
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }
-
-    private DataDictionaryService dataDictionaryService;
-
-    public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
-    {
-        this.dataDictionaryService = dataDictionaryService;
     }
 
     private IndicatorService indicatorService;
@@ -677,53 +664,7 @@ public class DefaultImportObjectManager
 
         log.info( "Imported IndicatorGroupSet members" );
     }
-
-    @Transactional
-    public void importDataDictionaries()
-    {
-        BatchHandler<DataDictionary> batchHandler = batchHandlerFactory.createBatchHandler(
-            DataDictionaryBatchHandler.class ).init();
-
-        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataDictionary.class );
-
-        Importer<DataDictionary> importer = new DataDictionaryImporter( batchHandler, dataDictionaryService );
-
-        for ( ImportObject importObject : importObjects )
-        {
-            importer.importObject( (DataDictionary) importObject.getObject(), params );
-        }
-
-        batchHandler.flush();
-
-        importObjectStore.deleteImportObjects( DataDictionary.class );
-
-        log.info( "Imported DataDictionaries" );
-    }
-
-    @Transactional
-    public void importDataDictionaryDataElements()
-    {
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
-            .createBatchHandler( DataDictionaryDataElementBatchHandler.class );
-
-        importGroupMemberAssociation( batchHandler, GroupMemberType.DATADICTIONARY_DATAELEMENT, objectMappingGenerator
-            .getDataDictionaryMapping( false ), objectMappingGenerator.getDataElementMapping( false ) );
-
-        log.info( "Imported DataDictionary DataElements" );
-    }
-
-    @Transactional
-    public void importDataDictionaryIndicators()
-    {
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
-            .createBatchHandler( DataDictionaryIndicatorBatchHandler.class );
-
-        importGroupMemberAssociation( batchHandler, GroupMemberType.DATADICTIONARY_INDICATOR, objectMappingGenerator
-            .getDataDictionaryMapping( false ), objectMappingGenerator.getIndicatorMapping( false ) );
-
-        log.info( "Imported DataDictionary Indicators" );
-    }
-
+    
     @Transactional
     public void importDataSets()
     {

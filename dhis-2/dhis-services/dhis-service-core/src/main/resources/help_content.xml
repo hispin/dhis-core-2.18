@@ -5460,18 +5460,6 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 <para>Type the name of the category combination in the &quot;Name&quot; field, and then select the desired categories from the left panel. Press the &quot;Move right&quot; button to add the selected categories to the category combination. Press &quot;Move left&quot; to remove any categories that should not be part of the category combination. </para>
 <para>Categories can only be added to a category combination at this step. Categories can be removed from category combinations later by editing the category combination, however, it is not allowed to add additional categories once the combination has been created. Ensure that the category combination and its respective categories is final before you create the category combination and assign it to a data element. </para>
 </section>
-<section id="dataDictionary">
-<title>Data dictionaries</title>
-<para>Data dictionaries are used to group data elements and indicators during filtering operations. They are useful for combining related groups of data elements and indicators according to the programs to which they belong. For instance a data dictionary called &quot;MCH&quot; could be created, and all maternal and child health data elements and indicators could be added to the dictionary. The data dictionary can be access by choosing Maintenance-&gt;Data elements and indicators-&gt;Data dictionary. The following screen will be displayed in the browser. </para>
-<screenshot>
-<mediaobject>
-<imageobject>
-<imagedata width="100%" fileref="resources/images/maintainence/data_dictionary.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<para>Provide a name for the data dictionary in the &quot;Name&quot; field and a description of its contents. Data elements and indicators can be added or removed from the dictionary. Click &quot;Save&quot; if you are creating a new data dictionary or &quot;Add&quot; if you are editing the contents of an existing data dictionary. </para>
-</section>
 <section id="translation">
 <title>Translations</title>
 <para>DHIS 2 provides functionality for translations of database content like data elements, data element groups, indicators, indicator groups, validation rules and more. These elements can be translated to any number of locales. A locale represents a specific geographical, political, or cultural region. </para>

@@ -29,10 +29,6 @@
         <td>$objects.getValue( "DATASET" )</td>
     </tr>
     <tr>
-        <td>$i18n.getString( "data_dictionaries" )</td>
-        <td>$objects.getValue( "DATADICTIONARY" )</td>
-    </tr>
-    <tr>
         <td>$i18n.getString( "organisation_units" )</td>
         <td>$objects.getValue( "SOURCE" )</td>
     </tr>

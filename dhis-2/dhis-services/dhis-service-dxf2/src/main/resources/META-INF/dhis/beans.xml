@@ -225,10 +225,6 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.validation.ValidationRuleGroup" />
   </bean>
 
-  <bean id="dataDictionaryImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
-    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.datadictionary.DataDictionary" />
-  </bean>
-
   <!-- register tracker importers -->
 
   <bean id="eventReportImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">

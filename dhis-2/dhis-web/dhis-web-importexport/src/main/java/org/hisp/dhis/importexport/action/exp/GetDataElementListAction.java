@@ -29,14 +29,10 @@ package org.hisp.dhis.importexport.action.exp;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -62,13 +58,6 @@ public class GetDataElementListAction
         this.dataElementService = dataElementService;
     }
 
-    private DataDictionaryService dataDictionaryService;
-
-    public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
-    {
-        this.dataDictionaryService = dataDictionaryService;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -87,28 +76,9 @@ public class GetDataElementListAction
         return dataElementGroups;
     }
 
-    private List<DataDictionary> dataDictionaries;
-
-    public List<DataDictionary> getDataDictionaries()
-    {
-        return dataDictionaries;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-
-    private Integer dataDictionaryId;
-
-    public Integer getDataDictionaryId()
-    {
-        return dataDictionaryId;
-    }
-
-    public void setDataDictionaryId( Integer dataDictionaryId )
-    {
-        this.dataDictionaryId = dataDictionaryId;
-    }
 
     private Integer dataElementGroupId;
 
@@ -126,24 +96,11 @@ public class GetDataElementListAction
     // Action implemantation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     public String execute()
     {
-        if ( dataDictionaryId != null && dataElementGroupId == null )
-        {
-            dataElements = new ArrayList<>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getDataElements() );
-        }
-        else if ( dataDictionaryId == null && dataElementGroupId != null )
+        if ( dataElementGroupId != null )
         {
             dataElements = new ArrayList<>( dataElementService.getDataElementGroup( dataElementGroupId ).getMembers() );
-        }
-        else if ( dataDictionaryId != null && dataElementGroupId != null )
-        {
-            Collection<DataElement> dictionary = dataDictionaryService.getDataDictionary( dataDictionaryId ).getDataElements();
-
-            Collection<DataElement> members = dataElementService.getDataElementGroup( dataElementGroupId ).getMembers();
-
-            dataElements = new ArrayList<DataElement>( CollectionUtils.intersection( dictionary, members ) );
         }
         else
         {

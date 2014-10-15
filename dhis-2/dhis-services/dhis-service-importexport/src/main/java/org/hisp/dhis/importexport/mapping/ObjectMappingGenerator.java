@@ -71,8 +71,6 @@ public interface ObjectMappingGenerator
     
     Map<Object, Integer> getIndicatorTypeMapping( boolean skipMapping );
     
-    Map<Object, Integer> getDataDictionaryMapping( boolean skipMapping );
-    
     Map<Object, Integer> getDataSetMapping( boolean skipMapping );
     
     Map<Object, Integer> getOrganisationUnitMapping( boolean skipMapping );

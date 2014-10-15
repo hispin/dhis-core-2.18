@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.paging.ActionPagingSupport;
@@ -68,28 +67,9 @@ public class GetIndicatorListAction
         return indicators;
     }
 
-    private List<DataDictionary> dataDictionaries;
-
-    public List<DataDictionary> getDataDictionaries()
-    {
-        return dataDictionaries;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-
-    private Integer dataDictionaryId;
-
-    public Integer getDataDictionaryId()
-    {
-        return dataDictionaryId;
-    }
-
-    public void setDataDictionaryId( Integer dataDictionaryId )
-    {
-        this.dataDictionaryId = dataDictionaryId;
-    }
 
     private String key;
     

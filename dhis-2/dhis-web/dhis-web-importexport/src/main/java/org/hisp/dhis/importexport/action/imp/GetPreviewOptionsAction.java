@@ -42,7 +42,6 @@ import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.constant.Constant;
-import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
@@ -193,13 +192,6 @@ public class GetPreviewOptionsAction
         return newIndicatorGroupSets;
     }
 
-    private Integer newDataDictionaries;
-
-    public Integer getNewDataDictionaries()
-    {
-        return newDataDictionaries;
-    }
-
     private Integer newDataSets;
 
     public Integer getNewDataSets()
@@ -347,13 +339,6 @@ public class GetPreviewOptionsAction
         return updateIndicatorGroupSets;
     }
 
-    private Integer updateDataDictionaries;
-
-    public Integer getUpdateDataDictionaries()
-    {
-        return updateDataDictionaries;
-    }
-
     private Integer updateDataSets;
 
     public Integer getUpdateDataSets()
@@ -453,7 +438,6 @@ public class GetPreviewOptionsAction
         newIndicators = importObjectService.getImportObjects( NEW, Indicator.class ).size();
         newIndicatorGroups = importObjectService.getImportObjects( NEW, IndicatorGroup.class ).size();
         newIndicatorGroupSets = importObjectService.getImportObjects( NEW, IndicatorGroupSet.class ).size();
-        newDataDictionaries = importObjectService.getImportObjects( NEW, DataDictionary.class ).size();
         newDataSets = importObjectService.getImportObjects( NEW, DataSet.class ).size();
         newOrganisationUnits = importObjectService.getImportObjects( NEW, OrganisationUnit.class ).size();
         newOrganisationUnitGroups = importObjectService.getImportObjects( NEW, OrganisationUnitGroup.class ).size();
@@ -473,7 +457,6 @@ public class GetPreviewOptionsAction
         updateIndicators = importObjectService.getImportObjects( UPDATE, Indicator.class ).size();
         updateIndicatorGroups = importObjectService.getImportObjects( UPDATE, IndicatorGroup.class ).size();
         updateIndicatorGroupSets = importObjectService.getImportObjects( UPDATE, IndicatorGroupSet.class ).size();
-        updateDataDictionaries = importObjectService.getImportObjects( UPDATE, DataDictionary.class ).size();
         updateDataSets = importObjectService.getImportObjects( UPDATE, DataSet.class ).size();
         updateOrganisationUnits = importObjectService.getImportObjects( UPDATE, OrganisationUnit.class ).size();
         updateOrganisationUnitGroups = importObjectService.getImportObjects( UPDATE, OrganisationUnitGroup.class ).size();

@@ -11,7 +11,6 @@
     #introListImgItem( "categoryCombo.action" "category_combo" "category" )
     #introListImgItem( "categoryOptionGroup.action" "category_option_group" "category" )
     #introListImgItem( "categoryOptionGroupSet.action" "category_option_group_set" "category" )
-    #introListImgItem( "dataDictionary.action" "data_dictionary" "datadictionary" )
     #introListImgItem( "indicator.action" "indicator" "indicator" )
     #introListImgItem( "indicatorType.action" "indicator_type" "indicator" )
     #introListImgItem( "indicatorGroup.action" "indicator_group" "indicator" )
