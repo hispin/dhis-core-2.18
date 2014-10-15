@@ -562,19 +562,30 @@ public class DefaultEventAnalyticsService
             }
         }
 
-        for ( QueryItem item : params.getItems() )
-        {
-            map.put( item.getItem().getUid(), item.getItem().getDisplayName() );
-        }
-
-        for ( QueryItem item : params.getItemFilters() )
-        {
-            map.put( item.getItem().getUid(), item.getItem().getDisplayName() );
-        }
-
+        map.putAll( getUidNameMap( params.getItems(), params.getDisplayProperty() ) );
+        map.putAll( getUidNameMap( params.getItemFilters(), params.getDisplayProperty() ) );
         map.putAll( getUidNameMap( params.getDimensions(), params.isHierarchyMeta(), params.getDisplayProperty() ) );
         map.putAll( getUidNameMap( params.getFilters(), params.isHierarchyMeta(), params.getDisplayProperty() ) );
 
+        return map;
+    }
+    
+    private Map<String, String> getUidNameMap( List<QueryItem> queryItems, DisplayProperty displayProperty )
+    {
+        Map<String, String> map = new HashMap<>();
+        
+        for ( QueryItem item : queryItems )
+        {
+            if ( DisplayProperty.SHORTNAME.equals( displayProperty ) )
+            {
+                map.put( item.getItem().getUid(), item.getItem().getDisplayShortName() );
+            }
+            else
+            {
+                map.put( item.getItem().getUid(), item.getItem().getDisplayName() );
+            }
+        }
+        
         return map;
     }
 
