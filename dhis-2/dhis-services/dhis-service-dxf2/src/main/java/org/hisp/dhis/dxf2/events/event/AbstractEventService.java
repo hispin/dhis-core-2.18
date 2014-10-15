@@ -28,15 +28,25 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.common.CodeGenerator;
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
@@ -74,19 +84,10 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -950,19 +951,19 @@ public abstract class AbstractEventService
         }
     }
 
-    private OrganisationUnit getOrganisationUnit( IdentifiableObject.IdentifiableProperty scheme, String value )
+    private OrganisationUnit getOrganisationUnit( IdentifiableProperty scheme, String value )
     {
         OrganisationUnit organisationUnit = null;
 
-        if ( IdentifiableObject.IdentifiableProperty.UUID.equals( scheme ) )
+        if ( IdentifiableProperty.UUID.equals( scheme ) )
         {
             organisationUnit = organisationUnitService.getOrganisationUnitByUuid( value );
         }
-        else if ( IdentifiableObject.IdentifiableProperty.CODE.equals( scheme ) )
+        else if ( IdentifiableProperty.CODE.equals( scheme ) )
         {
             organisationUnit = organisationUnitService.getOrganisationUnitByCode( value );
         }
-        else if ( IdentifiableObject.IdentifiableProperty.NAME.equals( scheme ) )
+        else if ( IdentifiableProperty.NAME.equals( scheme ) )
         {
             List<OrganisationUnit> organisationUnitByName = organisationUnitService.getOrganisationUnitByName( value );
 
