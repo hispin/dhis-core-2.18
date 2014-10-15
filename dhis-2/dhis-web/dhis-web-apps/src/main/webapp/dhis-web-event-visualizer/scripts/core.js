@@ -1991,6 +1991,9 @@ Ext.onReady( function() {
                     paramString += '&startDate=' + layout.startDate + '&endDate=' + layout.endDate;
                 }
 
+                // display property
+                paramString += '&displayProperty=' + init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+
                 return paramString;
             };
 

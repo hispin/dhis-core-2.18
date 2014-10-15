@@ -1771,6 +1771,9 @@ Ext.onReady( function() {
                     }
                 }
 
+                // display property
+                paramString += '&displayProperty=' + init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+
                 return paramString;
             };
 
