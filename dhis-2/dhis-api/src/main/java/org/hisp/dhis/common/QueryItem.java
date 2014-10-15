@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class QueryItem
 {
-    private IdentifiableObject item;
+    private NameableObject item;
 
     private List<QueryFilter> filters = new ArrayList<>();
     
@@ -50,18 +50,18 @@ public class QueryItem
     // Constructors
     // -------------------------------------------------------------------------
 
-    public QueryItem( IdentifiableObject item )
+    public QueryItem( NameableObject item )
     {
         this.item = item;
     }
 
-    public QueryItem( IdentifiableObject item, boolean numeric )
+    public QueryItem( NameableObject item, boolean numeric )
     {
         this.item = item;
         this.numeric = numeric;
     }
     
-    public QueryItem( IdentifiableObject item, QueryOperator operator, String filter, boolean numeric )
+    public QueryItem( NameableObject item, QueryOperator operator, String filter, boolean numeric )
     {
         this.item = item;
         this.numeric = numeric;
@@ -72,7 +72,7 @@ public class QueryItem
         }
     }
     
-    public QueryItem( IdentifiableObject item, List<QueryFilter> filters, boolean numeric )
+    public QueryItem( NameableObject item, List<QueryFilter> filters, boolean numeric )
     {
         this.item = item;
         this.filters = filters;
@@ -98,11 +98,11 @@ public class QueryItem
         return filters != null && !filters.isEmpty();
     }
 
-    public static List<QueryItem> getQueryItems( Collection<? extends IdentifiableObject> objects )
+    public static List<QueryItem> getQueryItems( Collection<? extends NameableObject> objects )
     {
         List<QueryItem> queryItems = new ArrayList<>();
         
-        for ( IdentifiableObject object : objects )
+        for ( NameableObject object : objects )
         {
             queryItems.add( new QueryItem( object, false ) );
         }
@@ -153,12 +153,12 @@ public class QueryItem
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public IdentifiableObject getItem()
+    public NameableObject getItem()
     {
         return item;
     }
 
-    public void setItem( IdentifiableObject item )
+    public void setItem( NameableObject item )
     {
         this.item = item;
     }
