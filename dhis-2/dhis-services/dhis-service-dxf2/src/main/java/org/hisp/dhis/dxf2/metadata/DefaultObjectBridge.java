@@ -30,10 +30,12 @@ package org.hisp.dhis.dxf2.metadata;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
 import org.hisp.dhis.dxf2.timer.Timer;
 import org.hisp.dhis.period.PeriodStore;
@@ -47,6 +49,7 @@ import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -140,9 +143,9 @@ public class DefaultObjectBridge
         for ( Class<?> type : registeredTypes )
         {
             populateIdentifiableObjectMap( type );
-            populateIdentifiableObjectMap( type, IdentifiableObject.IdentifiableProperty.UID );
-            populateIdentifiableObjectMap( type, IdentifiableObject.IdentifiableProperty.CODE );
-            populateIdentifiableObjectMap( type, IdentifiableObject.IdentifiableProperty.NAME );
+            populateIdentifiableObjectMap( type, IdentifiableProperty.UID );
+            populateIdentifiableObjectMap( type, IdentifiableProperty.CODE );
+            populateIdentifiableObjectMap( type, IdentifiableProperty.NAME );
         }
 
         timer.stop();
@@ -180,7 +183,7 @@ public class DefaultObjectBridge
     }
 
     @SuppressWarnings( "unchecked" )
-    private void populateIdentifiableObjectMap( Class<?> clazz, IdentifiableObject.IdentifiableProperty property )
+    private void populateIdentifiableObjectMap( Class<?> clazz, IdentifiableProperty property )
     {
         Map<String, IdentifiableObject> map = new HashMap<>();
 
@@ -191,15 +194,15 @@ public class DefaultObjectBridge
 
         if ( !preheatCache || map != null )
         {
-            if ( property == IdentifiableObject.IdentifiableProperty.UID )
+            if ( property == IdentifiableProperty.UID )
             {
                 uidMap.put( (Class<? extends IdentifiableObject>) clazz, map );
             }
-            else if ( property == IdentifiableObject.IdentifiableProperty.CODE )
+            else if ( property == IdentifiableProperty.CODE )
             {
                 codeMap.put( (Class<? extends IdentifiableObject>) clazz, map );
             }
-            else if ( property == IdentifiableObject.IdentifiableProperty.NAME )
+            else if ( property == IdentifiableProperty.NAME )
             {
                 if ( !preheatCache )
                 {

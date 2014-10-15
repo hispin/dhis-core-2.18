@@ -35,7 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dxf2.datavalue.DataValue;

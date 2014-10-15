@@ -31,7 +31,7 @@ package org.hisp.dhis.importexport.action.datavalue;
 import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.importexport.ImportStrategy;

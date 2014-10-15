@@ -28,8 +28,8 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.CODE;
-import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UID;
+import static org.hisp.dhis.common.IdentifiableProperty.CODE;
+import static org.hisp.dhis.common.IdentifiableProperty.UID;
 import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
 import static org.hisp.dhis.importexport.ImportStrategy.UPDATES;
 import static org.junit.Assert.assertEquals;
