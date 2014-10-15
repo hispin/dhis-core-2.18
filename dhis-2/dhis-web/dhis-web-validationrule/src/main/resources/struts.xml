@@ -180,11 +180,21 @@
       <param name="requiredAuthorities">F_RUN_VALIDATION</param>
     </action>
 
-    <action name="viewFollowUpAnalysisForm" class="org.hisp.dhis.validationrule.action.NoAction">
+    <action name="viewFollowupAnalysisForm" class="org.hisp.dhis.validationrule.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-validationrule/followUpAnalysisForm.vm</param>
+      <param name="page">/dhis-web-validationrule/followupAnalysisForm.vm</param>
       <param name="menu">/dhis-web-validationrule/menu.vm</param>
-      <param name="javascripts">javascript/dataAnalysis.js</param>
+      <param name="javascripts">
+        ../dhis-web-commons/oust/oust.js,
+        ../dhis-web-commons/javascripts/lists.js,
+        javascript/dataAnalysis.js
+      </param>
+      <interceptor-ref name="organisationUnitTreeStack" />
+      <param name="requiredAuthorities">F_RUN_VALIDATION</param>
+    </action>
+
+    <action name="getFollowup" class="org.hisp.dhis.validationrule.action.dataanalysis.GetFollowupAction">
+      <result name="success" type="velocity">/dhis-web-validationrule/followupResult.vm</result>
       <param name="requiredAuthorities">F_RUN_VALIDATION</param>
     </action>
 

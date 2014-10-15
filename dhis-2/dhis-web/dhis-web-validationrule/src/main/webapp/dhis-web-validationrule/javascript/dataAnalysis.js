@@ -20,11 +20,11 @@ function validateRunAnalyseData()
         {
             if ( json.response == "success" )
             {
-            	analyseData();
+                analyseData();
             }
             else
             {
-            	setHeaderDelayMessage( json.message );
+                setHeaderDelayMessage( json.message );
                 $( '#startButton').removeAttr( 'disabled' );
             }
         } );
@@ -35,13 +35,13 @@ function analyseDataInvalid()
 {
     if ( $( "#fromDate" ).val().length == 0 )
     {
-    	setHeaderDelayMessage( i18n_specify_a_start_date );
+        setHeaderDelayMessage( i18n_specify_a_start_date );
         return false;
     }
 
     if ( $( "#toDate" ).val().length == 0 )
     {
-    	setHeaderDelayMessage( i18n_specify_an_ending_date );
+        setHeaderDelayMessage( i18n_specify_an_ending_date );
         return false;
     }
 
@@ -49,7 +49,7 @@ function analyseDataInvalid()
 
     if ( dataSets.options.length == 0 )
     {
-    	setHeaderDelayMessage( i18n_specify_dataset );
+        setHeaderDelayMessage( i18n_specify_dataset );
         return false;
     }
 
@@ -75,27 +75,13 @@ function analyseData()
         $( "div#analysisResult" ).show();
         $( "div#analysisResult" ).html( data );
 
-        $( '#startButton').removeAttr( 'disabled' );
-    } );
-}
-
-function getFollowUpAnalysis()
-{
-    setHeaderWaitMessage( i18n_analysing_please_wait );
-
-    var url = "getAnalysis.action?key=followup";
-
-    $.get( url, function( data )
-    {
-        hideHeaderMessage();
-        $( "div#analysisResult" ).show();
-        $( "div#analysisResult" ).html( data );
+        $( "#startButton" ).removeAttr( 'disabled' );
     } );
 }
 
 function displayAnalysisInput()
 {
-	$( 'div#analysisInput' ).show();
+    $( 'div#analysisInput' ).show();
     $( 'div#analysisResult' ).empty().hide();
 }
 
@@ -105,31 +91,46 @@ function exportAnalysisResult( type )
     window.location.href = url;
 }
 
-function markFollowUp( valueId )
-{	
+function markFollowup( valueId )
+{
     var dataElementId = $( '#value-' + valueId + '-de' ).val();
     var categoryOptionComboId = $( '#value-' + valueId + '-coc' ).val();
     var periodId = $( '#value-' + valueId + '-pe' ).val();
     var sourceId = $( '#value-' + valueId + '-ou' ).val();
     
     $.ajax( {
-    	url: 'markForFollowup.action',
-    	data: { dataElementId:dataElementId, periodId:periodId, sourceId:sourceId, categoryOptionComboId:categoryOptionComboId },
-    	type: 'POST',
-    	dataType: 'json',
-    	success: function( json )
-		{
-            var $image = $( '#value-' + valueId + '-followUp' );
-			
-            if ( json.message == "marked" )
-		    {
-		        $image.attr( "src", "../images/marked.png" );
-		        $image.attr( "title", i18n_unmark_value_for_followup );
-		    }
-		    else if ( json.message == "unmarked" )
-		    {
-		        $image.attr( "src", "../images/unmarked.png" );
-		        $image.attr( "title", i18n_mark_value_for_followup );   
-		    }
-		} } );
+      url: 'markForFollowup.action',
+      data: { dataElementId:dataElementId, periodId:periodId, sourceId:sourceId, categoryOptionComboId:categoryOptionComboId },
+      type: 'POST',
+      dataType: 'json',
+      success: function( json )
+      {
+        var $image = $( '#value-' + valueId + '-followUp' );
+
+        if ( json.message == "marked" )
+        {
+            $image.attr( "src", "../images/marked.png" );
+            $image.attr( "title", i18n_unmark_value_for_followup );
+        }
+        else if ( json.message == "unmarked" )
+        {
+            $image.attr( "src", "../images/unmarked.png" );
+            $image.attr( "title", i18n_mark_value_for_followup );
+        }
+      }
+    } );
+}
+
+function getFollowupAnalysis()
+{
+    setHeaderWaitMessage( i18n_analysing_please_wait );
+
+    var url = "getFollowup.action";
+
+    $.get( url, function( data )
+    {
+        hideHeaderMessage();
+        $( "div#analysisResult" ).show();
+        $( "div#analysisResult" ).html( data );
+    } );
 }

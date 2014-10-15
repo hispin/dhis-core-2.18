@@ -42,7 +42,6 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataanalysis.DataAnalysisStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -59,6 +58,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
  * @author Lars Helge Overland
+ * @author Halvdan Hoem Grelland
  */
 public class JdbcDataAnalysisStore
     implements DataAnalysisStore
@@ -243,12 +243,15 @@ public class JdbcDataAnalysisStore
         
         return jdbcTemplate.query( sql, new DeflatedDataValueNameMinMaxRowMapper( lowerBoundMap, upperBoundMap, null ) );
     }
-    
-    public Collection<DeflatedDataValue> getDataValuesMarkedForFollowup()
+
+    @Override
+    public Collection<DeflatedDataValue> getFollowupDataValues( OrganisationUnit organisationUnit, int limit )
     {
-        final String sql =
+        final String idLevelColumn = "idlevel" + organisationUnit.getOrganisationUnitLevel();
+
+        String sql =
             "select dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, " +
-            "dv.storedby, dv.lastupdated, dv.created, dv.comment, dv.followup, mm.minimumvalue, mm.maximumvalue, de.name as dataelementname, " +
+            "dv.storedby, dv.lastupdated, dv.created, dv.comment, dv.followup, mm.minimumvalue, mm.maximumvalue, de.name AS dataelementname, " +
             "pe.startdate, pe.enddate, pt.name AS periodtypename, ou.name AS sourcename, cc.categoryoptioncomboname " +
             "from datavalue dv " +
             "left join minmaxdataelement mm on (dv.sourceid = mm.sourceid and dv.dataelementid = mm.dataelementid and dv.categoryoptioncomboid = mm.categoryoptioncomboid) " +
@@ -257,9 +260,11 @@ public class JdbcDataAnalysisStore
             "join periodtype pt on pe.periodtypeid = pt.periodtypeid " +
             "left join organisationunit ou on ou.organisationunitid = dv.sourceid " +
             "left join _categoryoptioncomboname cc on dv.categoryoptioncomboid = cc.categoryoptioncomboid " +
-            "where dv.followup = true " +
-            statementBuilder.limitRecord( 0, DataAnalysisService.MAX_OUTLIERS );
+            "inner join _orgunitstructure ous on ous.organisationunitid = dv.sourceid " +
+            "where ous." + idLevelColumn + " = " + organisationUnit.getId() + " " +
+            "and dv.followup = true " +
+            statementBuilder.limitRecord( 0, limit );
         
-        return jdbcTemplate.query( sql, new DeflatedDataValueNameMinMaxRowMapper() );        
+        return jdbcTemplate.query( sql, new DeflatedDataValueNameMinMaxRowMapper() );
     }
 }

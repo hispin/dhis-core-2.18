@@ -210,7 +210,7 @@ public class GetAnalysisAction
 
         DataAnalysisService service = serviceProvider.provide( key );
 
-        if ( service != null ) // Follow-up analysis has no input params
+        if ( service != null )
         {
             dataValues = service.analyse( orgUnits, dataElements, periods, standardDeviation );
 

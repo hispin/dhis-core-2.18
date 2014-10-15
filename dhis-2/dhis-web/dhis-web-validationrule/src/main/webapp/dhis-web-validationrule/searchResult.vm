@@ -65,9 +65,9 @@
 		
 		<td style="text-align:center">
 		#if ( $value.followup )
-			<img id="value-${count}-followUp" src="../images/marked.png" onclick="markFollowUp($count)" style="cursor:pointer">
+			<img id="value-${count}-followUp" src="../images/marked.png" onclick="markFollowup($count)" style="cursor:pointer">
 		#else
-		    <img id="value-${count}-followUp" src="../images/unmarked.png" onclick="markFollowUp($count)" style="cursor:pointer">
+		    <img id="value-${count}-followUp" src="../images/unmarked.png" onclick="markFollowup($count)" style="cursor:pointer">
 		#end
 		</td>		
 	</tr>

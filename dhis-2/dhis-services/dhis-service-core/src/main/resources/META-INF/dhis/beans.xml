@@ -556,7 +556,7 @@
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataanalysis.FollowupAnalysisService" class="org.hisp.dhis.dataanalysis.FollowupAnalysisService">
+  <bean id="org.hisp.dhis.dataanalysis.FollowupAnalysisService" class="org.hisp.dhis.dataanalysis.DefaultFollowupAnalysisService">
     <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.DataAnalysisStore" />
   </bean>
 
@@ -574,12 +574,6 @@
             <value>minmaxoutlier</value>
           </key>
           <ref bean="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
-        </entry>
-        <entry>
-          <key>
-            <value>followup</value>
-          </key>
-          <ref bean="org.hisp.dhis.dataanalysis.FollowupAnalysisService" />
         </entry>
       </map>
     </property>
