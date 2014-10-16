@@ -83,6 +83,7 @@ public class ProgramInstanceController
         @RequestParam( value = "orgUnit" ) List<String> orgUnits,
         @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
         @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
+        @RequestParam( required = false ) Integer status,
         @RequestParam Map<String, String> parameters, HttpServletResponse response
     )
     {
@@ -115,18 +116,22 @@ public class ProgramInstanceController
 
         if ( options.hasPaging() )
         {
-            int count = programInstanceService.countProgramInstances( program, identifiers, startDate, endDate );
+            int count = status == null ?
+                programInstanceService.countProgramInstances( program, identifiers, startDate, endDate ) :
+                programInstanceService.countProgramInstancesByStatus( status, program, identifiers, startDate, endDate );
 
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            programInstances = new ArrayList<>( programInstanceService.getProgramInstances( program, identifiers,
-                startDate, endDate, pager.getOffset(), pager.getPageSize() ) );
+            programInstances = new ArrayList<>( status == null ?
+                programInstanceService.getProgramInstances( program, identifiers, startDate, endDate, pager.getOffset(), pager.getPageSize() ) :
+                programInstanceService.getProgramInstancesByStatus( status, program, identifiers, startDate, endDate, pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {
-            programInstances = new ArrayList<>( programInstanceService.getProgramInstances( program, identifiers,
-                startDate, endDate, 0, Integer.MAX_VALUE ) );
+            programInstances = new ArrayList<>( status == null ?
+                programInstanceService.getProgramInstances( program, identifiers, startDate, endDate, 0, Integer.MAX_VALUE ) :
+                programInstanceService.getProgramInstancesByStatus( status, program, identifiers, startDate, endDate ) );
         }
 
         RootNode rootNode = new RootNode( "metadata" );
