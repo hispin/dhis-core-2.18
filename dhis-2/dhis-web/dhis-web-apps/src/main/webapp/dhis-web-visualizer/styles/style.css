@@ -48,6 +48,7 @@ body,
 .x-grid-cell-inner,
 .x-form-item-label,
 .x-window-header-text-default {
+    font-size: 11px;
 	font-family: arial,sans-serif,ubuntu,consolas;
 }
 
