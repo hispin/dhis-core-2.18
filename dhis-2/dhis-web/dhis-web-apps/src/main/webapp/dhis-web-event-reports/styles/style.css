@@ -55,6 +55,7 @@ body,
 .x-grid-cell-inner,
 .x-form-item-label,
 .x-window-header-text-default {
+	font-size: 11px;
     font-family: arial,sans-serif,ubuntu,consolas;
 }
 
@@ -247,7 +248,7 @@ table.small td {
 }
 
 .pivot-dim-label {
-	background-color: #f2f6fc;
+	background-color: #cddaed;
 	white-space: nowrap;
     text-align: center;
 }
