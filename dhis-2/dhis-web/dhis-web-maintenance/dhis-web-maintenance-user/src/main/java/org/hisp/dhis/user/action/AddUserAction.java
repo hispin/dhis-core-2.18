@@ -447,7 +447,7 @@ public class AddUserAction
 
         if ( ACCOUNT_ACTION_INVITE.equals( accountAction ) )
         {
-            RestoreOptions restoreOptions = inviteUsername.isEmpty() ? RestoreOptions.INVITE_WITH_USERNAME_CHOICE : RestoreOptions.INVITE_WITH_DEFINED_USERNAME;
+            RestoreOptions restoreOptions = inviteUsername == null || inviteUsername.isEmpty() ? RestoreOptions.INVITE_WITH_USERNAME_CHOICE : RestoreOptions.INVITE_WITH_DEFINED_USERNAME;
 
             securityService.sendRestoreMessage( userCredentials, getRootPath(), restoreOptions );
         }

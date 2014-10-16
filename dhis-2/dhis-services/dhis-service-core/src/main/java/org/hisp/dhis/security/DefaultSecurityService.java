@@ -149,6 +149,36 @@ public class DefaultSecurityService
     }
 
     @Override
+    public String validateRestore( UserCredentials credentials )
+    {
+        if ( !systemSettingManager.emailEnabled() )
+        {
+            log.info( "Could not send restore/invite message as email is not configured" );
+            return "email_not_configured_for_system";
+        }
+
+        if ( credentials == null || credentials.getUser() == null )
+        {
+            log.info( "Could not send restore/invite message as user does not exist: " + credentials );
+            return "user_does_not_exist";
+        }
+
+        if ( credentials.getUser().getEmail() == null || !ValidationUtils.emailIsValid( credentials.getUser().getEmail() ) )
+        {
+            log.info( "Could not send restore/invite message as user has no email or email is invalid" );
+            return "user_does_not_have_valid_email";
+        }
+
+        if ( credentials.hasAnyAuthority( Arrays.asList( UserAuthorityGroup.CRITICAL_AUTHS ) ) )
+        {
+            log.info( "Not allowed to restore/invite users with critical authorities" );
+            return "user_has_critical_authorities";
+        }
+
+        return null;
+    }
+
+    @Override
     public boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreOptions restoreOptions )
     {
         if ( credentials == null || rootPath == null )
@@ -156,31 +186,12 @@ public class DefaultSecurityService
             return false;
         }
 
+        if ( validateRestore( credentials ) != null )
+        {
+            return false;
+        }
+        
         RestoreType restoreType = restoreOptions.getRestoreType();
-
-        if ( credentials.getUser() == null || credentials.getUser().getEmail() == null )
-        {
-            log.info( "Could not send " + restoreType.name() + " message as user does not exist or has no email: " + credentials );
-            return false;
-        }
-
-        if ( !ValidationUtils.emailIsValid( credentials.getUser().getEmail() ) )
-        {
-            log.info( "Could not send " + restoreType.name() + " message as email is invalid" );
-            return false;
-        }
-
-        if ( !systemSettingManager.emailEnabled() )
-        {
-            log.info( "Could not send " + restoreType.name() + " message as email is not configured" );
-            return false;
-        }
-
-        if ( credentials.hasAnyAuthority( Arrays.asList( UserAuthorityGroup.CRITICAL_AUTHS ) ) )
-        {
-            log.info( "Not allowed to  " + restoreType.name() + " users with critical authorities" );
-            return false;
-        }
 
         String[] result = initRestore( credentials, restoreOptions );
 
@@ -351,7 +362,7 @@ public class DefaultSecurityService
 
         if ( restoreCode == null )
         {
-            return "account_restoreCode_is_null";
+            return "account_restore_code_is_null";
         }
 
         boolean validCode = passwordManager.tokenMatches( code, restoreCode, credentials.getUsername() );
