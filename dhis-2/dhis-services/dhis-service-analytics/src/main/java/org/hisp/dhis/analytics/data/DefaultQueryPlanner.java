@@ -510,7 +510,7 @@ public class DefaultQueryPlanner
 
         if ( queries.size() > 1 )
         {
-            log.info( "Split on org unit level: " + queries.size() );
+            log.debug( "Split on org unit level: " + queries.size() );
         }
         
         return queries;    
