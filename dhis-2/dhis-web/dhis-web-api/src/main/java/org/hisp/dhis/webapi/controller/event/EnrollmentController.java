@@ -28,9 +28,6 @@ package org.hisp.dhis.webapi.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.webapi.webdomain.WebOptions;
-import org.hisp.dhis.webapi.controller.exception.NotFoundException;
-import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
@@ -44,7 +41,11 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.webapi.controller.exception.NotFoundException;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,6 +60,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -88,13 +90,24 @@ public class EnrollmentController
         @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
         @RequestParam( value = "program", required = false ) String programUid,
         @RequestParam( value = "trackedEntityInstance", required = false ) String trackedEntityInstanceUid,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam( value = "status", required = false ) EnrollmentStatus status,
         @RequestParam Map<String, String> parameters, Model model ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
         Enrollments enrollments;
 
-        if ( orgUnitUid == null && programUid == null && trackedEntityInstanceUid == null )
+        if ( startDate != null && endDate != null && programUid != null && orgUnitUid != null )
+        {
+            OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
+            Program program = getProgram( programUid );
+
+            enrollments = status != null ?
+                enrollmentService.getEnrollments( program, status, organisationUnit, startDate, endDate ) :
+                enrollmentService.getEnrollments( program, organisationUnit, startDate, endDate );
+        }
+        else if ( orgUnitUid == null && programUid == null && trackedEntityInstanceUid == null )
         {
             enrollments = status != null ? enrollmentService.getEnrollments( status ) : enrollmentService.getEnrollments();
         }
