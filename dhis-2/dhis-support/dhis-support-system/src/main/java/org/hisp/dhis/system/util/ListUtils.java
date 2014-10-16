@@ -150,7 +150,7 @@ public class ListUtils
      * @param comparator the comparator.
      * @return a set of duplicates from the given list.
      */
-    public static <T> Collection<T> getDuplicates( List<T> list, Comparator<T> comparator )
+    public static <T> Set<T> getDuplicates( List<T> list, Comparator<T> comparator )
     {
         Set<T> duplicates = new HashSet<>();
         
@@ -166,6 +166,28 @@ public class ListUtils
             }
             
             previous = entry;
+        }
+        
+        return duplicates;
+    }
+
+    /**
+     * Returns the duplicates in the given list.
+     * 
+     * @param list the list.
+     * @return a set of duplicates from the given list.
+     */
+    public static <T> Set<T> getDuplicates( List<T> list )
+    {
+        Set<T> duplicates = new HashSet<>();
+        UniqueArrayList<T> uniqueElements = new UniqueArrayList<>();
+        
+        for ( T element : list )
+        {
+            if ( !uniqueElements.add( element ) )
+            {
+                duplicates.add( element );
+            }
         }
         
         return duplicates;

@@ -38,7 +38,7 @@ public class Timer
     private long startTime;
     
     private boolean printDisabled;
-    
+        
     public Timer disablePrint()
     {
         this.printDisabled = true;

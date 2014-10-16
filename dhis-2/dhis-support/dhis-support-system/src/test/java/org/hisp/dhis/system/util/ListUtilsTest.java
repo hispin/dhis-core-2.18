@@ -30,7 +30,9 @@ package org.hisp.dhis.system.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -57,5 +59,16 @@ public class ListUtilsTest
         assertTrue( list.contains( "d" ) );
         assertTrue( list.contains( "e" ) );
         assertTrue( list.contains( "g" ) );
+    }
+    
+    @Test
+    public void testGetDuplicates()
+    {
+        List<String> list = new ArrayList<>( Arrays.asList( "a", "b", "c", "c", "d", "e", "e", "e", "f" ) );
+        Set<String> expected = new HashSet<>( Arrays.asList( "c", "e" ) );
+        assertEquals( expected, ListUtils.getDuplicates( list ) );
+        
+        list = new ArrayList<>( Arrays.asList( "a", "b", "c", "d", "e", "f", "g", "h" ) );
+        assertEquals( 0, ListUtils.getDuplicates( list ).size() );
     }
 }
