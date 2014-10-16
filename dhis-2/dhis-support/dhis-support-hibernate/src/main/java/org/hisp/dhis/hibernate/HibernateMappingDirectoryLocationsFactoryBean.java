@@ -53,17 +53,20 @@ public class HibernateMappingDirectoryLocationsFactoryBean
     // FactoryBean implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Object[] getObject()
         throws Exception
     {
         return hibernateConfigurationProvider.getDirectoryResources().toArray();
     }
 
+    @Override
     public Class<Resource> getObjectType()
     {
         return Resource.class;
     }
 
+    @Override
     public boolean isSingleton()
     {
         return true;

@@ -114,6 +114,7 @@ public abstract class AbstractJdbcTableManager
     // Implementation
     // -------------------------------------------------------------------------
 
+    @Override
     @Transactional
     public List<AnalyticsTable> getTables( Integer lastYears )
     {
@@ -136,6 +137,7 @@ public abstract class AbstractJdbcTableManager
         return getTables( earliest, latest );
     }
 
+    @Override
     @Transactional
     public List<AnalyticsTable> getTables( Date earliest, Date latest )
     {
@@ -158,11 +160,13 @@ public abstract class AbstractJdbcTableManager
         return tables;
     }
     
+    @Override
     public String getTempTableName()
     {
         return getTableName() + TABLE_TEMP_SUFFIX;
     }
     
+    @Override
     @Async
     public Future<?> createIndexesAsync( ConcurrentLinkedQueue<AnalyticsIndex> indexes )
     {
@@ -189,6 +193,7 @@ public abstract class AbstractJdbcTableManager
         return null;
     }
 
+    @Override
     public void swapTable( AnalyticsTable table )
     {
         final String tempTable = table.getTempTableName();
@@ -203,6 +208,7 @@ public abstract class AbstractJdbcTableManager
         executeSilently( sqlAlter );
     }
 
+    @Override
     public boolean pruneTable( AnalyticsTable table )
     {
         String tableName = table.getTempTableName();
@@ -221,6 +227,7 @@ public abstract class AbstractJdbcTableManager
         return false;
     }
 
+    @Override
     @Async
     public Future<?> vacuumTablesAsync( ConcurrentLinkedQueue<AnalyticsTable> tables )
     {
@@ -243,6 +250,7 @@ public abstract class AbstractJdbcTableManager
         return null;
     }
 
+    @Override
     public void dropTable( String tableName )
     {
         final String realTable = tableName.replaceFirst( TABLE_TEMP_SUFFIX, "" );

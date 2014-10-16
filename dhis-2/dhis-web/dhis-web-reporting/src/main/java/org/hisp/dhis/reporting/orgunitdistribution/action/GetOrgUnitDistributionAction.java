@@ -108,6 +108,7 @@ public class GetOrgUnitDistributionAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         type = StringUtils.defaultIfEmpty( type, DEFAULT_TYPE );

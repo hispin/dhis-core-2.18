@@ -111,6 +111,7 @@ public class LogicalOrAccessDecisionManager
         }
     }
 
+    @Override
     public boolean supports( ConfigAttribute configAttribute )
     {
         for ( AccessDecisionManager accessDecisionManager : accessDecisionManagers )

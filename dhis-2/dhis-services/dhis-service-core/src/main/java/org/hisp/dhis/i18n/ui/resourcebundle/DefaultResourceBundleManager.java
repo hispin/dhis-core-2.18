@@ -91,6 +91,7 @@ public class DefaultResourceBundleManager
         return getSpecificResourceBundle( clazz.getName(), locale );
     }
 
+    @Override
     public ResourceBundle getSpecificResourceBundle( String clazzName, Locale locale )
     {
         String path = PathUtils.getClassPath( clazzName );
@@ -111,6 +112,7 @@ public class DefaultResourceBundleManager
         return null;
     }
 
+    @Override
     public ResourceBundle getGlobalResourceBundle( Locale locale )
         throws ResourceBundleManagerException
     {
@@ -124,6 +126,7 @@ public class DefaultResourceBundleManager
         }
     }
 
+    @Override
     public List<Locale> getAvailableLocales()
         throws ResourceBundleManagerException
     {
@@ -197,6 +200,7 @@ public class DefaultResourceBundleManager
         Set<Locale> availableLocales = new HashSet<>();
         File[] files = dir.listFiles( new FilenameFilter()
         {
+            @Override
             public boolean accept( File dir, String name )
             {
                 return name.startsWith( globalResourceBundleName ) && name.endsWith( EXT_RESOURCE_BUNDLE );

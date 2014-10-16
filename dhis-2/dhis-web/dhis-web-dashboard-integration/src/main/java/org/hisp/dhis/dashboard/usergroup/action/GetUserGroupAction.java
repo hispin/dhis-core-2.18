@@ -81,6 +81,7 @@ public class GetUserGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         group = userGroupService.getUserGroup(userGroupId );

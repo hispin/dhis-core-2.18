@@ -102,6 +102,7 @@ public class GeoToolsMapGenerationService
     // MapGenerationService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public BufferedImage generateMapImage( MapView mapView )
     {
         Map map = new Map();
@@ -111,11 +112,13 @@ public class GeoToolsMapGenerationService
         return generateMapImage( map );
     }
 
+    @Override
     public BufferedImage generateMapImage( Map map )
     {
         return generateMapImage( map, new Date(), null, 512, null );
     }
     
+    @Override
     public BufferedImage generateMapImage( Map map, Date date, OrganisationUnit unit, Integer width, Integer height )
     {
         Assert.isTrue( map != null );

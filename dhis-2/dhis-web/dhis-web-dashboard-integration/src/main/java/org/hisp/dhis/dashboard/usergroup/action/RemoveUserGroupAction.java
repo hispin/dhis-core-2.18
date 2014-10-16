@@ -82,6 +82,7 @@ public class RemoveUserGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         try

@@ -80,6 +80,7 @@ public class GetIndicatorGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicatorGroup = indicatorService.getIndicatorGroup( id );

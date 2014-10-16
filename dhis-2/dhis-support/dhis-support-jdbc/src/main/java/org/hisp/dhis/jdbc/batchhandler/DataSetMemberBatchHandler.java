@@ -52,29 +52,34 @@ public class DataSetMemberBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "datasetmembers" );
     }
     
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "datasetid" );
         statementBuilder.setUniqueColumn( "dataelementid" );
     }
     
+    @Override
     protected void setUniqueValues( GroupMemberAssociation association )
     {        
         statementBuilder.setUniqueValue( association.getGroupId() );
         statementBuilder.setUniqueValue( association.getMemberId() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "datasetid" );
         statementBuilder.setColumn( "dataelementid" );
     }
     
+    @Override
     protected void setValues( GroupMemberAssociation association )
     {        
         statementBuilder.setValue( association.getGroupId() );

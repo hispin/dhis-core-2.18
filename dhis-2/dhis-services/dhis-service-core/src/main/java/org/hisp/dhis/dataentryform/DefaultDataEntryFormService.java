@@ -106,36 +106,43 @@ public class DefaultDataEntryFormService
     // Implemented Methods
     // ------------------------------------------------------------------------
 
+    @Override
     public int addDataEntryForm( DataEntryForm dataEntryForm )
     {
         return dataEntryFormStore.addDataEntryForm( dataEntryForm );
     }
 
+    @Override
     public void updateDataEntryForm( DataEntryForm dataEntryForm )
     {
         dataEntryFormStore.updateDataEntryForm( dataEntryForm );
     }
 
+    @Override
     public void deleteDataEntryForm( DataEntryForm dataEntryForm )
     {
         dataEntryFormStore.deleteDataEntryForm( dataEntryForm );
     }
 
+    @Override
     public DataEntryForm getDataEntryForm( int id )
     {
         return dataEntryFormStore.getDataEntryForm( id );
     }
 
+    @Override
     public DataEntryForm getDataEntryFormByName( String name )
     {
         return dataEntryFormStore.getDataEntryFormByName( name );
     }
 
+    @Override
     public Collection<DataEntryForm> getAllDataEntryForms()
     {
         return dataEntryFormStore.getAllDataEntryForms();
     }
 
+    @Override
     public String prepareDataEntryFormForSave( String htmlCode )
     {
         if ( htmlCode == null )
@@ -176,6 +183,7 @@ public class DefaultDataEntryFormService
         return sb.toString();
     }
 
+    @Override
     public String prepareDataEntryFormForEdit( String htmlCode, I18n i18n )
     {
         //TODO HTML encode names
@@ -255,6 +263,7 @@ public class DefaultDataEntryFormService
         return sb.toString();
     }
 
+    @Override
     public String prepareDataEntryFormForEntry( String htmlCode, I18n i18n, DataSet dataSet )
     {
         //TODO HTML encode names
@@ -369,6 +378,7 @@ public class DefaultDataEntryFormService
         return sb.toString();
     }
 
+    @Override
     public Set<DataElement> getDataElementsInDataEntryForm( DataSet dataSet )
     {
         if ( dataSet == null || !dataSet.hasDataEntryForm() )
@@ -411,6 +421,7 @@ public class DefaultDataEntryFormService
         return dataElements;
     }
 
+    @Override
     public Set<DataElementOperand> getOperandsInDataEntryForm( DataSet dataSet )
     {
         if ( dataSet == null || !dataSet.hasDataEntryForm() )
@@ -442,6 +453,7 @@ public class DefaultDataEntryFormService
         return operands;
     }
 
+    @Override
     public Collection<DataEntryForm> listDistinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
     {
         if ( programStageIds == null || programStageIds.isEmpty() )
@@ -452,6 +464,7 @@ public class DefaultDataEntryFormService
         return dataEntryFormStore.listDistinctDataEntryFormByProgramStageIds( programStageIds );
     }
 
+    @Override
     public Collection<DataEntryForm> listDistinctDataEntryFormByDataSetIds( List<Integer> dataSetIds )
     {
         if ( dataSetIds == null || dataSetIds.size() == 0 )
@@ -462,12 +475,14 @@ public class DefaultDataEntryFormService
         return dataEntryFormStore.listDistinctDataEntryFormByDataSetIds( dataSetIds );
     }
 
+    @Override
     public Collection<DataEntryForm> getDataEntryForms( final Collection<Integer> identifiers )
     {
         Collection<DataEntryForm> dataEntryForms = getAllDataEntryForms();
 
         return identifiers == null ? dataEntryForms : FilterUtils.filter( dataEntryForms, new Filter<DataEntryForm>()
         {
+            @Override
             public boolean retain( DataEntryForm object )
             {
                 return identifiers.contains( object.getId() );

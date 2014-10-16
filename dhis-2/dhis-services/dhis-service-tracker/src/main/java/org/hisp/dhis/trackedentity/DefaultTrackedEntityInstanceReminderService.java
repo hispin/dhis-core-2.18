@@ -275,6 +275,7 @@ public class DefaultTrackedEntityInstanceReminderService
         return phoneNumbers;
     }
 
+    @Override
     public Set<User> getUsers( TrackedEntityInstanceReminder reminder, TrackedEntityInstance entityInstance )
     {
         Set<User> users = new HashSet<>();

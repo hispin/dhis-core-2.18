@@ -135,6 +135,7 @@ public class UpdateUserAccountAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

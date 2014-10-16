@@ -77,6 +77,7 @@ public class ImportTypeSummary
         this.type = type;
     }
 
+    @Override
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ImportCount getImportCount()
@@ -84,6 +85,7 @@ public class ImportTypeSummary
         return importCount;
     }
 
+    @Override
     public void setImportCount( ImportCount importCount )
     {
         this.importCount = importCount;

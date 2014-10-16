@@ -58,6 +58,7 @@ public class DetectingSystemAuthoritiesProvider
     // SystemAuthoritiesProvider implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Collection<String> getSystemAuthorities()
     {
         HashSet<String> authorities = new HashSet<>();

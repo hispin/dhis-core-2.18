@@ -57,31 +57,37 @@ public class DefaultRelationshipService
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    @Override
     public void deleteRelationship( Relationship relationship )
     {
         relationshipStore.delete( relationship );
     }
 
+    @Override
     public Relationship getRelationship( int id )
     {
         return relationshipStore.get( id );
     }
 
+    @Override
     public Collection<Relationship> getRelationshipsForTrackedEntityInstance( TrackedEntityInstance instance )
     {
         return relationshipStore.getForTrackedEntityInstance( instance );
     }
 
+    @Override
     public int addRelationship( Relationship relationship )
     {
         return relationshipStore.save( relationship );
     }
 
+    @Override
     public void updateRelationship( Relationship relationship )
     {
         relationshipStore.update( relationship );
     }
 
+    @Override
     public Relationship getRelationship( TrackedEntityInstance instanceA, TrackedEntityInstance instanceB, RelationshipType relationshipType )
     {
         return relationshipStore.get( instanceA, instanceB, relationshipType );

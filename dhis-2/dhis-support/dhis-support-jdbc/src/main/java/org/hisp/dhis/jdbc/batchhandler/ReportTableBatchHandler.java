@@ -52,6 +52,7 @@ public class ReportTableBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "reporttable" );

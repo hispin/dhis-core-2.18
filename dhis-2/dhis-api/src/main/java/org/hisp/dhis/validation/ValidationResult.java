@@ -208,6 +208,7 @@ public class ValidationResult
      * to initialize lazy Hibernate properties. So object properties to compare
      * must be chosen accordingly.
      */
+    @Override
     public int compareTo( ValidationResult other )
     {
     	int result = source.getName().compareTo( other.source.getName() );

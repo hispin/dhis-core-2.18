@@ -65,11 +65,13 @@ public class DefaultMaintenanceService
     // MaintenanceService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public int deleteZeroDataValues()
     {
         return maintenanceStore.deleteZeroDataValues();
     }
     
+    @Override
     public void prunePeriods()
     {
         for ( Period period : periodService.getAllPeriods() )

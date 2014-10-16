@@ -77,6 +77,7 @@ public class GetUserGroupListAction
     // Action Implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

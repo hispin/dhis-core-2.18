@@ -178,6 +178,7 @@ public class CompleteDataSetRegistration
         return true;
     }
 
+    @Override
     public String getName()
     {
         throw new UnsupportedOperationException();

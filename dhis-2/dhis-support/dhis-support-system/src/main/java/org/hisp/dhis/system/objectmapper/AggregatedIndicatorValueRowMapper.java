@@ -40,6 +40,7 @@ import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 public class AggregatedIndicatorValueRowMapper
     implements RowMapper<AggregatedIndicatorValue>, org.springframework.jdbc.core.RowMapper<AggregatedIndicatorValue>
 {
+    @Override
     public AggregatedIndicatorValue mapRow( ResultSet resultSet )
         throws SQLException
     {

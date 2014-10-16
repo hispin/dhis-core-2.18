@@ -62,11 +62,13 @@ public class DefaultStartupRoutineExecutor
     // Add methods
     // -------------------------------------------------------------------------
 
+    @Override
     public void addStartupRoutine( StartupRoutine routine )
     {
         routines.add( routine );
     }
 
+    @Override
     public void addStartupRoutines( Collection<StartupRoutine> routines )
     {
         for ( StartupRoutine routine : routines )
@@ -79,12 +81,14 @@ public class DefaultStartupRoutineExecutor
     // Execute
     // -------------------------------------------------------------------------
 
+    @Override
     public void execute()
         throws Exception
     {
         execute( false );
     }
     
+    @Override
     public void executeForTesting()
         throws Exception
     {

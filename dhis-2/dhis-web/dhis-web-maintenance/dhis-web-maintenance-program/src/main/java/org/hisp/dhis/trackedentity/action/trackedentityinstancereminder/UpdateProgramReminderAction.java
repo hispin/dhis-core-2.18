@@ -153,6 +153,7 @@ public class UpdateProgramReminderAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

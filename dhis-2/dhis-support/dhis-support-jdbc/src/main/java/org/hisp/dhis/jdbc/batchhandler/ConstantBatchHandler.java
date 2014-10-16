@@ -52,6 +52,7 @@ public class ConstantBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "constant" );
@@ -75,16 +76,19 @@ public class ConstantBatchHandler
         statementBuilder.setIdentifierValue( constant.getId() );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "name" );
     }
 
+    @Override
     protected void setUniqueValues( Constant constant )
     {
         statementBuilder.setUniqueValue( constant.getName() );
     }
 
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "uid" );
@@ -93,6 +97,7 @@ public class ConstantBatchHandler
         statementBuilder.setColumn( "value" );
     }
 
+    @Override
     protected void setValues( Constant constant )
     {
         statementBuilder.setValue( constant.getUid() );

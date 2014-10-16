@@ -206,6 +206,7 @@ public class DefaultImportObjectService<T>
     // ImportObject operations
     // -------------------------------------------------------------------------
 
+    @Override
     @Transactional
     public int addImportObject( ImportObjectStatus status, GroupMemberType groupMemberType, ImportableObject object )
     {
@@ -214,6 +215,7 @@ public class DefaultImportObjectService<T>
         return importObjectStore.addImportObject( importObject );
     }
 
+    @Override
     @Transactional
     public int addImportObject( ImportObjectStatus status, ImportableObject object, ImportableObject compareObject )
     {
@@ -222,6 +224,7 @@ public class DefaultImportObjectService<T>
         return importObjectStore.addImportObject( importObject );
     }
 
+    @Override
     @Transactional
     public int addImportObject( ImportObjectStatus status, GroupMemberType groupMemberType, ImportableObject object,
         ImportableObject compareObject )
@@ -232,30 +235,35 @@ public class DefaultImportObjectService<T>
         return importObjectStore.addImportObject( importObject );
     }
 
+    @Override
     @Transactional
     public ImportObject getImportObject( int id )
     {
         return importObjectStore.getImportObject( id );
     }
 
+    @Override
     @Transactional
     public Collection<ImportObject> getImportObjects( Class<?> clazz )
     {
         return importObjectStore.getImportObjects( clazz );
     }
 
+    @Override
     @Transactional
     public Collection<ImportObject> getImportObjects( ImportObjectStatus status, Class<?> clazz )
     {
         return importObjectStore.getImportObjects( status, clazz );
     }
 
+    @Override
     @Transactional
     public Collection<ImportObject> getImportObjects( GroupMemberType groupMemberType )
     {
         return importObjectStore.getImportObjects( groupMemberType );
     }
 
+    @Override
     @Transactional
     public void deleteImportObject( int importObjectId )
     {
@@ -267,12 +275,14 @@ public class DefaultImportObjectService<T>
         }
     }
 
+    @Override
     @Transactional
     public void deleteImportObjects( Class<?> clazz )
     {
         importObjectStore.deleteImportObjects( clazz );
     }
 
+    @Override
     @Transactional
     public void deleteImportObjects()
     {
@@ -283,6 +293,7 @@ public class DefaultImportObjectService<T>
     // TODO Refactor: this code is not extensible and is error-prone in terms of
     // cascading deletion of associated objects
 
+    @Override
     @Transactional
     public void cascadeDeleteImportObject( int importObjectId )
     {
@@ -379,6 +390,7 @@ public class DefaultImportObjectService<T>
         deleteImportObject( importObjectId );
     }
 
+    @Override
     @Transactional
     public void cascadeDeleteImportObjects( Class<?> clazz )
     {
@@ -462,6 +474,7 @@ public class DefaultImportObjectService<T>
     // Object
     // -------------------------------------------------------------------------
 
+    @Override
     @Transactional
     public void matchObject( int importObjectId, int existingObjectId )
     {
@@ -598,6 +611,7 @@ public class DefaultImportObjectService<T>
     // Import
     // -------------------------------------------------------------------------
 
+    @Override
     public void importAll()
     {
         importObjectManager.importConstants();

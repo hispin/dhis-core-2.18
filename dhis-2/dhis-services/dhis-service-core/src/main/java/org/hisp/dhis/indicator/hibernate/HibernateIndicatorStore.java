@@ -48,6 +48,7 @@ public class HibernateIndicatorStore
     // Indicator
     // -------------------------------------------------------------------------
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<Indicator> getIndicatorsWithGroupSets()
     {
@@ -56,6 +57,7 @@ public class HibernateIndicatorStore
         return getQuery( hql ).setCacheable( true ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<Indicator> getIndicatorsWithoutGroups()
     {
@@ -64,6 +66,7 @@ public class HibernateIndicatorStore
         return getQuery( hql ).setCacheable( true ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<Indicator> getIndicatorsWithDataSets()
     {

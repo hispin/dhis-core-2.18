@@ -87,6 +87,7 @@ public class JdbcDataAnalysisStore
     // OutlierAnalysisStore implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Map<Integer, Double> getStandardDeviation( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits )
     {
         Map<Integer, Double> map = new HashMap<>();
@@ -120,6 +121,7 @@ public class JdbcDataAnalysisStore
         return map;
     }
     
+    @Override
     public Map<Integer, Double> getAverage( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits )
     {
         Map<Integer, Double> map = new HashMap<>();
@@ -153,6 +155,7 @@ public class JdbcDataAnalysisStore
         return map;        
     }
     
+    @Override
     public Collection<DeflatedDataValue> getMinMaxViolations( Collection<DataElement> dataElements, Collection<DataElementCategoryOptionCombo> categoryOptionCombos,
         Collection<Period> periods, Collection<OrganisationUnit> organisationUnits, int limit )
     {
@@ -190,6 +193,7 @@ public class JdbcDataAnalysisStore
         return jdbcTemplate.query( sql, new DeflatedDataValueNameMinMaxRowMapper( null, null, optionComboMap ) );
     }
     
+    @Override
     public Collection<DeflatedDataValue> getDeflatedDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
         Collection<Period> periods, Map<Integer, Integer> lowerBoundMap, Map<Integer, Integer> upperBoundMap )
     {

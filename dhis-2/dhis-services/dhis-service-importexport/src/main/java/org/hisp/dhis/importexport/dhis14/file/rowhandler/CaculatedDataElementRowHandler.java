@@ -79,6 +79,7 @@ public class CaculatedDataElementRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {
 

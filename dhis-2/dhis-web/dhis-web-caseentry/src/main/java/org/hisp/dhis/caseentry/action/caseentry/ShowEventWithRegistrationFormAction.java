@@ -192,6 +192,7 @@ public class ShowEventWithRegistrationFormAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         // ---------------------------------------------------------------------

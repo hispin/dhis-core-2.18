@@ -51,31 +51,37 @@ public class DefaultEventChartService
     // EventReportService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public int saveEventChart( EventChart eventChart )
     {
         return eventChartStore.save( eventChart );
     }
     
+    @Override
     public void updateEventChart( EventChart eventChart )
     {
         eventChartStore.update( eventChart );
     }
     
+    @Override
     public EventChart getEventChart( int id )
     {
         return eventChartStore.get( id );
     }
     
+    @Override
     public EventChart getEventChart( String uid )
     {
         return eventChartStore.getByUid( uid );
     }
     
+    @Override
     public void deleteEventChart( EventChart eventChart )
     {
         eventChartStore.delete( eventChart );
     }
     
+    @Override
     public List<EventChart> getAllEventCharts()
     {
         return eventChartStore.getAll();

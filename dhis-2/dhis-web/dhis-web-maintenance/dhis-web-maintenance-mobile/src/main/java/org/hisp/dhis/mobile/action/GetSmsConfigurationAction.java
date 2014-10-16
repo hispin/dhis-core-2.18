@@ -137,6 +137,7 @@ public class GetSmsConfigurationAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

@@ -100,6 +100,7 @@ public class HibernateGenericStore<T>
     /**
      * Could be overridden programmatically.
      */
+    @Override
     public Class<T> getClazz()
     {
         return clazz;

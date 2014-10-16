@@ -86,6 +86,7 @@ public class RemoveDataElementCategoryAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         try

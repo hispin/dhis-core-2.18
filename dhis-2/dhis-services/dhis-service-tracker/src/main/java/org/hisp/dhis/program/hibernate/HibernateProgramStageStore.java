@@ -46,6 +46,7 @@ public class HibernateProgramStageStore
     // Implemented methods
     // -------------------------------------------------------------------------
 
+    @Override
     public ProgramStage getByNameAndProgram( String name, Program program )
     {
         return (ProgramStage) getCriteria( 

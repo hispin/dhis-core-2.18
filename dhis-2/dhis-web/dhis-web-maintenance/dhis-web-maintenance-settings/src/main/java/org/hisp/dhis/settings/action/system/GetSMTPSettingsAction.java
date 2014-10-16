@@ -102,6 +102,7 @@ public class GetSMTPSettingsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         Configuration config = configurationService.getConfiguration();

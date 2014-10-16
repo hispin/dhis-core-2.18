@@ -52,6 +52,7 @@ public class IndicatorGroupDeletionHandler
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String getClassName()
     {
         return IndicatorGroup.class.getSimpleName();

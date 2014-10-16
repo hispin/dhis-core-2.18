@@ -66,6 +66,7 @@ public class ShowAddOrganisationUnitGroupFormAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         attributes = new ArrayList<>( attributeService.getOrganisationUnitGroupAttributes() );

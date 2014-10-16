@@ -69,11 +69,13 @@ public class HibernateImportDataValueStore
     // ImportDataValueStore implementation
     // ----------------------------------------------------------------------
 
+    @Override
     public void addImportDataValue( ImportDataValue importDataValue )
     {
         sessionFactory.getCurrentSession().save( importDataValue );
     }
         
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ImportDataValue> getImportDataValues( ImportObjectStatus status )
     {
@@ -86,6 +88,7 @@ public class HibernateImportDataValueStore
         return criteria.list();
     }
 
+    @Override
     public void deleteImportDataValues()
     {
         Session session = sessionFactory.getCurrentSession();
@@ -95,6 +98,7 @@ public class HibernateImportDataValueStore
         session.createQuery( hql ).executeUpdate();
     }
     
+    @Override
     public void deleteImportDataValuesByDataElement( int dataElementId )
     {        
         Session session = sessionFactory.getCurrentSession();
@@ -108,6 +112,7 @@ public class HibernateImportDataValueStore
         query.executeUpdate();
     }
     
+    @Override
     public void deleteImportDataValuesBySource( int sourceId )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -121,6 +126,7 @@ public class HibernateImportDataValueStore
         query.executeUpdate();
     }
     
+    @Override
     public int getNumberOfImportDataValues( ImportObjectStatus status )
     {
         String sql = "SELECT COUNT(*) FROM importdatavalue WHERE status = '" + status.name() + "'";

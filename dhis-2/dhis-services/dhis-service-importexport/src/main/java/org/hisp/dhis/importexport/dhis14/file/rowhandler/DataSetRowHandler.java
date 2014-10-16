@@ -73,6 +73,7 @@ public class DataSetRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {
         final DataSet dataSet = (DataSet) object;

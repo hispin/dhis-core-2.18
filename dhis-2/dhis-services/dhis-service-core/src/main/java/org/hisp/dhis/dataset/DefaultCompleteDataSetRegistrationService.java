@@ -75,6 +75,7 @@ public class DefaultCompleteDataSetRegistrationService
     // CompleteDataSetRegistrationService
     // -------------------------------------------------------------------------
 
+    @Override
     public void saveCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
         if ( registration.getAttributeOptionCombo() == null )
@@ -85,6 +86,7 @@ public class DefaultCompleteDataSetRegistrationService
         completeDataSetRegistrationStore.saveCompleteDataSetRegistration( registration );
     }
 
+    @Override
     public void saveCompleteDataSetRegistration( CompleteDataSetRegistration registration, boolean notify )
     {
         saveCompleteDataSetRegistration( registration );
@@ -95,6 +97,7 @@ public class DefaultCompleteDataSetRegistrationService
         }
     }
 
+    @Override
     public void saveCompleteDataSetRegistrations( List<CompleteDataSetRegistration> registrations, boolean notify )
     {
         for ( CompleteDataSetRegistration registration : registrations )
@@ -103,16 +106,19 @@ public class DefaultCompleteDataSetRegistrationService
         }
     }
 
+    @Override
     public void updateCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
         completeDataSetRegistrationStore.updateCompleteDataSetRegistration( registration );
     }
 
+    @Override
     public void deleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
         completeDataSetRegistrationStore.deleteCompleteDataSetRegistration( registration );
     }
 
+    @Override
     public void deleteCompleteDataSetRegistrations( List<CompleteDataSetRegistration> registrations )
     {
         for ( CompleteDataSetRegistration registration : registrations )
@@ -121,6 +127,7 @@ public class DefaultCompleteDataSetRegistrationService
         }
     }
 
+    @Override
     public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period,
         OrganisationUnit source, DataElementCategoryOptionCombo attributeOptionCombo )
     {
@@ -128,22 +135,26 @@ public class DefaultCompleteDataSetRegistrationService
             .getCompleteDataSetRegistration( dataSet, period, source, attributeOptionCombo );
     }
 
+    @Override
     public Collection<CompleteDataSetRegistration> getAllCompleteDataSetRegistrations()
     {
         return completeDataSetRegistrationStore.getAllCompleteDataSetRegistrations();
     }
 
+    @Override
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations(
         Collection<DataSet> dataSets, Collection<OrganisationUnit> sources, Collection<Period> periods )
     {
         return completeDataSetRegistrationStore.getCompleteDataSetRegistrations( dataSets, sources, periods );
     }
 
+    @Override
     public void deleteCompleteDataSetRegistrations( DataSet dataSet )
     {
         completeDataSetRegistrationStore.deleteCompleteDataSetRegistrations( dataSet );
     }
 
+    @Override
     public void deleteCompleteDataSetRegistrations( OrganisationUnit unit )
     {
         completeDataSetRegistrationStore.deleteCompleteDataSetRegistrations( unit );

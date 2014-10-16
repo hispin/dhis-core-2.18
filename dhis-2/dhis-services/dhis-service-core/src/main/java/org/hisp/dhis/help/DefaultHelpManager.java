@@ -55,6 +55,7 @@ public class DefaultHelpManager
     // HelpManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void getHelpContent( OutputStream out, String id, Locale locale )
     {
         try
@@ -77,6 +78,7 @@ public class DefaultHelpManager
         }
     }
 
+    @Override
     public void getHelpItems( OutputStream out, Locale locale )
     {
         try

@@ -95,6 +95,7 @@ public class GetOptionsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         query = StringUtils.trimToNull( query );

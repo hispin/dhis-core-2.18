@@ -58,11 +58,13 @@ private String clientVersion;
         this.options = options;
     }
     
+    @Override
     public String getClientVersion()
     {
         return clientVersion;
     }
 
+    @Override
     public void setClientVersion( String clientVersion )
     {
         this.clientVersion = clientVersion;

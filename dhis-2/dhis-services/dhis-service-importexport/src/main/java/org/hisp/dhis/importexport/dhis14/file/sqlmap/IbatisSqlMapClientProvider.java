@@ -74,6 +74,7 @@ public class IbatisSqlMapClientProvider
     // SqlMapClientProvider implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public SqlMapClient getSqlMapClient()
     {
         try

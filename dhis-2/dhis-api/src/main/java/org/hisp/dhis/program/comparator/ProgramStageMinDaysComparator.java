@@ -38,6 +38,7 @@ import org.hisp.dhis.program.ProgramStage;
  */
 public class ProgramStageMinDaysComparator implements Comparator<ProgramStage>
 {
+    @Override
     public int compare( ProgramStage programStage1, ProgramStage programStage2 )
     {
         if(  programStage1.getMinDaysFromStart() != programStage2.getMinDaysFromStart() )

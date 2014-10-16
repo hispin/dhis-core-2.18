@@ -80,6 +80,7 @@ public class ShowDataElementGroupEditorAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

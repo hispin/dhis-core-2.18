@@ -52,23 +52,27 @@ public class CategoryComboCategoryAssociationBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "categorycombos_categories" );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "categorycomboid" );
         statementBuilder.setUniqueColumn( "sort_order" );
     }
     
+    @Override
     protected void setUniqueValues( GroupMemberAssociation association )
     {        
         statementBuilder.setUniqueValue( association.getGroupId() );
         statementBuilder.setUniqueValue( association.getSortOrder() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "categorycomboid" );
@@ -76,6 +80,7 @@ public class CategoryComboCategoryAssociationBatchHandler
         statementBuilder.setColumn( "sort_order" );
     }
     
+    @Override
     protected void setValues( GroupMemberAssociation association )
     {        
         statementBuilder.setValue( association.getGroupId() );

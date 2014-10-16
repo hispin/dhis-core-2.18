@@ -604,47 +604,56 @@ public class DefaultValidationRuleService
     // ValidationRule CRUD operations
     // -------------------------------------------------------------------------
 
+    @Override
     public int saveValidationRule( ValidationRule validationRule )
     {
         return validationRuleStore.save( validationRule );
     }
 
+    @Override
     public void updateValidationRule( ValidationRule validationRule )
     {
         validationRuleStore.update( validationRule );
     }
 
+    @Override
     public void deleteValidationRule( ValidationRule validationRule )
     {
         validationRuleStore.delete( validationRule );
     }
 
+    @Override
     public ValidationRule getValidationRule( int id )
     {
         return i18n( i18nService, validationRuleStore.get( id ) );
     }
 
+    @Override
     public ValidationRule getValidationRule( String uid )
     {
         return i18n( i18nService, validationRuleStore.getByUid( uid ) );
     }
 
+    @Override
     public ValidationRule getValidationRuleByName( String name )
     {
         return i18n( i18nService, validationRuleStore.getByName( name ) );
     }
 
+    @Override
     public Collection<ValidationRule> getAllValidationRules()
     {
         return i18n( i18nService, validationRuleStore.getAll() );
     }
 
+    @Override
     public Collection<ValidationRule> getValidationRules( final Collection<Integer> identifiers )
     {
         Collection<ValidationRule> objects = getAllValidationRules();
 
         return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<ValidationRule>()
         {
+            @Override
             public boolean retain( ValidationRule object )
             {
                 return identifiers.contains( object.getId() );
@@ -652,31 +661,37 @@ public class DefaultValidationRuleService
         } );
     }
 
+    @Override
     public Collection<ValidationRule> getValidationRulesByName( String name )
     {
         return getObjectsByName( i18nService, validationRuleStore, name );
     }
 
+    @Override
     public Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements )
     {
         return i18n( i18nService, validationRuleStore.getValidationRulesByDataElements( dataElements ) );
     }
 
+    @Override
     public int getValidationRuleCount()
     {
         return validationRuleStore.getCount();
     }
 
+    @Override
     public int getValidationRuleCountByName( String name )
     {
         return getCountByName( i18nService, validationRuleStore, name );
     }
 
+    @Override
     public Collection<ValidationRule> getValidationRulesBetween( int first, int max )
     {
         return getObjectsBetween( i18nService, validationRuleStore, first, max );
     }
 
+    @Override
     public Collection<ValidationRule> getValidationRulesBetweenByName( String name, int first, int max )
     {
         return getObjectsBetweenByName( i18nService, validationRuleStore, name, first, max );
@@ -686,26 +701,31 @@ public class DefaultValidationRuleService
     // ValidationRuleGroup CRUD operations
     // -------------------------------------------------------------------------
 
+    @Override
     public int addValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
     {
         return validationRuleGroupStore.save( validationRuleGroup );
     }
 
+    @Override
     public void deleteValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
     {
         validationRuleGroupStore.delete( validationRuleGroup );
     }
 
+    @Override
     public void updateValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
     {
         validationRuleGroupStore.update( validationRuleGroup );
     }
 
+    @Override
     public ValidationRuleGroup getValidationRuleGroup( int id )
     {
         return i18n( i18nService, validationRuleGroupStore.get( id ) );
     }
 
+    @Override
     public ValidationRuleGroup getValidationRuleGroup( int id, boolean i18nValidationRules )
     {
         ValidationRuleGroup group = getValidationRuleGroup( id );
@@ -718,36 +738,43 @@ public class DefaultValidationRuleService
         return group;
     }
 
+    @Override
     public ValidationRuleGroup getValidationRuleGroup( String uid )
     {
         return i18n( i18nService, validationRuleGroupStore.getByUid( uid ) );
     }
 
+    @Override
     public Collection<ValidationRuleGroup> getAllValidationRuleGroups()
     {
         return i18n( i18nService, validationRuleGroupStore.getAll() );
     }
 
+    @Override
     public ValidationRuleGroup getValidationRuleGroupByName( String name )
     {
         return i18n( i18nService, validationRuleGroupStore.getByName( name ) );
     }
 
+    @Override
     public int getValidationRuleGroupCount()
     {
         return validationRuleGroupStore.getCount();
     }
 
+    @Override
     public int getValidationRuleGroupCountByName( String name )
     {
         return getCountByName( i18nService, validationRuleGroupStore, name );
     }
 
+    @Override
     public Collection<ValidationRuleGroup> getValidationRuleGroupsBetween( int first, int max )
     {
         return getObjectsBetween( i18nService, validationRuleGroupStore, first, max );
     }
 
+    @Override
     public Collection<ValidationRuleGroup> getValidationRuleGroupsBetweenByName( String name, int first, int max )
     {
         return getObjectsBetweenByName( i18nService, validationRuleGroupStore, name, first, max );

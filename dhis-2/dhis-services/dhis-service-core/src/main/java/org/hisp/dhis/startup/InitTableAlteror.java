@@ -50,6 +50,7 @@ public class InitTableAlteror
     // Execute
     // -------------------------------------------------------------------------
 
+    @Override
     @Transactional
     public void execute()
     {

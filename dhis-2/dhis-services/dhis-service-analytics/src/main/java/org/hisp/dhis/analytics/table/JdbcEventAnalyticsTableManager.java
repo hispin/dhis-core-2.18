@@ -95,6 +95,7 @@ public class JdbcEventAnalyticsTableManager
         return tables;
     }
 
+    @Override
     public String validState()
     {
         boolean hasData = jdbcTemplate.queryForRowSet( "select dataelementid from trackedentitydatavalue limit 1" ).next();
@@ -107,11 +108,13 @@ public class JdbcEventAnalyticsTableManager
         return null;
     }
 
+    @Override
     public String getTableName()
     {
         return "analytics_event";
     }
 
+    @Override
     public void createTable( AnalyticsTable table )
     {
         final String tableName = table.getTempTableName();
@@ -191,6 +194,7 @@ public class JdbcEventAnalyticsTableManager
         return null;
     }
 
+    @Override
     public List<String[]> getDimensionColumns( AnalyticsTable table )
     {
         final String dbl = statementBuilder.getDoubleColumnType();
@@ -276,6 +280,7 @@ public class JdbcEventAnalyticsTableManager
         return columns;
     }
 
+    @Override
     public Date getEarliestData()
     {
         final String sql = "select min(psi.executiondate) from programstageinstance psi "
@@ -284,6 +289,7 @@ public class JdbcEventAnalyticsTableManager
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
 
+    @Override
     public Date getLatestData()
     {
         final String sql = "select max(psi.executiondate) from programstageinstance psi "
@@ -292,6 +298,7 @@ public class JdbcEventAnalyticsTableManager
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
 
+    @Override
     @Async
     public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<AnalyticsTable> tables,
         Collection<String> dataElements, int aggregationLevel )

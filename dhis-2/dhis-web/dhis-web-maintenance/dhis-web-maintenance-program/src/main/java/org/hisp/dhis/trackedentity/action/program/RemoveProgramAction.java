@@ -86,6 +86,7 @@ public class RemoveProgramAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

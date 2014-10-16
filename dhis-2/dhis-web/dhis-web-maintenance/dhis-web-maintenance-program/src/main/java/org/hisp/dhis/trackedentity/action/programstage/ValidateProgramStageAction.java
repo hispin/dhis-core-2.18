@@ -106,6 +106,7 @@ public class ValidateProgramStageAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

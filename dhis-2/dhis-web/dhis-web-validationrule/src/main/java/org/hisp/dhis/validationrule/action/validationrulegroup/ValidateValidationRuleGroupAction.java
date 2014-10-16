@@ -92,6 +92,7 @@ public class ValidateValidationRuleGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         ValidationRuleGroup match = validationRuleService.getValidationRuleGroupByName( name );

@@ -76,6 +76,7 @@ public class JdbcAnalyticsTableManager
     // Implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public String validState()
     {
         boolean hasData = jdbcTemplate.queryForRowSet( "select dataelementid from datavalue limit 1" ).next();
@@ -95,11 +96,13 @@ public class JdbcAnalyticsTableManager
         return null;
     }
     
+    @Override
     public String getTableName()
     {
         return ANALYTICS_TABLE_NAME;
     }
     
+    @Override
     public void createTable( AnalyticsTable table )
     {
         final String tableName = table.getTempTableName();
@@ -126,6 +129,7 @@ public class JdbcAnalyticsTableManager
         executeSilently( sqlCreate );
     }
     
+    @Override
     @Async
     public Future<?> populateTableAsync( ConcurrentLinkedQueue<AnalyticsTable> tables )
     {
@@ -240,6 +244,7 @@ public class JdbcAnalyticsTableManager
         return TextUtils.removeLastOr( sql ) + ") ) as approvallevel";        
     }
 
+    @Override
     public List<String[]> getDimensionColumns( AnalyticsTable table )
     {
         List<String[]> columns = new ArrayList<>();
@@ -323,6 +328,7 @@ public class JdbcAnalyticsTableManager
         return columns;
     }
     
+    @Override
     public Date getEarliestData()
     {
         final String sql = "select min(pe.startdate) from datavalue dv " +
@@ -332,6 +338,7 @@ public class JdbcAnalyticsTableManager
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
 
+    @Override
     public Date getLatestData()
     {
         final String sql = "select max(pe.enddate) from datavalue dv " +
@@ -341,6 +348,7 @@ public class JdbcAnalyticsTableManager
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
     
+    @Override
     @Async
     public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<AnalyticsTable> tables, Collection<String> dataElements, int aggregationLevel )
     {

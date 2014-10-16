@@ -45,6 +45,7 @@ public class BooleanTypeHandler
     // TypeHandlerCallback implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Object getResult( ResultGetter getter )
         throws SQLException
     {
@@ -53,12 +54,14 @@ public class BooleanTypeHandler
         return value != 0;
     }
 
+    @Override
     public void setParameter( ParameterSetter setter, Object parameter )
         throws SQLException
     {
         // Not in use
     }
     
+    @Override
     public Object valueOf( String result )
     {
         int value = Integer.parseInt( result );

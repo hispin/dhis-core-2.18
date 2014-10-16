@@ -93,47 +93,56 @@ public class DefaultDataElementService
     // DataElement
     // -------------------------------------------------------------------------
 
+    @Override
     public int addDataElement( DataElement dataElement )
     {
         return dataElementStore.save( dataElement );
     }
 
+    @Override
     public void updateDataElement( DataElement dataElement )
     {
         dataElementStore.update( dataElement );
     }
 
+    @Override
     public void deleteDataElement( DataElement dataElement )
     {
         dataElementStore.delete( dataElement );
     }
 
+    @Override
     public DataElement getDataElement( int id )
     {
         return i18n( i18nService, dataElementStore.get( id ) );
     }
 
+    @Override
     public DataElement getDataElement( String uid )
     {
         return i18n( i18nService, dataElementStore.getByUid( uid ) );
     }
 
+    @Override
     public DataElement getDataElementByCode( String code )
     {
         return i18n( i18nService, dataElementStore.getByCode( code ) );
     }
 
+    @Override
     public Collection<DataElement> getAllDataElements()
     {
         return i18n( i18nService, dataElementStore.getAll() );
     }
 
+    @Override
     public Collection<DataElement> getDataElements( final Collection<Integer> identifiers )
     {
         Collection<DataElement> dataElements = getAllDataElements();
 
         return identifiers == null ? dataElements : FilterUtils.filter( dataElements, new Filter<DataElement>()
         {
+            @Override
             public boolean retain( DataElement dataElement )
             {
                 return identifiers.contains( dataElement.getId() );
@@ -141,11 +150,13 @@ public class DefaultDataElementService
         } );
     }
 
+    @Override
     public List<DataElement> getDataElementsByUid( Collection<String> uids )
     {
         return dataElementStore.getByUid( uids );
     }
 
+    @Override
     public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds )
     {
         if ( dataElementIds != null )
@@ -154,11 +165,13 @@ public class DefaultDataElementService
         }
     }
 
+    @Override
     public Collection<DataElement> getDataElementsByZeroIsSignificant( boolean zeroIsSignificant )
     {
         return dataElementStore.getDataElementsByZeroIsSignificant( zeroIsSignificant );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsByZeroIsSignificantAndGroup( boolean zeroIsSignificant,
         DataElementGroup dataElementGroup )
     {
@@ -175,11 +188,13 @@ public class DefaultDataElementService
         return dataElements;
     }
 
+    @Override
     public Collection<DataElement> getAggregateableDataElements()
     {
         return i18n( i18nService, dataElementStore.getAggregateableDataElements() );
     }
 
+    @Override
     public DataElement getDataElementByName( String name )
     {
         List<DataElement> dataElements = new ArrayList<>( dataElementStore.getAllEqName( name ) );
@@ -192,11 +207,13 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElements.get( 0 ) );
     }
 
+    @Override
     public Collection<DataElement> searchDataElementsByName( String key )
     {
         return i18n( i18nService, dataElementStore.searchDataElementsByName( key ) );
     }
 
+    @Override
     public DataElement getDataElementByShortName( String shortName )
     {
         List<DataElement> dataElements = new ArrayList<>( dataElementStore.getAllEqShortName( shortName ) );
@@ -209,22 +226,26 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElements.get( 0 ) );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsByAggregationOperator( String aggregationOperator )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByAggregationOperator( aggregationOperator ) );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsByType( String type )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByType( type ) );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsByPeriodType( final PeriodType periodType )
     {
         Collection<DataElement> dataElements = getAllDataElements();
 
         return FilterUtils.filter( dataElements, new Filter<DataElement>()
         {
+            @Override
             public boolean retain( DataElement dataElement )
             {
                 return dataElement.getPeriodType() != null && dataElement.getPeriodType().equals( periodType );
@@ -232,21 +253,25 @@ public class DefaultDataElementService
         } );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByDomainType( domainType ) );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType, int first, int max )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByDomainType( domainType, first, max ) );
     }
 
+    @Override
     public Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         return i18n( i18nService, dataElementStore.getDataElementByCategoryCombo( categoryCombo ) );
     }
 
+    @Override
     public Map<DataElementCategoryCombo, List<DataElement>> getGroupedDataElementsByCategoryCombo(
         List<DataElement> dataElements )
     {
@@ -270,6 +295,7 @@ public class DefaultDataElementService
         return mappedDataElements;
     }
 
+    @Override
     public List<DataElementCategoryCombo> getDataElementCategoryCombos( List<DataElement> dataElements )
     {
         Set<DataElementCategoryCombo> categoryCombos = new HashSet<>();
@@ -286,71 +312,85 @@ public class DefaultDataElementService
         return listCategoryCombos;
     }
 
+    @Override
     public Collection<DataElement> getDataElementsWithGroupSets()
     {
         return i18n( i18nService, dataElementStore.getDataElementsWithGroupSets() );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsWithoutGroups()
     {
         return i18n( i18nService, dataElementStore.getDataElementsWithoutGroups() );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsWithoutDataSets()
     {
         return i18n( i18nService, dataElementStore.getDataElementsWithoutDataSets() );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsWithDataSets()
     {
         return i18n( i18nService, dataElementStore.getDataElementsWithDataSets() );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsLikeName( String name )
     {
         return getObjectsByName( i18nService, dataElementStore, name );
     }
 
+    @Override
     public int getDataElementCount()
     {
         return dataElementStore.getCount();
     }
 
+    @Override
     public int getDataElementCountByName( String name )
     {
         return getCountByName( i18nService, dataElementStore, name );
     }
 
+    @Override
     public int getDataElementCountByDomainType( DataElementDomain domainType )
     {
         return dataElementStore.getCountByDomainType( domainType );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsBetween( int first, int max )
     {
         return getObjectsBetween( i18nService, dataElementStore, first, max );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max )
     {
         return getObjectsBetweenByName( i18nService, dataElementStore, name, first, max );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByDataSets( dataSets ) );
     }
 
+    @Override
     public Collection<DataElement> getDataElementsByAggregationLevel( int aggregationLevel )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByAggregationLevel( aggregationLevel ) );
     }
 
+    @Override
     public ListMap<String, String> getDataElementCategoryOptionComboMap( Set<String> dataElementUids )
     {
         return dataElementStore.getDataElementCategoryOptionComboMap( dataElementUids );
     }
 
+    @Override
     public Map<String, Integer> getDataElementUidIdMap()
     {
         Map<String, Integer> map = new HashMap<>();
@@ -363,6 +403,7 @@ public class DefaultDataElementService
         return map;
     }
 
+    @Override
     public Collection<DataElement> getDataElements( DataSet dataSet, String key, Integer max )
     {
         return i18n( i18nService, dataElementStore.get( dataSet, key, max ) );
@@ -372,6 +413,7 @@ public class DefaultDataElementService
     // DataElementGroup
     // -------------------------------------------------------------------------
 
+    @Override
     public int addDataElementGroup( DataElementGroup dataElementGroup )
     {
         int id = dataElementGroupStore.save( dataElementGroup );
@@ -379,21 +421,25 @@ public class DefaultDataElementService
         return id;
     }
 
+    @Override
     public void updateDataElementGroup( DataElementGroup dataElementGroup )
     {
         dataElementGroupStore.update( dataElementGroup );
     }
 
+    @Override
     public void deleteDataElementGroup( DataElementGroup dataElementGroup )
     {
         dataElementGroupStore.delete( dataElementGroup );
     }
 
+    @Override
     public DataElementGroup getDataElementGroup( int id )
     {
         return i18n( i18nService, dataElementGroupStore.get( id ) );
     }
 
+    @Override
     public DataElementGroup getDataElementGroup( int id, boolean i18nDataElements )
     {
         DataElementGroup group = getDataElementGroup( id );
@@ -406,12 +452,14 @@ public class DefaultDataElementService
         return group;
     }
 
+    @Override
     public Collection<DataElementGroup> getDataElementGroups( final Collection<Integer> identifiers )
     {
         Collection<DataElementGroup> groups = getAllDataElementGroups();
 
         return identifiers == null ? groups : FilterUtils.filter( groups, new Filter<DataElementGroup>()
         {
+            @Override
             public boolean retain( DataElementGroup object )
             {
                 return identifiers.contains( object.getId() );
@@ -419,21 +467,25 @@ public class DefaultDataElementService
         } );
     }
 
+    @Override
     public List<DataElementGroup> getDataElementGroupsByUid( Collection<String> uids )
     {
         return dataElementGroupStore.getByUid( uids );
     }
 
+    @Override
     public DataElementGroup getDataElementGroup( String uid )
     {
         return i18n( i18nService, dataElementGroupStore.getByUid( uid ) );
     }
 
+    @Override
     public Collection<DataElementGroup> getAllDataElementGroups()
     {
         return i18n( i18nService, dataElementGroupStore.getAll() );
     }
 
+    @Override
     public DataElementGroup getDataElementGroupByName( String name )
     {
         List<DataElementGroup> dataElementGroups = new ArrayList<>(
@@ -447,6 +499,7 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementGroups.get( 0 ) );
     }
 
+    @Override
     public DataElementGroup getDataElementGroupByShortName( String shortName )
     {
         List<DataElementGroup> dataElementGroups = new ArrayList<>( dataElementGroupStore.getAllEqShortName( shortName ) );
@@ -459,11 +512,13 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementGroups.get( 0 ) );
     }
 
+    @Override
     public DataElementGroup getDataElementGroupByCode( String code )
     {
         return i18n( i18nService, dataElementGroupStore.getByCode( code ) );
     }
 
+    @Override
     public Collection<DataElementGroup> getGroupsContainingDataElement( DataElement dataElement )
     {
         Collection<DataElementGroup> groups = getAllDataElementGroups();
@@ -481,26 +536,31 @@ public class DefaultDataElementService
         return groups;
     }
 
+    @Override
     public Collection<DataElement> getDataElementsByGroupId( int groupId )
     {
         return i18n( i18nService, dataElementGroupStore.get( groupId ).getMembers() );
     }
 
+    @Override
     public int getDataElementGroupCount()
     {
         return dataElementGroupStore.getCount();
     }
 
+    @Override
     public int getDataElementGroupCountByName( String name )
     {
         return getCountByName( i18nService, dataElementGroupStore, name );
     }
 
+    @Override
     public Collection<DataElementGroup> getDataElementGroupsBetween( int first, int max )
     {
         return getObjectsBetween( i18nService, dataElementGroupStore, first, max );
     }
 
+    @Override
     public Collection<DataElementGroup> getDataElementGroupsBetweenByName( String name, int first, int max )
     {
         return getObjectsBetweenByName( i18nService, dataElementGroupStore, name, first, max );
@@ -510,26 +570,31 @@ public class DefaultDataElementService
     // DataElementGroupSet
     // -------------------------------------------------------------------------
 
+    @Override
     public int addDataElementGroupSet( DataElementGroupSet groupSet )
     {
         return dataElementGroupSetStore.save( groupSet );
     }
 
+    @Override
     public void updateDataElementGroupSet( DataElementGroupSet groupSet )
     {
         dataElementGroupSetStore.update( groupSet );
     }
 
+    @Override
     public void deleteDataElementGroupSet( DataElementGroupSet groupSet )
     {
         dataElementGroupSetStore.delete( groupSet );
     }
 
+    @Override
     public DataElementGroupSet getDataElementGroupSet( int id )
     {
         return i18n( i18nService, dataElementGroupSetStore.get( id ) );
     }
 
+    @Override
     public DataElementGroupSet getDataElementGroupSet( int id, boolean i18nGroups )
     {
         DataElementGroupSet groupSet = getDataElementGroupSet( id );
@@ -542,11 +607,13 @@ public class DefaultDataElementService
         return groupSet;
     }
 
+    @Override
     public DataElementGroupSet getDataElementGroupSet( String uid )
     {
         return i18n( i18nService, dataElementGroupSetStore.getByUid( uid ) );
     }
 
+    @Override
     public DataElementGroupSet getDataElementGroupSetByName( String name )
     {
         List<DataElementGroupSet> dataElementGroupSets = new ArrayList<>(
@@ -581,6 +648,7 @@ public class DefaultDataElementService
     {
         return FilterUtils.filter( getAllDataElementGroupSets(), new Filter<DataElementGroupSet>()
         {
+            @Override
             public boolean retain( DataElementGroupSet object )
             {
                 return object.isCompulsory() && object.hasDataElementGroups();
@@ -604,6 +672,7 @@ public class DefaultDataElementService
         return groupSets;
     }
 
+    @Override
     public Collection<DataElementGroupSet> getAllDataElementGroupSets()
     {
         return i18n( i18nService, dataElementGroupSetStore.getAll() );
@@ -615,12 +684,14 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementGroupSetStore.getByDataDimension( true ) );
     }
 
+    @Override
     public Collection<DataElementGroupSet> getDataElementGroupSets( final Collection<Integer> identifiers )
     {
         Collection<DataElementGroupSet> groupSets = getAllDataElementGroupSets();
 
         return identifiers == null ? groupSets : FilterUtils.filter( groupSets, new Filter<DataElementGroupSet>()
         {
+            @Override
             public boolean retain( DataElementGroupSet object )
             {
                 return identifiers.contains( object.getId() );
@@ -628,26 +699,31 @@ public class DefaultDataElementService
         } );
     }
 
+    @Override
     public List<DataElementGroupSet> getDataElementGroupSetsByUid( Collection<String> uids )
     {
         return dataElementGroupSetStore.getByUid( uids );
     }
 
+    @Override
     public int getDataElementGroupSetCount()
     {
         return dataElementGroupSetStore.getCount();
     }
 
+    @Override
     public int getDataElementGroupSetCountByName( String name )
     {
         return getCountByName( i18nService, dataElementGroupSetStore, name );
     }
 
+    @Override
     public Collection<DataElementGroupSet> getDataElementGroupSetsBetween( int first, int max )
     {
         return getObjectsBetween( i18nService, dataElementGroupSetStore, first, max );
     }
 
+    @Override
     public Collection<DataElementGroupSet> getDataElementGroupSetsBetweenByName( String name, int first, int max )
     {
         return getObjectsBetweenByName( i18nService, dataElementGroupSetStore, name, first, max );

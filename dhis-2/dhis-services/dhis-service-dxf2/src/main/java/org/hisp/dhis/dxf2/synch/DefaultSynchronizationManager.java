@@ -96,6 +96,7 @@ public class DefaultSynchronizationManager
     // SynchronizatonManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public AvailabilityStatus isRemoteServerAvailable()
     {
         Configuration config = configurationService.getConfiguration();
@@ -164,6 +165,7 @@ public class DefaultSynchronizationManager
         return status;
     }
     
+    @Override
     public ImportSummary executeDataSynch()
         throws HttpServerErrorException
     {
@@ -201,6 +203,7 @@ public class DefaultSynchronizationManager
         
         final RequestCallback requestCallback = new RequestCallback() {
             
+            @Override
             public void doWithRequest( ClientHttpRequest request ) throws IOException
             {
                 request.getHeaders().setContentType( MediaType.APPLICATION_JSON );
@@ -224,6 +227,7 @@ public class DefaultSynchronizationManager
         return summary;
     }
     
+    @Override
     public Date getLastSynchSuccess()
     {
         return (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_DATA_SYNC );

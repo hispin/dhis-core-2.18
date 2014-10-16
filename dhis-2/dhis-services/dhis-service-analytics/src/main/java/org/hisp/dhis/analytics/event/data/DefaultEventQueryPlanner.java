@@ -198,6 +198,7 @@ public class DefaultEventQueryPlanner
         queryPlanner.validateMaintenanceMode();
     }
     
+    @Override
     public int getMaxLimit()
     {
         return (Integer) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_ANALYTICS_MAX_LIMIT, SystemSettingManager.DEFAULT_ANALYTICS_MAX_LIMIT );

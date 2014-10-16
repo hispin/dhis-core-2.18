@@ -47,6 +47,7 @@ public class IndicatorTypeTypeHandler
     // TypeHandlerCallback implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Object getResult( ResultGetter getter )
         throws SQLException
     {
@@ -59,12 +60,14 @@ public class IndicatorTypeTypeHandler
         return type;
     }
 
+    @Override
     public void setParameter( ParameterSetter setter, Object parameter )
         throws SQLException
     {
         // Not in use
     }
     
+    @Override
     public Object valueOf( String result )
     {
         Integer id = Integer.parseInt( result );

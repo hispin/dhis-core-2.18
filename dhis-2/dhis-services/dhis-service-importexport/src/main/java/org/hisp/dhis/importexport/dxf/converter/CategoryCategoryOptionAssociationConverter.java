@@ -107,6 +107,7 @@ public class CategoryCategoryOptionAssociationConverter
     // XMLConverter implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<DataElementCategory> categories = categoryService.getDataElementCategories( params.getCategories() );
@@ -142,6 +143,7 @@ public class CategoryCategoryOptionAssociationConverter
         }
     }
     
+    @Override
     public void read( XMLReader reader, ImportParams params )
     {
         Counter<Integer> counter = new Counter<>(); // Used for backwards compatibility
@@ -161,6 +163,7 @@ public class CategoryCategoryOptionAssociationConverter
         }
     }
 
+    @Override
     public void importObject( GroupMemberAssociation object, ImportParams params )
     {
         read( object, GroupMemberType.CATEGORY_CATEGORYOPTION, params );        

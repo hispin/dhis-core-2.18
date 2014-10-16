@@ -51,6 +51,7 @@ public class GhostAutomaticAccessProvider
     // AdminAccessManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void initialise()
     {
         String username = "ghost_admin";
@@ -62,6 +63,7 @@ public class GhostAutomaticAccessProvider
         authentication = new UsernamePasswordAuthenticationToken( user, user.getPassword(), user.getAuthorities() );
     }
 
+    @Override
     public void access()
     {
         if ( authentication != null && SecurityContextHolder.getContext().getAuthentication() == null )

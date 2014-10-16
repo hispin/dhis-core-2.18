@@ -64,6 +64,7 @@ public class Jackson2PropertyIntrospectorService extends AbstractPropertyIntrosp
     @Autowired
     private SessionFactory sessionFactory;
 
+    @Override
     protected Map<String, Property> scanClass( Class<?> clazz )
     {
         Map<String, Property> propertyMap = Maps.newHashMap();

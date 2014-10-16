@@ -132,6 +132,7 @@ public class ShowAddProgramFormAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         programs = new ArrayList<>( programService.getAllPrograms() );

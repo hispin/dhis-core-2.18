@@ -40,11 +40,13 @@ public class OutputHolderState
 {
     private Object output;
 
+    @Override
     public Object getOutput()
     {
         return output;
     }
 
+    @Override
     public void setOutput( Object output )
     {
         this.output = output;

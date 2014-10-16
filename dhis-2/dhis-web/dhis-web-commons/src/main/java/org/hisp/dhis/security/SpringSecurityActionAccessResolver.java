@@ -76,6 +76,7 @@ public class SpringSecurityActionAccessResolver
     // ActionAccessResolver implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public boolean hasAccess( String module, String name )
     {
         // ---------------------------------------------------------------------

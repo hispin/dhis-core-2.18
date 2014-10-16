@@ -41,6 +41,7 @@ public class HibernateCategoryComboStore
     extends HibernateIdentifiableObjectStore<DataElementCategoryCombo>
     implements CategoryComboStore
 {
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElementCategoryCombo> getCategoryCombosByDimensionType( String dimensionType )
     {

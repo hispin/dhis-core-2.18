@@ -110,6 +110,7 @@ public class JdbcAnalyticsManager
     // Implementation
     // -------------------------------------------------------------------------
     
+    @Override
     @Async
     public Future<Map<String, Object>> getAggregatedDataValues( DataQueryParams params )
     {
@@ -159,6 +160,7 @@ public class JdbcAnalyticsManager
         }
     }
     
+    @Override
     public void replaceDataPeriodsWithAggregationPeriods( Map<String, Object> dataValueMap, DataQueryParams params, ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap )
     {
         if ( params.isDisaggregation() )

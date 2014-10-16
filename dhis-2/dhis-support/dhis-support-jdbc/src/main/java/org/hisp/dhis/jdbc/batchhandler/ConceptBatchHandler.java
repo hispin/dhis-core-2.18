@@ -52,6 +52,7 @@ public class ConceptBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "concept" );
@@ -75,16 +76,19 @@ public class ConceptBatchHandler
         statementBuilder.setIdentifierValue( concept.getId() );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "name" );
     }
 
+    @Override
     protected void setUniqueValues( Concept concept )
     {
         statementBuilder.setUniqueValue( concept.getName() );
     }
 
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "uid" );
@@ -92,6 +96,7 @@ public class ConceptBatchHandler
         statementBuilder.setColumn( "name" );
     }
 
+    @Override
     protected void setValues( Concept concept )
     {        
         statementBuilder.setValue( concept.getUid() );

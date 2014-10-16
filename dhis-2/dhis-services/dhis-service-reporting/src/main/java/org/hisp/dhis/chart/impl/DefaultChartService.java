@@ -209,6 +209,7 @@ public class DefaultChartService
     // ChartService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public JFreeChart getJFreeChart( int id, I18nFormat format )
     {
         Chart chart = getChart( id );
@@ -216,11 +217,13 @@ public class DefaultChartService
         return chart != null ? getJFreeChart( chart, format ) : null;
     }
 
+    @Override
     public JFreeChart getJFreeChart( BaseChart chart, I18nFormat format )
     {
         return getJFreeChart( chart, null, null, format );
     }
 
+    @Override
     public JFreeChart getJFreeChart( BaseChart chart, Date date, OrganisationUnit organisationUnit, I18nFormat format )
     {
         User user = currentUserService.getCurrentUser();
@@ -252,6 +255,7 @@ public class DefaultChartService
     // Specific chart methods
     // -------------------------------------------------------------------------
 
+    @Override
     public JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format )
     {
         List<Period> periods = periodService.reloadPeriods(
@@ -276,6 +280,7 @@ public class DefaultChartService
         return getJFreeChart( chart );
     }
 
+    @Override
     public JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title,
         I18nFormat format )
     {
@@ -301,6 +306,7 @@ public class DefaultChartService
         return getJFreeChart( chart );
     }
 
+    @Override
     public JFreeChart getJFreeChart( String name, PlotOrientation orientation, CategoryLabelPositions labelPositions,
         Map<String, Double> categoryValues )
     {
@@ -319,6 +325,7 @@ public class DefaultChartService
         return jFreeChart;
     }
 
+    @Override
     public JFreeChart getJFreeChartHistory( DataElement dataElement,
         DataElementCategoryOptionCombo categoryOptionCombo, Period lastPeriod, OrganisationUnit organisationUnit,
         int historyLength, I18nFormat format )
@@ -867,52 +874,62 @@ public class DefaultChartService
     // CRUD operations
     // -------------------------------------------------------------------------
 
+    @Override
     public int addChart( Chart chart )
     {
         return chartStore.save( chart );
     }
 
+    @Override
     public void updateChart( Chart chart )
     {
         chartStore.update( chart );
     }
 
+    @Override
     public Chart getChart( int id )
     {
         return chartStore.get( id );
     }
 
+    @Override
     public Chart getChart( String uid )
     {
         return chartStore.getByUid( uid );
     }
 
+    @Override
     public Chart getChartNoAcl( String uid )
     {
         return chartStore.getByUidNoAcl( uid );
     }
 
+    @Override
     public void deleteChart( Chart chart )
     {
         chartStore.delete( chart );
     }
 
+    @Override
     public Collection<Chart> getAllCharts()
     {
         return chartStore.getAll();
     }
 
+    @Override
     public Chart getChartByName( String name )
     {
         return chartStore.getByName( name );
     }
 
+    @Override
     public Collection<Chart> getCharts( final Collection<Integer> identifiers )
     {
         Collection<Chart> charts = getAllCharts();
 
         return identifiers == null ? charts : FilterUtils.filter( charts, new Filter<Chart>()
         {
+            @Override
             public boolean retain( Chart object )
             {
                 return identifiers.contains( object.getId() );
@@ -920,21 +937,25 @@ public class DefaultChartService
         } );
     }
 
+    @Override
     public int getChartCount()
     {
         return chartStore.getCount();
     }
 
+    @Override
     public int getChartCountByName( String name )
     {
         return chartStore.getCountLikeName( name );
     }
 
+    @Override
     public List<Chart> getChartsBetween( int first, int max )
     {
         return chartStore.getAllOrderedName( first, max );
     }
 
+    @Override
     public List<Chart> getChartsBetweenByName( String name, int first, int max )
     {
         return chartStore.getAllLikeName( name, first, max );

@@ -48,6 +48,7 @@ public class HibernateProgramValidationStore
     // Implemented methods
     // -------------------------------------------------------------------------
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramValidation> get( Program program )
     {

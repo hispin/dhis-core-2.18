@@ -52,23 +52,27 @@ public class IndicatorGroupSetMemberBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "indicatorgroupsetmembers" );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "indicatorgroupsetid" );
         statementBuilder.setUniqueColumn( "sort_order" );
     }
     
+    @Override
     protected void setUniqueValues( GroupMemberAssociation association )
     {        
         statementBuilder.setUniqueValue( association.getGroupId() );
         statementBuilder.setUniqueValue( association.getSortOrder() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "indicatorgroupsetid" );
@@ -76,6 +80,7 @@ public class IndicatorGroupSetMemberBatchHandler
         statementBuilder.setColumn( "sort_order" );
     }
     
+    @Override
     protected void setValues( GroupMemberAssociation association )
     {        
         statementBuilder.setValue( association.getGroupId() );

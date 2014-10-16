@@ -88,6 +88,7 @@ public class UpdateIndicatorTypeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         IndicatorType indicatorType = indicatorService.getIndicatorType( id );

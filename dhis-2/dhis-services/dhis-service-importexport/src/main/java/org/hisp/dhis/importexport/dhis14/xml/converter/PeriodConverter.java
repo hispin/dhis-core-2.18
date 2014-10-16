@@ -115,6 +115,7 @@ public class PeriodConverter
     // XMLConverter implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<Period> periods = periodService.getPeriods( params.getPeriods() );
@@ -169,6 +170,7 @@ public class PeriodConverter
         }
     }
 
+    @Override
     public void read( XMLReader reader, ImportParams params )
     {
         Period period = new Period();

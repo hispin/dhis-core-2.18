@@ -72,6 +72,7 @@ public class GetValidationRulesAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         validationRules = new ArrayList<>( validationRuleService.getAllValidationRules() );

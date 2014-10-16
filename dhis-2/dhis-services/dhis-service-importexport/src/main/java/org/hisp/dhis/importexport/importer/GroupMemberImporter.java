@@ -41,21 +41,25 @@ public abstract class GroupMemberImporter
     // Overridden methods
     // -------------------------------------------------------------------------
 
+    @Override
     protected void importUnique( GroupMemberAssociation object )
     {
         batchHandler.addObject( object );      
     }
 
+    @Override
     protected void importMatching( GroupMemberAssociation object, GroupMemberAssociation match )
     {
         log.info( object.getName() + ": GroupMemberAssociations can only be unique or duplicate" );
     }
     
+    @Override
     protected GroupMemberAssociation getMatching( GroupMemberAssociation object )
     {
         return !batchHandler.objectExists( object ) ? null : object;
     }
     
+    @Override
     protected boolean isIdentical( GroupMemberAssociation object, GroupMemberAssociation existing )
     {
         return true;

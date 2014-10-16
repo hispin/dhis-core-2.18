@@ -152,6 +152,7 @@ public class ShowUpdateIndicatorFormAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicator = indicatorService.getIndicator( id );

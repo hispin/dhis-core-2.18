@@ -64,6 +64,7 @@ public class GetPingAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         loggedIn = !(currentUserService.getCurrentUser() == null);

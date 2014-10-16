@@ -57,11 +57,13 @@ public class DefaultTranslationService
     // Translation
     // -------------------------------------------------------------------------
 
+    @Override
     public void addTranslation( Translation translation )
     {
         translationStore.addTranslation( translation );
     }
 
+    @Override
     public void createOrUpdate( Collection<Translation> translations )
     {
         for ( Translation translation : translations )
@@ -70,56 +72,67 @@ public class DefaultTranslationService
         }
     }
 
+    @Override
     public void updateTranslation( Translation translation )
     {
         translationStore.updateTranslation( translation );
     }
 
+    @Override
     public Translation getTranslation( String className, Locale locale, String property, String objectUid )
     {
         return translationStore.getTranslation( className, locale, property, objectUid );
     }
 
+    @Override
     public Translation getTranslationNoFallback( String className, Locale locale, String property, String objectUid )
     {
         return translationStore.getTranslationNoFallback( className, locale, property, objectUid );
     }
 
+    @Override
     public Collection<Translation> getTranslations( String className, Locale locale, String objectUid )
     {
         return translationStore.getTranslations( className, locale, objectUid );
     }
 
+    @Override
     public Collection<Translation> getTranslationsNoFallback( String className, Locale locale, String objectUid )
     {
         return translationStore.getTranslationsNoFallback( className, objectUid, locale );
     }
 
+    @Override
     public Collection<Translation> getTranslations( String className, Locale locale )
     {
         return translationStore.getTranslations( className, locale );
     }
 
+    @Override
     public Collection<Translation> getTranslations( Locale locale )
     {
         return translationStore.getTranslations( locale );
     }
 
+    @Override
     public Collection<Translation> getAllTranslations()
     {
         return translationStore.getAllTranslations();
     }
 
+    @Override
     public void deleteTranslation( Translation translation )
     {
         translationStore.deleteTranslation( translation );
     }
 
+    @Override
     public void deleteTranslations( String className, String objectUid )
     {
         translationStore.deleteTranslations( className, objectUid );
     }
 
+    @Override
     public void createOrUpdate( Translation translation )
     {
         Translation translationNoFallback = getTranslationNoFallback( translation.getClassName(), LocaleUtils.getLocale( translation.getLocale() ), translation.getProperty(), translation.getObjectUid() );

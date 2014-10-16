@@ -81,6 +81,7 @@ public class AddIndicatorTypeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         IndicatorType indicatorType = new IndicatorType( name, factor, number );

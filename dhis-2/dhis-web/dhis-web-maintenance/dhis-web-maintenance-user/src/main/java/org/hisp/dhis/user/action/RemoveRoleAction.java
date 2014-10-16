@@ -83,6 +83,7 @@ public class RemoveRoleAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

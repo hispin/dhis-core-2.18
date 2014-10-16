@@ -141,6 +141,7 @@ public class SaveSectionGreyStatusAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

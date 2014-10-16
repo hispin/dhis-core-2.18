@@ -163,6 +163,7 @@ public class GetGeneralSettingsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         configuration = configurationService.getConfiguration();

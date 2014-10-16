@@ -68,21 +68,25 @@ public class DefaultPeriodService
     // Period
     // -------------------------------------------------------------------------
 
+    @Override
     public int addPeriod( Period period )
     {
         return periodStore.addPeriod( period );
     }
 
+    @Override
     public void deletePeriod( Period period )
     {
         periodStore.delete( period );
     }
 
+    @Override
     public Period getPeriod( int id )
     {
         return periodStore.get( id );
     }
     
+    @Override
     public Period getPeriod( String isoPeriod )
     {
         Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
@@ -95,22 +99,26 @@ public class DefaultPeriodService
         return period;
     }
 
+    @Override
     public Period getPeriod( Date startDate, Date endDate, PeriodType periodType )
     {
         return periodStore.getPeriod( startDate, endDate, periodType );
     }
 
+    @Override
     public Collection<Period> getAllPeriods()
     {
         return periodStore.getAll();
     }
 
+    @Override
     public Collection<Period> getPeriods( final Collection<Integer> identifiers )
     {
         Collection<Period> periods = getAllPeriods();
 
         return identifiers == null ? periods : FilterUtils.filter( periods, new Filter<Period>()
         {
+            @Override
             public boolean retain( Period object )
             {
                 return identifiers.contains( object.getId() );
@@ -118,36 +126,43 @@ public class DefaultPeriodService
         } );
     }
 
+    @Override
     public Collection<Period> getPeriodsByPeriodType( PeriodType periodType )
     {
         return periodStore.getPeriodsByPeriodType( periodType );
     }
 
+    @Override
     public Collection<Period> getPeriodsBetweenDates( Date startDate, Date endDate )
     {
         return periodStore.getPeriodsBetweenDates( startDate, endDate );
     }
 
+    @Override
     public Collection<Period> getPeriodsBetweenDates( PeriodType periodType, Date startDate, Date endDate )
     {
         return periodStore.getPeriodsBetweenDates( periodType, startDate, endDate );
     }
 
+    @Override
     public Collection<Period> getPeriodsBetweenOrSpanningDates( Date startDate, Date endDate )
     {
         return periodStore.getPeriodsBetweenOrSpanningDates( startDate, endDate );
     }
 
+    @Override
     public Collection<Period> getIntersectingPeriodsByPeriodType( PeriodType periodType, Date startDate, Date endDate )
     {
         return periodStore.getIntersectingPeriodsByPeriodType( periodType, startDate, endDate );
     }
 
+    @Override
     public Collection<Period> getIntersectingPeriods( Date startDate, Date endDate )
     {
         return periodStore.getIntersectingPeriods( startDate, endDate );
     }
 
+    @Override
     public Collection<Period> getIntersectionPeriods( Collection<Period> periods )
     {
         Set<Period> intersecting = new HashSet<>();
@@ -160,6 +175,7 @@ public class DefaultPeriodService
         return intersecting;
     }
 
+    @Override
     public Collection<Period> getBoundaryPeriods( Period period, Collection<Period> periods )
     {
         Collection<Period> immutablePeriods = new ArrayList<>( periods );
@@ -180,6 +196,7 @@ public class DefaultPeriodService
         return immutablePeriods;
     }
 
+    @Override
     public Collection<Period> getInclusivePeriods( Period period, Collection<Period> periods )
     {
         Collection<Period> immutablePeriods = new ArrayList<>( periods );
@@ -200,6 +217,7 @@ public class DefaultPeriodService
         return immutablePeriods;
     }
 
+    @Override
     public List<Period> reloadPeriods( List<Period> periods )
     {
         List<Period> reloaded = new ArrayList<>();
@@ -212,6 +230,7 @@ public class DefaultPeriodService
         return reloaded;
     }
 
+    @Override
     public List<Period> getPeriods( Period lastPeriod, int historyLength )
     {
         List<Period> periods = new ArrayList<>( historyLength );
@@ -236,6 +255,7 @@ public class DefaultPeriodService
         return periods;
     }
 
+    @Override
     public Collection<Period> namePeriods( Collection<Period> periods, I18nFormat format )
     {
         for ( Period period : periods )
@@ -246,16 +266,19 @@ public class DefaultPeriodService
         return periods;
     }
 
+    @Override
     public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )
     {
         return periodStore.getPeriodFromDates( startDate, endDate, periodType );
     }
 
+    @Override
     public Period reloadPeriod( Period period )
     {
         return periodStore.reloadForceAddPeriod( period );
     }
     
+    @Override
     public Period reloadIsoPeriod( String isoPeriod )
     {
         Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
@@ -263,6 +286,7 @@ public class DefaultPeriodService
         return period != null ? reloadPeriod( period ) : null;
     }
     
+    @Override
     public List<Period> reloadIsoPeriods( List<String> isoPeriods )
     {
         List<Period> periods = new ArrayList<>();
@@ -280,6 +304,7 @@ public class DefaultPeriodService
         return periods;
     }
     
+    @Override
     public PeriodHierarchy getPeriodHierarchy( Collection<Period> periods )
     {
         PeriodHierarchy hierarchy = new PeriodHierarchy();
@@ -297,26 +322,31 @@ public class DefaultPeriodService
     // PeriodType
     // -------------------------------------------------------------------------
 
+    @Override
     public PeriodType getPeriodType( int id )
     {
         return periodStore.getPeriodType( id );
     }
 
+    @Override
     public List<PeriodType> getAllPeriodTypes()
     {
         return PeriodType.getAvailablePeriodTypes();
     }
 
+    @Override
     public PeriodType getPeriodTypeByName( String name )
     {
         return PeriodType.getPeriodTypeByName( name );
     }
 
+    @Override
     public PeriodType getPeriodTypeByClass( Class<? extends PeriodType> periodType )
     {
         return periodStore.getPeriodType( periodType );
     }
 
+    @Override
     public PeriodType reloadPeriodType( PeriodType periodType )
     {
         return periodStore.reloadPeriodType( periodType );
@@ -326,6 +356,7 @@ public class DefaultPeriodService
     // PeriodType
     // -------------------------------------------------------------------------
 
+    @Override
     public void deleteRelativePeriods( RelativePeriods relativePeriods )
     {
         periodStore.deleteRelativePeriods( relativePeriods );

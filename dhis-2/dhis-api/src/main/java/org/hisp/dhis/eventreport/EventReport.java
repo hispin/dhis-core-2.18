@@ -206,6 +206,7 @@ public class EventReport
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @Override
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
@@ -220,6 +221,7 @@ public class EventReport
         this.program = program;
     }
 
+    @Override
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
@@ -234,6 +236,7 @@ public class EventReport
         this.programStage = programStage;
     }
 
+    @Override
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -247,6 +250,7 @@ public class EventReport
         this.startDate = startDate;
     }
 
+    @Override
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )

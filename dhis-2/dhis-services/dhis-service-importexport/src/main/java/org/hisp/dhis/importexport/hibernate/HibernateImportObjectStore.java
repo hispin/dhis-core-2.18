@@ -66,6 +66,7 @@ public class HibernateImportObjectStore
     // ImportObject
     // ----------------------------------------------------------------------
 
+    @Override
     public int addImportObject( ImportObject importObject )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -73,6 +74,7 @@ public class HibernateImportObjectStore
         return (Integer) session.save( importObject );
     }
     
+    @Override
     public void updateImportObject( ImportObject importObject )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -80,6 +82,7 @@ public class HibernateImportObjectStore
         session.saveOrUpdate( importObject );
     }
     
+    @Override
     public ImportObject getImportObject( int id )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -87,6 +90,7 @@ public class HibernateImportObjectStore
         return (ImportObject) session.get( ImportObject.class, id );
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ImportObject> getImportObjects( Class<?> clazz )
     {
@@ -99,6 +103,7 @@ public class HibernateImportObjectStore
         return criteria.list();
     }
     
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ImportObject> getImportObjects( ImportObjectStatus status, Class<?> clazz )
     {
@@ -112,6 +117,7 @@ public class HibernateImportObjectStore
         return criteria.list();
     }
     
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ImportObject> getImportObjects( GroupMemberType groupMemberType )
     {
@@ -124,6 +130,7 @@ public class HibernateImportObjectStore
         return criteria.list();
     }
     
+    @Override
     public void deleteImportObject( ImportObject importObject )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -131,6 +138,7 @@ public class HibernateImportObjectStore
         session.delete( importObject );
     }
     
+    @Override
     @SuppressWarnings( "unchecked" )
     public void deleteImportObjects( Class<?> clazz )
     {
@@ -158,6 +166,7 @@ public class HibernateImportObjectStore
         query.executeUpdate();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public void deleteImportObjects( GroupMemberType groupMemberType )
     {
@@ -185,6 +194,7 @@ public class HibernateImportObjectStore
         query.executeUpdate();
     }
     
+    @Override
     public void deleteImportObjects()
     {
         Session session = sessionFactory.getCurrentSession();

@@ -60,6 +60,7 @@ public class ValidationRuleRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {
         final ValidationRule validationRule = (ValidationRule) object;

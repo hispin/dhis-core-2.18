@@ -90,6 +90,7 @@ public class RemoveDataElementGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         try

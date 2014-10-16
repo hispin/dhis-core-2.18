@@ -63,31 +63,37 @@ public class DefaultProgramStageService
     // ProgramStage implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public int saveProgramStage( ProgramStage programStage )
     {
         return programStageStore.save( programStage );
     }
 
+    @Override
     public void deleteProgramStage( ProgramStage programStage )
     {
         programStageStore.delete( programStage );
     }
 
+    @Override
     public ProgramStage getProgramStage( int id )
     {
         return i18n( i18nService, programStageStore.get( id ) );
     }
 
+    @Override
     public ProgramStage getProgramStage( String uid )
     {
         return i18n( i18nService, programStageStore.getByUid( uid ) );
     }
 
+    @Override
     public ProgramStage getProgramStageByName( String name, Program program )
     {
         return i18n( i18nService, programStageStore.getByNameAndProgram( name, program ) );
     }
 
+    @Override
     public void updateProgramStage( ProgramStage programStage )
     {
         programStageStore.update( programStage );

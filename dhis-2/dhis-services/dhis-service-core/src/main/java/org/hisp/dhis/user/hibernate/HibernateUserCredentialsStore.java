@@ -77,11 +77,13 @@ public class HibernateUserCredentialsStore
     // UserCredentials
     // -------------------------------------------------------------------------
 
+    @Override
     public int addUserCredentials( UserCredentials userCredentials )
     {
         return (Integer) sessionFactory.getCurrentSession().save( userCredentials );
     }
 
+    @Override
     public void updateUserCredentials( UserCredentials userCredentials )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -99,6 +101,7 @@ public class HibernateUserCredentialsStore
         session.update( userCredentials );
     }
 
+    @Override
     public UserCredentials getUserCredentials( User user )
     {
         if ( user == null )
@@ -111,11 +114,13 @@ public class HibernateUserCredentialsStore
         return (UserCredentials) session.get( UserCredentials.class, user.getId() );
     }
     
+    @Override
     public UserCredentials getUserCredentials( int id )
     {
         return (UserCredentials) sessionFactory.getCurrentSession().get( UserCredentials.class, id );
     }
 
+    @Override
     public UserCredentials getUserCredentialsByUsername( String username )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -141,6 +146,7 @@ public class HibernateUserCredentialsStore
         return (UserCredentials) query.uniqueResult();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<UserCredentials> getAllUserCredentials()
     {
@@ -149,6 +155,7 @@ public class HibernateUserCredentialsStore
         return session.createCriteria( UserCredentials.class ).list();
     }
 
+    @Override
     public void deleteUserCredentials( UserCredentials userCredentials )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -156,6 +163,7 @@ public class HibernateUserCredentialsStore
         session.delete( userCredentials );
     }
 
+    @Override
     public int getUserCount()
     {
         Session session = sessionFactory.getCurrentSession();
@@ -167,6 +175,7 @@ public class HibernateUserCredentialsStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<UserCredentials> searchUsersByName( String key )
     {
@@ -186,6 +195,7 @@ public class HibernateUserCredentialsStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<UserCredentials> searchUsersByName( String key, int first, int max )
     {
@@ -208,6 +218,7 @@ public class HibernateUserCredentialsStore
         return criteria.list();
     }
 
+    @Override
     public int getUserCountByName( String name )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -223,6 +234,7 @@ public class HibernateUserCredentialsStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<UserCredentials> getUsersBetween( int first, int max )
     {
@@ -232,6 +244,7 @@ public class HibernateUserCredentialsStore
             .setMaxResults( max ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max )
     {
@@ -247,47 +260,56 @@ public class HibernateUserCredentialsStore
         return criteria.list();
     }
 
+    @Override
     public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max )
     {
         return getBlockUser( toUserCredentials( orgUnit.getUsers() ), first, max );
     }
 
+    @Override
     public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
         int first, int max )
     {
         return getBlockUser( findByName( toUserCredentials( orgUnit.getUsers() ), name ), first, max );
     }
 
+    @Override
     public int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit )
     {
         return orgUnit.getUsers().size();
     }
 
+    @Override
     public int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name )
     {
         return findByName( toUserCredentials( orgUnit.getUsers() ), name ).size();
     }
 
+    @Override
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
     {
         return getBlockUser( toUserCredentials( userService.getUsersWithoutOrganisationUnit() ), first, max );
     }
 
+    @Override
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max )
     {
         return getBlockUser( findByName( toUserCredentials( userService.getUsersWithoutOrganisationUnit() ), name ), first, max );
     }
 
+    @Override
     public int getUsersWithoutOrganisationUnitCount()
     {
         return userService.getUsersWithoutOrganisationUnit().size();
     }
 
+    @Override
     public int getUsersWithoutOrganisationUnitCountByName( String name )
     {
         return findByName( toUserCredentials( userService.getUsersWithoutOrganisationUnit() ), name ).size();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<UserCredentials> getSelfRegisteredUserCredentials( int first, int max )
     {
@@ -300,6 +322,7 @@ public class HibernateUserCredentialsStore
         return criteria.list();
     }
 
+    @Override
     public int getSelfRegisteredUserCredentialsCount()
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
@@ -311,6 +334,7 @@ public class HibernateUserCredentialsStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<UserCredentials> getInactiveUsers( Date date )
     {
@@ -320,6 +344,7 @@ public class HibernateUserCredentialsStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<UserCredentials> getInactiveUsers( Date date, int first, int max )
     {
@@ -331,6 +356,7 @@ public class HibernateUserCredentialsStore
         return criteria.list();
     }
 
+    @Override
     public int getInactiveUsersCount( Date date )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
@@ -342,6 +368,7 @@ public class HibernateUserCredentialsStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     public int getActiveUsersCount( Date date )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
@@ -353,6 +380,7 @@ public class HibernateUserCredentialsStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<String> getUsernames( String key, Integer max )
     {

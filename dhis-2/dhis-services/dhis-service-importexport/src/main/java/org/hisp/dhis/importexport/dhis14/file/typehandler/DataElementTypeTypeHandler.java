@@ -47,6 +47,7 @@ public class DataElementTypeTypeHandler
     // TypeHandlerCallback implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Object getResult( ResultGetter getter )
         throws SQLException
     {
@@ -57,12 +58,14 @@ public class DataElementTypeTypeHandler
         return type;
     }
     
+    @Override
     public void setParameter( ParameterSetter setter, Object parameter )
         throws SQLException
     {
         // Not in use
     }
     
+    @Override
     public Object valueOf( String result )
     {
         int value = Integer.parseInt( result );

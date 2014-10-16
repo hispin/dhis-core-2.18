@@ -104,6 +104,7 @@ public class AddValidationRuleGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         ValidationRuleGroup group = new ValidationRuleGroup();

@@ -99,6 +99,7 @@ public class DefaultQueryPlanner
 
     //TODO shortcut group by methods when only 1 option?
     
+    @Override
     public void validate( DataQueryParams params )
         throws IllegalQueryException
     {
@@ -162,6 +163,7 @@ public class DefaultQueryPlanner
         }
     }
     
+    @Override
     public void validateTableLayout( DataQueryParams params, List<String> columns, List<String> rows )
     {
         String violation = null;
@@ -201,6 +203,7 @@ public class DefaultQueryPlanner
         }
     }
     
+    @Override
     public void validateMaintenanceMode()
         throws MaintenanceModeException
     {
@@ -212,6 +215,7 @@ public class DefaultQueryPlanner
         }
     }
     
+    @Override
     public DataQueryGroups planQuery( DataQueryParams params, int optimalQueries, String tableName )
     {
         validate( params );
@@ -359,6 +363,7 @@ public class DefaultQueryPlanner
     // Supportive - group by methods
     // -------------------------------------------------------------------------
     
+    @Override
     public List<DataQueryParams> groupByPartition( DataQueryParams params, String tableName, String tableSuffix )
     {
         Set<String> validPartitions = partitionManager.getAnalyticsPartitions();
@@ -416,6 +421,7 @@ public class DefaultQueryPlanner
      * with one filter for each period type. Sets the dimension names and filter
      * names respectively.
      */
+    @Override
     public List<DataQueryParams> groupByPeriodType( DataQueryParams params )
     {
         List<DataQueryParams> queries = new ArrayList<>();
@@ -465,6 +471,7 @@ public class DefaultQueryPlanner
         return queries;        
     }
     
+    @Override
     public List<DataQueryParams> groupByOrgUnitLevel( DataQueryParams params )
     {
         List<DataQueryParams> queries = new ArrayList<>();

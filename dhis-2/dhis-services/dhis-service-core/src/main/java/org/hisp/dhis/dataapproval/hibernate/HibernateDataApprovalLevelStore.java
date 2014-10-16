@@ -47,12 +47,14 @@ public class HibernateDataApprovalLevelStore
     // DataApprovalLevelStore implementation
     // -------------------------------------------------------------------------
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<DataApprovalLevel> getAllDataApprovalLevels()
     {
         return getCriteria().addOrder( Order.asc( "level" ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<DataApprovalLevel> getDataApprovalLevelsByOrgUnitLevel( int orgUnitLevel )
     {

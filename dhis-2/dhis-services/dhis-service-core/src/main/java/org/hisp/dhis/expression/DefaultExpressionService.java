@@ -123,30 +123,35 @@ public class DefaultExpressionService
     // Expression CRUD operations
     // -------------------------------------------------------------------------
 
+    @Override
     @Transactional
     public int addExpression( Expression expression )
     {
         return expressionStore.save( expression );
     }
 
+    @Override
     @Transactional
     public void deleteExpression( Expression expression )
     {
         expressionStore.delete( expression );
     }
 
+    @Override
     @Transactional
     public Expression getExpression( int id )
     {
         return expressionStore.get( id );
     }
 
+    @Override
     @Transactional
     public void updateExpression( Expression expression )
     {
         expressionStore.update( expression );
     }
 
+    @Override
     @Transactional
     public Collection<Expression> getAllExpressions()
     {
@@ -157,7 +162,8 @@ public class DefaultExpressionService
     // Business logic
     // -------------------------------------------------------------------------
     
-    public Double getIndicatorValue( Indicator indicator, Period period, Map<DataElementOperand, Double> valueMap, 
+    @Override
+    public Double getIndicatorValue( Indicator indicator, Period period, Map<DataElementOperand, Double> valueMap,
         Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days )
     {
         if ( indicator == null || indicator.getExplodedNumeratorFallback() == null || indicator.getExplodedDenominatorFallback() == null )
@@ -197,12 +203,14 @@ public class DefaultExpressionService
         return null;
     }
 
+    @Override
     public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap,
         Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days )
     {
         return getExpressionValue( expression, valueMap, constantMap, orgUnitCountMap, days, null );
     }
 
+    @Override
     public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap,
         Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days, Set<DataElementOperand> incompleteValues )
     {
@@ -216,6 +224,7 @@ public class DefaultExpressionService
         return result;
     }
 
+    @Override
     @Transactional
     public Set<DataElement> getDataElementsInExpression( String expression )
     {
@@ -241,6 +250,7 @@ public class DefaultExpressionService
         return dataElementsInExpression;
     }
     
+    @Override
     public Set<OrganisationUnitGroup> getOrganisationUnitGroupsInIndicators( Collection<Indicator> indicators )
     {
         Set<OrganisationUnitGroup> groups = null;
@@ -259,6 +269,7 @@ public class DefaultExpressionService
         return groups;
     }
     
+    @Override
     public Set<OrganisationUnitGroup> getOrganisationUnitGroupsInExpression( String expression )
     {
         Set<OrganisationUnitGroup> groupsInExpression = null;
@@ -283,6 +294,7 @@ public class DefaultExpressionService
         return groupsInExpression;
     }
     
+    @Override
     public Set<String> getDataElementTotalUids( String expression )
     {
         Set<String> uids = new HashSet<>();
@@ -300,6 +312,7 @@ public class DefaultExpressionService
         return uids;
     }
     
+    @Override
     @Transactional
     public Set<DataElementCategoryOptionCombo> getOptionCombosInExpression( String expression )
     {
@@ -326,6 +339,7 @@ public class DefaultExpressionService
         return optionCombosInExpression;
     }
 
+    @Override
     @Transactional
     public Set<DataElementOperand> getOperandsInExpression( String expression )
     {
@@ -351,6 +365,7 @@ public class DefaultExpressionService
         return operandsInExpression;
     }
 
+    @Override
     @Transactional
     public Set<DataElement> getDataElementsInIndicators( Collection<Indicator> indicators )
     {
@@ -375,6 +390,7 @@ public class DefaultExpressionService
         return dataElements;
     }
 
+    @Override
     @Transactional
     public void filterInvalidIndicators( Collection<Indicator> indicators )
     {
@@ -396,12 +412,14 @@ public class DefaultExpressionService
         }
     }
 
+    @Override
     @Transactional
     public String expressionIsValid( String formula )
     {
         return expressionIsValid( formula, null, null, null, null );
     }
 
+    @Override
     @Transactional
     public String expressionIsValid( String expression, Set<String> dataElements, Set<String> categoryOptionCombos, Set<String> orgUnitGroups, Set<String> constants )
     {
@@ -498,6 +516,7 @@ public class DefaultExpressionService
         return VALID;
     }
 
+    @Override
     @Transactional
     public String getExpressionDescription( String expression )
     {
@@ -599,6 +618,7 @@ public class DefaultExpressionService
         return expression;
     }
 
+    @Override
     @Transactional
     public void explodeAndSubstituteExpressions( Collection<Indicator> indicators, Integer days )
     {
@@ -610,6 +630,7 @@ public class DefaultExpressionService
         }
     }
 
+    @Override
     @Transactional
     public void substituteExpressions( Collection<Indicator> indicators, Integer days )
     {
@@ -623,6 +644,7 @@ public class DefaultExpressionService
         }                
     }
     
+    @Override
     @Transactional
     public void explodeExpressions( Collection<Indicator> indicators )
     {
@@ -652,6 +674,7 @@ public class DefaultExpressionService
         }
     }
 
+    @Override
     @Transactional
     public void explodeValidationRuleExpressions( Collection<ValidationRule> validationRules )
     {
@@ -715,6 +738,7 @@ public class DefaultExpressionService
         return appendTail( matcher, sb );
     }
 
+    @Override
     @Transactional
     public String explodeExpression( String expression )
     {
@@ -750,6 +774,7 @@ public class DefaultExpressionService
         return appendTail( matcher, sb );
     }
 
+    @Override
     @Transactional
     public String substituteExpression( String expression, Integer days )
     {
@@ -817,6 +842,7 @@ public class DefaultExpressionService
         return appendTail( matcher, sb );
     }
 
+    @Override
     @Transactional
     public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, 
         Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days, MissingValueStrategy missingValueStrategy )
@@ -929,6 +955,7 @@ public class DefaultExpressionService
         return appendTail( matcher, sb );
     }
 
+    @Override
     @Transactional
     public Set<DataElementOperand> getOperandsInIndicators( Collection<Indicator> indicators )
     {

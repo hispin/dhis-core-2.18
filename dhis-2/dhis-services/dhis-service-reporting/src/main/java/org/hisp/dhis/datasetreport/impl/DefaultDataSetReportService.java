@@ -102,6 +102,7 @@ public class DefaultDataSetReportService
     // DataSetReportService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String getCustomDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions,
         boolean selectedUnitOnly, I18nFormat format )
     {
@@ -114,6 +115,7 @@ public class DefaultDataSetReportService
         return prepareReportContent( dataSet.getDataEntryForm(), valueMap, indicatorValueMap, format );
     }
     
+    @Override
     public List<Grid> getCustomDataSetReportAsGrid( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions,
         boolean selectedUnitOnly, I18nFormat format )
     {
@@ -129,6 +131,7 @@ public class DefaultDataSetReportService
         }
     }
 
+    @Override
     public List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions,
         boolean selectedUnitOnly, I18nFormat format, I18n i18n )
     {
@@ -242,7 +245,8 @@ public class DefaultDataSetReportService
         return grids;
     }
 
-    public List<Grid> getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions, 
+    @Override
+    public List<Grid> getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions,
         boolean selectedUnitOnly, I18nFormat format, I18n i18n )
     {
         ListMap<DataElementCategoryCombo, DataElement> map = new ListMap<>();

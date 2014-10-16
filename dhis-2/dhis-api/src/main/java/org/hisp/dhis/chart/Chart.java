@@ -99,6 +99,7 @@ public class Chart
     // Logic
     // -------------------------------------------------------------------------
 
+    @Override
     public List<NameableObject> series()
     {
         DimensionalObject object = getDimensionalObject( series, relativePeriodDate, user, true,
@@ -107,6 +108,7 @@ public class Chart
         return object != null ? object.getItems() : null;
     }
 
+    @Override
     public List<NameableObject> category()
     {
         DimensionalObject object = getDimensionalObject( category, relativePeriodDate, user, true,
@@ -177,6 +179,7 @@ public class Chart
         this.filterDimensions.add( filter );
     }
 
+    @Override
     public AnalyticsType getAnalyticsType()
     {
         return AnalyticsType.AGGREGATE;
@@ -222,6 +225,7 @@ public class Chart
         this.category = category;
     }
 
+    @Override
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -230,6 +234,7 @@ public class Chart
         return rewindRelativePeriods;
     }
 
+    @Override
     public void setRewindRelativePeriods( boolean rewindRelativePeriods )
     {
         this.rewindRelativePeriods = rewindRelativePeriods;

@@ -79,6 +79,7 @@ public class InitAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         messageCount = messageService.getUnreadMessageConversationCount();

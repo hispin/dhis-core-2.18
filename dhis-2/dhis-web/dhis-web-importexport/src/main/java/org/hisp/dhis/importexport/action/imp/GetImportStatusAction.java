@@ -110,7 +110,8 @@ public class GetImportStatusAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() 
+    @Override
+    public String execute()
         throws Exception
     {
         if ( processIsRunning( PROCESS_KEY_IMPORT ) )

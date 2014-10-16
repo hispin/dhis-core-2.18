@@ -79,6 +79,7 @@ public class GetIndicatorGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( id != null )

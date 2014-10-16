@@ -69,6 +69,7 @@ public class ShowAddIndicatorGroupForm
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         attributes = new ArrayList<>( attributeService.getIndicatorAttributes() );

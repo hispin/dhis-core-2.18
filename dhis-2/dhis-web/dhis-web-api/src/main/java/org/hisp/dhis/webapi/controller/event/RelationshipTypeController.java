@@ -60,6 +60,7 @@ public class RelationshipTypeController extends AbstractCrudController<Relations
     // POST
     //--------------------------------------------------------------------------
 
+    @Override
     @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
     @ResponseStatus( HttpStatus.CREATED )
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
@@ -70,6 +71,7 @@ public class RelationshipTypeController extends AbstractCrudController<Relations
         response.setHeader( "Location", ContextUtils.getRootPath( request ) + RelationshipTypeSchemaDescriptor.API_ENDPOINT + "/" + relationshipType.getUid() );
     }
 
+    @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     @ResponseStatus( HttpStatus.CREATED )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
@@ -84,6 +86,7 @@ public class RelationshipTypeController extends AbstractCrudController<Relations
     // PUT
     //--------------------------------------------------------------------------
 
+    @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
@@ -103,6 +106,7 @@ public class RelationshipTypeController extends AbstractCrudController<Relations
         relationshipTypeService.updateRelationshipType( relationshipType );
     }
 
+    @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
@@ -126,6 +130,7 @@ public class RelationshipTypeController extends AbstractCrudController<Relations
     // DELETE
     //--------------------------------------------------------------------------
 
+    @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception

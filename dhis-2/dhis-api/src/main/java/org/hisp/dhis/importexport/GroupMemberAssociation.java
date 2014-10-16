@@ -112,6 +112,7 @@ public class GroupMemberAssociation
             memberId == other.getMemberId() && sortOrder == other.getSortOrder();
     }
 
+    @Override
     public String getName()
     {
         throw new UnsupportedOperationException();

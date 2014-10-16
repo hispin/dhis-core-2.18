@@ -73,6 +73,7 @@ public class DefaultProgramSchedulingManager implements ProgramSchedulingManager
     // SchedulingManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void scheduleTasks()
     {
         Map<String, String> keyCronMap = getScheduledTasks();
@@ -89,6 +90,7 @@ public class DefaultProgramSchedulingManager implements ProgramSchedulingManager
         }
     }
     
+    @Override
     public void scheduleTasks( Map<String, String> keyCronMap )
     {
         systemSettingManager.saveSystemSetting( KEY_SEND_MESSAGE_SCHEDULED_TASKS, new HashMap<>( keyCronMap ) );
@@ -96,6 +98,7 @@ public class DefaultProgramSchedulingManager implements ProgramSchedulingManager
         scheduleTasks();
     }
     
+    @Override
     public void stopTasks()
     {
         systemSettingManager.saveSystemSetting( KEY_SEND_MESSAGE_SCHEDULED_TASKS, null );
@@ -103,6 +106,7 @@ public class DefaultProgramSchedulingManager implements ProgramSchedulingManager
         scheduler.stopAllTasks();
     }
     
+    @Override
     public void executeTasks()
     {
         Map<String, String> keyCronMap = getScheduledTasks();
@@ -118,12 +122,14 @@ public class DefaultProgramSchedulingManager implements ProgramSchedulingManager
         }
     }
     
+    @Override
     @SuppressWarnings("unchecked")
     public Map<String, String> getScheduledTasks()
     {
         return (Map<String, String>) systemSettingManager.getSystemSetting( KEY_SEND_MESSAGE_SCHEDULED_TASKS, new HashMap<String, String>() );
     }
     
+    @Override
     public String getTaskStatus()
     {
         Map<String, String> keyCronMap = getScheduledTasks();

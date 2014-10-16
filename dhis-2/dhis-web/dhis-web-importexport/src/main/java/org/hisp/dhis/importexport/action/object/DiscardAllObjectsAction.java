@@ -58,6 +58,7 @@ public class DiscardAllObjectsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

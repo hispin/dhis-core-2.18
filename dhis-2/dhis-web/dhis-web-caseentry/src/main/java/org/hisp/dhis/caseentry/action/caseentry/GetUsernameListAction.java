@@ -81,6 +81,7 @@ public class GetUsernameListAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         usernames = userService.getUsernames( query, MAX_USER_DISPLAYED );

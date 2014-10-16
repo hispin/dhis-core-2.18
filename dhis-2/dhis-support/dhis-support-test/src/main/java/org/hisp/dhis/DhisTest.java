@@ -65,6 +65,7 @@ public abstract class DhisTest
 
     private ApplicationContext context;
 
+    @Override
     public void setApplicationContext( ApplicationContext context )
     {
         this.context = context;

@@ -66,6 +66,7 @@ public class DiscardObjectsOfTypeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

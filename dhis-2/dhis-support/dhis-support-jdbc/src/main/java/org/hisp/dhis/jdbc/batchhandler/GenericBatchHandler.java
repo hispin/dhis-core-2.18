@@ -53,6 +53,7 @@ public class GenericBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         // Must be set externally
@@ -64,21 +65,25 @@ public class GenericBatchHandler
         return statementBuilder.getNoColumnInsertStatementOpening();
     }
     
+    @Override
     protected void setUniqueColumns()
     {
         // Cannot be known
     }
 
+    @Override
     protected void setUniqueValues( Object object )
     {
         throw new UnsupportedOperationException();
     }
     
+    @Override
     protected void setColumns()
     {
         // Not in use
     }
     
+    @Override
     @SuppressWarnings( "unchecked" )
     protected void setValues( Object object )
     {

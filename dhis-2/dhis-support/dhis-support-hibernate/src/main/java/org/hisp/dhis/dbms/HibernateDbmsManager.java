@@ -73,6 +73,7 @@ public class HibernateDbmsManager
     // DbmsManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void emptyDatabase()
     {
         emptyTable( "translation" );
@@ -207,11 +208,13 @@ public class HibernateDbmsManager
         log.debug( "Cleared Hibernate cache" );
     }
 
+    @Override
     public void clearSession()
     {
         sessionFactory.getCurrentSession().clear();
     }
 
+    @Override
     public void emptyTable( String table )
     {
         try

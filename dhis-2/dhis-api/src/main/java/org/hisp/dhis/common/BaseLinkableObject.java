@@ -45,6 +45,7 @@ public class BaseLinkableObject
      */
     private transient String href;
 
+    @Override
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
     public String getHref()
@@ -52,6 +53,7 @@ public class BaseLinkableObject
         return href;
     }
 
+    @Override
     public void setHref( String href )
     {
         this.href = href;

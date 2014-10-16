@@ -42,12 +42,14 @@ public class MessageConverterAddingPostProcessor
 {
     private HttpMessageConverter<?> messageConverter = new DataStreamSerializableMessageConverter();
 
+    @Override
     public Object postProcessBeforeInitialization( Object bean, String beanName )
         throws BeansException
     {
         return bean;
     }
 
+    @Override
     public Object postProcessAfterInitialization( Object bean, String beanName )
         throws BeansException
     {

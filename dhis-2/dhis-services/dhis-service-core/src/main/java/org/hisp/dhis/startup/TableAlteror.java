@@ -74,6 +74,7 @@ public class TableAlteror
     // Execute
     // -------------------------------------------------------------------------
 
+    @Override
     @Transactional
     public void execute()
     {

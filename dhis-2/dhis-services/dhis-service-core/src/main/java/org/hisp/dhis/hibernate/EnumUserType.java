@@ -53,11 +53,13 @@ public class EnumUserType<E extends Enum<E>>
 
     private static final int[] SQL_TYPES = { Types.VARCHAR };
 
+    @Override
     public int[] sqlTypes()
     {
         return SQL_TYPES;
     }
 
+    @Override
     public Class<?> returnedClass()
     {
         return clazz;

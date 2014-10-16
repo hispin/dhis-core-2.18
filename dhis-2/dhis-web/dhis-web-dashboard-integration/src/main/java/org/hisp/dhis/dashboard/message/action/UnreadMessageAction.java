@@ -73,6 +73,7 @@ public class UnreadMessageAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

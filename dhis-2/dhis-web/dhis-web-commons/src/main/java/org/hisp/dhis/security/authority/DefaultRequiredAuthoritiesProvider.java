@@ -79,11 +79,13 @@ public class DefaultRequiredAuthoritiesProvider
     // RequiredAuthoritiesProvider implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public SecurityMetadataSource createSecurityMetadataSource( ActionConfig actionConfig )
     {
         return createSecurityMetadataSource( actionConfig, actionConfig );
     }
 
+    @Override
     public SecurityMetadataSource createSecurityMetadataSource( ActionConfig actionConfig, Object object )
     {
         Collection<ConfigAttribute> attributes = new ArrayList<>();
@@ -93,6 +95,7 @@ public class DefaultRequiredAuthoritiesProvider
         return new SingleSecurityMetadataSource( object, attributes );
     }
 
+    @Override
     public Collection<String> getAllAuthorities( ActionConfig actionConfig )
     {
         Collection<String> authorities = new HashSet<>();
@@ -102,6 +105,7 @@ public class DefaultRequiredAuthoritiesProvider
         return authorities;
     }
 
+    @Override
     public Collection<String> getRequiredAuthorities( ActionConfig actionConfig )
     {
         return StrutsAuthorityUtils.getAuthorities( actionConfig, requiredAuthoritiesKey );

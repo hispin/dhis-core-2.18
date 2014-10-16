@@ -67,6 +67,7 @@ public class GetCalendarSettingsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         return SUCCESS;

@@ -64,6 +64,7 @@ public class DefaultUserSettingService
     // UserSettingService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void saveUserSetting( String name, Serializable value )
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -71,6 +72,7 @@ public class DefaultUserSettingService
         save( name, value, currentUser );
     }
 
+    @Override
     public void saveUserSetting( String name, Serializable value, String username )
     {
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
@@ -107,6 +109,7 @@ public class DefaultUserSettingService
         }
     }
 
+    @Override
     public Serializable getUserSetting( String name )
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -114,6 +117,7 @@ public class DefaultUserSettingService
     }
 
 
+    @Override
     public Serializable getUserSetting( String name, String username )
     {
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
@@ -138,6 +142,7 @@ public class DefaultUserSettingService
         return null;
     }
 
+    @Override
     public Serializable getUserSetting( String name, Serializable defaultValue )
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -157,6 +162,7 @@ public class DefaultUserSettingService
         return defaultValue;
     }
 
+    @Override
     public Collection<UserSetting> getAllUserSettings()
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -169,6 +175,7 @@ public class DefaultUserSettingService
         return userService.getAllUserSettings( currentUser );
     }
 
+    @Override
     public void deleteUserSetting( String name )
     {
         User currentUser = currentUserService.getCurrentUser();

@@ -100,6 +100,7 @@ public class RemoveSmsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         OutboundSms outboundSms = outboundSmsService.getOutboundSms( id );

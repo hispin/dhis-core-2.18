@@ -84,6 +84,7 @@ public class DefaultImportAnalyser
     // ImportAnalyser implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void addObject( Object object )
     {
         if ( object instanceof DataValue )
@@ -126,6 +127,7 @@ public class DefaultImportAnalyser
         }
     }
     
+    @Override
     public ImportAnalysis getImportAnalysis()
     {
         ImportAnalysis analysis = new ImportAnalysis();

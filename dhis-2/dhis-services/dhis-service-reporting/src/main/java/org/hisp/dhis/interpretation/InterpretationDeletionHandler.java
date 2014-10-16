@@ -52,6 +52,7 @@ public class InterpretationDeletionHandler
         return DeletionHandler.class.getSimpleName();
     }
 
+    @Override
     public void deleteUser( User user )
     {
         List<Interpretation> interpretations = interpretationService.getInterpretations();

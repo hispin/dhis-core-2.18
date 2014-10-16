@@ -427,6 +427,7 @@ public class GetPreviewOptionsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

@@ -39,6 +39,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public abstract class AbstractSpringSecurityCurrentUserService
     implements CurrentUserService
 {
+    @Override
     public String getCurrentUsername()
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -69,6 +70,7 @@ public abstract class AbstractSpringSecurityCurrentUserService
         return userDetails.getUsername();
     }
 
+    @Override
     public void clearCurrentUser()
     {
         SecurityContextHolder.clearContext();

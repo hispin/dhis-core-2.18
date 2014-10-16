@@ -81,6 +81,7 @@ public class ShowIndicatorGroupEditorAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicatorGroups = new ArrayList<>( indicatorService.getAllIndicatorGroups() );

@@ -77,6 +77,7 @@ public class SetApprovalSettingsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         systemSettingManager.saveSystemSetting( KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, hideUnapprovedDataInAnalytics );

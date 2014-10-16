@@ -54,6 +54,7 @@ public class HibernatePeriodStore
     // Period
     // -------------------------------------------------------------------------
 
+    @Override
     public int addPeriod( Period period )
     {
         period.setPeriodType( reloadPeriodType( period.getPeriodType() ) );
@@ -61,6 +62,7 @@ public class HibernatePeriodStore
         return save( period );
     }
 
+    @Override
     public Period getPeriod( Date startDate, Date endDate, PeriodType periodType )
     {
         Criteria criteria = getCriteria();
@@ -71,6 +73,7 @@ public class HibernatePeriodStore
         return (Period) criteria.uniqueResult();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getPeriodsBetweenDates( Date startDate, Date endDate )
     {
@@ -82,6 +85,7 @@ public class HibernatePeriodStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getPeriodsBetweenDates( PeriodType periodType, Date startDate, Date endDate )
     {
@@ -93,6 +97,7 @@ public class HibernatePeriodStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getPeriodsBetweenOrSpanningDates( Date startDate, Date endDate )
     {
@@ -101,6 +106,7 @@ public class HibernatePeriodStore
         return getQuery( hql ).setDate( "startDate", startDate ).setDate( "endDate", endDate ).list();
     }
     
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getIntersectingPeriodsByPeriodType( PeriodType periodType, Date startDate, Date endDate )
     {
@@ -112,6 +118,7 @@ public class HibernatePeriodStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getIntersectingPeriods( Date startDate, Date endDate )
     {
@@ -122,6 +129,7 @@ public class HibernatePeriodStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getPeriodsByPeriodType( PeriodType periodType )
     {
@@ -131,6 +139,7 @@ public class HibernatePeriodStore
         return criteria.list();
     }
 
+    @Override
     public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )
     {
         Criteria criteria = getCriteria();
@@ -141,6 +150,7 @@ public class HibernatePeriodStore
         return (Period) criteria.uniqueResult();
     }
 
+    @Override
     public Period reloadPeriod( Period period )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -155,6 +165,7 @@ public class HibernatePeriodStore
         return storedPeriod != null ? storedPeriod.copyTransientProperties( period ) : null;
     }
 
+    @Override
     public Period reloadForceAddPeriod( Period period )
     {
         Period storedPeriod = reloadPeriod( period );
@@ -173,6 +184,7 @@ public class HibernatePeriodStore
     // PeriodType (do not use generic store which is linked to Period)
     // -------------------------------------------------------------------------
 
+    @Override
     public int addPeriodType( PeriodType periodType )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -180,6 +192,7 @@ public class HibernatePeriodStore
         return (Integer) session.save( periodType );
     }
 
+    @Override
     public void deletePeriodType( PeriodType periodType )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -187,6 +200,7 @@ public class HibernatePeriodStore
         session.delete( periodType );
     }
 
+    @Override
     public PeriodType getPeriodType( int id )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -194,6 +208,7 @@ public class HibernatePeriodStore
         return (PeriodType) session.get( PeriodType.class, id );
     }
 
+    @Override
     public PeriodType getPeriodType( Class<? extends PeriodType> periodType )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -203,6 +218,7 @@ public class HibernatePeriodStore
         return (PeriodType) criteria.setCacheable( true ).uniqueResult();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<PeriodType> getAllPeriodTypes()
     {
@@ -211,6 +227,7 @@ public class HibernatePeriodStore
         return session.createCriteria( PeriodType.class ).setCacheable( true ).list();
     }
 
+    @Override
     public PeriodType reloadPeriodType( PeriodType periodType )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -235,6 +252,7 @@ public class HibernatePeriodStore
     // RelativePeriods (do not use generic store which is linked to Period)
     // -------------------------------------------------------------------------
 
+    @Override
     public void deleteRelativePeriods( RelativePeriods relativePeriods )
     {
         sessionFactory.getCurrentSession().delete( relativePeriods );

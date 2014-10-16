@@ -81,6 +81,7 @@ public class AddSqlViewAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( (name == null) || (name.trim().isEmpty()) )

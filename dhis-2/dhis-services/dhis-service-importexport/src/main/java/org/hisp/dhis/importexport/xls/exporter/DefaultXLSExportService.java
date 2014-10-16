@@ -100,6 +100,7 @@ public class DefaultXLSExportService
     // ExportService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public InputStream exportData( ExportParams params )
     {
         try

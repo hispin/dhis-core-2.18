@@ -78,6 +78,7 @@ public class GetAppearanceSettingsStringAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         translations = translateSystemSettingManager.getTranslationNoFallbackSystemAppearanceSettings( localeCode );

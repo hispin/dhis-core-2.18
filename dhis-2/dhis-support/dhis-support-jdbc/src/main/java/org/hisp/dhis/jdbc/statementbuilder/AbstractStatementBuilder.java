@@ -57,6 +57,7 @@ public abstract class AbstractStatementBuilder
         return quote ? ( QUOTE + value + QUOTE ) : value;
     }
     
+    @Override
     public String columnQuote( String column )
     {
         return column != null ? ( getColumnQuote() + column + getColumnQuote() ) : null;

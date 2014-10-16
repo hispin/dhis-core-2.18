@@ -227,6 +227,7 @@ public class GetDataIntegrityAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         dataElementsWithoutDataSet = new ArrayList<>( dataIntegrityService.getDataElementsWithoutDataSet() );

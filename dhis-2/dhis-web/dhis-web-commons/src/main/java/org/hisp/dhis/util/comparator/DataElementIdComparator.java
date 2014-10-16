@@ -39,6 +39,7 @@ import org.hisp.dhis.dataelement.DataElement;
 public class DataElementIdComparator
     implements Comparator<DataElement>
 {
+    @Override
     public int compare( DataElement dataElement0, DataElement dataElement1 )
     {
         return dataElement0.getId() - dataElement1.getId();

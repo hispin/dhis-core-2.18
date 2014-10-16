@@ -291,6 +291,7 @@ public class DefaultTrackedEntityInstanceService
         return grid;
     }
 
+    @Override
     public void decideAccess( TrackedEntityInstanceQueryParams params )
     {
         if ( params.isOrganisationUnitMode( ALL ) &&

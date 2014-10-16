@@ -40,6 +40,7 @@ public class IdentifiableObjectNameComparator
 {
     public static final Comparator<IdentifiableObject> INSTANCE = new IdentifiableObjectNameComparator();
 
+    @Override
     public int compare( IdentifiableObject object0, IdentifiableObject object1 )
     {
         if ( object0 == null || object0.getDisplayName() == null )

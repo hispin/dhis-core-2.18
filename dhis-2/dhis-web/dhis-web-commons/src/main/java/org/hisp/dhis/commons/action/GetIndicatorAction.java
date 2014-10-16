@@ -76,6 +76,7 @@ public class GetIndicatorAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( id != null )

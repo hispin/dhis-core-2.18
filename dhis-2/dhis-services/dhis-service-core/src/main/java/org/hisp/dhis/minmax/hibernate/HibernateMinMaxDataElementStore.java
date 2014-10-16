@@ -52,6 +52,7 @@ public class HibernateMinMaxDataElementStore
     // MinMaxDataElementStore Implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public MinMaxDataElement get( OrganisationUnit source, DataElement dataElement,
         DataElementCategoryOptionCombo optionCombo )
     {
@@ -61,6 +62,7 @@ public class HibernateMinMaxDataElementStore
             Restrictions.eq( "optionCombo", optionCombo ) ).uniqueResult();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<MinMaxDataElement> get( OrganisationUnit source, DataElement dataElement )
     {
@@ -69,6 +71,7 @@ public class HibernateMinMaxDataElementStore
             Restrictions.eq( "dataElement", dataElement ) ).list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<MinMaxDataElement> get( OrganisationUnit source, Collection<DataElement> dataElements )
     {
@@ -82,6 +85,7 @@ public class HibernateMinMaxDataElementStore
             Restrictions.in( "dataElement", dataElements ) ).list();
     }
     
+    @Override
     public void delete( OrganisationUnit organisationUnit )
     {
         String hql = "delete from MinMaxDataElement m where m.source = :source";
@@ -89,6 +93,7 @@ public class HibernateMinMaxDataElementStore
         getQuery( hql ).setEntity( "source", organisationUnit ).executeUpdate();
     }
     
+    @Override
     public void delete( DataElement dataElement )
     {
         String hql = "delete from MinMaxDataElement m where m.dataElement = :dataElement";
@@ -96,6 +101,7 @@ public class HibernateMinMaxDataElementStore
         getQuery( hql ).setEntity( "dataElement", dataElement ).executeUpdate();
     }
     
+    @Override
     public void delete( DataElementCategoryOptionCombo optionCombo )
     {
         String hql = "delete from MinMaxDataElement m where m.optionCombo = :optionCombo";
@@ -103,6 +109,7 @@ public class HibernateMinMaxDataElementStore
         getQuery( hql ).setEntity( "optionCombo", optionCombo ).executeUpdate();
     }
     
+    @Override
     public void delete( Collection<DataElement> dataElements, Collection<OrganisationUnit> organisationUnits )
     {
         String hql = "delete from MinMaxDataElement m where m.dataElement in (:dataElements) and m.source in (:organisationUnits)";

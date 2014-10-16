@@ -84,6 +84,7 @@ public class DefaultOrgUnitDistributionService
     // OrgUnitDistributionService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public JFreeChart getOrganisationUnitDistributionChart( OrganisationUnitGroupSet groupSet, OrganisationUnit organisationUnit )
     {
         Map<String, Double> categoryValues = new HashMap<>();

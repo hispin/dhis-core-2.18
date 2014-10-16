@@ -61,6 +61,7 @@ public class TrackedEntityAttributeGroupController
     // POST
     //--------------------------------------------------------------------------
 
+    @Override
     @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
     @ResponseStatus( HttpStatus.CREATED )
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
@@ -71,6 +72,7 @@ public class TrackedEntityAttributeGroupController
         response.setHeader( "Location", ContextUtils.getRootPath( request ) + TrackedEntityAttributeGroupSchemaDescriptor.API_ENDPOINT + "/" + trackedEntityAttributeGroup.getUid() );
     }
 
+    @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     @ResponseStatus( HttpStatus.CREATED )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
@@ -85,6 +87,7 @@ public class TrackedEntityAttributeGroupController
     // PUT
     //--------------------------------------------------------------------------
 
+    @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
@@ -104,6 +107,7 @@ public class TrackedEntityAttributeGroupController
         trackedEntityAttributeGroupService.updateTrackedEntityAttributeGroup( trackedEntityAttributeGroup );
     }
 
+    @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
@@ -127,6 +131,7 @@ public class TrackedEntityAttributeGroupController
     // DELETE
     //--------------------------------------------------------------------------
 
+    @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception

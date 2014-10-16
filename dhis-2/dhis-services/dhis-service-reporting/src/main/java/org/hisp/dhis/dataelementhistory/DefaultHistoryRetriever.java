@@ -76,6 +76,7 @@ public class DefaultHistoryRetriever
     // HistoryRetriever implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public DataElementHistory getHistory( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
         OrganisationUnit organisationUnit, Period lastPeriod, int historyLength )
     {

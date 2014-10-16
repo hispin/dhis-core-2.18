@@ -42,6 +42,7 @@ public class AscendingPeriodComparator
 {
     public static final AscendingPeriodComparator INSTANCE = new AscendingPeriodComparator();
     
+    @Override
     public int compare( Period period1, Period period2 )
     {
         if ( period1.getStartDate() == null )

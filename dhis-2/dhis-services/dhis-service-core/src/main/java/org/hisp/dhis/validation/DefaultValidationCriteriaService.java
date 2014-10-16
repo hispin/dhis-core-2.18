@@ -66,31 +66,37 @@ public class DefaultValidationCriteriaService
     // ValidationCriteria implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public int saveValidationCriteria( ValidationCriteria validationCriteria )
     {
         return validationCriteriaStore.save( validationCriteria );
     }
 
+    @Override
     public void updateValidationCriteria( ValidationCriteria validationCriteria )
     {
         validationCriteriaStore.update( validationCriteria );
     }
 
+    @Override
     public void deleteValidationCriteria( ValidationCriteria validationCriteria )
     {
         validationCriteriaStore.delete( validationCriteria );
     }
 
+    @Override
     public ValidationCriteria getValidationCriteria( int id )
     {
         return i18n( i18nService, validationCriteriaStore.get( id ) );
     }
 
+    @Override
     public Collection<ValidationCriteria> getAllValidationCriterias()
     {
         return i18n( i18nService, validationCriteriaStore.getAll() );
     }
 
+    @Override
     public ValidationCriteria getValidationCriteria( String name )
     {
         return i18n( i18nService, validationCriteriaStore.getByName( name ) );

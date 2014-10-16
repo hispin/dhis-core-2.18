@@ -63,6 +63,7 @@ public class HibernateDataEntryFormStore
     // DataEntryFormStore implementation
     // ------------------------------------------------------------------------
 
+    @Override
     public int addDataEntryForm( DataEntryForm dataEntryForm )
     {
         if ( dataEntryForm != null )
@@ -75,6 +76,7 @@ public class HibernateDataEntryFormStore
         return (Integer) session.save( dataEntryForm );
     }
 
+    @Override
     public void updateDataEntryForm( DataEntryForm dataEntryForm )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -82,6 +84,7 @@ public class HibernateDataEntryFormStore
         session.update( dataEntryForm );
     }
 
+    @Override
     public void deleteDataEntryForm( DataEntryForm dataEntryForm )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -89,6 +92,7 @@ public class HibernateDataEntryFormStore
         session.delete( dataEntryForm );
     }
 
+    @Override
     public DataEntryForm getDataEntryForm( int id )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -96,6 +100,7 @@ public class HibernateDataEntryFormStore
         return (DataEntryForm) session.get( DataEntryForm.class, id );
     }
 
+    @Override
     public DataEntryForm getDataEntryFormByName( String name )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -116,6 +121,7 @@ public class HibernateDataEntryFormStore
         return (DataEntryForm) criteria.uniqueResult();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<DataEntryForm> getAllDataEntryForms()
     {
@@ -126,6 +132,7 @@ public class HibernateDataEntryFormStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<DataEntryForm> listDistinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
     {
@@ -138,6 +145,7 @@ public class HibernateDataEntryFormStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<DataEntryForm> listDistinctDataEntryFormByDataSetIds( List<Integer> dataSetIds )
     {

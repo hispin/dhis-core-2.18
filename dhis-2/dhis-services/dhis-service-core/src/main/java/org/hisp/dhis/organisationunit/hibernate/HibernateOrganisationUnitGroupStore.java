@@ -41,6 +41,7 @@ public class HibernateOrganisationUnitGroupStore
     extends HibernateIdentifiableObjectStore<OrganisationUnitGroup>
     implements OrganisationUnitGroupStore
 {
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsWithGroupSets()
     {

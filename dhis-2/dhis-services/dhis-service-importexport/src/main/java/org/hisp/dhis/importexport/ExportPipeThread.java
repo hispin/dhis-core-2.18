@@ -133,6 +133,7 @@ public class ExportPipeThread
     // Thread implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void doRun()
     {
         try

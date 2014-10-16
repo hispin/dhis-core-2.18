@@ -71,6 +71,7 @@ public abstract class AbstractAutomaticAccessProvider
 
     protected abstract void initialise();
     
+    @Override
     public final void init()
     {
         if ( isEnabled() )

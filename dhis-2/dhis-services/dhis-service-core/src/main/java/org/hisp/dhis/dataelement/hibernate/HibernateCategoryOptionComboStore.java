@@ -44,6 +44,7 @@ public class HibernateCategoryOptionComboStore
     extends HibernateIdentifiableObjectStore<DataElementCategoryOptionCombo>
     implements CategoryOptionComboStore
 {
+    @Override
     public DataElementCategoryOptionCombo getCategoryOptionCombo( DataElementCategoryCombo categoryCombo, Set<DataElementCategoryOption> categoryOptions )
     {
         String hql = "from DataElementCategoryOptionCombo co where co.categoryCombo = :categoryCombo";

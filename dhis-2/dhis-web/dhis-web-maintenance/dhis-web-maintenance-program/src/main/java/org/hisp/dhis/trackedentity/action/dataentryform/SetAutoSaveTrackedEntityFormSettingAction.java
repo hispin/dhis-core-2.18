@@ -66,6 +66,7 @@ public class SetAutoSaveTrackedEntityFormSettingAction
     // Implementation Action
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

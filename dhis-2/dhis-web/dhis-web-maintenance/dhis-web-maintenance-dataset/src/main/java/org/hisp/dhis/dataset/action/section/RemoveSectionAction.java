@@ -71,6 +71,7 @@ public class RemoveSectionAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

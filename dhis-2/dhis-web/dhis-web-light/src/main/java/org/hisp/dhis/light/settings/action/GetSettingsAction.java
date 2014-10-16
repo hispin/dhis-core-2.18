@@ -144,6 +144,7 @@ public class GetSettingsAction
 
         Collections.sort( availableLocales, new Comparator<Locale>()
         {
+            @Override
             public int compare( Locale locale0, Locale locale1 )
             {
                 return locale0.getDisplayName().compareTo( locale1.getDisplayName() );

@@ -66,6 +66,7 @@ public class RemoveAttributeGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

@@ -112,6 +112,7 @@ public class GetValidationRuleAction
     // Action implementation
     // -------------------------------------------------------------------------    
     
+    @Override
     public String execute() throws Exception
     {
         validationRule = validationRuleService.getValidationRule( id );

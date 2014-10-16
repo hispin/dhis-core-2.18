@@ -59,6 +59,7 @@ public class IbatisQueryManager
     // QueryManager implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public Object queryForObject( String query, Object parameter )
     {
         SqlMapClient sqlMapClient = sqlMapClientProvider.getSqlMapClient();
@@ -92,6 +93,7 @@ public class IbatisQueryManager
         }
     }
     
+    @Override
     public List<?> queryForList( String query, Object parameter )
     {
         SqlMapClient sqlMapClient = sqlMapClientProvider.getSqlMapClient();
@@ -125,12 +127,14 @@ public class IbatisQueryManager
         }
     }
 
+    @Override
     @Transactional
     public void queryWithRowhandler( String query, RowHandler rowHandler )
     {
         queryWithRowhandler( query, rowHandler, null );
     }
     
+    @Override
     @Transactional
     public void queryWithRowhandler( String query, RowHandler rowHandler, Object parameter )
     {

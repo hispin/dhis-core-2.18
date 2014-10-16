@@ -606,6 +606,7 @@ public class DefaultProgramInstanceService
         updateProgramInstance( programInstance );
     }
 
+    @Override
     public void cancelProgramInstanceStatus( ProgramInstance programInstance )
     {
         // ---------------------------------------------------------------------

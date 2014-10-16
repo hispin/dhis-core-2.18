@@ -48,6 +48,7 @@ import org.springframework.web.client.ResponseExtractor;
 public class ImportSummaryResponseExtractor
     implements ResponseExtractor<ImportSummary>
 {
+    @Override
     public ImportSummary extractData( ClientHttpResponse response ) throws IOException
     {
         ImportSummary summary = JacksonUtils.fromJson( response.getBody(), ImportSummary.class );

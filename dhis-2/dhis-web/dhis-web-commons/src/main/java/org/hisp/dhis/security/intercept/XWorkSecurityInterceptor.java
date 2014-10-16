@@ -89,14 +89,17 @@ public class XWorkSecurityInterceptor
     // WebWork Interceptor
     // -------------------------------------------------------------------------
 
+    @Override
     public void init()
     {
     }
 
+    @Override
     public void destroy()
     {
     }
 
+    @Override
     public String intercept( ActionInvocation invocation )
         throws Exception
     {

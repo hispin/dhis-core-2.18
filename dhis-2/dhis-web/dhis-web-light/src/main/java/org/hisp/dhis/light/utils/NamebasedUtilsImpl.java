@@ -64,6 +64,7 @@ public class NamebasedUtilsImpl
         this.programStageService = programStageService;
     }
     
+    @Override
     public ProgramStage getProgramStage( int programId, int programStageId )
     {
         Program program = programService.getProgram( programId );
@@ -80,6 +81,7 @@ public class NamebasedUtilsImpl
         return null;
     }
   
+    @Override
     public String getTypeViolation( DataElement dataElement, String value )
     {
         String type = dataElement.getType();
@@ -140,6 +142,7 @@ public class NamebasedUtilsImpl
         return null;
     }
 
+    @Override
     public ProgramStageInstance getNextStage( Set<ProgramStageInstance> programStageInstances )
     {
         for ( ProgramStageInstance programStageInstance : programStageInstances )
@@ -153,6 +156,7 @@ public class NamebasedUtilsImpl
         return null;
     }
     
+    @Override
     public List<org.hisp.dhis.api.mobile.model.DataElement> transformDataElementsToMobileModel( Integer programStageId )
     {
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
@@ -166,6 +170,7 @@ public class NamebasedUtilsImpl
         return des;
     }
     
+    @Override
     public List<org.hisp.dhis.api.mobile.model.DataElement> transformDataElementsToMobileModel( List<ProgramStageDataElement> programStageDataElements )
     {
         List<org.hisp.dhis.api.mobile.model.DataElement> des = new ArrayList<>();

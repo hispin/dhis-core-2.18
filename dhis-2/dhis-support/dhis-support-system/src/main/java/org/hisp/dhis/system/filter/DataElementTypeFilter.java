@@ -44,6 +44,7 @@ public class DataElementTypeFilter
         this.type = type;
     }
     
+    @Override
     public boolean retain( DataElement object )
     {
         return object != null && type.equals( object.getType() );

@@ -76,6 +76,7 @@ public abstract class AbstractStatementInternalProcess
     // InternalProcess implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public final Class<OutputHolderState> getStateClass()
     {
         return OutputHolderState.class;
@@ -84,6 +85,7 @@ public abstract class AbstractStatementInternalProcess
     /**
      * Delegates process execution to {@link #executeStatements()}.
      */
+    @Override
     public final void execute( OutputHolderState state )
     {
         this.state = state;

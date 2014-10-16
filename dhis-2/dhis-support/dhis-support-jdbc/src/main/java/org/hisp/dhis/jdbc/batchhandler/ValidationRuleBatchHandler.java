@@ -48,6 +48,7 @@ extends AbstractBatchHandler<ValidationRule>
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "dataelement" );
@@ -71,18 +72,21 @@ extends AbstractBatchHandler<ValidationRule>
         statementBuilder.setIdentifierValue( validationRule.getId() );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "name" );
         statementBuilder.setUniqueColumn( "code" );
     }
 
+    @Override
     protected void setUniqueValues( ValidationRule validationRule )
     {
         statementBuilder.setUniqueValue( validationRule.getName() );
         statementBuilder.setUniqueValue( validationRule.getCode() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "uid" );
@@ -92,6 +96,7 @@ extends AbstractBatchHandler<ValidationRule>
         statementBuilder.setColumn( "operator" );
     }
     
+    @Override
     protected void setValues( ValidationRule validationRule )
     {
         statementBuilder.setValue( validationRule.getUid() );

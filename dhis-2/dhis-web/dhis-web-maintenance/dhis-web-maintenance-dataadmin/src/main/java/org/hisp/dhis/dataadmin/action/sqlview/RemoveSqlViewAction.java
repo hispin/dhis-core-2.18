@@ -65,6 +65,7 @@ public class RemoveSqlViewAction
     // Action
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

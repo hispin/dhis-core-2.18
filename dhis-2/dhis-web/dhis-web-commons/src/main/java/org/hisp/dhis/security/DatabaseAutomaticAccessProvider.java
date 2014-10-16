@@ -59,6 +59,7 @@ public class DatabaseAutomaticAccessProvider
     // AdminAccessManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void initialise()
     {
         // ---------------------------------------------------------------------
@@ -90,6 +91,7 @@ public class DatabaseAutomaticAccessProvider
         userService.addUserCredentials( userCredentials );
     }
 
+    @Override
     public void access()
     {
     }

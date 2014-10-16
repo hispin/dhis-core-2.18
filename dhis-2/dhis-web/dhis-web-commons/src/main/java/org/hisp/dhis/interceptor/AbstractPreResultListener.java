@@ -53,14 +53,17 @@ public abstract class AbstractPreResultListener
     // Interceptor implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public final void destroy()
     {
     }
 
+    @Override
     public final void init()
     {
     }
 
+    @Override
     public final String intercept( ActionInvocation actionInvocation ) throws Exception
     {
         actionInvocation.addPreResultListener( this );
@@ -82,6 +85,7 @@ public abstract class AbstractPreResultListener
     // PreResultListener implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public final void beforeResult( ActionInvocation actionInvocation, String result )
     {
         if ( executePreResultListener )

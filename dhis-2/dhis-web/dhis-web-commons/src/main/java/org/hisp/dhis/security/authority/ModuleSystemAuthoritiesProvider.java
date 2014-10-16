@@ -75,6 +75,7 @@ public class ModuleSystemAuthoritiesProvider
     // SystemAuthoritiesProvider implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Collection<String> getSystemAuthorities()
     {
         HashSet<String> authorities = new HashSet<>();

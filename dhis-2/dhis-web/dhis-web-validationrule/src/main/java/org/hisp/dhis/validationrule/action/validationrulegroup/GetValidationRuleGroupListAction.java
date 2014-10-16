@@ -84,6 +84,7 @@ public class GetValidationRuleGroupListAction
     // Action implemantation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( isNotBlank( key ) ) // Filter on key only if set

@@ -124,6 +124,7 @@ public class DefaultSecurityService
     // SecurityService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public boolean prepareUserForInvite( User user )
     {
         if ( user == null || user.getUserCredentials() == null )
@@ -147,6 +148,7 @@ public class DefaultSecurityService
         return true;
     }
 
+    @Override
     public boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreOptions restoreOptions )
     {
         if ( credentials == null || rootPath == null )
@@ -220,6 +222,7 @@ public class DefaultSecurityService
         return true;
     }
 
+    @Override
     public String[] initRestore( UserCredentials credentials, RestoreOptions restoreOptions )
     {
         String token = restoreOptions.getTokenPrefix() + CodeGenerator.generateCode( RESTORE_TOKEN_LENGTH );
@@ -241,11 +244,13 @@ public class DefaultSecurityService
         return new String[] { token, code };
     }
 
+    @Override
     public RestoreOptions getRestoreOptions( String token )
     {
         return RestoreOptions.getRestoreOptions( token );
     }
 
+    @Override
     public boolean restore( UserCredentials credentials, String token, String code, String newPassword, RestoreType restoreType )
     {
         if ( credentials == null || token == null || code == null || newPassword == null
@@ -267,6 +272,7 @@ public class DefaultSecurityService
         return true;
     }
 
+    @Override
     public boolean canRestore( UserCredentials credentials, String token, String code, RestoreType restoreType )
     {
         String logPrefix = "Restore user: " + credentials.getUid() + ", username: " + credentials.getUsername() + " ";
@@ -373,6 +379,7 @@ public class DefaultSecurityService
      * @param restoreType type of restore operation.
      * @return null if success, otherwise error string.
      */
+    @Override
     public String verifyToken( UserCredentials credentials, String token, RestoreType restoreType )
     {
         if ( credentials == null )

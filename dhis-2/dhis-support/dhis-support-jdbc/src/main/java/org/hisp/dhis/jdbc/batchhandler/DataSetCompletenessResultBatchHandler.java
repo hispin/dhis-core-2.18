@@ -52,6 +52,7 @@ public class DataSetCompletenessResultBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "aggregateddatasetcompleteness" );
@@ -89,6 +90,7 @@ public class DataSetCompletenessResultBatchHandler
         statementBuilder.setUniqueValue( result.getOrganisationUnitId() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "datasetid" );
@@ -102,6 +104,7 @@ public class DataSetCompletenessResultBatchHandler
         statementBuilder.setColumn( "valueOnTime" );
     }
     
+    @Override
     protected void setValues( DataSetCompletenessResult result )
     {        
         statementBuilder.setValue( result.getDataSetId() );

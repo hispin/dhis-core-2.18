@@ -78,6 +78,7 @@ public class DefaultAnalyticsSecurityManager
     // AnalyticsSecurityManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void decideAccess( DataQueryParams params )
     {
         // ---------------------------------------------------------------------
@@ -106,6 +107,7 @@ public class DefaultAnalyticsSecurityManager
         }
     }
     
+    @Override
     public void applyDataApprovalConstraints( DataQueryParams params )
     {
         boolean approval = (Boolean) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, false );
@@ -130,6 +132,7 @@ public class DefaultAnalyticsSecurityManager
         }
     }
     
+    @Override
     public void applyDimensionConstraints( DataQueryParams params )
     {
         applyOrganisationUnitConstraint( params );

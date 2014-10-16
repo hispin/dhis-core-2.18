@@ -57,16 +57,19 @@ public class DefaultDeletionManager
     // DeletionManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void addDeletionHandler( DeletionHandler handler )
     {
         this.handlers.add( handler );
     }
 
+    @Override
     public void addDeletionHandlers( Collection<DeletionHandler> deletionHandlers )
     {
         this.handlers.addAll( deletionHandlers );
     }
 
+    @Override
     public void execute( Object object )
     {
         Class<?> clazz = getClazz( object );

@@ -169,6 +169,7 @@ public class EntityPropertyValue
         return "[" + entity + ", " + property + ", " + value + "]";
     }
 
+    @Override
     public int compareTo( EntityPropertyValue other )
     {
         if ( this == other )

@@ -96,6 +96,7 @@ public class SemiPermanentDataValueRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {
         final Dhis14SemiPermanentDataValue dhis14Value = (Dhis14SemiPermanentDataValue) object;

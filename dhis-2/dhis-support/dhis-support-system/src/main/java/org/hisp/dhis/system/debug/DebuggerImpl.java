@@ -38,6 +38,7 @@ public class DebuggerImpl
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
+    @Override
     @Transactional
     public void markDbLog( String key )
     {

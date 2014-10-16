@@ -53,6 +53,7 @@ public class SimpleSystemAuthoritiesProvider
     // Interface implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Collection<String> getSystemAuthorities()
     {
         return authorities;

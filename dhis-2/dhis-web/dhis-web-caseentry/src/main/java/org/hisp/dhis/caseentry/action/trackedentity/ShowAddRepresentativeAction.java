@@ -69,6 +69,7 @@ public class ShowAddRepresentativeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         relationshipTypes = new ArrayList<>( relationshipTypeService.getAllRelationshipTypes() );

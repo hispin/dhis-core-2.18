@@ -89,6 +89,7 @@ public class RemoveUserAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

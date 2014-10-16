@@ -185,6 +185,7 @@ public class DefaultDashboardService
         return true;
     }
 
+    @Override
     public void mergeDashboard( Dashboard dashboard )
     {
         if ( dashboard.getItems() != null )
@@ -196,6 +197,7 @@ public class DefaultDashboardService
         }
     }
 
+    @Override
     public void mergeDashboardItem( DashboardItem item )
     {
         if ( item.getChart() != null )

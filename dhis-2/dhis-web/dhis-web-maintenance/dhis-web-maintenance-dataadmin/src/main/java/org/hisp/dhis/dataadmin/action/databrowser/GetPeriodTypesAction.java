@@ -68,6 +68,7 @@ public class GetPeriodTypesAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         periodTypes = periodService.getAllPeriodTypes();

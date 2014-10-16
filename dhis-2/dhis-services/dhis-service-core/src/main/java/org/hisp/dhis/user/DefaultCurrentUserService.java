@@ -54,6 +54,7 @@ public class DefaultCurrentUserService
     // CurrentUserService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public User getCurrentUser()
     {
         String username = getCurrentUsername();
@@ -73,6 +74,7 @@ public class DefaultCurrentUserService
         return userCredentials.getUser();
     }
 
+    @Override
     public boolean currentUserIsSuper()
     {
         String username = getCurrentUsername();
@@ -92,6 +94,7 @@ public class DefaultCurrentUserService
         return userCredentials.isSuper();
     }
     
+    @Override
     public boolean currenUserIsAuthorized( String auth )
     {
         User user = getCurrentUser();

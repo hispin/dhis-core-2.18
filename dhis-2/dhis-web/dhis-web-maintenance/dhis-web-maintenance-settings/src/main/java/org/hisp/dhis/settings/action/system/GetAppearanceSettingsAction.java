@@ -123,6 +123,7 @@ public class GetAppearanceSettingsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         availableLocales = localeManager.getAvailableLocales();

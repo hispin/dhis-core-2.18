@@ -38,6 +38,7 @@ import org.hisp.dhis.user.User;
 public class UserComparator
     implements Comparator<User>
 {
+    @Override
     public int compare( User u0, User u1 )
     {
         if ( u0 == null )

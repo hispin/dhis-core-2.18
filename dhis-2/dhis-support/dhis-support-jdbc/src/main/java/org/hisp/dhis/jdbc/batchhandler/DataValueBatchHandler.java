@@ -54,6 +54,7 @@ public class DataValueBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "datavalue" );
@@ -79,6 +80,7 @@ public class DataValueBatchHandler
         statementBuilder.setIdentifierValue( value.getAttributeOptionCombo().getId() );
     }
     
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "dataelementid" );
@@ -88,6 +90,7 @@ public class DataValueBatchHandler
         statementBuilder.setUniqueColumn( "attributeoptioncomboid" );
     }
     
+    @Override
     protected void setUniqueValues( DataValue value )
     {        
         statementBuilder.setUniqueValue( value.getDataElement().getId() );
@@ -97,6 +100,7 @@ public class DataValueBatchHandler
         statementBuilder.setUniqueValue( value.getAttributeOptionCombo().getId() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "dataelementid" );
@@ -112,6 +116,7 @@ public class DataValueBatchHandler
         statementBuilder.setColumn( "followup" );
     }
     
+    @Override
     protected void setValues( DataValue value )
     {        
         statementBuilder.setValue( value.getDataElement().getId() );

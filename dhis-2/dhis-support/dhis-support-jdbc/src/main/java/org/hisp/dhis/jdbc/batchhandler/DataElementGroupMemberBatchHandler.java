@@ -52,29 +52,34 @@ public class DataElementGroupMemberBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "dataelementgroupmembers" );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "dataelementgroupid" );
         statementBuilder.setUniqueColumn( "dataelementid" );
     }
     
+    @Override
     protected void setUniqueValues( GroupMemberAssociation association )
     {        
         statementBuilder.setUniqueValue( association.getGroupId() );
         statementBuilder.setUniqueValue( association.getMemberId() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "dataelementgroupid" );
         statementBuilder.setColumn( "dataelementid" );
     }
     
+    @Override
     protected void setValues( GroupMemberAssociation association )
     {        
         statementBuilder.setValue( association.getGroupId() );

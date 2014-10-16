@@ -52,29 +52,34 @@ public class DataSetSourceAssociationBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "datasetsource" );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "datasetid" );
         statementBuilder.setUniqueColumn( "sourceid" );
     }
     
+    @Override
     protected void setUniqueValues( GroupMemberAssociation association )
     {
         statementBuilder.setUniqueValue( association.getGroupId() );
         statementBuilder.setUniqueValue( association.getMemberId() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "datasetid" );
         statementBuilder.setColumn( "sourceid" );
     }
     
+    @Override
     protected void setValues( GroupMemberAssociation association )
     {
         statementBuilder.setValue( association.getGroupId() );

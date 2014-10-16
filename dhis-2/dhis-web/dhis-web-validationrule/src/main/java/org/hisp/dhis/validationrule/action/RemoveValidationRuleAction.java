@@ -66,7 +66,8 @@ public class RemoveValidationRuleAction
     // Action
     // -------------------------------------------------------------------------
 
-    public String execute() 
+    @Override
+    public String execute()
         throws Exception
     {
         ValidationRule validationRule = validationRuleService.getValidationRule( id );

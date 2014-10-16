@@ -87,6 +87,7 @@ public class GetStringsFromLocaleAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

@@ -58,21 +58,25 @@ public class OrganisationUnitRelationshipImporter
     // Overridden methods
     // -------------------------------------------------------------------------
 
+    @Override
     protected void importUnique( GroupMemberAssociation object )
     {
         organisationUnitService.updateOrganisationUnitParent( object.getMemberId(), object.getGroupId() );
     }
 
+    @Override
     protected void importMatching( GroupMemberAssociation object, GroupMemberAssociation match )
     {
         // Not in use
     }
     
+    @Override
     protected GroupMemberAssociation getMatching( GroupMemberAssociation object )
     {
         return null;
     }
     
+    @Override
     protected boolean isIdentical( GroupMemberAssociation object, GroupMemberAssociation existing )
     {
         return true;

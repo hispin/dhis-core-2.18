@@ -107,6 +107,7 @@ public class AddUserGroupAction
     // Action Implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

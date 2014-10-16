@@ -130,6 +130,7 @@ public class BaseDimensionalObject
      * Indicates whether this dimension should use all dimension items. All
      * dimension options is represented as an option list of zero elements.
      */
+    @Override
     public boolean isAllItems()
     {
         return items != null && items.isEmpty();
@@ -138,6 +139,7 @@ public class BaseDimensionalObject
     /**
      * Indicates whether this dimension has any dimension items.
      */
+    @Override
     public boolean hasItems()
     {
         return items != null && !items.isEmpty();
@@ -146,11 +148,13 @@ public class BaseDimensionalObject
     /**
      * Returns dimension name with fall back to dimension.
      */
+    @Override
     public String getDimensionName()
     {
         return dimensionName != null ? dimensionName : uid;
     }
     
+    @Override
     public AnalyticsType getAnalyticsType()
     {
         return 
@@ -183,6 +187,7 @@ public class BaseDimensionalObject
     // Getters and setters
     //--------------------------------------------------------------------------
 
+    @Override
     @JsonProperty
     @JsonView( { DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -196,6 +201,7 @@ public class BaseDimensionalObject
         this.uid = dimension;
     }
 
+    @Override
     @JsonProperty
     @JsonView( { DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )

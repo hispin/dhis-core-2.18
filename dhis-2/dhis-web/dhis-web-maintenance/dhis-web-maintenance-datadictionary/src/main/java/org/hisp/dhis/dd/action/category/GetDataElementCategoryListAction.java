@@ -91,6 +91,7 @@ public class GetDataElementCategoryListAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         defaultCategory = dataElementCategoryService.getDataElementCategoryByName( DataElementCategory.DEFAULT_NAME );

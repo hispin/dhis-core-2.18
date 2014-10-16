@@ -84,6 +84,7 @@ public class OpenUpdateIndicatorGroupSetAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicatorGroupSet = indicatorService.getIndicatorGroupSet( id, true );

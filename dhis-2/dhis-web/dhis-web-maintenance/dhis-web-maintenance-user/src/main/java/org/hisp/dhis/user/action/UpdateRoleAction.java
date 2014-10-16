@@ -112,6 +112,7 @@ public class UpdateRoleAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

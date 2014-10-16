@@ -67,6 +67,7 @@ public class AuthenticationListener
     // ApplicationListener implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void onApplicationEvent( ApplicationEvent applicationEvent )
     {
         Assert.notNull( applicationEvent );

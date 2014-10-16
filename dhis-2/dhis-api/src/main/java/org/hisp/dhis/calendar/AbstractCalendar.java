@@ -102,6 +102,7 @@ public abstract class AbstractCalendar implements Calendar
         return dateFormat;
     }
 
+    @Override
     public void setDateFormat( String dateFormat )
     {
         this.dateFormat = dateFormat;

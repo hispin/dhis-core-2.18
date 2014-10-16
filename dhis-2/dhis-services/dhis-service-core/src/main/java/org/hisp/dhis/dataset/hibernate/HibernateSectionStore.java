@@ -43,6 +43,7 @@ import org.hisp.dhis.dataset.SectionStore;
 public class HibernateSectionStore
     extends HibernateIdentifiableObjectStore<Section> implements SectionStore
 {
+    @Override
     public Section getSectionByName( String name, DataSet dataSet )
     {
         Criteria criteria = getCriteria();

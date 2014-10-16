@@ -53,6 +53,7 @@ public class ReportDeletionHandler
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String getClassName()
     {
         return ReportTable.class.getSimpleName();

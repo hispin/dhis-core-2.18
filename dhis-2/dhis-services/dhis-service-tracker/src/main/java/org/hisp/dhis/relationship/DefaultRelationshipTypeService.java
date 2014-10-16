@@ -65,16 +65,19 @@ public class DefaultRelationshipTypeService
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    @Override
     public void deleteRelationshipType( RelationshipType relationshipType )
     {
         relationshipTypeStore.delete( relationshipType );
     }
 
+    @Override
     public Collection<RelationshipType> getAllRelationshipTypes()
     {
         return i18n( i18nService, relationshipTypeStore.getAll() );
     }
 
+    @Override
     public RelationshipType getRelationshipType( int id )
     {
         return i18n( i18nService, relationshipTypeStore.get( id ) );
@@ -86,16 +89,19 @@ public class DefaultRelationshipTypeService
         return i18n( i18nService, relationshipTypeStore.getByUid( uid ) );
     }
 
+    @Override
     public int addRelationshipType( RelationshipType relationshipType )
     {
         return relationshipTypeStore.save( relationshipType );
     }
 
+    @Override
     public void updateRelationshipType( RelationshipType relationshipType )
     {
         relationshipTypeStore.update( relationshipType );
     }
 
+    @Override
     public RelationshipType getRelationshipType( String aIsToB, String bIsToA )
     {
         return i18n( i18nService, relationshipTypeStore.getRelationshipType( aIsToB, bIsToA ) );

@@ -66,6 +66,7 @@ public class RemoveValidationRuleGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         ValidationRuleGroup group = validationRuleService.getValidationRuleGroup( id );

@@ -83,6 +83,7 @@ public class MemoryAggregationCache
     // AggregationCache implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Collection<Integer> getIntersectingPeriods( final Date startDate, final Date endDate )
     {
         final String key = startDate.toString() + SEPARATOR + endDate.toString();
@@ -107,6 +108,7 @@ public class MemoryAggregationCache
         return periods;
     }
 
+    @Override
     public Collection<Integer> getPeriodsBetweenDates( final Date startDate, final Date endDate )
     {
         final String key = startDate.toString() + SEPARATOR + endDate.toString();
@@ -131,6 +133,7 @@ public class MemoryAggregationCache
         return periods;
     }
 
+    @Override
     public Collection<Integer> getPeriodsBetweenDatesPeriodType( final PeriodType periodType, final Date startDate, final Date endDate )
     {
         final String key = periodType.getName() + SEPARATOR + startDate.toString() + SEPARATOR + endDate.toString();
@@ -155,6 +158,7 @@ public class MemoryAggregationCache
         return periods;
     }
     
+    @Override
     public Period getPeriod( final int id )
     {
         final String key = String.valueOf( id );
@@ -179,6 +183,7 @@ public class MemoryAggregationCache
         return period;
     }
 
+    @Override
     public int getLevelOfOrganisationUnit( final int id )
     {
         final String key = String.valueOf( id );
@@ -203,6 +208,7 @@ public class MemoryAggregationCache
         return level;
     }
     
+    @Override
     public void clearCache()
     {
         intersectingPeriodCache.remove();

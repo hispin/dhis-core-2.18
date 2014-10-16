@@ -55,6 +55,7 @@ public class UserXSDConverter
     // XMLConverter implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public void write( XMLWriter writer, ExportParams params )
     {
         writer.openElement( "xsd:element", "name", "UserName" );
@@ -106,6 +107,7 @@ public class UserXSDConverter
         writer.closeElement();
     }    
 
+    @Override
     public void read( XMLReader reader, ImportParams params )
     {
         // Not implemented        

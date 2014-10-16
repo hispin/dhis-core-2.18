@@ -40,6 +40,7 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 public class TrackedEntityAttributeSortOrderComparator
     implements Comparator<TrackedEntityAttribute>
 {
+    @Override
     public int compare( TrackedEntityAttribute attribute0, TrackedEntityAttribute attribute1 )
     {
         if ( attribute0.getSortOrderInVisitSchedule() == null || attribute0.getSortOrderInVisitSchedule() == 0 )

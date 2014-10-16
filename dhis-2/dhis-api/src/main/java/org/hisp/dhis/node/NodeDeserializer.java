@@ -38,7 +38,9 @@ import java.util.List;
  */
 public interface NodeDeserializer extends Deserializer<RootNode>
 {
+    @Override
     List<String> contentTypes();
 
+    @Override
     RootNode deserialize( InputStream inputStream ) throws Exception;
 }

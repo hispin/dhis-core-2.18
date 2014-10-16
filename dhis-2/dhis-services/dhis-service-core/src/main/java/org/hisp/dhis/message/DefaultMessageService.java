@@ -97,11 +97,13 @@ public class DefaultMessageService
     // MessageService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public int sendMessage( String subject, String text, String metaData, Set<User> users )
     {
         return sendMessage( subject, text, metaData, users, null, false, false );
     }
 
+    @Override
     public int sendMessage( String subject, String text, String metaData, Set<User> users_,
         User sender, boolean includeFeedbackRecipients, boolean forceNotifications )
     {
@@ -159,11 +161,13 @@ public class DefaultMessageService
         return id;
     }
 
+    @Override
     public int sendFeedback( String subject, String text, String metaData )
     {
         return sendMessage( subject, text, metaData, new HashSet<User>(), null, true, false );
     }
 
+    @Override
     public void sendReply( MessageConversation conversation, String text, String metaData )
     {
         User sender = currentUserService.getCurrentUser();
@@ -177,6 +181,7 @@ public class DefaultMessageService
         invokeMessageSenders( conversation.getSubject(), text, sender, new HashSet<>( conversation.getUsers() ), false );
     }
 
+    @Override
     public int sendCompletenessMessage( CompleteDataSetRegistration registration )
     {
         DataSet dataSet = registration.getDataSet();
@@ -230,42 +235,50 @@ public class DefaultMessageService
         return 0;
     }
 
+    @Override
     public int saveMessageConversation( MessageConversation conversation )
     {
         return messageConversationStore.save( conversation );
     }
 
+    @Override
     public void updateMessageConversation( MessageConversation conversation )
     {
         messageConversationStore.update( conversation );
     }
 
+    @Override
     public MessageConversation getMessageConversation( int id )
     {
         return messageConversationStore.get( id );
     }
 
+    @Override
     public MessageConversation getMessageConversation( String uid )
     {
         return messageConversationStore.getByUid( uid );
     }
 
+    @Override
     public long getUnreadMessageConversationCount()
     {
         return messageConversationStore.getUnreadUserMessageConversationCount( currentUserService.getCurrentUser() );
     }
 
+    @Override
     public long getUnreadMessageConversationCount( User user )
     {
         return messageConversationStore.getUnreadUserMessageConversationCount( user );
     }
 
+    @Override
     public List<MessageConversation> getMessageConversations( int first, int max )
     {
         return messageConversationStore.getMessageConversations( currentUserService.getCurrentUser(), false, false,
             first, max );
     }
 
+    @Override
     public List<MessageConversation> getMessageConversations( boolean followUpOnly, boolean unreadOnly, int first,
         int max )
     {
@@ -273,27 +286,32 @@ public class DefaultMessageService
             unreadOnly, first, max );
     }
 
+    @Override
     public Collection<MessageConversation> getMessageConversations( String[] messageConversationUids )
     {
         return messageConversationStore.getMessageConversations( messageConversationUids );
     }
 
+    @Override
     public int getMessageConversationCount()
     {
         return messageConversationStore.getMessageConversationCount( currentUserService.getCurrentUser(), false, false );
     }
 
+    @Override
     public int getMessageConversationCount( boolean followUpOnly, boolean unreadOnly )
     {
         return messageConversationStore.getMessageConversationCount( currentUserService.getCurrentUser(), followUpOnly,
             unreadOnly );
     }
 
+    @Override
     public List<MessageConversation> getAllMessageConversations()
     {
         return messageConversationStore.getMessageConversations( null, false, false, null, null );
     }
 
+    @Override
     public void deleteMessages( User user )
     {
         messageConversationStore.deleteMessages( user );
@@ -301,6 +319,7 @@ public class DefaultMessageService
         messageConversationStore.removeUserFromMessageConversations( user );
     }
 
+    @Override
     public List<UserMessage> getLastRecipients( int first, int max )
     {
         return messageConversationStore.getLastRecipients( currentUserService.getCurrentUser(), first, max );

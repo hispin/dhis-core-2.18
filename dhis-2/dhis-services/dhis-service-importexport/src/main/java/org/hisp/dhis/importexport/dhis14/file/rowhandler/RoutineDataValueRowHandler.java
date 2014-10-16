@@ -99,6 +99,7 @@ public class RoutineDataValueRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {
         final Dhis14RoutineDataValue dhis14Value = (Dhis14RoutineDataValue) object;

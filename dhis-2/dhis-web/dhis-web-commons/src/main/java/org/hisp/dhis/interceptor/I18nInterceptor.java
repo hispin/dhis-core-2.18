@@ -75,14 +75,17 @@ public class I18nInterceptor
     // AroundInterceptor implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void destroy()
     {
     }
 
+    @Override
     public void init()
     {
     }
 
+    @Override
     public String intercept( ActionInvocation invocation )
         throws Exception
     {

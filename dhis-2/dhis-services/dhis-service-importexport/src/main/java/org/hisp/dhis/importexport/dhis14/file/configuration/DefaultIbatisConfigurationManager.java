@@ -56,6 +56,7 @@ public class DefaultIbatisConfigurationManager
     // IbatisConfigurationManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Properties getPropertiesConfiguration()
     {
         Properties properties = new Properties();
@@ -68,6 +69,7 @@ public class DefaultIbatisConfigurationManager
         return properties;
     }
     
+    @Override
     public void setConfiguration( String connectionUrl, String username, String password, String levels )
     {
         systemSettingManager.saveSystemSetting( KEY_CONNECTION_URL_DATABASE, connectionUrl );
@@ -76,6 +78,7 @@ public class DefaultIbatisConfigurationManager
         systemSettingManager.saveSystemSetting( KEY_LEVELS, levels );
     }
 
+    @Override
     public boolean fileIsValid( String path )
     {
         if ( path == null || !path.endsWith( ACCESS_EXTENSION ) )

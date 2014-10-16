@@ -166,7 +166,8 @@ public class PerformMaintenanceAction
     // Action implementation
     // -------------------------------------------------------------------------
     
-    public String execute() 
+    @Override
+    public String execute()
         throws Exception
     {
         String username = currentUserService.getCurrentUsername();

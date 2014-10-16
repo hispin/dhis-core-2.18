@@ -67,6 +67,7 @@ public class DefaultUserDetailsService
     // UserDetailsService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     @Transactional
     public final UserDetails loadUserByUsername( String username )
         throws UsernameNotFoundException, DataAccessException

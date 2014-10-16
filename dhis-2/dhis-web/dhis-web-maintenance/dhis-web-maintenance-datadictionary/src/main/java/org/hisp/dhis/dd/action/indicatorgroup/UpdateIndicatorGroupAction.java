@@ -107,6 +107,7 @@ public class UpdateIndicatorGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicatorGroup = indicatorService.getIndicatorGroup( id );

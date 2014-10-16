@@ -55,11 +55,13 @@ public class Relationship extends Model
 
     private String bIsToA;
     
+    @Override
     public String getClientVersion()
     {
         return clientVersion;
     }
     
+    @Override
     public void setClientVersion( String clientVersion )
     {
         this.clientVersion = clientVersion;
@@ -135,6 +137,7 @@ public class Relationship extends Model
         this.bIsToA = bIsToA;
     }
 
+    @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
@@ -224,6 +227,7 @@ public class Relationship extends Model
         }
     }
     
+    @Override
     public void deSerialize( DataInputStream dint )
         throws IOException
     {

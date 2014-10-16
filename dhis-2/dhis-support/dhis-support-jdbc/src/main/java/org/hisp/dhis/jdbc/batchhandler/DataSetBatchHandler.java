@@ -52,6 +52,7 @@ public class DataSetBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "dataset" );
@@ -75,6 +76,7 @@ public class DataSetBatchHandler
         statementBuilder.setIdentifierValue( dataSet.getId() );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "name" );
@@ -82,6 +84,7 @@ public class DataSetBatchHandler
         statementBuilder.setUniqueColumn( "code" );
     }
 
+    @Override
     protected void setUniqueValues( DataSet dataSet )
     {
         statementBuilder.setUniqueValue( dataSet.getName() );
@@ -89,6 +92,7 @@ public class DataSetBatchHandler
         statementBuilder.setUniqueValue( dataSet.getCode() );
     }
 
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "uid" );
@@ -113,6 +117,7 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "renderhorizontally" );
     }
 
+    @Override
     protected void setValues( DataSet dataSet )
     {
         statementBuilder.setValue( dataSet.getUid() );

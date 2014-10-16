@@ -169,6 +169,7 @@ public class GetDataCompletenessAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

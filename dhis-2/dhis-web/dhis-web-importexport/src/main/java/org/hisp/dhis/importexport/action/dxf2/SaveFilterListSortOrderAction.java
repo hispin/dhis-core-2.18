@@ -66,6 +66,7 @@ public class SaveFilterListSortOrderAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         int sortOrder = 1;

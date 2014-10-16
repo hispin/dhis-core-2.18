@@ -71,6 +71,7 @@ public class GetMinMaxValidationParamsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

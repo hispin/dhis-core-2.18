@@ -93,6 +93,7 @@ public class ValidateAttributeGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

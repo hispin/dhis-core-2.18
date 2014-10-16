@@ -54,6 +54,7 @@ public class CompositeSystemAuthoritiesProvider
     // SystemAuthoritiesProvider implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Collection<String> getSystemAuthorities()
     {
         HashSet<String> authorities = new HashSet<>();

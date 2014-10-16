@@ -194,6 +194,7 @@ public class StreamingDataValueSet
         return new StreamingDataValue( writer );
     }
 
+    @Override
     public void close()
     {
         if ( writer != null )

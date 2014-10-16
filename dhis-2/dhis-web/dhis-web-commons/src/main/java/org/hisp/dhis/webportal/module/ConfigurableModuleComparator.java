@@ -57,6 +57,7 @@ public class ConfigurableModuleComparator
     // Comparator
     // -------------------------------------------------------------------------
 
+    @Override
     public int compare( Module moduleA, Module moduleB )
     {
         int indexA = order.indexOf( moduleA.getName() );

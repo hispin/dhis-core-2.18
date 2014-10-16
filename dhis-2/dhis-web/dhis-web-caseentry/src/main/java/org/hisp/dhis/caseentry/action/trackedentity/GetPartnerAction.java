@@ -125,6 +125,7 @@ public class GetPartnerAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

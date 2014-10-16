@@ -67,6 +67,7 @@ public class UserSettingLocaleManager
     // LocaleManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Locale getCurrentLocale()
     {
         Locale locale = getUserSelectedLocale();
@@ -79,11 +80,13 @@ public class UserSettingLocaleManager
         return DHIS_STANDARD_LOCALE;
     }
 
+    @Override
     public void setCurrentLocale( Locale locale )
     {
         userSettingService.saveUserSetting( UserSettingService.KEY_UI_LOCALE, locale );
     }
 
+    @Override
     public List<Locale> getLocalesOrderedByPriority()
     {
         List<Locale> locales = new ArrayList<>();
@@ -105,11 +108,13 @@ public class UserSettingLocaleManager
         return (Locale) userSettingService.getUserSetting( UserSettingService.KEY_UI_LOCALE );
     }
 
+    @Override
     public Locale getFallbackLocale()
     {
         return DHIS_STANDARD_LOCALE;
     }
     
+    @Override
     public List<Locale> getAvailableLocales()
     {
         try

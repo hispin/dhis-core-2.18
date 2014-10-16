@@ -73,6 +73,7 @@ public class GetTableAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         table = reportTableService.getReportTable( id );

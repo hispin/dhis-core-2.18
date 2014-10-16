@@ -72,6 +72,7 @@ public class DefaultSectionService
     // SectionService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public int addSection( Section section )
     {
         int id = sectionStore.save( section );
@@ -79,16 +80,19 @@ public class DefaultSectionService
         return id;
     }
 
+    @Override
     public void deleteSection( Section section )
     {
         sectionStore.delete( section );
     }
 
+    @Override
     public Collection<Section> getAllSections()
     {
         return i18n( i18nService, sectionStore.getAll() );
     }
 
+    @Override
     public Section getSection( int id )
     {
         return i18n( i18nService, sectionStore.get( id ) );
@@ -100,11 +104,13 @@ public class DefaultSectionService
         return i18n( i18nService, sectionStore.getByUid( uid ) );
     }
 
+    @Override
     public Section getSectionByName( String name, Integer dataSetId )
     {
         return i18n( i18nService, sectionStore.getSectionByName( name, dataSetService.getDataSet( dataSetId ) ) );
     }
 
+    @Override
     public void updateSection( Section section )
     {
         sectionStore.update( section );

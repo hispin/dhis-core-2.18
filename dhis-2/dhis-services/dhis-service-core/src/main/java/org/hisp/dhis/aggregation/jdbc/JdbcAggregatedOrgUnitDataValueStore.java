@@ -57,6 +57,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
     // AggregatedOrgUnitDataValueStore implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Double getAggregatedDataValue( int dataElement, int categoryOptionCombo, int period, int organisationUnit, int organisationUnitGroup )
     {
         final String sql =
@@ -71,7 +72,8 @@ public class JdbcAggregatedOrgUnitDataValueStore
         return jdbcTemplate.queryForObject( sql, Double.class );
     }
 
-    public Collection<AggregatedDataValue> getAggregatedDataValueTotals( Collection<Integer> dataElementIds, 
+    @Override
+    public Collection<AggregatedDataValue> getAggregatedDataValueTotals( Collection<Integer> dataElementIds,
         Collection<Integer> periodIds, int organisationUnitId, Collection<Integer> organisationUnitGroupIds )
     {
         final String sql = 
@@ -86,6 +88,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
         return jdbcTemplate.query( sql, new AggregatedOrgUnitDataValueRowMapper() );
     }
 
+    @Override
     public void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         final String sql =
@@ -97,6 +100,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
         jdbcTemplate.execute( sql );
     }
 
+    @Override
     public void deleteAggregatedDataValues()
     {
         final String sql = "DELETE FROM aggregatedorgunitdatavalue";
@@ -108,6 +112,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
     // AggregatedIndicatorValue
     // -------------------------------------------------------------------------
 
+    @Override
     public Double getAggregatedIndicatorValue( int indicator, int period, int organisationUnit, int organisationUnitGroup )
     {
         final String sql =
@@ -121,7 +126,8 @@ public class JdbcAggregatedOrgUnitDataValueStore
         return jdbcTemplate.queryForObject( sql, Double.class );
     }
 
-    public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> indicatorIds, 
+    @Override
+    public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, int organisationUnitId, Collection<Integer> organisationUnitGroupIds )
     {
         final String sql =
@@ -135,6 +141,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
         return jdbcTemplate.query( sql, new AggregatedOrgUnitIndicatorValueRowMapper() );
     }
 
+    @Override
     public void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds )
     {
@@ -147,6 +154,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
         jdbcTemplate.execute( sql );
     }
 
+    @Override
     public void deleteAggregatedIndicatorValues()
     {
         final String sql = "DELETE FROM aggregatedorgunitindicatorvalue ";

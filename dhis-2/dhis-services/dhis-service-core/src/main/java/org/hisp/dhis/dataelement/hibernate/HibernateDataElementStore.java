@@ -66,12 +66,14 @@ public class HibernateDataElementStore
     // DataElement
     // -------------------------------------------------------------------------
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> searchDataElementsByName( String key )
     {
         return getCriteria( Restrictions.ilike( "name", "%" + key + "%" ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getAggregateableDataElements()
     {
@@ -83,24 +85,28 @@ public class HibernateDataElementStore
         return getCriteria( Restrictions.in( "type", types ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsByAggregationOperator( String aggregationOperator )
     {
         return getCriteria( Restrictions.eq( "aggregationOperator", aggregationOperator ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsByType( String type )
     {
         return getCriteria( Restrictions.eq( "type", type ) ).list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType )
     {
         return getCriteria( Restrictions.eq( "domainType", domainType ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType, int first, int max )
     {
@@ -114,12 +120,14 @@ public class HibernateDataElementStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         return getCriteria( Restrictions.eq( "categoryCombo", categoryCombo ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsWithGroupSets()
     {
@@ -128,6 +136,7 @@ public class HibernateDataElementStore
         return getQuery( hql ).list();
     }
 
+    @Override
     public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds )
     {
         String hql = "update DataElement set zeroIsSignificant = false";
@@ -149,6 +158,7 @@ public class HibernateDataElementStore
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsByZeroIsSignificant( boolean zeroIsSignificant )
     {
@@ -159,6 +169,7 @@ public class HibernateDataElementStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsWithoutGroups()
     {
@@ -167,6 +178,7 @@ public class HibernateDataElementStore
         return getQuery( hql ).setCacheable( true ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsWithoutDataSets()
     {
@@ -175,6 +187,7 @@ public class HibernateDataElementStore
         return getQuery( hql ).setParameter( "domainType", DataElementDomain.AGGREGATE ).setCacheable( true ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsWithDataSets()
     {
@@ -183,6 +196,7 @@ public class HibernateDataElementStore
         return getQuery( hql ).setCacheable( true ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets )
     {
@@ -191,6 +205,7 @@ public class HibernateDataElementStore
         return getQuery( hql ).setParameterList( "ids", getIdentifiers( DataSet.class, dataSets ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsByAggregationLevel( int aggregationLevel )
     {
@@ -199,6 +214,7 @@ public class HibernateDataElementStore
         return getQuery( hql ).setInteger( "aggregationLevel", aggregationLevel ).list();
     }
 
+    @Override
     public ListMap<String, String> getDataElementCategoryOptionComboMap( Set<String> dataElementUids )
     {
         final String sql =
@@ -232,6 +248,7 @@ public class HibernateDataElementStore
         return map;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElement> get( DataSet dataSet, String key, Integer max )
     {

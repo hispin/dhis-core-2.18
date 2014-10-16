@@ -107,6 +107,7 @@ public class GetTrackedEntityInstanceHistoryAction
     // Implementation Action
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

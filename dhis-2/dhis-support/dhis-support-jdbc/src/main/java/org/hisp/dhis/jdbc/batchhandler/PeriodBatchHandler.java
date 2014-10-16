@@ -52,6 +52,7 @@ public class PeriodBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "period" );
@@ -93,6 +94,7 @@ public class PeriodBatchHandler
         statementBuilder.setMatchValue( period.getEndDate() );        
     }
     
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "periodtypeid" );
@@ -100,6 +102,7 @@ public class PeriodBatchHandler
         statementBuilder.setUniqueColumn( "enddate" );
     }
     
+    @Override
     protected void setUniqueValues( Period period )
     {        
         statementBuilder.setUniqueValue( period.getPeriodType().getId() );
@@ -107,6 +110,7 @@ public class PeriodBatchHandler
         statementBuilder.setUniqueValue( period.getEndDate() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "periodtypeid" );
@@ -114,6 +118,7 @@ public class PeriodBatchHandler
         statementBuilder.setColumn( "enddate" );
     }
     
+    @Override
     protected void setValues( Period period )
     {        
         statementBuilder.setValue( period.getPeriodType().getId() );

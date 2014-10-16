@@ -58,56 +58,67 @@ public class DefaultDocumentService
     // DocumentService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public int saveDocument( Document document )
     {
         return documentStore.save( document );
     }
 
+    @Override
     public Document getDocument( int id )
     {
         return documentStore.get( id );
     }
 
+    @Override
     public Document getDocument( String uid )
     {
         return documentStore.getByUid( uid );
     }
 
+    @Override
     public void deleteDocument( Document document )
     {
         documentStore.delete( document );
     }
 
+    @Override
     public List<Document> getAllDocuments()
     {
         return documentStore.getAll();
     }
 
+    @Override
     public List<Document> getDocumentByName( String name )
     {
         return documentStore.getAllEqName( name );
     }
 
+    @Override
     public int getDocumentCount()
     {
         return documentStore.getCount();
     }
 
+    @Override
     public int getDocumentCountByName( String name )
     {
         return documentStore.getCountLikeName( name );
     }
 
+    @Override
     public List<Document> getDocumentsBetween( int first, int max )
     {
         return documentStore.getAllOrderedName( first, max );
     }
 
+    @Override
     public List<Document> getDocumentsBetweenByName( String name, int first, int max )
     {
         return documentStore.getAllLikeName( name, first, max );
     }
     
+    @Override
     public List<Document> getDocumentsByUid( List<String> uids )
     {
         return documentStore.getByUid( uids );

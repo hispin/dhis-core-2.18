@@ -57,41 +57,49 @@ public class DefaultConstantService
     // Constant
     // -------------------------------------------------------------------------
 
+    @Override
     public int saveConstant( Constant constant )
     {
         return constantStore.save( constant );
     }
 
+    @Override
     public void updateConstant( Constant constant )
     {
         constantStore.update( constant );
     }
 
+    @Override
     public void deleteConstant( Constant constant )
     {
         constantStore.delete( constant );
     }
 
+    @Override
     public Constant getConstant( int constantId )
     {
         return constantStore.get( constantId );
     }
 
+    @Override
     public Constant getConstant( String uid )
     {
         return constantStore.getByUid( uid );
     }
 
+    @Override
     public Constant getConstantByName( String constantName )
     {
         return constantStore.getByName( constantName );
     }
 
+    @Override
     public Collection<Constant> getAllConstants()
     {
         return constantStore.getAll();
     }
     
+    @Override
     public Map<String, Double> getConstantMap()
     {
         Map<String, Double> map = new HashMap<>();
@@ -104,6 +112,7 @@ public class DefaultConstantService
         return map;
     }
     
+    @Override
     public Map<String, Double> getConstantParameterMap()
     {
         Map<String, Double> map = new HashMap<>();
@@ -120,21 +129,25 @@ public class DefaultConstantService
     // Constant expanding
     // -------------------------------------------------------------------------
     
+    @Override
     public int getConstantCount()
     {
         return constantStore.getCount();
     }
 
+    @Override
     public int getConstantCountByName( String name )
     {
         return constantStore.getCountLikeName( name );
     }
 
+    @Override
     public Collection<Constant> getConstantsBetween( int first, int max )
     {
         return constantStore.getAllOrderedName( first, max );
     }
 
+    @Override
     public Collection<Constant> getConstantsBetweenByName( String name, int first, int max )
     {
         return constantStore.getAllLikeName( name, first, max );

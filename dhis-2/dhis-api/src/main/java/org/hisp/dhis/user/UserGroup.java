@@ -127,12 +127,14 @@ public class UserGroup
         return false;
     }
 
+    @Override
     @JsonIgnore
     public User getUser()
     {
         return user;
     }
 
+    @Override
     @JsonIgnore
     public void setUser( User user )
     {

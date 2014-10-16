@@ -154,42 +154,50 @@ public class DefaultReportTableService
     // Persistence
     // -------------------------------------------------------------------------
 
+    @Override
     public int saveReportTable( ReportTable reportTable )
     {
         return reportTableStore.save( reportTable );
     }
 
+    @Override
     public void updateReportTable( ReportTable reportTable )
     {
         reportTableStore.update( reportTable );
     }
 
+    @Override
     public void deleteReportTable( ReportTable reportTable )
     {
         reportTableStore.delete( reportTable );
     }
 
+    @Override
     public ReportTable getReportTable( int id )
     {
         return reportTableStore.get( id );
     }
 
+    @Override
     public ReportTable getReportTable( String uid )
     {
         return reportTableStore.getByUid( uid );
     }
 
+    @Override
     public ReportTable getReportTableNoAcl( String uid )
     {
         return reportTableStore.getByUidNoAcl( uid );
     }
 
+    @Override
     public Collection<ReportTable> getReportTables( final Collection<Integer> identifiers )
     {
         Collection<ReportTable> objects = getAllReportTables();
 
         return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<ReportTable>()
         {
+            @Override
             public boolean retain( ReportTable object )
             {
                 return identifiers.contains( object.getId() );
@@ -197,56 +205,67 @@ public class DefaultReportTableService
         } );
     }
     
+    @Override
     public List<ReportTable> getReportTablesByUid( List<String> uids )
     {
         return reportTableStore.getByUid( uids );
     }
 
+    @Override
     public List<ReportTable> getAllReportTables()
     {
         return reportTableStore.getAll();
     }
 
+    @Override
     public List<ReportTable> getReportTableByName( String name )
     {
         return reportTableStore.getAllEqName( name );
     }
 
+    @Override
     public List<ReportTable> getReportTablesBetweenByName( String name, int first, int max )
     {
         return reportTableStore.getAllLikeName( name, first, max );
     }
 
+    @Override
     public int getReportTableCount()
     {
         return reportTableStore.getCount();
     }
 
+    @Override
     public int getReportTableCountByName( String name )
     {
         return reportTableStore.getCountLikeName( name );
     }
 
+    @Override
     public List<ReportTable> getReportTablesBetween( int first, int max )
     {
         return reportTableStore.getAllOrderedName( first, max );
     }
     
+    @Override
     public int countDataSetReportTables( DataSet dataSet )
     {
         return reportTableStore.countDataSetAnalyticalObject( dataSet );
     }
     
+    @Override
     public int countIndicatorReportTables( Indicator indicator )
     {
         return reportTableStore.countIndicatorAnalyticalObject( indicator );
     }
     
+    @Override
     public int countDataElementReportTables( DataElement dataElement )
     {
         return reportTableStore.countDataElementAnalyticalObject( dataElement );
     }
     
+    @Override
     public int countOrganisationUnitReportTables( OrganisationUnit organisationUnit )
     {
         return reportTableStore.countOrganisationUnitAnalyticalObject( organisationUnit );

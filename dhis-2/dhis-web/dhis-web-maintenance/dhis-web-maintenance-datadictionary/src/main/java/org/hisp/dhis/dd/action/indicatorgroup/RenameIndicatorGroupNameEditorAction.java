@@ -77,6 +77,7 @@ public class RenameIndicatorGroupNameEditorAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicatorGroup = indicatorService.getIndicatorGroup( id );

@@ -152,6 +152,7 @@ public class AddAttributeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

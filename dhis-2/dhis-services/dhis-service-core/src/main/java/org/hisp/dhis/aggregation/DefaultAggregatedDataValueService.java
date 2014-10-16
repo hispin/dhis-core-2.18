@@ -60,76 +60,91 @@ public class DefaultAggregatedDataValueService
     // AggregatedDataValue
     // -------------------------------------------------------------------------
     
+    @Override
     public Double getAggregatedDataValue( int dataElement, int period, int organisationUnit )
     {
         return aggregatedDataValueStore.getAggregatedDataValue( dataElement, period, organisationUnit );
     }
     
+    @Override
     public Double getAggregatedValue( DataElement dataElement, Period period, OrganisationUnit organisationUnit )
     {
         return aggregatedDataValueStore.getAggregatedDataValue( dataElement.getId(), period.getId(), organisationUnit.getId() );
     }
     
+    @Override
     public Double getAggregatedDataValue( int dataElement, int categoryOptionCombo, int period, int organisationUnit )
     {
         return aggregatedDataValueStore.getAggregatedDataValue( dataElement, categoryOptionCombo, period, organisationUnit );
     }
     
+    @Override
     public Double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit organisationUnit )
     {
         return aggregatedDataValueStore.getAggregatedDataValue( dataElement.getId(), categoryOptionCombo.getId(), period.getId(), organisationUnit.getId() );
     }
 
+    @Override
     public Double getAggregatedValue( int dataElement, int categoryOptionCombo, Collection<Integer> periodIds, int organisationUnit )
     {
         return aggregatedDataValueStore.getAggregatedDataValue( dataElement, categoryOptionCombo, periodIds, organisationUnit );
     }
     
+    @Override
     public Double getAggregatedValue( DataElement dataElement, DataElementCategoryOption categoryOption, Period period, OrganisationUnit organisationUnit )
     {
         return aggregatedDataValueStore.getAggregatedDataValue( dataElement, categoryOption, period, organisationUnit );
     }
     
+    @Override
     public Collection<AggregatedDataValue> getAggregatedDataValues( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedDataValues( periodIds, organisationUnitIds );
     }
     
+    @Override
     public Collection<AggregatedDataValue> getAggregatedDataValueTotals( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedDataValueTotals( periodIds, organisationUnitIds );
     }
     
+    @Override
     public Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedDataValues( dataElementId, periodIds, organisationUnitIds );
     }
     
+    @Override
     public Collection<AggregatedDataValue> getAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
     }
 
+    @Override
     public Collection<AggregatedDataValue> getAggregatedDataValueTotals( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitIds );
     }
     
+    @Override
     public void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         aggregatedDataValueStore.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
     }
     
+    @Override
     public void deleteAggregatedDataValues()
     {
         aggregatedDataValueStore.deleteAggregatedDataValues();
     }
 
+    @Override
     public StoreIterator<AggregatedDataValue> getAggregateDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods)
     {
        return aggregatedDataValueStore.getAggregatedDataValuesAtLevel(orgunit, level, periods);
     }
 
+    @Override
     public int countDataValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
         return aggregatedDataValueStore.countDataValuesAtLevel( orgunit, level, periods );
@@ -144,38 +159,45 @@ public class DefaultAggregatedDataValueService
         return aggregatedDataValueStore.getAggregatedIndicatorValue( indicator, period, organisationUnit );
     }
     
+    @Override
     public Double getAggregatedValue( Indicator indicator, Period period, OrganisationUnit organisationUnit )
     {
         return aggregatedDataValueStore.getAggregatedIndicatorValue( indicator.getId(), period.getId(), organisationUnit.getId() );
     }
     
+    @Override
     public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedIndicatorValues( periodIds, organisationUnitIds );
     }
     
+    @Override
     public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
     }
     
+    @Override
     public void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds )
     {
         aggregatedDataValueStore.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
     }
     
+    @Override
     public void deleteAggregatedIndicatorValues()
     {
         aggregatedDataValueStore.deleteAggregatedIndicatorValues();
     }
 
+    @Override
     public StoreIterator<AggregatedIndicatorValue> getAggregateIndicatorValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
         return aggregatedDataValueStore.getAggregatedIndicatorValuesAtLevel( orgunit, level, periods );
     }
 
+    @Override
     public int countIndicatorValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
         return aggregatedDataValueStore.countIndicatorValuesAtLevel( orgunit, level, periods );
@@ -185,6 +207,7 @@ public class DefaultAggregatedDataValueService
     // AggregatedDataSetCompleteness
     // -------------------------------------------------------------------------
     
+    @Override
     public Collection<DataSetCompletenessResult> getAggregatedDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds )
     {
@@ -195,11 +218,13 @@ public class DefaultAggregatedDataValueService
     // Data mart
     // -------------------------------------------------------------------------
     
+    @Override
     public void dropDataMart()
     {
         aggregatedDataValueStore.dropDataMart();
     }
     
+    @Override
     public void createDataMart()
     {
         aggregatedDataValueStore.createDataMart();

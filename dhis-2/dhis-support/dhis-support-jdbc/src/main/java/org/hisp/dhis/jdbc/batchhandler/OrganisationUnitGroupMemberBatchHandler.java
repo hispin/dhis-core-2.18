@@ -52,29 +52,34 @@ public class OrganisationUnitGroupMemberBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "orgunitgroupmembers" );
     }
     
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "orgunitgroupid" );
         statementBuilder.setUniqueColumn( "organisationunitid" );
     }
     
+    @Override
     protected void setUniqueValues( GroupMemberAssociation association )
     {        
         statementBuilder.setUniqueValue( association.getGroupId() );
         statementBuilder.setUniqueValue( association.getMemberId() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "orgunitgroupid" );
         statementBuilder.setColumn( "organisationunitid" );
     }
     
+    @Override
     protected void setValues( GroupMemberAssociation association )
     {        
         statementBuilder.setValue( association.getGroupId() );

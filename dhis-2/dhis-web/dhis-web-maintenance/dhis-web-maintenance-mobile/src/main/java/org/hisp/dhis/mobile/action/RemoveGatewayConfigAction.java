@@ -84,6 +84,7 @@ public class RemoveGatewayConfigAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

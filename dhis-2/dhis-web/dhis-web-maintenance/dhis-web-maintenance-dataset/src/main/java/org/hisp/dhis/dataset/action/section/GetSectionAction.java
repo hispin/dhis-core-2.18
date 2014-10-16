@@ -108,6 +108,7 @@ public class GetSectionAction
     // Action
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

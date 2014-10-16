@@ -75,6 +75,7 @@ public class GetCategoryOptionComboListAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         defaultCategoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();

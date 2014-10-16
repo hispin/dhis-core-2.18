@@ -73,6 +73,7 @@ public class UpdateCategoryOptionComboAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( id );

@@ -73,6 +73,7 @@ public class PlainTextErrorResult
     // Result implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void execute( ActionInvocation invocation )
         throws Exception
     {

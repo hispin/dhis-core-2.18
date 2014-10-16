@@ -93,6 +93,7 @@ public class ValidateIndicatorTypeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( name != null )

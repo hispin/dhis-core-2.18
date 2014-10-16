@@ -52,6 +52,7 @@ public class CompleteDataSetRegistrationBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "completedatasetregistration" );
@@ -75,6 +76,7 @@ public class CompleteDataSetRegistrationBatchHandler
         statementBuilder.setIdentifierValue( registration.getAttributeOptionCombo().getId() );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "datasetid" );
@@ -83,6 +85,7 @@ public class CompleteDataSetRegistrationBatchHandler
         statementBuilder.setUniqueColumn( "attributeoptioncomboid" );
     }
 
+    @Override
     protected void setUniqueValues( CompleteDataSetRegistration registration )
     {        
         statementBuilder.setUniqueValue( registration.getDataSet().getId() );
@@ -91,6 +94,7 @@ public class CompleteDataSetRegistrationBatchHandler
         statementBuilder.setUniqueValue( registration.getAttributeOptionCombo().getId() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "datasetid" );
@@ -100,6 +104,7 @@ public class CompleteDataSetRegistrationBatchHandler
         statementBuilder.setColumn( "date" );
     }
     
+    @Override
     protected void setValues( CompleteDataSetRegistration registration )
     {        
         statementBuilder.setValue( registration.getDataSet().getId() );

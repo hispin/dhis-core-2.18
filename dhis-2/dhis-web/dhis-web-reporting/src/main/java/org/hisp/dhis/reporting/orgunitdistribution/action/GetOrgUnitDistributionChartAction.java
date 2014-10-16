@@ -108,6 +108,7 @@ public class GetOrgUnitDistributionChartAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         OrganisationUnitGroupSet groupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( groupSetId );

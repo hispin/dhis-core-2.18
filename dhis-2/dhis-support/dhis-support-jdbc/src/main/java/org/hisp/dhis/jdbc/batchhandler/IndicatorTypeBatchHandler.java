@@ -52,6 +52,7 @@ public class IndicatorTypeBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "indicatortype" );
@@ -75,16 +76,19 @@ public class IndicatorTypeBatchHandler
         statementBuilder.setIdentifierValue( type.getId() );
     }
     
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "name" );
     }
     
+    @Override
     protected void setUniqueValues( IndicatorType type )
     {        
         statementBuilder.setUniqueValue( type.getName() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "uid" );
@@ -94,6 +98,7 @@ public class IndicatorTypeBatchHandler
         statementBuilder.setColumn( "indicatornumber" );
     }
     
+    @Override
     protected void setValues( IndicatorType type )
     {        
         statementBuilder.setValue( type.getUid() );

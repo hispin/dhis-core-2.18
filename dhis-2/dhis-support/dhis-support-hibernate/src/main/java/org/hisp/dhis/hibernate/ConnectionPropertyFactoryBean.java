@@ -67,6 +67,7 @@ public class ConnectionPropertyFactoryBean
     // FactoryBean implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String getObject()
         throws Exception
     {
@@ -75,11 +76,13 @@ public class ConnectionPropertyFactoryBean
         return StringUtils.defaultIfEmpty( value, defaultValue );
     }
 
+    @Override
     public Class<String> getObjectType()
     {
         return String.class;
     }
 
+    @Override
     public boolean isSingleton()
     {
         return true;

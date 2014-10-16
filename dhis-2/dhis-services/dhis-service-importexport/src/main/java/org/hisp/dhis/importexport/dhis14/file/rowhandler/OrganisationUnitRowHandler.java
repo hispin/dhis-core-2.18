@@ -68,6 +68,7 @@ public class OrganisationUnitRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {
         final OrganisationUnit unit = (OrganisationUnit) object;

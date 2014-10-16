@@ -96,6 +96,7 @@ public class ValidateCategoryOptionComboAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         DataElementCategoryOptionCombo match = categoryService.getDataElementCategoryOptionComboByCode( code );

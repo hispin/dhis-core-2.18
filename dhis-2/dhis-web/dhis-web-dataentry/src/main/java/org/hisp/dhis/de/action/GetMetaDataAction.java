@@ -216,6 +216,7 @@ public class GetMetaDataAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         User user = currentUserService.getCurrentUser();

@@ -54,6 +54,7 @@ public class ClearCacheAction
     // Action implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public String execute()
     {
         cacheManager.clearCache();

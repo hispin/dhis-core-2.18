@@ -147,6 +147,7 @@ public class WeightedPaginatedListTest
 
     class One implements Weighted
     {
+        @Override
         public int getWeight()
         {
             return 1;
@@ -155,6 +156,7 @@ public class WeightedPaginatedListTest
 
     class Two implements Weighted
     {
+        @Override
         public int getWeight()
         {
             return 2;
@@ -163,6 +165,7 @@ public class WeightedPaginatedListTest
     
     class Three implements Weighted
     {
+        @Override
         public int getWeight()
         {
             return 3;

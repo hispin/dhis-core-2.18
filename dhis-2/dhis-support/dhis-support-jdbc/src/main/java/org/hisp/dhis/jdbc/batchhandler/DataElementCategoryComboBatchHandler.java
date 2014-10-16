@@ -52,6 +52,7 @@ public class DataElementCategoryComboBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "categorycombo" );
@@ -75,16 +76,19 @@ public class DataElementCategoryComboBatchHandler
         statementBuilder.setIdentifierValue( categoryCombo.getId() );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "name" );
     }
     
+    @Override
     protected void setUniqueValues( DataElementCategoryCombo categoryCombo )
     {        
         statementBuilder.setUniqueValue( categoryCombo.getName() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "uid" );
@@ -93,6 +97,7 @@ public class DataElementCategoryComboBatchHandler
         statementBuilder.setColumn( "skiptotal" );
     }
     
+    @Override
     protected void setValues( DataElementCategoryCombo categoryCombo )
     {        
         statementBuilder.setValue( categoryCombo.getUid() );

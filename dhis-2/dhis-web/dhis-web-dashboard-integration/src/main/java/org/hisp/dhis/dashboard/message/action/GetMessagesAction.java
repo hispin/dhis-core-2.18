@@ -84,6 +84,7 @@ public class GetMessagesAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         this.paging = createPaging( messageService.getMessageConversationCount( followUp, unread ) );

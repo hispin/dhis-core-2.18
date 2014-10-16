@@ -53,6 +53,7 @@ public class JdbcPartitionManager
     @Autowired
     private JdbcTemplate jdbcTemplate;
         
+    @Override
     public Set<String> getAnalyticsPartitions()
     {
         if ( ANALYTICS_PARTITIONS != null )
@@ -72,6 +73,7 @@ public class JdbcPartitionManager
         return partitions;
     }
     
+    @Override
     public Set<String> getEventAnalyticsPartitions()
     {
         if ( ANALYTICS_EVENT_PARTITIONS != null )
@@ -91,6 +93,7 @@ public class JdbcPartitionManager
         return partitions;
     }
     
+    @Override
     public void clearCaches()
     {
         ANALYTICS_PARTITIONS = null;

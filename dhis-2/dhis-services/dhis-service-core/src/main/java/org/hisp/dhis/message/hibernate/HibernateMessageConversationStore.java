@@ -65,6 +65,7 @@ public class HibernateMessageConversationStore
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    @Override
     public List<MessageConversation> getMessageConversations( User user, boolean followUpOnly, boolean unreadOnly,
         Integer first, Integer max )
     {
@@ -101,6 +102,7 @@ public class HibernateMessageConversationStore
 
         final List<MessageConversation> conversations = jdbcTemplate.query( sql, new RowMapper<MessageConversation>()
         {
+            @Override
             public MessageConversation mapRow( ResultSet resultSet, int count )
                 throws SQLException
             {
@@ -137,6 +139,7 @@ public class HibernateMessageConversationStore
         return query.list();
     }
 
+    @Override
     public int getMessageConversationCount( User user, boolean followUpOnly, boolean unreadOnly )
     {
         String sql = "select count(*) from messageconversation mc "
@@ -157,6 +160,7 @@ public class HibernateMessageConversationStore
         return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
+    @Override
     public long getUnreadUserMessageConversationCount( User user )
     {
         if ( user == null )
@@ -172,6 +176,7 @@ public class HibernateMessageConversationStore
         return (Long) query.uniqueResult();
     }
 
+    @Override
     public int deleteMessages( User sender )
     {
         if ( sender == null )
@@ -191,6 +196,7 @@ public class HibernateMessageConversationStore
         return query.executeUpdate();
     }
 
+    @Override
     public int deleteUserMessages( User user )
     {
         if ( user == null )
@@ -210,6 +216,7 @@ public class HibernateMessageConversationStore
         return query.executeUpdate();
     }
 
+    @Override
     public int removeUserFromMessageConversations( User lastSender )
     {
         String hql = "update MessageConversation m set m.lastSender = null where m.lastSender = :lastSender";
@@ -219,6 +226,7 @@ public class HibernateMessageConversationStore
         return query.executeUpdate();
     }
 
+    @Override
     public List<UserMessage> getLastRecipients( User user, Integer first, Integer max )
     {
         String sql = " select distinct userinfoid, surname, firstname from userinfo uf"
@@ -236,6 +244,7 @@ public class HibernateMessageConversationStore
 
         final List<UserMessage> recipients = jdbcTemplate.query( sql, new RowMapper<UserMessage>()
         {
+            @Override
             public UserMessage mapRow( ResultSet resultSet, int count ) throws SQLException
             {
                 UserMessage recipient = new UserMessage();

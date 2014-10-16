@@ -147,6 +147,7 @@ public class GetReportParamsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( mode == null || uid == null )
