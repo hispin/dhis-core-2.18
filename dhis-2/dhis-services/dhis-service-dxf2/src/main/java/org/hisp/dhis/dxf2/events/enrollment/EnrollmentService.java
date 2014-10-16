@@ -28,16 +28,18 @@ package org.hisp.dhis.dxf2.events.enrollment;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -63,6 +65,10 @@ public interface EnrollmentService
     Enrollments getEnrollments( Program program );
 
     Enrollments getEnrollments( Program program, EnrollmentStatus status );
+
+    Enrollments getEnrollments( Program program, EnrollmentStatus status, OrganisationUnit organisationUnit, Date startDate, Date endDate );
+
+    Enrollments getEnrollments( Program program, EnrollmentStatus status, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate );
 
     Enrollments getEnrollments( Program program, TrackedEntityInstance trackedEntityInstance );
 
