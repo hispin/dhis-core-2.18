@@ -80,6 +80,8 @@ public interface EnrollmentService
 
     Enrollments getEnrollments( Program program, OrganisationUnit organisationUnit );
 
+    Enrollments getEnrollments( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate );
+
     Enrollments getEnrollments( Collection<ProgramInstance> programInstances );
 
     Enrollment getEnrollment( String id );
