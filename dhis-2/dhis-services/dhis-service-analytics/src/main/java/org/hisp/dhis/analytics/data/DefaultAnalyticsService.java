@@ -577,8 +577,6 @@ public class DefaultAnalyticsService
         Grid grid = getAggregatedDataValues( params );
 
         Map<String, Double> valueMap = getAggregatedDataValueMapping( grid );
-
-        log.info( "Got aggregated values for table layout" );
         
         return reportTable.getGrid( new ListGrid( grid.getMetaData() ), valueMap, false );
     }
@@ -743,11 +741,11 @@ public class DefaultAnalyticsService
 
         int optimalQueries = MathUtils.getWithin( getProcessNo(), 1, MAX_QUERIES );
 
-        Timer t = new Timer().start();
+        Timer t = new Timer().start().disablePrint();
 
         DataQueryGroups queryGroups = queryPlanner.planQuery( params, optimalQueries, tableName );
 
-        log.debug( "Planned analytics query, got: " + queryGroups.getLargestGroupSize() + " for optimal: " + optimalQueries );
+        t.getSplitTime( "Planned analytics query, got: " + queryGroups.getLargestGroupSize() + " for optimal: " + optimalQueries );
 
         Map<String, Object> map = new HashMap<>();
 

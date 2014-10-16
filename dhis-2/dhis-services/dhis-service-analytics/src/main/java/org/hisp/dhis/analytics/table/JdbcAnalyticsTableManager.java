@@ -114,8 +114,12 @@ public class JdbcAnalyticsTableManager
         executeSilently( sqlDrop );
         
         String sqlCreate = "create table " + tableName + " (";
+
+        List<String[]> columns = getDimensionColumns( table );
         
-        for ( String[] col : getDimensionColumns( table ) )
+        validateDimensionColumns( columns );
+        
+        for ( String[] col : columns )
         {
             sqlCreate += col[0] + " " + col[1] + ",";
         }
