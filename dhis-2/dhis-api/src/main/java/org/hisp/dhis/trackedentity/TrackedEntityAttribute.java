@@ -141,6 +141,14 @@ public class TrackedEntityAttribute
         return TYPE_NUMBER.equals( valueType );
     }
 
+    /**
+     * Indicates whether this attribute has an option set.
+     */
+    public boolean hasOptionSet()
+    {
+        return optionSet != null;
+    }    
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
