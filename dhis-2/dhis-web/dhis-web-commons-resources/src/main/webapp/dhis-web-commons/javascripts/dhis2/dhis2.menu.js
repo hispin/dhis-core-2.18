@@ -35,6 +35,23 @@
         du = {
             isFunction: function(obj) {
                 return Object.prototype.toString.call(obj) == '[object Function]';
+            },
+            isString: function (value) {
+                if (typeof value === 'string' || value instanceof String) {
+                    return true;
+                }
+                return false;
+            },
+            clone: function (sourceObj) {
+                var x;
+                var cloneObj = {};
+
+                for (x in sourceObj) {
+                    if (sourceObj.hasOwnProperty(x)) {
+                        cloneObj[x] = sourceObj[x];
+                    }
+                }
+                return cloneObj;
             }
         },
         getBaseUrl = (function () {
@@ -86,8 +103,11 @@
          * and managers the order of the items to be saved.
          */
          menuItemsList = function () {
-            var menuOrder = [],
-                menuItems = {};
+            var menuOrder = [];
+            var menuItems = {};
+            var filterFunction = function (item, key) {
+                return true;
+            };
 
             return {
                 getItem: function (key) {
@@ -99,9 +119,12 @@
                 },
                 list: function () {
                     var result = [];
+                    var filtered = [];
 
                     menuOrder.forEach(function (element, index, array) {
-                        result.push(menuItems[element]);
+                        if (filterFunction(menuItems[element], menuItems[element].id)) {
+                            result.push(menuItems[element]);
+                        }
                     });
 
                     return result;
@@ -111,10 +134,20 @@
                 },
                 getOrder: function () {
                     return menuOrder;
+                },
+                addFilter: function (filter) {
+                    if (du.isFunction(filter)) {
+                        filterFunction = function (item, key, items) {
+                            if (filter(du.clone(item), key)) {
+                                return true;
+                            }
+                            return false;
+                        };
+                    }
                 }
             }
         };
-
+    var menus = {};
     dhis2.menu = {};
 
     dhis2.menu = function (nameKey, preLoadedData) {
@@ -328,6 +361,10 @@
             return true;
         };
 
+        that.notify = function () {
+            executeCallBacks();
+        }
+
         /**
          * Get the favorite apps
          *
@@ -428,8 +465,50 @@
             that.addMenuItems(preLoadedData);
         }
 
+        menus[nameKey] = that;
+
         return that;
     };
+
+    //The following are dhis2.menu "Api" functions that let you interact with the menu.
+    /**
+     * Add a filter to the menu that has the id nameKey.
+     *
+     * @param {String} nameKey Id string of the menu
+     * @param {Function} filterFunction Function that is called for every menu element, should return true for items
+     *                                  that should be in the menu, otherwise false. The filterFunction receives a copy
+     *                                  of the menuItem as the first parameter and the menuItemId as the second.
+     *
+     *
+     * @returns {boolean} Returns true if the filter function was added to the specified menu. Returns false when either
+     *                    nameKey was not a string or filterFunction not a function.
+     */
+    dhis2.menu.filter = function (nameKey, filterFunction) {
+        if (du.isString(nameKey) && du.isFunction(filterFunction)) {
+            menus[nameKey].getMenuItems().addFilter(filterFunction);
+            menus[nameKey].notify();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns the name keys for the current menus.
+     *
+     * @returns {Object} Returns an object with a property that contains the nameKey for each menu and has an array of
+     *                   menuItem ids.
+     */
+    dhis2.menu.getNameKeysForMenus = function () {
+        var nameKeys = {};
+        var menuId;
+        var tempMenu;
+        for (menuId in menus) {
+            if (menus.hasOwnProperty(menuId)) {
+                nameKeys[menuId] = menus[menuId].getMenuItems().getOrder();
+            }
+        }
+        return nameKeys;
+    }
 
     //Expose the fixUrl method so we can use externally
     dhis2.menu.fixUrlIfNeeded = fixUrlIfNeeded;
