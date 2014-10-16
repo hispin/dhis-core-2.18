@@ -158,16 +158,19 @@ public class DefaultProgramInstanceService
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    @Override
     public int addProgramInstance( ProgramInstance programInstance )
     {
         return programInstanceStore.save( programInstance );
     }
 
+    @Override
     public void deleteProgramInstance( ProgramInstance programInstance )
     {
         programInstanceStore.delete( programInstance );
     }
 
+    @Override
     public ProgramInstance getProgramInstance( int id )
     {
         return programInstanceStore.get( id );
@@ -179,81 +182,90 @@ public class DefaultProgramInstanceService
         return programInstanceStore.getByUid( id );
     }
 
+    @Override
     public void updateProgramInstance( ProgramInstance programInstance )
     {
         programInstanceStore.update( programInstance );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstances( Program program )
     {
         return programInstanceStore.get( program );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs )
     {
         return programInstanceStore.get( programs );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs,
         OrganisationUnit organisationUnit )
     {
         return programInstanceStore.get( programs, organisationUnit );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs,
         OrganisationUnit organisationUnit, int status )
     {
         return programInstanceStore.get( programs, organisationUnit, status );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs, Integer status )
     {
         return programInstanceStore.get( programs, status );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstances( Program program, Integer status )
     {
         return programInstanceStore.get( program, status );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstances( TrackedEntityInstance entityInstance, Integer status )
     {
         return programInstanceStore.get( entityInstance, status );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstances( TrackedEntityInstance entityInstance, Program program )
     {
         return programInstanceStore.get( entityInstance, program );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstances( TrackedEntityInstance entityInstance, Program program,
         Integer status )
     {
         return programInstanceStore.get( entityInstance, program, status );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit,
         Integer min, Integer max )
     {
         return programInstanceStore.get( program, organisationUnit, min, max );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstances( Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, Integer min, Integer max )
     {
         return programInstanceStore.get( program, orgunitIds, startDate, endDate, min, max );
     }
 
-    public int countProgramInstances( Program program, OrganisationUnit organisationUnit )
-    {
-        return programInstanceStore.count( program, organisationUnit );
-    }
-
+    @Override
     public int countProgramInstances( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
         return programInstanceStore.count( program, orgunitIds, startDate, endDate );
     }
 
+    @Override
     public List<Grid> getProgramInstanceReport( TrackedEntityInstance instance, I18n i18n )
     {
 
@@ -321,6 +333,7 @@ public class DefaultProgramInstanceService
         return grids;
     }
 
+    @Override
     public Grid getProgramInstanceReport( ProgramInstance programInstance, I18n i18n )
     {
         I18nFormat format = i18nManager.getI18nFormat();
@@ -418,18 +431,28 @@ public class DefaultProgramInstanceService
         return grid;
     }
 
+    @Override
     public int countProgramInstancesByStatus( Integer status, Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate )
     {
         return programInstanceStore.countByStatus( status, program, orgunitIds, startDate, endDate );
     }
 
+    @Override
     public Collection<ProgramInstance> getProgramInstancesByStatus( Integer status, Program program,
         Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
         return programInstanceStore.getByStatus( status, program, orgunitIds, startDate, endDate );
     }
 
+    @Override
+    public Collection<ProgramInstance> getProgramInstancesByStatus( Integer status, Program program,
+        Collection<Integer> orgunitIds, Date startDate, Date endDate, Integer min, Integer max )
+    {
+        return programInstanceStore.getByStatus( status, program, orgunitIds, startDate, endDate, min, max );
+    }
+
+    @Override
     public Collection<SchedulingProgramObject> getScheduleMesssages()
     {
         Collection<SchedulingProgramObject> result = programInstanceStore

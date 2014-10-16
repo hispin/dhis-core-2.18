@@ -210,6 +210,21 @@ public interface ProgramInstanceStore
         Date startDate, Date endDate );
 
     /**
+     * Retrieve program instances with a certain status on a program and an
+     * orgunit ids list for a period
+     *
+     * @param status     of program-instance, include STATUS_ACTIVE,
+     *                   STATUS_COMPLETED and STATUS_CANCELLED
+     * @param program    ProgramInstance
+     * @param orgunitIds A list of orgunit ids
+     * @param startDate  The start date for retrieving on enrollment-date
+     * @param endDate    The end date for retrieving on enrollment-date
+     * @return ProgramInstance list
+     */
+    Collection<ProgramInstance> getByStatus( Integer status, Program program, Collection<Integer> orgunitIds,
+        Date startDate, Date endDate, Integer min, Integer max );
+
+    /**
      * Rerieve schedule list of patiens registered
      *
      * @return A SchedulingProgramObject list
