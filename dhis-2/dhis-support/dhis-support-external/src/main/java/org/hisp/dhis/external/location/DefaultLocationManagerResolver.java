@@ -62,6 +62,7 @@ public class DefaultLocationManagerResolver
     // URIResolver implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Source resolve( String href, String base )
         throws TransformerException
     {

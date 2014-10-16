@@ -73,7 +73,8 @@ public class SumBoolAggregator
     // DataElementAggregator implementation
     // -------------------------------------------------------------------------
 
-    public Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands, 
+    @Override
+    public Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands,
         final Period period, int unitLevel, final Collection<Integer> organisationUnits, String key )
     {
         if ( CollectionUtils.isEmpty( operands ) )
@@ -111,6 +112,7 @@ public class SumBoolAggregator
         return values;
     }
     
+    @Override
     public Collection<DataElementOperand> filterOperands( final Collection<DataElementOperand> operands, final PeriodType periodType )
     {
         final Collection<DataElementOperand> filteredOperands = new HashSet<>();

@@ -39,6 +39,7 @@ import org.hisp.dhis.user.UserCredentials;
 public class UsernameComparator
     implements Comparator<UserCredentials>
 {
+    @Override
     public int compare( UserCredentials uc0, UserCredentials uc1 )
     {
         if ( uc0 == null )

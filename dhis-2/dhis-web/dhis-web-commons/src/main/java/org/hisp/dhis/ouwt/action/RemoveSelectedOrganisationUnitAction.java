@@ -82,6 +82,7 @@ public class RemoveSelectedOrganisationUnitAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

@@ -84,17 +84,20 @@ public class StatementBuilderFactoryBean
     // FactoryBean implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public StatementBuilder getObject()
         throws Exception
     {
         return statementBuilder;
     }
 
+    @Override
     public Class<StatementBuilder> getObjectType()
     {
         return StatementBuilder.class;
     }
 
+    @Override
     public boolean isSingleton()
     {
         return true;

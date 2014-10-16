@@ -54,6 +54,7 @@ public class CachingSystemAuthoritiesProvider
 
     private Collection<String> cache;
 
+    @Override
     public Collection<String> getSystemAuthorities()
     {
         if ( cache == null )

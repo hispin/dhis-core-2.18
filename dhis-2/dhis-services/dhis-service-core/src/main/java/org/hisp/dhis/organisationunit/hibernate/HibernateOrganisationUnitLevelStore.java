@@ -40,6 +40,7 @@ public class HibernateOrganisationUnitLevelStore
     extends HibernateIdentifiableObjectStore<OrganisationUnitLevel>
     implements OrganisationUnitLevelStore
 {
+    @Override
     public void deleteAll()
     {
         String hql = "delete from OrganisationUnitLevel";
@@ -47,6 +48,7 @@ public class HibernateOrganisationUnitLevelStore
         getQuery( hql ).executeUpdate();
     }
 
+    @Override
     public OrganisationUnitLevel getByLevel( int level )
     {
         return (OrganisationUnitLevel) getCriteria( Restrictions.eq( "level", level ) ).uniqueResult();

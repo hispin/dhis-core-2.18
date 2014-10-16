@@ -68,6 +68,7 @@ public class StdDevOutlierAnalysisService
     // DataAnalysisService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public final Collection<DeflatedDataValue> analyse( Collection<OrganisationUnit> organisationUnits,
         Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
     {

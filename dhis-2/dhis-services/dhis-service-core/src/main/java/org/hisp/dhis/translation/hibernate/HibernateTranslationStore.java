@@ -62,6 +62,7 @@ public class HibernateTranslationStore
     // Translation
     // -------------------------------------------------------------------------
 
+    @Override
     public void addTranslation( Translation translation )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -69,6 +70,7 @@ public class HibernateTranslationStore
         session.save( translation );
     }
 
+    @Override
     public void updateTranslation( Translation translation )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -76,6 +78,7 @@ public class HibernateTranslationStore
         session.update( translation );
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Translation getTranslation( String className, Locale locale, String property, String objectUid )
     {
@@ -97,6 +100,7 @@ public class HibernateTranslationStore
         return !translations.isEmpty() ? translations.get( 0 ) : null;
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Translation getTranslationNoFallback( String className, Locale locale, String property, String objectUid )
     {
@@ -116,6 +120,7 @@ public class HibernateTranslationStore
         return !translations.isEmpty() ? translations.get( 0 ) : null;
     }
     
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Translation> getTranslations( String className, Locale locale, String objectUid )
     {
@@ -134,6 +139,7 @@ public class HibernateTranslationStore
         return LocaleUtils.getTranslationsHighestSpecifity( translations );
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Translation> getTranslationsNoFallback( String className, String objectUid, Locale locale )
     {
@@ -150,6 +156,7 @@ public class HibernateTranslationStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Translation> getTranslations( String className, Locale locale )
     {
@@ -167,6 +174,7 @@ public class HibernateTranslationStore
         return LocaleUtils.getTranslationsHighestSpecifity( translations );
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Translation> getTranslations( Locale locale )
     {
@@ -181,6 +189,7 @@ public class HibernateTranslationStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Translation> getAllTranslations()
     {
@@ -193,6 +202,7 @@ public class HibernateTranslationStore
         return criteria.list();
     }
 
+    @Override
     public void deleteTranslation( Translation translation )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -200,6 +210,7 @@ public class HibernateTranslationStore
         session.delete( translation );
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public void deleteTranslations( String className, String objectUid )
     {

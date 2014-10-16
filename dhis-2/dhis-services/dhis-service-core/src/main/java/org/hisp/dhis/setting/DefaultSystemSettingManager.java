@@ -69,6 +69,7 @@ public class DefaultSystemSettingManager
     // SystemSettingManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void saveSystemSetting( String name, Serializable value )
     {        
         SystemSetting setting = systemSettingStore.getByName( name );
@@ -90,6 +91,7 @@ public class DefaultSystemSettingManager
         }
     }
 
+    @Override
     public Serializable getSystemSetting( String name )
     {
         SystemSetting setting = systemSettingStore.getByName( name );
@@ -97,6 +99,7 @@ public class DefaultSystemSettingManager
         return setting != null && setting.hasValue() ? setting.getValue() : null;
     }
 
+    @Override
     public Serializable getSystemSetting( String name, Serializable defaultValue )
     {
         SystemSetting setting = systemSettingStore.getByName( name );
@@ -104,11 +107,13 @@ public class DefaultSystemSettingManager
         return setting != null && setting.hasValue() ? setting.getValue() : defaultValue;
     }
 
+    @Override
     public Collection<SystemSetting> getAllSystemSettings()
     {
         return systemSettingStore.getAll();
     }
 
+    @Override
     public void deleteSystemSetting( String name )
     {
         SystemSetting setting = systemSettingStore.getByName( name );
@@ -123,12 +128,14 @@ public class DefaultSystemSettingManager
     // Specific methods
     // -------------------------------------------------------------------------
 
+    @Override
     public List<String> getFlags()
     {
         Collections.sort( flags );
         return flags;
     }
 
+    @Override
     public String getFlagImage()
     {
         String flag = (String) getSystemSetting( KEY_FLAG, DEFAULT_FLAG );
@@ -136,36 +143,43 @@ public class DefaultSystemSettingManager
         return flag != null ? flag + ".png" : null;
     }
 
+    @Override
     public String getEmailHostName()
     {
         return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_HOST_NAME ) );
     }
 
+    @Override
     public int getEmailPort()
     {
         return (Integer) getSystemSetting( KEY_EMAIL_PORT, DEFAULT_EMAIL_PORT );
     }
 
+    @Override
     public String getEmailUsername()
     {
         return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_USERNAME ) );
     }
 
+    @Override
     public boolean getEmailTls()
     {
         return (Boolean) getSystemSetting( KEY_EMAIL_TLS, true );
     }
     
+    @Override
     public String getEmailSender()
     {
         return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_SENDER ) );
     }
     
+    @Override
     public boolean accountRecoveryEnabled()
     {
         return (Boolean) getSystemSetting( KEY_ACCOUNT_RECOVERY, false );
     }
 
+    @Override
     public boolean accountInviteEnabled()
     {
         return (Boolean) getSystemSetting( KEY_ACCOUNT_INVITE, false );
@@ -177,11 +191,13 @@ public class DefaultSystemSettingManager
         return (Boolean) getSystemSetting( KEY_SELF_REGISTRATION_NO_RECAPTCHA, false );
     }
 
+    @Override
     public boolean emailEnabled()
     {
         return getEmailHostName() != null;
     }
 
+    @Override
     public String googleAnalyticsUA()
     {
         return StringUtils.trimToNull( (String) getSystemSetting( KEY_GOOGLE_ANALYTICS_UA ) );
@@ -193,6 +209,7 @@ public class DefaultSystemSettingManager
         return (Integer) (getSystemSetting( KEY_CREDENTIALS_EXPIRES ) == null ? 0 : getSystemSetting( KEY_CREDENTIALS_EXPIRES ));
     }
 
+    @Override
     public Map<String, Serializable> getSystemSettingsAsMap()
     {
         Map<String, Serializable> settingsMap = new HashMap<>();
@@ -212,6 +229,7 @@ public class DefaultSystemSettingManager
         return settingsMap;
     }
 
+    @Override
     public Map<String, Serializable> getSystemSettings( Set<String> names )
     {
         Map<String, Serializable> map = new HashMap<>();

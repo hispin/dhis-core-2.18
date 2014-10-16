@@ -55,6 +55,7 @@ public class UserRoleXSDConverter
     // XMLConverter implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public void write( XMLWriter writer, ExportParams params )
     {
         writer.openElement( "xsd:element", "name", "UserInfoRole" );
@@ -80,6 +81,7 @@ public class UserRoleXSDConverter
         writer.closeElement();
     }    
 
+    @Override
     public void read( XMLReader reader, ImportParams params )
     {
         // Not implemented        

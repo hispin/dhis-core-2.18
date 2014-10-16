@@ -119,6 +119,7 @@ public class SetSMTPSettingsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         Configuration config = configurationService.getConfiguration();

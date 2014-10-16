@@ -90,6 +90,7 @@ public class ValidateIndicatorAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( code != null && !code.trim().isEmpty() )

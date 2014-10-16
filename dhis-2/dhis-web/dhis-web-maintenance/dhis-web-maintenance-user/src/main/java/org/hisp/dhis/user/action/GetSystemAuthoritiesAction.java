@@ -67,6 +67,7 @@ public class GetSystemAuthoritiesAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

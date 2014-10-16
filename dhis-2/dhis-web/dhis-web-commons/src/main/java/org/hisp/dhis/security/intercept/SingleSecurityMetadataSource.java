@@ -64,6 +64,7 @@ public class SingleSecurityMetadataSource
     // SecurityMetadataSource implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Collection<ConfigAttribute> getAttributes( Object object )
         throws IllegalArgumentException
     {

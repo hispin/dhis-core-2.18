@@ -75,6 +75,7 @@ public class ImportInternalProcess
     // SerialToGroup implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String getGroup()
     {
         return PROCESS_GROUP;
@@ -84,6 +85,7 @@ public class ImportInternalProcess
     // AbstractStatementInternalProcess implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void executeStatements()
         throws Exception
     {

@@ -51,6 +51,7 @@ public class IndicatorGroupSetDeletionHandler
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String getClassName()
     {
         return IndicatorGroupSet.class.getSimpleName();

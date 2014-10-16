@@ -113,6 +113,7 @@ public class DataElementDeletionHandler
         }
     }
     
+    @Override
     public String allowDeleteOptionSet( OptionSet optionSet )
     {
         String sql = "SELECT COUNT(*) " + "FROM dataelement " + "WHERE optionsetid=" + optionSet.getId();

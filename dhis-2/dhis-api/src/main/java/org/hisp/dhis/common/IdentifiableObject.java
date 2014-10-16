@@ -47,6 +47,7 @@ public interface IdentifiableObject
 
     String getUid();
 
+    @Override
     String getName();
 
     String getDisplayName();

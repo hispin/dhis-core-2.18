@@ -105,6 +105,7 @@ public class GetReportOptionsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         reportTables = new ArrayList<>( reportTableService.getAllReportTables() );

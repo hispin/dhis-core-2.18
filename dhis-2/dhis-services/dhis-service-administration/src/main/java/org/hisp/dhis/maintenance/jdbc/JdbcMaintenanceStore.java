@@ -61,6 +61,7 @@ public class JdbcMaintenanceStore
     // MaintenanceStore implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public int deleteZeroDataValues()
     {
         return jdbcTemplate.update( statementBuilder.getDeleteZeroDataValues() );

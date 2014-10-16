@@ -62,6 +62,7 @@ public class DisableUserAction
         this.enable = enable;
     }
 
+    @Override
     public String execute()
     {
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );

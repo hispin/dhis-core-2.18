@@ -65,6 +65,7 @@ public class GetCategoryOptionGroupsAction
     // Action
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         categoryOptionGroups = new ArrayList<>(

@@ -79,6 +79,7 @@ public class DefaultCsvImportService
     // CsvImportService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public MetaData fromCsv( InputStream input, Class<?> clazz )
         throws IOException
     {

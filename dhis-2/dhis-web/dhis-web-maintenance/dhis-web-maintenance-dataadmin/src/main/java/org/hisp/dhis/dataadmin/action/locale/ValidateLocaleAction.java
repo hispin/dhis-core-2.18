@@ -88,6 +88,7 @@ public class ValidateLocaleAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         localeCode = StringUtils.trimToNull( localeCode );

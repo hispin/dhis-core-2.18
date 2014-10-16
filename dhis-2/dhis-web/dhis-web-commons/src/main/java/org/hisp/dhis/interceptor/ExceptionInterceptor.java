@@ -95,14 +95,17 @@ public class ExceptionInterceptor
     // Interface implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void destroy()
     {
     }
 
+    @Override
     public void init()
     {
     }
 
+    @Override
     public String intercept( ActionInvocation actionInvocation )
     {
         try

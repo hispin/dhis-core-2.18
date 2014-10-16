@@ -76,6 +76,7 @@ public class HibernateUserStore
         return criteria.list();
     }
 
+    @Override
     public List<User> getUsersWithoutOrganisationUnit()
     {
         List<User> users = getAll();
@@ -93,6 +94,7 @@ public class HibernateUserStore
         return users;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<User> getUsersByPhoneNumber( String phoneNumber )
     {
@@ -104,6 +106,7 @@ public class HibernateUserStore
         return query.list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> orgunits )
     {
@@ -112,6 +115,7 @@ public class HibernateUserStore
         return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", orgunits ).list();
     }
 
+    @Override
     public void removeUserSettings( User user )
     {
         String hql = "delete from UserSetting us where us.user = :user";

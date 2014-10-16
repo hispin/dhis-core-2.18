@@ -52,11 +52,13 @@ public class AggregatedIndicatorValueBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "aggregatedindicatorvalue" );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "indicatorid" );
@@ -64,6 +66,7 @@ public class AggregatedIndicatorValueBatchHandler
         statementBuilder.setUniqueColumn( "organisationunitid" );
     }
     
+    @Override
     protected void setUniqueValues( AggregatedIndicatorValue value )
     {        
         statementBuilder.setUniqueValue( value.getIndicatorId() );
@@ -71,6 +74,7 @@ public class AggregatedIndicatorValueBatchHandler
         statementBuilder.setUniqueValue( value.getOrganisationUnitId() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "indicatorid" );
@@ -85,6 +89,7 @@ public class AggregatedIndicatorValueBatchHandler
         statementBuilder.setColumn( "denominatorvalue" );
     }
 
+    @Override
     protected void setValues( AggregatedIndicatorValue value )
     {        
         statementBuilder.setValue( value.getIndicatorId() );

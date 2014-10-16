@@ -67,6 +67,7 @@ public class JdbcDataMergeStore
     // DataMergeStore implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void eliminateDuplicateDataElement( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
         DataElement sourceDataElement, DataElementCategoryOptionCombo sourceCategoryOptionCombo )
     {
@@ -102,6 +103,7 @@ public class JdbcDataMergeStore
         jdbcTemplate.execute( sql );
     }
     
+    @Override
     public void mergeOrganisationUnits( OrganisationUnit dest, OrganisationUnit source )
     {
         final int destId = dest.getId();

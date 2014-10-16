@@ -52,6 +52,7 @@ public class MobileModel
 
     private Date serverCurrentDate;
 
+    @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {

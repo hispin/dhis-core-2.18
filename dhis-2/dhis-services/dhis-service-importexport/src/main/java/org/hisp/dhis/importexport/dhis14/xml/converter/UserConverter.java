@@ -75,6 +75,7 @@ public class UserConverter
     // XMLConverter implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public void write( XMLWriter writer, ExportParams params )
     {
         writer.openElement( ELEMENT_NAME );
@@ -123,6 +124,7 @@ public class UserConverter
         writer.closeElement();
     }    
 
+    @Override
     public void read( XMLReader reader, ImportParams params )
     {
         // Not implemented        

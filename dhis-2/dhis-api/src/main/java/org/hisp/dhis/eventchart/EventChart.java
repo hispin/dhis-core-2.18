@@ -127,6 +127,7 @@ public class EventChart
         }
     }
 
+    @Override
     public List<NameableObject> series()
     {
         String series = columnDimensions.get( 0 );
@@ -139,6 +140,7 @@ public class EventChart
         return object != null ? object.getItems() : null;
     }
 
+    @Override
     public List<NameableObject> category()
     {
         String category = rowDimensions.get( 0 );
@@ -151,6 +153,7 @@ public class EventChart
         return object != null ? object.getItems() : null;
     }
     
+    @Override
     public AnalyticsType getAnalyticsType()
     {
         return AnalyticsType.EVENT;
@@ -160,6 +163,7 @@ public class EventChart
     // Getters and setters properties
     // -------------------------------------------------------------------------
 
+    @Override
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
@@ -174,6 +178,7 @@ public class EventChart
         this.program = program;
     }
 
+    @Override
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
@@ -188,6 +193,7 @@ public class EventChart
         this.programStage = programStage;
     }
 
+    @Override
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -201,6 +207,7 @@ public class EventChart
         this.startDate = startDate;
     }
 
+    @Override
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )

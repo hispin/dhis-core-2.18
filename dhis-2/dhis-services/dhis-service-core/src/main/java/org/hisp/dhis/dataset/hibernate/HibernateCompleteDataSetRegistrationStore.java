@@ -72,6 +72,7 @@ public class HibernateCompleteDataSetRegistrationStore
     // DataSetCompleteRegistrationStore implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void saveCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
         registration.setPeriod( periodStore.reloadForceAddPeriod( registration.getPeriod() ) );
@@ -79,6 +80,7 @@ public class HibernateCompleteDataSetRegistrationStore
         sessionFactory.getCurrentSession().save( registration );
     }
 
+    @Override
     public void updateCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
         registration.setPeriod( periodStore.reloadForceAddPeriod( registration.getPeriod() ) );
@@ -86,7 +88,8 @@ public class HibernateCompleteDataSetRegistrationStore
         sessionFactory.getCurrentSession().update( registration );
     }
 
-    public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, 
+    @Override
+    public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period,
         OrganisationUnit source, DataElementCategoryOptionCombo attributeOptionCombo )
     {
         Period storedPeriod = periodStore.reloadPeriod( period );
@@ -106,11 +109,13 @@ public class HibernateCompleteDataSetRegistrationStore
         return (CompleteDataSetRegistration) criteria.uniqueResult();
     }
 
+    @Override
     public void deleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
         sessionFactory.getCurrentSession().delete( registration );
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
         DataSet dataSet, Collection<OrganisationUnit> sources, Period period )
@@ -131,12 +136,14 @@ public class HibernateCompleteDataSetRegistrationStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<CompleteDataSetRegistration> getAllCompleteDataSetRegistrations()
     {
         return sessionFactory.getCurrentSession().createCriteria( CompleteDataSetRegistration.class ).list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
         Collection<DataSet> dataSets, Collection<OrganisationUnit> sources, Collection<Period> periods )
@@ -155,6 +162,7 @@ public class HibernateCompleteDataSetRegistrationStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
         DataSet dataSet, Collection<OrganisationUnit> sources, Period period, Date deadline )
@@ -176,6 +184,7 @@ public class HibernateCompleteDataSetRegistrationStore
         return criteria.list();
     }
 
+    @Override
     public void deleteCompleteDataSetRegistrations( DataSet dataSet )
     {
         String hql = "delete from CompleteDataSetRegistration c where c.dataSet = :dataSet";
@@ -187,6 +196,7 @@ public class HibernateCompleteDataSetRegistrationStore
         query.executeUpdate();
     }
     
+    @Override
     public void deleteCompleteDataSetRegistrations( OrganisationUnit unit )
     {
         String hql = "delete from CompleteDataSetRegistration c where c.source = :source";

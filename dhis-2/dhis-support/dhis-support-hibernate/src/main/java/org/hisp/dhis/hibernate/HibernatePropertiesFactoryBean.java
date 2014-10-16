@@ -54,17 +54,20 @@ public class HibernatePropertiesFactoryBean
     // FactoryBean implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Properties getObject()
         throws Exception
     {
         return hibernateConfigurationProvider.getConfiguration().getProperties();
     }
 
+    @Override
     public Class<Properties> getObjectType()
     {
         return Properties.class;
     }
 
+    @Override
     public boolean isSingleton()
     {
         return true;

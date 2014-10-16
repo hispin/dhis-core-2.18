@@ -15,11 +15,13 @@ public class RelationshipType
 
     private String bIsToA;
     
+    @Override
     public int getId()
     {
         return id;
     }
 
+    @Override
     public void setId( int id )
     {
         this.id = id;
@@ -45,6 +47,7 @@ public class RelationshipType
         this.bIsToA = bIsToA;
     }
 
+    @Override
     public void serialize( DataOutputStream dataOutputStream )
         throws IOException
     {
@@ -54,6 +57,7 @@ public class RelationshipType
         dataOutputStream.writeUTF( this.bIsToA );
     }
     
+    @Override
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
@@ -63,6 +67,7 @@ public class RelationshipType
         this.bIsToA = dataInputStream.readUTF();
     }
 
+    @Override
     public void serializeVersion2_8( DataOutputStream dataOutputStream )
         throws IOException
     {
@@ -70,6 +75,7 @@ public class RelationshipType
         
     }
 
+    @Override
     public void serializeVersion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
@@ -77,6 +83,7 @@ public class RelationshipType
         
     }
 
+    @Override
     public void serializeVersion2_10( DataOutputStream dataOutputStream )
         throws IOException
     {

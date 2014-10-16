@@ -41,6 +41,7 @@ public class HibernateCategoryStore
     extends HibernateDimensionalObjectStore<DataElementCategory>
     implements CategoryStore
 {
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<DataElementCategory> getCategoriesByDimensionType( String dimensionType )
     {

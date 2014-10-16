@@ -117,6 +117,7 @@ public class IsInviteTokenValidAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( !systemSettingManager.accountInviteEnabled() )

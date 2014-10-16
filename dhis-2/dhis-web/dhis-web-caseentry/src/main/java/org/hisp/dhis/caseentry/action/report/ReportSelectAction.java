@@ -84,6 +84,7 @@ public class ReportSelectAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         orgunit = selectionManager.getSelectedOrganisationUnit();

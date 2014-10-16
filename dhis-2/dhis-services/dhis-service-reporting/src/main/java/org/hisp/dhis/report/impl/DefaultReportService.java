@@ -135,6 +135,7 @@ public class DefaultReportService
     // ReportService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public JasperPrint renderReport( OutputStream out, String reportUid, Period period,
         String organisationUnitUid, String type, I18nFormat format )
     {
@@ -223,6 +224,7 @@ public class DefaultReportService
         return print;
     }
 
+    @Override
     public void renderHtmlReport( Writer writer, String uid, Date date, String ou, I18nFormat format )
     {
         Report report = getReport( uid );
@@ -288,26 +290,31 @@ public class DefaultReportService
         new VelocityManager().getEngine().getTemplate( "html-report.vm" ).merge( context, writer );
     }
 
+    @Override
     public int saveReport( Report report )
     {
         return reportStore.save( report );
     }
 
+    @Override
     public void deleteReport( Report report )
     {
         reportStore.delete( report );
     }
 
+    @Override
     public List<Report> getAllReports()
     {
         return reportStore.getAll();
     }
 
+    @Override
     public Report getReport( int id )
     {
         return reportStore.get( id );
     }
 
+    @Override
     public Report getReport( String uid )
     {
         return reportStore.getByUid( uid );
@@ -337,17 +344,20 @@ public class DefaultReportService
         return reportStore.getAllLikeName( name, first, max );
     }
 
+    @Override
     public List<Report> getReportByName( String name )
     {
         return reportStore.getAllEqName( name );
     }
 
+    @Override
     public Collection<Report> getReports( final Collection<Integer> identifiers )
     {
         Collection<Report> reports = getAllReports();
 
         return identifiers == null ? reports : FilterUtils.filter( reports, new Filter<Report>()
         {
+            @Override
             public boolean retain( Report object )
             {
                 return identifiers.contains( object.getId() );
@@ -355,6 +365,7 @@ public class DefaultReportService
         } );
     }
 
+    @Override
     public List<Report> getReportsByUid( List<String> uids )
     {
         return reportStore.getByUid( uids );

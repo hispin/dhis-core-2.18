@@ -95,6 +95,7 @@ public class DefaultAnalyticsTableService
     // Implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public void update( Integer lastYears, TaskId taskId )
     {
         int processNo = getProcessNo();
@@ -155,6 +156,7 @@ public class DefaultAnalyticsTableService
         notifier.notify( taskId, "Table update done" );
     }
 
+    @Override
     public void dropTables()
     {
         List<AnalyticsTable> tables = tableManager.getTables( null );
@@ -166,6 +168,7 @@ public class DefaultAnalyticsTableService
         }
     }
 
+    @Override
     public void generateResourceTables()
     {
         resourceTableService.dropAllSqlViews();

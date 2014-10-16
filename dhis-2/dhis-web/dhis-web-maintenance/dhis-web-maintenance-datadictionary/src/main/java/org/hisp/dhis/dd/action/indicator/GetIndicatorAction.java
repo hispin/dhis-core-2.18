@@ -87,6 +87,7 @@ public class GetIndicatorAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicator = indicatorService.getIndicator( id );

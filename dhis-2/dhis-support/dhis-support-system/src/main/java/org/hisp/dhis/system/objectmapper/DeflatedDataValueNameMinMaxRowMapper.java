@@ -78,6 +78,7 @@ public class DeflatedDataValueNameMinMaxRowMapper
         this.optionComboMap = optionComboMap;
     }
     
+    @Override
     public DeflatedDataValue mapRow( ResultSet resultSet )
         throws SQLException
     {

@@ -126,6 +126,7 @@ public class ShowUpdateValidationRuleGroupFormAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         validationRuleGroup = validationRuleService.getValidationRuleGroup( id, true );

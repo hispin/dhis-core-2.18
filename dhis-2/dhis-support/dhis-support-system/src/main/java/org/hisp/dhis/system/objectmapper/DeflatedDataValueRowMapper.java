@@ -41,6 +41,7 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
 public class DeflatedDataValueRowMapper
     implements RowMapper<DeflatedDataValue>, org.springframework.jdbc.core.RowMapper<DeflatedDataValue>
 {
+    @Override
     public DeflatedDataValue mapRow( ResultSet resultSet )
         throws SQLException
     {

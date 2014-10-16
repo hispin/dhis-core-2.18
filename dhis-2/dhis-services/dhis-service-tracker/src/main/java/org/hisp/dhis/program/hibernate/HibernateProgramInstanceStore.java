@@ -65,12 +65,14 @@ public class HibernateProgramInstanceStore
     // Implemented methods
     // -------------------------------------------------------------------------
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<ProgramInstance> get( Program program )
     {
         return getCriteria( Restrictions.eq( "program", program ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<ProgramInstance> get( Collection<Program> programs )
     {
@@ -113,12 +115,14 @@ public class HibernateProgramInstanceStore
             add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<ProgramInstance> get( Program program, Integer status )
     {
         return getCriteria( Restrictions.eq( "program", program ), Restrictions.eq( "status", status ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<ProgramInstance> get( Collection<Program> programs, Integer status )
     {
@@ -130,18 +134,21 @@ public class HibernateProgramInstanceStore
         return getCriteria( Restrictions.in( "program", programs ), Restrictions.eq( "status", status ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<ProgramInstance> get( TrackedEntityInstance entityInstance, Integer status )
     {
         return getCriteria( Restrictions.eq( "entityInstance", entityInstance ), Restrictions.eq( "status", status ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<ProgramInstance> get( TrackedEntityInstance entityInstance, Program program )
     {
         return getCriteria( Restrictions.eq( "entityInstance", entityInstance ), Restrictions.eq( "program", program ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<ProgramInstance> get( TrackedEntityInstance entityInstance, Program program, Integer status )
     {
@@ -149,6 +156,7 @@ public class HibernateProgramInstanceStore
             Restrictions.eq( "status", status ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, Integer min, Integer max )
     {
@@ -171,6 +179,7 @@ public class HibernateProgramInstanceStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<ProgramInstance> get( Program program, Collection<Integer> orgunitIds, Date startDate,
         Date endDate, Integer min, Integer max )
@@ -193,6 +202,7 @@ public class HibernateProgramInstanceStore
         return criteria.list();
     }
 
+    @Override
     public int count( Program program, OrganisationUnit organisationUnit )
     {
         Number rs = (Number) getCriteria(
@@ -204,6 +214,7 @@ public class HibernateProgramInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     public int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
         Number rs = (Number) getCriteria(
@@ -218,6 +229,7 @@ public class HibernateProgramInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     public int countByStatus( Integer status, Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
         Number rs = (Number) getCriteria(
@@ -232,6 +244,7 @@ public class HibernateProgramInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> getByStatus( Integer status, Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate )
@@ -245,6 +258,7 @@ public class HibernateProgramInstanceStore
             add( Restrictions.eq( "status", status ) ).list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<ProgramInstance> getByStatus( Integer status, Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, Integer min, Integer max )
@@ -272,6 +286,7 @@ public class HibernateProgramInstanceStore
 
     //TODO from here this class must be rewritten
 
+    @Override
     public Collection<SchedulingProgramObject> getSendMesssageEvents( String dateToCompare )
     {
         String sql = " ( " + sendMessageToTrackedEntityInstanceSql( dateToCompare ) + " ) ";

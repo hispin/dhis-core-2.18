@@ -98,6 +98,7 @@ public class ValidateUserAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

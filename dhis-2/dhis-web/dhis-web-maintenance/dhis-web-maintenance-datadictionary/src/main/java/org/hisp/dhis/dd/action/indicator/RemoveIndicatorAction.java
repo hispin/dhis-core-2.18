@@ -85,6 +85,7 @@ public class RemoveIndicatorAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         try

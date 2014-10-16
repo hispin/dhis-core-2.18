@@ -45,11 +45,13 @@ public class SessionMenuStateManager
     // MenuStateManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public MenuState getMenuState()
     {
         return (MenuState) getSession().get( SESSION_KEY_MENU_STATE );
     }
 
+    @Override
     public void setMenuState( MenuState menuState )
     {
         getSession().put( SESSION_KEY_MENU_STATE, menuState );

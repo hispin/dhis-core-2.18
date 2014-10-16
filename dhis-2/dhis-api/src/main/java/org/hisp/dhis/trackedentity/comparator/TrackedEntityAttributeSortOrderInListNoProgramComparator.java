@@ -41,6 +41,7 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 public class TrackedEntityAttributeSortOrderInListNoProgramComparator
     implements Comparator<TrackedEntityAttribute>
 {
+    @Override
     public int compare( TrackedEntityAttribute attribute0, TrackedEntityAttribute attribute1 )
     {
         if ( attribute0.getSortOrderInListNoProgram() == null || attribute0.getSortOrderInListNoProgram() == 0 )

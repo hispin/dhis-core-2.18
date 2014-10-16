@@ -344,11 +344,13 @@ public class EventQueryParams
         return asc;
     }
 
+    @Override
     public List<DimensionalObject> getDimensions()
     {
         return dimensions;
     }
 
+    @Override
     public void setDimensions( List<DimensionalObject> dimensions )
     {
         this.dimensions = dimensions;
@@ -439,11 +441,13 @@ public class EventQueryParams
         this.coordinatesOnly = coordinatesOnly;
     }
 
+    @Override
     public String getPeriodType()
     {
         return periodType;
     }
 
+    @Override
     public void setPeriodType( String periodType )
     {
         this.periodType = periodType;

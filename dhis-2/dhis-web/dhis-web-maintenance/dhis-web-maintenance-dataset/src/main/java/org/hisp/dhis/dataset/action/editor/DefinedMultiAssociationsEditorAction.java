@@ -150,6 +150,7 @@ public class DefinedMultiAssociationsEditorAction
     // Action implement
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

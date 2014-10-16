@@ -44,6 +44,7 @@ public class HibernateMapLayerStore
     extends HibernateIdentifiableObjectStore<MapLayer>
     implements MapLayerStore
 {
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<MapLayer> getMapLayersByType( String type )
     {
@@ -68,6 +69,7 @@ public class HibernateMapLayerStore
         return criteria.list();
     }
 
+    @Override
     public MapLayer getMapLayerByMapSource( String mapSource )
     {
         Session session = sessionFactory.getCurrentSession();

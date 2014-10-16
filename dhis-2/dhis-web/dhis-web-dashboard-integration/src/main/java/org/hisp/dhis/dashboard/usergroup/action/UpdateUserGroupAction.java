@@ -119,6 +119,7 @@ public class UpdateUserGroupAction
     // Action Implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

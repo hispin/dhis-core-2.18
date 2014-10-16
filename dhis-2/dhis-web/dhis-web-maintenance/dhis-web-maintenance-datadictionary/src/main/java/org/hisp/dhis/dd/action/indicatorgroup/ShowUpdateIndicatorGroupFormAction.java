@@ -108,6 +108,7 @@ public class ShowUpdateIndicatorGroupFormAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicatorGroup = indicatorService.getIndicatorGroup( id, true );

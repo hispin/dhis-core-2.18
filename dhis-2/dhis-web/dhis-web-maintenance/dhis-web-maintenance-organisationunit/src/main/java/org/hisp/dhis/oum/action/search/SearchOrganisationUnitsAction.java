@@ -171,6 +171,7 @@ public class SearchOrganisationUnitsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

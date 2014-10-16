@@ -57,6 +57,7 @@ public class JdbcStatisticsProvider
     // StatisticsProvider implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public Map<Objects, Integer> getObjectCounts()
     {
         final Map<Objects, Integer> objectCounts = new HashMap<>();

@@ -80,6 +80,7 @@ public class GetAssignedIndicatorGroupsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

@@ -88,6 +88,7 @@ public class DefaultInterpretationService
     // InterpretationService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public int saveInterpretation( Interpretation interpretation )
     {
         User user = currentUserService.getCurrentUser();
@@ -110,26 +111,31 @@ public class DefaultInterpretationService
         return interpretationStore.save( interpretation );
     }
 
+    @Override
     public Interpretation getInterpretation( int id )
     {
         return interpretationStore.get( id );
     }
 
+    @Override
     public Interpretation getInterpretation( String uid )
     {
         return interpretationStore.getByUid( uid );
     }
 
+    @Override
     public void updateInterpretation( Interpretation interpretation )
     {
         interpretationStore.update( interpretation );
     }
 
+    @Override
     public void deleteInterpretation( Interpretation interpretation )
     {
         interpretationStore.delete( interpretation );
     }
 
+    @Override
     public List<Interpretation> getInterpretations()
     {
         return interpretationStore.getAll();
@@ -141,6 +147,7 @@ public class DefaultInterpretationService
         return interpretationStore.getAllGeLastUpdated( lastUpdated );
     }
 
+    @Override
     public List<Interpretation> getInterpretations( int first, int max )
     {
         return interpretationStore.getAllOrderedLastUpdated( first, max );
@@ -169,6 +176,7 @@ public class DefaultInterpretationService
         return comment;
     }
 
+    @Override
     public void updateCurrentUserLastChecked()
     {
         User user = currentUserService.getCurrentUser();
@@ -178,6 +186,7 @@ public class DefaultInterpretationService
         userService.updateUser( user );
     }
 
+    @Override
     public long getNewInterpretationCount()
     {
         User user = currentUserService.getCurrentUser();
@@ -214,6 +223,7 @@ public class DefaultInterpretationService
         return interpretationStore.countReportTableInterpretations( reportTable );
     }
 
+    @Override
     public Interpretation getInterpretationByChartId( int id )
     {
         return interpretationStore.getByChartId( id );

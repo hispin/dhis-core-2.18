@@ -93,6 +93,7 @@ public class RemoveProgramStageAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

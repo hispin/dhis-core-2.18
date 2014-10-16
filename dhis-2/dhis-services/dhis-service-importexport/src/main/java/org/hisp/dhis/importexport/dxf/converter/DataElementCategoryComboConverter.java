@@ -90,6 +90,7 @@ public class DataElementCategoryComboConverter
     // XMLConverter implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<DataElementCategoryCombo> categoryCombos = categoryService.getDataElementCategoryCombos( params.getCategoryCombos() );
@@ -114,6 +115,7 @@ public class DataElementCategoryComboConverter
         }
     }
     
+    @Override
     public void read( XMLReader reader, ImportParams params )
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )

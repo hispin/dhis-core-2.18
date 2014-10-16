@@ -125,6 +125,7 @@ public class DefaultDataApprovalService
         }
     }
 
+    @Override
     public void addDataApproval( DataApproval dataApproval )
     {
         if ( (dataApproval.getCategoryOptionGroup() == null || securityService.canRead( dataApproval.getCategoryOptionGroup() ))
@@ -154,6 +155,7 @@ public class DefaultDataApprovalService
         }
     }
 
+    @Override
     public void deleteDataApprovals( List<DataApproval> dataApprovalList )
     {
         for ( DataApproval dataApproval : dataApprovalList )
@@ -162,6 +164,7 @@ public class DefaultDataApprovalService
         }
     }
 
+    @Override
     public void deleteDataApproval( DataApproval dataApproval )
     {
         boolean mayUnapprove = mayUnapprove( dataApproval.getDataApprovalLevel(), dataApproval.getOrganisationUnit(), dataApproval.isAccepted() )
@@ -204,6 +207,7 @@ public class DefaultDataApprovalService
         }
     }
 
+    @Override
     public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
     {
         Set<DataElementCategoryOption> categoryOptions =
@@ -213,6 +217,7 @@ public class DefaultDataApprovalService
         return getDataApprovalStatus( dataSet, period, organisationUnit, null, categoryOptions );
     }
 
+    @Override
     public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
         Set<CategoryOptionGroup> categoryOptionGroups, Set<DataElementCategoryOption> dataElementCategoryOptions )
     {
@@ -224,6 +229,7 @@ public class DefaultDataApprovalService
         return dataApprovalSelection.getDataApprovalStatus();
     }
 
+    @Override
     public DataApprovalPermissions getDataApprovalPermissions( DataSet dataSet, Period period,
         OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
     {
@@ -234,6 +240,7 @@ public class DefaultDataApprovalService
         return getDataApprovalPermissions( dataSet, period, organisationUnit, null, categoryOptions );
     }
 
+    @Override
     public DataApprovalPermissions getDataApprovalPermissions( DataSet dataSet, Period period,
         OrganisationUnit organisationUnit, Set<CategoryOptionGroup> categoryOptionGroups, Set<DataElementCategoryOption> dataElementCategoryOptions )
     {
@@ -283,11 +290,13 @@ public class DefaultDataApprovalService
         return permissions;
     }
 
+    @Override
     public void accept( DataApproval dataApproval )
     {
         acceptOrUnaccept( dataApproval, true );
     }
 
+    @Override
     public void unaccept( DataApproval dataApproval )
     {
         acceptOrUnaccept( dataApproval, false );

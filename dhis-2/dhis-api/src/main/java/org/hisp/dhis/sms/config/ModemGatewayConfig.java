@@ -101,6 +101,7 @@ public class ModemGatewayConfig
         this.pin = pin;
     }
 
+    @Override
     public boolean isInbound()
     {
         return inbound;
@@ -111,6 +112,7 @@ public class ModemGatewayConfig
         this.inbound = inbound;
     }
 
+    @Override
     public boolean isOutbound()
     {
         return outbound;

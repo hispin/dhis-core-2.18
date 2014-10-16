@@ -93,6 +93,7 @@ public class ModuleAccessVoter
      * prefix + module name, or the module name is in the always accessible set.
      * Otherwise votes ACCESS_DENIED.
      */
+    @Override
     public int vote( Authentication authentication, Object object, Collection<ConfigAttribute> attributes )
     {
         if ( !supports( object.getClass() ) )

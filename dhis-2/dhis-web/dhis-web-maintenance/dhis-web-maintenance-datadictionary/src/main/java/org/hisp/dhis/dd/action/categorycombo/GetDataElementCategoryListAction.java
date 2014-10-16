@@ -71,6 +71,7 @@ public class GetDataElementCategoryListAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         dataElementCategories = new ArrayList<>( dataElementCategoryService

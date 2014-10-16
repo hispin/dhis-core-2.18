@@ -107,6 +107,7 @@ public class DefaultModuleManager
     // ModuleManager
     // -------------------------------------------------------------------------
 
+    @Override
     public Module getModuleByName( String name )
     {
         detectModules();
@@ -114,6 +115,7 @@ public class DefaultModuleManager
         return modulesByName.get( name );
     }
 
+    @Override
     public Module getModuleByNamespace( String namespace )
     {
         detectModules();
@@ -121,11 +123,13 @@ public class DefaultModuleManager
         return modulesByNamespace.get( namespace );
     }
     
+    @Override
     public boolean moduleExists( String name )
     {
         return getModuleByName( name ) != null;
     }
 
+    @Override
     public List<Module> getMenuModules()
     {
         detectModules();
@@ -133,6 +137,7 @@ public class DefaultModuleManager
         return new ArrayList<>( menuModules );
     }
 
+    @Override
     public List<Module> getAccessibleMenuModules()
     {
         detectModules();
@@ -140,6 +145,7 @@ public class DefaultModuleManager
         return getAccessibleModules( menuModules );
     }
     
+    @Override
     public List<Module> getAccessibleMenuModulesAndApps()
     {
         List<Module> modules = getAccessibleMenuModules();
@@ -154,6 +160,7 @@ public class DefaultModuleManager
         return modules;
     }
 
+    @Override
     public Collection<Module> getAllModules()
     {
         detectModules();
@@ -161,11 +168,13 @@ public class DefaultModuleManager
         return new ArrayList<>( modulesByName.values() );
     }
     
+    @Override
     public Module getCurrentModule()
     {
         return currentModule.get();
     }
 
+    @Override
     public void setCurrentModule( Module module )
     {
         currentModule.set( module );

@@ -41,6 +41,7 @@ import java.util.Date;
 public class ProgramStageInstanceVisitDateComparator
     implements Comparator<ProgramStageInstance>
 {
+    @Override
     public int compare( ProgramStageInstance programStageInstance1, ProgramStageInstance programStageInstance2 )
     {
         Date d1 = (programStageInstance1.getExecutionDate() != null) ? programStageInstance1.getExecutionDate() : programStageInstance1.getDueDate();

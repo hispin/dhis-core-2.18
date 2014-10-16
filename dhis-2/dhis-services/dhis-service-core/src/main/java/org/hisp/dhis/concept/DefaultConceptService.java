@@ -56,36 +56,43 @@ public class DefaultConceptService
     // Concept
     // -------------------------------------------------------------------------
 
+    @Override
     public int saveConcept( Concept concept )
     {
         return conceptStore.save( concept );
     }
 
+    @Override
     public void updateConcept( Concept concept )
     {
         conceptStore.update( concept );
     }
 
+    @Override
     public void deleteConcept( Concept concept )
     {
         conceptStore.delete( concept );
     }
 
+    @Override
     public Concept getConcept( int conceptId )
     {
         return conceptStore.get( conceptId );
     }
 
+    @Override
     public Concept getConceptByName( String conceptName )
     {
         return conceptStore.getByName( conceptName );
     }
 
+    @Override
     public Collection<Concept> getAllConcepts()
     {
         return conceptStore.getAll();
     }
 
+    @Override
     public void generateDefaultConcept()
     {
         Concept defaultConcept = new Concept( "default" );

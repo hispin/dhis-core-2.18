@@ -160,6 +160,7 @@ public class BaseNameableObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @Override
     @JsonProperty
     @JsonView( { ShortNameView.class, DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
@@ -173,6 +174,7 @@ public class BaseNameableObject
         this.shortName = shortName;
     }
 
+    @Override
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -186,6 +188,7 @@ public class BaseNameableObject
         this.description = description;
     }
 
+    @Override
     public String getDisplayShortName()
     {
         return displayShortName != null && !displayShortName.trim().isEmpty() ? displayShortName : shortName;
@@ -196,6 +199,7 @@ public class BaseNameableObject
         this.displayShortName = displayShortName;
     }
 
+    @Override
     public String getDisplayDescription()
     {
         return displayDescription != null && !displayDescription.trim().isEmpty() ? displayDescription : description;

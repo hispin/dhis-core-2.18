@@ -42,6 +42,7 @@ public class IsAccountRecoveryAllowedAction
     @Autowired
     private SystemSettingManager systemSettingManager;
     
+    @Override
     public String execute()
     {
         boolean enabled = systemSettingManager.accountRecoveryEnabled();

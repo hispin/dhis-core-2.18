@@ -57,6 +57,7 @@ public class TableCreator
     // StartupRoutine implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void execute()
     {
         aggregatedDataValueService.createDataMart();

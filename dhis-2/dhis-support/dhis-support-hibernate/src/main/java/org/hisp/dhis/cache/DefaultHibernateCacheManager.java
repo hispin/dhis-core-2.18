@@ -52,24 +52,28 @@ public class DefaultHibernateCacheManager
     // HibernateCacheManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void clearObjectCache()
     {
         sessionFactory.getCache().evictEntityRegions();
         sessionFactory.getCache().evictCollectionRegions();
      }
     
+    @Override
     public void clearQueryCache()
     {
         sessionFactory.getCache().evictDefaultQueryRegion();
         sessionFactory.getCache().evictQueryRegions();
     }
     
+    @Override
     public void clearCache()
     {
         clearObjectCache();        
         clearQueryCache();
     }
     
+    @Override
     public Statistics getStatistics()
     {
         return sessionFactory.getStatistics();

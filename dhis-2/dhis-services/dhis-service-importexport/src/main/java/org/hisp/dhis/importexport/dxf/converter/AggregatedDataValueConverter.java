@@ -98,6 +98,7 @@ public class AggregatedDataValueConverter
     // XMLConverter implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void write( XMLWriter writer, ExportParams params )
     {
         if ( params.isIncludeDataValues() )
@@ -145,6 +146,7 @@ public class AggregatedDataValueConverter
         }
     }
     
+    @Override
     public void read( XMLReader reader, ImportParams params )
     {
         // this code should never be called

@@ -37,6 +37,7 @@ import org.hisp.dhis.system.util.Filter;
 public class IndicatorGroupWIthoutGroupSetFilter
     implements Filter<IndicatorGroup>
 {
+    @Override
     public boolean retain( IndicatorGroup object )
     {
         return object == null || object.getGroupSet() == null;

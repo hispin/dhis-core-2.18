@@ -83,6 +83,7 @@ public class GetIndicatorListAction
     // Action implemantation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {   
         if ( indicatorGroupId != null )

@@ -92,6 +92,7 @@ public class MinMaxOutlierAnalysisService
     // DataAnalysisService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Collection<DeflatedDataValue> analyse( Collection<OrganisationUnit> organisationUnits,
         Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
     {
@@ -111,6 +112,7 @@ public class MinMaxOutlierAnalysisService
         return dataAnalysisStore.getMinMaxViolations( elements, categoryOptionCombos, periods, organisationUnits, MAX_OUTLIERS );
     }
     
+    @Override
     public void generateMinMaxValues( Collection<OrganisationUnit> organisationUnits,
         Collection<DataElement> dataElements, Double stdDevFactor )
     {

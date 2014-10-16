@@ -80,6 +80,7 @@ public class GetUserAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( id != null )

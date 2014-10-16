@@ -87,6 +87,7 @@ public class UpdateRelationshipTypeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

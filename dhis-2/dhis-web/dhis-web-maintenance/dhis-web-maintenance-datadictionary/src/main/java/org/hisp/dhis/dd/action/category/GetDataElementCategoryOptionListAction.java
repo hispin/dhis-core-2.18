@@ -89,6 +89,7 @@ public class GetDataElementCategoryOptionListAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         defaultCategoryOption = dataElementCategoryService.getDataElementCategoryOptionByName( DataElementCategoryOption.DEFAULT_NAME );

@@ -40,6 +40,7 @@ public class HibernateRelationshipTypeStore
     extends HibernateIdentifiableObjectStore<RelationshipType>
     implements RelationshipTypeStore
 {
+    @Override
     public RelationshipType getRelationshipType( String aIsToB, String bIsToA )
     {
         return (RelationshipType) getCriteria( 

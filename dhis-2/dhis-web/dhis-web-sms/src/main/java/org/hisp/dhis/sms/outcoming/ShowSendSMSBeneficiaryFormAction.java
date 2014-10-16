@@ -106,6 +106,7 @@ public class ShowSendSMSBeneficiaryFormAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

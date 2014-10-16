@@ -86,14 +86,17 @@ public class XWorkPortalParamsInterceptor
     // AroundInterceptor implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void destroy()
     {
     }
 
+    @Override
     public void init()
     {
     }
 
+    @Override
     public String intercept( ActionInvocation actionInvocation )
         throws Exception
     {

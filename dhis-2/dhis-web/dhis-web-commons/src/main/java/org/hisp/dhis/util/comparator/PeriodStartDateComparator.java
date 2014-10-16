@@ -39,6 +39,7 @@ import org.hisp.dhis.period.Period;
 public class PeriodStartDateComparator
     implements Comparator<Period>
 {
+    @Override
     public int compare( Period period0, Period period1 )
     {
         return period0.getStartDate().compareTo( period1.getStartDate() );

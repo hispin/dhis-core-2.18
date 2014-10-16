@@ -66,6 +66,7 @@ public class HibernateSMSCommandStore
         return criteria.list();
     }
 
+    @Override
     @Transactional
     public int save( SMSCommand cmd )
     {
@@ -74,6 +75,7 @@ public class HibernateSMSCommandStore
         return 0;
     }
 
+    @Override
     @Transactional
     public void save( Set<SMSCode> codes )
     {
@@ -85,6 +87,7 @@ public class HibernateSMSCommandStore
         }
     }
 
+    @Override
     public SMSCommand getSMSCommand( int id )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( SMSCommand.class );
@@ -98,6 +101,7 @@ public class HibernateSMSCommandStore
         return null;
     }
 
+    @Override
     @Transactional
     public void delete( SMSCommand cmd )
     {

@@ -74,6 +74,7 @@ public class DefaultI18nService
     // Internationalise
     // -------------------------------------------------------------------------
 
+    @Override
     public void internationalise( Object object )
     {
         if ( isCollection( object ) )
@@ -86,6 +87,7 @@ public class DefaultI18nService
         }
     }
 
+    @Override
     public void internationalise( Object object, Locale locale )
     {
         if ( isCollection( object ) )
@@ -152,6 +154,7 @@ public class DefaultI18nService
         }
     }
 
+    @Override
     public Map<String, String> getObjectPropertyValues( Object object )
     {
         if ( object == null )
@@ -171,6 +174,7 @@ public class DefaultI18nService
         return translations;
     }
 
+    @Override
     public List<String> getObjectPropertyNames( Object object )
     {
         if ( object == null )
@@ -196,6 +200,7 @@ public class DefaultI18nService
     // Object
     // -------------------------------------------------------------------------
 
+    @Override
     public void removeObject( Object object )
     {
         if ( object != null )
@@ -208,6 +213,7 @@ public class DefaultI18nService
     // Translation
     // -------------------------------------------------------------------------
 
+    @Override
     public void updateTranslation( String className, Locale locale, Map<String, String> translations, String objectUid )
     {
         if ( locale != null && className != null )
@@ -222,11 +228,13 @@ public class DefaultI18nService
         }
     }
 
+    @Override
     public Map<String, String> getTranslations( String className, String objectUid )
     {
         return getTranslations( className, getCurrentLocale(), objectUid );
     }
 
+    @Override
     public Map<String, String> getTranslations( String className, Locale locale, String objectUid )
     {
         if ( locale != null && className != null )
@@ -237,11 +245,13 @@ public class DefaultI18nService
         return new HashMap<>();
     }
 
+    @Override
     public Map<String, String> getTranslationsNoFallback( String className, String objectUid )
     {
         return getTranslationsNoFallback( className, objectUid, getCurrentLocale() );
     }
 
+    @Override
     public Map<String, String> getTranslationsNoFallback( String className, String objectUid, Locale locale )
     {
         if ( locale != null && className != null )
@@ -256,16 +266,19 @@ public class DefaultI18nService
     // Locale
     // -------------------------------------------------------------------------
 
+    @Override
     public Locale getCurrentLocale()
     {
         return (Locale) userSettingService.getUserSetting( UserSettingService.KEY_DB_LOCALE );
     }
 
+    @Override
     public boolean currentLocaleIsBase()
     {
         return getCurrentLocale() == null;
     }
 
+    @Override
     public List<Locale> getAvailableLocales()
     {
         return localeService.getAllLocales();

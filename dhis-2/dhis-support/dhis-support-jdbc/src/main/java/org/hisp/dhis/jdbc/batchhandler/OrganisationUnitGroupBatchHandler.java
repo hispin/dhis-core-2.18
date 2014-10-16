@@ -52,6 +52,7 @@ public class OrganisationUnitGroupBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "orgunitgroup" );
@@ -75,16 +76,19 @@ public class OrganisationUnitGroupBatchHandler
         statementBuilder.setIdentifierValue( group.getId() );
     }
     
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "name" );
     }
     
+    @Override
     protected void setUniqueValues( OrganisationUnitGroup group )
     {        
         statementBuilder.setUniqueValue( group.getName() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "uid" );
@@ -93,6 +97,7 @@ public class OrganisationUnitGroupBatchHandler
         statementBuilder.setColumn( "shortname" );
     }
     
+    @Override
     protected void setValues( OrganisationUnitGroup group )
     {
         statementBuilder.setValue( group.getUid() );

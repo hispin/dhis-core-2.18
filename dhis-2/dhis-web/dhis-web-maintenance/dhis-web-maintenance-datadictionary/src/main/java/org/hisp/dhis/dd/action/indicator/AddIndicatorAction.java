@@ -180,6 +180,7 @@ public class AddIndicatorAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         IndicatorType indicatorType = indicatorService.getIndicatorType( indicatorTypeId );

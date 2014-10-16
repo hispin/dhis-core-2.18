@@ -81,6 +81,7 @@ public class TrackedEntityAttributeValueDeletionHandler
         }
     }
 
+    @Override
     public void deleteTrackedEntityAttribute( TrackedEntityAttribute attribute )
     {
         Collection<TrackedEntityAttributeValue> attributeValues = attributeValueService

@@ -55,6 +55,7 @@ public class PeriodXSDConverter
     // XMLConverter implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public void write( XMLWriter writer, ExportParams params )
     {
         writer.openElement( "xsd:element", "name", "DataPeriod" );
@@ -93,6 +94,7 @@ public class PeriodXSDConverter
     }
     
 
+    @Override
     public void read( XMLReader reader, ImportParams params )
     {
         // Not implemented        

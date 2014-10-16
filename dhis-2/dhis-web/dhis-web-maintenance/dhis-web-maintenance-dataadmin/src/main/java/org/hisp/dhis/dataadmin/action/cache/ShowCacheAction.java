@@ -68,6 +68,7 @@ public class ShowCacheAction
     // Action implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public String execute()
     {
         stats = cacheManager.getStatistics();

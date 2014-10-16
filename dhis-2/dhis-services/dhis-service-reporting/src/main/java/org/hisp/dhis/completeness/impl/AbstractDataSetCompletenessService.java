@@ -138,6 +138,7 @@ public abstract class AbstractDataSetCompletenessService
     // DataSetCompleteness
     // -------------------------------------------------------------------------
 
+    @Override
     @Async
     public Future<?> exportDataSetCompleteness( Collection<DataSet> dataSets, Collection<Period> periods,
         Collection<OrganisationUnit> units )
@@ -185,6 +186,7 @@ public abstract class AbstractDataSetCompletenessService
         return null;
     }
 
+    @Override
     @Transactional
     public Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId, int organisationUnitId, Set<Integer> groupIds )
     {
@@ -225,6 +227,7 @@ public abstract class AbstractDataSetCompletenessService
         return results;
     }
 
+    @Override
     @Transactional
     public Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId,
         Collection<Integer> organisationUnitIds, int dataSetId, Set<Integer> groupIds )
@@ -257,6 +260,7 @@ public abstract class AbstractDataSetCompletenessService
         return results;
     }
 
+    @Override
     @Transactional
     public void deleteDataSetCompleteness()
     {
@@ -267,12 +271,14 @@ public abstract class AbstractDataSetCompletenessService
     // Index
     // -------------------------------------------------------------------------
 
+    @Override
     @Transactional
     public void createIndex()
     {
         completenessStore.createIndex();
     }
 
+    @Override
     @Transactional
     public void dropIndex()
     {

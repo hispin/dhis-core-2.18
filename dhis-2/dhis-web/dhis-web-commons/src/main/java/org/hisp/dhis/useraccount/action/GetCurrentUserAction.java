@@ -70,6 +70,7 @@ public class GetCurrentUserAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

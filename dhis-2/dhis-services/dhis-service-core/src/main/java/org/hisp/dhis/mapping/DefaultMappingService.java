@@ -120,6 +120,7 @@ public class DefaultMappingService
     // MapLegend
     // -------------------------------------------------------------------------
 
+    @Override
     public void addOrUpdateMapLegend( String name, Double startValue, Double endValue, String color, String image )
     {
         MapLegend mapLegend = getMapLegendByName( name );
@@ -142,16 +143,19 @@ public class DefaultMappingService
         }
     }
 
+    @Override
     public int addMapLegend( MapLegend mapLegend )
     {
         return mapLegendStore.save( mapLegend );
     }
 
+    @Override
     public void deleteMapLegend( MapLegend mapLegend )
     {
         mapLegendStore.delete( mapLegend );
     }
 
+    @Override
     public MapLegend getMapLegend( int id )
     {
         return mapLegendStore.get( id );
@@ -163,11 +167,13 @@ public class DefaultMappingService
         return mapLegendStore.getByUid( uid );
     }
 
+    @Override
     public MapLegend getMapLegendByName( String name )
     {
         return mapLegendStore.getByName( name );
     }
 
+    @Override
     public Collection<MapLegend> getAllMapLegends()
     {
         return mapLegendStore.getAll();
@@ -177,16 +183,19 @@ public class DefaultMappingService
     // MapLegendSet
     // -------------------------------------------------------------------------
 
+    @Override
     public int addMapLegendSet( MapLegendSet mapLegendSet )
     {
         return mapLegendSetStore.save( mapLegendSet );
     }
 
+    @Override
     public void updateMapLegendSet( MapLegendSet mapLegendSet )
     {
         mapLegendSetStore.update( mapLegendSet );
     }
 
+    @Override
     public void addOrUpdateMapLegendSet( String name, String type, String symbolizer, Set<MapLegend> mapLegends )
     {
         MapLegendSet mapLegendSet = getMapLegendSetByName( name );
@@ -210,11 +219,13 @@ public class DefaultMappingService
         }
     }
 
+    @Override
     public void deleteMapLegendSet( MapLegendSet mapLegendSet )
     {
         mapLegendSetStore.delete( mapLegendSet );
     }
 
+    @Override
     public MapLegendSet getMapLegendSet( int id )
     {
         return mapLegendSetStore.get( id );
@@ -226,11 +237,13 @@ public class DefaultMappingService
         return mapLegendSetStore.getByUid( uid );
     }
 
+    @Override
     public MapLegendSet getMapLegendSetByName( String name )
     {
         return mapLegendSetStore.getByName( name );
     }
 
+    @Override
     public Collection<MapLegendSet> getAllMapLegendSets()
     {
         return mapLegendSetStore.getAll();
@@ -240,41 +253,49 @@ public class DefaultMappingService
     // Map
     // -------------------------------------------------------------------------
 
+    @Override
     public int addMap( Map map )
     {
         return mapStore.save( map );
     }
 
+    @Override
     public void updateMap( Map map )
     {
         mapStore.update( map );
     }
 
+    @Override
     public Map getMap( int id )
     {
         return mapStore.get( id );
     }
 
+    @Override
     public Map getMap( String uid )
     {
         return mapStore.getByUid( uid );
     }
 
+    @Override
     public Map getMapNoAcl( String uid )
     {
         return mapStore.getByUidNoAcl( uid );
     }
 
+    @Override
     public void deleteMap( Map map )
     {
         mapStore.delete( map );
     }
 
+    @Override
     public List<Map> getAllMaps()
     {
         return mapStore.getAll();
     }
 
+    @Override
     public List<Map> getMapsBetweenLikeName( String name, int first, int max )
     {
         return mapStore.getAllLikeName( name, first, max );
@@ -284,21 +305,25 @@ public class DefaultMappingService
     // MapView
     // -------------------------------------------------------------------------
 
+    @Override
     public int addMapView( MapView mapView )
     {
         return mapViewStore.save( mapView );
     }
 
+    @Override
     public void updateMapView( MapView mapView )
     {
         mapViewStore.update( mapView );
     }
 
+    @Override
     public void deleteMapView( MapView mapView )
     {
         mapViewStore.delete( mapView );
     }
 
+    @Override
     public MapView getMapView( int id )
     {
         MapView mapView = mapViewStore.get( id );
@@ -308,6 +333,7 @@ public class DefaultMappingService
         return mapView;
     }
 
+    @Override
     public MapView getMapView( String uid )
     {
         MapView mapView = mapViewStore.getByUid( uid );
@@ -328,11 +354,13 @@ public class DefaultMappingService
         }
     }
 
+    @Override
     public MapView getMapViewByName( String name )
     {
         return mapViewStore.getByName( name );
     }
 
+    @Override
     public MapView getIndicatorLastYearMapView( String indicatorUid, String organisationUnitUid, int level )
     {
         MapView mapView = new MapView();
@@ -352,6 +380,7 @@ public class DefaultMappingService
         return mapView;
     }
 
+    @Override
     public Collection<MapView> getAllMapViews()
     {
         Collection<MapView> mapViews = mapViewStore.getAll();
@@ -372,6 +401,7 @@ public class DefaultMappingService
         return mapViews;
     }
 
+    @Override
     public Collection<MapView> getMapViewsBetweenByName( String name, int first, int max )
     {
         return mapViewStore.getAllLikeName( name, first, max );
@@ -381,16 +411,19 @@ public class DefaultMappingService
     // MapLayer
     // -------------------------------------------------------------------------
 
+    @Override
     public int addMapLayer( MapLayer mapLayer )
     {
         return mapLayerStore.save( mapLayer );
     }
 
+    @Override
     public void updateMapLayer( MapLayer mapLayer )
     {
         mapLayerStore.update( mapLayer );
     }
 
+    @Override
     public void addOrUpdateMapLayer( String name, String type, String url, String layers, String time,
         String fillColor, double fillOpacity, String strokeColor, int strokeWidth )
     {
@@ -416,11 +449,13 @@ public class DefaultMappingService
         }
     }
 
+    @Override
     public void deleteMapLayer( MapLayer mapLayer )
     {
         mapLayerStore.delete( mapLayer );
     }
 
+    @Override
     public MapLayer getMapLayer( int id )
     {
         return mapLayerStore.get( id );
@@ -432,21 +467,25 @@ public class DefaultMappingService
         return mapLayerStore.getByUid( uid );
     }
 
+    @Override
     public MapLayer getMapLayerByName( String name )
     {
         return mapLayerStore.getByName( name );
     }
 
+    @Override
     public Collection<MapLayer> getMapLayersByType( String type )
     {
         return mapLayerStore.getMapLayersByType( type );
     }
 
+    @Override
     public MapLayer getMapLayerByMapSource( String mapSource )
     {
         return mapLayerStore.getMapLayerByMapSource( mapSource );
     }
 
+    @Override
     public Collection<MapLayer> getAllMapLayers()
     {
         return mapLayerStore.getAll();

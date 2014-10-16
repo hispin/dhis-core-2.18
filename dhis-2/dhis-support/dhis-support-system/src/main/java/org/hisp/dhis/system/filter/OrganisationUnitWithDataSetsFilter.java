@@ -37,6 +37,7 @@ import org.hisp.dhis.system.util.Filter;
 public class OrganisationUnitWithDataSetsFilter
     implements Filter<OrganisationUnit>
 {
+    @Override
     public boolean retain( OrganisationUnit object )
     {
         return object.getDataSets().size() > 0;

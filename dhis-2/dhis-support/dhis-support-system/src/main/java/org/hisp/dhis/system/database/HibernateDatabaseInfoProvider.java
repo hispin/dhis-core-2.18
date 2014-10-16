@@ -101,11 +101,13 @@ public class HibernateDatabaseInfoProvider
     // DatabaseInfoProvider implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public DatabaseInfo getDatabaseInfo()
     {   
         return info;
     }
     
+    @Override
     public boolean isInMemory()
     {
         return info.getUrl() != null && info.getUrl().contains( ":mem:" );

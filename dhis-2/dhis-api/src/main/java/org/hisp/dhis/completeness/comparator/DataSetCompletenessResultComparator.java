@@ -39,6 +39,7 @@ import org.hisp.dhis.completeness.DataSetCompletenessResult;
 public class DataSetCompletenessResultComparator
     implements Comparator<DataSetCompletenessResult>
 {
+    @Override
     public int compare( DataSetCompletenessResult result1, DataSetCompletenessResult result2 )
     {        
         return result1.getName().compareTo( result2.getName() );

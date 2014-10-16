@@ -68,6 +68,7 @@ public class AddLocaleAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

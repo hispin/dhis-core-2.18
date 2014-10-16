@@ -122,6 +122,7 @@ public class UpdateSectionAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

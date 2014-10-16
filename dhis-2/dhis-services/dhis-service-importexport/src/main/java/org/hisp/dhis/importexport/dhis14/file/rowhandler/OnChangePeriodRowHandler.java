@@ -73,6 +73,7 @@ public class OnChangePeriodRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public void handleRow( Object object )
     {
         final Period period = (Period) object;

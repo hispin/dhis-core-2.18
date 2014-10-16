@@ -84,6 +84,7 @@ public class RemoveTrackedEntityCommentAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         TrackedEntityComment comment = commentService.getTrackedEntityComment( id );

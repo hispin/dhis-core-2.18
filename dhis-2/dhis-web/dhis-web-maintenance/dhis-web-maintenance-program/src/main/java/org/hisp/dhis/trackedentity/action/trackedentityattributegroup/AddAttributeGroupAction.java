@@ -95,6 +95,7 @@ public class AddAttributeGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

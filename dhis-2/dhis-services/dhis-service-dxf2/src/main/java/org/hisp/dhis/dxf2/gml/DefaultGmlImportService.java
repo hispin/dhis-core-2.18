@@ -90,6 +90,7 @@ public class DefaultGmlImportService
         Map<String, OrganisationUnit> namedMap = Maps.uniqueIndex( metaData.getOrganisationUnits(),
             new Function<OrganisationUnit, String>()
             {
+                @Override
                 public String apply( OrganisationUnit organisationUnit )
                 {
                     return organisationUnit.getName();

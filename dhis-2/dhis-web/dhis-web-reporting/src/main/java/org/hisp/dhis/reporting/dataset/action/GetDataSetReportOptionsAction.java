@@ -202,6 +202,7 @@ public class GetDataSetReportOptionsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {        
         periodTypes = getAvailablePeriodTypes();

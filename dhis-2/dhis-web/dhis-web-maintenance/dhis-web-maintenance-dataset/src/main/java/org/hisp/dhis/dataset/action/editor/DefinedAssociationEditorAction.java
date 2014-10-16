@@ -129,6 +129,7 @@ public class DefinedAssociationEditorAction
     // Action implement
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

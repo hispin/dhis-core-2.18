@@ -37,11 +37,13 @@ import  org.springframework.security.core.userdetails.UserDetails;
 public class DefaultUsernameSaltSource
     implements UsernameSaltSource
 {
+    @Override
     public Object getSalt( UserDetails userDetails )
     {
         return getSalt( userDetails.getUsername() );
     }
 
+    @Override
     public Object getSalt( String username )
     {
         return username.hashCode();

@@ -180,6 +180,7 @@ public class DataEntryForm
         this.id = id;
     }
 
+    @Override
     @JsonProperty
     @JsonView({ DetailedView.class, ExportView.class })
     @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)

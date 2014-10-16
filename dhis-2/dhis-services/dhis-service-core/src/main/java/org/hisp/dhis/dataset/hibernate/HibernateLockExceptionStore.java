@@ -145,6 +145,7 @@ public class HibernateLockExceptionStore
         return criteria.list();
     }
 
+    @Override
     public long getCount( DataElement dataElement, Period period, OrganisationUnit organisationUnit )
     {
         Criteria criteria = getCriteria(
@@ -155,6 +156,7 @@ public class HibernateLockExceptionStore
         return (Long) criteria.setProjection( Projections.rowCount() ).uniqueResult();
     }
 
+    @Override
     public long getCount( DataSet dataSet, Period period, OrganisationUnit organisationUnit )
     {
         Criteria criteria = getCriteria(

@@ -75,6 +75,7 @@ public class JDBCDataSetCompletenessStore
     // Based on complete data set registrations
     // -------------------------------------------------------------------------
 
+    @Override
     public Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources )
     {
         if ( relevantSources == null || relevantSources.isEmpty() || periods == null || periods.isEmpty() )
@@ -92,6 +93,7 @@ public class JDBCDataSetCompletenessStore
         return statementManager.getHolder().queryForInteger( sql );
     }
 
+    @Override
     public Integer getCompleteDataSetRegistrationsWithTimeliness( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources )
     {
         if ( relevantSources == null || relevantSources.isEmpty() || periods == null || periods.isEmpty() )
@@ -115,11 +117,13 @@ public class JDBCDataSetCompletenessStore
     // Based on compulsory data element operands
     // -------------------------------------------------------------------------
 
+    @Override
     public Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods )
     {
         return getCompulsoryDataElementRegistrations( dataSet, children, periods, -1 );
     }
     
+    @Override
     public Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods, int completenessOffset )
     {
         if ( children == null || children.isEmpty() || periods == null || periods.isEmpty() )
@@ -153,6 +157,7 @@ public class JDBCDataSetCompletenessStore
     // Based on number of data values
     // -------------------------------------------------------------------------
     
+    @Override
     public Collection<DataSet> getDataSetsWithRegistrations( Collection<DataSet> dataSets )
     {
         Collection<DataSet> selection = new ArrayList<>();
@@ -174,6 +179,7 @@ public class JDBCDataSetCompletenessStore
     // Aggregated data set completeness methods
     // -------------------------------------------------------------------------
 
+    @Override
     public Double getPercentage( int dataSetId, int periodId, int organisationUnitId )
     {
         final String sql =
@@ -186,6 +192,7 @@ public class JDBCDataSetCompletenessStore
         return statementManager.getHolder().queryForDouble( sql );
     }
     
+    @Override
     public void deleteDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         if ( dataSetIds == null || dataSetIds.isEmpty() || periodIds == null || periodIds.isEmpty() || organisationUnitIds == null || organisationUnitIds.isEmpty() )
@@ -202,6 +209,7 @@ public class JDBCDataSetCompletenessStore
         statementManager.getHolder().executeUpdate( sql );
     }
     
+    @Override
     public void deleteDataSetCompleteness()
     {
         final String sql = "DELETE FROM aggregateddatasetcompleteness";
@@ -209,6 +217,7 @@ public class JDBCDataSetCompletenessStore
         statementManager.getHolder().executeUpdate( sql );
     }
 
+    @Override
     public void createIndex()
     {
         try
@@ -222,6 +231,7 @@ public class JDBCDataSetCompletenessStore
         }
     }
     
+    @Override
     public void dropIndex()
     {
         try

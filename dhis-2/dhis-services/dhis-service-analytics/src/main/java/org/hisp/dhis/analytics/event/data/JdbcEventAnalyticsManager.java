@@ -81,6 +81,7 @@ public class JdbcEventAnalyticsManager
     // EventAnalyticsManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Grid getAggregatedEventData( EventQueryParams params, Grid grid, int maxLimit )
     {
         String countClause = ( params.isProgramRegistration() && params.isUniqueInstances() ) ? "count(distinct tei)" : "count(psi)";
@@ -172,6 +173,7 @@ public class JdbcEventAnalyticsManager
         }
     }
     
+    @Override
     public Grid getEvents( EventQueryParams params, Grid grid, int maxLimit )
     {
         List<String> fixedCols = Arrays.asList( "psi", "ps", "executiondate", "longitude", "latitude", "ouname", "oucode" );
@@ -262,6 +264,7 @@ public class JdbcEventAnalyticsManager
         }
     }
     
+    @Override
     public int getEventCount( EventQueryParams params )
     {
         String sql = "select count(psi) ";

@@ -82,6 +82,7 @@ public class JRExportUtils
     
     private static class JRXlsExportProvider implements JRExportProvider
     {
+        @Override
         public JRAbstractExporter provide()
         {
             JRXlsExporter exporter = new JRXlsExporter();
@@ -96,6 +97,7 @@ public class JRExportUtils
     
     private static class JRPdfExportProvider implements JRExportProvider
     {
+        @Override
         public JRAbstractExporter provide()
         {
             return new JRPdfExporter();
@@ -104,6 +106,7 @@ public class JRExportUtils
     
     private static class JRHtmlExportProvider implements JRExportProvider
     {
+        @Override
         public JRAbstractExporter provide()
         {
             JRHtmlExporter exporter = new JRHtmlExporter();

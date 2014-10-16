@@ -307,6 +307,7 @@ public class DefaultCaseAggregationConditionService
         return description.toString();
     }
 
+    @Override
     public Collection<DataElement> getDataElementsInCondition( String aggregationExpression )
     {
         String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
@@ -339,6 +340,7 @@ public class DefaultCaseAggregationConditionService
         return dataElements;
     }
 
+    @Override
     public Collection<Program> getProgramsInCondition( String aggregationExpression )
     {
         String regExp = "\\[(" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE_DATAELEMENT + ")" + SEPARATOR_OBJECT
@@ -371,6 +373,7 @@ public class DefaultCaseAggregationConditionService
         return programs;
     }
 
+    @Override
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesInCondition( String aggregationExpression )
     {
         String regExp = "\\[" + OBJECT_TRACKED_ENTITY_ATTRIBUTE + SEPARATOR_OBJECT + "[0-9]+\\]";
@@ -401,6 +404,7 @@ public class DefaultCaseAggregationConditionService
         return attributes;
     }
 
+    @Override
     public Collection<CaseAggregationCondition> getCaseAggregationConditions( Collection<DataElement> dataElements, String key,Integer first, Integer max )
     {
         return i18n( i18nService, aggregationConditionStore.get( dataElements, key, first, max ) );
@@ -412,6 +416,7 @@ public class DefaultCaseAggregationConditionService
         return aggregationConditionStore.count( dataElements, key );
     }
     
+    @Override
     public void aggregate( List<CaseAggregateSchedule> caseAggregateSchedules, String taskStrategy )
     {       
         ConcurrentLinkedQueue<CaseAggregateSchedule> datasetQ = new ConcurrentLinkedQueue<>(

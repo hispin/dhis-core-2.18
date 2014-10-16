@@ -94,6 +94,7 @@ public class GetCompareOptionsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

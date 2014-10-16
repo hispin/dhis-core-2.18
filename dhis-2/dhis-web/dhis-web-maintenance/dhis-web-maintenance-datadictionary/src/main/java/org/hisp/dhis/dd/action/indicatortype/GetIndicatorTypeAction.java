@@ -73,6 +73,7 @@ public class GetIndicatorTypeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicatorType = indicatorService.getIndicatorType( id );

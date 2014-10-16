@@ -76,6 +76,7 @@ public class DefaultDataMergeService
     // DataMergeService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     @Transactional
     public void eliminateDuplicateDataElement( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
         DataElement sourceDataElement, DataElementCategoryOptionCombo sourceCategoryOptionCombo )
@@ -100,6 +101,7 @@ public class DefaultDataMergeService
         }
     }
 
+    @Override
     @Transactional
     public void mergeOrganisationUnits( OrganisationUnit dest, OrganisationUnit source )
     {

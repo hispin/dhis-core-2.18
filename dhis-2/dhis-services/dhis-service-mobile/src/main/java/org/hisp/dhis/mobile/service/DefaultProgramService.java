@@ -135,6 +135,7 @@ public class DefaultProgramService
         return programs;
     }
 
+    @Override
     public Program getProgram( int programId, String localeString )
     {
         org.hisp.dhis.program.Program program = programService.getProgram( programId );

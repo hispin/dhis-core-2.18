@@ -106,6 +106,7 @@ public class ValidateGroupSetAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         // ---------------------------------------------------------------------
@@ -140,6 +141,7 @@ public class ValidateGroupSetAction
 
             Collection<OrganisationUnit> duplicates = ListUtils.getDuplicates( units, new Comparator<OrganisationUnit>()
             {
+                @Override
                 public int compare( OrganisationUnit o1, OrganisationUnit o2 )
                 {
                     return o1.getName().compareTo( o2.getName() );

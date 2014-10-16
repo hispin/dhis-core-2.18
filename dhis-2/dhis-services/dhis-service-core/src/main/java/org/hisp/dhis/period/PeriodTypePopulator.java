@@ -60,6 +60,7 @@ public class PeriodTypePopulator
     // Execute
     // -------------------------------------------------------------------------
 
+    @Override
     @Transactional
     public void execute()
         throws Exception

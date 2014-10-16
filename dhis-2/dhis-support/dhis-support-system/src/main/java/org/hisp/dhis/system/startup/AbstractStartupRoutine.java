@@ -63,16 +63,19 @@ public abstract class AbstractStartupRoutine
     // StartupRoutine implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public int getRunlevel()
     {
         return runlevel;
     }
     
+    @Override
     public String getName()
     {
         return name;
     }
 
+    @Override
     public boolean skipInTests()
     {
         return skipInTests;

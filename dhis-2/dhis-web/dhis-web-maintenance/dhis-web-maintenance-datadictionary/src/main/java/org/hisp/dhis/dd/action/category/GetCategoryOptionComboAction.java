@@ -73,6 +73,7 @@ public class GetCategoryOptionComboAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         optionCombo = categoryService.getDataElementCategoryOptionCombo( id );

@@ -73,6 +73,7 @@ public class RemoveMessageAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

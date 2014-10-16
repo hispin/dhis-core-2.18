@@ -134,6 +134,7 @@ public class ShowedAssociationsEditorAction
     // Action implement
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

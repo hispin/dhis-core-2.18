@@ -40,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultConverterInvoker
     implements ConverterInvoker
 {
+    @Override
     @Transactional
     public void invokeRead( XMLConverter converter, XMLReader reader, ImportParams params )
     {

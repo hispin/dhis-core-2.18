@@ -140,6 +140,7 @@ public class SpringDataValueSetStore
         
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {
+            @Override
             public void processRow( ResultSet rs ) throws SQLException
             {
                 DataValue dataValue = dataValueSet.getDataValueInstance();

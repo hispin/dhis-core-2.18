@@ -52,6 +52,7 @@ public class IndicatorGroupSetBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "indicatorgroupset" );
@@ -75,16 +76,19 @@ public class IndicatorGroupSetBatchHandler
         statementBuilder.setIdentifierValue( groupSet.getId() );
     }
     
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "name" );
     }
     
+    @Override
     protected void setUniqueValues( IndicatorGroupSet groupSet )
     {        
         statementBuilder.setUniqueValue( groupSet.getName() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "uid" );
@@ -92,6 +96,7 @@ public class IndicatorGroupSetBatchHandler
         statementBuilder.setColumn( "name" );
     }
     
+    @Override
     protected void setValues( IndicatorGroupSet groupSet )
     {
         statementBuilder.setValue( groupSet.getUid() );

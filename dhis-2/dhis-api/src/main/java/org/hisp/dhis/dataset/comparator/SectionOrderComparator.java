@@ -37,6 +37,7 @@ public class SectionOrderComparator
 {
     public static final SectionOrderComparator INSTANCE = new SectionOrderComparator();
     
+    @Override
     public int compare( Section o1, Section o2 )
     {
         if ( o1.getDataSet() != null && o2.getDataSet() != null )

@@ -107,6 +107,7 @@ public class EliminateDuplicateDataAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         DataElement dataElementEliminate = dataElementService.getDataElement( dataElementToEliminate );

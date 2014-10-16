@@ -159,6 +159,7 @@ public class SetAppearanceSettingsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         applicationIntro = StringUtils.trimToNull( applicationIntro );

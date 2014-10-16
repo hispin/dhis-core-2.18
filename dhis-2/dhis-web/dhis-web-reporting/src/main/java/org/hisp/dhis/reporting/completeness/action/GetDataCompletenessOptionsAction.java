@@ -94,6 +94,7 @@ public class GetDataCompletenessOptionsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         dataSets = new ArrayList<>( dataSetService.getAllDataSets() );

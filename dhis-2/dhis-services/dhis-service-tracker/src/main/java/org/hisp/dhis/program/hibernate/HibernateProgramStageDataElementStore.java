@@ -61,6 +61,7 @@ public class HibernateProgramStageDataElementStore
     // Implemented methods
     // -------------------------------------------------------------------------
 
+    @Override
     public void save( ProgramStageDataElement programStageDataElement )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -68,6 +69,7 @@ public class HibernateProgramStageDataElementStore
         session.save( programStageDataElement );
     }
 
+    @Override
     public void update( ProgramStageDataElement programStageDataElement )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -75,6 +77,7 @@ public class HibernateProgramStageDataElementStore
         session.update( programStageDataElement );
     }
 
+    @Override
     public void delete( ProgramStageDataElement programStageDataElement )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -82,6 +85,7 @@ public class HibernateProgramStageDataElementStore
         session.delete( programStageDataElement );
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageDataElement> getAll()
     {
@@ -92,6 +96,7 @@ public class HibernateProgramStageDataElementStore
         return criteria.list();
     }
 
+    @Override
     public ProgramStageDataElement get( ProgramStage programStage, DataElement dataElement )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -103,6 +108,7 @@ public class HibernateProgramStageDataElementStore
         return (ProgramStageDataElement) criteria.uniqueResult();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getListDataElement( ProgramStage programStage )
     {

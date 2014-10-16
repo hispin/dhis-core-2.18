@@ -39,6 +39,7 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
 public class TrackedEntityAttributeGroupSortOrderComparator
     implements Comparator<TrackedEntityAttributeGroup>
 {
+    @Override
     public int compare( TrackedEntityAttributeGroup group0,
         TrackedEntityAttributeGroup group1 )
     {

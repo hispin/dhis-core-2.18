@@ -64,6 +64,7 @@ public class JDBCCrossTabStore
     // CrossTabStore implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void createCrossTabTable( List<DataElementOperand> operands, String key )
     {
         final StringBuffer sql = new StringBuffer( "CREATE TABLE " + CROSSTAB_TABLE_PREFIX + key + " ( " );
@@ -81,11 +82,13 @@ public class JDBCCrossTabStore
         statementManager.getHolder().executeUpdate( sql.toString() );
     }
 
+    @Override
     public void dropCrossTabTable( String key )
     {
         statementManager.getHolder().executeUpdate( "DROP TABLE IF EXISTS " + CROSSTAB_TABLE_PREFIX + key );
     }
 
+    @Override
     public void createAggregatedDataCache( List<DataElementOperand> operands, String key )
     {
         final StringBuffer sql = new StringBuffer( "CREATE TABLE " + AGGREGATEDDATA_CACHE_PREFIX + key + " ( " );
@@ -103,11 +106,13 @@ public class JDBCCrossTabStore
         statementManager.getHolder().executeUpdate( sql.toString() );
     }
     
+    @Override
     public void dropAggregatedDataCache( String key )
     {
         statementManager.getHolder().executeUpdate( "DROP TABLE IF EXISTS " + AGGREGATEDDATA_CACHE_PREFIX + key );
     }
 
+    @Override
     public void createAggregatedOrgUnitDataCache( List<DataElementOperand> operands, String key )
     {
         final StringBuffer sql = new StringBuffer( "CREATE TABLE " + AGGREGATEDORGUNITDATA_CACHE_PREFIX + key + " ( " );
@@ -126,6 +131,7 @@ public class JDBCCrossTabStore
         statementManager.getHolder().executeUpdate( sql.toString() );
     }
     
+    @Override
     public void dropAggregatedOrgUnitDataCache( String key )
     {
         statementManager.getHolder().executeUpdate( "DROP TABLE IF EXISTS " + AGGREGATEDORGUNITDATA_CACHE_PREFIX + key );
@@ -135,7 +141,8 @@ public class JDBCCrossTabStore
     // CrossTabDataValue
     // -------------------------------------------------------------------------
 
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, 
+    @Override
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
         Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
     {
         final StatementHolder holder = statementManager.getHolder();
@@ -165,7 +172,8 @@ public class JDBCCrossTabStore
         }
     }
         
-    public Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, 
+    @Override
+    public Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands,
         int periodId, int sourceId, String key )
     {
         final StatementHolder holder = statementManager.getHolder();
@@ -191,7 +199,8 @@ public class JDBCCrossTabStore
         }
     }
 
-    public Map<DataElementOperand, Double> getAggregatedOrgUnitDataCacheValue( Collection<DataElementOperand> operands, 
+    @Override
+    public Map<DataElementOperand, Double> getAggregatedOrgUnitDataCacheValue( Collection<DataElementOperand> operands,
         int periodId, int sourceId, int organisationUnitGroupId, String key )
     {
         final StatementHolder holder = statementManager.getHolder();

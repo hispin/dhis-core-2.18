@@ -55,6 +55,7 @@ public class ClearSelectedOrganisationUnitsAction
     // Action implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public String execute()
     {
         selectionTreeManager.clearSelectedOrganisationUnits();

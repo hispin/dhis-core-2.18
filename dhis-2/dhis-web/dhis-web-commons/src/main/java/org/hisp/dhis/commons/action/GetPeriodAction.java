@@ -72,6 +72,7 @@ public class GetPeriodAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( id != null )

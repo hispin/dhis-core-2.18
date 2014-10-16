@@ -102,16 +102,19 @@ public class DefaultI18nLocaleService
     // I18nLocaleService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Map<String, String> getAvailableLanguages()
     {
         return languages;
     }
     
+    @Override
     public Map<String, String> getAvailableCountries()
     {
         return countries;
     }
     
+    @Override
     public boolean addI18nLocale( String language, String country )
     {
         String languageName = languages.get( language );
@@ -137,51 +140,61 @@ public class DefaultI18nLocaleService
         return true;
     }
         
+    @Override
     public void saveI18nLocale( I18nLocale locale )
     {
         localeStore.save( locale );
     }
     
+    @Override
     public I18nLocale getI18nLocale( int id )
     {
         return localeStore.get( id );
     }
     
+    @Override
     public I18nLocale getI18nLocaleByUid( String uid )
     {
         return localeStore.getByUid( uid );
     }
         
+    @Override
     public I18nLocale getI18nLocale( Locale locale )
     {
         return localeStore.getI18nLocaleByLocale( locale );
     }
     
+    @Override
     public void deleteI18nLocale( I18nLocale locale )
     {
         localeStore.delete( locale );
     }
     
+    @Override
     public int getI18nLocaleCount()
     {
         return localeStore.getCount();
     }
 
+    @Override
     public int getI18nLocaleCountByName( String name )
     {
         return localeStore.getCountLikeName( name );
     }
     
+    @Override
     public Collection<I18nLocale> getI18nLocalesBetween( int first, int max )
     {
         return localeStore.getAllOrderedName( first, max );
     }
     
+    @Override
     public Collection<I18nLocale> getI18nLocalesBetweenLikeName( String name, int first, int max )
     {
         return localeStore.getAllLikeName( name, first, max );
     }
     
+    @Override
     public List<Locale> getAllLocales()
     {
         List<Locale> locales = new ArrayList<>();

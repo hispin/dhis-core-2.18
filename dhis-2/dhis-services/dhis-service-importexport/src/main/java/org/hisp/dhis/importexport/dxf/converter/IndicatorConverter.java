@@ -112,6 +112,7 @@ public class IndicatorConverter
     // XMLConverter implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<Indicator> indicators = indicatorService.getIndicators( params.getIndicators() );
@@ -145,6 +146,7 @@ public class IndicatorConverter
         }
     }
     
+    @Override
     public void read( XMLReader reader, ImportParams params )
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )

@@ -501,6 +501,7 @@ public class MobileOrgUnitLinks
         this.completeProgramInstanceUrl = completeProgramInstanceUrl;
     }
 
+    @Override
     public void serialize( DataOutputStream dataOutputStream )
         throws IOException
     {
@@ -544,6 +545,7 @@ public class MobileOrgUnitLinks
 
     }
 
+    @Override
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {

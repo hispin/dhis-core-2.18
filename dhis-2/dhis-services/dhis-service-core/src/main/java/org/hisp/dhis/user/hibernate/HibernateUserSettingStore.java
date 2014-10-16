@@ -58,6 +58,7 @@ public class HibernateUserSettingStore
     // UserSettingStore implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void addUserSetting( UserSetting userSetting )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -65,6 +66,7 @@ public class HibernateUserSettingStore
         session.save( userSetting );
     }
 
+    @Override
     public void updateUserSetting( UserSetting userSetting )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -72,6 +74,7 @@ public class HibernateUserSettingStore
         session.update( userSetting );
     }
 
+    @Override
     public UserSetting getUserSetting( User user, String name )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -85,6 +88,7 @@ public class HibernateUserSettingStore
         return (UserSetting) query.uniqueResult();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<UserSetting> getAllUserSettings( User user )
     {
@@ -95,6 +99,7 @@ public class HibernateUserSettingStore
         return query.list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<UserSetting> getUserSettings( String name )
     {
@@ -105,6 +110,7 @@ public class HibernateUserSettingStore
         return query.list();
     }
 
+    @Override
     public void deleteUserSetting( UserSetting userSetting )
     {
         Session session = sessionFactory.getCurrentSession();

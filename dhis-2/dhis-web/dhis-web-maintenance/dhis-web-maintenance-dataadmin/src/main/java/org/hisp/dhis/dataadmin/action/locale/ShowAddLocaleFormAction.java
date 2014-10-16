@@ -70,6 +70,7 @@ public class ShowAddLocaleFormAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
     	availableLanguages = localeService.getAvailableLanguages();

@@ -80,6 +80,7 @@ public class DefaultSchedulingManager
     // SchedulingManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void scheduleTasks()
     {        
         ListMap<String, String> cronKeyMap = getCronKeyMap();
@@ -95,6 +96,7 @@ public class DefaultSchedulingManager
         }
     }
     
+    @Override
     public void scheduleTasks( ListMap<String, String> cronKeyMap )
     {
         systemSettingManager.saveSystemSetting( KEY_SCHEDULED_TASKS, new ListMap<>( cronKeyMap ) );
@@ -102,6 +104,7 @@ public class DefaultSchedulingManager
         scheduleTasks();
     }
     
+    @Override
     public void stopTasks()
     {
         systemSettingManager.saveSystemSetting( KEY_SCHEDULED_TASKS, null );
@@ -109,12 +112,14 @@ public class DefaultSchedulingManager
         scheduler.stopAllTasks();
     }
     
+    @Override
     @SuppressWarnings("unchecked")
     public ListMap<String, String> getCronKeyMap()
     {
         return (ListMap<String, String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_TASKS, new ListMap<String, String>() );
     }
     
+    @Override
     public Set<String> getScheduledKeys()
     {
         ListMap<String, String> cronKeyMap = getCronKeyMap();
@@ -129,6 +134,7 @@ public class DefaultSchedulingManager
         return keys;
     }
     
+    @Override
     public String getTaskStatus()
     {
         ListMap<String, String> cronKeyMap = getCronKeyMap();

@@ -47,6 +47,7 @@ public class DummyDeletionHandler
         return Object.class.getSimpleName();
     }
     
+    @Override
     public void deleteDataElement( DataElement dataElement )
     {
         log.info( "Iterating over all objects and removing associations to the data element" );

@@ -83,6 +83,7 @@ public class RemoveProgramInstanceAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         try

@@ -61,6 +61,7 @@ public class SimpleAccessVoter
     // Interface implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public boolean supports( ConfigAttribute configAttribute )
     {
         return configAttribute != null && configAttribute.getAttribute() != null
@@ -73,6 +74,7 @@ public class SimpleAccessVoter
         return true;
     }
 
+    @Override
     public int vote( Authentication authentication, Object object, Collection<ConfigAttribute> attributes )
     {
         for ( GrantedAuthority authority : authentication.getAuthorities() )

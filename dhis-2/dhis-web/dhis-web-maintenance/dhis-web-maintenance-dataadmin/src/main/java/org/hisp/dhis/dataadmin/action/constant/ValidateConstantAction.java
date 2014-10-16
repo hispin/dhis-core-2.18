@@ -95,6 +95,7 @@ public class ValidateConstantAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( name != null )

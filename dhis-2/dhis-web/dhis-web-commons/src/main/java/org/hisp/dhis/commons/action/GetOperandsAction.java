@@ -158,6 +158,7 @@ public class GetOperandsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         List<DataElement> dataElements = new ArrayList<>();

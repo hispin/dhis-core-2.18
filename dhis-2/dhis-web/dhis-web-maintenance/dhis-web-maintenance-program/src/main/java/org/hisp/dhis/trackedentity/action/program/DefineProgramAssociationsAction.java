@@ -80,6 +80,7 @@ public class DefineProgramAssociationsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

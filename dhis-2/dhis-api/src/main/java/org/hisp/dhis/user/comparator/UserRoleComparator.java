@@ -38,6 +38,7 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 public class UserRoleComparator
     implements Comparator<UserAuthorityGroup>
 {
+    @Override
     public int compare( UserAuthorityGroup ur0, UserAuthorityGroup ur1 )
     {
         if ( ur0 == null )

@@ -58,6 +58,7 @@ public interface OutboundSmsTransportService extends SmsConfigurable
 
     boolean isEnabled();
 
+    @Override
     String initialize( SmsConfiguration smsConfiguration )
         throws SmsServiceException;
 

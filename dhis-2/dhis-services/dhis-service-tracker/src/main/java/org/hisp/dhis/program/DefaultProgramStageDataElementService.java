@@ -56,31 +56,37 @@ public class DefaultProgramStageDataElementService
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    @Override
     public void addProgramStageDataElement( ProgramStageDataElement programStageDataElement )
     {
         programStageDataElementStore.save( programStageDataElement );
     }
 
+    @Override
     public void deleteProgramStageDataElement( ProgramStageDataElement programStageDataElement )
     {
         programStageDataElementStore.delete( programStageDataElement );
     }
 
+    @Override
     public Collection<ProgramStageDataElement> getAllProgramStageDataElements()
     {
         return programStageDataElementStore.getAll();
     }
     
+    @Override
     public ProgramStageDataElement get( ProgramStage programStage, DataElement dataElement )
     {
         return programStageDataElementStore.get( programStage, dataElement );
     }
 
+    @Override
     public void updateProgramStageDataElement( ProgramStageDataElement programStageDataElement )
     {
         programStageDataElementStore.update( programStageDataElement );
     }
 
+    @Override
     public Collection<DataElement> getListDataElement( ProgramStage programStage )
     {
         return programStageDataElementStore.getListDataElement( programStage );

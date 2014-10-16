@@ -39,6 +39,7 @@ import java.util.Comparator;
 public class StartupRoutineComparator
     implements Comparator<StartupRoutine>
 {
+    @Override
     public int compare( StartupRoutine routineA, StartupRoutine routineB )
     {
         return routineA.getRunlevel() - routineB.getRunlevel();

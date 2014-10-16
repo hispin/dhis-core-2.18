@@ -109,6 +109,7 @@ public class GetChartAction
     // Action implemenation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( id != null )

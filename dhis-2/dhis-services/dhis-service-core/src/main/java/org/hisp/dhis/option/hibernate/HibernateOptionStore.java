@@ -74,6 +74,7 @@ public class HibernateOptionStore
         return query.list();
     }
 
+    @Override
     public Option getOptionByName( OptionSet optionSet, String name )
     {
         String hql = 
@@ -87,6 +88,7 @@ public class HibernateOptionStore
         return (Option) query.uniqueResult();
     }
 
+    @Override
     public Option getOptionByCode( OptionSet optionSet, String code )
     {
         String hql = 
@@ -100,6 +102,7 @@ public class HibernateOptionStore
         return (Option) query.uniqueResult();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Option> getOptions( OptionSet optionSet, String option, Integer min, Integer max )
     {

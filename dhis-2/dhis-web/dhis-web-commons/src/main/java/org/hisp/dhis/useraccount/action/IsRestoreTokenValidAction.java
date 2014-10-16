@@ -80,6 +80,7 @@ public class IsRestoreTokenValidAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );

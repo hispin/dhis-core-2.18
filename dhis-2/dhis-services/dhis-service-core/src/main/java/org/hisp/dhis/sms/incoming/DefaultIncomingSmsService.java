@@ -51,6 +51,7 @@ public class DefaultIncomingSmsService
 
     private MessageQueue incomingSmsQueue;
 
+    @Override
     public void setIncomingSmsQueue( MessageQueue incomingSmsQueue )
     {
         this.incomingSmsQueue = incomingSmsQueue;

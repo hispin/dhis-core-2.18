@@ -368,6 +368,7 @@ public abstract class AbstractEventService
     // READ
     // -------------------------------------------------------------------------
 
+    @Override
     public Events getEvents( Program program, OrganisationUnit organisationUnit )
     {
         return getEvents( program, null, null, null, Arrays.asList( organisationUnit ), null, null, null, null );
@@ -534,6 +535,7 @@ public abstract class AbstractEventService
 
     }
 
+    @Override
     public void updateEventForNote( Event event )
     {
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
@@ -547,6 +549,7 @@ public abstract class AbstractEventService
         saveTrackedEntityComment( programStageInstance, event, getStoredBy( event, null ) );
     }
 
+    @Override
     public void updateEventForEventDate( Event event )
     {
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event.getEvent() );

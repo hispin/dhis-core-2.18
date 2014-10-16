@@ -156,6 +156,7 @@ public class SetAccessSettingsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         UserAuthorityGroup group = null;

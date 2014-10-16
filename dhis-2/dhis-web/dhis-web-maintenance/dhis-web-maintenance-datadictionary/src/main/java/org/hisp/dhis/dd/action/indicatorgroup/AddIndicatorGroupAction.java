@@ -97,6 +97,7 @@ public class AddIndicatorGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicatorGroup = new IndicatorGroup( name );

@@ -38,6 +38,7 @@ import org.hisp.dhis.user.UserGroup;
 public class UserGroupComparator
     implements Comparator<UserGroup>
 {
+    @Override
     public int compare( UserGroup ug0, UserGroup ug1 )
     {
         if ( ug0 == null )

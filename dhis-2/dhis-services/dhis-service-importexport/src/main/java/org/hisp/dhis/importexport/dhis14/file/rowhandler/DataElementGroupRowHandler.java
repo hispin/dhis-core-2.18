@@ -65,6 +65,7 @@ public class DataElementGroupRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {        
         final DataElementGroup dataElementGroup = (DataElementGroup) object;

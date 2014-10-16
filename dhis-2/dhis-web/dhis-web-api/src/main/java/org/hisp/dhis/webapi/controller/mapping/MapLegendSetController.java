@@ -77,6 +77,7 @@ public class MapLegendSetController
         ContextUtils.createdResponse( response, "Map legend set created", MapLegendSetSchemaDescriptor.API_ENDPOINT + "/" + legendSet.getUid() );
     }
 
+    @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
@@ -111,6 +112,7 @@ public class MapLegendSetController
         mappingService.updateMapLegendSet( legendSet );
     }
 
+    @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )

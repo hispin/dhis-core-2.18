@@ -166,6 +166,7 @@ public class DefaultDimensionService
         return null;
     }
     
+    @Override
     public DimensionalObject getDimension( String uid, DimensionType dimensionType )
     {
         if ( uid == null || dimensionType == null )
@@ -183,6 +184,7 @@ public class DefaultDimensionService
         return identifiableObjectManager.get( clazz, uid );
     }
     
+    @Override
     public List<NameableObject> getCanReadDimensionItems( String uid )
     {
         DimensionalObject dimension = getDimension( uid );
@@ -199,6 +201,7 @@ public class DefaultDimensionService
         return items;
     }
     
+    @Override
     public <T extends IdentifiableObject> List<T> getCanReadObjects( List<T> objects )
     {
         User user = currentUserService.getCurrentUser();
@@ -206,6 +209,7 @@ public class DefaultDimensionService
         return getCanReadObjects( user, objects );
     }
     
+    @Override
     public <T extends IdentifiableObject> List<T> getCanReadObjects( User user, List<T> objects )
     {        
         List<T> list = new ArrayList<>( objects );
@@ -224,6 +228,7 @@ public class DefaultDimensionService
         return list;
     }
         
+    @Override
     public DimensionType getDimensionType( String uid )
     {
         DataElementCategory cat = identifiableObjectManager.get( DataElementCategory.class, uid );
@@ -301,6 +306,7 @@ public class DefaultDimensionService
         return getCanReadObjects( user, dimensions );
     }
     
+    @Override
     public List<DimensionalObject> getDimensionConstraints()
     {
         Collection<CategoryOptionGroupSet> cogs = categoryService.getDataDimensionCategoryOptionGroupSets();
@@ -338,6 +344,7 @@ public class DefaultDimensionService
         }
     }
     
+    @Override
     public DimensionalObject getDimensionalObjectCopy( String uid, boolean filterCanRead )
     {
         DimensionalObject dimension = getDimension( uid );

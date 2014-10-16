@@ -92,6 +92,7 @@ public class ValidateValidationCriteriaAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         if ( name == null || name.isEmpty() )

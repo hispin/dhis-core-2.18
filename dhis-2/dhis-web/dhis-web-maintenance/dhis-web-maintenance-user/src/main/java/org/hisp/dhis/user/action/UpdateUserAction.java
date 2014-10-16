@@ -254,6 +254,7 @@ public class UpdateUserAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

@@ -57,6 +57,7 @@ public abstract class AbstractPrefixedAccessDecisionVoter
     // AccessDecisionVoter implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public boolean supports( ConfigAttribute configAttribute )
     {
         boolean result = configAttribute.getAttribute() != null

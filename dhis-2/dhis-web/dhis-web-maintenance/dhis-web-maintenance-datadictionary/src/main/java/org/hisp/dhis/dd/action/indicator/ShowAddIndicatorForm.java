@@ -102,6 +102,7 @@ public class ShowAddIndicatorForm
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicatorTypes = new ArrayList<>( indicatorService.getAllIndicatorTypes() );

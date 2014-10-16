@@ -53,6 +53,7 @@ public class ClearSelectedOrganisationUnitsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

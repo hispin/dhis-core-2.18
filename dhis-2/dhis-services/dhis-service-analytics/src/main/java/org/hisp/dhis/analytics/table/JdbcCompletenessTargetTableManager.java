@@ -56,16 +56,19 @@ public class JdbcCompletenessTargetTableManager
         return tables;
     }
     
+    @Override
     public String validState()
     {
         return null;
     }    
     
+    @Override
     public String getTableName()
     {
         return COMPLETENESS_TARGET_TABLE_NAME;
     }
 
+    @Override
     public void createTable( AnalyticsTable table )
     {
         final String tableName = table.getTempTableName();
@@ -90,6 +93,7 @@ public class JdbcCompletenessTargetTableManager
         executeSilently( sqlCreate );
     }
 
+    @Override
     @Async
     public Future<?> populateTableAsync( ConcurrentLinkedQueue<AnalyticsTable> tables )
     {
@@ -131,6 +135,7 @@ public class JdbcCompletenessTargetTableManager
         return null;
     }
 
+    @Override
     public List<String[]> getDimensionColumns( AnalyticsTable table )
     {
         List<String[]> columns = new ArrayList<>();
@@ -161,16 +166,19 @@ public class JdbcCompletenessTargetTableManager
         return columns;
     }
 
+    @Override
     public Date getEarliestData()
     {
         return null; // Not relevant
     }
 
+    @Override
     public Date getLatestData()
     {
         return null; // Not relevant
     }
 
+    @Override
     @Async
     public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<AnalyticsTable> tables, Collection<String> dataElements, int aggregationLevel )
     {

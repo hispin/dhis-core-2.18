@@ -60,14 +60,17 @@ public class UserSettingInterceptor
     // UserSettingInterceptor implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void destroy()
     {
     }
 
+    @Override
     public void init()
     {
     }
 
+    @Override
     public String intercept( ActionInvocation invocation )
         throws Exception
     {

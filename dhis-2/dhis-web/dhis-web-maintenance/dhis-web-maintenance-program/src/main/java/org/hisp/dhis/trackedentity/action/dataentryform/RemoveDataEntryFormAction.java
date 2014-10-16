@@ -100,6 +100,7 @@ public class RemoveDataEntryFormAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

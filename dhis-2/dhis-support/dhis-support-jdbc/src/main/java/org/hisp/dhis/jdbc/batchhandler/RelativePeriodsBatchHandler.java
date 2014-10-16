@@ -47,6 +47,7 @@ public class RelativePeriodsBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "relativeperiods" );

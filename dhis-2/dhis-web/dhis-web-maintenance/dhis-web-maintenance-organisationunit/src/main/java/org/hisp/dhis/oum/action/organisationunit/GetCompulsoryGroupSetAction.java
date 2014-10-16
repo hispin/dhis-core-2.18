@@ -93,6 +93,7 @@ public class GetCompulsoryGroupSetAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitId );

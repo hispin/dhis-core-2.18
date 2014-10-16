@@ -88,6 +88,7 @@ public class GetAvailablePeriodsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         periodType = periodType != null && !periodType.isEmpty() ? periodType : MonthlyPeriodType.NAME;

@@ -207,6 +207,7 @@ public class DefaultProgramIndicatorService
         return result;
     }
 
+    @Override
     public String getExpressionDescription( String expression )
     {
         StringBuffer description = new StringBuffer();

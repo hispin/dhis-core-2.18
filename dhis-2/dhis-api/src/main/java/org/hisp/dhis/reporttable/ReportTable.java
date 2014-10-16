@@ -857,6 +857,7 @@ public class ReportTable
         this.reportParams = reportParams;
     }
 
+    @Override
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
@@ -865,11 +866,13 @@ public class ReportTable
         return sortOrder;
     }
 
+    @Override
     public void setSortOrder( int sortOrder )
     {
         this.sortOrder = sortOrder;
     }
 
+    @Override
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
@@ -878,6 +881,7 @@ public class ReportTable
         return topLimit;
     }
 
+    @Override
     public void setTopLimit( int topLimit )
     {
         this.topLimit = topLimit;

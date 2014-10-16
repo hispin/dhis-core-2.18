@@ -52,11 +52,13 @@ public class AggregatedDataValueBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
     
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "aggregateddatavalue" );
     }
     
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "dataelementid" );
@@ -64,6 +66,7 @@ public class AggregatedDataValueBatchHandler
         statementBuilder.setUniqueColumn( "organisationunitid" );
     }
     
+    @Override
     protected void setUniqueValues( AggregatedDataValue value )
     {        
         statementBuilder.setUniqueValue( value.getDataElementId() );
@@ -71,6 +74,7 @@ public class AggregatedDataValueBatchHandler
         statementBuilder.setUniqueValue( value.getOrganisationUnitId() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "dataelementid" );
@@ -82,6 +86,7 @@ public class AggregatedDataValueBatchHandler
         statementBuilder.setColumn( "value" );
     }
     
+    @Override
     protected void setValues( AggregatedDataValue value )
     {        
         statementBuilder.setValue( value.getDataElementId() );

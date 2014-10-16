@@ -82,6 +82,7 @@ public class RemoveLocaleAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

@@ -65,6 +65,7 @@ public class MoveApprovalLevelUpAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         DataApprovalLevel approvalLevel = dataApprovalLevelService.getDataApprovalLevel( id );

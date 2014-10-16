@@ -45,6 +45,7 @@ import org.hisp.dhis.period.Period;
 public class DataValueRowMapper
     implements RowMapper<DataValue>, org.springframework.jdbc.core.RowMapper<DataValue>
 {
+    @Override
     public DataValue mapRow( ResultSet resultSet )
         throws SQLException
     {

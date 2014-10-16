@@ -73,6 +73,7 @@ public class GetRelationshipTypeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

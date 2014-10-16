@@ -45,6 +45,7 @@ public class HibernateRelationshipStore
     extends HibernateGenericStore<Relationship>
     implements RelationshipStore
 {
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Relationship> getForTrackedEntityInstance( TrackedEntityInstance instance )
     {
@@ -54,6 +55,7 @@ public class HibernateRelationshipStore
             Restrictions.eq( "entityInstanceB", instance ) ) ).list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Relationship> getByRelationshipType( RelationshipType relationshipType )
     {
@@ -68,6 +70,7 @@ public class HibernateRelationshipStore
             Restrictions.eq( "relationshipType", relationshipType ) ).list();
     }
 
+    @Override
     public Relationship get( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB, RelationshipType relationshipType )
     {
         return (Relationship) getCriteria( 

@@ -38,6 +38,7 @@ public class AggregatedOrgUnitIndicatorValueTempBatchHandler
         super( config );
     }
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "aggregatedorgunitindicatorvalue_temp" );

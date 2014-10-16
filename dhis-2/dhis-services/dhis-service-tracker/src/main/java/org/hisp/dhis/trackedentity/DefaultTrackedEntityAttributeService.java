@@ -64,67 +64,80 @@ public class DefaultTrackedEntityAttributeService
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    @Override
     public void deleteTrackedEntityAttribute( TrackedEntityAttribute attribute )
     {
         attributeStore.delete( attribute );
     }
 
+    @Override
     public Collection<TrackedEntityAttribute> getAllTrackedEntityAttributes()
     {
         return attributeStore.getAll();
     }
 
+    @Override
     public TrackedEntityAttribute getTrackedEntityAttribute( int id )
     {
         return attributeStore.get( id );
     }
 
+    @Override
     public int addTrackedEntityAttribute( TrackedEntityAttribute attribute )
     {
         return attributeStore.save( attribute );
     }
 
+    @Override
     public void updateTrackedEntityAttribute( TrackedEntityAttribute attribute )
     {
         attributeStore.update( attribute );
     }
 
+    @Override
     public TrackedEntityAttribute getTrackedEntityAttributeByName( String name )
     {
         return attributeStore.getByName( name );
     }
 
+    @Override
     public TrackedEntityAttribute getTrackedEntityAttributeByShortName( String shortName )
     {
         return attributeStore.getByShortName( shortName );
     }
 
+    @Override
     public TrackedEntityAttribute getTrackedEntityAttributeByCode( String code )
     {
         return attributeStore.getByShortName( code );
     }
 
+    @Override
     public Collection<TrackedEntityAttribute> getOptionalAttributesWithoutGroup()
     {
         return attributeStore.getOptionalAttributesWithoutGroup();
     }
 
+    @Override
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesWithoutGroup()
     {
         return attributeStore.getWithoutGroup();
     }
 
+    @Override
     public TrackedEntityAttribute getTrackedEntityAttribute( String uid )
     {
         return attributeStore.getByUid( uid );
     }
 
+    @Override
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesByDisplayOnVisitSchedule(
         boolean displayOnVisitSchedule )
     {
         return attributeStore.getByDisplayOnVisitSchedule( displayOnVisitSchedule );
     }
 
+    @Override
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesWithoutProgram()
     {
         Collection<TrackedEntityAttribute> result = attributeStore.getAll();
@@ -144,26 +157,31 @@ public class DefaultTrackedEntityAttributeService
         return new HashSet<>();
     }
 
+    @Override
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayInList()
     {
         return attributeStore.getDisplayInList();
     }
 
+    @Override
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesBetweenByName( String name, int min, int max )
     {
         return attributeStore.getAllLikeName( name, min, max );
     }
 
+    @Override
     public int getTrackedEntityAttributeCount()
     {
         return attributeStore.getCount();
     }
 
+    @Override
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesBetween( int min, int max )
     {
         return attributeStore.getAllOrderedName( min, max );
     }
 
+    @Override
     public int getTrackedEntityAttributeCountByName( String name )
     {
         return attributeStore.getCountLikeName( name );

@@ -37,6 +37,7 @@ import org.hisp.dhis.system.util.Filter;
 public class DataElementGroupWithoutGroupSetFilter
     implements Filter<DataElementGroup>
 {
+    @Override
     public boolean retain( DataElementGroup object )
     {
         return object == null || object.getGroupSet() == null;

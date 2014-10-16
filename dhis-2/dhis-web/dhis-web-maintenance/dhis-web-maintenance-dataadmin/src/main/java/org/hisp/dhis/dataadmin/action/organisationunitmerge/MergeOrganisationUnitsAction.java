@@ -83,6 +83,7 @@ public class MergeOrganisationUnitsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         OrganisationUnit eliminate = organisationUnitService.getOrganisationUnit( organisationUnitToEliminate );

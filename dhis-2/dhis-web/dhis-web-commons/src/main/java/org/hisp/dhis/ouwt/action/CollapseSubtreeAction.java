@@ -85,6 +85,7 @@ public class CollapseSubtreeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

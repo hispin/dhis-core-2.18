@@ -213,6 +213,7 @@ public class UpdateValidationRuleAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         ValidationRule validationRule = validationRuleService.getValidationRule( id );

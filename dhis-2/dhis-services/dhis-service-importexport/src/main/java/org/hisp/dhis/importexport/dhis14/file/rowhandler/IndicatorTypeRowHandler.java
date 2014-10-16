@@ -65,6 +65,7 @@ public class IndicatorTypeRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {
         final IndicatorType indicatorType = (IndicatorType) object;

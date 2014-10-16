@@ -74,6 +74,7 @@ public class DataElementRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {
         final DataElement dataElement = (DataElement) object;

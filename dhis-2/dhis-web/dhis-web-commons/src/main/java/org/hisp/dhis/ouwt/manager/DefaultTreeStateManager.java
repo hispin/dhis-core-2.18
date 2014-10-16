@@ -73,11 +73,13 @@ public class DefaultTreeStateManager
     // TreeStateManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void setSubtreeExpanded( OrganisationUnit unit )
     {
         getTreeState().add( unit.getId() );
     }
 
+    @Override
     public Collection<OrganisationUnit> setSubtreeCollapsed( OrganisationUnit unit )
     {
         if ( collapseClosesAllSubtrees )
@@ -94,11 +96,13 @@ public class DefaultTreeStateManager
         }
     }
 
+    @Override
     public boolean isSubtreeExpanded( OrganisationUnit unit )
     {
         return getTreeState().contains( unit.getId() );
     }
 
+    @Override
     public void clearTreeState()
     {
         getTreeState().clear();

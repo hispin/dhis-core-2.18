@@ -98,6 +98,7 @@ public class GetAttributeGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

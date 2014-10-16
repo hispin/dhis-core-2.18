@@ -86,6 +86,7 @@ public class GetIndicatorGroupsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         indicatorGroups = new ArrayList<>( indicatorService.getAllIndicatorGroups() );

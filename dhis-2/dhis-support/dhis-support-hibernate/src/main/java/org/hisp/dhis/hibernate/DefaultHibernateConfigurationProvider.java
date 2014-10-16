@@ -189,17 +189,20 @@ public class DefaultHibernateConfigurationProvider
     // HibernateConfigurationProvider implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Configuration getConfiguration()
     {
         return configuration;
     }
 
-    public List<Resource> getJarResources() 
+    @Override
+    public List<Resource> getJarResources()
     {
         return jarResources;
     }
 
-    public List<Resource> getDirectoryResources() 
+    @Override
+    public List<Resource> getDirectoryResources()
     {
         return dirResources;
     }    

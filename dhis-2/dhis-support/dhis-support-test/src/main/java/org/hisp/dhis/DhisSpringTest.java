@@ -54,6 +54,7 @@ public abstract class DhisSpringTest
 
     protected ApplicationContext context;
 
+    @Override
     public void setApplicationContext( ApplicationContext context )
     {
         this.context = context;

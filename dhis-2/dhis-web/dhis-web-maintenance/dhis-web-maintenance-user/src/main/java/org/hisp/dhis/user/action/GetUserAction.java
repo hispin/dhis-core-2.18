@@ -84,6 +84,7 @@ public class GetUserAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

@@ -81,7 +81,8 @@ public class GetAllReportsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() 
+    @Override
+    public String execute()
         throws Exception
     {
         if ( isNotBlank( key ) )

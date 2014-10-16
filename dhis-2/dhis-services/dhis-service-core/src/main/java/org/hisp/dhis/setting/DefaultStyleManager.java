@@ -88,16 +88,19 @@ public class DefaultStyleManager
     // StyleManager implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void setSystemStyle( String style )
     {
          systemSettingManager.saveSystemSetting( SETTING_NAME_STYLE, style );
     }
     
+    @Override
     public void setUserStyle( String style )
     {
         userSettingService.saveUserSetting( SETTING_NAME_STYLE, style );
     }
 
+    @Override
     public String getCurrentStyle()
     {
         String style = (String) userSettingService.getUserSetting( SETTING_NAME_STYLE );
@@ -110,11 +113,13 @@ public class DefaultStyleManager
         return getSystemStyle();
     }
     
+    @Override
     public String getSystemStyle()
     {
         return (String) systemSettingManager.getSystemSetting( SETTING_NAME_STYLE, styles.get( defaultStyle ) );
     }
 
+    @Override
     public String getCurrentStyleDirectory()
     {
         String currentStyle = getCurrentStyle();
@@ -132,6 +137,7 @@ public class DefaultStyleManager
         return currentStyle;
     }
 
+    @Override
     public SortedMap<String, String> getStyles()
     {
         return styles;

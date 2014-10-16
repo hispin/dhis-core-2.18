@@ -52,6 +52,7 @@ public class DataElementGroupSetBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "dataelementgroupset" );
@@ -75,16 +76,19 @@ public class DataElementGroupSetBatchHandler
         statementBuilder.setIdentifierValue( groupSet.getId() );
     }
 
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "name" );
     }
     
+    @Override
     protected void setUniqueValues( DataElementGroupSet groupSet )
     {
         statementBuilder.setUniqueValue( groupSet.getName() );        
     }
        
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "uid" );
@@ -95,6 +99,7 @@ public class DataElementGroupSetBatchHandler
         statementBuilder.setColumn( "datadimension" );
     }
     
+    @Override
     protected void setValues( DataElementGroupSet groupSet )
     {
         statementBuilder.setValue( groupSet.getUid() );        

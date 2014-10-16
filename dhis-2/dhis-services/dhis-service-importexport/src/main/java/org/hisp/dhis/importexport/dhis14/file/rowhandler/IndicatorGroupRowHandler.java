@@ -65,6 +65,7 @@ public class IndicatorGroupRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {        
         final IndicatorGroup indicatorGroup = (IndicatorGroup) object;

@@ -63,6 +63,7 @@ public class GetCategoryOptionsAction
     // Action
     // -------------------------------------------------------------------------
     
+    @Override
     public String execute()
     {
         categoryOptions = new ArrayList<>( categoryService.getAllDataElementCategoryOptions() );

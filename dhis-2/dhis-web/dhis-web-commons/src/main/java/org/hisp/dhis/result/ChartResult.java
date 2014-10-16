@@ -121,6 +121,7 @@ public class ChartResult
      * @throws Exception if an error occurs when creating or writing the chart
      *         to the servlet output stream.
      */
+    @Override
     public void execute( ActionInvocation invocation )
         throws Exception
     {

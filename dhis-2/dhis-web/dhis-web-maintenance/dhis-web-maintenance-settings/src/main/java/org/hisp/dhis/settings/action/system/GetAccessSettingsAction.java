@@ -77,6 +77,7 @@ public class GetAccessSettingsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         userRoles = new ArrayList<>( userService.getAllUserAuthorityGroups() );

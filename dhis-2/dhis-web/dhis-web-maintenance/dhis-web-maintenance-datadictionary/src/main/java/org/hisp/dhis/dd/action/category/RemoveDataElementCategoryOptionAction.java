@@ -77,6 +77,7 @@ public class RemoveDataElementCategoryOptionAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         DataElementCategoryOption categoryOption = dataElementCategoryService.getDataElementCategoryOption( id );

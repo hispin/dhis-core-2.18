@@ -147,6 +147,7 @@ public class DefaultEventAnalyticsService
     // TODO order event analytics tables on execution date to avoid default
     // TODO sorting in queries
 
+    @Override
     public Grid getAggregatedEventData( EventQueryParams params )
     {
         securityManager.decideAccess( params );
@@ -235,6 +236,7 @@ public class DefaultEventAnalyticsService
         return grid;
     }
     
+    @Override
     public Grid getAggregatedEventData( AnalyticalObject object, I18nFormat format )
     {
         EventQueryParams params = getFromAnalyticalObject( (EventAnalyticalObject) object, format );
@@ -242,6 +244,7 @@ public class DefaultEventAnalyticsService
         return getAggregatedEventData( params );
     }
 
+    @Override
     public Grid getEvents( EventQueryParams params )
     {
         securityManager.decideAccess( params );
@@ -325,6 +328,7 @@ public class DefaultEventAnalyticsService
         return grid;
     }
 
+    @Override
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate,
         Set<String> dimension, Set<String> filter, boolean skipMeta, boolean hierarchyMeta, SortOrder sortOrder, 
         Integer limit, boolean uniqueInstances, I18nFormat format )
@@ -340,6 +344,7 @@ public class DefaultEventAnalyticsService
         return params;
     }
 
+    @Override
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate,
         Set<String> dimension, Set<String> filter, String ouMode, Set<String> asc, Set<String> desc,
         boolean skipMeta, boolean hierarchyMeta, boolean coordinatesOnly, Integer page, Integer pageSize, I18nFormat format )
@@ -454,6 +459,7 @@ public class DefaultEventAnalyticsService
         return params;
     }
 
+    @Override
     public EventQueryParams getFromAnalyticalObject( EventAnalyticalObject object, I18nFormat format )
     {        
         EventQueryParams params = new EventQueryParams();

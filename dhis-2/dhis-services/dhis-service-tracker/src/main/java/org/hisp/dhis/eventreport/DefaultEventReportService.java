@@ -51,31 +51,37 @@ public class DefaultEventReportService
     // EventReportService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public int saveEventReport( EventReport report )
     {
         return eventReportStore.save( report );
     }
     
+    @Override
     public void updateEventReport( EventReport report )
     {
         eventReportStore.update( report );
     }
     
+    @Override
     public EventReport getEventReport( int id )
     {
         return eventReportStore.get( id );
     }
     
+    @Override
     public EventReport getEventReport( String uid )
     {
         return eventReportStore.getByUid( uid );
     }
     
+    @Override
     public void deleteEventReport( EventReport report )
     {
         eventReportStore.delete( report );
     }
     
+    @Override
     public List<EventReport> getAllEventReprots()
     {
         return eventReportStore.getAll();

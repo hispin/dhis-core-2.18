@@ -147,11 +147,13 @@ public class AggregatedIndicatorValue
         this.indicatorId = indicatorId;
     }
 
+    @Override
     public int getLevel()
     {
         return level;
     }
 
+    @Override
     public void setLevel( int level )
     {
         this.level = level;

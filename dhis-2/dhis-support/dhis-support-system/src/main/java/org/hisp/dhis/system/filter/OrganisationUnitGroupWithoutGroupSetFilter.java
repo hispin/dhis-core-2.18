@@ -37,6 +37,7 @@ import org.hisp.dhis.system.util.Filter;
 public class OrganisationUnitGroupWithoutGroupSetFilter
     implements Filter<OrganisationUnitGroup>
 {
+    @Override
     public boolean retain( OrganisationUnitGroup object )
     {
         return object == null || object.getGroupSet() == null;

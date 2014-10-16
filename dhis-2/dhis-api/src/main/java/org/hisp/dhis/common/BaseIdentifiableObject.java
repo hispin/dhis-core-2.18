@@ -170,6 +170,7 @@ public class BaseIdentifiableObject
     // Setters and getters
     // -------------------------------------------------------------------------
 
+    @Override
     @JsonIgnore
     public int getId()
     {
@@ -181,6 +182,7 @@ public class BaseIdentifiableObject
         this.id = id;
     }
 
+    @Override
     @JsonProperty( value = "id" )
     @JacksonXmlProperty( localName = "id", isAttribute = true )
     @Description( "The Unique Identifier for this Object." )
@@ -194,6 +196,7 @@ public class BaseIdentifiableObject
         this.uid = uid;
     }
 
+    @Override
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
     @Description( "The unique code for this Object." )
@@ -207,6 +210,7 @@ public class BaseIdentifiableObject
         this.code = code;
     }
 
+    @Override
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
     @Description( "The name of this Object. Required and unique." )
@@ -232,6 +236,7 @@ public class BaseIdentifiableObject
         return false;
     }
 
+    @Override
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
     @Description( "The date this object was created." )
@@ -245,6 +250,7 @@ public class BaseIdentifiableObject
         this.created = created;
     }
 
+    @Override
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
     @Description( "The date this object was last updated." )
@@ -301,6 +307,7 @@ public class BaseIdentifiableObject
         this.user = user;
     }
 
+    @Override
     @JsonProperty
     @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
     @JacksonXmlElementWrapper( localName = "userGroupAccesses", namespace = DxfNamespaces.DXF_2_0 )
@@ -315,6 +322,7 @@ public class BaseIdentifiableObject
         this.userGroupAccesses = userGroupAccesses;
     }
 
+    @Override
     @JsonProperty
     @JacksonXmlProperty( localName = "access", namespace = DxfNamespaces.DXF_2_0 )
     public Access getAccess()

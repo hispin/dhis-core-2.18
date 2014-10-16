@@ -39,6 +39,7 @@ import java.util.Comparator;
 public class ProgramStageInstanceDueDateComparator
     implements Comparator<ProgramStageInstance>
 {
+    @Override
     public int compare( ProgramStageInstance programStageInstance1, ProgramStageInstance programStageInstance2 )
     {
         if ( programStageInstance1.getDueDate().before( programStageInstance2.getDueDate() ) )

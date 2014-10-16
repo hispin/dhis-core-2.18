@@ -129,12 +129,14 @@ public class DefaultLocationManager
     // InputStream
     // -------------------------------------------------------------------------
 
+    @Override
     public InputStream getInputStream( String fileName )
         throws LocationManagerException
     {
         return getInputStream( fileName, new String[0] );
     }
 
+    @Override
     public InputStream getInputStream( String fileName, String... directories )
         throws LocationManagerException
     {
@@ -156,12 +158,14 @@ public class DefaultLocationManager
     // File for reading
     // -------------------------------------------------------------------------
 
+    @Override
     public File getFileForReading( String fileName )
         throws LocationManagerException
     {
         return getFileForReading( fileName, new String[0] );
     }
 
+    @Override
     public File getFileForReading( String fileName, String... directories )
         throws LocationManagerException
     {
@@ -181,12 +185,14 @@ public class DefaultLocationManager
     // OutputStream
     // -------------------------------------------------------------------------
 
+    @Override
     public OutputStream getOutputStream( String fileName )
         throws LocationManagerException
     {
         return getOutputStream( fileName, new String[0] );
     }
     
+    @Override
     public OutputStream getOutputStream( String fileName, String... directories )
         throws LocationManagerException
     {
@@ -208,12 +214,14 @@ public class DefaultLocationManager
     // File for writing
     // -------------------------------------------------------------------------
 
+    @Override
     public File getFileForWriting( String fileName )
         throws LocationManagerException
     {
         return getFileForWriting( fileName, new String[0] );
     }
     
+    @Override
     public File getFileForWriting( String fileName, String... directories )
         throws LocationManagerException
     {
@@ -229,6 +237,7 @@ public class DefaultLocationManager
         return file;
     }
     
+    @Override
     public File buildDirectory( String... directories )
         throws LocationManagerException
     {
@@ -251,6 +260,7 @@ public class DefaultLocationManager
     // External directory and environment variable
     // -------------------------------------------------------------------------
 
+    @Override
     public File getExternalDirectory()
         throws LocationManagerException
     {
@@ -262,11 +272,13 @@ public class DefaultLocationManager
         return new File( externalDir );
     }
 
+    @Override
     public boolean externalDirectorySet()
     {
         return externalDir != null;
     }
     
+    @Override
     public String getEnvironmentVariable()
     {
         return environmentVariable;

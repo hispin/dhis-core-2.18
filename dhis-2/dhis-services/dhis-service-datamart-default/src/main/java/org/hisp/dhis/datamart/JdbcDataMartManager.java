@@ -241,6 +241,7 @@ public class JdbcDataMartManager
     // Data mart tables
     // -------------------------------------------------------------------------
 
+    @Override
     public void createTempAggregatedTables()
     {
         executeSilently( statementBuilder.getCreateAggregatedDataValueTable( true ) );
@@ -249,6 +250,7 @@ public class JdbcDataMartManager
         executeSilently( statementBuilder.getCreateAggregatedOrgUnitIndicatorTable( true ) );
     }
     
+    @Override
     public void dropTempAggregatedTables()
     {
         executeSilently( "drop table aggregateddatavalue_temp" );
@@ -257,21 +259,25 @@ public class JdbcDataMartManager
         executeSilently( "drop table aggregatedorgunitindicatorvalue_temp" );
     }
     
+    @Override
     public void copyAggregatedDataValuesFromTemp()
     {
         executeSilently( "insert into aggregateddatavalue select * from aggregateddatavalue_temp" );
     }
 
+    @Override
     public void copyAggregatedIndicatorValuesFromTemp()
     {
         executeSilently( "insert into aggregatedindicatorvalue select * from aggregatedindicatorvalue_temp" );
     }
 
+    @Override
     public void copyAggregatedOrgUnitDataValuesFromTemp()
     {
         executeSilently( "insert into aggregatedorgunitdatavalue select * from aggregatedorgunitdatavalue_temp" );
     }
 
+    @Override
     public void copyAggregatedOrgUnitIndicatorValuesFromTemp()
     {
         executeSilently( "insert into aggregatedorgunitindicatorvalue select * from aggregatedorgunitindicatorvalue_temp" );

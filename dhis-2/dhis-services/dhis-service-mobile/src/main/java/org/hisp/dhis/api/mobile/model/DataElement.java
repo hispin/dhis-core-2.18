@@ -89,11 +89,13 @@ public class DataElement
         this.compulsory = compulsory;
     }
 
+    @Override
     public String getClientVersion()
     {
         return clientVersion;
     }
 
+    @Override
     public void setClientVersion( String clientVersion )
     {
         this.clientVersion = clientVersion;

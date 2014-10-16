@@ -137,6 +137,7 @@ public class SetGeneralSettingsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

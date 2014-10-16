@@ -111,6 +111,7 @@ public class UpdateValidationRuleGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         ValidationRuleGroup group = validationRuleService.getValidationRuleGroup( id );

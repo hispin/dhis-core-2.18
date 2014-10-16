@@ -73,11 +73,13 @@ public class AutomaticAccessFilter
     // Filter implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void init( FilterConfig filterConfig )
         throws ServletException
     {
     }
 
+    @Override
     public void doFilter( ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain )
         throws IOException, ServletException
     {
@@ -113,6 +115,7 @@ public class AutomaticAccessFilter
         filterChain.doFilter( servletRequest, servletResponse );
     }
 
+    @Override
     public void destroy()
     {
     }

@@ -55,6 +55,7 @@ public class SetMenuStateAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute() throws Exception
     {
         if ( state != null )

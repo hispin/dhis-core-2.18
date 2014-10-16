@@ -58,12 +58,14 @@ public class HttpRedirectFilter
     // Filter implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void init( FilterConfig config )
         throws ServletException
     {
         redirectPath = config.getInitParameter( REDIRECT_PATH_KEY );
     }
 
+    @Override
     public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain )
         throws IOException, ServletException
     {
@@ -88,6 +90,7 @@ public class HttpRedirectFilter
         return;
     }
 
+    @Override
     public void destroy()
     {
     }

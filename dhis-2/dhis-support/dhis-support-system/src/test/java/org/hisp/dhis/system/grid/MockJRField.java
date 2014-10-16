@@ -42,45 +42,54 @@ public class MockJRField
         this.name = name;
     }
     
+    @Override
     public String getDescription()
     {
         return null;
     }
 
+    @Override
     public String getName()
     {
         return name;
     }
 
+    @Override
     public Class<?> getValueClass()
     {
         return null;
     }
 
+    @Override
     public String getValueClassName()
     {
         return null;
     }
 
+    @Override
     public void setDescription( String arg0 )
     {
     }
 
+    @Override
     public JRPropertiesHolder getParentProperties()
     {
         return null;
     }
 
+    @Override
     public JRPropertiesMap getPropertiesMap()
     {
         return null;
     }
 
+    @Override
     public boolean hasProperties()
     {
         return false;
     }
     
+    @Override
     public Object clone()
     {
         return null;

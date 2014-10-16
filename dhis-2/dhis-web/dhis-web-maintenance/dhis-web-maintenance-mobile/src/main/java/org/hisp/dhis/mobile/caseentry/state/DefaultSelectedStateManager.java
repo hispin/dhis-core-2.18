@@ -101,16 +101,19 @@ public class DefaultSelectedStateManager
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    @Override
     public OrganisationUnit getSelectedOrganisationUnit()
     {
         return selectionManager.getSelectedOrganisationUnit();
     }
 
+    @Override
     public void setSelectedPatient( TrackedEntityInstance patient )
     {
         getSession().put( SESSION_KEY_SELECTED_PATIENT_ID, patient.getId() );
     }
 
+    @Override
     public TrackedEntityInstance getSelectedPatient()
     {
         Integer id = (Integer) getSession().get( SESSION_KEY_SELECTED_PATIENT_ID );
@@ -123,16 +126,19 @@ public class DefaultSelectedStateManager
         return trackedEntityInstanceService.getTrackedEntityInstance( id );
     }
 
+    @Override
     public void clearSelectedPatient()
     {
         getSession().remove( SESSION_KEY_SELECTED_PATIENT_ID );
     }
 
+    @Override
     public void setSelectedProgramInstance( ProgramInstance programInstance )
     {
         getSession().put( SESSION_KEY_SELECTED_PROGRAM_INSTANCE_ID, programInstance.getId() );
     }
 
+    @Override
     public ProgramInstance getSelectedProgramInstance()
     {
         Integer id = (Integer) getSession().get( SESSION_KEY_SELECTED_PROGRAM_INSTANCE_ID );
@@ -145,16 +151,19 @@ public class DefaultSelectedStateManager
         return programInstanceService.getProgramInstance( id );
     }
 
+    @Override
     public void clearSelectedProgramInstance()
     {
         getSession().remove( SESSION_KEY_SELECTED_PROGRAM_INSTANCE_ID );
     }
 
+    @Override
     public void setSelectedProgramStageInstance( ProgramStageInstance programStageInstance )
     {
         getSession().put( SESSION_KEY_SELECTED_PROGRAM_STAGE_INSTANCE_ID, programStageInstance.getId() );
     }
 
+    @Override
     public ProgramStageInstance getSelectedProgramStageInstance()
     {
         Integer id = (Integer) getSession().get( SESSION_KEY_SELECTED_PROGRAM_STAGE_INSTANCE_ID );
@@ -167,26 +176,31 @@ public class DefaultSelectedStateManager
         return programStageInstanceService.getProgramStageInstance( id );
     }
 
+    @Override
     public void clearSelectedProgramStageInstance()
     {
         getSession().remove( SESSION_KEY_SELECTED_PROGRAM_STAGE_INSTANCE_ID );
     }
 
+    @Override
     public void clearListAll()
     {
         getSession().remove( SESSION_KEY_LISTALL );
     }
 
+    @Override
     public void clearSearchTest()
     {
         getSession().remove( SESSION_KEY_SPECIFIED_SEARCH_TEXT );
     }
 
+    @Override
     public void clearSearchingAttributeId()
     {
         getSession().remove( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID );
     }
 
+    @Override
     public boolean getListAll()
     {
         if ( getSession().get( SESSION_KEY_LISTALL ) != null )
@@ -200,26 +214,31 @@ public class DefaultSelectedStateManager
         }
     }
 
+    @Override
     public String getSearchText()
     {
         return (String) getSession().get( SESSION_KEY_SPECIFIED_SEARCH_TEXT );
     }
 
+    @Override
     public Integer getSearchingAttributeId()
     {
         return (Integer) getSession().get( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID );
     }
 
+    @Override
     public void setListAll( boolean listAll )
     {
         getSession().put( SESSION_KEY_LISTALL, listAll );
     }
 
+    @Override
     public void setSearchText( String searchText )
     {
         getSession().put( SESSION_KEY_SPECIFIED_SEARCH_TEXT, searchText );
     }
 
+    @Override
     public void setSearchingAttributeId( int searchingAttributeId )
     {
         getSession().put( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID, searchingAttributeId );
@@ -229,16 +248,19 @@ public class DefaultSelectedStateManager
     // Sort by patient-attribute
     // -------------------------------------------------------------------------
 
+    @Override
     public void setSortingAttributeId( int sortAttributeId )
     {
         getSession().put( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID, sortAttributeId );
     }
 
+    @Override
     public Integer getSortAttributeId()
     {
         return (Integer) getSession().get( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID );
     }
 
+    @Override
     public void clearSortingAttributeId()
     {
         getSession().remove( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID );

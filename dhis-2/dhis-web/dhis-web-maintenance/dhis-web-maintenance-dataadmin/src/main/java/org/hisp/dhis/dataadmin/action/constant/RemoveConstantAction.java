@@ -89,6 +89,7 @@ public class RemoveConstantAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         try

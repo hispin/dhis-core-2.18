@@ -49,6 +49,7 @@ import org.springframework.security.core.GrantedAuthority;
 public class AllRequiredRoleVoter
     extends RoleVoter
 {
+    @Override
     public int vote( Authentication authentication, Object object, Collection<ConfigAttribute> attributes )
     {
         int supported = 0;

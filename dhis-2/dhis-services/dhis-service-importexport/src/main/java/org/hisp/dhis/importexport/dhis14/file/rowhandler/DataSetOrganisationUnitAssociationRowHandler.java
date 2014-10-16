@@ -75,6 +75,7 @@ public class DataSetOrganisationUnitAssociationRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {
         final Dhis14GroupMemberAssociation dhis14Association = (Dhis14GroupMemberAssociation) object;

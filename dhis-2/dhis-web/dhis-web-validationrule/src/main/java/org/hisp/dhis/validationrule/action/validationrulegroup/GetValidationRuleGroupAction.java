@@ -77,6 +77,7 @@ public class GetValidationRuleGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         validationRuleGroup = validationRuleService.getValidationRuleGroup( id );

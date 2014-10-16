@@ -62,6 +62,7 @@ public class HibernateDataApprovalStore
     // DataApproval
     // -------------------------------------------------------------------------
 
+    @Override
     public void addDataApproval( DataApproval dataApproval )
     {
         dataApproval.setPeriod( periodService.reloadPeriod( dataApproval.getPeriod() ) );
@@ -86,6 +87,7 @@ public class HibernateDataApprovalStore
         save( dataApproval );
     }
 
+    @Override
     public void updateDataApproval( DataApproval dataApproval )
     {
         dataApproval.setPeriod( periodService.reloadPeriod( dataApproval.getPeriod() ) );
@@ -93,12 +95,14 @@ public class HibernateDataApprovalStore
         update ( dataApproval );
     }
     
+    @Override
     public void deleteDataApproval( DataApproval dataApproval )
     {
         delete( dataApproval );
     }
 
-    public DataApproval getDataApproval( DataSet dataSet, Period period, 
+    @Override
+    public DataApproval getDataApproval( DataSet dataSet, Period period,
         OrganisationUnit organisationUnit, CategoryOptionGroup categoryOptionGroup )
     {
         Period storedPeriod = periodService.reloadPeriod( period );

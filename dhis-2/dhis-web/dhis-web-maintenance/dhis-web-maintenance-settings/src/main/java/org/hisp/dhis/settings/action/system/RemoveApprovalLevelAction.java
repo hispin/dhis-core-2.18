@@ -86,6 +86,7 @@ public class RemoveApprovalLevelAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         DataApprovalLevel approvalLevel = dataApprovalLevelService.getDataApprovalLevel( id );

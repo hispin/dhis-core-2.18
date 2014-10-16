@@ -52,6 +52,7 @@ public class GroupSetBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "orgunitgroupset" );
@@ -75,16 +76,19 @@ public class GroupSetBatchHandler
         statementBuilder.setIdentifierValue( groupSet.getId() );
     }
     
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "name" );
     }
     
+    @Override
     protected void setUniqueValues( OrganisationUnitGroupSet groupSet )
     {        
         statementBuilder.setUniqueValue( groupSet.getName() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "uid" );
@@ -95,6 +99,7 @@ public class GroupSetBatchHandler
         statementBuilder.setColumn( "datadimension" );
     }
     
+    @Override
     protected void setValues( OrganisationUnitGroupSet groupSet )
     {        
         statementBuilder.setValue( groupSet.getUid() );

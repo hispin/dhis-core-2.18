@@ -73,21 +73,25 @@ public class DefaultDataElementOperandService
     // Operand
     // -------------------------------------------------------------------------
 
+    @Override
     public int addDataElementOperand( DataElementOperand dataElementOperand )
     {
         return dataElementOperandStore.save( dataElementOperand );
     }
 
+    @Override
     public void deleteDataElementOperand( DataElementOperand dataElementOperand )
     {
         dataElementOperandStore.delete( dataElementOperand );
     }
 
+    @Override
     public DataElementOperand getDataElementOperand( int id )
     {
         return dataElementOperandStore.get( id );
     }
 
+    @Override
     public DataElementOperand getDataElementOperandByUid( String uid )
     {
         if ( StringUtils.isEmpty( uid ) )
@@ -119,6 +123,7 @@ public class DefaultDataElementOperandService
         return new DataElementOperand( dataElement, categoryOptionCombo );
     }
 
+    @Override
     public List<DataElementOperand> getDataElementOperandsByUid( Collection<String> uids )
     {
         List<DataElementOperand> list = new ArrayList<>();
@@ -131,6 +136,7 @@ public class DefaultDataElementOperandService
         return list;
     }
 
+    @Override
     public DataElementOperand getDataElementOperand( DataElementOperand dataElementOperand )
     {
         for ( DataElementOperand operand : getAllDataElementOperands() )
@@ -145,6 +151,7 @@ public class DefaultDataElementOperandService
         return null;
     }
 
+    @Override
     public Collection<DataElementOperand> getAllDataElementOperands()
     {
         return dataElementOperandStore.getAllOrderedName();
@@ -156,6 +163,7 @@ public class DefaultDataElementOperandService
         return dataElementOperandStore.getAllOrderedName( first, max );
     }
 
+    @Override
     public Collection<DataElementOperand> getDataElementOperandByDataElements( Collection<DataElement> dataElements )
     {
         Collection<DataElementOperand> operands = new ArrayList<>();
@@ -171,6 +179,7 @@ public class DefaultDataElementOperandService
         return operands;
     }
 
+    @Override
     public Collection<DataElementOperand> getDataElementOperandByOptionCombos(
         Collection<DataElementCategoryOptionCombo> optionCombos )
     {

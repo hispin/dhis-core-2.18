@@ -83,6 +83,7 @@ public class IndicatorTypeConverter
     // XMLConverter implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<IndicatorType> indicatorTypes = indicatorService.getIndicatorTypes( params.getIndicatorTypes() );
@@ -102,6 +103,7 @@ public class IndicatorTypeConverter
         }
     }
     
+    @Override
     public void read( XMLReader reader, ImportParams params )
     {
         final IndicatorType type = new IndicatorType();

@@ -75,6 +75,7 @@ public class GetImportSummaryAction
     // Action implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public String execute()
     {
         TaskId taskId = new TaskId( category, currentUserService.getCurrentUser() );        

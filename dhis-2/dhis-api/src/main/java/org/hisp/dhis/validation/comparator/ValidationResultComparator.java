@@ -40,6 +40,7 @@ import org.hisp.dhis.validation.ValidationResult;
 public class ValidationResultComparator
     implements Comparator<ValidationResult>
 {
+    @Override
     public int compare( ValidationResult result1, ValidationResult result2 )
     {
         if ( result1.getPeriod() == null && result2.getPeriod() == null )

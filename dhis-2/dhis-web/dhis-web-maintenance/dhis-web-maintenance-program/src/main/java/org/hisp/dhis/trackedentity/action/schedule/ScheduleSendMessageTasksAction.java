@@ -134,6 +134,7 @@ public class ScheduleSendMessageTasksAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         TaskId taskId = new TaskId( TaskCategory.SENDING_REMINDER_MESSAGE, currentUserService.getCurrentUser() );

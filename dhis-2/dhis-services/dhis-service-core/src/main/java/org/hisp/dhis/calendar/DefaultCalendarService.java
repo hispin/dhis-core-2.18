@@ -143,6 +143,7 @@ public class DefaultCalendarService
     // Calendar key
     // -------------------------------------------------------------------------
 
+    @Override
     public String getSystemCalendarKey()
     {
         String key = keyCache.containsKey( KEY_CALENDAR ) ? keyCache.get( KEY_CALENDAR ) : 
@@ -151,12 +152,14 @@ public class DefaultCalendarService
         return key;
     }
     
+    @Override
     public void setSystemCalendarKey( String calendarKey )
     {
         keyCache.put( KEY_CALENDAR, calendarKey );
         settingManager.saveSystemSetting( KEY_CALENDAR, calendarKey );
     }
     
+    @Override
     public String getSystemDateFormatKey()
     {
         String key = keyCache.containsKey( KEY_DATE_FORMAT ) ? keyCache.get( KEY_DATE_FORMAT ) :
@@ -165,6 +168,7 @@ public class DefaultCalendarService
         return key;
     }
 
+    @Override
     public void setSystemDateFormatKey( String dateFormatKey )
     {
         keyCache.put( KEY_DATE_FORMAT, dateFormatKey );

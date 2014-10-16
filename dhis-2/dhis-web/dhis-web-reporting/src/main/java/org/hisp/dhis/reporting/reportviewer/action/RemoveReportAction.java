@@ -65,7 +65,8 @@ public class RemoveReportAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() 
+    @Override
+    public String execute()
         throws Exception
     {
         Report report = reportService.getReport( id );

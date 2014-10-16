@@ -158,6 +158,7 @@ public class TrackedEntityAttribute
         this.inherit = inherit;
     }
 
+    @Override
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -166,6 +167,7 @@ public class TrackedEntityAttribute
         return description;
     }
 
+    @Override
     public void setDescription( String description )
     {
         this.description = description;

@@ -55,6 +55,7 @@ public class DefaultFollowupAnalysisService
     // FollowupAnalysisService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Collection<DeflatedDataValue> getFollowupDataValues( OrganisationUnit organisationUnit, int limit )
     {
         if( organisationUnit == null || limit < 1 )

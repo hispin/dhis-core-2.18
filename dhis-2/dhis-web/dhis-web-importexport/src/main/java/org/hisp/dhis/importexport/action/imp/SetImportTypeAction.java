@@ -54,6 +54,7 @@ public class SetImportTypeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         // ---------------------------------------------------------------------

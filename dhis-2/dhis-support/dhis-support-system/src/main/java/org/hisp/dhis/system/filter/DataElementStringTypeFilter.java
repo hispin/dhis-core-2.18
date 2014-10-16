@@ -37,6 +37,7 @@ import org.hisp.dhis.system.util.Filter;
 public class DataElementStringTypeFilter
     implements Filter<DataElement>
 {
+    @Override
     public boolean retain( DataElement object )
     {
         return object != null && object.getType().equals( DataElement.VALUE_TYPE_STRING );

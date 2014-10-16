@@ -155,6 +155,7 @@ public class CaseAggregationResultAction
     // Action Implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

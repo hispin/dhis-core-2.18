@@ -67,6 +67,7 @@ public class AddUserGroupFormAction
     // Action Implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {

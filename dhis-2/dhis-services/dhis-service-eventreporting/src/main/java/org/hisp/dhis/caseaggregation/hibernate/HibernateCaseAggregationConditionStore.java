@@ -117,6 +117,7 @@ public class HibernateCaseAggregationConditionStore
 
     private JdbcTemplate jdbcTemplate;
 
+    @Override
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
@@ -208,6 +209,7 @@ public class HibernateCaseAggregationConditionStore
         return criteria.list();
     }
 
+    @Override
     public Grid getAggregateValue( String sql, I18nFormat format, I18n i18n )
     {
         Grid grid = new ListGrid();
@@ -1212,6 +1214,7 @@ public class HibernateCaseAggregationConditionStore
 
         Collection<Integer> orgunitIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
         {
+            @Override
             public Integer mapRow( ResultSet rs, int rowNum )
                 throws SQLException
             {
@@ -1289,6 +1292,7 @@ public class HibernateCaseAggregationConditionStore
         {
             List<Integer> entityInstanceIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
             {
+                @Override
                 public Integer mapRow( ResultSet rs, int rowNum )
                     throws SQLException
                 {

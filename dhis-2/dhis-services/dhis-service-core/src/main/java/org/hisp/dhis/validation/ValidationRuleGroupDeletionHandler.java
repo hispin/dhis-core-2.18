@@ -57,6 +57,7 @@ public class ValidationRuleGroupDeletionHandler
         return ValidationRuleGroup.class.getSimpleName();
     }
     
+    @Override
     public void deleteValidationRule( ValidationRule validationRule )
     {
         for ( ValidationRuleGroup group : validationRule.getGroups() )

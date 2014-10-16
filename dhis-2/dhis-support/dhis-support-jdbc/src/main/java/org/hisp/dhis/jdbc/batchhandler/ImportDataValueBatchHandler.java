@@ -52,6 +52,7 @@ public class ImportDataValueBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "importdatavalue" );
@@ -75,6 +76,7 @@ public class ImportDataValueBatchHandler
         statementBuilder.setIdentifierValue( value.getSourceId() );
     }
     
+    @Override
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "dataelementid" );
@@ -83,6 +85,7 @@ public class ImportDataValueBatchHandler
         statementBuilder.setUniqueColumn( "sourceid" );
     }
     
+    @Override
     protected void setUniqueValues( ImportDataValue value )
     {        
         statementBuilder.setUniqueValue( value.getDataElementId() );
@@ -91,6 +94,7 @@ public class ImportDataValueBatchHandler
         statementBuilder.setUniqueValue( value.getSourceId() );
     }
     
+    @Override
     protected void setColumns()
     {
         statementBuilder.setColumn( "dataelementid" );
@@ -104,6 +108,7 @@ public class ImportDataValueBatchHandler
         statementBuilder.setColumn( "status" );
     }
     
+    @Override
     protected void setValues( ImportDataValue value )
     {        
         statementBuilder.setValue( value.getDataElementId() );

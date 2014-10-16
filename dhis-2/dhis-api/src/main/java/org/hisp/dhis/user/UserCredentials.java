@@ -331,11 +331,13 @@ public class UserCredentials
      *
      * @return the name.
      */
+    @Override
     public String getName()
     {
         return user != null ? user.getName() : username;
     }
 
+    @Override
     public String getCode()
     {
         return username;

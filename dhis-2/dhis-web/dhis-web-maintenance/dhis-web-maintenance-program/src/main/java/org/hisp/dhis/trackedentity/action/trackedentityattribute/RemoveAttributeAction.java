@@ -82,6 +82,7 @@ public class RemoveAttributeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         try

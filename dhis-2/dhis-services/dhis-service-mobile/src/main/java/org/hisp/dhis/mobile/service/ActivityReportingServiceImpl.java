@@ -1219,6 +1219,7 @@ public class ActivityReportingServiceImpl
     {
         Comparator<ProgramStageDataElement> OrderBySortOrder = new Comparator<ProgramStageDataElement>()
         {
+            @Override
             public int compare( ProgramStageDataElement i1, ProgramStageDataElement i2 )
             {
                 return i1.getSortOrder().compareTo( i2.getSortOrder() );
@@ -1500,6 +1501,7 @@ public class ActivityReportingServiceImpl
         return patientMobile;
     }
 
+    @Override
     public org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList findPatients( String patientIds )
         throws NotAllowedException
     {

@@ -39,6 +39,7 @@ import org.hisp.dhis.validation.ValidationCriteria;
 public class ValidationCriteriaComparator
     implements Comparator<ValidationCriteria>
 {
+    @Override
     public int compare( ValidationCriteria result1, ValidationCriteria result2 )
     {
         return result1.getName().compareToIgnoreCase( result2.getName() );

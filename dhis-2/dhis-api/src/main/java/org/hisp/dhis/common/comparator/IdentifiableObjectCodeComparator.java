@@ -40,6 +40,7 @@ public class IdentifiableObjectCodeComparator
 {
     public static final Comparator<IdentifiableObject> INSTANCE = new IdentifiableObjectCodeComparator();
     
+    @Override
     public int compare( IdentifiableObject object0, IdentifiableObject object1 )
     {
         if ( object0 == null )

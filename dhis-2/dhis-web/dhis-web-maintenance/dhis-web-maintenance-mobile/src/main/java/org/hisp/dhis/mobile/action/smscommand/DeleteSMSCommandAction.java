@@ -39,6 +39,7 @@ public class DeleteSMSCommandAction
 
     private int deleteCommandId;
 
+    @Override
     public String execute()
         throws Exception
     {

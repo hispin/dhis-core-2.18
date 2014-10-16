@@ -120,6 +120,7 @@ public class SendMessagesAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         log.info( "SendMessagesAction.execute() called" );        

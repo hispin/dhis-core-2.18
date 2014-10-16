@@ -65,6 +65,7 @@ public class GroupSetRowHandler
     // RowHandler implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void handleRow( Object object )
     {
         final OrganisationUnitGroupSet groupSet = (OrganisationUnitGroupSet) object;

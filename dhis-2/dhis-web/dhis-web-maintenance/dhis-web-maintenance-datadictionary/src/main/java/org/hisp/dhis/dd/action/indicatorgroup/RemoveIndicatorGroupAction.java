@@ -90,6 +90,7 @@ public class RemoveIndicatorGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         try

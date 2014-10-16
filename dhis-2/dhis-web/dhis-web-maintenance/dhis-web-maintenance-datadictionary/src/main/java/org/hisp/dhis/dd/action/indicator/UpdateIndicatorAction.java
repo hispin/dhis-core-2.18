@@ -194,6 +194,7 @@ public class UpdateIndicatorAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
         Indicator indicator = indicatorService.getIndicator( id );

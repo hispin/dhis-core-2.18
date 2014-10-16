@@ -67,6 +67,7 @@ public class MessageServiceTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     @Before
     public void setUpTest()
     {
