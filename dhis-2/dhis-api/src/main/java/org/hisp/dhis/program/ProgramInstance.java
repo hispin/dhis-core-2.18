@@ -29,15 +29,12 @@ package org.hisp.dhis.program;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.sms.outbound.OutboundSms;
@@ -71,8 +68,6 @@ public class ProgramInstance
 
     public static int STATUS_CANCELLED = 2;
 
-    private int id;
-
     private Date dateOfIncident; // TODO rename to incidenceDate
 
     private Date enrollmentDate;
@@ -101,8 +96,7 @@ public class ProgramInstance
     {
     }
 
-    public ProgramInstance( Date enrollmentDate, Date dateOfIncident, TrackedEntityInstance entityInstance,
-        Program program )
+    public ProgramInstance( Date enrollmentDate, Date dateOfIncident, TrackedEntityInstance entityInstance, Program program )
     {
         this.enrollmentDate = enrollmentDate;
         this.dateOfIncident = dateOfIncident;
@@ -117,9 +111,9 @@ public class ProgramInstance
     /**
      * Updated the bi-directional associations between this program instance and
      * the given entity instance and program.
-     * 
+     *
      * @param entityInstance the entity instance to enroll.
-     * @param program the program to enroll the entity instance to.
+     * @param program        the program to enroll the entity instance to.
      */
     public void enrollTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program )
     {
@@ -266,18 +260,7 @@ public class ProgramInstance
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getDateOfIncident()
     {
@@ -290,7 +273,6 @@ public class ProgramInstance
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getEnrollmentDate()
     {
@@ -303,7 +285,6 @@ public class ProgramInstance
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getEndDate()
     {
@@ -316,7 +297,6 @@ public class ProgramInstance
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getStatus()
     {
@@ -330,7 +310,6 @@ public class ProgramInstance
 
     @JsonProperty( "trackedEntityInstance" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( localName = "trackedEntityInstance", namespace = DxfNamespaces.DXF_2_0 )
     public TrackedEntityInstance getEntityInstance()
     {
@@ -344,7 +323,6 @@ public class ProgramInstance
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Program getProgram()
     {
@@ -356,6 +334,9 @@ public class ProgramInstance
         this.program = program;
     }
 
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "programStageInstances", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "programStageInstance", namespace = DxfNamespaces.DXF_2_0 )
     public Set<ProgramStageInstance> getProgramStageInstances()
     {
         return programStageInstances;
@@ -377,7 +358,6 @@ public class ProgramInstance
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getFollowup()
     {
@@ -390,8 +370,8 @@ public class ProgramInstance
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlElementWrapper( localName = "messageConversations", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "messageConversation", namespace = DxfNamespaces.DXF_2_0 )
     public List<MessageConversation> getMessageConversations()
     {
         return messageConversations;
@@ -402,9 +382,9 @@ public class ProgramInstance
         this.messageConversations = messageConversations;
     }
 
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonProperty( "trackedEntityComments" )
+    @JacksonXmlElementWrapper( localName = "trackedEntityComments", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "trackedEntityComment", namespace = DxfNamespaces.DXF_2_0 )
     public List<TrackedEntityComment> getComments()
     {
         return comments;
