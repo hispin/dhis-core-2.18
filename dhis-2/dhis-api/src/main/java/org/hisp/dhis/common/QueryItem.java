@@ -45,6 +45,8 @@ public class QueryItem
     private List<QueryFilter> filters = new ArrayList<>();
     
     private boolean numeric;
+    
+    private boolean optionSet;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -55,16 +57,18 @@ public class QueryItem
         this.item = item;
     }
 
-    public QueryItem( NameableObject item, boolean numeric )
+    public QueryItem( NameableObject item, boolean numeric, boolean optionSet )
     {
         this.item = item;
         this.numeric = numeric;
+        this.optionSet = optionSet;
     }
     
-    public QueryItem( NameableObject item, QueryOperator operator, String filter, boolean numeric )
+    public QueryItem( NameableObject item, QueryOperator operator, String filter, boolean numeric, boolean optionSet )
     {
         this.item = item;
         this.numeric = numeric;
+        this.optionSet = optionSet;
         
         if ( operator != null && filter != null )
         {
@@ -72,11 +76,12 @@ public class QueryItem
         }
     }
     
-    public QueryItem( NameableObject item, List<QueryFilter> filters, boolean numeric )
+    public QueryItem( NameableObject item, List<QueryFilter> filters, boolean numeric, boolean optionSet )
     {
         this.item = item;
         this.filters = filters;
         this.numeric = numeric;
+        this.optionSet = optionSet;
     }
     
     // -------------------------------------------------------------------------
@@ -104,7 +109,7 @@ public class QueryItem
         
         for ( NameableObject object : objects )
         {
-            queryItems.add( new QueryItem( object, false ) );
+            queryItems.add( new QueryItem( object, false, false ) );
         }
         
         return queryItems;
@@ -146,7 +151,7 @@ public class QueryItem
     @Override
     public String toString()
     {
-        return "[Item: " + item + ", filters: " + filters + "]";
+        return "[Item: " + item + ", filters: " + filters + ", numeric: " + numeric + ", optionSet: " + optionSet + "]";
     }
     
     // -------------------------------------------------------------------------
@@ -181,5 +186,15 @@ public class QueryItem
     public void setNumeric( boolean numeric )
     {
         this.numeric = numeric;
+    }
+
+    public boolean isOptionSet()
+    {
+        return optionSet;
+    }
+
+    public void setOptionSet( boolean optionSet )
+    {
+        this.optionSet = optionSet;
     }
 }

@@ -492,7 +492,7 @@ public class DefaultTrackedEntityInstanceService
             throw new IllegalQueryException( "Attribute does not exist: " + item );
         }
         
-        return new QueryItem( at, at.isNumericType() );
+        return new QueryItem( at, at.isNumericType(), at.hasOptionSet() );
     }
     
     /**

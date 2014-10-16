@@ -274,7 +274,7 @@ public class DefaultEventAnalyticsService
 
         for ( QueryItem item : params.getItems() )
         {
-            grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName(), item.getTypeAsString() ) );
+            grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName(), item.getTypeAsString(), false, true, item.isOptionSet() ) );
         }
 
         // ---------------------------------------------------------------------
@@ -647,14 +647,14 @@ public class DefaultEventAnalyticsService
 
         if ( de != null ) //TODO check if part of program
         {
-            return new QueryItem( de, de.isNumericType() );
+            return new QueryItem( de, de.isNumericType(), de.hasOptionSet() );
         }
 
         TrackedEntityAttribute at = attributeService.getTrackedEntityAttribute( item );
 
         if ( at != null )
         {
-            return new QueryItem( at, at.isNumericType() );
+            return new QueryItem( at, at.isNumericType(), at.hasOptionSet() );
         }
 
         throw new IllegalQueryException( "Item identifier does not reference any item part of the program: " + item );
