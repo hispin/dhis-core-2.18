@@ -60,6 +60,7 @@ $(document).ready(function()
         
         promise = promise.then( dhis2.ec.store.open );
         promise = promise.then( getUserProfile );
+        promise = promise.then( getCalendarSetting );
         promise = promise.then( getLoginDetails );
         promise = promise.then( getMetaPrograms );     
         promise = promise.then( getPrograms );     
@@ -164,6 +165,21 @@ function getUserProfile()
     });
     
     return def.promise(); 
+}
+
+function getCalendarSetting()
+{
+    var def = $.Deferred();
+
+    $.ajax({
+        url: '../api/systemSettings?key=keyCalendar&key=keyDateFormat',
+        type: 'GET'
+    }).done(function(response) {
+        localStorage['CALENDAR_SETTING'] = JSON.stringify(response);
+        def.resolve();
+    });
+
+    return def.promise();
 }
 
 function getLoginDetails()
@@ -334,7 +350,7 @@ function getProgramStage( id )
 {
     return function() {
         return $.ajax( {
-            url: '../api/programStages.json?filter=id:eq:' + id +'&fields=id,name,version,description,reportDateDescription,captureCoordinates,dataEntryForm,minDaysFromStart,repeatable,preGenerateUID,programStageSections[id,name,programStageDataElements[dataElement[id]]],programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,formName,optionSet[id]]]',
+            url: '../api/programStages.json?filter=id:eq:' + id +'&fields=id,name,version,description,reportDateDescription,captureCoordinates,dataEntryForm,minDaysFromStart,repeatable,preGenerateUID,programStageSections[id,name,programStageDataElements[dataElement[id]]],programStageDataElements[displayInReports,sortOrder,allowProvidedElsewhere,allowFutureDate,compulsory,dataElement[id,name,type,formName,optionSet[id]]]',
             type: 'GET'
         }).done( function( response ){            
             _.each( _.values( response.programStages ), function( programStage ) {                

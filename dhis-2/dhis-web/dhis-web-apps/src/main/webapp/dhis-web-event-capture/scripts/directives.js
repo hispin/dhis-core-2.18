@@ -191,10 +191,62 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
     };   
 })
 
+.directive('d2Date', function(DateUtils, CalendarService, storage, $parse) {
+    return {
+        restrict: 'A',
+        require: 'ngModel',        
+        link: function(scope, element, attrs, ctrl) {    
+            
+            var calendarSetting = CalendarService.getSetting();            
+            var dateFormat = 'yyyy-mm-dd';
+            if(calendarSetting.keyDateFormat === 'dd-MM-yyyy'){
+                dateFormat = 'dd-mm-yyyy';
+            }            
+            
+            var minDate = $parse(attrs.minDate)(scope), 
+                maxDate = $parse(attrs.maxDate)(scope),
+                calendar = $.calendars.instance(calendarSetting.keyCalendar);
+            
+            element.calendarsPicker({
+                changeMonth: true,
+                dateFormat: dateFormat,
+                yearRange: '-120:+30',
+                minDate: minDate,
+                maxDate: maxDate,
+                calendar: calendar, 
+                renderer: $.calendars.picker.themeRollerRenderer,
+                onSelect: function(date) {
+                    //scope.date = date;
+                    ctrl.$setViewValue(date);
+                    $(this).change();                    
+                    scope.$apply();
+                }
+            })
+            .change(function() {                
+                var rawDate = this.value;
+                var convertedDate = DateUtils.format(this.value);
+
+                if(rawDate != convertedDate){
+                    scope.invalidDate = true;
+                    ctrl.$setViewValue(this.value);                                   
+                    ctrl.$setValidity('foo', false);                    
+                    scope.$apply();     
+                }
+                else{
+                    scope.invalidDate = false;
+                    ctrl.$setViewValue(this.value);                                   
+                    ctrl.$setValidity('foo', true);                    
+                    scope.$apply();     
+                }
+            });    
+        }      
+    };   
+})
+
 .directive('blurOrChange', function() {
     
     return function( scope, elem, attrs) {
-        elem.datepicker({
+        elem.calendarsPicker({
             onSelect: function() {
                 scope.$apply(attrs.blurOrChange);
                 $(this).change();                                        
