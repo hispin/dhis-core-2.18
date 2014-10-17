@@ -544,7 +544,8 @@ function doComplete( isCreateEvent ) {
 function runCompleteEvent( isCreateEvent ) {
     var flag = false;
 
-    $("#dataEntryFormDiv input[name='entryfield'],select[name='entryselect']").each(function() {
+    $("#dataEntryFormDiv .optionset").parent().removeClass("errorCell");
+    $("#dataEntryFormDiv input[name='entryfield'],select[name='entryselect'],.optionset:checked").each(function() {
         $(this).parent().removeClass("errorCell");
 
         var arrData = $(this).attr('data').replace('{', '').replace('}', '').replace(/'/g, "").split(',');
@@ -956,31 +957,60 @@ function entryFormContainerOnReady()
 
 function runValidation()
 {
-	$('#loading-bar').show();
-	$('#loading-bar').dialog({
-		modal:true,
-		width: 330
-	});
-	$("#loading-bar").siblings(".ui-dialog-titlebar").hide(); 
-	
-	var programStageInstanceId = jQuery('.stage-object-selected').attr('id').split('_')[1];
-	$('#validateProgramDiv' ).load( 'validateProgram.action',
-		{
-			programStageInstanceId: programStageInstanceId
-		},
-		function(){
-			$( "#loading-bar" ).dialog( "close" );
-			
-			$('#validateProgramDiv' ).dialog({
-				title: i18n_violate_validation,
-				maximize: true, 
-				closable: true,
-				modal:true,
-				overlay:{background:'#000000', opacity:0.1},
-				width: 800,
-				height: 450
-			});
+	$("#dataEntryFormDiv .optionset").parent().removeClass("errorCell");
+	var flag = false;
+	$("#dataEntryFormDiv input[name='entryfield'],select[name='entryselect'],.optionset:checked").each(function() {
+        $(this).parent().removeClass("errorCell");
+  
+        var arrData = $(this).attr('data').replace('{', '').replace('}', '').replace(/'/g, "").split(',');
+        var data = [];
+  
+        $.each(arrData, function() {
+            var values = this.split(':');
+            values = $.trimArray(values);
+            data[values[0]] = values[1];
+        });
+  
+        var compulsory = data['compulsory'];
+  
+        if( compulsory == 'true' && ( !$(this).val() || $(this).val() == "undefined" ) ) {
+            flag = true;
+            $(this).parent().addClass("errorCell");
+        }
+    });
+ 
+	if( flag ) {
+         alert(i18n_error_required_field);
+         return;
+    }
+    else
+    {
+		$('#loading-bar').show();
+		$('#loading-bar').dialog({
+			modal:true,
+			width: 330
 		});
+		$("#loading-bar").siblings(".ui-dialog-titlebar").hide(); 
+		
+		var programStageInstanceId = jQuery('.stage-object-selected').attr('id').split('_')[1];
+		$('#validateProgramDiv' ).load( 'validateProgram.action',
+			{
+				programStageInstanceId: programStageInstanceId
+			},
+			function(){
+				$( "#loading-bar" ).dialog( "close" );
+				
+				$('#validateProgramDiv' ).dialog({
+					title: i18n_violate_validation,
+					maximize: true, 
+					closable: true,
+					modal:true,
+					overlay:{background:'#000000', opacity:0.1},
+					width: 800,
+					height: 450
+				});
+			});
+	}
 }
 
 function searchOptionSet( uid, query, success ) {

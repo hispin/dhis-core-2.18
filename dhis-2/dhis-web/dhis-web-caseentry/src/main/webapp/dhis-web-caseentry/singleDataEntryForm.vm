@@ -125,8 +125,8 @@
 													<table style='width:100%'>
 														<tr>
 															<td>
-													<input id='$id' class='$id' name="$id" options='no' type='radio' optionset='$programStageDataElement.dataElement.optionSet.uid'
-														data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }"
+													<input id='$id' class='$id optionset' name="$id" options='no' type='radio' optionset='$programStageDataElement.dataElement.optionSet.uid'
+														data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" value='' 
 														#if( $dataValue.value == "$option.code") checked #end
 														onclick="saveRadio( '$programStageDataElement.dataElement.uid', '' )" tabindex="$tabIndex" />$i18n.getString("non_value")
 														</td>
