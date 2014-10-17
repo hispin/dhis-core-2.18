@@ -148,9 +148,10 @@ dhis2.de.generateExpression = function( expression )
     return expression;
 }
 
-function saveVal( dataElementId, optionComboId, fieldId )
+function saveVal( dataElementId, optionComboId, fieldId, target )
 {
 	var fieldIds = fieldId.split( "-" );
+  var feedbackId = '#' + (target || fieldId);
 
 	if ( fieldIds.length > 3 )
 	{
@@ -163,7 +164,7 @@ function saveVal( dataElementId, optionComboId, fieldId )
     var value = $( fieldId ).val();
     var type = getDataElementType( dataElementId );
 
-    $( fieldId ).css( 'background-color', dhis2.de.cst.colorYellow );
+    $( feedbackId ).css( 'background-color', dhis2.de.cst.colorYellow );
 
     var periodId = $( '#selectedPeriodId' ).val();
 
@@ -248,7 +249,7 @@ function saveVal( dataElementId, optionComboId, fieldId )
     
     var color = warning ? dhis2.de.cst.colorOrange : dhis2.de.cst.colorGreen;
     
-    var valueSaver = new ValueSaver( dataElementId,	periodId, optionComboId, value, fieldId, color );
+    var valueSaver = new ValueSaver( dataElementId,	periodId, optionComboId, value, feedbackId, color );
     valueSaver.save();
 
     dhis2.de.updateIndicators(); // Update indicators for custom form
