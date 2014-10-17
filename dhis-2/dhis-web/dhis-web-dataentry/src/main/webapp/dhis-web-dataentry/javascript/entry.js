@@ -148,10 +148,10 @@ dhis2.de.generateExpression = function( expression )
     return expression;
 }
 
-function saveVal( dataElementId, optionComboId, fieldId, target )
+function saveVal( dataElementId, optionComboId, fieldId, feedbackId )
 {
 	var fieldIds = fieldId.split( "-" );
-  var feedbackId = '#' + (target || fieldId);
+  feedbackId = '#' + (feedbackId || fieldId);
 
 	if ( fieldIds.length > 3 )
 	{
