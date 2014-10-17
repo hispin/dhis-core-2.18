@@ -244,14 +244,14 @@ public interface DataElementCategoryService
     Collection<DataElementCategoryOption> getAllDataElementCategoryOptions();
 
     /**
-     * Returns all DataElementCategoryOptions for a given concept
+     * Returns all DataElementCategoryOptions for the given DataElementCategory.
      * 
-     * @param concept the Concept
+     * @param category the DataElementCategory.
      * @return a collection of all DataElementCategoryOptions, or an empty
      *         collection if there are no DataElementCategoryOptions.
      */
-    Collection<DataElementCategoryOption> getDataElementCategoryOptionsByConcept( Concept concept );
-
+    Collection<DataElementCategoryOption> getDataElementCategoryOptions( DataElementCategory category );
+    
     // -------------------------------------------------------------------------
     // CategoryCombo
     // -------------------------------------------------------------------------

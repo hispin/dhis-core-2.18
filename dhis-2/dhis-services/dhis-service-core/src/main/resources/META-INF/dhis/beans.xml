@@ -170,8 +170,7 @@
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.CategoryOptionStore"
-    class="org.hisp.dhis.common.hibernate.HibernateDimensionalObjectStore">
+  <bean id="org.hisp.dhis.dataelement.CategoryOptionStore" class="org.hisp.dhis.dataelement.hibernate.HibernateCategoryOptionStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryOption" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />

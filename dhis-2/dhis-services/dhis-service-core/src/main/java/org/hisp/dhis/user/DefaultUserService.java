@@ -390,15 +390,9 @@ public class DefaultUserService
         {
             options = new HashSet<>();
 
-            for ( DataElementCategory cat : catConstraints )
+            for ( DataElementCategory category : catConstraints )
             {
-                for ( DataElementCategoryOption o : cat.getCategoryOptions() )
-                {
-                    if ( securityService.canRead( o ) )
-                    {
-                        options.add( o );
-                    }
-                }
+                options.addAll( categoryService.getDataElementCategoryOptions( category ) );
             }
         }
 
