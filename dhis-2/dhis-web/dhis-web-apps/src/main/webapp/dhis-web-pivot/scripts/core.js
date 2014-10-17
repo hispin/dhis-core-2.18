@@ -138,7 +138,7 @@ Ext.onReady( function() {
 				west_fill_accordion_indicator: 56,
 				west_fill_accordion_dataelement: 59,
 				west_fill_accordion_dataset: 31,
-				west_fill_accordion_period: 293,
+				west_fill_accordion_period: 284,
 				west_fill_accordion_organisationunit: 58,
 				west_maxheight_accordion_indicator: 400,
 				west_maxheight_accordion_dataelement: 400,
@@ -2231,6 +2231,7 @@ Ext.onReady( function() {
                     getEmptyHtmlArray = function(i) {
                         var a = [];
 
+                        // if not the intersection cell
                         if (i < xColAxis.dims - 1) {
                             if (xRowAxis && xRowAxis.dims) {
                                 for (var j = 0; j < xRowAxis.dims - 1; j++) {
@@ -2257,14 +2258,32 @@ Ext.onReady( function() {
 
                             a.push(getEmptyNameTdConfig({
                                 cls: 'pivot-dim-label',
-                                htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[j]].name + '&nbsp;/&nbsp;' + dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
+                                htmlValue: (xRowAxis ? dimConf.objectNameMap[xLayout.rowObjectNames[j]].name : '') + (xColAxis && xRowAxis ? '&nbsp;/&nbsp;' : '') + (xColAxis ? dimConf.objectNameMap[xLayout.columnObjectNames[i]].name : '')
                             }));
                         }
 
                         return a;
                     };
 
-					if (!(xColAxis && Ext.isObject(xColAxis))) {
+					if (!xColAxis) {
+
+                        // show row dimension labels
+                        if (xRowAxis && xLayout.showDimensionLabels) {
+                            var dimLabelHtml = [];
+
+                            // labels from row object names
+                            for (var i = 0; i < xLayout.rowObjectNames.length; i++) {
+                                dimLabelHtml.push(getEmptyNameTdConfig({
+                                    cls: 'pivot-dim-label',
+                                    htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[i]].name
+                                }));
+                            }
+
+                            // pivot-transparent-column unnecessary
+
+                            a.push(dimLabelHtml);
+                        }
+                        
 						return a;
 					}
 
@@ -2377,6 +2396,16 @@ Ext.onReady( function() {
 							axisAllObjects.push(row);
 						}
 					}
+                    else {
+                        if (xLayout.showDimensionLabels) {
+                            axisAllObjects.push([{
+                                type: 'transparent',
+                                cls: 'pivot-transparent-row'
+                            }]);
+                        }
+                    }
+                        
+                        
 	//axisAllObjects = [ [ dim, dim ]
 	//				     [ dim, dim ]
 	//				     [ dim, dim ]
@@ -2656,9 +2685,9 @@ Ext.onReady( function() {
 					for (var i = 0, row; i < xValueObjects.length; i++) {
 						row = [];
 
-						if (xRowAxis) {
+						//if (xRowAxis) {
 							row = row.concat(axisAllObjects[i]);
-						}
+						//}
 
 						row = row.concat(xValueObjects[i]);
 
