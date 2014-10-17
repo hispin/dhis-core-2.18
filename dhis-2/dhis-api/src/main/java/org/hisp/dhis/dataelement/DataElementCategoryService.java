@@ -602,6 +602,8 @@ public interface DataElementCategoryService
     Collection<CategoryOptionGroup> getCategoryOptionGroupsBetweenByName( int first, int max, String name );
 
     Collection<CategoryOptionGroup> getAllCategoryOptionGroups();
+    
+    List<CategoryOptionGroup> getCategoryOptionGroups( CategoryOptionGroupSet groupSet );
 
     CategoryOptionGroup getCategoryOptionGroupByName( String name );
 

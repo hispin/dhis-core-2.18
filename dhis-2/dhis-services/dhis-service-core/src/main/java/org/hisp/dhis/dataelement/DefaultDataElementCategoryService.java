@@ -90,9 +90,9 @@ public class DefaultDataElementCategoryService
         this.categoryOptionComboStore = categoryOptionComboStore;
     }
 
-    private GenericNameableObjectStore<CategoryOptionGroup> categoryOptionGroupStore;
+    private CategoryOptionGroupStore categoryOptionGroupStore;
 
-    public void setCategoryOptionGroupStore( GenericNameableObjectStore<CategoryOptionGroup> categoryOptionGroupStore )
+    public void setCategoryOptionGroupStore( CategoryOptionGroupStore categoryOptionGroupStore )
     {
         this.categoryOptionGroupStore = categoryOptionGroupStore;
     }
@@ -923,6 +923,12 @@ public class DefaultDataElementCategoryService
         return categoryOptionGroupStore.getAll();
     }
 
+    @Override
+    public List<CategoryOptionGroup> getCategoryOptionGroups( CategoryOptionGroupSet groupSet )
+    {
+        return categoryOptionGroupStore.getCategoryOptionGroups( groupSet );
+    }
+    
     @Override
     public CategoryOptionGroup getCategoryOptionGroupByName( String name )
     {
