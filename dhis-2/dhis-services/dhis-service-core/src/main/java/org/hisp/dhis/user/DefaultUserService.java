@@ -49,6 +49,7 @@ import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
@@ -108,8 +109,15 @@ public class DefaultUserService
         this.currentUserService = currentUserService;
     }
 
+    private DataElementCategoryService categoryService;
+    
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+    
     private SecurityService securityService;
-
+    
     public void setSecurityService( SecurityService securityService )
     {
         this.securityService = securityService;
@@ -362,15 +370,9 @@ public class DefaultUserService
         {
             groups = new HashSet<>();
 
-            for ( CategoryOptionGroupSet set : cogsConstraints )
+            for ( CategoryOptionGroupSet cogs : cogsConstraints )
             {
-                for ( CategoryOptionGroup g : set.getMembers() )
-                {
-                    if ( securityService.canRead( g ) )
-                    {
-                        groups.add( g );
-                    }
-                }
+                groups.addAll( categoryService.getCategoryOptionGroups( cogs ) );
             }
         }
 
@@ -835,11 +837,11 @@ public class DefaultUserService
      */
     private boolean hasGroupsToUpdateUser( UserCredentials userCredentials )
     {
-        UserCredentials currentUserCredentials = currentUserService.getCurrentUser().getUserCredentials();
+        User user = currentUserService.getCurrentUser();
 
         boolean onlyManageWithinUserGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
 
-        if ( onlyManageWithinUserGroups && !currentUserCredentials.getAllAuthorities().contains( UserAuthorityGroup.AUTHORITY_ALL ) )
+        if ( onlyManageWithinUserGroups && !user.getUserCredentials().getAllAuthorities().contains( UserAuthorityGroup.AUTHORITY_ALL ) )
         {
             if ( userCredentials.getUser().getGroups() != null )
             {

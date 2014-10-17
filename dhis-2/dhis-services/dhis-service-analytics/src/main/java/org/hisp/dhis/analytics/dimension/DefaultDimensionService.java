@@ -320,8 +320,6 @@ public class DefaultDimensionService
         return dimensions;
     }
     
-    
-
     @Override
     public void mergeAnalyticalObject( BaseAnalyticalObject object )
     {
