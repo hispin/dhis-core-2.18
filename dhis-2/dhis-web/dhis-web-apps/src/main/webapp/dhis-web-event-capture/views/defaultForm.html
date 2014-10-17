@@ -81,18 +81,19 @@
                                 <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
                             </div>
                             <div ng-switch-when="string">                                
-                                <div class="container-fluid" ng-if="programStageDataElements[eventGridColumn.id].dataElement.optionSet">
-                                    <span ng-if="!selectedProgram.dataEntryMethod || programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length >= 7">
+                                <div class="container-fluid" ng-if="prStDes[eventGridColumn.id].dataElement.optionSet">
+                                    <span ng-if="!selectedProgram.dataEntryMethod || optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id].options.length >= 7">
                                         <input type="text"
                                                ng-model="currentEvent[eventGridColumn.id]"                                                                    
-                                               typeahead="option.code as option.name for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
-                                               typeahead-open-on-focus
+                                               typeahead="option.name as option.name for option in optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id].options | filter:$viewValue | limitTo:20" 
+                                               typeahead-open-on-focus   
+                                               typeahead-editable=false
                                                ng-required={{eventGridColumn.compulsory}}
                                                name="foo" 
                                                style="width:99%;"/>
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
                                     </span>
-                                    <span ng-if="selectedProgram.dataEntryMethod && programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length < 7">                                    
+                                    <span ng-if="selectedProgram.dataEntryMethod && optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id].options.length < 7">                                    
                                         <label>
                                             <input type="radio" 
                                                    name="foo" 
@@ -100,17 +101,17 @@
                                                    ng-model="currentEvent[eventGridColumn.id]"
                                                    value=""> {{'no_value' | translate}}<br>
                                         </label>                                    
-                                        <label ng-repeat="option in  programStageDataElements[eventGridColumn.id].dataElement.optionSet.options">
+                                        <label ng-repeat="option in  optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id].options">
                                             <input type="radio" 
                                                    name={{eventGridColumn.id}}   
                                                    ng-required={{eventGridColumn.compulsory}}
                                                    ng-model="currentEvent[eventGridColumn.id]"
-                                                   value={{option.code}}> {{option.name}}<br>                                        
+                                                   value={{option.name}}> {{option.name}}<br>                                        
                                         </label>                                    
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>                                    
                                     </span>
                                 </div>
-                                <div ng-if="!programStageDataElements[eventGridColumn.id].dataElement.optionSet">
+                                <div ng-if="!prStDes[eventGridColumn.id].dataElement.optionSet">
                                     <input type="text"
                                         ng-model="currentEvent[eventGridColumn.id]"                                        
                                         ng-required={{eventGridColumn.compulsory}}
@@ -240,53 +241,54 @@
                 <tbody id="list">       
                     <tr ng-repeat="de in section.programStageDataElements">
                         <td >
-                            {{programStageDataElements[de.dataElement.id].dataElement.formName ? programStageDataElements[de.dataElement.id].dataElement.formName : programStageDataElements[de.dataElement.id].dataElement.name}}
+                            {{prStDes[de.dataElement.id].dataElement.formName ? prStDes[de.dataElement.id].dataElement.formName : prStDes[de.dataElement.id].dataElement.name}}
                         </td>
                         <td >
                             <ng-form name="innerForm">
-                                <div ng-switch="programStageDataElements[de.dataElement.id].dataElement.type">
+                                <div ng-switch="prStDes[de.dataElement.id].dataElement.type">
                                     <div ng-switch-when="int">
                                         <input type="number"
                                                ng-model="currentEvent[de.dataElement.id]"                                                                
-                                               ng-required={{programStageDataElements[de.dataElement.id].compulsory}}
+                                               ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                name="foo" 
                                                style="width:99%;"/>
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
                                     </div>
                                     <div ng-switch-when="string">
-                                        <div class="container-fluid" ng-if="programStageDataElements[de.dataElement.id].dataElement.optionSet">                                
-                                            <span ng-if="!selectedProgram.dataEntryMethod || programStageDataElements[de.dataElement.id].dataElement.optionSet.options.length > 8">
+                                        <div class="container-fluid" ng-if="prStDes[de.dataElement.id].dataElement.optionSet">                                
+                                            <span ng-if="!selectedProgram.dataEntryMethod || prStDes[de.dataElement.id].dataElement.optionSet.options.length > 8">
                                                 <input type="text"
                                                        ng-model="currentEvent[de.dataElement.id]"                                                                    
-                                                       typeahead="option.code as option.name for option in programStageDataElements[de.dataElement.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
-                                                       typeahead-open-on-focus
-                                                       ng-required={{programStageDataElements[de.dataElement.id].compulsory}}
+                                                       typeahead="option.name as option.name for option in prStDes[de.dataElement.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                                       typeahead-open-on-focus   
+                                                       typeahead-editable="false"
+                                                       ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                        name="foo" 
                                                        style="width:99%;"/>
                                                 <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
                                             </span>
-                                            <span ng-if="selectedProgram.dataEntryMethod && programStageDataElements[de.dataElement.id].dataElement.optionSet.options.length < 7">                                    
+                                            <span ng-if="selectedProgram.dataEntryMethod && prStDes[de.dataElement.id].dataElement.optionSet.options.length < 7">                                    
                                                 <label>
                                                     <input type="radio" 
                                                            name="foo" 
-                                                           ng-required={{programStageDataElements[de.dataElement.id].compulsory}}
+                                                           ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                            ng-model="currentEvent[de.dataElement.id]"
                                                            value=""> {{'no_value' | translate}}<br>
                                                 </label>                                    
-                                                <label ng-repeat="option in  programStageDataElements[de.dataElement.id].dataElement.optionSet.options">
+                                                <label ng-repeat="option in  prStDes[de.dataElement.id].dataElement.optionSet.options">
                                                     <input type="radio" 
                                                            name={{de.dataElement.id}}   
-                                                           ng-required={{programStageDataElements[de.dataElement.id].compulsory}}
+                                                           ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                            ng-model="currentEvent[de.dataElement.id]"
-                                                           value={{option.code}}> {{option.name}}<br>                                        
+                                                           value={{option.name}}> {{option.name}}<br>                                        
                                                 </label>                                    
                                                 <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>                                    
                                             </span>
                                         </div>
-                                        <div ng-if="!programStageDataElements[de.dataElement.id].dataElement.optionSet">
+                                        <div ng-if="!prStDes[de.dataElement.id].dataElement.optionSet">
                                             <input type="text"
                                                 ng-model="currentEvent[de.dataElement.id]"
-                                                ng-required={{programStageDataElements[de.dataElement.id].compulsory}}
+                                                ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                 name="foo" 
                                                 style="width:99%;"/>
                                             <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
@@ -294,7 +296,7 @@
                                     </div>
                                     <div ng-switch-when="bool">
                                         <select ng-model="currentEvent[de.dataElement.id]"                                                                
-                                                ng-required={{programStageDataElements[de.dataElement.id].compulsory}}
+                                                ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                 name="foo" 
                                                 style="width:99%;">
                                         <option value="">{{'please_select'| translate}}</option>                        
@@ -308,7 +310,7 @@
                                                placeholder="yyyy-mm-dd" 
                                                ng-date 
                                                ng-model="currentEvent[de.dataElement.id]"                                                               
-                                               ng-required={{programStageDataElements[de.dataElement.id].compulsory}}
+                                               ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                name="foo" 
                                                style="width:99%;"/>
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
@@ -316,7 +318,7 @@
                                     <div ng-switch-when="trueOnly">
                                         <input type="checkbox"                                                                      
                                                ng-model="currentEvent[de.dataElement.id]"                                                               
-                                               ng-required={{programStageDataElements[de.dataElement.id].compulsory}}
+                                               ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                name="foo"/>
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
                                     </div>

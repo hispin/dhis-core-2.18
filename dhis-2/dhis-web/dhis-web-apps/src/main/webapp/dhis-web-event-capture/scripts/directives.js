@@ -73,7 +73,7 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
             });
             
             //listen to user selection, and inform angular         
-            selection.setListenerFunction( organisationUnitSelected );            
+            selection.setListenerFunction( organisationUnitSelected, true );            
             selection.responseReceived();
             
             function organisationUnitSelected( orgUnits, orgUnitNames ) {
