@@ -66,7 +66,7 @@ public class FileController
     // Custom script
     // -------------------------------------------------------------------------
 
-    @RequestMapping( value = { "/script", "/script.js" }, method = RequestMethod.GET )
+    @RequestMapping( value = "/script", method = RequestMethod.GET )
     public void getCustomScript( HttpServletResponse response, Writer writer )
         throws IOException
     {
@@ -77,7 +77,7 @@ public class FileController
         writer.write( content );
     }
 
-    @RequestMapping( value = { "/script", "/script.js" }, method = RequestMethod.POST, consumes = "application/javascript" )
+    @RequestMapping( value = "/script", method = RequestMethod.POST, consumes = "application/javascript" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_INSERT_CUSTOM_JS_CSS')" )
     public void postCustomScript( @RequestBody String content, HttpServletResponse response )
     {
@@ -88,7 +88,7 @@ public class FileController
         }
     }
 
-    @RequestMapping( value = { "/script", "/script.js" }, method = RequestMethod.DELETE )
+    @RequestMapping( value = "/script", method = RequestMethod.DELETE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_INSERT_CUSTOM_JS_CSS')" )
     public void removeCustomScript( HttpServletResponse response )
     {
@@ -102,7 +102,7 @@ public class FileController
     /**
      * The style/external mapping enables style to be reached from login page / before authentication.
      */
-    @RequestMapping( value = { "/style", "/style.js", "/style/external.js" }, method = RequestMethod.GET )
+    @RequestMapping( value = { "/style", "/style/external" }, method = RequestMethod.GET )
     public void getCustomStyle( HttpServletResponse response, Writer writer )
         throws IOException
     {
@@ -113,7 +113,7 @@ public class FileController
         writer.write( content );
     }
 
-    @RequestMapping( value = { "/style", "/style.js" }, method = RequestMethod.POST, consumes = "text/css" )
+    @RequestMapping( value = "/style", method = RequestMethod.POST, consumes = "text/css" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_INSERT_CUSTOM_JS_CSS')" )
     public void postCustomStyle( @RequestBody String content, HttpServletResponse response )
     {
@@ -124,7 +124,7 @@ public class FileController
         }
     }
 
-    @RequestMapping( value = { "/style", "/style.js" }, method = RequestMethod.DELETE )
+    @RequestMapping( value = "/style", method = RequestMethod.DELETE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_INSERT_CUSTOM_JS_CSS')" )
     public void removeCustomStyle( HttpServletResponse response )
     {

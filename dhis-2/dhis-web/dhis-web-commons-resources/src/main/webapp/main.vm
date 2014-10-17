@@ -18,7 +18,7 @@
     #foreach ( $style in $stylesheets )
     <link type="text/css" rel="stylesheet" href="${style}?_rev=$!{buildRevision}">
     #end
-    <link type="text/css" rel="stylesheet" href="../api/files/style.css?_rev=$!{buildRevision}" />
+    <link type="text/css" rel="stylesheet" href="../api/files/style?_rev=$!{buildRevision}" />
     <link rel="shortcut icon" href="../favicon.ico" />
 
     <script type="text/javascript">
@@ -85,7 +85,7 @@
     #foreach( $javascript in $javascripts )
     <script type="text/javascript" src="${javascript}?_rev=$!{buildRevision}"></script>
     #end
-    <script type="text/javascript" src="../api/files/script.js?_rev=$!{buildRevision}"></script>
+    <script type="text/javascript" src="../api/files/script?_rev=$!{buildRevision}"></script>
     <!-- Create global system calendar -->
     <script>
       dhis2.period.format = '$dateFormat.js';
