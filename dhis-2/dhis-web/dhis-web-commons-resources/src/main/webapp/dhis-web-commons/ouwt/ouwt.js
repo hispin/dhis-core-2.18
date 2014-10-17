@@ -403,43 +403,51 @@ function Selection()
         } else {
             selection.busy( true );
 
-            $.ajax( {
-                url: organisationUnitTreePath + "clearselected.action",
-                type: 'POST'
-            }).done(function() {
-                var selected = selection.getSelected();
+            if( selection.getSelected() && selection.getSelected().length === 0 ) {
+                setTimeout(doSync, 1000);
+            } else {
+                doSync();
+            }
 
-                if( multipleSelectionAllowed ) {
-                    var q = '';
+            function doSync() {
+                $.ajax( {
+                    url: organisationUnitTreePath + "clearselected.action",
+                    type: 'POST'
+                }).done(function() {
+                    var selected = selection.getSelected();
 
-                    $.each( selected, function( i, item ) {
-                        q += "id=" + item;
+                    if( multipleSelectionAllowed ) {
+                        var q = '';
 
-                        if( i < (selected.length - 1) ) {
-                            q += '&';
-                        }
-                    });
+                        $.each( selected, function( i, item ) {
+                            q += "id=" + item;
 
-                    $.ajax({
-                        url: organisationUnitTreePath + "addorgunit.action",
-                        data: q,
-                        type: 'POST'
-                    } ).complete( function() {
-                        selection.busy( false );
-                    });
-                } else {
-                    selected = $.isArray( selected ) ? selected[0] : selected;
+                            if( i < (selected.length - 1) ) {
+                                q += '&';
+                            }
+                        });
 
-                    $.post( organisationUnitTreePath + "setorgunit.action", {
-                        id: selected
-                    } ).complete( function() {
-                        selection.busy( false );
-                        fn();
-                    } );
-                }
-            }).always(function() {
-                selection.busy( false );
-            });
+                        $.ajax({
+                            url: organisationUnitTreePath + "addorgunit.action",
+                            data: q,
+                            type: 'POST'
+                        } ).complete( function() {
+                            selection.busy( false );
+                        });
+                    } else {
+                        selected = $.isArray( selected ) ? selected[0] : selected;
+
+                        $.post( organisationUnitTreePath + "setorgunit.action", {
+                            id: selected
+                        } ).complete( function() {
+                            selection.busy( false );
+                            fn();
+                        } );
+                    }
+                }).always(function() {
+                    selection.busy( false );
+                });
+            }
         }
     };
 
