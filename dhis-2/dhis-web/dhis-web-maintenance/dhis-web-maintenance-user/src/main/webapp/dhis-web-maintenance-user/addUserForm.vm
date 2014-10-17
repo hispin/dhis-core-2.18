@@ -24,6 +24,7 @@
 
     checkValueIsExist("username", "validateUser.action");
     checkValueIsExist("openId", "validateUser.action");
+    checkValueIsExist("inviteUsername", "validateUser.action");
 
     ouwtSelected = selection.getSelected();
     selection.setMultipleSelectionAllowed( true );

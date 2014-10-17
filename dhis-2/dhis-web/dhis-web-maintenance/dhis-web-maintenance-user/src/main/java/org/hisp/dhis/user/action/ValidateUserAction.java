@@ -75,12 +75,19 @@ public class ValidateUserAction
     {
         this.username = username;
     }
-
+    
     private String openId;
 
     public void setOpenId( String openId )
     {
         this.openId = openId;
+    }
+    
+    private String inviteUsername;
+
+    public void setInviteUsername( String inviteUsername )
+    {
+        this.inviteUsername = inviteUsername;
     }
 
     // -------------------------------------------------------------------------
@@ -121,6 +128,18 @@ public class ValidateUserAction
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "openid_in_use" );
+
+                return ERROR;
+            }
+        }
+
+        if ( inviteUsername != null )
+        {
+            UserCredentials match = userService.getUserCredentialsByUsername( inviteUsername );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "username_in_use" );
 
                 return ERROR;
             }
