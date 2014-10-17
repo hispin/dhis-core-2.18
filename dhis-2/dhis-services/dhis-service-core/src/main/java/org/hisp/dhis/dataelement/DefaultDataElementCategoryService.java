@@ -41,7 +41,6 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.GenericDimensionalObjectStore;
 import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.i18n.I18nService;
@@ -69,9 +68,9 @@ public class DefaultDataElementCategoryService
         this.categoryStore = categoryStore;
     }
 
-    private GenericDimensionalObjectStore<DataElementCategoryOption> categoryOptionStore;
+    private CategoryOptionStore categoryOptionStore;
 
-    public void setCategoryOptionStore( GenericDimensionalObjectStore<DataElementCategoryOption> categoryOptionStore )
+    public void setCategoryOptionStore( CategoryOptionStore categoryOptionStore )
     {
         this.categoryOptionStore = categoryOptionStore;
     }
@@ -376,6 +375,12 @@ public class DefaultDataElementCategoryService
     }
 
     @Override
+    public Collection<DataElementCategoryOption> getDataElementCategoryOptions( DataElementCategory category )
+    {
+        return i18n( i18nService, categoryOptionStore.getCategoryOptions( category ) );
+    }
+
+    @Override
     public Collection<DataElementCategoryOption> getDataElementCategoryOptionsBetween( int first, int max )
     {
         return i18n( i18nService, categoryOptionStore.getAllOrderedName( first, max ) );
@@ -386,12 +391,6 @@ public class DefaultDataElementCategoryService
         int max )
     {
         return i18n( i18nService, categoryOptionStore.getAllLikeName( name, first, max ) );
-    }
-
-    @Override
-    public Collection<DataElementCategoryOption> getDataElementCategoryOptionsByConcept( Concept concept )
-    {
-        return categoryOptionStore.getByConcept( concept );
     }
 
     @Override

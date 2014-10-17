@@ -33,7 +33,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
@@ -52,7 +56,11 @@ public class DataElementCategoryOptionServiceTest
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
     private DataElementCategoryOption categoryOptionC;
-  
+    
+    private DataElementCategory categoryA;
+    private DataElementCategory categoryB;
+    private DataElementCategory categoryC;
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
@@ -118,5 +126,54 @@ public class DataElementCategoryOptionServiceTest
         assertTrue( categoryOptions.contains( categoryOptionA ) );
         assertTrue( categoryOptions.contains( categoryOptionB ) );
         assertTrue( categoryOptions.contains( categoryOptionC ) );        
+    }
+
+    @Test
+    public void testGetByCategory()
+    {
+        categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
+        categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );
+        categoryOptionC = new DataElementCategoryOption( "CategoryOptionC" );
+
+        categoryService.addDataElementCategoryOption( categoryOptionA );
+        categoryService.addDataElementCategoryOption( categoryOptionB );
+        categoryService.addDataElementCategoryOption( categoryOptionC );
+        
+        List<DataElementCategoryOption> optionsA = new ArrayList<>();
+        List<DataElementCategoryOption> optionsB = new ArrayList<>();
+           
+        optionsA.add( categoryOptionA );
+        optionsA.add( categoryOptionB );
+        optionsB.add( categoryOptionC );
+        
+        categoryA = new DataElementCategory( "CategoryA", optionsA );
+        categoryB = new DataElementCategory( "CategoryB", optionsB );
+        categoryC = new DataElementCategory( "CategoryC" );
+        
+        Set<DataElementCategory> categoriesA = new HashSet<>();
+        Set<DataElementCategory> categoriesB = new HashSet<>();
+        
+        categoriesA.add( categoryA );
+        categoriesB.add( categoryB );
+        
+        categoryOptionA.setCategories( categoriesA );
+        categoryOptionB.setCategories( categoriesA );
+        categoryOptionC.setCategories( categoriesB );
+        
+        categoryService.addDataElementCategory( categoryA );
+        categoryService.addDataElementCategory( categoryB );
+        categoryService.addDataElementCategory( categoryC );
+        
+        Collection<DataElementCategoryOption> categoryOptions = categoryService.getDataElementCategoryOptions( categoryA );
+
+        assertEquals( 2, categoryOptions.size() );
+        
+        categoryOptions = categoryService.getDataElementCategoryOptions( categoryB );
+
+        assertEquals( 1, categoryOptions.size() );
+        
+        categoryOptions = categoryService.getDataElementCategoryOptions( categoryC );
+
+        assertEquals( 0, categoryOptions.size() );        
     }
 }
