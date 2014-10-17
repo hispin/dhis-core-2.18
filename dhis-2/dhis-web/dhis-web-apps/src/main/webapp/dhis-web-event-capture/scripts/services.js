@@ -5,6 +5,17 @@
 var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource'])
 
 
+.factory('StorageService', function(){
+    var store = new dhis2.storage.Store({
+        name: EC_STORE_NAME,
+        adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+        objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
+    });
+    return{
+        currentStore: store
+    };
+})
+
 .service('DateUtils', function($filter){
     
     return {
@@ -34,14 +45,48 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
     };  
 })
 
+
+/* Factory to fetch optioSets */
+.factory('OptionSetFactory', function($q, $rootScope, StorageService) { 
+    return {
+        getAll: function(){
+            
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.getAll('optionSets').done(function(optionSets){
+                    $rootScope.$apply(function(){
+                        def.resolve(optionSets);
+                    });                    
+                });
+            });            
+            
+            return def.promise;            
+        },
+        get: function(uid){
+            
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.get('optionSets', uid).done(function(optionSet){                    
+                    $rootScope.$apply(function(){
+                        def.resolve(optionSet);
+                    });
+                });
+            });                        
+            return def.promise;            
+        }
+    };
+})
+
 /* Factory to fetch programs */
-.factory('ProgramFactory', function($q, $rootScope) {  
+.factory('ProgramFactory', function($q, $rootScope, StorageService) {  
     
-    dhis2.ec.store = new dhis2.storage.Store({
+    /*dhis2.ec.store = new dhis2.storage.Store({
         name: EC_STORE_NAME,
         adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
         objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
-    });
+    });*/
         
     return {
         
@@ -49,38 +94,35 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             
             var def = $q.defer();
             
-            dhis2.ec.store.open().done(function(){
-                dhis2.ec.store.getAll('eventCapturePrograms').done(function(programs){
-                    
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.getAll('eventCapturePrograms').done(function(programs){                    
                     $rootScope.$apply(function(){
                         def.resolve(programs);
                     });                    
                 });
-            });            
-            
-            return def.promise;            
+            });
+            return def.promise;
         }        
-        
     };
 })
 
 /* Factory to fetch programStages */
-.factory('ProgramStageFactory', function($q, $rootScope) {  
+.factory('ProgramStageFactory', function($q, $rootScope, StorageService) {  
 
-    dhis2.ec.store = new dhis2.storage.Store({
+    /*dhis2.ec.store = new dhis2.storage.Store({
         name: EC_STORE_NAME,
         adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
         objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
-    });
+    });*/
     
     return {        
         get: function(uid){
             
             var def = $q.defer();
             
-            dhis2.ec.store.open().done(function(){
-                dhis2.ec.store.get('programStages', uid).done(function(pst){                    
-                    angular.forEach(pst.programStageDataElements, function(pstDe){   
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.get('programStages', uid).done(function(pst){                    
+                    /*angular.forEach(pst.programStageDataElements, function(pstDe){   
                         if(pstDe.dataElement.optionSet){
                             dhis2.ec.store.get('optionSets', pstDe.dataElement.optionSet.id).done(function(optionSet){
                                 pstDe.dataElement.optionSet = optionSet;                                
@@ -89,7 +131,10 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                         $rootScope.$apply(function(){
                             def.resolve(pst);
                         });
-                    });                                        
+                    });*/
+                    $rootScope.$apply(function(){
+                        def.resolve(pst);
+                    });
                 });
             });                        
             return def.promise;            
@@ -246,31 +291,33 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                             newInputField = '<input type="number" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '"' +
-                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">';
+                                            ' ng-required="prStDes.' + deId + '.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "string"){
                             if(programStageDataElements[deId].dataElement.optionSet){
+                                var optionSetId = programStageDataElements[deId].dataElement.optionSet.id;
                         		newInputField = '<input type="text" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '" ' +
                                             ' ng-disabled="currentEvent[uid] == \'uid\'" ' +
-                                            ' ng-required="programStageDataElements.' + deId + '.compulsory"' +
-                                            ' typeahead="option.code as option.name for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
-                                            ' typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory">';
+                                            ' ng-required="prStDes.' + deId + '.compulsory"' +
+                                            ' typeahead="option.name as option.name for option in optionSets.'+optionSetId+'.options | filter:$viewValue | limitTo:20"' +
+                                            ' typeahead-editable="false" ' +
+                                            ' typeahead-open-on-focus ng-required="prStDes.'+deId+'.compulsory">';
                         	}
                         	else{
                         		newInputField = '<input type="text" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '" ' +
                                             ' ng-disabled="currentEvent[uid] == \'uid\'" ' +
-                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">';
+                                            ' ng-required="prStDes.' + deId + '.compulsory">';
                         	}
                         }
                         if(programStageDataElements[deId].dataElement.type == "bool"){
                             newInputField = '<select ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '" ' +
-                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">' + 
+                                            ' ng-required="prStDes.' + deId + '.compulsory">' + 
                                             '<option value="">{{\'please_select\'| translate}}</option>' +
                                             '<option value="false">{{\'no\'| translate}}</option>' + 
                                             '<option value="true">{{\'yes\'| translate}}</option>' +
@@ -281,13 +328,13 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '"' +
                                             ' ng-date' +
-                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">';
+                                            ' ng-required="prStDes.' + deId + '.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "trueOnly"){
                             newInputField = '<input type="checkbox" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '"' +
-                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">';
+                                            ' ng-required="prStDes.' + deId + '.compulsory">';
                         }
 
                         newInputField = //'<ng-form name="innerForm">' + 
