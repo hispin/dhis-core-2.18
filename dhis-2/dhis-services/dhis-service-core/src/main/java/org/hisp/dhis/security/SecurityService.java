@@ -52,7 +52,7 @@ public interface SecurityService
      * 
      * <ul>
      * <li>email_not_configured_for_system</li>
-     * <li>user_does_not_exist</li>
+     * <li>no_user_credentials</li>
      * <li>user_does_not_have_valid_email</li>
      * <li>user_has_critical_authorities</li>
      * </ul>

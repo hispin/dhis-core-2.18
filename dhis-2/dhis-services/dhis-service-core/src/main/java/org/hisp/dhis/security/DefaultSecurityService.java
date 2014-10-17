@@ -160,7 +160,7 @@ public class DefaultSecurityService
         if ( credentials == null || credentials.getUser() == null )
         {
             log.info( "Could not send restore/invite message as user does not exist: " + credentials );
-            return "user_does_not_exist";
+            return "no_user_credentials";
         }
 
         if ( credentials.getUser().getEmail() == null || !ValidationUtils.emailIsValid( credentials.getUser().getEmail() ) )

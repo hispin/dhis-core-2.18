@@ -1,5 +1,6 @@
 <script type="text/javascript">
   var ouwtSelected = [];
+  var i18n_data_capture_org_unit_required = '$encoder.jsEscape( $i18n.getString( "data_capture_organisation_unit_required_for_user" ) , "'" )';
 
   jQuery(function() {
     validation2('addUserForm', function( form ) {
@@ -8,16 +9,19 @@
       jQuery("#dcSelected").children().attr("selected", "selected");
 
       if( $('#orgUnitTree').find('.selected').size() == 0 ) {
-        setHeaderDelayMessage('$encoder.jsEncode( $i18n.getString( "data_capture_organisation_unit_required_for_user" ) )');
+        setHeaderDelayMessage(i18n_data_capture_org_unit_required);
       } else {
         $('#ouwtSelected').val( ouwtSelected[0] );
         selection.setSelected( ouwtSelected !== undefined ? ouwtSelected : [] );
-        form.submit();
+        
+        validateInvite().done(function(val) {        
+        	form.submit();
+        });
       }
     }, {
       'beforeValidateHandler': function() {
         listValidator('urValidator', 'urSelected');
-          #tblDynamicAttributesJavascript()
+        #tblDynamicAttributesJavascript()
       },
       'rules': getValidationRules("user")
     });

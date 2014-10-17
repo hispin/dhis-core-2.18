@@ -56,6 +56,8 @@
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
+  <bean id="org.hisp.dhis.user.action.ValidateInviteAction" class="org.hisp.dhis.user.action.ValidateInviteAction" scope="prototype"/>
+
   <bean id="org.hisp.dhis.user.action.SetupTreeAction" class="org.hisp.dhis.user.action.SetupTreeAction" scope="prototype">
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
