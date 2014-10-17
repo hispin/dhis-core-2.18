@@ -99,7 +99,7 @@ public class Expression
      * Indicates whether the expression should evaluate to null if all or any
      * data values are missing in the expression.
      */
-    private MissingValueStrategy missingValueStrategy;
+    private MissingValueStrategy missingValueStrategy = MissingValueStrategy.SKIP_IF_ALL_VALUES_MISSING;
 
     /**
      * A reference to the DataElements in the Expression.
