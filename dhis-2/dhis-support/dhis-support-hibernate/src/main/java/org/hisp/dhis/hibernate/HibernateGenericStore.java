@@ -249,6 +249,25 @@ public class HibernateGenericStore<T>
     }
 
     /**
+     * Creates a sharing Criteria for the implementation Class type restricted by the
+     * given Criterions.
+     *
+     * @param expressions the Criterions for the Criteria.
+     * @return a Criteria instance.
+     */
+    protected final Criteria getSharingCriteria( Criterion... expressions )
+    {
+        Criteria criteria = getSharingCriteria();
+
+        for ( Criterion expression : expressions )
+        {
+            criteria.add( expression );
+        }
+
+        criteria.setCacheable( cacheable );
+        return criteria;
+    }
+    /**
      * Retrieves an object based on the given Criterions.
      *
      * @param expressions the Criterions for the Criteria.
@@ -388,44 +407,6 @@ public class HibernateGenericStore<T>
     public final List<T> getAll()
     {
         return getSharingCriteria().list();
-    }
-
-    /**
-     * Returns a Query instance. Allows for injecting a criteria part, such as
-     * "code = :code and name = :name". Note that the bound values must be set
-     * on the query before executing it.
-     *
-     * @param hqlCriteria the HQL criteria.
-     * @return a Query.
-     */
-    protected Query getQueryWithSelect( String hqlCriteria )
-    {
-        boolean sharingEnabled = sharingEnabled();
-
-        String hql = "select distinct c from " + clazz.getName() + " c";
-
-        if ( hqlCriteria != null )
-        {
-            hql += " where " + hqlCriteria;
-        }
-
-        if ( sharingEnabled )
-        {
-            String criteria = hqlCriteria != null ? "and" : "where";
-
-            hql += " " + criteria + " ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
-                + " or exists "
-                + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%') )";
-        }
-
-        Query query = getQuery( hql );
-
-        if ( sharingEnabled )
-        {
-            query.setEntity( "user", currentUserService.getCurrentUser() );
-        }
-
-        return query;
     }
 
     @Override
