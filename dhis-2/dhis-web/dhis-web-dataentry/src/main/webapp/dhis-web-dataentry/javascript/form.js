@@ -454,13 +454,13 @@ function addEventListeners()
             // fake event, needed for valueBlur / valueFocus when using date-picker (it doesn't send the event object through).
             var fakeEvent = {
                 target: {
-                    id: id
+                    id: id + '-dp'
                 }
             };
 
             dhis2.period.picker.createInstance( '#' + id, false, {
                 onSelect: function() {
-                    saveVal( dataElementId, optionComboId, id );
+                    saveVal( dataElementId, optionComboId, id, fakeEvent.target.id );
                 },
                 onClose: function() {
                     valueBlur(fakeEvent);

@@ -70,7 +70,8 @@ dhis2.period.DatePicker = function( calendar, format ) {
       dateFormat: format,
       showAnim: '',
       maxDate: calendar.today(),
-      yearRange: 'c-100:c+100'
+      yearRange: 'c-100:c+100',
+      altFormat: 'yyyy-mm-dd'
     }
   });
 };
@@ -79,10 +80,11 @@ dhis2.period.DatePicker = function( calendar, format ) {
  * Creates a date picker.
  *
  * @param {jQuery|String|Object} el Element to select on, can be any kind of jQuery selector, or a jqEl
- * @param {*} [fromIso] Convert field from ISO 8601 to local calendar
- * @param {*} [options] Additional options, will be merged with the defaults
+ * @param {boolean} [fromIso] Convert field from ISO 8601 to local calendar
+ * @param {Object} [options] Additional options, will be merged with the defaults
  */
 dhis2.period.DatePicker.prototype.createInstance = function( el, fromIso, options ) {
+  var self = this;
   var $el = $(el);
 
   if( fromIso ) {
@@ -91,6 +93,25 @@ dhis2.period.DatePicker.prototype.createInstance = function( el, fromIso, option
     var cDateIsoDate = this.calendar.fromJD(isoDate.toJD());
     $el.val(this.calendar.formatDate(this.format, cDateIsoDate));
   }
+
+  var isoFieldId = $el.attr('id');
+  $el.attr('id', isoFieldId + '-dp');
+
+  $el.before($('<input type="hidden"/>')
+    .attr({
+      id: isoFieldId
+    }));
+
+  $(document).on('dhis2.de.event.dataValuesLoaded', function() {
+    var $isoField = $('#' + isoFieldId);
+
+    var date = self.calendar.parseDate('yyyy-mm-dd', $isoField.val());
+    var localDate = self.calendar.formatDate(self.format, date);
+
+    $el.val(localDate);
+  });
+
+  options.altField = '#' + isoFieldId;
 
   $el.calendarsPicker($.extend({}, this.defaults, options));
 };
