@@ -119,6 +119,36 @@ function changeAccountAction()
     }
 }
 
+function validateInvite() {
+	var def = $.Deferred();
+	var action = $('#accountAction').val();
+	
+	if ( "invite" == action ) {
+		var url = 'validateInvite.action?email=' + $('#inviteEmail').val();
+		var options = $('#urSelected').val();
+		$.each(options, function(inx,val) {
+			url += '&urSelected=' + val;
+		});
+		
+		$.getJSON(url, function(json) {
+			if (json.response == "error") {
+				setHeaderDelayMessage(json.message);
+				def.reject();
+			}
+			else if (json.response == "success") {
+				def.resolve();
+			}
+		});
+	}
+	else {
+		def.resolve();
+	}
+	
+	return def.promise();
+}
+
+
+
 // -----------------------------------------------------------------------------
 // Remove user
 // -----------------------------------------------------------------------------
