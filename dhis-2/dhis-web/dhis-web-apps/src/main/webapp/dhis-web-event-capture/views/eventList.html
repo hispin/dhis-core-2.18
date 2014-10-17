@@ -72,11 +72,11 @@
                                                 <input style="width: 45%;" placeholder="{{'upper_limit' | translate}}" type="number" ng-model="filterText[eventGridColumn.id].end" ng-blur="searchInGrid(eventGridColumn)">
                                             </span>
                                             <span ng-switch-when="date">
-                                                <input style="width: 70%;" placeholder="{{'start_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].start" data-ng-date readonly="readonly">
+                                                <input style="width: 70%;" placeholder="{{'start_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].start" d2-date readonly="readonly">
                                                 <span ng-hide="filterText[eventGridColumn.id].start == undefined || filterText[eventGridColumn.id].start == ''">
                                                     <a href ng-click='removeStartFilterText(eventGridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
                                                 </span>
-                                                <input style="width: 70%;" placeholder="{{'end_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].end" data-ng-date readonly="readonly">
+                                                <input style="width: 70%;" placeholder="{{'end_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].end" d2-date readonly="readonly">
                                                 <span ng-hide="filterText[eventGridColumn.id].end == undefined || filterText[eventGridColumn.id].end == ''">
                                                     <a href ng-click='removeEndFilterText(eventGridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
                                                 </span> 
@@ -213,8 +213,9 @@
                                         </div>
                                         <div ng-switch-when="date">
                                             <input type="text" 
-                                                   placeholder="yyyy-mm-dd" 
-                                                   ng-date 
+                                                   placeholder="{{dhis2CalendarFormat.keyDateFormat}}"
+                                                   d2-date
+                                                   max-date="prStDes[eventGridColumn.id].allowFutureDate ? '' : 0" 
                                                    ng-model="dhis2Event[eventGridColumn.id]"
                                                    blur-or-change="updateEventDataValue(dhis2Event, eventGridColumn.id)" 
                                                    ng-required={{eventGridColumn.compulsory}}

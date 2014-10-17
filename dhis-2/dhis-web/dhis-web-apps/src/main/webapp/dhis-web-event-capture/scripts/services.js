@@ -16,16 +16,54 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
     };
 })
 
-.service('DateUtils', function($filter){
+.service('DateUtils', function($filter, CalendarService){
     
     return {
         format: function(dateValue) {            
+            if(!dateValue){
+                return;
+            }            
+            var calendarSetting = CalendarService.getSetting();
+            dateValue = $filter('date')(dateValue, calendarSetting.keyDateFormat);            
+            return dateValue;
+        },
+        formatToHrsMins: function(dateValue) {
+            var calendarSetting = CalendarService.getSetting();
+            var dateFormat = 'YYYY-MM-DD @ hh:mm A';
+            if(calendarSetting.keyDateFormat === 'dd-MM-yyyy'){
+                dateFormat = 'DD-MM-YYYY @ hh:mm A';
+            }            
+            return moment(dateValue).format(dateFormat);
+        },
+        getToday: function(){  
+            var calendarSetting = CalendarService.getSetting();
+            var tdy = $.calendars.instance(calendarSetting.keyCalendar).newDate();            
+            var today = moment(tdy._year + '-' + tdy._month + '-' + tdy._day, 'YYYY-MM-DD')._d;            
+            today = Date.parse(today);     
+            today = $filter('date')(today,  calendarSetting.keyDateFormat);
+            return today;
+        },
+        formatFromUserToApi: function(dateValue){            
+            if(!dateValue){
+                return;
+            }
+            var calendarSetting = CalendarService.getSetting();            
+            dateValue = moment(dateValue, calendarSetting.momentFormat)._d;
+            dateValue = Date.parse(dateValue);     
+            dateValue = $filter('date')(dateValue, 'yyyy-MM-dd'); 
+            return dateValue;            
+        },
+        formatFromApiToUser: function(dateValue){            
+            if(!dateValue){
+                return;
+            }            
+            var calendarSetting = CalendarService.getSetting();
             dateValue = moment(dateValue, 'YYYY-MM-DD')._d;
-            dateValue = Date.parse(dateValue);
-            dateValue = $filter('date')(dateValue, 'yyyy-MM-dd');
+            dateValue = Date.parse(dateValue);     
+            dateValue = $filter('date')(dateValue, calendarSetting.keyDateFormat); 
             return dateValue;
         }
-    };            
+    };
 })
 
 /* factory for loading logged in user profiles from DHIS2 */
@@ -286,6 +324,8 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                             attributes['name'] = deId;
                         }
                         
+                        var maxDate = programStageDataElements[deId].allowFutureDate ? '' : 0;
+                        
                         //check data element type and generate corresponding angular input field
                         if(programStageDataElements[deId].dataElement.type == "int"){
                             newInputField = '<input type="number" ' +
@@ -327,7 +367,8 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                             newInputField = '<input type="text" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '"' +
-                                            ' ng-date' +
+                                            ' d2-date ' +
+                                            ' max-date="' + maxDate + '"' + '\'' +
                                             ' ng-required="prStDes.' + deId + '.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "trueOnly"){
@@ -568,4 +609,30 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
         }
     };
             
+})
+
+/* service for getting calendar setting */
+.service('CalendarService', function(storage, $rootScope){    
+
+    return {
+        getSetting: function() {
+            
+            var dhis2CalendarFormat = {keyDateFormat: 'yyyy-MM-dd', keyCalendar: 'gregorian', momentFormat: 'YYYY-MM-DD'};                
+            var storedFormat = storage.get('CALENDAR_SETTING');
+            if(angular.isObject(storedFormat) && storedFormat.keyDateFormat && storedFormat.keyCalendar){
+                if(storedFormat.keyCalendar === 'iso8601'){
+                    storedFormat.keyCalendar = 'gregorian';
+                }
+
+                if(storedFormat.keyDateFormat === 'dd-MM-yyyy'){
+                    dhis2CalendarFormat.momentFormat = 'DD-MM-YYYY';
+                }
+                
+                dhis2CalendarFormat.keyCalendar = storedFormat.keyCalendar;
+                dhis2CalendarFormat.keyDateFormat = storedFormat.keyDateFormat;
+            }
+            $rootScope.dhis2CalendarFormat = dhis2CalendarFormat;
+            return dhis2CalendarFormat;
+        }
+    };            
 });

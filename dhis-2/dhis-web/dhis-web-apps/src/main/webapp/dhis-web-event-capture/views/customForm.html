@@ -13,8 +13,9 @@
         </td>
         <td>
             <input type="text"                                                   
-                   placeholder="yyyy-mm-dd" 
-                   ng-date 
+                   placeholder="{{dhis2CalendarFormat.keyDateFormat}}"
+                   d2-date
+                   max-date='0'
                    ng-model="currentEvent.eventDate"
                    ng-disabled="editingEventInFull"    
                    ng-required="true" 

@@ -43,9 +43,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     
     //notes
     $scope.note = {};
-    var today = moment();
-    today = Date.parse(today);
-    today = $filter('date')(today, 'yyyy-MM-dd');
+    $scope.today = DateUtils.getToday();
     
     var loginDetails = storage.get('LOGIN_DETAILS');
     var storedBy = '';
@@ -230,7 +228,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                             if(angular.isObject($scope.prStDes[dataValue.dataElement].dataElement)){                               
 
                                                 //converting int string value to integer for proper sorting.
-                                                if($scope.prStDes[dataValue.dataElement].dataElement.type == 'int'){
+                                                if($scope.prStDes[dataValue.dataElement].dataElement.type === 'int'){
                                                     if( !isNaN(parseInt(val)) ){
                                                         val = parseInt(val);
                                                     }
@@ -238,12 +236,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                                         val = '';
                                                     }                                        
                                                 }
-                                                if($scope.prStDes[dataValue.dataElement].dataElement.type == 'string'){
+                                                if($scope.prStDes[dataValue.dataElement].dataElement.type === 'string'){
                                                     if($scope.prStDes[dataValue.dataElement].dataElement.optionSet && $scope.optionNamesByCode[  '"' + val + '"']){                                                        
                                                         val = $scope.optionNamesByCode[  '"' + val + '"'];                                                      
                                                     }                                                
                                                 }
-                                                if( $scope.prStDes[dataValue.dataElement].dataElement.type == 'trueOnly'){
+                                                if($scope.prStDes[dataValue.dataElement].dataElement.type === 'date'){
+                                                    val = DateUtils.formatFromApiToUser(val);                                               
+                                                }
+                                                if( $scope.prStDes[dataValue.dataElement].dataElement.type === 'trueOnly'){
                                                     if(val == 'true'){
                                                         val = true;
                                                     }
@@ -258,7 +259,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                     });
 
                                     $scope.dhis2Events[i]['uid'] = $scope.dhis2Events[i].event;                                
-                                    $scope.dhis2Events[i].eventDate = DateUtils.format($scope.dhis2Events[i].eventDate);                                
+                                    $scope.dhis2Events[i].eventDate = DateUtils.formatFromApiToUser($scope.dhis2Events[i].eventDate);                                
                                     $scope.dhis2Events[i]['event_date'] = $scope.dhis2Events[i].eventDate;
 
                                     delete $scope.dhis2Events[i].dataValues;
@@ -437,13 +438,17 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             var val = $scope.currentEvent[dataElement];
             if(val){
                 valueExists = true;            
-                if($scope.prStDes[dataElement].dataElement.type == 'string'){
+                if($scope.prStDes[dataElement].dataElement.type === 'string'){
                     if($scope.prStDes[dataElement].dataElement.optionSet){
                         if($scope.optionCodesByName[  '"' + val + '"']){
                             val = $scope.optionCodesByName[  '"' + val + '"'];
                         }
                     }
-                }            
+                }
+
+                if($scope.prStDes[dataElement].dataElement.type === 'date'){
+                    val = DateUtils.formatFromUserToApi(val);
+                }
             }
             dataValues.push({dataElement: dataElement, value: val});
         }
@@ -466,7 +471,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 programStage: $scope.selectedProgramStage.id,
                 orgUnit: $scope.selectedOrgUnit.id,
                 status: 'ACTIVE',            
-                eventDate: $filter('date')(newEvent.eventDate, 'yyyy-MM-dd'),
+                eventDate: DateUtils.formatFromUserToApi(newEvent.eventDate),
                 dataValues: dataValues
         }; 
         
@@ -477,7 +482,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         if(!angular.isUndefined($scope.note.value) && $scope.note.value != ''){
             dhis2Event.notes = [{value: $scope.note.value}];
             
-            newEvent.notes = [{value: $scope.note.value, storedDate: today, storedBy: storedBy}];
+            newEvent.notes = [{value: $scope.note.value, storedDate: $scope.today, storedBy: storedBy}];
             
             $scope.noteExists = true;
         }
@@ -486,7 +491,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             dhis2Event.coordinate = {latitude: $scope.currentEvent.coordinate.latitude ? $scope.currentEvent.coordinate.latitude : '',
                                      longitude: $scope.currentEvent.coordinate.longitude ? $scope.currentEvent.coordinate.longitude : ''};             
         }
-
+        
         //send the new event to server
         DHIS2EventFactory.create(dhis2Event).then(function(data) {
             if (data.importSummaries[0].status === 'ERROR') {
@@ -505,7 +510,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     $scope.dhis2Events = [];                   
                 }
                 newEvent['uid'] = newEvent.event;
-                newEvent['event_date'] = DateUtils.format(newEvent.eventDate); 
+                newEvent['event_date'] = newEvent.eventDate; 
                 $scope.dhis2Events.splice(0,0,newEvent);
                 
                 $scope.eventLength++;
@@ -548,12 +553,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         for(var dataElement in $scope.prStDes){
             var val = $scope.currentEvent[dataElement];
             
-            if(val && $scope.prStDes[dataElement].dataElement.type == 'string'){
+            if(val && $scope.prStDes[dataElement].dataElement.type === 'string'){
                 if($scope.prStDes[dataElement].dataElement.optionSet){                        
                     if($scope.optionCodesByName[  '"' + val + '"']){
                         val = $scope.optionCodesByName[  '"' + val + '"'];
                     }                                            
                 }    
+            }
+            if(val && $scope.prStDes[dataElement].dataElement.type === 'date'){
+                val = DateUtils.formatFromUserToApi(val);    
             }
             dataValues.push({dataElement: dataElement, value: val});
         }
@@ -563,12 +571,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                             programStage: $scope.currentEvent.programStage,
                             orgUnit: $scope.currentEvent.orgUnit,
                             status: 'ACTIVE',                                        
-                            eventDate: $scope.currentEvent.eventDate,
+                            eventDate: DateUtils.formatFromUserToApi($scope.currentEvent.eventDate),
                             event: $scope.currentEvent.event, 
                             dataValues: dataValues
                         };
 
-        updatedEvent.eventDate = DateUtils.format(updatedEvent.eventDate);
         
         if($scope.selectedProgramStage.captureCoordinates){
             updatedEvent.coordinate = {latitude: $scope.currentEvent.coordinate.latitude ? $scope.currentEvent.coordinate.latitude : '',
@@ -580,10 +587,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             updatedEvent.notes = [{value: $scope.note.value}];
             
             if($scope.currentEvent.notes){
-                $scope.currentEvent.notes.splice(0,0,{value: $scope.note.value, storedDate: today, storedBy: storedBy});
+                $scope.currentEvent.notes.splice(0,0,{value: $scope.note.value, storedDate: $scope.today, storedBy: storedBy});
             }
             else{
-                $scope.currentEvent.notes = [{value: $scope.note.value, storedDate: today, storedBy: storedBy}];
+                $scope.currentEvent.notes = [{value: $scope.note.value, storedDate: $scope.today, storedBy: storedBy}];
             }   
             
             $scope.noteExists = true;
@@ -640,6 +647,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                         newValue = $scope.optionCodesByName[  '"' + newValue + '"'];
                     }
                 }
+            }            
+            if($scope.prStDes[dataElement].dataElement.type === 'date'){
+                newValue = DateUtils.formatFromUserToApi(newValue);
             }
             
             var updatedSingleValueEvent = {event: currentEvent.event, dataValues: [{value: newValue, dataElement: dataElement}]};
