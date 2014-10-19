@@ -158,6 +158,7 @@ public class JdbcEventAnalyticsTableManager
 
             final String start = DateUtils.getMediumDateString( table.getPeriod().getStartDate() );
             final String end = DateUtils.getMediumDateString( table.getPeriod().getEndDate() );
+            final String tableName = table.getTempTableName();
 
             String sql = "insert into " + table.getTempTableName() + " (";
 
@@ -190,9 +191,7 @@ public class JdbcEventAnalyticsTableManager
                 "and psi.organisationunitid is not null " +
                 "and psi.executiondate is not null";
 
-            log.info( "Populate SQL: " + sql );
-
-            jdbcTemplate.execute( sql );
+            populateAndLog( sql, tableName );
         }
 
         return null;
