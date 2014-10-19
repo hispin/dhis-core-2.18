@@ -30,6 +30,7 @@ package org.hisp.dhis.interceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
+
 import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -124,6 +125,7 @@ public class SystemSettingInterceptor
         map.put( KEY_ANALYTICS_MAINTENANCE_MODE, systemSettingManager.getSystemSetting( KEY_ANALYTICS_MAINTENANCE_MODE, false ) );
         map.put( KEY_DATABASE_SERVER_CPUS, systemSettingManager.getSystemSetting( KEY_DATABASE_SERVER_CPUS, DEFAULT_DATABASE_SERVER_CPUS ) );
         map.put( KEY_HELP_PAGE_LINK, systemSettingManager.getSystemSetting( KEY_HELP_PAGE_LINK, DEFAULT_HELP_PAGE_LINK ) );
+        map.put( KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, systemSettingManager.getSystemSetting( KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, false ) );
         map.put( SYSPROP_PORTAL, defaultIfEmpty( System.getProperty( SYSPROP_PORTAL ), String.valueOf( false ) ) );
 
         invocation.getStack().push( map );
