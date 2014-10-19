@@ -33,7 +33,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.system.timer.SystemNanoTimer;
+import org.hisp.dhis.system.timer.SystemTimer;
 import org.hisp.dhis.system.timer.Timer;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.scheduling.TaskId;
@@ -144,7 +144,7 @@ public class DefaultImportService
         log.info( "User '" + username + "' started import at " + new Date() );
 
         notifier.clear( taskId ).notify( taskId, "Importing meta-data" );
-        Timer timer = new SystemNanoTimer().start();
+        Timer timer = new SystemTimer().start();
 
         ImportSummary importSummary = new ImportSummary();
 

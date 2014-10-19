@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.system.timer.SystemNanoTimer;
+import org.hisp.dhis.system.timer.SystemTimer;
 import org.hisp.dhis.system.timer.Timer;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
@@ -120,7 +120,7 @@ public class JacksonEventService extends AbstractEventService
 
         notifier.clear( taskId ).notify( taskId, "Importing events" );
 
-        Timer timer = new SystemNanoTimer().start();
+        Timer timer = new SystemTimer().start();
 
         try
         {
@@ -182,7 +182,7 @@ public class JacksonEventService extends AbstractEventService
 
         notifier.clear( taskId ).notify( taskId, "Importing events" );
 
-        Timer timer = new SystemNanoTimer().start();
+        Timer timer = new SystemTimer().start();
 
         try
         {

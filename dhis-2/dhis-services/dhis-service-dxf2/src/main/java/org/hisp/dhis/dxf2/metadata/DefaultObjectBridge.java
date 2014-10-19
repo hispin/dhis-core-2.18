@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IdentifiableProperty;
-import org.hisp.dhis.system.timer.SystemNanoTimer;
+import org.hisp.dhis.system.timer.SystemTimer;
 import org.hisp.dhis.system.timer.Timer;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
@@ -127,7 +127,7 @@ public class DefaultObjectBridge
     public void init()
     {
         log.info( "Building object-bridge maps (preheatCache: " + preheatCache + ")." );
-        Timer timer = new SystemNanoTimer().start();
+        Timer timer = new SystemTimer().start();
 
         masterMap = Maps.newHashMap();
         periodTypeMap = Maps.newHashMap();

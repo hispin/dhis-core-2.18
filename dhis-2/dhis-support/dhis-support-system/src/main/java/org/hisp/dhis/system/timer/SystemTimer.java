@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class SystemNanoTimer 
+public class SystemTimer 
     implements Timer
 {
     private long _start = 0;
