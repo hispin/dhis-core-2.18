@@ -111,6 +111,7 @@ public class JdbcCompletenessTableManager
             
             final String start = DateUtils.getMediumDateString( table.getPeriod().getStartDate() );
             final String end = DateUtils.getMediumDateString( table.getPeriod().getEndDate() );
+            final String tableName = table.getTempTableName();
         
             String insert = "insert into " + table.getTempTableName() + " (";
             
@@ -144,9 +145,7 @@ public class JdbcCompletenessTableManager
     
             final String sql = insert + select;
             
-            log.info( "Populate SQL: "+ sql );
-            
-            jdbcTemplate.execute( sql );
+            populateAndLog( sql, tableName );
         }
         
         return null;
