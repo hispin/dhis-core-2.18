@@ -127,8 +127,7 @@ public class DefaultObjectBridge
     public void init()
     {
         log.info( "Building object-bridge maps (preheatCache: " + preheatCache + ")." );
-        Timer<Long> timer = new SystemNanoTimer();
-        timer.start();
+        Timer timer = new SystemNanoTimer().start();
 
         masterMap = Maps.newHashMap();
         periodTypeMap = Maps.newHashMap();

@@ -33,28 +33,29 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class SystemNanoTimer implements Timer<Long>
+public class SystemNanoTimer 
+    implements Timer
 {
     private long _start = 0;
 
     private long _end = 0;
 
     @Override
-    public Timer<Long> start()
+    public Timer start()
     {
         _start = System.nanoTime();
         return this;
     }
 
     @Override
-    public Timer<Long> stop()
+    public Timer stop()
     {
         _end = System.nanoTime();
         return this;
     }
 
     @Override
-    public Long getDuration()
+    public Long duration()
     {
         return _end - _start;
     }
@@ -62,7 +63,7 @@ public class SystemNanoTimer implements Timer<Long>
     @Override
     public String toString()
     {
-        double seconds = TimeUnit.MILLISECONDS.convert( getDuration(), TimeUnit.NANOSECONDS ) / 1000.0f;
+        double seconds = TimeUnit.MILLISECONDS.convert( duration(), TimeUnit.NANOSECONDS ) / 1000.0f;
         return String.format( "%.2f seconds", seconds );
     }
 }
