@@ -55,7 +55,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.system.timer.SystemNanoTimer;
+import org.hisp.dhis.system.timer.SystemTimer;
 import org.hisp.dhis.system.timer.Timer;
 import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18nManager;
@@ -179,7 +179,7 @@ public abstract class AbstractEventService
     {
         notifier.clear( taskId ).notify( taskId, "Importing events" );
 
-        Timer timer = new SystemNanoTimer().start();
+        Timer timer = new SystemTimer().start();
 
         ImportSummaries importSummaries = addEvents( events, importOptions );
 
