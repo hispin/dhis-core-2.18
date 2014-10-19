@@ -33,11 +33,11 @@ package org.hisp.dhis.system.timer;
  *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface Timer<T>
+public interface Timer
 {
-    Timer<T> start();
+    Timer start();
 
-    Timer<T> stop();
+    Timer stop();
 
-    T getDuration();
+    Long duration();
 }

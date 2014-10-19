@@ -179,7 +179,7 @@ public abstract class AbstractEventService
     {
         notifier.clear( taskId ).notify( taskId, "Importing events" );
 
-        Timer<Long> timer = new SystemNanoTimer().start();
+        Timer timer = new SystemNanoTimer().start();
 
         ImportSummaries importSummaries = addEvents( events, importOptions );
 
