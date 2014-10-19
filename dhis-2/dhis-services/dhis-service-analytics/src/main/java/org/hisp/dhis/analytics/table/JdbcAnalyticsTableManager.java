@@ -92,6 +92,8 @@ public class JdbcAnalyticsTableManager
         {
             return "No organisation unit levels exist, not updating aggregate analytics tables";
         }
+
+        log.info( "Approval enabled: " + isApprovalEnabled() );
         
         return null;
     }
