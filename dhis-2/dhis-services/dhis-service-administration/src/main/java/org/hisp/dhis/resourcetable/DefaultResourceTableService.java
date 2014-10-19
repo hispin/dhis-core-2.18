@@ -387,13 +387,14 @@ public class DefaultResourceTableService
             values.add( dataSet != null ? dataSet.getId() : null );
             values.add( dataSet != null ? dataSet.getUid() : null );
             values.add( dataSet != null ? dataSet.getName() : null );
+            values.add( dataSet != null ? dataSet.isApproveData() : false );
             values.add( periodType != null ? periodType.getId() : null );
             values.add( periodType != null ? periodType.getName() : null );
 
             batchArgs.add( values.toArray() );
         }
 
-        resourceTableStore.batchUpdate( 8, TABLE_NAME_DATA_ELEMENT_STRUCTURE, batchArgs );
+        resourceTableStore.batchUpdate( 9, TABLE_NAME_DATA_ELEMENT_STRUCTURE, batchArgs );
 
         log.info( "Data element table generated" );
     }

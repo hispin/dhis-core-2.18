@@ -424,6 +424,7 @@ public class JdbcResourceTableStore
             "datasetid INTEGER, " +
             "datasetuid CHARACTER(11), " +
             "datasetname VARCHAR(250), " +
+            "approvedata BOOLEAN, " +
             "periodtypeid INTEGER, " + 
             "periodtypename VARCHAR(250) )";
         
