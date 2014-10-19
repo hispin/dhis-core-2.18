@@ -206,7 +206,6 @@ public class JdbcAnalyticsTableManager
             textValueExpression + " as textvalue " +
             "from datavalue dv " +
             "left join _dataelementgroupsetstructure degs on dv.dataelementid=degs.dataelementid " +
-            "left join _dataelementstructure des on dv.dataelementid=des.dataelementid " +
             "left join _organisationunitgroupsetstructure ougs on dv.sourceid=ougs.organisationunitid " +
             "left join _categoryoptiongroupsetstructure cogs on dv.attributeoptioncomboid=cogs.categoryoptioncomboid " +
             "left join _categorystructure dcs on dv.categoryoptioncomboid=dcs.categoryoptioncomboid " +
@@ -236,8 +235,8 @@ public class JdbcAnalyticsTableManager
             "select coalesce(min(dal.level),999) " +
             "from dataapproval da " +
             "inner join dataapprovallevel dal on da.dataapprovallevelid = dal.dataapprovallevelid " +
-            "where da.datasetid = des.datasetid " +
-            "and da.periodid = dv.periodid " +
+            "inner join _dataelementstructure des on da.datasetid = des.datasetid and des.dataelementid = dv.dataelementid " +
+            "where da.periodid = dv.periodid " +
             "and des.approvedata = true " +
             "and (";
         
