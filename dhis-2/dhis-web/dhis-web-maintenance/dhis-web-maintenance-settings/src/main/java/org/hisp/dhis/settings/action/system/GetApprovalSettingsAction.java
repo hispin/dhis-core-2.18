@@ -27,14 +27,12 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.List;
+
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
-import org.hisp.dhis.setting.SystemSettingManager;
 
-import static org.hisp.dhis.setting.SystemSettingManager.*;
-
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jim Grace
@@ -46,13 +44,6 @@ public class GetApprovalSettingsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
     private DataApprovalLevelService dataApprovalLevelService;
 
     public void setDataApprovalLevelService( DataApprovalLevelService dataApprovalLevelService )
@@ -63,13 +54,6 @@ public class GetApprovalSettingsAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
-    private boolean keyHideUnapprovedDataInAnalytics;
-
-    public boolean getKeyHideUnapprovedDataInAnalytics()
-    {
-        return keyHideUnapprovedDataInAnalytics;
-    }
 
     private List<DataApprovalLevel> dataApprovalLevels;
 
@@ -99,8 +83,6 @@ public class GetApprovalSettingsAction
     @Override
     public String execute()
     {
-        keyHideUnapprovedDataInAnalytics = (Boolean) systemSettingManager.getSystemSetting( KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, false );
-
         dataApprovalLevels = dataApprovalLevelService.getAllDataApprovalLevels();
 
         categoryOptionGroupSetsPresent = false;
