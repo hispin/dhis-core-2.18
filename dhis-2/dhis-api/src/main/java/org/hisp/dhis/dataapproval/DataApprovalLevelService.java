@@ -29,9 +29,11 @@ package org.hisp.dhis.dataapproval;
  */
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Jim Grace
@@ -86,6 +88,13 @@ public interface DataApprovalLevelService
      * @return a list of data approval levels.
      */
     List<DataApprovalLevel> getDataApprovalLevelsByOrgUnitLevel( int orgUnitLevel );
+    
+    /**
+     * Retrieves all org unit levels which have approval levels associated.
+     * 
+     * @return a list of org unit levels.
+     */
+    Set<OrganisationUnitLevel> getOrganisationUnitApprovalLevels();
     
     /**
      * Tells whether a level can move down in the list (can switch places with

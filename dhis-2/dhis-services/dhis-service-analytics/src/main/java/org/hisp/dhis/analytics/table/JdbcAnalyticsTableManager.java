@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
@@ -230,7 +231,7 @@ public class JdbcAnalyticsTableManager
         populateAndLog( sql, tableName + ", " + valueType );
     }
 
-    private String getApprovalSubquery( Collection<OrganisationUnitLevel> levels )
+    private String getApprovalSubquery()
     {
         String sql = "(" +
             "select min(dal.level) " +
@@ -240,6 +241,8 @@ public class JdbcAnalyticsTableManager
             "and des.datasetid = da.datasetid " +
             "and des.datasetapprovedata = true " +
             "and (";
+        
+        Set<OrganisationUnitLevel> levels = dataApprovalLevelService.getOrganisationUnitApprovalLevels();
         
         for ( OrganisationUnitLevel level : levels )
         {
@@ -326,7 +329,7 @@ public class JdbcAnalyticsTableManager
 
         if ( isApprovalEnabled() )
         {            
-            String[] al = { quote( "approvallevel" ), "integer", getApprovalSubquery( levels ) };
+            String[] al = { quote( "approvallevel" ), "integer", getApprovalSubquery() };
             columns.add( al );
         }
         
