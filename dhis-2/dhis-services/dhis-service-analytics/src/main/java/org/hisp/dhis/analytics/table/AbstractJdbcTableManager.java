@@ -43,6 +43,7 @@ import org.hisp.dhis.analytics.AnalyticsIndex;
 import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.jdbc.StatementBuilder;
@@ -90,6 +91,9 @@ public abstract class AbstractJdbcTableManager
     
     @Autowired
     protected SystemSettingManager systemSettingManager;
+    
+    @Autowired
+    protected DataApprovalLevelService dataApprovalLevelService;
    
     @Autowired
     protected StatementBuilder statementBuilder;

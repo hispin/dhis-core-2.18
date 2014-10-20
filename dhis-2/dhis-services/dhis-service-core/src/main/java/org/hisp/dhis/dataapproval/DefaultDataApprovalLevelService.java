@@ -212,6 +212,26 @@ public class DefaultDataApprovalLevelService
     }
 
     @Override
+    public Set<OrganisationUnitLevel> getOrganisationUnitApprovalLevels()
+    {
+        Set<OrganisationUnitLevel> orgUnitLevels = new HashSet<>();
+        
+        List<DataApprovalLevel> dataApprovalLevels = dataApprovalLevelStore.getAllDataApprovalLevels();
+        
+        for ( DataApprovalLevel level : dataApprovalLevels )
+        {
+            OrganisationUnitLevel orgUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( level.getOrgUnitLevel() );
+            
+            if ( orgUnitLevel != null )
+            {
+                orgUnitLevels.add( orgUnitLevel );
+            }
+        }
+        
+        return orgUnitLevels;
+    }
+
+    @Override
     public boolean canDataApprovalLevelMoveDown( int level )
     {
         List<DataApprovalLevel> dataApprovalLevels = getAllDataApprovalLevels();
