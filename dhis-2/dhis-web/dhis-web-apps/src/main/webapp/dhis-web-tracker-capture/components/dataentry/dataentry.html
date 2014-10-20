@@ -130,7 +130,7 @@
 
             <div class="form-group">
                 <div class='row'><hr></div>
-                <a href ng-click="completeIncompleteEvent()" class="btn btn-warning" ng-if="currentEvent.eventDate && (currentEvent.status === 'ACTIVE' || currentEvent.status === 'VISITED')">{{'complete'| translate}}</a>
+                <a href ng-click="completeIncompleteEvent()" class="btn btn-warning" ng-if="currentEvent.eventDate && ( currentEvent.status === 'SCHEDULE' || currentEvent.status === 'ACTIVE' || currentEvent.status === 'VISITED')">{{'complete'| translate}}</a>
                 <a href ng-click="completeIncompleteEvent()" class="btn btn-warning" ng-if="currentEvent.eventDate && currentEvent.status === 'COMPLETED'">{{'incomplete'| translate}}</a>                       
                 <a href ng-click="validateEvent()" class="btn btn-info" ng-disabled="true" ng-if="currentEvent.eventDate">{{'validate'| translate}}</a>                        
                 <a href ng-click="skipUnskipEvent()" class="btn btn-warning" ng-if="!currentEvent.eventDate">{{currentEvent.status === 'SKIPPED' ? 'unskip' : 'skip'| translate}}</a>

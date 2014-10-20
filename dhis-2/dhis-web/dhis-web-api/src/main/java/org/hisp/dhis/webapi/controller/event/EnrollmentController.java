@@ -29,6 +29,7 @@ package org.hisp.dhis.webapi.controller.event;
  */
 
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentStatus;
@@ -40,6 +41,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.webapi.controller.exception.NotFoundException;
 import org.hisp.dhis.webapi.utils.ContextUtils;
@@ -59,8 +61,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,6 +85,9 @@ public class EnrollmentController
 
     @Autowired
     private IdentifiableObjectManager manager;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     // -------------------------------------------------------------------------
     // READ
@@ -92,20 +100,23 @@ public class EnrollmentController
         @RequestParam( value = "trackedEntityInstance", required = false ) String trackedEntityInstanceUid,
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
+        @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
         @RequestParam( value = "status", required = false ) EnrollmentStatus status,
         @RequestParam Map<String, String> parameters, Model model ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
         Enrollments enrollments;
 
-        if ( startDate != null && endDate != null && programUid != null && orgUnitUid != null )
+        if ( startDate != null && endDate != null && programUid != null && orgUnitUid != null && ouMode != null )
         {
             OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
+            List<OrganisationUnit> organisationUnits = getOrganisationUnits( organisationUnit, ouMode );
+            
             Program program = getProgram( programUid );
 
             enrollments = status != null ?
-                enrollmentService.getEnrollments( program, status, organisationUnit, startDate, endDate ) :
-                enrollmentService.getEnrollments( program, organisationUnit, startDate, endDate );
+                enrollmentService.getEnrollments( program, status, organisationUnits, startDate, endDate ) :
+                enrollmentService.getEnrollments( program, organisationUnits, startDate, endDate );
         }
         else if ( orgUnitUid == null && programUid == null && trackedEntityInstanceUid == null )
         {
@@ -308,6 +319,27 @@ public class EnrollmentController
         }
 
         return organisationUnit;
+    }
+    
+    private List<OrganisationUnit> getOrganisationUnits( OrganisationUnit rootOrganisationUnit, OrganisationUnitSelectionMode ouMode )
+    {
+        List<OrganisationUnit> organisationUnits = new ArrayList<>();
+        
+        if ( OrganisationUnitSelectionMode.DESCENDANTS.equals( ouMode ) )
+        {
+            organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( rootOrganisationUnit.getUid() ) );
+        }
+        else if ( OrganisationUnitSelectionMode.CHILDREN.equals( ouMode ) )
+        {
+            organisationUnits.add( rootOrganisationUnit );
+            organisationUnits.addAll( rootOrganisationUnit.getChildren() );
+        }
+        else // SELECTED
+        {
+            organisationUnits.add( rootOrganisationUnit );
+        }
+        
+        return organisationUnits;        
     }
 
     private Program getProgram( String id ) throws NotFoundException

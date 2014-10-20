@@ -240,6 +240,13 @@ public abstract class AbstractEnrollmentService
     }
 
     @Override
+    public Enrollments getEnrollments( Program program, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate )
+    {
+        return getEnrollments(
+            programInstanceService.getProgramInstances( program, IdentifiableObjectUtils.getIdentifiers( organisationUnits ), startDate, endDate, 0, Integer.MAX_VALUE ) );
+    }
+    
+    @Override
     public Enrollments getEnrollments( Program program, TrackedEntityInstance trackedEntityInstance )
     {
         org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( trackedEntityInstance
