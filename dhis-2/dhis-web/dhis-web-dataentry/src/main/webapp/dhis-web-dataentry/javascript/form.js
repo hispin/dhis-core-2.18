@@ -417,6 +417,18 @@ function addEventListeners()
     {
         var id = $( this ).attr( 'id' );
 
+        // if entryfield is a datepicker, remove old target field, and change id
+        if( /-dp$/.test(id) ) {
+          var dpTargetId = id.substring(0, id.length - 3);
+          $('#' + dpTargetId).remove();
+
+          $( this )
+            .attr('id', dpTargetId)
+            .calendarsPicker('destroy');
+
+          id = dpTargetId;
+        }
+
         var split = splitFieldId( id );
         var dataElementId = split.dataElementId;
         var optionComboId = split.optionComboId;
