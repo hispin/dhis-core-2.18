@@ -534,11 +534,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( objects.isEmpty() )
         {
             ContextUtils.notFoundResponse( response, getEntityName() + " does not exist: " + pvUid );
+            return;
         }
 
         if ( !getSchema().getPropertyMap().containsKey( pvProperty ) )
         {
             ContextUtils.notFoundResponse( response, "Property " + pvProperty + " does not exist on " + getEntityName() );
+            return;
         }
 
         Property property = getSchema().getPropertyMap().get( pvProperty );
@@ -546,11 +548,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( !property.isCollection() || !property.isIdentifiableObject() )
         {
             ContextUtils.conflictResponse( response, "Only adds within identifiable collection are allowed." );
+            return;
         }
 
         if ( !property.isOwner() )
         {
             ContextUtils.conflictResponse( response, getEntityName() + " is not the owner of this relationship." );
+            return;
         }
 
         Collection<IdentifiableObject> identifiableObjects =
@@ -561,6 +565,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( candidate == null )
         {
             ContextUtils.notFoundResponse( response, "Collection " + pvProperty + " does not have an item with ID: " + pvItemId );
+            return;
         }
 
         // if it already contains this object, don't add it. It might be a list and not set, and we don't want duplicates.
@@ -592,11 +597,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( objects.isEmpty() )
         {
             ContextUtils.notFoundResponse( response, getEntityName() + " does not exist: " + pvUid );
+            return;
         }
 
         if ( !getSchema().getPropertyMap().containsKey( pvProperty ) )
         {
             ContextUtils.notFoundResponse( response, "Property " + pvProperty + " does not exist on " + getEntityName() );
+            return;
         }
 
         Property property = getSchema().getPropertyMap().get( pvProperty );
@@ -604,11 +611,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( !property.isCollection() || !property.isIdentifiableObject() )
         {
             ContextUtils.conflictResponse( response, "Only deletes within identifiable collection are allowed." );
+            return;
         }
 
         if ( !property.isOwner() )
         {
             ContextUtils.conflictResponse( response, getEntityName() + " is not the owner of this relationship." );
+            return;
         }
 
         Collection<IdentifiableObject> identifiableObjects =
@@ -633,6 +642,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( candidate == null )
         {
             ContextUtils.notFoundResponse( response, "Collection " + pvProperty + " does not have an item with ID: " + pvItemId );
+            return;
         }
 
         if ( !aclService.canUpdate( currentUserService.getCurrentUser(), objects.get( 0 ) ) )
