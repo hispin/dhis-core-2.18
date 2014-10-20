@@ -69,7 +69,6 @@ public class DefaultSecurityService
 
     private static final String RESTORE_PATH = "/dhis-web-commons/security/";
 
-    private static final int INVITED_USERNAME_UNIQUE_LENGTH = 15;
     private static final int INVITED_USER_PASSWORD_LENGTH = 40;
 
     private static final int RESTORE_TOKEN_LENGTH = 50;
@@ -134,7 +133,7 @@ public class DefaultSecurityService
 
         if ( user.getUsername() == null || user.getUsername().isEmpty() )
         {
-            String username = "user_invitation_" + CodeGenerator.generateCode( INVITED_USERNAME_UNIQUE_LENGTH );
+            String username = "invite-" + user.getEmail() + "-" + CodeGenerator.generateCode();
 
             user.getUserCredentials().setUsername( username );
         }
