@@ -68,6 +68,10 @@
   </filter-mapping>
   <filter-mapping>
     <filter-name>shallowEtagHeaderFilter</filter-name>
+    <url-pattern>/api/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>shallowEtagHeaderFilter</filter-name>
     <url-pattern>/ohie/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
