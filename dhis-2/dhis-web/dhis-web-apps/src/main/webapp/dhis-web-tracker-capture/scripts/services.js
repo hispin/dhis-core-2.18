@@ -111,8 +111,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                         if(pstDe.dataElement.optionSet){
                             StorageService.currentStore.get('optionSets', pstDe.dataElement.optionSet.id).done(function(optionSet){
                                 pstDe.dataElement.optionSet = optionSet;                                
-                            });                            
-                        }                        
+                            });
+                        }
                     });
                     $rootScope.$apply(function(){
                         def.resolve(pst);
@@ -219,6 +219,12 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         },
         getByEntityAndProgram: function( entity, program ){
             var promise = $http.get(  '../api/enrollments?trackedEntityInstance=' + entity + '&program=' + program ).then(function(response){
+                return response.data;
+            });
+            return promise;
+        },
+        getByStartAndEndDate: function( program, orgUnit, ouMode, startDate, endDate ){
+            var promise = $http.get(  '../api/enrollments.json?program=' + program + '&orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&startDate=' + startDate + '&endDate=' + endDate + '&paging=false').then(function(response){
                 return response.data;
             });
             return promise;

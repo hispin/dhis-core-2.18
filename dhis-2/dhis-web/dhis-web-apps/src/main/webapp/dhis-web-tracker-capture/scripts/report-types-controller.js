@@ -10,6 +10,10 @@ trackerCapture.controller('ReportTypesController',
         $location.path('/program-summary').search();
     };
     
+    $scope.programStatistics = function(){   
+        $location.path('/program-statistics').search();
+    };
+    
     $scope.overdueEvents = function(){   
         $location.path('/overdue-events').search();
     };   

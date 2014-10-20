@@ -38,7 +38,7 @@
                            class="form-control" 
                            d2-date 
                            ng-model="report.startDate" 
-                           max="today"
+                           max-date="0"
                            ng-required="true"/> 
                     <span ng-show="outerForm.submitted && outerForm.reportStartDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}} ({{dhis2CalendarFormat.keyDateFormat}})</span>
                 </td>
@@ -49,7 +49,7 @@
                            class="form-control" 
                            d2-date 
                            ng-model="report.endDate" 
-                           max="today" 
+                           max-date="0" 
                            ng-required="true"/>
                     <span ng-show="outerForm.submitted && outerForm.reportEndDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}} ({{dhis2CalendarFormat.keyDateFormat}})</span>
                 </td>

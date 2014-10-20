@@ -316,12 +316,14 @@ trackerCapture.controller('DataEntryController',
             if(val){                
                 if( de && de.type === 'int'){
                     val = parseInt(val);
-                }                    
+                }
+                if(de.type === 'date'){
+                    val = DateUtils.formatFromApiToUser(val);
+                }
             }    
             $scope.currentEvent[dataValue.dataElement] = val;
             if(dataValue.providedElsewhere){
                 $scope.currentEvent.providedElsewhere[dataValue.dataElement] = dataValue.providedElsewhere;
-                
             }
         });
 
@@ -491,10 +493,10 @@ trackerCapture.controller('DataEntryController',
             var newNote = {value: $scope.note};
 
             if(angular.isUndefined( $scope.currentEvent.notes) ){
-                $scope.currentEvent.notes = [{value: $scope.note, storedDate: DateUtils.formatFromUserToApi(today), storedBy: storedBy}];
+                $scope.currentEvent.notes = [{value: $scope.note, storedDate: today, storedBy: storedBy}];
             }
             else{
-                $scope.currentEvent.notes.splice(0,0,{value: $scope.note, storedDate: DateUtils.formatFromUserToApi(today), storedBy: storedBy});
+                $scope.currentEvent.notes.splice(0,0,{value: $scope.note, storedDate: today, storedBy: storedBy});
             }
 
             var e = {event: $scope.currentEvent.event,

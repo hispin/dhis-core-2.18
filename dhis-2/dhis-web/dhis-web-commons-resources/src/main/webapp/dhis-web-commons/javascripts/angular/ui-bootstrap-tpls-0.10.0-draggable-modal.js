@@ -3197,7 +3197,8 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
           if (inputValue === modelCtrl.$viewValue ) {
             if (matches && matches.length > 0) {
 
-              typeaheadCtrl.active = 0;
+              //typeaheadCtrl.active = 0; //tyring to avoid first match selected by default
+              typeaheadCtrl.active = -1;
               typeaheadCtrl.matches.length = 0;
 
               //transform labels
@@ -3316,7 +3317,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
         evt.preventDefault();
 
         if (evt.which === 40) {
-          typeaheadCtrl.active= (typeaheadCtrl.active + 1) % scope.matches.length;
+          typeaheadCtrl.active= (typeaheadCtrl.active + 1) % typeaheadCtrl.matches.length;
           scope.$digest();
 
         } else if (evt.which === 38) {
@@ -3325,7 +3326,15 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
 
         } else if (evt.which === 13 || evt.which === 9) {
           scope.$apply(function () {
-            typeaheadCtrl.select(typeaheadCtrl.active);
+          	//########
+          	if(typeaheadCtrl.active != -1){
+          		typeaheadCtrl.select(typeaheadCtrl.active);
+          	}
+            else{
+                 typeaheadCtrl.resetMatches();
+            }
+          	//########
+            //typeaheadCtrl.select(typeaheadCtrl.active);
           });
 
         } else if (evt.which === 27) {
@@ -3531,6 +3540,14 @@ angular.module("template/modal/window.html", []).run(["$templateCache", function
     "    <div class=\"modal-dialog\"><div draggable-modal class=\"modal-content\" ng-transclude></div></div>\n" +
     "</div>");
 }]);
+
+/*angular.module("template/modal/window.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("template/modal/window.html",
+    "<div tabindex=\"-1\" class=\"modal fade {{ windowClass }}\" ng-class=\"{in: animate}\" ng-style=\"{'z-index': 1050 + index*10, display: 'block'}\" ng-click=\"close($event)\">\n" +
+    "    <div class=\"modal-dialog\"><div class=\"modal-content\" ng-transclude></div></div>\n" +
+    "</div>");
+}]);*/
+
 
 angular.module("template/pagination/pager.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/pagination/pager.html",
