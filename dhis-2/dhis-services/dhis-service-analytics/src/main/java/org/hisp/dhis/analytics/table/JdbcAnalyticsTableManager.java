@@ -213,6 +213,7 @@ public class JdbcAnalyticsTableManager
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
             "left join _periodstructure ps on dv.periodid=ps.periodid " +
             "left join dataelement de on dv.dataelementid=de.dataelementid " +
+            "left join _dataelementstructure des on de.dataelementid = des.dataelementid " +
             "left join categoryoptioncombo co on dv.categoryoptioncomboid=co.categoryoptioncomboid " +
             "left join period pe on dv.periodid=pe.periodid " +
             "where de.valuetype = '" + valueType + "' " +
@@ -232,12 +233,12 @@ public class JdbcAnalyticsTableManager
     private String getApprovalSubquery( Collection<OrganisationUnitLevel> levels )
     {
         String sql = "(" +
-            "select coalesce(min(dal.level),999) " +
+            "select min(dal.level) " +
             "from dataapproval da " +
             "inner join dataapprovallevel dal on da.dataapprovallevelid = dal.dataapprovallevelid " +
-            "inner join _dataelementstructure des on da.datasetid = des.datasetid and des.dataelementid = dv.dataelementid " +
             "where da.periodid = dv.periodid " +
-            "and des.approvedata = true " +
+            "and des.datasetid = da.datasetid " +
+            "and des.datasetapprovedata = true " +
             "and (";
         
         for ( OrganisationUnitLevel level : levels )
