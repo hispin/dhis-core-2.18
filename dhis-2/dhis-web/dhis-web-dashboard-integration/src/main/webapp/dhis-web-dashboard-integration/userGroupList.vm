@@ -47,7 +47,6 @@
           <thead>
           <tr>
             <th>$i18n.getString( "name" )</th>
-            <th></th>
           </tr>
           </thead>
           <tbody id="list">
