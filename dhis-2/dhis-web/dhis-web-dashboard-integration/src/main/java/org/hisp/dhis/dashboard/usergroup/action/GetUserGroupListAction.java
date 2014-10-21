@@ -31,9 +31,13 @@ package org.hisp.dhis.dashboard.usergroup.action;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
@@ -51,6 +55,13 @@ public class GetUserGroupListAction
         this.userGroupService = userGroupService;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------------------------------------
     // Parameters
     // -------------------------------------------------------------------------
@@ -60,6 +71,13 @@ public class GetUserGroupListAction
     public List<UserGroup> getUserGroupList()
     {
         return userGroupList;
+    }
+
+    private Map<UserGroup, Boolean> isCurrentUserMemberMap;
+
+    public Map<UserGroup, Boolean> getIsCurrentUserMemberMap()
+    {
+        return isCurrentUserMemberMap;
     }
 
     private String key;
@@ -93,7 +111,28 @@ public class GetUserGroupListAction
             
             userGroupList = new ArrayList<>( userGroupService.getUserGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
+
+        isCurrentUserMemberMap = populateMemberShipMap( userGroupList );
         
         return SUCCESS;
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Map<UserGroup, Boolean> populateMemberShipMap( List<UserGroup> userGroups )
+    {
+        User currentUser = currentUserService.getCurrentUser();
+
+        Map<UserGroup, Boolean> map = new HashMap<>();
+
+        for( UserGroup ug : userGroups )
+        {
+            map.put( ug, ug.getMembers().contains( currentUser ) );
+        }
+
+        return map;
+    }
 }
+
