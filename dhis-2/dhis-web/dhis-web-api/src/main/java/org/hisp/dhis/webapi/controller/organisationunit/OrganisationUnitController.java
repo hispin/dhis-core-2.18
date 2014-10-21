@@ -284,10 +284,6 @@ public class OrganisationUnitController
         {
             featureType = OrganisationUnit.FEATURETYPE_POLYGON;
         }
-        else
-        {
-            featureType = OrganisationUnit.FEATURETYPE_MULTIPOINT;
-        }
 
         generator.writeStartObject();
 
@@ -297,10 +293,8 @@ public class OrganisationUnitController
         generator.writeObjectFieldStart( "geometry" );
         generator.writeStringField( "type", featureType );
 
-        generator.writeArrayFieldStart( "coordinates" );
-
+        generator.writeFieldName( "coordinates" );
         generator.writeRawValue( organisationUnit.getCoordinates() );
-        generator.writeEndArray();
 
         generator.writeEndObject();
 
