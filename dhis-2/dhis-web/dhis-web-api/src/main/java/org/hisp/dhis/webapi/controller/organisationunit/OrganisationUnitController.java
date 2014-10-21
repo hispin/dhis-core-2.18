@@ -32,7 +32,6 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.organisationunit.CoordinatesTuple;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitByLevelComparator;
@@ -251,7 +250,7 @@ public class OrganisationUnitController
             organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( rpLevel ) );
         }
 
-        response.setContentType( "application/json+geojson" );
+        response.setContentType( "application/json" );
 
         JsonFactory jsonFactory = new JsonFactory();
         JsonGenerator generator = jsonFactory.createGenerator( response.getOutputStream() );
@@ -283,7 +282,7 @@ public class OrganisationUnitController
         // if featureType is anything other than Point (MultiPoint), just assume MultiPolygon
         if ( !OrganisationUnit.FEATURETYPE_POINT.equals( featureType ) )
         {
-            featureType = OrganisationUnit.FEATURETYPE_MULTIPOLYGON;
+            featureType = OrganisationUnit.FEATURETYPE_POLYGON;
         }
         else
         {
@@ -299,6 +298,7 @@ public class OrganisationUnitController
         generator.writeStringField( "type", featureType );
 
         generator.writeArrayFieldStart( "coordinates" );
+
         generator.writeRawValue( organisationUnit.getCoordinates() );
         generator.writeEndArray();
 
