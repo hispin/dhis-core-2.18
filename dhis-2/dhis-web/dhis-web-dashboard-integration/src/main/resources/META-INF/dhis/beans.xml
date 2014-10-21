@@ -69,7 +69,7 @@
     scope="prototype"/>
     
   <!-- User groups -->
-  
+
   <bean id="org.hisp.dhis.dashboard.usergroup.action.AddUserGroupAction" class="org.hisp.dhis.dashboard.usergroup.action.AddUserGroupAction"
     scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
@@ -85,6 +85,7 @@
   <bean id="org.hisp.dhis.dashboard.usergroup.action.GetUserGroupListAction" class="org.hisp.dhis.dashboard.usergroup.action.GetUserGroupListAction"
     scope="prototype">
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
   
   <bean id="org.hisp.dhis.dashboard.usergroup.action.EditUserGroupFormAction" class="org.hisp.dhis.dashboard.usergroup.action.EditUserGroupFormAction"

@@ -10,7 +10,7 @@ function editUserGroupForm( context ) {
 }
 
 // -----------------------------------------------------------------------------
-// Usergroup functionality
+// User group functionality
 // -----------------------------------------------------------------------------
 
 function showUserGroupDetails( context ) {
@@ -26,4 +26,37 @@ function showUserGroupDetails( context ) {
 
 function removeUserGroup( context ) {
   removeItem(context.id, context.name, i18n_confirm_delete, 'removeUserGroup.action');
+}
+
+function joinUserGroup( context ) {
+  $.ajax( {
+    type: 'POST',
+    url: '../api/me/groups',
+    data: { 'groupUid'  : context.uid },
+    success: function() {
+      var $userGroup = $( "#tr" + context.id );
+      $userGroup.find( ".memberIcon" ).show();
+      $userGroup.data( "can-join", false );
+      $userGroup.data( "can-leave", true );
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      console.log( "Failed to join user group: " + jqXHR.responseText );
+    }
+  });
+}
+
+function leaveUserGroup( context ) {
+  $.ajax( {
+    type: 'DELETE',
+    url: '../api/me/groups/' + context.uid,
+    success: function( data ) {
+      var $userGroup = $( "#tr" + context.id );
+      $userGroup.find( ".memberIcon" ).hide();
+      $userGroup.data( "can-join", true );
+      $userGroup.data( "can-leave", false );
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      console.log( "Failed to leave user group: " + jqXHR.responseText );
+    }
+  });
 }

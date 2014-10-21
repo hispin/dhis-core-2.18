@@ -9,10 +9,24 @@
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
-    <li data-enabled="canManage"><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>
-    <li data-enabled="canUpdate"><a data-target-fn="editUserGroupForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
-    <li data-enabled="canDelete"><a data-target-fn="removeUserGroup"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
-    <li><a data-target-fn="showUserGroupDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
+    <li data-enabled="canJoin">
+      <a data-target-fn="joinUserGroup"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;&nbsp;$i18n.getString( "join_group" )</a>
+    </li>
+    <li data-enabled="canLeave">
+      <a data-target-fn="leaveUserGroup"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;&nbsp;$i18n.getString( "leave_group" )</a>
+    </li>
+    <li data-enabled="canManage">
+       <a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a>
+    </li>
+    <li data-enabled="canUpdate">
+       <a data-target-fn="editUserGroupForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a>
+    </li>
+    <li data-enabled="canDelete">
+      <a data-target-fn="removeUserGroup"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;&nbsp;$i18n.getString( "remove" )</a>
+    </li>
+    <li>
+      <a data-target-fn="showUserGroupDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;&nbsp;$i18n.getString( "show_details" )</a>
+    </li>
   </ul>
 </div>
 
@@ -33,15 +47,38 @@
           <thead>
           <tr>
             <th>$i18n.getString( "name" )</th>
+            <th></th>
           </tr>
           </thead>
           <tbody id="list">
             #foreach( $userGroup in $userGroupList )
-              <tr id="tr${userGroup.id}" data-id="$!userGroup.id" data-uid="$!userGroup.uid" data-type="UserGroup" data-name="$encoder.htmlEncode( $!userGroup.displayName )"
+              <tr id="tr${userGroup.id}"
+                  data-id="$!userGroup.id"
+                  data-uid="$!userGroup.uid"
+                  data-type="UserGroup"
+                  data-name="$encoder.htmlEncode( $!userGroup.displayName )"
                   data-can-manage="$security.canManage( $userGroup )"
                   data-can-update="$security.canUpdate( $userGroup )"
-                  data-can-delete="$security.canDelete( $userGroup )">
-                  <td>$encoder.htmlEncode( $!userGroup.displayName )</td>
+                  data-can-delete="$security.canDelete( $userGroup )"
+                  #if( $isCurrentUserMemberMap.get( $userGroup ) && $security.canUpdate( $userGroup ) )
+                    data-can-join="false"
+                    data-can-leave="true"
+                  #elseif ( $security.canUpdate( $userGroup ) )
+                    data-can-join="true"
+                    data-can-leave="false"
+                  #else
+                     data-can-join="false"
+                     data-can-leave="false"
+                  #end >
+                  <td>$encoder.htmlEncode( $!userGroup.displayName )
+                  <i class="memberIcon fa fa-user"
+                  #if( not $isCurrentUserMemberMap.get( $userGroup ) )
+                     style="margin-left: 5px; display: none;"
+                  #else
+                     style="margin-left: 5px;"
+                  #end
+                  ></i>
+                  </td>
               </tr>
             #end
           </tbody>
@@ -50,7 +87,6 @@
         #parse( "/dhis-web-commons/paging/paging.vm" )
         </div>
       </td>
-
       <td id="detailsData">
         <div id="detailsArea">
           <div id="hideDetailsArea">
