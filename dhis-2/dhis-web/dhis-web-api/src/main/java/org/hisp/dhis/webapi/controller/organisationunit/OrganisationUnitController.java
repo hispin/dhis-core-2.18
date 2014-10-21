@@ -234,21 +234,26 @@ public class OrganisationUnitController
 
     @RequestMapping( value = "", method = RequestMethod.GET, produces = { "application/json+geo", "application/json+geojson" } )
     public void getGeoJson(
-        @RequestParam( value = "level", defaultValue = "1" ) int rpLevel,
-        @RequestParam( value = "parent", required = false ) String rpParent,
+        @RequestParam( value = "level", required = false ) List<Integer> rpLevels,
+        @RequestParam( value = "parent", required = false ) List<String> rpParents,
         HttpServletResponse response ) throws IOException
     {
-        OrganisationUnit parent = manager.search( OrganisationUnit.class, rpParent );
-        List<OrganisationUnit> organisationUnits;
+        rpLevels = rpLevels != null ? rpLevels : new ArrayList<Integer>();
+        rpParents = rpParents != null ? rpParents : new ArrayList<String>();
 
-        if ( parent != null )
+        List<OrganisationUnit> parents = new ArrayList<>( manager.getByUid( OrganisationUnit.class, rpParents ) );
+
+        if ( rpLevels.isEmpty() )
         {
-            organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( rpLevel, parent ) );
+            rpLevels.add( 1 );
         }
-        else
+
+        if ( parents.isEmpty() )
         {
-            organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( rpLevel ) );
+            parents.addAll( organisationUnitService.getRootOrganisationUnits() );
         }
+
+        List<OrganisationUnit> organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevels( rpLevels, parents ) );
 
         response.setContentType( "application/json" );
 
