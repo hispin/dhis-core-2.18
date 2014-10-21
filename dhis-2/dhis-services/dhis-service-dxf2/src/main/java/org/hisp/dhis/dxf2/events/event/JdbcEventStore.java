@@ -107,7 +107,7 @@ public class JdbcEventStore
 
         while ( rowSet.next() )
         {
-            if ( rowSet.getString( "psi_uid" ) == null || rowSet.getString( "ou_uid" ) == null )
+            if ( rowSet.getString( "psi_uid" ) == null )
             {
                 continue;
             }
