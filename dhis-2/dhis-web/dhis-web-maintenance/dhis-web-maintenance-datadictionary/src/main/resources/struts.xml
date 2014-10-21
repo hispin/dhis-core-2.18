@@ -20,7 +20,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/dataElement.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="javascripts">javascript/dataElement.js,javascript/dataDictionary.js</param>
+      <param name="javascripts">javascript/dataElement.js</param>
     </action>
 
     <action name="getDataElementGroupMembers" class="org.hisp.dhis.dd.action.dataelement.GetDataElementGroupMembersAction">
@@ -207,7 +207,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/indicator.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js</param>
+      <param name="javascripts">javascript/indicator.js</param>
     </action>
 
     <action name="removeIndicator" class="org.hisp.dhis.dd.action.indicator.RemoveIndicatorAction">
