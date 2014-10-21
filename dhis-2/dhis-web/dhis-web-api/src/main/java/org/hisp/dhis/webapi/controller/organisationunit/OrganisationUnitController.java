@@ -28,14 +28,9 @@ package org.hisp.dhis.webapi.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.google.common.collect.Lists;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -54,7 +49,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.google.common.collect.Lists;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -76,7 +77,7 @@ public class OrganisationUnitController
         List<OrganisationUnit> entityList;
 
         Integer level = options.getInt( "level" );
-        Integer maxLevel = options.getInt( "maxLevel" );        
+        Integer maxLevel = options.getInt( "maxLevel" );
         boolean levelSorted = options.isTrue( "levelSorted" );
 
         if ( maxLevel != null )
@@ -200,16 +201,16 @@ public class OrganisationUnitController
 
         return organisationUnits;
     }
-    
+
     @RequestMapping( value = "/{uid}/parents", method = RequestMethod.GET )
-    public List<OrganisationUnit> getEntityList( @PathVariable( "uid" ) String uid, 
-        @RequestParam Map<String, String> parameters, Model model, 
+    public List<OrganisationUnit> getEntityList( @PathVariable( "uid" ) String uid,
+        @RequestParam Map<String, String> parameters, Model model,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
-    { 
+    {
         OrganisationUnit organisationUnit = manager.get( getEntityClass(), uid );
 
         List<OrganisationUnit> organisationUnits = Lists.newArrayList();
-        
+
         if ( organisationUnit != null )
         {
             OrganisationUnit organisationUnitParent = organisationUnit.getParent();
@@ -217,17 +218,92 @@ public class OrganisationUnitController
             while ( organisationUnitParent != null )
             {
                 organisationUnits.add( organisationUnitParent );
-                organisationUnitParent = organisationUnitParent.getParent();   
+                organisationUnitParent = organisationUnitParent.getParent();
             }
         }
-        
-        WebMetaData metaData = new WebMetaData();      
+
+        WebMetaData metaData = new WebMetaData();
         metaData.setOrganisationUnits( organisationUnits );
-        WebOptions options = new WebOptions(parameters);
-        
-        model.addAttribute( "model", metaData );        
+        WebOptions options = new WebOptions( parameters );
+
+        model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
-        
+
         return organisationUnits;
-    }    
+    }
+
+    @RequestMapping( value = "", method = RequestMethod.GET, produces = { "application/json+geo", "application/json+geojson" } )
+    public void getGeoJson(
+        @RequestParam( value = "level", defaultValue = "1" ) int pvLevel,
+        @RequestParam( value = "parent", required = false ) String pvParent,
+        HttpServletResponse response ) throws IOException
+    {
+        OrganisationUnit parent = manager.search( OrganisationUnit.class, pvParent );
+        List<OrganisationUnit> organisationUnits;
+
+        if ( parent != null )
+        {
+            organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( pvLevel, parent ) );
+        }
+        else
+        {
+            organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( pvLevel ) );
+        }
+
+        JsonFactory jsonFactory = new JsonFactory();
+        JsonGenerator generator = jsonFactory.createGenerator( response.getOutputStream() );
+
+        generator.writeStartObject();
+        generator.writeStringField( "type", "FeatureCollection" );
+        generator.writeArrayFieldStart( "features" );
+
+        for ( OrganisationUnit organisationUnit : organisationUnits )
+        {
+            writeFeature( generator, organisationUnit );
+        }
+
+        generator.writeEndArray();
+        generator.writeEndObject();
+
+        generator.close();
+    }
+
+    public void writeFeature( JsonGenerator generator, OrganisationUnit organisationUnit ) throws IOException
+    {
+        if ( organisationUnit.getFeatureType() == null || organisationUnit.getCoordinates() == null )
+        {
+            return;
+        }
+
+        String featureType = organisationUnit.getFeatureType();
+
+        if ( OrganisationUnit.FEATURETYPE_POLYGON.equals( featureType ) )
+        {
+            featureType = OrganisationUnit.FEATURETYPE_MULTIPOLYGON;
+        }
+
+        generator.writeStartObject();
+
+        generator.writeStringField( "type", "Feature" );
+        generator.writeStringField( "id", organisationUnit.getUid() );
+
+        generator.writeObjectFieldStart( "geometry" );
+        generator.writeStringField( "type", featureType );
+
+        generator.writeArrayFieldStart( "coordinates" );
+        generator.writeRawValue( organisationUnit.getCoordinates() );
+        generator.writeEndArray();
+
+        generator.writeEndObject();
+
+        generator.writeObjectFieldStart( "properties" );
+        generator.writeStringField( "code", organisationUnit.getCode() );
+        generator.writeStringField( "name", organisationUnit.getName() );
+        generator.writeStringField( "level", String.valueOf( organisationUnit.getLevel() ) );
+        generator.writeStringField( "parent", organisationUnit.getParent().getUid() );
+        generator.writeStringField( "parentGraph", organisationUnit.getParentGraph() );
+        generator.writeEndObject();
+
+        generator.writeEndObject();
+    }
 }
