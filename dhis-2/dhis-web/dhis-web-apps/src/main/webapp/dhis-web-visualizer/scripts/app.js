@@ -15,7 +15,7 @@ Ext.onReady( function() {
 		core: {},
 		app: {}
 	};
-	
+
 	// set app config
 	(function() {
 
@@ -214,7 +214,7 @@ Ext.onReady( function() {
 
 					ms.store.on('add', function(store, addedRecords) {
                         var range = store.getRange();
-                        
+
                         if (range.length > 1) {
                             var addedIds = Ext.Array.pluck(addedRecords, 'internalId'),
                                 records = Ext.clone(range);
@@ -230,10 +230,10 @@ Ext.onReady( function() {
                                 }
                             }
                         }
-                        
+
 						Ext.defer( function() {
 							ms.boundList.getSelectionModel().deselectAll();
-						}, 10);                        
+						}, 10);
 					});
 				}
 			}
@@ -266,7 +266,7 @@ Ext.onReady( function() {
 
 					ms.store.on('add', function(store, addedRecords) {
                         var range = store.getRange();
-                        
+
                         if (range.length > 1) {
                             var addedIds = Ext.Array.pluck(addedRecords, 'internalId'),
                                 records = Ext.clone(range);
@@ -282,10 +282,10 @@ Ext.onReady( function() {
                                 }
                             }
                         }
-                        
+
 						Ext.defer( function() {
 							ms.boundList.getSelectionModel().deselectAll();
-						}, 10);                        
+						}, 10);
 					});
 				}
 			}
@@ -514,7 +514,7 @@ Ext.onReady( function() {
             rangeAxisDecimals,
 			rangeAxisTitle,
 			domainAxisTitle,
-            
+
 			hideLegend,
 			hideTitle,
 			title,
@@ -686,7 +686,7 @@ Ext.onReady( function() {
 			enforceMaxLength: true,
 			style: 'margin-bottom:1px'
 		});
-		
+
 		domainAxisTitle = Ext.create('Ext.form.field.Text', {
 			width: cmpWidth,
 			fieldLabel: NS.i18n.domain_axis_label,
@@ -760,7 +760,7 @@ Ext.onReady( function() {
 				rangeAxisTitle,
 				domainAxisTitle
 			]
-		};			
+		};
 
 		general = {
 			bodyStyle: 'border:0 none',
@@ -885,7 +885,7 @@ Ext.onReady( function() {
 				else {
 					domainAxisTitle.reset();
 				}
-				
+
 				hideLegend.setValue(Ext.isBoolean(layout.hideLegend) ? layout.hideLegend : false);
 				hideTitle.setValue(Ext.isBoolean(layout.hideTitle) ? layout.hideTitle : false);
 
@@ -966,7 +966,7 @@ Ext.onReady( function() {
 					w.rangeAxisDecimals = rangeAxisDecimals;
 					w.rangeAxisTitle = rangeAxisTitle;
 					w.domainAxisTitle = domainAxisTitle;
-					
+
 					w.hideLegend = hideLegend;
 					w.hideTitle = hideTitle;
 					w.title = title;
@@ -1949,7 +1949,7 @@ Ext.onReady( function() {
 
 				svg = Ext.get(svg[0]);
 				svg = svg.parent().dom.innerHTML;
-
+console.log(svg);
 				Ext.query('#svgField')[0].value = svg;
 				Ext.query('#filenameField')[0].value = 'test';
 
@@ -2223,7 +2223,7 @@ Ext.onReady( function() {
 
 					for (var j = 0, dimName, dim; j < dimNames.length; j++) {
 						dimName = dimNames[j];
-                        
+
 						if (dimName === co) {
 							axes[i].push({
 								dimension: co,
@@ -2342,7 +2342,7 @@ Ext.onReady( function() {
                     fn;
 
                 fn = function() {
-                    
+
                     // create chart
                     ns.app.chart = ns.core.web.chart.createChart(ns ,legendSet);
 
@@ -2749,7 +2749,7 @@ Ext.onReady( function() {
             loadStore: function(data, pager, append) {
                 this.loadData(data, append);
                 this.sortStore();
-                
+
                 this.lastPage = this.nextPage;
 
                 if (pager.pageCount > this.nextPage) {
@@ -2929,7 +2929,7 @@ Ext.onReady( function() {
             loadStore: function(data, pager, append) {
                 this.loadData(data, append);
                 this.sortStore();
-                
+
                 this.lastPage = this.nextPage;
 
                 if (pager.pageCount > this.nextPage) {
@@ -3033,7 +3033,7 @@ Ext.onReady( function() {
             loadStore: function(data, pager, append) {
                 this.loadData(data, append);
                 this.sortStore();
-                
+
                 this.lastPage = this.nextPage;
 
                 if (pager.pageCount > this.nextPage) {
@@ -3083,7 +3083,7 @@ Ext.onReady( function() {
 			data: []
 		});
 		ns.app.stores.fixedPeriodSelected = fixedPeriodSelectedStore;
-        
+
 		chartStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name', 'lastUpdated', 'access'],
 			proxy: {
@@ -3156,7 +3156,7 @@ Ext.onReady( function() {
 		isScrolled = function(e) {
 			var el = e.srcElement,
 				scrollBottom = el.scrollTop + ((el.clientHeight / el.scrollHeight) * el.scrollHeight);
-                
+
 			return scrollBottom / el.scrollHeight > 0.9;
 		};
 
@@ -4199,7 +4199,7 @@ Ext.onReady( function() {
             var type = periodType.getValue(),
                 periodOffset = periodType.periodOffset,
                 generator = ns.core.init.periodGenerator,
-                periods = generator.generateReversedPeriods(type, type === 'Yearly' ? periodOffset - 5 : periodOffset);           
+                periods = generator.generateReversedPeriods(type, type === 'Yearly' ? periodOffset - 5 : periodOffset);
 
             for (var i = 0; i < periods.length; i++) {
                 periods[i].id = periods[i].iso;
@@ -4208,7 +4208,7 @@ Ext.onReady( function() {
             fixedPeriodAvailableStore.setIndex(periods);
             fixedPeriodAvailableStore.loadData(periods);
             ns.core.web.multiSelect.filterAvailable(fixedPeriodAvailable, fixedPeriodSelected);
-        };            
+        };
 
         periodType = Ext.create('Ext.form.field.ComboBox', {
             cls: 'ns-combo',
@@ -5077,7 +5077,7 @@ Ext.onReady( function() {
 		};
 
 		// viewport
-        
+
 		update = function() {
 			var config = ns.core.web.chart.getLayoutConfig(),
 				layout = ns.core.api.layout.Layout(config);
@@ -5850,7 +5850,7 @@ Ext.onReady( function() {
 
 			// Layout
 			ns.app.viewport.chartType.setChartType(layout.type);
-            
+
 			ns.app.stores.dimension.removeAll();
 			ns.app.stores.col.removeAll();
 			ns.app.stores.row.removeAll();
@@ -5922,7 +5922,7 @@ Ext.onReady( function() {
             if (!ns.app.layoutWindow.hasDimension(dimConf.data.dimensionName)) {
                 ns.app.stores.dimension.add({id: dimConf.data.dimensionName, name: dimConf.data.name});
             }
-            
+
             // add orgunit as dimension
             if (!ns.app.layoutWindow.hasDimension(dimConf.organisationUnit.dimensionName)) {
                 ns.app.stores.dimension.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
@@ -6274,7 +6274,7 @@ Ext.onReady( function() {
                                         });
 
                                         // dimensions
-                                        requests.push({ 
+                                        requests.push({
                                             url: contextPath + '/api/dimensions.json?links=false&paging=false',
                                             success: function(r) {
                                                 init.dimensions = Ext.decode(r.responseText).dimensions || [];
