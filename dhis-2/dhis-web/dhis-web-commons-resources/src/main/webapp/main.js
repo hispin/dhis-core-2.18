@@ -85,7 +85,7 @@ dhis2.leftBar.retract = function()
     $( '#leftBar, #orgUnitTree' ).show().animate( { direction: 'right', width: '-=150px', duration: 20 } );
     $( '#mainPage' ).animate( { direction: 'right', marginLeft: '-=150px', duration: 20 } );
     $( '#hideMainMenuLink' ).attr( 'href', 'javascript:javascript:dhis2.leftBar.hideAnimated()' );
-}
+};
 
 dhis2.leftBar.hideAnimated = function()
 {
@@ -100,6 +100,17 @@ dhis2.leftBar.hide = function()
 	dhis2.leftBar.setMenuHidden();
 	dhis2.leftBar.setLinks( true, false );
     $( '#leftBar' ).hide();
+    $( '#mainPage' ).css( 'margin-left', '20px' );
+};
+
+/**
+ * Resets the left bar to its initial position (but does not change the kept state).
+ * Useful for avoiding left bar extended/retracted position skewing the dashboard view.
+ */
+dhis2.leftBar.resetPosition = function()
+{
+    $( '#leftBar' ).hide();
+    $( '#showLeftBar').hide();
     $( '#mainPage' ).css( 'margin-left', '20px' );
 };
 
