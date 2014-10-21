@@ -464,7 +464,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid )
         throws Exception
     {
@@ -522,7 +521,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( value = "/{uid}/{property}/{itemId}", method = { RequestMethod.POST, RequestMethod.PUT } )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @SuppressWarnings( "unchecked" )
     public void addCollectionItem(
         @PathVariable( "uid" ) String pvUid,
@@ -585,7 +583,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( value = "/{uid}/{property}/{itemId}", method = RequestMethod.DELETE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @SuppressWarnings( "unchecked" )
     public void deleteCollectionItem(
         @PathVariable( "uid" ) String pvUid,

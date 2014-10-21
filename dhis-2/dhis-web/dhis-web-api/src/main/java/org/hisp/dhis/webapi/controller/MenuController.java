@@ -55,7 +55,6 @@ public class MenuController
     private UserService userService;
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void saveMenuOrder( InputStream input )
         throws Exception
     {
