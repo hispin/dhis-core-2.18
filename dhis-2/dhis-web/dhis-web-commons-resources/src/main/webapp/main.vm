@@ -99,7 +99,7 @@
     </script>
   </head>
 
-  #if ( $keyCustomLoginPageLogo )
+  #if ( $keyCustomTopMenuLogo )
   #set( $logoBanner = "../external-static/logo_banner.png" )
   #else
   #set( $logoBanner = "../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png" )
