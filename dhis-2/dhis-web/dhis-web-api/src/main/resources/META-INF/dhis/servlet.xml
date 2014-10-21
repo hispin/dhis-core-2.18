@@ -54,6 +54,7 @@
         <entry key="pdf" value="application/pdf" />
         <entry key="xls" value="application/vnd.ms-excel" />
         <entry key="csv" value="application/csv" />
+        <entry key="geojson" value="application/json+geojson" />
       </map>
     </constructor-arg>
     <property name="useJaf" value="false" />
