@@ -79,7 +79,6 @@ public class MapLegendSetController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -114,7 +113,6 @@ public class MapLegendSetController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
     public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
     {
