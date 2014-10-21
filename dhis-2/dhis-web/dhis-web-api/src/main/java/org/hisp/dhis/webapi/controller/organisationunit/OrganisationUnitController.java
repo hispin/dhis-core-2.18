@@ -279,10 +279,10 @@ public class OrganisationUnitController
 
         String featureType = organisationUnit.getFeatureType();
 
-        // if featureType is anything other than Point (MultiPoint), just assume MultiPolygon
+        // if featureType is anything other than Point, just assume MultiPolygon
         if ( !OrganisationUnit.FEATURETYPE_POINT.equals( featureType ) )
         {
-            featureType = OrganisationUnit.FEATURETYPE_POLYGON;
+            featureType = OrganisationUnit.FEATURETYPE_MULTIPOLYGON;
         }
 
         generator.writeStartObject();
