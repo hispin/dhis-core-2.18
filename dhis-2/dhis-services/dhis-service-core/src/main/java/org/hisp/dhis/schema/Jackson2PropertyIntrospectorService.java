@@ -59,7 +59,8 @@ import java.util.Map;
  *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class Jackson2PropertyIntrospectorService extends AbstractPropertyIntrospectorService
+public class Jackson2PropertyIntrospectorService 
+    extends AbstractPropertyIntrospectorService
 {
     @Autowired
     private SessionFactory sessionFactory;

@@ -46,7 +46,8 @@ import java.util.Map;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractPropertyIntrospectorService implements PropertyIntrospectorService
+public abstract class AbstractPropertyIntrospectorService 
+    implements PropertyIntrospectorService
 {
     // simple alias map for our concrete implementations of the core interfaces.
     private static final ImmutableMap<Class<?>, Class<?>> BASE_ALIAS_MAP = ImmutableMap.<Class<?>, Class<?>>builder()
