@@ -34,12 +34,12 @@ jQuery( document ).ready( function() {
 </h3></div>
 
 <div id="dashboardMenu" class="horizontalMenu">
-	<ul>
+    <ul>
         <li><a class="greyButtonLink" href="profile.action?id=${currentUser.uid}">$i18n.getString( "profile" )</a></li>
-		<li><a class="greyButtonLink" href="message.action">$i18n.getString( "messages" )</a></li>
-		<li><a class="greyButtonLink" href="interpretation.action">$i18n.getString( "interpretations" )</a></li>
-		<li><a class="greyButtonLink" href="getAllUserGroups.action">$i18n.getString( "groups" )</a></li>
-	</ul>
+        <li><a class="greyButtonLink" href="message.action">$i18n.getString( "messages" )</a></li>
+        <li><a class="greyButtonLink" href="interpretation.action">$i18n.getString( "interpretations" )</a></li>
+        <li><a class="greyButtonLink" href="getAllUserGroups.action">$i18n.getString( "groups" )</a></li>
+    </ul>
 </div>
 
 <div id="searchDiv"><input type="text" id="searchField" autocomplete="off" placeholder="$i18n.getString( 'search_for_users_charts_maps_reports' )"></div>
@@ -48,13 +48,13 @@ jQuery( document ).ready( function() {
 <div id="searchButton"><a class="blueButtonLink" href="javascript:dhis2.db.search()">$i18n.getString( "search" )</a></div>
 
 <div id="dashboardControl" class="horizontalMenu dashboardList">
-	<ul>
-		<li><a class='bold' href='javascript:dhis2.db.openAddDashboardForm()'>$i18n.getString( "add" )</a></li>
-		<li id="manageDashboard"><a class='bold'>$i18n.getString( "manage" )</a></li>
-		<li id="manageSharing"><a class='bold'>$i18n.getString( "share" )</a></li>
-		<li><a class='bold' href='javascript:dhis2.db.scrollLeft()' title='$i18n.getString( "previous" )'>&lt;</a></li>
-		<li><a class='bold' href='javascript:dhis2.db.scrollRight()' title='$i18n.getString( "next" )'>&gt;</a></li>
-	</ul>
+    <ul>
+        <li><a class='bold' href='javascript:dhis2.db.openAddDashboardForm()'>$i18n.getString( "add" )</a></li>
+        <li id="manageDashboard"><a class='bold'>$i18n.getString( "manage" )</a></li>
+        <li id="manageSharing"><a class='bold'>$i18n.getString( "share" )</a></li>
+        <li><a class='bold' href='javascript:dhis2.db.scrollLeft()' title='$i18n.getString( "previous" )'>&lt;</a></li>
+        <li><a class='bold' href='javascript:dhis2.db.scrollRight()' title='$i18n.getString( "next" )'>&gt;</a></li>
+    </ul>
 </div>
 
 <div id="dashboardListContainer" class="horizontalMenu">
@@ -68,37 +68,36 @@ jQuery( document ).ready( function() {
 </div>
 
 <div id="chartView" class="page">
-	<img id="chartImage" src="" style="padding: 10px;">
+    <img id="chartImage" src="" style="padding: 10px;">
 </div>
 
 <div id="reportDialogView" class="page"></div>
 
 <div id="shareForm">
-	<textarea id="interpretationArea" class="interpretationArea" placeholder="$i18n.getString( 'write_your_interpretation' )"></textarea>
-	<input type="button" class="interpretationButton" value="$i18n.getString( 'share' )" onclick="dhis2.db.shareInterpretation()">
+    <textarea id="interpretationArea" class="interpretationArea" placeholder="$i18n.getString( 'write_your_interpretation' )"></textarea>
+    <input type="button" class="interpretationButton" value="$i18n.getString( 'share' )" onclick="dhis2.db.shareInterpretation()">
 </div>
 
 <div id="shareHelpForm">
-	<ul>
-		<li>$i18n.getString( "from" ) <a href="../dhis-web-pivot/index.html">$i18n.getString( "pivot_table" )</a>, $i18n.getString( "generate_pivot_table_click_share" )</li>
+    <ul>
+        <li>$i18n.getString( "from" ) <a href="../dhis-web-pivot/index.html">$i18n.getString( "pivot_table" )</a>, $i18n.getString( "generate_pivot_table_click_share" )</li>
         <li>$i18n.getString( "from" ) <a href="../dhis-web-visualizer/index.html">$i18n.getString( "data_visualizer" )</a>, $i18n.getString( "load_favorite_click_share" )</li>
-		<li>$i18n.getString( "from" ) <a href="../dhis-web-mapping/index.html">$i18n.getString( "gis" )</a>, $i18n.getString( "load_favorite_click_share" )</li>
-		<li>$i18n.getString( "from" ) <a href="../dhis-web-reporting/showDataSetReportForm.action">$i18n.getString( "data_set_report" )</a>, $i18n.getString( "generate_data_set_report_click_share" )</li>
-	</ul>
+        <li>$i18n.getString( "from" ) <a href="../dhis-web-mapping/index.html">$i18n.getString( "gis" )</a>, $i18n.getString( "load_favorite_click_share" )</li>
+        <li>$i18n.getString( "from" ) <a href="../dhis-web-reporting/showDataSetReportForm.action">$i18n.getString( "data_set_report" )</a>, $i18n.getString( "generate_data_set_report_click_share" )</li>
+    </ul>
 </div>
 
 <div id="addDashboardForm">
-	<label style="margin-right: 10px">$i18n.getString( "name" )</label><input type="text" id="dashboardName" style="width: 240px; padding: 5px; margin-right: 10px;">
+    <label style="margin-right: 10px">$i18n.getString( "name" )</label><input type="text" id="dashboardName" style="width: 240px; padding: 5px; margin-right: 10px;">
     <a class="greyButtonLink" href="javascript:dhis2.db.addDashboard()" style="margin-top: 1px">$i18n.getString( 'create' )</a>
 </div>
 
 <div id="manageDashboardForm" class="page">
-	<h4>$i18n.getString( "rename_current_dashboard" )</h4>
-	<div><label style="margin-right: 10px">$i18n.getString( "name" )</label><input type="text" id="dashboardRename" style="width: 230px; padding: 5px; margin-right: 10px;">
+    <h4>$i18n.getString( "rename_current_dashboard" )</h4>
+    <div><label style="margin-right: 10px">$i18n.getString( "name" )</label><input type="text" id="dashboardRename" style="width: 230px; padding: 5px; margin-right: 10px;">
     <a class="greyButtonLink" href="javascript:dhis2.db.renameDashboard()" style="margin-top: 1px">$i18n.getString( "rename" )</a></div>
     <h4>$i18n.getString( "add_items_to_current_dashboard" )</h4>
     <div><a class="greyButtonLink" href="javascript:dhis2.db.addMessagesContent()">$i18n.getString( "messages" )</a></div>
-	<h4>$i18n.getString( "delete_current_dashboard" )</h4>
-	<div><a class="greyButtonLink" href="javascript:dhis2.db.removeDashboard()">$i18n.getString( "delete" )</a></div>
+    <h4>$i18n.getString( "delete_current_dashboard" )</h4>
+    <div><a class="greyButtonLink" href="javascript:dhis2.db.removeDashboard()">$i18n.getString( "delete" )</a></div>
 </div>
-
