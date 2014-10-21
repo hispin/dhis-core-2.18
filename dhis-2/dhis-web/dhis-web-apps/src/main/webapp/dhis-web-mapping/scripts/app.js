@@ -7181,18 +7181,18 @@ Ext.onReady( function() {
 					Ext.Ajax.request({
 						url: gis.init.contextPath + '/api/indicators.json?fields=legendSet[id]&paging=false&filter=id:eq:' + this.getValue(),
 						success: function(r) {
-							r = Ext.decode(r.responseText);
+							var set = Ext.decode(r.responseText).indicators[0].legendSet;
 
-							if (Ext.isObject(r.mapLegendSet) && r.mapLegendSet.id) {
+							if (Ext.isObject(set) && set.id) {
 								legendType.setValue(gis.conf.finals.widget.legendtype_predefined);
 								legendTypeToggler(gis.conf.finals.widget.legendtype_predefined);
 
 								if (gis.store.legendSets.isLoaded) {
-									legendSet.setValue(r.mapLegendSet.id);
+									legendSet.setValue(set.id);
 								}
 								else {
 									gis.store.legendSets.loadFn( function() {
-										legendSet.setValue(r.mapLegendSet.id);
+										legendSet.setValue(set.id);
 									});
 								}
 							}
@@ -7269,18 +7269,18 @@ Ext.onReady( function() {
 					Ext.Ajax.request({
 						url: gis.init.contextPath + '/api/dataElements.json?fields=legendSet[id]&paging=false&filter=id:eq:' + this.getValue(),
 						success: function(r) {
-							r = Ext.decode(r.responseText);
+							var set = Ext.decode(r.responseText).dataElements[0].legendSet;
 
-							if (Ext.isObject(r.mapLegendSet) && r.mapLegendSet.id) {
+							if (Ext.isObject(set) && set.id) {
 								legendType.setValue(gis.conf.finals.widget.legendtype_predefined);
 								legendTypeToggler(gis.conf.finals.widget.legendtype_predefined);
 
 								if (gis.store.legendSets.isLoaded) {
-									legendSet.setValue(r.mapLegendSet.id);
+									legendSet.setValue(set.id);
 								}
 								else {
 									gis.store.legendSets.loadFn( function() {
-										legendSet.setValue(r.mapLegendSet.id);
+										legendSet.setValue(set.id);
 									});
 								}
 							}
@@ -7342,7 +7342,35 @@ Ext.onReady( function() {
 			width: gis.conf.layout.widget.item_width,
 			labelWidth: gis.conf.layout.widget.itemlabel_width,
 			listConfig: {loadMask: false},
-			store: dataSetStore
+			store: dataSetStore,
+			listeners: {
+				select: function(cb) {
+					Ext.Ajax.request({
+						url: gis.init.contextPath + '/api/dataSets.json?fields=legendSet[id]&paging=false&filter=id:eq:' + this.getValue(),
+						success: function(r) {
+							var set = Ext.decode(r.responseText).dataSets[0].legendSet;
+
+							if (Ext.isObject(set) && set.id) {
+								legendType.setValue(gis.conf.finals.widget.legendtype_predefined);
+								legendTypeToggler(gis.conf.finals.widget.legendtype_predefined);
+
+								if (gis.store.legendSets.isLoaded) {
+									legendSet.setValue(set.id);
+								}
+								else {
+									gis.store.legendSets.loadFn( function() {
+										legendSet.setValue(set.id);
+									});
+								}
+							}
+							else {
+								legendType.setValue(gis.conf.finals.widget.legendtype_automatic);
+								legendTypeToggler(gis.conf.finals.widget.legendtype_automatic);
+							}
+						}
+					});
+				}
+			}
 		});
 
         onPeriodTypeSelect = function() {
