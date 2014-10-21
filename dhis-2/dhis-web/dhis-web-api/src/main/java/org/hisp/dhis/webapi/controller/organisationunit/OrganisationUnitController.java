@@ -32,6 +32,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.organisationunit.CoordinatesTuple;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitByLevelComparator;
@@ -234,20 +235,20 @@ public class OrganisationUnitController
 
     @RequestMapping( value = "", method = RequestMethod.GET, produces = { "application/json+geo", "application/json+geojson" } )
     public void getGeoJson(
-        @RequestParam( value = "level", defaultValue = "1" ) int pvLevel,
-        @RequestParam( value = "parent", required = false ) String pvParent,
+        @RequestParam( value = "level", defaultValue = "1" ) int rpLevel,
+        @RequestParam( value = "parent", required = false ) String rpParent,
         HttpServletResponse response ) throws IOException
     {
-        OrganisationUnit parent = manager.search( OrganisationUnit.class, pvParent );
+        OrganisationUnit parent = manager.search( OrganisationUnit.class, rpParent );
         List<OrganisationUnit> organisationUnits;
 
         if ( parent != null )
         {
-            organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( pvLevel, parent ) );
+            organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( rpLevel, parent ) );
         }
         else
         {
-            organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( pvLevel ) );
+            organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( rpLevel ) );
         }
 
         JsonFactory jsonFactory = new JsonFactory();
@@ -277,9 +278,14 @@ public class OrganisationUnitController
 
         String featureType = organisationUnit.getFeatureType();
 
-        if ( OrganisationUnit.FEATURETYPE_POLYGON.equals( featureType ) )
+        // if featureType is anything other than Point (MultiPoint), just assume MultiPolygon
+        if ( !OrganisationUnit.FEATURETYPE_POINT.equals( featureType ) )
         {
             featureType = OrganisationUnit.FEATURETYPE_MULTIPOLYGON;
+        }
+        else
+        {
+            featureType = OrganisationUnit.FEATURETYPE_MULTIPOINT;
         }
 
         generator.writeStartObject();
