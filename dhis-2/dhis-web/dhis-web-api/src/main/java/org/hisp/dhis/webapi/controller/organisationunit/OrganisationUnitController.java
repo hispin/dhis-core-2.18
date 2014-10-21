@@ -251,6 +251,8 @@ public class OrganisationUnitController
             organisationUnits = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( rpLevel ) );
         }
 
+        response.setContentType( "application/json+geojson" );
+
         JsonFactory jsonFactory = new JsonFactory();
         JsonGenerator generator = jsonFactory.createGenerator( response.getOutputStream() );
 
