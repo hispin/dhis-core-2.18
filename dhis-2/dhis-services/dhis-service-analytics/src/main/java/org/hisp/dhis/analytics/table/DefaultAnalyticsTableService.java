@@ -208,7 +208,7 @@ public class DefaultAnalyticsTableService
         
         List<Future<?>> futures = new ArrayList<>();
         
-        for ( int i = 0; i < getProcessNo(); i++ )
+        for ( int i = 0; i < taskNo; i++ )
         {
             futures.add( tableManager.populateTableAsync( tableQ ) );
         }
