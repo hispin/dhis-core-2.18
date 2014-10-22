@@ -820,7 +820,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                     var attributes = {};
                                        
                     $(inputElement[0].attributes).each(function() {
-                        attributes[this.nodeName] = this.nodeValue;                       
+                        attributes[this.nodeName] = this.value;                       
                     });
                     
                     var deId = '', newInputField;     
@@ -832,30 +832,44 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                             attributes['name'] = deId;
                         }
                         
+                        var maxDate = programStageDataElements[deId].allowFutureDate ? '' : 0;
                         //check data element type and generate corresponding angular input field
                         if(programStageDataElements[deId].dataElement.type == "int"){
                             newInputField = '<input type="number" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '"' +
-                                            ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
+                                            ' ng-class="getInputNotifcationClass(programStageDataElements.' + deId + '.dataElement.id,true)"' +
                                             ' ng-blur="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "string"){
-                            newInputField = '<input type="text" ' +
+                            if(programStageDataElements[deId].dataElement.optionSet){
+                                var optionSetId = programStageDataElements[deId].dataElement.optionSet.id;
+                                newInputField = '<input type="text" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '" ' +
-                                            ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
+                                            ' ng-class="getInputNotifcationClass(programStageDataElements.' + deId + '.dataElement.id,true)"' +
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory"' +
-                                            ' ng-blur="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
-                                            ' typeahead="option.code as option.name for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
+                                            ' ng-blur="saveDatavalue(programStageDataElements.'+ deId + ')"' +
+                                            ' typeahead-editable="false" ' + 
+                                            ' typeahead="option.name as option.name for option in optionSets.optionSets.'+optionSetId+'.options | filter:$viewValue | limitTo:20"' +
                                             ' typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory">';
+                            }
+                            else{
+                                newInputField = '<input type="text" ' +
+                                            this.getAttributesAsString(attributes) +
+                                            ' ng-model="currentEvent.' + deId + '" ' +
+                                            ' ng-class="getInputNotifcationClass(programStageDataElements.' + deId + '.dataElement.id,true)"' +
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory"' +
+                                            ' ng-blur="saveDatavalue(programStageDataElements.'+ deId + ')"' +
+                                            ' ng-required="programStageDataElements.'+deId+'.compulsory">';
+                            }
                         }
                         if(programStageDataElements[deId].dataElement.type == "bool"){
                             newInputField = '<select ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '" ' +
-                                            ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
+                                            ' ng-class="getInputNotifcationClass(programStageDataElements.' + deId + '.dataElement.id,true)"' +
                                             ' ng-change="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory">' + 
                                             '<option value="">{{\'please_select\'| translate}}</option>' +
@@ -867,8 +881,9 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                             newInputField = '<input type="text" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '"' +
-                                            ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
+                                            ' ng-class="getInputNotifcationClass(programStageDataElements.' + deId + '.dataElement.id,true)"' +
                                             ' d2-date' +
+                                            ' max-date="' + maxDate + '"' + '\'' +
                                             ' blur-or-change="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
@@ -876,7 +891,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                             newInputField = '<input type="checkbox" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '"' +
-                                            ' ng-class="getInputNotifcationClass(' + deId + ',true)"' +
+                                            ' ng-class="getInputNotifcationClass(programStageDataElements.' + deId + '.dataElement.id,true)"' +
                                             ' ng-change="saveDatavalue(programStageDataElements.'+ deId + ')"' + 
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
@@ -1116,7 +1131,6 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         return Math.max(low, 0);
     };
 })
-
 
 /*this is just a hack - there should be better way */
 .service('ValidDate', function(){    
