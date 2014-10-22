@@ -37,7 +37,6 @@ import static org.hisp.dhis.user.UserSettingService.KEY_ANALYSIS_DISPLAY_PROPERT
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -56,7 +55,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
@@ -69,7 +67,6 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSettingService;
@@ -695,84 +692,5 @@ public class CurrentUserController
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), forms );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, value = "/groups" )
-    public void joinUserGroup(
-        HttpServletResponse response, @RequestParam( value = "groupUid", required = true ) String groupUid )
-        throws NotAuthenticatedException
-    {
-        User currentUser = currentUserService.getCurrentUser();
-
-        if ( currentUser == null )
-        {
-            throw new NotAuthenticatedException();
-        }
-
-        UserGroup group = manager.get( UserGroup.class, groupUid );
-
-        if ( group == null )
-        {
-            ContextUtils.notFoundResponse( response, "UserGroup does not exist: " + groupUid );
-            return;
-        }
-
-        Collection<UserGroup> userGroups = currentUser.getGroups();
-
-        if ( userGroups.contains( group ) )
-        {
-            ContextUtils.okResponse( response, "Already a member of this group." );
-            return;
-        }
-
-        if ( !aclService.canUpdate( currentUser, group ) )
-        {
-            throw new UpdateAccessDeniedException( "You don't have permissions modify this group." );
-        }
-
-        group.addUser( currentUser );
-
-        manager.update( group );
-
-        ContextUtils.okResponse( response, "Joined group." );
-    }
-
-    @RequestMapping( method = RequestMethod.DELETE, value = "/groups/{uid}" )
-    public void leaveUserGroup( HttpServletResponse response, @PathVariable( "uid" ) String groupUid )
-        throws NotAuthenticatedException
-    {
-        User currentUser = currentUserService.getCurrentUser();
-
-        if ( currentUser == null )
-        {
-            throw new NotAuthenticatedException();
-        }
-
-        UserGroup group = manager.get( UserGroup.class, groupUid );
-
-        if ( group == null )
-        {
-            ContextUtils.notFoundResponse( response, "UserGroup does not exist: " + groupUid );
-            return;
-        }
-
-        Collection<UserGroup> userGroups = currentUser.getGroups();
-
-        if ( !userGroups.contains( group ) )
-        {
-            ContextUtils.okResponse( response, "Not a member of this UserGroup." );
-            return;
-        }
-
-        if ( !aclService.canUpdate( currentUser, group ) )
-        {
-            throw new UpdateAccessDeniedException( "You don't have permissions modify this group." );
-        }
-
-        group.removeUser( currentUser );
-
-        manager.update( group );
-
-        ContextUtils.okResponse( response, "Left group." );
     }
 }

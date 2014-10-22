@@ -91,6 +91,14 @@ public class GetUserGroupListAction
     {
         this.key = key;
     }
+
+    private String currentUserUid;
+
+    public String getCurrentUserUid()
+    {
+        return currentUserUid;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -111,6 +119,8 @@ public class GetUserGroupListAction
             
             userGroupList = new ArrayList<>( userGroupService.getUserGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
+
+        currentUserUid = currentUserService.getCurrentUser().getUid();
 
         isCurrentUserMemberMap = populateMemberShipMap( userGroupList );
         
