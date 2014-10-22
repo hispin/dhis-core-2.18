@@ -337,10 +337,11 @@ trackerCapture.controller('DataEntryController',
     
     $scope.saveDatavalue = function(prStDe){
         
+        $scope.currentElement = {id: prStDe.dataElement.id, saved: false};
+        
         //check for input validity
         $scope.dataEntryOuterForm.submitted = true;        
-        if( $scope.dataEntryOuterForm.$invalid ){
-            $scope.currentElement = {id: prStDe.dataElement.id, saved: false};
+        if( $scope.dataEntryOuterForm.$invalid ){            
             return false;
         }
          
@@ -374,7 +375,7 @@ trackerCapture.controller('DataEntryController',
                                         ]
                          };
                 DHIS2EventFactory.updateForSingleValue(ev).then(function(response){
-                    $scope.currentElement = {id: prStDe.dataElement.id, saved: true};
+                    $scope.currentElement.saved = true;
                 });
             }
         }
