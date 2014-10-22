@@ -114,7 +114,6 @@ trackerCapture.controller('RegistrationController',
                                 dateOfEnrollment: DateUtils.formatFromUserToApi($scope.enrollment.dateOfEnrollment),
                                 dateOfIncident: $scope.enrollment.dateOfIncident == '' ? DateUtils.formatFromUserToApi($scope.enrollment.dateOfEnrollment) : DateUtils.formatFromUserToApi($scope.enrollment.dateOfIncident)
                             };                           
-                    console.log('enrollment details:  ', enrollment);
                     EnrollmentService.enroll(enrollment).then(function(data){
                         if(data.status !== 'SUCCESS'){
                             //enrollment has failed
@@ -197,13 +196,9 @@ trackerCapture.controller('RegistrationController',
                             dueDate: DateUtils.formatFromUserToApi(EventUtils.getEventDueDate(null,stage, enrollment)),
                             status: 'SCHEDULE'
                         };
-                    console.log('enrollment details:  ', enrollment);     
-                    console.log('the event due date is:  ', EventUtils.getEventDueDate(null,stage, enrollment));    
                     dhis2Events.events.push(newEvent);    
                 }
             });
-
-            console.log('the events are:  ', dhis2Events);
             if(dhis2Events.events.length > 0){
                 DHIS2EventFactory.create(dhis2Events).then(function(data){
 

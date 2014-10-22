@@ -2,6 +2,7 @@ trackerCapture.controller('ProfileController',
         function($rootScope,
                 $scope,     
                 CurrentSelection,
+                DateUtils,
                 TEIService,
                 DialogService,
                 AttributesFactory,
@@ -23,13 +24,15 @@ trackerCapture.controller('ProfileController',
     $scope.$on('dashboardWidgets', function(event, args) { 
         var selections = CurrentSelection.get();
         $scope.selectedTei = angular.copy(selections.tei);
+
         $scope.trackedEntity = selections.te;
         $scope.selectedProgram = selections.pr;   
-        $scope.selectedEnrollment = selections.enrollment;  
-        
+        $scope.selectedEnrollment = selections.enrollment;
+        $scope.optionSets = selections.optionSets;
+
         //display only those attributes that belong to the selected program
         //if no program, display attributesInNoProgram
-        TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.selectedEnrollment).then(function(tei){
+        TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.selectedEnrollment, $scope.optionSets).then(function(tei){
             $scope.selectedTei = tei;
         });
     });
@@ -40,23 +43,53 @@ trackerCapture.controller('ProfileController',
         $rootScope.profileWidget.expand = true;
     };
     
-    $scope.save = function(){
+    $scope.save = function(){        
         
         //check for form validity
         $scope.outerForm.submitted = true;        
         if( $scope.outerForm.$invalid ){
             return false;
         }
-        
+
+        //form is valid, continue the update process        
+        //get tei attributes and their values
+        //but there could be a case where attributes are non-mandatory and
+        //form comes empty, in this case enforce at least one value
+        $scope.formEmpty = true;
         var tei = angular.copy($scope.selectedTei);
         tei.attributes = [];
-        //prepare to update the tei on the server side 
         angular.forEach($scope.selectedTei.attributes, function(attribute){
-            if(!angular.isUndefined(attribute.value)){
-                tei.attributes.push({attribute: attribute.attribute, value: attribute.value});
-            } 
+            if(attribute.type === 'trueOnly'){ 
+                if(!attribute.value){
+                    tei.attributes.push({attribute: attribute.attribute, value: ''});
+                    $scope.formEmpty = false;                    
+                }
+                else{
+                    tei.attributes.push({attribute: attribute.attribute, value: 'true'});
+                    $scope.formEmpty = false;
+                }
+            }            
+            else{
+                var val = attribute.value;
+                if(!angular.isUndefined(val) && val !== ''){
+                    if(attribute.type === 'date'){   
+                        val = DateUtils.formatFromUserToApi(val);
+                    }
+                    if(attribute.type === 'optionSet' && $scope.optionSets.optionCodesByName[  '"' + val + '"']){   
+                        val = $scope.optionSets.optionCodesByName[  '"' + val + '"'];
+                    }                    
+                    $scope.formEmpty = false;
+                }
+                tei.attributes.push({attribute: attribute.attribute, value: val});
+            }           
+             
         });
         
+        if($scope.formEmpty){
+            //form is empty            
+            return false;
+        }
+
         TEIService.update(tei).then(function(updateResponse){
             
             if(updateResponse.status !== 'SUCCESS'){//update has failed
@@ -69,9 +102,9 @@ trackerCapture.controller('ProfileController',
             }
             
             $scope.editProfile = !$scope.editProfile;
-            CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment});   
+            CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment, optionSets: $scope.optionSets});   
             $scope.outerForm.submitted = false; 
-        });       
+        });
     };
     
     $scope.cancel = function(){

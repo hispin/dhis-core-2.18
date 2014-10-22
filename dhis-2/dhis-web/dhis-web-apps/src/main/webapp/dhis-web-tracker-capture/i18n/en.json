@@ -27,6 +27,7 @@
     "list_all_entities": "List all entities",
     "list_all": "List all",
     "list": "List",
+    "invalid": "Invalid",
     "required": "Required",
     "number_required": "Number required",
     "date_required": "Date required (yyyy-mm-dd)",

@@ -26,6 +26,7 @@ trackerCapture.controller('NotesController',
         var selections = CurrentSelection.get();                    
         $scope.selectedTei = angular.copy(selections.tei);
         $scope.selectedProgram = selections.pr;
+        $scope.optionSets = selections.optionSets;
         
         var selections = CurrentSelection.get();
         if(selections.enrollment){
@@ -43,7 +44,7 @@ trackerCapture.controller('NotesController',
         if($scope.selectedProgram && $scope.selectedTei){
             //check if the selected TEI has any of the contact attributes
             //that can be used for communication
-            TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.selectedEnrollment).then(function(tei){
+            TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.selectedEnrollment, $scope.optionSets).then(function(tei){
                 $scope.selectedTei = tei; 
                 var continueLoop = true;
                 for(var i=0; i<$scope.selectedTei.attributes.length && continueLoop; i++){
