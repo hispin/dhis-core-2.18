@@ -31,8 +31,7 @@ function removeUserGroup( context ) {
 function joinUserGroup( context ) {
   $.ajax( {
     type: 'POST',
-    url: '../api/me/groups',
-    data: { 'groupUid'  : context.uid },
+    url: '../api/userGroups/' + context.uid + '/users/' + currentUser,
     success: function() {
       var $userGroup = $( "#tr" + context.id );
       $userGroup.find( ".memberIcon" ).show();
@@ -48,7 +47,7 @@ function joinUserGroup( context ) {
 function leaveUserGroup( context ) {
   $.ajax( {
     type: 'DELETE',
-    url: '../api/me/groups/' + context.uid,
+    url: '../api/userGroups/' + context.uid + '/users/' + currentUser,
     success: function( data ) {
       var $userGroup = $( "#tr" + context.id );
       $userGroup.find( ".memberIcon" ).hide();
