@@ -583,8 +583,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             throw new DeleteAccessDeniedException( "You don't have the proper permissions to delete this object." );
         }
 
-        sessionFactory.getCurrentSession().refresh( candidate  );
         manager.update( objects.get( 0 ) );
+        sessionFactory.getCurrentSession().refresh( candidate  );
     }
 
     @RequestMapping( value = "/{uid}/{property}/{itemId}", method = RequestMethod.DELETE )
@@ -652,8 +652,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             throw new DeleteAccessDeniedException( "You don't have the proper permissions to delete this object." );
         }
 
-        sessionFactory.getCurrentSession().refresh( candidate  );
         manager.update( objects.get( 0 ) );
+        sessionFactory.getCurrentSession().refresh( candidate  );
     }
 
     //--------------------------------------------------------------------------
