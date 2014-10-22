@@ -48,4 +48,13 @@ public class HibernateCategoryStore
     {
         return getSharingCriteria( Restrictions.eq( "dataDimensionType", dimensionType ) ).list();
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Collection<DataElementCategory> getCategories( String dimensionType, boolean dataDimension )
+    {
+        return getSharingCriteria( 
+            Restrictions.eq( "dataDimensionType", dimensionType ),
+            Restrictions.eq( "dataDimension", dataDimension ) ).list();
+    }
 }
