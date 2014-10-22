@@ -82,7 +82,7 @@ trackerCapture.controller('ProgramSummaryController',
                             false).then(function(data){                     
             
             //process tei grid
-            var teis = TEIGridService.format(data,true);     
+            var teis = TEIGridService.format(data,true, null);     
             $scope.teiList = [];
 
             DHIS2EventFactory.getByOrgUnitAndProgram($scope.selectedOrgUnit.id, 

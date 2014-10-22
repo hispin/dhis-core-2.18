@@ -67,7 +67,7 @@ trackerCapture.controller('DashboardController',
                         }
                     });
                     
-                    $scope.optionSets = {optionSets: [], optionNamesByCode: new Object(), optionCodesByName: new Object()};                    
+                    $scope.optionSets = {optionSets: [], optionNamesByCode: new Object(), optionCodesByName: new Object()};
                     OptionSetFactory.getAll().then(function(optionSets){
                         angular.forEach(optionSets, function(optionSet){
                             angular.forEach(optionSet.options, function(option){

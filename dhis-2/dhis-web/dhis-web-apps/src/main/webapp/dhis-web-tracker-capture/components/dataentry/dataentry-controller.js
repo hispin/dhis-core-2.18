@@ -1,6 +1,5 @@
 trackerCapture.controller('DataEntryController',
         function($scope,
-                $timeout,
                 DateUtils,
                 EventUtils,
                 orderByFilter,
@@ -48,6 +47,7 @@ trackerCapture.controller('DataEntryController',
         $scope.showDummyEventDiv = false;        
         $scope.currentDummyEvent = null;
         $scope.currentEvent = null;
+        $scope.currentStage = null;
             
         $scope.allowEventCreation = false;
         $scope.repeatableStages = [];        
@@ -61,14 +61,12 @@ trackerCapture.controller('DataEntryController',
         $scope.optionSets = selections.optionSets;
         $scope.selectedProgramWithStage = [];
         
-        if($scope.selectedOrgUnit && 
-                $scope.selectedProgram && 
-                $scope.selectedEntity && 
-                $scope.selectedEnrollment){
-            
+        if($scope.selectedOrgUnit && $scope.selectedProgram && $scope.selectedEntity && $scope.selectedEnrollment){            
             angular.forEach($scope.selectedProgram.programStages, function(st){                
-                
                 ProgramStageFactory.get(st.id).then(function(stage){
+                    if(stage.openAfterEnrollment){
+                        $scope.currentStage = stage;
+                    }
                     $scope.selectedProgramWithStage[stage.id] = stage;
                 });
             });
@@ -109,6 +107,20 @@ trackerCapture.controller('DataEntryController',
 
                             dhis2Event.statusColor = EventUtils.getEventStatusColor(dhis2Event);  
                             //dhis2Event = EventUtils.setEventOrgUnitName(dhis2Event);
+                            
+                            if($scope.currentStage && $scope.currentStage.id === dhis2Event.programStage){
+                                $scope.currentEvent = dhis2Event;
+                                if(!dhis2Event.eventDate){
+                                    if($scope.currentStage.reportDateToUse === 'dateOfIncident'){
+                                        $scope.currentEvent.eventDate = $scope.selectedEnrollment.dateOfIncident;
+                                    }
+                                    else{
+                                        $scope.currentEvent.eventDate = $scope.selectedEnrollment.dateOfEnrollment;
+                                    }
+                                }
+                                $scope.saveEventDate();
+                                $scope.showDataEntry($scope.currentEvent, true);
+                            }
                         } 
                     }                    
                 });
@@ -247,18 +259,18 @@ trackerCapture.controller('DataEntryController',
                     $scope.dhis2Events.splice(0,0,newEvent);
                 }
                 
-                $scope.showDataEntry(newEvent);
+                $scope.showDataEntry(newEvent, false);
             }
         });
     };   
     
-    $scope.showDataEntry = function(event){        
+    $scope.showDataEntry = function(event, rightAfterEnrollment){        
         
         //$scope.dueDateSaved = false;
         //$scope.eventDateSaved = false;
         if(event){
 
-            if($scope.currentEvent && $scope.currentEvent.event === event.event){
+            if($scope.currentEvent && !rightAfterEnrollment && $scope.currentEvent.event === event.event){
                 //clicked on the same stage, do toggling
                 $scope.currentEvent = null;
                 $scope.currentElement = {id: '', saved: false};

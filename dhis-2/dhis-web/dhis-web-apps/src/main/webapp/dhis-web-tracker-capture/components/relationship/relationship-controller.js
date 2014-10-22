@@ -245,7 +245,7 @@ trackerCapture.controller('RelationshipController',
             }
             
             //process tei grid
-            $scope.trackedEntityList = TEIGridService.format(data,false);
+            $scope.trackedEntityList = TEIGridService.format(data,false, null);
             $scope.showTrackedEntityDiv = true;
             $scope.teiFetched = true;            
         });
@@ -459,7 +459,7 @@ trackerCapture.controller('RelationshipController',
                                 program: $scope.selectedProgramForRelative.id,
                                 status: 'ACTIVE',
                                 dateOfEnrollment: DateUtils.formatFromUserToApi($scope.enrollment.enrollmentDate),
-                                dateOfIncident: $scope.enrollment.incidentDate == '' ? DateUtils.formatFromUserToApi($scope.enrollment.enrollmentDate) : DateUtils.formatFromUserToApi($scope.enrollment.incidentDate)
+                                dateOfIncident: $scope.enrollment.incidentDate === '' ? DateUtils.formatFromUserToApi($scope.enrollment.enrollmentDate) : DateUtils.formatFromUserToApi($scope.enrollment.incidentDate)
                             };
                     EnrollmentService.enroll(enrollment).then(function(data){
                         if(data.status !== 'SUCCESS'){
