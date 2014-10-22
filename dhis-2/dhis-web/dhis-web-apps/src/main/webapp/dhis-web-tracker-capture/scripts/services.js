@@ -1176,19 +1176,18 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                         for(var i=5; i<row.length; i++){
                             if(row[i] && row[i] !== ''){
                                 isEmpty = false;
+                                var val = row[i];
                                 if(attributes[grid.headers[i].name] && 
                                         attributes[grid.headers[i].name].valueType === 'optionSet' && 
                                         optionNamesByCode &&    
-                                        optionNamesByCode[  '"' + row[i] + '"']){
-                                    
-                                    entity[grid.headers[i].name] = optionNamesByCode[  '"' + row[i] + '"'];
+                                        optionNamesByCode[  '"' + val + '"']){
+                                    val = optionNamesByCode[  '"' + val + '"'];
                                 }
                                 if(attributes[grid.headers[i].name] && attributes[grid.headers[i].name].valueType === 'date'){                                    
-                                    entity[grid.headers[i].name] = DateUtils.formatFromApiToUser( row[i] );
+                                    val = DateUtils.formatFromApiToUser( val );
                                 }
-                                else{
-                                    entity[grid.headers[i].name] = row[i];
-                                }
+                                
+                                entity[grid.headers[i].name] = val;
                             }
                         }
 

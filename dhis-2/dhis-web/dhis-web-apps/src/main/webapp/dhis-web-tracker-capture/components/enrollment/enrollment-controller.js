@@ -325,6 +325,16 @@ trackerCapture.controller('EnrollmentController',
                             dueDate: DateUtils.formatFromUserToApi( EventUtils.getEventDueDate(dhis2Events.events, stage, $scope.selectedEnrollment) ),
                             status: 'SCHEDULE'
                         };
+                    
+                    if(stage.openAfterEnrollment){
+                        if(stage.reportDateToUse === 'dateOfIncident'){
+                            newEvent.eventDate = DateUtils.formatFromUserToApi($scope.selectedEnrollment.dateOfIncident);
+                        }
+                        else{
+                            newEvent.eventDate = DateUtils.formatFromUserToApi($scope.selectedEnrollment.dateOfEnrollment);
+                        }
+                    }
+                    
                     dhis2Events.events.push(newEvent);    
                 }
             });

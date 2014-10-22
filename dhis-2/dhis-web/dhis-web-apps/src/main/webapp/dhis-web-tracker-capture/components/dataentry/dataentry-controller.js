@@ -109,16 +109,7 @@ trackerCapture.controller('DataEntryController',
                             //dhis2Event = EventUtils.setEventOrgUnitName(dhis2Event);
                             
                             if($scope.currentStage && $scope.currentStage.id === dhis2Event.programStage){
-                                $scope.currentEvent = dhis2Event;
-                                if(!dhis2Event.eventDate){
-                                    if($scope.currentStage.reportDateToUse === 'dateOfIncident'){
-                                        $scope.currentEvent.eventDate = $scope.selectedEnrollment.dateOfIncident;
-                                    }
-                                    else{
-                                        $scope.currentEvent.eventDate = $scope.selectedEnrollment.dateOfEnrollment;
-                                    }
-                                }
-                                $scope.saveEventDate();
+                                $scope.currentEvent = dhis2Event;                                
                                 $scope.showDataEntry($scope.currentEvent, true);
                             }
                         } 
@@ -361,8 +352,8 @@ trackerCapture.controller('DataEntryController',
                 value = DateUtils.formatFromUserToApi(value);
             }
             if(prStDe.dataElement.type === 'string'){                    
-                if(prStDe.dataElement.optionSet && $scope.optionCodesByName[  '"' + value + '"']){                        
-                    value = $scope.optionCodesByName[  '"' + value + '"'];                                                      
+                if(prStDe.dataElement.optionSet && $scope.optionSets.optionCodesByName[  '"' + value + '"']){                        
+                    value = $scope.optionSets.optionCodesByName[  '"' + value + '"'];                                                      
                 }                    
             }
 
