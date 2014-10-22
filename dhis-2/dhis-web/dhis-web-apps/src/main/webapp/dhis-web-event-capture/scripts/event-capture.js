@@ -7,7 +7,7 @@ dhis2.ec.emptyOrganisationUnits = false;
 // Instance of the StorageManager
 dhis2.ec.storageManager = new StorageManager();
 
-var EC_STORE_NAME = "dhis2ec";
+var EC_STORE_NAME = "dhis2";
 var i18n_no_orgunits = 'No organisation unit attached to current user, no data entry possible';
 var i18n_offline_notification = 'You are offline, data will be stored locally';
 var i18n_online_notification = 'You are online';
