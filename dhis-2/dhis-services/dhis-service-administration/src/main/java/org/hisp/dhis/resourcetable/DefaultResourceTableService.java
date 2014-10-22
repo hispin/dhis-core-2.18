@@ -279,7 +279,7 @@ public class DefaultResourceTableService
     @Transactional
     public void generateDataElementGroupSetTable()
     {
-        List<DataElementGroupSet> groupSets = new ArrayList<>( dataElementService.getAllDataElementGroupSets() );
+        List<DataElementGroupSet> groupSets = new ArrayList<>( dataElementService.getDataDimensionDataElementGroupSets() );
 
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -318,7 +318,7 @@ public class DefaultResourceTableService
     public void generateOrganisationUnitGroupSetTable()
     {
         List<OrganisationUnitGroupSet> groupSets = new ArrayList<>(
-            organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
+            organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets() );
 
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
 

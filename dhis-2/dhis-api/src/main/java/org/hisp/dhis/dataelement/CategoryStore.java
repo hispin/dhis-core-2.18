@@ -39,4 +39,6 @@ public interface CategoryStore
     extends GenericDimensionalObjectStore<DataElementCategory>
 {
     Collection<DataElementCategory> getCategoriesByDimensionType( String dimensionType );
+    
+    Collection<DataElementCategory> getCategories( String dimensionType, boolean dataDimension );
 }

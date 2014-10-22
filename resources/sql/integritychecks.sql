@@ -158,7 +158,7 @@ join categorycombos_optioncombos co on (n.categoryoptioncomboid=co.categoryoptio
 join categorycombo c on (co.categorycomboid=c.categorycomboid)
 order by c.name, n.categoryoptioncomboname;
 
--- Get category combinations without data elements
+-- Get category combinations without data elements or data sets
 
 select * from categorycombo where categorycomboid not in (select distinct categorycomboid from dataelement);
 
