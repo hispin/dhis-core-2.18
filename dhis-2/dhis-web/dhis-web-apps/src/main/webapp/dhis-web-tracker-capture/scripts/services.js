@@ -1132,10 +1132,10 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             
 })
 
-.service('TEIGridService', function(OrgUnitService, DateUtils, $translate){
+.service('TEIGridService', function(OrgUnitService, DateUtils, $translate, AttributesFactory){
     
     return {
-        format: function(grid, map){
+        format: function(grid, map, optionNamesByCode){
             if(!grid || !grid.rows){
                 return;
             }
@@ -1148,43 +1148,61 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             }
 
             var entityList = [];
+            
+            AttributesFactory.getAll().then(function(atts){
+                
+                var attributes = [];
+                angular.forEach(atts, function(att){
+                    attributes[att.id] = att;
+                });
+            
+                OrgUnitService.open().then(function(){
 
-            OrgUnitService.open().then(function(){
+                    angular.forEach(grid.rows, function(row){
+                        var entity = {};
+                        var isEmpty = true;
 
-                angular.forEach(grid.rows, function(row){
-                    var entity = {};
-                    var isEmpty = true;
+                        entity.id = row[0];
+                        entity.created = DateUtils.formatFromApiToUser( row[1] );
+                        entity.orgUnit = row[3];                              
+                        entity.type = row[4];
 
-                    entity.id = row[0];
-                    var rDate = row[1];
-                    rDate = DateUtils.format(rDate);
-                    entity.created = rDate;
-                    entity.orgUnit = row[3];                              
-                    entity.type = row[4];  
+                        OrgUnitService.get(row[3]).then(function(ou){
+                            if(ou){
+                                entity.orgUnitName = ou.n;
+                            }                                                       
+                        });
 
-                    OrgUnitService.get(row[3]).then(function(ou){
-                        if(ou){
-                            entity.orgUnitName = ou.n;
-                        }                                                       
-                    });
-
-                    for(var i=5; i<row.length; i++){
-                        if(row[i] && row[i] !== ''){
-                            isEmpty = false;
-                            entity[grid.headers[i].name] = row[i];
+                        for(var i=5; i<row.length; i++){
+                            if(row[i] && row[i] !== ''){
+                                isEmpty = false;
+                                if(attributes[grid.headers[i].name] && 
+                                        attributes[grid.headers[i].name].valueType === 'optionSet' && 
+                                        optionNamesByCode &&    
+                                        optionNamesByCode[  '"' + row[i] + '"']){
+                                    
+                                    entity[grid.headers[i].name] = optionNamesByCode[  '"' + row[i] + '"'];
+                                }
+                                if(attributes[grid.headers[i].name] && attributes[grid.headers[i].name].valueType === 'date'){                                    
+                                    entity[grid.headers[i].name] = DateUtils.formatFromApiToUser( row[i] );
+                                }
+                                else{
+                                    entity[grid.headers[i].name] = row[i];
+                                }
+                            }
                         }
-                    }
 
-                    if(!isEmpty){
-                        if(map){
-                            entityList[entity.id] = entity;
-                        }
-                        else{
-                            entityList.push(entity);
-                        }
-                    }        
-                });                
-            });
+                        if(!isEmpty){
+                            if(map){
+                                entityList[entity.id] = entity;
+                            }
+                            else{
+                                entityList.push(entity);
+                            }
+                        }        
+                    });                
+                });
+            }); 
             return {headers: attributes, rows: entityList, pager: grid.metaData.pager};                                    
         },
         generateGridColumns: function(attributes, ouMode){

@@ -11,6 +11,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 Paginator,
                 TranslationService, 
                 storage,
+                OptionSetFactory,
                 OperatorFactory,
                 ProgramFactory,
                 AttributesFactory,
@@ -38,7 +39,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.boolOperators = OperatorFactory.boolOperators;
     $scope.enrollment = {programStartDate: '', programEndDate: '', operator: $scope.defaultOperators[0]};
     $scope.searchState = true;   
-    $scope.searchMode = { listAll: 'LIST_ALL', freeText: 'FREE_TEXT', attributeBased: 'ATTRIBUTE_BASED' };
+    $scope.searchMode = { listAll: 'LIST_ALL', freeText: 'FREE_TEXT', attributeBased: 'ATTRIBUTE_BASED' };    
+    $scope.optionSets = null;
     
     //Registration
     $scope.showRegistrationDiv = false;
@@ -58,6 +60,20 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             //apply translation - by now user's profile is fetched from server.
             TranslationService.translate();
             
+            if(!$scope.optionSets){
+                $scope.optionSets = {optionSets: [], optionNamesByCode: new Object(), optionCodesByName: new Object()};
+                OptionSetFactory.getAll().then(function(optionSets){
+                    angular.forEach(optionSets, function(optionSet){
+                        angular.forEach(optionSet.options, function(option){
+                            if(option.name && option.code){
+                                $scope.optionSets.optionNamesByCode[ '"' + option.code + '"'] = option.name;
+                                $scope.optionSets.optionCodesByName[ '"' + option.name + '"'] = option.code;
+                            }                       
+                        });
+                        $scope.optionSets.optionSets[optionSet.id] = optionSet;
+                    });
+                });
+            }            
             $scope.loadPrograms($scope.selectedOrgUnit);                                
         }
     });
@@ -262,7 +278,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             }
             
             //process tei grid
-            $scope.trackedEntityList = TEIGridService.format(data,false);
+            $scope.trackedEntityList = TEIGridService.format(data,false, $scope.optionSets.optionNamesByCode);
             $scope.showTrackedEntityDiv = true;
             $scope.teiFetched = true;  
             $scope.doSearch = true;
