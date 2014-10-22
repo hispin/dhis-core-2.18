@@ -486,37 +486,17 @@ Ext.onReady( function() {
 					fields: [idProperty, 'name'],
 					data: [],
 					loadOptionSet: function(optionSetId, key, pageSize) {
-						var store = this,
-							params = {};
+						var store = this;
 
                         optionSetId = optionSetId || container.dataElement.optionSet.id;
+                        pageSize = pageSize || 100;
 
-						//if (key) {
-							//params['key'] = key;
-						//}
-
-						params['max'] = pageSize || 15;
-
-						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/optionSets/' + optionSetId + '.json?fields=options[' + idProperty + ',' + nameProperty + ']',
-							params: params,
-							disableCaching: false,
-							success: function(r) {
-								var options = Ext.decode(r.responseText).options,
-                                    data = [];
-
-                                for (var i = 0; i < options.length; i++) {
-                                    if (container.valueStore.findExact(idProperty, options[i][idProperty]) === -1) {
-                                        data.push(options[i]);
-                                    }
-                                }
-
-								store.removeAll();
-                                store.loadData(data);
-
-                                container.triggerCmp.storage = Ext.clone(options);
-							}
-						});
+                        dhis2.er.store.get('optionSets', optionSetId).done( function(obj) {
+                            if (Ext.isObject(obj) && Ext.isArray(obj.options) && obj.options.length) {
+                                store.removeAll();
+                                store.loadData(obj.options.slice(0, pageSize));
+                            }
+                        });
 					},
                     listeners: {
 						datachanged: function(s) {
@@ -554,20 +534,18 @@ Ext.onReady( function() {
                     },
                     store: this.searchStore,
                     listeners: {
-						keyup: {
-							fn: function() {
-								var value = this.getValue(),
-									optionSetId = container.dataElement.optionSet.id;
+						keyup: function() {
+                            var value = this.getValue(),
+                                optionSetId = container.dataElement.optionSet.id;
 
-								// search
-								container.searchStore.loadOptionSet(optionSetId, value);
+                            // search
+                            container.searchStore.loadOptionSet(optionSetId, value);
 
-                                // trigger
-                                if (!value || (Ext.isString(value) && value.length === 1)) {
-									container.triggerCmp.setDisabled(!!value);
-								}
-							}
-						},
+                            // trigger
+                            if (!value || (Ext.isString(value) && value.length === 1)) {
+                                container.triggerCmp.setDisabled(!!value);
+                            }
+                        },
 						select: function() {
                             var id = Ext.Array.from(this.getValue())[0];
 
@@ -596,15 +574,8 @@ Ext.onReady( function() {
                     disabledCls: 'ns-button-combotrigger-disabled',
                     width: 18,
                     height: 22,
-                    storage: [],
                     handler: function(b) {
-                        if (b.storage.length) {
-							container.searchStore.removeAll();
-                            container.searchStore.add(Ext.clone(b.storage));
-                        }
-                        else {
-                            container.searchStore.loadOptionSet();
-                        }
+                        container.searchStore.loadOptionSet();
                     }
                 });
 
@@ -7399,6 +7370,57 @@ Ext.onReady( function() {
                                             success: function(r) {
                                                 init.dimensions = Ext.decode(r.responseText).organisationUnitGroupSets || [];
                                                 fn();
+                                            }
+                                        });
+
+                                        // option sets
+                                        requests.push({
+                                            url: contextPath + '/api/optionSets.json?fields=id,version&paging=false',
+                                            success: function(r) {
+                                                var optionSets = Ext.decode(r.responseText).optionSets,
+                                                    store = dhis2.er.store,
+                                                    ids = [],
+                                                    url = '',
+                                                    callbacks = 0,
+                                                    checkOptionSet,
+                                                    updateStore;
+
+                                                updateStore = function() {
+                                                    if (++callbacks === optionSets.length) {
+                                                        if (!ids.length) {
+                                                            fn();
+                                                        }
+
+                                                        for (var i = 0; i < ids.length; i++) {
+                                                            url += '&filter=id:eq:' + ids[i];
+                                                        }
+
+                                                        Ext.Ajax.request({
+                                                            url: contextPath + '/api/optionSets.json?fields=id,name,version,options[code,name]&paging=false' + url,
+                                                            success: function(r) {
+                                                                var sets = Ext.decode(r.responseText).optionSets;
+
+                                                                store.setAll('optionSets', sets).done(fn);
+                                                            }
+                                                        });
+                                                    }
+                                                };
+
+                                                checkOptionSet = function(optionSet) {
+                                                    store.get('optionSets', optionSet.id).done( function(obj) {
+                                                        if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
+                                                            ids.push(optionSet.id);
+                                                        }
+
+                                                        updateStore();
+                                                    });
+                                                };
+
+                                                store.open().done( function() {
+                                                    for (var i = 0; i < optionSets.length; i++) {
+                                                        checkOptionSet(optionSets[i]);
+                                                    }
+                                                });
                                             }
                                         });
 

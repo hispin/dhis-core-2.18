@@ -705,7 +705,7 @@ Ext.onReady( function() {
                 pointRadius: 8,
                 labelAlign: 'cr',
                 labelYOffset: 13,
-                fontFamily: 'arial,sans-serif,roboto,helvetica neue,helvetica,consolas'
+                fontFamily: '"Arial","Sans-serif","Roboto","Helvetica","Consolas"'
 			},
 			select = {
 				fillOpacity: 0.9,
