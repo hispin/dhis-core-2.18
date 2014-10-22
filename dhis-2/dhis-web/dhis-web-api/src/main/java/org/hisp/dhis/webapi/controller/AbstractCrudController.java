@@ -31,7 +31,10 @@ package org.hisp.dhis.webapi.controller;
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import org.hibernate.LockOptions;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.acl.AclService;
+import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -66,14 +69,12 @@ import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -125,6 +126,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @Autowired
     protected ContextService contextService;
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     //--------------------------------------------------------------------------
     // GET
@@ -579,6 +583,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             throw new DeleteAccessDeniedException( "You don't have the proper permissions to delete this object." );
         }
 
+        sessionFactory.getCurrentSession().refresh( candidate  );
         manager.update( objects.get( 0 ) );
     }
 
@@ -647,6 +652,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             throw new DeleteAccessDeniedException( "You don't have the proper permissions to delete this object." );
         }
 
+        sessionFactory.getCurrentSession().refresh( candidate  );
         manager.update( objects.get( 0 ) );
     }
 
