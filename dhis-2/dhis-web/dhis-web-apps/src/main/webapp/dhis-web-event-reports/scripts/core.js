@@ -12,15 +12,6 @@ Ext.onReady( function() {
 	NS.isDebug = false;
 	NS.isSessionStorage = ('sessionStorage' in window && window['sessionStorage'] !== null);
 
-    // dhis2
-    dhis2.util.namespace('dhis2.er');
-
-    dhis2.er.store = dhis2.er.store || new dhis2.storage.Store({
-        name: 'dhis2',
-        adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-        objectStores: ['optionSets']
-    });
-
     // core
 	NS.getCore = function(init) {
         var conf = {},

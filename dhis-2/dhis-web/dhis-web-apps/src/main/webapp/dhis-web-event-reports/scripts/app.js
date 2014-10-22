@@ -7238,6 +7238,15 @@ Ext.onReady( function() {
 
                                         init.namePropertyUrl = namePropertyUrl;
 
+                                        // dhis2
+                                        dhis2.util.namespace('dhis2.er');
+
+                                        dhis2.er.store = dhis2.er.store || new dhis2.storage.Store({
+                                            name: 'dhis2',
+                                            adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+                                            objectStores: ['optionSets']
+                                        });
+
                                         // calendar
                                         (function() {
                                             var dhis2PeriodUrl = '../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
@@ -7377,7 +7386,7 @@ Ext.onReady( function() {
                                         requests.push({
                                             url: contextPath + '/api/optionSets.json?fields=id,version&paging=false',
                                             success: function(r) {
-                                                var optionSets = Ext.decode(r.responseText).optionSets,
+                                                var optionSets = Ext.decode(r.responseText).optionSets || [],
                                                     store = dhis2.er.store,
                                                     ids = [],
                                                     url = '',
@@ -7406,7 +7415,7 @@ Ext.onReady( function() {
                                                     }
                                                 };
 
-                                                checkOptionSet = function(optionSet) {
+                                                registerOptionSet = function(optionSet) {
                                                     store.get('optionSets', optionSet.id).done( function(obj) {
                                                         if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
                                                             ids.push(optionSet.id);
@@ -7418,7 +7427,7 @@ Ext.onReady( function() {
 
                                                 store.open().done( function() {
                                                     for (var i = 0; i < optionSets.length; i++) {
-                                                        checkOptionSet(optionSets[i]);
+                                                        registerOptionSet(optionSets[i]);
                                                     }
                                                 });
                                             }
