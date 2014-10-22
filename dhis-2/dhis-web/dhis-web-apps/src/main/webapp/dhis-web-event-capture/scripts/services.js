@@ -7,7 +7,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 
 .factory('StorageService', function(){
     var store = new dhis2.storage.Store({
-        name: EC_STORE_NAME,
+        name: 'dhis2',
         adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
         objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
     });
