@@ -1949,7 +1949,7 @@ Ext.onReady( function() {
 
 				svg = Ext.get(svg[0]);
 				svg = svg.parent().dom.innerHTML;
-console.log(svg);
+
 				Ext.query('#svgField')[0].value = svg;
 				Ext.query('#filenameField')[0].value = 'test';
 

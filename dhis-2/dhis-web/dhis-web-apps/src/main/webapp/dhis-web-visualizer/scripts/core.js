@@ -212,7 +212,7 @@ Ext.onReady( function() {
             conf.chart = {
                 style: {
                     inset: 30,
-                    fontFamily: 'Arial,Sans-serif,Helvetica,Helvetica Neue,Lucida Grande,Ubuntu'
+                    fontFamily: 'Arial,Sans-serif,Roboto,Helvetica,Consolas'
                 },
                 theme: {
                     dv1: ['#94ae0a', '#1d5991', '#a61120', '#ff8809', '#7c7474', '#a61187', '#ffd13e', '#24ad9a', '#a66111', '#414141', '#4500c4', '#1d5700']
