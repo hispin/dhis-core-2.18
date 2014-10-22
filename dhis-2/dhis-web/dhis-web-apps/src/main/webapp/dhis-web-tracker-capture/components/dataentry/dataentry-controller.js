@@ -1,5 +1,6 @@
 trackerCapture.controller('DataEntryController',
-        function($scope, 
+        function($scope,
+                $timeout,
                 DateUtils,
                 EventUtils,
                 orderByFilter,
@@ -57,6 +58,7 @@ trackerCapture.controller('DataEntryController',
         $scope.selectedEntity = selections.tei;      
         $scope.selectedProgram = selections.pr;        
         $scope.selectedEnrollment = selections.enrollment;   
+        $scope.optionSets = selections.optionSets;
         $scope.selectedProgramWithStage = [];
         
         if($scope.selectedOrgUnit && 
@@ -106,7 +108,7 @@ trackerCapture.controller('DataEntryController',
                             }                       
 
                             dhis2Event.statusColor = EventUtils.getEventStatusColor(dhis2Event);  
-                            dhis2Event = EventUtils.setEventOrgUnitName(dhis2Event);
+                            //dhis2Event = EventUtils.setEventOrgUnitName(dhis2Event);
                         } 
                     }                    
                 });
@@ -258,7 +260,7 @@ trackerCapture.controller('DataEntryController',
 
             if($scope.currentEvent && $scope.currentEvent.event === event.event){
                 //clicked on the same stage, do toggling
-                $scope.currentEvent = {};
+                $scope.currentEvent = null;
                 $scope.currentElement = {id: '', saved: false};
                 $scope.showDataEntryDiv = !$scope.showDataEntryDiv;      
             }
@@ -332,26 +334,28 @@ trackerCapture.controller('DataEntryController',
     
     $scope.saveDatavalue = function(prStDe){
         
-        $scope.currentElement = {};
-        
         //check for input validity
         $scope.dataEntryOuterForm.submitted = true;        
         if( $scope.dataEntryOuterForm.$invalid ){
+            $scope.currentElement = {id: prStDe.dataElement.id, saved: false};
             return false;
         }
          
         //input is valid
-        $scope.updateSuccess = false;      
-        
-        if(!angular.isUndefined($scope.currentEvent[prStDe.dataElement.id])){
+        $scope.updateSuccess = false;
+        var value = $scope.currentEvent[prStDe.dataElement.id];        
+        if(!angular.isUndefined(value)){
+            if(prStDe.dataElement.type === 'date'){                    
+                value = DateUtils.formatFromUserToApi(value);
+            }
+            if(prStDe.dataElement.type === 'string'){                    
+                if(prStDe.dataElement.optionSet && $scope.optionCodesByName[  '"' + value + '"']){                        
+                    value = $scope.optionCodesByName[  '"' + value + '"'];                                                      
+                }                    
+            }
 
-            if($scope.currentEventOriginal[prStDe.dataElement.id] !== $scope.currentEvent[prStDe.dataElement.id]){
+            if($scope.currentEventOriginal[prStDe.dataElement.id] !== value){
                 
-                //get current element
-                $scope.currentElement = {id: prStDe.dataElement.id, saved: false};
-
-                //currentEvent.providedElsewhere[prStDe.dataElement.id];
-                var value = $scope.currentEvent[prStDe.dataElement.id];
                 var ev = {  event: $scope.currentEvent.event,
                             orgUnit: $scope.currentEvent.orgUnit,
                             program: $scope.currentEvent.program,
@@ -367,10 +371,10 @@ trackerCapture.controller('DataEntryController',
                                         ]
                          };
                 DHIS2EventFactory.updateForSingleValue(ev).then(function(response){
-                    $scope.currentElement.saved = true;
+                    $scope.currentElement = {id: prStDe.dataElement.id, saved: true};
                 });
             }
-        }        
+        }
     };
     
     $scope.saveDatavalueLocation = function(prStDe){
@@ -404,7 +408,7 @@ trackerCapture.controller('DataEntryController',
     $scope.saveEventDate = function(){
         
         $scope.eventDateSaved = false;
-        if($scope.currentEvent.eventDate == ''){            
+        if($scope.currentEvent.eventDate === ''){            
             $scope.invalidDate = true;
             return false;
         }
@@ -420,7 +424,7 @@ trackerCapture.controller('DataEntryController',
         var e = {event: $scope.currentEvent.event,
              enrollment: $scope.currentEvent.enrollment,
              dueDate: DateUtils.formatFromUserToApi($scope.currentEvent.dueDate),
-             status: $scope.currentEvent.status == 'SCHEDULE' ? 'ACTIVE' : $scope.currentEvent.status,
+             status: $scope.currentEvent.status === 'SCHEDULE' ? 'ACTIVE' : $scope.currentEvent.status,
              program: $scope.currentEvent.program,
              programStage: $scope.currentEvent.programStage,
              orgUnit: $scope.currentEvent.orgUnit,
@@ -432,23 +436,14 @@ trackerCapture.controller('DataEntryController',
             $scope.currentEvent.sortingDate = $scope.currentEvent.eventDate;
             $scope.invalidDate = false;
             $scope.eventDateSaved = true;
-
-            var statusColor = EventUtils.getEventStatusColor($scope.currentEvent);  
-            var continueLoop = true;
-            for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
-                if($scope.dhis2Events[i].event === $scope.currentEvent.event ){
-                    $scope.dhis2Events[i].statusColor = statusColor;
-                    $scope.dhis2Events[i].status = e.status;
-                    continueLoop = false;
-                }
-            }
+            $scope.currentEvent.statusColor = EventUtils.getEventStatusColor($scope.currentEvent);
         });
     };
     
     $scope.saveDueDate = function(){
         $scope.dueDateSaved = false;
 
-        if($scope.currentEvent.dueDate == ''){
+        if($scope.currentEvent.dueDate === ''){
             $scope.invalidDate = true;
             return false;
         }
@@ -474,22 +469,15 @@ trackerCapture.controller('DataEntryController',
         DHIS2EventFactory.update(e).then(function(data){            
             $scope.invalidDate = false;
             $scope.dueDateSaved = true;
-            $scope.currentEvent.sortingDate = $scope.currentEvent.dueDate;                
-            var statusColor = EventUtils.getEventStatusColor($scope.currentEvent);  
-            var continueLoop = true;
-            for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
-                if($scope.dhis2Events[i].event === $scope.currentEvent.event ){
-                    $scope.dhis2Events[i].statusColor = statusColor;
-                    continueLoop = false;
-                }
-            }
+            $scope.currentEvent.sortingDate = $scope.currentEvent.dueDate;
+            $scope.currentEvent.statusColor = EventUtils.getEventStatusColor($scope.currentEvent);            
             $scope.schedulingEnabled = !$scope.schedulingEnabled;
         });
                       
     };
     
     $scope.addNote = function(){
-        if(!angular.isUndefined($scope.note) && $scope.note != ""){
+        if(!angular.isUndefined($scope.note) && $scope.note !== ""){
             var newNote = {value: $scope.note};
 
             if(angular.isUndefined( $scope.currentEvent.notes) ){
@@ -668,5 +656,21 @@ trackerCapture.controller('DataEntryController',
     
     $scope.toggleLegend = function(){
         $scope.showEventColors = !$scope.showEventColors;
+    };
+    
+    $scope.getEventStyle = function(ev, dummy){
+        var style = EventUtils.getEventStatusColor(ev);
+        
+        if(dummy){
+            if($scope.currentDummyEvent && $scope.currentDummyEvent.programStage === ev.programStage){
+                style = style + ' ' + 'current-stage';
+            }
+        }
+        else{
+            if($scope.currentEvent && $scope.currentEvent.event === ev.event){
+                style = style + ' ' + 'current-stage';
+            }
+        }        
+        return style;
     };
 });

@@ -32,10 +32,8 @@
                 <tbody>
                     <tr>
                         <td class="inline-block" ng-repeat="dhis2Event in dhis2Events | orderBy:'sortingDate':reverse">
-                            <span class="block align-center">{{dhis2Event.eventOrgUnitName}}</span>                                              
-                            <span class="stage-container"                                                     
-                                  ng-class="{'current-stage': currentEvent && currentEvent.event == dhis2Event.event, '{{dhis2Event.statusColor}}': true}"                                                      
-                                  ng-click="showDataEntry(dhis2Event)">
+                            <!--<span class="block align-center">{{dhis2Event.eventOrgUnitName}}</span> -->
+                            <span class="stage-container" ng-class='getEventStyle(dhis2Event, false)' ng-click="showDataEntry(dhis2Event)">
                                 {{dhis2Event.name}}<br/>
                                 {{dhis2Event.sortingDate}}         
                             </span>
@@ -53,17 +51,15 @@
                 <tbody>
                     <tr>
                         <td class="inline-block" ng-repeat="dummyEvent in dummyEvents| orderBy:'sortingDate':reverse">
-                            <span class="block align-center">{{dhis2Event.eventOrgUnitName}}</span>                                              
-                            <span class="stage-container"                                                     
-                                  ng-class="{'current-stage': currentDummyEvent && currentDummyEvent.programStage == dummyEvent.programStage, '{{dummyEvent.statusColor}}': true}"                                                      
-                                  ng-click="showDummyEventCreation(dummyEvent)">
+                            <!--<span class="block align-center">{{dhis2Event.eventOrgUnitName}}</span>-->                                              
+                            <span class="stage-container" ng-class='getEventStyle(dummyEvent, true)' ng-click="showDummyEventCreation(dummyEvent)">
                                 {{dummyEvent.name}}<br/>
                                 {{dummyEvent.dueDate}}         
                             </span>
                             <i class="fa fa-arrow-right" ng-if="$index < dummyEvents.length - 1"></i>
-                        </td>                        
-                    </tr>                        
-                </tbody>                
+                        </td>
+                    </tr>
+                </tbody>
             </table>
             <form name="eventCreationForm" novalidate ng-show="currentDummyEvent">
                 <div class="row">

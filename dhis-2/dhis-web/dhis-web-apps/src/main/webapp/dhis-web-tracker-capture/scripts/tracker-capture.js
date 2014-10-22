@@ -6,7 +6,7 @@ dhis2.tc.emptyOrganisationUnits = false;
 // Instance of the StorageManager
 dhis2.tc.storageManager = new StorageManager();
 
-var TC_STORE_NAME = "dhis2tc";
+var TC_STORE_NAME = "dhis2";
 var i18n_no_orgunits = 'No organisation unit attached to current user, no data entry possible';
 var i18n_offline_notification = 'You are offline, data will be stored locally';
 var i18n_online_notification = 'You are online';
@@ -397,7 +397,7 @@ function getProgram( id )
         return $.ajax( {
             url: '../api/programs.json',
             type: 'GET',
-            data: 'paging=false&filter=id:eq:' + id +'&fields=id,name,version,dataEntryMethod,relationshipText,relationshipFromA,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,realionshipText,relationshipFromA,selectEnrollmentDatesInFuture,selectIncidentDatesInFuture,onlyEnrollOnce,externalAccess,displayOnAllOrgunit,registration,trackedEntity[id,name,description],userRoles[id,name],organisationUnits[id,name],programStages[id,name,version,minDaysFromStart,standardInterval,reportDateDescription,repeatable,autoGenerateEvent],programTrackedEntityAttributes[displayInList,mandatory,trackedEntityAttribute[id]]'
+            data: 'paging=false&filter=id:eq:' + id +'&fields=id,name,version,dataEntryMethod,relationshipText,relationshipFromA,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,realionshipText,relationshipFromA,selectEnrollmentDatesInFuture,selectIncidentDatesInFuture,onlyEnrollOnce,externalAccess,displayOnAllOrgunit,registration,trackedEntity[id,name,description],userRoles[id,name],organisationUnits[id,name],programStages[id,name,version,minDaysFromStart,standardInterval,generatedByEnrollmentDate,reportDateDescription,repeatable,autoGenerateEvent],programTrackedEntityAttributes[displayInList,mandatory,allowFutureDate,trackedEntityAttribute[id]]'
         }).done( function( response ){
             
             _.each( _.values( response.programs ), function ( program ) { 
@@ -474,7 +474,7 @@ function getProgramStage( id )
         return $.ajax( {
             url: '../api/programStages.json',
             type: 'GET',
-            data: 'filter=id:eq:' + id +'&fields=id,name,version,dataEntryForm,captureCoordinates,blockEntryForm,autoGenerateEvent,reportDateDescription,minDaysFromStart,standardInterval,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,formName,type,optionSet[id]]]'
+            data: 'filter=id:eq:' + id +'&fields=id,name,version,dataEntryForm,captureCoordinates,blockEntryForm,autoGenerateEvent,reportDateDescription,minDaysFromStart,standardInterval,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowFutureDate,compulsory,dataElement[id,name,formName,type,optionSet[id]]]'
         }).done( function( response ){            
             _.each( _.values( response.programStages ), function( programStage ) {
                 dhis2.tc.store.set( 'programStages', programStage );
