@@ -338,10 +338,10 @@ public class DefaultResourceTableService
     public void generateCategoryTable()
     {
         // ---------------------------------------------------------------------
-        // Create table
+        // Create table - only using data dimension categories
         // ---------------------------------------------------------------------
 
-        List<DataElementCategory> categories = new ArrayList<>( categoryService.getAllDataElementCategories() );
+        List<DataElementCategory> categories = new ArrayList<>( categoryService.getDataDimensionDataElementCategories() );
 
         Collections.sort( categories, IdentifiableObjectNameComparator.INSTANCE );
 
