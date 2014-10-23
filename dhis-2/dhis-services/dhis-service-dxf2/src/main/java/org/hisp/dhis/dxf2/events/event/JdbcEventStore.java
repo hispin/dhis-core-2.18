@@ -133,6 +133,7 @@ public class JdbcEventStore
 
                 event.setStoredBy( rowSet.getString( "psi_completeduser" ) );
                 event.setOrgUnit( rowSet.getString( "ou_uid" ) );
+                event.setOrgUnitName( rowSet.getString( "ou_name" ) );
 
                 event.setDueDate( StringUtils.defaultIfEmpty(
                     DateUtils.getLongDateString( rowSet.getDate( "psi_duedate" ) ), DateUtils.getLongDateString( rowSet.getDate(
@@ -211,7 +212,7 @@ public class JdbcEventStore
         String sql =
             "select pa.uid as tei_uid, pi.uid as pi_uid, pi.status as pi_status, pi.followup as pi_followup, p.uid as p_uid, " +
                 "p.type as p_type, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, " +
-                "psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, " +
+                "psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, ou.name as ou_name, " +
                 "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, " +
                 "psi.longitude as psi_longitude, psi.latitude as psi_latitude, " +
                 "psinote.trackedentitycommentid as psinote_id, psinote.commenttext as psinote_value, " +

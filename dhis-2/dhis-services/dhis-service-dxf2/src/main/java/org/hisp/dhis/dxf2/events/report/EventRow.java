@@ -56,15 +56,13 @@ public class EventRow
     
     private String event;
     
-    private String eventName;
-    
     private String program;
     
     private String programStage;
 
     private String enrollment;
     
-    private String eventOrgUnit; 
+    private String eventOrgUnitName;
     
     private String registrationOrgUnit;
     
@@ -118,18 +116,6 @@ public class EventRow
         this.event = event;
     }  
     
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getEventName()
-    {
-        return eventName;
-    }
-
-    public void setEventName( String eventName )
-    {
-        this.eventName = eventName;
-    }
-
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
     public String getProgram()
@@ -192,14 +178,14 @@ public class EventRow
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public String getEventOrgUnit()
+    public String getEventOrgUnitName()
     {
-        return eventOrgUnit;
+        return eventOrgUnitName;
     }
 
-    public void seteventOrgUnit( String eventOrgUnit )
+    public void setEventOrgUnitName( String eventOrgUnitName )
     {
-        this.eventOrgUnit = eventOrgUnit;
+        this.eventOrgUnitName = eventOrgUnitName;
     }    
 
     @JsonProperty( required = true )
@@ -271,7 +257,7 @@ public class EventRow
             return false;
         if ( dueDate != null ? !dueDate.equals( eventRow1.dueDate ) : eventRow1.dueDate != null )
             return false;
-        if ( eventOrgUnit != null ? !eventOrgUnit.equals( eventRow1.eventOrgUnit ) : eventRow1.eventOrgUnit != null )
+        if ( eventOrgUnitName != null ? !eventOrgUnitName.equals( eventRow1.eventOrgUnitName ) : eventRow1.eventOrgUnitName != null )
             return false;        
         if ( registrationOrgUnit != null ? !registrationOrgUnit.equals( eventRow1.registrationOrgUnit ) : eventRow1.registrationOrgUnit != null )
             return false;
@@ -295,7 +281,7 @@ public class EventRow
         result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
         result = 31 * result + (program != null ? program.hashCode() : 0);
         result = 31 * result + (programStage != null ? programStage.hashCode() : 0);
-        result = 31 * result + (eventOrgUnit != null ? eventOrgUnit.hashCode() : 0);
+        result = 31 * result + (eventOrgUnitName != null ? eventOrgUnitName.hashCode() : 0);
         result = 31 * result + (registrationOrgUnit != null ? registrationOrgUnit.hashCode() : 0);
         result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
         result = 31 * result + (trackedEntityInstance != null ? trackedEntityInstance.hashCode() : 0);
@@ -309,11 +295,10 @@ public class EventRow
     {
         return "Event{" + 
             "event='" + event + '\'' +
-            ", eventName=" + eventName +
             ", attributes=" + attributes +
             ", program='" + program + '\'' + 
             ", programStage='" + programStage + '\'' + 
-            ", eventOrgUnit='" + eventOrgUnit + '\'' + 
+            ", eventOrgUnitName='" + eventOrgUnitName + '\'' + 
             ", registrationOrgUnit='" + registrationOrgUnit + '\'' +
             ", registrationDate='" + registrationDate + '\'' +
             ", trackedEntityInstance='" + trackedEntityInstance + '\'' + 
