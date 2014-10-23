@@ -505,7 +505,7 @@ public class DefaultDataSetService
 
         DataApprovalStatus dataApprovalStatus = dataApprovalService.getDataApprovalStatus( dataSet, period, organisationUnit, attributeOptionCombo );
         
-        return dataApprovalStatus.getDataApprovalState().isApproved();
+        return dataApprovalStatus.getState().isApproved();
     }
 
     @Override
