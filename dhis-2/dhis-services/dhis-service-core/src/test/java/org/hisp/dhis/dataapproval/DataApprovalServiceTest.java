@@ -801,11 +801,11 @@ public class DataApprovalServiceTest
         Date date = new Date();
 
         // Level 4 (organisationUnitD and organisationUnitF ready)
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 3 (organisationUnitC) and Level 4 (organisationUnitF) ready
         try
@@ -819,11 +819,11 @@ public class DataApprovalServiceTest
         }
 
         dataApprovalStore.addDataApproval( new DataApproval( level4, dataSetA, periodA, organisationUnitD, defaultCombo, NOT_ACCEPTED, date, userA ) );
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 2 (organisationUnitB) ready
         try
@@ -859,19 +859,19 @@ public class DataApprovalServiceTest
         }
         dataApprovalStore.addDataApproval( new DataApproval( level3, dataSetA, periodA, organisationUnitC, defaultCombo, NOT_ACCEPTED, date, userA ) );
 
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 1 (organisationUnitA) ready
         dataApprovalService.approveData( asList( new DataApproval( level2, dataSetA, periodA, organisationUnitB, defaultCombo, NOT_ACCEPTED, date, userA ) ) );
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 1 (organisationUnitA) try to approve
         try
@@ -911,29 +911,29 @@ public class DataApprovalServiceTest
         Date date = new Date();
 
         // Level 4 (organisationUnitD and organisationUnitF ready)
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 3 (organisationUnitC) and Level 4 (organisationUnitF) ready
         dataApprovalService.approveData( asList( new DataApproval( level4, dataSetA, periodA, organisationUnitD, defaultCombo, NOT_ACCEPTED, date, userA ) ) );
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 2 (organisationUnitB) ready
         dataApprovalService.approveData( asList( new DataApproval( level4, dataSetA, periodA, organisationUnitF, defaultCombo, NOT_ACCEPTED, date, userA ) ) );
         dataApprovalService.approveData( asList( new DataApproval( level3, dataSetA, periodA, organisationUnitE, defaultCombo, NOT_ACCEPTED, date, userA ) ) );
         dataApprovalService.approveData( asList( new DataApproval( level3, dataSetA, periodA, organisationUnitC, defaultCombo, NOT_ACCEPTED, date, userA ) ) );
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 1 (organisationUnitA) ready
         try
@@ -948,11 +948,11 @@ public class DataApprovalServiceTest
 
         dataApprovalStore.addDataApproval( new DataApproval( level2, dataSetA, periodA, organisationUnitB, defaultCombo, NOT_ACCEPTED, date, userA ) );
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 1 (organisationUnitA) try to approve
         try
@@ -992,37 +992,37 @@ public class DataApprovalServiceTest
         Date date = new Date();
 
         // Level 4 (organisationUnitD and organisationUnitF ready)
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 3 (organisationUnitC) and Level 4 (organisationUnitF) ready
         dataApprovalService.approveData( asList( new DataApproval( level4, dataSetA, periodA, organisationUnitD, defaultCombo, NOT_ACCEPTED, date, userA ) ) );
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 2 (organisationUnitB) ready
         dataApprovalService.approveData( asList( new DataApproval( level4, dataSetA, periodA, organisationUnitF, defaultCombo, NOT_ACCEPTED, date, userA ) ) );
         dataApprovalService.approveData( asList( new DataApproval( level3, dataSetA, periodA, organisationUnitE, defaultCombo, NOT_ACCEPTED, date, userA ) ) );
         dataApprovalService.approveData( asList( new DataApproval( level3, dataSetA, periodA, organisationUnitC, defaultCombo, NOT_ACCEPTED, date, userA ) ) );
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 1 (organisationUnitA) ready
         dataApprovalService.approveData( asList( new DataApproval( level2, dataSetA, periodA, organisationUnitB, defaultCombo, NOT_ACCEPTED, date, userA ) ) );
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayApprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         // Level 1 (organisationUnitA) try to approve
         try
@@ -1059,14 +1059,14 @@ public class DataApprovalServiceTest
 
         Date date = new Date();
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         dataApprovalStore.addDataApproval( new DataApproval( level4, dataSetA, periodA, organisationUnitD, defaultCombo, NOT_ACCEPTED, date, userA ) );
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         dataApprovalStore.addDataApproval( new DataApproval( level3, dataSetA, periodA, organisationUnitC, defaultCombo, NOT_ACCEPTED, date, userA ) );
         dataApprovalStore.addDataApproval( new DataApproval( level3, dataSetA, periodA, organisationUnitE, defaultCombo, NOT_ACCEPTED, date, userA ) );
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayApprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayApprove());
 
         dataApprovalStore.addDataApproval( new DataApproval( level2, dataSetA, periodA, organisationUnitB, defaultCombo, NOT_ACCEPTED, date, userA ) );
 
@@ -1125,12 +1125,12 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalF );
         dataApprovalStore.addDataApproval( dataApprovalE );
@@ -1146,11 +1146,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalB );
 
@@ -1164,11 +1164,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalA );
 
@@ -1182,11 +1182,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
     }
 
     @Test
@@ -1233,11 +1233,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalF );
         dataApprovalStore.addDataApproval( dataApprovalE );
@@ -1253,11 +1253,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalB );
 
@@ -1271,11 +1271,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalA );
 
@@ -1289,11 +1289,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
     }
 
     @Test
@@ -1340,11 +1340,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalF );
         dataApprovalStore.addDataApproval( dataApprovalE );
@@ -1360,11 +1360,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( true, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalB );
 
@@ -1378,11 +1378,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalA );
 
@@ -1396,11 +1396,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
     }
 
     @Test
@@ -1446,11 +1446,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalF );
         dataApprovalStore.addDataApproval( dataApprovalE );
@@ -1466,11 +1466,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalB );
 
@@ -1484,11 +1484,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
 
         dataApprovalStore.addDataApproval( dataApprovalA );
 
@@ -1502,11 +1502,11 @@ public class DataApprovalServiceTest
             // Expected
         }
 
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
-        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitD, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitE, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
+        assertEquals( false, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitF, NO_GROUPS, NO_OPTIONS ).getDataApprovalPermissions().isMayUnapprove());
     }
 
     // ---------------------------------------------------------------------
@@ -1637,45 +1637,45 @@ public class DataApprovalServiceTest
         // Option combo J -> Options C,F -> Groups B,D
         // Option combo K -> Options C,G -> Groups B,D
 
-        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, groupABSet, NO_OPTIONS ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, groupABSet, NO_OPTIONS ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, groupABSet, NO_OPTIONS ).getDataApprovalStatus().getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, groupABSet, NO_OPTIONS ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, groupABSet, NO_OPTIONS ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, groupABSet, NO_OPTIONS ).getDataApprovalState() );
 
-        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, NO_GROUPS, optionsAE ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, optionsAE ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsAE ).getDataApprovalStatus().getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, NO_GROUPS, optionsAE ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, optionsAE ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsAE ).getDataApprovalState() );
 
         dataApprovalLevelService.addDataApprovalLevel( level2ABCD ); // Groups AB, CD. Options A,B,C,D.
 
-        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, groupABSet, NO_OPTIONS ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, groupABSet, NO_OPTIONS ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, groupABSet, NO_OPTIONS ).getDataApprovalStatus().getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, groupABSet, NO_OPTIONS ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, groupABSet, NO_OPTIONS ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, groupABSet, NO_OPTIONS ).getDataApprovalState() );
 
-        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, NO_GROUPS, optionsAE ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, optionsAF ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsAG ).getDataApprovalStatus().getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, NO_GROUPS, optionsAE ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, optionsAF ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsAG ).getDataApprovalState() );
 
-        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, NO_GROUPS, optionsCE ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, optionsCF ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsCG ).getDataApprovalStatus().getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, NO_GROUPS, optionsCE ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, optionsCF ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsCG ).getDataApprovalState() );
 
-        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsEF ).getDataApprovalStatus().getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsEF ).getDataApprovalState() );
 
         dataApprovalService.approveData( asList( new DataApproval( level2ABCD, dataSetA, periodA, organisationUnitB, optionComboAE, NOT_ACCEPTED, date, userA ) ) );
 
-        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, groupABSet, NO_OPTIONS ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.PARTIALLY_APPROVED_HERE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, groupABSet, NO_OPTIONS ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.PARTIALLY_APPROVED_ELSEWHERE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, groupABSet, NO_OPTIONS ).getDataApprovalStatus().getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, groupABSet, NO_OPTIONS ).getDataApprovalState() );
+        assertEquals( DataApprovalState.PARTIALLY_APPROVED_HERE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, groupABSet, NO_OPTIONS ).getDataApprovalState() );
+        assertEquals( DataApprovalState.PARTIALLY_APPROVED_ELSEWHERE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, groupABSet, NO_OPTIONS ).getDataApprovalState() );
 
-        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, NO_GROUPS, optionsAE ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.PARTIALLY_APPROVED_HERE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, optionsAF ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.PARTIALLY_APPROVED_ELSEWHERE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsAG ).getDataApprovalStatus().getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, NO_GROUPS, optionsAE ).getDataApprovalState() );
+        assertEquals( DataApprovalState.PARTIALLY_APPROVED_HERE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, optionsAF ).getDataApprovalState() );
+        assertEquals( DataApprovalState.PARTIALLY_APPROVED_ELSEWHERE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsAG ).getDataApprovalState() );
 
-        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, NO_GROUPS, optionsCE ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, optionsCF ).getDataApprovalStatus().getDataApprovalState() );
-        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsCG ).getDataApprovalStatus().getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_WAITING, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitA, NO_GROUPS, optionsCE ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitB, NO_GROUPS, optionsCF ).getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVED_READY, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsCG ).getDataApprovalState() );
 
-        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsEF ).getDataApprovalStatus().getDataApprovalState() );
+        assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatusAndPermissions( dataSetA, periodA, organisationUnitC, NO_GROUPS, optionsEF ).getDataApprovalState() );
 
         assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatus( dataSetA, periodA, organisationUnitA, optionComboAE ).getDataApprovalState() );
         assertEquals( DataApprovalState.PARTIALLY_APPROVED_HERE, dataApprovalService.getDataApprovalStatus( dataSetA, periodA, organisationUnitB, optionComboAF ).getDataApprovalState() );

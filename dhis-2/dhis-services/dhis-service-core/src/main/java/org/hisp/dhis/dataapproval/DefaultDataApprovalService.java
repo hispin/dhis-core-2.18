@@ -333,7 +333,7 @@ public class DefaultDataApprovalService
 
         if ( dal == null )
         {
-            status = new DataApprovalStatus( DataApprovalState.UNAPPROVABLE, null, null );
+            status = new DataApprovalStatus( DataApprovalState.UNAPPROVABLE, null, null, null );
             return status;
         }
 
@@ -347,7 +347,7 @@ public class DefaultDataApprovalService
         }
         catch ( DataApprovalException ex )
         {
-            status = new DataApprovalStatus( DataApprovalState.UNAPPROVABLE, null, null );
+            status = new DataApprovalStatus( DataApprovalState.UNAPPROVABLE, null, null, null );
         }
 
         status.setDataApproval( defensiveCopy( status.getDataApproval() ) );
@@ -356,7 +356,7 @@ public class DefaultDataApprovalService
     }
 
     @Override
-    public DataApprovalStatusAndPermissions getDataApprovalStatusAndPermissions( DataSet dataSet, Period period,
+    public DataApprovalStatus getDataApprovalStatusAndPermissions( DataSet dataSet, Period period,
                                     OrganisationUnit organisationUnit, Set<CategoryOptionGroup> categoryOptionGroups,
                                     Set<DataElementCategoryOption> attributeCategoryOptions )
     {
@@ -386,11 +386,7 @@ public class DefaultDataApprovalService
         {
             tracePrint( "Returning UNAPPROVABLE because no approval levels apply." );
 
-            DataApprovalStatusAndPermissions permissions = new DataApprovalStatusAndPermissions();
-
-            permissions.setDataApprovalStatus( new DataApprovalStatus( DataApprovalState.UNAPPROVABLE, null, null ) );
-
-            return permissions;
+            return new DataApprovalStatus( DataApprovalState.UNAPPROVABLE, null, null, null );
         }
 
         DataApproval da = checkDataApproval( new DataApproval( dal, dataSet, period, organisationUnit, null, false, null, null ), true, new HashMap<OrganisationUnit, Integer>() );
@@ -401,13 +397,13 @@ public class DefaultDataApprovalService
     }
 
     @Override
-    public List<DataApprovalStatusAndPermissions> getUserDataApprovalsAndPermissions( Set<DataSet> dataSets, Period period )
+    public List<DataApprovalStatus> getUserDataApprovalsAndPermissions( Set<DataSet> dataSets, Period period )
     {
         tracePrint( "---------------------------------------------------------------------- getUserDataApprovalsAndPermissions" );
 
         List<List<DataApproval>> userDataApprovals = getUserDataApprovals( dataSets, period );
 
-        List<DataApprovalStatusAndPermissions> userDataApprovalsAndPermissions = new ArrayList<>();
+        List<DataApprovalStatus> statusList = new ArrayList<>();
 
         for ( List<DataApproval> dataApprovals : userDataApprovals )
         {
@@ -416,11 +412,12 @@ public class DefaultDataApprovalService
 
             DataApprovalStatus status = doGetDataApprovalStatus( dataApprovals, dataApprovals.iterator().next() );
 
-            DataApprovalStatusAndPermissions permissions = getPermissions( status.getDataApprovalLevel(), status, status.getDataApproval() );
+            status = getPermissions( status.getDataApprovalLevel(), status, status.getDataApproval() );
 
-            userDataApprovalsAndPermissions.add( permissions );
+            statusList.add( status );
         }
-        return userDataApprovalsAndPermissions;
+        
+        return statusList;
     }
 
     // -------------------------------------------------------------------------
@@ -779,11 +776,9 @@ public class DefaultDataApprovalService
      * @param da Original Data Approval describing what we were looking for
      * @return Permissions along with status
      */
-    private DataApprovalStatusAndPermissions getPermissions( DataApprovalLevel dal, DataApprovalStatus status, DataApproval da )
+    private DataApprovalStatus getPermissions( DataApprovalLevel dal, DataApprovalStatus status, DataApproval da )
     {
-        DataApprovalStatusAndPermissions permissions = new DataApprovalStatusAndPermissions();
-
-        permissions.setDataApprovalStatus( status );
+        DataApprovalPermissions permissions = new DataApprovalPermissions();
 
         tracePrint( "getPermissions - dal " + ( dal == null ? "(null)" : dal.getName() )
                 + " dataApproval null? " + ( status.getDataApproval() == null ) );
@@ -809,8 +804,9 @@ public class DefaultDataApprovalService
                 + " may unaccept = " + permissions.isMayUnaccept() );
 
         status.setDataApproval( defensiveCopy( status.getDataApproval() ) );
+        status.setDataApprovalPermissions( permissions );
 
-        return permissions;
+        return status;
     }
 
     /**
