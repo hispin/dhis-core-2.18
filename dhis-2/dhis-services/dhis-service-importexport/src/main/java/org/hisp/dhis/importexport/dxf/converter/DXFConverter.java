@@ -37,8 +37,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.ProcessState;
-import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -69,7 +67,6 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ConceptBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ConstantBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryBatchHandler;
@@ -143,13 +140,6 @@ public class DXFConverter
     public void setImportObjectService( ImportObjectService importObjectService )
     {
         this.importObjectService = importObjectService;
-    }
-
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
     }
 
     private ConstantService constantService;
@@ -300,24 +290,7 @@ public class DXFConverter
 
         while ( reader.next() )
         {
-            if ( reader.isStartElement( ConceptConverter.COLLECTION_NAME ) )
-            {
-                log.debug( "Starting Concepts import" );
-
-                state.setMessage( "importing_concepts" );
-
-                BatchHandler<Concept> batchHandler = batchHandlerFactory.createBatchHandler( ConceptBatchHandler.class )
-                    .init();
-
-                XMLConverter converter = new ConceptConverter( batchHandler, importObjectService, conceptService );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported Concepts" );
-            }
-            else if ( reader.isStartElement( ConstantConverter.COLLECTION_NAME ) )
+            if ( reader.isStartElement( ConstantConverter.COLLECTION_NAME ) )
             {
                 log.debug( "Starting Constants import" ) ;
 

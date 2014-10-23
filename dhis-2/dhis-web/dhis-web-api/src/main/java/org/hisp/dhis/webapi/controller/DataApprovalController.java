@@ -28,21 +28,36 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.google.common.collect.Lists.newArrayList;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.dataapproval.DataApproval;
-import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
-import org.hisp.dhis.dataapproval.DataApprovalStatusAndPermissions;
 import org.hisp.dhis.dataapproval.DataApprovalService;
 import org.hisp.dhis.dataapproval.DataApprovalStateRequest;
 import org.hisp.dhis.dataapproval.DataApprovalStateRequests;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponse;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponses;
 import org.hisp.dhis.dataapproval.DataApprovalStatus;
+import org.hisp.dhis.dataapproval.DataApprovalStatusAndPermissions;
+import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -62,30 +77,12 @@ import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.utils.InputUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import static org.hisp.dhis.system.util.CollectionUtils.asSet;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author Lars Helge Overland
@@ -765,21 +762,6 @@ public class DataApprovalController
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    //TODO: temporary -- remove
-    private void demoUserDataApprovalsAndPermissions()
-    {
-        System.out.println("demoUserDataApprovalsAndPermissions");
-
-        Set<DataSet> dataSets = asSet( dataSetService.getDataSetByName( "MER: Community Based" ).iterator().next(), dataSetService.getDataSetByName( "MER: Facility Based" ).iterator().next() );
-
-        List<DataApprovalStatusAndPermissions> permissionsList = dataApprovalService.getUserDataApprovalsAndPermissions( dataSets, PeriodType.getPeriodFromIsoString( "2014Oct" ) );
-
-        for ( DataApprovalStatusAndPermissions p : permissionsList )
-        {
-            System.out.println( "status for - " + p.getDataApprovalStatus().getDataApproval().getAttributeOptionCombo().getName() + " " + p.getDataApprovalStatus().getDataApprovalLevel().getLevel() );
-        }
-    }
-
     private List<DataApproval> makeDataApprovalList( DataApprovalLevel dataApprovalLevel, DataSet dataSet,
                                                      Period period, OrganisationUnit organisationUnit,
                                                      Set<DataElementCategoryOption> attributeOptions,
@@ -819,16 +801,5 @@ public class DataApprovalController
         }
 
         return options;
-    }
-
-    private String approvalParameters( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
-        Set<CategoryOptionGroup> categoryOptionGroups )
-    {
-        return "dataSet " + dataSet.getName()
-            + ", period " + period.getName()
-            + ", org unit " + organisationUnit.getName()
-            + ", categoryOptionGroup " + (categoryOptionGroups == null ?
-            "null" :
-            ((CategoryOptionGroup) categoryOptionGroups.toArray()[0]).getName());
     }
 }

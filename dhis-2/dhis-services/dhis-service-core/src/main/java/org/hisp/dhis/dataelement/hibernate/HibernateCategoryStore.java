@@ -31,7 +31,7 @@ package org.hisp.dhis.dataelement.hibernate;
 import java.util.Collection;
 
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.common.hibernate.HibernateDimensionalObjectStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.CategoryStore;
 import org.hisp.dhis.dataelement.DataElementCategory;
 
@@ -39,7 +39,7 @@ import org.hisp.dhis.dataelement.DataElementCategory;
  * @author Lars Helge Overland
  */
 public class HibernateCategoryStore
-    extends HibernateDimensionalObjectStore<DataElementCategory>
+    extends HibernateIdentifiableObjectStore<DataElementCategory>
     implements CategoryStore
 {
     @Override

@@ -28,9 +28,6 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
-import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -39,8 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version GetDataElementCategoryOptionList.java 8:47:42 AM Feb 22, 2013 $
  */
 public class GetDataElementCategoryOptionAction
     extends ActionPagingSupport<DataElementCategoryOption>
@@ -86,13 +81,6 @@ public class GetDataElementCategoryOptionAction
     public boolean isMoreOptionsPresent()
     {
         return moreOptionsPresent;
-    }
-
-    private List<Concept> concepts;
-
-    public List<Concept> getConcepts()
-    {
-        return concepts;
     }
 
     // -------------------------------------------------------------------------

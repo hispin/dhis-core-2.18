@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
 /**
@@ -541,15 +540,6 @@ public interface DataElementCategoryService
     Collection<DataElementCategory> getDataElementCategoriesBetween( int first, int max );
 
     Collection<DataElementCategory> getDataElementCategoriesBetweenByName( String name, int first, int max );
-
-    /**
-     * Returns all DataElementCategories for a given concept
-     * 
-     * @param concept the Concept
-     * @return a collection of all DataElementCategories, or an empty
-     *         collection.
-     */
-    Collection<DataElementCategory> getDataElementCategoriesByConcept( Concept concept );
 
     Map<String, Integer> getDataElementCategoryOptionComboUidIdMap();
 

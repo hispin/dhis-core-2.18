@@ -32,7 +32,6 @@ import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
@@ -493,15 +492,6 @@ public abstract class DeletionHandler
     }
 
     public String allowDeleteMapView( MapView mapView )
-    {
-        return null;
-    }
-
-    public void deleteConcept( Concept concept )
-    {
-    }
-
-    public String allowDeleteConcept( Concept concept )
     {
         return null;
     }

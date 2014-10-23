@@ -42,7 +42,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.GenericNameableObjectStore;
-import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -208,12 +207,6 @@ public class DefaultDataElementCategoryService
         }
 
         return i18n( i18nService, dataElementCategories.get( 0 ) );
-    }
-
-    @Override
-    public Collection<DataElementCategory> getDataElementCategoriesByConcept( Concept concept )
-    {
-        return i18n( i18nService, categoryStore.getByConcept( concept ) );
     }
 
     @Override

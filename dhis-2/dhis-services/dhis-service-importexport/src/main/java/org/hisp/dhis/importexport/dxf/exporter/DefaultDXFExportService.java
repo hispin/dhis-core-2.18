@@ -47,7 +47,6 @@ import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -58,7 +57,6 @@ import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.dxf.converter.CategoryCategoryOptionAssociationConverter;
 import org.hisp.dhis.importexport.dxf.converter.CategoryComboCategoryAssociationConverter;
 import org.hisp.dhis.importexport.dxf.converter.ChartConverter;
-import org.hisp.dhis.importexport.dxf.converter.ConceptConverter;
 import org.hisp.dhis.importexport.dxf.converter.ConstantConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementCategoryComboConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementCategoryConverter;
@@ -116,13 +114,6 @@ public class DefaultDXFExportService
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
-    }
-
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
     }
 
     private ConstantService constantService;
@@ -248,7 +239,6 @@ public class DefaultDXFExportService
             thread.setRootName( DXFROOT );
             thread.setRootProperties( rootProperties );
 
-            thread.registerXMLConverter( new ConceptConverter( conceptService ) );
             thread.registerXMLConverter( new DataElementCategoryOptionConverter( categoryService ) );
             thread.registerXMLConverter( new DataElementCategoryConverter( categoryService ) );
             thread.registerXMLConverter( new DataElementCategoryComboConverter( categoryService ) );

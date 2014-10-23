@@ -381,8 +381,6 @@ public class DataApprovalServiceTest
     @Test
     public void testAddAllAndGetDataApproval() throws Exception
     {
-        System.out.println( "--------------- testAddAllAndGetDataApproval" );
-
         dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
         dataApprovalLevelService.addDataApprovalLevel( level2, 2 );
 
@@ -475,8 +473,6 @@ public class DataApprovalServiceTest
     @Test
     public void testAddDuplicateDataApproval() throws Exception
     {
-        System.out.println( "--------------- testAddDuplicateDataApproval" );
-
         dataApprovalLevelService.addDataApprovalLevel( level1 );
 
         dataSetA.setApproveData( true );
@@ -500,8 +496,6 @@ public class DataApprovalServiceTest
     @Test
     public void testDeleteDataApproval() throws Exception
     {
-        System.out.println( "--------------- testDeleteDataApproval" );
-
         dataApprovalLevelService.addDataApprovalLevel( level1 );
         dataApprovalLevelService.addDataApprovalLevel( level2 );
         dataApprovalLevelService.addDataApprovalLevel( level3 );
@@ -555,8 +549,6 @@ public class DataApprovalServiceTest
     @Test
     public void testGetDataApprovalState() throws Exception
     {
-        System.out.println( "--------------- testGetDataApprovalState" );
-
         dataApprovalLevelService.addDataApprovalLevel( level1 );
         dataApprovalLevelService.addDataApprovalLevel( level2 );
         dataApprovalLevelService.addDataApprovalLevel( level3 );
@@ -692,8 +684,6 @@ public class DataApprovalServiceTest
     @Test
     public void testGetDataApprovalStateWithMultipleChildren() throws Exception
     {
-        System.out.println( "--------------- testGetDataApprovalStateWithMultipleChildren" );
-
         dataApprovalLevelService.addDataApprovalLevel( level1 );
         dataApprovalLevelService.addDataApprovalLevel( level2 );
         dataApprovalLevelService.addDataApprovalLevel( level3 );
@@ -760,8 +750,6 @@ public class DataApprovalServiceTest
     @Test
     public void testGetDataApprovalStateOtherPeriodTypes() throws Exception
     {
-        System.out.println( "--------------- testGetDataApprovalStateOtherPeriodTypes" );
-
         dataApprovalLevelService.addDataApprovalLevel( level1 );
         dataApprovalLevelService.addDataApprovalLevel( level2 );
         dataApprovalLevelService.addDataApprovalLevel( level3 );
@@ -790,8 +778,6 @@ public class DataApprovalServiceTest
     @Test
     public void testMayApproveSameLevel() throws Exception
     {
-        System.out.println( "--------------- testMayApprove" );
-
         dataApprovalLevelService.addDataApprovalLevel( level1 );
         dataApprovalLevelService.addDataApprovalLevel( level2 );
         dataApprovalLevelService.addDataApprovalLevel( level3 );
@@ -902,8 +888,6 @@ public class DataApprovalServiceTest
     @Test
     public void testMayApproveLowerLevels() throws Exception
     {
-        System.out.println( "--------------- testMayApproveLowerLevels" );
-
         dataApprovalLevelService.addDataApprovalLevel( level1 );
         dataApprovalLevelService.addDataApprovalLevel( level2 );
         dataApprovalLevelService.addDataApprovalLevel( level3 );
@@ -985,8 +969,6 @@ public class DataApprovalServiceTest
     @Test
     public void testMayApproveSameAndLowerLevels() throws Exception
     {
-        System.out.println( "--------------- testMayApproveSameAndLowerLevels" );
-
         dataApprovalLevelService.addDataApprovalLevel( level1 );
         dataApprovalLevelService.addDataApprovalLevel( level2 );
         dataApprovalLevelService.addDataApprovalLevel( level3 );

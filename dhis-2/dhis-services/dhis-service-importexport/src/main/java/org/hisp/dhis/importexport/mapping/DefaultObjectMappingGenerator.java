@@ -33,7 +33,6 @@ import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
-import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -48,7 +47,6 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.jdbc.batchhandler.ConceptBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ConstantBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryBatchHandler;
@@ -117,14 +115,6 @@ public class DefaultObjectMappingGenerator
     // -------------------------------------------------------------------------
     // Concept
     // -------------------------------------------------------------------------
-
-    @Override
-    public Map<Object, Integer> getConceptMapping( boolean skipMapping )
-    {
-        BatchHandler<Concept> batchHandler = batchHandlerFactory.createBatchHandler( ConceptBatchHandler.class );
-
-        return getMapping( batchHandler, NameMappingUtil.getConceptMap(), skipMapping );
-    }
 
     private DataElementCategoryService categoryService;
 

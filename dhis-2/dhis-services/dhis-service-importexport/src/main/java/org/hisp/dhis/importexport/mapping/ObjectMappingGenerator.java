@@ -45,8 +45,6 @@ public interface ObjectMappingGenerator
 {
     String ID = ObjectMappingGenerator.class.getName();
     
-    Map<Object, Integer> getConceptMapping( boolean skipMapping );
-    
     Map<Object, Integer> getConstantMapping( boolean skipMapping );
     
     Map<Object, Integer> getCategoryMapping( boolean skipMapping );

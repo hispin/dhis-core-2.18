@@ -37,7 +37,6 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.dashboard.DashboardItem;
@@ -118,8 +117,6 @@ public class MetaData
     private List<Document> documents = new ArrayList<>();
 
     private List<Constant> constants = new ArrayList<>();
-
-    private List<Concept> concepts = new ArrayList<>();
 
     private List<User> users = new ArrayList<>();
 
@@ -414,19 +411,6 @@ public class MetaData
     public void setDataElementGroupSets( List<DataElementGroupSet> dataElementGroupSets )
     {
         this.dataElementGroupSets = dataElementGroupSets;
-    }
-
-    @JsonProperty
-    @JacksonXmlElementWrapper( localName = "concepts", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "concept", namespace = DxfNamespaces.DXF_2_0 )
-    public List<Concept> getConcepts()
-    {
-        return concepts;
-    }
-
-    public void setConcepts( List<Concept> concepts )
-    {
-        this.concepts = concepts;
     }
 
     @JsonProperty
@@ -1049,7 +1033,6 @@ public class MetaData
             ", attributes=" + attributes +
             ", documents=" + documents +
             ", constants=" + constants +
-            ", concepts=" + concepts +
             ", users=" + users +
             ", userRoles=" + userRoles +
             ", userGroups=" + userGroups +
