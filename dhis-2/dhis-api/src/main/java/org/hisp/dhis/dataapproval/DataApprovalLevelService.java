@@ -28,6 +28,9 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
@@ -71,6 +74,41 @@ public interface DataApprovalLevelService
      * @return a data approval level.
      */
     DataApprovalLevel getDataApprovalLevelByLevelNumber( int levelNumber );
+
+    /**
+     * Gets the highest approval level for a given organisation unit and
+     * (optionally) a set of attribute option groups. Returns the first
+     * approval level matching both the orgUnit's level and (optionally)
+     * having a category option group set containing one of the category
+     * option groups.
+     *
+     * @param orgUnit organisation unit to look for.
+     * @param cogs attribute option groups (if any) to look for.
+     * @return a data approval level, or null if not found.
+     */
+    DataApprovalLevel getHighestDataApprovalLevel( OrganisationUnit orgUnit, Set<CategoryOptionGroup> cogs );
+
+    /**
+     * Gets the lowest approval level for a given organisation unit and
+     * (optionally) a set of attribute options. Returns the last
+     * approval level matching both the orgUnit's level and (optionally)
+     * having a category option group set containing one of the category
+     * option groups containing one of the options.
+     *
+     * @param orgUnit organisation unit to look for.
+     * @param attributeOptionCombo attribute option combination.
+     * @return a data approval level, or null if not found.
+     */
+    DataApprovalLevel getLowestDataApprovalLevel( OrganisationUnit orgUnit, DataElementCategoryOptionCombo attributeOptionCombo );
+
+    /**
+     * Gets the lowest approval level for a given attribute option (for
+     * any possible organisation unit.)
+     *
+     * @param option option (if any) that may belong to an approval level.
+     * @return lowest approval level that could contain the option.
+     */
+    DataApprovalLevel getLowestOptionApprovalLevel( DataElementCategoryOption option );
 
     /**
      * Gets a list of all data approval levels.
@@ -165,6 +203,16 @@ public interface DataApprovalLevelService
      * @param dataApprovalLevel the data approval level to delete.
      */
     void deleteDataApprovalLevel( DataApprovalLevel dataApprovalLevel );
+
+    /**
+     * Gets the approval level at which this user may make approval actions
+     * (if the user is authorized for any) on this organisation unit.
+     *
+     * @param orgUnit org unit to test
+     * @param includeDataViewOrgUnits include data view org units in test?
+     * @return approval level
+     */
+    DataApprovalLevel getUserApprovalLevel( OrganisationUnit orgUnit, boolean includeDataViewOrgUnits );
 
     /**
      * By organisation unit subhierarchy, returns the lowest data approval

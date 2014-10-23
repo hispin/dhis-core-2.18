@@ -275,6 +275,12 @@ public class DefaultOrganisationUnitService
     }
 
     @Override
+    public int getLevelOfOrganisationUnit( OrganisationUnit unit )
+    {
+        return unit.getLevel() != 0 ? unit.getLevel() : unit.getOrganisationUnitLevel();
+    }
+
+    @Override
     public int getLevelOfOrganisationUnit( int id )
     {
         return getOrganisationUnit( id ).getOrganisationUnitLevel();

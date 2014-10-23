@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataapproval.hibernate;
+package org.hisp.dhis.dataapproval.exceptions;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,36 +28,17 @@ package org.hisp.dhis.dataapproval.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.dataapproval.DataApprovalLevel;
-import org.hisp.dhis.dataapproval.DataApprovalLevelStore;
-
 /**
  * @author Jim Grace
+ * @version $Id$
  */
-public class HibernateDataApprovalLevelStore
-    extends HibernateIdentifiableObjectStore<DataApprovalLevel>
-    implements DataApprovalLevelStore
+public class UserMayNotAcceptDataException
+        extends DataApprovalException
 {
-    // -------------------------------------------------------------------------
-    // DataApprovalLevelStore implementation
-    // -------------------------------------------------------------------------
+    private static final long serialVersionUID = 2765006990627122000L;
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<DataApprovalLevel> getAllDataApprovalLevels()
+    public UserMayNotAcceptDataException()
     {
-        return getCriteria().addOrder( Order.asc( "level" ) ).list();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<DataApprovalLevel> getDataApprovalLevelsByOrgUnitLevel( int orgUnitLevel )
-    {
-        return getCriteria( Restrictions.eq( "orgUnitLevel", orgUnitLevel ) ).addOrder( Order.asc( "level" ) ).list();
+        super();
     }
 }

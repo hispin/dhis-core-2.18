@@ -71,7 +71,7 @@ public class DataApprovalLevel
     /**
      * The name of the organisation unit level (derived through the service.)
      */
-    private String orgUnitLevelName;
+    private transient String orgUnitLevelName;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -89,7 +89,7 @@ public class DataApprovalLevel
     }
 
     public DataApprovalLevel( String name, int level, int orgUnitLevel, CategoryOptionGroupSet categoryOptionGroupSet,
-        Date created, Date lastUpdated )
+                              Date created, Date lastUpdated )
     {
         this.name = name;
         this.level = level;
@@ -97,6 +97,16 @@ public class DataApprovalLevel
         this.categoryOptionGroupSet = categoryOptionGroupSet;
         this.created = created;
         this.lastUpdated = lastUpdated;
+    }
+
+    public DataApprovalLevel( DataApprovalLevel d )
+    {
+        this.name = d.name;
+        this.level = d.level;
+        this.orgUnitLevel = d.orgUnitLevel;
+        this.categoryOptionGroupSet = d.categoryOptionGroupSet;
+        this.created = d.created;
+        this.lastUpdated = d.lastUpdated;
     }
 
     // -------------------------------------------------------------------------

@@ -31,7 +31,13 @@ package org.hisp.dhis.dataapproval;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -78,9 +84,9 @@ public class DataApproval
     private OrganisationUnit organisationUnit;
     
     /**
-     * The attribute CategoryOptionGroup being approved (optional).
+     * The attribute category option combo being approved (optional).
      */
-    private CategoryOptionGroup categoryOptionGroup;
+    private DataElementCategoryOptionCombo attributeOptionCombo;
 
     /**
      * Whether the approval has been accepted (optional, usually by another
@@ -109,14 +115,14 @@ public class DataApproval
 
     public DataApproval( DataApprovalLevel dataApprovalLevel, DataSet dataSet,
                          Period period, OrganisationUnit organisationUnit,
-                         CategoryOptionGroup categoryOptionGroup, boolean accepted,
-                         Date created, User creator )
+                         DataElementCategoryOptionCombo attributeOptionCombo,
+                         boolean accepted, Date created, User creator )
     {
         this.dataApprovalLevel = dataApprovalLevel;
         this.dataSet = dataSet;
         this.period = period;
         this.organisationUnit = organisationUnit;
-        this.categoryOptionGroup = categoryOptionGroup;
+        this.attributeOptionCombo = attributeOptionCombo;
         this.accepted = accepted;
         this.created = created;
         this.creator = creator;
@@ -128,7 +134,7 @@ public class DataApproval
         this.dataSet = da.dataSet;
         this.period = da.period;
         this.organisationUnit = da.organisationUnit;
-        this.categoryOptionGroup = da.categoryOptionGroup;
+        this.attributeOptionCombo = da.attributeOptionCombo;
         this.accepted = da.accepted;
         this.created = da.created;
         this.creator = da.creator;
@@ -148,6 +154,9 @@ public class DataApproval
         this.id = id;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DataApprovalLevel getDataApprovalLevel()
     {
         return dataApprovalLevel;
@@ -188,14 +197,14 @@ public class DataApproval
         this.organisationUnit = organisationUnit;
     }
 
-    public CategoryOptionGroup getCategoryOptionGroup()
+    public DataElementCategoryOptionCombo getAttributeOptionCombo()
     {
-        return categoryOptionGroup;
+        return attributeOptionCombo;
     }
 
-    public void setCategoryOptionGroup( CategoryOptionGroup categoryOptionGroup )
+    public void setAttributeOptionCombo( DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        this.categoryOptionGroup = categoryOptionGroup;
+        this.attributeOptionCombo = attributeOptionCombo;
     }
 
     public boolean isAccepted()
@@ -226,5 +235,103 @@ public class DataApproval
     public void setCreator( User creator )
     {
         this.creator = creator;
+    }
+
+    // ----------------------------------------------------------------------
+    // hashCode and equals
+    // ----------------------------------------------------------------------
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+
+        int result = 1;
+
+        result = prime * result + ((dataApprovalLevel == null) ? 0 : dataApprovalLevel.hashCode());
+        result = prime * result + ((dataSet == null) ? 0 : dataSet.hashCode());
+        result = prime * result + ((period == null) ? 0 : period.hashCode());
+        result = prime * result + ((organisationUnit == null) ? 0 : organisationUnit.hashCode());
+        result = prime * result + ((attributeOptionCombo == null) ? 0 : attributeOptionCombo.hashCode());
+
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+
+        if ( object == null || !( object instanceof DataApproval ) )
+        {
+            return false;
+        }
+
+        DataApproval that = (DataApproval) object;
+
+        if ( dataApprovalLevel != null )
+        {
+            if ( !dataApprovalLevel.equals( that.getDataApprovalLevel() ) )
+            {
+                return false;
+            }
+        }
+        else if ( that.getDataApprovalLevel() != null )
+        {
+            return false;
+        }
+
+        if ( dataSet != null )
+        {
+            if ( !dataSet.equals( that.getDataSet() ) )
+            {
+                return false;
+            }
+        }
+        else if ( that.getDataSet() != null )
+        {
+            return false;
+        }
+
+        if ( period != null )
+        {
+            if ( !period.equals( that.getPeriod() ) )
+            {
+                return false;
+            }
+        }
+        else if ( that.getPeriod() != null )
+        {
+            return false;
+        }
+
+        if ( organisationUnit != null )
+        {
+            if ( !organisationUnit.equals( that.getOrganisationUnit() ) )
+            {
+                return false;
+            }
+        }
+        else if ( that.getOrganisationUnit() != null )
+        {
+            return false;
+        }
+
+        if ( attributeOptionCombo != null )
+        {
+            if ( !attributeOptionCombo.equals( that.getAttributeOptionCombo() ) )
+            {
+                return false;
+            }
+        }
+        else if ( that.getAttributeOptionCombo() != null )
+        {
+            return false;
+        }
+
+        return true;
     }
 }
