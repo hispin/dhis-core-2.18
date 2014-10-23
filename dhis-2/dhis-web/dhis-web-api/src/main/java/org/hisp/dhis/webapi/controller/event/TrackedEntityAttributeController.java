@@ -197,6 +197,7 @@ public class TrackedEntityAttributeController
             return;
         }
 
+        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         trackedEntityAttributeService.deleteTrackedEntityAttribute( trackedEntityAttribute );
     }
 }
