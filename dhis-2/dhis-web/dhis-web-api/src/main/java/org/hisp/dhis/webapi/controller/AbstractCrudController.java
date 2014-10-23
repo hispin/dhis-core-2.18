@@ -31,10 +31,7 @@ package org.hisp.dhis.webapi.controller;
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import org.hibernate.LockOptions;
-import org.hibernate.SessionFactory;
 import org.hisp.dhis.acl.AclService;
-import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -126,9 +123,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @Autowired
     protected ContextService contextService;
-
-    @Autowired
-    private SessionFactory sessionFactory;
 
     //--------------------------------------------------------------------------
     // GET
@@ -584,7 +578,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         manager.update( objects.get( 0 ) );
-        sessionFactory.getCurrentSession().refresh( candidate  );
+        manager.refresh( candidate );
     }
 
     @RequestMapping( value = "/{uid}/{property}/{itemId}", method = RequestMethod.DELETE )
@@ -653,7 +647,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         manager.update( objects.get( 0 ) );
-        sessionFactory.getCurrentSession().refresh( candidate  );
+        manager.refresh( candidate );
     }
 
     //--------------------------------------------------------------------------
