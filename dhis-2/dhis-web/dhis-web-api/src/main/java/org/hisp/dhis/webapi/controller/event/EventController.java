@@ -296,9 +296,9 @@ public class EventController
         return "events";
     }
 
-    @RequestMapping( value = "/overdue", method = RequestMethod.GET )
+    @RequestMapping( value = "/eventRows", method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_DATAVALUE_ADD')" )
-    public String getOverdueEvents(
+    public String getEventRows(
         @RequestParam( required = false ) String program,
         @RequestParam( required = false ) String orgUnit,
         @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,

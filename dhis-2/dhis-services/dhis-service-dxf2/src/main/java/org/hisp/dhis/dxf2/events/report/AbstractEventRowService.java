@@ -41,7 +41,6 @@ import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -87,11 +86,10 @@ public class AbstractEventRowService
                 eventRow.setAttributes( tei.getAttributes() );
                 eventRow.setEvent( event.getEvent() );
                 eventRow.setProgram( program.getUid() );
-                eventRow.setProgramStage( event.getProgramStage() );
-                eventRow.setEventName( manager.get( ProgramStage.class, event.getProgramStage() ).getName() );
-                eventRow.setRegistrationOrgUnit( manager.get( OrganisationUnit.class, tei.getOrgUnit() ).getName() );
+                eventRow.setProgramStage( event.getProgramStage() );                
+                eventRow.setRegistrationOrgUnit( tei.getOrgUnit() );
                 eventRow.setRegistrationDate( tei.getCreated() );
-                // eventRow.setOrgUnit( event.getOrgUnit() );
+                eventRow.setEventOrgUnitName( event.getOrgUnitName() );
                 eventRow.setDueDate( event.getDueDate() );
                 eventRow.setFollowup( event.getFollowup() );
                 eventRowList.add( eventRow );
