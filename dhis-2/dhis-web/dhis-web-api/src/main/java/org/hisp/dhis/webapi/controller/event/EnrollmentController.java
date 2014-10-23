@@ -176,11 +176,12 @@ public class EnrollmentController
     // CREATE
     // -------------------------------------------------------------------------
 
-    @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE )
+    @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PROGRAM_ENROLLMENT')" )
     public void postEnrollmentXml( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummaries importSummaries = enrollmentService.addEnrollmentsXml( request.getInputStream() );
+        response.setContentType( MediaType.APPLICATION_XML_VALUE );
 
         if ( importSummaries.getImportSummaries().size() > 1 )
         {
@@ -201,11 +202,12 @@ public class EnrollmentController
         }
     }
 
-    @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
+    @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PROGRAM_ENROLLMENT')" )
     public void postEnrollmentJson( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummaries importSummaries = enrollmentService.addEnrollmentsJson( request.getInputStream() );
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
 
         if ( importSummaries.getImportSummaries().size() > 1 )
         {
@@ -230,19 +232,23 @@ public class EnrollmentController
     // UPDATE
     // -------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_XML_VALUE )
+    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PROGRAM_UNENROLLMENT')" )
     public void updateEnrollmentXml( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummary importSummary = enrollmentService.updateEnrollmentXml( id, request.getInputStream() );
+        response.setContentType( MediaType.APPLICATION_XML_VALUE );
+
         JacksonUtils.toXml( response.getOutputStream(), importSummary );
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
+    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PROGRAM_UNENROLLMENT')" )
     public void updateEnrollmentJson( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummary importSummary = enrollmentService.updateEnrollmentJson( id, request.getInputStream() );
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+
         JacksonUtils.toJson( response.getOutputStream(), importSummary );
     }
 
@@ -253,6 +259,7 @@ public class EnrollmentController
     {
         Enrollment enrollment = getEnrollment( id );
         enrollment.setStatus( EnrollmentStatus.CANCELLED );
+
         enrollmentService.cancelEnrollment( enrollment );
     }
 
@@ -263,6 +270,7 @@ public class EnrollmentController
     {
         Enrollment enrollment = getEnrollment( id );
         enrollment.setStatus( EnrollmentStatus.COMPLETED );
+
         enrollmentService.completeEnrollment( enrollment );
     }
 
