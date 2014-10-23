@@ -248,6 +248,7 @@ public class EnrollmentController
 
     @RequestMapping( value = "/{id}/cancelled", method = RequestMethod.PUT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PROGRAM_UNENROLLMENT')" )
+    @ResponseStatus( HttpStatus.NO_CONTENT )
     public void cancelEnrollment( @PathVariable String id ) throws NotFoundException
     {
         Enrollment enrollment = getEnrollment( id );
@@ -257,6 +258,7 @@ public class EnrollmentController
 
     @RequestMapping( value = "/{id}/completed", method = RequestMethod.PUT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PROGRAM_UNENROLLMENT')" )
+    @ResponseStatus( HttpStatus.NO_CONTENT )
     public void completedEnrollment( @PathVariable String id ) throws NotFoundException
     {
         Enrollment enrollment = getEnrollment( id );
@@ -270,6 +272,7 @@ public class EnrollmentController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PROGRAM_UNENROLLMENT')" )
+    @ResponseStatus( HttpStatus.NO_CONTENT )
     public void deleteEnrollment( @PathVariable String id ) throws NotFoundException
     {
         Enrollment enrollment = getEnrollment( id );
