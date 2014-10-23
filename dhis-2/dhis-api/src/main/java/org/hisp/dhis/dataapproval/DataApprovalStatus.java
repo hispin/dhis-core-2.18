@@ -55,7 +55,9 @@ public class DataApprovalStatus
      * one level, this is for the highest level of approval.
      */
     private DataApprovalLevel dataApprovalLevel;
-
+    
+    private DataApprovalPermissions dataApprovalPermissions;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -65,11 +67,12 @@ public class DataApprovalStatus
     }
 
     public DataApprovalStatus( DataApprovalState dataApprovalState, DataApproval dataApproval,
-        DataApprovalLevel dataApprovalLevel )
+        DataApprovalLevel dataApprovalLevel, DataApprovalPermissions dataApprovalPermissions )
     {
         this.dataApprovalState = dataApprovalState;
         this.dataApproval = dataApproval;
         this.dataApprovalLevel = dataApprovalLevel;
+        this.dataApprovalPermissions = dataApprovalPermissions;
     }
 
     // -------------------------------------------------------------------------
@@ -104,5 +107,15 @@ public class DataApprovalStatus
     public void setDataApprovalLevel( DataApprovalLevel dataApprovalLevel )
     {
         this.dataApprovalLevel = dataApprovalLevel;
+    }
+
+    public DataApprovalPermissions getDataApprovalPermissions()
+    {
+        return dataApprovalPermissions;
+    }
+
+    public void setDataApprovalPermissions( DataApprovalPermissions dataApprovalPermissions )
+    {
+        this.dataApprovalPermissions = dataApprovalPermissions;
     }
 }

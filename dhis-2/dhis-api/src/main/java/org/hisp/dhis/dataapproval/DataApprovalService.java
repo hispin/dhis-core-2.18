@@ -103,7 +103,7 @@ public interface DataApprovalService
      * @param dataElementCategoryOptions Selected category options (if any).
      * @return the data approval permissions (including status.)
      */
-    DataApprovalStatusAndPermissions getDataApprovalStatusAndPermissions( DataSet dataSet, Period period,
+    DataApprovalStatus getDataApprovalStatusAndPermissions( DataSet dataSet, Period period,
                                                                           OrganisationUnit organisationUnit,
                                                                           Set<CategoryOptionGroup> categoryOptionGroups,
                                                                           Set<DataElementCategoryOption> dataElementCategoryOptions );
@@ -116,5 +116,5 @@ public interface DataApprovalService
      * @param period period we are getting the status for
      * @return list of status and permissions
      */
-    List<DataApprovalStatusAndPermissions> getUserDataApprovalsAndPermissions( Set<DataSet> dataSets, Period period );
+    List<DataApprovalStatus> getUserDataApprovalsAndPermissions( Set<DataSet> dataSets, Period period );
 }

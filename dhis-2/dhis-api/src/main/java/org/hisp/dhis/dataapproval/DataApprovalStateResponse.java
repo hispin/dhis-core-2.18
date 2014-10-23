@@ -55,16 +55,10 @@ public class DataApprovalStateResponse
 
     private Date createdDate;
 
-    private boolean mayApprove;
-
-    private boolean mayUnapprove;
-
-    private boolean mayAccept;
-
-    private boolean mayUnaccept;
+    private DataApprovalPermissions permissions;
 
     public DataApprovalStateResponse( DataSet dataSet, Period period, OrganisationUnit organisationUnit, String state, Date createdDate, String createdByUsername,
-        boolean mayApprove, boolean mayUnapprove, boolean mayAccept, boolean mayUnaccept )
+        DataApprovalPermissions permissions )
     {
         this.dataSet = dataSet;
         this.period = period;
@@ -72,10 +66,7 @@ public class DataApprovalStateResponse
         this.state = state;
         this.createdDate = createdDate;
         this.createdByUsername = createdByUsername;
-        this.mayApprove = mayApprove;
-        this.mayUnapprove = mayUnapprove;
-        this.mayAccept = mayAccept;
-        this.mayUnaccept = mayUnaccept;
+        this.permissions = permissions;
     }
 
     @JsonProperty
@@ -131,50 +122,14 @@ public class DataApprovalStateResponse
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isMayApprove()
+    public DataApprovalPermissions getPermissions()
     {
-        return mayApprove;
+        return permissions;
     }
 
-    public void setMayApprove( boolean mayApprove )
+    public void setPermissions( DataApprovalPermissions permissions )
     {
-        this.mayApprove = mayApprove;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isMayUnapprove()
-    {
-        return mayUnapprove;
-    }
-
-    public void setMayUnapprove( boolean mayUnapprove )
-    {
-        this.mayUnapprove = mayUnapprove;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isMayAccept()
-    {
-        return mayAccept;
-    }
-
-    public void setMayAccept( boolean mayAccept )
-    {
-        this.mayAccept = mayAccept;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isMayUnaccept()
-    {
-        return mayUnaccept;
-    }
-
-    public void setMayUnaccept( boolean mayUnaccept )
-    {
-        this.mayUnaccept = mayUnaccept;
+        this.permissions = permissions;
     }
 
     @JsonProperty

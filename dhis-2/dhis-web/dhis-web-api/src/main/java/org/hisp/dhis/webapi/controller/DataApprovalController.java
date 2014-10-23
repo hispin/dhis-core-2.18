@@ -34,11 +34,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -56,7 +54,6 @@ import org.hisp.dhis.dataapproval.DataApprovalStateRequests;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponse;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponses;
 import org.hisp.dhis.dataapproval.DataApprovalStatus;
-import org.hisp.dhis.dataapproval.DataApprovalStatusAndPermissions;
 import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -98,11 +95,6 @@ public class DataApprovalController
     private static final String STATUS_PATH = "/status";
     private static final String MULTIPLE_SAVE_RESOURCE_PATH = "/multiple";
     private static final String MULTIPLE_ACCEPTANCES_RESOURCE_PATH = "/acceptances/multiple";
-    private static final String APPROVAL_STATE = "state";
-    private static final String APPROVAL_MAY_APPROVE = "mayApprove";
-    private static final String APPROVAL_MAY_UNAPPROVE = "mayUnapprove";
-    private static final String APPROVAL_MAY_ACCEPT = "mayAccept";
-    private static final String APPROVAL_MAY_UNACCEPT = "mayUnaccept";
 
     @Autowired
     private DataApprovalService dataApprovalService;
@@ -194,17 +186,10 @@ public class DataApprovalController
             return;
         }
 
-        DataApprovalStatusAndPermissions permissions = dataApprovalService
+        DataApprovalStatus status = dataApprovalService
             .getDataApprovalStatusAndPermissions( dataSet, period, organisationUnit, categoryOptionGroups, categoryOptions );
 
-        Map<String, Object> approvalState = new HashMap<>();
-        approvalState.put( APPROVAL_STATE, permissions.getDataApprovalStatus().getDataApprovalState().toString() );
-        approvalState.put( APPROVAL_MAY_APPROVE, permissions.isMayApprove() );
-        approvalState.put( APPROVAL_MAY_UNAPPROVE, permissions.isMayUnapprove() );
-        approvalState.put( APPROVAL_MAY_ACCEPT, permissions.isMayAccept() );
-        approvalState.put( APPROVAL_MAY_UNACCEPT, permissions.isMayUnaccept() );
-
-        JacksonUtils.toJson( response.getOutputStream(), approvalState );
+        JacksonUtils.toJson( response.getOutputStream(), status.getDataApprovalPermissions() );
     }
 
     @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON, value = STATUS_PATH )
@@ -266,23 +251,20 @@ public class DataApprovalController
         JacksonUtils.toJsonWithView( response.getOutputStream(), dataApprovalStateResponses, BasicView.class );
     }
 
-    private DataApprovalStateResponse getDataApprovalStateResponse( DataSet dataSet, OrganisationUnit organisationUnit,
-        Period period )
+    private DataApprovalStateResponse getDataApprovalStateResponse( DataSet dataSet, 
+        OrganisationUnit organisationUnit, Period period )
     {
-        DataApprovalStatusAndPermissions permissions = dataApprovalService.getDataApprovalStatusAndPermissions( dataSet, period,
+        DataApprovalStatus status = dataApprovalService.getDataApprovalStatusAndPermissions( dataSet, period,
             organisationUnit, null, null );
 
-        DataApprovalStatus dataApprovalStatus = permissions.getDataApprovalStatus();
-
-        DataApproval dataApproval = dataApprovalStatus.getDataApproval();
+        DataApproval dataApproval = status.getDataApproval();
         Date createdDate = (dataApproval == null) ? null : dataApproval.getCreated();
         String createdByUsername = (dataApproval == null) ? null : dataApproval.getCreator().getUsername();
 
-        String state = dataApprovalStatus.getDataApprovalState().toString();
+        String state = status.getDataApprovalState().toString();
 
-        return new DataApprovalStateResponse( dataSet, period, organisationUnit, state, createdDate, createdByUsername,
-            permissions.isMayApprove(), permissions.isMayUnapprove(), permissions.isMayAccept(),
-            permissions.isMayUnaccept() );
+        return new DataApprovalStateResponse( dataSet, period, organisationUnit, state, 
+            createdDate, createdByUsername, status.getDataApprovalPermissions() );
     }
     
     // -------------------------------------------------------------------------
