@@ -28,7 +28,6 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.common.NameableObject.NameableProperty;
 
 import java.util.Collection;
@@ -121,6 +120,8 @@ public interface IdentifiableObjectManager
     <T extends IdentifiableObject> int getCountLikeName( Class<T> clazz, String name );
 
     <T extends IdentifiableObject> int getCountLikeShortName( Class<T> clazz, String shortName );
+
+    void refresh( Object object );
 
     // -------------------------------------------------------------------------
     // NO ACL

@@ -30,7 +30,7 @@ package org.hisp.dhis.common;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.IdentifiableProperty;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.common.NameableObject.NameableProperty;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +60,9 @@ public class DefaultIdentifiableObjectManager
 
     @Autowired
     private Set<GenericNameableObjectStore<? extends NameableObject>> nameableObjectStores;
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     private Map<Class<? extends IdentifiableObject>, GenericIdentifiableObjectStore<? extends IdentifiableObject>> identifiableObjectStoreMap;
 
@@ -680,6 +683,12 @@ public class DefaultIdentifiableObjectManager
         }
 
         return null;
+    }
+
+    @Override
+    public void refresh( Object object )
+    {
+        sessionFactory.getCurrentSession().refresh( object );
     }
 
     @Override
