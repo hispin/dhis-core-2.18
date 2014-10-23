@@ -166,13 +166,14 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
                 calendar: calendar, 
                 renderer: $.calendars.picker.themeRollerRenderer,
                 onSelect: function(date) {
-                    //scope.date = date;
+                    //scope.date = date;                    
                     ctrl.$setViewValue(date);
                     $(this).change();                    
                     scope.$apply();
                 }
             })
-            .change(function() {                
+            .change(function() {
+                
                 var rawDate = this.value;
                 var convertedDate = DateUtils.format(this.value);
 
@@ -188,7 +189,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
                     ctrl.$setValidity('foo', true);                    
                     scope.$apply();     
                 }
-            });    
+            });
         }      
     };   
 })

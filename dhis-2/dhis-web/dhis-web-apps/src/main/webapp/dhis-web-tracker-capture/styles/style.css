@@ -801,6 +801,10 @@ a:active {
     height: inherit;  //this is to make it play nice with bootstrap
 }
 
+#ui-datepicker-div, .calendars-popup {
+	z-index: 1000; //has to be greater than bootsrap's modal z-index
+}
+
 @media print {
     #header, #leftBar, .not-printable {
         display: none;

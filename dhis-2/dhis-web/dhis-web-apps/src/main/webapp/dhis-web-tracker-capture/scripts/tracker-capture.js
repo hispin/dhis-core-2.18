@@ -151,7 +151,10 @@ $(document).ready(function()
     
     $('#searchDropDown').on('click', "[data-stop-propagation]", function(e) {
         e.stopPropagation();
-    });   
+    });
+    
+    //stop date picker's event bubling
+    $(document).on('click.dropdown touchstart.dropdown.data-api', '#ui-datepicker-div', function (e) { e.stopPropagation() });
 
 });
 

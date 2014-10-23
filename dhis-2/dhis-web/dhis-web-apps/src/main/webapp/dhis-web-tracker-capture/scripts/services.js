@@ -333,16 +333,14 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         
         get: function(entityUid) {
             var promise = $http.get(  '../api/trackedEntityInstances/' +  entityUid ).then(function(response){     
-                var tei = response.data;
+                return response.data;
                 
-                angular.forEach(tei.attributes, function(attribute){                   
-                   if(attribute.type && attribute.value){                       
-                       if(attribute.type === 'date'){                           
-                           attribute.value = DateUtils.format(attribute.value);
-                       }
+                /*angular.forEach(tei.attributes, function(attribute){                   
+                   if(attribute.type && attribute.value && attribute.type=== 'date'){                       
+                        attribute.value = DateUtils.format(attribute.value);                        
                    } 
                 });
-                return tei;
+                return tei;*/
             });            
             return promise;
         },        
@@ -663,7 +661,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };  
 })
 
-.service('EntityQueryFactory', function(OperatorFactory){  
+.service('EntityQueryFactory', function(OperatorFactory, DateUtils){  
     
     this.getAttributesQuery = function(attributes, enrollment){
 
@@ -671,22 +669,31 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         
         angular.forEach(attributes, function(attribute){           
 
-            if(attribute.type === 'date' || attribute.type === 'number'){
+            if(attribute.valueType === 'date' || attribute.valueType === 'number'){
                 var q = '';
                 
                 if(attribute.operator === OperatorFactory.defaultOperators[0]){
                     if(attribute.exactValue && attribute.exactValue !== ''){
-                        query.hasValue = true;    
+                        query.hasValue = true;
+                        if(attribute.valueType === 'date'){
+                            attribute.exactValue = DateUtils.formatFromUserToApi(attribute.exactValue);
+                        }
                         q += 'EQ:' + attribute.exactValue + ':';
                     }
                 }                
                 if(attribute.operator === OperatorFactory.defaultOperators[1]){
                     if(attribute.startValue && attribute.startValue !== ''){
-                        query.hasValue = true;    
+                        query.hasValue = true;
+                        if(attribute.valueType === 'date'){
+                            attribute.startValue = DateUtils.formatFromUserToApi(attribute.startValue);
+                        }
                         q += 'GT:' + attribute.startValue + ':';
                     }
                     if(attribute.endValue && attribute.endValue !== ''){
-                        query.hasValue = true;    
+                        query.hasValue = true;
+                        if(attribute.valueType === 'date'){
+                            attribute.endValue = DateUtils.formatFromUserToApi(attribute.endValue);
+                        }
                         q += 'LT:' + attribute.endValue + ':';
                     }
                 }                
@@ -743,17 +750,17 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             if(enrollment.operator === OperatorFactory.defaultOperators[0]){
                 if(enrollment.programExactDate && enrollment.programExactDate !== ''){
                     query.hasValue = true;
-                    q += '&programStartDate=' + enrollment.programExactDate + '&programEndDate=' + enrollment.programExactDate;
+                    q += '&programStartDate=' + DateUtils.formatFromUserToApi(enrollment.programExactDate) + '&programEndDate=' + DateUtils.formatFromUserToApi(enrollment.programExactDate);
                 }
             }
             if(enrollment.operator === OperatorFactory.defaultOperators[1]){
                 if(enrollment.programStartDate && enrollment.programStartDate !== ''){                
                     query.hasValue = true;
-                    q += '&programStartDate=' + enrollment.programStartDate;
+                    q += '&programStartDate=' + DateUtils.formatFromUserToApi(enrollment.programStartDate);
                 }
                 if(enrollment.programEndDate && enrollment.programEndDate !== ''){
                     query.hasValue = true;
-                    q += '&programEndDate=' + enrollment.programEndDate;
+                    q += '&programEndDate=' + DateUtils.formatFromUserToApi(enrollment.programEndDate);
                 }
             }            
             if(q){
