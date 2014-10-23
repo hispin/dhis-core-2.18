@@ -156,7 +156,7 @@ public class DefaultDataApprovalService
 
             if ( status.getState().isApproved() && status.getDataApprovalLevel().getLevel() >= da.getDataApprovalLevel().getLevel() )
             {
-                it.remove(); // Already approved at this level -- no action needed.
+                it.remove(); // Already approved at this level, no action needed
             }
             else if ( !status.getState().isApprovable() )
             {
@@ -319,6 +319,8 @@ public class DefaultDataApprovalService
     {
         tracePrint( "---------------------------------------------------------------------- getDataApprovalStatus" );
 
+        period = periodService.reloadPeriod( period );
+        
         tracePrint( "getDataApprovalStatus( " + dataSet.getName() + ", "
                 + period.getPeriodType().getName() + " " + period.getName() + " " + period + ", "
                 + organisationUnit.getName() + ", "
@@ -370,6 +372,8 @@ public class DefaultDataApprovalService
     {
         tracePrint( "---------------------------------------------------------------------- getDataApprovalStatusAndPermissions" );
 
+        period = periodService.reloadPeriod( period );
+        
         tracePrint( "getDataApprovalStatusAndPermissions( " + dataSet.getName() + ", "
                 + period.getPeriodType().getName() + " " + period.getName() + " " + period + ", "
                 + organisationUnit.getName() + ", "
@@ -409,6 +413,8 @@ public class DefaultDataApprovalService
     {
         tracePrint( "---------------------------------------------------------------------- getUserDataApprovalsAndPermissions" );
 
+        period = periodService.reloadPeriod( period );
+        
         List<List<DataApproval>> userDataApprovals = getUserDataApprovals( dataSets, period );
 
         List<DataApprovalStatus> statusList = new ArrayList<>();
@@ -466,6 +472,8 @@ public class DefaultDataApprovalService
                                                   Set<DataElementCategoryOption> attributeOptions,
                                                   boolean isGetStatus )
     {
+        dataApproval.setPeriod( periodService.reloadPeriod( dataApproval.getPeriod() ) );
+        
         if ( ( attributeOptionGroups == null || attributeOptionGroups.isEmpty() )
             && ( attributeOptions == null || attributeOptions.isEmpty() ) )
         {
@@ -771,7 +779,7 @@ public class DefaultDataApprovalService
      * @return Permissions along with status
      */
     private DataApprovalStatus getPermissions( DataApprovalLevel dal, DataApprovalStatus status, DataApproval da )
-    {
+    {        
         DataApprovalPermissions permissions = new DataApprovalPermissions();
 
         tracePrint( "getPermissions - dal " + ( dal == null ? "(null)" : dal.getName() )

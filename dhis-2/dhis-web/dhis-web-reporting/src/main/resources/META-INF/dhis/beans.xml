@@ -117,10 +117,6 @@
     scope="prototype">
   </bean>
   
-  <bean id="org.hisp.dhis.reporting.dataapproval.action.GetCategoryOptionGroupsAction" class="org.hisp.dhis.reporting.dataapproval.action.GetCategoryOptionGroupsAction"
-    scope="prototype">
-  </bean>
-
   <!-- Data completeness -->
 
   <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction"

@@ -47,8 +47,6 @@ public class DataApprovalStateRequest
 
     private String ou;
 
-    private String cog;
-
     private String ab;
 
     private Date ad;
@@ -91,18 +89,6 @@ public class DataApprovalStateRequest
     public void setOu( String ou )
     {
         this.ou = ou;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getCog()
-    {
-        return cog;
-    }
-
-    public void setCog( String cog )
-    {
-        this.cog = cog;
     }
 
     @JsonProperty

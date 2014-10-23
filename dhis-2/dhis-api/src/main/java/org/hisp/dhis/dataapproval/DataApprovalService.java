@@ -87,8 +87,7 @@ public interface DataApprovalService
      * @return the data approval status.
      */
     DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period,
-                                              OrganisationUnit organisationUnit,
-                                              DataElementCategoryOptionCombo attributeOptionCombo );
+        OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo );
 
     /**
      * Returns the data approval status and permissions for a given data set,
@@ -120,9 +119,8 @@ public interface DataApprovalService
      * @return the data approval permissions (including status.)
      */
     DataApprovalStatus getDataApprovalStatusAndPermissions( DataSet dataSet, Period period,
-                                                                          OrganisationUnit organisationUnit,
-                                                                          Set<CategoryOptionGroup> categoryOptionGroups,
-                                                                          Set<DataElementCategoryOption> dataElementCategoryOptions );
+        OrganisationUnit organisationUnit, Set<CategoryOptionGroup> categoryOptionGroups,
+        Set<DataElementCategoryOption> dataElementCategoryOptions );
 
     /**
      * Returns a list of approval status and permissions for all of the

@@ -106,12 +106,6 @@ div.inputSection {
 #parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
 </div>
 
-<div class="inputSection" id="categoryOptionGroupSection" style="display:none">
-<label>$i18n.getString( "approval_entity" )</label><br>
-<select id="categoryOptionGroupId" name="categoryOptionGroupId" style="width:330px">
-</select>
-</div>
-
 <div class="inputSection">
 <input type="button" value='$i18n.getString( "get_data" )' style="width:120px" onclick="dhis2.appr.generateDataReport()">
 <input type="button" value='$i18n.getString( "cancel" )' style="width:120px" onclick="dhis2.dsr.hideCriteria()">
