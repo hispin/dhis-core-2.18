@@ -7401,6 +7401,7 @@ Ext.onReady( function() {
                                                     if (++callbacks === optionSets.length) {
                                                         if (!ids.length) {
                                                             fn();
+                                                            return;
                                                         }
 
                                                         for (var i = 0; i < ids.length; i++) {
