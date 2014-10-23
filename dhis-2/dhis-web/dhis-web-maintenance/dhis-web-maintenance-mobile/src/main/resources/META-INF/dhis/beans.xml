@@ -145,5 +145,11 @@
 	<bean id="org.hisp.dhis.mobile.action.incoming.ProcessingSendQuickSMSAction"
         class="org.hisp.dhis.mobile.action.incoming.ProcessingSendQuickSMSAction" 
         scope="prototype"/>
-
+        
+	<bean id="org.hisp.dhis.mobile.action.smscommand.ValidateSMSCommandAction"
+		class="org.hisp.dhis.mobile.action.smscommand.ValidateSMSCommandAction"
+		scope="prototype">
+		<property name="smsCommandService" ref="smsCommandService" />
+	</bean>
+	
 </beans>

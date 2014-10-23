@@ -69,6 +69,12 @@ public class DefaultSMSCommandService
     }
 
     @Override
+    public SMSCommand getSMSCommand( String name )
+    {
+        return smsCommandStore.getSMSCommand( name );
+    }
+    
+    @Override
     public void save( Set<SMSCode> codes )
     {
         smsCommandStore.save( codes );

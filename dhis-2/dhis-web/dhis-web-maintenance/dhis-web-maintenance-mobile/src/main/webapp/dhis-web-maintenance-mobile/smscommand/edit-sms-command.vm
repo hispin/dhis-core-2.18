@@ -111,7 +111,14 @@
 			}
 		}
 	};
-    
+	var i18_special_characters = '$encoder.jsEscape( $i18n.getString( "special_characters" ) , "'" )';
+	var i18_value = '$encoder.jsEscape( $i18n.getString( "value" ) , "'" )';
+	
+	jQuery(document).ready(function() {
+		changeParserType( getFieldValue( 'parserType' ) );
+		validation( "updateSMSCommandForm" );
+		checkValueIsExist( "name", "validateSMSCommand.action", {id:"$selectedCommandID"});
+	});
 </script>
 
 <h3>$i18n.getString( "edit_command" )</h3>
@@ -120,32 +127,34 @@
 	<select id='speCharName' name="speCharName" multiple="multiple" class="hidden"></select>
 	<select id='speCharValue' name="speCharValue" multiple="multiple" class="hidden"></select>
 	<table>
-	<thead>
-      <tr>
-        <th colspan="2">$i18n.getString( "command_details" )</th>
-      </tr>
-    </thead>
+		<thead>
+		  <tr>
+			<th colspan="2">$i18n.getString( "command_details" )</th>
+		  </tr>
+		</thead>
 		<tr>
+			<td></td>
 			<td>
 				<input type="hidden" value="$selectedCommandID" name="selectedCommandID" />
 			</td>
 		</tr>
 		<tr>
-			<td>$i18n.getString( "name" )</td>
-			<td><input type="text" name="name" id="name" value="$smsCommand.name" style="width:20em" class="{validate:{required:true}}" /></td>
+			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><input type="text" name="name" id="name" value="$smsCommand.name" class="{validate:{required:true}}" /></td>
 		</tr>
 		<tr>
-			<td>$i18n.getString( "parser" )</td>
-			<td>#if($smsCommand.parserType) $smsCommand.parserType #end</td>
+			<td><label for="parser">$i18n.getString( "parser" )</label></td>
+			<td>#if($smsCommand.parserType) $i18n.getString( "$smsCommand.parserType" ) #end</td>
 		</tr>
 		
 		#if( $smsCommand.parserType == 'KEY_VALUE_PARSER' || $smsCommand.parserType == 'J2ME_PARSER' )
+		<tbody id="codes">
 		<tr>
-			<td>$i18n.getString( "dataset" )</td>
+			<td><label for="dataset">$i18n.getString( "dataset" )</label></td>
 			<td>#if($smsCommand.dataset.name) $smsCommand.dataset.name #end</td>
 		</tr>
 		<tr>
-		<td>$i18n.getString( "completeness_method" )</td>
+			<td><label for="completenessMethod">$i18n.getString( "completeness_method" )</label></td>
 			<td>
 				<select id="completenessMethod" name="completenessMethod">
 					<option value="1" #if($smsCommand.completenessMethod == 1) selected #end>$i18n.getString( "receive_all_datavalue" )</option>
@@ -155,45 +164,45 @@
 			</td>
 		</tr>
 		<tr>
-	       <td>Use current period for reporting</td>
-		   <td><input type="checkbox" name="currentPeriodUsedForReporting" #if($smsCommand.currentPeriodUsedForReporting) checked #end /></td>
+	       <td><label for="currentPeriodUsedForReporting">Use current period for reporting</label></td>
+		   <td><input type="checkbox" id='currentPeriodUsedForReporting' name="currentPeriodUsedForReporting" #if($smsCommand.currentPeriodUsedForReporting) checked #end /></td>
 		</tr>   
 
         <tr>
-			<td>$i18n.getString( "code_value_separator" )</td>
+			<td><label for="separator">$i18n.getString( "code_value_separator" )</label></td>
 			<td>
-				<input type="text"  #if($smsCommand.separator) value="$smsCommand.separator" #end name="separator" style="width:20em" class="validate" />
+				<input type="text" #if($smsCommand.separator) value="$smsCommand.separator" #end id="separator" name="separator" class="validate" />
 			</td>
 		</tr>
 		
 		<tr>
-            <td style="width:130px">$i18n.getString( "no_codes_message" )</td>
-            <td><textarea cols="35" type="text" name="defaultMessage">#if($smsCommand.defaultMessage)$smsCommand.defaultMessage#end</textarea></td>
+            <td><label for="defaultMessage">$i18n.getString( "no_codes_message" )</label></td>
+            <td><textarea cols="35" type="text" id="defaultMessage" name="defaultMessage">#if($smsCommand.defaultMessage)$smsCommand.defaultMessage#end</textarea></td>
         </tr>
         <tr>
-            <td style="width:130px">$i18n.getString( "wrong_format_message" )</td>
-            <td><textarea cols="35" type="text" name="wrongFormatMessage">#if($smsCommand.wrongFormatMessage)$smsCommand.wrongFormatMessage#end</textarea></td>
+            <td><label for="wrongFormatMessage">$i18n.getString( "wrong_format_message" )</label></td>
+            <td><textarea cols="35" type="text" id="wrongFormatMessage" name="wrongFormatMessage">#if($smsCommand.wrongFormatMessage)$smsCommand.wrongFormatMessage#end</textarea></td>
         </tr>
         <tr>
-            <td style="width:130px">$i18n.getString( "no_user_message" )</td>
+            <td><label for="noUserMessage">$i18n.getString( "no_user_message" )</label></td>
             <td><textarea cols="35" type="text" name="noUserMessage">#if($smsCommand.noUserMessage)$smsCommand.noUserMessage#end</textarea></td>
         </tr>
         
 		<tr>
-            <td style="width:130px">$i18n.getString( "more_than_one_orgunit_message" )</td>
-            <td><textarea cols="35" type="text" name="moreThanOneOrgUnitMessage">#if($smsCommand.moreThanOneOrgUnitMessage)$smsCommand.moreThanOneOrgUnitMessage#end</textarea></td>
+            <td><label for="moreThanOneOrgUnitMessage">$i18n.getString( "more_than_one_orgunit_message" )</label></td>
+            <td><textarea cols="35" type="text" id="moreThanOneOrgUnitMessage" name="moreThanOneOrgUnitMessage">#if($smsCommand.moreThanOneOrgUnitMessage)$smsCommand.moreThanOneOrgUnitMessage#end</textarea></td>
         </tr>
         
         <tr>
-            <td style="width:130px">$i18n.getString( "success_message" )</td>
-            <td><textarea cols="35" type="text" name="successMessage">#if($smsCommand.successMessage)$smsCommand.successMessage#end</textarea></td>
+            <td><label for="successMessage">$i18n.getString( "success_message" )</label></td>
+            <td><textarea cols="35" type="text" id="successMessage" name="successMessage">#if($smsCommand.successMessage)$smsCommand.successMessage#end</textarea></td>
         </tr>
 		 
 		#elseif( $smsCommand.parserType == 'ALERT_PARSER' || $smsCommand.parserType == 'UNREGISTERED_PARSER' )
 		<tr>
-			<td>$i18n.getString( "userGroup" )</td>
+			<td><label for="userGroupID">$i18n.getString( "userGroup" )</label></td>
 			<td>
-				<select name="userGroupID" >
+				<select id="userGroupID" name="userGroupID" >
 				#foreach( $userGroup in $userGroupList )
 					<option value="$userGroup.id" #if($smsCommand.userGroup == $userGroup) selected #end>$userGroup.name</option>
 				#end
@@ -201,25 +210,15 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:130px">Confirm Message: </td>
-			<td><textarea cols="35" type="text" name="receivedMessage">#if($smsCommand.receivedMessage)$smsCommand.receivedMessage#end</textarea></td>
+			<td><label for="receivedMessage">$i18n.getString("confirm_message")</label></td>
+			<td><textarea cols="35" type="text" id="receivedMessage" name="receivedMessage">#if($smsCommand.receivedMessage)$smsCommand.receivedMessage#end</textarea></td>
 		</tr>
 		#end
         
-	</table>
-	
-	
-	</br>
-	</br>
 	#if( $smsCommand.parserType == 'KEY_VALUE_PARSER' || $smsCommand.parserType == 'J2ME_PARSER' )
-    <table id="codes">
-	<col style="width:350px"/><col/>
-    <thead>
-      <tr>
-        <th>$i18n.getString( "data_element_category_combination")</th>
-		<th>$i18n.getString( "code" )</th>
-      </tr>
-    </thead>
+    <tr>
+		<th colspan='2'>$i18n.getString( "data_element_category_combination")</th>
+	</tr>
 		#set($index = 0)
         #foreach( $dataElement in $dataElements)
 			#set($index = $index + 1)
@@ -230,8 +229,7 @@
 					
 					#set ($str = ""+$dataElement.id+""+$x.id)
                        <tr class="trDataElementCode">
-                           <td>
-                               $dataElement.name $x.name
+                           <td><label for="codeId$index">$dataElement.name $x.name</label>
                            </td>
                            <td>
 								<input type="hidden" id="codeId$index" name="codeId$index" value="$dataElement.id.$x.id"/>
@@ -241,42 +239,33 @@
 				#end
             #else
             <tr class="dataElementCode">
-               <td>$dataElement.name</td>
-               <td><input type="text" name="$dataElement.id"></td>   
+               <td><label for="$dataElement.id">$dataElement.name</label></td>
+               <td><input type="text" id="$dataElement.id" name="$dataElement.id"></td>   
             </tr>         
             #end  
          #end
-    </table>
-	<table border="0">
-	<col style="width:350px"/><col/>
-    <thead>
-      <tr>
-        <th>$i18n.getString( "special_characters" )</th>
-		<th>$i18n.getString( "value" )</th>
+	</tbody>	 
+    <tr>
+        <th colspan='2'>$i18n.getString( "special_characters" )</th>
       </tr>
     </thead>
 	<tbody id="specialCharacters">
 		#foreach( $specialCharacters in $smsCommand.specialCharacters )
 			<tr id="trSpecialCharacter$velocityCount" name="trSpecialCharacter$velocityCount" class="trSpecialCharacter">
-				<td><input type="text" id="name$velocityCount" name="name$velocityCount" class="name {validate:{required:true}}" value="$specialCharacters.name" onblur="checkDuplicatedSpeCharName(this.value, $velocityCount)"/></td>
-				<td><input type="text" id="value$velocityCount" name="value$velocityCount" class="value {validate:{required:true}}" value="$specialCharacters.value" onblur="checkDuplicatedSpeCharValue(this.value, $velocityCount)"/></td>
+				<td><input type="text" id="name$velocityCount" name="name$velocityCount" class="name {validate:{required:true}}" value="$specialCharacters.name" onblur="checkDuplicatedSpeCharName(this.value, $velocityCount)" placeholder='$i18n.getString( "special_characters" )'/></td>
+				<td><input type="text" id="value$velocityCount" name="value$velocityCount" class="value {validate:{required:true}}" value="$specialCharacters.value" onblur="checkDuplicatedSpeCharValue(this.value, $velocityCount)" placeholder='$i18n.getString( "value" )'/></td>
 				<td><input type="button" value="remove" onclick="removeSpecialCharactersForm($velocityCount)"/></input>
 			</tr>
 		#end
 	</tbody>
 	<tr>
 		<td col="2"><input type="button" value="$i18n.getString('add_more')" onclick="generateSpecialCharactersForm()"/><td>
-	</tr>
-	</table>
-    #end
+	</tr>    #end
     
     #if( $smsCommand.parserType == 'TRACKED_ENTITY_REGISTRATION_PARSER' )
-    	<table id="codes">
-		<col style="width:350px"/><col/>
-	    <thead>
+    	<tbody id="codes">
 	      <tr>
-	        <th>$i18n.getString( "tracked_entity_attribute")</th>
-			<th>$i18n.getString( "code" )</th>
+	        <th colspan='2'>$i18n.getString( "tracked_entity_attribute")</th>
 	      </tr>
 	    </thead>
 	    #set($index = 0)
@@ -285,18 +274,21 @@
 	    #set ($index = $index + 1)
 	    
     		 <tr class="trackedEntityAttribute">
-               <td>$attribute.name <input type="hidden" id="attId$index" name="attId$index" value="$attribute.id"/></td>
+               <td>
+				   <label for="attCode$index">$attribute.name</label>
+				   <input type="hidden" id="attId$index" name="attId$index" value="$attribute.id"/>
+			   </td>
                <td><input type="text" name="attCode$index" id="attCode$index" class="{validate:{required:true}}" value='$!codes["$attribute.id"]'></td>   
             </tr>      
 	    #end
-	    </table>
     #end
 
+</table>
 	<br/>	
     <input type="hidden" name="codeDataelementOption" id="codeDataelementOption" />
 	<input type="hidden" name="specialCharactersInfo" id="specialCharactersInfo" />
 	<input type="hidden" name="trackedEntityAttributeCodes" id="trackedEntityAttributeCodes" />
 	
     <input type="button" style="width: 100px" onclick="prepSubmit()" value="$i18n.getString( 'save' )" />
-    <input type="button" id="btnBack" name="btnBack" value="Back" style="width:8em" onclick="window.location.href='SMSCommands.action'"/>
+    <input type="button" id="btnBack" name="btnBack" value="$i18n.getString('cancel')" style="width:8em" onclick="window.location.href='SMSCommands.action'"/>
 </form>

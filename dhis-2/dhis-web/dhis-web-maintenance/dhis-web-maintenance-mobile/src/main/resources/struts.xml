@@ -157,6 +157,7 @@
       <param name="page">/dhis-web-maintenance-mobile/smscommand/new-sms-command.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/command.js</param>
+      <param name="stylesheets">style/dhis-web-maintenance-mobile.css</param>
       <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
     </action>
 
@@ -180,8 +181,17 @@
     </action>
 
     <action name="deleteSMSCommand" class="org.hisp.dhis.mobile.action.smscommand.DeleteSMSCommandAction">
-      <result name="success" type="redirect">SMSCommands.action</result>
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
+    </action>
+    
+    <action name="validateSMSCommand"
+      class="org.hisp.dhis.mobile.action.smscommand.ValidateSMSCommandAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <!-- J2ME Client Update -->
