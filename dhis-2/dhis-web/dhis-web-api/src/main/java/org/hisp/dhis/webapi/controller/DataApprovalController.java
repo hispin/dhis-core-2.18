@@ -32,11 +32,9 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,6 +48,7 @@ import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.dataapproval.DataApproval;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
+import org.hisp.dhis.dataapproval.DataApprovalPermissions;
 import org.hisp.dhis.dataapproval.DataApprovalService;
 import org.hisp.dhis.dataapproval.DataApprovalStateRequest;
 import org.hisp.dhis.dataapproval.DataApprovalStateRequests;
@@ -57,8 +56,6 @@ import org.hisp.dhis.dataapproval.DataApprovalStateResponse;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponses;
 import org.hisp.dhis.dataapproval.DataApprovalStatus;
 import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
@@ -136,14 +133,10 @@ public class DataApprovalController
     public void getApprovalState(
         @RequestParam String ds,
         @RequestParam String pe,
-        @RequestParam String ou,
-        @RequestParam( required = false ) Set<String> cog,
-        @RequestParam( required = false ) String cp, HttpServletResponse response )
+        @RequestParam String ou, HttpServletResponse response )
         throws IOException
     {
-        log.info( "GET " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
-            + (cog == null || cog.isEmpty() ? "" : ("&cog=" + Arrays.toString( cog.toArray() )))
-            + (cp == null ? "" : ("&cp=" + cp)) );
+        log.info( "GET " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
 
@@ -169,27 +162,11 @@ public class DataApprovalController
             return;
         }
 
-        Set<CategoryOptionGroup> categoryOptionGroups = null;
-
-        if ( cog != null && !cog.isEmpty() )
-        {
-            categoryOptionGroups = inputUtils.getAttributeOptionGroups( response, cog );
-
-            if ( categoryOptionGroups == null )
-            {
-                return;
-            }
-        }
-
-        Set<DataElementCategoryOption> categoryOptions = inputUtils.getAttributeOptions( response, cp );
-
-        if ( categoryOptions != null && categoryOptions.isEmpty() )
-        {
-            return;
-        }
-
         DataApprovalStatus status = dataApprovalService
-            .getDataApprovalStatusAndPermissions( dataSet, period, organisationUnit, categoryOptionGroups, categoryOptions );
+            .getDataApprovalStatusAndPermissions( dataSet, period, organisationUnit, null, null ); //TODO fix category stuff
+        
+        DataApprovalPermissions permissions = status.getPermissions();
+        permissions.setState( status.getState().toString() );
 
         JacksonUtils.toJson( response.getOutputStream(), status.getPermissions() );
     }
@@ -319,11 +296,9 @@ public class DataApprovalController
     public void saveApproval(
         @RequestParam String ds,
         @RequestParam String pe,
-        @RequestParam String ou,
-        @RequestParam( required = false ) String cog, HttpServletResponse response )
+        @RequestParam String ou, HttpServletResponse response )
     {
-        log.info( "POST " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
-            + (cog == null ? "" : ("&cog=" + cog)) );
+        log.info( "POST " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
 
@@ -349,23 +324,7 @@ public class DataApprovalController
             return;
         }
 
-        Set<CategoryOptionGroup> categoryOptionGroups = null;
-        Set<DataElementCategoryOption> categoryOptions = null;
-
-        if ( cog != null )
-        {
-            categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
-
-            if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
-            {
-                return;
-            }
-
-            categoryOptions = getCommonOptions( categoryOptionGroups );
-
-        }
-
-        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
 
         if ( dataApprovalLevel == null )
         {
@@ -376,7 +335,7 @@ public class DataApprovalController
         User user = currentUserService.getCurrentUser();
 
         List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
-            period, organisationUnit, categoryOptions, false, new Date(), user );
+            period, organisationUnit, false, new Date(), user ); //TODO fix category stuff
 
         try
         {
@@ -390,8 +349,7 @@ public class DataApprovalController
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
     @RequestMapping( method = RequestMethod.POST, value = MULTIPLE_SAVE_RESOURCE_PATH )
-    public void saveApprovalMultiple(
-        @RequestBody DataApprovalStateRequests dataApprovalStateRequests,
+    public void saveApprovalMultiple( @RequestBody DataApprovalStateRequests dataApprovalStateRequests,
         HttpServletResponse response )
     {
         List<DataApproval> dataApprovalList = new ArrayList<>();
@@ -423,23 +381,7 @@ public class DataApprovalController
                 return;
             }
 
-            Set<CategoryOptionGroup> categoryOptionGroups = null;
-            Set<DataElementCategoryOption> categoryOptions = null;
-
-            if ( dataApprovalStateRequest.getCog() != null )
-            {
-                categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, dataApprovalStateRequest.getCog() );
-
-                if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
-                {
-                    return;
-                }
-
-                categoryOptions = getCommonOptions( categoryOptionGroups );
-
-            }
-
-            DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
+            DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
 
             if ( dataApprovalLevel == null )
             {
@@ -454,7 +396,7 @@ public class DataApprovalController
             Date approvalDate = (dataApprovalStateRequest.getAd() == null) ? new Date() : dataApprovalStateRequest.getAd();
 
             dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
-                period, organisationUnit, categoryOptions, false, approvalDate, user ) );
+                period, organisationUnit, false, approvalDate, user ) );
         }
 
         try
@@ -472,11 +414,9 @@ public class DataApprovalController
     public void acceptApproval(
         @RequestParam String ds,
         @RequestParam String pe,
-        @RequestParam String ou,
-        @RequestParam( required = false ) String cog, HttpServletResponse response )
+        @RequestParam String ou, HttpServletResponse response )
     {
-        log.info( "POST " + RESOURCE_PATH + ACCEPTANCES_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
-            + (cog == null ? "" : ("&cog=" + cog)) );
+        log.info( "POST " + RESOURCE_PATH + ACCEPTANCES_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
 
@@ -502,22 +442,7 @@ public class DataApprovalController
             return;
         }
 
-        Set<CategoryOptionGroup> categoryOptionGroups = null;
-        Set<DataElementCategoryOption> categoryOptions = null;
-
-        if ( cog != null )
-        {
-            categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
-
-            if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
-            {
-                return;
-            }
-
-            categoryOptions = getCommonOptions( categoryOptionGroups );
-        }
-
-        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
 
         if ( dataApprovalLevel == null )
         {
@@ -528,7 +453,7 @@ public class DataApprovalController
         User user = currentUserService.getCurrentUser();
 
         List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
-            period, organisationUnit, categoryOptions, false, new Date(), user );
+            period, organisationUnit, false, new Date(), user );
 
         try
         {
@@ -574,22 +499,7 @@ public class DataApprovalController
                 return;
             }
 
-            Set<CategoryOptionGroup> categoryOptionGroups = null;
-            Set<DataElementCategoryOption> categoryOptions = null;
-
-            if ( dataApprovalStateRequest.getCog() != null )
-            {
-                categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, dataApprovalStateRequest.getCog() );
-
-                if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
-                {
-                    return;
-                }
-
-                categoryOptions = getCommonOptions( categoryOptionGroups );
-            }
-
-            DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
+            DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
 
             if ( dataApprovalLevel == null )
             {
@@ -603,7 +513,7 @@ public class DataApprovalController
             Date approvalDate = (dataApprovalStateRequest.getAd() == null) ? new Date() : dataApprovalStateRequest.getAd();
 
             dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
-                period, organisationUnit, categoryOptions, false, approvalDate, user ) );
+                period, organisationUnit, false, approvalDate, user ) );
         }
 
         try
@@ -625,11 +535,9 @@ public class DataApprovalController
     public void removeApproval(
         @RequestParam Set<String> ds,
         @RequestParam String pe,
-        @RequestParam String ou,
-        @RequestParam( required = false ) String cog, HttpServletResponse response )
+        @RequestParam String ou, HttpServletResponse response )
     {
-        log.info( "DELETE " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
-            + (cog == null ? "" : ("&cog=" + cog)) );
+        log.info( "DELETE " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
 
         Set<DataSet> dataSets = new HashSet<>( manager.getByUid( DataSet.class, ds ) );
 
@@ -655,23 +563,7 @@ public class DataApprovalController
             return;
         }
 
-        Set<CategoryOptionGroup> categoryOptionGroups = null;
-        Set<DataElementCategoryOption> categoryOptions = null;
-
-        if ( cog != null )
-        {
-            categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
-
-            if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
-            {
-                return;
-            }
-
-            categoryOptions = getCommonOptions( categoryOptionGroups );
-
-        }
-
-        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
 
         if ( dataApprovalLevel == null )
         {
@@ -686,7 +578,7 @@ public class DataApprovalController
         for ( DataSet dataSet : dataSets )
         {
             dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
-                period, organisationUnit, categoryOptions, false, new Date(), user ) );
+                period, organisationUnit, false, new Date(), user ) );
         }
 
         try
@@ -704,11 +596,9 @@ public class DataApprovalController
     public void unacceptApproval(
         @RequestParam String ds,
         @RequestParam String pe,
-        @RequestParam String ou,
-        @RequestParam( required = false ) String cog, HttpServletResponse response )
+        @RequestParam String ou, HttpServletResponse response )
     {
-        log.info( "DELETE " + RESOURCE_PATH + ACCEPTANCES_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
-            + (cog == null ? "" : ("&cog=" + cog)) );
+        log.info( "DELETE " + RESOURCE_PATH + ACCEPTANCES_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
 
@@ -734,22 +624,7 @@ public class DataApprovalController
             return;
         }
 
-        Set<CategoryOptionGroup> categoryOptionGroups = null;
-        Set<DataElementCategoryOption> categoryOptions = null;
-
-        if ( cog != null )
-        {
-            categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
-
-            if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
-            {
-                return;
-            }
-
-            categoryOptions = getCommonOptions( categoryOptionGroups );
-        }
-
-        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
 
         if ( dataApprovalLevel == null )
         {
@@ -760,7 +635,7 @@ public class DataApprovalController
         User user = currentUserService.getCurrentUser();
 
         List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
-            period, organisationUnit, categoryOptions, false, new Date(), user );
+            period, organisationUnit, false, new Date(), user );
 
         try
         {
@@ -777,42 +652,14 @@ public class DataApprovalController
     // -------------------------------------------------------------------------
 
     private List<DataApproval> makeDataApprovalList( DataApprovalLevel dataApprovalLevel, DataSet dataSet,
-        Period period, OrganisationUnit organisationUnit, Set<DataElementCategoryOption> attributeOptions,
-        boolean accepted, Date created, User creator )
+        Period period, OrganisationUnit organisationUnit, boolean accepted, Date created, User creator )
     {
         List<DataApproval> approvals = new ArrayList<>();
 
-        if ( attributeOptions == null )
-        {
-            DataElementCategoryOptionCombo combo = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
+        DataElementCategoryOptionCombo combo = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
 
-            approvals.add( new DataApproval( dataApprovalLevel, dataSet, period, organisationUnit, combo, accepted, created, creator ) );
-        }
-        else
-        {
-            for ( DataElementCategoryOption option : attributeOptions )
-            {
-                for ( DataElementCategoryOptionCombo combo : option.getCategoryOptionCombos() )
-                {
-                    approvals.add( new DataApproval( dataApprovalLevel, dataSet, period, organisationUnit, combo, accepted, created, creator ) );
-                }
-            }
-        }
+        approvals.add( new DataApproval( dataApprovalLevel, dataSet, period, organisationUnit, combo, accepted, created, creator ) );
 
         return approvals;
-    }
-
-    private Set<DataElementCategoryOption> getCommonOptions( Set<CategoryOptionGroup> categoryOptionGroups )
-    {
-        Iterator<CategoryOptionGroup> it = categoryOptionGroups.iterator();
-
-        Set<DataElementCategoryOption> options = it.next().getMembers();
-
-        while ( it.hasNext() )
-        {
-            options.retainAll( it.next().getMembers() );
-        }
-
-        return options;
     }
 }
