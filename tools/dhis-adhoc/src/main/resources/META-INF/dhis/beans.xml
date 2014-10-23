@@ -6,4 +6,5 @@
     
     <bean id="randomDataPopulator" class="org.hisp.dhis.adhoc.command.RandomDataPopulator" />
 
+	<bean id="analyticsTableGenerator" class="org.hisp.dhis.adhoc.command.AnalyticsTableGenerator" />
 </beans>
