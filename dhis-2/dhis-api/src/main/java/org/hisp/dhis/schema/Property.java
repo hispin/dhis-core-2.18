@@ -160,7 +160,7 @@ public class Property implements Ordered
 
     public Property( Class<?> klass )
     {
-        this.klass = klass;
+        setKlass( klass );
     }
 
     public Property( Class<?> klass, Method getter, Method setter )
