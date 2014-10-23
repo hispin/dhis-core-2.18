@@ -424,7 +424,7 @@ public class JdbcResourceTableStore
             "datasetid INTEGER, " +
             "datasetuid CHARACTER(11), " +
             "datasetname VARCHAR(250), " +
-            "datasetapprovedata BOOLEAN, " +
+            "datasetapprovallevel INTEGER, " +
             "periodtypeid INTEGER, " + 
             "periodtypename VARCHAR(250) )";
         
@@ -435,13 +435,11 @@ public class JdbcResourceTableStore
         final String deUdInSql = "create unique index in_dataelementstructure_dataelementuid on _dataelementstructure(dataelementuid)";
         final String dsIdInSql = "create index in_dataelementstructure_datasetid on _dataelementstructure(datasetid)";
         final String dsUdInSql = "create index in_dataelementstructure_datasetuid on _dataelementstructure(datasetuid)";
-        final String dsApInSql = "create index in_dataelementstructure_datasetapprovedata on _dataelementstructure(datasetapprovedata)";
         final String ptIdInSql = "create index in_dataelementstructure_periodtypeid on _dataelementstructure(periodtypeid)";
         
         jdbcTemplate.execute( deUdInSql );
         jdbcTemplate.execute( dsIdInSql );
         jdbcTemplate.execute( dsUdInSql );
-        jdbcTemplate.execute( dsApInSql );
         jdbcTemplate.execute( ptIdInSql );
     }
     
