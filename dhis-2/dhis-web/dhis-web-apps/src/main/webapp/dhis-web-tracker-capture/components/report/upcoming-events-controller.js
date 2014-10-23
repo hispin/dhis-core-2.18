@@ -109,10 +109,11 @@ trackerCapture.controller('UpcomingEventsController',
                 angular.forEach(row.attributes, function(att){
                     upcomingEvent[att.attribute] = att.value;
                 });
-
+                    
                 upcomingEvent.dueDate = DateUtils.formatFromApiToUser(row.dueDate);
                 upcomingEvent.event = row.event;
-                upcomingEvent.eventName = row.eventName;
+                upcomingEvent.eventName = $scope.programStages[row.programStage].name;
+                upcomingEvent.eventOrgUnitName = row.eventOrgUnitName;
                 upcomingEvent.followup = row.followup;
                 upcomingEvent.program = row.program;
                 upcomingEvent.programStage = row.programStage;
@@ -144,9 +145,12 @@ trackerCapture.controller('UpcomingEventsController',
                 $scope.programStages[stage.id] = stage;
             });
 
+            
             AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){            
                 $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode);
-
+                
+                $scope.gridColumns.push({name: $translate('event_orgunit_name'), id: 'eventOrgUnitName', type: 'string', displayInListNoProgram: false, showFilter: false, show: true});
+                $scope.filterTypes['eventOrgUnitName'] = 'string';
                 $scope.gridColumns.push({name: $translate('event_name'), id: 'eventName', type: 'string', displayInListNoProgram: false, showFilter: false, show: true});
                 $scope.filterTypes['eventName'] = 'string';
                 $scope.gridColumns.push({name: $translate('due_date'), id: 'dueDate', type: 'date', displayInListNoProgram: false, showFilter: false, show: true});
