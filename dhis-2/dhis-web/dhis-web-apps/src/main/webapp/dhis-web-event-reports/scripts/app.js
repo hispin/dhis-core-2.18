@@ -7101,6 +7101,8 @@ Ext.onReady( function() {
 				render: function() {
 					ns.app.viewport = this;
 
+                    document.getElementById('init').remove();
+
 					ns.app.aggregateLayoutWindow = AggregateLayoutWindow();
 					ns.app.aggregateLayoutWindow.hide();
 					ns.app.queryLayoutWindow = QueryLayoutWindow();
@@ -7280,6 +7282,7 @@ Ext.onReady( function() {
                                             url: 'i18n/' + keyUiLocale + '.properties',
                                             success: function(r) {
                                                 NS.i18n = dhis2.util.parseJavaProperties(r.responseText);
+                                                Ext.get('init').update(NS.i18n.initializing + '..');
 
                                                 if (keyUiLocale !== defaultKeyUiLocale) {
                                                     Ext.Ajax.request({

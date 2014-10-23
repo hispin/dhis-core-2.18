@@ -63,6 +63,13 @@ body.x-windows {
 	-webkit-text-stroke: 0.2px #888;
 }
 
+#init {
+    width: 100%;
+    text-align: center;
+    margin-top: 200px;
+    font-size: 15px;
+}
+
 	/* Scrollbar Webkit */
 ::-webkit-scrollbar {
     width: 8px;
