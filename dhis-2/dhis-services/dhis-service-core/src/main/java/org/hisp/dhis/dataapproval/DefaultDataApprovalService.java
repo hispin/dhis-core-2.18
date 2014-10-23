@@ -356,9 +356,17 @@ public class DefaultDataApprovalService
     }
 
     @Override
+    public DataApprovalStatus getDataApprovalStatusAndPermissions( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
+    {
+        DataApprovalStatus status = getDataApprovalStatus( dataSet, period, organisationUnit, attributeOptionCombo );
+
+        return getPermissions( status.getDataApprovalLevel(), status, status.getDataApproval() );
+    }
+
+    @Override
     public DataApprovalStatus getDataApprovalStatusAndPermissions( DataSet dataSet, Period period,
-                                    OrganisationUnit organisationUnit, Set<CategoryOptionGroup> categoryOptionGroups,
-                                    Set<DataElementCategoryOption> attributeCategoryOptions )
+                                                                   OrganisationUnit organisationUnit, Set<CategoryOptionGroup> categoryOptionGroups,
+                                                                   Set<DataElementCategoryOption> attributeCategoryOptions )
     {
         tracePrint( "---------------------------------------------------------------------- getDataApprovalStatusAndPermissions" );
 
@@ -389,7 +397,7 @@ public class DefaultDataApprovalService
             return new DataApprovalStatus( DataApprovalState.UNAPPROVABLE, null, null, null );
         }
 
-        DataApproval da = checkDataApproval( new DataApproval( dal, dataSet, period, organisationUnit, null, false, null, null ), true, new HashMap<OrganisationUnit, Integer>() );
+        DataApproval da = checkDataApproval( new DataApproval( dal, dataSet, period, organisationUnit, null, false, null, null ), true );
 
         DataApprovalStatus status = doGetDataApprovalStatus( makeApprovalsList( da, asSet( dataSet ), categoryOptionGroups, attributeCategoryOptions, true ), da );
 
@@ -466,7 +474,7 @@ public class DefaultDataApprovalService
             return checkApprovalsList( org.hisp.dhis.system.util.CollectionUtils.asList( dataApproval ), dataSets, isGetStatus );
         }
 
-        DataApproval da = checkDataApproval( dataApproval, false, new HashMap<OrganisationUnit, Integer>() );
+        DataApproval da = checkDataApproval( dataApproval, false );
 
         tracePrint("makeApprovalsList(2) combo - " + ( da.getAttributeOptionCombo() == null ? "(null)" : da.getAttributeOptionCombo().getName() ) );
 
@@ -538,11 +546,9 @@ public class DefaultDataApprovalService
     {
         List<DataApproval> daList = new ArrayList<>();
 
-        Map<OrganisationUnit, Integer> approvalLevelCache = new HashMap<>();
-
         for ( DataApproval dataApproval : dataApprovalList )
         {
-            DataApproval da = checkDataApproval( dataApproval, isGetStatus, approvalLevelCache );
+            DataApproval da = checkDataApproval( dataApproval, isGetStatus );
 
             tracePrint("checkApprovalsList(1) combo - " + ( da.getAttributeOptionCombo() == null ? "(null)" : da.getAttributeOptionCombo().getName() ) );
 
@@ -570,7 +576,7 @@ public class DefaultDataApprovalService
         return false;
     }
 
-    private DataApproval checkDataApproval( DataApproval dataApproval, boolean includeDataViewOrgUnits, Map<OrganisationUnit, Integer> approvalLevelCache )
+    private DataApproval checkDataApproval( DataApproval dataApproval, boolean includeDataViewOrgUnits )
     {
         DataApproval da = new DataApproval ( dataApproval ); // Defensive copy so we can change it.
 
@@ -586,21 +592,9 @@ public class DefaultDataApprovalService
             tracePrint( "getDefaultDataElementCategoryOptionCombo() -> " + ( da.getAttributeOptionCombo() == null ? "(null)" : da.getAttributeOptionCombo().getName() ) );
         }
 
-        Integer userLevel = approvalLevelCache.get( da.getOrganisationUnit() );
+        DataApprovalLevel dal = dataApprovalLevelService.getUserApprovalLevel( da.getOrganisationUnit(), includeDataViewOrgUnits );
 
-        if ( userLevel == null )
-        {
-            DataApprovalLevel dal = dataApprovalLevelService.getUserApprovalLevel( da.getOrganisationUnit(), includeDataViewOrgUnits );
-            if ( dal == null )
-            {
-                userLevel = 99999;
-            }
-            else
-            {
-                userLevel = dal.getLevel();
-            }
-            approvalLevelCache.put( da.getOrganisationUnit(), userLevel );
-        }
+        int userLevel = ( dal == null ? 99999 : dal.getLevel() );
 
         tracePrint( "userLevel ( " + da.getOrganisationUnit().getName() + " ): " + userLevel + ", data approval level " + da.getDataApprovalLevel().getLevel() );
         log.info( "userLevel ( " + da.getOrganisationUnit().getName() + " ): " + userLevel );
@@ -783,7 +777,7 @@ public class DefaultDataApprovalService
         tracePrint( "getPermissions - dal " + ( dal == null ? "(null)" : dal.getName() )
                 + " dataApproval null? " + ( status.getDataApproval() == null ) );
 
-        if ( dal != null && securityService.canRead( dal ) && status.getDataApproval() != null
+        if ( da != null && dal != null && securityService.canRead( dal ) && status.getDataApproval() != null
                 && ( dal.getCategoryOptionGroupSet() == null || securityService.canRead( dal.getCategoryOptionGroupSet() ) ) )
         {
             DataApprovalState state = status.getState();

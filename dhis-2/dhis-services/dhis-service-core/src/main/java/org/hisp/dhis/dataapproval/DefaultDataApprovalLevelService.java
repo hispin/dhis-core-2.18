@@ -733,16 +733,6 @@ public class DefaultDataApprovalLevelService
                 && CollectionUtils.isEmpty( userCredentials.getCatDimensionConstraints() );
         }
 
-        for ( CategoryOptionGroup cog : cogs.getMembers() )
-        {
-            tracePrint("canReadCOGS( " + cogs.getName() + " ) cog " + cog.getName() + " " + securityService.canRead( cog ) );
-
-            if ( securityService.canRead( cog ) )
-            {
-                return true;
-            }
-        }
-        
-        return false;
+        return !CollectionUtils.isEmpty( categoryService.getAllCategoryOptionGroups() );
     }
 }
