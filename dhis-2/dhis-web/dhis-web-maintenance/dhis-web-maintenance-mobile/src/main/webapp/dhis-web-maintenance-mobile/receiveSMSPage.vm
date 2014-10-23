@@ -200,10 +200,6 @@
 		}
 	}
 
-			
-
-
-	
 </script>
 
 <input id="pollingInterval" name="pollingInterval" type="hidden" value="$pollingInterval"/>
@@ -258,7 +254,10 @@
 			
 			<tr id="tr${incomingSms.id}" height="40">
 				<td style="text-align:center"><input type="checkbox" name="mycheck" value="$incomingSms.id"/></td>			
-				<td style="text-align:center">$velocityCount</td>
+				<td style="text-align:center">
+					#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
+					$nr
+				</td>
 				<td>
 				
 					<a id="$velocityCount" style="display: block" href="#" onclick="makeVisible( $incomingSms.id, $velocityCount )">$incomingSms.text</a>
