@@ -34,9 +34,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -267,6 +269,47 @@ public class DataApprovalController
             createdDate, createdByUsername, status.getPermissions() );
     }
 
+    @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON, value = "/categoryOptionCombos" )
+    public void getApprovalByCategoryOptionCombos( 
+        @RequestParam Set<String> ds, 
+        @RequestParam String pe, 
+        HttpServletResponse response ) throws IOException
+    {
+        Set<DataSet> dataSets = new HashSet<>( manager.getByUid( DataSet.class, ds ) );
+        
+        Period period = PeriodType.getPeriodFromIsoString( pe );
+
+        if ( period == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal period identifier: " + pe );
+            return;
+        }
+        
+        List<DataApprovalStatus> statusList = dataApprovalService.getUserDataApprovalsAndPermissions( dataSets, period );
+
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        for ( DataApprovalStatus status : statusList )
+        {
+            Map<String, Object> item = new HashMap<String, Object>();
+            
+            DataApproval approval = status.getDataApproval();
+            
+            if ( approval != null )
+            {
+                item.put( "id", approval.getAttributeOptionCombo().getUid() );
+                item.put( "level", status.getDataApprovalLevel() );
+                item.put( "ou",  approval.getOrganisationUnit().getUid() );
+                item.put( "accepted", approval.isAccepted() );
+                item.put( "permissions", status.getPermissions() );
+                
+                list.add( item );
+            }
+        }
+        
+        JacksonUtils.toXml( response.getOutputStream(), list );
+    }
+    
     // -------------------------------------------------------------------------
     // Post
     // -------------------------------------------------------------------------
