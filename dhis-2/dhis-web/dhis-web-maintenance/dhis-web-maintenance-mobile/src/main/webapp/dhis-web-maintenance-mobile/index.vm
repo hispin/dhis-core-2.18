@@ -1,5 +1,1 @@
 <h3>$i18n.getString( "mobile_configuration" ) </h3>
-
-<ul class="introList">
-    #introListImgItem( "showMobileDataSet.action" "mobile_dataset" "mobile" )
-</ul>
