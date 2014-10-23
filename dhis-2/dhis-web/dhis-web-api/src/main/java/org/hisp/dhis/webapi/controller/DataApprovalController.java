@@ -307,7 +307,7 @@ public class DataApprovalController
             }
         }
         
-        JacksonUtils.toXml( response.getOutputStream(), list );
+        JacksonUtils.toJson( response.getOutputStream(), list );
     }
     
     // -------------------------------------------------------------------------
