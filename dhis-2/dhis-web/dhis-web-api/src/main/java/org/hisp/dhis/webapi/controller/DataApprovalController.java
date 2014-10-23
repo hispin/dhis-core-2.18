@@ -189,7 +189,7 @@ public class DataApprovalController
         DataApprovalStatus status = dataApprovalService
             .getDataApprovalStatusAndPermissions( dataSet, period, organisationUnit, categoryOptionGroups, categoryOptions );
 
-        JacksonUtils.toJson( response.getOutputStream(), status.getDataApprovalPermissions() );
+        JacksonUtils.toJson( response.getOutputStream(), status.getPermissions() );
     }
 
     @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON, value = STATUS_PATH )
@@ -261,12 +261,12 @@ public class DataApprovalController
         Date createdDate = (dataApproval == null) ? null : dataApproval.getCreated();
         String createdByUsername = (dataApproval == null) ? null : dataApproval.getCreator().getUsername();
 
-        String state = status.getDataApprovalState().toString();
+        String state = status.getState().toString();
 
         return new DataApprovalStateResponse( dataSet, period, organisationUnit, state, 
-            createdDate, createdByUsername, status.getDataApprovalPermissions() );
+            createdDate, createdByUsername, status.getPermissions() );
     }
-    
+
     // -------------------------------------------------------------------------
     // Post
     // -------------------------------------------------------------------------

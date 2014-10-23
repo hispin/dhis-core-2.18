@@ -152,13 +152,13 @@ public class DefaultDataApprovalService
             DataApprovalStatus status = getStatus( da );
 
             tracePrint("approveData( level " + da.getDataApprovalLevel().getLevel() + ", " + da.getDataSet().getName() + ", "
-                    + da.getPeriod().getName() + ", " + da.getOrganisationUnit().getName() + ", " + da.getAttributeOptionCombo().getName() + " ) -> " + status.getDataApprovalState().name() );
+                    + da.getPeriod().getName() + ", " + da.getOrganisationUnit().getName() + ", " + da.getAttributeOptionCombo().getName() + " ) -> " + status.getState().name() );
 
-            if ( status.getDataApprovalState().isApproved() && status.getDataApprovalLevel().getLevel() >= da.getDataApprovalLevel().getLevel() )
+            if ( status.getState().isApproved() && status.getDataApprovalLevel().getLevel() >= da.getDataApprovalLevel().getLevel() )
             {
                 it.remove(); // Already approved at this level -- no action needed.
             }
-            else if ( !status.getDataApprovalState().isApprovable() )
+            else if ( !status.getState().isApprovable() )
             {
                 throw new DataMayNotBeApprovedException();
             }
@@ -192,9 +192,9 @@ public class DefaultDataApprovalService
         {
             DataApprovalStatus status = getStatus( da );
 
-            if ( status.getDataApprovalState().isApproved() )
+            if ( status.getState().isApproved() )
             {
-                if ( !status.getDataApprovalState().isUnapprovable() )
+                if ( !status.getState().isUnapprovable() )
                 {
                     throw new DataMayNotBeUnapprovedException();
                 }
@@ -233,13 +233,13 @@ public class DefaultDataApprovalService
         {
             DataApprovalStatus status = getStatus( da );
 
-            if ( !status.getDataApprovalState().isAccepted() )
+            if ( !status.getState().isAccepted() )
             {
-                if ( !status.getDataApprovalState().isAcceptable() )
+                if ( !status.getState().isAcceptable() )
                 {
-                    tracePrint("acceptData() state " + status.getDataApprovalState().name()
-                            + " accepted " + status.getDataApprovalState().isAccepted()
-                            + " acceptable " + status.getDataApprovalState().isAcceptable() );
+                    tracePrint("acceptData() state " + status.getState().name()
+                            + " accepted " + status.getState().isAccepted()
+                            + " acceptable " + status.getState().isAcceptable() );
 
                     throw new DataMayNotBeAcceptedException();
                 }
@@ -282,9 +282,9 @@ public class DefaultDataApprovalService
         {
             DataApprovalStatus status = getStatus( da );
 
-            if ( status.getDataApprovalState().isAccepted() )
+            if ( status.getState().isAccepted() )
             {
-                if ( !status.getDataApprovalState().isUnacceptable() )
+                if ( !status.getState().isUnacceptable() )
                 {
                     throw new DataMayNotBeUnacceptedException();
                 }
@@ -786,7 +786,7 @@ public class DefaultDataApprovalService
         if ( dal != null && securityService.canRead( dal ) && status.getDataApproval() != null
                 && ( dal.getCategoryOptionGroupSet() == null || securityService.canRead( dal.getCategoryOptionGroupSet() ) ) )
         {
-            DataApprovalState state = status.getDataApprovalState();
+            DataApprovalState state = status.getState();
 
             tracePrint( "getPermissions - state is " + state.name() );
 
@@ -797,14 +797,14 @@ public class DefaultDataApprovalService
         }
 
         log.debug( "Found permissions for " + da.getOrganisationUnit().getName()
-                + " " + status.getDataApprovalState().name()
+                + " " + status.getState().name()
                 + " may approve = " + permissions.isMayApprove()
                 + " may unapprove = " + permissions.isMayUnapprove()
                 + " may accept = " + permissions.isMayAccept()
                 + " may unaccept = " + permissions.isMayUnaccept() );
 
         status.setDataApproval( defensiveCopy( status.getDataApproval() ) );
-        status.setDataApprovalPermissions( permissions );
+        status.setPermissions( permissions );
 
         return status;
     }

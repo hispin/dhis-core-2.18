@@ -208,7 +208,7 @@ class DataApprovalSelection
             status.setDataApprovalLevel( originalDataApproval.getDataApprovalLevel() );
         }
 
-        tracePrint("getDataApprovalStatus returning " + status.getDataApprovalLevel().getLevel() + "-" + status.getDataApprovalState().name() );
+        tracePrint("getDataApprovalStatus returning " + status.getDataApprovalLevel().getLevel() + "-" + status.getState().name() );
         tracePrint( "-----------------------" );
 
         log.info( "getDataApprovalStatus() org unit " +  selectedOrgUnit.getName()
@@ -252,7 +252,7 @@ class DataApprovalSelection
             }
             else if ( oldStatus.getDataApprovalLevel().getLevel() == newStatus.getDataApprovalLevel().getLevel() )
             {
-                DataApprovalState state = DataApprovalAggregator.nextState( oldStatus.getDataApprovalState(), newStatus.getDataApprovalState() );
+                DataApprovalState state = DataApprovalAggregator.nextState( oldStatus.getState(), newStatus.getState() );
 
                 DataApproval da = newStatus.getDataApproval();
 
@@ -290,7 +290,7 @@ class DataApprovalSelection
     {
         return status == null ? "(null)" :
                 ( status.getDataApprovalLevel() == null ? "(null level)" : status.getDataApprovalLevel().getLevel() )
-                + "-" + ( status.getDataApprovalState() == null ? "(null state)" : status.getDataApprovalState().name() )
+                + "-" + ( status.getState() == null ? "(null state)" : status.getState().name() )
                 + " da " + ( status.getDataApproval() == null ? "(null)" : ( "level "
                         + ( status.getDataApproval().getDataApprovalLevel() == null ? "(null)" : status.getDataApproval().getDataApprovalLevel().getLevel() ) ) );
     }
