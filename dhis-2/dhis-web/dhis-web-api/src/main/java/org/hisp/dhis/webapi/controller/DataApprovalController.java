@@ -94,23 +94,14 @@ public class DataApprovalController
     private final static Log log = LogFactory.getLog( DataApprovalController.class );
 
     public static final String RESOURCE_PATH = "/dataApprovals";
-
     public static final String ACCEPTANCES_PATH = "/acceptances";
-
     private static final String STATUS_PATH = "/status";
-
     private static final String MULTIPLE_SAVE_RESOURCE_PATH = "/multiple";
-
     private static final String MULTIPLE_ACCEPTANCES_RESOURCE_PATH = "/acceptances/multiple";
-
     private static final String APPROVAL_STATE = "state";
-
     private static final String APPROVAL_MAY_APPROVE = "mayApprove";
-
     private static final String APPROVAL_MAY_UNAPPROVE = "mayUnapprove";
-
     private static final String APPROVAL_MAY_ACCEPT = "mayAccept";
-
     private static final String APPROVAL_MAY_UNACCEPT = "mayUnaccept";
 
     @Autowired
@@ -152,8 +143,6 @@ public class DataApprovalController
         @RequestParam( required = false ) String cp, HttpServletResponse response )
         throws IOException
     {
-//        demoUserDataApprovalsAndPermissions(); //TODO: remove
-
         log.info( "GET " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
             + (cog == null || cog.isEmpty() ? "" : ("&cog=" + Arrays.toString( cog.toArray() )))
             + (cp == null ? "" : ("&cp=" + cp)) );
@@ -225,9 +214,6 @@ public class DataApprovalController
         HttpServletResponse response )
         throws IOException
     {
-
-//        demoUserDataApprovalsAndPermissions(); //TODO: remove
-
         Set<DataSet> dataSets = new HashSet<>();
 
         dataSets.addAll( manager.getByUid( DataSet.class, ds ) );
@@ -357,7 +343,7 @@ public class DataApprovalController
         User user = currentUserService.getCurrentUser();
 
         List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
-                period, organisationUnit, categoryOptions, false, new Date(), user );
+            period, organisationUnit, categoryOptions, false, new Date(), user );
 
         try
         {
@@ -383,8 +369,7 @@ public class DataApprovalController
 
             if ( dataSet == null )
             {
-                ContextUtils
-                    .conflictResponse( response, "Illegal data set identifier: " + dataApprovalStateRequest.getDs() );
+                ContextUtils.conflictResponse( response, "Illegal data set identifier: " + dataApprovalStateRequest.getDs() );
                 return;
             }
 
@@ -401,8 +386,7 @@ public class DataApprovalController
 
             if ( organisationUnit == null )
             {
-                ContextUtils.conflictResponse( response,
-                    "Illegal organisation unit identifier: " + dataApprovalStateRequest.getOu() );
+                ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + dataApprovalStateRequest.getOu() );
                 return;
             }
 
@@ -437,7 +421,7 @@ public class DataApprovalController
             Date approvalDate = (dataApprovalStateRequest.getAd() == null) ? new Date() : dataApprovalStateRequest.getAd();
 
             dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
-                    period, organisationUnit, categoryOptions, false, approvalDate, user ) );
+                period, organisationUnit, categoryOptions, false, approvalDate, user ) );
         }
 
         try
@@ -516,7 +500,7 @@ public class DataApprovalController
         for ( DataSet dataSet : dataSets )
         {
             dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
-                    period, organisationUnit, categoryOptions, false, new Date(), user ) );
+                period, organisationUnit, categoryOptions, false, new Date(), user ) );
         }
 
         try
@@ -577,7 +561,6 @@ public class DataApprovalController
             }
 
             categoryOptions = getCommonOptions( categoryOptionGroups );
-
         }
 
         DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
@@ -591,7 +574,7 @@ public class DataApprovalController
         User user = currentUserService.getCurrentUser();
 
         List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
-                period, organisationUnit, categoryOptions, false, new Date(), user );
+            period, organisationUnit, categoryOptions, false, new Date(), user );
 
         try
         {
@@ -605,9 +588,8 @@ public class DataApprovalController
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
     @RequestMapping( method = RequestMethod.POST, value = MULTIPLE_ACCEPTANCES_RESOURCE_PATH )
-    public void acceptApprovalMultiple(
-            @RequestBody DataApprovalStateRequests dataApprovalStateRequests,
-            HttpServletResponse response )
+    public void acceptApprovalMultiple( @RequestBody DataApprovalStateRequests dataApprovalStateRequests, 
+        HttpServletResponse response )
     {
         List<DataApproval> dataApprovalList = new ArrayList<>();
 
@@ -617,8 +599,7 @@ public class DataApprovalController
 
             if ( dataSet == null )
             {
-                ContextUtils
-                        .conflictResponse( response, "Illegal data set identifier: " + dataApprovalStateRequest.getDs() );
+                ContextUtils.conflictResponse( response, "Illegal data set identifier: " + dataApprovalStateRequest.getDs() );
                 return;
             }
 
@@ -631,12 +612,11 @@ public class DataApprovalController
             }
 
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit(
-                    dataApprovalStateRequest.getOu() );
+                dataApprovalStateRequest.getOu() );
 
             if ( organisationUnit == null )
             {
-                ContextUtils.conflictResponse( response,
-                        "Illegal organisation unit identifier: " + dataApprovalStateRequest.getOu() );
+                ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + dataApprovalStateRequest.getOu() );
                 return;
             }
 
@@ -653,7 +633,6 @@ public class DataApprovalController
                 }
 
                 categoryOptions = getCommonOptions( categoryOptionGroups );
-
             }
 
             DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
@@ -664,14 +643,13 @@ public class DataApprovalController
                 return;
             }
 
-            User user = dataApprovalStateRequest.getAb() == null ?
-                    currentUserService.getCurrentUser() :
-                    userService.getUserCredentialsByUsername( dataApprovalStateRequest.getAb() ).getUser();
+            User user = dataApprovalStateRequest.getAb() == null ? 
+                currentUserService.getCurrentUser() : userService.getUserCredentialsByUsername( dataApprovalStateRequest.getAb() ).getUser();
 
             Date approvalDate = (dataApprovalStateRequest.getAd() == null) ? new Date() : dataApprovalStateRequest.getAd();
 
             dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
-                    period, organisationUnit, categoryOptions, false, approvalDate, user ) );
+                period, organisationUnit, categoryOptions, false, approvalDate, user ) );
         }
 
         try
@@ -732,7 +710,6 @@ public class DataApprovalController
             }
 
             categoryOptions = getCommonOptions( categoryOptionGroups );
-
         }
 
         DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
@@ -746,7 +723,7 @@ public class DataApprovalController
         User user = currentUserService.getCurrentUser();
 
         List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
-                period, organisationUnit, categoryOptions, false, new Date(), user );
+            period, organisationUnit, categoryOptions, false, new Date(), user );
 
         try
         {
@@ -763,9 +740,8 @@ public class DataApprovalController
     // -------------------------------------------------------------------------
 
     private List<DataApproval> makeDataApprovalList( DataApprovalLevel dataApprovalLevel, DataSet dataSet,
-                                                     Period period, OrganisationUnit organisationUnit,
-                                                     Set<DataElementCategoryOption> attributeOptions,
-                                                     boolean accepted, Date created, User creator )
+        Period period, OrganisationUnit organisationUnit, Set<DataElementCategoryOption> attributeOptions,
+        boolean accepted, Date created, User creator )
     {
         List<DataApproval> approvals = new ArrayList<>();
 
