@@ -129,8 +129,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public @ResponseBody RootNode getObjectList(
-        @RequestParam Map<String, String> parameters, HttpServletResponse response, HttpServletRequest request )
+    public @ResponseBody RootNode getObjectList( @RequestParam Map<String, String> parameters, 
+        HttpServletResponse response, HttpServletRequest request )
     {
         List<String> fields = Lists.newArrayList( contextService.getParameterValues( "fields" ) );
         List<String> filters = Lists.newArrayList( contextService.getParameterValues( "filter" ) );
@@ -334,7 +334,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
-    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) 
+        throws Exception
     {
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
         {
@@ -362,7 +363,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) 
+        throws Exception
     {
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
         {
@@ -394,8 +396,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE } )
-    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
-        input ) throws Exception
+    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, 
+        @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         List<T> objects = getEntity( uid );
 
@@ -426,8 +428,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
-        input ) throws Exception
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, 
+        @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         List<T> objects = getEntity( uid );
 
@@ -462,8 +464,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid )
-        throws Exception
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, 
+        @PathVariable( "uid" ) String uid ) throws Exception
     {
         List<T> objects = getEntity( uid );
 
@@ -661,17 +663,14 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     protected void postProcessEntities( List<T> entityList, WebOptions options, Map<String, String> parameters )
     {
-
     }
 
     /**
      * Override to process entities after it has been retrieved from
      * storage and before it is returned to the view. Entities is null-safe.
      */
-
     protected void postProcessEntities( List<T> entityList )
     {
-
     }
 
     /**
