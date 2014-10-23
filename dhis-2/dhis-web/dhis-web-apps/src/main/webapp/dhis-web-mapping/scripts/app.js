@@ -1531,37 +1531,17 @@ Ext.onReady( function() {
 					fields: [idProperty, 'name'],
 					data: [],
 					loadOptionSet: function(optionSetId, key, pageSize) {
-						var store = this,
-							params = {};
+						var store = this;
 
                         optionSetId = optionSetId || container.dataElement.optionSet.id;
+                        pageSize = pageSize || 100;
 
-						//if (key) {
-							//params['key'] = key;
-						//}
-
-						params['max'] = pageSize || 15;
-
-						Ext.Ajax.request({
-							url: gis.init.contextPath + '/api/optionSets/' + optionSetId + '.json?fields=options[' + idProperty + ',' + nameProperty + ']',
-							params: params,
-							disableCaching: false,
-							success: function(r) {
-								var options = Ext.decode(r.responseText).options,
-                                    data = [];
-
-                                for (var i = 0; i < options.length; i++) {
-                                    if (container.valueStore.findExact(idProperty, options[i][idProperty]) === -1) {
-                                        data.push(options[i]);
-                                    }
-                                }
-
-								store.removeAll();
-                                store.loadData(data);
-
-                                container.triggerCmp.storage = Ext.clone(options);
-							}
-						});
+                        dhis2.gis.store.get('optionSets', optionSetId).done( function(obj) {
+                            if (Ext.isObject(obj) && Ext.isArray(obj.options) && obj.options.length) {
+                                store.removeAll();
+                                store.loadData(obj.options.slice(0, pageSize));
+                            }
+                        });
 					},
                     listeners: {
 						datachanged: function(s) {
@@ -1641,15 +1621,8 @@ Ext.onReady( function() {
                     disabledCls: 'gis-button-combotrigger-disabled',
                     width: 18,
                     height: 22,
-                    storage: [],
                     handler: function(b) {
-                        if (b.storage.length) {
-							container.searchStore.removeAll();
-                            container.searchStore.add(Ext.clone(b.storage));
-                        }
-                        else {
-                            container.searchStore.loadOptionSet();
-                        }
+                        container.searchStore.loadOptionSet();
                     }
                 });
 
@@ -9086,6 +9059,8 @@ Ext.onReady( function() {
 		});
 
 		onRender = function(vp) {
+            document.getElementById('init').remove();
+
 			gis.olmap.mask = Ext.create('Ext.LoadMask', vp.getEl(), {
 				msg: 'Loading'
 			});
@@ -9282,6 +9257,15 @@ Ext.onReady( function() {
 
                                         init.namePropertyUrl = namePropertyUrl;
 
+                                        // dhis2
+                                        dhis2.util.namespace('dhis2.gis');
+
+                                        dhis2.gis.store = dhis2.gis.store || new dhis2.storage.Store({
+                                            name: 'dhis2',
+                                            adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+                                            objectStores: ['optionSets']
+                                        });
+
                                         // calendar
                                         (function() {
                                             var dhis2PeriodUrl = '../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
@@ -9315,6 +9299,7 @@ Ext.onReady( function() {
                                             url: 'i18n/' + keyUiLocale + '.properties',
                                             success: function(r) {
                                                 GIS.i18n = dhis2.util.parseJavaProperties(r.responseText);
+                                                Ext.get('init').update(GIS.i18n.initializing + '..');
 
                                                 if (keyUiLocale !== defaultKeyUiLocale) {
                                                     Ext.Ajax.request({
@@ -9454,6 +9439,58 @@ Ext.onReady( function() {
 
                                                 init.systemSettings.infrastructuralPeriodType = Ext.isObject(obj) ? obj : null;
                                                 fn();
+                                            }
+                                        });
+
+                                        // option sets
+                                        requests.push({
+                                            url: contextPath + '/api/optionSets.json?fields=id,version&paging=false',
+                                            success: function(r) {
+                                                var optionSets = Ext.decode(r.responseText).optionSets || [],
+                                                    store = dhis2.gis.store,
+                                                    ids = [],
+                                                    url = '',
+                                                    callbacks = 0,
+                                                    checkOptionSet,
+                                                    updateStore;
+
+                                                updateStore = function() {
+                                                    if (++callbacks === optionSets.length) {
+                                                        if (!ids.length) {
+                                                            fn();
+                                                            return;
+                                                        }
+
+                                                        for (var i = 0; i < ids.length; i++) {
+                                                            url += '&filter=id:eq:' + ids[i];
+                                                        }
+
+                                                        Ext.Ajax.request({
+                                                            url: contextPath + '/api/optionSets.json?fields=id,name,version,options[code,name]&paging=false' + url,
+                                                            success: function(r) {
+                                                                var sets = Ext.decode(r.responseText).optionSets;
+
+                                                                store.setAll('optionSets', sets).done(fn);
+                                                            }
+                                                        });
+                                                    }
+                                                };
+
+                                                registerOptionSet = function(optionSet) {
+                                                    store.get('optionSets', optionSet.id).done( function(obj) {
+                                                        if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
+                                                            ids.push(optionSet.id);
+                                                        }
+
+                                                        updateStore();
+                                                    });
+                                                };
+
+                                                store.open().done( function() {
+                                                    for (var i = 0; i < optionSets.length; i++) {
+                                                        registerOptionSet(optionSets[i]);
+                                                    }
+                                                });
                                             }
                                         });
 
