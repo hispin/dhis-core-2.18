@@ -1,7 +1,6 @@
 <h2>DHIS Mobile Configuration</h2>
 <ul>
 	<!--<li><a href = "mobileSettings.action">Settings</a></li>-->
-	<li><a href="showMobileDataSet.action">$i18n.getString( "mobile_dataset" )&nbsp;</a></li>
 	<li><a href="showSMSConfigureForm.action">$i18n.getString( "sms_service_configuration" )</a></li>
     <li><a href="showSentPage.action">$i18n.getString( "view_sent_sms" )</a></li>
 	<li><a href="showReceivingPage.action">$i18n.getString( "show_receive_sms_form" )</a></li>
