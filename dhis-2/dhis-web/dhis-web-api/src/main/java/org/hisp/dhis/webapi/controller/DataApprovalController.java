@@ -163,7 +163,7 @@ public class DataApprovalController
         }
 
         DataApprovalStatus status = dataApprovalService
-            .getDataApprovalStatusAndPermissions( dataSet, period, organisationUnit, null, null ); //TODO fix category stuff
+            .getDataApprovalStatusAndPermissions( dataSet, period, organisationUnit, null );
         
         DataApprovalPermissions permissions = status.getPermissions();
         permissions.setState( status.getState().toString() );
@@ -234,7 +234,7 @@ public class DataApprovalController
         OrganisationUnit organisationUnit, Period period )
     {
         DataApprovalStatus status = dataApprovalService.getDataApprovalStatusAndPermissions( dataSet, period,
-            organisationUnit, null, null );
+            organisationUnit, null );
 
         DataApproval dataApproval = status.getDataApproval();
         Date createdDate = (dataApproval == null) ? null : dataApproval.getCreated();
