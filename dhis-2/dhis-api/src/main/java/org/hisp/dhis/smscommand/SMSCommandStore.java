@@ -57,4 +57,6 @@ public interface SMSCommandStore
     void deleteCodeSet( Set<SMSCode> codes );
 
     int countDataSetSmsCommands( DataSet dataSet );
+
+    SMSCommand getSMSCommand( String name );
 }

@@ -3,3 +3,7 @@
   display: none;
 }
 
+input[type='text'], select, textarea
+{
+	width:300px;
+}

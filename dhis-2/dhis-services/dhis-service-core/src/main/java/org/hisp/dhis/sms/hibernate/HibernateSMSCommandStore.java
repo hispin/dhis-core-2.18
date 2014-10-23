@@ -102,6 +102,20 @@ public class HibernateSMSCommandStore
     }
 
     @Override
+    public SMSCommand getSMSCommand( String name )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( SMSCommand.class );
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        if ( criteria.list() != null && criteria.list().size() > 0 )
+        {
+            return (SMSCommand) criteria.list().get( 0 );
+        }
+
+        return null;
+    }
+    
+    @Override
     @Transactional
     public void delete( SMSCommand cmd )
     {

@@ -4,6 +4,7 @@
 	jQuery(document).ready(function() {
 		changeParserType( getFieldValue( 'parserType' ) );
 		validation( "newSMSCommandForm" );
+		checkValueIsExist( "name", "validateSMSCommand.action");
 	});
 </script>
 <h3>Add command</h3>
@@ -16,15 +17,15 @@
 		<tr><th colspan="2">$i18n.getString( "command_details" )</th></tr>
     </thead>
 		<tr>
-			<td>$i18n.getString( "name" )</td>
+			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
-				<input type="text" value="" id="name" name="name" style="width:20em" class="{validate:{required:true}}"/>
+				<input type="text" id="name" name="name" class="{validate:{required:true}}"/>
 			</td>
 		</tr>
 		<tr>
-			<td>$i18n.getString( "parser" )</td>
+			<td><label for="parserType">$i18n.getString( "parser" )</label></td>
             <td>
-				<select id="parserType" name="parserType" style="width:100%;" onchange="changeParserType( this.value )">
+				<select id="parserType" name="parserType" onchange="changeParserType( this.value )">
 				#foreach( $type in $parserType )
 					<option value="$type">$i18n.getString( "$type" )</option>
 				#end
@@ -33,9 +34,9 @@
         </tr>
 		<tbody id="dataSetParser">
 			<tr>
-				<td>$i18n.getString( "dataset" )</td>
+				<td><label for="selectedDataSetID">$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 				<td>
-					<select name="selectedDataSetID" >
+					<select id="selectedDataSetID" name="selectedDataSetID" class="{validate:{required:true}}">
 					#foreach( $dataSet in $dataSets )
 						<option value="$dataSet.id" #if ($SMSCommand.dataset.id == $dataSet.id) selected #end >$dataSet.displayName</option>
 					#end
@@ -46,9 +47,9 @@
 		
 		<tbody id="alertParser">
 			<tr>
-				<td>$i18n.getString( "userGroup" )</td>
+				<td><label for="userGroupID">$i18n.getString( "userGroup" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 				<td>
-					<select name="userGroupID" >
+					<select id="userGroupID"  name="userGroupID" class="{validate:{required:true}}" disabled >
 					#foreach( $userGroup in $userGroupList )
 						<option value="$userGroup.id">$userGroup.name</option>
 					#end
@@ -59,9 +60,9 @@
 		
 		<tbody id="anonymousProgramParser">
 			<tr>
-				<td>$i18n.getString( "program" )</td>
+				<td><label for="programId">$i18n.getString( "program" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 				<td>
-					<select name="programId" >
+					<select id="programId" name="programId" class="{validate:{required:true}}" disabled >
 					#foreach( $anonymousProgram in $anonymousProgramList )
 						<option value="$userGroup.id">$anonymousProgram.name</option>
 					#end
@@ -72,9 +73,9 @@
 		
 		<tbody id="registrationParser">
 			<tr>
-				<td>$i18n.getString( "program" )</td>
+				<td><label for="selectedProgramId">$i18n.getString( "program" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 				<td>
-					<select name="selectedProgramId" >
+					<select id="selectedProgramId" name="selectedProgramId" class="{validate:{required:true}}" disabled >
 					#foreach( $program in $programList )
 						<option value="$program.id">$program.name</option>
 					#end
@@ -82,11 +83,12 @@
 				</td>
 			</tr>
 		</tbody>
-		
+		<tr><td>&nbsp;</td></tr>
 		<tr>
-			<td colspan="2">
-			     <input id="save" type="submit"  style="width: 100px" value="$i18n.getString( "save" )" />
-			     <input type="button" id ="btnBack" name ="btnBack" value="Back" style="width:8em" onclick="window.location.href='SMSCommands.action'"/>
+			<td></td>
+			<td>
+			     <input id="save" type="submit" style="width: 100px" value="$i18n.getString( 'save' )" />
+			     <input type="button" id ="btnBack" name ="btnBack" value="$i18n.getString( 'cancel' )" style="width:8em" onclick="window.location.href='SMSCommands.action'"/>
 			</td>
 		</tr>
 	</table>

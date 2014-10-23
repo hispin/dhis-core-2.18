@@ -56,6 +56,7 @@ public class EditSMSCommandForm
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private SMSCommandService smsCommandService;
 
     public void setSmsCommandService( SMSCommandService smsCommandService )

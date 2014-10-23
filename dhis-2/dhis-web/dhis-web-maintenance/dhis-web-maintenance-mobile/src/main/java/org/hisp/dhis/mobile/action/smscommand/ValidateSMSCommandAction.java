@@ -1,5 +1,3 @@
-package org.hisp.dhis.mobile.action.smscommand;
-
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -27,17 +25,26 @@ package org.hisp.dhis.mobile.action.smscommand;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.mobile.action.smscommand;
 
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
 
 import com.opensymphony.xwork2.Action;
 
-public class DeleteSMSCommandAction
+/**
+ * @author Chau Thu Tran
+ *
+ * @version $ ValidateSMSCommandAction.java Oct 23, 2014 11:05:06 PM $
+ */
+public class ValidateSMSCommandAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
     private SMSCommandService smsCommandService;
 
     public void setSmsCommandService( SMSCommandService smsCommandService )
@@ -45,15 +52,36 @@ public class DeleteSMSCommandAction
         this.smsCommandService = smsCommandService;
     }
 
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
-    // Input & output
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private Integer id;
 
-    public void setId( int id )
+    public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
     }
 
     // -------------------------------------------------------------------------
@@ -62,11 +90,19 @@ public class DeleteSMSCommandAction
 
     @Override
     public String execute()
-        throws Exception
     {
-        smsCommandService.delete( smsCommandService.getSMSCommand( id ) );
+        if ( name != null )
+        {
+            SMSCommand match = smsCommandService.getSMSCommand( name );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "name_in_used" );
+
+                return ERROR;
+            }
+        }
 
         return SUCCESS;
     }
-
 }
