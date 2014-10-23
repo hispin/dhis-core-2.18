@@ -224,6 +224,13 @@ public interface OrganisationUnitService
     int getLevelOfOrganisationUnit( int id );
 
     /**
+     * Returns the level of the organisation unit (whether loaded or not.)
+     *
+     * @return the level of the organisation unit with the given identifier.
+     */
+    int getLevelOfOrganisationUnit( OrganisationUnit unit );
+
+    /**
      * Returns the intersection of the members of the given OrganisationUnitGroups
      * and the OrganisationUnits which are children of the given collection of
      * parents in the hierarchy. If the given parent collection is null or empty, 

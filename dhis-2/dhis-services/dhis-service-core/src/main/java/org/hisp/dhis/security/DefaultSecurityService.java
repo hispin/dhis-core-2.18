@@ -180,7 +180,7 @@ public class DefaultSecurityService
     @Override
     public boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreOptions restoreOptions )
     {
-        if ( credentials == null || rootPath == null )
+        if ( credentials == null || restoreOptions == null )
         {
             return false;
         }

@@ -47,6 +47,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Abyot Asalefew
@@ -121,10 +122,6 @@ public class DataElementCategoryOption
         
         return groupSets;
     }
-    
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
 
     public void addCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo )
     {
@@ -136,6 +133,30 @@ public class DataElementCategoryOption
     {
         categoryOptionCombos.remove( dataElementCategoryOptionCombo );
         dataElementCategoryOptionCombo.getCategoryOptions().remove( this );
+    }
+
+    public boolean includes( Period period )
+    {
+        return ( startDate == null || !startDate.after( period.getEndDate() ) )
+                && ( endDate == null || !endDate.before( period.getStartDate() ) );
+    }
+
+    public boolean includes( OrganisationUnit ou )
+    {
+        return organisationUnits == null || organisationUnits.isEmpty()
+                || ou.isEqualOrChildOf( organisationUnits );
+    }
+
+    public boolean includesAny( Set<OrganisationUnit> orgUnits )
+    {
+        for ( OrganisationUnit ou : orgUnits )
+        {
+            if ( includes( ou ) )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     // -------------------------------------------------------------------------

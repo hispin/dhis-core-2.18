@@ -35,7 +35,7 @@ package org.hisp.dhis.dataapproval;
  *
  * @author Jim Grace
  */
-public class DataApprovalPermissions
+public class DataApprovalStatusAndPermissions
 {
     private DataApprovalStatus dataApprovalStatus;
 

@@ -36,9 +36,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -71,6 +75,13 @@ public class DefaultDataApprovalLevelService
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
 
     private CurrentUserService currentUserService;
@@ -116,6 +127,127 @@ public class DefaultDataApprovalLevelService
         {
             return dataApprovalLevels.get( levelNumber - 1 );
         }
+    }
+
+    @Override
+    public DataApprovalLevel getHighestDataApprovalLevel( OrganisationUnit orgUnit, Set<CategoryOptionGroup> cogs )
+    {
+        Set<CategoryOptionGroupSet> cogSets = null;
+
+        tracePrint( "getHighestDataApprovalLevel - org unit: " + orgUnit.getName() );
+        if ( cogs != null && !cogs.isEmpty() )
+        {
+            cogSets = new HashSet<>();
+
+            for ( CategoryOptionGroup cog : cogs )
+            {
+                tracePrint( "getHighestDataApprovalLevel - COG: " + cog.getName() );
+                if ( cog.getGroupSet() != null )
+                {
+                    tracePrint( "getHighestDataApprovalLevel - COGS: " + cog.getGroupSet().getName() );
+                    cogSets.add( cog.getGroupSet() );
+                }
+            }
+        }
+
+        int orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+
+        DataApprovalLevel levelAbove = null;
+
+        int levelAboveOrgUnitLevel = 0;
+
+        tracePrint( "getHighestDataApprovalLevel - data approval level count: " + getAllDataApprovalLevels().size() );
+
+        for ( DataApprovalLevel level : getAllDataApprovalLevels() )
+        {
+            tracePrint( "getHighestDataApprovalLevel - data approval level: " + level.getName() );
+
+            if ( ( level.getCategoryOptionGroupSet() == null && cogSets == null )
+                    || ( level.getCategoryOptionGroupSet() != null
+                         && cogSets != null
+                         && cogSets.contains( level.getCategoryOptionGroupSet() ) ) )
+            {
+                if ( level.getOrgUnitLevel() == orgUnitLevel )
+                {
+                    return level; // Exact match on org unit level.
+                }
+                else if ( level.getOrgUnitLevel() > levelAboveOrgUnitLevel )
+                {
+                    levelAbove = level; // Must be first matching approval level for this org unit level.
+
+                    levelAboveOrgUnitLevel = level.getOrgUnitLevel();
+                }
+            }
+        }
+
+        return levelAbove; // Closest ancestor above, or null if none.
+    }
+
+    @Override
+    public DataApprovalLevel getLowestDataApprovalLevel( OrganisationUnit orgUnit, DataElementCategoryOptionCombo attributeOptionCombo )
+    {
+        Set<CategoryOptionGroupSet> cogSets = null;
+
+        if ( attributeOptionCombo != null && attributeOptionCombo != categoryService.getDefaultDataElementCategoryOptionCombo()  )
+        {
+            cogSets = new HashSet<>();
+
+            for ( DataElementCategoryOption option : attributeOptionCombo.getCategoryOptions() )
+            {
+                if ( option.getGroupSets() != null )
+                {
+                    cogSets.addAll( option.getGroupSets() );
+                }
+            }
+        }
+
+        int orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+
+        for ( DataApprovalLevel level : Lists.reverse( getDataApprovalLevelsByOrgUnitLevel( orgUnitLevel ) ) )
+        {
+            if ( level.getCategoryOptionGroupSet() == null )
+            {
+                if ( cogSets == null )
+                {
+                    return level;
+                }
+            }
+            else if ( cogSets != null && cogSets.contains( level.getCategoryOptionGroupSet() ) )
+            {
+                return level;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public DataApprovalLevel getLowestOptionApprovalLevel( DataElementCategoryOption option )
+    {
+        Set<CategoryOptionGroupSet> cogSets = null;
+
+        if ( option != null && option.getGroupSets() != null
+                && !categoryService.getDefaultDataElementCategoryCombo().getCategoryOptions().contains( option ) )
+        {
+            cogSets = option.getGroupSets();
+        }
+
+        for ( DataApprovalLevel level : Lists.reverse( getAllDataApprovalLevels() ) )
+        {
+            if ( level.getCategoryOptionGroupSet() == null )
+            {
+                if ( cogSets == null )
+                {
+                    return level;
+                }
+            }
+            else if ( cogSets != null && cogSets.contains( level.getCategoryOptionGroupSet() ) )
+            {
+                return level;
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -360,6 +492,36 @@ public class DefaultDataApprovalLevelService
     }
 
     @Override
+    public DataApprovalLevel getUserApprovalLevel( OrganisationUnit orgUnit, boolean includeDataViewOrgUnits )
+    {
+        User user = currentUserService.getCurrentUser();
+
+        if ( user != null )
+        {
+            for ( OrganisationUnit ou : user.getOrganisationUnits() )
+            {
+                if ( orgUnit.isEqualOrChildOf( org.hisp.dhis.system.util.CollectionUtils.asSet( ou ) ) )
+                {
+                    return userApprovalLevel( ou );
+                }
+            }
+
+            if ( includeDataViewOrgUnits && user.getDataViewOrganisationUnits() != null )
+            {
+                for ( OrganisationUnit ou : user.getOrganisationUnits() )
+                {
+                    if ( orgUnit.isEqualOrChildOf( org.hisp.dhis.system.util.CollectionUtils.asSet( ou ) ) )
+                    {
+                        return userApprovalLevel( ou );
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public Map<OrganisationUnit, Integer> getUserReadApprovalLevels()
     {
         Map<OrganisationUnit, Integer> map = new HashMap<>();
@@ -402,6 +564,14 @@ public class DefaultDataApprovalLevelService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+
+    private void tracePrint( String s ) // Temporary, for development
+    {
+        if ( false ) // Enable or disable.
+        {
+            System.out.println( s );
+        }
+    }
 
     /**
      * Swaps a data approval level with the next higher level.
@@ -492,25 +662,55 @@ public class DefaultDataApprovalLevelService
      */
     private int requiredApprovalLevel( OrganisationUnit orgUnit )
     {
-        int orgUnitLevel = orgUnit.getLevel() != 0 ?
-            orgUnit.getLevel() :
-            organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() );
+        DataApprovalLevel userLevel = userApprovalLevel( orgUnit );
 
-        int required = APPROVAL_LEVEL_UNAPPROVED;
+        return userLevel == null ? 0 :
+                userLevel.getLevel() == getAllDataApprovalLevels().size() ? APPROVAL_LEVEL_UNAPPROVED :
+                        userLevel.getLevel() + 1;
+    }
+
+    /**
+     * Get the approval level for a user for a given organisation unit. It is
+     * assumed that the user has access to the organisation unit (must be
+     * checked elsewhere, it is not checked here.) If the organisation unit is
+     * above all approval levels, returns null (no approval levels apply.)
+     * <p>
+     * If users are restricted to viewing approved data only, users may
+     * see data from lower levels *only* if it is approved *below* this approval
+     * level (higher number approval level). Or, if this method returns the
+     * lowest (highest number) approval level, users may see unapproved data.
+     * <p>
+     * If users have approve/unapprove authority (checked elsewhere, not here),
+     * the returned level is the level at which users may approve/unapprove.
+     * If users have authority to approve at lower levels, they may approve
+     * at levels below the returned level.
+     * <p>
+     * If users have accept/unaccept authority (checked elsewhere, not here),
+     * users may accept/unaccept at the level just *below* this level.
+     *
+     * @param orgUnit organisation unit to test.
+     * @return approval level for user.
+     */
+    private DataApprovalLevel userApprovalLevel( OrganisationUnit orgUnit )
+    {
+        int orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+
+        DataApprovalLevel userLevel = null;
 
         for ( DataApprovalLevel level : getAllDataApprovalLevels() )
         {
+            tracePrint("userApprovalLevel( " + orgUnit.getName() + "-" + orgUnitLevel + " ) approval level " + level.getName() + " " + securityService.canRead( level ) );
+
             if ( level.getOrgUnitLevel() >= orgUnitLevel
-                && securityService.canRead( level )
-                && canReadCOGS( level.getCategoryOptionGroupSet() )
-                && level.getLevel() < getAllDataApprovalLevels().size() )
+                    && securityService.canRead( level )
+                    && canReadCOGS( level.getCategoryOptionGroupSet() ) )
             {
-                required = level.getLevel() + 1;
+                userLevel = level;
                 break;
             }
         }
 
-        return required;
+        return userLevel;
     }
 
     /**
@@ -538,7 +738,9 @@ public class DefaultDataApprovalLevelService
 
         for ( CategoryOptionGroup cog : cogs.getMembers() )
         {
-            if ( securityService.canRead(cog) )
+            tracePrint("canReadCOGS( " + cogs.getName() + " ) cog " + cog.getName() + " " + securityService.canRead( cog ) );
+
+            if ( securityService.canRead( cog ) )
             {
                 return true;
             }

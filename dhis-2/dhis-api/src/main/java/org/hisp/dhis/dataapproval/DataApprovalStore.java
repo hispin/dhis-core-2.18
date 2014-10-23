@@ -29,6 +29,7 @@ package org.hisp.dhis.dataapproval;
  */
 
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -69,15 +70,16 @@ public interface DataApprovalStore
     void deleteDataApproval( DataApproval dataApproval );
 
     /**
-     * Returns the DataApproval object (if any) for a given
-     * dataset, period and organisation unit.
+     * Returns the DataApproval object (if any) for a given approval level,
+     * dataset, period, organisation unit, and attribute option combo.
      *
+     * @param dataApprovalLevel Level for approval
      * @param dataSet DataSet for approval
      * @param period Period for approval
      * @param organisationUnit OrganisationUnit for approval
-     * @param categoryOptionGroup CategoryOptionGroup (if any) for approval.
+     * @param attributeOptionCombo attribute option combo for approval
      * @return matching DataApproval object, if any
      */
-    DataApproval getDataApproval( DataSet dataSet, Period period, 
-        OrganisationUnit organisationUnit, CategoryOptionGroup categoryOptionGroup );
+    DataApproval getDataApproval( DataApprovalLevel dataApprovalLevel, DataSet dataSet, Period period,
+        OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo );
 }

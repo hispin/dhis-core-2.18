@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataapproval;
+package org.hisp.dhis.dataapproval.exceptions;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -29,47 +29,16 @@ package org.hisp.dhis.dataapproval;
  */
 
 /**
- * "Base", or simplified, state of data approval for a given data selection.
- *
  * @author Jim Grace
+ * @version $Id$
  */
-public enum DataApprovalBaseState
+public class DataMayNotBeApprovedException
+        extends DataApprovalException
 {
-    /**
-     * Data approval does not apply to this selection. (Data is neither
-     * "approved" nor "unapproved".)
-     */
-    UNAPPROVABLE,
+    private static final long serialVersionUID = 2765006990627122000L;
 
-    /**
-     * Data is unapproved, and is not ready to be approved for this selection.
-     */
-    UNAPPROVED_NOT_READY,
-
-    /**
-     * Data is unapproved, and is ready to be approved for this selection.
-     */
-    UNAPPROVED_READY,
-
-    /**
-     * Data is approved for some but not all periods inside this longer period
-     * and is ready for approval in all periods inside this containing period.
-     */
-    PARTIALLY_APPROVED,
-
-    /**
-     * Data is approved (either here or elsewhere).
-     */
-    APPROVED,
-
-    /**
-     * Data is accepted for some but not all periods inside this longer period
-     * and is ready for accepting in all periods inside this containing period.
-     */
-    PARTIALLY_ACCEPTED,
-
-    /**
-     * Data is approved and accepted (either here or elsewhere).
-     */
-    ACCEPTED;
+    public DataMayNotBeApprovedException()
+    {
+        super();
+    }
 }

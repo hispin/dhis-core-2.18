@@ -33,9 +33,11 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.dataapproval.DataApproval;
-import org.hisp.dhis.dataapproval.DataApprovalPermissions;
+import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
+import org.hisp.dhis.dataapproval.DataApprovalLevel;
+import org.hisp.dhis.dataapproval.DataApprovalLevelService;
+import org.hisp.dhis.dataapproval.DataApprovalStatusAndPermissions;
 import org.hisp.dhis.dataapproval.DataApprovalService;
-import org.hisp.dhis.dataapproval.DataApprovalState;
 import org.hisp.dhis.dataapproval.DataApprovalStateRequest;
 import org.hisp.dhis.dataapproval.DataApprovalStateRequests;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponse;
@@ -43,6 +45,8 @@ import org.hisp.dhis.dataapproval.DataApprovalStateResponses;
 import org.hisp.dhis.dataapproval.DataApprovalStatus;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -67,6 +71,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import static org.hisp.dhis.system.util.CollectionUtils.asSet;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,6 +80,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -97,6 +104,8 @@ public class DataApprovalController
 
     private static final String MULTIPLE_SAVE_RESOURCE_PATH = "/multiple";
 
+    private static final String MULTIPLE_ACCEPTANCES_RESOURCE_PATH = "/acceptances/multiple";
+
     private static final String APPROVAL_STATE = "state";
 
     private static final String APPROVAL_MAY_APPROVE = "mayApprove";
@@ -109,6 +118,9 @@ public class DataApprovalController
 
     @Autowired
     private DataApprovalService dataApprovalService;
+
+    @Autowired
+    private DataApprovalLevelService dataApprovalLevelService;
 
     @Autowired
     private DataSetService dataSetService;
@@ -129,6 +141,9 @@ public class DataApprovalController
     private PeriodService periodService;
 
     @Autowired
+    private DataElementCategoryService dataElementCategoryService;
+
+    @Autowired
     private InputUtils inputUtils;
 
     @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
@@ -140,6 +155,8 @@ public class DataApprovalController
         @RequestParam( required = false ) String cp, HttpServletResponse response )
         throws IOException
     {
+//        demoUserDataApprovalsAndPermissions(); //TODO: remove
+
         log.info( "GET " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
             + (cog == null || cog.isEmpty() ? "" : ("&cog=" + Arrays.toString( cog.toArray() )))
             + (cp == null ? "" : ("&cp=" + cp)) );
@@ -187,8 +204,8 @@ public class DataApprovalController
             return;
         }
 
-        DataApprovalPermissions permissions = dataApprovalService
-            .getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, categoryOptions );
+        DataApprovalStatusAndPermissions permissions = dataApprovalService
+            .getDataApprovalStatusAndPermissions( dataSet, period, organisationUnit, categoryOptionGroups, categoryOptions );
 
         Map<String, Object> approvalState = new HashMap<>();
         approvalState.put( APPROVAL_STATE, permissions.getDataApprovalStatus().getDataApprovalState().toString() );
@@ -211,6 +228,8 @@ public class DataApprovalController
         HttpServletResponse response )
         throws IOException
     {
+
+//        demoUserDataApprovalsAndPermissions(); //TODO: remove
 
         Set<DataSet> dataSets = new HashSet<>();
 
@@ -263,7 +282,7 @@ public class DataApprovalController
     private DataApprovalStateResponse getDataApprovalStateResponse( DataSet dataSet, OrganisationUnit organisationUnit,
         Period period )
     {
-        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period,
+        DataApprovalStatusAndPermissions permissions = dataApprovalService.getDataApprovalStatusAndPermissions( dataSet, period,
             organisationUnit, null, null );
 
         DataApprovalStatus dataApprovalStatus = permissions.getDataApprovalStatus();
@@ -315,55 +334,51 @@ public class DataApprovalController
         }
 
         Set<CategoryOptionGroup> categoryOptionGroups = null;
+        Set<DataElementCategoryOption> categoryOptions = null;
 
         if ( cog != null )
         {
             categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
 
-            if ( categoryOptionGroups == null )
+            if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
             {
                 return;
             }
+
+            categoryOptions = getCommonOptions( categoryOptionGroups );
+
         }
 
-        DataApprovalPermissions permissions = dataApprovalService
-            .getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
 
-        DataApprovalState state = permissions.getDataApprovalStatus().getDataApprovalState();
-
-        if ( state != DataApprovalState.UNAPPROVED_READY &&
-            state != DataApprovalState.PARTIALLY_APPROVED_HERE )
+        if ( dataApprovalLevel == null )
         {
-            ContextUtils
-                .conflictResponse( response, "Data is not ready for approval here, current state is: " + state.name() );
-            return;
-        }
-
-        if ( !permissions.isMayApprove() )
-        {
-            ContextUtils.conflictResponse( response, "Current user is not authorized to approve for "
-                + approvalParameters( dataSet, period, organisationUnit, categoryOptionGroups ) );
+            ContextUtils.conflictResponse( response, "Approval level not found." );
             return;
         }
 
         User user = currentUserService.getCurrentUser();
 
-        CategoryOptionGroup categoryOptionGroup = categoryOptionGroups == null || categoryOptionGroups.isEmpty() ?
-            null : categoryOptionGroups.iterator().next();
+        List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
+                period, organisationUnit, categoryOptions, false, new Date(), user );
 
-        DataApproval approval = new DataApproval( permissions.getDataApprovalStatus().getDataApprovalLevel(),
-            dataSet, period, organisationUnit, categoryOptionGroup, false, new Date(), user );
-
-        dataApprovalService.addDataApproval( approval );
+        try
+        {
+            dataApprovalService.approveData( dataApprovalList );
+        }
+        catch ( DataApprovalException ex )
+        {
+            ContextUtils.conflictResponse( response, ex.getClass().getName() );
+        }
     }
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
     @RequestMapping( method = RequestMethod.POST, value = MULTIPLE_SAVE_RESOURCE_PATH )
-    public void saveApproval(
+    public void saveApprovalMultiple(
         @RequestBody DataApprovalStateRequests dataApprovalStateRequests,
         HttpServletResponse response )
     {
-        List<DataApproval> dataApprovals = new ArrayList<>();
+        List<DataApproval> dataApprovalList = new ArrayList<>();
 
         for ( DataApprovalStateRequest dataApprovalStateRequest : dataApprovalStateRequests )
         {
@@ -395,34 +410,26 @@ public class DataApprovalController
             }
 
             Set<CategoryOptionGroup> categoryOptionGroups = null;
+            Set<DataElementCategoryOption> categoryOptions = null;
 
             if ( dataApprovalStateRequest.getCog() != null )
             {
                 categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, dataApprovalStateRequest.getCog() );
 
-                if ( categoryOptionGroups == null )
+                if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
                 {
                     return;
                 }
+
+                categoryOptions = getCommonOptions( categoryOptionGroups );
+
             }
 
-            DataApprovalPermissions permissions = dataApprovalService
-                .getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
+            DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
 
-            DataApprovalState state = permissions.getDataApprovalStatus().getDataApprovalState();
-
-            if ( state != DataApprovalState.UNAPPROVED_READY &&
-                state != DataApprovalState.PARTIALLY_APPROVED_HERE )
+            if ( dataApprovalLevel == null )
             {
-                ContextUtils.conflictResponse( response,
-                    "Data is not ready for approval here, current state is: " + state.name() );
-                return;
-            }
-
-            if ( !permissions.isMayApprove() )
-            {
-                ContextUtils.conflictResponse( response, "Current user is not authorized to approve for "
-                    + approvalParameters( dataSet, period, organisationUnit, categoryOptionGroups ) );
+                ContextUtils.conflictResponse( response, "Approval level not found." );
                 return;
             }
 
@@ -432,16 +439,18 @@ public class DataApprovalController
 
             Date approvalDate = (dataApprovalStateRequest.getAd() == null) ? new Date() : dataApprovalStateRequest.getAd();
 
-            CategoryOptionGroup categoryOptionGroup =
-                categoryOptionGroups == null || categoryOptionGroups.isEmpty() ? null :
-                    categoryOptionGroups.iterator().next();
-
-            dataApprovals.add(
-                new DataApproval( permissions.getDataApprovalStatus().getDataApprovalLevel(), dataSet, period,
-                    organisationUnit, categoryOptionGroup, false, approvalDate, user ) );
+            dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
+                    period, organisationUnit, categoryOptions, false, approvalDate, user ) );
         }
 
-        dataApprovalService.addAllDataApprovals( dataApprovals );
+        try
+        {
+            dataApprovalService.approveData( dataApprovalList );
+        }
+        catch ( DataApprovalException ex )
+        {
+            ContextUtils.conflictResponse( response, ex.getClass().getName() );
+        }
     }
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
@@ -480,45 +489,47 @@ public class DataApprovalController
         }
 
         Set<CategoryOptionGroup> categoryOptionGroups = null;
+        Set<DataElementCategoryOption> categoryOptions = null;
 
         if ( cog != null )
         {
             categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
 
-            if ( categoryOptionGroups == null )
+            if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
             {
                 return;
             }
+
+            categoryOptions = getCommonOptions( categoryOptionGroups );
+
         }
+
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
+
+        if ( dataApprovalLevel == null )
+        {
+            ContextUtils.conflictResponse( response, "Approval level not found." );
+            return;
+        }
+
+        User user = currentUserService.getCurrentUser();
 
         List<DataApproval> dataApprovalList = newArrayList();
 
         for ( DataSet dataSet : dataSets )
         {
-            DataApprovalPermissions permissions = dataApprovalService
-                .getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
-
-            DataApprovalState state = permissions.getDataApprovalStatus().getDataApprovalState();
-
-            if ( state != DataApprovalState.APPROVED_HERE && state != DataApprovalState.ACCEPTED_HERE &&
-                state != DataApprovalState.PARTIALLY_APPROVED_HERE && state != DataApprovalState.PARTIALLY_ACCEPTED_HERE )
-            {
-                ContextUtils
-                    .conflictResponse( response, "Data is not approved here, current state is: " + state.name() );
-                return;
-            }
-
-            if ( !permissions.isMayUnapprove() )
-            {
-                ContextUtils.conflictResponse( response, "Current user is not authorized to unapprove for "
-                    + approvalParameters( dataSet, period, organisationUnit, categoryOptionGroups ) );
-                return;
-            }
-
-            dataApprovalList.add( permissions.getDataApprovalStatus().getDataApproval() );
+            dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
+                    period, organisationUnit, categoryOptions, false, new Date(), user ) );
         }
 
-        dataApprovalService.deleteDataApprovals( dataApprovalList );
+        try
+        {
+            dataApprovalService.unapproveData( dataApprovalList );
+        }
+        catch ( DataApprovalException ex )
+        {
+            ContextUtils.conflictResponse( response, ex.getClass().getName() );
+        }
     }
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
@@ -557,38 +568,123 @@ public class DataApprovalController
         }
 
         Set<CategoryOptionGroup> categoryOptionGroups = null;
+        Set<DataElementCategoryOption> categoryOptions = null;
 
         if ( cog != null )
         {
             categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
 
-            if ( categoryOptionGroups == null )
+            if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
             {
                 return;
             }
+
+            categoryOptions = getCommonOptions( categoryOptionGroups );
+
         }
 
-        DataApprovalPermissions permissions = dataApprovalService
-            .getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
 
-        DataApprovalState state = permissions.getDataApprovalStatus().getDataApprovalState();
-
-        if ( state != DataApprovalState.APPROVED_HERE &&
-            state != DataApprovalState.PARTIALLY_ACCEPTED_HERE )
+        if ( dataApprovalLevel == null )
         {
-            ContextUtils.conflictResponse( response,
-                "Data is not ready for accepting here, current state is: " + state.name() );
+            ContextUtils.conflictResponse( response, "Approval level not found." );
             return;
         }
 
-        if ( !permissions.isMayAccept() )
+        User user = currentUserService.getCurrentUser();
+
+        List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
+                period, organisationUnit, categoryOptions, false, new Date(), user );
+
+        try
         {
-            ContextUtils.conflictResponse( response, "Current user is not authorized to accept approval for "
-                + approvalParameters( dataSet, period, organisationUnit, categoryOptionGroups ) );
-            return;
+            dataApprovalService.acceptData( dataApprovalList );
+        }
+        catch ( DataApprovalException ex )
+        {
+            ContextUtils.conflictResponse( response, ex.getClass().getName() );
+        }
+    }
+
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
+    @RequestMapping( method = RequestMethod.POST, value = MULTIPLE_ACCEPTANCES_RESOURCE_PATH )
+    public void acceptApprovalMultiple(
+            @RequestBody DataApprovalStateRequests dataApprovalStateRequests,
+            HttpServletResponse response )
+    {
+        List<DataApproval> dataApprovalList = new ArrayList<>();
+
+        for ( DataApprovalStateRequest dataApprovalStateRequest : dataApprovalStateRequests )
+        {
+            DataSet dataSet = dataSetService.getDataSet( dataApprovalStateRequest.getDs() );
+
+            if ( dataSet == null )
+            {
+                ContextUtils
+                        .conflictResponse( response, "Illegal data set identifier: " + dataApprovalStateRequest.getDs() );
+                return;
+            }
+
+            Period period = PeriodType.getPeriodFromIsoString( dataApprovalStateRequest.getPe() );
+
+            if ( period == null )
+            {
+                ContextUtils.conflictResponse( response, "Illegal period identifier: " + dataApprovalStateRequest.getPe() );
+                return;
+            }
+
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit(
+                    dataApprovalStateRequest.getOu() );
+
+            if ( organisationUnit == null )
+            {
+                ContextUtils.conflictResponse( response,
+                        "Illegal organisation unit identifier: " + dataApprovalStateRequest.getOu() );
+                return;
+            }
+
+            Set<CategoryOptionGroup> categoryOptionGroups = null;
+            Set<DataElementCategoryOption> categoryOptions = null;
+
+            if ( dataApprovalStateRequest.getCog() != null )
+            {
+                categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, dataApprovalStateRequest.getCog() );
+
+                if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
+                {
+                    return;
+                }
+
+                categoryOptions = getCommonOptions( categoryOptionGroups );
+
+            }
+
+            DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
+
+            if ( dataApprovalLevel == null )
+            {
+                ContextUtils.conflictResponse( response, "Approval level not found." );
+                return;
+            }
+
+            User user = dataApprovalStateRequest.getAb() == null ?
+                    currentUserService.getCurrentUser() :
+                    userService.getUserCredentialsByUsername( dataApprovalStateRequest.getAb() ).getUser();
+
+            Date approvalDate = (dataApprovalStateRequest.getAd() == null) ? new Date() : dataApprovalStateRequest.getAd();
+
+            dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
+                    period, organisationUnit, categoryOptions, false, approvalDate, user ) );
         }
 
-        dataApprovalService.accept( permissions.getDataApprovalStatus().getDataApproval() );
+        try
+        {
+            dataApprovalService.acceptData( dataApprovalList );
+        }
+        catch ( DataApprovalException ex )
+        {
+            ContextUtils.conflictResponse( response, ex.getClass().getName() );
+        }
     }
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
@@ -627,42 +723,103 @@ public class DataApprovalController
         }
 
         Set<CategoryOptionGroup> categoryOptionGroups = null;
+        Set<DataElementCategoryOption> categoryOptions = null;
 
         if ( cog != null )
         {
             categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
 
-            if ( categoryOptionGroups == null )
+            if ( categoryOptionGroups == null || categoryOptionGroups.isEmpty() )
             {
                 return;
             }
+
+            categoryOptions = getCommonOptions( categoryOptionGroups );
+
         }
 
-        DataApprovalPermissions permissions = dataApprovalService
-            .getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, categoryOptionGroups );
 
-        DataApprovalState state = permissions.getDataApprovalStatus().getDataApprovalState();
-
-        if ( state != DataApprovalState.ACCEPTED_HERE &&
-            state != DataApprovalState.PARTIALLY_ACCEPTED_HERE )
+        if ( dataApprovalLevel == null )
         {
-            ContextUtils.conflictResponse( response, "Data is not accepted here, current state is: " + state.name() );
+            ContextUtils.conflictResponse( response, "Approval level not found." );
             return;
         }
 
-        if ( !permissions.isMayUnaccept() )
-        {
-            ContextUtils.conflictResponse( response, "Current user is not authorized to unaccept approval for "
-                + approvalParameters( dataSet, period, organisationUnit, categoryOptionGroups ) );
-            return;
-        }
+        User user = currentUserService.getCurrentUser();
 
-        dataApprovalService.unaccept( permissions.getDataApprovalStatus().getDataApproval() );
+        List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
+                period, organisationUnit, categoryOptions, false, new Date(), user );
+
+        try
+        {
+            dataApprovalService.unacceptData( dataApprovalList );
+        }
+        catch ( DataApprovalException ex )
+        {
+            ContextUtils.conflictResponse( response, ex.getClass().getName() );
+        }
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+
+    //TODO: temporary -- remove
+    private void demoUserDataApprovalsAndPermissions()
+    {
+        System.out.println("demoUserDataApprovalsAndPermissions");
+
+        Set<DataSet> dataSets = asSet( dataSetService.getDataSetByName( "MER: Community Based" ).iterator().next(), dataSetService.getDataSetByName( "MER: Facility Based" ).iterator().next() );
+
+        List<DataApprovalStatusAndPermissions> permissionsList = dataApprovalService.getUserDataApprovalsAndPermissions( dataSets, PeriodType.getPeriodFromIsoString( "2014Oct" ) );
+
+        for ( DataApprovalStatusAndPermissions p : permissionsList )
+        {
+            System.out.println( "status for - " + p.getDataApprovalStatus().getDataApproval().getAttributeOptionCombo().getName() + " " + p.getDataApprovalStatus().getDataApprovalLevel().getLevel() );
+        }
+    }
+
+    private List<DataApproval> makeDataApprovalList( DataApprovalLevel dataApprovalLevel, DataSet dataSet,
+                                                     Period period, OrganisationUnit organisationUnit,
+                                                     Set<DataElementCategoryOption> attributeOptions,
+                                                     boolean accepted, Date created, User creator )
+    {
+        List<DataApproval> approvals = new ArrayList<>();
+
+        if ( attributeOptions == null )
+        {
+            DataElementCategoryOptionCombo combo = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
+
+            approvals.add( new DataApproval( dataApprovalLevel, dataSet, period, organisationUnit, combo, accepted, created, creator ) );
+        }
+        else
+        {
+            for ( DataElementCategoryOption option : attributeOptions )
+            {
+                for ( DataElementCategoryOptionCombo combo : option.getCategoryOptionCombos() )
+                {
+                    approvals.add( new DataApproval( dataApprovalLevel, dataSet, period, organisationUnit, combo, accepted, created, creator ) );
+                }
+            }
+        }
+
+        return approvals;
+    }
+
+    private Set<DataElementCategoryOption> getCommonOptions( Set<CategoryOptionGroup> categoryOptionGroups )
+    {
+        Iterator<CategoryOptionGroup> it = categoryOptionGroups.iterator();
+
+        Set<DataElementCategoryOption> options = it.next().getMembers();
+
+        while ( it.hasNext() )
+        {
+            options.retainAll( it.next().getMembers() );
+        }
+
+        return options;
+    }
 
     private String approvalParameters( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
         Set<CategoryOptionGroup> categoryOptionGroups )
