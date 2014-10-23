@@ -638,6 +638,7 @@ public class EventController
             return;
         }
 
+        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         eventService.deleteEvent( event );
     }
 }
