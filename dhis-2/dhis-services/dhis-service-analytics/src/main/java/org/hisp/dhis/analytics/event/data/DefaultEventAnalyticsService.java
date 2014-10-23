@@ -165,7 +165,7 @@ public class DefaultEventAnalyticsService
 
         for ( QueryItem item : params.getItems() )
         {
-            grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName(), item.getTypeAsString(), false, true ) );
+            grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName(), item.getTypeAsString(), false, true, item.isOptionSet() ) );
         }
 
         grid.addHeader( new GridHeader( "value", "Value", Double.class.getName(), false, false ) );
