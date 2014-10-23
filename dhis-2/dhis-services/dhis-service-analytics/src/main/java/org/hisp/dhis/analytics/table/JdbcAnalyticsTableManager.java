@@ -28,7 +28,6 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataapproval.DataApprovalLevelService.APPROVAL_LEVEL_UNAPPROVED;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 
 import java.util.ArrayList;
@@ -235,12 +234,11 @@ public class JdbcAnalyticsTableManager
     private String getApprovalSubquery()
     {
         String sql = "(" +
-            "select coalesce(min(dal.level)," + APPROVAL_LEVEL_UNAPPROVED + ") " +
+            "select coalesce(min(dal.level), des.datasetapprovallevel) " +
             "from dataapproval da " +
             "inner join dataapprovallevel dal on da.dataapprovallevelid = dal.dataapprovallevelid " +
             "where da.periodid = dv.periodid " +
             "and des.datasetid = da.datasetid " +
-            "and des.datasetapprovedata = true " +
             "and (";
         
         Set<OrganisationUnitLevel> levels = dataApprovalLevelService.getOrganisationUnitApprovalLevels();
