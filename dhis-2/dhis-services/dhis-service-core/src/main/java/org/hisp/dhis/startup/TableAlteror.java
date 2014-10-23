@@ -80,8 +80,6 @@ public class TableAlteror
     {
         int defaultCategoryComboId = getDefaultCategoryCombo();
 
-        int defaultOptionCombo = getDefaultOptionCombo();
-
         // ---------------------------------------------------------------------
         // Drop outdated tables
         // ---------------------------------------------------------------------
