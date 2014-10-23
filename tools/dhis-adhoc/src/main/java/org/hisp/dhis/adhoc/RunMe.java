@@ -35,7 +35,7 @@ public class RunMe
      */
     public static List<String> commands()
     {
-        return Arrays.asList( "exampleCommand" );
+        return Arrays.asList( "analyticsTableGenerator" );
     }
     
     public static void main( String[] args )
