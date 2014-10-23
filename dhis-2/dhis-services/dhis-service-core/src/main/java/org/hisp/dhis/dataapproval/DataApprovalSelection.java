@@ -61,8 +61,6 @@ class DataApprovalSelection
 {
     private final static Log log = LogFactory.getLog( DataApprovalSelection.class );
 
-    private final static int INDEX_NOT_FOUND = -1;
-
     // -------------------------------------------------------------------------
     // Data selection parameters
     // -------------------------------------------------------------------------
@@ -102,12 +100,6 @@ class DataApprovalSelection
     private boolean dataSetFoundBelow = false;
 
     private Map<DataElementCategoryOptionCombo, Set<CategoryOptionGroupSet>> optionComboGroupSetCache = new HashMap<>();
-
-    // -------------------------------------------------------------------------
-    // Preconstructed Status object
-    // -------------------------------------------------------------------------
-
-    private static final DataApprovalStatus STATUS_UNAPPROVABLE = new DataApprovalStatus( UNAPPROVABLE, null, null);
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -236,10 +228,7 @@ class DataApprovalSelection
 
     private void tracePrint( String s ) // Temporary, for development
     {
-        if ( false ) // Enable or disable.
-        {
-            System.out.println( s );
-        }
+        //System.out.println( s );
     }
 
     /**

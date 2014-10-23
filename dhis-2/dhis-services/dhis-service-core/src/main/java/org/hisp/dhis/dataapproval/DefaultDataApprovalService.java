@@ -28,7 +28,6 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
@@ -56,6 +55,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.security.SecurityService;
+import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
@@ -429,10 +429,7 @@ public class DefaultDataApprovalService
 
     private void tracePrint( String s ) // Temporary, for development
     {
-        if ( false ) // Enable or disable.
-        {
-            System.out.println( s );
-        }
+        //System.out.println( s );
     }
 
     private DataApproval defensiveCopy( DataApproval  da )
@@ -861,7 +858,7 @@ public class DefaultDataApprovalService
 
         for ( DataElementCategoryOption option : optionCombo.getCategoryOptions() )
         {
-            if ( !CollectionUtils.isEmpty( option.getOrganisationUnits() ) )
+            if ( option.getOrganisationUnits() != null && !option.getOrganisationUnits().isEmpty() )
             {
                 if ( orgUnits == null )
                 {

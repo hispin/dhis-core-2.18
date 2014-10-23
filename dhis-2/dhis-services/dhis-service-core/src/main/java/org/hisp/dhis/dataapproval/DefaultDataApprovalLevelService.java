@@ -567,10 +567,7 @@ public class DefaultDataApprovalLevelService
 
     private void tracePrint( String s ) // Temporary, for development
     {
-        if ( false ) // Enable or disable.
-        {
-            System.out.println( s );
-        }
+        //System.out.println( s );
     }
 
     /**

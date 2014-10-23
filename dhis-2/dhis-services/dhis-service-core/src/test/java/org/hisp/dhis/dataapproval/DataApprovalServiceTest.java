@@ -28,6 +28,7 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.hisp.dhis.system.util.CollectionUtils.asList;
 import static org.hisp.dhis.system.util.CollectionUtils.asSet;
 import static org.junit.Assert.assertEquals;
@@ -36,14 +37,19 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataapproval.exceptions.UserCannotAccessApprovalLevelException;
 import org.hisp.dhis.dataapproval.exceptions.UserMayNotApproveDataException;
-import org.hisp.dhis.dataelement.*;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.mock.MockCurrentUserService;
@@ -57,7 +63,6 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author Jim Grace
@@ -362,8 +367,6 @@ public class DataApprovalServiceTest
         groupCD.setGroupSet( groupSetABCD );
         groupEF.setGroupSet( groupSetEFGH );
         groupGH.setGroupSet( groupSetEFGH );
-
-        System.out.println("groupA set is " + groupAB.getGroupSet().getName() );
 
         level1ABCD = new DataApprovalLevel( "level1ABCD", 1, groupSetABCD );
         level1EFGH = new DataApprovalLevel( "level1EFGH", 1, groupSetEFGH );
@@ -1547,8 +1550,8 @@ public class DataApprovalServiceTest
         setDependency( dataApprovalLevelService, "currentUserService", currentUserService, CurrentUserService.class );
 
         DataApproval dataApprovalJan = new DataApproval( level2, dataSetA, periodA, organisationUnitB, defaultCombo, NOT_ACCEPTED, date, userA );
-        DataApproval dataApprovalFeb = new DataApproval( level2, dataSetA, periodB, organisationUnitB, defaultCombo, NOT_ACCEPTED, date, userA );
-        DataApproval dataApprovalMar = new DataApproval( level2, dataSetA, periodC, organisationUnitB, defaultCombo, NOT_ACCEPTED, date, userA );
+        new DataApproval( level2, dataSetA, periodB, organisationUnitB, defaultCombo, NOT_ACCEPTED, date, userA );
+        new DataApproval( level2, dataSetA, periodC, organisationUnitB, defaultCombo, NOT_ACCEPTED, date, userA );
 
         dataApprovalService.approveData( asList( dataApprovalJan ) );
         dataApprovalService.acceptData( asList( dataApprovalJan ) );

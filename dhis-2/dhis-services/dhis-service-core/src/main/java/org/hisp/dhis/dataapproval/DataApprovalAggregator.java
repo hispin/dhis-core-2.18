@@ -226,9 +226,10 @@ public class DataApprovalAggregator
      * @param <T> type of items
      * @return the first non-null item
      */
-    private static <T> T firstNonNull( T... values ) 
+    @SafeVarargs
+    private static <T> T firstNonNull( final T... values ) 
     {
-        for ( T value : values )
+        for ( final T value : values )
         {
             if ( value != null )
             {
