@@ -39,7 +39,6 @@
 
     <tbody>
 		<tr>
-		  <!---->
 		  <td>
 		  	<select id="availableList" name="availableList" multiple="multiple" style="height: 200px; width: 100%;"></select>          
           </td>
@@ -54,7 +53,7 @@
         <td>
           <select id="selectedList" name="selectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
         	#foreach( $mobiledataset in $mobileDatasets )
-      			<option value="$mobiledataset.id">$encoder.htmlEncode( $mobiledataset.name )-Version $mobiledataset.version</option>
+      			<option value="$mobiledataset.uid">$encoder.htmlEncode( $mobiledataset.name )-Version $mobiledataset.version</option>
     		#end
           </select>
         </td>

@@ -42,6 +42,7 @@ public class UpdateMobileDataSetAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -52,6 +53,7 @@ public class UpdateMobileDataSetAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+    
     private Collection<String> selectedList = new HashSet<>();
 
     public void setSelectedList( Collection<String> selectedList )
@@ -73,7 +75,8 @@ public class UpdateMobileDataSetAction
         DataSet dataset = null;
         for ( String id : selectedList )
         {
-            dataset = dataSetService.getDataSet( Integer.parseInt( id ) );
+            dataset = dataSetService.getDataSet( id );
+            
             if ( !dataset.isMobile() )
             {
                 dataset.setMobile( true );
@@ -83,7 +86,8 @@ public class UpdateMobileDataSetAction
      
         for ( String id : availableList )
         {
-            dataset = dataSetService.getDataSet( Integer.parseInt( id ) );
+            dataset = dataSetService.getDataSet( id );
+            
             if ( dataset.isMobile() )
             {
                 dataset.setMobile( false );
