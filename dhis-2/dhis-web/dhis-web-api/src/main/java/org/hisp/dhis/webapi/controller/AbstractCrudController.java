@@ -480,6 +480,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             throw new DeleteAccessDeniedException( "You don't have the proper permissions to delete this object." );
         }
 
+        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         manager.delete( objects.get( 0 ) );
     }
 
@@ -579,6 +580,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             throw new DeleteAccessDeniedException( "You don't have the proper permissions to delete this object." );
         }
 
+        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+
         manager.update( objects.get( 0 ) );
         manager.refresh( candidate );
     }
@@ -647,6 +650,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             throw new DeleteAccessDeniedException( "You don't have the proper permissions to delete this object." );
         }
+
+        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
 
         manager.update( objects.get( 0 ) );
         manager.refresh( candidate );
