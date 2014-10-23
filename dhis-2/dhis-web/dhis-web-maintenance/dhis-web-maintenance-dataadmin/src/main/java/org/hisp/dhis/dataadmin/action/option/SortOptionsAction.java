@@ -1,3 +1,5 @@
+package org.hisp.dhis.dataadmin.action.option;
+
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -26,8 +28,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dataadmin.action.option;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +39,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- *
- * @version $ SortOptionsAction.java Jul 28, 2014 8:41:52 PM $
  */
 public class SortOptionsAction
     implements Action
@@ -72,41 +70,34 @@ public class SortOptionsAction
         return optionSetId;
     }
 
-    private List<Integer> optionIds = new ArrayList<>();
+    private List<String> optionIds = new ArrayList<>();
 
-    public void setOptionIds( List<Integer> optionIds )
+    public void setOptionIds( List<String> optionIds )
     {
         this.optionIds = optionIds;
     }
 
-    // -------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
         throws Exception
     {
-        try
+        OptionSet optionSet = optionService.getOptionSet( optionSetId );
+        
+        List<Option> options = new ArrayList<>();
+        
+        for ( String optionId : optionIds )
         {
-            OptionSet optionSet = optionService.getOptionSet( optionSetId );
-            // optionSet.getOptions().clear();
-            List<Option> options = new ArrayList<>();
-            for ( int optionId : optionIds )
-            {
-                Option option = optionService.getOption( optionId );
-                options.add( option );
-            }
-            optionSet.setOptions( options );
-            optionService.updateOptionSet( optionSet );
-            System.out.println( "\n  optionSet: " + optionSet );
+            Option option = optionService.getOption( Integer.valueOf( optionId ) );
+            options.add( option );
+        }
+        
+        optionSet.setOptions( options );
+        optionService.updateOptionSet( optionSet );
 
-            return SUCCESS;
-        }
-        catch ( Exception ex )
-        {
-            System.out.println( ex.getMessage() );
-        }
-        return ERROR;
+        return SUCCESS;
     }
 }
