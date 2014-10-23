@@ -159,6 +159,7 @@ public class TrackedEntityAttributeController
         newTrackedEntityAttribute.setUid( trackedEntityAttribute.getUid() );
         trackedEntityAttribute.mergeWith( newTrackedEntityAttribute );
 
+        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         trackedEntityAttributeService.updateTrackedEntityAttribute( trackedEntityAttribute );
     }
 
@@ -178,6 +179,7 @@ public class TrackedEntityAttributeController
         newTrackedEntityAttribute.setUid( trackedEntityAttribute.getUid() );
         trackedEntityAttribute.mergeWith( newTrackedEntityAttribute );
 
+        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         trackedEntityAttributeService.updateTrackedEntityAttribute( trackedEntityAttribute );
     }
 
