@@ -102,7 +102,10 @@
 			#set($numb=$velocityCount-1)
 			<tr id="tr${outboundSms.id}" height="40">
 				<td style="text-align:center"><input type="checkbox" name="mycheck" value="$outboundSms.id"/></td>
-				<td style="text-align:center">$velocityCount</td>
+				<td style="text-align:center">
+					#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
+					$nr
+				</td>
 				<td>$outboundSms.message</td>
 				<td>$outboundSms.recipients</td>
 				<td>$recipientNames.get($velocityCount)</td>
