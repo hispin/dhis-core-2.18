@@ -38,7 +38,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -101,9 +100,6 @@ public class CaseAggregationConditionServiceTest
 
     @Autowired
     private DataElementCategoryService categoryService;
-
-    @Autowired
-    private ConceptService conceptService;
 
     @Autowired
     private DataElementCategoryService dataElementCategoryService;

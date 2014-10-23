@@ -53,7 +53,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
@@ -1313,20 +1312,6 @@ public abstract class DhisConvenienceTest
         sqlView.setSqlQuery( sql );
 
         return sqlView;
-    }
-
-    /**
-     * @param uniqueCharacter A unique character to identify the object.
-     * @return a concept instance
-     */
-    protected static Concept createConcept( char uniqueCharacter )
-    {
-        Concept concept = new Concept();
-        concept.setAutoFields();
-
-        concept.setName( "Concept" + uniqueCharacter );
-
-        return concept;
     }
 
     /**

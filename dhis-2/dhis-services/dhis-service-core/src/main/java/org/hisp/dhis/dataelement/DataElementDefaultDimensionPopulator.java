@@ -32,8 +32,6 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,13 +63,6 @@ public class DataElementDefaultDimensionPopulator
         this.dataElementService = dataElementService;
     }
 
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
-    }
-
     private DataElementCategoryService categoryService;
 
     public void setCategoryService( DataElementCategoryService categoryService )
@@ -88,17 +79,6 @@ public class DataElementDefaultDimensionPopulator
     public void execute()
         throws Exception
     {
-        Concept defaultConcept = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME );
-
-        if ( defaultConcept == null )
-        {
-            conceptService.generateDefaultConcept();
-
-            defaultConcept = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME );
-
-            log.info( "Added default concept" );
-        }
-
         DataElementCategory defaultCategory = categoryService.getDataElementCategoryByName( DataElementCategory.DEFAULT_NAME );
 
         if ( defaultCategory == null )
