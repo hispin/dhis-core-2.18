@@ -366,49 +366,6 @@ public class DefaultDataApprovalService
     }
 
     @Override
-    public DataApprovalStatus getDataApprovalStatusAndPermissions( DataSet dataSet, Period period,
-                                                                   OrganisationUnit organisationUnit, Set<CategoryOptionGroup> categoryOptionGroups,
-                                                                   Set<DataElementCategoryOption> attributeCategoryOptions )
-    {
-        tracePrint( "---------------------------------------------------------------------- getDataApprovalStatusAndPermissions" );
-
-        period = periodService.reloadPeriod( period );
-        
-        tracePrint( "getDataApprovalStatusAndPermissions( " + dataSet.getName() + ", "
-                + period.getPeriodType().getName() + " " + period.getName() + " " + period + ", "
-                + organisationUnit.getName() + ", "
-                + ( categoryOptionGroups == null ? "(null)" : categoryOptionGroups.size() + " categoryOptionGroups" )
-                + ( attributeCategoryOptions == null ? "(null)" : attributeCategoryOptions.size() + " attributeCategoryOptions" ) + " )" );
-
-        Set<CategoryOptionGroup> groups = categoryOptionGroups;
-
-        if ( ( groups == null || groups.isEmpty() ) && attributeCategoryOptions != null )
-        {
-            groups = new HashSet<>();
-
-            for ( DataElementCategoryOption option : attributeCategoryOptions )
-            {
-                groups.addAll( option.getGroups() );
-            }
-        }
-
-        DataApprovalLevel dal = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, groups );
-
-        if ( dal == null )
-        {
-            tracePrint( "Returning UNAPPROVABLE because no approval levels apply." );
-
-            return new DataApprovalStatus( DataApprovalState.UNAPPROVABLE, null, null, null );
-        }
-
-        DataApproval da = checkDataApproval( new DataApproval( dal, dataSet, period, organisationUnit, null, false, null, null ), true );
-
-        DataApprovalStatus status = doGetDataApprovalStatus( makeApprovalsList( da, asSet( dataSet ), categoryOptionGroups, attributeCategoryOptions, true ), da );
-
-        return getPermissions( dal, status, da );
-    }
-
-    @Override
     public List<DataApprovalStatus> getUserDataApprovalsAndPermissions( Set<DataSet> dataSets, Period period )
     {
         tracePrint( "---------------------------------------------------------------------- getUserDataApprovalsAndPermissions" );
@@ -440,7 +397,7 @@ public class DefaultDataApprovalService
 
     private void tracePrint( String s ) // Temporary, for development
     {
-        //System.out.println( s );
+//        System.out.println( s );
     }
 
     private DataApproval defensiveCopy( DataApproval  da )
@@ -796,14 +753,14 @@ public class DefaultDataApprovalService
             permissions.setMayUnapprove( state.isUnapprovable() && mayUnapprove( status.getDataApproval(), status ) );
             permissions.setMayAccept( state.isAcceptable() && mayAcceptOrUnaccept( status.getDataApproval(), status ) );
             permissions.setMayUnaccept( state.isUnacceptable() && mayAcceptOrUnaccept( status.getDataApproval(), status ) );
-        }
 
-        log.debug( "Found permissions for " + da.getOrganisationUnit().getName()
-                + " " + status.getState().name()
-                + " may approve = " + permissions.isMayApprove()
-                + " may unapprove = " + permissions.isMayUnapprove()
-                + " may accept = " + permissions.isMayAccept()
-                + " may unaccept = " + permissions.isMayUnaccept() );
+            log.debug( "Found permissions for " + da.getOrganisationUnit().getName()
+                    + " " + status.getState().name()
+                    + " may approve = " + permissions.isMayApprove()
+                    + " may unapprove = " + permissions.isMayUnapprove()
+                    + " may accept = " + permissions.isMayAccept()
+                    + " may unaccept = " + permissions.isMayUnaccept() );
+        }
 
         status.setDataApproval( defensiveCopy( status.getDataApproval() ) );
         status.setPermissions( permissions );
