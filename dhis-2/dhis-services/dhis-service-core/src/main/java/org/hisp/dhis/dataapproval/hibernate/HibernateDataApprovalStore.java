@@ -28,13 +28,16 @@ package org.hisp.dhis.dataapproval.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataapproval.DataApproval;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataapproval.DataApprovalStore;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
@@ -43,18 +46,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Jim Grace
