@@ -33,6 +33,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.user.User;
 
 import java.util.List;
 import java.util.Map;
@@ -215,6 +216,8 @@ public interface DataApprovalLevelService
      * @return approval level
      */
     DataApprovalLevel getUserApprovalLevel( OrganisationUnit orgUnit, boolean includeDataViewOrgUnits );
+    
+    DataApprovalLevel getUserApprovalLevel( User user, OrganisationUnit orgUnit, boolean includeDataViewOrgUnits );
 
     /**
      * By organisation unit subhierarchy, returns the lowest data approval

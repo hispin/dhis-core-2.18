@@ -386,7 +386,7 @@ public class DefaultDataApprovalService
 
             if ( da.getOrganisationUnit() != null ) //TODO: Shouldn't be null -- fix the category option mappings to org units in the database.
             {
-                DataApprovalLevel userApprovalLevel = dataApprovalLevelService.getUserApprovalLevel( da.getOrganisationUnit(), false );
+                DataApprovalLevel userApprovalLevel = dataApprovalLevelService.getUserApprovalLevel( user, da.getOrganisationUnit(), false );
 
                 if ( userApprovalLevel != null )
                 {

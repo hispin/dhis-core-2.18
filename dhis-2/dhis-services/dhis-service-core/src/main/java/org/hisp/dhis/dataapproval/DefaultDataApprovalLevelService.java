@@ -511,14 +511,20 @@ public class DefaultDataApprovalLevelService
     public DataApprovalLevel getUserApprovalLevel( OrganisationUnit orgUnit, boolean includeDataViewOrgUnits )
     {
         User user = currentUserService.getCurrentUser();
-
+        
+        return getUserApprovalLevel( user, orgUnit, includeDataViewOrgUnits );
+    }
+    
+    @Override
+    public DataApprovalLevel getUserApprovalLevel( User user, OrganisationUnit orgUnit, boolean includeDataViewOrgUnits )
+    {
         if ( user != null )
         {
             for ( OrganisationUnit ou : user.getOrganisationUnits() )
             {
                 if ( orgUnit.isEqualOrChildOf( org.hisp.dhis.system.util.CollectionUtils.asSet( ou ) ) )
                 {
-                    return userApprovalLevel( ou );
+                    return userApprovalLevel( ou, user );
                 }
             }
 
@@ -528,7 +534,7 @@ public class DefaultDataApprovalLevelService
                 {
                     if ( orgUnit.isEqualOrChildOf( org.hisp.dhis.system.util.CollectionUtils.asSet( ou ) ) )
                     {
-                        return userApprovalLevel( ou );
+                        return userApprovalLevel( ou, user );
                     }
                 }
             }
@@ -555,7 +561,7 @@ public class DefaultDataApprovalLevelService
         {
             for ( OrganisationUnit orgUnit : user.getOrganisationUnits() )
             {
-                map.put( orgUnit, requiredApprovalLevel( orgUnit ) );
+                map.put( orgUnit, requiredApprovalLevel( orgUnit, user ) );
             }
         }
 
@@ -570,7 +576,7 @@ public class DefaultDataApprovalLevelService
         {
             if ( !map.containsKey( orgUnit ) )
             {
-                map.put( orgUnit, requiredApprovalLevel( orgUnit ) );
+                map.put( orgUnit, requiredApprovalLevel( orgUnit, user ) );
             }
         }
 
@@ -673,9 +679,9 @@ public class DefaultDataApprovalLevelService
      * @param orgUnit organisation unit to test.
      * @return required approval level for user to see the data.
      */
-    private int requiredApprovalLevel( OrganisationUnit orgUnit )
+    private int requiredApprovalLevel( OrganisationUnit orgUnit, User user )
     {
-        DataApprovalLevel userLevel = userApprovalLevel( orgUnit );
+        DataApprovalLevel userLevel = userApprovalLevel( orgUnit, user );
 
         return userLevel == null ? 0 :
                 userLevel.getLevel() == getAllDataApprovalLevels().size() ? APPROVAL_LEVEL_UNAPPROVED :
@@ -704,7 +710,7 @@ public class DefaultDataApprovalLevelService
      * @param orgUnit organisation unit to test.
      * @return approval level for user.
      */
-    private DataApprovalLevel userApprovalLevel( OrganisationUnit orgUnit )
+    private DataApprovalLevel userApprovalLevel( OrganisationUnit orgUnit, User user )
     {
         int orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
 
@@ -716,7 +722,7 @@ public class DefaultDataApprovalLevelService
 
             if ( level.getOrgUnitLevel() >= orgUnitLevel
                     && securityService.canRead( level )
-                    && canReadCOGS( level.getCategoryOptionGroupSet() ) )
+                    && canReadCOGS( user, level.getCategoryOptionGroupSet() ) )
             {
                 userLevel = level;
                 break;
@@ -739,11 +745,11 @@ public class DefaultDataApprovalLevelService
      * @param cogs The category option group set to test
      * @return true if user can read at least one category option group.
      */
-    private boolean canReadCOGS( CategoryOptionGroupSet cogs )
+    private boolean canReadCOGS( User user, CategoryOptionGroupSet cogs )
     {
         if ( cogs == null )
         {
-            UserCredentials userCredentials = currentUserService.getCurrentUser().getUserCredentials();
+            UserCredentials userCredentials = user.getUserCredentials();
 
             return CollectionUtils.isEmpty( userCredentials.getCogsDimensionConstraints() )
                 && CollectionUtils.isEmpty( userCredentials.getCatDimensionConstraints() );
