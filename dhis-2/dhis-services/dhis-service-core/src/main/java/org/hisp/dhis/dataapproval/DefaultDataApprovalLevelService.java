@@ -755,6 +755,6 @@ public class DefaultDataApprovalLevelService
                 && CollectionUtils.isEmpty( userCredentials.getCatDimensionConstraints() );
         }
 
-        return !CollectionUtils.isEmpty( categoryService.getAllCategoryOptionGroups() );
+        return !CollectionUtils.isEmpty( categoryService.getCategoryOptionGroups( cogs ) );
     }
 }

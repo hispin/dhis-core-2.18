@@ -394,10 +394,10 @@ public class DefaultDataApprovalService
                     int dataLevel = da.getDataApprovalLevel() == null ? maxApprovalLevel + 1 : da.getDataApprovalLevel().getLevel();
 
                     boolean mayApprove = ( authorizedToApprove && userLevel == dataLevel && !da.isAccepted() ) ||
-                            authorizedToApproveAtLowerLevels && userLevel < dataLevel;
+                        authorizedToApproveAtLowerLevels && userLevel < dataLevel;
 
                     boolean mayAcceptOrUnaccept = authorizedToAcceptAtLowerLevels && dataLevel <= maxApprovalLevel &&
-                            ( userLevel == dataLevel + 1 || ( userLevel < dataLevel && authorizedToApproveAtLowerLevels ) );
+                        ( userLevel == dataLevel + 1 || ( userLevel < dataLevel && authorizedToApproveAtLowerLevels ) );
 
                     boolean mayUnapprove = mayApprove && ( !da.isAccepted() || mayAcceptOrUnaccept );
 
