@@ -366,7 +366,57 @@ public class DefaultDataApprovalService
     }
 
     @Override
-    public List<DataApprovalStatus> getUserDataApprovalsAndPermissions( Set<DataSet> dataSets, Period period )
+    public List<DataApprovalStatus> getUserDataApprovalsAndPermissions( Set<DataSet> dataSets, Set<Period> periods )
+    {
+        User user = currentUserService.getCurrentUser();
+
+        boolean authorizedToApprove = user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE );
+        boolean authorizedToApproveAtLowerLevels = user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        boolean authorizedToAcceptAtLowerLevels = user.getUserCredentials().isAuthorized( DataApproval.AUTH_ACCEPT_LOWER_LEVELS );
+
+        int maxApprovalLevel = dataApprovalLevelService.getAllDataApprovalLevels().size();
+
+        List<DataApprovalStatus> statusList = new ArrayList<>();
+
+        for ( DataApproval da : dataApprovalStore.getUserDataApprovals( dataSets, periods ) )
+        {
+            DataApprovalPermissions permissions = new DataApprovalPermissions();
+
+            if ( da.getOrganisationUnit() != null ) //TODO: Shouldn't be null -- fix the category option mappings to org units in the database.
+            {
+                DataApprovalLevel userApprovalLevel = dataApprovalLevelService.getUserApprovalLevel( da.getOrganisationUnit(), false );
+
+                if ( userApprovalLevel != null )
+                {
+                    int userLevel = userApprovalLevel.getLevel();
+                    int dataLevel = da.getDataApprovalLevel() == null ? maxApprovalLevel + 1 : da.getDataApprovalLevel().getLevel();
+
+                    boolean mayApprove = ( authorizedToApprove && userLevel == dataLevel && !da.isAccepted() ) ||
+                            authorizedToApproveAtLowerLevels && userLevel < dataLevel;
+
+                    boolean mayAcceptOrUnaccept = authorizedToAcceptAtLowerLevels && dataLevel <= maxApprovalLevel &&
+                            ( userLevel == dataLevel + 1 || ( userLevel < dataLevel && authorizedToApproveAtLowerLevels ) );
+
+                    boolean mayUnapprove = mayApprove && ( !da.isAccepted() || mayAcceptOrUnaccept );
+
+                    permissions.setMayApprove( mayApprove );
+                    permissions.setMayUnapprove( mayUnapprove );
+                    permissions.setMayAccept( mayAcceptOrUnaccept );
+                    permissions.setMayUnaccept( mayAcceptOrUnaccept );
+                }
+                boolean mayReadData = true; //TODO: Fix.
+
+                permissions.setMayReadData( mayReadData );
+
+                statusList.add( new DataApprovalStatus( null, da, da.getDataApprovalLevel(), permissions ) );
+            }
+        }
+
+        return statusList;
+    }
+
+    /*
+    public List<DataApprovalStatus> getUserDataApprovalsAndPermissions( Set<DataSet> dataSets, Set<Period> periods )
     {
         tracePrint( "---------------------------------------------------------------------- getUserDataApprovalsAndPermissions" );
 
@@ -390,6 +440,7 @@ public class DefaultDataApprovalService
         
         return statusList;
     }
+    */
 
     // -------------------------------------------------------------------------
     // Supportive methods

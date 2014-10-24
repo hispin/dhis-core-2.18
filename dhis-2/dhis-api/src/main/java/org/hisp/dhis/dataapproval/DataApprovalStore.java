@@ -33,6 +33,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
+import java.util.Set;
+
 /**
  * Defines the functionality for persisting DataApproval objects.
  *
@@ -81,4 +83,16 @@ public interface DataApprovalStore
      */
     DataApproval getDataApproval( DataApprovalLevel dataApprovalLevel, DataSet dataSet, Period period,
         OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo );
+
+    /**
+     * Returns a set of DataApproval objects representing the approval states
+     * for organisation units & category option combos that the user is allowed
+     * to see.
+     *
+     * @param dataSets Data sets to look within
+     * @param periods Periods to look within
+     * @return data approval objects for the user to see
+     */
+    Set<DataApproval> getUserDataApprovals( Set<DataSet> dataSets, Set<Period> periods);
+
 }

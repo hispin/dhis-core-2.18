@@ -109,8 +109,8 @@ public interface DataApprovalService
      * category option combos that the user is allowed to see.
      *
      * @param dataSets DataSets that we are getting the status for
-     * @param period period we are getting the status for
+     * @param periods Periods we are getting the status for
      * @return list of status and permissions
      */
-    List<DataApprovalStatus> getUserDataApprovalsAndPermissions( Set<DataSet> dataSets, Period period );
+    List<DataApprovalStatus> getUserDataApprovalsAndPermissions( Set<DataSet> dataSets, Set<Period> periods );
 }
