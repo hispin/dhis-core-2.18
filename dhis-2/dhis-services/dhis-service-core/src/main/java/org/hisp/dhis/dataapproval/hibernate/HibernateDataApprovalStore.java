@@ -241,6 +241,8 @@ public class HibernateDataApprovalStore
         int previousPeriodId = 0;
         int previousLevel = 0;
 
+        DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
         Set<DataApproval> userDataApprovals = new HashSet<>();
 
         while ( rowSet.next() )
@@ -266,7 +268,7 @@ public class HibernateDataApprovalStore
             OrganisationUnit orgUnit = ( orgUnitId == null ? null : organisationUnitService.getOrganisationUnit( orgUnitId ) );
 
             //TODO: currently special cased for PEFPAR's requirements. Can we make it more generic?
-            if ( level > 1 && attributeOptionCombo.equals ( categoryService.getDefaultDataElementCategoryOptionCombo() ) )
+            if ( level > 1 && attributeOptionCombo.equals( defaultOptionCombo ) )
             {
                 for ( OrganisationUnit ou : getUserOrgsAtLevel( 3 ) )
                 {
@@ -277,6 +279,7 @@ public class HibernateDataApprovalStore
 
                 continue;
             }
+            
             DataApproval da = new DataApproval( dataApprovalLevel, null, period, orgUnit, attributeOptionCombo, accepted, null, null );
 
             userDataApprovals.add( da );
