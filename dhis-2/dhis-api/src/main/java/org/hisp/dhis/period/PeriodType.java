@@ -247,7 +247,6 @@ public abstract class PeriodType
         {
             return periodCache.get( getCacheKey( date ), new Callable<Period>()
             {
-                @Override
                 public Period call() throws Exception
                 {
                     return createPeriod( createCalendarInstance( date ) );
@@ -284,7 +283,6 @@ public abstract class PeriodType
         {
             return periodCache.get( getCacheKey( calendar, date ), new Callable<Period>()
             {
-                @Override
                 public Period call() throws Exception
                 {
                     return createPeriod( calendar.fromIso( DateTimeUnit.fromJdkDate( date ) ), calendar );
