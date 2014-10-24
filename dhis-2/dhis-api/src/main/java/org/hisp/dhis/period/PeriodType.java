@@ -61,7 +61,8 @@ import java.util.concurrent.TimeUnit;
 public abstract class PeriodType
     implements Serializable
 {
-    // cache for speeding up period lookup, uses calendar.name() + periodType.getName() + date.getTime() as key
+    // Cache for period lookup, uses calendar.name() + periodType.getName() + date.getTime() as key
+    
     private static Cache<String, Period> periodCache = CacheBuilder.newBuilder()
         .expireAfterAccess( 5, TimeUnit.MINUTES )
         .initialCapacity( 10000 )
