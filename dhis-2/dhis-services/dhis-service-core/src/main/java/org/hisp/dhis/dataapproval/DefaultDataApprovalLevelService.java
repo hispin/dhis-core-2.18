@@ -508,7 +508,7 @@ public class DefaultDataApprovalLevelService
 
             if ( includeDataViewOrgUnits && user.getDataViewOrganisationUnits() != null )
             {
-                for ( OrganisationUnit ou : user.getOrganisationUnits() )
+                for ( OrganisationUnit ou : user.getDataViewOrganisationUnits() )
                 {
                     if ( orgUnit.isEqualOrChildOf( org.hisp.dhis.system.util.CollectionUtils.asSet( ou ) ) )
                     {
