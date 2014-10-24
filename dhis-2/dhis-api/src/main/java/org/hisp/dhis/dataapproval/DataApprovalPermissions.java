@@ -43,6 +43,8 @@ public class DataApprovalPermissions
     private boolean mayAccept;
 
     private boolean mayUnaccept;
+
+    private boolean mayReadData;
     
     private transient String state;
     
@@ -92,6 +94,17 @@ public class DataApprovalPermissions
     public void setMayUnaccept( boolean mayUnaccept )
     {
         this.mayUnaccept = mayUnaccept;
+    }
+
+    @JsonProperty
+    public boolean isMayReadData()
+    {
+        return mayReadData;
+    }
+
+    public void setMayReadData( boolean mayReadData )
+    {
+        this.mayReadData = mayReadData;
     }
 
     @JsonProperty
