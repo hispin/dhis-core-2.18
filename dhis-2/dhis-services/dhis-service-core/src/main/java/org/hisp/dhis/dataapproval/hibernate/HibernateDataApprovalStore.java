@@ -32,6 +32,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -53,6 +56,9 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 /**
  * @author Jim Grace
  */
@@ -60,6 +66,18 @@ public class HibernateDataApprovalStore
     extends HibernateGenericStore<DataApproval>
     implements DataApprovalStore
 {
+    private static Cache<Integer, Period> PERIOD_CACHE = CacheBuilder.newBuilder()
+        .expireAfterAccess( 10, TimeUnit.MINUTES ).initialCapacity( 1000 )
+        .maximumSize( 2000 ).build();
+
+    private static Cache<Integer, DataElementCategoryOptionCombo> OPTION_COMBO_CACHE = CacheBuilder.newBuilder()
+        .expireAfterAccess( 10, TimeUnit.MINUTES ).initialCapacity( 10000 )
+        .maximumSize( 50000 ).build();
+
+    private static Cache<Integer, OrganisationUnit> ORGANISATION_UNIT_CACHE = CacheBuilder.newBuilder()
+        .expireAfterAccess( 10, TimeUnit.MINUTES ).initialCapacity( 10000 )
+        .maximumSize( 50000 ).build();
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -248,44 +266,72 @@ public class HibernateDataApprovalStore
         
         Set<DataApproval> userDataApprovals = new HashSet<>();
 
-        while ( rowSet.next() )
+        try
         {
-            Integer attributeOptionComboId = rowSet.getInt( 1 );
-            Integer periodId = rowSet.getInt( 2 );
-            Integer level = rowSet.getInt( 3 );
-            Integer orgUnitId = rowSet.getInt( 4 );
-            Boolean accepted = rowSet.getBoolean( 5 );
-
-            if ( attributeOptionComboId == previousAttributeOptionComboId && periodId == previousPeriodId && level > previousLevel )
+            while ( rowSet.next() )
             {
-                continue;
-            }
-
-            previousAttributeOptionComboId = attributeOptionComboId;
-            previousPeriodId = periodId;
-            previousLevel = level;
-
-            DataElementCategoryOptionCombo attributeOptionCombo = categoryService.getDataElementCategoryOptionCombo( attributeOptionComboId );
-            Period period = periodService.getPeriod( periodId );
-            DataApprovalLevel dataApprovalLevel = ( level == null ? null : levelMap.get( level ) );
-            OrganisationUnit orgUnit = ( orgUnitId == null ? null : organisationUnitService.getOrganisationUnit( orgUnitId ) );
-
-            //TODO: currently special cased for PEFPAR's requirements. Can we make it more generic?
-            if ( level > 1 && attributeOptionCombo.equals( defaultOptionCombo ) )
-            {
-                for ( OrganisationUnit ou : getUserOrgsAtLevel( 3 ) )
+                final Integer aoc = rowSet.getInt( 1 );
+                final Integer pe = rowSet.getInt( 2 );
+                final Integer level = rowSet.getInt( 3 );
+                final Integer ou = rowSet.getInt( 4 );
+                final Boolean accepted = rowSet.getBoolean( 5 );
+    
+                if ( aoc == previousAttributeOptionComboId && pe == previousPeriodId && level > previousLevel )
                 {
-                    DataApproval da = new DataApproval( dataApprovalLevel, null, period, ou, attributeOptionCombo, accepted, null, null );
-
-                    userDataApprovals.add( da );
+                    continue;
                 }
-
-                continue;
+    
+                previousAttributeOptionComboId = aoc;
+                previousPeriodId = pe;
+                previousLevel = level;
+    
+                DataApprovalLevel dataApprovalLevel = ( level == null ? null : levelMap.get( level ) );
+                
+                DataElementCategoryOptionCombo optionCombo = ( aoc == null || aoc == 0 ? null : OPTION_COMBO_CACHE.get( aoc, new Callable<DataElementCategoryOptionCombo>()
+                {
+                    public DataElementCategoryOptionCombo call() throws ExecutionException
+                    {
+                        return categoryService.getDataElementCategoryOptionCombo( aoc );
+                    }
+                } ) );
+                
+                Period period = ( pe == null || pe == 0 ? null : PERIOD_CACHE.get( pe, new Callable<Period>()
+                {
+                    public Period call() throws ExecutionException
+                    {
+                        return periodService.getPeriod( pe );
+                    }
+                } ) );
+                
+                OrganisationUnit orgUnit = ( ou == null || ou == 0 ? null : ORGANISATION_UNIT_CACHE.get( ou, new Callable<OrganisationUnit>()
+                {
+                    public OrganisationUnit call() throws ExecutionException
+                    {
+                        return organisationUnitService.getOrganisationUnit( ou );
+                    }
+                } ) );
+    
+                //TODO: currently special cased for PEFPAR's requirements. Can we make it more generic?
+                if ( level > 1 && optionCombo.equals( defaultOptionCombo ) )
+                {
+                    for ( OrganisationUnit unit : getUserOrgsAtLevel( 3 ) )
+                    {
+                        DataApproval da = new DataApproval( dataApprovalLevel, null, period, unit, optionCombo, accepted, null, null );
+    
+                        userDataApprovals.add( da );
+                    }
+    
+                    continue;
+                }
+                
+                DataApproval da = new DataApproval( dataApprovalLevel, null, period, orgUnit, optionCombo, accepted, null, null );
+    
+                userDataApprovals.add( da );
             }
-            
-            DataApproval da = new DataApproval( dataApprovalLevel, null, period, orgUnit, attributeOptionCombo, accepted, null, null );
-
-            userDataApprovals.add( da );
+        }
+        catch ( ExecutionException ex )
+        {
+            throw new RuntimeException( ex );
         }
 
         return userDataApprovals;
