@@ -127,7 +127,7 @@ public class LoadQualityMaxScoreAction implements Action
         
         for ( String qualityMaxValue : qualityMaxValues )
         {
-            System.out.println( qualityMaxValue  );
+            //System.out.println( qualityMaxValue  );
         }
         
         

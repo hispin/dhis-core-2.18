@@ -389,11 +389,19 @@ public class LoadDataEntryFormAction implements Action
             orgUnitBranchIds += "," + orgUnit.getId();
         }
         
+        
+        
+        
+        
+        
         OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( organisationUnit, dataSet.getId(), orgUnitBranchIds );
         if( orgUnitGroup != null )
         {
             tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( orgUnitGroup, orgUnitBranchIds, dataSet, period ) );
         }
+        
+        //System.out.println( orgUnitBranchIds + " : " + orgUnitGroup.getId() + " : " + organisationUnit.getId() + " : " + dataSet.getId() );
+        
         
         /*
         OrganisationUnit parentOrgunit = findParentOrgunitforTariff( organisationUnit, tariff_setting_authority );
@@ -556,10 +564,13 @@ public class LoadDataEntryFormAction implements Action
     {
         Set<Integer> orgUnitGroupIds = tariffDataValueService.getOrgUnitGroupsByDataset( dataSetId, orgUnitIds );
         
+        //System.out.println( " orgUnitGroupIds : " + orgUnitGroupIds  );
+        
         OrganisationUnitGroup orgUnitGroup = null;
         if( orgUnitGroupIds != null && orgUnitGroupIds.size() > 0 )
         {
              orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupIds.iterator().next() );
+             //System.out.println( " 1 orgUnitGroup : " + orgUnitGroup.getId()  );
         }
         else
         {        
@@ -568,6 +579,8 @@ public class LoadDataEntryFormAction implements Action
             OrganisationUnitGroupSet orgUnitGroupSet = orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() );
         	
             orgUnitGroup = organisationUnit.getGroupInGroupSet( orgUnitGroupSet );
+            
+            //System.out.println( " 2 orgUnitGroup : " + orgUnitGroup.getId()  );
         }
     	
     	return orgUnitGroup;

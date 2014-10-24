@@ -1,5 +1,4 @@
 <script >
-
 	var windowWidth = $(window).width();
 	var windowHeight = $(window).height();
 	var tableWidth = (parseInt( windowWidth ) * 70.2) / 100 ;	
@@ -55,11 +54,6 @@ Ext.onReady(function() {
 });
 
 var changeOwner = function(combo, record, index) {
-
-						//jQuery('#loadTariffDetails').dialog('destroy').remove();
-						
-						setInnerHTML('loadTariffDetails', '');
-						
 						var dataElementName = combo.getValue();
 						$('#dataElementName').val(dataElementName);
         				$('#loadTariffDetails').load("loadTariffDetails.action", 
@@ -74,9 +68,6 @@ var changeOwner = function(combo, record, index) {
 	
 function getTariffData()
 {
-  //jQuery('#loadTariffDetails').dialog('destroy').remove();
-  
-  setInnerHTML('loadTariffDetails', '');
   $('#loadTariffDetails').load("loadTariffDetails.action", 
             				{
             					dataElementName : $('#dataElementName').val(),								
@@ -207,5 +198,4 @@ function loadExtTariff()
 </div>
 <br/><br/><br/>
 <div id="loadTariffDetails" style="width:85%"></div>
-
 	

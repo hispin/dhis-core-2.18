@@ -176,7 +176,7 @@ public class AddTariffDataAction
             tariffDataValue.setOrgUnitLevel( organisationUnit.getOrganisationUnitLevel() );
             
             tariffDataValueService.addTariffDataValue( tariffDataValue );
-            System.out.println("Tariff Data Added");
+            //System.out.println("Tariff Data Added");
         }
         else
         {
@@ -193,7 +193,7 @@ public class AddTariffDataAction
             tariffDataValue.setStoredBy( currentUserService.getCurrentUsername() );
             
             tariffDataValueService.updateTariffDataValue( tariffDataValue );
-            System.out.println("Tariff Data Updated");
+            //System.out.println("Tariff Data Updated");
         }
         
         return SUCCESS;

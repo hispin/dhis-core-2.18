@@ -135,6 +135,16 @@
 		<property name="lookupService" ref="org.hisp.dhis.rbf.api.LookupService" />
     </bean>
     
+    
+    <!-- Add tariff details form -->
+    <bean id="org.hisp.dhis.rbf.action.ShowAddTariffDetailsFormAction" class="org.hisp.dhis.rbf.action.ShowAddTariffDetailsFormAction" scope="prototype">
+    </bean>   
+    
+     <!-- Add tariff details form -->
+    <bean id="org.hisp.dhis.rbf.action.ShowUpdateTariffDetailsFormAction" class="org.hisp.dhis.rbf.action.ShowUpdateTariffDetailsFormAction" scope="prototype">
+    
+    </bean>    
+    
     <!-- Add Tariff -->
 	<bean id="org.hisp.dhis.rbf.action.AddTariffDataAction" class="org.hisp.dhis.rbf.action.AddTariffDataAction" scope="prototype">
 		<property name="tariffDataValueService" ref="org.hisp.dhis.rbf.api.TariffDataValueService" />
@@ -787,9 +797,26 @@
 -->	
 	
 	
+    <!-- Partner Form -->
+    <bean id="org.hisp.dhis.rbf.partner.action.PartnerFormAction"
+        class="org.hisp.dhis.rbf.partner.action.PartnerFormAction"
+        scope="prototype">
+    </bean>	
+
+    <!-- Get DataElements and Periods List-->
+    <bean id="org.hisp.dhis.rbf.partner.action.GetDataElementAndPeriodListAction"
+        class="org.hisp.dhis.rbf.partner.action.GetDataElementAndPeriodListAction"
+        scope="prototype">
+    </bean>
+
 	
-	
-	
+    <!-- Partner Form Save -->
+    <bean id="org.hisp.dhis.rbf.partner.action.SavePartnerDetailsResultAction"
+        class="org.hisp.dhis.rbf.partner.action.SavePartnerDetailsResultAction"
+        scope="prototype">
+        <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+        <property name="pbfDataValueService" ref="org.hisp.dhis.rbf.api.PBFDataValueService" />
+    </bean>		
 	
 	
 	

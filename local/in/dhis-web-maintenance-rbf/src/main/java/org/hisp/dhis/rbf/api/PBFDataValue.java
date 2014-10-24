@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -32,6 +33,9 @@ public class PBFDataValue implements Serializable
     private Date timestamp;
 
     private String comment;
+    
+    private Option option;
+
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -209,4 +213,16 @@ public class PBFDataValue implements Serializable
     {
         this.comment = comment;
     }
+    
+    public Option getOption()
+    {
+        return option;
+    }
+
+    public void setOption( Option option )
+    {
+        this.option = option;
+    }
+
+    
 }

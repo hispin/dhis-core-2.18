@@ -172,8 +172,16 @@ public class LoadTariffDetailsAction
         // selecteddataElement ) );
 
         tariffList = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( orgUnitGroup, organisationUnit, selecteddataElement ) );
-
-        System.out.println( tariffList.size() + " : " + orgUnitGroup.getId() + " : " + organisationUnit.getId() + " : " + selecteddataElement.getId() );
+        
+        
+        //System.out.println( tariffList.size() + " : " + orgUnitGroup.getId() + " : " + organisationUnit.getId() + " : " + selecteddataElement.getId() );
+        
+        /*
+        for ( TariffDataValue value : tariffList )
+        {
+            System.out.println( "DataElement  name : "+ value.getDataElement().getName()  +  "dataSet name : "+ value.getDataSet().getName()  + " value : " + value.getValue()  + " start date : " + value.getStartDate().toString() + " End date : " + value.getEndDate().toString()  );
+        }
+        */
         
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
 
@@ -186,7 +194,23 @@ public class LoadTariffDetailsAction
             dataSets.add( dataSet );
         }
         
-        dataSets.retainAll( orgUnitGroup.getDataSets() );
+        /*
+        Set<OrganisationUnit> groupMember = new TreeSet<OrganisationUnit>( orgUnitGroup.getMembers() );
+        
+        Set<DataSet> tempDataSets = new TreeSet<DataSet>();
+        
+        for( OrganisationUnit orgUnit : groupMember )
+        {
+            tempDataSets.addAll( orgUnit.getDataSets() );
+        }
+        
+        dataSets.retainAll( tempDataSets );
+        
+        */
+        
+        dataSets.retainAll( dataSetService.getDataSetsBySources( orgUnitGroup.getMembers() ) );
+        
+        //dataSets.retainAll( orgUnitGroup.getDataSets() );
         
         /*
         System.out.println( "Lookup DataSet Size : " + dataSets.size() );
@@ -204,6 +228,11 @@ public class LoadTariffDetailsAction
         }
         
         System.out.println( "Final DataSet Size : " + dataSets.size() );
+        
+        for( DataSet dataSet : dataSets )
+        {
+            System.out.println(" Final dataSet ---" + dataSet.getId() +" -- " + dataSet.getName() );
+        }      
         */
         
         return SUCCESS;

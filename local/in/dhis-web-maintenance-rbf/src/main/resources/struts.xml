@@ -23,10 +23,25 @@
 			<param name="stylesheets">../dhis-web-commons/javascripts/ext/resources/css/ext-all-gray.css</param>
 			<param name="requiredAuthorities">F_PBF_DATAELEMENT_TARIFF_MANAGEMENT</param>
 		</action>
+		
 		<action name="loadTariffDetails" class="org.hisp.dhis.rbf.action.LoadTariffDetailsAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-rbf/loadTariffData.vm</param>
 		</action>
+		
+		<!--  add tariffDetails form -->
+		<action name="showAddTariffDetailsForm" class="org.hisp.dhis.rbf.action.ShowAddTariffDetailsFormAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-maintenance-rbf/loadTariffAddDetailsForm.vm</param>
+		</action>		
+		
+		<!--  Update tariffDetails form -->
+		<action name="showUpdateTariffDetailsForm" class="org.hisp.dhis.rbf.action.ShowUpdateTariffDetailsFormAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-maintenance-rbf/loadTariffUpdateDetailsForm.vm</param>
+		</action>		
+		
+		<!--  add/update tariff -->
 		 <action name="addTariffData" class="org.hisp.dhis.rbf.action.AddTariffDataAction">
 			<result name="success" type="velocity-json">/dhis-web-maintenance-rbf/tariffStatus.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>					
@@ -604,7 +619,7 @@
 
 
     <!-- PBF Reports -->
-    <action name="PBFInvoiceReportForm" class="org.hisp.dhis.rbf.report.action.PBFInvoiceReportFormAction">
+   <action name="PBFInvoiceReportForm" class="org.hisp.dhis.rbf.report.action.PBFInvoiceReportFormAction">
         <result name="success" type="velocity">/main.vm</result>
         <param name="page">/dhis-web-maintenance-rbf/PBFInvoiceReportForm.vm</param>
         <param name="javascripts">javascript/prevNextPeriods.js</param>
@@ -627,10 +642,29 @@
 	-->	
 
 
+   <!-- PBF Reports -->
+   <action name="partnerForm" class="org.hisp.dhis.rbf.partner.action.PartnerFormAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-rbf/partnerForm.vm</param>
+        <param name="javascripts">javascript/partner.js</param>
+        <param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
+        <param name="requiredAuthorities">F_PBF_PARTNER</param>
+   </action>
+
+
+	<!-- Get DataElements and Periods List-->
+	<action name="getDataElementsAndPeriodList" class="org.hisp.dhis.rbf.partner.action.GetDataElementAndPeriodListAction">
+		<result name="success" type="velocity-xml">/dhis-web-maintenance-rbf/responseDataElementAndPeriods.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>
+		<param name="requiredAuthorities">F_PBF_PARTNER</param>
+	</action>
 
 
 
-
+    <action name="partnerFormResult" class="org.hisp.dhis.rbf.partner.action.SavePartnerDetailsResultAction">
+        <result name="success" type="redirect">index.action</result>
+        <param name="requiredAuthorities">F_PBF_PARTNER</param>
+    </action>
 
 
 

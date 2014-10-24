@@ -267,11 +267,19 @@ public class LoadQualityScoreDetailsAction
 
         OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( organisationUnit, dataSet.getId(), orgUnitBranchIds );
         
+        
+        //System.out.println(" DataSet Id ---" + dataSet.getId()  );
+        //System.out.println(" orgUnitGroup Id ---" + orgUnitGroup.getId()  );
+        //System.out.println(" orgUnitBranch Ids ---" + orgUnitBranchIds  );
+        //System.out.println(" period Id ---" + period.getId()  );
+        
         if( orgUnitGroup != null )
         {
             qualityMaxValueMap.putAll( qualityMaxValueService.getQualityMaxValues( orgUnitGroup, orgUnitBranchIds, dataSet, period ) );
         }
-
+        
+ 
+        
         //List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
         
         
@@ -322,7 +330,15 @@ public class LoadQualityScoreDetailsAction
         
         dataElements = new ArrayList<DataElement>( geti18nDataElements( dataElementList ) );
         
+        /*
+        for ( DataElement de : dataElements )
+        {
+            System.out.println(" de name ---" + de.getId() + "-"+ de.getDisplayName() +" Quality max value is : " + qualityMaxValueMap.get( de.getId() )  );
+            
+        }
+        */
         
+       
         for ( DataElement dataElement : dataElements )
         {
             DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, optionCombo );
