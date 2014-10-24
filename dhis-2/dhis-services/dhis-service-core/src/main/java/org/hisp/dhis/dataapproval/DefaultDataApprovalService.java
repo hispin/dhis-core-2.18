@@ -378,7 +378,9 @@ public class DefaultDataApprovalService
 
         List<DataApprovalStatus> statusList = new ArrayList<>();
 
-        for ( DataApproval da : dataApprovalStore.getUserDataApprovals( dataSets, periods ) )
+        Set<DataApproval> approvals = dataApprovalStore.getUserDataApprovals( dataSets, periods );
+        
+        for ( DataApproval da : approvals )
         {
             DataApprovalPermissions permissions = new DataApprovalPermissions();
 
@@ -404,6 +406,7 @@ public class DefaultDataApprovalService
                     permissions.setMayAccept( mayAcceptOrUnaccept );
                     permissions.setMayUnaccept( mayAcceptOrUnaccept );
                 }
+                
                 boolean mayReadData = true; //TODO: Fix.
 
                 permissions.setMayReadData( mayReadData );
