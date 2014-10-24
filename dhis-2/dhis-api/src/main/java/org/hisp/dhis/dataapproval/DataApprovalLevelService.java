@@ -117,6 +117,8 @@ public interface DataApprovalLevelService
      */
     List<DataApprovalLevel> getAllDataApprovalLevels();
     
+    Map<Integer, DataApprovalLevel> getDataApprovalLevelMap();
+    
     List<DataApprovalLevel> getUserDataApprovalLevels();
 
     /**

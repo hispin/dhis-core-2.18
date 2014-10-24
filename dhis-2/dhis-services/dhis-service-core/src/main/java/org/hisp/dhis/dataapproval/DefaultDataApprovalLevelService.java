@@ -36,7 +36,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
@@ -267,6 +270,19 @@ public class DefaultDataApprovalLevelService
         }
 
         return dataApprovalLevels;
+    }
+    
+    public Map<Integer, DataApprovalLevel> getDataApprovalLevelMap()
+    {
+        List<DataApprovalLevel> levels = dataApprovalLevelStore.getAllDataApprovalLevels();
+        
+        return Maps.uniqueIndex( levels, new Function<DataApprovalLevel, Integer>()
+        {
+            public Integer apply( DataApprovalLevel level )
+            {
+                return level.getLevel();
+            }            
+        } );
     }
 
     @Override

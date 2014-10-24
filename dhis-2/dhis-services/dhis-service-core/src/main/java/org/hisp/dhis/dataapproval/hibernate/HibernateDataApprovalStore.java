@@ -30,6 +30,7 @@ package org.hisp.dhis.dataapproval.hibernate;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Criteria;
@@ -243,6 +244,8 @@ public class HibernateDataApprovalStore
 
         DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
+        Map<Integer, DataApprovalLevel> levelMap = dataApprovalLevelService.getDataApprovalLevelMap();
+        
         Set<DataApproval> userDataApprovals = new HashSet<>();
 
         while ( rowSet.next() )
@@ -264,7 +267,7 @@ public class HibernateDataApprovalStore
 
             DataElementCategoryOptionCombo attributeOptionCombo = categoryService.getDataElementCategoryOptionCombo( attributeOptionComboId );
             Period period = periodService.getPeriod( periodId );
-            DataApprovalLevel dataApprovalLevel = ( level == null ? null : dataApprovalLevelService.getDataApprovalLevelByLevelNumber( level ) );
+            DataApprovalLevel dataApprovalLevel = ( level == null ? null : levelMap.get( level ) );
             OrganisationUnit orgUnit = ( orgUnitId == null ? null : organisationUnitService.getOrganisationUnit( orgUnitId ) );
 
             //TODO: currently special cased for PEFPAR's requirements. Can we make it more generic?
