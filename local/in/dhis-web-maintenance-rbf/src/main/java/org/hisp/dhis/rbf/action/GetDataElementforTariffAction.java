@@ -13,6 +13,7 @@ import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -55,7 +56,10 @@ public class GetDataElementforTariffAction
     
     @Autowired
     private OrganisationUnitGroupService orgUnitGroupService;
-        
+    
+    @Autowired
+    private DataSetService dataSetService;
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -139,10 +143,38 @@ public class GetDataElementforTariffAction
         Set<DataElement> dataElements = new TreeSet<DataElement>();
         for( OrganisationUnitGroup orgUnitGroup : orgUnitGroups )
         {
+            
+            /*
+            Set<OrganisationUnit> groupMember = new TreeSet<OrganisationUnit>( orgUnitGroup.getMembers() );
+            
+            Set<DataSet> dataSets = new TreeSet<DataSet>();
+            
+            for( OrganisationUnit orgUnit : groupMember )
+            {
+                dataSets.addAll( orgUnit.getDataSets() );
+            }
+            
+            for( DataSet dataSet : dataSets )
+            {
+                dataElements.addAll( dataSet.getDataElements() );
+            }
+            
+            */
+            
+            for( DataSet dataSet : dataSetService.getDataSetsBySources( orgUnitGroup.getMembers() ) )
+            {
+                dataElements.addAll( dataSet.getDataElements() );
+            }
+            
+            
+            /*
             for( DataSet dataSet : orgUnitGroup.getDataSets() )
             {
                 dataElements.addAll( dataSet.getDataElements() );
             }
+            */
+            
+            
         }
             
         for( DataElement de : dataElements )

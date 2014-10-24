@@ -110,15 +110,30 @@ public class GetOrganisationUnitForMaxAction
             }
         }
 
-        dataSets.addAll( orgUnitGroup.getDataSets() );
+        /*
+        Set<OrganisationUnit> groupMember = new TreeSet<OrganisationUnit>( orgUnitGroup.getMembers() );
+        
+        Set<DataSet> tempDataSets = new TreeSet<DataSet>();
+        
+        for( OrganisationUnit orgUnit : groupMember )
+        {
+            tempDataSets.addAll( orgUnit.getDataSets() );
+        }
+        
+        dataSets.addAll( tempDataSets );
+        */
+        
+        dataSets.retainAll( dataSetService.getDataSetsBySources( orgUnitGroup.getMembers() ) );
+        
+        //dataSets.addAll( orgUnitGroup.getDataSets() );
 
-        System.out.println( "Before : " + dataSets.size() );
+        //System.out.println( "Before : " + dataSets.size() );
 
         dataSets.retainAll( pbfDataSets );
 
         Collections.sort( dataSets );
 
-        System.out.println( "After : " + dataSets.size() );
+        //System.out.println( "After : " + dataSets.size() );
 
         if ( dataSets.size() > 0 )
         {

@@ -177,6 +177,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
         return criteria.list();
     }
     
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<TariffDataValue> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataElement dataElement )
     {
@@ -277,6 +278,8 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String curPeriod = simpleDateFormat.format( period.getEndDate() );
         
+        
+        
         try
         {
             /*String query = "SELECT dataelementid, value FROM tariffdatavalue " +
@@ -308,7 +311,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
                                                 " and sag1.level=td.orgunitlevelid ";
                                                 //" and td.organisationunitid in ("+ orgUnitBranchIds +") ";
             
-            //System.out.println("Query: " + query );
+            System.out.println(" tariff Query: " + query );
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
