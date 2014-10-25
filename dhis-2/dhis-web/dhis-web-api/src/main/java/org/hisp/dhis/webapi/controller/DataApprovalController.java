@@ -238,8 +238,8 @@ public class DataApprovalController
             organisationUnit, null );
 
         DataApproval dataApproval = status.getDataApproval();
-        Date createdDate = (dataApproval == null) ? null : dataApproval.getCreated();
-        String createdByUsername = (dataApproval == null) ? null : dataApproval.getCreator().getUsername();
+        Date createdDate = dataApproval == null ? null : dataApproval.getCreated();
+        String createdByUsername = dataApproval == null ? null : dataApproval.getCreator().getUsername();
 
         String state = status.getState().toString();
 
@@ -394,7 +394,7 @@ public class DataApprovalController
                 currentUserService.getCurrentUser() :
                 userService.getUserCredentialsByUsername( dataApprovalStateRequest.getAb() ).getUser();
 
-            Date approvalDate = (dataApprovalStateRequest.getAd() == null) ? new Date() : dataApprovalStateRequest.getAd();
+            Date approvalDate = dataApprovalStateRequest.getAd() == null ? new Date() : dataApprovalStateRequest.getAd();
 
             dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
                 period, organisationUnit, false, approvalDate, user ) );
