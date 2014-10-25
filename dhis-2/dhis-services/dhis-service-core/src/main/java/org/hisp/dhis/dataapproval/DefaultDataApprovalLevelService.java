@@ -53,6 +53,7 @@ import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -92,6 +93,13 @@ public class DefaultDataApprovalLevelService
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
 
     private SecurityService securityService;
@@ -312,10 +320,16 @@ public class DefaultDataApprovalLevelService
             boolean approvableAtLevel = false;
             boolean approvableAtAllLowerLevels = false;
 
+            boolean canSeeAllDimensions = CollectionUtils.isEmpty( userService.getCoDimensionConstraints( user.getUserCredentials() ) )
+                    && CollectionUtils.isEmpty( userService.getCogDimensionConstraints( user.getUserCredentials() ) );
+
             for ( DataApprovalLevel approvalLevel : getAllDataApprovalLevels() )
             {
-                Boolean canReadThisLevel = ( securityService.canRead( approvalLevel ) &&
-                    ( !approvalLevel.hasCategoryOptionGroupSet() || securityService.canRead( approvalLevel.getCategoryOptionGroupSet() ) ) );
+                CategoryOptionGroupSet cogs = approvalLevel.getCategoryOptionGroupSet();
+
+                Boolean canReadThisLevel = ( securityService.canRead( approvalLevel ) && (
+                    ( cogs == null && canSeeAllDimensions ) ||
+                    ( cogs != null && securityService.canRead( cogs ) && !CollectionUtils.isEmpty( categoryService.getCategoryOptionGroups( cogs ) ) ) ) );
 
                 //
                 // Test using assignedAtLevel and approvableAtLevel values from the previous (higher) level.

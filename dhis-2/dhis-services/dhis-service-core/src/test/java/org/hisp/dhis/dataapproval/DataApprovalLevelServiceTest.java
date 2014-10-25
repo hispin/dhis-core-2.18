@@ -528,7 +528,7 @@ public class DataApprovalLevelServiceTest
         // Test 2... TBD
         //
     }
-*/
+
     @Test
     public void testGetUserDataApprovalLevelsApproveHere() throws Exception
     {
@@ -672,4 +672,5 @@ public class DataApprovalLevelServiceTest
         assertEquals( "2B", levels.get( 1 ).getName() );
         assertEquals( "03", levels.get( 2 ).getName() );
     }
+*/
 }
