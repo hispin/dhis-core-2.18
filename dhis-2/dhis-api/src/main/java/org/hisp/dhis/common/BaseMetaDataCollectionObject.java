@@ -95,40 +95,6 @@ public class BaseMetaDataCollectionObject
     protected List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<>();
 
     // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-    
-    public boolean hasIndicators()
-    {
-        return indicators != null && !indicators.isEmpty();
-    }
-    
-    public boolean hasDataElements()
-    {
-        return dataElements != null && !dataElements.isEmpty();
-    }
-
-    public boolean hasDataSets()
-    {
-        return dataSets != null && !dataSets.isEmpty();
-    }
-
-    public boolean hasOrganisationUnits()
-    {
-        return organisationUnits != null && !organisationUnits.isEmpty();
-    }
-
-    public boolean hasPeriods()
-    {
-        return periods != null && !periods.isEmpty();
-    }
-    
-    public boolean hasCategoryOptionCombos()
-    {
-        return categoryOptionCombos != null && !categoryOptionCombos.isEmpty();
-    }
-    
-    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
     

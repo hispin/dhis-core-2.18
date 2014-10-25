@@ -28,16 +28,15 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.user.User;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Jim Grace
