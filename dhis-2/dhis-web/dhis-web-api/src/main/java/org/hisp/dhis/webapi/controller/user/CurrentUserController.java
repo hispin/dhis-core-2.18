@@ -51,6 +51,8 @@ import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.dashboard.DashboardItem;
+import org.hisp.dhis.dataapproval.DataApprovalLevel;
+import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -144,6 +146,9 @@ public class CurrentUserController
 
     @Autowired
     protected AclService aclService;
+    
+    @Autowired
+    private DataApprovalLevelService approvalLevelService;
 
     @RequestMapping( produces = { "application/json", "text/*" } )
     public void getCurrentUser( HttpServletResponse response ) throws Exception
@@ -402,7 +407,7 @@ public class CurrentUserController
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), recipients );
     }
-
+    
     @RequestMapping( value = { "/assignedOrganisationUnits", "/organisationUnits" }, produces = { "application/json", "text/*" } )
     public void getAssignedOrganisationUnits( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
@@ -692,5 +697,13 @@ public class CurrentUserController
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), forms );
+    }
+
+    @RequestMapping( value = "/dataApprovalLevels", produces = { "application/json", "text/*" } )
+    public void getApprovalLevels( HttpServletResponse response ) throws IOException
+    {
+        List<DataApprovalLevel> approvalLevels = approvalLevelService.getUserDataApprovalLevels();
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+        JacksonUtils.toJson( response.getOutputStream(), approvalLevels );        
     }
 }
