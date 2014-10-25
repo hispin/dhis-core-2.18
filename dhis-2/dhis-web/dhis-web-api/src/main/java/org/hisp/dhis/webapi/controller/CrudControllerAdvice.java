@@ -33,6 +33,7 @@ import javax.validation.ConstraintViolationException;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.MaintenanceModeException;
+import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 import org.hisp.dhis.webapi.controller.exception.NotAuthenticatedException;
 import org.hisp.dhis.webapi.controller.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
@@ -93,10 +94,16 @@ public class CrudControllerAdvice
         return new ResponseEntity<>( ex.getMessage(), getHeaders(), HttpStatus.CONFLICT );
     }
     
-    @ExceptionHandler( { MaintenanceModeException.class } )
+    @ExceptionHandler( MaintenanceModeException.class )
     public ResponseEntity<String> maintenanceModeExceptionHandler( MaintenanceModeException ex )
     {
         return new ResponseEntity<>( ex.getMessage(), getHeaders(), HttpStatus.SERVICE_UNAVAILABLE );
+    }
+    
+    @ExceptionHandler( DataApprovalException.class )
+    public ResponseEntity<String> dataApprovalExceptionHandler( DataApprovalException ex )
+    {
+        return new ResponseEntity<>( ex.getMessage(), getHeaders(), HttpStatus.CONFLICT );
     }
     
     private HttpHeaders getHeaders()

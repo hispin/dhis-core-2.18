@@ -58,7 +58,6 @@ import org.hisp.dhis.dataapproval.DataApprovalStateRequests;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponse;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponses;
 import org.hisp.dhis.dataapproval.DataApprovalStatus;
-import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
@@ -341,14 +340,7 @@ public class DataApprovalController
         List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
             period, organisationUnit, false, new Date(), user ); //TODO fix category stuff
 
-        try
-        {
-            dataApprovalService.approveData( dataApprovalList );
-        }
-        catch ( DataApprovalException ex )
-        {
-            ContextUtils.conflictResponse( response, ex.getClass().getName() );
-        }
+        dataApprovalService.approveData( dataApprovalList );
     }
 
     @RequestMapping( method = RequestMethod.POST, value = "/batch" )
@@ -415,14 +407,7 @@ public class DataApprovalController
                 period, organisationUnit, false, approvalDate, user ) );
         }
 
-        try
-        {
-            dataApprovalService.approveData( dataApprovalList );
-        }
-        catch ( DataApprovalException ex )
-        {
-            ContextUtils.conflictResponse( response, ex.getClass().getName() );
-        }
+        dataApprovalService.approveData( dataApprovalList );
     }
 
     // -------------------------------------------------------------------------
@@ -475,14 +460,7 @@ public class DataApprovalController
         List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
             period, organisationUnit, false, new Date(), user );
 
-        try
-        {
-            dataApprovalService.acceptData( dataApprovalList );
-        }
-        catch ( DataApprovalException ex )
-        {
-            ContextUtils.conflictResponse( response, ex.getClass().getName() );
-        }
+        dataApprovalService.acceptData( dataApprovalList );
     }
 
     @RequestMapping( method = RequestMethod.POST, value = "/acceptances/batch" )
@@ -547,15 +525,8 @@ public class DataApprovalController
             dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
                 period, organisationUnit, false, approvalDate, user ) );
         }
-
-        try
-        {
-            dataApprovalService.acceptData( dataApprovalList );
-        }
-        catch ( DataApprovalException ex )
-        {
-            ContextUtils.conflictResponse( response, ex.getClass().getName() );
-        }
+        
+        dataApprovalService.acceptData( dataApprovalList );
     }
 
     // -------------------------------------------------------------------------
@@ -613,14 +584,7 @@ public class DataApprovalController
                 period, organisationUnit, false, new Date(), user ) );
         }
 
-        try
-        {
-            dataApprovalService.unapproveData( dataApprovalList );
-        }
-        catch ( DataApprovalException ex )
-        {
-            ContextUtils.conflictResponse( response, ex.getClass().getName() );
-        }
+        dataApprovalService.unapproveData( dataApprovalList );
     }
 
     @RequestMapping( method = RequestMethod.DELETE, value = "/batch" )
@@ -685,14 +649,7 @@ public class DataApprovalController
         List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
             period, organisationUnit, false, new Date(), user );
 
-        try
-        {
-            dataApprovalService.unacceptData( dataApprovalList );
-        }
-        catch ( DataApprovalException ex )
-        {
-            ContextUtils.conflictResponse( response, ex.getClass().getName() );
-        }
+        dataApprovalService.unacceptData( dataApprovalList );
     }
 
     @RequestMapping( method = RequestMethod.DELETE, value = "/acceptances/batch" )

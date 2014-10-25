@@ -32,7 +32,7 @@ package org.hisp.dhis.dataapproval.exceptions;
  * @author Jim Grace
  */
 public class DataMayNotBeApprovedException
-        extends DataApprovalException
+    extends DataApprovalException
 {
     public DataMayNotBeApprovedException()
     {
