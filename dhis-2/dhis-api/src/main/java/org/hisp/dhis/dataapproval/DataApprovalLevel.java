@@ -30,7 +30,6 @@ package org.hisp.dhis.dataapproval;
 
 import java.util.Date;
 
-import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
@@ -190,7 +189,7 @@ public class DataApprovalLevel
     }
 
     @JsonProperty
-    @JsonSerialize( as = BaseDimensionalObject.class )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public CategoryOptionGroupSet getCategoryOptionGroupSet()
