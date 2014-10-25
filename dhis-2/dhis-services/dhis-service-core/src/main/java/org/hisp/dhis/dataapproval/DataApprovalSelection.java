@@ -382,7 +382,7 @@ class DataApprovalSelection
     {
         tracePrint( "optionApplies - level " + dal.getLevel() + " COGS "
                 + ( dal.getCategoryOptionGroupSet() == null ? "(none)" : dal.getCategoryOptionGroupSet().getName() )
-                + " combo " + daIn.getAttributeOptionCombo().getName() );
+                + " combo " + ( daIn.getAttributeOptionCombo() == null ? "(null)" : daIn.getAttributeOptionCombo().getName() ) );
 
         tracePrint("optionApplies - option combo group sets " + getOptionComboGroupSets( daIn.getAttributeOptionCombo() ) );
 

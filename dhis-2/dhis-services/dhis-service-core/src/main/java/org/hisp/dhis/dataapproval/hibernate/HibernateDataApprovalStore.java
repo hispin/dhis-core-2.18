@@ -278,7 +278,7 @@ public class HibernateDataApprovalStore
     
                 if ( aoc == previousAttributeOptionComboId && pe == previousPeriodId && level > previousLevel )
                 {
-                    continue;
+                    continue; // Skip the lower-level approvals for the same categoryOptionCombo & period.
                 }
     
                 previousAttributeOptionComboId = aoc;
@@ -312,7 +312,7 @@ public class HibernateDataApprovalStore
                 } ) );
     
                 //TODO: currently special cased for PEFPAR's requirements. Can we make it more generic?
-                if ( level > 1 && optionCombo.equals( defaultOptionCombo ) )
+                if ( ( level == null || level != 1 ) && optionCombo.equals( defaultOptionCombo ) )
                 {
                     for ( OrganisationUnit unit : getUserOrgsAtLevel( 3 ) )
                     {
