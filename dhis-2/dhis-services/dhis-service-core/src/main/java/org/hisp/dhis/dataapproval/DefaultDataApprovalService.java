@@ -139,6 +139,8 @@ public class DefaultDataApprovalService
 
         List<DataApproval> checkedList = checkApprovalsList( dataApprovalList, null, false );
 
+        tracePrint( "checkedList ( " + checkedList.size() + " items )" );
+
         for ( Iterator<DataApproval> it = checkedList.iterator(); it.hasNext(); )
         {
             DataApproval da = it.next();
@@ -150,6 +152,8 @@ public class DefaultDataApprovalService
 
             if ( status.getState().isApproved() && status.getDataApprovalLevel().getLevel() >= da.getDataApprovalLevel().getLevel() )
             {
+                tracePrint( "approveData: data already approved." );
+
                 it.remove(); // Already approved at this level, no action needed
             }
             else if ( !status.getState().isApprovable() )
@@ -544,6 +548,8 @@ public class DefaultDataApprovalService
     {
         List<DataApproval> daList = new ArrayList<>();
 
+        tracePrint( "checkApprovalsList checking " + dataApprovalList.size() + " items." );
+
         for ( DataApproval dataApproval : dataApprovalList )
         {
             DataApproval da = checkDataApproval( dataApproval, isGetStatus );
@@ -580,15 +586,17 @@ public class DefaultDataApprovalService
 
         if ( !da.getDataSet().isApproveData() )
         {
+            tracePrint("checkDataApproval - data set '" + da.getDataSet().getName() + "' is not marked for approval." );
+
             throw new DataSetNotMarkedForApprovalException();
         }
 
         if ( da.getAttributeOptionCombo() == null )
         {
             da.setAttributeOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
-
-            tracePrint( "getDefaultDataElementCategoryOptionCombo() -> " + ( da.getAttributeOptionCombo() == null ? "(null)" : da.getAttributeOptionCombo().getName() ) );
         }
+
+        tracePrint( "getDefaultDataElementCategoryOptionCombo() -> " + ( da.getAttributeOptionCombo() == null ? "(null)" : da.getAttributeOptionCombo().getName() ) );
 
         DataApprovalLevel dal = dataApprovalLevelService.getUserApprovalLevel( da.getOrganisationUnit(), includeDataViewOrgUnits );
 
@@ -599,6 +607,8 @@ public class DefaultDataApprovalService
 
         if ( userLevel > da.getDataApprovalLevel().getLevel() )
         {
+            log.info( "User level " + userLevel + " cannot access approvalLevel " + da.getDataApprovalLevel().getLevel() );
+
             throw new UserCannotAccessApprovalLevelException();
         }
 
