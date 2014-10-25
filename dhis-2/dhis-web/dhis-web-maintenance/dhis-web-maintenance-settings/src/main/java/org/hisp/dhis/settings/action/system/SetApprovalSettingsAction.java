@@ -54,6 +54,13 @@ public class SetApprovalSettingsAction
     {
         this.hideUnapprovedDataInAnalytics = hideUnapprovedDataInAnalytics;
     }
+    
+    private Boolean acceptanceRequiredForApproval;
+
+    public void setAcceptanceRequiredForApproval( Boolean acceptanceRequiredForApproval )
+    {
+        this.acceptanceRequiredForApproval = acceptanceRequiredForApproval;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -81,6 +88,7 @@ public class SetApprovalSettingsAction
     public String execute()
     {
         systemSettingManager.saveSystemSetting( KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, hideUnapprovedDataInAnalytics );
+        systemSettingManager.saveSystemSetting( KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL, acceptanceRequiredForApproval );
 
         message = i18n.getString( "settings_updated" );
 
