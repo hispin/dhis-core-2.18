@@ -58,7 +58,6 @@ import org.hisp.dhis.dataapproval.DataApprovalStateRequests;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponse;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponses;
 import org.hisp.dhis.dataapproval.DataApprovalStatus;
-import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
@@ -356,14 +355,7 @@ public class DataApprovalController
             ContextUtils.conflictResponse( response, "Approval must have data sets, periods and category option combos" );
         }
 
-        try
-        {
-            dataApprovalService.approveData( getDataApprovalList( dataApproval ) );
-        }
-        catch ( DataApprovalException ex )
-        {
-            ContextUtils.conflictResponse( response, ex.getClass().getName() );
-        }
+        dataApprovalService.approveData( getDataApprovalList( dataApproval ) );
     }
 
     @RequestMapping( value = APPROVALS_PATH + "/unapprovals", method = RequestMethod.POST )
@@ -375,14 +367,7 @@ public class DataApprovalController
             ContextUtils.conflictResponse( response, "Approval must have data sets, periods and category option combos" );
         }
 
-        try
-        {
-            dataApprovalService.unapproveData( getDataApprovalList( dataApproval ) );
-        }
-        catch ( DataApprovalException ex )
-        {
-            ContextUtils.conflictResponse( response, ex.getClass().getName() );
-        }
+        dataApprovalService.unapproveData( getDataApprovalList( dataApproval ) );
     }
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
@@ -501,15 +486,8 @@ public class DataApprovalController
         {
             ContextUtils.conflictResponse( response, "Acceptance must have data sets, periods and category option combos" );
         }
-
-        try
-        {
-            dataApprovalService.acceptData( getDataApprovalList( dataApproval ) );
-        }
-        catch ( DataApprovalException ex )
-        {
-            ContextUtils.conflictResponse( response, ex.getClass().getName() );
-        }
+        
+        dataApprovalService.acceptData( getDataApprovalList( dataApproval ) );
     }
 
     @RequestMapping( value = ACCEPTANCES_PATH + "/unacceptances", method = RequestMethod.POST )
@@ -520,15 +498,8 @@ public class DataApprovalController
         {
             ContextUtils.conflictResponse( response, "Acceptance must have data sets, periods and category option combos" );
         }
-
-        try
-        {
-            dataApprovalService.unacceptData( getDataApprovalList( dataApproval ) );
-        }
-        catch ( DataApprovalException ex )
-        {
-            ContextUtils.conflictResponse( response, ex.getClass().getName() );
-        }        
+        
+        dataApprovalService.unacceptData( getDataApprovalList( dataApproval ) );
     }
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
