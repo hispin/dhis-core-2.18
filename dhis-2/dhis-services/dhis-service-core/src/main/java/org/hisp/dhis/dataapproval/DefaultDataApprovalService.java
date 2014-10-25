@@ -326,6 +326,11 @@ public class DefaultDataApprovalService
                 + organisationUnit.getName() + ", "
                 + ( attributeOptionCombo == null ? "(null)" : attributeOptionCombo.getName() ) + " )" );
 
+        if ( attributeOptionCombo == null )
+        {
+            attributeOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        }
+
         Set<DataElementCategoryOption> attributeCategoryOptions = ( attributeOptionCombo == null || attributeOptionCombo.equals( categoryService.getDefaultDataElementCategoryOptionCombo() ) )
                 ? null : attributeOptionCombo.getCategoryOptions();
 
@@ -390,8 +395,9 @@ public class DefaultDataApprovalService
 
                 if ( userApprovalLevel != null )
                 {
+                    boolean isApproved = ( da.getDataApprovalLevel() != null );
                     int userLevel = userApprovalLevel.getLevel();
-                    int dataLevel = da.getDataApprovalLevel() == null ? maxApprovalLevel + 1 : da.getDataApprovalLevel().getLevel();
+                    int dataLevel = isApproved ? da.getDataApprovalLevel().getLevel() : maxApprovalLevel;
 
                     boolean mayApprove = ( authorizedToApprove && userLevel == dataLevel && !da.isAccepted() ) ||
                         authorizedToApproveAtLowerLevels && userLevel < dataLevel;
@@ -399,7 +405,7 @@ public class DefaultDataApprovalService
                     boolean mayAcceptOrUnaccept = authorizedToAcceptAtLowerLevels && dataLevel <= maxApprovalLevel &&
                         ( userLevel == dataLevel + 1 || ( userLevel < dataLevel && authorizedToApproveAtLowerLevels ) );
 
-                    boolean mayUnapprove = mayApprove && ( !da.isAccepted() || mayAcceptOrUnaccept );
+                    boolean mayUnapprove = isApproved && mayApprove && ( !da.isAccepted() || mayAcceptOrUnaccept );
 
                     permissions.setMayApprove( mayApprove );
                     permissions.setMayUnapprove( mayUnapprove );
