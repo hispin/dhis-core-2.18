@@ -31,9 +31,6 @@ package org.hisp.dhis.webapi.webdomain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * We could have gotten this information from the form instance, but
- * in the interest of performance, we duplicate some information here.
- *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class FormDataSet
