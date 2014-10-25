@@ -36,6 +36,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataapproval.DataApproval;
@@ -66,6 +68,8 @@ public class HibernateDataApprovalStore
     extends HibernateGenericStore<DataApproval>
     implements DataApprovalStore
 {
+    private static final Log log = LogFactory.getLog( HibernateDataApprovalStore.class );
+    
     private static Cache<Integer, Period> PERIOD_CACHE = CacheBuilder.newBuilder()
         .expireAfterAccess( 10, TimeUnit.MINUTES ).initialCapacity( 1000 )
         .maximumSize( 2000 ).build();
@@ -253,7 +257,8 @@ public class HibernateDataApprovalStore
                 "group by ccoc.categoryoptioncomboid, da.periodid, dal.level, coo.organisationunitid, da.accepted " +
                 "order by ccoc.categoryoptioncomboid, da.periodid, dal.level";
 
-        System.out.println( "sql = " + sql );
+        log.info( "Get approval SQL: " + sql );
+        
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
         int previousAttributeOptionComboId = 0;
