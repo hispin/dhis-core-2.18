@@ -32,13 +32,10 @@ import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class NoAttributeOptionsFoundInGroupsException
-        extends DataApprovalException
+    extends DataApprovalException
 {
-    private static final long serialVersionUID = -781185389702703948L;
-
     public NoAttributeOptionsFoundInGroupsException()
     {
         super();

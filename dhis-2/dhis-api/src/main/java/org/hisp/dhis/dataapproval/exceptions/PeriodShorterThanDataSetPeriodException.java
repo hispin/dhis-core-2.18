@@ -32,13 +32,10 @@ import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class PeriodShorterThanDataSetPeriodException
-        extends DataApprovalException
+    extends DataApprovalException
 {
-    private static final long serialVersionUID = -6211422929151909772L;
-
     public PeriodShorterThanDataSetPeriodException()
     {
         super();

@@ -32,13 +32,10 @@ import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class UserMayNotApproveDataException
-        extends DataApprovalException
+    extends DataApprovalException
 {
-    private static final long serialVersionUID = 2765006990627122000L;
-
     public UserMayNotApproveDataException()
     {
         super();
