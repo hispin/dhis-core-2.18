@@ -53,7 +53,7 @@ public class GridHeader
 
     private boolean meta;
     
-    private boolean optionSet;
+    private String optionSet;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -128,7 +128,7 @@ public class GridHeader
      * @param meta meta
      * @param optionSet optionSet
      */
-    public GridHeader( String name, String column, String type, boolean hidden, boolean meta, boolean optionSet )
+    public GridHeader( String name, String column, String type, boolean hidden, boolean meta, String optionSet )
     {
         this.name = name;
         this.column = column;
@@ -213,12 +213,12 @@ public class GridHeader
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    public boolean isOptionSet()
+    public String getOptionSet()
     {
         return optionSet;
     }
 
-    public void setOptionSet( boolean optionSet )
+    public void setOptionSet( String optionSet )
     {
         this.optionSet = optionSet;
     }
