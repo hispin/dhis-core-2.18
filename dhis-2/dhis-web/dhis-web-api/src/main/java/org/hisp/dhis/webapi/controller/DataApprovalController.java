@@ -29,6 +29,7 @@ package org.hisp.dhis.webapi.controller;
  */
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,10 +40,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.BaseMetaDataCollectionObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.dataapproval.DataApproval;
@@ -106,7 +109,7 @@ public class DataApprovalController
     private DataSetService dataSetService;
 
     @Autowired
-    private IdentifiableObjectManager manager;
+    private IdentifiableObjectManager objectManager;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -185,7 +188,7 @@ public class DataApprovalController
     {
         Set<DataSet> dataSets = new HashSet<>();
 
-        dataSets.addAll( manager.getByUid( DataSet.class, ds ) );
+        dataSets.addAll( objectManager.getByUid( DataSet.class, ds ) );
 
         Set<Period> periods = new HashSet<>();
 
@@ -253,7 +256,7 @@ public class DataApprovalController
         @RequestParam String pe, 
         HttpServletResponse response ) throws IOException
     {
-        Set<DataSet> dataSets = new HashSet<>( manager.getByUid( DataSet.class, ds ) );
+        Set<DataSet> dataSets = new HashSet<>( objectManager.getByUid( DataSet.class, ds ) );
         
         Period period = PeriodType.getPeriodFromIsoString( pe );
 
@@ -348,6 +351,50 @@ public class DataApprovalController
         }
     }
 
+    /**
+     * The data set, period and category option combo associations will be used.
+     */
+    @RequestMapping( method = RequestMethod.POST, value = "/batch" )
+    public void saveApprovalBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
+        HttpServletRequest request, HttpServletResponse response )
+    {
+        if ( !dataApproval.hasDataSets() || !dataApproval.hasPeriods() || !dataApproval.hasCategoryOptionCombos() )
+        {
+            ContextUtils.conflictResponse( response, "Approval must have data sets, periods and category option combos" );
+        }
+        
+        List<DataSet> dataSets = objectManager.getByUid( DataSet.class, getUids( dataApproval.getDataSets() ) );
+        List<Period> periods = PeriodType.getPeriodsFromIsoStrings( getUids( dataApproval.getPeriods() ) );
+        List<DataElementCategoryOptionCombo> optionCombos = objectManager.getByUid( DataElementCategoryOptionCombo.class, getUids( dataApproval.getCategoryOptionCombos() ) );
+
+        User user = currentUserService.getCurrentUser();
+        OrganisationUnit unit = user.getOrganisationUnit(); //TODO
+        DataApprovalLevel approvalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( unit, null );
+        
+        Date date = new Date();
+
+        List<DataApproval> approvals = new ArrayList<>();
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            Set<DataElementCategoryOptionCombo> dataSetOptionCombos = dataSet.hasCategoryCombo() ? dataSet.getCategoryCombo().getOptionCombos() : null;
+            
+            for ( Period period : periods )
+            {
+                for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                {
+                    if ( dataSetOptionCombos != null && dataSetOptionCombos.contains( optionCombo ) )
+                    {
+                        DataApproval approval = new DataApproval( approvalLevel, dataSet, period, unit, optionCombo, false, date, user );
+                        approvals.add( approval );
+                    }
+                }
+            }
+        }
+        
+        dataApprovalService.approveData( approvals );
+    }
+    
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
     @RequestMapping( method = RequestMethod.POST, value = MULTIPLE_SAVE_RESOURCE_PATH )
     public void saveApprovalMultiple( @RequestBody DataApprovalStateRequests dataApprovalStateRequests,
@@ -540,7 +587,7 @@ public class DataApprovalController
     {
         log.info( "DELETE " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
 
-        Set<DataSet> dataSets = new HashSet<>( manager.getByUid( DataSet.class, ds ) );
+        Set<DataSet> dataSets = new HashSet<>( objectManager.getByUid( DataSet.class, ds ) );
 
         if ( dataSets.size() != ds.size() )
         {

@@ -171,6 +171,8 @@ public class DefaultDataApprovalService
 
             dataApprovalStore.addDataApproval( da );
         }
+        
+        log.info( "Approvals saved: " + dataApprovalList.size() );
     }
 
     @Override
@@ -212,6 +214,8 @@ public class DefaultDataApprovalService
 
             dataApprovalStore.deleteDataApproval( d );
         }
+        
+        log.info( "Unapprovals saved: " + dataApprovalList.size() );
     }
 
     @Override
@@ -261,6 +265,8 @@ public class DefaultDataApprovalService
 
             dataApprovalStore.updateDataApproval( d );
         }
+        
+        log.info( "Accepts saved: " + dataApprovalList.size() );
     }
 
     @Override
@@ -306,6 +312,8 @@ public class DefaultDataApprovalService
 
             dataApprovalStore.updateDataApproval( da );
         }
+        
+        log.info( "Unaccepts saved: " + dataApprovalList.size() );
     }
 
     @Override

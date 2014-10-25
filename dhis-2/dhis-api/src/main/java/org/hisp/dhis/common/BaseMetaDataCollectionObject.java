@@ -37,6 +37,7 @@ import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
@@ -52,10 +53,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
 * @author Lars Helge Overland
 */
+@JacksonXmlRootElement( localName = "metaDataCollectionObject", namespace = DxfNamespaces.DXF_2_0 )
 public class BaseMetaDataCollectionObject
     extends BaseIdentifiableObject
 {
@@ -87,7 +90,44 @@ public class BaseMetaDataCollectionObject
 
     @Scanned
     protected List<Integer> organisationUnitLevels = new ArrayList<>();
+    
+    @Scanned
+    protected List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<>();
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+    
+    public boolean hasIndicators()
+    {
+        return indicators != null && !indicators.isEmpty();
+    }
+    
+    public boolean hasDataElements()
+    {
+        return dataElements != null && !dataElements.isEmpty();
+    }
+
+    public boolean hasDataSets()
+    {
+        return dataSets != null && !dataSets.isEmpty();
+    }
+
+    public boolean hasOrganisationUnits()
+    {
+        return organisationUnits != null && !organisationUnits.isEmpty();
+    }
+
+    public boolean hasPeriods()
+    {
+        return periods != null && !periods.isEmpty();
+    }
+    
+    public boolean hasCategoryOptionCombos()
+    {
+        return categoryOptionCombos != null && !categoryOptionCombos.isEmpty();
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -237,4 +277,18 @@ public class BaseMetaDataCollectionObject
     {
         this.organisationUnitLevels = organisationUnitLevels;
     }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "categoryOptionCombos", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "categoryOptionCombo", namespace = DxfNamespaces.DXF_2_0 )
+    public List<DataElementCategoryOptionCombo> getCategoryOptionCombos()
+    {
+        return categoryOptionCombos;
+    }
+
+    public void setCategoryOptionCombos( List<DataElementCategoryOptionCombo> categoryOptionCombos )
+    {
+        this.categoryOptionCombos = categoryOptionCombos;
+    }    
 }
