@@ -28,6 +28,7 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
 import org.hisp.dhis.common.DeleteNotAllowedException;
@@ -36,6 +37,7 @@ import org.hisp.dhis.common.MaintenanceModeException;
 import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 import org.hisp.dhis.webapi.controller.exception.NotAuthenticatedException;
 import org.hisp.dhis.webapi.controller.exception.NotFoundException;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -101,9 +103,9 @@ public class CrudControllerAdvice
     }
     
     @ExceptionHandler( DataApprovalException.class )
-    public ResponseEntity<String> dataApprovalExceptionHandler( DataApprovalException ex )
+    public void dataApprovalExceptionHandler( DataApprovalException ex, HttpServletResponse response )
     {
-        return new ResponseEntity<>( ex.getMessage(), getHeaders(), HttpStatus.CONFLICT );
+        ContextUtils.conflictResponse( response, ex.getClass().getName() ); //TODO fix message
     }
     
     private HttpHeaders getHeaders()
