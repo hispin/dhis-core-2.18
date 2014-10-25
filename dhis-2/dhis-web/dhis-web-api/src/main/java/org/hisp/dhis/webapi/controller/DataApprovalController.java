@@ -84,19 +84,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
+ * This controller uses both /dataApprovals and /dataAcceptances.
+ * 
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = DataApprovalController.RESOURCE_PATH )
+@RequestMapping
 public class DataApprovalController
 {
     private final static Log log = LogFactory.getLog( DataApprovalController.class );
 
-    public static final String RESOURCE_PATH = "/dataApprovals";
-    public static final String ACCEPTANCES_PATH = "/acceptances";
-    private static final String STATUS_PATH = "/status";
-    private static final String MULTIPLE_SAVE_RESOURCE_PATH = "/multiple";
-    private static final String MULTIPLE_ACCEPTANCES_RESOURCE_PATH = "/acceptances/multiple";
+    public static final String APPROVALS_PATH = "/dataApprovals";
+    private static final String STATUS_PATH = APPROVALS_PATH + "/status";
+    private static final String MULTIPLE_SAVE_RESOURCE_PATH = APPROVALS_PATH + "/multiple";
+
+    public static final String ACCEPTANCES_PATH = "/dataAcceptances";
+    private static final String MULTIPLE_ACCEPTANCES_RESOURCE_PATH = ACCEPTANCES_PATH + "/multiple";
 
     @Autowired
     private DataApprovalService dataApprovalService;
@@ -132,14 +135,14 @@ public class DataApprovalController
     // Get
     // -------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
-    public void getApprovalState(
+    @RequestMapping( value = APPROVALS_PATH, method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
+    public void getApprovalPermissions(
         @RequestParam String ds,
         @RequestParam String pe,
         @RequestParam String ou, HttpServletResponse response )
         throws IOException
     {
-        log.info( "GET " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
+        log.info( "GET " + APPROVALS_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
 
@@ -174,7 +177,7 @@ public class DataApprovalController
         JacksonUtils.toJson( response.getOutputStream(), status.getPermissions() );
     }
 
-    @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON, value = STATUS_PATH )
+    @RequestMapping( value = STATUS_PATH, method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
     public void getApproval(
         @RequestParam Set<String> ds,
         @RequestParam( required = false ) String pe,
@@ -249,7 +252,7 @@ public class DataApprovalController
             createdDate, createdByUsername, status.getPermissions() );
     }
 
-    @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON, value = "/categoryOptionCombos" )
+    @RequestMapping( value = APPROVALS_PATH + "/categoryOptionCombos", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
     public void getApprovalByCategoryOptionCombos( 
         @RequestParam Set<String> ds, 
         @RequestParam String pe, 
@@ -295,13 +298,13 @@ public class DataApprovalController
     // -------------------------------------------------------------------------
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
-    @RequestMapping( method = RequestMethod.POST )
+    @RequestMapping( value = APPROVALS_PATH, method = RequestMethod.POST )
     public void saveApproval(
         @RequestParam String ds,
         @RequestParam String pe,
         @RequestParam String ou, HttpServletResponse response )
     {
-        log.info( "POST " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
+        log.info( "POST " + APPROVALS_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
 
@@ -337,13 +340,13 @@ public class DataApprovalController
 
         User user = currentUserService.getCurrentUser();
 
-        List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
+        List<DataApproval> dataApprovalList = getApprovalsAsList( dataApprovalLevel, dataSet,
             period, organisationUnit, false, new Date(), user ); //TODO fix category stuff
 
         dataApprovalService.approveData( dataApprovalList );
     }
 
-    @RequestMapping( method = RequestMethod.POST, value = "/batch" )
+    @RequestMapping( value = APPROVALS_PATH + "/approvals", method = RequestMethod.POST )
     public void saveApprovalBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
         HttpServletRequest request, HttpServletResponse response )
     {
@@ -354,9 +357,21 @@ public class DataApprovalController
         
         dataApprovalService.approveData( getDataApprovalList( dataApproval ) );
     }
-    
+
+    @RequestMapping( value = APPROVALS_PATH + "/unapprovals", method = RequestMethod.DELETE )
+    public void removeApprovalBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
+        HttpServletRequest request, HttpServletResponse response )
+    {
+        if ( !dataApproval.hasDataSets() || !dataApproval.hasPeriods() || !dataApproval.hasCategoryOptionCombos() )
+        {
+            ContextUtils.conflictResponse( response, "Approval must have data sets, periods and category option combos" );
+        }
+        
+        dataApprovalService.unapproveData( getDataApprovalList( dataApproval ) );
+    }
+
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
-    @RequestMapping( method = RequestMethod.POST, value = MULTIPLE_SAVE_RESOURCE_PATH )
+    @RequestMapping( value = MULTIPLE_SAVE_RESOURCE_PATH, method = RequestMethod.POST )
     public void saveApprovalMultiple( @RequestBody DataApprovalStateRequests dataApprovalStateRequests,
         HttpServletResponse response )
     {
@@ -403,7 +418,7 @@ public class DataApprovalController
 
             Date approvalDate = dataApprovalStateRequest.getAd() == null ? new Date() : dataApprovalStateRequest.getAd();
 
-            dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
+            dataApprovalList.addAll( getApprovalsAsList( dataApprovalLevel, dataSet,
                 period, organisationUnit, false, approvalDate, user ) );
         }
 
@@ -421,7 +436,7 @@ public class DataApprovalController
         @RequestParam String pe,
         @RequestParam String ou, HttpServletResponse response )
     {
-        log.info( "POST " + RESOURCE_PATH + ACCEPTANCES_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
+        log.info( "POST " + APPROVALS_PATH + ACCEPTANCES_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
 
@@ -457,13 +472,13 @@ public class DataApprovalController
 
         User user = currentUserService.getCurrentUser();
 
-        List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
+        List<DataApproval> dataApprovalList = getApprovalsAsList( dataApprovalLevel, dataSet,
             period, organisationUnit, false, new Date(), user );
 
         dataApprovalService.acceptData( dataApprovalList );
     }
 
-    @RequestMapping( method = RequestMethod.POST, value = "/acceptances/batch" )
+    @RequestMapping( value = ACCEPTANCES_PATH + "/acceptances", method = RequestMethod.POST )
     public void saveAcceptanceBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
         HttpServletRequest request, HttpServletResponse response )
     {
@@ -474,9 +489,21 @@ public class DataApprovalController
         
         dataApprovalService.acceptData( getDataApprovalList( dataApproval ) );
     }
-    
+
+    @RequestMapping( value = ACCEPTANCES_PATH + "/unacceptances", method = RequestMethod.DELETE )
+    public void removeAcceptancesBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
+        HttpServletRequest request, HttpServletResponse response )
+    {
+        if ( !dataApproval.hasDataSets() || !dataApproval.hasPeriods() || !dataApproval.hasCategoryOptionCombos() )
+        {
+            ContextUtils.conflictResponse( response, "Acceptance must have data sets, periods and category option combos" );
+        }
+        
+        dataApprovalService.unacceptData( getDataApprovalList( dataApproval ) );
+    }
+
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
-    @RequestMapping( method = RequestMethod.POST, value = MULTIPLE_ACCEPTANCES_RESOURCE_PATH )
+    @RequestMapping( value = MULTIPLE_ACCEPTANCES_RESOURCE_PATH, method = RequestMethod.POST )
     public void acceptApprovalMultiple( @RequestBody DataApprovalStateRequests dataApprovalStateRequests, 
         HttpServletResponse response )
     {
@@ -522,7 +549,7 @@ public class DataApprovalController
 
             Date approvalDate = (dataApprovalStateRequest.getAd() == null) ? new Date() : dataApprovalStateRequest.getAd();
 
-            dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
+            dataApprovalList.addAll( getApprovalsAsList( dataApprovalLevel, dataSet,
                 period, organisationUnit, false, approvalDate, user ) );
         }
         
@@ -530,17 +557,17 @@ public class DataApprovalController
     }
 
     // -------------------------------------------------------------------------
-    // Delete, approval
+    // Delete
     // -------------------------------------------------------------------------
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
-    @RequestMapping( method = RequestMethod.DELETE )
+    @RequestMapping( value = APPROVALS_PATH, method = RequestMethod.DELETE )
     public void removeApproval(
         @RequestParam Set<String> ds,
         @RequestParam String pe,
         @RequestParam String ou, HttpServletResponse response )
     {
-        log.info( "DELETE " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
+        log.info( "DELETE " + APPROVALS_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
 
         Set<DataSet> dataSets = new HashSet<>( objectManager.getByUid( DataSet.class, ds ) );
 
@@ -580,28 +607,12 @@ public class DataApprovalController
 
         for ( DataSet dataSet : dataSets )
         {
-            dataApprovalList.addAll( makeDataApprovalList( dataApprovalLevel, dataSet,
+            dataApprovalList.addAll( getApprovalsAsList( dataApprovalLevel, dataSet,
                 period, organisationUnit, false, new Date(), user ) );
         }
 
         dataApprovalService.unapproveData( dataApprovalList );
     }
-
-    @RequestMapping( method = RequestMethod.DELETE, value = "/batch" )
-    public void removeApprovalBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
-        HttpServletRequest request, HttpServletResponse response )
-    {
-        if ( !dataApproval.hasDataSets() || !dataApproval.hasPeriods() || !dataApproval.hasCategoryOptionCombos() )
-        {
-            ContextUtils.conflictResponse( response, "Approval must have data sets, periods and category option combos" );
-        }
-        
-        dataApprovalService.unapproveData( getDataApprovalList( dataApproval ) );
-    }
-
-    // -------------------------------------------------------------------------
-    // Delete, acceptance
-    // -------------------------------------------------------------------------
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
     @RequestMapping( value = ACCEPTANCES_PATH, method = RequestMethod.DELETE )
@@ -610,7 +621,7 @@ public class DataApprovalController
         @RequestParam String pe,
         @RequestParam String ou, HttpServletResponse response )
     {
-        log.info( "DELETE " + RESOURCE_PATH + ACCEPTANCES_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
+        log.info( "DELETE " + APPROVALS_PATH + ACCEPTANCES_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
 
@@ -646,34 +657,23 @@ public class DataApprovalController
 
         User user = currentUserService.getCurrentUser();
 
-        List<DataApproval> dataApprovalList = makeDataApprovalList( dataApprovalLevel, dataSet,
+        List<DataApproval> dataApprovalList = getApprovalsAsList( dataApprovalLevel, dataSet,
             period, organisationUnit, false, new Date(), user );
 
         dataApprovalService.unacceptData( dataApprovalList );
-    }
-
-    @RequestMapping( method = RequestMethod.DELETE, value = "/acceptances/batch" )
-    public void removeAcceptancesBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
-        HttpServletRequest request, HttpServletResponse response )
-    {
-        if ( !dataApproval.hasDataSets() || !dataApproval.hasPeriods() || !dataApproval.hasCategoryOptionCombos() )
-        {
-            ContextUtils.conflictResponse( response, "Acceptance must have data sets, periods and category option combos" );
-        }
-        
-        dataApprovalService.unacceptData( getDataApprovalList( dataApproval ) );
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private List<DataApproval> makeDataApprovalList( DataApprovalLevel dataApprovalLevel, DataSet dataSet,
+    private List<DataApproval> getApprovalsAsList( DataApprovalLevel dataApprovalLevel, DataSet dataSet,
         Period period, OrganisationUnit organisationUnit, boolean accepted, Date created, User creator )
     {
         List<DataApproval> approvals = new ArrayList<>();
 
         DataElementCategoryOptionCombo combo = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
+        period = periodService.reloadPeriod( period );
 
         approvals.add( new DataApproval( dataApprovalLevel, dataSet, period, organisationUnit, combo, accepted, created, creator ) );
 
