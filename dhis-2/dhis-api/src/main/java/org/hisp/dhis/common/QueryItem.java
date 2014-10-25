@@ -46,7 +46,7 @@ public class QueryItem
     
     private boolean numeric;
     
-    private boolean optionSet;
+    private String optionSet;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -57,14 +57,14 @@ public class QueryItem
         this.item = item;
     }
 
-    public QueryItem( NameableObject item, boolean numeric, boolean optionSet )
+    public QueryItem( NameableObject item, boolean numeric, String optionSet )
     {
         this.item = item;
         this.numeric = numeric;
         this.optionSet = optionSet;
     }
     
-    public QueryItem( NameableObject item, QueryOperator operator, String filter, boolean numeric, boolean optionSet )
+    public QueryItem( NameableObject item, QueryOperator operator, String filter, boolean numeric, String optionSet )
     {
         this.item = item;
         this.numeric = numeric;
@@ -76,7 +76,7 @@ public class QueryItem
         }
     }
     
-    public QueryItem( NameableObject item, List<QueryFilter> filters, boolean numeric, boolean optionSet )
+    public QueryItem( NameableObject item, List<QueryFilter> filters, boolean numeric, String optionSet )
     {
         this.item = item;
         this.filters = filters;
@@ -109,7 +109,7 @@ public class QueryItem
         
         for ( NameableObject object : objects )
         {
-            queryItems.add( new QueryItem( object, false, false ) );
+            queryItems.add( new QueryItem( object, false, null ) );
         }
         
         return queryItems;
@@ -188,12 +188,12 @@ public class QueryItem
         this.numeric = numeric;
     }
 
-    public boolean isOptionSet()
+    public String getOptionSet()
     {
         return optionSet;
     }
 
-    public void setOptionSet( boolean optionSet )
+    public void setOptionSet( String optionSet )
     {
         this.optionSet = optionSet;
     }
