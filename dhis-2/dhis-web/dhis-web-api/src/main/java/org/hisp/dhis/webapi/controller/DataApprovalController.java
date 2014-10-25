@@ -523,13 +523,12 @@ public class DataApprovalController
 
         try
         {
-            dataApprovalService.acceptData( getDataApprovalList( dataApproval ) );
+            dataApprovalService.unacceptData( getDataApprovalList( dataApproval ) );
         }
         catch ( DataApprovalException ex )
         {
             ContextUtils.conflictResponse( response, ex.getClass().getName() );
-        }
-        dataApprovalService.unacceptData( getDataApprovalList( dataApproval ) );
+        }        
     }
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
