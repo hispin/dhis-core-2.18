@@ -35,7 +35,7 @@
 
 <div class="setting">
     <input type="checkbox" id="acceptanceRequiredForApproval" name="acceptanceRequiredForApproval"#if( $keyAcceptanceRequiredForApproval ) checked="checked"#end>
-    <label for="acceptanceRequiredForApproval">$i18n.getString( "acceptance_required_for_approval" )</label>
+    <label for="acceptanceRequiredForApproval">$i18n.getString( "acceptance_required_before_approval" )</label>
 </div>
 
 <div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>
