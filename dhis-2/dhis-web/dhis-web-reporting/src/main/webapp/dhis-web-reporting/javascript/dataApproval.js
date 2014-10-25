@@ -326,6 +326,6 @@ dhis2.appr.getApprovalUrl = function()
 dhis2.appr.getAcceptanceUrl = function()
 {
 	var data = dhis2.appr.getDataReport();
-	var url = "../api/dataApprovals/acceptances?ds=" + data.ds + "&pe=" + data.pe + "&ou=" + data.ou;
+	var url = "../api/dataAcceptances?ds=" + data.ds + "&pe=" + data.pe + "&ou=" + data.ou;
 	return url;
 };
