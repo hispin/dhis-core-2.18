@@ -58,6 +58,7 @@ import org.hisp.dhis.dataapproval.DataApprovalStateRequests;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponse;
 import org.hisp.dhis.dataapproval.DataApprovalStateResponses;
 import org.hisp.dhis.dataapproval.DataApprovalStatus;
+import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
@@ -330,7 +331,7 @@ public class DataApprovalController
             return;
         }
 
-        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit );
 
         if ( dataApprovalLevel == null )
         {
@@ -354,8 +355,15 @@ public class DataApprovalController
         {
             ContextUtils.conflictResponse( response, "Approval must have data sets, periods and category option combos" );
         }
-        
-        dataApprovalService.approveData( getDataApprovalList( dataApproval ) );
+
+        try
+        {
+            dataApprovalService.approveData( getDataApprovalList( dataApproval ) );
+        }
+        catch ( DataApprovalException ex )
+        {
+            ContextUtils.conflictResponse( response, ex.getClass().getName() );
+        }
     }
 
     @RequestMapping( value = APPROVALS_PATH + "/unapprovals", method = RequestMethod.POST )
@@ -366,8 +374,15 @@ public class DataApprovalController
         {
             ContextUtils.conflictResponse( response, "Approval must have data sets, periods and category option combos" );
         }
-        
-        dataApprovalService.unapproveData( getDataApprovalList( dataApproval ) );
+
+        try
+        {
+            dataApprovalService.unapproveData( getDataApprovalList( dataApproval ) );
+        }
+        catch ( DataApprovalException ex )
+        {
+            ContextUtils.conflictResponse( response, ex.getClass().getName() );
+        }
     }
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
@@ -404,7 +419,7 @@ public class DataApprovalController
                 return;
             }
 
-            DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
+            DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit );
 
             if ( dataApprovalLevel == null )
             {
@@ -462,7 +477,7 @@ public class DataApprovalController
             return;
         }
 
-        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit );
 
         if ( dataApprovalLevel == null )
         {
@@ -486,8 +501,15 @@ public class DataApprovalController
         {
             ContextUtils.conflictResponse( response, "Acceptance must have data sets, periods and category option combos" );
         }
-        
-        dataApprovalService.acceptData( getDataApprovalList( dataApproval ) );
+
+        try
+        {
+            dataApprovalService.acceptData( getDataApprovalList( dataApproval ) );
+        }
+        catch ( DataApprovalException ex )
+        {
+            ContextUtils.conflictResponse( response, ex.getClass().getName() );
+        }
     }
 
     @RequestMapping( value = ACCEPTANCES_PATH + "/unacceptances", method = RequestMethod.POST )
@@ -498,7 +520,15 @@ public class DataApprovalController
         {
             ContextUtils.conflictResponse( response, "Acceptance must have data sets, periods and category option combos" );
         }
-        
+
+        try
+        {
+            dataApprovalService.acceptData( getDataApprovalList( dataApproval ) );
+        }
+        catch ( DataApprovalException ex )
+        {
+            ContextUtils.conflictResponse( response, ex.getClass().getName() );
+        }
         dataApprovalService.unacceptData( getDataApprovalList( dataApproval ) );
     }
 
@@ -536,7 +566,7 @@ public class DataApprovalController
                 return;
             }
 
-            DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
+            DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit );
 
             if ( dataApprovalLevel == null )
             {
@@ -593,7 +623,7 @@ public class DataApprovalController
             return;
         }
 
-        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit );
 
         if ( dataApprovalLevel == null )
         {
@@ -647,7 +677,7 @@ public class DataApprovalController
             return;
         }
 
-        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit, null ); //TODO fix category stuff
+        DataApprovalLevel dataApprovalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( organisationUnit );
 
         if ( dataApprovalLevel == null )
         {
@@ -688,16 +718,16 @@ public class DataApprovalController
 
         User user = currentUserService.getCurrentUser();
         OrganisationUnit unit = user.getOrganisationUnit(); //TODO
-        DataApprovalLevel approvalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( unit, null );
+        DataApprovalLevel approvalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( unit );
         
         Date date = new Date();
 
         List<DataApproval> approvals = new ArrayList<>();
-        
+
         for ( DataSet dataSet : dataSets )
         {
             Set<DataElementCategoryOptionCombo> dataSetOptionCombos = dataSet.hasCategoryCombo() ? dataSet.getCategoryCombo().getOptionCombos() : null;
-            
+
             for ( Period period : periods )
             {
                 for ( DataElementCategoryOptionCombo optionCombo : optionCombos )

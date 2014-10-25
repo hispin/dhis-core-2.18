@@ -141,26 +141,8 @@ public class DefaultDataApprovalLevelService
     }
 
     @Override
-    public DataApprovalLevel getHighestDataApprovalLevel( OrganisationUnit orgUnit, Set<CategoryOptionGroup> cogs )
+    public DataApprovalLevel getHighestDataApprovalLevel( OrganisationUnit orgUnit )
     {
-        Set<CategoryOptionGroupSet> cogSets = null;
-
-        tracePrint( "getHighestDataApprovalLevel - org unit: " + orgUnit.getName() );
-        if ( cogs != null && !cogs.isEmpty() )
-        {
-            cogSets = new HashSet<>();
-
-            for ( CategoryOptionGroup cog : cogs )
-            {
-                tracePrint( "getHighestDataApprovalLevel - COG: " + cog.getName() );
-                if ( cog.getGroupSet() != null )
-                {
-                    tracePrint( "getHighestDataApprovalLevel - COGS: " + cog.getGroupSet().getName() );
-                    cogSets.add( cog.getGroupSet() );
-                }
-            }
-        }
-
         int orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
 
         DataApprovalLevel levelAbove = null;
@@ -169,25 +151,19 @@ public class DefaultDataApprovalLevelService
 
         tracePrint( "getHighestDataApprovalLevel - data approval level count: " + getAllDataApprovalLevels().size() );
 
-        for ( DataApprovalLevel level : getAllDataApprovalLevels() )
+        for ( DataApprovalLevel level : getUserDataApprovalLevels() )
         {
             tracePrint( "getHighestDataApprovalLevel - data approval level: " + level.getName() );
 
-            if ( ( level.getCategoryOptionGroupSet() == null && cogSets == null )
-                    || ( level.getCategoryOptionGroupSet() != null
-                         && cogSets != null
-                         && cogSets.contains( level.getCategoryOptionGroupSet() ) ) )
+            if ( level.getOrgUnitLevel() == orgUnitLevel )
             {
-                if ( level.getOrgUnitLevel() == orgUnitLevel )
-                {
-                    return level; // Exact match on org unit level.
-                }
-                else if ( level.getOrgUnitLevel() > levelAboveOrgUnitLevel )
-                {
-                    levelAbove = level; // Must be first matching approval level for this org unit level.
+                return level; // Exact match on org unit level.
+            }
+            else if ( level.getOrgUnitLevel() > levelAboveOrgUnitLevel )
+            {
+                levelAbove = level; // Must be first matching approval level for this org unit level.
 
-                    levelAboveOrgUnitLevel = level.getOrgUnitLevel();
-                }
+                levelAboveOrgUnitLevel = level.getOrgUnitLevel();
             }
         }
 

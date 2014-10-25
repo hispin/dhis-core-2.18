@@ -77,17 +77,13 @@ public interface DataApprovalLevelService
     DataApprovalLevel getDataApprovalLevelByLevelNumber( int levelNumber );
 
     /**
-     * Gets the highest approval level for a given organisation unit and
-     * (optionally) a set of attribute option groups. Returns the first
-     * approval level matching both the orgUnit's level and (optionally)
-     * having a category option group set containing one of the category
-     * option groups.
+     * Gets the highest approval at which the current user may approve the
+     * organisation unit.
      *
      * @param orgUnit organisation unit to look for.
-     * @param cogs attribute option groups (if any) to look for.
      * @return a data approval level, or null if not found.
      */
-    DataApprovalLevel getHighestDataApprovalLevel( OrganisationUnit orgUnit, Set<CategoryOptionGroup> cogs );
+    DataApprovalLevel getHighestDataApprovalLevel( OrganisationUnit orgUnit );
 
     /**
      * Gets the lowest approval level for a given organisation unit and
