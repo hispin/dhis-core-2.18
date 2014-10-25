@@ -2,7 +2,8 @@
     jQuery( document ).ready( function() {
         jQuery( "input[type=button]" ).click( function() {
             jQuery.postUTF8( "setSystemApprovalSettings.action", {
-                hideUnapprovedDataInAnalytics: jQuery( "#hideUnapprovedDataInAnalytics" ).is( ':checked' )
+                hideUnapprovedDataInAnalytics: jQuery( "#hideUnapprovedDataInAnalytics" ).is( ":checked" ),
+                acceptanceRequiredForApproval: jQuery( "#acceptanceRequiredForApproval" ).is( ":checked" )
             }, function( json ) {
                 if ( json.response == "success" ) {
                     setHeaderDelayMessage( json.message );
@@ -30,6 +31,11 @@
 <div class="setting">
     <input type="checkbox" id="hideUnapprovedDataInAnalytics" name="hideUnapprovedDataInAnalytics"#if( $keyHideUnapprovedDataInAnalytics ) checked="checked"#end>
     <label for="hideUnapprovedDataInAnalytics">$i18n.getString( "hide_unapproved_data_in_analytics" )</label>
+</div>
+
+<div class="setting">
+    <input type="checkbox" id="acceptanceRequiredForApproval" name="acceptanceRequiredForApproval"#if( $keyAcceptanceRequiredForApproval ) checked="checked"#end>
+    <label for="acceptanceRequiredForApproval">$i18n.getString( "acceptance_required_for_approval" )</label>
 </div>
 
 <div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>
