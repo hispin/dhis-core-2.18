@@ -32,13 +32,10 @@ import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class UserCannotAccessApprovalLevelException
-        extends DataApprovalException
+    extends DataApprovalException
 {
-    private static final long serialVersionUID = -571500237431167490L;
-
     public UserCannotAccessApprovalLevelException()
     {
         super();

@@ -32,13 +32,10 @@ import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class UserCannotApproveAttributeComboException
-        extends DataApprovalException
+    extends DataApprovalException
 {
-    private static final long serialVersionUID = 4733220902600832778L;
-
     public UserCannotApproveAttributeComboException()
     {
         super();

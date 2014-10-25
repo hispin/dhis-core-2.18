@@ -32,13 +32,10 @@ import org.hisp.dhis.dataapproval.exceptions.DataApprovalException;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class DataSetNotMarkedForApprovalException
-        extends DataApprovalException
+    extends DataApprovalException
 {
-    private static final long serialVersionUID = 6661288395024958390L;
-
     public DataSetNotMarkedForApprovalException()
     {
         super();
