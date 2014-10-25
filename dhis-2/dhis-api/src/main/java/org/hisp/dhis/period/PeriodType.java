@@ -418,8 +418,8 @@ public abstract class PeriodType
     }
 
     /**
-     * Returns a period type based on the given date string in ISO format. Returns
-     * null if the date string cannot be parsed to a date.
+     * Returns a period based on the given date string in ISO format. Returns
+     * null if the date string cannot be parsed to a period.
      *
      * @param isoPeriod the date string in ISO format.
      * @return a period.
@@ -441,6 +441,29 @@ public abstract class PeriodType
         }
 
         return null;
+    }
+
+    /**
+     * Returns a list of periods based on the given date string in ISO format.
+     *
+     * @param isoPeriod the date string in ISO format.
+     * @return a period.
+     */
+    public static List<Period> getPeriodsFromIsoStrings( List<String> isoPeriods )
+    {
+        List<Period> periods = new ArrayList<>();
+        
+        for ( String isoPeriod : isoPeriods )
+        {
+            Period period = getPeriodFromIsoString( isoPeriod );
+            
+            if ( period != null )
+            {
+                periods.add( period );
+            }
+        }
+        
+        return periods;
     }
 
     /**
