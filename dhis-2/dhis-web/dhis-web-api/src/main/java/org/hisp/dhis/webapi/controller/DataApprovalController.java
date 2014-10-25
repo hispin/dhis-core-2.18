@@ -292,7 +292,7 @@ public class DataApprovalController
     }
     
     // -------------------------------------------------------------------------
-    // Post
+    // Post, approval
     // -------------------------------------------------------------------------
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
@@ -351,9 +351,6 @@ public class DataApprovalController
         }
     }
 
-    /**
-     * The data set, period and category option combo associations will be used.
-     */
     @RequestMapping( method = RequestMethod.POST, value = "/batch" )
     public void saveApprovalBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
         HttpServletRequest request, HttpServletResponse response )
@@ -363,36 +360,7 @@ public class DataApprovalController
             ContextUtils.conflictResponse( response, "Approval must have data sets, periods and category option combos" );
         }
         
-        List<DataSet> dataSets = objectManager.getByUid( DataSet.class, getUids( dataApproval.getDataSets() ) );
-        List<Period> periods = PeriodType.getPeriodsFromIsoStrings( getUids( dataApproval.getPeriods() ) );
-        List<DataElementCategoryOptionCombo> optionCombos = objectManager.getByUid( DataElementCategoryOptionCombo.class, getUids( dataApproval.getCategoryOptionCombos() ) );
-
-        User user = currentUserService.getCurrentUser();
-        OrganisationUnit unit = user.getOrganisationUnit(); //TODO
-        DataApprovalLevel approvalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( unit, null );
-        
-        Date date = new Date();
-
-        List<DataApproval> approvals = new ArrayList<>();
-        
-        for ( DataSet dataSet : dataSets )
-        {
-            Set<DataElementCategoryOptionCombo> dataSetOptionCombos = dataSet.hasCategoryCombo() ? dataSet.getCategoryCombo().getOptionCombos() : null;
-            
-            for ( Period period : periods )
-            {
-                for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
-                {
-                    if ( dataSetOptionCombos != null && dataSetOptionCombos.contains( optionCombo ) )
-                    {
-                        DataApproval approval = new DataApproval( approvalLevel, dataSet, period, unit, optionCombo, false, date, user );
-                        approvals.add( approval );
-                    }
-                }
-            }
-        }
-        
-        dataApprovalService.approveData( approvals );
+        dataApprovalService.approveData( getDataApprovalList( dataApproval ) );
     }
     
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
@@ -457,6 +425,10 @@ public class DataApprovalController
         }
     }
 
+    // -------------------------------------------------------------------------
+    // Post, acceptance
+    // -------------------------------------------------------------------------
+
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
     @RequestMapping( value = ACCEPTANCES_PATH, method = RequestMethod.POST )
     public void acceptApproval(
@@ -513,6 +485,18 @@ public class DataApprovalController
         }
     }
 
+    @RequestMapping( method = RequestMethod.POST, value = "/acceptances/batch" )
+    public void saveAcceptanceBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
+        HttpServletRequest request, HttpServletResponse response )
+    {
+        if ( !dataApproval.hasDataSets() || !dataApproval.hasPeriods() || !dataApproval.hasCategoryOptionCombos() )
+        {
+            ContextUtils.conflictResponse( response, "Acceptance must have data sets, periods and category option combos" );
+        }
+        
+        dataApprovalService.acceptData( getDataApprovalList( dataApproval ) );
+    }
+    
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
     @RequestMapping( method = RequestMethod.POST, value = MULTIPLE_ACCEPTANCES_RESOURCE_PATH )
     public void acceptApprovalMultiple( @RequestBody DataApprovalStateRequests dataApprovalStateRequests, 
@@ -575,7 +559,7 @@ public class DataApprovalController
     }
 
     // -------------------------------------------------------------------------
-    // Delete
+    // Delete, approval
     // -------------------------------------------------------------------------
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
@@ -639,6 +623,22 @@ public class DataApprovalController
         }
     }
 
+    @RequestMapping( method = RequestMethod.DELETE, value = "/batch" )
+    public void removeApprovalBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
+        HttpServletRequest request, HttpServletResponse response )
+    {
+        if ( !dataApproval.hasDataSets() || !dataApproval.hasPeriods() || !dataApproval.hasCategoryOptionCombos() )
+        {
+            ContextUtils.conflictResponse( response, "Approval must have data sets, periods and category option combos" );
+        }
+        
+        dataApprovalService.unapproveData( getDataApprovalList( dataApproval ) );
+    }
+
+    // -------------------------------------------------------------------------
+    // Delete, acceptance
+    // -------------------------------------------------------------------------
+
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
     @RequestMapping( value = ACCEPTANCES_PATH, method = RequestMethod.DELETE )
     public void unacceptApproval(
@@ -695,6 +695,18 @@ public class DataApprovalController
         }
     }
 
+    @RequestMapping( method = RequestMethod.DELETE, value = "/acceptances/batch" )
+    public void removeAcceptancesBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
+        HttpServletRequest request, HttpServletResponse response )
+    {
+        if ( !dataApproval.hasDataSets() || !dataApproval.hasPeriods() || !dataApproval.hasCategoryOptionCombos() )
+        {
+            ContextUtils.conflictResponse( response, "Acceptance must have data sets, periods and category option combos" );
+        }
+        
+        dataApprovalService.unacceptData( getDataApprovalList( dataApproval ) );
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -708,6 +720,40 @@ public class DataApprovalController
 
         approvals.add( new DataApproval( dataApprovalLevel, dataSet, period, organisationUnit, combo, accepted, created, creator ) );
 
+        return approvals;
+    }
+
+    private List<DataApproval> getDataApprovalList( BaseMetaDataCollectionObject dataApproval )
+    {
+        List<DataSet> dataSets = objectManager.getByUid( DataSet.class, getUids( dataApproval.getDataSets() ) );
+        List<Period> periods = PeriodType.getPeriodsFromIsoStrings( getUids( dataApproval.getPeriods() ) );
+        List<DataElementCategoryOptionCombo> optionCombos = objectManager.getByUid( DataElementCategoryOptionCombo.class, getUids( dataApproval.getCategoryOptionCombos() ) );
+
+        User user = currentUserService.getCurrentUser();
+        OrganisationUnit unit = user.getOrganisationUnit(); //TODO
+        DataApprovalLevel approvalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( unit, null );
+        
+        Date date = new Date();
+
+        List<DataApproval> approvals = new ArrayList<>();
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            Set<DataElementCategoryOptionCombo> dataSetOptionCombos = dataSet.hasCategoryCombo() ? dataSet.getCategoryCombo().getOptionCombos() : null;
+            
+            for ( Period period : periods )
+            {
+                for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                {
+                    if ( dataSetOptionCombos != null && dataSetOptionCombos.contains( optionCombo ) )
+                    {
+                        DataApproval approval = new DataApproval( approvalLevel, dataSet, period, unit, optionCombo, false, date, user );
+                        approvals.add( approval );
+                    }
+                }
+            }
+        }
+        
         return approvals;
     }
 }

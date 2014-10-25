@@ -215,7 +215,7 @@ public class DefaultDataApprovalService
             dataApprovalStore.deleteDataApproval( d );
         }
         
-        log.info( "Unapprovals saved: " + dataApprovalList.size() );
+        log.info( "Approvals deleted: " + dataApprovalList.size() );
     }
 
     @Override
@@ -313,7 +313,7 @@ public class DefaultDataApprovalService
             dataApprovalStore.updateDataApproval( da );
         }
         
-        log.info( "Unaccepts saved: " + dataApprovalList.size() );
+        log.info( "Accepts deleted: " + dataApprovalList.size() );
     }
 
     @Override
