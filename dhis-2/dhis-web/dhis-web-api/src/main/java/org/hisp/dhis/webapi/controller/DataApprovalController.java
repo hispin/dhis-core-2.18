@@ -278,10 +278,18 @@ public class DataApprovalController
             
             DataApproval approval = status.getDataApproval();
             
+            Map<String, String> approvalLevel = new HashMap<>();
+            
+            if ( status.getDataApprovalLevel() != null )
+            {
+                approvalLevel.put( "id", status.getDataApprovalLevel().getUid() );
+                approvalLevel.put( "level", String.valueOf( status.getDataApprovalLevel().getLevel() ) );
+            }
+            
             if ( approval != null )
             {
                 item.put( "id", approval.getAttributeOptionCombo().getUid() );
-                item.put( "level", status.getDataApprovalLevel() );
+                item.put( "level", approvalLevel );
                 item.put( "ou",  approval.getOrganisationUnit().getUid() );
                 item.put( "accepted", approval.isAccepted() );
                 item.put( "permissions", status.getPermissions() );
