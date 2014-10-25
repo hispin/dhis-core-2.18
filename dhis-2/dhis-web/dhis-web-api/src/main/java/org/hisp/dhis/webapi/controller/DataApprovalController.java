@@ -358,7 +358,7 @@ public class DataApprovalController
         dataApprovalService.approveData( getDataApprovalList( dataApproval ) );
     }
 
-    @RequestMapping( value = APPROVALS_PATH + "/unapprovals", method = RequestMethod.DELETE )
+    @RequestMapping( value = APPROVALS_PATH + "/unapprovals", method = RequestMethod.POST )
     public void removeApprovalBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
         HttpServletRequest request, HttpServletResponse response )
     {
@@ -490,7 +490,7 @@ public class DataApprovalController
         dataApprovalService.acceptData( getDataApprovalList( dataApproval ) );
     }
 
-    @RequestMapping( value = ACCEPTANCES_PATH + "/unacceptances", method = RequestMethod.DELETE )
+    @RequestMapping( value = ACCEPTANCES_PATH + "/unacceptances", method = RequestMethod.POST )
     public void removeAcceptancesBatch( @RequestBody BaseMetaDataCollectionObject dataApproval,
         HttpServletRequest request, HttpServletResponse response )
     {
