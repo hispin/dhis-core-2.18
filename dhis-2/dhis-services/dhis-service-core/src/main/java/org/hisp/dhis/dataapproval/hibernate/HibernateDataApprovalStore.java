@@ -260,7 +260,7 @@ public class HibernateDataApprovalStore
                 "left outer join dataelementcategoryoptionusergroupaccesses couga on couga.categoryoptionid = cocco.categoryoptionid " +
                 "left outer join usergroupaccess uga on uga.usergroupaccessid = couga.usergroupaccessid " +
                 "left outer join usergroupmembers ugm on ugm.usergroupid = uga.usergroupid " +
-                "left outer join dataapproval da on da.categoryoptioncomboid = ccoc.categoryoptioncomboid and da.periodid in (" + sPeriods + ") " +
+                "left outer join dataapproval da on da.attributeoptioncomboid = ccoc.categoryoptioncomboid and da.periodid in (" + sPeriods + ") " +
                 "left outer join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
                 "left outer join _orgunitstructure ousda on ousda.organisationunitid = da.organisationunitid " +
                 "where ccoc.categorycomboid in (" + sDataSetCCs + ") " +

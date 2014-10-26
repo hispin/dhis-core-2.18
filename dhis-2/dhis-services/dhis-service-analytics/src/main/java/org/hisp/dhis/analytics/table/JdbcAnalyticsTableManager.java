@@ -238,7 +238,7 @@ public class JdbcAnalyticsTableManager
             "from dataapproval da " +
             "inner join dataapprovallevel dal on da.dataapprovallevelid = dal.dataapprovallevelid " +
             "where da.periodid = dv.periodid " +
-            "and da.categoryoptioncomboid = dv.attributeoptioncomboid " +
+            "and da.attributeoptioncomboid = dv.attributeoptioncomboid " +
             "and des.datasetid = da.datasetid " +
             "and (";
         

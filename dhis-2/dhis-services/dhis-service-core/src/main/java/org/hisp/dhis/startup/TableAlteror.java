@@ -743,8 +743,10 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataapproval ALTER COLUMN accepted SET NOT NULL" );
         executeSql( "DELETE FROM dataapproval WHERE categoryoptiongroupid IS NOT NULL" );
         executeSql( "ALTER TABLE dataapproval DROP COLUMN categoryoptiongroupid" );
-        executeSql( "UPDATE dataapproval SET categoryoptioncomboid=" + defaultCategoryComboId + " WHERE categoryoptioncomboid IS NULL" );
-        executeSql( "ALTER TABLE dataapproval ALTER COLUMN categoryoptioncomboid SET NOT NULL" );
+        executeSql( "UPDATE dataapproval SET attributeoptioncomboid=categoryoptioncomboid WHERE categoryoptioncomboid IS NOT NULL" );
+        executeSql( "ALTER TABLE dataapproval DROP COLUMN categoryoptioncomboid" );
+        executeSql( "UPDATE dataapproval SET attributeoptioncomboid=" + defaultCategoryComboId + " WHERE attributeoptioncomboid IS NULL" );
+        executeSql( "ALTER TABLE dataapproval ALTER COLUMN attributeoptioncomboid SET NOT NULL" );
 
         // validation rule group, new column alertbyorgunits
         executeSql( "UPDATE validationrulegroup SET alertbyorgunits=false WHERE alertbyorgunits IS NULL" );
