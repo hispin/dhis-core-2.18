@@ -36,6 +36,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -55,6 +56,8 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -105,6 +108,13 @@ public class HibernateDataApprovalStore
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -175,6 +185,11 @@ public class HibernateDataApprovalStore
     @Override
     public Set<DataApproval> getUserDataApprovals( Set<DataSet> dataSets, Set<Period> periods)
     {
+        User user = currentUserService.getCurrentUser();
+
+        boolean canSeeDefaultOptionCombo = CollectionUtils.isEmpty( userService.getCoDimensionConstraints( user.getUserCredentials() ) )
+                && CollectionUtils.isEmpty( userService.getCogDimensionConstraints( user.getUserCredentials() ) );
+
         Date minDate = null;
         Date maxDate = null;
 
@@ -209,7 +224,7 @@ public class HibernateDataApprovalStore
         String limitCategoryOptionByOrgUnit = "";
         String limitApprovalByOrgUnit = "";
 
-        for ( OrganisationUnit orgUnit : currentUserService.getCurrentUser().getOrganisationUnits() )
+        for ( OrganisationUnit orgUnit : user.getOrganisationUnits() )
         {
             if ( orgUnit.getParent() == null ) // User has root org unit access
             {
@@ -233,7 +248,7 @@ public class HibernateDataApprovalStore
 
         if ( !currentUserService.currentUserIsSuper() )
         {
-            limitBySharing = "and (ugm.userid = " + currentUserService.getCurrentUser().getId() + " or left(co.publicaccess,1) = 'r') ";
+            limitBySharing = "and (ugm.userid = " + user.getId() + " or left(co.publicaccess,1) = 'r') ";
         }
 
         String sql = "select ccoc.categoryoptioncomboid, da.periodid, dal.level, coo.organisationunitid, da.accepted " +
@@ -319,13 +334,16 @@ public class HibernateDataApprovalStore
                 //TODO: currently special cased for PEFPAR's requirements. Can we make it more generic?
                 if ( ( level == null || level != 1 ) && optionCombo.equals( defaultOptionCombo ) )
                 {
-                    for ( OrganisationUnit unit : getUserOrgsAtLevel( 3 ) )
+                    if ( canSeeDefaultOptionCombo )
                     {
-                        DataApproval da = new DataApproval( dataApprovalLevel, null, period, unit, optionCombo, accepted, null, null );
-    
-                        userDataApprovals.add( da );
+                        for ( OrganisationUnit unit : getUserOrgsAtLevel( 3 ) )
+                        {
+                            DataApproval da = new DataApproval( dataApprovalLevel, null, period, unit, optionCombo, accepted, null, null );
+
+                            userDataApprovals.add( da );
+                        }
                     }
-    
+
                     continue;
                 }
                 

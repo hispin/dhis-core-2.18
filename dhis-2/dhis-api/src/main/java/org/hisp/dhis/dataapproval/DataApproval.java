@@ -55,6 +55,7 @@ public class DataApproval
     public static final String AUTH_APPROVE = "F_APPROVE_DATA";
     public static final String AUTH_APPROVE_LOWER_LEVELS = "F_APPROVE_DATA_LOWER_LEVELS";
     public static final String AUTH_ACCEPT_LOWER_LEVELS = "F_ACCEPT_DATA_LOWER_LEVELS";
+    public static final String AUTH_VIEW_UNAPPROVED_DATA = "F_VIEW_UNAPPROVED_DATA";
 
     private static final long serialVersionUID = -4034531921928532366L;
 

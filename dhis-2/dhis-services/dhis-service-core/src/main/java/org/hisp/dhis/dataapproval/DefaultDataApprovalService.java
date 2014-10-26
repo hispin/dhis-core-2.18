@@ -61,8 +61,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.security.SecurityService;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -127,6 +127,13 @@ public class DefaultDataApprovalService
         this.securityService = securityService;
     }
 
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+
     // -------------------------------------------------------------------------
     // DataApproval
     // -------------------------------------------------------------------------
@@ -140,6 +147,8 @@ public class DefaultDataApprovalService
         List<DataApproval> checkedList = checkApprovalsList( dataApprovalList, null, false );
 
         tracePrint( "checkedList ( " + checkedList.size() + " items )" );
+
+        DataApprovalPermissionsEvaluator permissionsEvaluator = makePermissionsEvaluator();
 
         for ( Iterator<DataApproval> it = checkedList.iterator(); it.hasNext(); )
         {
@@ -158,9 +167,11 @@ public class DefaultDataApprovalService
             }
             else if ( !status.getState().isApprovable() )
             {
+                tracePrint("approveData: data is not approvable, state " + status.getState().name() );
+
                 throw new DataMayNotBeApprovedException();
             }
-            else if ( !mayApprove( da, status ) )
+            else if ( !permissionsEvaluator.getPermissions( da, status ).isMayApprove() )
             {
                 throw new UserMayNotApproveDataException();
             }
@@ -188,6 +199,8 @@ public class DefaultDataApprovalService
         List<DataApproval> checkedList = checkApprovalsList( dataApprovalList, null, false );
         List<DataApproval> storedDataApprovals = new ArrayList<>();
 
+        DataApprovalPermissionsEvaluator permissionsEvaluator = makePermissionsEvaluator();
+
         for ( DataApproval da : checkedList )
         {
             DataApprovalStatus status = getStatus( da );
@@ -196,10 +209,14 @@ public class DefaultDataApprovalService
             {
                 if ( !status.getState().isUnapprovable() )
                 {
+                    tracePrint( "unapproveData: data may not be unapproved." );
+
                     throw new DataMayNotBeUnapprovedException();
                 }
-                else if ( !mayUnapprove( da, status ) )
+                else if ( !permissionsEvaluator.getPermissions( da, status ).isMayUnapprove() )
                 {
+                    tracePrint( "unapproveData: user may not unapprove the data." );
+
                     throw new UserMayNotUnapproveDataException();
                 }
 
@@ -231,6 +248,8 @@ public class DefaultDataApprovalService
         List<DataApproval> checkedList = checkApprovalsList( dataApprovalList, null, false );
         List<DataApproval> storedDataApprovals = new ArrayList<>();
 
+        DataApprovalPermissionsEvaluator permissionsEvaluator = makePermissionsEvaluator();
+
         for ( DataApproval da : checkedList )
         {
             DataApprovalStatus status = getStatus( da );
@@ -239,14 +258,16 @@ public class DefaultDataApprovalService
             {
                 if ( !status.getState().isAcceptable() )
                 {
-                    tracePrint("acceptData() state " + status.getState().name()
+                    tracePrint("acceptData: state " + status.getState().name()
                             + " accepted " + status.getState().isAccepted()
                             + " acceptable " + status.getState().isAcceptable() );
 
                     throw new DataMayNotBeAcceptedException();
                 }
-                else if ( !mayAcceptOrUnaccept( da, status ) )
+                else if ( !permissionsEvaluator.getPermissions( da, status ).isMayAccept() )
                 {
+                    tracePrint( "acceptData: user may not accept the data." );
+
                     throw new UserMayNotAcceptDataException();
                 }
 
@@ -282,6 +303,8 @@ public class DefaultDataApprovalService
         List<DataApproval> checkedList = checkApprovalsList( dataApprovalList, null, false );
         List<DataApproval> storedDataApprovals = new ArrayList<>();
 
+        DataApprovalPermissionsEvaluator permissionsEvaluator = makePermissionsEvaluator();
+
         for ( DataApproval da : checkedList )
         {
             DataApprovalStatus status = getStatus( da );
@@ -290,10 +313,16 @@ public class DefaultDataApprovalService
             {
                 if ( !status.getState().isUnacceptable() )
                 {
+                    tracePrint("acceptData: state " + status.getState().name()
+                            + " accepted " + status.getState().isAccepted()
+                            + " unacceptable " + status.getState().isUnacceptable() );
+
                     throw new DataMayNotBeUnacceptedException();
                 }
-                else if ( !mayAcceptOrUnaccept( da, status ) )
+                else if ( !permissionsEvaluator.getPermissions( da, status ).isMayUnaccept() )
                 {
+                    tracePrint( "unacceptData: user may not unaccept the data." );
+
                     throw new UserMayNotUnacceptDataException();
                 }
 
@@ -373,19 +402,20 @@ public class DefaultDataApprovalService
     {
         DataApprovalStatus status = getDataApprovalStatus( dataSet, period, organisationUnit, attributeOptionCombo );
 
-        return getPermissions( status.getDataApprovalLevel(), status, status.getDataApproval() );
+        DataApprovalPermissionsEvaluator permissionsEvaluator = makePermissionsEvaluator();
+
+        DataApproval da = ( status.getDataApproval() != null ? status.getDataApproval() :
+                new DataApproval( null, dataSet, period, organisationUnit, attributeOptionCombo, false, null, null ) );
+
+        status.setPermissions( permissionsEvaluator.getPermissions( da, status ) );
+
+        return status;
     }
 
     @Override
     public List<DataApprovalStatus> getUserDataApprovalsAndPermissions( Set<DataSet> dataSets, Set<Period> periods )
     {
-        User user = currentUserService.getCurrentUser();
-
-        boolean authorizedToApprove = user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE );
-        boolean authorizedToApproveAtLowerLevels = user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE_LOWER_LEVELS );
-        boolean authorizedToAcceptAtLowerLevels = user.getUserCredentials().isAuthorized( DataApproval.AUTH_ACCEPT_LOWER_LEVELS );
-
-        int maxApprovalLevel = dataApprovalLevelService.getAllDataApprovalLevels().size();
+        DataApprovalPermissionsEvaluator permissionsEvaluator = makePermissionsEvaluator();
 
         List<DataApprovalStatus> statusList = new ArrayList<>();
 
@@ -393,35 +423,9 @@ public class DefaultDataApprovalService
         
         for ( DataApproval da : approvals )
         {
-            DataApprovalPermissions permissions = new DataApprovalPermissions();
-
-            if ( da.getOrganisationUnit() != null ) //TODO: Shouldn't be null -- fix the category option mappings to org units in the database.
+            if ( da.getOrganisationUnit() != null ) // Each CO in the database needs an org unit.
             {
-                DataApprovalLevel userApprovalLevel = dataApprovalLevelService.getUserApprovalLevel( user, da.getOrganisationUnit(), false );
-
-                if ( userApprovalLevel != null )
-                {
-                    boolean isApproved = ( da.getDataApprovalLevel() != null );
-                    int userLevel = userApprovalLevel.getLevel();
-                    int dataLevel = isApproved ? da.getDataApprovalLevel().getLevel() : maxApprovalLevel;
-
-                    boolean mayApprove = ( authorizedToApprove && userLevel == dataLevel && !da.isAccepted() ) ||
-                        authorizedToApproveAtLowerLevels && userLevel < dataLevel;
-
-                    boolean mayAcceptOrUnaccept = authorizedToAcceptAtLowerLevels && dataLevel <= maxApprovalLevel &&
-                        ( userLevel == dataLevel + 1 || ( userLevel < dataLevel && authorizedToApproveAtLowerLevels ) );
-
-                    boolean mayUnapprove = isApproved && mayApprove && ( !da.isAccepted() || mayAcceptOrUnaccept );
-
-                    permissions.setMayApprove( mayApprove );
-                    permissions.setMayUnapprove( mayUnapprove );
-                    permissions.setMayAccept( mayAcceptOrUnaccept );
-                    permissions.setMayUnaccept( mayAcceptOrUnaccept );
-                }
-                
-                boolean mayReadData = true; //TODO: Fix.
-
-                permissions.setMayReadData( mayReadData );
+                DataApprovalPermissions permissions = permissionsEvaluator.getPermissions( da, null );
 
                 statusList.add( new DataApprovalStatus( null, da, da.getDataApprovalLevel(), permissions ) );
             }
@@ -437,6 +441,12 @@ public class DefaultDataApprovalService
     private void tracePrint( String s ) // Temporary, for development
     {
 //        System.out.println( s );
+    }
+
+    private DataApprovalPermissionsEvaluator makePermissionsEvaluator()
+    {
+        return DataApprovalPermissionsEvaluator.makePermissionsEvaluator(
+                currentUserService, systemSettingManager, dataApprovalLevelService );
     }
 
     private DataApproval defensiveCopy( DataApproval  da )
@@ -680,61 +690,6 @@ public class DefaultDataApprovalService
         return expandedApprovals;
     }
 
-    private boolean mayApprove( DataApproval dataApproval, DataApprovalStatus dataApprovalStatus )
-    {
-        DataApprovalLevel userDal = dataApprovalLevelService.getUserApprovalLevel( dataApproval.getOrganisationUnit(), false );
-
-        if ( userDal != null )
-        {
-            User user = currentUserService.getCurrentUser();
-
-            boolean mayApprove = user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE );
-            boolean mayApproveAtLowerLevels = user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE_LOWER_LEVELS );
-
-            if ( ( mayApprove && userDal.getLevel() == dataApprovalStatus.getDataApprovalLevel().getLevel() )
-                || ( mayApproveAtLowerLevels && userDal.getLevel() < dataApprovalStatus.getDataApprovalLevel().getLevel() ) )
-            {
-                tracePrint("mayApprove TRUE user level " + userDal.getLevel() + ", mayApprove " + mayApprove + ", mayApproveAtLL "
-                        + mayApproveAtLowerLevels + ", data level " + dataApprovalStatus.getDataApprovalLevel().getLevel() );
-                return true;
-            }
-
-            tracePrint("mayApprove FALSE user level " + userDal.getLevel() + ", mayApprove " + mayApprove + ", mayApproveAtLL "
-                    + mayApproveAtLowerLevels + ", data level " + dataApprovalStatus.getDataApprovalLevel().getLevel() );
-        }
-        else
-        {
-            tracePrint("mayApprove FALSE, no user level" );
-        }
-
-        return false;
-    }
-
-    private boolean mayUnapprove( DataApproval dataApproval, DataApprovalStatus dataApprovalStatus )
-    {
-        return mayApprove( dataApproval, dataApprovalStatus ) || mayAcceptOrUnaccept( dataApproval, dataApprovalStatus );
-    }
-
-    private boolean mayAcceptOrUnaccept( DataApproval dataApproval, DataApprovalStatus dataApprovalStatus )
-    {
-        DataApprovalLevel userDal = dataApprovalLevelService.getUserApprovalLevel( dataApproval.getOrganisationUnit(), false );
-
-        if ( userDal != null )
-        {
-            User user = currentUserService.getCurrentUser();
-
-            boolean mayAcceptAtLowerLevels = user.getUserCredentials().isAuthorized( DataApproval.AUTH_ACCEPT_LOWER_LEVELS )
-                    || user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE_LOWER_LEVELS );
-
-            if ( mayAcceptAtLowerLevels && userDal.getLevel() < dataApprovalStatus.getDataApprovalLevel().getLevel() )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     private DataApprovalStatus getStatus( DataApproval dataApproval )
     {
         return doGetDataApprovalStatus( org.hisp.dhis.system.util.CollectionUtils.asList( dataApproval ), dataApproval );
@@ -746,68 +701,5 @@ public class DefaultDataApprovalService
                 dataApprovalStore, dataApprovalLevelService, organisationUnitService, categoryService );
 
         return dataApprovalSelection.getDataApprovalStatus();
-    }
-
-    /**
-     * Return true if there are no category option groups, or if there is
-     * one and the user can read it.
-     *
-     * @param categoryOptionGroups option groups (if any) for data selection
-     * @return true if at most 1 option group and user can read, else false
-     */
-    boolean canReadOneCategoryOptionGroup( Collection<CategoryOptionGroup> categoryOptionGroups )
-    {
-        if ( categoryOptionGroups == null || categoryOptionGroups.size() == 0 )
-        {
-            return true;
-        }
-
-        if ( categoryOptionGroups.size() != 1 )
-        {
-            return false;
-        }
-
-        return (securityService.canRead( (CategoryOptionGroup) categoryOptionGroups.toArray()[0] ));
-    }
-
-    /**
-     * Find permissions, and add to returned status.
-     *
-     * @param dal Data Approval Level we were looking for
-     * @param status Approval Status that we found
-     * @param da Original Data Approval describing what we were looking for
-     * @return Permissions along with status
-     */
-    private DataApprovalStatus getPermissions( DataApprovalLevel dal, DataApprovalStatus status, DataApproval da )
-    {        
-        DataApprovalPermissions permissions = new DataApprovalPermissions();
-
-        tracePrint( "getPermissions - dal " + ( dal == null ? "(null)" : dal.getName() )
-                + " dataApproval null? " + ( status.getDataApproval() == null ) );
-
-        if ( da != null && dal != null && securityService.canRead( dal ) && status.getDataApproval() != null
-                && ( dal.getCategoryOptionGroupSet() == null || securityService.canRead( dal.getCategoryOptionGroupSet() ) ) )
-        {
-            DataApprovalState state = status.getState();
-
-            tracePrint( "getPermissions - state is " + state.name() );
-
-            permissions.setMayApprove( state.isApprovable() && mayApprove( da, status ) );
-            permissions.setMayUnapprove( state.isUnapprovable() && mayUnapprove( status.getDataApproval(), status ) );
-            permissions.setMayAccept( state.isAcceptable() && mayAcceptOrUnaccept( status.getDataApproval(), status ) );
-            permissions.setMayUnaccept( state.isUnacceptable() && mayAcceptOrUnaccept( status.getDataApproval(), status ) );
-
-            log.debug( "Found permissions for " + da.getOrganisationUnit().getName()
-                + " " + status.getState().name()
-                + " may approve = " + permissions.isMayApprove()
-                + " may unapprove = " + permissions.isMayUnapprove()
-                + " may accept = " + permissions.isMayAccept()
-                + " may unaccept = " + permissions.isMayUnaccept() );
-        }
-
-        status.setDataApproval( defensiveCopy( status.getDataApproval() ) );
-        status.setPermissions( permissions );
-
-        return status;
     }
 }
