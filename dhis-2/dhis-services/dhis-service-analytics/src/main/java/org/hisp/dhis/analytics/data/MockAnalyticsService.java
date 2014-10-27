@@ -93,6 +93,12 @@ public class MockAnalyticsService
     {
         throw new NotImplementedException();
     }
+    
+    @Override
+    public List<DimensionalObject> getDimensionalObjects( Set<String> dimensionParams, I18nFormat format )
+    {
+        throw new NotImplementedException();        
+    }
 
     @Override
     public List<DimensionalObject> getDimension( String dimension, List<String> items, Date relativePeriodDate,
