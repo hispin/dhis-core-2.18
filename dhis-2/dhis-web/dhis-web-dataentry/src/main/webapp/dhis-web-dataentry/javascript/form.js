@@ -186,7 +186,7 @@ $( document ).ready( function()
 
 	            setHeaderMessage( message );
 
-	            $( '#sync_button' ).bind( 'click', uploadLocalData );
+	            $( '#sync_button' ).bind( 'click', dhis2.de.uploadLocalData );
 	        }
 	        else
 	        {
@@ -287,7 +287,7 @@ dhis2.de.loadMetaData = function()
 	} );
 }
 
-function uploadLocalData()
+dhis2.de.uploadLocalData = function()
 {
     if ( !dhis2.de.storageManager.hasLocalData() )
     {
@@ -343,7 +343,7 @@ function uploadLocalData()
                         + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
 
                     setHeaderMessage( message );
-                    $( '#sync_button' ).bind( 'click', uploadLocalData );
+                    $( '#sync_button' ).bind( 'click', dhis2.de.uploadLocalData );
         		}
             }
         } );
@@ -404,14 +404,14 @@ function uploadLocalData()
 	                    + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
 	
 	                setHeaderMessage( message );
-	                $( '#sync_button' ).bind( 'click', uploadLocalData );
+	                $( '#sync_button' ).bind( 'click', dhis2.de.uploadLocalData );
             	}
             }
         } );
     } )( dataValuesArray );
 }
 
-function addEventListeners()
+dhis2.de.addEventListeners = function()
 {
     $( '.entryfield' ).each( function( i )
     {
@@ -429,7 +429,7 @@ function addEventListeners()
           id = dpTargetId;
         }
 
-        var split = splitFieldId( id );
+        var split = dhis2.de.splitFieldId( id );
         var dataElementId = split.dataElementId;
         var optionComboId = split.optionComboId;
         dhis2.de.currentOrganisationUnitId = split.organisationUnitId;
@@ -463,7 +463,8 @@ function addEventListeners()
 
         if ( type == 'date' )
         {
-            // fake event, needed for valueBlur / valueFocus when using date-picker (it doesn't send the event object through).
+            // Fake event, needed for valueBlur / valueFocus when using date-picker
+        	
             var fakeEvent = {
                 target: {
                     id: id + '-dp'
@@ -487,7 +488,7 @@ function addEventListeners()
     $( '.entryselect' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
-        var split = splitFieldId( id );
+        var split = dhis2.de.splitFieldId( id );
 
         var dataElementId = split.dataElementId;
         var optionComboId = split.optionComboId;
@@ -508,7 +509,7 @@ function addEventListeners()
     $( '.entrytrueonly' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
-        var split = splitFieldId( id );
+        var split = dhis2.de.splitFieldId( id );
 
         var dataElementId = split.dataElementId;
         var optionComboId = split.optionComboId;
@@ -528,7 +529,7 @@ function addEventListeners()
     $( '.entryoptionset' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
-        var split = splitFieldId( id );
+        var split = dhis2.de.splitFieldId( id );
 
         var dataElementId = split.dataElementId;
         var optionComboId = split.optionComboId;
@@ -548,7 +549,7 @@ function addEventListeners()
     $( '.commentlink' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
-        var split = splitFieldId( id );
+        var split = dhis2.de.splitFieldId( id );
 
         var dataElementId = split.dataElementId;
         var optionComboId = split.optionComboId;
@@ -566,26 +567,26 @@ function addEventListeners()
     } );
 }
 
-function resetSectionFilters()
+dhis2.de.resetSectionFilters = function()
 {
     $( '#filterDataSetSectionDiv' ).hide();
     $( '.formSection' ).show();
 }
 
-function clearSectionFilters()
+dhis2.de.clearSectionFilters = function()
 {
     $( '#filterDataSetSection' ).children().remove();
     $( '#filterDataSetSectionDiv' ).hide();
     $( '.formSection' ).show();
 }
 
-function clearPeriod()
+dhis2.de.clearPeriod = function()
 {
     clearListById( 'selectedPeriodId' );
-    clearEntryForm();
+    dhis2.de.clearEntryForm();
 }
 
-function clearEntryForm()
+dhis2.de.clearEntryForm = function()
 {
     $( '#contentDiv' ).html( '' );
 
@@ -597,7 +598,7 @@ function clearEntryForm()
     $( '#infoDiv' ).hide();
 }
 
-function loadForm()
+dhis2.de.loadForm = function()
 {
 	var dataSetId = dhis2.de.currentDataSetId;
 	
@@ -620,7 +621,7 @@ function loadForm()
 	                    $( "#tabs" ).tabs();
 	                }
 	
-	                enableSectionFilter();	               
+	                dhis2.de.enableSectionFilter();	               
 	                $( document ).trigger( dhis2.de.event.formLoaded, dhis2.de.currentDataSetId );
 	
 	                loadDataValues();
@@ -640,7 +641,7 @@ function loadForm()
        	                    $( "#tabs" ).tabs();
        	                }
 
-       	                enableSectionFilter();
+       	                dhis2.de.enableSectionFilter();
        	                $( document ).trigger( dhis2.de.event.formLoaded, dhis2.de.currentDataSetId );
 
        	                loadDataValues();
@@ -668,7 +669,7 @@ function loadForm()
                     $( "#tabs" ).tabs();
                 }
 
-                enableSectionFilter();
+                dhis2.de.enableSectionFilter();
             }
             else
             {
@@ -685,10 +686,10 @@ function loadForm()
 // Section filter
 //------------------------------------------------------------------------------
 
-function enableSectionFilter()
+dhis2.de.enableSectionFilter = function()
 {
     var $sectionHeaders = $( '.formSection .cent h3' );
-    clearSectionFilters();
+    dhis2.de.clearSectionFilters();
 
     if ( $sectionHeaders.size() > 1)
     {
@@ -707,7 +708,7 @@ function enableSectionFilter()
     }
 }
 
-function filterOnSection()
+dhis2.de.filterOnSection = function()
 {
     var $filterDataSetSection = $( '#filterDataSetSection' );
     var value = $filterDataSetSection.val();
@@ -723,7 +724,7 @@ function filterOnSection()
     }
 }
 
-function filterInSection( $this )
+dhis2.de.filterInSection = function( $this )
 {
     var $tbody = $this.parent().parent().parent();
     var $trTarget = $tbody.find( 'tr:not([colspan])' );
@@ -762,7 +763,7 @@ function filterInSection( $this )
 /**
  * Splits an id based on the multi org unit variable.
  */
-function splitFieldId( id )
+dhis2.de.splitFieldId = function( id )
 {
     var split = {};
 
@@ -895,7 +896,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
             $( '#selectedDataSetId' ).val( dataSetId ); // Restore selected data set
 
             if ( dhis2.de.inputSelected() && dhis2.de.dataEntryFormIsLoaded ) {
-                resetSectionFilters();
+                dhis2.de.resetSectionFilters();
                 showLoader();
                 loadDataValues();
             }
@@ -908,8 +909,8 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
         	dhis2.de.multiOrganisationUnit = false;
             dhis2.de.currentDataSetId = null;
 
-            clearSectionFilters();
-            clearPeriod();
+            dhis2.de.clearSectionFilters();
+            dhis2.de.clearPeriod();
             dhis2.de.clearAttributes();
         }
     });
@@ -964,8 +965,8 @@ dhis2.de._updateDataSets = function( ou ) {
 };
 
 /**
- * Get a list of sorted data-sets for a orgUnit, if data-set list is empty, it will try and fetch
- * data-sets from the server.
+ * Get a list of sorted data-sets for a orgUnit, if data-set list is empty, it will 
+ * try and fetch data-sets from the server.
  *
  * @param {String} [ou] Organisation unit to fetch data-sets for
  * @returns {$.Deferred}
@@ -976,9 +977,10 @@ dhis2.de.getOrFetchDataSetList = function( ou ) {
     var dataSets = getSortedDataSetList(ou);
     ou = ou || dhis2.de.getCurrentOrganisationUnit();
 
-    if( dataSets.length > 0 ) {
+    if (dataSets.length > 0) {
         def.resolve(dataSets);
-    } else {
+    } 
+    else {
         dhis2.de.fetchDataSets(ou).then(function() {
             def.resolve(getSortedDataSetList(ou));
         });
@@ -1058,47 +1060,50 @@ function getSortedDataSetListForOrgUnits( orgUnits )
 // -----------------------------------------------------------------------------
 
 /**
- * Callback for changes in data set list.
+ * Callback for changes in data set list. For previous selection to be valid and
+ * the period selection to remain, the period type of the previous data set must
+ * equal the current data set, and the allow future periods property of the previous
+ * data set must equal the current data set or the current period offset must not
+ * be in the future.
  */
 function dataSetSelected()
-{    
-    var dataSetId = $( '#selectedDataSetId' ).val();
+{
+    var previousDataSetValid = ( dhis2.de.currentDataSetId && dhis2.de.currentDataSetId != -1 );
+    var previousDataSet = !!previousDataSetValid ? dhis2.de.dataSets[dhis2.de.currentDataSetId] : undefined;
+    var previousPeriodType = previousDataSet ? previousDataSet.periodType : undefined;
+    var previousAllowFuturePeriods = previousDataSet ? previousDataSet.allowFuturePeriods : false;
 
-    var previousDataSetValid = ( dhis2.de.currentDataSetId && dhis2.de.currentDataSetId != -1 );    
-    var previousPeriodType = !!previousDataSetValid ? dhis2.de.dataSets[dhis2.de.currentDataSetId].periodType : null;
-
-    dhis2.de.currentDataSetId = dataSetId;
+    dhis2.de.currentDataSetId = $( '#selectedDataSetId' ).val();
     
-    if ( dataSetId && dataSetId != -1 )
+    if ( dhis2.de.currentDataSetId && dhis2.de.currentDataSetId != -1 )
     {
         $( '#selectedPeriodId' ).removeAttr( 'disabled' );
         $( '#prevButton' ).removeAttr( 'disabled' );
         $( '#nextButton' ).removeAttr( 'disabled' );
 
-        var periodType = dhis2.de.dataSets[dataSetId].periodType;
+        var periodType = dhis2.de.dataSets[dhis2.de.currentDataSetId].periodType;
+        var allowFuturePeriods = dhis2.de.dataSets[dhis2.de.currentDataSetId].allowFuturePeriods;
 
-        var previousPeriodTypeValid = !!( previousPeriodType && previousPeriodType == periodType );
+        var previousSelectionValid = !!( periodType == previousPeriodType && 
+        	( allowFuturePeriods == previousAllowFuturePeriods || dhis2.de.currentPeriodOffset <= 0 ) );
         
-        if ( !previousPeriodTypeValid )
-        {
-            displayPeriods();
-            clearSectionFilters();
-        }
-        
-        dhis2.de.currentCategories = dhis2.de.getCategories( dataSetId );
+        dhis2.de.currentCategories = dhis2.de.getCategories( dhis2.de.currentDataSetId );
 
         dhis2.de.setAttributesMarkup();   
 
         dhis2.de.multiOrganisationUnit = !!$( '#selectedDataSetId :selected' ).data( 'multiorg' );
 
-        if ( dhis2.de.inputSelected() && previousPeriodTypeValid )
+        if ( dhis2.de.inputSelected() && previousSelectionValid )
         {
             showLoader();
-            loadForm();
+            dhis2.de.loadForm();
         }
         else
         {
-            clearEntryForm();
+        	dhis2.de.currentPeriodOffset = 0;
+        	displayPeriods();
+        	dhis2.de.clearSectionFilters();
+            dhis2.de.clearEntryForm();
         }
     }
     else
@@ -1108,7 +1113,7 @@ function dataSetSelected()
         $( '#prevButton' ).attr( 'disabled', 'disabled' );
         $( '#nextButton' ).attr( 'disabled', 'disabled' );
 
-        clearEntryForm();
+        dhis2.de.clearEntryForm();
         dhis2.de.clearAttributes();
     }
 }
@@ -1138,12 +1143,12 @@ function periodSelected()
         }
         else
         {
-            loadForm();
+            dhis2.de.loadForm();
         }
     }
     else
     {
-        clearEntryForm();
+        dhis2.de.clearEntryForm();
     }
 }
 
@@ -1152,7 +1157,9 @@ function periodSelected()
  */
 function nextPeriodsSelected()
 {
-    if ( dhis2.de.currentPeriodOffset < 0 ) // Cannot display future periods
+	var allowFuturePeriods = !!( dhis2.de.currentDataSetId && dhis2.de.dataSets[dhis2.de.currentDataSetId].allowFuturePeriods );
+	
+    if ( dhis2.de.currentPeriodOffset < 0 || allowFuturePeriods )
     {
     	dhis2.de.currentPeriodOffset++;
         displayPeriods();
@@ -1393,12 +1400,12 @@ dhis2.de.attributeSelected = function( categoryId )
             loadDataValues();
         }
         else {
-            loadForm();
+            dhis2.de.loadForm();
         }
     }
     else
     {
-        clearEntryForm();
+        dhis2.de.clearEntryForm();
     }
 };
 
@@ -1646,7 +1653,7 @@ function insertDataValues( json )
 
 function displayEntryFormCompleted()
 {
-    addEventListeners();
+    dhis2.de.addEventListeners();
 
     $( '#validationButton' ).removeAttr( 'disabled' );
     $( '#validateButton' ).removeAttr( 'disabled' );
@@ -1662,7 +1669,7 @@ function valueFocus( e )
     var id = e.target.id;
     var value = e.target.value;
 
-    var split = splitFieldId( id );
+    var split = dhis2.de.splitFieldId( id );
     var dataElementId = split.dataElementId;
     var optionComboId = split.optionComboId;
     dhis2.de.currentOrganisationUnitId = split.organisationUnitId;
@@ -1682,7 +1689,7 @@ function valueBlur( e )
 {
     var id = e.target.id;
 
-    var split = splitFieldId( id );
+    var split = dhis2.de.splitFieldId( id );
     var dataElementId = split.dataElementId;
 
     $( '#' + dataElementId + '-cell' ).removeClass( 'currentRow' );
@@ -2003,7 +2010,7 @@ dhis2.de.validateCompulsoryCombinations = function()
         {
             var id = $( this ).attr( 'id' );
 
-            var split = splitFieldId( id );
+            var split = dhis2.de.splitFieldId( id );
             var dataElementId = split.dataElementId;
             var hasValue = $.trim( $( this ).val() ).length > 0;
             
@@ -2865,7 +2872,7 @@ dhis2.de.loadOptionSets = function()
 dhis2.de.insertOptionSets = function() 
 {
     $( '.entryoptionset').each( function( idx, item ) {
-    	var optionSetKey = splitFieldId(item.id);
+    	var optionSetKey = dhis2.de.splitFieldId( item.id );
 
         if ( dhis2.de.multiOrganisationUnit ) {
         	item = optionSetKey.organisationUnitId + '-' + optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;

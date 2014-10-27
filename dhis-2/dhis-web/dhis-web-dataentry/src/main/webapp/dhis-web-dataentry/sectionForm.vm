@@ -61,7 +61,7 @@
     #set( $categoryOptions = $optionsMap.get( $category.id ) )
     #set( $colCount = $colCount / $categoryOptions.size() )
     <tr colspan="$colCount">
-    <td>#if( $hasFilterInSection == false )<input type="text" class="sectionFilter" placeholder="$encoder.jsEscape( $i18n.getString( "filter_in_section" ) , "'")" onkeyup="filterInSection($(this));">#set( $hasFilterInSection = true )#end</td>
+    <td>#if( $hasFilterInSection == false )<input type="text" class="sectionFilter" placeholder="$encoder.jsEscape( $i18n.getString( "filter_in_section" ) , "'")" onkeyup="dhis2.de.filterInSection($(this));">#set( $hasFilterInSection = true )#end</td>
     #set( $cols = $colRepeat.get( $category.id ) )
     #foreach( $col in $cols )
     #foreach( $categoryOption in $categoryOptions )
