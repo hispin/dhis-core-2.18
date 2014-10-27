@@ -54,7 +54,6 @@ public class GetUserGroupListAction
     {
         this.userGroupService = userGroupService;
     }
-
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
