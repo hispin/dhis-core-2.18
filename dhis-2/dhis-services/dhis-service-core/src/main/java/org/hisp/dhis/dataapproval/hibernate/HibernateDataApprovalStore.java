@@ -255,7 +255,7 @@ public class HibernateDataApprovalStore
                 "from categorycombos_optioncombos ccoc " +
                 "join categoryoptioncombos_categoryoptions cocco on cocco.categoryoptioncomboid = ccoc.categoryoptioncomboid " +
                 "join dataelementcategoryoption co on co.categoryoptionid = cocco.categoryoptionid " +
-                "left outer join cateogryoption_organisationunits coo on coo.categoryoptionid = cocco.categoryoptionid " +
+                "left outer join categoryoption_organisationunits coo on coo.categoryoptionid = cocco.categoryoptionid " +
                 "left outer join _orgunitstructure ous on ous.organisationunitid = coo.organisationunitid " +
                 "left outer join dataelementcategoryoptionusergroupaccesses couga on couga.categoryoptionid = cocco.categoryoptionid " +
                 "left outer join usergroupaccess uga on uga.usergroupaccessid = couga.usergroupaccessid " +
