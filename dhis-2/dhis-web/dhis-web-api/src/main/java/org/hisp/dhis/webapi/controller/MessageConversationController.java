@@ -138,7 +138,7 @@ public class MessageConversationController
         }
         else if ( options.hasPaging() )
         {
-            int count = manager.getCount( getEntityClass() );
+            int count = messageService.getMessageConversationCount();
 
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
@@ -370,7 +370,6 @@ public class MessageConversationController
 
         return responseNode;
     }
-
 
     //--------------------------------------------------------------------------
     // Delete a MessageConversation (requires override auth)
