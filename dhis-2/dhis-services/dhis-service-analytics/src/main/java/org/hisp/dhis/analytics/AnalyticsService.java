@@ -174,6 +174,15 @@ public interface AnalyticsService
     DataQueryParams getFromAnalyticalObject( AnalyticalObject object, I18nFormat format );
     
     /**
+     * Creates a list of DimensionalObject from the given set of dimension params.
+     * 
+     * @param dimensionParams the dimension URL params.
+     * @param format the i18n format.
+     * @return a list of DimensionalObject.
+     */
+    List<DimensionalObject> getDimensionalObjects( Set<String> dimensionParams, I18nFormat format );
+    
+    /**
      * Returns a list of persisted DimensionalObjects generated from the given 
      * dimension identifier and list of dimension options. The dx dimension
      * will be exploded into concrete in|de|ds object identifiers and returned

@@ -800,30 +800,12 @@ public class DefaultAnalyticsService
 
         if ( dimensionParams != null && !dimensionParams.isEmpty() )
         {
-            for ( String param : dimensionParams )
-            {
-                String dimension = DimensionalObjectUtils.getDimensionFromParam( param );
-                List<String> options = DimensionalObjectUtils.getDimensionItemsFromParam( param );
-
-                if ( dimension != null && options != null )
-                {
-                    params.getDimensions().addAll( getDimension( dimension, options, null, format, false ) );
-                }
-            }
+            params.getDimensions().addAll( getDimensionalObjects( dimensionParams, format ) );
         }
 
         if ( filterParams != null && !filterParams.isEmpty() )
         {
-            for ( String param : filterParams )
-            {
-                String dimension = DimensionalObjectUtils.getDimensionFromParam( param );
-                List<String> options = DimensionalObjectUtils.getDimensionItemsFromParam( param );
-
-                if ( dimension != null && options != null )
-                {
-                    params.getFilters().addAll( getDimension( dimension, options, null, format, false ) );
-                }
-            }
+            params.getFilters().addAll( getDimensionalObjects( filterParams, format ) );
         }
 
         if ( measureCriteria != null && !measureCriteria.isEmpty() )
@@ -871,6 +853,28 @@ public class DefaultAnalyticsService
         return params;
     }
 
+    @Override
+    public List<DimensionalObject> getDimensionalObjects( Set<String> dimensionParams, I18nFormat format )
+    {
+        List<DimensionalObject> list = new ArrayList<>();
+        
+        if ( dimensionParams != null )
+        {
+            for ( String param : dimensionParams )
+            {
+                String dimension = DimensionalObjectUtils.getDimensionFromParam( param );
+                List<String> options = DimensionalObjectUtils.getDimensionItemsFromParam( param );
+
+                if ( dimension != null && options != null )
+                {
+                    list.addAll( getDimension( dimension, options, null, format, false ) );
+                }
+            }
+        }
+        
+        return list;
+    }
+    
     // TODO verify that current user can read each dimension and dimension item
     // TODO optimize so that org unit levels + boundary are used in query instead of fetching all org units one by one
 
