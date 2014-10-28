@@ -14,6 +14,7 @@
 	"categoryCombo": "$!encoder.xmlEncode( ${dataElement.categoryCombo.name} )",
 	"url": "$!encoder.xmlEncode( ${dataElement.url} )",
 	"lastUpdated": "$!format.formatDate( ${dataElement.lastUpdated} )",
+	"approveData": "$!{dataElement.approveData}",
 	
 	#set( $size = ${dataElement.dataSets.size()} )
 	"dataSets": [

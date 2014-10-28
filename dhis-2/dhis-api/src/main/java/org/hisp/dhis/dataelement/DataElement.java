@@ -338,6 +338,24 @@ public class DataElement
 
         return dataSet != null ? dataSet.getPeriodType() : null;
     }
+    
+    /**
+     * Indicates whether this data element requires approval of data. Returns true
+     * if only one of the data sets associated with this data element requires
+     * approval.
+     */
+    public boolean isApproveData()
+    {
+        for ( DataSet dataSet : dataSets )
+        {
+            if ( dataSet != null && dataSet.isApproveData() )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     /**
      * Returns the frequency order for the PeriodType of this DataElement. If no

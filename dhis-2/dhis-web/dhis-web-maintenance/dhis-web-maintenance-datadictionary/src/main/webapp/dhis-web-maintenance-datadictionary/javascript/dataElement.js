@@ -116,6 +116,9 @@ function showDataElementDetails( context ) {
       var lastUpdated = json.dataElement.lastUpdated;
       setInnerHTML('lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']');
 
+      var approveData = json.dataElement.approveData;
+      setInnerHTML('approveDataField', approveData == "true" ? i18n_yes : i18n_no );
+      
       var dataSets = joinNameableObjects(json.dataElement.dataSets);
       setInnerHTML('dataSetsField', dataSets ? dataSets : '[' + i18n_none + ']');
 
