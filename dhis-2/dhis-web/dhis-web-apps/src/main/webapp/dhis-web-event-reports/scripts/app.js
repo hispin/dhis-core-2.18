@@ -483,7 +483,7 @@ Ext.onReady( function() {
                 });
 
                 this.searchStore = Ext.create('Ext.data.Store', {
-					fields: [idProperty, 'name'],
+					fields: [idProperty, nameProperty],
 					data: [],
 					loadOptionSet: function(optionSetId, key, pageSize) {
 						var store = this;
@@ -493,8 +493,31 @@ Ext.onReady( function() {
 
                         dhis2.er.store.get('optionSets', optionSetId).done( function(obj) {
                             if (Ext.isObject(obj) && Ext.isArray(obj.options) && obj.options.length) {
+                                var data = [];
+
+                                if (key) {
+                                    var re = new RegExp(key, 'gi');
+
+                                    for (var i = 0, name, match; i < obj.options.length; i++) {
+                                        name = obj.options[i].name;
+                                        match = name.match(re);
+
+                                        if (Ext.isArray(match) && match.length) {
+                                            data.push(obj.options[i]);
+
+                                            if (data.length === pageSize) {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                else {
+                                    data = obj.options;
+                                }
+
                                 store.removeAll();
-                                store.loadData(obj.options.slice(0, pageSize));
+                                store.loadData(data.slice(0, pageSize));
+
                             }
                         });
 					},
@@ -526,11 +549,10 @@ Ext.onReady( function() {
                     valueField: idProperty,
                     displayField: nameProperty,
                     hideTrigger: true,
-                    delimiter: '; ',
                     enableKeyEvents: true,
                     queryMode: 'local',
                     listConfig: {
-                        minWidth: 304
+                        minWidth: 346
                     },
                     store: this.searchStore,
                     listeners: {
@@ -603,6 +625,7 @@ Ext.onReady( function() {
                     store: container.valueStore,
                     queryMode: 'local',
                     listConfig: {
+                        minWidth: 266,
                         cls: 'optionselector'
                     },
                     setOptionValues: function(optionArray) {
