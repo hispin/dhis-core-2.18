@@ -6335,86 +6335,135 @@ Ext.onReady( function() {
 
 				map['aggregated_values'] = function() {
 					var xLayout,
+                        xResponse,
 						xColAxis,
 						xRowAxis,
 						table,
-						getHtml,
-						getXLayout = service.layout.getExtendedLayout,
-						getSXLayout = service.layout.getSyncronizedXLayout,
-						getXResponse = service.response.aggregate.getExtendedResponse,
-						getXAxis = service.layout.getExtendedAxis;
+						getSXLayout,
+						getXResponse,
+                        getTable;
 
+                    getTable = function() {
+                        var getHtml = function(xLayout, xResponse) {
+                            xColAxis = service.layout.getExtendedAxis(xLayout, 'col');
+                            xRowAxis = service.layout.getExtendedAxis(xLayout, 'row');
+
+                            return web.report.aggregate.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
+                        };
+
+                        table = getHtml(xLayout, xResponse);
+
+                        if (table.tdCount > 20000 || (layout.hideEmptyRows && table.tdCount > 10000)) {
+                            alert('Table has too many cells. Please reduce the table and try again.');
+                            web.mask.hide(ns.app.centerRegion);
+                            return;
+                        }
+
+                        if (layout.sorting) {
+                            xResponse = web.report.aggregate.sort(xLayout, xResponse, xColAxis);
+                            xLayout = service.layout.getSyncronizedXLayout(layout, xLayout, xResponse);
+                            table = getHtml(xLayout, xResponse);
+                        }
+
+                        web.mask.show(ns.app.centerRegion, 'Rendering table..');
+
+                        // timing
+                        ns.app.dateRender = new Date();
+
+                        ns.app.centerRegion.removeAll(true);
+                        ns.app.centerRegion.update(table.html);
+
+                        // timing
+                        ns.app.dateTotal = new Date();
+
+                        // after render
+                        ns.app.layout = layout;
+                        ns.app.xLayout = xLayout;
+                        ns.app.response = response;
+                        ns.app.xResponse = xResponse;
+                        ns.app.xColAxis = xColAxis;
+                        ns.app.xRowAxis = xRowAxis;
+                        ns.app.uuidDimUuidsMap = table.uuidDimUuidsMap;
+                        ns.app.uuidObjectMap = Ext.applyIf((xColAxis ? xColAxis.uuidObjectMap : {}), (xRowAxis ? xRowAxis.uuidObjectMap : {}));
+
+                        if (NS.isSessionStorage) {
+                            //web.events.setValueMouseHandlers(layout, response || xResponse, ns.app.uuidDimUuidsMap, ns.app.uuidObjectMap);
+                            web.events.setColumnHeaderMouseHandlers(layout, response, xResponse);
+                            web.storage.session.set(layout, 'eventtable');
+                        }
+
+                        ns.app.accordion.setGui(layout, xLayout, response, isUpdateGui, table);
+
+                        web.mask.hide(ns.app.centerRegion);
+
+                        if (NS.isDebug) {
+                            console.log("Number of cells", table.tdCount);
+                            console.log("DATA", (ns.app.dateCreate - ns.app.dateData) / 1000);
+                            console.log("CREATE", (ns.app.dateRender - ns.app.dateCreate) / 1000);
+                            console.log("RENDER", (ns.app.dateTotal - ns.app.dateRender) / 1000);
+                            console.log("TOTAL", (ns.app.dateTotal - ns.app.dateData) / 1000);
+                            console.log("layout", layout);
+                            console.log("response", response);
+                            console.log("xResponse", xResponse);
+                            console.log("xLayout", xLayout);
+                            console.log("core", ns.core);
+                            console.log("app", ns.app);
+                        }
+                    };
+
+                    getSXLayout = function() {
+                        xLayout = service.layout.getSyncronizedXLayout(layout, xLayout, xResponse);
+
+                        getTable();
+                    };
+
+                    getXResponse = function() {
+                        xLayout = service.layout.getExtendedLayout(layout);
+                        xResponse = service.response.aggregate.getExtendedResponse(xLayout, response);
+
+                        //get option sets
+                        var optionSetHeaders = [];
+
+                        for (var i = 0; i < xResponse.headers.length; i++) {
+                            if (Ext.isString(xResponse.headers[i].optionSet)) {
+                                optionSetHeaders.push(xResponse.headers[i]);
+                            }
+                        }
+
+                        if (optionSetHeaders.length) {
+                            var callbacks = 0,
+                                optionMap = {},
+                                fn;
+
+                            fn = function() {
+                                if (++callbacks === optionSetHeaders.length) {
+                                    //Ext.apply(xResponse.metaData.names, optionMap);
+                                    xResponse.metaData.optionNames = optionMap;
+                                    getSXLayout();
+                                }
+                            };
+
+                            // execute
+                            for (var i = 0, header; i < optionSetHeaders.length; i++) {
+                                header = optionSetHeaders[i];
+                                optionSetId = header.optionSet;
+                                dataElementId = header.name;
+
+                                dhis2.er.store.get('optionSets', optionSetId).done( function(obj) {
+                                    Ext.apply(optionMap, support.prototype.array.getObjectMap(obj.options, 'code', 'name', dataElementId));
+                                    fn();
+                                });
+                            }
+                        }
+                        else {
+                            getSXLayout();
+                        }
+                    };
+
+                    // execute
 					response = response || ns.app.response;
 
-					getHtml = function(xLayout, xResponse) {
-						xColAxis = getXAxis(xLayout, 'col');
-						xRowAxis = getXAxis(xLayout, 'row');
-
-						return web.report.aggregate.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
-					};
-
-					xLayout = getXLayout(layout);
-					xResponse = service.response.aggregate.getExtendedResponse(xLayout, response);
-					xLayout = getSXLayout(layout, xLayout, xResponse);
-
-					table = getHtml(xLayout, xResponse);
-
-                    if (table.tdCount > 20000 || (layout.hideEmptyRows && table.tdCount > 10000)) {
-                        alert('Table has too many cells. Please reduce the table and try again.');
-                        web.mask.hide(ns.app.centerRegion);
-                        return;
-                    }
-
-					if (layout.sorting) {
-						xResponse = web.report.aggregate.sort(xLayout, xResponse, xColAxis);
-						xLayout = getSXLayout(layout, xLayout, xResponse);
-						table = getHtml(xLayout, xResponse);
-					}
-
-                    web.mask.show(ns.app.centerRegion, 'Rendering table..');
-
-                    // timing
-                    ns.app.dateRender = new Date();
-
-					ns.app.centerRegion.removeAll(true);
-					ns.app.centerRegion.update(table.html);
-
-                    // timing
-                    ns.app.dateTotal = new Date();
-
-					// after render
-					ns.app.layout = layout;
-					ns.app.xLayout = xLayout;
-					ns.app.response = response;
-					ns.app.xResponse = xResponse;
-					ns.app.xColAxis = xColAxis;
-					ns.app.xRowAxis = xRowAxis;
-					ns.app.uuidDimUuidsMap = table.uuidDimUuidsMap;
-					ns.app.uuidObjectMap = Ext.applyIf((xColAxis ? xColAxis.uuidObjectMap : {}), (xRowAxis ? xRowAxis.uuidObjectMap : {}));
-
-					if (NS.isSessionStorage) {
-						//web.events.setValueMouseHandlers(layout, response || xResponse, ns.app.uuidDimUuidsMap, ns.app.uuidObjectMap);
-						web.events.setColumnHeaderMouseHandlers(layout, response, xResponse);
-						web.storage.session.set(layout, 'eventtable');
-					}
-
-					ns.app.accordion.setGui(layout, xLayout, response, isUpdateGui, table);
-
-					web.mask.hide(ns.app.centerRegion);
-
-					if (NS.isDebug) {
-                        console.log("Number of cells", table.tdCount);
-                        console.log("DATA", (ns.app.dateCreate - ns.app.dateData) / 1000);
-                        console.log("CREATE", (ns.app.dateRender - ns.app.dateCreate) / 1000);
-                        console.log("RENDER", (ns.app.dateTotal - ns.app.dateRender) / 1000);
-                        console.log("TOTAL", (ns.app.dateTotal - ns.app.dateData) / 1000);
-                        console.log("layout", layout);
-                        console.log("response", response);
-                        console.log("xResponse", xResponse);
-                        console.log("xLayout", xLayout);
-						console.log("core", ns.core);
-						console.log("app", ns.app);
-					}
+                    getXResponse();
 				};
 
 				map['individual_cases'] = function() {
@@ -7193,6 +7242,8 @@ Ext.onReady( function() {
 			}
 		};
 
+        init.optionSetStorage = {};
+
 		// requests
 		Ext.Ajax.request({
 			url: 'manifest.webapp',
@@ -7395,12 +7446,25 @@ Ext.onReady( function() {
                                                     url = '',
                                                     callbacks = 0,
                                                     checkOptionSet,
-                                                    updateStore;
+                                                    updateStore,
+                                                    createStorage;
+
+                                                createStorage = function() {
+                                                    store.getAll('optionSets').done( function(array) {
+                                                        for (var i = 0, optionSet; i < array.length; i++) {
+                                                            optionSet = array[i];
+
+                                                            init.optionSetStorage[optionSet.id] = optionSet;
+                                                        }
+
+                                                        fn();
+                                                    });
+                                                };
 
                                                 updateStore = function() {
                                                     if (++callbacks === optionSets.length) {
                                                         if (!ids.length) {
-                                                            fn();
+                                                            createStorage();
                                                             return;
                                                         }
 
@@ -7413,7 +7477,7 @@ Ext.onReady( function() {
                                                             success: function(r) {
                                                                 var sets = Ext.decode(r.responseText).optionSets;
 
-                                                                store.setAll('optionSets', sets).done(fn);
+                                                                store.setAll('optionSets', sets).done(createStorage);
                                                             }
                                                         });
                                                     }
