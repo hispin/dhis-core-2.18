@@ -6433,6 +6433,7 @@ Ext.onReady( function() {
                         if (optionSetHeaders.length) {
                             var callbacks = 0,
                                 optionMap = {},
+                                getOptions,
                                 fn;
 
                             fn = function() {
@@ -6443,16 +6444,20 @@ Ext.onReady( function() {
                                 }
                             };
 
-                            // execute
-                            for (var i = 0, header; i < optionSetHeaders.length; i++) {
-                                header = optionSetHeaders[i];
-                                optionSetId = header.optionSet;
-                                dataElementId = header.name;
-
+                            getOptions = function(optionSetId, dataElementId) {
                                 dhis2.er.store.get('optionSets', optionSetId).done( function(obj) {
                                     Ext.apply(optionMap, support.prototype.array.getObjectMap(obj.options, 'code', 'name', dataElementId));
                                     fn();
                                 });
+                            };
+
+                            // execute
+                            for (var i = 0, header, optionSetId, dataElementId; i < optionSetHeaders.length; i++) {
+                                header = optionSetHeaders[i];
+                                optionSetId = header.optionSet;
+                                dataElementId = header.name;
+
+                                getOptions(optionSetId, dataElementId);
                             }
                         }
                         else {
