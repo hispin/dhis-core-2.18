@@ -291,6 +291,8 @@ public class ContextUtils
      * based on the given set of dimension strings. Splits the strings using : as
      * separator. Returns null of dimensions are null or empty.
      * 
+     * TODO remove
+     * 
      * @param dimensions the set of strings on format dimension:dimension-option.
      * @return a map of dimensions and dimension options.
      */
