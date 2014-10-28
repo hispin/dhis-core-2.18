@@ -2967,6 +2967,7 @@ Ext.onReady( function() {
 				var dimensionHeaders = xResponse.dimensionHeaders,
 					rows = xResponse.rows,
                     names = xResponse.metaData.names,
+                    optionNames = xResponse.metaData.optionNames,
                     pager = xResponse.metaData.pager,
                     count = pager.page * pager.pageSize - pager.pageSize
 					tableCls = 'pivot',
@@ -3004,7 +3005,8 @@ Ext.onReady( function() {
 					for (var j = 0, str, header, name; j < dimensionHeaders.length; j++) {
 						header = dimensionHeaders[j];
 						str = row[header.index];
-                        str = names.hasOwnProperty(str) ? names[str] : str;
+                        //str = names.hasOwnProperty(str) ? names[str] : str;
+                        str = optionNames[header.name + str] || optionNames[str] || names[str] || str;
 						name = web.report.query.format(str);
 
 						//if (header.name === 'ouname' && layout.showHierarchy) {
