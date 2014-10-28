@@ -29,7 +29,7 @@ package org.hisp.dhis.datasetreport;
  */
 
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataset.DataSet;
@@ -55,7 +55,7 @@ public interface DataSetReportService
      * @param format the i18n format.
      * @return
      */
-    String getCustomDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions, boolean selectedUnitOnly, I18nFormat format );
+    String getCustomDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions, boolean selectedUnitOnly, I18nFormat format );
 
     /**
      * Generates a list of Grids based on the HTML code for a custom data set report.
@@ -68,7 +68,7 @@ public interface DataSetReportService
      * @param format the i18n format.
      * @return a list of Grids.
      */
-    List<Grid> getCustomDataSetReportAsGrid( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions,
+    List<Grid> getCustomDataSetReportAsGrid( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions,
         boolean selectedUnitOnly, I18nFormat format );
     
     /**
@@ -84,7 +84,7 @@ public interface DataSetReportService
      * @param i18n the i18n object.
      * @return a list of Grids.
      */
-    List<Grid> getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions,  boolean selectedUnitOnly, I18nFormat format, I18n i18n );
+    List<Grid> getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions, boolean selectedUnitOnly, I18nFormat format, I18n i18n );
     
     /**
      * Generates a list of Grids representing a data set report. The data elements
@@ -99,5 +99,5 @@ public interface DataSetReportService
      * @param i18n the i18n object.
      * @return a Grid.
      */
-    List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions, boolean selectedUnitOnly, I18nFormat format, I18n i18n );
+    List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions, boolean selectedUnitOnly, I18nFormat format, I18n i18n );
 }

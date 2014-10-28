@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 
 import org.hisp.dhis.common.Grid;
@@ -103,7 +104,7 @@ public class DefaultDataSetReportService
     // -------------------------------------------------------------------------
 
     @Override
-    public String getCustomDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions,
+    public String getCustomDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions,
         boolean selectedUnitOnly, I18nFormat format )
     {
         Map<String, Double> valueMap = dataSetReportStore.getAggregatedValues( dataSet, period, unit, dimensions, selectedUnitOnly );
@@ -116,7 +117,7 @@ public class DefaultDataSetReportService
     }
     
     @Override
-    public List<Grid> getCustomDataSetReportAsGrid( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions,
+    public List<Grid> getCustomDataSetReportAsGrid( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions,
         boolean selectedUnitOnly, I18nFormat format )
     {
         String html = getCustomDataSetReport( dataSet, period, unit, dimensions, selectedUnitOnly, format );
@@ -132,7 +133,7 @@ public class DefaultDataSetReportService
     }
 
     @Override
-    public List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions,
+    public List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions,
         boolean selectedUnitOnly, I18nFormat format, I18n i18n )
     {
         List<Section> sections = new ArrayList<>( dataSet.getSections() );
@@ -197,7 +198,7 @@ public class DefaultDataSetReportService
             for ( DataElement dataElement : dataElements )
             {
                 grid.addRow();
-                grid.addValue( new GridValue( dataElement.getFormName() ) ); // Data element name
+                grid.addValue( new GridValue( dataElement.getFormNameFallback() ) ); // Data element name
 
                 for ( DataElementCategoryOptionCombo optionCombo : optionCombos ) // Values
                 {
@@ -246,7 +247,7 @@ public class DefaultDataSetReportService
     }
 
     @Override
-    public List<Grid> getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Map<String, String> dimensions,
+    public List<Grid> getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions,
         boolean selectedUnitOnly, I18nFormat format, I18n i18n )
     {
         ListMap<DataElementCategoryCombo, DataElement> map = new ListMap<>();

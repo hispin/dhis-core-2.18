@@ -33,7 +33,6 @@ import static org.hisp.dhis.dataset.DataSet.TYPE_SECTION;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -257,8 +256,6 @@ public class GenerateDataSetReportAction
      
         selectedOrgunit = organisationUnitService.getOrganisationUnit( ou );
 
-        Map<String, String> dimensions = ContextUtils.getDimensionsAndOptions( dimension );
-        
         String dataSetType = selectedDataSet.getDataSetType();
 
         DataElementCategoryOptionCombo attributeOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
@@ -269,20 +266,20 @@ public class GenerateDataSetReportAction
         {
             if ( type != null )
             {
-                grids = dataSetReportService.getCustomDataSetReportAsGrid( selectedDataSet, selectedPeriod, selectedOrgunit, dimensions, selectedUnitOnly, format );
+                grids = dataSetReportService.getCustomDataSetReportAsGrid( selectedDataSet, selectedPeriod, selectedOrgunit, dimension, selectedUnitOnly, format );
             }
             else
             {
-                customDataEntryFormCode = dataSetReportService.getCustomDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, dimensions, selectedUnitOnly, format );
+                customDataEntryFormCode = dataSetReportService.getCustomDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, dimension, selectedUnitOnly, format );
             }
         }
         else if ( TYPE_SECTION.equals( dataSetType ) )
         {
-            grids = dataSetReportService.getSectionDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, dimensions, selectedUnitOnly, format, i18n );
+            grids = dataSetReportService.getSectionDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, dimension, selectedUnitOnly, format, i18n );
         }
         else
         {
-            grids = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, dimensions, selectedUnitOnly, format, i18n );
+            grids = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, dimension, selectedUnitOnly, format, i18n );
         }
         
         return type != null ? type : dataSetType;
