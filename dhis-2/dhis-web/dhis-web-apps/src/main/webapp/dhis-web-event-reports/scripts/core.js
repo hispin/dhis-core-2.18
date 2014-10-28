@@ -1754,6 +1754,7 @@ Ext.onReady( function() {
                 ouHierarchy = response.metaData.ouHierarchy,
                 names = response.metaData.names;
                 names[emptyId] = emptyId;
+                response.metaData.optionNames = {};
 
 				response.nameHeaderMap = {};
 				response.idValueMap = {};
