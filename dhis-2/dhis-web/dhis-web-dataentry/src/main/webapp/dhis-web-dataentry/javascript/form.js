@@ -2760,7 +2760,7 @@ dhis2.de.searchOptionSet = function( uid, query, success )
 {
     if ( window.DAO !== undefined && window.DAO.store !== undefined ) {
         DAO.store.get( 'optionSets', uid ).done( function ( obj ) {
-            if ( obj ) {
+            if ( obj && obj.optionSet ) {
                 var options = [];
 
                 if ( query == null || query == '' ) {
@@ -2838,14 +2838,14 @@ dhis2.de.loadOptionSets = function()
     _.each( options, function ( item, idx ) {
         if ( uids.indexOf( item.uid ) == -1 ) {
             DAO.store.get( 'optionSets', item.uid ).done( function( obj ) {
-                if( !obj || obj.optionSet.version !== item.v ) {
+                if( !obj || !obj.optionSet || !obj.optionSet.version || !item.v || obj.optionSet.version !== item.v ) {
                     promise = promise.then( function () {
                         return $.ajax( {
                             url: '../api/optionSets/' + item.uid + '.json?links=false',
                             type: 'GET',
                             cache: false
                         } ).done( function ( data ) {
-                          console.log( 'Successfully stored optionSet: ' + item.uid );
+                            console.log( 'Successfully stored optionSet: ' + item.uid );
 
                             var obj = {};
                             obj.id = item.uid;
