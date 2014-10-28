@@ -744,7 +744,7 @@ Ext.onReady( function() {
                 for (var i = 0, obj; i < array.length; i++) {
                     obj = array[i];
 
-                    o[namePrefix + obj[idProperty]] = obj[nameProperty] + " WORKS";
+                    o[namePrefix + obj[idProperty]] = obj[nameProperty];
                 }
 
                 return o;
@@ -971,7 +971,7 @@ Ext.onReady( function() {
 					return name;
 				}
 
-				name += metaData.names[id] || metaData.optionNames[id];
+				name += metaData.optionNames[id] || metaData.names[id];
 
 				return name;
 			};
@@ -1754,8 +1754,8 @@ Ext.onReady( function() {
                 ouHierarchy = response.metaData.ouHierarchy,
                 names = response.metaData.names;
                 names[emptyId] = emptyId;
-                response.metaData.optionNames = {};
 
+                response.metaData.optionNames = {};
 				response.nameHeaderMap = {};
 				response.idValueMap = {};
 
