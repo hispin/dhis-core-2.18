@@ -7446,25 +7446,12 @@ Ext.onReady( function() {
                                                     url = '',
                                                     callbacks = 0,
                                                     checkOptionSet,
-                                                    updateStore,
-                                                    createStorage;
-
-                                                createStorage = function() {
-                                                    store.getAll('optionSets').done( function(array) {
-                                                        for (var i = 0, optionSet; i < array.length; i++) {
-                                                            optionSet = array[i];
-
-                                                            init.optionSetStorage[optionSet.id] = optionSet;
-                                                        }
-
-                                                        fn();
-                                                    });
-                                                };
+                                                    updateStore;
 
                                                 updateStore = function() {
                                                     if (++callbacks === optionSets.length) {
                                                         if (!ids.length) {
-                                                            createStorage();
+                                                            fn();
                                                             return;
                                                         }
 
@@ -7477,7 +7464,7 @@ Ext.onReady( function() {
                                                             success: function(r) {
                                                                 var sets = Ext.decode(r.responseText).optionSets;
 
-                                                                store.setAll('optionSets', sets).done(createStorage);
+                                                                store.setAll('optionSets', sets).done(fn);
                                                             }
                                                         });
                                                     }
