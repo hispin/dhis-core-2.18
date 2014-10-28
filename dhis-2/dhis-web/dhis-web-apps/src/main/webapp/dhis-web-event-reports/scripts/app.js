@@ -6354,7 +6354,51 @@ Ext.onReady( function() {
 			};
 
 			web.report.createReport = function(layout, response, isUpdateGui) {
-				var map = {};
+				var map = {},
+                    getOptionSets;
+
+                getOptionSets = function(xResponse, callbackFn) {
+                    var optionSetHeaders = [];
+
+                    for (var i = 0; i < xResponse.headers.length; i++) {
+                        if (Ext.isString(xResponse.headers[i].optionSet)) {
+                            optionSetHeaders.push(xResponse.headers[i]);
+                        }
+                    }
+
+                    if (optionSetHeaders.length) {
+                        var callbacks = 0,
+                            optionMap = {},
+                            getOptions,
+                            fn;
+
+                        fn = function() {
+                            if (++callbacks === optionSetHeaders.length) {
+                                xResponse.metaData.optionNames = optionMap;
+                                callbackFn();
+                            }
+                        };
+
+                        getOptions = function(optionSetId, dataElementId) {
+                            dhis2.er.store.get('optionSets', optionSetId).done( function(obj) {
+                                Ext.apply(optionMap, support.prototype.array.getObjectMap(obj.options, 'code', 'name', dataElementId));
+                                fn();
+                            });
+                        };
+
+                        // execute
+                        for (var i = 0, header, optionSetId, dataElementId; i < optionSetHeaders.length; i++) {
+                            header = optionSetHeaders[i];
+                            optionSetId = header.optionSet;
+                            dataElementId = header.name;
+
+                            getOptions(optionSetId, dataElementId);
+                        }
+                    }
+                    else {
+                        callbackFn();
+                    }
+                };
 
 				map['aggregated_values'] = function() {
 					var xLayout,
@@ -6444,48 +6488,7 @@ Ext.onReady( function() {
                         xLayout = service.layout.getExtendedLayout(layout);
                         xResponse = service.response.aggregate.getExtendedResponse(xLayout, response);
 
-                        //get option sets
-                        var optionSetHeaders = [];
-
-                        for (var i = 0; i < xResponse.headers.length; i++) {
-                            if (Ext.isString(xResponse.headers[i].optionSet)) {
-                                optionSetHeaders.push(xResponse.headers[i]);
-                            }
-                        }
-
-                        if (optionSetHeaders.length) {
-                            var callbacks = 0,
-                                optionMap = {},
-                                getOptions,
-                                fn;
-
-                            fn = function() {
-                                if (++callbacks === optionSetHeaders.length) {
-                                    //Ext.apply(xResponse.metaData.names, optionMap);
-                                    xResponse.metaData.optionNames = optionMap;
-                                    getSXLayout();
-                                }
-                            };
-
-                            getOptions = function(optionSetId, dataElementId) {
-                                dhis2.er.store.get('optionSets', optionSetId).done( function(obj) {
-                                    Ext.apply(optionMap, support.prototype.array.getObjectMap(obj.options, 'code', 'name', dataElementId));
-                                    fn();
-                                });
-                            };
-
-                            // execute
-                            for (var i = 0, header, optionSetId, dataElementId; i < optionSetHeaders.length; i++) {
-                                header = optionSetHeaders[i];
-                                optionSetId = header.optionSet;
-                                dataElementId = header.name;
-
-                                getOptions(optionSetId, dataElementId);
-                            }
-                        }
-                        else {
-                            getSXLayout();
-                        }
+                        getOptionSets(xResponse, getSXLayout);
                     };
 
                     // execute
@@ -6495,29 +6498,38 @@ Ext.onReady( function() {
 				};
 
 				map['individual_cases'] = function() {
-					var xResponse = service.response.query.getExtendedResponse(layout, response),
+					var xResponse,
+                        getTable;
+
+                    getTable = function() {
                         table = web.report.query.getHtml(layout, xResponse);
 
-					//if (layout.sorting) {
-						//xResponse = web.report.query.sort(layout, xResponse);
-						//table = web.report.query.getHtml(layout, xResponse);
-					//}
+                        //if (layout.sorting) {
+                            //xResponse = web.report.query.sort(layout, xResponse);
+                            //table = web.report.query.getHtml(layout, xResponse);
+                        //}
 
-					ns.app.centerRegion.removeAll(true);
-					ns.app.centerRegion.update(table.html);
+                        ns.app.centerRegion.removeAll(true);
+                        ns.app.centerRegion.update(table.html);
 
-					// after render
-					ns.app.layout = layout;
-					ns.app.response = response;
-					ns.app.xResponse = xResponse;
+                        // after render
+                        ns.app.layout = layout;
+                        ns.app.response = response;
+                        ns.app.xResponse = xResponse;
 
-					if (NS.isSessionStorage) {
-						web.events.setColumnHeaderMouseHandlers(layout, response, xResponse);
-					}
+                        if (NS.isSessionStorage) {
+                            web.events.setColumnHeaderMouseHandlers(layout, response, xResponse);
+                        }
 
-					ns.app.accordion.setGui(layout, null, response, isUpdateGui, table);
+                        ns.app.accordion.setGui(layout, null, response, isUpdateGui, table);
 
-					web.mask.hide(ns.app.centerRegion);
+                        web.mask.hide(ns.app.centerRegion);
+                    };
+
+                    // execute
+                    xResponse = service.response.query.getExtendedResponse(layout, response);
+
+                    getOptionSets(xResponse, getTable);
 				};
 
 				map[layout.dataType]();
