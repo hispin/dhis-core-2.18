@@ -209,6 +209,10 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
             for (i = 1; i < nbBins; i++) {
                 bounds[i] = values[binLastValPos];
                 binLastValPos += binSize;
+
+                if (binLastValPos > values.length - 1) {
+                	binLastValPos = values.length - 1;
+                }
             }
             bounds.push(values[values.length - 1]);
         }
