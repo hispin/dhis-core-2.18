@@ -9059,7 +9059,8 @@ Ext.onReady( function() {
 		});
 
 		onRender = function(vp) {
-            document.getElementById('init').remove();
+            var initEl = document.getElementById('init');
+            initEl.parentNode.removeChild(initEl);
 
 			gis.olmap.mask = Ext.create('Ext.LoadMask', vp.getEl(), {
 				msg: 'Loading'
