@@ -45,7 +45,12 @@ public class GeoFeature
      * Identifier.
      */
     private String id;
-    
+
+    /**
+     * Code identifier.
+     */
+    private String code;
+
     /**
      * Name.
      */
@@ -113,6 +118,17 @@ public class GeoFeature
     public void setId( String id )
     {
         this.id = id;
+    }
+
+    @JsonProperty
+    public String getCode()
+    {
+        return code;
+    }
+
+    public void setCode( String code )
+    {
+        this.code = code;
     }
 
     @JsonProperty

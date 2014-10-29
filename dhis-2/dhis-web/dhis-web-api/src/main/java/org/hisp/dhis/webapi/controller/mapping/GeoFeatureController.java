@@ -122,6 +122,7 @@ public class GeoFeatureController
         {
             GeoFeature feature = new GeoFeature();
             feature.setId( unit.getUid() );
+            feature.setCode( unit.getCode() );
             feature.setHcd( unit.hasChildrenWithCoordinates() );
             feature.setHcu( unit.hasCoordinatesUp() );
             feature.setLe( unit.getLevel() );
