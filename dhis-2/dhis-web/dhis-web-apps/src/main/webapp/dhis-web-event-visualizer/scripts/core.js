@@ -10,6 +10,10 @@ Ext.onReady( function() {
         }
     });
 
+    Ext.isIE = function() {
+        return /trident/.test(Ext.userAgent);
+    }();
+
 	// namespace
 	EV = {};
 	var NS = EV;

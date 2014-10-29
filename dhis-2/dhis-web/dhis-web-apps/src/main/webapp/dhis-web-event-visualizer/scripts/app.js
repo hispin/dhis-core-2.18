@@ -6743,8 +6743,9 @@ Ext.onReady( function() {
 			listeners: {
 				render: function() {
 					ns.app.viewport = this;
-
-                    document.getElementById('init').remove();
+                    
+                    var initEl = document.getElementById('init');
+                    initEl.parentNode.removeChild(initEl);
 
 					ns.app.aggregateLayoutWindow = AggregateLayoutWindow();
 					ns.app.aggregateLayoutWindow.hide();

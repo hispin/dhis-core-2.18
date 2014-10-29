@@ -3,6 +3,10 @@ Ext.onReady( function() {
 	// ext config
 	Ext.Ajax.method = 'GET';
 
+    Ext.isIE = function() {
+        return /trident/.test(Ext.userAgent);
+    }();
+
 	// gis
 	GIS = {
 		core: {
