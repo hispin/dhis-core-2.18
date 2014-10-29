@@ -303,8 +303,8 @@ public class DefaultTrackedEntityFormService
 
 
         if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_PHONE_NUMBER ) )
-        {
-            inputHtml += " phoneNumber ";
+        {            
+            inputHtml += " phoneNumber value=\"" + value + "\"" + TAG_CLOSE;
         }
         else if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_TRUE_ONLY ) )
         {
