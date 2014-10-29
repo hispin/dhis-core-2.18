@@ -669,13 +669,12 @@ public class DefaultProgramDataEntryService
         {
             if ( entityInstanceDataValue.equalsIgnoreCase( "true" ) )
             {
-                inputHTML = inputHTML.replace( "<option value=\"true\">", "<option value=\"" + i18n.getString( "true" )
-                    + "\" selected>" );
+                inputHTML = inputHTML.replace( "<option value=\"true\">", "<option value=\"true\" selected>" );
             }
             else if ( entityInstanceDataValue.equalsIgnoreCase( "false" ) )
             {
                 inputHTML = inputHTML.replace( "<option value=\"false\">",
-                    "<option value=\"" + i18n.getString( "false" ) + "\" selected>" );
+                    "<option value=\"false\" selected>" );
             }
         }
 
