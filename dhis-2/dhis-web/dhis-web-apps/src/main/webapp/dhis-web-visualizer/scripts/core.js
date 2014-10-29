@@ -2881,17 +2881,20 @@ Ext.onReady( function() {
                     chart.setTitlePosition = function() {
                         if (this.items) {
                             var title = this.items[0],
-                                subTitle = this.items[1];
+                                subTitle = this.items[1],
+                                titleXFallback = 10;
 
                             if (title) {
-                                var titleX = (ns.app.centerRegion.getWidth() / 2) - (title.el.getWidth() / 2);
+                                var titleWidth = Ext.isIE ? title.el.dom.scrollWidth : title.el.getWidth(),
+                                    titleX = titleWidth ? (ns.app.centerRegion.getWidth() / 2) - (titleWidth / 2) : titleXFallback;
                                 title.setAttributes({
                                     x: titleX
                                 }, true);
                             }
 
                             if (subTitle) {
-                                var subTitleX = (ns.app.centerRegion.getWidth() / 2) - (subTitle.el.getWidth() / 2);
+                                var subTitleWidth = Ext.isIE ? subTitle.el.dom.scrollWidth : subTitle.el.getWidth(),
+                                    subTitleX = subTitleWidth ? (ns.app.centerRegion.getWidth() / 2) - (subTitleWidth / 2) : titleXFallback;
                                 subTitle.setAttributes({
                                     x: subTitleX
                                 }, true);
