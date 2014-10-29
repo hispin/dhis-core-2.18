@@ -8,6 +8,8 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
+import org.hisp.dhis.rbf.api.Lookup;
+import org.hisp.dhis.rbf.api.LookupService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -29,6 +31,9 @@ public class PartnerFormAction implements Action
     @Autowired
     private DataSetService dataSetService;
     
+    @Autowired
+    private LookupService lookupService;
+    
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -47,16 +52,15 @@ public class PartnerFormAction implements Action
         return options;
     }
     
-    
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
 
-
     public String execute() throws Exception
     {
+        Lookup partnerOptionSetLookup = lookupService.getLookupByName( Lookup.OPTION_SET_PARTNER );
         
-        OptionSet activitesOptionSet = optionService.getOptionSetByName( OPTION_SET_PARTNER );
+        OptionSet activitesOptionSet = optionService.getOptionSet( Integer.parseInt( partnerOptionSetLookup.getValue() ) );
         
         if( activitesOptionSet != null )
         {

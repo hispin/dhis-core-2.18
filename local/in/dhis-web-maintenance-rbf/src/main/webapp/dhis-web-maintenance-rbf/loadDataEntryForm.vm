@@ -90,6 +90,9 @@
     
 	<tr bgcolor="#CBDDEB">
 		<th style="width:35%;">$i18n.getString( "dataelement" )</th>
+		
+		<th style="width:35%;">$i18n.getString( "partner" )</th>
+		
 		<th style="text-align: center;width:15%;">$i18n.getString( "qty_reported" )</th>
 		
 		#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated") || $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") || $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfAdminDataEntry" ) )
@@ -118,8 +121,11 @@
         #end
 		<tr #if( $mark1 ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8" #end>
 			<td><label>$dataElement.getDisplayName()</label></td>
-			#set( $count = 0)
-				#set( $pbfDataValue = $!pbfDataValueMap.get( $dataElement ) )
+			
+			#set( $count = 0)						
+			#set( $pbfDataValue = $!pbfDataValueMap.get( $dataElement ) )
+
+            <td><label>$!pbfDataValue.getOption().getDisplayName()</label></td>				
 				
 				#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfAdminDataEntry" ) )
 					<td>

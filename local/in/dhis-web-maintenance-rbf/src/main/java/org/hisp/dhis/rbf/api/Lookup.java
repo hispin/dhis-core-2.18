@@ -26,6 +26,8 @@ public class Lookup extends BaseNameableObject implements Serializable
     public static final String ORGUNITID_BY_COMMA = "ORGUNITID_BY_COMMA";
     public static final String PERIODID_BY_COMMA = "PERIODID_BY_COMMA";
     
+    public static final String OPTION_SET_PARTNER = "OPTION_SET_PARTNER";
+    
     
     private String type;
     

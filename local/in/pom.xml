@@ -19,7 +19,7 @@
 	
 	<module>dhis-web-maintenance-rbf</module>
 	
-	<module>dhis-web-birtreports</module>
+	<!--<module>dhis-web-birtreports</module>-->
 	
 	<!--<module>dhis-web-maintenance-ccem</module>	
 	<module>dhis-web-coldchain</module>
