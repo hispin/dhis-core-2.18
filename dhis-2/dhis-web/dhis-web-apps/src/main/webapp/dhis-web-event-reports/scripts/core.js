@@ -754,7 +754,6 @@ Ext.onReady( function() {
                 return o;
             };
 
-
                 // object
 			support.prototype.object = {};
 
