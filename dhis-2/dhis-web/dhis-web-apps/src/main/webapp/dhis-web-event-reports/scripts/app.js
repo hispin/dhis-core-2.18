@@ -6408,9 +6408,9 @@ Ext.onReady( function() {
 						table,
 						getSXLayout,
 						getXResponse,
-                        getTable;
+                        getReport;
 
-                    getTable = function() {
+                    getReport = function() {
                         var getHtml = function(xLayout, xResponse) {
                             xColAxis = service.layout.getExtendedAxis(xLayout, 'col');
                             xRowAxis = service.layout.getExtendedAxis(xLayout, 'row');
@@ -6481,7 +6481,7 @@ Ext.onReady( function() {
                     getSXLayout = function() {
                         xLayout = service.layout.getSyncronizedXLayout(layout, xLayout, xResponse);
 
-                        getTable();
+                        getReport();
                     };
 
                     getXResponse = function() {
@@ -6499,9 +6499,9 @@ Ext.onReady( function() {
 
 				map['individual_cases'] = function() {
 					var xResponse,
-                        getTable;
+                        getReport;
 
-                    getTable = function() {
+                    getReport = function() {
                         table = web.report.query.getHtml(layout, xResponse);
 
                         //if (layout.sorting) {
@@ -6529,7 +6529,7 @@ Ext.onReady( function() {
                     // execute
                     xResponse = service.response.query.getExtendedResponse(layout, response);
 
-                    getOptionSets(xResponse, getTable);
+                    getOptionSets(xResponse, getReport);
 				};
 
 				map[layout.dataType]();
