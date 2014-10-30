@@ -292,7 +292,7 @@ public class DefaultCsvImportService
             {
                 OrganisationUnit object = new OrganisationUnit();
                 setIdentifiableObject( object, values );
-                String parentUid = getSafe( values, 3, null, 11 );
+                String parentUid = getSafe( values, 3, null, 230 ); // Could be UID, code, name
                 object.setShortName( getSafe( values, 4, object.getName(), 50 ) );
                 object.setDescription( getSafe( values, 5, null, null ) );
                 object.setUuid( getSafe( values, 6, null, 36 ) );
@@ -312,6 +312,9 @@ public class DefaultCsvImportService
                 {
                     OrganisationUnit parent = new OrganisationUnit();
                     parent.setUid( parentUid );
+                    parent.setCode( parentUid );
+                    parent.setName( parentUid );
+                    
                     object.setParent( parent );
                 }
 
