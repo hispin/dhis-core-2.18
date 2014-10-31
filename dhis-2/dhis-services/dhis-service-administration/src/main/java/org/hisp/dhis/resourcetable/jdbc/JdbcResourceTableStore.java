@@ -523,16 +523,21 @@ public class JdbcResourceTableStore
             // Do nothing, table does not exist
         }
         
-        final String create = "CREATE TABLE " + TABLE_NAME_DATA_ELEMENT_CATEGORY_OPTION_COMBO + 
-            " (dataelementuid VARCHAR(11) NOT NULL, categoryoptioncombouid VARCHAR(11) NOT NULL)";
+        final String create = "CREATE TABLE " + TABLE_NAME_DATA_ELEMENT_CATEGORY_OPTION_COMBO + " (" +
+            "dataelementid INTEGER NOT NULL, " +
+            "dataelementuid VARCHAR(11) NOT NULL, " +
+            "categoryoptioncomboid INTEGER NOT NULL, " +
+            "categoryoptioncombouid VARCHAR(11) NOT NULL)";
         
         jdbcTemplate.execute( create );
         
         log.info( "Create data element category option combo SQL: " + create );
         
         final String sql = 
-            "insert into " + TABLE_NAME_DATA_ELEMENT_CATEGORY_OPTION_COMBO + " (dataelementuid, categoryoptioncombouid) " +
-            "select de.uid as dataelementuid, coc.uid as categoryoptioncombouid " +
+            "insert into " + TABLE_NAME_DATA_ELEMENT_CATEGORY_OPTION_COMBO + 
+            " (dataelementid, dataelementuid, categoryoptioncomboid, categoryoptioncombouid) " +
+            "select de.dataelementid as dataelementid, de.uid as dataelementuid, " +
+            "coc.categoryoptioncomboid as categoryoptioncomboid, coc.uid as categoryoptioncombouid " +
             "from dataelement de " +
             "join categorycombos_optioncombos cc on de.categorycomboid = cc.categorycomboid " +
             "join categoryoptioncombo coc on cc.categoryoptioncomboid = coc.categoryoptioncomboid";
