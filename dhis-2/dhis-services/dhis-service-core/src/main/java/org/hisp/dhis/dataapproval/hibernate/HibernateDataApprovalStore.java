@@ -28,6 +28,15 @@ package org.hisp.dhis.dataapproval.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataapproval.DataApprovalState.ACCEPTED_HERE;
+import static org.hisp.dhis.dataapproval.DataApprovalState.APPROVED_ELSEWHERE;
+import static org.hisp.dhis.dataapproval.DataApprovalState.APPROVED_HERE;
+import static org.hisp.dhis.dataapproval.DataApprovalState.UNAPPROVED_READY;
+import static org.hisp.dhis.dataapproval.DataApprovalState.UNAPPROVED_WAITING;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -63,17 +72,11 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-
-import static org.hisp.dhis.dataapproval.DataApprovalState.*;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL;
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
-import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 /**
  * @author Jim Grace
@@ -111,13 +114,6 @@ public class HibernateDataApprovalStore
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
-    }
-
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -363,40 +359,5 @@ public class HibernateDataApprovalStore
         }
 
         return statusList;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Set<OrganisationUnit> getUserOrgsAtLevel( int desiredLevel )
-    {
-        Set<OrganisationUnit> orgUnits = new HashSet<>();
-
-        for ( OrganisationUnit orgUnit : currentUserService.getCurrentUser().getOrganisationUnits() )
-        {
-            orgUnits.addAll( getOrgsAtLevel( orgUnit, desiredLevel, organisationUnitService.getLevelOfOrganisationUnit( orgUnit ) ) );
-        }
-
-        return orgUnits;
-    }
-
-    private Set<OrganisationUnit> getOrgsAtLevel( OrganisationUnit orgUnit, int desiredLevel, int thisLevel )
-    {
-        Set<OrganisationUnit> orgUnits = new HashSet<>();
-
-        if ( thisLevel < desiredLevel )
-        {
-            for ( OrganisationUnit child : orgUnit.getChildren() )
-            {
-                orgUnits.addAll( getOrgsAtLevel( child, desiredLevel, thisLevel + 1 ) );
-            }
-        }
-        else if ( thisLevel == desiredLevel )
-        {
-            orgUnits.add( orgUnit );
-        }
-
-        return orgUnits;
     }
 }
