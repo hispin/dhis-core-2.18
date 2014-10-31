@@ -157,7 +157,24 @@ public class DataApprovalLevel
         
         return true;
     }
-    
+
+    // -------------------------------------------------------------------------
+    // toString
+    // -------------------------------------------------------------------------
+
+    @Override
+    public String toString()
+    {
+        return "DataApprovalLevel{" +
+                "name=" + name +
+                ", level=" + level +
+                ", orgUnitLevel=" + orgUnitLevel +
+                ", categoryOptionGroupSet='" + ( categoryOptionGroupSet == null ? "(null)" : categoryOptionGroupSet.getName() ) + "'" +
+                ", created=" + created +
+                ", lastUpdated=" + lastUpdated +
+                '}';
+    }
+
     // -------------------------------------------------------------------------
     // Getters and Setters
     // -------------------------------------------------------------------------

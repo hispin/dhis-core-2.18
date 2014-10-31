@@ -131,7 +131,7 @@ public interface DataApprovalLevelService
      * @return a list of org unit levels.
      */
     Set<OrganisationUnitLevel> getOrganisationUnitApprovalLevels();
-    
+
     /**
      * Tells whether a level can move down in the list (can switch places with
      * the level below.)
