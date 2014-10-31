@@ -86,6 +86,9 @@ public class HibernateDbmsManager
         emptyTable( "datavalueaudit" );
         emptyTable( "datavalue" );
         emptyTable( "completedatasetregistration" );
+        
+        emptyTable( "dataapproval" );
+        emptyTable( "dataapprovallevel" );
 
         emptyTable( "reporttable_categorydimensions" );
         emptyTable( "reporttable_categoryoptiongroups" );
