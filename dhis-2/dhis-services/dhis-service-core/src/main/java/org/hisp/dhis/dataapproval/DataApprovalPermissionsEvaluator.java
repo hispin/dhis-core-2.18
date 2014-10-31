@@ -1,8 +1,12 @@
 package org.hisp.dhis.dataapproval;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS;
@@ -30,6 +34,8 @@ class DataApprovalPermissionsEvaluator
     private boolean authorizedToApproveAtLowerLevels;
     private boolean authorizedToAcceptAtLowerLevels;
     private boolean authorizedToViewUnapprovedData;
+
+    private Map<OrganisationUnit, DataApprovalLevel> userOrgUnitApprovalLevelsCache = new HashMap<>();
 
     int maxApprovalLevel;
 
@@ -79,71 +85,76 @@ class DataApprovalPermissionsEvaluator
      * <p>
      * If there is a data permissions state, also takes this into account.
      *
-     * @param da the data approval object to evaluate
      * @param status the data approval status (if any)
      * @return the data approval permissions for the object
      */
-    DataApprovalPermissions getPermissions( DataApproval da, DataApprovalStatus status )
+    DataApprovalPermissions getPermissions( DataApprovalStatus status )
     {
+        DataApproval da = status.getDataApproval();
+
+        DataApprovalState s = status.getState();
+
         DataApprovalPermissions permissions = new DataApprovalPermissions();
 
-        if ( da == null || da.getOrganisationUnit() == null )
-        {
-            return permissions; // No approval object or no org unit -> no permissions.
-        }
-
-        DataApprovalLevel userApprovalLevel = dataApprovalLevelService.getUserApprovalLevel( user, da.getOrganisationUnit(), false );
+        DataApprovalLevel userApprovalLevel = getUserOrgUnitApprovalLevel( da.getOrganisationUnit() );
 
         if ( userApprovalLevel == null )
         {
-            return permissions; // Can't find user approval level, so no permissions are true.
+            return permissions; // Can't find user approval level, so no permissions are set.
         }
 
-        boolean isApproved = ( da.getDataApprovalLevel() != null );
         int userLevel = userApprovalLevel.getLevel();
-        int dataLevel = ( isApproved ? da.getDataApprovalLevel().getLevel() : maxApprovalLevel );
-        boolean isApprovable = true; // Unless the state tells us otherwise
-        boolean isAccepted = da.isAccepted();
 
-        if ( status != null && status.getState() != null )
-        {
-            DataApprovalState state = status.getState();
+        int dataLevel = ( s.isApproved() ? da.getDataApprovalLevel().getLevel() : maxApprovalLevel );
 
-            isApproved = state.isApproved() && state.isUnapprovable(); // Maybe approved, but not here.
-            isApprovable = state.isApprovable();
-            isAccepted = state.isAccepted();
-        }
-
-        boolean mayApproveOrUnapprove = ( authorizedToApprove && userLevel == dataLevel && !da.isAccepted() ) ||
+        boolean mayApproveOrUnapproveAtLevel = ( authorizedToApprove && userLevel == dataLevel && !da.isAccepted() ) ||
                         ( authorizedToApproveAtLowerLevels && userLevel < dataLevel );
 
-        boolean mayApproveFromLowerLevel = ( userLevel + 1 == dataLevel && isApproved ) && acceptanceRequiredForApproval;
-
-        boolean mayApprove = isApprovable && ( !isApproved || userLevel < dataLevel )
-                && ( mayApproveOrUnapprove || mayApproveFromLowerLevel );
-
-        boolean mayAcceptOrUnaccept = authorizedToAcceptAtLowerLevels && isApproved &&
+        boolean mayAcceptOrUnacceptAtLevel = authorizedToAcceptAtLowerLevels &&
                 ( userLevel == dataLevel - 1 || ( userLevel < dataLevel && authorizedToApproveAtLowerLevels ) );
 
-        boolean mayUnapprove = isApproved && ( ( mayApproveOrUnapprove && !da.isAccepted() ) || mayAcceptOrUnaccept );
+        boolean mayApprove = s.isApprovable() && mayApproveOrUnapproveAtLevel;
+
+        boolean mayUnapprove = s.isUnapprovable() && ( ( mayApproveOrUnapproveAtLevel && !da.isAccepted() ) || mayAcceptOrUnacceptAtLevel );
+
+        boolean mayAccept = s.isAcceptable() && mayAcceptOrUnacceptAtLevel;
+
+        boolean mayUnaccept = s.isUnacceptable() && mayAcceptOrUnacceptAtLevel;
 
         boolean mayReadData = authorizedToViewUnapprovedData || !hideUnapprovedData || mayApprove
                 || userLevel >= dataLevel;
 
         tracePrint( "getPermissions orgUnit " + ( da.getOrganisationUnit() == null ? "(null)" : da.getOrganisationUnit().getName() )
-                + " combo " + da.getAttributeOptionCombo().getName()
-                + " state " + ( status == null || status.getState() == null ? "(null)" : status.getState().name() )
-                + " isApproved " + isApproved + " isAccepted " + isAccepted + " userLevel " + userLevel + " dataLevel " + dataLevel
-                + " mayApproveOrUnapprove " + mayApproveOrUnapprove + " mayApprove " + mayApprove + " mayUnapprove " + mayUnapprove
-                + " mayAcceptOrUnaccept " + mayAcceptOrUnaccept + " mayReadData " + mayReadData );
+                + " combo " + da.getAttributeOptionCombo().getName() + " state " + s.name()
+                + " isApproved " + s.isApproved()+ " isApprovable " + s.isApprovable()+ " isUnapprovable " + s.isUnapprovable()
+                + " isAccepted " + s.isAccepted() + " isAcceptable " + s.isAcceptable() + " isUnacceptable " + s.isUnacceptable()
+                + " userLevel " + userLevel + " dataLevel " + dataLevel
+                + " mayApproveOrUnapproveAtLevel " + mayApproveOrUnapproveAtLevel + " mayAcceptOrUnacceptAtLevel " + mayAcceptOrUnacceptAtLevel
+                + " mayApprove " + mayApprove + " mayUnapprove " + mayUnapprove
+                + " mayAccept " + mayAccept + " mayUnaccept " + mayUnaccept
+                + " mayReadData " + mayReadData );
 
         permissions.setMayApprove( mayApprove );
         permissions.setMayUnapprove( mayUnapprove );
-        permissions.setMayAccept( mayAcceptOrUnaccept && !isAccepted );
-        permissions.setMayUnaccept( mayAcceptOrUnaccept && isAccepted );
+        permissions.setMayAccept( mayAccept );
+        permissions.setMayUnaccept( mayUnaccept );
         permissions.setMayReadData( mayReadData );
 
         return permissions;
+    }
+
+    private DataApprovalLevel getUserOrgUnitApprovalLevel( OrganisationUnit orgUnit )
+    {
+        DataApprovalLevel level = userOrgUnitApprovalLevelsCache.get( orgUnit );
+
+        if ( level == null )
+        {
+            level = dataApprovalLevelService.getUserApprovalLevel( user, orgUnit, false );
+
+            userOrgUnitApprovalLevelsCache.put( orgUnit, level );
+        }
+
+        return level;
     }
 
     private static void tracePrint( String s )
