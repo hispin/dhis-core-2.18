@@ -33,10 +33,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class DataApprovalDeletionHandler
-        extends DeletionHandler
+    extends DeletionHandler
 {
     // -------------------------------------------------------------------------
     // Dependencies
