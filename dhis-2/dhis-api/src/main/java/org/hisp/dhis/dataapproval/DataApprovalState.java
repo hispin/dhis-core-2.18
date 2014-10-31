@@ -48,8 +48,8 @@ public enum DataApprovalState
      * At least some data within the selection is unapproved and waiting for
      * approval at a higher organisation unit level (not approvable here.)
      */
-    UNAPPROVED_ELSEWHERE ( /* approved */ false, /* approvable */ false, /* unapprovable */ false,
-                           /* accepted */ false, /* acceptable */ false, /* unacceptable */ false ),
+    UNAPPROVED_ABOVE ( /* approved */ false, /* approvable */ false, /* unapprovable */ false,
+                       /* accepted */ false, /* acceptable */ false, /* unacceptable */ false ),
 
     /**
      * At least some data within the selection is unapproved and waiting for
@@ -63,57 +63,18 @@ public enum DataApprovalState
      */
     UNAPPROVED_READY ( /* approved */ false, /* approvable */ true, /* unapprovable */ false,
                        /* accepted */ false, /* acceptable */ false, /* unacceptable */ false ),
-
-    /**
-     * Some data within the selection is approved elsewhere and some are not
-     * approved elsewhere (at a higher organisation unit level
-     * -- not approvable here.)
-     */
-    PARTIALLY_APPROVED_ELSEWHERE ( /* approved */ false, /* approvable */ false, /* unapprovable */ false,
-                                   /* accepted */ false, /* acceptable */ false, /* unacceptable */ false ),
-
-    /**
-     * Some data within the selection is approved here and some is ready for
-     * approval here. Data may be either approved or unapproved.
-     */
-    PARTIALLY_APPROVED_HERE( /* approved */ false, /* approvable */ true, /* unapprovable */ true,
-                             /* accepted */ false, /* acceptable */ false, /* unacceptable */ false ),
-
     /**
      * Data is approved, but at a higher organisation unit level
      * (so cannot be unapproved here.)
      */
-    APPROVED_ELSEWHERE( /* approved */ true, /* approvable */ false, /* unapprovable */ false,
-                        /* accepted */ false, /* acceptable */ false, /* unacceptable */ false ),
+    APPROVED_ABOVE ( /* approved */ true, /* approvable */ false, /* unapprovable */ false,
+                     /* accepted */ false, /* acceptable */ false, /* unacceptable */ false ),
 
     /**
      * Data is approved, and was approved here (so could be unapproved here.)
      */
     APPROVED_HERE ( /* approved */ true, /* approvable */ false, /* unapprovable */ true,
                     /* accepted */ false, /* acceptable */ true, /* unacceptable */ false ),
-
-    /**
-     * Some periods within this multi-period selection are accepted elsewhere
-     * and some are approved elsewhere (at a higher organisation unit level --
-     * not approvable here.)
-     */
-    PARTIALLY_ACCEPTED_ELSEWHERE ( /* approved */ true, /* approvable */ false, /* unapprovable */ false,
-                                   /* accepted */ false, /* acceptable */ false, /* unacceptable */ false ),
-
-    /**
-     * Some data within the selection is accepted here and some are only
-     * approved here (but could be accepted.) Data may either be accepted
-     * or unaccepted.
-     */
-    PARTIALLY_ACCEPTED_HERE( /* approved */ true, /* approvable */ false, /* unapprovable */ true,
-                             /* accepted */ false, /* acceptable */ true, /* unacceptable */ true ),
-
-    /**
-     * Data is approved and accepted, but at a higher organisation unit level --
-     * not approvable here.
-     */
-    ACCEPTED_ELSEWHERE ( /* approved */ true, /* approvable */ false, /* unapprovable */ false,
-                         /* accepted */ true, /* acceptable */ false, /* unacceptable */ false ),
 
     /**
      * Data is approved and accepted here (so could be unapproved here.)

@@ -87,13 +87,14 @@ public interface DataApprovalStore
 
     /**
      * Returns a list of data approval results and corresponding states for a
-     * given organisation unit, for all the category option combos that the
-     * user is allowed to see.
+     * given organisation unit, either restricted to one attribute option combo
+     * or for all the category option combos that the user is allowed to see.
      *
      * @param orgUnit Organisation unit to look for
      * @param dataSets Data sets to look within
      * @param period Period to look within
-     * @return data approval objects for the user to see
+     * @param attributeOptionCombo (optional) attribute option combo to fetch
+     * @return data approval status objects
      */
-    List<DataApprovalStatus> getUserDataApprovals( OrganisationUnit orgUnit, Set<DataSet> dataSets, Period period);
+    List<DataApprovalStatus> getDataApprovals( OrganisationUnit orgUnit, Set<DataSet> dataSets, Period period, DataElementCategoryOptionCombo attributeOptionCombo );
 }
