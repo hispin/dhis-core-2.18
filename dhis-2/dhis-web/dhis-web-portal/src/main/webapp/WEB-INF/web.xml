@@ -24,14 +24,6 @@
     </init-param>
   </filter>
   <filter>
-    <filter-name>HttpMaxCacheFilter</filter-name>
-    <filter-class>org.hisp.dhis.servlet.filter.HttpMaxCacheFilter</filter-class>
-    <init-param>
-      <param-name>regex</param-name>
-      <param-value>(\.js|\.css|\.gif|\.woff|\.ttf|\.eot|\.ico|(/dhis-web-commons/|/images/|/icons/).*\.png)$</param-value>
-    </init-param>
-  </filter>
-  <filter>
     <filter-name>shallowEtagHeaderFilter</filter-name>
     <filter-class>org.springframework.web.filter.ShallowEtagHeaderFilter</filter-class>
   </filter>
@@ -71,10 +63,6 @@
   <filter-mapping>
     <filter-name>RedirectFilter</filter-name>
     <url-pattern>/</url-pattern>
-  </filter-mapping>
-  <filter-mapping>
-    <filter-name>HttpMaxCacheFilter</filter-name>
-    <url-pattern>/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>OpenSessionInViewFilter</filter-name>
