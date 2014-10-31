@@ -66,7 +66,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -692,6 +691,7 @@ public class DataApprovalController
     {
         List<DataSet> dataSets = objectManager.getByUid( DataSet.class, approvals.getDs() );
         List<Period> periods = PeriodType.getPeriodsFromIsoStrings( approvals.getPe() );
+        periods = periodService.reloadPeriods( periods );
 
         User user = currentUserService.getCurrentUser();
         Date date = new Date();
