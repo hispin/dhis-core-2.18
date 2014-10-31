@@ -44,6 +44,23 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.joda.time.DateTime;
 
 /**
+ * Filter which adds max expiry cache headers to responses. Can be configured in
+ * web.xml with:
+ * 
+ * <filter>
+ *   <filter-name>HttpMaxCacheFilter</filter-name>
+ *   <filter-class>org.hisp.dhis.servlet.filter.HttpMaxCacheFilter</filter-class>
+ *   <init-param>
+ *     <param-name>regex</param-name>
+ *     <param-value>(\.js|\.css|\.gif|\.woff|\.ttf|\.eot|\.ico|(/dhis-web-commons/|/images/|/icons/).*\.png)$</param-value>
+ *   </init-param>
+ * </filter>
+ *  
+ * <filter-mapping>
+ *   <filter-name>HttpMaxCacheFilter</filter-name>
+ *   <url-pattern>/*</url-pattern>
+ * </filter-mapping>
+ * 
  * @author Lars Helge Overland
  */
 public class HttpMaxCacheFilter
