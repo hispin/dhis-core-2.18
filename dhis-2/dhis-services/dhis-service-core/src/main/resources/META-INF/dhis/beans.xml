@@ -75,7 +75,6 @@
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
