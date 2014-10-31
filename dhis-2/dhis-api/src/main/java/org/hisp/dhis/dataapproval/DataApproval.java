@@ -239,7 +239,7 @@ public class DataApproval
     }
 
     // ----------------------------------------------------------------------
-    // hashCode and equals
+    // hashCode, equals, toString
     // ----------------------------------------------------------------------
 
     @Override
@@ -256,6 +256,22 @@ public class DataApproval
         result = prime * result + ((attributeOptionCombo == null) ? 0 : attributeOptionCombo.hashCode());
 
         return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "DataApproval{" +
+                "id=" + id +
+                ", dataApprovalLevel=" + ( dataApprovalLevel == null ? "(null)" : dataApprovalLevel.getLevel() ) +
+                ", dataSet='" + ( dataSet == null ? "(null)" : dataSet.getName() ) + "'" +
+                ", period=" + ( period == null ? "(null)" : period.getName() ) +
+                ", organisationUnit='" + ( organisationUnit == null ? "(null)" : organisationUnit.getName() ) + "'" +
+                ", attributeOptionCombo='" + ( attributeOptionCombo == null ? "(null)" : attributeOptionCombo.getName() ) + "'" +
+                ", accepted=" + accepted +
+                ", created=" + created +
+                ", creator=" + ( dataApprovalLevel == null ? "(null)" : dataApprovalLevel.getName() ) +
+                '}';
     }
 
     @Override

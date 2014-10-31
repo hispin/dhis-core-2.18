@@ -79,6 +79,7 @@
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 
   <bean id="org.hisp.dhis.dataapproval.DataApprovalLevelStore" class="org.hisp.dhis.dataapproval.hibernate.HibernateDataApprovalLevelStore">

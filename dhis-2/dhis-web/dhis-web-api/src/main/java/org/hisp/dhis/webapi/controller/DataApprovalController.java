@@ -268,7 +268,7 @@ public class DataApprovalController
             return;
         }
         
-        List<DataApprovalStatus> statusList = dataApprovalService.getUserDataApprovalsAndPermissions( dataSets, CollectionUtils.asSet( period ) );
+        List<DataApprovalStatus> statusList = dataApprovalService.getUserDataApprovalsAndPermissions( dataSets, period, null );
 
         List<Map<String, Object>> list = new ArrayList<>();
 
