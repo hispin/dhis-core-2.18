@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -57,6 +58,9 @@ import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 
 
 /**
@@ -438,6 +442,17 @@ public class DefaultDataApprovalService
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    private Map<String, DataApproval> getIndexedMap( List<DataApproval> dataApprovalList )
+    {
+        return Maps.uniqueIndex( dataApprovalList, new Function<DataApproval, String>()
+        {
+            public String apply( DataApproval approval )
+            {
+                return approval != null ? approval.getOrganisationUnit().getId() + "-" + approval.getPeriod().getId() : null;
+            }
+        } );
+    }
+    
     private void tracePrint( String s ) // Temporary, for development
     {
 //        System.out.println( s );
