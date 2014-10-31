@@ -271,7 +271,8 @@ public class JdbcAnalyticsManager
     
     /**
      * Generates the from clause of the SQL query. This method should be used for
-     * queries where the period filter spans multiple partitions.
+     * queries where the period filter spans multiple partitions. This query
+     * will return a result set which will be aggregated by the outer query.
      */
     private String getFromWhereClauseMultiplePartitionFilters( DataQueryParams params )
     {
@@ -280,8 +281,12 @@ public class JdbcAnalyticsManager
         for ( String partition : params.getPartitions().getPartitions() )
         {
             sql += "select " + getCommaDelimitedQuotedColumns( params.getQueryDimensions() ) + ", ";
-            
-            if ( params.isAggregationType( AVERAGE_SUM_INT ) )
+
+            if ( params.isDataType( TEXT ) )
+            {
+                sql += "textvalue";
+            }
+            else if ( params.isAggregationType( AVERAGE_SUM_INT ) )
             {
                 sql += "daysxvalue";
             }
