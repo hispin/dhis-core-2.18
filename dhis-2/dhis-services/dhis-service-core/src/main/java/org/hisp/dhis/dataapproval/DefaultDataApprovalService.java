@@ -114,7 +114,7 @@ public class DefaultDataApprovalService
     @Override
     public void approveData( List<DataApproval> dataApprovalList )
     {
-        log.info( "------------ approveData ( " + dataApprovalList.size() + " items )" );
+        log.info( "- approveData ( " + dataApprovalList.size() + " items )" );
 
         Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( dataApprovalList );
 
@@ -137,7 +137,7 @@ public class DefaultDataApprovalService
 
         for ( DataApproval da : dataApprovalList )
         {
-            log.info("--> approving " + da );
+            log.info("-> approving " + da );
 
             dataApprovalStore.addDataApproval( da );
         }
@@ -148,7 +148,7 @@ public class DefaultDataApprovalService
     @Override
     public void unapproveData( List<DataApproval> dataApprovalList )
     {
-        log.debug( "------------ unapproveData ( " + dataApprovalList.size() + " items )" );
+        log.debug( "- unapproveData ( " + dataApprovalList.size() + " items )" );
 
         Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( dataApprovalList );
 
@@ -173,7 +173,7 @@ public class DefaultDataApprovalService
 
         for ( DataApproval da : dataApprovalList )
         {
-            log.debug( "--> unapproving " + da );
+            log.debug( "- unapproving " + da );
 
             DataApproval d = dataApprovalStore.getDataApproval( da.getDataApprovalLevel(), da.getDataSet(), da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo() );
 
@@ -186,7 +186,7 @@ public class DefaultDataApprovalService
     @Override
     public void acceptData( List<DataApproval> dataApprovalList )
     {
-        log.debug( "------------ acceptData ( " + dataApprovalList.size() + " items )" );
+        log.debug( "- acceptData ( " + dataApprovalList.size() + " items )" );
 
         Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( dataApprovalList );
 
@@ -213,7 +213,7 @@ public class DefaultDataApprovalService
         {
             da.setAccepted( true );
 
-            log.debug( "--> accepting " + da );
+            log.debug( "- accepting " + da );
 
             DataApproval d = dataApprovalStore.getDataApproval( da.getDataApprovalLevel(), da.getDataSet(), da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo() );
 
@@ -228,7 +228,7 @@ public class DefaultDataApprovalService
     @Override
     public void unacceptData( List<DataApproval> dataApprovalList )
     {
-        log.debug( "------------ unacceptData ( " + dataApprovalList.size() + " items )" );
+        log.debug( "- unacceptData ( " + dataApprovalList.size() + " items )" );
 
         Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( dataApprovalList );
 
@@ -253,7 +253,7 @@ public class DefaultDataApprovalService
 
         for ( DataApproval da : dataApprovalList )
         {
-            log.debug( "--> unaccepting " + da );
+            log.debug( "- unaccepting " + da );
 
             DataApproval d = dataApprovalStore.getDataApproval( da.getDataApprovalLevel(), da.getDataSet(), da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo() );
 
@@ -268,7 +268,7 @@ public class DefaultDataApprovalService
     @Override
     public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        log.debug( "------------ getDataApprovalStatus( " + dataSet.getName() + ", "
+        log.debug( "- getDataApprovalStatus( " + dataSet.getName() + ", "
                 + period.getPeriodType().getName() + " " + period.getName() + " " + period + ", "
                 + organisationUnit.getName() + ", "
                 + ( attributeOptionCombo == null ? "(null)" : attributeOptionCombo.getName() ) + " )" );
