@@ -236,29 +236,6 @@ public abstract class AbstractJdbcTableManager
     }
 
     @Override
-    @Async
-    public Future<?> vacuumTablesAsync( ConcurrentLinkedQueue<AnalyticsTable> tables )
-    {
-        taskLoop : while ( true )
-        {
-            AnalyticsTable table = tables.poll();
-            
-            if ( table == null )
-            {
-                break taskLoop;
-            }
-            
-            final String sql = statementBuilder.getVacuum( table.getTempTableName() );
-            
-            log.info( "Vacuum SQL: " + sql );
-            
-            jdbcTemplate.execute( sql );
-        }
-        
-        return null;
-    }
-
-    @Override
     public void dropTable( String tableName )
     {
         final String realTable = tableName.replaceFirst( TABLE_TEMP_SUFFIX, "" );
