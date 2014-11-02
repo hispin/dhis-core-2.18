@@ -529,9 +529,11 @@ public class DefaultAnalyticsService
     @Override
     public Grid getAggregatedDataValues( DataQueryParams params, boolean tableLayout, List<String> columns, List<String> rows )
     {
+        Grid grid = getAggregatedDataValues( params );
+        
         if ( !tableLayout )
         {
-            return getAggregatedDataValues( params );
+            return grid;
         }
 
         ListUtils.removeEmptys( columns );
@@ -573,8 +575,6 @@ public class DefaultAnalyticsService
         reportTable.setTitle( IdentifiableObjectUtils.join( params.getFilterItems() ) );
         reportTable.setHideEmptyRows( params.isHideEmptyRows() );
         reportTable.setShowHierarchy( params.isShowHierarchy() );
-
-        Grid grid = getAggregatedDataValues( params );
 
         Map<String, Double> valueMap = getAggregatedDataValueMapping( grid );
         
