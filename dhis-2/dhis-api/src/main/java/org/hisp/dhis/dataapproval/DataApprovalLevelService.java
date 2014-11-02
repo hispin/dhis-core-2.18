@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -98,21 +97,19 @@ public interface DataApprovalLevelService
     DataApprovalLevel getLowestDataApprovalLevel( OrganisationUnit orgUnit, DataElementCategoryOptionCombo attributeOptionCombo );
 
     /**
-     * Gets the lowest approval level for a given attribute option (for
-     * any possible organisation unit.)
-     *
-     * @param option option (if any) that may belong to an approval level.
-     * @return lowest approval level that could contain the option.
-     */
-    DataApprovalLevel getLowestOptionApprovalLevel( DataElementCategoryOption option );
-
-    /**
      * Gets a list of all data approval levels.
      *
-     * @return List of all data approval levels, ordered from 1 to n.
+     * @return list of all data approval levels, ordered from 1 to n.
      */
     List<DataApprovalLevel> getAllDataApprovalLevels();
     
+    /**
+     * Gets a mapping of all data approval levels between level number and approval
+     * level.
+     * 
+     * @return map of all data approval levels between level number and approval
+     * level.
+     */
     Map<Integer, DataApprovalLevel> getDataApprovalLevelMap();
     
     List<DataApprovalLevel> getUserDataApprovalLevels();

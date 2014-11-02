@@ -208,35 +208,6 @@ public class DefaultDataApprovalLevelService
     }
 
     @Override
-    public DataApprovalLevel getLowestOptionApprovalLevel( DataElementCategoryOption option )
-    {
-        Set<CategoryOptionGroupSet> cogSets = null;
-
-        if ( option != null && option.getGroupSets() != null
-                && !categoryService.getDefaultDataElementCategoryCombo().getCategoryOptions().contains( option ) )
-        {
-            cogSets = option.getGroupSets();
-        }
-
-        for ( DataApprovalLevel level : Lists.reverse( getAllDataApprovalLevels() ) )
-        {
-            if ( level.getCategoryOptionGroupSet() == null )
-            {
-                if ( cogSets == null )
-                {
-                    return level;
-                }
-            }
-            else if ( cogSets != null && cogSets.contains( level.getCategoryOptionGroupSet() ) )
-            {
-                return level;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
     public List<DataApprovalLevel> getAllDataApprovalLevels()
     {
         List<DataApprovalLevel> dataApprovalLevels = dataApprovalLevelStore.getAllDataApprovalLevels();
