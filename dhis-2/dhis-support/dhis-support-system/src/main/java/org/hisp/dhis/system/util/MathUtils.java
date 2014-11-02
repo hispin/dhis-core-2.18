@@ -201,7 +201,7 @@ public class MathUtils
      * 
      * @param value the value to return and potentially round off.
      */
-    public static Object getRounded( Object value )
+    public static Object getRoundedObject( Object value )
     {
         return value != null && Double.class.equals( value.getClass() ) ? getRounded( (Double) value ) : value;
     }
