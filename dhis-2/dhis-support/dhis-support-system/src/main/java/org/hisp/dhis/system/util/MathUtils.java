@@ -173,7 +173,7 @@ public class MathUtils
     }
     
     /**
-     * Return a rounded off number.
+     * Returns a rounded off number.
      * 
      * <ul>
      * <li>If value is exclusively between 1 and -1 it will have 2 decimals.</li>
@@ -193,6 +193,17 @@ public class MathUtils
         {
             return getRounded( value, 1 );
         }
+    }
+
+    /**
+     * Returns a rounded off number. If the value class is not Double, the value
+     * is returned unchanged.
+     * 
+     * @param value the value to return and potentially round off.
+     */
+    public static Object getRounded( Object value )
+    {
+        return value != null && Double.class.equals( value.getClass() ) ? getRounded( (Double) value ) : value;
     }
 
     /**
