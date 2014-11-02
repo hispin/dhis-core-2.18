@@ -393,6 +393,29 @@ public class JdbcAnalyticsTableManager
         return null;
     }
 
+    @Override
+    @Async
+    public Future<?> vacuumTablesAsync( ConcurrentLinkedQueue<AnalyticsTable> tables )
+    {
+        taskLoop : while ( true )
+        {
+            AnalyticsTable table = tables.poll();
+            
+            if ( table == null )
+            {
+                break taskLoop;
+            }
+            
+            final String sql = statementBuilder.getVacuum( table.getTempTableName() );
+            
+            log.info( "Vacuum SQL: " + sql );
+            
+            jdbcTemplate.execute( sql );
+        }
+        
+        return null;
+    }
+
     /**
      * Indicates whether the system should ignore data which has not been approved
      * in analytics tables.
