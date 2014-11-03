@@ -37,6 +37,7 @@ import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.sqlview.SqlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
@@ -67,6 +68,7 @@ public class ExternalAccessVoter implements AccessDecisionVoter<FilterInvocation
         externalClasses.put( "reportTables", ReportTable.class );
         externalClasses.put( "reports", Report.class );
         externalClasses.put( "documents", Document.class );
+        externalClasses.put( "sqlViews", SqlView.class );
     }
 
     // -------------------------------------------------------------------------

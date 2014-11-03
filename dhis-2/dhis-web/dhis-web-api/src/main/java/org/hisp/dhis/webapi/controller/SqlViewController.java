@@ -28,16 +28,13 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.schema.descriptors.SqlViewSchemaDescriptor;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.system.grid.GridUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,16 +43,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = SqlViewController.RESOURCE_PATH )
+@RequestMapping( value = SqlViewSchemaDescriptor.API_ENDPOINT )
 public class SqlViewController
     extends AbstractCrudController<SqlView>
 {
-    public static final String RESOURCE_PATH = "/sqlViews";
-    
     @Autowired
     private SqlViewService sqlViewService;
 
@@ -63,120 +61,120 @@ public class SqlViewController
     private ContextUtils contextUtils;
 
     @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
-    public String getViewJson( @PathVariable( "uid" ) String uid, 
-        @RequestParam(required=false) Set<String> criteria, Model model, HttpServletResponse response )
+    public String getViewJson( @PathVariable( "uid" ) String uid,
+        @RequestParam( required = false ) Set<String> criteria, Model model, HttpServletResponse response )
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
-        
+
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
 
         model.addAttribute( "model", grid );
         model.addAttribute( "viewClass", "detailed" );
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
-        
+
         return grid != null ? "sqlView" : null;
     }
 
     @RequestMapping( value = "/{uid}/data.xml", method = RequestMethod.GET )
-    public void getViewXml( @PathVariable( "uid" ) String uid, 
-        @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
+    public void getViewXml( @PathVariable( "uid" ) String uid,
+        @RequestParam( required = false ) Set<String> criteria, HttpServletResponse response ) throws Exception
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
-        
+
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING );
-        
+
         GridUtils.toXml( grid, response.getOutputStream() );
     }
 
     @RequestMapping( value = "/{uid}/data.csv", method = RequestMethod.GET )
-    public void getViewCsv( @PathVariable( "uid" ) String uid, 
-        @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
+    public void getViewCsv( @PathVariable( "uid" ) String uid,
+        @RequestParam( required = false ) Set<String> criteria, HttpServletResponse response ) throws Exception
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
-        
+
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.csv", true );
-        
+
         GridUtils.toCsv( grid, response.getOutputStream() );
     }
-    
+
     @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
-    public void getViewXls( @PathVariable( "uid" ) String uid, 
-        @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
+    public void getViewXls( @PathVariable( "uid" ) String uid,
+        @RequestParam( required = false ) Set<String> criteria, HttpServletResponse response ) throws Exception
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
-        
+
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.xls", true );
-        
+
         GridUtils.toXls( grid, response.getOutputStream() );
     }
 
     @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
-    public void getViewHtml( @PathVariable( "uid" ) String uid, 
-        @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
+    public void getViewHtml( @PathVariable( "uid" ) String uid,
+        @RequestParam( required = false ) Set<String> criteria, HttpServletResponse response ) throws Exception
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
-        
+
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
-        
+
         GridUtils.toHtml( grid, response.getWriter() );
     }
 
     @RequestMapping( value = "/{uid}/data.html+css", method = RequestMethod.GET )
-    public void getViewHtmlCss( @PathVariable( "uid" ) String uid, 
-        @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
+    public void getViewHtmlCss( @PathVariable( "uid" ) String uid,
+        @RequestParam( required = false ) Set<String> criteria, HttpServletResponse response ) throws Exception
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
-        
+
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
-        
+
         GridUtils.toHtmlCss( grid, response.getWriter() );
     }
 
     @RequestMapping( value = "/{uid}/data.pdf", method = RequestMethod.GET )
-    public void getViewPdf( @PathVariable( "uid" ) String uid, 
-        @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
+    public void getViewPdf( @PathVariable( "uid" ) String uid,
+        @RequestParam( required = false ) Set<String> criteria, HttpServletResponse response ) throws Exception
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
-        
+
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.RESPECT_SYSTEM_SETTING );
-        
+
         GridUtils.toPdf( grid, response.getOutputStream() );
     }
-    
+
     @RequestMapping( value = "/{uid}/execute", method = RequestMethod.POST )
     public void executeView( @PathVariable( "uid" ) String uid, HttpServletResponse response )
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
-        
+
         if ( sqlView == null )
         {
             ContextUtils.notFoundResponse( response, "SQL view not found" );
             return;
         }
-        
+
         String result = sqlViewService.createViewTable( sqlView );
-        
+
         if ( result != null )
         {
             ContextUtils.conflictResponse( response, result );
         }
         else
         {
-            String location = RESOURCE_PATH + "/" + sqlView.getUid();
-            
+            String location = SqlViewSchemaDescriptor.API_ENDPOINT + "/" + sqlView.getUid();
+
             ContextUtils.createdResponse( response, "SQL view created", location );
         }
     }
