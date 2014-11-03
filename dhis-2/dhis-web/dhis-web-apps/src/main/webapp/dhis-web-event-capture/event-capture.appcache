@@ -1,12 +1,25 @@
 CACHE MANIFEST
 
 CACHE:
+
 ../dhis-web-commons/javascripts/jQuery/jquery.min.js
 ../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js
-../dhis-web-commons/javascripts/jQuery/jquery.tmpl.js
-../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css
-../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_inset-hard_100_fcfdfd_1x100.png 
+../dhis-web-commons/javascripts/jQuery/jquery.plugin.min.js
 
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.min.js
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.picker.min.js
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.plus.min.js
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.picker.ext.js
+
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.coptic.min.js
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.ethiopian.min.js
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.islamic.min.js
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.julian.min.js
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.nepali.min.js
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.thai.min.js      
+
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css
+../dhis-web-commons/javascripts/jQuery/calendars/css/ui-redmond.calendars.picker.css    
 
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.eot
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.woff
@@ -88,18 +101,28 @@ styles/style.css
 ../dhis-web-commons/javascripts/dhis2/dhis2.menu.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js
 
-scripts/event-capture.js  
+scripts/event-capture.js
 scripts/app.js
 scripts/services.js
 scripts/directives.js
-scripts/controllers.js
+scripts/controllers.js        
+scripts/column-display-controller.js
+scripts/header-controller.js
+scripts/map-controller.js
+scripts/notes-controller.js        
 scripts/filters.js
 scripts/orgunitTreeSearch.js
 
-views/serverside-pagination.html
-views/modal.html
-views/dialog.html
 views/column-modal.html
+views/customForm.html
+views/defaultForm.html
+views/dialog.html
+views/eventList.html
+views/home.html
+views/map.html
+views/modal.html
+views/notes.html
+views/serverside-pagination.html
 
 i18n/en.json
 
