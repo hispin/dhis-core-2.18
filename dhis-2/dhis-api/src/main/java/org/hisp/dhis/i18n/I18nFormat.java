@@ -30,6 +30,7 @@ package org.hisp.dhis.i18n;
 
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,6 +48,9 @@ import org.hisp.dhis.period.WeeklyPeriodType;
  */
 public class I18nFormat
 {
+    private static final DecimalFormat FORMAT_VALUE = new DecimalFormat( "#.#" ); // Fixed for now
+    private static final String EMPTY = "";
+    
     private static final String INVALID_DATE = "Invalid date format";
 
     public static final String FORMAT_DATE = "yyyy-MM-dd";
@@ -241,7 +245,7 @@ public class I18nFormat
 
         if ( !dayPattern )
         {
-            // set day to first of month, so that we don't overflow when we convert to jdk date
+            // Set day to first of month to not overflow when converting to JDK date
             start.setDay( 1 );
             end.setDay( 1 );
 
@@ -263,7 +267,28 @@ public class I18nFormat
             return INVALID_DATE;
         }
     }
-
+    /**
+     * Formats value. Returns empty string if value is null. Returns NaN if value
+     * is not a number.
+     *
+     * @param value the value to format.
+     */
+    public String formatValue( Object value )
+    {
+        if ( value == null )
+        {
+            return EMPTY;
+        }
+        
+        try
+        {
+            return FORMAT_VALUE.format( value );
+        }
+        catch ( IllegalArgumentException ex )
+        {
+            return String.valueOf( value );
+        }
+    }
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------

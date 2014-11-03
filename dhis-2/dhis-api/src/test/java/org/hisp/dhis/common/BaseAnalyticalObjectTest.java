@@ -51,7 +51,7 @@ public class BaseAnalyticalObjectTest
     @Test
     public void testSortKeys()
     {
-        Map<String, Double> valueMap = new HashMap<>();
+        Map<String, Object> valueMap = new HashMap<>();
         
         valueMap.put( "b1-a1-c1", 1d );
         valueMap.put( "a2-c2-b2", 2d );
@@ -66,10 +66,15 @@ public class BaseAnalyticalObjectTest
         assertTrue( valueMap.containsKey( "a3-b3-c3" ) );
         assertTrue( valueMap.containsKey( "a4-b4-c4" ) );
         
-        assertEquals( 1d, valueMap.get( "a1-b1-c1" ), 0.01 );
-        assertEquals( 2d, valueMap.get( "a2-b2-c2" ), 0.01 );
-        assertEquals( 3d, valueMap.get( "a3-b3-c3" ), 0.01 );
-        assertEquals( 4d, valueMap.get( "a4-b4-c4" ), 0.01 );
+        Object d1 = 1d;
+        Object d2 = 2d;
+        Object d3 = 3d;
+        Object d4 = 4d;
+        
+        assertEquals( d1, valueMap.get( "a1-b1-c1" ) );
+        assertEquals( d2, valueMap.get( "a2-b2-c2" ) );
+        assertEquals( d3, valueMap.get( "a3-b3-c3" ) );
+        assertEquals( d4, valueMap.get( "a4-b4-c4" ) );
         
         valueMap = new HashMap<>();
         
@@ -82,8 +87,8 @@ public class BaseAnalyticalObjectTest
         assertTrue( valueMap.containsKey( "b1" ) );
         assertTrue( valueMap.containsKey( "b2" ) );
         
-        assertEquals( 1d, valueMap.get( "b1" ), 0.01 );
-        assertEquals( 2d, valueMap.get( "b2" ), 0.01 );
+        assertEquals( d1, valueMap.get( "b1" ) );
+        assertEquals( d2, valueMap.get( "b2" ) );
 
         valueMap = new HashMap<>();
         

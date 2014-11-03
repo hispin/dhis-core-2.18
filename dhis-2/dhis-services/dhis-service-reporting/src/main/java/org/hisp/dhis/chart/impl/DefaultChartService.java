@@ -794,7 +794,7 @@ public class DefaultChartService
 
     private CategoryDataset[] getCategoryDataSet( BaseChart chart )
     {
-        Map<String, Double> valueMap = new HashMap<>();
+        Map<String, Object> valueMap = new HashMap<>();
         
         if ( chart.isAnalyticsType( AnalyticsType.AGGREGATE ) )
         {
@@ -839,13 +839,15 @@ public class DefaultChartService
                 
                 key = BaseAnalyticalObject.sortKey( key );
 
-                Double value = valueMap.get( key );
+                Object object = valueMap.get( key );
+                
+                Number value = object != null && object instanceof Number ? (Number) object : null;
 
                 regularDataSet.addValue( value, series.getShortName(), category.getShortName() );
 
-                if ( chart.isRegression() && value != null && !MathUtils.isEqual( value, MathUtils.ZERO ) )
+                if ( chart.isRegression() && value != null && value instanceof Double && !MathUtils.isEqual( (Double) value, MathUtils.ZERO ) )
                 {
-                    regression.addData( categoryIndex, value );
+                    regression.addData( categoryIndex, (Double) value );
                 }
             }
 

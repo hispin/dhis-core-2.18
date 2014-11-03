@@ -66,7 +66,7 @@ public class AnalyticsDataSetReportStore
     // -------------------------------------------------------------------------
 
     @Override
-    public Map<String, Double> getAggregatedValues( DataSet dataSet, Period period, OrganisationUnit unit, 
+    public Map<String, Object> getAggregatedValues( DataSet dataSet, Period period, OrganisationUnit unit, 
         Set<String> dimensions, boolean rawData )
     {
         List<DataElement> dataElements = new ArrayList<>( dataSet.getDataElements() );
@@ -90,11 +90,11 @@ public class AnalyticsDataSetReportStore
             params.setFilters( analyticsService.getDimensionalObjects( dimensions, null ) );
         }
         
-        Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
+        Map<String, Object> map = analyticsService.getAggregatedDataValueMapping( params );
         
-        Map<String, Double> dataMap = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
         
-        for ( Entry<String, Double> entry : map.entrySet() )
+        for ( Entry<String, Object> entry : map.entrySet() )
         {
             String[] split = entry.getKey().split( SEPARATOR );            
             dataMap.put( split[0] + SEPARATOR + split[3], entry.getValue() );
@@ -104,9 +104,9 @@ public class AnalyticsDataSetReportStore
     }
 
     @Override
-    public Map<String, Double> getAggregatedSubTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions )
+    public Map<String, Object> getAggregatedSubTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions )
     {
-        Map<String, Double> dataMap = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
         
         for ( Section section : dataSet.getSections() )
         {
@@ -139,9 +139,9 @@ public class AnalyticsDataSetReportStore
                     params.setFilters( analyticsService.getDimensionalObjects( dimensions, null ) );
                 }
                 
-                Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
+                Map<String, Object> map = analyticsService.getAggregatedDataValueMapping( params );
                 
-                for ( Entry<String, Double> entry : map.entrySet() )
+                for ( Entry<String, Object> entry : map.entrySet() )
                 {
                     String[] split = entry.getKey().split( SEPARATOR );            
                     dataMap.put( split[0] + SEPARATOR + split[3], entry.getValue() );
@@ -153,7 +153,7 @@ public class AnalyticsDataSetReportStore
     }
 
     @Override
-    public Map<String, Double> getAggregatedTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions )
+    public Map<String, Object> getAggregatedTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions )
     {
         List<DataElement> dataElements = new ArrayList<>( dataSet.getDataElements() );
 
@@ -175,11 +175,11 @@ public class AnalyticsDataSetReportStore
             params.setFilters( analyticsService.getDimensionalObjects( dimensions, null ) );
         }
         
-        Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
+        Map<String, Object> map = analyticsService.getAggregatedDataValueMapping( params );
 
-        Map<String, Double> dataMap = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
         
-        for ( Entry<String, Double> entry : map.entrySet() )
+        for ( Entry<String, Object> entry : map.entrySet() )
         {
             String[] split = entry.getKey().split( SEPARATOR );            
             dataMap.put( split[0], entry.getValue() );
@@ -189,7 +189,7 @@ public class AnalyticsDataSetReportStore
     }
 
     @Override
-    public Map<String, Double> getAggregatedIndicatorValues( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions )
+    public Map<String, Object> getAggregatedIndicatorValues( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions )
     {
         List<Indicator> indicators = new ArrayList<>( dataSet.getIndicators() );
         
@@ -209,11 +209,11 @@ public class AnalyticsDataSetReportStore
             params.setFilters( analyticsService.getDimensionalObjects( dimensions, null ) );
         }
         
-        Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
+        Map<String, Object> map = analyticsService.getAggregatedDataValueMapping( params );
 
-        Map<String, Double> dataMap = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
         
-        for ( Entry<String, Double> entry : map.entrySet() )
+        for ( Entry<String, Object> entry : map.entrySet() )
         {
             String[] split = entry.getKey().split( SEPARATOR );            
             dataMap.put( split[0], entry.getValue() );

@@ -28,7 +28,6 @@ package org.hisp.dhis.system.grid;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.trimToEmpty;
 import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.system.util.CsvUtils.NEWLINE;
 import static org.hisp.dhis.system.util.CsvUtils.SEPARATOR_B;
@@ -618,9 +617,9 @@ public class GridUtils
      * @param valueIndex the index of the column holding the value, must be numeric.
      * @return a meta string to value object mapping.
      */
-    public static Map<String, Double> getMetaValueMapping( Grid grid, int valueIndex )
+    public static Map<String, Object> getMetaValueMapping( Grid grid, int valueIndex )
     {
-        Map<String, Double> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         
         List<Integer> metaIndexes = grid.getMetaColumnIndexes();
 
@@ -630,7 +629,7 @@ public class GridUtils
             
             String key = TextUtils.join( metaDataRowItems, DIMENSION_SEP, NameableObjectUtils.NULL_REPLACEMENT );
             
-            map.put( key, Double.parseDouble( trimToEmpty( String.valueOf( row.get( valueIndex ) ) ) ) );
+            map.put( key, row.get( valueIndex ) );
         }
         
         return map;

@@ -460,8 +460,8 @@ public class MathUtils
         }
         
         return Math.abs( d1 - d2 ) < TOLERANCE;
-    }
-    
+    }    
+
     /**
      * Tests whether the two decimal numbers are equal with a tolerance of 0.01.
      * 
