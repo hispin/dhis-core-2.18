@@ -71,7 +71,7 @@
 				<label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
 			</td>
 			<td>
-				<input type="text" id="name" value="$!registrationForm.dataEntryForm.name" name="name" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}" style="width:30em;" >
+				<input type="text" id="name" value="$!encoder.htmlEncode($registrationForm.dataEntryForm.name)" name="name" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}" style="width:30em;" >
 			</td>			
 		</tr>
 		<tr>

@@ -89,8 +89,8 @@
 							#if($attribute.valueType=='age')
 								#set($attId=$attribute.id + ".age")
 								#set($attVisitId=$attribute.id + ".visit")
-								<option optionSet="$!attribute.optionSet.uid" title="$attribute.displayName" value="[CA:$attId]">$attribute.displayName ($i18n.getString('ages'))</option>
-								<option optionSet="$!attribute.optionSet.uid" value="[PS:*] AND [CA:$attVisitId]" name="multiProgram">$attribute.displayName ($i18n.getString( "age_at_visit_days_since_birth" ))</option>
+								<option optionSet="$!attribute.optionSet.uid" title="$attribute.displayName" value="[CA:$attId]">$encoder.htmlEncode($attribute.displayName) ($i18n.getString('ages'))</option>
+								<option optionSet="$!attribute.optionSet.uid" value="[PS:*] AND [CA:$attVisitId]" name="multiProgram">$encoder.htmlEncode($attribute.displayName) ($i18n.getString( "age_at_visit_days_since_birth" ))</option>
 							#else
 								<option optionSet="$!attribute.optionSet.uid"  title="$attribute.displayName" value="[CA:$attribute.id]">$attribute.displayName</option>
 							#end
@@ -102,9 +102,9 @@
 								#set($attId=$attribute.id + ".age")
 								#set($attVisitId=$attribute.id + ".visit")
 								<option optionSet="$!attribute.optionSet.uid"  optionSet="" title="$attribute.displayName" value="[CA:$attId]">$attribute.displayName ($i18n.getString('ages'))</option>
-								<option optionSet="$!attribute.optionSet.uid"  value="[PS:*] AND [CA:$attVisitId]" name="multiProgram">$attribute.displayName ($i18n.getString( "age_at_visit_days_since_birth" ))</option>
+								<option optionSet="$!attribute.optionSet.uid"  value="[PS:*] AND [CA:$attVisitId]" name="multiProgram">$encoder.htmlEncode($attribute.displayName) ($i18n.getString( "age_at_visit_days_since_birth" ))</option>
 							#else
-								<option optionSet="$!attribute.optionSet.uid" title="$attribute.displayName" value="[CA:$attribute.id]">$attribute.displayName</option>
+								<option optionSet="$!attribute.optionSet.uid" title="$attribute.displayName" value="[CA:$attribute.id]">$encoder.htmlEncode($attribute.displayName)</option>
 							#end
 						#end
 					</select>
@@ -188,7 +188,7 @@
 			<fieldset>
 				<legend>$i18n.getString( "condition" ) <em title="$i18n.getString( 'required' )" class="required">*</em></legend>
 				<table style="width:100%"><tr><td>
-					<textarea id="aggregationCondition" name="aggregationCondition" onkeyup='getConditionDescription();' maxlength="1000" style="width:100%">$!caseAggregation.aggregationExpression</textarea>
+					<textarea id="aggregationCondition" name="aggregationCondition" onkeyup='getConditionDescription();' maxlength="1000" style="width:100%">$!encoder.htmlEncode($caseAggregation.aggregationExpression)</textarea>
 				</td></tr></table>
 			</fieldset>
 		</td>
@@ -198,7 +198,7 @@
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "description" )</legend>
-				<div id='aggregationDescription'>$!description</div>
+				<div id='aggregationDescription'>$!encoder.htmlEncode($description)</div>
 			</fieldset>
 		</td>
 	</tr>

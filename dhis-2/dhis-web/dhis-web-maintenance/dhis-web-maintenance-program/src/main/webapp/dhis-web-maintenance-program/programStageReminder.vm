@@ -1,6 +1,6 @@
 
 <h3>$i18n.getString( "template_reminder_message" )</h3>
-<h5>$programStage.displayName</h5>
+<h5>$encoder.htmlEncode($programStage.displayName)</h5>
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">

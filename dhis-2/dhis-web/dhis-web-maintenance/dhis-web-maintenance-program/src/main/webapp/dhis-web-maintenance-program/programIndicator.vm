@@ -9,7 +9,7 @@
   </ul>
 </div>
 
-<h4>$program.displayName</h4>
+<h4>$encoder.htmlEncode($program.displayName)</h4>
 
 <input type='hidden' id='id' name='id' value='$program.id'>
 

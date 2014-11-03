@@ -32,22 +32,22 @@ jQuery( document ).ready( function()
     </thead>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value='$programIndicator.name'></td>
+		<td><input type="text" id="name" name="name" value='$encoder.htmlEncode($programIndicator.name)'></td>
 		<td></td>
 	</tr>	
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" value='$programIndicator.shortName'></td>
+		<td><input type="text" id="shortName" name="shortName" value='$encoder.htmlEncode($programIndicator.shortName)'></td>
 		<td></td>
 	</tr>	
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" value='$programIndicator.code'></td>
+		<td><input type="text" id="code" name="code" value='$encoder.htmlEncode($programIndicator.code)'></td>
 		<td></td>
 	</tr>	
 	<tr>
 		<td><label for="description">$i18n.getString( "description" ) </label></td>
-		<td><textarea type="text" id="description" name="description">$programIndicator.description</textarea></td>
+		<td><textarea type="text" id="description" name="description">$encoder.htmlEncode($programIndicator.description)</textarea></td>
 		<td></td>
 	</tr>
 	<tr>
@@ -77,7 +77,7 @@ jQuery( document ).ready( function()
 				<select id="programStageId" name="programStageId" onChange="getTrackedEntityDataElements();">
 					<option value=''>[$i18n.getString('please_select')]</option>
 					#foreach( $programStage in $programIndicator.program.programStages )
-					<option value='$programStage.id'>$programStage.displayName</option>
+					<option value='$programStage.id'>$encoder.htmlEncode($programStage.displayName)</option>
 					#end
 				</select>
 			</td>

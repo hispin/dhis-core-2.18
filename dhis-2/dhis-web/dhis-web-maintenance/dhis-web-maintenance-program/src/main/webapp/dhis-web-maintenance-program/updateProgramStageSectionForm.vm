@@ -22,7 +22,7 @@ jQuery( document ).ready( function()
 
 <h3>$i18n.getString( "update_program_stage_section" )</h3>
 			
-<h4>$programStage.displayName</h4>
+<h4>$encoder.htmlEncode($programStage.displayName)</h4>
 			
 <form id="programStageSectionForm" name="programStageSectionForm" action="updateProgramStageSection.action" method="post" class="inputForm">
 	<input type="hidden" id="programStageId" name="programStageId" value="$programStage.id"/>
@@ -35,7 +35,7 @@ jQuery( document ).ready( function()
 	<tbody>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" value='$section.name'/></td>
+			<td><input type="text" id="name" name="name" value='$encoder.htmlEncode($section.name)'/></td>
 		</tr>
 	</tbody>
 </table>
@@ -62,7 +62,7 @@ jQuery( document ).ready( function()
         <td>
             <select style="width:100%;" size="15" id="availableList" name='availableList' multiple="multiple" ondblclick="moveSelectedById( 'availableList', 'dataElementIds' );">
 				#foreach( $psDataElement in $availableDataElements )
-					<option value='$psDataElement.dataElement.id'>$psDataElement.dataElement.name</option>
+					<option value='$psDataElement.dataElement.id'>$encoder.htmlEncode($psDataElement.dataElement.name)</option>
 				#end
 			</select>
         </td>
@@ -77,7 +77,7 @@ jQuery( document ).ready( function()
 		<td>
 			<select style="width:100%;" size="15" id="dataElementIds" name='dataElementIds' multiple="multiple"  ondblclick="moveSelectedById( 'dataElementIds', 'availableList' );">
 				#foreach( $psDataElement in $section.programStageDataElements )
-					<option value='$psDataElement.dataElement.id'>$psDataElement.dataElement.name</option>
+					<option value='$psDataElement.dataElement.id'>$encoder.htmlEncode($psDataElement.dataElement.name)</option>
 				#end
 			</select>
 		</td>

@@ -1,5 +1,5 @@
 <h3>$i18n.getString( "validation_criteria_management" )  #openHelp( "validation_criteria" )</h3>
-<h5>$program.displayName</h5>
+<h5>$encoder.htmlEncode($program.displayName)</h5>
 
 <div id="contextMenu" class="contextMenu" style="width: 210px;">
   <ul id="contextMenuItems" class="contextMenuItems">

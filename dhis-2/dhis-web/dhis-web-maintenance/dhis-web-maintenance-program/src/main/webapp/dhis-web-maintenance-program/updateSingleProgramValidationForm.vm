@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "update_program_validation_rule" )</h3>
 
-<h4>$validation.program.displayName</h4>
+<h4>$encoder.htmlEncode($validation.program.displayName)</h4>
 
 <form id='programValidationForm' name='programValidationForm' method='post' action='updateProgramValidation.action' class="inputForm">
 
@@ -18,7 +18,7 @@
 	<tr>
 		<td><label for="name">$i18n.getString('name') <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>			
-			<input type="text" id='name' name='name' value="$validation.name" >
+			<input type="text" id='name' name='name' value="$encoder.htmlEncode($validation.name)" >
 		</td>
 	</tr>
 	<tr>
@@ -39,15 +39,15 @@
 		<td></td>
 		<td>
 			<input type="button" value="$i18n.getString( 'edit_left_side' )" onclick="editLeftExpression();" style="width:10em">
-			<input type="hidden" id="leftSideDescription" name="leftSideDescription" value="$!validation.leftSide.description">
-			<input type="hidden" id="leftSideExpression" name="leftSideExpression" value="$!validation.leftSide.expression" class="{validate:{required:true}}">
-			<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression" value="$!leftSideTextualExpression">
+			<input type="hidden" id="leftSideDescription" name="leftSideDescription" value="$!encoder.htmlEncode($validation.leftSide.description)">
+			<input type="hidden" id="leftSideExpression" name="leftSideExpression" value="$!encoder.htmlEncode($validation.leftSide.expression)" class="{validate:{required:true}}">
+			<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression" value="$!encoder.htmlEncode($leftSideTextualExpression)">
 			<input type="hidden" id="leftSideNullIfBlank" name="leftSideNullIfBlank" value="$!validation.leftSide.nullIfBlank">
 			
 			<input type="button" value="$i18n.getString( 'edit_right_side' )" onclick="editRightExpression();" style="width:10em">
-			<input type="hidden" id="rightSideDescription" name="rightSideDescription" value="$!validation.rightSide.description">
-			<input type="hidden" id="rightSideExpression" name="rightSideExpression" value="$!validation.rightSide.expression" class="{validate:{required:true}}">
-			<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression" value="$!rightSideTextualExpression">
+			<input type="hidden" id="rightSideDescription" name="rightSideDescription" value="$!encoder.htmlEncode($validation.rightSide.description)">
+			<input type="hidden" id="rightSideExpression" name="rightSideExpression" value="$!encoder.htmlEncode($validation.rightSide.expression)" class="{validate:{required:true}}">
+			<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression" value="$!encoder.htmlEncode($rightSideTextualExpression)">
 			<input type="hidden" id="rightSideNullIfBlank" name="rightSideNullIfBlank" value="$!validation.rightSide.nullIfBlank">
 		</td>
 		</td>

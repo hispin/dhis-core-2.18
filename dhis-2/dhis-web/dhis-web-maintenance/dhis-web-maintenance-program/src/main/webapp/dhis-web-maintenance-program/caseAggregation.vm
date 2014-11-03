@@ -29,7 +29,7 @@ $(function() {
 				<select id='dataSetId' name='dataSetId' onchange='getCaseAggConditionByDataset();'>
 					<option value=''>[ $i18n.getString( "all" ) ]</option>
 					#foreach( $dataSet in $dataSets )
-					<option value='$dataSet.id' #if( $dataSetId=="$dataSet.id") selected #end >$dataSet.displayName</option>
+					<option value='$dataSet.id' #if( $dataSetId=="$dataSet.id") selected #end >$encoder.htmlEncode($dataSet.displayName)</option>
 					#end
 				</select>
 			</td>
