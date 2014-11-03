@@ -7,9 +7,9 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 
 .factory('StorageService', function(){
     var store = new dhis2.storage.Store({
-        name: 'dhis2',
+        name: 'dhis2ec',
         adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-        objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
+        objectStores: ['ecPrograms', 'programStages', 'geoJsons', 'optionSets']
     });
     return{
         currentStore: store
@@ -84,8 +84,60 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 })
 
 
+/* factory for fetching selected orgunit's coordinate */
+.factory('OrgUnitService', function($http) { 
+           
+    var orgUnitId, promise;
+    return {
+        get: function(id) {
+            if( !promise && id !== orgUnitId){
+                promise = $http.get('../api/me/profile').then(function(response){
+                   orgUnitId = id; 
+                   return response.data;;
+                });
+            }
+            return promise;         
+        }
+    };  
+})
+
+
+/* Factory to fetch geojsons */
+.factory('GeoJsonFactory', function($q, $rootScope, StorageService) { 
+    return {
+        getAll: function(){
+            
+            //console.log('I am trying to fetch geojsons');
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.getAll('geoJsons').done(function(geoJsons){
+                    $rootScope.$apply(function(){
+                        def.resolve(geoJsons);
+                    });                    
+                });
+            });
+            
+            return def.promise;            
+        },
+        get: function(level){
+            
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.get('geoJsons', level).done(function(geoJson){                    
+                    $rootScope.$apply(function(){
+                        def.resolve(geoJson);
+                    });
+                });
+            });                        
+            return def.promise;            
+        }
+    };
+})
+
 /* Factory to fetch optioSets */
-.factory('OptionSetFactory', function($q, $rootScope, StorageService) { 
+.factory('OptionSetService', function($q, $rootScope, StorageService) { 
     return {
         getAll: function(){
             
@@ -113,18 +165,29 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                 });
             });                        
             return def.promise;            
+        },
+        getNameOrCode: function(options, key){
+            var val = key;            
+
+            if(options){
+                for(var i=0; i<options.length; i++){
+                    if( key === options[i].name){
+                        val = options[i].code;
+                        break;
+                    }
+                    if( key === options[i].code){
+                        val = options[i].name;
+                        break;
+                    }
+                }
+            }            
+            return val;
         }
     };
 })
 
 /* Factory to fetch programs */
 .factory('ProgramFactory', function($q, $rootScope, StorageService) {  
-    
-    /*dhis2.ec.store = new dhis2.storage.Store({
-        name: EC_STORE_NAME,
-        adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-        objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
-    });*/
         
     return {
         
@@ -133,7 +196,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             var def = $q.defer();
             
             StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.getAll('eventCapturePrograms').done(function(programs){                    
+                StorageService.currentStore.getAll('ecPrograms').done(function(programs){                    
                     $rootScope.$apply(function(){
                         def.resolve(programs);
                     });                    
@@ -146,12 +209,6 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 
 /* Factory to fetch programStages */
 .factory('ProgramStageFactory', function($q, $rootScope, StorageService) {  
-
-    /*dhis2.ec.store = new dhis2.storage.Store({
-        name: EC_STORE_NAME,
-        adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-        objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
-    });*/
     
     return {        
         get: function(uid){
@@ -160,16 +217,6 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             
             StorageService.currentStore.open().done(function(){
                 StorageService.currentStore.get('programStages', uid).done(function(pst){                    
-                    /*angular.forEach(pst.programStageDataElements, function(pstDe){   
-                        if(pstDe.dataElement.optionSet){
-                            dhis2.ec.store.get('optionSets', pstDe.dataElement.optionSet.id).done(function(optionSet){
-                                pstDe.dataElement.optionSet = optionSet;                                
-                            });                            
-                        }
-                        $rootScope.$apply(function(){
-                            def.resolve(pst);
-                        });
-                    });*/
                     $rootScope.$apply(function(){
                         def.resolve(pst);
                     });

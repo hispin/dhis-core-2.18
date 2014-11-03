@@ -7,9 +7,9 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 
 .factory('StorageService', function(){
     var store = new dhis2.storage.Store({
-        name: "dhis2",
+        name: "dhis2tc",
         adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-        objectStores: ['trackerCapturePrograms', 'programStages', 'trackedEntities', 'trackedEntityForms', 'attributes','optionSets']
+        objectStores: ['tcPrograms', 'programStages', 'trackedEntities', 'trackedEntityForms', 'attributes','optionSets']
     });
     return{
         currentStore: store
@@ -17,7 +17,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Factory to fetch optioSets */
-.factory('OptionSetFactory', function($q, $rootScope, StorageService) { 
+.factory('OptionSetService', function($q, $rootScope, StorageService) { 
     return {
         getAll: function(){
             
@@ -107,7 +107,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             var def = $q.defer();
             
             StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.getAll('trackerCapturePrograms').done(function(programs){
+                StorageService.currentStore.getAll('tcPrograms').done(function(programs){
                     $rootScope.$apply(function(){
                         def.resolve(programs);
                     });                    
@@ -121,7 +121,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             var def = $q.defer();
             
             StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.get('trackerCapturePrograms', uid).done(function(pr){                    
+                StorageService.currentStore.get('tcPrograms', uid).done(function(pr){                    
                     $rootScope.$apply(function(){
                         def.resolve(pr);
                     });
@@ -1230,8 +1230,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             var columns = attributes ? angular.copy(attributes) : [];
        
             //also add extra columns which are not part of attributes (orgunit for example)
-            columns.push({id: 'orgUnitName', name: $translate('registering_unit'), type: 'string', displayInListNoProgram: false});
-            columns.push({id: 'created', name: $translate('registration_date'), type: 'date', displayInListNoProgram: false});
+            columns.push({id: 'orgUnitName', name: $translate('registering_unit'), valueType: 'string', displayInListNoProgram: false});
+            columns.push({id: 'created', name: $translate('registration_date'), valueType: 'date', displayInListNoProgram: false});
 
             //generate grid column for the selected program/attributes
             angular.forEach(columns, function(column){

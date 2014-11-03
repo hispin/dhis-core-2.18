@@ -11,7 +11,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 Paginator,
                 TranslationService, 
                 storage,
-                OptionSetFactory,
+                OptionSetService,
                 OperatorFactory,
                 ProgramFactory,
                 AttributesFactory,
@@ -62,7 +62,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             
             if(!$scope.optionSets){
                 $scope.optionSets = {optionSets: [], optionNamesByCode: new Object(), optionCodesByName: new Object()};
-                OptionSetFactory.getAll().then(function(optionSets){
+                OptionSetService.getAll().then(function(optionSets){
                     angular.forEach(optionSets, function(optionSet){
                         angular.forEach(optionSet.options, function(option){
                             if(option.name && option.code){

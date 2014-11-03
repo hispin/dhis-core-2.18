@@ -16,16 +16,27 @@ var eventCapture = angular.module('eventCapture',
               
 .value('DHIS2URL', '..')
 
-.config(function($httpProvider, $translateProvider) {    
+.config(function($httpProvider, $routeProvider, $translateProvider) {    
             
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    
+    $routeProvider.when('/', {
+        templateUrl: 'views/home.html',
+        controller: 'MainController'/*,
+        resolve: {
+            geoJsons: function(GeoJsonFactory){
+                return GeoJsonFactory.getAll();
+            }
+        }*/
+    }).otherwise({
+        redirectTo : '/'
+    });
     
     $translateProvider.useStaticFilesLoader({
         prefix: 'i18n/',
         suffix: '.json'
     });
     
-    $translateProvider.preferredLanguage('en');	
-    
+    $translateProvider.preferredLanguage('en');    
 });

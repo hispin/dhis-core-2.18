@@ -98,7 +98,7 @@
                         <tr ng-repeat="dhis2Event in dhis2Events | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes">
                            
                             <!-- Visible when event is not under editing -->
-                            <td dhis-context-menu 
+                            <td d2-context-menu 
                                 selected-item={{dhis2Event}}
                                 ng-click="showEventList()"
                                 ng-hide="(currentEvent.event == dhis2Event.event) || !eventGridColumn.show || eventGridColumn.id === 'comment'" 
