@@ -32,6 +32,7 @@ import org.hisp.dhis.dxf2.render.RenderService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -111,6 +112,7 @@ public class SystemSettingController
     @RequestMapping( method = RequestMethod.GET, produces = { ContextUtils.CONTENT_TYPE_JSON, ContextUtils.CONTENT_TYPE_HTML } )
     public void getSystemSettingsJson( @RequestParam( value = "key", required = false ) Set<String> key, HttpServletResponse response ) throws IOException
     {
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         renderService.toJson( response.getOutputStream(), getSystemSettings( key ) );
     }
 
@@ -120,6 +122,7 @@ public class SystemSettingController
         @RequestParam( defaultValue = "callback" ) String callback,
         HttpServletResponse response ) throws IOException
     {
+        response.setContentType( "application/javascript" );
         renderService.toJsonP( response.getOutputStream(), getSystemSettings( key ), callback );
     }
 

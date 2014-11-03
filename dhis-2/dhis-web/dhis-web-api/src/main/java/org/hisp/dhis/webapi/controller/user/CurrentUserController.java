@@ -291,8 +291,6 @@ public class CurrentUserController
     {
         UserAccount userAccount = getUserAccount();
 
-        System.err.println( "accept:" + request.getHeader( "Accept" ) );
-
         response.setContentType( "application/javascript" );
         renderService.toJsonP( response.getOutputStream(), userAccount, callback );
     }
