@@ -28,13 +28,11 @@ package org.hisp.dhis.datasetreport.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.trimToEmpty;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.DATAELEMENT_TOTAL_PATTERN;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.IDENTIFIER_PATTERN;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.INDICATOR_PATTERN;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.INPUT_PATTERN;
 import static org.hisp.dhis.datasetreport.DataSetReportStore.SEPARATOR;
-import static org.hisp.dhis.system.util.MathUtils.getRoundedObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -323,7 +321,7 @@ public class DefaultDataSetReportService
 
                 Object dataValue = dataValues.get( dataElementId + SEPARATOR + optionComboId );
 
-                String value = "<span class=\"val\" data-de=\"" + dataElementId + "\" data-co=\"" + optionComboId + "\">" + trimToEmpty( String.valueOf( getRoundedObject( dataValue ) ) ) + "</span>";
+                String value = "<span class=\"val\" data-de=\"" + dataElementId + "\" data-co=\"" + optionComboId + "\">" + format.formatValue( dataValue ) + "</span>";
                 
                 inputMatcher.appendReplacement( buffer, value );
             }
@@ -333,7 +331,7 @@ public class DefaultDataSetReportService
                 
                 Object dataValue = dataValues.get( dataElementId );
 
-                inputMatcher.appendReplacement( buffer, trimToEmpty( String.valueOf( getRoundedObject( dataValue ) ) ) );
+                inputMatcher.appendReplacement( buffer, format.formatValue( dataValue ) );
             }
             else if ( indicatorMatcher.find() && indicatorMatcher.groupCount() > 0 )
             {
@@ -341,7 +339,7 @@ public class DefaultDataSetReportService
 
                 Object indicatorValue = indicatorValues.get( indicatorId );
 
-                inputMatcher.appendReplacement( buffer, trimToEmpty( String.valueOf( getRoundedObject( indicatorValue ) ) ) );
+                inputMatcher.appendReplacement( buffer, format.formatValue( indicatorValue ) );
             }
         }
 
