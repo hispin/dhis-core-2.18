@@ -34,7 +34,7 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DisplayProperty;
 import org.hisp.dhis.common.NameableObjectUtils;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.dxf2.render.RenderService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -42,8 +42,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.system.filter.OrganisationUnitWithValidCoordinatesFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.hisp.dhis.webapi.webdomain.GeoFeature;
+import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +52,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -73,12 +72,15 @@ public class GeoFeatureController
 {
     public static final String RESOURCE_PATH = "/geoFeatures";
 
-    private static final Map<String, Integer> FEATURE_TYPE_MAP = new HashMap<String, Integer>() { {
-        put( OrganisationUnit.FEATURETYPE_POINT, GeoFeature.TYPE_POINT );
-        put( OrganisationUnit.FEATURETYPE_MULTIPOLYGON, GeoFeature.TYPE_POLYGON );
-        put( OrganisationUnit.FEATURETYPE_POLYGON, GeoFeature.TYPE_POLYGON );
-        put( null, 0 );
-    } };
+    private static final Map<String, Integer> FEATURE_TYPE_MAP = new HashMap<String, Integer>()
+    {
+        {
+            put( OrganisationUnit.FEATURETYPE_POINT, GeoFeature.TYPE_POINT );
+            put( OrganisationUnit.FEATURETYPE_MULTIPOLYGON, GeoFeature.TYPE_POLYGON );
+            put( OrganisationUnit.FEATURETYPE_POLYGON, GeoFeature.TYPE_POLYGON );
+            put( null, 0 );
+        }
+    };
 
     @Autowired
     private AnalyticsService analyticsService;
@@ -86,9 +88,12 @@ public class GeoFeatureController
     @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
 
-    @RequestMapping( method = RequestMethod.GET, produces = "application/json" )
-    public void getGeoFeatures( 
-        @RequestParam String ou, 
+    @Autowired
+    private RenderService renderService;
+
+    @RequestMapping( method = RequestMethod.GET, produces = { ContextUtils.CONTENT_TYPE_JSON, ContextUtils.CONTENT_TYPE_HTML } )
+    public void getGeoFeaturesJson(
+        @RequestParam String ou,
         @RequestParam( required = false ) DisplayProperty displayProperty,
         @RequestParam Map<String, String> parameters,
         HttpServletRequest request, HttpServletResponse response ) throws IOException
@@ -96,12 +101,37 @@ public class GeoFeatureController
         WebOptions options = new WebOptions( parameters );
         boolean includeGroupSets = "detailed".equals( options.getViewClass() );
 
+        List<GeoFeature> features = getGeoFeatures( ou, displayProperty, request, response, includeGroupSets );
+        if ( features == null ) return;
+
+        renderService.toJson( response.getOutputStream(), features );
+    }
+
+    @RequestMapping( method = RequestMethod.GET, produces = { "application/javascript" } )
+    public void getGeoFeaturesJsonP(
+        @RequestParam String ou,
+        @RequestParam( required = false ) DisplayProperty displayProperty,
+        @RequestParam( defaultValue = "callback" ) String callback,
+        @RequestParam Map<String, String> parameters,
+        HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        WebOptions options = new WebOptions( parameters );
+        boolean includeGroupSets = "detailed".equals( options.getViewClass() );
+
+        List<GeoFeature> features = getGeoFeatures( ou, displayProperty, request, response, includeGroupSets );
+        if ( features == null ) return;
+
+        renderService.toJsonP( response.getOutputStream(), features, callback );
+    }
+
+    private List<GeoFeature> getGeoFeatures( String ou, DisplayProperty displayProperty, HttpServletRequest request, HttpServletResponse response, boolean includeGroupSets )
+    {
         Set<String> set = new HashSet<>();
         set.add( ou );
 
         DataQueryParams params = analyticsService.getFromUrl( set, null, AggregationType.SUM, null, false, false, false, false, false, false, displayProperty, null );
 
-        DimensionalObject dim = params.getDimension( DimensionalObject.ORGUNIT_DIM_ID );       
+        DimensionalObject dim = params.getDimension( DimensionalObject.ORGUNIT_DIM_ID );
 
         List<OrganisationUnit> organisationUnits = NameableObjectUtils.asTypedList( dim.getItems() );
 
@@ -111,7 +141,7 @@ public class GeoFeatureController
 
         if ( !modified )
         {
-            return;
+            return null;
         }
 
         Collection<OrganisationUnitGroupSet> groupSets = includeGroupSets ? organisationUnitGroupService.getAllOrganisationUnitGroupSets() : null;
@@ -131,7 +161,7 @@ public class GeoFeatureController
             feature.setPn( unit.getParent() != null ? unit.getParent().getDisplayName() : null );
             feature.setTy( FEATURE_TYPE_MAP.get( unit.getFeatureType() ) );
             feature.setCo( unit.getCoordinates() );
-            
+
             if ( DisplayProperty.SHORTNAME.equals( params.getDisplayProperty() ) )
             {
                 feature.setNa( unit.getDisplayShortName() );
@@ -158,8 +188,7 @@ public class GeoFeatureController
         }
 
         Collections.sort( features, GeoFeatureTypeComparator.INSTANCE );
-
-        JacksonUtils.toJson( response.getOutputStream(), features );
+        return features;
     }
 
     static class GeoFeatureTypeComparator
