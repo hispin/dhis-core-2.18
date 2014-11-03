@@ -5,15 +5,20 @@ Ext.onReady( function() {
 	// ext config
 	Ext.Ajax.method = 'GET';
 
+    Ext.isIE = function() {
+        return /trident/.test(Ext.userAgent);
+    }();
+
 	// namespace
-	PT = {};
+	ER = {};
 
-	PT.instances = [];
-	PT.i18n = {};
-	PT.isDebug = false;
-	PT.isSessionStorage = ('sessionStorage' in window && window['sessionStorage'] !== null);
+	ER.instances = [];
+	ER.i18n = {};
+	ER.isDebug = false;
+	ER.isSessionStorage = ('sessionStorage' in window && window['sessionStorage'] !== null);
 
-	PT.getCore = function(init) {
+    // core
+	ER.getCore = function(init) {
         var conf = {},
             api = {},
             support = {},
@@ -24,34 +29,30 @@ Ext.onReady( function() {
 		// conf
 		(function() {
 			conf.finals = {
-				url: {
-					path_module: '/dhis-web-pivot/',
-					organisationunitchildren_get: 'getOrganisationUnitChildren.action'
-				},
 				dimension: {
 					data: {
 						value: 'data',
-						name: PT.i18n.data,
+						name: ER.i18n.data || 'Data',
 						dimensionName: 'dx',
 						objectName: 'dx',
 						warning: {
-							filter: '...'//PT.i18n.wm_multiple_filter_ind_de
+							filter: '...'//ER.i18n.wm_multiple_filter_ind_de
 						}
 					},
 					category: {
-						name: PT.i18n.categories,
+						name: ER.i18n.categories || 'Assigned categories',
 						dimensionName: 'co',
 						objectName: 'co',
 					},
 					indicator: {
 						value: 'indicators',
-						name: PT.i18n.indicators,
+						name: ER.i18n.indicators || 'Indicators',
 						dimensionName: 'dx',
 						objectName: 'in'
 					},
 					dataElement: {
 						value: 'dataElements',
-						name: PT.i18n.data_elements,
+						name: ER.i18n.data_elements || 'Data elements',
 						dimensionName: 'dx',
 						objectName: 'de'
 					},
@@ -63,13 +64,13 @@ Ext.onReady( function() {
 					},
 					dataSet: {
 						value: 'dataSets',
-						name: PT.i18n.data_sets,
+						name: ER.i18n.data_sets || 'Data sets',
 						dimensionName: 'dx',
 						objectName: 'ds'
 					},
 					period: {
 						value: 'period',
-						name: PT.i18n.periods,
+						name: ER.i18n.periods || 'Periods',
 						dimensionName: 'pe',
 						objectName: 'pe'
 					},
@@ -77,11 +78,16 @@ Ext.onReady( function() {
 						value: 'periods'
 					},
 					relativePeriod: {
-						value: 'relativePeriods'
+						value: 'relativePeriods',
+						name: ER.i18n.relative_periods
 					},
+                    startEndDate: {
+                        value: 'dates',
+                        name: ER.i18n.start_end_dates
+                    },
 					organisationUnit: {
 						value: 'organisationUnits',
-						name: PT.i18n.organisation_units,
+						name: ER.i18n.organisation_units || 'Organisation units',
 						dimensionName: 'ou',
 						objectName: 'ou'
 					},
@@ -113,42 +119,35 @@ Ext.onReady( function() {
 
 			conf.period = {
 				periodTypes: [
-					{id: 'Daily', name: PT.i18n.daily},
-					{id: 'Weekly', name: PT.i18n.weekly},
-					{id: 'Monthly', name: PT.i18n.monthly},
-					{id: 'BiMonthly', name: PT.i18n.bimonthly},
-					{id: 'Quarterly', name: PT.i18n.quarterly},
-					{id: 'SixMonthly', name: PT.i18n.sixmonthly},
-					{id: 'Yearly', name: PT.i18n.yearly},
-					{id: 'FinancialOct', name: PT.i18n.financial_oct},
-					{id: 'FinancialJuly', name: PT.i18n.financial_july},
-					{id: 'FinancialApril', name: PT.i18n.financial_april}
+					{id: 'Daily', name: ER.i18n.daily},
+					{id: 'Weekly', name: ER.i18n.weekly},
+					{id: 'Monthly', name: ER.i18n.monthly},
+					{id: 'BiMonthly', name: ER.i18n.bimonthly},
+					{id: 'Quarterly', name: ER.i18n.quarterly},
+					{id: 'SixMonthly', name: ER.i18n.sixmonthly},
+					{id: 'Yearly', name: ER.i18n.yearly},
+					{id: 'FinancialOct', name: ER.i18n.financial_oct},
+					{id: 'FinancialJuly', name: ER.i18n.financial_july},
+					{id: 'FinancialApril', name: ER.i18n.financial_april}
 				]
 			};
 
 			conf.layout = {
-				west_width: 424,
-				west_fieldset_width: 416,
-				west_width_padding: 4,
+				west_width: 452,
 				west_fill: 2,
-				west_fill_accordion_indicator: 59,
-				west_fill_accordion_dataelement: 59,
-				west_fill_accordion_dataset: 33,
-				west_fill_accordion_period: 296,
-				west_fill_accordion_organisationunit: 62,
-				west_maxheight_accordion_indicator: 400,
-				west_maxheight_accordion_dataelement: 400,
-				west_maxheight_accordion_dataset: 400,
-				west_maxheight_accordion_period: 513,
-				west_maxheight_accordion_organisationunit: 900,
-				west_maxheight_accordion_group: 340,
-				west_maxheight_accordion_options: 449,
-				west_scrollbarheight_accordion_indicator: 300,
-				west_scrollbarheight_accordion_dataelement: 300,
-				west_scrollbarheight_accordion_dataset: 300,
-				west_scrollbarheight_accordion_period: 450,
-				west_scrollbarheight_accordion_organisationunit: 450,
-				west_scrollbarheight_accordion_group: 300,
+                west_fill_accordion_indicator: 56,
+                west_fill_accordion_dataelement: 59,
+                west_fill_accordion_dataset: 31,
+                west_fill_accordion_period: 307,
+                west_fill_accordion_organisationunit: 58,
+                west_maxheight_accordion_indicator: 450,
+                west_maxheight_accordion_dataset: 350,
+                west_maxheight_accordion_period: 405,
+                west_maxheight_accordion_organisationunit: 500,
+                west_scrollbarheight_accordion_indicator: 300,
+                west_scrollbarheight_accordion_dataset: 250,
+                west_scrollbarheight_accordion_period: 405,
+                west_scrollbarheight_accordion_organisationunit: 350,
 				east_tbar_height: 31,
 				east_gridcolumn_height: 30,
 				form_label_width: 55,
@@ -168,7 +167,7 @@ Ext.onReady( function() {
 				multiselect_fill_reportingrates: 315
 			};
 
-			conf.pivot = {
+			conf.report = {
 				digitGroupSeparator: {
 					'comma': ',',
 					'space': ' '
@@ -184,6 +183,43 @@ Ext.onReady( function() {
 					'large': '13px'
 				}
 			};
+
+            conf.url = {
+                analysisFields: [
+                    '*',
+                    'program[id,name]',
+                    'programStage[id,name]',
+                    'columns[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
+                    'rows[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
+                    'filters[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
+                    '!lastUpdated',
+                    '!href',
+                    '!created',
+                    '!publicAccess',
+                    '!rewindRelativePeriods',
+                    '!userOrganisationUnit',
+                    '!userOrganisationUnitChildren',
+                    '!userOrganisationUnitGrandChildren',
+                    '!externalAccess',
+                    '!access',
+                    '!relativePeriods',
+                    '!columnDimensions',
+                    '!rowDimensions',
+                    '!filterDimensions',
+                    '!user',
+                    '!organisationUnitGroups',
+                    '!itemOrganisationUnitGroups',
+                    '!userGroupAccesses',
+                    '!indicators',
+                    '!dataElements',
+                    '!dataElementOperands',
+                    '!dataElementGroups',
+                    '!dataSets',
+                    '!periods',
+                    '!organisationUnitLevels',
+                    '!organisationUnits'
+                ]
+            };
 		}());
 
 		// api
@@ -206,7 +242,7 @@ Ext.onReady( function() {
 						return;
 					}
 
-					config.id = config.id.replace('.', '-');
+					//config.id = config.id.replace('.', '-');
 
 					return config;
 				}();
@@ -233,21 +269,21 @@ Ext.onReady( function() {
 					if (config.dimension !== conf.finals.dimension.category.objectName) {
 						var records = [];
 
-						if (!Ext.isArray(config.items)) {
-							console.log('Dimension: items is not an array: ' + config);
-							return;
-						}
+						//if (!Ext.isArray(config.items)) {
+							//console.log('Dimension: items is not an array: ' + config);
+							//return;
+						//}
 
-						for (var i = 0; i < config.items.length; i++) {
-							records.push(api.layout.Record(config.items[i]));
-						}
+						//for (var i = 0; i < config.items.length; i++) {
+							//records.push(api.layout.Record(config.items[i]));
+						//}
 
-						config.items = Ext.Array.clean(records);
+						//config.items = Ext.Array.clean(records);
 
-						if (!config.items.length) {
-							console.log('Dimension: has no valid items: ' + config);
-							return;
-						}
+						//if (!config.items.length) {
+							//console.log('Dimension: has no valid items: ' + config);
+							//return;
+						//}
 					}
 
 					return config;
@@ -266,11 +302,21 @@ Ext.onReady( function() {
 
 				// filters: [Dimension]
 
-				// showTotals: boolean (true)
+				// showRowTotals: boolean (true)
 
-				// showSubTotals: boolean (true)
+				// showColTotals: boolean (true)
+
+				// showColSubTotals: boolean (true)
+
+				// showRowSubTotals: boolean (true)
+
+                // showDimensionLabels: boolean (false)
 
 				// hideEmptyRows: boolean (false)
+
+                // countType: string ('events') - 'events', 'tracked_entity_instance'
+
+                // aggregationType: string ('default') - 'default', 'count', 'sum'
 
 				// showHierarchy: boolean (false)
 
@@ -336,19 +382,19 @@ Ext.onReady( function() {
 
 							// Indicators as filter
 							if (layout.filters[i].dimension === dimConf.indicator.objectName) {
-								web.message.alert(PT.i18n.indicators_cannot_be_specified_as_filter || 'Indicators cannot be specified as filter');
+								web.message.alert(ER.i18n.indicators_cannot_be_specified_as_filter || 'Indicators cannot be specified as filter');
 								return;
 							}
 
 							// Categories as filter
 							if (layout.filters[i].dimension === dimConf.category.objectName) {
-								web.message.alert(PT.i18n.categories_cannot_be_specified_as_filter || 'Categories cannot be specified as filter');
+								web.message.alert(ER.i18n.categories_cannot_be_specified_as_filter || 'Categories cannot be specified as filter');
 								return;
 							}
 
 							// Data sets as filter
 							if (layout.filters[i].dimension === dimConf.dataSet.objectName) {
-								web.message.alert(PT.i18n.data_sets_cannot_be_specified_as_filter || 'Data sets cannot be specified as filter');
+								web.message.alert(ER.i18n.data_sets_cannot_be_specified_as_filter || 'Data sets cannot be specified as filter');
 								return;
 							}
 						}
@@ -397,7 +443,7 @@ Ext.onReady( function() {
 
 					// at least one dimension specified as column or row
 					if (!(config.columns || config.rows)) {
-						alert(PT.i18n.at_least_one_dimension_must_be_specified_as_row_or_column);
+						alert(ER.i18n.at_least_one_dimension_must_be_specified_as_row_or_column);
 						return;
 					}
 
@@ -411,10 +457,10 @@ Ext.onReady( function() {
 					}
 
 					// at least one period
-					if (!Ext.Array.contains(objectNames, dimConf.period.objectName)) {
-						alert(PT.i18n.at_least_one_period_must_be_specified_as_column_row_or_filter);
-						return;
-					}
+					//if (!Ext.Array.contains(objectNames, dimConf.period.objectName)) {
+						//alert(ER.i18n.at_least_one_period_must_be_specified_as_column_row_or_filter);
+						//return;
+					//}
 
 					// favorite
 					if (config.id) {
@@ -430,10 +476,25 @@ Ext.onReady( function() {
 					layout.rows = config.rows;
 					layout.filters = config.filters;
 
+                    layout.dataType = Ext.isString(config.dataType) ? config.dataType : 'aggregated_values';
+                    layout.program = config.program;
+                    layout.programStage = config.programStage;
+
+                    // dates
+                    if (config.startDate && config.endDate) {
+                        layout.startDate = config.startDate;
+                        layout.endDate = config.endDate;
+                    }
+
 					// properties
-					layout.showTotals = Ext.isBoolean(config.totals) ? config.totals : (Ext.isBoolean(config.showTotals) ? config.showTotals : true);
-					layout.showSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showSubTotals) ? config.showSubTotals : true);
+					layout.showColTotals = Ext.isBoolean(config.colTotals) ? config.colTotals : (Ext.isBoolean(config.showColTotals) ? config.showColTotals : true);
+					layout.showRowTotals = Ext.isBoolean(config.rowTotals) ? config.rowTotals : (Ext.isBoolean(config.showRowTotals) ? config.showRowTotals : true);
+					layout.showColSubTotals = Ext.isBoolean(config.colSubTotals) ? config.colSubTotals : (Ext.isBoolean(config.showColSubTotals) ? config.showColSubTotals : true);
+					layout.showRowSubTotals = Ext.isBoolean(config.rowSubTotals) ? config.rowSubTotals : (Ext.isBoolean(config.showRowSubTotals) ? config.showRowSubTotals : true);
+					layout.showDimensionLabels = Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : (Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : true);
 					layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false;
+					layout.countType = Ext.isString(config.countType) && !Ext.isEmpty(config.countType) ? config.countType : 'events';
+                    layout.aggregationType = Ext.isString(config.aggregationType) ? config.aggregationType : 'default';
 
 					layout.showHierarchy = Ext.isBoolean(config.showHierarchy) ? config.showHierarchy : false;
 
@@ -444,7 +505,7 @@ Ext.onReady( function() {
 
 					layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : null;
 
-					layout.sorting = Ext.isObject(config.sorting) && Ext.isString(config.sorting.id) && Ext.isString(config.sorting.direction) ? config.sorting : null;
+					layout.sorting = Ext.isObject(config.sorting) && Ext.isDefined(config.sorting.id) && Ext.isString(config.sorting.direction) ? config.sorting : null;
 
 					layout.reportingPeriod = Ext.isObject(config.reportParams) && Ext.isBoolean(config.reportParams.paramReportingPeriod) ? config.reportParams.paramReportingPeriod : (Ext.isBoolean(config.reportingPeriod) ? config.reportingPeriod : false);
 					layout.organisationUnit =  Ext.isObject(config.reportParams) && Ext.isBoolean(config.reportParams.paramOrganisationUnit) ? config.reportParams.paramOrganisationUnit : (Ext.isBoolean(config.organisationUnit) ? config.organisationUnit : false);
@@ -555,18 +616,24 @@ Ext.onReady( function() {
 			};
 
 			support.prototype.array.sort = function(array, direction, key) {
-				// accepts [number], [string], [{key: number}], [{key: string}]
+				// supports [number], [string], [{key: number}], [{key: string}], [[string]], [[number]]
 
 				if (!support.prototype.array.getLength(array)) {
 					return;
 				}
 
-				key = key || 'name';
+				key = !!key || Ext.isNumber(key) ? key : 'name';
 
 				array.sort( function(a, b) {
 
 					// if object, get the property values
-					if (Ext.isObject(a) && Ext.isObject(b) && key) {
+					if (Ext.isObject(a) && Ext.isObject(b)) {
+						a = a[key];
+						b = b[key];
+					}
+
+					// if array, get from the right index
+					if (Ext.isArray(a) && Ext.isArray(b)) {
 						a = a[key];
 						b = b[key];
 					}
@@ -595,7 +662,100 @@ Ext.onReady( function() {
 				return array;
 			};
 
-				// object
+            support.prototype.array.uniqueByProperty = function(array, property) {
+                var names = [],
+                    uniqueItems = [];
+
+                for (var i = 0, item; i < array.length; i++) {
+                    item = array[i];
+
+                    if (!Ext.Array.contains(names, item[property])) {
+                        uniqueItems.push(item);
+                        names.push(item[property]);
+                    }
+                }
+
+                return uniqueItems;
+            };
+
+            support.prototype.array.getNameById = function(array, value, idProperty, nameProperty) {
+                if (!(Ext.isArray(array) && value)) {
+                    return;
+                }
+
+                idProperty = idProperty || 'id';
+                nameProperty = nameProperty || 'name';
+
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i][idProperty] === value) {
+                        return array[i][nameProperty];
+                    }
+                }
+
+                return;
+            };
+
+            support.prototype.array.cleanFalsy = function(array) {
+                if (!Ext.isArray(array)) {
+                    return [];
+                }
+
+                if (!array.length) {
+                    return array;
+                }
+
+                for (var i = 0; i < array.length; i++) {
+                    array[i] = array[i] || null;
+                }
+
+                var a = Ext.clean(array);
+                array = null;
+
+                return a;
+            };
+
+            support.prototype.array.pluckIf = function(array, pluckProperty, valueProperty, value, type) {
+                var a = [];
+
+                if (!(Ext.isArray(array) && array.length)) {
+                    return a;
+                }
+
+                pluckProperty = pluckProperty || 'name';
+                valueProperty = valueProperty || pluckProperty;
+
+                for (var i = 0; i < array.length; i++) {
+                    if (Ext.isDefined(type) && typeof array[i][valueProperty] === type) {
+                        a.push(array[i][pluckProperty]);
+                    }
+                    else if (Ext.isDefined(value) && array[i][valueProperty] === value) {
+                        a.push(array[i][pluckProperty]);
+                    }
+                }
+
+                return a;
+            };
+
+            support.prototype.array.getObjectMap = function(array, idProperty, nameProperty, namePrefix) {
+                if (!(Ext.isArray(array) && array.length)) {
+                    return {};
+                }
+
+                var o = {};
+                idProperty = idProperty || 'id';
+                nameProperty = nameProperty || 'name';
+                namePrefix = namePrefix || '';
+
+                for (var i = 0, obj; i < array.length; i++) {
+                    obj = array[i];
+
+                    o[namePrefix + obj[idProperty]] = obj[nameProperty];
+                }
+
+                return o;
+            };
+
+                // object
 			support.prototype.object = {};
 
 			support.prototype.object.getLength = function(object, suppressWarning) {
@@ -672,7 +832,7 @@ Ext.onReady( function() {
 					return number;
 				}
 
-				return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, conf.pivot.digitGroupSeparator[separator]);
+				return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, conf.report.digitGroupSeparator[separator]);
 			};
 
 			// color
@@ -798,15 +958,24 @@ Ext.onReady( function() {
 					name = '';
 
 				if (service.layout.isHierarchy(layout, response, id)) {
-					var a = Ext.Array.clean(metaData.ouHierarchy[id].split('/'));
+					var a = metaData.names[id].split('/');
+
+                    if (a.length === 1) {
+                        return a[0];
+                    }
+
 					a.shift();
 
-					for (var i = 0; i < a.length; i++) {
-						name += (isHtml ? '<span class="text-weak">' : '') + metaData.names[a[i]] + (isHtml ? '</span>' : '') + ' / ';
+					for (var i = 0, isLast; i < a.length; i++) {
+						isLast = !!(i === a.length - 1);
+
+						name += (isHtml && !isLast ? '<span class="text-weak">' : '') + a[i] + (isHtml && !isLast ? '</span>' : '') + (!isLast ? ' / ' : '');
 					}
+
+					return name;
 				}
 
-				name += metaData.names[id];
+				name += metaData.optionNames[id] || metaData.names[id];
 
 				return name;
 			};
@@ -857,16 +1026,18 @@ Ext.onReady( function() {
 					dimensionNameIdsMap: {},
 
 						// for param string
-					dimensionNameSortedIdsMap: {},
+					dimensionNameSortedIdsMap: {}
 
 					// sort table by column
-					sortableIdObjects: []
+					//sortableIdObjects: []
 				};
 
 				Ext.applyIf(xLayout, layout);
 
 				// columns, rows, filters
 				if (layout.columns) {
+                    //layout.columns = support.prototype.array.uniqueByProperty(layout.columns, 'dimension');
+
 					for (var i = 0, dim, items, xDim; i < layout.columns.length; i++) {
 						dim = layout.columns[i];
 						items = dim.items;
@@ -874,11 +1045,13 @@ Ext.onReady( function() {
 
 						xDim.dimension = dim.dimension;
 						xDim.objectName = dim.dimension;
-						xDim.dimensionName = dimConf.objectNameMap[dim.dimension].dimensionName;
+						xDim.dimensionName = dimConf.objectNameMap.hasOwnProperty(dim.dimension) ? dimConf.objectNameMap[dim.dimension].dimensionName || dim.dimension : dim.dimension;
+
+						xDim.items = [];
+						xDim.ids = [];
 
 						if (items) {
 							xDim.items = items;
-							xDim.ids = [];
 
 							for (var j = 0; j < items.length; j++) {
 								xDim.ids.push(items[j].id);
@@ -892,7 +1065,7 @@ Ext.onReady( function() {
 
 						xLayout.axisDimensions.push(xDim);
 						xLayout.axisObjectNames.push(xDim.objectName);
-						xLayout.axisDimensionNames.push(dimConf.objectNameMap[xDim.objectName].dimensionName);
+						xLayout.axisDimensionNames.push(dimConf.objectNameMap.hasOwnProperty(xDim.objectName) ? dimConf.objectNameMap[xDim.objectName].dimensionName || xDim.objectName : xDim.objectName);
 
 						xLayout.objectNameDimensionsMap[xDim.objectName] = xDim;
 						xLayout.objectNameItemsMap[xDim.objectName] = xDim.items;
@@ -901,6 +1074,8 @@ Ext.onReady( function() {
 				}
 
 				if (layout.rows) {
+                    //layout.rows = support.prototype.array.uniqueByProperty(layout.rows, 'dimension');
+
 					for (var i = 0, dim, items, xDim; i < layout.rows.length; i++) {
 						dim = Ext.clone(layout.rows[i]);
 						items = dim.items;
@@ -908,11 +1083,13 @@ Ext.onReady( function() {
 
 						xDim.dimension = dim.dimension;
 						xDim.objectName = dim.dimension;
-						xDim.dimensionName = dimConf.objectNameMap[dim.dimension].dimensionName;
+						xDim.dimensionName = dimConf.objectNameMap.hasOwnProperty(dim.dimension) ? dimConf.objectNameMap[dim.dimension].dimensionName || dim.dimension : dim.dimension;
+
+						xDim.items = [];
+						xDim.ids = [];
 
 						if (items) {
 							xDim.items = items;
-							xDim.ids = [];
 
 							for (var j = 0; j < items.length; j++) {
 								xDim.ids.push(items[j].id);
@@ -926,7 +1103,7 @@ Ext.onReady( function() {
 
 						xLayout.axisDimensions.push(xDim);
 						xLayout.axisObjectNames.push(xDim.objectName);
-						xLayout.axisDimensionNames.push(dimConf.objectNameMap[xDim.objectName].dimensionName);
+						xLayout.axisDimensionNames.push(dimConf.objectNameMap.hasOwnProperty(xDim.objectName) ? dimConf.objectNameMap[xDim.objectName].dimensionName || xDim.objectName : xDim.objectName);
 
 						xLayout.objectNameDimensionsMap[xDim.objectName] = xDim;
 						xLayout.objectNameItemsMap[xDim.objectName] = xDim.items;
@@ -935,6 +1112,8 @@ Ext.onReady( function() {
 				}
 
 				if (layout.filters) {
+                    //layout.filters = support.prototype.array.uniqueByProperty(layout.filters, 'dimension');
+
 					for (var i = 0, dim, items, xDim; i < layout.filters.length; i++) {
 						dim = layout.filters[i];
 						items = dim.items;
@@ -942,11 +1121,13 @@ Ext.onReady( function() {
 
 						xDim.dimension = dim.dimension;
 						xDim.objectName = dim.dimension;
-						xDim.dimensionName = dimConf.objectNameMap[dim.dimension].dimensionName;
+						xDim.dimensionName = dimConf.objectNameMap.hasOwnProperty(dim.dimension) ? dimConf.objectNameMap[dim.dimension].dimensionName || dim.dimension : dim.dimension;
+
+						xDim.items = [];
+						xDim.ids = [];
 
 						if (items) {
 							xDim.items = items;
-							xDim.ids = [];
 
 							for (var j = 0; j < items.length; j++) {
 								xDim.ids.push(items[j].id);
@@ -957,7 +1138,7 @@ Ext.onReady( function() {
 
 						xLayout.filterDimensions.push(xDim);
 						xLayout.filterObjectNames.push(xDim.objectName);
-						xLayout.filterDimensionNames.push(dimConf.objectNameMap[xDim.objectName].dimensionName);
+						xLayout.filterDimensionNames.push(dimConf.objectNameMap.hasOwnProperty(xDim.objectName) ? dimConf.objectNameMap[xDim.objectName].dimensionName || xDim.objectName : xDim.objectName);
 
 						xLayout.objectNameDimensionsMap[xDim.objectName] = xDim;
 						xLayout.objectNameItemsMap[xDim.objectName] = xDim.items;
@@ -968,7 +1149,7 @@ Ext.onReady( function() {
 				// legend set
 				xLayout.legendSet = layout.legendSet ? init.idLegendSetMap[layout.legendSet.id] : null;
 
-				if (layout.legendSet) {
+				if (layout.legendSet && layout.legendSet.mapLegends) {
 					xLayout.legendSet = init.idLegendSetMap[layout.legendSet.id];
 					support.prototype.array.sort(xLayout.legendSet.mapLegends, 'ASC', 'startValue');
 				}
@@ -1020,10 +1201,11 @@ Ext.onReady( function() {
 				return xLayout;
 			};
 
-			service.layout.getSyncronizedXLayout = function(xLayout, response) {
+			service.layout.getSyncronizedXLayout = function(layout, xLayout, xResponse) {
 				var removeDimensionFromXLayout,
 					getHeaderNames,
-					dimensions = Ext.Array.clean([].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || []));
+					dimensions = Ext.Array.clean([].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || [])),
+                    originalDimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || []));
 
 				removeDimensionFromXLayout = function(objectName) {
 					var getUpdatedAxis;
@@ -1059,168 +1241,80 @@ Ext.onReady( function() {
 				getHeaderNames = function() {
 					var headerNames = [];
 
-					for (var i = 0; i < response.headers.length; i++) {
-						headerNames.push(response.headers[i].name);
+					for (var i = 0; i < xResponse.headers.length; i++) {
+						headerNames.push(xResponse.headers[i].name);
 					}
 
 					return headerNames;
 				};
 
-				return function() {
-					var headerNames = getHeaderNames(),
-						xOuDimension = xLayout.objectNameDimensionsMap[dimConf.organisationUnit.objectName],
-						isUserOrgunit = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT'),
-						isUserOrgunitChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_CHILDREN'),
-						isUserOrgunitGrandChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_GRANDCHILDREN'),
-						isLevel = function() {
-							if (xOuDimension && Ext.isArray(xOuDimension.ids)) {
-								for (var i = 0; i < xOuDimension.ids.length; i++) {
-									if (xOuDimension.ids[i].substr(0,5) === 'LEVEL') {
-										return true;
-									}
-								}
-							}
+                // items
+                for (var i = 0, dim, header; i < dimensions.length; i++) {
+                    dim = dimensions[i];
+                    dim.items = [];
+                    header = xResponse.nameHeaderMap[dim.dimension];
+                    optionMap = {};
 
-							return false;
-						}(),
-						isGroup = function() {
-							if (xOuDimension && Ext.isArray(xOuDimension.ids)) {
-								for (var i = 0; i < xOuDimension.ids.length; i++) {
-									if (xOuDimension.ids[i].substr(0,8) === 'OU_GROUP') {
-										return true;
-									}
-								}
-							}
+                    if (header) {
+                        for (var j = 0, id; j < header.ids.length; j++) {
+                            id = header.ids[j];
+// TODO, items used?
+                            dim.items.push({
+                                id: id,
+                                name: xResponse.metaData.optionNames[id] || xResponse.metaData.names[id] || id
+                            });
+                        }
+                    }
+                }
 
-							return false;
-						}(),
-						co = dimConf.category.objectName,
-						ou = dimConf.organisationUnit.objectName,
-						layout;
+                // restore order for options
+                for (var i = 0, orgDim; i < originalDimensions.length; i++) {
+                    orgDim = originalDimensions[i];
 
-					// Set items from init/metaData/xLayout
-					for (var i = 0, dim, metaDataDim, items; i < dimensions.length; i++) {
-						dim = dimensions[i];
-						dim.items = [];
-						metaDataDim = response.metaData[dim.objectName];
+                    // if sorting and row dim, dont restore order
+                    if (layout.sorting && Ext.Array.contains(xLayout.rowDimensionNames, orgDim.dimension)) {
+                        continue;
+                    }
 
-						// If ou and children
-						if (dim.dimensionName === ou) {
-							if (isUserOrgunit || isUserOrgunitChildren || isUserOrgunitGrandChildren) {
-								var userOu,
-									userOuc,
-									userOugc;
+                    if (Ext.isString(orgDim.filter)) {
+                        var a = orgDim.filter.split(':');
 
-								if (isUserOrgunit) {
-									userOu = [{
-										id: init.user.ou,
-										name: service.layout.getItemName(xLayout, response, init.user.ou, false)
-									}];
-								}
-								if (isUserOrgunitChildren) {
-									userOuc = [];
+                        if (a[0] === 'IN' && a.length > 1 && Ext.isString(a[1])) {
+                            var options = a[1].split(';');
 
-									for (var j = 0; j < init.user.ouc.length; j++) {
-										userOuc.push({
-											id: init.user.ouc[j],
-											name: service.layout.getItemName(xLayout, response, init.user.ouc[j], false)
-										});
-									}
+                            for (var j = 0, dim, items; j < dimensions.length; j++) {
+                                dim = dimensions[j];
 
-									support.prototype.array.sort(userOuc);
-								}
-								if (isUserOrgunitGrandChildren) {
-									var userOuOuc = [].concat(init.user.ou, init.user.ouc),
-										responseOu = response.metaData[ou];
+                                if (dim.dimension === orgDim.dimension && dim.items && dim.items.length) {
+                                    items = [];
 
-									userOugc = [];
+                                    for (var k = 0, option; k < options.length; k++) {
+                                        option = options[k];
 
-									for (var j = 0, id; j < responseOu.length; j++) {
-										id = responseOu[j];
+                                        for (var l = 0, item; l < dim.items.length; l++) {
+                                            item = dim.items[l];
+                                            if (item.id === option || item.id === (dim.dimension + option)) {
+                                                items.push(item);
+                                            }
+                                        }
+                                    }
 
-										if (!Ext.Array.contains(userOuOuc, id)) {
-											userOugc.push({
-												id: id,
-												name: service.layout.getItemName(xLayout, response, id, false)
-											});
-										}
-									}
+                                    dim.items = items;
+                                }
+                            }
+                        }
+                    }
+                }
 
-									support.prototype.array.sort(userOugc);
-								}
+                // Re-layout
+                layout = api.layout.Layout(xLayout);
 
-								dim.items = [].concat(userOu || [], userOuc || [], userOugc || []);
-							}
-							else if (isLevel || isGroup) {
-								for (var j = 0, responseOu = response.metaData[ou], id; j < responseOu.length; j++) {
-									id = responseOu[j];
-
-									dim.items.push({
-										id: id,
-										name: service.layout.getItemName(xLayout, response, id, false)
-									});
-								}
-
-								support.prototype.array.sort(dim.items);
-							}
-							else {
-								dim.items = Ext.clone(xLayout.dimensionNameItemsMap[dim.dimensionName]);
-							}
-						}
-						else {
-							// Items: get ids from metadata -> items
-							if (Ext.isArray(metaDataDim) && metaDataDim.length) {
-								var ids = Ext.clone(response.metaData[dim.dimensionName]);
-								for (var j = 0; j < ids.length; j++) {
-									dim.items.push({
-										id: ids[j],
-										name: response.metaData.names[ids[j]]
-									});
-								}
-							}
-							// Items: get items from xLayout
-							else {
-								dim.items = Ext.clone(xLayout.objectNameItemsMap[dim.objectName]);
-							}
-						}
-					}
-
-					// Remove dimensions from layout that do not exist in response
-					for (var i = 0, dimensionName; i < xLayout.axisDimensionNames.length; i++) {
-						dimensionName = xLayout.axisDimensionNames[i];
-						if (!Ext.Array.contains(headerNames, dimensionName)) {
-							removeDimensionFromXLayout(dimensionName);
-						}
-					}
-
-					// Re-layout
-					layout = api.layout.Layout(xLayout);
-
-					if (layout) {
-						dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || []));
-
-						for (var i = 0, idNameMap = response.metaData.names, dimItems; i < dimensions.length; i++) {
-							dimItems = dimensions[i].items;
-
-							if (Ext.isArray(dimItems) && dimItems.length) {
-								for (var j = 0, item; j < dimItems.length; j++) {
-									item = dimItems[j];
-
-									if (Ext.isObject(item) && Ext.isString(idNameMap[item.id]) && !Ext.isString(item.name)) {
-										item.name = idNameMap[item.id] || '';
-									}
-								}
-							}
-						}
-
-						return service.layout.getExtendedLayout(layout);
-					}
-
-					return null;
-				}();
+                if (layout) {
+                    return service.layout.getExtendedLayout(layout);
+                }
 			};
 
-			service.layout.getExtendedAxis = function(xLayout, xResponse, type) {
+			service.layout.getExtendedAxis = function(xLayout, type) {
 				var dimensionNames,
 					spanType,
 					aDimensions = [],
@@ -1265,7 +1359,7 @@ Ext.onReady( function() {
 					var a = [];
 
 					for (var i = 0; i < aDimensions.length; i++) {
-						a.push(xResponse.nameHeaderMap[aDimensions[i].dimensionName].ids);
+						a.push(xLayout.dimensionNameIdsMap[aDimensions[i].dimensionName]);
 					}
 
 					return a;
@@ -1397,10 +1491,13 @@ Ext.onReady( function() {
 				}
 
 				// add span and children
-				for (var i = 0; i < aaAllFloorObjects.length; i++) {
+				for (var i = 0, aAboveFloorObjects, doorIds, uniqueDoorIds; i < aaAllFloorObjects.length; i++) {
+                    doorIds = [];
+
 					for (var j = 0, obj, doorCount = 0, oldestObj; j < aaAllFloorObjects[i].length; j++) {
 
 						obj = aaAllFloorObjects[i][j];
+                        doorIds.push(obj.id);
 
 						if (doorCount === 0) {
 
@@ -1408,8 +1505,9 @@ Ext.onReady( function() {
 							obj[spanType] = aFloorSpan[i];
 
 							// children
-							//obj.children = Ext.isDefined(aFloorSpan[i + 1]) ? aFloorSpan[i] / aFloorSpan[i + 1] : 0;
-							obj.children = obj.leaf ? 0 : aFloorSpan[i];
+                            if (obj.leaf) {
+                                obj.children = 0;
+                            }
 
 							// first sibling
 							obj.oldest = true;
@@ -1429,16 +1527,26 @@ Ext.onReady( function() {
 							doorCount = 0;
 						}
 					}
+
+                    // set above floor door children to number of unique door ids on this floor
+                    if (i > 0) {
+                        aAboveFloorObjects = aaAllFloorObjects[i-1];
+                        uniqueDoorIds = Ext.Array.unique(doorIds);
+
+                        for (var j = 0; j < aAboveFloorObjects.length; j++) {
+                            aAboveFloorObjects[j].children = uniqueDoorIds.length;
+                        }
+                    }
 				}
 
 				// add parents if more than 1 floor
 				if (nAxisHeight > 1) {
-					for (var i = 1, allFloor; i < nAxisHeight; i++) {
-						allFloor = aaAllFloorObjects[i];
+					for (var i = 1, aAllFloor; i < nAxisHeight; i++) {
+						aAllFloor = aaAllFloorObjects[i];
 
-						//for (var j = 0, obj, doorCount = 0, span = aFloorSpan[i - 1], parentObj = aaAllFloorObjects[i - 1][0]; j < allFloor.length; j++) {
-						for (var j = 0, doorCount = 0, span = aFloorSpan[i - 1]; j < allFloor.length; j++) {
-							allFloor[j].parent = aaAllFloorObjects[i - 1][j];
+						//for (var j = 0, obj, doorCount = 0, span = aFloorSpan[i - 1], parentObj = aaAllFloorObjects[i - 1][0]; j < aAllFloor.length; j++) {
+						for (var j = 0, doorCount = 0, span = aFloorSpan[i - 1]; j < aAllFloor.length; j++) {
+							aAllFloor[j].parent = aaAllFloorObjects[i - 1][j];
 
 							//doorCount++;
 
@@ -1454,11 +1562,11 @@ Ext.onReady( function() {
 				if (aaAllFloorObjects.length) {
 
 					// set span to second lowest span number: if aFloorSpan == [15,3,15,1], set span to 3
-					var span = nAxisHeight > 1 ? support.prototype.array.sort(Ext.clone(aFloorSpan))[1] : nAxisWidth,
-						allFloorObjectsLast = aaAllFloorObjects[aaAllFloorObjects.length - 1];
+					var nSpan = nAxisHeight > 1 ? support.prototype.array.sort(Ext.clone(aFloorSpan))[1] : nAxisWidth,
+						aAllFloorObjectsLast = aaAllFloorObjects[aaAllFloorObjects.length - 1];
 
-					for (var i = 0, leaf, parentUuids, obj, leafUuids = []; i < allFloorObjectsLast.length; i++) {
-						leaf = allFloorObjectsLast[i];
+					for (var i = 0, leaf, parentUuids, obj, leafUuids = []; i < aAllFloorObjectsLast.length; i++) {
+						leaf = aAllFloorObjectsLast[i];
 						leafUuids.push(leaf.uuid);
 						parentUuids = [];
 						obj = leaf;
@@ -1473,9 +1581,9 @@ Ext.onReady( function() {
 						leaf.uuids = Ext.clone(parentUuids);
 
 						// add uuid for all leaves
-						if (leafUuids.length === span) {
-							for (var j = (i - span) + 1, leaf; j <= i; j++) {
-								leaf = allFloorObjectsLast[j];
+						if (leafUuids.length === nSpan) {
+							for (var j = (i - nSpan) + 1, leaf; j <= i; j++) {
+								leaf = aAllFloorObjectsLast[j];
 								leaf.uuids = leaf.uuids.concat(Ext.clone(leafUuids));
 							}
 
@@ -1518,9 +1626,33 @@ Ext.onReady( function() {
 				return layout.showHierarchy && Ext.isObject(response.metaData.ouHierarchy) && response.metaData.ouHierarchy.hasOwnProperty(id);
 			};
 
-			service.layout.layout2plugin = function(layout) {
+            service.layout.getHierarchyName = function(ouHierarchy, names, id) {
+                var graph = ouHierarchy[id],
+                    ids = Ext.Array.clean(graph.split('/')),
+                    hierarchyName = '';
+
+                if (ids.length < 2) {
+                    return names[id];
+                }
+
+                for (var i = 0; i < ids.length; i++) {
+                    hierarchyName += names[ids[i]] + ' / ';
+                }
+
+                hierarchyName += names[id];
+
+                return hierarchyName;
+            };
+
+			service.layout.layout2plugin = function(layout, el) {
 				var layout = Ext.clone(layout),
 					dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || []));
+
+				layout.url = init.contextPath;
+
+				if (el) {
+					layout.el = el;
+				}
 
 				if (Ext.isString(layout.id)) {
 					return {id: layout.id};
@@ -1542,6 +1674,7 @@ Ext.onReady( function() {
 						delete item.code;
 						delete item.created;
 						delete item.lastUpdated;
+						delete item.value;
 					}
 				}
 
@@ -1593,91 +1726,211 @@ Ext.onReady( function() {
 				return layout;
 			};
 
+            service.layout.getDataDimensionsFromLayout = function(layout) {
+                var dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || [])),
+                    ignoreKeys = ['pe', 'ou'],
+                    dataDimensions = [];
+
+                for (var i = 0; i < dimensions.length; i++) {
+                    if (!Ext.Array.contains(ignoreKeys, dimensions[i].dimension)) {
+                        dataDimensions.push(dimensions[i]);
+                    }
+                }
+
+                return dataDimensions;
+            };
+
 			// response
 			service.response = {};
 
-			service.response.getExtendedResponse = function(xLayout, response) {
-				var ids = [];
+				// aggregate
+			service.response.aggregate = {};
 
+			service.response.aggregate.getExtendedResponse = function(xLayout, response) {
+				var emptyId = '[N/A]',
+                    meta = ['ou', 'pe'],
+                    ouHierarchy,
+                    names,
+					headers;
+
+				response = Ext.clone(response);
+				headers = response.headers;
+                ouHierarchy = response.metaData.ouHierarchy,
+                names = response.metaData.names;
+                names[emptyId] = emptyId;
+
+                response.metaData.optionNames = {};
 				response.nameHeaderMap = {};
 				response.idValueMap = {};
 
-				// extend headers
-				(function() {
+				// add to headers: size, index, response ids
+				for (var i = 0, header, isMeta; i < headers.length; i++) {
+					header = headers[i];
+                    header.ids = [];
+                    isMeta = Ext.Array.contains(meta, header.name);
 
-					// extend headers: index, ids, size
-					for (var i = 0, header; i < response.headers.length; i++) {
-						header = response.headers[i];
+                    // overwrite row ids, update metadata, set unique header ids
+                    if (header.meta) {
+                        if (header.type === 'java.lang.Double') {
+                            var objects = [];
 
-						// index
-						header.index = i;
+                            for (var j = 0, id, fullId, parsedId, displayId; j < response.rows.length; j++) {
+                                id = response.rows[j][i] || emptyId;
+                                fullId = header.name + id;
+                                parsedId = parseFloat(id);
 
-						if (header.meta) {
+                                displayId = Ext.isNumber(parsedId) ? parsedId : (names[id] || id);
 
-							// ids
-							header.ids = Ext.clone(xLayout.dimensionNameIdsMap[header.name]) || [];
+								// update names
+                                names[fullId] = (isMeta ? '' : header.column + ' ') + displayId;
 
-							// size
-							header.size = header.ids.length;
+								// update rows
+                                response.rows[j][i] = fullId;
 
-							// collect ids, used by extendMetaData
-							ids = ids.concat(header.ids);
-						}
+								// number sorting
+                                objects.push({
+                                    id: fullId,
+                                    sortingId: Ext.isNumber(parsedId) ? parsedId : Number.MAX_VALUE
+                                });
+                            }
+
+                            support.prototype.array.sort(objects, 'ASC', 'sortingId');
+                            header.ids = Ext.Array.pluck(objects, 'id');
+                        }
+                        else {
+							var objects = [];
+
+                            for (var j = 0, id, fullId, name, isHierarchy; j < response.rows.length; j++) {
+                                id = response.rows[j][i] || emptyId;
+                                fullId = header.name + id;
+                                isHierarchy = service.layout.isHierarchy(xLayout, response, id);
+
+                                // add dimension name prefix if not pe/ou
+                                name = isMeta ? '' : header.column + ' ';
+
+                                // add hierarchy if ou and showHierarchy
+                                name = isHierarchy ? service.layout.getHierarchyName(ouHierarchy, names, id) : (names[id] || id);
+
+                                names[fullId] = name;
+
+                                // update rows
+                                response.rows[j][i] = fullId;
+
+                                // update ou hierarchy
+                                if (isHierarchy) {
+									ouHierarchy[fullId] = ouHierarchy[id];
+								}
+
+								objects.push({
+									id: fullId,
+									sortingId: header.name === 'pe' ? fullId : name
+								});
+                            }
+
+                            support.prototype.array.sort(objects, 'ASC', 'sortingId');
+                            header.ids = Ext.Array.pluck(objects, 'id');
+                        }
+                    }
+
+					header.ids = Ext.Array.unique(header.ids);
+
+					header.size = header.ids.length;
+					header.index = i;
+
+					response.nameHeaderMap[header.name] = header;
+				}
+
+				// idValueMap: vars
+				var valueHeaderIndex = response.nameHeaderMap[conf.finals.dimension.value.value].index,
+					dx = dimConf.data.dimensionName,
+					axisDimensionNames = xLayout.axisDimensionNames,
+					idIndexOrder = [];
+
+				// idValueMap: idIndexOrder
+				for (var i = 0; i < axisDimensionNames.length; i++) {
+					idIndexOrder.push(response.nameHeaderMap[axisDimensionNames[i]].index);
+				}
+
+				// idValueMap
+				for (var i = 0, row, id; i < response.rows.length; i++) {
+					row = response.rows[i];
+					id = '';
+
+					for (var j = 0; j < idIndexOrder.length; j++) {
+						id += row[idIndexOrder[j]];
 					}
 
-					// nameHeaderMap (headerName: header)
-					for (var i = 0, header; i < response.headers.length; i++) {
-						header = response.headers[i];
-
-						response.nameHeaderMap[header.name] = header;
-					}
-				}());
-
-				// extend metadata
-				(function() {
-					for (var i = 0, id, splitId ; i < ids.length; i++) {
-						id = ids[i];
-
-						if (id.indexOf('-') !== -1) {
-							splitId = id.split('-');
-							response.metaData.names[id] = response.metaData.names[splitId[0]] + ' ' + response.metaData.names[splitId[1]];
-						}
-					}
-				}());
-
-				// create value id map
-				(function() {
-					var valueHeaderIndex = response.nameHeaderMap[conf.finals.dimension.value.value].index,
-						coHeader = response.nameHeaderMap[conf.finals.dimension.category.dimensionName],
-						dx = dimConf.data.dimensionName,
-						co = dimConf.category.dimensionName,
-						axisDimensionNames = xLayout.axisDimensionNames,
-						idIndexOrder = [];
-
-					// idIndexOrder
-					for (var i = 0; i < axisDimensionNames.length; i++) {
-						idIndexOrder.push(response.nameHeaderMap[axisDimensionNames[i]].index);
-
-						// If co exists in response and is not added in layout, add co after dx
-						if (coHeader && !Ext.Array.contains(axisDimensionNames, co) && axisDimensionNames[i] === dx) {
-							idIndexOrder.push(coHeader.index);
-						}
-					}
-
-					// idValueMap
-					for (var i = 0, row, id; i < response.rows.length; i++) {
-						row = response.rows[i];
-						id = '';
-
-						for (var j = 0; j < idIndexOrder.length; j++) {
-							id += row[idIndexOrder[j]];
-						}
-
-						response.idValueMap[id] = row[valueHeaderIndex];
-					}
-				}());
+					response.idValueMap[id] = row[valueHeaderIndex];
+				}
 
 				return response;
+			};
+
+				// query
+			service.response.query = {};
+
+			service.response.query.getExtendedResponse = function(layout, response) {
+				var xResponse = Ext.clone(response),
+					metaData = xResponse.metaData,
+                    dimensionNames = Ext.Array.unique(Ext.Array.pluck(layout.columns, 'dimension')),
+                    dimensionHeaders = [],
+					headers = xResponse.headers,
+					nameHeaderMap = {},
+                    nameMap = {},
+                    ouIndex;
+
+                nameMap['pe'] = 'eventdate';
+                nameMap['ou'] = 'ouname';
+
+                // get ou index
+                for (var i = 0, header; i < headers.length; i++) {
+					if (headers[i].name === 'ou') {
+						ouIndex = i;
+						break;
+					}
+				}
+
+				// update rows
+				for (var i = 0, header; i < headers.length; i++) {
+					header = headers[i];
+					header.index = i;
+
+					nameHeaderMap[header.name] = header;
+
+					if (header.type === 'java.lang.Double') {
+						for (var j = 0, value; j < xResponse.rows.length; j++) {
+                            value = xResponse.rows[j][i];
+							xResponse.rows[j][i] = value ? parseFloat(value) : value;
+						}
+					}
+
+					if (header.name === 'eventdate') {
+						for (var j = 0; j < xResponse.rows.length; j++) {
+							xResponse.rows[j][i] = xResponse.rows[j][i].substr(0,10);
+						}
+					}
+
+					// TODO, using descendants -> missing orgunits in ouHierarchy
+
+					//else if (header.name === 'ouname' && layout.showHierarchy && metaData.ouHierarchy) {
+						//for (var j = 0, ouId; j < xResponse.rows.length; j++) {
+							//ouId = xResponse.rows[j][ouIndex];
+							//xResponse.rows[j][i] = service.layout.getHierarchyName(metaData.ouHierarchy, metaData.names, ouId);
+						//}
+					//}
+				}
+
+				// dimension headers
+                for (var i = 0, name; i < dimensionNames.length; i++) {
+                    name = nameMap[dimensionNames[i]] || dimensionNames[i];
+
+                    dimensionHeaders.push(nameHeaderMap[name]);
+                }
+
+				xResponse.dimensionHeaders = dimensionHeaders;
+				xResponse.nameHeaderMap = nameHeaderMap;
+
+				return xResponse;
 			};
 		}());
 
@@ -1695,14 +1948,14 @@ Ext.onReady( function() {
 
 				message = message || 'Loading..';
 
-				if (Ext.isObject(component.mask) && component.mask.destroy) {
+				if (component.mask && component.mask.destroy) {
 					component.mask.destroy();
 					component.mask = null;
 				}
 
 				component.mask = new Ext.create('Ext.LoadMask', component, {
 					shadow: false,
-					message: message,
+					msg: message,
 					style: 'box-shadow:0',
 					bodyStyle: 'box-shadow:0'
 				});
@@ -1732,63 +1985,108 @@ Ext.onReady( function() {
 			// analytics
 			web.analytics = {};
 
-			web.analytics.getParamString = function(xLayout, isSorted) {
-				var axisDimensionNames = isSorted ? xLayout.sortedAxisDimensionNames : xLayout.axisDimensionNames,
-					filterDimensions = isSorted ? xLayout.sortedFilterDimensions : xLayout.filterDimensions,
-					dimensionNameIdsMap = isSorted ? xLayout.dimensionNameSortedIdsMap : xLayout.dimensionNameIdsMap,
-					paramString = '?',
-					addCategoryDimension = false,
-					map = xLayout.dimensionNameItemsMap,
-					dx = dimConf.indicator.dimensionName,
-					co = dimConf.category.dimensionName;
+			web.analytics.getParamString = function(view, format, skipPaging) {
+                var paramString,
+                    dimensions = Ext.Array.clean([].concat(view.columns || [], view.rows || [])),
+                    ignoreKeys = ['longitude', 'latitude'],
+                    dataTypeMap = {
+                        'aggregated_values': 'aggregate',
+                        'individual_cases': 'query'
+                    },
+                    nameItemsMap;
 
-				for (var i = 0, dimName, items; i < axisDimensionNames.length; i++) {
-					dimName = axisDimensionNames[i];
+                format = format || 'json';
 
-					paramString += 'dimension=' + dimName;
+                paramString = '/api/analytics/events/' + dataTypeMap[view.dataType] + '/' + view.program.id + '.' + format + '?';
 
-					items = Ext.clone(dimensionNameIdsMap[dimName]);
+				// stage
+				paramString += 'stage=' + view.programStage.id;
 
-					if (dimName === dx) {
-						for (var j = 0, index; j < items.length; j++) {
-							index = items[j].indexOf('-');
+                // dimensions
+                if (dimensions) {
+					for (var i = 0, dim; i < dimensions.length; i++) {
+						dim = dimensions[i];
 
-							if (index > 0) {
-								addCategoryDimension = true;
-								items[j] = items[j].substr(0, index);
-							}
+						if (Ext.Array.contains(ignoreKeys, dim.dimension) || (dim.dimension === 'pe' && !dim.items && !dim.filter)) {
+							continue;
 						}
 
-						items = Ext.Array.unique(items);
-					}
+						paramString += '&dimension=' + dim.dimension;
 
-					if (dimName !== co) {
-						paramString += ':' + items.join(';');
-					}
+						if (dim.items && dim.items.length) {
+							paramString += ':';
 
-					if (i < (axisDimensionNames.length - 1)) {
-						paramString += '&';
-					}
-				}
+							for (var j = 0, item; j < dim.items.length; j++) {
+								item = dim.items[j];
 
-				if (addCategoryDimension) {
-					paramString += '&dimension=' + conf.finals.dimension.category.dimensionName;
-				}
-
-				if (Ext.isArray(filterDimensions) && filterDimensions.length) {
-					for (var i = 0, dim; i < filterDimensions.length; i++) {
-						dim = filterDimensions[i];
-
-						paramString += '&filter=' + dim.dimensionName + ':' + dim.ids.join(';');
+								paramString += encodeURIComponent(item.id) + ((j < (dim.items.length - 1)) ? ';' : '');
+							}
+						}
+						else {
+							paramString += dim.filter ? ':' + encodeURIComponent(dim.filter) : '';
+						}
 					}
 				}
 
-				if (xLayout.showHierarchy) {
-					paramString += '&hierarchyMeta=true';
+                // filters
+                if (view.filters) {
+					for (var i = 0, dim; i < view.filters.length; i++) {
+						dim = view.filters[i];
+
+                        paramString += '&filter=' + dim.dimension;
+
+                        if (Ext.isArray(dim.items) && dim.items.length) {
+                            paramString += ':';
+
+                            for (var j = 0; j < dim.items.length; j++) {
+                                paramString += encodeURIComponent(dim.items[j].id);
+                                paramString += j < dim.items.length - 1 ? ';' : '';
+                            }
+                        }
+                        else {
+                            paramString += dim.filter ? ':' + encodeURIComponent(dim.filter) : '';
+                        }
+					}
 				}
 
-				return paramString;
-			};
+                // dates
+                if (view.startDate && view.endDate) {
+                    paramString += '&startDate=' + view.startDate + '&endDate=' + view.endDate;
+                }
+
+				// hierarchy
+				paramString += view.showHierarchy ? '&hierarchyMeta=true' : '';
+
+                // limit
+                if (view.dataType === 'aggregated_values' && (view.sortOrder && view.topLimit)) {
+                    paramString += '&limit=' + view.topLimit + '&sortOrder=' + (view.sortOrder < 0 ? 'ASC' : 'DESC');
+                }
+
+                // count type
+                if (view.dataType === 'aggregated_values' && view.countType) {
+                    if (view.countType === 'tracked_entity_instances') {
+                        paramString += '&uniqueInstances=true';
+                    }
+                }
+
+                // sorting
+                if (view.dataType === 'individual_cases' && view.sorting) {
+                    if (view.sorting.id && view.sorting.direction) {
+                        paramString += '&' + view.sorting.direction.toLowerCase() + '=' + view.sorting.id;
+                    }
+                }
+
+                // paging
+                if (view.dataType === 'individual_cases' && view.paging && !skipPaging) {
+                    paramString += view.paging.pageSize ? '&pageSize=' + view.paging.pageSize : '';
+                    paramString += view.paging.page ? '&page=' + view.paging.page : '';
+                }
+
+                // display property
+                paramString += '&displayProperty=' + init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+
+                return paramString;
+            };
 
 			web.analytics.validateUrl = function(url) {
 				var msg;
@@ -1806,14 +2104,63 @@ Ext.onReady( function() {
                 alert(msg);
 			};
 
-			// pivot
-			web.pivot = {};
+			// report
+			web.report = {};
 
-			web.pivot.getHtml = function(xLayout, xResponse, xColAxis, xRowAxis) {
+				// aggregate
+			web.report.aggregate = {};
+
+			web.report.aggregate.sort = function(xLayout, xResponse, xColAxis) {
+				var condoId = xLayout.sorting.id,
+					name = xLayout.rows[0].dimension,
+					ids = xResponse.nameHeaderMap[name].ids,
+					valueMap = xResponse.idValueMap,
+					direction = xLayout.sorting ? xLayout.sorting.direction : 'DESC',
+					objects = [],
+					layout;
+
+				// relative id?
+				if (Ext.isString(condoId)) {
+					condoId = condoId.toLowerCase() === 'total' ? 'total_' : condoId;
+				}
+				else if (Ext.isNumber(condoId)) {
+					if (condoId === 0) {
+						condoId = 'total_';
+					}
+					else {
+						condoId = xColAxis.ids[parseInt(condoId) - 1];
+					}
+				}
+				else {
+					return xResponse;
+				}
+
+				// collect values
+				for (var i = 0, key, value; i < ids.length; i++) {
+					key = condoId + ids[i];
+					value = parseFloat(valueMap[key]);
+
+					objects.push({
+						id: ids[i],
+						value: Ext.isNumber(value) ? value : (Number.MAX_VALUE * -1)
+					});
+				}
+
+				support.prototype.array.sort(objects, direction, 'value');
+
+				// new id order
+				xResponse.nameHeaderMap[name].ids = Ext.Array.pluck(objects, 'id');
+
+				return xResponse;
+			};
+
+			web.report.aggregate.getHtml = function(xLayout, xResponse, xColAxis, xRowAxis) {
 				var getRoundedHtmlValue,
 					getTdHtml,
 					doSubTotals,
-					doTotals,
+					doRowTotals,
+                    doColTotals,
+                    doSortableColumnHeaders,
 					getColAxisHtmlArray,
 					getRowHtmlArray,
 					rowAxisHtmlArray,
@@ -1841,7 +2188,10 @@ Ext.onReady( function() {
 					totalColObjects = [],
 					uuidDimUuidsMap = {},
 					isLegendSet = Ext.isObject(xLayout.legendSet) && Ext.isArray(xLayout.legendSet.mapLegends) && xLayout.legendSet.mapLegends.length,
+                    tdCount = 0,
 					htmlArray;
+
+				xResponse.sortableIdObjects = [];
 
 				getRoundedHtmlValue = function(value, dec) {
 					dec = dec || 2;
@@ -1865,7 +2215,14 @@ Ext.onReady( function() {
 						return '';
 					}
 
-					// Background color from legend set
+					if (config.hidden || config.collapsed) {
+						return '';
+					}
+
+                    // number of cells
+                    tdCount = tdCount + 1;
+
+					// background color from legend set
 					if (isNumeric && xLayout.legendSet) {
 						var value = parseFloat(config.value);
 						mapLegends = xLayout.legendSet.mapLegends;
@@ -1881,35 +2238,35 @@ Ext.onReady( function() {
 					rowSpan = config.rowSpan ? 'rowspan="' + config.rowSpan + '" ' : '';
 					htmlValue = config.collapsed ? '' : config.htmlValue || config.value || '';
 					htmlValue = config.type !== 'dimension' ? support.prototype.number.prettyPrint(htmlValue, xLayout.digitGroupSeparator) : htmlValue;
-					displayDensity = conf.pivot.displayDensity[config.displayDensity] || conf.pivot.displayDensity[xLayout.displayDensity];
-					fontSize = conf.pivot.fontSize[config.fontSize] || conf.pivot.fontSize[xLayout.fontSize];
+					displayDensity = conf.report.displayDensity[config.displayDensity] || conf.report.displayDensity[xLayout.displayDensity];
+					fontSize = conf.report.fontSize[config.fontSize] || conf.report.fontSize[xLayout.fontSize];
 
 					cls += config.hidden ? ' td-hidden' : '';
 					cls += config.collapsed ? ' td-collapsed' : '';
-					cls += isValue ? ' pointer' : '';
+					//cls += isValue ? ' pointer' : '';
 					cls += bgColor ? ' legend' : (config.cls ? ' ' + config.cls : '');
 
 					// sorting
 					if (Ext.isString(metaDataId)) {
 						cls += ' td-sortable';
 
-						xLayout.sortableIdObjects.push({
+						xResponse.sortableIdObjects.push({
 							id: metaDataId,
 							uuid: config.uuid
 						});
 					}
 
 					html += '<td ' + (config.uuid ? ('id="' + config.uuid + '" ') : '');
-					html += ' class="' + cls + '" ' + colSpan + rowSpan
+					html += ' class="' + cls + '" ' + colSpan + rowSpan;
 
 
-					if (bgColor) {
-						html += '>';
-						html += '<div class="legendCt">';
-						html += '<div class="number ' + config.cls + '" style="padding:' + displayDensity + '; padding-right:3px; font-size:' + fontSize + '">' + htmlValue + '</div>';
-						html += '<div class="arrowCt ' + config.cls + '">';
-						html += '<div class="arrow" style="border-bottom:8px solid transparent; border-right:8px solid ' + bgColor + '">&nbsp;</div>';
-						html += '</div></div></div></td>';
+					//if (bgColor) {
+						//html += '>';
+						//html += '<div class="legendCt">';
+						//html += '<div class="number ' + config.cls + '" style="padding:' + displayDensity + '; padding-right:3px; font-size:' + fontSize + '">' + htmlValue + '</div>';
+						//html += '<div class="arrowCt ' + config.cls + '">';
+						//html += '<div class="arrow" style="border-bottom:8px solid transparent; border-right:8px solid ' + bgColor + '">&nbsp;</div>';
+						//html += '</div></div></div></td>';
 
 						//cls = 'legend';
 						//cls += config.hidden ? ' td-hidden' : '';
@@ -1923,37 +2280,29 @@ Ext.onReady( function() {
 						//html += htmlValue + '</div>';
 						//html += '<div class="legendColor" style="background-color:' + bgColor + '">&nbsp;</div>';
 						//html += '</div></td>';
-					}
-					else {
-						html += 'style="padding:' + displayDensity + '; font-size:' + fontSize + ';"' + '>' + htmlValue + '</td>';
-					}
+					//}
+					//else {
+						//html += 'style="padding:' + displayDensity + '; font-size:' + fontSize + ';"' + '>' + htmlValue + '</td>';
+                        html += 'style="' + (bgColor && isValue ? 'color:' + bgColor + '; ' : '') + 'padding:' + displayDensity + '; font-size:' + fontSize + ';"' + '>' + htmlValue + '</td>';
+					//}
 
 					return html;
 				};
 
-				doSubTotals = function(xAxis) {
-					return !!xLayout.showSubTotals && xAxis && xAxis.dims > 1;
-
-					//var multiItemDimension = 0,
-						//unique;
-
-					//if (!(xLayout.showSubTotals && xAxis && xAxis.dims > 1)) {
-						//return false;
-					//}
-
-					//unique = xAxis.xItems.unique;
-
-					//for (var i = 0; i < unique.length; i++) {
-						//if (unique[i].length > 1) {
-							//multiItemDimension++;
-						//}
-					//}
-
-					//return (multiItemDimension > 1);
+				doRowTotals = function() {
+					return !!xLayout.showRowTotals;
 				};
 
-				doTotals = function() {
-					return !!xLayout.showTotals;
+                doColTotals = function() {
+					return !!xLayout.showColTotals;
+				};
+
+				doColSubTotals = function() {
+					return !!xLayout.showColSubTotals && xRowAxis && xRowAxis.dims > 1;
+				};
+
+				doRowSubTotals = function() {
+					return !!xLayout.showRowSubTotals && xColAxis && xColAxis.dims > 1;
 				};
 
 				doSortableColumnHeaders = function() {
@@ -1964,14 +2313,52 @@ Ext.onReady( function() {
 					var a = [],
 						getEmptyHtmlArray;
 
-					getEmptyHtmlArray = function() {
-						return (xColAxis && xRowAxis) ? getTdHtml({
-							cls: 'pivot-dim-empty cursor-default',
-							colSpan: xRowAxis.dims,
-							rowSpan: xColAxis.dims,
-							htmlValue: '&nbsp;'
-						}) : '';
-					};
+                    getEmptyNameTdConfig = function(config) {
+                        config = config || {};
+
+                        return getTdHtml({
+                            cls: config.cls ? ' ' + config.cls : 'pivot-empty',
+                            colSpan: config.colSpan ? config.colSpan : 1,
+                            rowSpan: config.rowSpan ? config.rowSpan : 1,
+                            htmlValue: config.htmlValue ? config.htmlValue : '&nbsp;'
+                        });
+                    };
+
+                    getEmptyHtmlArray = function(i) {
+                        var a = [];
+
+                        if (i < xColAxis.dims - 1) {
+                            if (xRowAxis && xRowAxis.dims) {
+                                for (var j = 0; j < xRowAxis.dims - 1; j++) {
+                                    a.push(getEmptyNameTdConfig({
+                                        cls: 'pivot-dim-label'
+                                    }));
+                                }
+                            }
+
+                            a.push(getEmptyNameTdConfig({
+                                cls: 'pivot-dim-label',
+                                htmlValue: dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
+                            }));
+                        }
+                        else {
+                            if (xRowAxis && xRowAxis.dims) {
+                                for (var j = 0; j < xRowAxis.dims - 1; j++) {
+                                    a.push(getEmptyNameTdConfig({
+                                        cls: 'pivot-dim-label',
+                                        htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[j]].name
+                                    }));
+                                }
+                            }
+
+                            a.push(getEmptyNameTdConfig({
+                                cls: 'pivot-dim-label',
+                                htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[j]].name + ' / ' + dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
+                            }));
+                        }
+
+                        return a;
+                    };
 
 					if (!(xColAxis && Ext.isObject(xColAxis))) {
 						return a;
@@ -1981,12 +2368,20 @@ Ext.onReady( function() {
 					for (var i = 0, dimHtml; i < xColAxis.dims; i++) {
 						dimHtml = [];
 
-						if (i === 0) {
-							dimHtml.push(getEmptyHtmlArray());
+                        if (xLayout.showDimensionLabels) {
+                            dimHtml = dimHtml.concat(getEmptyHtmlArray(i));
+                        }
+                        else if (i === 0) {
+							dimHtml.push(xColAxis && xRowAxis ? getEmptyNameTdConfig({
+                                colSpan: xRowAxis.dims,
+                                rowSpan: xColAxis.dims
+                            }) : '');
 						}
 
 						for (var j = 0, obj, spanCount = 0, condoId, totalId; j < xColAxis.size; j++) {
 							spanCount++;
+							condoId = null;
+							totalId = null;
 
 							obj = xColAxis.objects.all[i][j];
 							obj.type = 'dimension';
@@ -1997,12 +2392,13 @@ Ext.onReady( function() {
 
 							// sortable column headers. last dim only.
 							if (i === xColAxis.dims - 1 && doSortableColumnHeaders()) {
-								condoId = xColAxis.ids[j].split('-').join('');
+								//condoId = xColAxis.ids[j].split('-').join('');
+								condoId = xColAxis.ids[j];
 							}
 
 							dimHtml.push(getTdHtml(obj, condoId));
 
-							if (i === 0 && spanCount === xColAxis.span[i] && doSubTotals(xColAxis) ) {
+							if (i === 0 && spanCount === xColAxis.span[i] && doRowSubTotals() ) {
 								dimHtml.push(getTdHtml({
 									type: 'dimensionSubtotal',
 									cls: 'pivot-dim-subtotal cursor-default',
@@ -2013,7 +2409,7 @@ Ext.onReady( function() {
 								spanCount = 0;
 							}
 
-							if (i === 0 && (j === xColAxis.size - 1) && doTotals()) {
+							if (i === 0 && (j === xColAxis.size - 1) && doRowTotals()) {
 								totalId = doSortableColumnHeaders() ? 'total_' : null;
 
 								dimHtml.push(getTdHtml({
@@ -2059,21 +2455,42 @@ Ext.onReady( function() {
 
 					// dimension
 					if (xRowAxis) {
+						var aLineBreak = new Array(xRowAxis.dims);
+
 						for (var i = 0, row; i < xRowAxis.size; i++) {
 							row = [];
 
 							for (var j = 0, obj, newObj; j < xRowAxis.dims; j++) {
 								obj = xRowAxis.objects.all[j][i];
 								obj.type = 'dimension';
-								obj.cls = 'pivot-dim td-nobreak' + (service.layout.isHierarchy(xLayout, xResponse, obj.id) ? ' align-left' : '');
+								obj.cls = 'pivot-dim ' + (service.layout.isHierarchy(xLayout, xResponse, obj.id) ? ' align-left' : '');
 								obj.noBreak = true;
 								obj.hidden = !(obj.rowSpan || obj.colSpan);
 								obj.htmlValue = service.layout.getItemName(xLayout, xResponse, obj.id, true);
 
 								row.push(obj);
+
+								// allow line break for this dim?
+								if (obj.htmlValue.length > 50) {
+									aLineBreak[j] = true;
+								}
 							}
 
 							axisAllObjects.push(row);
+						}
+
+						// add nowrap line break cls
+						for (var i = 0, dim; i < aLineBreak.length; i++) {
+							dim = aLineBreak[i];
+
+							if (!dim) {
+								for (var j = 0, obj; j < xRowAxis.size; j++) {
+									obj = axisAllObjects[j][i];
+
+									obj.cls += ' td-nobreak';
+									obj.noBreak = true;
+								}
+							}
 						}
 					}
 	//axisAllObjects = [ [ dim, dim ]
@@ -2082,7 +2499,7 @@ Ext.onReady( function() {
 	//				     [ dim, dim ] ];
 
 					// value
-					for (var i = 0, valueItemsRow, valueObjectsRow, idValueMap = Ext.clone(xResponse.idValueMap); i < rowAxisSize; i++) {
+					for (var i = 0, valueItemsRow, valueObjectsRow, idValueMap = xResponse.idValueMap; i < rowAxisSize; i++) {
 						valueItemsRow = [];
 						valueObjectsRow = [];
 
@@ -2091,7 +2508,8 @@ Ext.onReady( function() {
 							uuids = [];
 
 							// meta data uid
-							id = (xColAxis ? support.prototype.str.replaceAll(xColAxis.ids[j], '-', '') : '') + (xRowAxis ? support.prototype.str.replaceAll(xRowAxis.ids[i], '-', '') : '');
+							//id = (xColAxis ? support.prototype.str.replaceAll(xColAxis.ids[j], '-', '') : '') + (xRowAxis ? support.prototype.str.replaceAll(xRowAxis.ids[i], '-', '') : '');
+							id = (xColAxis ? xColAxis.ids[j] : '') + (xRowAxis ? xRowAxis.ids[i] : '');
 
 							// value html element id
 							uuid = Ext.data.IdGenerator.get('uuid').generate();
@@ -2134,7 +2552,7 @@ Ext.onReady( function() {
 					}
 
 					// totals
-					if (xColAxis && doTotals()) {
+					if (xColAxis && doRowTotals()) {
 						for (var i = 0, empty = [], total = 0; i < valueObjects.length; i++) {
 							for (j = 0, obj; j < valueObjects[i].length; j++) {
 								obj = valueObjects[i][j];
@@ -2175,17 +2593,17 @@ Ext.onReady( function() {
 								// if value row is empty
 								if (isValueRowEmpty) {
 
-									// Hide values by adding collapsed = true to all items
+									// hide values by adding collapsed = true to all items
 									for (var j = 0; j < valueRow.length; j++) {
 										valueRow[j].collapsed = true;
 									}
 
-									// Hide totals by adding collapsed = true to all items
-									if (doTotals()) {
+									// hide totals by adding collapsed = true to all items
+									if (doRowTotals()) {
 										totalValueObjects[i].collapsed = true;
 									}
 
-									// Hide/reduce parent dim span
+									// hide/reduce parent dim span
 									dimLeaf = axisAllObjects[i][xRowAxis.dims-1];
 									recursiveReduce(dimLeaf);
 								}
@@ -2193,10 +2611,10 @@ Ext.onReady( function() {
 						}
 					}
 
-					xValueObjects = Ext.clone(valueObjects);
+					xValueObjects = valueObjects;
 
 					// col subtotals
-					if (doSubTotals(xColAxis)) {
+					if (doRowSubTotals()) {
 						var tmpValueObjects = [];
 
 						for (var i = 0, row, rowSubTotal, colCount; i < xValueObjects.length; i++) {
@@ -2238,7 +2656,7 @@ Ext.onReady( function() {
 					}
 
 					// row subtotals
-					if (doSubTotals(xRowAxis)) {
+					if (doColSubTotals()) {
 						var tmpAxisAllObjects = [],
 							tmpValueObjects = [],
 							tmpTotalValueObjects = [],
@@ -2382,7 +2800,7 @@ Ext.onReady( function() {
 				getColTotalHtmlArray = function() {
 					var a = [];
 
-					if (xRowAxis && doTotals()) {
+					if (xRowAxis && doColTotals()) {
 						var xTotalColObjects;
 
 						// Total col items
@@ -2407,9 +2825,9 @@ Ext.onReady( function() {
 							empty = [];
 						}
 
-						xTotalColObjects = Ext.clone(totalColObjects);
+						xTotalColObjects = totalColObjects;
 
-						if (xColAxis && doSubTotals(xColAxis)) {
+						if (xColAxis && doRowSubTotals()) {
 							var tmp = [];
 
 							for (var i = 0, item, subTotal = 0, empty = [], colCount = 0; i < xTotalColObjects.length; i++) {
@@ -2450,7 +2868,7 @@ Ext.onReady( function() {
 						empty = [],
 						a = [];
 
-					if (doTotals()) {
+					if (doRowTotals() && doColTotals()) {
 						for (var i = 0, obj; i < totalColObjects.length; i++) {
 							obj = totalColObjects[i];
 
@@ -2479,7 +2897,7 @@ Ext.onReady( function() {
 						row,
 						a = [];
 
-					if (doTotals()) {
+					if (doColTotals()) {
 						if (xRowAxis) {
 							dimTotalArray = [getTdHtml({
 								type: 'dimensionSubtotal',
@@ -2489,7 +2907,7 @@ Ext.onReady( function() {
 							})];
 						}
 
-						row = [].concat(dimTotalArray || [], Ext.clone(colTotal) || [], Ext.clone(grandTotal) || []);
+						row = [].concat(dimTotalArray || [], colTotal || [], grandTotal || []);
 
 						a.push(row);
 					}
@@ -2513,9 +2931,110 @@ Ext.onReady( function() {
 
 					return {
 						html: getHtml(htmlArray),
-						uuidDimUuidsMap: uuidDimUuidsMap
+						uuidDimUuidsMap: uuidDimUuidsMap,
+						xColAxis: xColAxis,
+						xRowAxis: xRowAxis,
+                        tdCount: tdCount
 					};
 				}();
+			};
+
+				// query
+			web.report.query = {};
+
+			web.report.query.sort = function(layout, xResponse) {
+				var id = layout.sorting.id,
+					direction = layout.sorting ? layout.sorting.direction : 'DESC',
+					index = xResponse.nameHeaderMap[id].index,
+					rows = xResponse.rows;
+
+				support.prototype.array.sort(rows, direction, index);
+
+				return xResponse;
+			};
+
+			web.report.query.format = function(str) {
+				var n = parseFloat(str);
+
+                // return string if
+                // - parsefloat(string) is not a number
+                // - string is just starting with a number
+                // - string is a valid date
+				if (!Ext.isNumber(n) || n != str || new Date(str).toString() !== 'Invalid Date') {
+					return str;
+				}
+
+                return n;
+			};
+
+			web.report.query.getHtml = function(layout, xResponse) {
+				var dimensionHeaders = xResponse.dimensionHeaders,
+					rows = xResponse.rows,
+                    names = xResponse.metaData.names,
+                    optionNames = xResponse.metaData.optionNames,
+                    pager = xResponse.metaData.pager,
+                    count = pager.page * pager.pageSize - pager.pageSize
+					tableCls = 'pivot',
+					html = '';
+
+				xResponse.sortableIdObjects = [];
+
+				tableCls += layout.displayDensity ? ' ' + layout.displayDensity : '';
+				tableCls += layout.fontSize ? ' ' + layout.fontSize : '';
+
+				html += '<table class="' + tableCls + '"><tr>';
+                html += '<td class="pivot-dim pivot-dim-subtotal">' + '#' + '</td>';
+
+				// get header indexes
+				for (var i = 0, header, uuid; i < dimensionHeaders.length; i++) {
+					header = dimensionHeaders[i];
+					uuid = Ext.data.IdGenerator.get('uuid').generate();
+
+					html += '<td id="' + uuid + '" class="pivot-dim td-sortable">' + header.column + '</td>';
+
+					xResponse.sortableIdObjects.push({
+						id: header.name,
+						uuid: uuid
+					});
+				}
+
+				html += '</tr>';
+
+				// rows
+				for (var i = 0, row; i < rows.length; i++) {
+					row = rows[i];
+					html += '<tr>';
+                    html += '<td class="pivot-value align-right">' + (count + (i + 1)) + '</td>';
+
+					for (var j = 0, str, header, name; j < dimensionHeaders.length; j++) {
+						header = dimensionHeaders[j];
+						str = row[header.index];
+                        //str = names.hasOwnProperty(str) ? names[str] : str;
+                        str = optionNames[header.name + str] || optionNames[str] || names[str] || str;
+						name = web.report.query.format(str);
+
+						//if (header.name === 'ouname' && layout.showHierarchy) {
+							//var a = Ext.Array.clean(name.split('/'));
+							//name = '';
+
+							//for (var k = 0, isLast; k < a.length; k++) {
+								//isLast = !!(i === a.length - 1);
+
+								//name += (!isLast ? '<span class="text-weak">' : '') + a[i] + (!isLast ? '</span>' : '') + (!isLast ? ' / ' : '');
+							//}
+						//}
+
+						html += '<td class="pivot-value align-left">' + name + '</td>';
+					}
+
+					html += '</tr>';
+				}
+
+				html += '</table>';
+
+				return {
+					html: html
+				};
 			};
 
 		}());
@@ -2536,15 +3055,17 @@ Ext.onReady( function() {
 			}
 
 			// sort ouc
-			support.prototype.array.sort(init.user.ouc);
+			if (init.user && init.user.ouc) {
+				support.prototype.array.sort(init.user.ouc);
+			}
 
 			// legend set map
-			init.idLegendSetMap = {};
+			//init.idLegendSetMap = {};
 
-			for (var i = 0, set; i < init.legendSets.length; i++) {
-				set = init.legendSets[i];
-				init.idLegendSetMap[set.id] = set;
-			}
+			//for (var i = 0, set; i < init.legendSets.length; i++) {
+				//set = init.legendSets[i];
+				//init.idLegendSetMap[set.id] = set;
+			//}
 		}());
 
 		// instance
@@ -2579,10 +3100,15 @@ Ext.onReady( function() {
 	css += '.pivot-value-total { \n background-color: #e4e4e4; \n white-space: nowrap; \n text-align: right; \n } \n';
 	css += '.pivot-value-total-subgrandtotal { \n background-color: #d8d8d8; \n white-space: nowrap; \n text-align: right; \n } \n';
 	css += '.pivot-value-grandtotal { \n background-color: #c8c8c8; \n white-space: nowrap; \n text-align: right; \n } \n';
+    css += '.pivot-dim-label { \n background-color: #cddaed; \n white-space: nowrap; \n text-align: center; \n } \n';
+    css += '.pivot-empty { \n background-color: #cddaed; \n } \n';
+    css += '.pivot-transparent-column { \n background-color: #fff; \n border-top-color: #fff !important; \n border-right-color: #fff !important; \n } \n';
+    css += '.pivot-transparent-row { \n background-color: #fff; \n border-bottom-color: #fff !important; \n border-left-color: #fff !important; \n } \n';
 
-	css += '.x-mask-msg { \n padding: 0; \n	border: 0 none; \n background-image: none; \n background-color: transparent; \n } \n';
+    css += '.x-mask-msg { \n padding: 0; \n	border: 0 none; \n background-image: none; \n background-color: transparent; \n } \n';
 	css += '.x-mask-msg div { \n background-position: 11px center; \n } \n';
 	css += '.x-mask-msg .x-mask-loading { \n border: 0 none; \n	background-color: #000; \n color: #fff; \n border-radius: 2px; \n padding: 12px 14px 12px 30px; \n opacity: 0.65; \n } \n';
+    css += '.x-mask { opacity: 0 } \n';
 
 	css += '.pivot td.legend { \n padding: 0; \n } \n';
 	css += '.pivot div.legendCt { \n display: table; \n float: right; \n width: 100%; \n } \n';
@@ -2592,14 +3118,15 @@ Ext.onReady( function() {
 	css += '.pivot div.legendColor { \n display: table-cell; \n width: 2px; \n } \n';
 
 	css += '.pointer { \n cursor: pointer; \n } \n';
-	css += '.td-sortable { \n background-image: url("http://dhis2-cdn.org/v214/plugin/images/arrowupdown.png"); \n background-repeat: no-repeat; \n background-position: right center; \n padding-right: 15px !important; \n } \n';
+	css += '.td-sortable { \n background-image: url("http://dhis2-cdn.org/v217/plugin/images/arrowupdown.png"); \n background-repeat: no-repeat; \n background-position: right center; \n padding-right: 15px !important; \n } \n';
 
 	Ext.util.CSS.createStyleSheet(css);
 
-	PT.plugin = {};
+	ER.plugin = {};
 
 	var init = {
-			user: {}
+			user: {},
+            systemInfo: {}
 		},
 		configs = [],
 		isInitStarted = false,
@@ -2607,14 +3134,16 @@ Ext.onReady( function() {
 		getInit,
 		execute;
 
-	getInit = function(url) {
+	getInit = function(contextPath) {
 		var isInit = false,
 			requests = [],
-			callbacks = 0,
+			callbackCount = 0,
 			fn;
 
+        init.contextPath = contextPath;
+
 		fn = function() {
-			if (++callbacks === requests.length) {
+			if (++callbackCount === requests.length) {
 				isInitComplete = true;
 
 				for (var i = 0; i < configs.length; i++) {
@@ -2625,16 +3154,120 @@ Ext.onReady( function() {
 			}
 		};
 
-		requests.push({
-			url: url + '/api/system/context.jsonp',
-			success: function(r) {
-				init.contextPath = r.contextPath;
-				fn();
-			}
-		});
+        // date, calendar
+        requests.push({
+            url: contextPath + '/api/systemSettings.jsonp?key=keyCalendar&key=keyDateFormat',
+            success: function(r) {
+                var systemSettings = r;
+                init.systemInfo.dateFormat = Ext.isString(systemSettings.keyDateFormat) ? systemSettings.keyDateFormat.toLowerCase() : 'yyyy-mm-dd';
+                init.systemInfo.calendar = systemSettings.keyCalendar;
+
+                // user-account
+                Ext.data.JsonP.request({
+                    url: contextPath + '/api/me/user-account.jsonp',
+                    success: function(r) {
+                        init.userAccount = r;
+
+                        Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/jQuery/jquery.min.js', function() {
+                            Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.util.js', function() {
+                                Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.js', function() {
+                                    Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js', function() {
+                                        Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js', function() {
+                                            Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js', function() {
+
+                                                // init
+                                                var defaultKeyUiLocale = 'en',
+                                                    defaultKeyAnalysisDisplayProperty = 'name',
+                                                    namePropertyUrl,
+                                                    contextPath,
+                                                    keyUiLocale,
+                                                    dateFormat;
+
+                                                init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
+                                                init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
+
+                                                // local vars
+                                                contextPath = init.contextPath;
+                                                keyUiLocale = init.userAccount.settings.keyUiLocale;
+                                                keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
+                                                namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
+                                                dateFormat = init.systemInfo.dateFormat;
+
+                                                init.namePropertyUrl = namePropertyUrl;
+
+                                                // dhis2
+                                                dhis2.util.namespace('dhis2.er');
+
+                                                dhis2.er.store = dhis2.er.store || new dhis2.storage.Store({
+                                                    name: 'dhis2',
+                                                    adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+                                                    objectStores: ['optionSets']
+                                                });
+
+                                                // option sets
+                                                Ext.data.JsonP.request({
+                                                    url: contextPath + '/api/optionSets.jsonp?fields=id,version&paging=false',
+                                                    success: function(r) {
+                                                        var optionSets = r.optionSets || [],
+                                                            store = dhis2.er.store,
+                                                            ids = [],
+                                                            url = '',
+                                                            callbacks = 0,
+                                                            checkOptionSet,
+                                                            updateStore;
+
+                                                        updateStore = function() {
+                                                            if (++callbacks === optionSets.length) {
+                                                                if (!ids.length) {
+                                                                    fn();
+                                                                    return;
+                                                                }
+
+                                                                for (var i = 0; i < ids.length; i++) {
+                                                                    url += '&filter=id:eq:' + ids[i];
+                                                                }
+
+                                                                Ext.data.JsonP.request({
+                                                                    url: contextPath + '/api/optionSets.jsonp?fields=id,name,version,options[code,name]&paging=false' + url,
+                                                                    success: function(r) {
+                                                                        var sets = r.optionSets;
+
+                                                                        store.setAll('optionSets', sets).done(fn);
+                                                                    }
+                                                                });
+                                                            }
+                                                        };
+
+                                                        registerOptionSet = function(optionSet) {
+                                                            store.get('optionSets', optionSet.id).done( function(obj) {
+                                                                if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
+                                                                    ids.push(optionSet.id);
+                                                                }
+
+                                                                updateStore();
+                                                            });
+                                                        };
+
+                                                        store.open().done( function() {
+                                                            for (var i = 0; i < optionSets.length; i++) {
+                                                                registerOptionSet(optionSets[i]);
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    }
+                });
+            }
+        });
 
 		requests.push({
-			url: url + '/api/organisationUnits.jsonp?userOnly=true&viewClass=detailed&paging=false&links=false',
+			url: contextPath + '/api/organisationUnits.jsonp?userOnly=true&fields=id,name,children[id,name]&paging=false',
 			success: function(r) {
 				var organisationUnits = r.organisationUnits || [],
                     ou = [],
@@ -2651,10 +3284,9 @@ Ext.onReady( function() {
                         }
                     }
 
-                    init.user = {
-                        ou: ou,
-                        ouc: ouc
-                    }
+                    init.user = init.user || {};
+                    init.user.ou = ou;
+                    init.user.ouc = ouc;
                 }
                 else {
                     alert('User is not assigned to any organisation units');
@@ -2664,21 +3296,18 @@ Ext.onReady( function() {
 			}
 		});
 
-		requests.push({
-			url: url + '/api/mapLegendSets.jsonp?viewClass=detailed&links=false&paging=false',
-			success: function(r) {
-				init.legendSets = r.mapLegendSets;
-				fn();
-			}
-		});
+        init.legendSets = [];
 
 		requests.push({
-			url: url + '/api/dimensions.jsonp?links=false&paging=false',
+			url: contextPath + '/api/dimensions.jsonp?links=false&paging=false',
 			success: function(r) {
 				init.dimensions = r.dimensions;
 				fn();
 			}
 		});
+
+        // option sets
+        requests.push();
 
 		for (var i = 0; i < requests.length; i++) {
 			Ext.data.JsonP.request(requests[i]);
@@ -2697,7 +3326,7 @@ Ext.onReady( function() {
 
 		validateConfig = function(config) {
 			if (!Ext.isObject(config)) {
-				console.log('Report table configuration is not an object');
+				console.log('Event report configuration is not an object');
 				return;
 			}
 
@@ -2713,46 +3342,54 @@ Ext.onReady( function() {
 
         extendInstance = function(pt) {
             var init = ns.core.init,
+                conf = ns.core.conf,
 				api = ns.core.api,
 				support = ns.core.support,
 				service = ns.core.service,
-				web = ns.core.web;
+				web = ns.core.web,
+                dimConf = conf.finals.dimension;
 
 			// mouse events
 			web.events = web.events || {};
 
-			web.events.setColumnHeaderMouseHandlers = function(xLayout, response) {
-				if (Ext.isArray(xLayout.sortableIdObjects)) {
-					for (var i = 0, obj, el; i < xLayout.sortableIdObjects.length; i++) {
-						obj = xLayout.sortableIdObjects[i];
+			web.events.setColumnHeaderMouseHandlers = function(layout, response, xResponse) {
+				if (Ext.isArray(xResponse.sortableIdObjects)) {
+					for (var i = 0, obj, el; i < xResponse.sortableIdObjects.length; i++) {
+						obj = xResponse.sortableIdObjects[i];
 						el = Ext.get(obj.uuid);
 
-						el.dom.xLayout = xLayout;
+						el.dom.layout = layout;
 						el.dom.response = response;
+						el.dom.xResponse = xResponse;
 						el.dom.metaDataId = obj.id;
 						el.dom.onColumnHeaderMouseClick = web.events.onColumnHeaderMouseClick;
 						el.dom.onColumnHeaderMouseOver = web.events.onColumnHeaderMouseOver;
 						el.dom.onColumnHeaderMouseOut = web.events.onColumnHeaderMouseOut;
 
-						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.xLayout, this.response, this.metaDataId)');
+						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.layout, this.response, this.metaDataId)');
 						el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
 						el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
 					}
 				}
 			};
 
-			web.events.onColumnHeaderMouseClick = function(xLayout, response, id) {
-				if (xLayout.sorting && xLayout.sorting.id === id) {
-					xLayout.sorting.direction = support.prototype.str.toggleDirection(xLayout.sorting.direction);
+			web.events.onColumnHeaderMouseClick = function(layout, response, id) {
+				if (layout.sorting && layout.sorting.id === id) {
+					layout.sorting.direction = support.prototype.str.toggleDirection(layout.sorting.direction);
 				}
 				else {
-					xLayout.sorting = {
+					layout.sorting = {
 						id: id,
-						direction: 'DESC'
+						direction: 'ASC'
 					};
 				}
 
-				ns.core.web.pivot.sort(xLayout, response, id);
+                if (layout.dataType === 'aggregated_values') {
+                    web.report.createReport(layout, response);
+                }
+                else if (layout.dataType === 'individual_cases') {
+                    web.report.getData(layout);
+                }
 			};
 
 			web.events.onColumnHeaderMouseOver = function(el) {
@@ -2763,116 +3400,247 @@ Ext.onReady( function() {
 				Ext.get(el).removeCls('pointer highlighted');
 			};
 
-			// pivot
-			web.pivot = web.pivot || {};
+			// report
+			web.report = web.report || {};
 
-            web.pivot.loadTable = function(id) {
+			web.report.loadReport = function(id) {
 				if (!Ext.isString(id)) {
-					alert('Invalid report table id');
+					alert('Invalid event report id');
 					return;
 				}
 
 				Ext.data.JsonP.request({
-					url: init.contextPath + '/api/eventReports/' + id + '.jsonp?viewClass=dimensional&links=false',
+					url: init.contextPath + '/api/eventReports/' + id + '.jsonp?fields=' + conf.url.analysisFields.join(','),
 					failure: function(r) {
-						window.open(init.contextPath + '/api/eventReports/' + id + '.json?viewClass=dimensional&links=false', '_blank');
+						window.open(init.contextPath + '/api/eventReports/' + id + '.json?fields=' + conf.url.analysisFields.join(','), '_blank');
 					},
 					success: function(r) {
 						var layout = api.layout.Layout(r);
 
 						if (layout) {
-							web.pivot.getData(layout, true);
+							web.report.getData(layout, true);
 						}
 					}
 				});
 			};
 
-			web.pivot.getData = function(layout, isUpdateGui) {
-				var xLayout,
-					paramString;
-
-				if (!layout) {
-					return;
-				}
-
-				xLayout = service.layout.getExtendedLayout(layout);
-				paramString = web.analytics.getParamString(xLayout, true);
+			web.report.getData = function(view, isUpdateGui) {
+				var paramString = web.analytics.getParamString(view, 'jsonp');
 
 				// show mask
 				web.mask.show(ns.app.centerRegion);
 
 				Ext.data.JsonP.request({
-					url: init.contextPath + '/api/analytics.jsonp' + paramString,
-					timeout: 60000,
-					headers: {
-						'Content-Type': 'application/json',
-						'Accepts': 'application/json'
-					},
+					url: ns.core.init.contextPath + paramString,
 					disableCaching: false,
+					scope: this,
 					failure: function(r) {
 						web.mask.hide(ns.app.centerRegion);
 
-						window.open(init.contextPath + '/api/analytics.json' + paramString, '_blank');
+                        console.log(r.status + '\n' + r.statusText + '\n' + r.responseText);
 					},
 					success: function(r) {
-						var response = api.response.Response(r);
+                        var response = api.response.Response(r);
 
-						if (!response) {
+                        if (!response) {
 							web.mask.hide(ns.app.centerRegion);
 							return;
 						}
 
-						// sync xLayout with response
-						xLayout = service.layout.getSyncronizedXLayout(xLayout, response);
+                        // add to dimConf, TODO
+                        for (var i = 0, map = dimConf.objectNameMap, header; i < response.headers.length; i++) {
+                            header = response.headers[i];
+                            map[header.name] = map[header.name] || {
+                                id: header.name,
+                                dimensionName: header.name,
+                                name: header.column
+                            };
+                        }
 
-						if (!xLayout) {
-							web.mask.hide(ns.app.centerRegion);
-							return;
-						}
+                        ns.app.paramString = paramString;
 
-						ns.app.paramString = paramString;
-
-						web.pivot.createTable(layout, xLayout, response, isUpdateGui);
+                        web.report.createReport(view, response, isUpdateGui);
 					}
 				});
 			};
 
-			web.pivot.createTable = function(layout, xLayout, response, isUpdateGui) {
-				var xResponse,
-					xColAxis,
-					xRowAxis,
-					config;
+			web.report.createReport = function(layout, response, isUpdateGui) {
+				var map = {},
+                    getOptionSets;
 
-				if (!xLayout) {
-					xLayout = service.layout.getExtendedLayout(layout);
-				}
+                getOptionSets = function(xResponse, callbackFn) {
+                    var optionSetHeaders = [];
 
-				// extend response
-				xResponse = service.response.getExtendedResponse(xLayout, response);
+                    for (var i = 0; i < xResponse.headers.length; i++) {
+                        if (Ext.isString(xResponse.headers[i].optionSet)) {
+                            optionSetHeaders.push(xResponse.headers[i]);
+                        }
+                    }
 
-				// extended axes
-				xColAxis = service.layout.getExtendedAxis(xLayout, xResponse, 'col');
-				xRowAxis = service.layout.getExtendedAxis(xLayout, xResponse, 'row');
+                    if (optionSetHeaders.length) {
+                        var callbacks = 0,
+                            optionMap = {},
+                            getOptions,
+                            fn;
 
-				// update viewport
-				config = web.pivot.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
-				ns.app.centerRegion.update(config.html);
+                        fn = function() {
+                            if (++callbacks === optionSetHeaders.length) {
+                                xResponse.metaData.optionNames = optionMap;
+                                callbackFn();
+                            }
+                        };
 
-				// after render
-				ns.app.layout = layout;
-				ns.app.xLayout = xLayout;
-				ns.app.response = response;
-				ns.app.xResponse = xResponse;
-				ns.app.uuidDimUuidsMap = config.uuidDimUuidsMap;
-				ns.app.uuidObjectMap = Ext.applyIf((xColAxis ? xColAxis.uuidObjectMap : {}), (xRowAxis ? xRowAxis.uuidObjectMap : {}));
+                        getOptions = function(optionSetId, dataElementId) {
+                            dhis2.er.store.get('optionSets', optionSetId).done( function(obj) {
+                                Ext.apply(optionMap, support.prototype.array.getObjectMap(obj.options, 'code', 'name', dataElementId));
+                                fn();
+                            });
+                        };
 
-				// sorting
-				web.events.setColumnHeaderMouseHandlers(xLayout, response);
+                        // execute
+                        for (var i = 0, header, optionSetId, dataElementId; i < optionSetHeaders.length; i++) {
+                            header = optionSetHeaders[i];
+                            optionSetId = header.optionSet;
+                            dataElementId = header.name;
 
-				web.mask.hide(ns.app.centerRegion);
+                            getOptions(optionSetId, dataElementId);
+                        }
+                    }
+                    else {
+                        callbackFn();
+                    }
+                };
+
+				map['aggregated_values'] = function() {
+					var xLayout,
+                        xResponse,
+						xColAxis,
+						xRowAxis,
+						table,
+						getSXLayout,
+						getXResponse,
+                        getReport;
+
+                    getReport = function() {
+                        var getHtml = function(xLayout, xResponse) {
+                            xColAxis = service.layout.getExtendedAxis(xLayout, 'col');
+                            xRowAxis = service.layout.getExtendedAxis(xLayout, 'row');
+
+                            return web.report.aggregate.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
+                        };
+
+                        table = getHtml(xLayout, xResponse);
+
+                        if (table.tdCount > 20000 || (layout.hideEmptyRows && table.tdCount > 10000)) {
+                            alert('Table has too many cells. Please reduce the table and try again.');
+                            web.mask.hide(ns.app.centerRegion);
+                            return;
+                        }
+
+                        if (layout.sorting) {
+                            xResponse = web.report.aggregate.sort(xLayout, xResponse, xColAxis);
+                            xLayout = service.layout.getSyncronizedXLayout(layout, xLayout, xResponse);
+                            table = getHtml(xLayout, xResponse);
+                        }
+
+                        //ns.app.centerRegion.removeAll(true);
+                        ns.app.centerRegion.update(table.html);
+
+                        Ext.defer( function() {
+                            Ext.get(ns.core.init.el).fadeIn({
+                                duration: 400
+                            });
+                        }, 300 );
+
+                        // after render
+                        ns.app.layout = layout;
+                        ns.app.xLayout = xLayout;
+                        ns.app.response = response;
+                        ns.app.xResponse = xResponse;
+                        ns.app.xColAxis = xColAxis;
+                        ns.app.xRowAxis = xRowAxis;
+                        ns.app.uuidDimUuidsMap = table.uuidDimUuidsMap;
+                        ns.app.uuidObjectMap = Ext.applyIf((xColAxis ? xColAxis.uuidObjectMap : {}), (xRowAxis ? xRowAxis.uuidObjectMap : {}));
+
+                        if (ER.isSessionStorage) {
+                            web.events.setColumnHeaderMouseHandlers(layout, response, xResponse);
+                        }
+
+                        web.mask.hide(ns.app.centerRegion);
+
+                        if (ER.isDebug) {
+                            console.log("Number of cells", table.tdCount);
+                            console.log("layout", layout);
+                            console.log("response", response);
+                            console.log("xResponse", xResponse);
+                            console.log("xLayout", xLayout);
+                            console.log("core", ns.core);
+                            console.log("app", ns.app);
+                        }
+                    };
+
+                    getSXLayout = function() {
+                        xLayout = service.layout.getSyncronizedXLayout(layout, xLayout, xResponse);
+
+                        getReport();
+                    };
+
+                    getXResponse = function() {
+                        xLayout = service.layout.getExtendedLayout(layout);
+                        xResponse = service.response.aggregate.getExtendedResponse(xLayout, response);
+
+                        getOptionSets(xResponse, getSXLayout);
+                    };
+
+                    // execute
+					response = response || ns.app.response;
+
+                    getXResponse();
+				};
+
+				map['individual_cases'] = function() {
+					var xResponse,
+                        getReport;
+
+                    getReport = function() {
+                        table = web.report.query.getHtml(layout, xResponse);
+
+                        //if (layout.sorting) {
+                            //xResponse = web.report.query.sort(layout, xResponse);
+                            //table = web.report.query.getHtml(layout, xResponse);
+                        //}
+
+                        ns.app.centerRegion.removeAll(true);
+                        ns.app.centerRegion.update(table.html);
+
+                        Ext.defer( function() {
+                            Ext.get(ns.core.init.el).fadeIn({
+                                duration: 400
+                            });
+                        }, 300 );
+
+                        // after render
+                        ns.app.layout = layout;
+                        ns.app.response = response;
+                        ns.app.xResponse = xResponse;
+
+                        if (ER.isSessionStorage) {
+                            web.events.setColumnHeaderMouseHandlers(layout, response, xResponse);
+                        }
+
+                        web.mask.hide(ns.app.centerRegion);
+                    };
+
+                    // execute
+                    xResponse = service.response.query.getExtendedResponse(layout, response);
+
+                    getOptionSets(xResponse, getReport);
+				};
+
+				map[layout.dataType]();
 			};
 
-			web.pivot.sort = function(xLayout, response, id) {
+			web.report.sort = function(xLayout, response, id) {
 				var xLayout = Ext.clone(xLayout),
 					response = Ext.clone(response),
 					dim = xLayout.rows[0],
@@ -2903,9 +3671,9 @@ Ext.onReady( function() {
 				layout = api.layout.Layout(xLayout);
 
 				// re-create table
-				web.pivot.createTable(layout, null, response, false);
+				web.report.createReport(layout, null, response, false);
 			};
-		};
+        };
 
 		createViewport = function() {
 			return {
@@ -2918,14 +3686,16 @@ Ext.onReady( function() {
 				return;
 			}
 
-			ns.core = PT.getCore(Ext.clone(init));
+			ns.core = ER.getCore(Ext.clone(init));
+            ns.core.init.el = config.el;
+            Ext.get(ns.core.init.el).setStyle('opacity', 0);
 			extendInstance(ns);
 
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
 
 			if (config.id) {
-				ns.core.web.pivot.loadTable(config.id);
+				ns.core.web.report.loadReport(config.id);
 			}
 			else {
 				layout = ns.core.api.layout.Layout(config);
@@ -2934,12 +3704,12 @@ Ext.onReady( function() {
 					return;
 				}
 
-				ns.core.web.pivot.getData(layout);
+				ns.core.web.report.getData(layout);
 			}
 		}();
 	};
 
-	PT.plugin.getTable = function(config) {
+	ER.plugin.getEventReport = function(config) {
 		if (Ext.isString(config.url) && config.url.split('').pop() === '/') {
 			config.url = config.url.substr(0, config.url.length - 1);
 		}
@@ -2958,5 +3728,5 @@ Ext.onReady( function() {
 	};
 
 	DHIS = Ext.isObject(window['DHIS']) ? DHIS : {};
-	DHIS.getTable = PT.plugin.getTable;
+	DHIS.getEventReport = ER.plugin.getEventReport;
 });

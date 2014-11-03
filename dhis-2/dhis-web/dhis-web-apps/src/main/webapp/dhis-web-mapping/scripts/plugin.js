@@ -389,11 +389,14 @@ Ext.onReady( function() {
 	Ext.define("GeoExt.data.LayerModel",{alternateClassName:"GeoExt.data.LayerRecord",extend:"Ext.data.Model",requires:["Ext.data.proxy.Memory","Ext.data.reader.Json"],alias:"model.gx_layer",statics:{createFromLayer:function(a){return this.proxy.reader.readRecords([a]).records[0]}},fields:["id",{name:"title",type:"string",mapping:"name"},{name:"legendURL",type:"string",mapping:"metadata.legendURL"},{name:"hideTitle",type:"bool",mapping:"metadata.hideTitle"},{name:"hideInLegend",type:"bool",mapping:"metadata.hideInLegend"}],proxy:{type:"memory",reader:{type:"json"}},getLayer:function(){return this.raw}});Ext.define("GeoExt.data.LayerStore",{requires:["GeoExt.data.LayerModel"],extend:"Ext.data.Store",model:"GeoExt.data.LayerModel",statics:{MAP_TO_STORE:1,STORE_TO_MAP:2},map:null,constructor:function(b){var c=this;b=Ext.apply({},b);var d=(GeoExt.MapPanel&&b.map instanceof GeoExt.MapPanel)?b.map.map:b.map;delete b.map;if(b.layers){b.data=b.layers}delete b.layers;var a={initDir:b.initDir};delete b.initDir;c.callParent([b]);if(d){this.bind(d,a)}},bind:function(e,a){var b=this;if(b.map){return}b.map=e;a=Ext.apply({},a);var c=a.initDir;if(a.initDir==undefined){c=GeoExt.data.LayerStore.MAP_TO_STORE|GeoExt.data.LayerStore.STORE_TO_MAP}var d=e.layers.slice(0);if(c&GeoExt.data.LayerStore.STORE_TO_MAP){b.each(function(f){b.map.addLayer(f.getLayer())},b)}if(c&GeoExt.data.LayerStore.MAP_TO_STORE){b.loadRawData(d,true)}e.events.on({changelayer:b.onChangeLayer,addlayer:b.onAddLayer,removelayer:b.onRemoveLayer,scope:b});b.on({load:b.onLoad,clear:b.onClear,add:b.onAdd,remove:b.onRemove,update:b.onUpdate,scope:b});b.data.on({replace:b.onReplace,scope:b});b.fireEvent("bind",b,e)},unbind:function(){var a=this;if(a.map){a.map.events.un({changelayer:a.onChangeLayer,addlayer:a.onAddLayer,removelayer:a.onRemoveLayer,scope:a});a.un("load",a.onLoad,a);a.un("clear",a.onClear,a);a.un("add",a.onAdd,a);a.un("remove",a.onRemove,a);a.data.un("replace",a.onReplace,a);a.map=null}},onChangeLayer:function(b){var e=b.layer;var c=this.findBy(function(f,g){return f.getLayer()===e});if(c>-1){var a=this.getAt(c);if(b.property==="order"){if(!this._adding&&!this._removing){var d=this.map.getLayerIndex(e);if(d!==c){this._removing=true;this.remove(a);delete this._removing;this._adding=true;this.insert(d,[a]);delete this._adding}}}else{if(b.property==="name"){a.set("title",e.name)}else{this.fireEvent("update",this,a,Ext.data.Record.EDIT)}}}},onAddLayer:function(b){var c=this;if(!c._adding){c._adding=true;var a=c.proxy.reader.read(b.layer);c.add(a.records);delete c._adding}},onRemoveLayer:function(a){if(this.map.unloadDestroy){if(!this._removing){var b=a.layer;this._removing=true;this.remove(this.getByLayer(b));delete this._removing}}else{this.unbind()}},onLoad:function(c,b,g){if(g){if(!Ext.isArray(b)){b=[b]}if(!this._addRecords){this._removing=true;for(var e=this.map.layers.length-1;e>=0;e--){this.map.removeLayer(this.map.layers[e])}delete this._removing}var a=b.length;if(a>0){var f=new Array(a);for(var d=0;d<a;d++){f[d]=b[d].getLayer()}this._adding=true;this.map.addLayers(f);delete this._adding}}delete this._addRecords},onClear:function(a){this._removing=true;for(var b=this.map.layers.length-1;b>=0;b--){this.map.removeLayer(this.map.layers[b])}delete this._removing},onAdd:function(b,a,c){if(!this._adding){this._adding=true;var e;for(var d=a.length-1;d>=0;--d){e=a[d].getLayer();this.map.addLayer(e);if(c!==this.map.layers.length-1){this.map.setLayerIndex(e,c)}}delete this._adding}},onRemove:function(b,a,c){if(!this._removing){var d=a.getLayer();if(this.map.getLayer(d.id)!=null){this._removing=true;this.removeMapLayer(a);delete this._removing}}},onUpdate:function(c,a,b){if(b===Ext.data.Record.EDIT){if(a.modified&&a.modified.title){var d=a.getLayer();var e=a.get("title");if(e!==d.name){d.setName(e)}}}},removeMapLayer:function(a){this.map.removeLayer(a.getLayer())},onReplace:function(c,a,b){this.removeMapLayer(a)},getByLayer:function(b){var a=this.findBy(function(c){return c.getLayer()===b});if(a>-1){return this.getAt(a)}},destroy:function(){var a=this;a.unbind();a.callParent()},loadRecords:function(a,b){if(b&&b.addRecords){this._addRecords=true}this.callParent(arguments)}});Ext.define("GeoExt.panel.Map",{extend:"Ext.panel.Panel",requires:["GeoExt.data.LayerStore"],alias:"widget.gx_mappanel",alternateClassName:"GeoExt.MapPanel",statics:{guess:function(){var a=Ext.ComponentQuery.query("gx_mappanel");return((a&&a.length>0)?a[0]:null)}},center:null,zoom:null,extent:null,prettyStateKeys:false,map:null,layers:null,stateEvents:["aftermapmove","afterlayervisibilitychange","afterlayeropacitychange","afterlayerorderchange","afterlayernamechange","afterlayeradd","afterlayerremove"],initComponent:function(){if(!(this.map instanceof OpenLayers.Map)){this.map=new OpenLayers.Map(Ext.applyIf(this.map||{},{allOverlays:true}))}var a=this.layers;if(!a||a instanceof Array){this.layers=Ext.create("GeoExt.data.LayerStore",{layers:a,map:this.map.layers.length>0?this.map:null})}if(Ext.isString(this.center)){this.center=OpenLayers.LonLat.fromString(this.center)}else{if(Ext.isArray(this.center)){this.center=new OpenLayers.LonLat(this.center[0],this.center[1])}}if(Ext.isString(this.extent)){this.extent=OpenLayers.Bounds.fromString(this.extent)}else{if(Ext.isArray(this.extent)){this.extent=OpenLayers.Bounds.fromArray(this.extent)}}this.callParent(arguments);this.on("resize",this.onResize,this);this.on("afterlayout",function(){if(typeof this.map.getViewport==="function"){this.items.each(function(b){if(typeof b.addToMapPanel==="function"){b.getEl().appendTo(this.map.getViewport())}},this)}},this);this.map.events.on({moveend:this.onMoveend,changelayer:this.onChangelayer,addlayer:this.onAddlayer,removelayer:this.onRemovelayer,scope:this})},onMoveend:function(a){this.fireEvent("aftermapmove",this,this.map,a)},onChangelayer:function(b){var a=this.map;if(b.property){if(b.property==="visibility"){this.fireEvent("afterlayervisibilitychange",this,a,b)}else{if(b.property==="order"){this.fireEvent("afterlayerorderchange",this,a,b)}else{if(b.property==="nathis"){this.fireEvent("afterlayernathischange",this,a,b)}else{if(b.property==="opacity"){this.fireEvent("afterlayeropacitychange",this,a,b)}}}}}},onAddlayer:function(){this.fireEvent("afterlayeradd")},onRemovelayer:function(){this.fireEvent("afterlayerremove")},onResize:function(){var a=this.map;if(this.body.dom!==a.div){a.render(this.body.dom);this.layers.bind(a);if(a.layers.length>0){this.setInitialExtent()}else{this.layers.on("add",this.setInitialExtent,this,{single:true})}}else{a.updateSize()}},setInitialExtent:function(){var a=this.map;if(!a.getCenter()){if(this.center||this.zoom){a.setCenter(this.center,this.zoom)}else{if(this.extent instanceof OpenLayers.Bounds){a.zoomToExtent(this.extent,true)}else{a.zoomToMaxExtent()}}}},getState:function(){var c=this,e=c.map,d=c.callParent(arguments)||{},b;if(!e){return}var a=e.getCenter();a&&Ext.applyIf(d,{x:a.lon,y:a.lat,zoom:e.getZoom()});c.layers.each(function(f){b=f.getLayer();layerId=this.prettyStateKeys?f.get("title"):f.get("id");d=c.addPropertyToState(d,"visibility_"+layerId,b.getVisibility());d=c.addPropertyToState(d,"opacity_"+layerId,(b.opacity===null)?1:b.opacity)},c);return d},applyState:function(a){var j=this;map=j.map;j.center=new OpenLayers.LonLat(a.x,a.y);j.zoom=a.zoom;var f,c,g,d,b,h;var e=map.layers;for(f=0,c=e.length;f<c;f++){g=e[f];d=j.prettyStateKeys?g.name:g.id;b=a["visibility_"+d];if(b!==undefined){b=(/^true$/i).test(b);if(g.isBaseLayer){if(b){map.setBaseLayer(g)}}else{g.setVisibility(b)}}h=a["opacity_"+d];if(h!==undefined){g.setOpacity(h)}}},onBeforeAdd:function(a){if(Ext.isFunction(a.addToMapPanel)){a.addToMapPanel(this)}this.callParent(arguments)},beforeDestroy:function(){if(this.map&&this.map.events){this.map.events.un({moveend:this.onMoveend,changelayer:this.onChangelayer,scope:this})}if(!this.initialConfig.map||!(this.initialConfig.map instanceof OpenLayers.Map)){if(this.map&&this.map.destroy){this.map.destroy()}}delete this.map;this.callParent(arguments)}});Ext.define("GeoExt.tree.Column",{extend:"Ext.tree.Column",alias:"widget.gx_treecolumn",initComponent:function(){var b=this;b.callParent();var a=b.renderer;this.renderer=function(i,e,d,h,j,f,c){var g=[a(i,e,d,h,j,f,c)];if(d.get("checkedGroup")){g[0]=g[0].replace(/class="([^-]+)-tree-checkbox([^"]+)?"/,'class="$1-tree-checkbox$2 gx-tree-radio"')}g.push('<div class="gx-tree-component gx-tree-component-off" id="tree-record-'+d.id+'"></div>');if(d.uiProvider&&d.uiProvider instanceof "string"){}return g.join("")}},defaultRenderer:function(a){return a}});Ext.define("GeoExt.tree.View",{extend:"Ext.tree.View",alias:"widget.gx_treeview",initComponent:function(){var a=this;a.on("itemupdate",this.onItem,this);a.on("itemadd",this.onItem,this);a.on("createchild",this.createChild,this);return a.callParent(arguments)},onItem:function(a,c,f,b){var e=this;if(!(a instanceof Array)){a=[a]}for(var d=0;d<a.length;d++){this.onNodeRendered(a[d])}},onNodeRendered:function(c){var b=this;var a=Ext.get("tree-record-"+c.id);if(!a){return}if(c.get("layer")){b.fireEvent("createchild",a,c)}if(c.hasChildNodes()){c.eachChild(function(d){b.onNodeRendered(d)},b)}},createChild:function(b,c){var a=c.get("component");if(a){cmpObj=Ext.ComponentManager.create(a);cmpObj.render(b);b.removeCls("gx-tree-component-off")}}});Ext.define("GeoExt.tree.LayerNode",{extend:"Ext.AbstractPlugin",alias:"plugin.gx_layer",init:function(b){this.target=b;var a=b.get("layer");b.set("checked",a.getVisibility());if(!b.get("checkedGroup")&&a.isBaseLayer){b.set("checkedGroup","gx_baselayer")}b.set("fixedText",!!b.text);b.set("leaf",true);if(!b.get("iconCls")){b.set("iconCls","gx-tree-layer-icon")}b.on("afteredit",this.onAfterEdit,this);a.events.on({visibilitychanged:this.onLayerVisibilityChanged,scope:this})},onAfterEdit:function(c,a){var b=this;if(~Ext.Array.indexOf(a,"checked")){b.onCheckChange()}},onLayerVisibilityChanged:function(){if(!this._visibilityChanging){this.target.set("checked",this.target.get("layer").getVisibility())}},onCheckChange:function(){var c=this.target,b=this.target.get("checked");if(b!=c.get("layer").getVisibility()){c._visibilityChanging=true;var a=c.get("layer");if(b&&a.isBaseLayer&&a.map){a.map.setBaseLayer(a)}else{a.setVisibility(b)}delete c._visibilityChanging}}});Ext.define("GeoExt.tree.LayerLoader",{extend:"Ext.util.Observable",requires:["GeoExt.tree.LayerNode"],store:null,filter:function(a){return a.getLayer().displayInLayerSwitcher===true},baseAttrs:null,load:function(a){if(this.fireEvent("beforeload",this,a)){this.removeStoreHandlers();while(a.firstChild){a.removeChild(a.firstChild)}if(!this.store){this.store=GeoExt.MapPanel.guess().layers}this.store.each(function(b){this.addLayerNode(a,b)},this);this.addStoreHandlers(a);this.fireEvent("load",this,a)}},onStoreAdd:function(b,a,c,f){if(!this._reordering){var g=f.get("container").recordIndexToNodeIndex(c+a.length-1,f);for(var d=0,e=a.length;d<e;++d){this.addLayerNode(f,a[d],g)}}},onStoreRemove:function(a,b){if(!this._reordering){this.removeLayerNode(b,a)}},addLayerNode:function(d,a,b){b=b||0;if(this.filter(a)===true){var c=a.getLayer();var e=this.createNode({plugins:[{ptype:"gx_layer"}],layer:c,text:c.name,listeners:{move:this.onChildMove,scope:this}});if(b!==undefined){d.insertChild(b,e)}else{d.appendChild(e)}d.getChildAt(b).on("move",this.onChildMove,this)}},removeLayerNode:function(b,a){if(this.filter(a)===true){var c=b.findChildBy(function(d){return d.get("layer")==a.getLayer()});if(c){c.un("move",this.onChildMove,this);c.remove()}}},onChildMove:function(c,k,l,h){var i=this,g=i.store.getByLayer(c.get("layer")),b=l.get("container"),f=b.loader;i._reordering=true;if(f instanceof i.self&&i.store===f.store){f._reordering=true;i.store.remove(g);var a;if(l.childNodes.length>1){var j=(h===0)?h+1:h-1;a=i.store.findBy(function(m){return l.childNodes[j].get("layer")===m.getLayer()});if(h===0){a++}}else{if(k.parentNode===l.parentNode){var d=l;do{d=d.previousSibling}while(d&&!(d.get("container") instanceof b.self&&d.lastChild));if(d){a=i.store.findBy(function(m){return d.lastChild.get("layer")===m.getLayer()})}else{var e=l;do{e=e.nextSibling}while(e&&!(e.get("container") instanceof b.self&&e.firstChild));if(e){a=i.store.findBy(function(m){return e.firstChild.get("layer")===m.getLayer()})}a++}}}if(a!==undefined){i.store.insert(a,[g])}else{i.store.insert(oldRecordIndex,[g])}delete f._reordering}delete i._reordering},addStoreHandlers:function(b){if(!this._storeHandlers){this._storeHandlers={add:function(c,e,d){this.onStoreAdd(c,e,d,b)},remove:function(c,d){this.onStoreRemove(d,b)}};for(var a in this._storeHandlers){this.store.on(a,this._storeHandlers[a],this)}}},removeStoreHandlers:function(){if(this._storeHandlers){for(var a in this._storeHandlers){this.store.un(a,this._storeHandlers[a],this)}delete this._storeHandlers}},createNode:function(a){if(this.baseAttrs){Ext.apply(a,this.baseAttrs)}return a},destroy:function(){this.removeStoreHandlers()}});Ext.define("GeoExt.tree.LayerContainer",{extend:"Ext.AbstractPlugin",requires:["GeoExt.tree.LayerLoader"],alias:"plugin.gx_layercontainer",defaultText:"Layers",init:function(c){var b=this;var a=b.loader;b.loader=(a&&a instanceof GeoExt.tree.LayerLoader)?a:new GeoExt.tree.LayerLoader(a);c.set("container",b);if(!c.get("text")){c.set("text",b.defaultText);c.commit()}b.loader.load(c)},recordIndexToNodeIndex:function(c,g){var f=this;var b=f.loader.store;var e=b.getCount();var a=g.childNodes.length;var h=-1;for(var d=e-1;d>=0;--d){if(f.loader.filter(b.getAt(d))===true){++h;if(c===d||h>a-1){break}}}return h}});Ext.define("GeoExt.tree.BaseLayerContainer",{extend:"GeoExt.tree.LayerContainer",alias:"plugin.gx_baselayercontainer",defaultText:"Base Layers",init:function(c){var b=this;var a=b.loader;b.loader=Ext.applyIf(a||{},{baseAttrs:Ext.applyIf((a&&a.baseAttrs)||{},{iconCls:"gx-tree-baselayer-icon",checkedGroup:"baselayer"}),filter:function(d){var e=d.getLayer();return e.displayInLayerSwitcher===true&&e.isBaseLayer===true}});b.callParent(arguments)}});Ext.define("GeoExt.tree.Panel",{extend:"Ext.tree.Panel",alias:"widget.gx_treepanel",requires:["GeoExt.tree.Column","GeoExt.tree.View"],viewType:"gx_treeview",initComponent:function(){var a=this;if(!a.columns){if(a.initialConfig.hideHeaders===undefined){a.hideHeaders=true}a.addCls(Ext.baseCSSPrefix+"autowidth-table");a.columns=[{xtype:"gx_treecolumn",text:"Name",width:Ext.isIE6?null:10000,dataIndex:a.displayField}]}a.callParent()}});
 
 
-
 	// GIS CORE
 
 	// ext config
 	Ext.Ajax.method = 'GET';
+
+    Ext.isIE = function() {
+        return /trident/.test(Ext.userAgent);
+    }();
 
 	// gis
 	GIS = {
@@ -1089,45 +1092,6 @@ Ext.onReady( function() {
 		selectHandlers.activate();
 	};
 
-	GIS.core.OrganisationUnitLevelStore = function(gis) {
-        var isPlugin = GIS.plugin && !GIS.app;
-
-		return Ext.create('Ext.data.Store', {
-			fields: ['id', 'name', 'level'],
-			proxy: {
-				type: isPlugin ? 'jsonp' : 'ajax',
-				url: gis.init.contextPath + '/api/organisationUnitLevels.' + (isPlugin ? 'jsonp' : 'json') + '?fields=id,name,level&paging=false',
-				reader: {
-					type: 'json',
-					root: 'organisationUnitLevels'
-				}
-			},
-			autoLoad: true,
-			cmp: [],
-			isLoaded: false,
-			loadFn: function(fn) {
-				if (this.isLoaded) {
-					fn.call();
-				}
-				else {
-					this.load(fn);
-				}
-			},
-			getRecordByLevel: function(level) {
-				return this.getAt(this.findExact('level', level));
-			},
-			listeners: {
-				load: function() {
-					if (!this.isLoaded) {
-						this.isLoaded = true;
-						gis.util.gui.combo.setQueryMode(this.cmp, 'local');
-					}
-					this.sort('level', 'ASC');
-				}
-			}
-		});
-	};
-
 	GIS.core.StyleMap = function(labelConfig) {
 		var defaults = {
 				fillOpacity: 1,
@@ -1136,7 +1100,7 @@ Ext.onReady( function() {
                 pointRadius: 8,
                 labelAlign: 'cr',
                 labelYOffset: 13,
-                fontFamily: 'arial,sans-serif,roboto,helvetica neue,helvetica,consolas'
+                fontFamily: '"Arial","Sans-serif","Roboto","Helvetica","Consolas"'
 			},
 			select = {
 				fillOpacity: 0.9,
@@ -1299,10 +1263,15 @@ Ext.onReady( function() {
                 setMap();
             };
 
-            failure = function() {
+            failure = function(r) {
                 gis.olmap.mask.hide();
-                alert('Map id not recognized' + (gis.el ? ' (' + gis.el + ')' : ''));
-                return;
+
+                if (Ext.Array.contains([403], r.status)) {
+                    alert(GIS.i18n.you_do_not_have_access_to_all_items_in_this_favorite);
+                }
+                else {
+                    alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
+                }
             };
 
             if (isPlugin) {
@@ -1734,10 +1703,13 @@ Ext.onReady( function() {
                 isPlugin = GIS.plugin && !GIS.app,
                 url = function() {
                     var params = '?ou=ou:';
+
                     for (var i = 0; i < items.length; i++) {
                         params += items[i].id;
                         params += i !== items.length - 1 ? ';' : '';
                     }
+
+                    params += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
 
                     return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params + '&viewClass=detailed';
                 }(),
@@ -2003,10 +1975,14 @@ Ext.onReady( function() {
                 isPlugin = GIS.plugin && !GIS.app,
                 url = function() {
                     var params = '?ou=ou:';
+
                     for (var i = 0; i < items.length; i++) {
                         params += items[i].id;
                         params += i !== items.length - 1 ? ';' : '';
                     }
+
+                    params += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+
                     return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params;
                 }(),
                 success,
@@ -2347,10 +2323,14 @@ Ext.onReady( function() {
                 isPlugin = GIS.plugin && !GIS.app,
                 url = function() {
                     var params = '?ou=ou:';
+
                     for (var i = 0; i < items.length; i++) {
                         params += items[i].id;
                         params += i !== items.length - 1 ? ';' : '';
                     }
+
+                    params += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+
                     return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params;
                 }(),
                 success,
@@ -2444,6 +2424,9 @@ Ext.onReady( function() {
 				paramString += peItems[i].id;
 				paramString += i < peItems.length - 1 ? ';' : '';
 			}
+
+            // display property
+            paramString += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
 
 			success = function(json) {
 				var response = gis.api.response.Response(json),
@@ -2721,8 +2704,6 @@ Ext.onReady( function() {
 		(function() {
 			conf.finals = {
 				url: {
-					path_api: '/api/',
-					path_module: '/dhis-web-mapping/',
 					path_commons: '/dhis-web-commons-ajax-json/'
 				},
 				layer: {
@@ -2893,9 +2874,9 @@ Ext.onReady( function() {
 
             conf.url.analysisFields = [
                 '*',
-                'columns[dimension,filter,items[id,name]]',
-                'rows[dimension,filter,items[id,name]]',
-                'filters[dimension,filter,items[id,name]]',
+                'columns[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
+                'rows[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
+                'filters[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
                 '!lastUpdated',
                 '!href',
                 '!created',
@@ -3594,11 +3575,6 @@ Ext.onReady( function() {
 					return response;
 				}();
 			};
-		}());
-
-		// store
-		(function() {
-			store.organisationUnitLevels = GIS.core.OrganisationUnitLevelStore(gis);
 		}());
 
 		gis.api = api;
@@ -5134,6 +5110,74 @@ Ext.onReady( function() {
 				fn();
 			}
 		});
+
+        // date, calendar
+        requests.push({
+            url: url + '/api/systemSettings.jsonp?key=keyCalendar&key=keyDateFormat',
+            success: function(r) {
+                var systemSettings = Ext.decode(r.responseText);
+                init.systemInfo.dateFormat = Ext.isString(systemSettings.keyDateFormat) ? systemSettings.keyDateFormat.toLowerCase() : 'yyyy-mm-dd';
+                init.systemInfo.calendar = systemSettings.keyCalendar;
+
+                // user-account
+                Ext.Ajax.request({
+                    url: init.contextPath + '/api/me/user-account.json',
+                    success: function(r) {
+                        init.userAccount = Ext.decode(r.responseText);
+
+                        // init
+                        var defaultKeyUiLocale = 'en',
+                            defaultKeyAnalysisDisplayProperty = 'name',
+                            namePropertyUrl,
+                            contextPath,
+                            keyUiLocale,
+                            dateFormat;
+
+                        init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
+                        init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
+
+                        // local vars
+                        contextPath = init.contextPath;
+                        keyUiLocale = init.userAccount.settings.keyUiLocale;
+                        keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
+                        namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
+                        dateFormat = init.systemInfo.dateFormat;
+
+                        init.namePropertyUrl = namePropertyUrl;
+
+                        // calendar
+                        (function() {
+                            var dhis2PeriodUrl = '../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
+                                defaultCalendarId = 'gregorian',
+                                calendarIdMap = {'iso8601': defaultCalendarId},
+                                calendarId = calendarIdMap[init.systemInfo.calendar] || init.systemInfo.calendar || defaultCalendarId,
+                                calendarIds = ['coptic', 'ethiopian', 'islamic', 'julian', 'nepali', 'thai'],
+                                calendarScriptUrl,
+                                createGenerator;
+
+                            // calendar
+                            createGenerator = function() {
+                                init.calendar = $.calendars.instance(calendarId);
+                                init.periodGenerator = new dhis2.period.PeriodGenerator(init.calendar, init.systemInfo.dateFormat);
+                            };
+
+                            if (Ext.Array.contains(calendarIds, calendarId)) {
+                                calendarScriptUrl = '../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarId + '.min.js';
+
+                                Ext.Loader.injectScriptElement(calendarScriptUrl, function() {
+                                    Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
+                                });
+                            }
+                            else {
+                                Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
+                            }
+                        }());
+
+                        fn();
+                    }
+                });
+            }
+        });
 
 		requests.push({
 			url: url + '/api/organisationUnits.jsonp?userOnly=true&fields=id,name,children[id,name]&paging=false',

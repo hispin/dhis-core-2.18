@@ -5,6 +5,10 @@ Ext.onReady( function() {
 	// ext config
 	Ext.Ajax.method = 'GET';
 
+    Ext.isIE = function() {
+        return /trident/.test(Ext.userAgent);
+    }();
+
 	// namespace
 	PT = {};
 
@@ -31,7 +35,7 @@ Ext.onReady( function() {
 				dimension: {
 					data: {
 						value: 'data',
-						name: PT.i18n.data,
+						name: PT.i18n.data || 'Data',
 						dimensionName: 'dx',
 						objectName: 'dx',
 						warning: {
@@ -39,19 +43,19 @@ Ext.onReady( function() {
 						}
 					},
 					category: {
-						name: PT.i18n.categories,
+						name: PT.i18n.assigned_categories || 'Assigned categories',
 						dimensionName: 'co',
 						objectName: 'co',
 					},
 					indicator: {
 						value: 'indicators',
-						name: PT.i18n.indicators,
+						name: PT.i18n.indicators || 'Indicators',
 						dimensionName: 'dx',
 						objectName: 'in'
 					},
 					dataElement: {
 						value: 'dataElements',
-						name: PT.i18n.data_elements,
+						name: PT.i18n.data_elements || 'Data elements',
 						dimensionName: 'dx',
 						objectName: 'de'
 					},
@@ -63,13 +67,13 @@ Ext.onReady( function() {
 					},
 					dataSet: {
 						value: 'dataSets',
-						name: PT.i18n.data_sets,
+						name: PT.i18n.data_sets || 'Data sets',
 						dimensionName: 'dx',
 						objectName: 'ds'
 					},
 					period: {
 						value: 'period',
-						name: PT.i18n.periods,
+						name: PT.i18n.periods || 'Periods',
 						dimensionName: 'pe',
 						objectName: 'pe'
 					},
@@ -81,7 +85,7 @@ Ext.onReady( function() {
 					},
 					organisationUnit: {
 						value: 'organisationUnits',
-						name: PT.i18n.organisation_units,
+						name: PT.i18n.organisation_units || 'Organisation units',
 						dimensionName: 'ou',
 						objectName: 'ou'
 					},
@@ -139,7 +143,7 @@ Ext.onReady( function() {
 				west_fill_accordion_indicator: 56,
 				west_fill_accordion_dataelement: 59,
 				west_fill_accordion_dataset: 31,
-				west_fill_accordion_period: 293,
+				west_fill_accordion_period: 284,
 				west_fill_accordion_organisationunit: 58,
 				west_maxheight_accordion_indicator: 400,
 				west_maxheight_accordion_dataelement: 400,
@@ -195,9 +199,9 @@ Ext.onReady( function() {
                     '*',
                     'program[id,name]',
                     'programStage[id,name]',
-                    'columns[dimension,filter,items[id,name]]',
-                    'rows[dimension,filter,items[id,name]]',
-                    'filters[dimension,filter,items[id,name]]',
+                    'columns[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
+                    'rows[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
+                    'filters[dimension,filter,items[id,' + init.namePropertyUrl + ']]',
                     '!lastUpdated',
                     '!href',
                     '!created',
@@ -248,7 +252,7 @@ Ext.onReady( function() {
 						return;
 					}
 
-					config.id = config.id.replace('#', '.');
+					config.id = config.id.replace('.', '#');
 
 					return config;
 				}();
@@ -311,7 +315,11 @@ Ext.onReady( function() {
 
 				// showColTotals: boolean (true)
 
-				// showSubTotals: boolean (true)
+				// showColSubTotals: boolean (true)
+
+				// showRowSubTotals: boolean (true)
+
+                // showDimensionLabels: boolean (false)
 
 				// hideEmptyRows: boolean (false)
 
@@ -419,7 +427,7 @@ Ext.onReady( function() {
 
 					// dc and co
 					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.category.objectName]) {
-						web.message.alert('Categories and detailed data elements cannot be specified together');
+						web.message.alert('Assigned categories and detailed data elements cannot be specified together');
 						return;
 					}
 
@@ -476,9 +484,11 @@ Ext.onReady( function() {
 					layout.filters = config.filters;
 
 					// properties
-					layout.showRowTotals = Ext.isBoolean(config.rowTotals) ? config.rowTotals : (Ext.isBoolean(config.showRowTotals) ? config.showRowTotals : true);
 					layout.showColTotals = Ext.isBoolean(config.colTotals) ? config.colTotals : (Ext.isBoolean(config.showColTotals) ? config.showColTotals : true);
-					layout.showSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showSubTotals) ? config.showSubTotals : true);
+					layout.showRowTotals = Ext.isBoolean(config.rowTotals) ? config.rowTotals : (Ext.isBoolean(config.showRowTotals) ? config.showRowTotals : true);
+					layout.showColSubTotals = Ext.isBoolean(config.colSubTotals) ? config.colSubTotals : (Ext.isBoolean(config.showColSubTotals) ? config.showColSubTotals : true);
+					layout.showRowSubTotals = Ext.isBoolean(config.rowSubTotals) ? config.rowSubTotals : (Ext.isBoolean(config.showRowSubTotals) ? config.showRowSubTotals : true);
+					layout.showDimensionLabels = Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : (Ext.isBoolean(config.showDimensionLabels) ? config.showDimensionLabels : true);
 					layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false;
                     layout.aggregationType = Ext.isString(config.aggregationType) ? config.aggregationType : 'default';
 
@@ -1628,8 +1638,12 @@ Ext.onReady( function() {
 					delete layout.showColTotals;
 				}
 
-				if (layout.showSubTotals) {
-					delete layout.showSubTotals;
+				if (layout.showColSubTotals) {
+					delete layout.showColSubTotals;
+				}
+
+				if (layout.showRowSubTotals) {
+					delete layout.showRowSubTotals;
 				}
 
 				if (!layout.hideEmptyRows) {
@@ -1720,8 +1734,8 @@ Ext.onReady( function() {
 					for (var i = 0, id, splitId ; i < ids.length; i++) {
 						id = ids[i];
 
-						if (id.indexOf('.') !== -1) {
-							splitId = id.split('.');
+						if (id.indexOf('#') !== -1) {
+							splitId = id.split('#');
 							response.metaData.names[id] = response.metaData.names[splitId[0]] + ' ' + response.metaData.names[splitId[1]];
 						}
 					}
@@ -1754,7 +1768,7 @@ Ext.onReady( function() {
 						for (var j = 0, index; j < idIndexOrder.length; j++) {
 							index = idIndexOrder[j];
 
-							id += response.headers[index].name === co ? '.' : '';
+							//id += response.headers[index].name === co ? '.' : '';
 							id += row[index];
 						}
 
@@ -1820,6 +1834,25 @@ Ext.onReady( function() {
 
                 return response;
             };
+
+            service.response.getValue = function(str) {
+				var n = parseFloat(str);
+
+                if (Ext.isBoolean(str)) {
+                    return 1;
+                }
+
+                // return string if
+                // - parsefloat(string) is not a number
+                // - string is just starting with a number
+                // - string is a valid date
+				//if (!Ext.isNumber(n) || n != str || new Date(str).toString() !== 'Invalid Date') {
+				if (!Ext.isNumber(n) || n != str) {
+					return 0;
+				}
+
+                return n;
+			};
         }());
 
 		// web
@@ -1900,7 +1933,7 @@ Ext.onReady( function() {
 
 					if (dimName === dx) {
 						for (var j = 0, index; j < items.length; j++) {
-							index = items[j].indexOf('.');
+							index = items[j].indexOf('#');
 
 							if (index > 0) {
 								addCategoryDimension = true;
@@ -1939,6 +1972,9 @@ Ext.onReady( function() {
                 if (aggTypes.hasOwnProperty(xLayout.aggregationType)) {
                     paramString += '&aggregationType=' + aggTypes[xLayout.aggregationType];
                 }
+
+                // display property
+                paramString += '&displayProperty=' + init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
 
 				return paramString;
 			};
@@ -2017,7 +2053,9 @@ Ext.onReady( function() {
 				var getRoundedHtmlValue,
 					getTdHtml,
 					doSubTotals,
-					doTotals,
+					doRowTotals,
+                    doColTotals,
+                    doSortableColumnHeaders,
 					getColAxisHtmlArray,
 					getRowHtmlArray,
 					rowAxisHtmlArray,
@@ -2068,7 +2106,32 @@ Ext.onReady( function() {
 						isNumeric = Ext.isObject(config) && Ext.isString(config.type) && config.type.substr(0,5) === 'value' && !config.empty,
 						isValue = isNumeric && config.type === 'value',
 						cls = '',
-						html = '';
+						html = '',
+                        getHtmlValue;
+
+                    getHtmlValue = function(config) {
+                        var str = config.htmlValue,
+                            n = parseFloat(config.htmlValue);
+
+                        if (config.collapsed) {
+                            return '';
+                        }
+
+                        if (isValue) {
+                            if (Ext.isBoolean(str)) {
+                                return str;
+                            }
+
+                            //if (!Ext.isNumber(n) || n != str || new Date(str).toString() !== 'Invalid Date') {
+                            if (!Ext.isNumber(n) || n != str) {
+                                return str;
+                            }
+
+                            return n;
+                        }
+
+                        return str || '';
+                    }
 
 					if (!Ext.isObject(config)) {
 						return '';
@@ -2095,7 +2158,7 @@ Ext.onReady( function() {
 
 					colSpan = config.colSpan ? 'colspan="' + config.colSpan + '" ' : '';
 					rowSpan = config.rowSpan ? 'rowspan="' + config.rowSpan + '" ' : '';
-					htmlValue = config.collapsed ? '' : config.htmlValue || config.value || '';
+                    htmlValue = getHtmlValue(config);
 					htmlValue = config.type !== 'dimension' ? support.prototype.number.prettyPrint(htmlValue, xLayout.digitGroupSeparator) : htmlValue;
 					displayDensity = conf.pivot.displayDensity[config.displayDensity] || conf.pivot.displayDensity[xLayout.displayDensity];
 					fontSize = conf.pivot.fontSize[config.fontSize] || conf.pivot.fontSize[xLayout.fontSize];
@@ -2135,16 +2198,20 @@ Ext.onReady( function() {
 					return html;
 				};
 
-				doSubTotals = function(xAxis) {
-					return !!xLayout.showSubTotals && xAxis && xAxis.dims > 1;
+                doColTotals = function() {
+					return !!xLayout.showColTotals;
 				};
 
 				doRowTotals = function() {
 					return !!xLayout.showRowTotals;
 				};
 
-                doColTotals = function() {
-					return !!xLayout.showColTotals;
+				doColSubTotals = function() {
+					return !!xLayout.showColSubTotals && xRowAxis && xRowAxis.dims > 1;
+				};
+
+				doRowSubTotals = function() {
+					return !!xLayout.showRowSubTotals && xColAxis && xColAxis.dims > 1;
 				};
 
 				doSortableColumnHeaders = function() {
@@ -2155,16 +2222,73 @@ Ext.onReady( function() {
 					var a = [],
 						getEmptyHtmlArray;
 
-					getEmptyHtmlArray = function() {
-						return (xColAxis && xRowAxis) ? getTdHtml({
-							cls: 'pivot-dim-empty cursor-default',
-							colSpan: xRowAxis.dims,
-							rowSpan: xColAxis.dims,
-							htmlValue: '&nbsp;'
-						}) : '';
-					};
+                    getEmptyNameTdConfig = function(config) {
+                        config = config || {};
 
-					if (!(xColAxis && Ext.isObject(xColAxis))) {
+                        return getTdHtml({
+                            cls: config.cls ? ' ' + config.cls : 'pivot-empty',
+                            colSpan: config.colSpan ? config.colSpan : 1,
+                            rowSpan: config.rowSpan ? config.rowSpan : 1,
+                            htmlValue: config.htmlValue ? config.htmlValue : '&nbsp;'
+                        });
+                    };
+
+                    getEmptyHtmlArray = function(i) {
+                        var a = [];
+
+                        // if not the intersection cell
+                        if (i < xColAxis.dims - 1) {
+                            if (xRowAxis && xRowAxis.dims) {
+                                for (var j = 0; j < xRowAxis.dims - 1; j++) {
+                                    a.push(getEmptyNameTdConfig({
+                                        cls: 'pivot-dim-label'
+                                    }));
+                                }
+                            }
+
+                            a.push(getEmptyNameTdConfig({
+                                cls: 'pivot-dim-label',
+                                htmlValue: dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
+                            }));
+                        }
+                        else {
+                            if (xRowAxis && xRowAxis.dims) {
+                                for (var j = 0; j < xRowAxis.dims - 1; j++) {
+                                    a.push(getEmptyNameTdConfig({
+                                        cls: 'pivot-dim-label',
+                                        htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[j]].name
+                                    }));
+                                }
+                            }
+
+                            a.push(getEmptyNameTdConfig({
+                                cls: 'pivot-dim-label',
+                                htmlValue: (xRowAxis ? dimConf.objectNameMap[xLayout.rowObjectNames[j]].name : '') + (xColAxis && xRowAxis ? '&nbsp;/&nbsp;' : '') + (xColAxis ? dimConf.objectNameMap[xLayout.columnObjectNames[i]].name : '')
+                            }));
+                        }
+
+                        return a;
+                    };
+
+					if (!xColAxis) {
+
+                        // show row dimension labels
+                        if (xRowAxis && xLayout.showDimensionLabels) {
+                            var dimLabelHtml = [];
+
+                            // labels from row object names
+                            for (var i = 0; i < xLayout.rowObjectNames.length; i++) {
+                                dimLabelHtml.push(getEmptyNameTdConfig({
+                                    cls: 'pivot-dim-label',
+                                    htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[i]].name
+                                }));
+                            }
+
+                            // pivot-transparent-column unnecessary
+
+                            a.push(dimLabelHtml);
+                        }
+
 						return a;
 					}
 
@@ -2172,8 +2296,14 @@ Ext.onReady( function() {
 					for (var i = 0, dimHtml; i < xColAxis.dims; i++) {
 						dimHtml = [];
 
-						if (i === 0) {
-							dimHtml.push(getEmptyHtmlArray());
+                        if (xLayout.showDimensionLabels) {
+                            dimHtml = dimHtml.concat(getEmptyHtmlArray(i));
+                        }
+                        else if (i === 0) {
+							dimHtml.push(xColAxis && xRowAxis ? getEmptyNameTdConfig({
+                                colSpan: xRowAxis.dims,
+                                rowSpan: xColAxis.dims
+                            }) : '');
 						}
 
 						for (var j = 0, obj, spanCount = 0, condoId, totalId; j < xColAxis.size; j++) {
@@ -2197,7 +2327,7 @@ Ext.onReady( function() {
 
 							dimHtml.push(getTdHtml(obj, condoId));
 
-							if (i === 0 && spanCount === xColAxis.span[i] && doSubTotals(xColAxis) ) {
+							if (i === 0 && spanCount === xColAxis.span[i] && doRowSubTotals() ) {
 								dimHtml.push(getTdHtml({
 									type: 'dimensionSubtotal',
 									cls: 'pivot-dim-subtotal cursor-default',
@@ -2271,6 +2401,16 @@ Ext.onReady( function() {
 							axisAllObjects.push(row);
 						}
 					}
+                    else {
+                        if (xLayout.showDimensionLabels) {
+                            axisAllObjects.push([{
+                                type: 'transparent',
+                                cls: 'pivot-transparent-row'
+                            }]);
+                        }
+                    }
+
+
 	//axisAllObjects = [ [ dim, dim ]
 	//				     [ dim, dim ]
 	//				     [ dim, dim ]
@@ -2281,13 +2421,12 @@ Ext.onReady( function() {
 						valueItemsRow = [];
 						valueObjectsRow = [];
 
-						for (var j = 0, id, value, htmlValue, empty, uuid, uuids; j < colAxisSize; j++) {
+						for (var j = 0, id, value, responseValue, htmlValue, empty, uuid, uuids; j < colAxisSize; j++) {
 							empty = false;
 							uuids = [];
 
 							// meta data uid
-							//id = (xColAxis ? support.prototype.str.replaceAll(xColAxis.ids[j], '-', '') : '') + (xRowAxis ? support.prototype.str.replaceAll(xRowAxis.ids[i], '-', '') : '');
-							id = (xColAxis ? xColAxis.ids[j] : '') + (xRowAxis ? xRowAxis.ids[i] : '');
+							id = ((xColAxis ? xColAxis.ids[j] : '') + (xRowAxis ? xRowAxis.ids[i] : '')).replace('#', '');
 
                             // value html element id
 							uuid = Ext.data.IdGenerator.get('uuid').generate();
@@ -2300,9 +2439,12 @@ Ext.onReady( function() {
 								uuids = uuids.concat(xRowAxis.objects.all[xRowAxis.dims - 1][i].uuids);
 							}
 
-							if (idValueMap[id]) {
-								value = parseFloat(idValueMap[id]);
-								htmlValue = value.toString();
+                            // value, htmlValue
+                            responseValue = idValueMap[id];
+
+							if (Ext.isDefined(responseValue)) {
+                                value = service.response.getValue(responseValue);
+                                htmlValue = responseValue;
 							}
 							else {
 								value = 0;
@@ -2392,7 +2534,7 @@ Ext.onReady( function() {
                     xValueObjects = valueObjects;
 
 					// col subtotals
-					if (doSubTotals(xColAxis)) {
+					if (doRowSubTotals()) {
 						var tmpValueObjects = [];
 
 						for (var i = 0, row, rowSubTotal, colCount; i < xValueObjects.length; i++) {
@@ -2434,7 +2576,7 @@ Ext.onReady( function() {
 					}
 
 					// row subtotals
-					if (doSubTotals(xRowAxis)) {
+					if (doColSubTotals()) {
 						var tmpAxisAllObjects = [],
 							tmpValueObjects = [],
 							tmpTotalValueObjects = [],
@@ -2548,9 +2690,9 @@ Ext.onReady( function() {
 					for (var i = 0, row; i < xValueObjects.length; i++) {
 						row = [];
 
-						if (xRowAxis) {
+						//if (xRowAxis) {
 							row = row.concat(axisAllObjects[i]);
-						}
+						//}
 
 						row = row.concat(xValueObjects[i]);
 
@@ -2605,7 +2747,7 @@ Ext.onReady( function() {
 
 						xTotalColObjects = totalColObjects;
 
-						if (xColAxis && doSubTotals(xColAxis)) {
+						if (xColAxis && doRowSubTotals()) {
 							var tmp = [];
 
 							for (var i = 0, item, subTotal = 0, empty = [], colCount = 0; i < xTotalColObjects.length; i++) {
@@ -2780,8 +2922,12 @@ Ext.onReady( function() {
 	css += '.pivot-value-total { \n background-color: #e4e4e4; \n white-space: nowrap; \n text-align: right; \n } \n';
 	css += '.pivot-value-total-subgrandtotal { \n background-color: #d8d8d8; \n white-space: nowrap; \n text-align: right; \n } \n';
 	css += '.pivot-value-grandtotal { \n background-color: #c8c8c8; \n white-space: nowrap; \n text-align: right; \n } \n';
+    css += '.pivot-dim-label { \n background-color: #cddaed; \n white-space: nowrap; \n text-align: center; \n } \n';
+    css += '.pivot-empty { \n background-color: #cddaed; \n } \n';
+    css += '.pivot-transparent-column { \n background-color: #fff; \n border-top-color: #fff !important; \n border-right-color: #fff !important; \n } \n';
+    css += '.pivot-transparent-row { \n background-color: #fff; \n border-bottom-color: #fff !important; \n border-left-color: #fff !important; \n } \n';
 
-	css += '.x-mask-msg { \n padding: 0; \n	border: 0 none; \n background-image: none; \n background-color: transparent; \n } \n';
+    css += '.x-mask-msg { \n padding: 0; \n	border: 0 none; \n background-image: none; \n background-color: transparent; \n } \n';
 	css += '.x-mask-msg div { \n background-position: 11px center; \n } \n';
 	css += '.x-mask-msg .x-mask-loading { \n border: 0 none; \n	background-color: #000; \n color: #fff; \n border-radius: 2px; \n padding: 12px 14px 12px 30px; \n opacity: 0.65; \n } \n';
     css += '.x-mask { opacity: 0 } \n';
@@ -2834,6 +2980,74 @@ Ext.onReady( function() {
 				fn();
 			}
 		});
+
+        // date, calendar
+        requests.push({
+            url: url + '/api/systemSettings.jsonp?key=keyCalendar&key=keyDateFormat',
+            success: function(r) {
+                var systemSettings = Ext.decode(r.responseText);
+                init.systemInfo.dateFormat = Ext.isString(systemSettings.keyDateFormat) ? systemSettings.keyDateFormat.toLowerCase() : 'yyyy-mm-dd';
+                init.systemInfo.calendar = systemSettings.keyCalendar;
+
+                // user-account
+                Ext.Ajax.request({
+                    url: init.contextPath + '/api/me/user-account.jsonp',
+                    success: function(r) {
+                        init.userAccount = Ext.decode(r.responseText);
+
+                        // init
+                        var defaultKeyUiLocale = 'en',
+                            defaultKeyAnalysisDisplayProperty = 'name',
+                            namePropertyUrl,
+                            contextPath,
+                            keyUiLocale,
+                            dateFormat;
+
+                        init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
+                        init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
+
+                        // local vars
+                        contextPath = init.contextPath;
+                        keyUiLocale = init.userAccount.settings.keyUiLocale;
+                        keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
+                        namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
+                        dateFormat = init.systemInfo.dateFormat;
+
+                        init.namePropertyUrl = namePropertyUrl;
+
+                        // calendar
+                        (function() {
+                            var dhis2PeriodUrl = '../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
+                                defaultCalendarId = 'gregorian',
+                                calendarIdMap = {'iso8601': defaultCalendarId},
+                                calendarId = calendarIdMap[init.systemInfo.calendar] || init.systemInfo.calendar || defaultCalendarId,
+                                calendarIds = ['coptic', 'ethiopian', 'islamic', 'julian', 'nepali', 'thai'],
+                                calendarScriptUrl,
+                                createGenerator;
+
+                            // calendar
+                            createGenerator = function() {
+                                init.calendar = $.calendars.instance(calendarId);
+                                init.periodGenerator = new dhis2.period.PeriodGenerator(init.calendar, init.systemInfo.dateFormat);
+                            };
+
+                            if (Ext.Array.contains(calendarIds, calendarId)) {
+                                calendarScriptUrl = '../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarId + '.min.js';
+
+                                Ext.Loader.injectScriptElement(calendarScriptUrl, function() {
+                                    Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
+                                });
+                            }
+                            else {
+                                Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
+                            }
+                        }());
+
+                        fn();
+                    }
+                });
+            }
+        });
 
 		requests.push({
 			url: url + '/api/organisationUnits.jsonp?userOnly=true&fields=id,name,children[id,name]&paging=false',

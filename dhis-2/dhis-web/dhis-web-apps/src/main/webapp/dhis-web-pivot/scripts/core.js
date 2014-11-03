@@ -34,27 +34,27 @@ Ext.onReady( function() {
 				dimension: {
 					data: {
 						value: 'data',
-						name: NS.i18n.data,
+						name: PT.i18n.data || 'Data',
 						dimensionName: 'dx',
 						objectName: 'dx',
 						warning: {
-							filter: '...'//NS.i18n.wm_multiple_filter_ind_de
+							filter: '...'//PT.i18n.wm_multiple_filter_ind_de
 						}
 					},
 					category: {
-						name: NS.i18n.assigned_categories,
+						name: PT.i18n.assigned_categories || 'Assigned categories',
 						dimensionName: 'co',
 						objectName: 'co',
 					},
 					indicator: {
 						value: 'indicators',
-						name: NS.i18n.indicators,
+						name: PT.i18n.indicators || 'Indicators',
 						dimensionName: 'dx',
 						objectName: 'in'
 					},
 					dataElement: {
 						value: 'dataElements',
-						name: NS.i18n.data_elements,
+						name: PT.i18n.data_elements || 'Data elements',
 						dimensionName: 'dx',
 						objectName: 'de'
 					},
@@ -66,13 +66,13 @@ Ext.onReady( function() {
 					},
 					dataSet: {
 						value: 'dataSets',
-						name: NS.i18n.data_sets,
+						name: PT.i18n.data_sets || 'Data sets',
 						dimensionName: 'dx',
 						objectName: 'ds'
 					},
 					period: {
 						value: 'period',
-						name: NS.i18n.periods,
+						name: PT.i18n.periods || 'Periods',
 						dimensionName: 'pe',
 						objectName: 'pe'
 					},
@@ -84,7 +84,7 @@ Ext.onReady( function() {
 					},
 					organisationUnit: {
 						value: 'organisationUnits',
-						name: NS.i18n.organisation_units,
+						name: PT.i18n.organisation_units || 'Organisation units',
 						dimensionName: 'ou',
 						objectName: 'ou'
 					},
@@ -2287,7 +2287,7 @@ Ext.onReady( function() {
 
                             a.push(dimLabelHtml);
                         }
-                        
+
 						return a;
 					}
 
@@ -2408,8 +2408,8 @@ Ext.onReady( function() {
                             }]);
                         }
                     }
-                        
-                        
+
+
 	//axisAllObjects = [ [ dim, dim ]
 	//				     [ dim, dim ]
 	//				     [ dim, dim ]
