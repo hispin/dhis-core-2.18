@@ -130,7 +130,7 @@ public class DefaultReportTableService
         
         reportTable.init( currentUserService.getCurrentUser(), reportingPeriod, organisationUnit, atLevels, inGroups, format );
 
-        Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( reportTable, format );
+        Map<String, Object> valueMap = analyticsService.getAggregatedDataValueMapping( reportTable, format );
 
         return reportTable.getGrid( new ListGrid(), valueMap, true );
     }

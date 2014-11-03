@@ -575,7 +575,7 @@ public class ReportTable
      * @return a grid.
      */
     @SuppressWarnings("unchecked")
-    public Grid getGrid( Grid grid, Map<String, Double> valueMap, boolean paramColumns )
+    public Grid getGrid( Grid grid, Map<String, Object> valueMap, boolean paramColumns )
     {
         valueMap = new HashMap<>( valueMap );
         
@@ -669,7 +669,7 @@ public class ReportTable
             {
                 String key = getIdentifier( column, row );
                 
-                Double value = valueMap.get( key );
+                Object value = valueMap.get( key );
                 
                 grid.addValue( value );
                 

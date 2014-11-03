@@ -576,13 +576,13 @@ public class DefaultAnalyticsService
         reportTable.setHideEmptyRows( params.isHideEmptyRows() );
         reportTable.setShowHierarchy( params.isShowHierarchy() );
 
-        Map<String, Double> valueMap = getAggregatedDataValueMapping( grid );
+        Map<String, Object> valueMap = getAggregatedDataValueMapping( grid );
         
         return reportTable.getGrid( new ListGrid( grid.getMetaData() ), valueMap, false );
     }
 
     @Override
-    public Map<String, Double> getAggregatedDataValueMapping( DataQueryParams params )
+    public Map<String, Object> getAggregatedDataValueMapping( DataQueryParams params )
     {
         Grid grid = getAggregatedDataValues( params );
 
@@ -590,7 +590,7 @@ public class DefaultAnalyticsService
     }
 
     @Override
-    public Map<String, Double> getAggregatedDataValueMapping( AnalyticalObject object, I18nFormat format )
+    public Map<String, Object> getAggregatedDataValueMapping( AnalyticalObject object, I18nFormat format )
     {
         DataQueryParams params = getFromAnalyticalObject( object, format );
 
@@ -636,9 +636,9 @@ public class DefaultAnalyticsService
      * @param grid the grid.
      * @return a mapping between item identifiers and aggregated values.
      */
-    private Map<String, Double> getAggregatedDataValueMapping( Grid grid )
+    private Map<String, Object> getAggregatedDataValueMapping( Grid grid )
     {
-        Map<String, Double> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         int metaCols = grid.getWidth() - 1;
         int valueIndex = grid.getWidth() - 1;
@@ -654,7 +654,7 @@ public class DefaultAnalyticsService
 
             key.deleteCharAt( key.length() - 1 );
 
-            Double value = (Double) row.get( valueIndex );
+            Object value = row.get( valueIndex );
 
             map.put( key.toString(), value );
         }

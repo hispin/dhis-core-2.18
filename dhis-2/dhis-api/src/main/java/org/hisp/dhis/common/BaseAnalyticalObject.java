@@ -643,9 +643,9 @@ public abstract class BaseAnalyticalObject
      * 
      * @param valueMap the mapping of keys and values.
      */
-    public static void sortKeys( Map<String, Double> valueMap )
+    public static void sortKeys( Map<String, Object> valueMap )
     {
-        Map<String, Double> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         for ( String key : valueMap.keySet() )
         {

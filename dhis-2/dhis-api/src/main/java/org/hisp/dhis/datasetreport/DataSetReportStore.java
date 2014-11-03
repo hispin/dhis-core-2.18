@@ -42,11 +42,11 @@ public interface DataSetReportStore
 {
     final String SEPARATOR = "-";
     
-    Map<String, Double> getAggregatedValues( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions, boolean rawData );
+    Map<String, Object> getAggregatedValues( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions, boolean rawData );
 
-    Map<String, Double> getAggregatedSubTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions );
+    Map<String, Object> getAggregatedSubTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions );
     
-    Map<String, Double> getAggregatedTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions );
+    Map<String, Object> getAggregatedTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions );
     
-    Map<String, Double> getAggregatedIndicatorValues( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions );
+    Map<String, Object> getAggregatedIndicatorValues( DataSet dataSet, Period period, OrganisationUnit unit, Set<String> dimensions );
 }

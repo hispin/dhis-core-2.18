@@ -130,7 +130,7 @@ public interface AnalyticsService
      * @param params the DataQueryParams.
      * @return a mapping of dimensional items and aggregated data values.
      */
-    Map<String, Double> getAggregatedDataValueMapping( DataQueryParams params );
+    Map<String, Object> getAggregatedDataValueMapping( DataQueryParams params );
 
     /**
      * Generates a mapping where the key represents the dimensional item identifiers
@@ -141,7 +141,7 @@ public interface AnalyticsService
      * @param format the I18nFormat, can be null.
      * @return a mapping of dimensional items and aggregated data values.
      */
-    Map<String, Double> getAggregatedDataValueMapping( AnalyticalObject object, I18nFormat format );
+    Map<String, Object> getAggregatedDataValueMapping( AnalyticalObject object, I18nFormat format );
 
     /**
      * Creates a data query parameter object from the given URL.

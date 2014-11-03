@@ -117,7 +117,7 @@ public class ReportTableGridTest
     private BatchHandlerFactory batchHandlerFactory;
     
     
-    private Map<String, Double> valueMap;
+    private Map<String, Object> valueMap;
     
     private List<DataElement> dataElements;
     private List<DataElementCategoryOptionCombo> categoryOptionCombos;
