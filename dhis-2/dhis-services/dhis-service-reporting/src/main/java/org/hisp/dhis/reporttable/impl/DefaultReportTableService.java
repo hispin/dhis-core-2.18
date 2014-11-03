@@ -34,8 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.common.AnalyticalObjectStore;
 import org.hisp.dhis.common.Grid;
@@ -61,8 +59,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultReportTableService
     implements ReportTableService
 {
-    private static final Log log = LogFactory.getLog( DefaultReportTableService.class );
-
     // ---------------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------------
@@ -109,8 +105,6 @@ public class DefaultReportTableService
     @Override
     public Grid getReportTableGrid( String uid, I18nFormat format, Date reportingPeriod, String organisationUnitUid )
     {
-        log.info( "Generating report table grid: " + uid + ", date: " + reportingPeriod + ", ou: " + organisationUnitUid );
-        
         ReportTable reportTable = getReportTable( uid );
                 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
