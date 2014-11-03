@@ -7,6 +7,12 @@
         <meta name="keywords" content="DHIS 2">        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
+        <script type="text/javascript">
+            window.google = null;
+        </script>
+
+        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
+        
         <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.plugin.min.js"></script>
@@ -33,7 +39,7 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/angular-route.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/angular-cookies.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/angular-animate.js"></script>  
-        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/ui-bootstrap-tpls-0.10.0-draggable-modal.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/ui-bootstrap-tpls-0.10.0-draggable-modal.js"></script>        
 
         <script type="text/javascript" src="../dhis-web-commons/javascripts/moment/moment-with-langs.min.js"></script>       
 
@@ -60,18 +66,22 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
-        <script type="text/javascript" src="../dhis-web-commons/ouwt/ouwt.js"></script>
+        <!--<script type="text/javascript" src="../dhis-web-commons/ouwt/ouwt.js"></script>-->
         
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angular-translate.min.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-static-files.min.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-url.min.js"></script>
 
-        <script type="text/javascript" src="scripts/event-capture.js"></script>
+        <!--<script type="text/javascript" src="scripts/event-capture.js"></script>-->
         <script type="text/javascript" src="scripts/app.js"></script>
         <script type="text/javascript" src="scripts/services.js"></script>
         <script type="text/javascript" src="scripts/directives.js"></script>
-        <script type="text/javascript" src="scripts/controllers.js"></script>
+        <script type="text/javascript" src="scripts/controllers.js"></script>        
+        <script type="text/javascript" src="scripts/column-display-controller.js"></script>
+        <script type="text/javascript" src="scripts/header-controller.js"></script>
+        <script type="text/javascript" src="scripts/map-controller.js"></script>
+        <script type="text/javascript" src="scripts/notes-controller.js"></script>        
         <script type="text/javascript" src="scripts/filters.js"></script>
         <script type="text/javascript" src="scripts/orgunitTreeSearch.js"></script>
 
@@ -98,108 +108,9 @@
 
             <div d2-menu></div>
 
-        </div>        
-        
-        <div ng-controller="MainController">
-            
-            <div id="leftBar"> 
-                
-                <div style="margin-top:20px">
-                    
-
-                    <img id="searchIcon" src="../images/search.png" style="cursor: pointer" title="{{ 'locate_organisation_unit_by_name' | translate}}">
-
-                    <span id="searchSpan" style="width:100%;display:none;">
-                            <input type="text" id="searchField" name="key" style="width:160px" />
-                            <input type="button" value="Find" onclick="selection.findByName()" />
-                    </span>
-                </div>
-                   
-                <div id="orgUnitTree">
-                    <ul>
-                    </ul>
-                </div>
-                <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
-            </div>
-            
-            <div class="page" id="mainPage" ng-show="selectedOrgUnit">
-                <h3>
-                    {{'event_capture'| translate}}
-                </h3>
-                
-                <!-- selection begins-->
-                <div>
-                    <table>
-                        <tr>
-                            <td><label>{{'registering_unit'| translate}}</label></td>
-                            <td><input type="text" class="fixed-width-text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name || 'please_select'| translate}}" disabled="" style="height:14px"></td>                        	                            
-                        </tr>
-                        <tr>
-                            <td><label>{{'program'| translate}}</label></td>
-                            <td>
-                                <select id="programId" 
-                                        class="fixed-width-select"
-                                        name="programId" 
-                                        ng-model="selectedProgram" 
-                                        ng-options="program as program.name for program in programs | orderBy: 'name'" 
-                                        ng-change="loadEvents()"
-                                        ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
-                                    <option value="">{{'please_select'| translate}}</option>
-                                </select>      
-                            </td>
-                            <td style='padding-left: 10px;'>
-                                <button class="button button-std not-printable"
-                                        ng-show="selectedProgramStage" 
-                                        ng-click="showEventRegistration()" 
-                                        ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
-                                    {{'register_event'| translate}}
-                                </button>  
-                            </td>
-                            <td ng-if="(editingEventInFull || eventRegistration) && customForm" style='padding-left: 10px;'>
-                                <button class="button button-std not-printable"
-                                        ng-click="switchDataEntryForm()">
-                                    {{displayCustomForm ? 'use_default_form' : 'use_custom_form'| translate}}
-                                </button>  
-                            </td>
-                            <td ng-if="dhis2Events.length > 0" style='padding-left: 10px;'>
-                                <button class="button button-std not-printable"
-                                        onclick="javascript:window.print()">
-                                    <span ng-if="!eventRegistration && !editingEventInFull">{{'print_list'| translate}}</span>
-                                    <span ng-if="eventRegistration">{{'print_form'| translate}}</span>
-                                    <span ng-if="editingEventInFull">{{'print_details'| translate}}</span>
-                                </button>  
-                            </td> 
-                        </tr>                       
-                    </table>
-                </div>
-                <!-- selection ends -->
-                <div id="hideTypeAheadPopUp" ng-hide="true"></div>
-                <!-- event grid begins -->
-                <div ng-include="'views/eventList.html'"></div>
-                <!-- event grid ends -->
-
-                <!-- event update in full / registration begins-->
-                <div>                
-                    <form name="outerForm" novalidate>
-                        <div ng-if="editingEventInFull || eventRegistration">
-                            <h3>
-                                <span ng-if="editingEventInFull">{{'event_details'| translate}}</span>                       
-                                <span ng-if="eventRegistration">{{'new_event'| translate}}</span>                            
-                            </h3>                            
-
-                            <div class="bordered-div" ng-if="displayCustomForm">
-                                <div ng-include="'views/customForm.html'"></div>  
-                            </div>
-
-                            <div class="bordered-div container-default-form" ng-if="!displayCustomForm">
-                                <div ng-include="'views/defaultForm.html'"></div>                
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
-                <!-- event update / registration ends -->                
-            </div>            
         </div>
+        
+        <div ng-view></div>
+        
     </body>
 </html>

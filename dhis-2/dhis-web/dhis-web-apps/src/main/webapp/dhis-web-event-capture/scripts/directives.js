@@ -21,13 +21,7 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
 
     return {        
         restrict: 'A',        
-        link: function(scope, element, attrs){ 
-           
-            dhis2.ec.store = new dhis2.storage.Store({
-                name: EC_STORE_NAME,
-                adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-                objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
-            });
+        link: function(scope, element, attrs){           
             
             //when tree has loaded, get selected orgunit - if there is any - and inform angular           
             $(function() {                 
@@ -73,7 +67,7 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
             });
             
             //listen to user selection, and inform angular         
-            selection.setListenerFunction( organisationUnitSelected, true );            
+            selection.setListenerFunction( organisationUnitSelected );            
             selection.responseReceived();
             
             function organisationUnitSelected( orgUnits, orgUnitNames ) {
@@ -84,7 +78,7 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
     };
 })
 
-.directive('dhisCustomForm', function($compile, $parse, CustomFormService) {
+.directive('d2CustomForm', function($compile, $parse, CustomFormService) {
     return{ 
         restrict: 'E',
         link: function(scope, elm, attrs){   
@@ -101,7 +95,7 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
     };
 })
 
-.directive('dhisContextMenu', function(ContextMenuSelectedItem) {
+.directive('d2ContextMenu', function(ContextMenuSelectedItem) {
         
     return {        
         restrict: 'A',
@@ -151,44 +145,6 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
             });
         }     
     };
-})
-
-.directive('ngDate', function($filter) {
-    return {
-        restrict: 'A',
-        require: 'ngModel',        
-        link: function(scope, element, attrs, ctrl) {
-            element.datepicker({
-                changeYear: true,
-                changeMonth: true,
-                maxDate: new Date(),
-                dateFormat: 'yy-mm-dd',
-                onSelect: function(date) {
-                    ctrl.$setViewValue(date);
-                    $(this).change();                    
-                    scope.$apply();
-                }                
-            })
-            .change(function() {
-                var rawDate = this.value;
-                var convertedDate = moment(this.value, 'YYYY-MM-DD')._d;
-                convertedDate = $filter('date')(convertedDate, 'yyyy-MM-dd');       
-
-                if(rawDate != convertedDate){
-                    scope.invalidDate = true;
-                    ctrl.$setViewValue(this.value);                                   
-                    ctrl.$setValidity('foo', false);                    
-                    scope.$apply();     
-                }
-                else{
-                    scope.invalidDate = false;
-                    ctrl.$setViewValue(this.value);                                   
-                    ctrl.$setValidity('foo', true);                    
-                    scope.$apply();     
-                }
-            });    
-        }      
-    };   
 })
 
 .directive('d2Date', function(DateUtils, CalendarService, storage, $parse) {
@@ -274,15 +230,6 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
     };
 })
 
-.directive('draggableModal', function(){
-    return {
-      restrict: 'EA',
-      link: function(scope, element) {
-        element.draggable();
-      }
-    };  
-})
-
 .directive('d2PopOver', function($compile, $templateCache){
     return {        
         restrict: 'EA',
@@ -302,6 +249,155 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
             content: '=',
             title: '@details',
             template: "@template"
+        }
+    };
+})
+
+.directive('d2GoogleMap', function ($parse, $compile, storage) {
+    return {
+        restrict: 'E',
+        replace: true,
+        template: '<div></div>',
+        link: function(scope, element, attrs){
+            
+            //remove angular bootstrap ui modal draggable
+            $(".modal-content").draggable({ disabled: true });
+            
+            //get a default center
+            var latCenter = 12.31, lngCenter = 51.48;            
+            
+            //if there is any marker already - use it as center
+            if(angular.isObject(scope.location)){
+                if(scope.location.lat && scope.location.lng){
+                    latCenter = scope.location.lat;
+                    lngCenter = scope.location.lng;
+                }                
+            }
+            
+            //default map configurations 
+            var mapOptions = {
+                zoom: 3,
+                center: new google.maps.LatLng(latCenter, lngCenter),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            },featureStyle = {
+                strokeWeight: 2,
+                strokeOpacity: 0.4,
+                fillOpacity: 0.4,
+                fillColor: 'green'
+            };
+            
+            var geojsons = $parse(attrs.geojsons)(scope);
+            var currentLayer = 0, currentGeojson = geojsons[0]; 
+            
+            var map = new google.maps.Map(document.getElementById(attrs.id), mapOptions);            
+            var currentGeojsonFeatures = map.data.addGeoJson(currentGeojson);
+            
+            var marker = new google.maps.Marker({
+                map: map
+            });
+            
+            if(angular.isObject(scope.location)){
+                if(scope.location.lat && scope.location.lng){                    
+                    addMarker({lat: scope.location.lat, lng: scope.location.lng});                    
+                }                
+            }
+            
+            function addMarker(loc){
+                var latLng = new google.maps.LatLng(loc.lat, loc.lng);
+                marker.setPosition(latLng);
+            }
+            
+            function centerMap(){
+                
+                if(currentGeojson && currentGeojson.features){
+                    var latLngBounds = new google.maps.LatLngBounds();
+                    angular.forEach(currentGeojson.features, function(feature){
+                        if(feature.geometry.type === 'MultiPolygon'){
+                            angular.forEach(feature.geometry.coordinates[0][0], function(coordinate){
+                                latLngBounds.extend(new google.maps.LatLng(coordinate[1],coordinate[0]));
+                            });
+                        }
+                        else if(feature.geometry.type === 'Point'){                        
+                            latLngBounds.extend(new google.maps.LatLng(feature.geometry.coordinates[1],feature.geometry.coordinates[0]));
+                        }
+                    });
+                    
+                    map.fitBounds(latLngBounds);
+                    map.panToBounds(latLngBounds);
+                }                
+            }
+            
+            function initializeMap(){                
+                google.maps.event.addListenerOnce(map, 'idle', function(){
+                    google.maps.event.trigger(map, 'resize');
+                    map.data.setStyle(featureStyle);
+                    centerMap();
+                });
+            }
+            
+            map.data.addListener('mouseover', function(e) {                
+                $("#polygon-label").text( e.feature.k.name );
+                map.data.revertStyle();
+                map.data.overrideStyle(e.feature, {fillOpacity: 0.8});
+            });
+            
+            map.data.addListener('mouseout', function() {                
+                $("#polygon-label").text( '' );
+                map.data.revertStyle();
+            });
+            
+            //drill-down based on polygons assigned to orgunits
+            map.data.addListener('rightclick', function(e){                
+                for (var i = 0; i < currentGeojsonFeatures.length; i++){
+                    map.data.remove(currentGeojsonFeatures[i]);
+                }
+                                
+                if(currentLayer >= geojsons.length-1){
+                    currentLayer = 0;
+                    currentGeojson = angular.copy(geojsons[currentLayer]);                    
+                }
+                else{
+                    currentLayer++;
+                    currentGeojson = angular.copy(geojsons[currentLayer]);
+                    currentGeojson.features = [];
+                    var selectedFeatures = [];
+                    angular.forEach(geojsons[currentLayer].features, function(feature){                    
+                        if(feature.properties.parent === e.feature.B){
+                            selectedFeatures.push(feature);
+                        }
+                    });
+                    
+                    if(selectedFeatures.length){
+                        currentGeojson.features = selectedFeatures;
+                    }                   
+                }                
+                currentGeojsonFeatures = map.data.addGeoJson(currentGeojson);
+                centerMap();         
+            });            
+            
+            //capturing coordinate from defined polygons
+            map.data.addListener('click', function(e) {                
+                scope.$apply(function(){
+                    addMarker({
+                       lat: e.latLng.lat(),
+                       lng: e.latLng.lng()
+                    });
+                    $parse(attrs.location).assign(scope.$parent, {lat: e.latLng.lat(), lng: e.latLng.lng()});                    
+                });                
+            });
+            
+            //capturing coordinate from anywhere in the map - incase no polygons are defined
+            google.maps.event.addListener(map, 'click', function(e){                
+                scope.$apply(function(){
+                    addMarker({
+                       lat: e.latLng.lat(),
+                       lng: e.latLng.lng()
+                    });
+                    $parse(attrs.location).assign(scope.$parent, {lat: e.latLng.lat(), lng: e.latLng.lng()});                    
+                });                
+            });
+            
+            initializeMap();
         }
     };
 })

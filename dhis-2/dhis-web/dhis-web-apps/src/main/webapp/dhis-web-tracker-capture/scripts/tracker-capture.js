@@ -6,7 +6,7 @@ dhis2.tc.emptyOrganisationUnits = false;
 // Instance of the StorageManager
 dhis2.tc.storageManager = new StorageManager();
 
-var TC_STORE_NAME = "dhis2";
+var TC_STORE_NAME = "dhis2tc";
 var i18n_no_orgunits = 'No organisation unit attached to current user, no data entry possible';
 var i18n_offline_notification = 'You are offline, data will be stored locally';
 var i18n_online_notification = 'You are online';
@@ -22,11 +22,8 @@ var TRACKER_VALUES = 'TRACKER_VALUES';
 
 var optionSetsInPromise = [];
 
-dhis2.tc.store = new dhis2.storage.Store({
-    name: TC_STORE_NAME,
-    adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-    objectStores: ['trackerCapturePrograms', 'programStages', 'trackedEntities', 'trackedEntityForms', 'attributes', 'relationshipTypes', 'optionSets']
-});
+dhis2.tc.store = null;
+dhis2.tc.memoryOnly = $('html').hasClass('ie7') || $('html').hasClass('ie8');
 
 (function($) {
     $.safeEach = function(arr, fn)
@@ -55,28 +52,7 @@ $(document).ready(function()
 
     $('#orgUnitTree').one('ouwtLoaded', function()
     {
-        var def = $.Deferred();
-        var promise = def.promise();
-        
-        promise = promise.then( dhis2.tc.store.open );
-        promise = promise.then( getUserProfile );
-        promise = promise.then( getCalendarSetting );
-        promise = promise.then( getLoginDetails );
-        promise = promise.then( getRelationships );
-        promise = promise.then( getAttributes );
-        promise = promise.then( getOptionSetsForAttributes );
-        promise = promise.then( getTrackedEntities );
-        promise = promise.then( getMetaPrograms );     
-        promise = promise.then( getPrograms );     
-        promise = promise.then( getProgramStages );    
-        promise = promise.then( getOptionSetsForPrograms );
-        promise = promise.then( getMetaTrackedEntityForms );
-        promise = promise.then( getTrackedEntityForms );        
-        promise.done(function() {
-            selection.responseReceived();
-        });
-
-        def.resolve();
+        loadMetaData();
 
     });
 
@@ -183,6 +159,80 @@ function ajax_login()
             }
         });
     });
+}
+
+function loadMetaData()
+{
+    /*dhis2.tc.store = new dhis2.storage.Store({
+        name: TC_STORE_NAME,
+        adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+        objectStores: ['tcPrograms', 'programStages', 'trackedEntities', 'trackedEntityForms', 'attributes', 'relationshipTypes', 'optionSets']
+    });*/
+    
+    var adapters = [];    
+    if( dhis2.tc.memoryOnly ) {
+        adapters = [ dhis2.storage.InMemoryAdapter ];
+    } else {
+        adapters = [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ];
+    }
+    
+    dhis2.tc.store = new dhis2.storage.Store({
+        name: TC_STORE_NAME,
+        objectStores: [
+            {
+                name: 'tcPrograms',
+                adapters: adapters
+            },
+            {
+                name: 'programStages',
+                adapters: adapters
+            },
+            {
+                name: 'trackedEntities',
+                adapters: adapters
+            },
+            {
+                name: 'trackedEntityForms',
+                adapters: adapters
+            },
+            {
+                name: 'attributes',
+                adapters: adapters
+            },
+            {
+                name: 'relationshipTypes',
+                adapters: adapters
+            },
+            {
+                name: 'optionSets',
+                adapters: adapters
+            }            
+        ]        
+    });
+    
+    
+    var def = $.Deferred();
+    var promise = def.promise();
+
+    promise = promise.then( dhis2.tc.store.open );
+    promise = promise.then( getUserProfile );
+    promise = promise.then( getCalendarSetting );
+    promise = promise.then( getLoginDetails );
+    promise = promise.then( getRelationships );
+    promise = promise.then( getAttributes );
+    promise = promise.then( getOptionSetsForAttributes );
+    promise = promise.then( getTrackedEntities );
+    promise = promise.then( getMetaPrograms );     
+    promise = promise.then( getPrograms );     
+    promise = promise.then( getProgramStages );    
+    promise = promise.then( getOptionSetsForPrograms );
+    promise = promise.then( getMetaTrackedEntityForms );
+    promise = promise.then( getTrackedEntityForms );        
+    promise.done(function() {
+        selection.responseReceived();
+    });
+
+    def.resolve();
 }
 
 function getUserProfile()
@@ -369,7 +419,7 @@ function getPrograms( programs )
         build = build.then(function() {
             var d = $.Deferred();
             var p = d.promise();
-            dhis2.tc.store.get('trackerCapturePrograms', program.id).done(function(obj) {
+            dhis2.tc.store.get('tcPrograms', program.id).done(function(obj) {
                 if(!obj || obj.version !== program.version) {
                     promise = promise.then( getProgram( program.id ) );
                 }
@@ -419,7 +469,7 @@ function getProgram( id )
 
                 program.userRoles = ur;
 
-                dhis2.tc.store.set( 'trackerCapturePrograms', program );
+                dhis2.tc.store.set( 'tcPrograms', program );
 
             });         
         });

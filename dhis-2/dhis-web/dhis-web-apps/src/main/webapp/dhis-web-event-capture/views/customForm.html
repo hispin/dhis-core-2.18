@@ -26,36 +26,38 @@
     </tr>
     <tr ng-if="selectedProgramStage.captureCoordinates">
         <td>
-            {{'latitude'| translate}}
+            {{'lat_lng' | translate}}
         </td>
         <td>
-            <input type="number"
-                   ng-model="currentEvent.coordinate.latitude"                                                                
+            <span class="coordinate-container">
+                <input type="number"
+                   ng-model="currentEvent.coordinate.latitude"
+                   placeholder="{{'latitude' | translate}}"    
                    name="latitude"
                    min="-90"
                    max="90"
                    ng-required="false"
-                   style="width:99%;"/>
-            <span ng-show="outerForm.submitted && outerForm.latitude.$invalid" class="required">{{'number_required'| translate}} [-90 ... 90]</span>
-        </td>                                            
-    </tr>
-    <tr ng-if="selectedProgramStage.captureCoordinates">
-        <td>
-            {{'longitude'| translate}}
-        </td>
-        <td>
-            <input type="number"
+                   style="width:100%;"/>
+                <span ng-show="outerForm.submitted && outerForm.latitude.$invalid" class="required">{{'number_required'| translate}} [-90 ... 90]</span>
+            </span>
+            <span class="coordinate-container">
+                <input type="number"
                    ng-model="currentEvent.coordinate.longitude"                                                                
+                   placeholder="{{'longitude' | translate}}" 
                    name="longitude" 
                    min="-180"
                    max="180"
                    ng-required="false"
-                   style="width:99%;"/>
-            <span ng-show="outerForm.submitted && outerForm.longitude.$invalid" class="required">{{'number_required'| translate}}[-180 ... 180]</span>
-        </td>                                            
+                   style="width:100%;"/>
+                <span ng-show="outerForm.submitted && outerForm.longitude.$invalid" class="required">{{'number_required'| translate}}[-180 ... 180]</span>
+            </span>
+            <!--<span class='pull-right'>
+                <a href ng-click="showMap(currentEvent)" title="{{'get_from_map'| translate}}"><i class="fa fa-map-marker fa-2x"></i></a>
+            </span>-->
+        </td>
     </tr>
 </table>
-<dhis-custom-form custom-form-type="PROGRAM_STAGE" custom-form-object="selectedProgramStage"></dhis-custom-form>
+<d2-custom-form custom-form-type="PROGRAM_STAGE" custom-form-object="selectedProgramStage"></d2-custom-form>
 <div class="clear">
     <hr>
     <h4>
