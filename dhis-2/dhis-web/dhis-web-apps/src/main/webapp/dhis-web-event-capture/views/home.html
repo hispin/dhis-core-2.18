@@ -1,0 +1,101 @@
+<script src="../dhis-web-commons/ouwt/ouwt.js"></script>
+<script src="scripts/event-capture.js"></script>
+
+<div id="leftBar"> 
+
+    <div style="margin-top:20px">
+
+
+        <img id="searchIcon" src="../images/search.png" style="cursor: pointer" title="{{ 'locate_organisation_unit_by_name' | translate}}">
+
+        <span id="searchSpan" style="width:100%;display:none;">
+            <input type="text" id="searchField" name="key" style="width:160px" />
+            <input type="button" value="Find" onclick="selection.findByName()" />
+        </span>
+    </div>
+
+    <div id="orgUnitTree">
+        <ul>
+        </ul>
+    </div>
+    <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
+</div>
+
+<div class="page" id="mainPage" ng-show="selectedOrgUnit">
+    <h3>
+        {{'event_capture'| translate}}
+    </h3>
+
+    <!-- selection begins-->
+    <div>
+        <table>
+            <tr>
+                <td><label>{{'registering_unit'| translate}}</label></td>
+                <td><input type="text" class="fixed-width-text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name|| 'please_select'| translate}}" disabled="" style="height:14px"></td>                        	                            
+            </tr>
+            <tr>
+                <td><label>{{'program'| translate}}</label></td>
+                <td>
+                    <select id="programId" 
+                            class="fixed-width-select"
+                            name="programId" 
+                            ng-model="selectedProgram" 
+                            ng-options="program as program.name for program in programs | orderBy: 'name'" 
+                            ng-change="loadEvents()"
+                            ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
+                        <option value="">{{'please_select'| translate}}</option>
+                    </select>      
+                </td>
+                <td style='padding-left: 10px;'>
+                    <button class="button button-std not-printable"
+                            ng-show="selectedProgramStage" 
+                            ng-click="showEventRegistration()" 
+                            ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
+                        {{'register_event'| translate}}
+                    </button>  
+                </td>
+                <td ng-if="(editingEventInFull || eventRegistration) && customForm" style='padding-left: 10px;'>
+                    <button class="button button-std not-printable"
+                            ng-click="switchDataEntryForm()">
+                        {{displayCustomForm ? 'use_default_form' : 'use_custom_form'| translate}}
+                    </button>  
+                </td>
+                <td ng-if="dhis2Events.length > 0" style='padding-left: 10px;'>
+                    <button class="button button-std not-printable"
+                            onclick="javascript:window.print()">
+                        <span ng-if="!eventRegistration && !editingEventInFull">{{'print_list'| translate}}</span>
+                        <span ng-if="eventRegistration">{{'print_form'| translate}}</span>
+                        <span ng-if="editingEventInFull">{{'print_details'| translate}}</span>
+                    </button>  
+                </td> 
+            </tr>                       
+        </table>
+    </div>
+    <!-- selection ends -->
+    <div id="hideTypeAheadPopUp" ng-hide="true"></div>
+    <!-- event grid begins -->
+    <div ng-include="'views/eventList.html'"></div>
+    <!-- event grid ends -->
+
+    <!-- event update in full / registration begins-->
+    <div>                
+        <form name="outerForm" novalidate>
+            <div ng-if="editingEventInFull || eventRegistration">
+                <h3>
+                    <span ng-if="editingEventInFull">{{'event_details'| translate}}</span>                       
+                    <span ng-if="eventRegistration">{{'new_event'| translate}}</span>                            
+                </h3>                            
+
+                <div class="bordered-div" ng-if="displayCustomForm">
+                    <div ng-include="'views/customForm.html'"></div>  
+                </div>
+
+                <div class="bordered-div container-default-form" ng-if="!displayCustomForm">
+                    <div ng-include="'views/defaultForm.html'"></div>                
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <!-- event update / registration ends -->                
+</div>            

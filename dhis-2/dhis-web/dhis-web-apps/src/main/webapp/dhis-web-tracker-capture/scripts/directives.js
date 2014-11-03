@@ -164,6 +164,8 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
                 minDate: minDate,
                 maxDate: maxDate,
                 calendar: calendar, 
+                duration: "fast",
+                showAnim: "",
                 renderer: $.calendars.picker.themeRollerRenderer,
                 onSelect: function(date) {
                     //scope.date = date;                    
