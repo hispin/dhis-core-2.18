@@ -37,9 +37,13 @@ import java.io.OutputStream;
  */
 public interface RenderService
 {
-    <T> void toJson( OutputStream output, T value ) throws IOException;
+    void toJson( OutputStream output, Object value ) throws IOException;
 
-    <T> void toJson( OutputStream output, T value, Class<?> klass ) throws IOException;
+    void toJson( OutputStream output, Object value, Class<?> klass ) throws IOException;
+
+    void toJsonP( OutputStream output, Object value, String callback ) throws IOException;
+
+    void toJsonP( OutputStream output, Object value, Class<?> klass, String callback ) throws IOException;
 
     <T> T fromJson( InputStream input, Class<T> klass ) throws IOException;
 
