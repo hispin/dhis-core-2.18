@@ -1,0 +1,13 @@
+<div class="modal-header page">
+    <h3>
+        {{'point_and_click_for_coordinate'| translate}}
+        <span id='polygon-label' class="pull-right"></span>
+    </h3>
+</div>
+<div class="modal-body page">
+    <d2-google-map location="location" id="map-container" geojsons="geoJsons"></d2-google-map>
+</div>
+<div class="modal-footer page">
+    <button class="big-button grey" data-ng-click="captureCoordinate()">{{'capture'| translate}}</button>
+    <button class="big-button grey" data-ng-click="close()">{{'cancel'| translate}}</button>        
+</div>

@@ -169,7 +169,9 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
                 yearRange: '-120:+30',
                 minDate: minDate,
                 maxDate: maxDate,
-                calendar: calendar, 
+                calendar: calendar,
+                duration: "fast",
+                showAnim: "",
                 renderer: $.calendars.picker.themeRollerRenderer,
                 onSelect: function(date) {
                     //scope.date = date;
