@@ -50,6 +50,7 @@ public class I18nFormat
 {
     private static final DecimalFormat FORMAT_VALUE = new DecimalFormat( "#.#" ); // Fixed for now
     private static final String EMPTY = "";
+    private static final String NAN = "NaN";
     
     private static final String INVALID_DATE = "Invalid date format";
 
@@ -269,7 +270,8 @@ public class I18nFormat
     }
     /**
      * Formats value. Returns empty string if value is null. Returns NaN if value
-     * is not a number.
+     * is not a number. Return a formatted string if value is an instance of Number,
+     * if not returns the value as a string.
      *
      * @param value the value to format.
      */
@@ -280,11 +282,18 @@ public class I18nFormat
             return EMPTY;
         }
         
-        try
+        if ( value instanceof Number )
         {
-            return FORMAT_VALUE.format( value );
+            try
+            {
+                return FORMAT_VALUE.format( value );
+            }
+            catch ( IllegalArgumentException ex )
+            {
+                return NAN;
+            }
         }
-        catch ( IllegalArgumentException ex )
+        else
         {
             return String.valueOf( value );
         }
