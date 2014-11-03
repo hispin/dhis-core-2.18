@@ -51,7 +51,7 @@
 </script>
 
 <h3>$i18n.getString( "edit_template_reminder_message" ) #openHelp( "program_template_reminder" )</h3>
-<h5>$program.displayName</h5>
+<h5>$encoder.htmlEncode($program.displayName)</h5>
 
 <form id="updateReminderForm" name="updateReminderForm" action="updateProgramReminder.action" method="get" onsubmit="selectAllById('selectedPropertyIds');" class="inputForm">
 
@@ -153,14 +153,14 @@
 					<option value="{days-since-enrollement-date}">$i18n.getString("days_since_enrollment_date")</option>
 					<option value="{orgunit-name}">$i18n.getString("orgunit_name")</option>
 					#foreach($attribute in $attributes)
-						<option value={attributeid=$attribute.uid}>$attribute.displayName</option>
+						<option value={attributeid=$attribute.uid}>$encoder.htmlEncode($attribute.displayName)</option>
 					#end
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="templateMessage">$i18n.getString( "message" )</label></td>
-			<td><textarea onkeyup="getMessageLength()" id="templateMessage" name="templateMessage" class="templateMessage">$reminder.templateMessage</textarea></td>
+			<td><textarea onkeyup="getMessageLength()" id="templateMessage" name="templateMessage" class="templateMessage">$encoder.htmlEncode($reminder.templateMessage)</textarea></td>
 		</tr>
 		<tr>
 			<td></td>

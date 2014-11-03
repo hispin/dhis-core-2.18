@@ -88,7 +88,7 @@
 		<td><label for="optionSetId">$i18n.getString( "option_set" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><select id="optionSetId" name="optionSetId" class="{validate:{required:true}}">
 				#foreach($optionSet in $optionSets)
-					<option value="$optionSet.id" #if($attribute.optionSet.id==$optionSet.id) selected #end>$optionSet.name</option>
+					<option value="$optionSet.id" #if($attribute.optionSet.id==$optionSet.id) selected #end>$encoder.htmlEncode($optionSet.name)</option>
 				#end
 			</select>
 		</td>

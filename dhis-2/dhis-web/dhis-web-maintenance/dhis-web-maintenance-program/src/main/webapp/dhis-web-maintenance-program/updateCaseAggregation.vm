@@ -24,7 +24,7 @@
 	
     <tr>
         <td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" value="$caseAggregation.name"></td>
+        <td><input type="text" id="name" name="name" value="$encoder.htmlEncode(caseAggregation.name)"></td>
     </tr>
     
     <tr>
@@ -33,7 +33,7 @@
 			<select id="dataSets" name="dataSets" onchange="getDataElementsByDataset();">
 				<option value="">[$i18n.getString('please_select')]</option>
 				#foreach( $ds in $dataSets)
-					<option value="$ds.id" #if( $dataSet.id=="$ds.id") selected #end >$ds.displayName</option>
+					<option value="$ds.id" #if( $dataSet.id=="$ds.id") selected #end >$encoder.htmlEncode($ds.displayName)</option>
 				#end
 			</select>
 		</td>				
@@ -88,7 +88,7 @@
 		<td>
 			<select id="deSumId" name="deSumId" #if( $caseAggregation.deSum ) #else disabled #end>
 				#if( $caseAggregation.deSum )
-				<option value='$caseAggregation.deSum.id'>$caseAggregation.deSum.displayName</option>
+				<option value='$caseAggregation.deSum.id'>$encoder.htmlEncode($caseAggregation.deSum.displayName)</option>
 				#end
 			</select>
 		</td>

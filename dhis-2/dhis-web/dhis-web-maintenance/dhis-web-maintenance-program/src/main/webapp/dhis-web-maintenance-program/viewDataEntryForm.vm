@@ -83,7 +83,7 @@
 		<tr>
 			<td>
 				<label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
-				<input type="text" id="name" value="$!dataEntryForm.name" name="name" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}" style="margin-left:15px;width:30em;">
+				<input type="text" id="name" value="$!encoder.htmlEncode($dataEntryForm.name)" name="name" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}" style="margin-left:15px;width:30em;">
 			</td>				
 		</tr>	
 	</table>  
@@ -144,13 +144,13 @@
 				<select id="dataElementIds" name="dataElementIds" style="height:200px; width:100%;"  multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.uid')">
 					#foreach( $de in $dataElements)
 					#set($deJSON = '{' + '"uid"' + ':"' + "$de.uid" + '",' + '"name"' + ':"' + "$de.name" + '",' + '"shortName"' + ':"' + "$de.shortName" + '",' + '"type"' + ':"' + "$de.getDetailedTextType()"  + '"}' )
-					<option value='$deJSON' decode="$!de.code" dename="$de.name" title="$de.name">$encoder.htmlEncode( $de.name )</option>
+					<option value='$deJSON' decode="$!de.code" dename="$encoder.htmlEncode($de.name)" title="$encoder.htmlEncode($de.name)">$encoder.htmlEncode( $de.name )</option>
 					#end
 				</select>
 				<select id="dataElementIdsStore" multiple="multiple" style="display:none">
 					#foreach( $de in $dataElements)
 					#set($deJSON = '{' + '"uid"' + ':"' + "$de.uid" + '",' + '"name"' + ':"' + "$de.name" + '",' + '"shortName"' + ':"' + "$de.shortName" + '",' + '"type"' + ':"' + "$de.getDetailedTextType()"  + '"}' )
-					<option value='$deJSON' decode="$!de.code" dename="$de.name">$encoder.htmlEncode( $de.name )</option>
+					<option value='$deJSON' decode="$!de.code" dename="$encoder.htmlEncode($de.name)">$encoder.htmlEncode( $de.name )</option>
 					#end
 				</select>
 			</td>

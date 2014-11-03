@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "program_stage_management" ) #openHelp( "program_stage" )</h3>
 
-<h4>$program.displayName</h4>
+<h4>$encoder.htmlEncode($program.displayName)</h4>
 
 <div id="contextMenu" class="contextMenu" style="width: 230px;">
   <ul id="contextMenuItems" class="contextMenuItems">

@@ -23,13 +23,13 @@
     <tbody>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" class="{validate:{required:true,rangelength:[2,160]}}" value='$trackedEntity.name' /></td>
+			<td><input type="text" id="name" name="name" class="{validate:{required:true,rangelength:[2,160]}}" value='$encoder.htmlEncode($trackedEntity.name)' /></td>
 			<td></td>
 		</tr>   
 		
 		<tr>
 			<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:2}}" value='$trackedEntity.description' /></td>
+			<td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:2}}" value='$encoder.htmlEncode($trackedEntity.description)' /></td>
 			<td></td>
 		</tr>
     </tbody>

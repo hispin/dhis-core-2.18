@@ -102,7 +102,7 @@
 				<select id='trackedEntityId' name='trackedEntityId' class="{validate:{required:true}}">
 					<option value=''>[$i18n.getString('please_select')]</option>
 					#foreach($trackedEntity in $trackedEntities)
-					<option value='$trackedEntity.id' #if($trackedEntity.id==$program.trackedEntity.id) selected #end >$trackedEntity.displayName</option>
+					<option value='$trackedEntity.id' #if($trackedEntity.id==$program.trackedEntity.id) selected #end >$encoder.htmlEncode($trackedEntity.displayName)</option>
 					#end
 				</select>
 			</td>
@@ -255,7 +255,7 @@
 			<td>
 				<select size="15" style="width:100%;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();" #if( $program.type=='3' ) disabled #end>
 					#foreach( $attribute in $availableAttributes )
-						<option value="attr_$attribute.id" valuetype='$attribute.valueType'>$attribute.displayName</option>
+						<option value="attr_$attribute.id" valuetype='$attribute.valueType'>$encoder.htmlEncode($attribute.displayName)</option>
 					#end
 				</select>
 			</td>

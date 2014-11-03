@@ -56,7 +56,7 @@
 		<td>
 			<select style="height:200px;width:100%;margin-top:22px;" multiple="multiple" id="selectedAttributeIds" name="selectedAttributeIds" size="15" ondblclick="moveSelectedById( 'selectedAttributeIds', 'availableAttributes' )" >
 				#foreach($attribute in $selectedAttributes)
-					<option value='$attribute.id'>$attribute.displayName</option>
+					<option value='$attribute.id'>$encoder.htmlEncode($attribute.displayName)</option>
 				#end
 			</select>
 		</td>

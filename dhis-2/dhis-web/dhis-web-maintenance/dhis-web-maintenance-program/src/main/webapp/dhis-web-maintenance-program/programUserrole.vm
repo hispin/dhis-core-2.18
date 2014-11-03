@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "assign_program_to_userroles" )</h3>
 
-<h4>$program.displayName</h4>
+<h4>$encoder.htmlEncode($program.displayName)</h4>
 
 <form name="userRole" action="defineProgramUserrole.action" method="POST" onsubmit="selectAllById( 'userRoleIds' );">
 <input type="hidden" name="id" value="$program.id"/>

@@ -1,7 +1,7 @@
 <script type="text/javascript" src="javascript/updateValidationCriteria.js"></script>																
 
 <h3>$i18n.getString( "edit_validation_criteria" ) #openHelp( "validation_criteria" )</h3>
-<h5>$program.displayName</h5>
+<h5>$encoder.htmlEncode($program.displayName)</h5>
 
 <form id="validationCriteriaForm" action="updateValidationCriteria.action" method="post" class="inputForm">
 	<input type='hidden' id='programId' name='programId' value='$program.id' />
@@ -12,11 +12,11 @@
 		</tr>
 		<tr>
 			<td><label for="name">$i18n.getString('name') <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td colspan="2"><input type='text' id='name' name='name' value="$validationCriteria.name" /></td>
+			<td colspan="2"><input type='text' id='name' name='name' value="$encoder.htmlEncode($validationCriteria.name)" /></td>
 		</tr>
 		<tr>
 			<td><label for="description">$i18n.getString('description') <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td colspan="2"><input type='text' id='description' name='description' value="$validationCriteria.description" /></td>
+			<td colspan="2"><input type='text' id='description' name='description' value="$encoder.htmlEncode($validationCriteria.description)" /></td>
 		</tr>
 		<tr>
 			<td><label for="property">$i18n.getString('criteria')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -33,7 +33,7 @@
 										#foreach($option in $programAttribute.attribute.optionSet.options)
 											#set($opt=$opt + ';' + $option )
 										#end 
-										<option valuetype='$programAttribute.attribute.valueType' value="$programAttribute.attribute.uid" opt="$opt" #if($validationCriteria.property==$$programAttribute.attribute.uid) #set($attribute = $$programAttribute.attribute) selected #end>$programAttribute.attribute.displayName</option>
+										<option valuetype='$programAttribute.attribute.valueType' value="$programAttribute.attribute.uid" opt="$opt" #if($validationCriteria.property==$$programAttribute.attribute.uid) #set($attribute = $$programAttribute.attribute) selected #end>$encoder.htmlEncode($programAttribute.attribute.displayName)</option>
 									#end
 								#end
 							</select>
@@ -46,7 +46,7 @@
 							</select>
 						</td>
 						<td id='valueTD'>
-							<input type='text' id='value' name='value' style="width:140px;" value='$validationCriteria.value' />
+							<input type='text' id='value' name='value' style="width:140px;" value='$encoder.htmlEncode($validationCriteria.value)' />
 						</td>
 					</tr>
 				</table>

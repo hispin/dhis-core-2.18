@@ -42,9 +42,9 @@
 						data-name="$encoder.htmlEncode( $!program.displayName )">
 						
 						#if($mapRegistrationForms.get($program.id))
-							<td><a>$program.name</a></td>
+							<td><a>$encoder.htmlEncode($program.name)</a></td>
 						#else
-							<td>$program.name</td>
+							<td>$encoder.htmlEncode($program.name)</td>
 						#end
 					</tr>
 				#end
