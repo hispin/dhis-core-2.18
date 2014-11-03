@@ -34,8 +34,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,15 +64,37 @@ public class DefaultRenderService implements RenderService
     //--------------------------------------------------------------------------
 
     @Override
-    public <T> void toJson( OutputStream output, T value ) throws IOException
+    public void toJson( OutputStream output, Object value ) throws IOException
     {
         jsonMapper.writeValue( output, value );
     }
 
     @Override
-    public <T> void toJson( OutputStream output, T value, Class<?> klass ) throws IOException
+    public void toJson( OutputStream output, Object value, Class<?> klass ) throws IOException
     {
         jsonMapper.writerWithView( klass ).writeValue( output, value );
+    }
+
+    @Override
+    public void toJsonP( OutputStream output, Object value, String callback ) throws IOException
+    {
+        if ( StringUtils.isEmpty( callback ) )
+        {
+            callback = "callback";
+        }
+
+        jsonMapper.writeValue( output, new JSONPObject( callback, value ) );
+    }
+
+    @Override
+    public void toJsonP( OutputStream output, Object value, Class<?> klass, String callback ) throws IOException
+    {
+        if ( StringUtils.isEmpty( callback ) )
+        {
+            callback = "callback";
+        }
+
+        jsonMapper.writerWithView( klass ).writeValue( output, new JSONPObject( callback, value ) );
     }
 
     @Override

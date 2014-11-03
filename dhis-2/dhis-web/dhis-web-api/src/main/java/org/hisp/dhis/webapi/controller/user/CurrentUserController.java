@@ -28,24 +28,7 @@ package org.hisp.dhis.webapi.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.user.UserSettingService.KEY_DB_LOCALE;
-import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
-import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
-import static org.hisp.dhis.user.UserSettingService.KEY_UI_LOCALE;
-import static org.hisp.dhis.user.UserSettingService.KEY_ANALYSIS_DISPLAY_PROPERTY;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -56,6 +39,7 @@ import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dxf2.render.RenderService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.interpretation.Interpretation;
@@ -93,13 +77,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.google.common.collect.Lists;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hisp.dhis.user.UserSettingService.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = { CurrentUserController.RESOURCE_PATH, "/me" }, method = RequestMethod.GET )
+@RequestMapping(value = { CurrentUserController.RESOURCE_PATH, "/me" }, method = RequestMethod.GET)
 public class CurrentUserController
 {
     public static final String RESOURCE_PATH = "/currentUser";
@@ -146,9 +141,12 @@ public class CurrentUserController
 
     @Autowired
     protected AclService aclService;
-    
+
     @Autowired
     private DataApprovalLevelService approvalLevelService;
+
+    @Autowired
+    private RenderService renderService;
 
     @RequestMapping( produces = { "application/json", "text/*" } )
     public void getCurrentUser( HttpServletResponse response ) throws Exception
@@ -161,10 +159,10 @@ public class CurrentUserController
         }
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJsonWithView( response.getOutputStream(), currentUser, DetailedView.class );
+        renderService.toJson( response.getOutputStream(), currentUser, DetailedView.class );
     }
 
-    @RequestMapping( value = "/dashboards", produces = { "application/json", "text/*" } )
+    @RequestMapping(value = "/dashboards", produces = { "application/json", "text/*" })
     public void getDashboards( HttpServletResponse response ) throws NotAuthenticatedException, IOException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -187,10 +185,10 @@ public class CurrentUserController
         }
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJsonWithView( response.getOutputStream(), dashboards, DetailedView.class );
+        renderService.toJson( response.getOutputStream(), dashboards, DetailedView.class );
     }
 
-    @RequestMapping( value = "/inbox", produces = { "application/json", "text/*" } )
+    @RequestMapping(value = "/inbox", produces = { "application/json", "text/*" })
     public void getInbox( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -215,10 +213,10 @@ public class CurrentUserController
         }
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJson( response.getOutputStream(), inbox );
+        renderService.toJson( response.getOutputStream(), inbox );
     }
 
-    @RequestMapping( value = "/inbox/messageConversations", produces = { "application/json", "text/*" } )
+    @RequestMapping(value = "/inbox/messageConversations", produces = { "application/json", "text/*" })
     public void getInboxMessageConversations( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -237,10 +235,10 @@ public class CurrentUserController
             messageConversation.setAccess( aclService.getAccess( messageConversation ) );
         }
 
-        JacksonUtils.toJson( response.getOutputStream(), messageConversations );
+        renderService.toJson( response.getOutputStream(), messageConversations );
     }
 
-    @RequestMapping( value = "/inbox/interpretations", produces = { "application/json", "text/*" } )
+    @RequestMapping(value = "/inbox/interpretations", produces = { "application/json", "text/*" })
     public void getInboxInterpretations( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -258,10 +256,10 @@ public class CurrentUserController
             interpretation.setAccess( aclService.getAccess( interpretation ) );
         }
 
-        JacksonUtils.toJson( response.getOutputStream(), interpretations );
+        renderService.toJson( response.getOutputStream(), interpretations );
     }
 
-    @RequestMapping( value = "/dashboard", produces = { "application/json", "text/*" } )
+    @RequestMapping(value = "/dashboard", produces = { "application/json", "text/*" })
     public void getDashboard( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -276,11 +274,30 @@ public class CurrentUserController
         dashboard.setUnreadInterpretations( interpretationService.getNewInterpretationCount() );
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJson( response.getOutputStream(), dashboard );
+        renderService.toJson( response.getOutputStream(), dashboard );
     }
 
-    @RequestMapping( value = { "/profile", "/user-account" }, produces = { "application/json", "text/*" } )
-    public void getUserAccount( HttpServletResponse response ) throws Exception
+    @RequestMapping( value = { "/profile", "/user-account" }, produces = { "application/json", "text/html" } )
+    public void getUserAccountJson( HttpServletResponse response ) throws Exception
+    {
+        UserAccount userAccount = getUserAccount();
+
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+        renderService.toJson( response.getOutputStream(), userAccount );
+    }
+
+    @RequestMapping( value = { "/profile", "/user-account" }, produces = { "application/javascript" } )
+    public void getUserAccountJsonP( @RequestParam( defaultValue = "callback" ) String callback, HttpServletResponse response, HttpServletRequest request ) throws Exception
+    {
+        UserAccount userAccount = getUserAccount();
+
+        System.err.println( "accept:" + request.getHeader( "Accept" ) );
+
+        response.setContentType( "application/javascript" );
+        renderService.toJsonP( response.getOutputStream(), userAccount, callback );
+    }
+
+    private UserAccount getUserAccount() throws NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -319,15 +336,13 @@ public class CurrentUserController
         userAccount.getSettings().put( KEY_MESSAGE_EMAIL_NOTIFICATION, TextUtils.toString( userSettingService.getUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION ) ) );
         userAccount.getSettings().put( KEY_MESSAGE_SMS_NOTIFICATION, TextUtils.toString( userSettingService.getUserSetting( KEY_MESSAGE_SMS_NOTIFICATION ) ) );
         userAccount.getSettings().put( KEY_ANALYSIS_DISPLAY_PROPERTY, TextUtils.toString( userSettingService.getUserSetting( KEY_ANALYSIS_DISPLAY_PROPERTY ) ) );
-
-        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJson( response.getOutputStream(), userAccount );
+        return userAccount;
     }
 
-    @RequestMapping( value = { "/profile", "/user-account" }, method = RequestMethod.POST, consumes = "application/json" )
+    @RequestMapping(value = { "/profile", "/user-account" }, method = RequestMethod.POST, consumes = "application/json")
     public void postUserAccountJson( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
-        UserAccount userAccount = JacksonUtils.fromJson( request.getInputStream(), UserAccount.class );
+        UserAccount userAccount = renderService.fromJson( request.getInputStream(), UserAccount.class );
         User currentUser = currentUserService.getCurrentUser();
 
         if ( currentUser == null )
@@ -360,16 +375,16 @@ public class CurrentUserController
         userService.updateUser( currentUser );
     }
 
-    @RequestMapping( value = "/authorization", produces = { "application/json", "text/*" } )
+    @RequestMapping(value = "/authorization", produces = { "application/json", "text/*" })
     public void getAuthorization( HttpServletResponse response ) throws IOException
     {
         User currentUser = currentUserService.getCurrentUser();
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJson( response.getOutputStream(), currentUser.getUserCredentials().getAllAuthorities() );
+        renderService.toJson( response.getOutputStream(), currentUser.getUserCredentials().getAllAuthorities() );
     }
 
-    @RequestMapping( value = "/authorization/{auth}", produces = { "application/json", "text/*" } )
+    @RequestMapping(value = "/authorization/{auth}", produces = { "application/json", "text/*" })
     public void hasAuthorization( @PathVariable String auth, HttpServletResponse response ) throws IOException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -377,12 +392,12 @@ public class CurrentUserController
         boolean hasAuth = currentUser != null && currentUser.getUserCredentials().isAuthorized( auth );
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJson( response.getOutputStream(), hasAuth );
+        renderService.toJson( response.getOutputStream(), hasAuth );
     }
 
-    @RequestMapping( value = "/recipients", produces = { "application/json", "text/*" } )
+    @RequestMapping(value = "/recipients", produces = { "application/json", "text/*" })
     public void recipientsJson( HttpServletResponse response,
-        @RequestParam( value = "filter" ) String filter ) throws IOException, NotAuthenticatedException, FilterTooShortException
+        @RequestParam(value = "filter") String filter ) throws IOException, NotAuthenticatedException, FilterTooShortException
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -405,10 +420,10 @@ public class CurrentUserController
         recipients.setUserGroups( new HashSet<>( userGroupService.getUserGroupsBetweenByName( filter, 0, MAX_OBJECTS ) ) );
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJson( response.getOutputStream(), recipients );
+        renderService.toJson( response.getOutputStream(), recipients );
     }
-    
-    @RequestMapping( value = { "/assignedOrganisationUnits", "/organisationUnits" }, produces = { "application/json", "text/*" } )
+
+    @RequestMapping(value = { "/assignedOrganisationUnits", "/organisationUnits" }, produces = { "application/json", "text/*" })
     public void getAssignedOrganisationUnits( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -454,12 +469,12 @@ public class CurrentUserController
         Class<?> viewClass = JacksonUtils.getViewClass( viewName );
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJsonWithView( response.getOutputStream(), userOrganisationUnits, viewClass );
+        renderService.toJson( response.getOutputStream(), userOrganisationUnits, viewClass );
     }
 
-    @RequestMapping( value = { "/assignedPrograms", "/programs" }, produces = { "application/json", "text/*" } )
+    @RequestMapping(value = { "/assignedPrograms", "/programs" }, produces = { "application/json", "text/*" })
     public void getPrograms( HttpServletResponse response, @RequestParam Map<String, String> parameters,
-        @RequestParam( required = false ) Integer type )
+        @RequestParam(required = false) Integer type )
         throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -574,12 +589,12 @@ public class CurrentUserController
         }
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJson( response.getOutputStream(), forms );
+        renderService.toJson( response.getOutputStream(), forms );
     }
 
-    @SuppressWarnings( "unchecked" )
-    @RequestMapping( value = { "/assignedDataSets", "/dataSets" }, produces = { "application/json", "text/*" } )
-    public void getDataSets( @RequestParam( defaultValue = "false" ) boolean optionSets, @RequestParam( defaultValue = "50" ) int maxOptions,
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = { "/assignedDataSets", "/dataSets" }, produces = { "application/json", "text/*" })
+    public void getDataSets( @RequestParam(defaultValue = "false") boolean optionSets, @RequestParam(defaultValue = "50") int maxOptions,
         HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -696,14 +711,14 @@ public class CurrentUserController
         }
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJson( response.getOutputStream(), forms );
+        renderService.toJson( response.getOutputStream(), forms );
     }
 
-    @RequestMapping( value = "/dataApprovalLevels", produces = { "application/json", "text/*" } )
+    @RequestMapping(value = "/dataApprovalLevels", produces = { "application/json", "text/*" })
     public void getApprovalLevels( HttpServletResponse response ) throws IOException
     {
         List<DataApprovalLevel> approvalLevels = approvalLevelService.getUserDataApprovalLevels();
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        JacksonUtils.toJson( response.getOutputStream(), approvalLevels );        
+        renderService.toJson( response.getOutputStream(), approvalLevels );
     }
 }
