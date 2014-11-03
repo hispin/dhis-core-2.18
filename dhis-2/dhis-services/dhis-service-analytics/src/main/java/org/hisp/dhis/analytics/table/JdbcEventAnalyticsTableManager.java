@@ -138,8 +138,10 @@ public class JdbcEventAnalyticsTableManager
 
         sqlCreate += statementBuilder.getTableOptions( false );
 
-        log.info( "Create SQL: " + sqlCreate );
-
+        log.info( "Creating table: " + tableName );
+        
+        log.debug( "Create SQL: " + sqlCreate );
+        
         executeSilently( sqlCreate );
     }
 

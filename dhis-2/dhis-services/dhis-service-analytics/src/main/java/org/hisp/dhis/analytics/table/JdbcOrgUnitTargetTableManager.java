@@ -90,8 +90,10 @@ public class JdbcOrgUnitTargetTableManager
         sqlCreate += "value double precision) ";
         
         sqlCreate += statementBuilder.getTableOptions( false );
+
+        log.info( "Creating table: " + tableName );
         
-        log.info( "Create SQL: " + sqlCreate );
+        log.debug( "Create SQL: " + sqlCreate );
         
         executeSilently( sqlCreate );
     }

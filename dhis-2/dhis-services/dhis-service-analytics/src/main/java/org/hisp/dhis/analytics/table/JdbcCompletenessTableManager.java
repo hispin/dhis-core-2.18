@@ -90,8 +90,10 @@ public class JdbcCompletenessTableManager
         sqlCreate += "value date) ";
         
         sqlCreate += statementBuilder.getTableOptions( false );
+
+        log.info( "Creating table: " + tableName );
         
-        log.info( "Create SQL: " + sqlCreate );
+        log.debug( "Create SQL: " + sqlCreate );
         
         executeSilently( sqlCreate );
     }
