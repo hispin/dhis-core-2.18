@@ -45,6 +45,7 @@ import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.GeoFeature;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -104,6 +105,7 @@ public class GeoFeatureController
         List<GeoFeature> features = getGeoFeatures( ou, displayProperty, request, response, includeGroupSets );
         if ( features == null ) return;
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         renderService.toJson( response.getOutputStream(), features );
     }
 
@@ -121,6 +123,7 @@ public class GeoFeatureController
         List<GeoFeature> features = getGeoFeatures( ou, displayProperty, request, response, includeGroupSets );
         if ( features == null ) return;
 
+        response.setContentType( "application/javascript" );
         renderService.toJsonP( response.getOutputStream(), features, callback );
     }
 
