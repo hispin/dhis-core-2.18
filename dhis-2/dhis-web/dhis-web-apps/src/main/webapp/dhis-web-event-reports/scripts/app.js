@@ -7283,7 +7283,15 @@ Ext.onReady( function() {
 			}
 		};
 
-        init.optionSetStorage = {};
+
+        // dhis2
+        dhis2.util.namespace('dhis2.er');
+
+        dhis2.er.store = dhis2.er.store || new dhis2.storage.Store({
+            name: 'dhis2',
+            adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+            objectStores: ['optionSets']
+        });
 
 		// requests
 		Ext.Ajax.request({
@@ -7331,15 +7339,6 @@ Ext.onReady( function() {
                                         dateFormat = init.systemInfo.dateFormat;
 
                                         init.namePropertyUrl = namePropertyUrl;
-
-                                        // dhis2
-                                        dhis2.util.namespace('dhis2.er');
-
-                                        dhis2.er.store = dhis2.er.store || new dhis2.storage.Store({
-                                            name: 'dhis2',
-                                            adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-                                            objectStores: ['optionSets']
-                                        });
 
                                         // calendar
                                         (function() {

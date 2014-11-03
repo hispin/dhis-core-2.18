@@ -259,9 +259,18 @@ table.small td {
 	white-space: nowrap;
     text-align: center;
 }
-
 .pivot-empty {
-	background-color: #dae6f8;
+	background-color: #cddaed;
+}
+.pivot-transparent-column {
+	background-color: #fff;
+    border-top-color: #fff !important;
+    border-right-color: #fff !important;
+}
+.pivot-transparent-row {
+	background-color: #fff;
+    border-bottom-color: #fff !important;
+    border-left-color: #fff !important;
 }
 
 .pivot-value {

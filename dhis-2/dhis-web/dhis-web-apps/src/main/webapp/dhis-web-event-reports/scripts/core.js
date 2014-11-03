@@ -31,7 +31,7 @@ Ext.onReady( function() {
 				dimension: {
 					data: {
 						value: 'data',
-						name: NS.i18n.data,
+						name: NS.i18n.data || 'Data',
 						dimensionName: 'dx',
 						objectName: 'dx',
 						warning: {
@@ -39,19 +39,19 @@ Ext.onReady( function() {
 						}
 					},
 					category: {
-						name: NS.i18n.categories,
+						name: NS.i18n.categories || 'Assigned categories',
 						dimensionName: 'co',
 						objectName: 'co',
 					},
 					indicator: {
 						value: 'indicators',
-						name: NS.i18n.indicators,
+						name: NS.i18n.indicators || 'Indicators',
 						dimensionName: 'dx',
 						objectName: 'in'
 					},
 					dataElement: {
 						value: 'dataElements',
-						name: NS.i18n.data_elements,
+						name: NS.i18n.data_elements || 'Data elements',
 						dimensionName: 'dx',
 						objectName: 'de'
 					},
@@ -63,13 +63,13 @@ Ext.onReady( function() {
 					},
 					dataSet: {
 						value: 'dataSets',
-						name: NS.i18n.data_sets,
+						name: NS.i18n.data_sets || 'Data sets',
 						dimensionName: 'dx',
 						objectName: 'ds'
 					},
 					period: {
 						value: 'period',
-						name: NS.i18n.periods,
+						name: NS.i18n.periods || 'Periods',
 						dimensionName: 'pe',
 						objectName: 'pe'
 					},
@@ -86,7 +86,7 @@ Ext.onReady( function() {
                     },
 					organisationUnit: {
 						value: 'organisationUnits',
-						name: NS.i18n.organisation_units,
+						name: NS.i18n.organisation_units || 'Organisation units',
 						dimensionName: 'ou',
 						objectName: 'ou'
 					},
@@ -1941,13 +1941,13 @@ Ext.onReady( function() {
 
 			web.mask.show = function(component, message) {
 				if (!Ext.isObject(component)) {
-					console.log('web.mask.show: component not an object');
+					console.log('support.gui.mask.show: component not an object');
 					return null;
 				}
 
 				message = message || 'Loading..';
 
-				if (component.mask) {
+				if (component.mask && component.mask.destroy) {
 					component.mask.destroy();
 					component.mask = null;
 				}
