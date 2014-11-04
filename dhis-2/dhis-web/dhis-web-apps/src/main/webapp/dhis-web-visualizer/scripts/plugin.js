@@ -10,7 +10,7 @@ Ext.onReady(function() {
 		var n = 0; // Number of observations
 		var xbar = 0; // Mean of accumulated x values, used in updating formulas
 		var ybar = 0; // Mean of accumulated y values, used in updating formulas
-		
+
 		this.addData = function( x, y )
 		{
 			if ( n == 0 )
@@ -27,29 +27,29 @@ Ext.onReady(function() {
 				xbar += dx / ( n + 1 );
 				ybar += dy / ( n + 1 );
 			}
-			
+
 			sumX += x;
 			sumY += y;
 			n++;
 		};
-		
+
 		this.predict = function( x )
 		{
 			var b1 = this.getSlope();
-			
+
 			return this.getIntercept( b1 ) + b1 * x;
 		};
-		
+
 		this.getSlope = function()
 		{
 			if ( n < 2 )
 			{
 				return Number.NaN;
 			}
-			
+
 			return sumXY / sumXX;
 		};
-		
+
 		this.getIntercept = function( slope )
 		{
 			return ( sumY - slope * sumX ) / n;
@@ -2411,7 +2411,7 @@ Ext.onReady(function() {
                                 legend = this.legend,
                                 legendCenterX,
                                 titleX;
-                                
+
                             if (this.legend.position === 'top') {
                                 legendCenterX = legend.x + (legend.width / 2);
                                 titleX = titleWidth ? legendCenterX - (titleWidth / 2) : titleXFallback;
@@ -3026,6 +3026,8 @@ Ext.onReady(function() {
 			callbacks = 0,
 			fn;
 
+        init.contextPath = url;
+
 		fn = function() {
 			if (++callbacks === requests.length) {
 				isInitComplete = true;
@@ -3038,81 +3040,31 @@ Ext.onReady(function() {
 			}
 		};
 
-		requests.push({
-			url: url + '/api/system/info.jsonp',
-			success: function(r) {
-                init.systemInfo = r;
-                init.contextPath = init.systemInfo.contextPath;
-                
-				fn();
-			}
-		});
-
-        // date, calendar
+        // user-account
         requests.push({
-            url: url + '/api/systemSettings.jsonp?key=keyCalendar&key=keyDateFormat',
+            url: init.contextPath + '/api/me/user-account.jsonp',
             success: function(r) {
-                var systemSettings = Ext.decode(r.responseText);
-                init.systemInfo.dateFormat = Ext.isString(systemSettings.keyDateFormat) ? systemSettings.keyDateFormat.toLowerCase() : 'yyyy-mm-dd';
-                init.systemInfo.calendar = systemSettings.keyCalendar;
+                init.userAccount = r;
 
-                // user-account
-                Ext.Ajax.request({
-                    url: init.contextPath + '/api/me/user-account.json',
-                    success: function(r) {
-                        init.userAccount = Ext.decode(r.responseText);
+                // init
+                var defaultKeyUiLocale = 'en',
+                    defaultKeyAnalysisDisplayProperty = 'name',
+                    namePropertyUrl,
+                    contextPath,
+                    keyUiLocale;
 
-                        // init
-                        var defaultKeyUiLocale = 'en',
-                            defaultKeyAnalysisDisplayProperty = 'name',
-                            namePropertyUrl,
-                            contextPath,
-                            keyUiLocale,
-                            dateFormat;
+                init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
+                init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
 
-                        init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
-                        init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
+                // local vars
+                contextPath = init.contextPath;
+                keyUiLocale = init.userAccount.settings.keyUiLocale;
+                keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
+                namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
 
-                        // local vars
-                        contextPath = init.contextPath;
-                        keyUiLocale = init.userAccount.settings.keyUiLocale;
-                        keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
-                        namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
-                        dateFormat = init.systemInfo.dateFormat;
+                init.namePropertyUrl = namePropertyUrl;
 
-                        init.namePropertyUrl = namePropertyUrl;
-
-                        // calendar
-                        (function() {
-                            var dhis2PeriodUrl = '../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
-                                defaultCalendarId = 'gregorian',
-                                calendarIdMap = {'iso8601': defaultCalendarId},
-                                calendarId = calendarIdMap[init.systemInfo.calendar] || init.systemInfo.calendar || defaultCalendarId,
-                                calendarIds = ['coptic', 'ethiopian', 'islamic', 'julian', 'nepali', 'thai'],
-                                calendarScriptUrl,
-                                createGenerator;
-
-                            // calendar
-                            createGenerator = function() {
-                                init.calendar = $.calendars.instance(calendarId);
-                                init.periodGenerator = new dhis2.period.PeriodGenerator(init.calendar, init.systemInfo.dateFormat);
-                            };
-
-                            if (Ext.Array.contains(calendarIds, calendarId)) {
-                                calendarScriptUrl = '../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarId + '.min.js';
-
-                                Ext.Loader.injectScriptElement(calendarScriptUrl, function() {
-                                    Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
-                                });
-                            }
-                            else {
-                                Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
-                            }
-                        }());
-
-                        fn();
-                    }
-                });
+                fn();
             }
         });
 
@@ -3212,7 +3164,7 @@ Ext.onReady(function() {
 					},
 					success: function(r) {
                         Ext.apply(r, config);
-                        
+
 						var layout = api.layout.Layout(r);
 
 						if (layout) {
@@ -3312,7 +3264,7 @@ Ext.onReady(function() {
 				// update viewport
 				ns.app.centerRegion.removeAll();
 				ns.app.centerRegion.add(ns.app.chart);
-                
+
 				web.mask.hide(ns.app.centerRegion);
 			};
 		};

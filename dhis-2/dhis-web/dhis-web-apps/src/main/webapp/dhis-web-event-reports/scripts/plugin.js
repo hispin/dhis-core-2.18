@@ -3306,9 +3306,6 @@ Ext.onReady( function() {
 			}
 		});
 
-        // option sets
-        requests.push();
-
 		for (var i = 0; i < requests.length; i++) {
 			Ext.data.JsonP.request(requests[i]);
 		}
