@@ -880,6 +880,11 @@ input:-moz-placeholder
   font-size: 10pt !important;
 }
 
+.ui-datepicker-header
+{
+  margin-bottom: 2px;
+}
+
 .ui-button-text
 {
   font-family: LiberationSans, arial, sans-serif !important;
