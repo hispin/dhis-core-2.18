@@ -52,6 +52,10 @@ public class DataApprovalPermissions
     {
     }
 
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
     @JsonProperty
     public boolean isMayApprove()
     {
@@ -116,5 +120,21 @@ public class DataApprovalPermissions
     public void setState( String state )
     {
         this.state = state;
+    }
+
+    // ----------------------------------------------------------------------
+    // toString
+    // ----------------------------------------------------------------------
+
+    @Override
+    public String toString()
+    {
+        return "DataApprovalPermissions{" +
+                "mayApprove=" + mayApprove +
+                ", mayUnapprove=" + mayUnapprove +
+                ", mayAccept=" + mayAccept +
+                ", mayUnaccept=" + mayUnaccept +
+                ", mayReadData=" + mayReadData +
+                '}';
     }
 }

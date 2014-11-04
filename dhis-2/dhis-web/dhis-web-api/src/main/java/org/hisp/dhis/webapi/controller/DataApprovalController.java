@@ -708,11 +708,10 @@ public class DataApprovalController
                 {
                     OrganisationUnit unit = organisationUnitService.getOrganisationUnit( approval.getOu() );
                     DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( approval.getAoc() );
-                    DataApprovalLevel approvalLevel = dataApprovalLevelService.getHighestDataApprovalLevel( unit );
-                    
+
                     if ( dataSetOptionCombos != null && dataSetOptionCombos.contains( optionCombo ) )
                     {
-                        DataApproval dataApproval = new DataApproval( approvalLevel, dataSet, period, unit, optionCombo, false, date, user );
+                        DataApproval dataApproval = new DataApproval( null, dataSet, period, unit, optionCombo, false, date, user );
                         list.add( dataApproval );
                     }
                 }
