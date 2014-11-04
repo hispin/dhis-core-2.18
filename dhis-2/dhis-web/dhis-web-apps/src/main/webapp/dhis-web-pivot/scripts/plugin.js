@@ -2961,6 +2961,8 @@ Ext.onReady( function() {
 			callbacks = 0,
 			fn;
 
+        init.contextPath = url;
+
 		fn = function() {
 			if (++callbacks === requests.length) {
 				isInitComplete = true;
@@ -2973,79 +2975,31 @@ Ext.onReady( function() {
 			}
 		};
 
-		requests.push({
-			url: url + '/api/system/info.jsonp',
-			success: function(r) {
-				init.contextPath = r.contextPath;
-				fn();
-			}
-		});
-
-        // date, calendar
+        // user-account
         requests.push({
-            url: url + '/api/systemSettings.jsonp?key=keyCalendar&key=keyDateFormat',
+            url: init.contextPath + '/api/me/user-account.jsonp',
             success: function(r) {
-                var systemSettings = Ext.decode(r.responseText);
-                init.systemInfo.dateFormat = Ext.isString(systemSettings.keyDateFormat) ? systemSettings.keyDateFormat.toLowerCase() : 'yyyy-mm-dd';
-                init.systemInfo.calendar = systemSettings.keyCalendar;
+                init.userAccount = r;
 
-                // user-account
-                Ext.Ajax.request({
-                    url: init.contextPath + '/api/me/user-account.jsonp',
-                    success: function(r) {
-                        init.userAccount = Ext.decode(r.responseText);
+                // init
+                var defaultKeyUiLocale = 'en',
+                    defaultKeyAnalysisDisplayProperty = 'name',
+                    namePropertyUrl,
+                    contextPath,
+                    keyUiLocale;
 
-                        // init
-                        var defaultKeyUiLocale = 'en',
-                            defaultKeyAnalysisDisplayProperty = 'name',
-                            namePropertyUrl,
-                            contextPath,
-                            keyUiLocale,
-                            dateFormat;
+                init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
+                init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
 
-                        init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
-                        init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
+                // local vars
+                contextPath = init.contextPath;
+                keyUiLocale = init.userAccount.settings.keyUiLocale;
+                keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
+                namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
 
-                        // local vars
-                        contextPath = init.contextPath;
-                        keyUiLocale = init.userAccount.settings.keyUiLocale;
-                        keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
-                        namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
-                        dateFormat = init.systemInfo.dateFormat;
+                init.namePropertyUrl = namePropertyUrl;
 
-                        init.namePropertyUrl = namePropertyUrl;
-
-                        // calendar
-                        (function() {
-                            var dhis2PeriodUrl = '../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
-                                defaultCalendarId = 'gregorian',
-                                calendarIdMap = {'iso8601': defaultCalendarId},
-                                calendarId = calendarIdMap[init.systemInfo.calendar] || init.systemInfo.calendar || defaultCalendarId,
-                                calendarIds = ['coptic', 'ethiopian', 'islamic', 'julian', 'nepali', 'thai'],
-                                calendarScriptUrl,
-                                createGenerator;
-
-                            // calendar
-                            createGenerator = function() {
-                                init.calendar = $.calendars.instance(calendarId);
-                                init.periodGenerator = new dhis2.period.PeriodGenerator(init.calendar, init.systemInfo.dateFormat);
-                            };
-
-                            if (Ext.Array.contains(calendarIds, calendarId)) {
-                                calendarScriptUrl = '../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarId + '.min.js';
-
-                                Ext.Loader.injectScriptElement(calendarScriptUrl, function() {
-                                    Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
-                                });
-                            }
-                            else {
-                                Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
-                            }
-                        }());
-
-                        fn();
-                    }
-                });
+                fn();
             }
         });
 
@@ -3130,38 +3084,44 @@ Ext.onReady( function() {
 			// mouse events
 			web.events = web.events || {};
 
-			web.events.setColumnHeaderMouseHandlers = function(xLayout, response) {
-				if (Ext.isArray(xLayout.sortableIdObjects)) {
-					for (var i = 0, obj, el; i < xLayout.sortableIdObjects.length; i++) {
-						obj = xLayout.sortableIdObjects[i];
+			web.events.setColumnHeaderMouseHandlers = function(layout, xLayout, response, xResponse) {
+				if (Ext.isArray(xResponse.sortableIdObjects)) {
+					for (var i = 0, obj, el; i < xResponse.sortableIdObjects.length; i++) {
+						obj = xResponse.sortableIdObjects[i];
 						el = Ext.get(obj.uuid);
 
+						el.dom.layout = layout;
 						el.dom.xLayout = xLayout;
 						el.dom.response = response;
+						el.dom.xResponse = xResponse;
 						el.dom.metaDataId = obj.id;
 						el.dom.onColumnHeaderMouseClick = web.events.onColumnHeaderMouseClick;
 						el.dom.onColumnHeaderMouseOver = web.events.onColumnHeaderMouseOver;
 						el.dom.onColumnHeaderMouseOut = web.events.onColumnHeaderMouseOut;
 
-						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.xLayout, this.response, this.metaDataId)');
+						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.layout, this.xLayout, this.response, this.xResponse, this.metaDataId)');
 						el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
 						el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
 					}
 				}
 			};
 
-			web.events.onColumnHeaderMouseClick = function(xLayout, response, id) {
-				if (xLayout.sorting && xLayout.sorting.id === id) {
-					xLayout.sorting.direction = support.prototype.str.toggleDirection(xLayout.sorting.direction);
+			web.events.onColumnHeaderMouseClick = function(layout, xLayout, response, xResponse, id) {
+				if (layout.sorting && layout.sorting.id === id) {
+					layout.sorting.direction = support.prototype.str.toggleDirection(layout.sorting.direction);
 				}
 				else {
-					xLayout.sorting = {
+					layout.sorting = {
 						id: id,
 						direction: 'DESC'
 					};
 				}
 
-				ns.core.web.pivot.sort(xLayout, response, id);
+                web.mask.show(ns.app.centerRegion, 'Sorting...');
+
+                Ext.defer(function() {
+                    web.pivot.createTable(layout, response, null, false);
+                }, 10);
 			};
 
 			web.events.onColumnHeaderMouseOver = function(el) {
@@ -3232,40 +3192,62 @@ Ext.onReady( function() {
 						}
 
 						// sync xLayout with response
-						xLayout = service.layout.getSyncronizedXLayout(xLayout, response);
+						//xLayout = service.layout.getSyncronizedXLayout(xLayout, response);
 
-						if (!xLayout) {
-							web.mask.hide(ns.app.centerRegion);
-							return;
-						}
+						//if (!xLayout) {
+							//web.mask.hide(ns.app.centerRegion);
+							//return;
+						//}
 
 						ns.app.paramString = paramString;
 
-						web.pivot.createTable(layout, xLayout, response, isUpdateGui);
+						web.pivot.createTable(layout, response, null, isUpdateGui);
 					}
 				});
 			};
 
-			web.pivot.createTable = function(layout, xLayout, response, isUpdateGui) {
-				var xResponse,
+			web.pivot.createTable = function(layout, response, xResponse, isUpdateGui) {
+				var xLayout,
 					xColAxis,
 					xRowAxis,
-					config;
+					table,
+					getHtml,
+					getXLayout = service.layout.getExtendedLayout,
+					getSXLayout = service.layout.getSyncronizedXLayout,
+					getXResponse = service.response.getExtendedResponse,
+					getXAxis = service.layout.getExtendedAxis;
 
-				if (!xLayout) {
-					xLayout = service.layout.getExtendedLayout(layout);
+				getHtml = function(xLayout, xResponse) {
+					xColAxis = getXAxis(xLayout, 'col');
+					xRowAxis = getXAxis(xLayout, 'row');
+
+					return web.pivot.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
+				};
+
+				xLayout = getSXLayout(getXLayout(layout), xResponse || response);
+
+                ns.app.dateSorting = new Date();
+
+				if (layout.sorting) {
+					if (!xResponse) {
+						xResponse = getXResponse(xLayout, response);
+						getHtml(xLayout, xResponse);
+					}
+
+					web.pivot.sort(xLayout, xResponse, xColAxis || ns.app.xColAxis);
+					xLayout = getXLayout(api.layout.Layout(xLayout));
+				}
+				else {
+					xResponse = service.response.getExtendedResponse(xLayout, response);
 				}
 
-				// extend response
-				xResponse = service.response.getExtendedResponse(xLayout, response);
+				table = getHtml(xLayout, xResponse);
 
-				// extended axes
-				xColAxis = service.layout.getExtendedAxis(xLayout, 'col');
-				xRowAxis = service.layout.getExtendedAxis(xLayout, 'row');
+                // timing
+                ns.app.dateRender = new Date();
 
-				// update viewport
-				config = web.pivot.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
-				ns.app.centerRegion.update(config.html);
+				//ns.app.centerRegion.removeAll(true);
+				ns.app.centerRegion.update(table.html);
 
                 Ext.defer( function() {
                     Ext.get(ns.core.init.el).fadeIn({
@@ -3282,44 +3264,53 @@ Ext.onReady( function() {
 				ns.app.uuidObjectMap = Ext.applyIf((xColAxis ? xColAxis.uuidObjectMap : {}), (xRowAxis ? xRowAxis.uuidObjectMap : {}));
 
 				// sorting
-				web.events.setColumnHeaderMouseHandlers(xLayout, response);
+				web.events.setColumnHeaderMouseHandlers(layout, xLayout, response, xResponse);
 
 				web.mask.hide(ns.app.centerRegion);
+
+                if (PT.isDebug) {
+                    console.log("layout", layout);
+                    console.log("response", response);
+                    console.log("xResponse", xResponse);
+                    console.log("xLayout", xLayout);
+                    console.log("core", ns.core);
+                    console.log("app", ns.app);
+                }
 			};
 
-			web.pivot.sort = function(xLayout, response, id) {
-				var xLayout = Ext.clone(xLayout),
-					response = Ext.clone(response),
-					dim = xLayout.rows[0],
-					valueMap = response.idValueMap,
-					direction = xLayout.sorting ? xLayout.sorting.direction : 'DESC',
-					layout;
+			//web.pivot.sort = function(xLayout, response, id) {
+				//var xLayout = Ext.clone(xLayout),
+					//response = Ext.clone(response),
+					//dim = xLayout.rows[0],
+					//valueMap = response.idValueMap,
+					//direction = xLayout.sorting ? xLayout.sorting.direction : 'DESC',
+					//layout;
 
-				dim.ids = [];
+				//dim.ids = [];
 
-				// collect values
-				for (var i = 0, item, key, value; i < dim.items.length; i++) {
-					item = dim.items[i];
-					key = id + item.id;
-					value = parseFloat(valueMap[key]);
+				//// collect values
+				//for (var i = 0, item, key, value; i < dim.items.length; i++) {
+					//item = dim.items[i];
+					//key = id + item.id;
+					//value = parseFloat(valueMap[key]);
 
-					item.value = Ext.isNumber(value) ? value : (Number.MAX_VALUE * -1);
-				}
+					//item.value = Ext.isNumber(value) ? value : (Number.MAX_VALUE * -1);
+				//}
 
-				// sort
-				support.prototype.array.sort(dim.items, direction, 'value');
+				//// sort
+				//support.prototype.array.sort(dim.items, direction, 'value');
 
-				// new id order
-				for (var i = 0; i < dim.items.length; i++) {
-					dim.ids.push(dim.items[i].id);
-				}
+				//// new id order
+				//for (var i = 0; i < dim.items.length; i++) {
+					//dim.ids.push(dim.items[i].id);
+				//}
 
-				// re-layout
-				layout = api.layout.Layout(xLayout);
+				//// re-layout
+				//layout = api.layout.Layout(xLayout);
 
-				// re-create table
-				web.pivot.createTable(layout, null, response, false);
-			};
+				//// re-create table
+				//web.pivot.createTable(layout, null, response, false);
+			//};
 		};
 
 		createViewport = function() {
