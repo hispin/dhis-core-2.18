@@ -28,6 +28,8 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -114,68 +116,92 @@ public class DefaultDataApprovalService
     @Override
     public void approveData( List<DataApproval> dataApprovalList )
     {
-        log.info( "- approveData ( " + dataApprovalList.size() + " items )" );
+        log.debug( "approveData ( " + dataApprovalList.size() + " items )" );
 
-        Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( dataApprovalList );
+        List<DataApproval> expandedList = expandPeriods( dataApprovalList );
 
-        for ( DataApproval da : dataApprovalList )
+        Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( expandedList );
+
+        List<DataApproval> checkedList = new ArrayList<>();
+
+        for ( DataApproval da : expandedList )
         {
             DataApprovalStatus status = getStatus( da, statusMap );
 
+            if ( da.getDataApprovalLevel() == null )
+            {
+                da.setDataApprovalLevel( status.getDataApproval().getDataApprovalLevel() );
+            }
+
+            if ( status != null && status.getState().isApproved() &&
+                    da.getDataApprovalLevel().getLevel() >= status.getDataApprovalLevel().getLevel() )
+            {
+                continue; // Already approved at or above this level
+            }
+
             if ( status == null || !status.getPermissions().isMayApprove() )
             {
-                log.warn( "approveData: data may not be approved, state " + ( status == null ? "(null)" : status.getState().name() ) + " " + da );
+                log.warn( "approveData: data may not be approved, state " +
+                        ( status == null ? "(null)" : status.getState().name() ) + " " + da );
 
                 throw new DataMayNotBeApprovedException();
             }
 
-            if ( status.getDataApproval().getDataApprovalLevel() != null )
-            {
-                da.setDataApprovalLevel( status.getDataApproval().getDataApprovalLevel() );
-            }
+            checkedList.add ( da );
         }
 
-        for ( DataApproval da : dataApprovalList )
+        for ( DataApproval da : checkedList )
         {
-            log.info("-> approving " + da );
+            log.debug( "-> approving " + da );
 
             dataApprovalStore.addDataApproval( da );
         }
         
-        log.info( "Approvals saved: " + dataApprovalList.size() );
+        log.info( "Approvals saved: " + checkedList.size() );
     }
 
     @Override
     public void unapproveData( List<DataApproval> dataApprovalList )
     {
-        log.debug( "- unapproveData ( " + dataApprovalList.size() + " items )" );
+        log.debug( "unapproveData ( " + dataApprovalList.size() + " items )" );
 
-        Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( dataApprovalList );
+        List<DataApproval> expandedList = expandPeriods( dataApprovalList );
 
-        for ( DataApproval da : dataApprovalList )
+        Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( expandedList );
+
+        List<DataApproval> checkedList = new ArrayList<>();
+
+        for ( DataApproval da : expandedList )
         {
             DataApprovalStatus status = getStatus( da, statusMap );
 
-            if ( status == null || !status.getPermissions().isMayUnapprove() )
-            {
-                log.warn( "unapproveData: data may not be unapproved, state " + ( status == null ? "(null)" : status.getState().name() ) + " " + da );
-
-                throw new DataMayNotBeUnapprovedException();
-            }
-
-            if ( status.getDataApproval().getDataApprovalLevel() != null )
+            if ( da.getDataApprovalLevel() == null )
             {
                 da.setDataApprovalLevel( status.getDataApproval().getDataApprovalLevel() );
             }
 
-            da.setDataApprovalLevel( status.getDataApproval().getDataApprovalLevel() );
+            if ( status == null || !status.getState().isApproved() ||
+                    da.getDataApprovalLevel().getLevel() < status.getDataApprovalLevel().getLevel() )
+            {
+                continue; // Already unapproved at or below this level
+            }
+
+            if ( !status.getPermissions().isMayUnapprove() )
+            {
+                log.warn( "unapproveData: data may not be unapproved, state " + status.getState().name() + " " + da );
+
+                throw new DataMayNotBeUnapprovedException();
+            }
+
+            checkedList.add ( da );
         }
 
-        for ( DataApproval da : dataApprovalList )
+        for ( DataApproval da : checkedList )
         {
-            log.debug( "- unapproving " + da );
+            log.debug( "unapproving " + da );
 
-            DataApproval d = dataApprovalStore.getDataApproval( da.getDataApprovalLevel(), da.getDataSet(), da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo() );
+            DataApproval d = dataApprovalStore.getDataApproval( da.getDataApprovalLevel(), da.getDataSet(),
+                    da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo() );
 
             dataApprovalStore.deleteDataApproval( d );
         }
@@ -186,36 +212,48 @@ public class DefaultDataApprovalService
     @Override
     public void acceptData( List<DataApproval> dataApprovalList )
     {
-        log.debug( "- acceptData ( " + dataApprovalList.size() + " items )" );
+        log.debug( "acceptData ( " + dataApprovalList.size() + " items )" );
 
-        Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( dataApprovalList );
+        List<DataApproval> expandedList = expandPeriods( dataApprovalList );
 
-        for ( DataApproval da : dataApprovalList )
+        Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( expandedList );
+
+        List<DataApproval> checkedList = new ArrayList<>();
+
+        for ( DataApproval da : expandedList )
         {
             DataApprovalStatus status = getStatus( da, statusMap );
 
-            if ( !status.getPermissions().isMayAccept() )
+            if ( da.getDataApprovalLevel() == null )
+            {
+                da.setDataApprovalLevel( status.getDataApproval().getDataApprovalLevel() );
+            }
+
+            if ( status != null &&
+                    ( status.getState().isAccepted() && da.getDataApprovalLevel().getLevel() == status.getDataApprovalLevel().getLevel()
+                    || da.getDataApprovalLevel().getLevel() > status.getDataApprovalLevel().getLevel() ) )
+            {
+                continue; // Already accepted at, or approved above, this level
+            }
+
+            if ( status == null || !status.getPermissions().isMayAccept() )
             {
                 log.warn( "acceptData: data may not be accepted, state " + ( status == null ? "(null)" : status.getState().name() ) + " " + da );
 
                 throw new DataMayNotBeAcceptedException();
             }
 
-            if ( status.getDataApproval().getDataApprovalLevel() != null )
-            {
-                da.setDataApprovalLevel( status.getDataApproval().getDataApprovalLevel() );
-            }
-
-            da.setDataApprovalLevel( status.getDataApproval().getDataApprovalLevel() );
+            checkedList.add ( da );
         }
 
-        for ( DataApproval da : dataApprovalList )
+        for ( DataApproval da : checkedList )
         {
             da.setAccepted( true );
 
-            log.debug( "- accepting " + da );
+            log.debug( "accepting " + da );
 
-            DataApproval d = dataApprovalStore.getDataApproval( da.getDataApprovalLevel(), da.getDataSet(), da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo() );
+            DataApproval d = dataApprovalStore.getDataApproval( da.getDataApprovalLevel(), da.getDataSet(),
+                    da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo() );
 
             d.setAccepted( true );
 
@@ -228,45 +266,58 @@ public class DefaultDataApprovalService
     @Override
     public void unacceptData( List<DataApproval> dataApprovalList )
     {
-        log.debug( "- unacceptData ( " + dataApprovalList.size() + " items )" );
+        log.debug( "unacceptData ( " + dataApprovalList.size() + " items )" );
 
-        Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( dataApprovalList );
+        List<DataApproval> expandedList = expandPeriods( dataApprovalList );
 
-        for ( DataApproval da : dataApprovalList )
+        Map<DataApproval, DataApprovalStatus> statusMap = getStatusMap( expandedList );
+
+        List<DataApproval> checkedList = new ArrayList<>();
+
+        for ( DataApproval da : expandedList )
         {
             DataApprovalStatus status = getStatus( da, statusMap );
 
-            if ( !status.getPermissions().isMayAccept() )
-            {
-                log.warn( "unacceptData: data may not be unaccepted, state " + ( status == null ? "(null)" : status.getState().name() ) + " " + da );
-
-                throw new DataMayNotBeUnacceptedException();
-            }
-
-            if ( status.getDataApproval().getDataApprovalLevel() != null )
+            if ( da.getDataApprovalLevel() == null )
             {
                 da.setDataApprovalLevel( status.getDataApproval().getDataApprovalLevel() );
             }
 
-            da.setDataApprovalLevel( status.getDataApproval().getDataApprovalLevel() );
+            if ( status == null || ( !status.getState().isAccepted() && da.getDataApprovalLevel().getLevel() == status.getDataApprovalLevel().getLevel() )
+                || da.getDataApprovalLevel().getLevel() < status.getDataApprovalLevel().getLevel() )
+            {
+                continue; // Already unaccepted at, or not approved up to, this level
+            }
+
+            if ( !status.getPermissions().isMayUnaccept() )
+            {
+                log.warn( "unacceptData: data may not be unaccepted, state " + ( status == null ? "(null)" : status.getState().name() )
+                        + " " + da + " " + status.getPermissions() );
+
+                throw new DataMayNotBeUnacceptedException();
+            }
+
+            checkedList.add ( da );
         }
 
-        for ( DataApproval da : dataApprovalList )
+        for ( DataApproval da : checkedList )
         {
-            log.debug( "- unaccepting " + da );
+            log.debug( "unaccepting " + da );
 
-            DataApproval d = dataApprovalStore.getDataApproval( da.getDataApprovalLevel(), da.getDataSet(), da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo() );
+            DataApproval d = dataApprovalStore.getDataApproval( da.getDataApprovalLevel(), da.getDataSet(),
+                    da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo() );
 
             d.setAccepted( false );
 
-            dataApprovalStore.updateDataApproval( da );
+            dataApprovalStore.updateDataApproval( d );
         }
         
         log.info( "Accepts deleted: " + dataApprovalList.size() );
     }
 
     @Override
-    public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
+    public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
+                                                     DataElementCategoryOptionCombo attributeOptionCombo )
     {
         log.debug( "- getDataApprovalStatus( " + dataSet.getName() + ", "
                 + period.getPeriodType().getName() + " " + period.getName() + " " + period + ", "
@@ -284,21 +335,36 @@ public class DefaultDataApprovalService
 
         if ( dal == null )
         {
+            log.debug( "Null approval level for " + organisationUnit.getName() + ",  " + attributeOptionCombo.getName() );
+
             return new DataApprovalStatus( DataApprovalState.UNAPPROVABLE, null, null, null );
         }
 
-        List<DataApprovalStatus> statuses = dataApprovalStore.getDataApprovals( organisationUnit, CollectionUtils.asSet( dataSet ), period, attributeOptionCombo );
+        List<DataApprovalStatus> statuses = dataApprovalStore.getDataApprovals( organisationUnit,
+                CollectionUtils.asSet( dataSet ), period, attributeOptionCombo );
 
         if ( statuses != null && !statuses.isEmpty() )
         {
-            return statuses.get( 0 );
+            DataApprovalStatus status = statuses.get( 0 );
+
+            DataApproval da = status.getDataApproval();
+
+            da = dataApprovalStore.getDataApproval( da.getDataApprovalLevel(), da.getDataSet(), da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo() );
+
+            if ( da != null )
+            {
+                status.setDataApproval( da ); // Includes created and creator from database.
+            }
+
+            return status;
         }
 
-        return null;
+        return new DataApprovalStatus( DataApprovalState.UNAPPROVABLE, null, null, null );
     }
 
     @Override
-    public DataApprovalStatus getDataApprovalStatusAndPermissions( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
+    public DataApprovalStatus getDataApprovalStatusAndPermissions( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
+                                                                   DataElementCategoryOptionCombo attributeOptionCombo )
     {
         DataApprovalStatus status = getDataApprovalStatus( dataSet, period, organisationUnit, attributeOptionCombo );
 
@@ -326,9 +392,39 @@ public class DefaultDataApprovalService
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    private List<DataApproval> expandPeriods( List<DataApproval> approvalList )
+    {
+        List<DataApproval> expandedList = new ArrayList<>();
+
+        for ( DataApproval da : approvalList )
+        {
+            if ( da.getPeriod().getPeriodType().getFrequencyOrder() > da.getDataSet().getPeriodType().getFrequencyOrder() )
+            {
+                Collection<Period> periods = periodService.getPeriodsBetweenDates(
+                        da.getDataSet().getPeriodType(),
+                        da.getPeriod().getStartDate(),
+                        da.getPeriod().getEndDate() );
+
+                for ( Period period : periods )
+                {
+                    expandedList.add( new DataApproval( da.getDataApprovalLevel(), da.getDataSet(),
+                            period, da.getOrganisationUnit(), da.getAttributeOptionCombo(), da.isAccepted(),
+                            da.getCreated(), da.getCreator() ) );
+                }
+            }
+            else
+            {
+                expandedList.add( da );
+            }
+        }
+
+        return expandedList;
+    }
+
     private DataApprovalStatus getStatus( DataApproval da, Map<DataApproval, DataApprovalStatus> statusMap )
     {
-        return statusMap.get( new DataApproval( null, da.getDataSet(), da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo(), false, null, null ) );
+        return statusMap.get( new DataApproval( null, da.getDataSet(), da.getPeriod(),
+                da.getOrganisationUnit(), da.getAttributeOptionCombo(), false, null, null ) );
     }
 
     private Map<DataApproval, DataApprovalStatus> getStatusMap( List<DataApproval> dataApprovalList )
@@ -360,7 +456,8 @@ public class DefaultDataApprovalService
 
                 for ( DataSet ds : dataSets )
                 {
-                    statusMap.put( new DataApproval( null, ds, da.getPeriod(), da.getOrganisationUnit(), da.getAttributeOptionCombo(), false, null, null ), status );
+                    statusMap.put( new DataApproval( null, ds, da.getPeriod(), da.getOrganisationUnit(),
+                            da.getAttributeOptionCombo(), false, null, null ), status );
                 }
             }
         }

@@ -124,16 +124,25 @@ class DataApprovalPermissionsEvaluator
 
         DataApprovalPermissions permissions = new DataApprovalPermissions();
 
+        if ( da == null || da.getOrganisationUnit() == null )
+        {
+            tracePrint( "getPermissions da " + da + ( da != null ? ( " " + da.getOrganisationUnit() ) : "" ) );
+
+            return permissions; // No permissions are set.
+        }
+
         DataApprovalLevel userApprovalLevel = getUserOrgUnitApprovalLevel( da.getOrganisationUnit() );
 
         if ( userApprovalLevel == null )
         {
+            tracePrint( "getPermissions userApprovalLevel is null" );
+
             return permissions; // Can't find user approval level, so no permissions are set.
         }
 
         int userLevel = userApprovalLevel.getLevel();
 
-        int dataLevel = ( s.isApproved() ? da.getDataApprovalLevel().getLevel() : maxApprovalLevel );
+        int dataLevel = ( da.getDataApprovalLevel() != null ? da.getDataApprovalLevel().getLevel() : maxApprovalLevel );
 
         boolean mayApproveOrUnapproveAtLevel = ( authorizedToApprove && userLevel == dataLevel && !da.isAccepted() ) ||
                         ( authorizedToApproveAtLowerLevels && userLevel < dataLevel );
