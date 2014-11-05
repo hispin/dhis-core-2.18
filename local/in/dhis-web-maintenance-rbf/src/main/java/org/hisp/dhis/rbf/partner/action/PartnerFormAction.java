@@ -19,7 +19,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class PartnerFormAction implements Action
 {
-    private final String OPTION_SET_PARTNER = "Partner";
+    //private final String OPTION_SET_PARTNER = "Partner";
     
     // -------------------------------------------------------------------------
     // Dependencies

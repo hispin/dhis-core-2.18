@@ -95,6 +95,14 @@
 		
 		<th style="text-align: center;width:15%;">$i18n.getString( "qty_reported" )</th>
 		
+		<th style="text-align: center;width:15%;">$i18n.getString( "qty_validated" )</th>
+		
+		<th style="text-align: center;width:15%;">$i18n.getString( "qty_external_verification" )</th>
+		
+		<th style="text-align: center;width:15%;">$i18n.getString( "tariff_amount" )</th>
+		<th style="text-align: center;width:15%;">$i18n.getString( "total" )</th>
+		
+		<!--
 		#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated") || $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") || $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfAdminDataEntry" ) )
 			<th style="text-align: center;width:15%;">$i18n.getString( "qty_validated" )</th>
 		#end
@@ -107,7 +115,7 @@
 			<th style="text-align: center;width:15%;">$i18n.getString( "tariff_amount" )</th>
 			<th style="text-align: center;width:15%;">$i18n.getString( "total" )</th>
 		#end
-			
+		-->	
 	</tr>
 	<script>
 		var allTotal = 0.0;
@@ -127,7 +135,7 @@
 
             <td><label>$!pbfDataValue.getOption().getDisplayName()</label></td>				
 				
-				#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfAdminDataEntry" ) )
+				##if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfAdminDataEntry" ) )
 					<td>
         				<input onblur="savePBFDataValue('$dataElement.id', 1 )" type="text" name="pbfdv_qty_reported_$dataElement.id" id="pbfdv_qty_reported_$dataElement.id" 
         						value="$!pbfDataValue.quantityReported" tabindex="$tabIndex" style="text-align: center;" 
@@ -140,6 +148,7 @@
 					<td>
         				<input onblur="savePBFDataValue('$dataElement.id', 2 )" onkeyup="calTariffVal('$dataElement.id')" type="text" name="pbfdv_qty_validated_$dataElement.id" id="pbfdv_qty_validated_$dataElement.id" 
         						value="$!pbfDataValue.quantityValidated" tabindex="$tabIndex" style="text-align: center;" 
+								#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfAdminDataEntry" ) || $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated" ) )  #else readonly = "readonly" #end
         						#if($dataElement.type =='number') class="{validate:{number:true}}" 
         						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
         						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
@@ -163,6 +172,7 @@
 						<td>
             				<input onblur="savePBFDataValue('$dataElement.id', 3 )" type="text" name="pbfdv_qty_external_verification_$dataElement.id" id="pbfdv_qty_external_verification_$dataElement.id" 
             						value="$!pbfDataValue.getQuantityExternalVerification()" tabindex="$tabIndex" style="text-align: center;" 
+									#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfAdminDataEntry" ) || $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") )  #else readonly = "readonly" #end
             						#if($dataElement.type =='number') class="{validate:{number:true}}" 
             						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
             						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
@@ -182,7 +192,9 @@
         					}
         					changeInt();
         				</script>							
-				#else
+				##else
+					
+					<!--
         			<td>
         				<input onblur="savePBFDataValue('$dataElement.id', 1 )" type="text" name="pbfdv_qty_reported_$dataElement.id" id="pbfdv_qty_reported_$dataElement.id" 
         						value="$!pbfDataValue.quantityReported" tabindex="$tabIndex" style="text-align: center;" 
@@ -193,11 +205,12 @@
         						#elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}"
         						#end  />
         			</td>
-				
+					
 					#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated") || $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") )
             			<td>
             				<input onblur="savePBFDataValue('$dataElement.id', 2 )" onkeyup="calTariffVal('$dataElement.id')" type="text" name="pbfdv_qty_validated_$dataElement.id" id="pbfdv_qty_validated_$dataElement.id" 
             						value="$!pbfDataValue.quantityValidated" tabindex="$tabIndex" style="text-align: center;" 
+									#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated") || $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") ) #else readonly = "readonly" #end
 									#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") ) disabled="disabled" #end
             						#if($dataElement.type =='number') class="{validate:{number:true}}" 
             						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
@@ -224,7 +237,8 @@
     					<td>
             				<input onblur="savePBFDataValue('$dataElement.id', 3 )" type="text" name="pbfdv_qty_external_verification_$dataElement.id" id="pbfdv_qty_external_verification_$dataElement.id" 
             						value="$!pbfDataValue.getQuantityExternalVerification()" tabindex="$tabIndex" style="text-align: center;" 
-            						#if($dataElement.type =='number') class="{validate:{number:true}}" 
+									#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") ) #else readonly = "readonly" #end
+									#if($dataElement.type =='number') class="{validate:{number:true}}" 
             						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
             						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
             						#elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}"
@@ -244,8 +258,8 @@
         					changeInt();
         				</script>				
 					#end
-
-				#end
+				-->
+				##end
 					
     			<td>
     				<input type="text" name="pbfdv_tariff_amt_$dataElement.id" id="pbfdv_tariff_amt_$dataElement.id" 
@@ -306,8 +320,9 @@
 		#set( $mark = !$mark)	
 #end
 
-	#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated") || $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") )
+	#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated") || $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") || $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfAdminDataEntry" ) )
 		<tr>
+			<td >&nbsp;</td>
 			<td >&nbsp;</td>
 			<td >&nbsp;</td>
 			<td >&nbsp;</td>
