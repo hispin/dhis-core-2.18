@@ -147,7 +147,7 @@ public class MessageConversationController
         }
         else
         {
-            entityList = new ArrayList<>( manager.getAll( getEntityClass() ) );
+            entityList = new ArrayList<>( messageService.getMessageConversations() );
         }
 
         return entityList;
