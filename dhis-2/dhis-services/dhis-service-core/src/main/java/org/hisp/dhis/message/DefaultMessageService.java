@@ -312,12 +312,6 @@ public class DefaultMessageService
     }
 
     @Override
-    public List<MessageConversation> getAllMessageConversations()
-    {
-        return messageConversationStore.getMessageConversations( null, false, false, null, null );
-    }
-
-    @Override
     public void deleteMessages( User user )
     {
         messageConversationStore.deleteMessages( user );
