@@ -2318,6 +2318,7 @@ Ext.onReady( function() {
 				var items = [];
 
 				combo = Ext.create('Ext.form.field.ComboBox', {
+                    style: 'margin-bottom:2px',
 					fieldLabel: isPublicAccess ? GIS.i18n.public_access : obj.name,
 					labelStyle: 'color:#333',
 					cls: 'gis-combo',
@@ -2482,7 +2483,7 @@ Ext.onReady( function() {
 
 		window = Ext.create('Ext.window.Window', {
 			title: 'Sharing settings',
-			bodyStyle: 'padding:6px 6px 0; background-color:#fff',
+			bodyStyle: 'padding:5px 5px 3px; background-color:#fff',
 			resizable: false,
 			modal: true,
 			destroyOnBlur: true,
@@ -2490,7 +2491,7 @@ Ext.onReady( function() {
 				{
 					html: sharing.object.name,
 					bodyStyle: 'border:0 none; font-weight:bold; color:#333',
-					style: 'margin-bottom:8px'
+					style: 'margin-bottom:7px'
 				},
 				{
 					xtype: 'container',
@@ -2500,6 +2501,11 @@ Ext.onReady( function() {
 						userGroupField,
 						userGroupButton
 					]
+				},
+				{
+					html: GIS.i18n.created_by + ' ' + sharing.object.user.name,
+					bodyStyle: 'border:0 none; color:#777',
+					style: 'margin-top:2px;margin-bottom:7px'
 				},
 				userGroupRowContainer
 			],
