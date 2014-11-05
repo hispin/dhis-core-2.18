@@ -272,6 +272,12 @@ public class DefaultMessageService
     }
 
     @Override
+    public List<MessageConversation> getMessageConversations()
+    {
+        return messageConversationStore.getMessageConversations( currentUserService.getCurrentUser(), false, false, null, null );
+    }
+
+    @Override
     public List<MessageConversation> getMessageConversations( int first, int max )
     {
         return messageConversationStore.getMessageConversations( currentUserService.getCurrentUser(), false, false,
