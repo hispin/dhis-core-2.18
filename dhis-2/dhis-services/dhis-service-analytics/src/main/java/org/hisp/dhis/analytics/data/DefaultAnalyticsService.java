@@ -108,6 +108,7 @@ import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
@@ -133,16 +134,15 @@ import org.hisp.dhis.period.comparator.AscendingPeriodEndDateComparator;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.grid.ListGrid;
-import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
-import org.hisp.dhis.util.Timer;
 import org.hisp.dhis.system.util.UniqueArrayList;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -485,12 +485,10 @@ public class DefaultAnalyticsService
     {
         if ( !params.isSkipMeta() )
         {
-            Integer cocIndex = params.getCocIndex();
-
             Map<Object, Object> metaData = new HashMap<>();
 
             Map<String, String> uidNameMap = getUidNameMap( params );
-            Map<String, String> cocNameMap = getCocNameMap( grid, cocIndex );
+            Map<String, String> cocNameMap = getCocNameMap( params );
             uidNameMap.putAll( cocNameMap );
 
             metaData.put( NAMES_META_KEY, uidNameMap );
@@ -1274,25 +1272,36 @@ public class DefaultAnalyticsService
 
     /**
      * Returns a mapping between the category option combo identifiers and names
-     * in the given grid. Returns an empty map if the grid or cocIndex parameters
-     * are null.
+     * in the given grid. 
      *
-     * @param grid the grid.
-     * @param cocIndex the category option combo index in the grid.
+     * @param params the data query parameters.
      */
-    private Map<String, String> getCocNameMap( Grid grid, Integer cocIndex )
+    private Map<String, String> getCocNameMap( DataQueryParams params )
     {
         Map<String, String> metaData = new HashMap<>();
 
-        if ( grid != null && cocIndex != null )
+        List<NameableObject> des = params.getDimensionOrFilter( DATAELEMENT_DIM_ID );
+        
+        if ( des != null && !des.isEmpty() )
         {
-            Set<String> uids = new HashSet<>( ConversionUtils.<String>cast( grid.getColumn( cocIndex ) ) );
-
-            Collection<DataElementCategoryOptionCombo> cocs = categoryService.getDataElementCategoryOptionCombosByUid( uids );
-
-            for ( DataElementCategoryOptionCombo coc : cocs )
+            Set<DataElementCategoryCombo> categoryCombos = new HashSet<>();
+            
+            for ( NameableObject de : des )
             {
-                metaData.put( coc.getUid(), coc.getName() );
+                DataElement dataElement = (DataElement) de;
+                
+                if ( dataElement.getCategoryCombo() != null )
+                {
+                    categoryCombos.add( dataElement.getCategoryCombo() );
+                }
+            }
+            
+            for ( DataElementCategoryCombo cc : categoryCombos )
+            {
+                for ( DataElementCategoryOptionCombo coc : cc.getOptionCombos() )
+                {
+                    metaData.put( coc.getUid(), coc.getName() );
+                }
             }
         }
 

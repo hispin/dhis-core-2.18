@@ -155,6 +155,11 @@ public class DefaultQueryPlanner
             violation = "Data sets and data element group sets cannot be specified simultaneously";
         }
         
+        if ( params.hasDimensionOrFilter( CATEGORYOPTIONCOMBO_DIM_ID ) && !params.hasDimensionOrFilter( DATAELEMENT_DIM_ID ) )
+        {
+            violation = "Category option combos cannot be specified when data elements are not specified";
+        }
+        
         if ( violation != null )
         {
             log.warn( "Validation failed: " + violation );
