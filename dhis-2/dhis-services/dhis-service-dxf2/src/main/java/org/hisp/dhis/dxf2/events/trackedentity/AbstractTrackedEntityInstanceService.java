@@ -318,13 +318,11 @@ public abstract class AbstractTrackedEntityInstanceService
 
         for ( Attribute attribute : trackedEntityInstance.getAttributes() )
         {
-            TrackedEntityAttribute entityAttribute = manager.get( TrackedEntityAttribute.class,
-                attribute.getAttribute() );
+            TrackedEntityAttribute entityAttribute = manager.get( TrackedEntityAttribute.class, attribute.getAttribute() );
 
             if ( entityAttribute == null )
             {
-                importConflicts.add( new ImportConflict( "Attribute.attribute", "Invalid attribute "
-                    + attribute.getAttribute() ) );
+                importConflicts.add( new ImportConflict( "Attribute.attribute", "Invalid attribute " + attribute.getAttribute() ) );
                 continue;
             }
 
@@ -369,7 +367,7 @@ public abstract class AbstractTrackedEntityInstanceService
 
         Grid instances = teiService.getTrackedEntityInstances( params );
 
-        if ( instances.getHeight() == 0 || (instances.getHeight() == 1 && instances.getRow( 0 ).contains( tei.getUid() )) )
+        if ( instances.getHeight() == 0 || (tei != null && instances.getHeight() == 1 && instances.getRow( 0 ).contains( tei.getUid() )) )
         {
             return importConflicts;
         }
@@ -389,8 +387,7 @@ public abstract class AbstractTrackedEntityInstanceService
 
             if ( relationshipType == null )
             {
-                importConflicts.add( new ImportConflict( "Relationship.type", "Invalid type "
-                    + relationship.getRelationship() ) );
+                importConflicts.add( new ImportConflict( "Relationship.type", "Invalid type " + relationship.getRelationship() ) );
             }
 
             org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstanceA = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getTrackedEntityInstanceA() );
