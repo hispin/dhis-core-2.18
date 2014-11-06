@@ -366,7 +366,7 @@ public abstract class AbstractEnrollmentService
             return importSummary;
         }
 
-        ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program,
+        ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( enrollment.getEnrollment(), entityInstance, program,
             enrollment.getDateOfEnrollment(), enrollment.getDateOfIncident(), entityInstance.getOrganisationUnit() );
 
         if ( programInstance == null )
