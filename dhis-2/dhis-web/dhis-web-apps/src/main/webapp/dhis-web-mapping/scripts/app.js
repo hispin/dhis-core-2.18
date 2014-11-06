@@ -9065,7 +9065,9 @@ Ext.onReady( function() {
 		});
 
 		onRender = function(vp) {
-
+			gis.olmap.mask = Ext.create('Ext.LoadMask', vp.getEl(), {
+				msg: 'Loading'
+			});
 		};
 
 		afterRender = function() {
