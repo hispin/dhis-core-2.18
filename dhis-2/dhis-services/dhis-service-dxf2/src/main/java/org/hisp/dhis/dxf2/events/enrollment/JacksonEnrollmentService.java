@@ -104,14 +104,12 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
 
             for ( Enrollment enrollment : enrollments.getEnrollments() )
             {
-                enrollment.setEnrollment( null );
                 importSummaries.addImportSummary( addEnrollment( enrollment ) );
             }
         }
         catch ( Exception ex )
         {
             Enrollment enrollment = fromJson( input, Enrollment.class );
-            enrollment.setEnrollment( null );
             importSummaries.addImportSummary( addEnrollment( enrollment ) );
         }
 
@@ -130,14 +128,12 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
 
             for ( Enrollment enrollment : enrollments.getEnrollments() )
             {
-                enrollment.setEnrollment( null );
                 importSummaries.addImportSummary( addEnrollment( enrollment ) );
             }
         }
         catch ( Exception ex )
         {
             Enrollment enrollment = fromXml( input, Enrollment.class );
-            enrollment.setEnrollment( null );
             importSummaries.addImportSummary( addEnrollment( enrollment ) );
         }
 
