@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.events.trackedentity;
  */
 
 import com.google.common.collect.Lists;
+import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
@@ -165,6 +166,8 @@ public abstract class AbstractTrackedEntityInstanceService
 
         TrackedEntity trackedEntity = trackedEntityService.getTrackedEntity( trackedEntityInstance.getTrackedEntity() );
         entityInstance.setTrackedEntity( trackedEntity );
+        entityInstance.setUid( CodeGenerator.isValidCode( trackedEntityInstance.getTrackedEntityInstance() ) ?
+            trackedEntityInstance.getTrackedEntityInstance() : CodeGenerator.generateCode() );
 
         return entityInstance;
     }
@@ -178,7 +181,7 @@ public abstract class AbstractTrackedEntityInstanceService
     {
         ImportSummary importSummary = new ImportSummary();
         importSummary.setDataValueCount( null );
-        
+
         trackedEntityInstance.trimValuesToNull();
 
         List<ImportConflict> importConflicts = new ArrayList<>();
@@ -349,7 +352,7 @@ public abstract class AbstractTrackedEntityInstanceService
         {
             return importConflicts;
         }
-            
+
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
         QueryItem queryItem = new QueryItem( attribute, QueryOperator.EQ, value, attribute.isNumericType(), null );
@@ -397,7 +400,7 @@ public abstract class AbstractTrackedEntityInstanceService
                 importConflicts.add( new ImportConflict( "Relationship.trackedEntityInstance", "Invalid trackedEntityInstance "
                     + relationship.getTrackedEntityInstanceA() ) );
             }
-            
+
             org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstanceB = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getTrackedEntityInstanceB() );
 
             if ( entityInstanceB == null )
@@ -435,7 +438,7 @@ public abstract class AbstractTrackedEntityInstanceService
         {
             org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstanceA = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getTrackedEntityInstanceA() );
             org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstanceB = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getTrackedEntityInstanceB() );
-            
+
             RelationshipType relationshipType = manager.get( RelationshipType.class, relationship.getRelationship() );
 
             Relationship entityRelationship = new Relationship();
@@ -472,7 +475,7 @@ public abstract class AbstractTrackedEntityInstanceService
     private List<ImportConflict> validateAttributeType( Attribute attribute )
     {
         List<ImportConflict> importConflicts = Lists.newArrayList();
-        
+
         if ( attribute == null || attribute.getValue() == null )
         {
             return importConflicts;
@@ -485,7 +488,7 @@ public abstract class AbstractTrackedEntityInstanceService
             importConflicts.add( new ImportConflict( "Attribute.attribute", "Does not point to a valid attribute." ) );
             return importConflicts;
         }
-        
+
         if ( attribute.getValue().length() > 255 )
         {
             importConflicts.add( new ImportConflict( "Attribute.value", "Value length is greater than 256 chars for attribute: " + attribute ) );
