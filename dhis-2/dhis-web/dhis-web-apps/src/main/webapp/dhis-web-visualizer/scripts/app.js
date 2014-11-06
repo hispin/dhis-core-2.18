@@ -6188,45 +6188,37 @@ Ext.onReady( function() {
 
                                         // i18n
                                         requests.push({
-                                            url: 'i18n/' + keyUiLocale + '.properties',
+                                            url: 'i18n/i18n_app.properties',
                                             success: function(r) {
                                                 NS.i18n = dhis2.util.parseJavaProperties(r.responseText);
 
-                                                if (keyUiLocale !== defaultKeyUiLocale) {
-                                                    Ext.Ajax.request({
-                                                        url: 'i18n/' + defaultKeyUiLocale + '.properties',
-                                                        success: function(r) {
-                                                            Ext.applyIf(NS.i18n, dhis2.util.parseJavaProperties(r.responseText));
-                                                        },
-                                                        callback: fn
-                                                    })
-                                                }
-                                                else {
+                                                if (keyUiLocale === defaultKeyUiLocale) {
                                                     fn();
                                                 }
-                                            },
-                                            failure: function() {
-                                                var onFailure = function() {
-                                                    alert('No translations found for system locale (' + keyUiLocale + ') or default locale (' + defaultKeyUiLocale + ').');
-                                                };
-
-                                                if (keyUiLocale !== defaultKeyUiLocale) {
+                                                else {
                                                     Ext.Ajax.request({
-                                                        url: 'i18n/' + defaultKeyUiLocale + '.json',
+                                                        url: 'i18n/i18n_app_' + keyUiLocale + '.properties',
                                                         success: function(r) {
-                                                            console.log('No translations found for system locale (' + keyUiLocale + ').');
-                                                            NS.i18n = dhis2.util.parseJavaProperties(r.responseText);
+                                                            Ext.apply(NS.i18n, dhis2.util.parseJavaProperties(r.responseText));
                                                         },
                                                         failure: function() {
-                                                            onFailure();
+                                                            console.log('No translations found for system locale (' + keyUiLocale + ')');
                                                         },
                                                         callback: fn
                                                     });
                                                 }
-                                                else {
-                                                    fn();
-                                                    onFailure();
-                                                }
+                                            },
+                                            failure: function() {
+                                                Ext.Ajax.request({
+                                                    url: 'i18n/i18n_app_' + keyUiLocale + '.properties',
+                                                    success: function(r) {
+                                                        NS.i18n = dhis2.util.parseJavaProperties(r.responseText);
+                                                    },
+                                                    failure: function() {
+                                                        alert('No translations found for system locale (' + keyUiLocale + ') or default locale (' + defaultKeyUiLocale + ').');
+                                                    },
+                                                    callback: fn
+                                                });
                                             }
                                         });
 
