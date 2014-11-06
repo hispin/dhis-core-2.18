@@ -59,14 +59,9 @@ body,
     font-family: arial,sans-serif,ubuntu,consolas;
 }
 
-body.x-windows {
-	-webkit-text-stroke: 0.2px #888;
-}
-
 #init {
-    width: 100%;
-    text-align: center;
-    margin-top: 200px;
+    display: table;
+    margin: 200px auto;
     font-size: 15px;
 }
 

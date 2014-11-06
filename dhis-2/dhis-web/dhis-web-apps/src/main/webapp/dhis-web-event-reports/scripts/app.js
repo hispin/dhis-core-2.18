@@ -7196,9 +7196,6 @@ Ext.onReady( function() {
 				render: function() {
 					ns.app.viewport = this;
 
-                    var initEl = document.getElementById('init');
-                    initEl.parentNode.removeChild(initEl);
-
 					ns.app.aggregateLayoutWindow = AggregateLayoutWindow();
 					ns.app.aggregateLayoutWindow.hide();
 					ns.app.queryLayoutWindow = QueryLayoutWindow();
@@ -7256,12 +7253,18 @@ Ext.onReady( function() {
 						}
 					}
 
+                    var initEl = document.getElementById('init');
+                    initEl.parentNode.removeChild(initEl);
+
+                    Ext.getBody().setStyle('background', '#fff');
+                    Ext.getBody().setStyle('opacity', 0);
+
 					// fade in
 					Ext.defer( function() {
 						Ext.getBody().fadeIn({
-							duration: 500
+							duration: 600
 						});
-					}, 300);
+					}, 300 );
 				}
 			}
 		});
@@ -7381,6 +7384,7 @@ Ext.onReady( function() {
                                                 NS.i18n = dhis2.util.parseJavaProperties(r.responseText);
 
                                                 if (keyUiLocale === defaultKeyUiLocale) {
+                                                    Ext.get('init').update(NS.i18n.initializing + '..');
                                                     fn();
                                                 }
                                                 else {
@@ -7392,7 +7396,10 @@ Ext.onReady( function() {
                                                         failure: function() {
                                                             console.log('No translations found for system locale (' + keyUiLocale + ')');
                                                         },
-                                                        callback: fn
+                                                        callback: function() {
+                                                            Ext.get('init').update(NS.i18n.initializing + '..');
+                                                            fn();
+                                                        }
                                                     });
                                                 }
                                             },
@@ -7401,6 +7408,7 @@ Ext.onReady( function() {
                                                     url: 'i18n/i18n_app_' + keyUiLocale + '.properties',
                                                     success: function(r) {
                                                         NS.i18n = dhis2.util.parseJavaProperties(r.responseText);
+                                                        Ext.get('init').update(NS.i18n.initializing + '..');
                                                     },
                                                     failure: function() {
                                                         alert('No translations found for system locale (' + keyUiLocale + ') or default locale (' + defaultKeyUiLocale + ').');
