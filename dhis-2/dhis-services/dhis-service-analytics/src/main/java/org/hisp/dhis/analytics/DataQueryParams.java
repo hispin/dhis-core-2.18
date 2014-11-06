@@ -68,6 +68,7 @@ import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
@@ -1289,9 +1290,17 @@ public class DataQueryParams
             
             if ( des != null && !des.isEmpty() )
             {
-                DataElement de = (DataElement) des.get( 0 );
+                Set<DataElementCategoryCombo> categoryCombos = new HashSet<>();
                 
-                items.addAll( de.getCategoryCombo().getSortedOptionCombos() );
+                for ( NameableObject de : des )
+                {
+                    categoryCombos.add( ((DataElement) de).getCategoryCombo() );
+                }
+                
+                for ( DataElementCategoryCombo cc : categoryCombos )
+                {
+                    items.addAll( cc.getSortedOptionCombos() );
+                }                
             }
         }
         else
