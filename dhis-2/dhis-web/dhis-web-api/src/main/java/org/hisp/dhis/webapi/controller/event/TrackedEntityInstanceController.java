@@ -257,11 +257,22 @@ public class TrackedEntityInstanceController
         else
         {
             response.setStatus( HttpServletResponse.SC_CREATED );
-            ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
+            ImportSummary importSummary;
 
-            if ( !importSummary.getStatus().equals( ImportStatus.ERROR ) )
+            if ( !importSummaries.getImportSummaries().isEmpty() )
             {
-                response.setHeader( "Location", getResourcePath( request, importSummary ) );
+                importSummary = importSummaries.getImportSummaries().get( 0 );
+
+                if ( !importSummary.getStatus().equals( ImportStatus.ERROR ) )
+                {
+                    response.setHeader( "Location", getResourcePath( request, importSummary ) );
+                }
+            }
+            else
+            {
+                importSummary = new ImportSummary( ImportStatus.SUCCESS, "Empty list of tracked entity instances given." );
+                importSummary.setDataValueCount( null );
+                importSummary.setImportCount( null );
             }
 
             JacksonUtils.toXml( response.getOutputStream(), importSummary );
@@ -284,11 +295,22 @@ public class TrackedEntityInstanceController
         else
         {
             response.setStatus( HttpServletResponse.SC_CREATED );
-            ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
+            ImportSummary importSummary;
 
-            if ( !importSummary.getStatus().equals( ImportStatus.ERROR ) )
+            if ( !importSummaries.getImportSummaries().isEmpty() )
             {
-                response.setHeader( "Location", getResourcePath( request, importSummary ) );
+                importSummary = importSummaries.getImportSummaries().get( 0 );
+
+                if ( !importSummary.getStatus().equals( ImportStatus.ERROR ) )
+                {
+                    response.setHeader( "Location", getResourcePath( request, importSummary ) );
+                }
+            }
+            else
+            {
+                importSummary = new ImportSummary( ImportStatus.SUCCESS, "Empty list of tracked entity instances given." );
+                importSummary.setDataValueCount( null );
+                importSummary.setImportCount( null );
             }
 
             JacksonUtils.toJson( response.getOutputStream(), importSummary );
