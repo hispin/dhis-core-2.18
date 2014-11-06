@@ -35,9 +35,12 @@
 /* General */
 
 body {
-	background-color: #e1e1e1;
-	opacity: 0;
-	filter:Alpha(opacity=0)
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 body,
@@ -50,20 +53,12 @@ body,
 .x-window-header-text-default {
     font-size: 11px;
 	font-family: 'Arial','Sans-serif','Roboto','Helvetica','Consolas';
-}
+}                                
 
-body {
-    font-size: 10px;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-
-body.x-windows {
-	-webkit-text-stroke: 0.2px #888;
+#init {
+    display: table;
+    margin: 200px auto;
+    font-size: 15px;
 }
 
 	/* Scrollbar Webkit */
