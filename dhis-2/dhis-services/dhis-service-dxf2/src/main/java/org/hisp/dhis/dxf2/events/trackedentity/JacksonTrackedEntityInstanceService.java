@@ -131,14 +131,12 @@ public class JacksonTrackedEntityInstanceService extends AbstractTrackedEntityIn
 
             for ( TrackedEntityInstance trackedEntityInstance : trackedEntityInstances.getTrackedEntityInstances() )
             {
-                trackedEntityInstance.setTrackedEntityInstance( null );
                 importSummaries.addImportSummary( addTrackedEntityInstance( trackedEntityInstance ) );
             }
         }
         catch ( Exception ex )
         {
             TrackedEntityInstance trackedEntityInstance = fromJson( input, TrackedEntityInstance.class );
-            trackedEntityInstance.setTrackedEntityInstance( null );
             importSummaries.addImportSummary( addTrackedEntityInstance( trackedEntityInstance ) );
         }
 
