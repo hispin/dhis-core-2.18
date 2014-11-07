@@ -373,7 +373,7 @@ public class HibernateDataApprovalStore
                      ( attributeOptionCombo == null ? "" : "and cocco.categoryoptioncomboid = " + attributeOptionCombo.getId() + " " ) +
                 ") as a";
 
-        log.info( "Get approval SQL: " + sql );
+        log.debug( "Get approval SQL: " + sql );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -430,10 +430,10 @@ public class HibernateDataApprovalStore
 
                 statusList.add( new DataApprovalStatus( state, da, statusLevel, null ) );
 
-                log.debug( "Get approval result: level " + level + " dataApprovalLevel " + daLevel.getLevel()
+                log.debug( "Get approval result: level " + level + " dataApprovalLevel " + ( daLevel != null ? daLevel.getLevel() : "[none]" )
                         + " approved " + ( statusLevel != null )
                         + " readyBelow " + readyBelow + " approvedAbove " + approvedAbove
-                        + " accepted " + accepted + " state " + state.name() + " " + da );
+                        + " accepted " + accepted + " state " + ( state != null ? state.name() : "[none]" ) + " " + da );
             }
         }
         catch ( ExecutionException ex )
