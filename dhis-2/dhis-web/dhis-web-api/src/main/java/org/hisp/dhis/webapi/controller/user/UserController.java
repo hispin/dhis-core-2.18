@@ -138,7 +138,7 @@ public class UserController
     }
 
     @Override
-    protected List<User> getEntity( String uid )
+    protected List<User> getEntity( String uid, WebOptions options )
     {
         List<User> users = Lists.newArrayList();
         Optional<User> user = Optional.fromNullable( userService.getUser( uid ) );

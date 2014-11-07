@@ -30,7 +30,9 @@ package org.hisp.dhis.webapi.controller;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.InputStream;
 import java.util.List;
 
@@ -52,7 +55,7 @@ public class IdentifiableObjectController
     public static final String RESOURCE_PATH = "/identifiableObjects";
 
     @Override
-    public List<IdentifiableObject> getEntity( String uid )
+    public List<IdentifiableObject> getEntity( String uid, WebOptions options )
     {
         List<IdentifiableObject> identifiableObjects = Lists.newArrayList();
         Optional<IdentifiableObject> optional = Optional.fromNullable( manager.get( uid ) );

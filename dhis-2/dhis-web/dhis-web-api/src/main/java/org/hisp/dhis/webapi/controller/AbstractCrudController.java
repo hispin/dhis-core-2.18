@@ -739,7 +739,10 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return entityList;
     }
 
-    protected List<T> getEntity( String uid )
+    /**
+     * Should not be overridden, instead override {@link getEntity(String, WebOptions}.
+     */
+    protected final List<T> getEntity( String uid )
     {
         return getEntity( uid, new WebOptions( new HashMap<String, String>() ) );
     }
