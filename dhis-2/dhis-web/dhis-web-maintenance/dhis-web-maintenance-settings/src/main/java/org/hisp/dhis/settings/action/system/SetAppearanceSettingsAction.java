@@ -166,6 +166,8 @@ public class SetAppearanceSettingsAction
         applicationTitle = StringUtils.trimToNull( applicationTitle );
         applicationNotification = StringUtils.trimToNull( applicationNotification );
         applicationFooter = StringUtils.trimToNull( applicationFooter );
+        flag = StringUtils.trimToNull( flag );
+        startModule = StringUtils.trimToNull( startModule );
 
         if ( flag != null && flag.equals( "NO_FLAG" ) )
         {
