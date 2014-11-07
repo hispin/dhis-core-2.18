@@ -63,8 +63,6 @@ class DataApprovalPermissionsEvaluator
     private boolean authorizedToAcceptAtLowerLevels;
     private boolean authorizedToViewUnapprovedData;
 
-    private Map<OrganisationUnit, DataApprovalLevel> userOrgUnitApprovalLevelsCache = new HashMap<>();
-
     int maxApprovalLevel;
 
     private DataApprovalPermissionsEvaluator()
@@ -131,11 +129,12 @@ class DataApprovalPermissionsEvaluator
             return permissions; // No permissions are set.
         }
 
-        DataApprovalLevel userApprovalLevel = getUserOrgUnitApprovalLevel( da.getOrganisationUnit() );
+        DataApprovalLevel userApprovalLevel = dataApprovalLevelService.getUserApprovalLevel( user, da.getOrganisationUnit(), false );
 
         if ( userApprovalLevel == null )
         {
-            tracePrint( "getPermissions userApprovalLevel is null" );
+            tracePrint( "getPermissions userApprovalLevel is null for user " + ( user == null ? "(null)" : user.getUsername() )
+                    + " orgUnit " +  da.getOrganisationUnit().getName() );
 
             return permissions; // Can't find user approval level, so no permissions are set.
         }
@@ -180,22 +179,8 @@ class DataApprovalPermissionsEvaluator
         return permissions;
     }
 
-    private DataApprovalLevel getUserOrgUnitApprovalLevel( OrganisationUnit orgUnit )
-    {
-        DataApprovalLevel level = userOrgUnitApprovalLevelsCache.get( orgUnit );
-
-        if ( level == null )
-        {
-            level = dataApprovalLevelService.getUserApprovalLevel( user, orgUnit, false );
-
-            userOrgUnitApprovalLevelsCache.put( orgUnit, level );
-        }
-
-        return level;
-    }
-
     private static void tracePrint( String s )
     {
-//        System.out.println( s );
+        System.out.println( s );
     }
 }

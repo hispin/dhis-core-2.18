@@ -254,7 +254,7 @@ public class DataApprovalController
     @RequestMapping( value = APPROVALS_PATH + "/categoryOptionCombos", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
     public void getApprovalByCategoryOptionCombos( 
         @RequestParam Set<String> ds, 
-        @RequestParam String pe, 
+        @RequestParam String pe,
         HttpServletResponse response ) throws IOException
     {
         Set<DataSet> dataSets = new HashSet<>( objectManager.getByUid( DataSet.class, ds ) );
@@ -266,7 +266,7 @@ public class DataApprovalController
             ContextUtils.conflictResponse( response, "Illegal period identifier: " + pe );
             return;
         }
-        
+
         List<DataApprovalStatus> statusList = dataApprovalService.getUserDataApprovalsAndPermissions( dataSets, period, null );
 
         List<Map<String, Object>> list = new ArrayList<>();
