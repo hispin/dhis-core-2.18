@@ -4612,7 +4612,6 @@ Ext.onReady( function() {
                 var greg = $.calendars.instance('gregorian'),
                     date = greg.parseDate('yyyy-mm-dd', (new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))).toJSON().slice(0,10));
 
-                date = gis.init.calendar.fromJD(date.toJD());
                 return gis.init.calendar.formatDate(gis.init.systemInfo.dateFormat, date);
             }(),
             listeners: {
@@ -4630,7 +4629,7 @@ Ext.onReady( function() {
             columnWidth: 0.5,
             height: 41,
             style: 'margin-left: 1px',
-            value: gis.init.calendar.today().toString(),
+            value: gis.init.calendar.formatDate(gis.init.systemInfo.dateFormat, gis.init.calendar.today()),
             listeners: {
                 render: function(c) {
                     onDateFieldRender(c);
