@@ -157,7 +157,7 @@ public class EventAnalyticsServiceTest
         filterParams.add( "pe:201401;201402" );
         
         EventQueryParams params = analyticsService.getFromUrl( prA.getUid(), null, 
-            null, null, dimensionParams, filterParams, false, false, null, null, false, null );
+            null, null, dimensionParams, filterParams, false, false, null, null, false, null, null );
         
         assertEquals( prA, params.getProgram() );
         assertEquals( 1, params.getOrganisationUnits().size() );

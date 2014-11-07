@@ -327,10 +327,10 @@ public class DefaultEventAnalyticsService
     @Override
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate,
         Set<String> dimension, Set<String> filter, boolean skipMeta, boolean hierarchyMeta, SortOrder sortOrder, 
-        Integer limit, boolean uniqueInstances, I18nFormat format )
+        Integer limit, boolean uniqueInstances, DisplayProperty displayProperty, I18nFormat format )
     {
         EventQueryParams params = getFromUrl( program, stage, startDate, endDate, dimension, filter, null, null, null,
-            skipMeta, hierarchyMeta, false, null, null, format );
+            skipMeta, hierarchyMeta, false, displayProperty, null, null, format );
         
         params.setSortOrder( sortOrder );
         params.setLimit( limit );
@@ -343,7 +343,7 @@ public class DefaultEventAnalyticsService
     @Override
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate,
         Set<String> dimension, Set<String> filter, String ouMode, Set<String> asc, Set<String> desc,
-        boolean skipMeta, boolean hierarchyMeta, boolean coordinatesOnly, Integer page, Integer pageSize, I18nFormat format )
+        boolean skipMeta, boolean hierarchyMeta, boolean coordinatesOnly, DisplayProperty displayProperty, Integer page, Integer pageSize, I18nFormat format )
     {
         EventQueryParams params = new EventQueryParams();
 
@@ -448,6 +448,7 @@ public class DefaultEventAnalyticsService
         params.setSkipMeta( skipMeta );
         params.setHierarchyMeta( hierarchyMeta );
         params.setCoordinatesOnly( coordinatesOnly );
+        params.setDisplayProperty( displayProperty );
         params.setPage( page );
         params.setPageSize( pageSize );
         params.setAggregate( false );
