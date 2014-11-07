@@ -770,8 +770,6 @@ public class TableAlteror
         executeSql( "alter table datavalueaudit alter column value type varchar(50000)" );
 
         executeSql( "update datavalueaudit set attributeoptioncomboid = " + defaultOptionComboId + " where attributeoptioncomboid is null" );
-        System.out.println("SQL " + "update datavalueaudit set attributeoptioncomboid = " + defaultOptionComboId + " where attributeoptioncomboid is null");
-        
         executeSql( "alter table datavalueaudit alter column attributeoptioncomboid set not null;" );
         
         upgradeDataValuesWithAttributeOptionCombo();
