@@ -9499,11 +9499,16 @@ Ext.onReady( function() {
                                                     });
                                                 };
 
-                                                store.open().done( function() {
-                                                    for (var i = 0; i < optionSets.length; i++) {
-                                                        registerOptionSet(optionSets[i]);
-                                                    }
-                                                });
+                                                if (optionSets.length) {
+                                                    store.open().done( function() {
+                                                        for (var i = 0; i < optionSets.length; i++) {
+                                                            registerOptionSet(optionSets[i]);
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    fn();
+                                                }
                                             }
                                         });
 
