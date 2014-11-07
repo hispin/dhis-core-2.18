@@ -64,16 +64,12 @@
 
 <div class="setting">
 <select id="startModule" name="startModule">
-    <option value="NO_START_PAGE">$i18n.getString( "system_overview" )</option>
+    <option value="">[ $i18n.getString( "default" ) ]</option>
     #foreach ( $module in $modules )
     <option value="$module.name" #if( $module.name == $startModule )selected="selected"#end>$i18n.getString( "$module.name" )</option>
     #end
-    #if( $apps.size() > 0 )
-    <optgroup label="Apps">
-        #foreach ( $app in $apps )
-        <option value="app:${app.name}" #if( "app:${app.name}" == $startModule )selected="selected"#end>$i18n.getString( "$app.name" )</option>
-        #end
-    </optgroup>
+    #foreach ( $app in $apps )
+    <option value="app:${app.name}" #if( "app:${app.name}" == $startModule )selected="selected"#end>$i18n.getString( "$app.name" )</option>
     #end
 </select>
 </div>

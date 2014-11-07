@@ -63,7 +63,7 @@ public class RedirectAction
     {
         String startModule = (String) systemSettingManager.getSystemSetting( KEY_START_MODULE );
 
-        if ( startModule != null )
+        if ( startModule != null && !startModule.trim().isEmpty() )
         {
             if ( startModule.startsWith( "app:" ) )
             {
