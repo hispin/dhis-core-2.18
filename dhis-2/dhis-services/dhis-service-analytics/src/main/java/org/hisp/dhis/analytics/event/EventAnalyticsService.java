@@ -32,6 +32,7 @@ import java.util.Set;
 
 import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.common.AnalyticalObject;
+import org.hisp.dhis.common.DisplayProperty;
 import org.hisp.dhis.common.EventAnalyticalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -52,13 +53,14 @@ public interface EventAnalyticsService
      */
     EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
         Set<String> dimension, Set<String> filter, boolean skipMeta, boolean hierarchyMeta, SortOrder sortOrder, 
-        Integer limit, boolean uniqueInstances, I18nFormat format );
+        Integer limit, boolean uniqueInstances, DisplayProperty displayProperty, I18nFormat format );
 
     /**
      * Used for event query.
      */
     EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, Set<String> dimension, Set<String> filter, 
-        String ouMode, Set<String> asc, Set<String> desc, boolean skipMeta, boolean hierarchyMeta, boolean coordinatesOnly, Integer page, Integer pageSize, I18nFormat format );
+        String ouMode, Set<String> asc, Set<String> desc, boolean skipMeta, boolean hierarchyMeta, boolean coordinatesOnly, 
+        DisplayProperty displayProperty, Integer page, Integer pageSize, I18nFormat format );
     
     EventQueryParams getFromAnalyticalObject( EventAnalyticalObject object, I18nFormat format );
 }
