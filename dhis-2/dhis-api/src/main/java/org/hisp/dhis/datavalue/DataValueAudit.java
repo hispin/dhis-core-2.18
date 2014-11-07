@@ -58,6 +58,8 @@ public class DataValueAudit
     private OrganisationUnit organisationUnit;
 
     private DataElementCategoryOptionCombo categoryOptionCombo;
+    
+    private DataElementCategoryOptionCombo attributeOptionCombo;
 
     private AuditType auditType;
 
@@ -75,6 +77,7 @@ public class DataValueAudit
         this.period = dataValue.getPeriod();
         this.organisationUnit = dataValue.getSource();
         this.categoryOptionCombo = dataValue.getCategoryOptionCombo();
+        this.attributeOptionCombo = dataValue.getAttributeOptionCombo();
 
         this.value = value;
         this.modifiedBy = modifiedBy;
@@ -164,6 +167,16 @@ public class DataValueAudit
     public void setCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
     {
         this.categoryOptionCombo = categoryOptionCombo;
+    }
+
+    public DataElementCategoryOptionCombo getAttributeOptionCombo()
+    {
+        return attributeOptionCombo;
+    }
+
+    public void setAttributeOptionCombo( DataElementCategoryOptionCombo attributeOptionCombo )
+    {
+        this.attributeOptionCombo = attributeOptionCombo;
     }
 
     public AuditType getAuditType()

@@ -11,16 +11,19 @@
     </id>
 
     <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
-                     foreign-key="fk_datavalueaudit_dataelementid" not-null="true"/>
+      foreign-key="fk_datavalueaudit_dataelementid" not-null="true"/>
 
     <many-to-one name="period" class="org.hisp.dhis.period.Period" column="periodid"
-                     foreign-key="fk_datavalueaudit_periodid" not-null="true"/>
+      foreign-key="fk_datavalueaudit_periodid" not-null="true"/>
 
     <many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
-                     foreign-key="fk_datavalueaudit_organisationunitid" not-null="true"/>
+      foreign-key="fk_datavalueaudit_organisationunitid" not-null="true"/>
 
-    <many-to-one name="categoryOptionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
-                     column="categoryoptioncomboid" foreign-key="fk_datavalueaudit_categoryoptioncomboid" not-null="true"/>
+    <many-to-one name="categoryOptionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="categoryoptioncomboid"
+      foreign-key="fk_datavalueaudit_categoryoptioncomboid" not-null="true"/>
+
+    <many-to-one name="attributeOptionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="attributeoptioncomboid"
+      foreign-key="fk_datavalueaudit_attributeoptioncomboid"/>
 
     <property name="value" length="50000" />
 

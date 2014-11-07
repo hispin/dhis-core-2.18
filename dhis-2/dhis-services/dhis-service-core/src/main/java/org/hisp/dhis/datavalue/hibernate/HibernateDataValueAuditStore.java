@@ -88,13 +88,13 @@ public class HibernateDataValueAuditStore
     public Collection<DataValueAudit> getDataValueAudits( DataValue dataValue )
     {
         return getDataValueAudits( dataValue.getDataElement(), dataValue.getPeriod(),
-            dataValue.getSource(), dataValue.getCategoryOptionCombo() );
+            dataValue.getSource(), dataValue.getCategoryOptionCombo(), dataValue.getAttributeOptionCombo() );
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public Collection<DataValueAudit> getDataValueAudits( DataElement dataElement, Period period,
-        OrganisationUnit organisationUnit, DataElementCategoryOptionCombo categoryOptionCombo )
+        OrganisationUnit organisationUnit, DataElementCategoryOptionCombo categoryOptionCombo, DataElementCategoryOptionCombo attributeOptionCombo )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -110,6 +110,7 @@ public class HibernateDataValueAuditStore
             .add( Restrictions.eq( "period", storedPeriod ) )
             .add( Restrictions.eq( "organisationUnit", organisationUnit ) )
             .add( Restrictions.eq( "categoryOptionCombo", categoryOptionCombo ) )
+            .add( Restrictions.eq( "attributeOptionCombo", attributeOptionCombo ) )
             .addOrder( Order.desc( "timestamp" ) );
 
         return criteria.list();

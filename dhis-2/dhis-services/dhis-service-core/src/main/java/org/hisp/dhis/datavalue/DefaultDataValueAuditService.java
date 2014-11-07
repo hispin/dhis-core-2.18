@@ -79,9 +79,9 @@ public class DefaultDataValueAuditService
 
     @Override
     public Collection<DataValueAudit> getDataValueAudits( DataElement dataElement, Period period,
-        OrganisationUnit organisationUnit, DataElementCategoryOptionCombo categoryOptionCombo )
+        OrganisationUnit organisationUnit, DataElementCategoryOptionCombo categoryOptionCombo, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        return dataValueAuditStore.getDataValueAudits( dataElement, period, organisationUnit, categoryOptionCombo );
+        return dataValueAuditStore.getDataValueAudits( dataElement, period, organisationUnit, categoryOptionCombo, attributeOptionCombo );
     }
 
     @Override
