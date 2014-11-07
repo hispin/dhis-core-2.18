@@ -187,6 +187,11 @@ public class HibernateDbmsManager
         emptyTable( "indicator" );
         emptyTable( "indicatortype" );
 
+        emptyTable( "categoryoptiongroupsetmembers" );
+        emptyTable( "categoryoptiongroupset" );
+        emptyTable( "categoryoptiongroupmembers" );
+        emptyTable( "categoryoptiongroup" );
+
         emptyTable( "expression" );
         emptyTable( "categoryoptioncombo" );
         emptyTable( "categorycombo" );

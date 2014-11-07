@@ -678,7 +678,10 @@ public class DefaultDataApprovalLevelService
 
         for ( DataApprovalLevel level : getAllDataApprovalLevels() )
         {
-            tracePrint("userApprovalLevel( " + orgUnit.getName() + "-" + orgUnitLevel + " ) approval level " + level.getName() + " " + securityService.canRead( level ) );
+            tracePrint("userApprovalLevel( " + orgUnit.getName() + "-" + orgUnitLevel + " ) approval level "
+                    + level.getName() + " " + securityService.canRead( level )
+                    + " COGS " + ( level.getCategoryOptionGroupSet() == null ? "(null)" : level.getCategoryOptionGroupSet().getName() )
+                    + " canReadCOGS " + canReadCOGS( user, level.getCategoryOptionGroupSet() ) );
 
             if ( level.getOrgUnitLevel() >= orgUnitLevel
                     && securityService.canRead( level )

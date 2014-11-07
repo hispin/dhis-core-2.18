@@ -319,29 +319,15 @@ public class DefaultDataApprovalService
     public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
                                                      DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        log.debug( "- getDataApprovalStatus( " + dataSet.getName() + ", "
+        log.debug( "getDataApprovalStatus( " + dataSet.getName() + ", "
                 + period.getPeriodType().getName() + " " + period.getName() + " " + period + ", "
                 + organisationUnit.getName() + ", "
                 + ( attributeOptionCombo == null ? "(null)" : attributeOptionCombo.getName() ) + " )" );
 
         period = periodService.reloadPeriod( period );
 
-        if ( attributeOptionCombo == null )
-        {
-            attributeOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        }
-
-        DataApprovalLevel dal = dataApprovalLevelService.getLowestDataApprovalLevel( organisationUnit, attributeOptionCombo );
-
-        if ( dal == null )
-        {
-            log.debug( "Null approval level for " + organisationUnit.getName() + ",  " + attributeOptionCombo.getName() );
-
-            return new DataApprovalStatus( DataApprovalState.UNAPPROVABLE, null, null, null );
-        }
-
-        List<DataApprovalStatus> statuses = dataApprovalStore.getDataApprovals( organisationUnit,
-                CollectionUtils.asSet( dataSet ), period, attributeOptionCombo );
+        List<DataApprovalStatus> statuses = dataApprovalStore.getDataApprovals( CollectionUtils.asSet( dataSet ),
+                period, organisationUnit, attributeOptionCombo );
 
         if ( statuses != null && !statuses.isEmpty() )
         {
@@ -378,7 +364,7 @@ public class DefaultDataApprovalService
     {
         DataApprovalPermissionsEvaluator permissionsEvaluator = makePermissionsEvaluator();
 
-        List<DataApprovalStatus> statusList = dataApprovalStore.getDataApprovals( orgUnit, dataSets, period, null );
+        List<DataApprovalStatus> statusList = dataApprovalStore.getDataApprovals( dataSets, period, orgUnit, null );
         
         for ( DataApprovalStatus status : statusList )
         {
@@ -437,16 +423,16 @@ public class DefaultDataApprovalService
         {
             Set<DataSet> dataSets = new HashSet<>();
 
-            Period period = entry.getValue().get(0).getPeriod();
-
-            OrganisationUnit orgUnit = entry.getValue().get(0).getOrganisationUnit();
-
             for ( DataApproval da : entry.getValue() )
             {
                 dataSets.add( da.getDataSet() );
             }
 
-            List<DataApprovalStatus> statuses = dataApprovalStore.getDataApprovals( orgUnit, dataSets, period, null );
+            Period period = entry.getValue().get(0).getPeriod();
+
+            OrganisationUnit orgUnit = entry.getValue().get(0).getOrganisationUnit();
+
+            List<DataApprovalStatus> statuses = dataApprovalStore.getDataApprovals( dataSets, period, orgUnit, null );
 
             for ( DataApprovalStatus status : statuses )
             {
@@ -471,7 +457,7 @@ public class DefaultDataApprovalService
 
         for ( DataApproval approval : dataApprovalList )
         {
-            String key = approval != null ? approval.getOrganisationUnit().getId() + "-" + approval.getPeriod().getId() : null;
+            String key = approval == null ? null : approval.getOrganisationUnit().getId() + "-" + approval.getPeriod().getId();
             map.putValue( key, approval );
         }
 
