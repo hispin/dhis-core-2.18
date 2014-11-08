@@ -211,7 +211,7 @@ public class DataElementGroupSet
     @Override
     public String getShortName()
     {
-        if ( getName().length() <= 50 )
+        if ( getName() == null || getName().length() <= 50 )
         {
             return getName();
         }

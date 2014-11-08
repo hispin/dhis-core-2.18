@@ -383,7 +383,7 @@ public class UserController
             {
                 UserGroup group = userGroupService.getUserGroup( ug.getUid() );
 
-                if ( group != null && (!writeGroupRequired || securityService.canWrite( group )) )
+                if ( group != null && ( !writeGroupRequired || securityService.canRead( group ) ) )
                 {
                     group.addUser( user );
 

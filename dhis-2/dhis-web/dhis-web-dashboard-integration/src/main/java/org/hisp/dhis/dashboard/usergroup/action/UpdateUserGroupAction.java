@@ -134,7 +134,7 @@ public class UpdateUserGroupAction
             User user = userService.getUser( groupMember );
             userList.add( user );
 
-            if ( writeGroupRequired && !userGroup.getMembers().contains( user) && !userService.canUpdate( user.getUserCredentials() ) )
+            if ( writeGroupRequired && !userGroup.getMembers().contains( user ) && !userService.canUpdate( user.getUserCredentials() ) )
             {
                 throw new UpdateAccessDeniedException( "You don't have permission to add all selected users to this group" );
             }
