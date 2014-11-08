@@ -362,7 +362,7 @@ public class UserController
             }
         }
 
-        if ( writeGroupRequired && !writeGroupFound )
+        if ( writeGroupRequired && !writeGroupFound && !currentUserService.currentUserIsSuper() )
         {
             throw new CreateAccessDeniedException( "The new user must be assigned to a user group to which you have write access." );
         }
