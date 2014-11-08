@@ -69,6 +69,8 @@ public class DefaultSecurityService
 
     private static final String RESTORE_PATH = "/dhis-web-commons/security/";
 
+    private static final String DEFAULT_APPLICATION_TITLE = "DHIS 2";
+
     private static final int INVITED_USER_PASSWORD_LENGTH = 40;
 
     private static final int RESTORE_TOKEN_LENGTH = 50;
@@ -192,13 +194,20 @@ public class DefaultSecurityService
         
         RestoreType restoreType = restoreOptions.getRestoreType();
 
+        String applicationTitle = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_APPLICATION_TITLE );
+
+        if ( applicationTitle == null || applicationTitle.isEmpty() )
+        {
+            applicationTitle = DEFAULT_APPLICATION_TITLE;
+        }
+
         String[] result = initRestore( credentials, restoreOptions );
 
         Set<User> users = new HashSet<>();
         users.add( credentials.getUser() );
 
         Map<String, Object> vars = new HashMap<>();
-        vars.put( "rootPath", rootPath );
+        vars.put( "applicationTitle", applicationTitle );
         vars.put( "restorePath", rootPath + RESTORE_PATH + restoreType.getAction() );
         vars.put( "token", result[0] );
         vars.put( "code", result[1] );
@@ -210,6 +219,8 @@ public class DefaultSecurityService
         I18n i18n = i18nManager.getI18n( locale );
         vars.put( "i18n" , i18n );
 
+        rootPath = rootPath.replace( "http://", "" ).replace( "https://", "" );
+
         // -------------------------------------------------------------------------
         // Render emails
         // -------------------------------------------------------------------------
@@ -219,8 +230,8 @@ public class DefaultSecurityService
         String text1 = vm.render( vars, restoreType.getEmailTemplate() + "1" ),
                text2 = vm.render( vars, restoreType.getEmailTemplate() + "2" );
 
-        String subject1 = i18n.getString( restoreType.getEmailSubject() ) + " (" + i18n.getString( "message" ).toLowerCase() + " 1 / 2)",
-               subject2 = i18n.getString( restoreType.getEmailSubject() ) + " (" + i18n.getString( "message" ).toLowerCase() + " 2 / 2)";
+        String subject1 = i18n.getString( restoreType.getEmailSubject() ) + " " + rootPath + " (" + i18n.getString( "message" ).toLowerCase() + " 1 / 2)",
+               subject2 = i18n.getString( restoreType.getEmailSubject() ) + " " + rootPath + " (" + i18n.getString( "message" ).toLowerCase() + " 2 / 2)";
 
         // -------------------------------------------------------------------------
         // Send emails
