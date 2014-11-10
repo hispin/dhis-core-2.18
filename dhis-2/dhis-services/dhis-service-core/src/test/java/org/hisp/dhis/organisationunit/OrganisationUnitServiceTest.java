@@ -362,7 +362,7 @@ public class OrganisationUnitServiceTest
     }
     
     @Test
-    public void testIsEqualOrChildOf()
+    public void testIsDescendantSet()
     {
         OrganisationUnit unit1 = createOrganisationUnit( '1' );
         organisationUnitService.addOrganisationUnit( unit1 );
@@ -378,15 +378,40 @@ public class OrganisationUnitServiceTest
         OrganisationUnit unit4 = createOrganisationUnit( '4' );
         organisationUnitService.addOrganisationUnit( unit4 );
         
-        assertTrue( unit1.isEqualOrChildOf( asSet( unit1 ) ) );
-        assertTrue( unit2.isEqualOrChildOf( asSet( unit1 ) ) );
-        assertTrue( unit3.isEqualOrChildOf( asSet( unit1 ) ) );
-        assertTrue( unit2.isEqualOrChildOf( asSet( unit1, unit3 ) ) );
+        assertTrue( unit1.isDescendant( asSet( unit1 ) ) );
+        assertTrue( unit2.isDescendant( asSet( unit1 ) ) );
+        assertTrue( unit3.isDescendant( asSet( unit1 ) ) );
+        assertTrue( unit2.isDescendant( asSet( unit1, unit3 ) ) );
         
-        assertFalse( unit2.isEqualOrChildOf( asSet( unit3 ) ) );
-        assertFalse( unit4.isEqualOrChildOf( asSet( unit1 ) ) );
+        assertFalse( unit2.isDescendant( asSet( unit3 ) ) );
+        assertFalse( unit4.isDescendant( asSet( unit1 ) ) );
     }
 
+    @Test
+    public void testIsDescendantObject()
+    {
+        OrganisationUnit unit1 = createOrganisationUnit( '1' );
+        organisationUnitService.addOrganisationUnit( unit1 );
+
+        OrganisationUnit unit2 = createOrganisationUnit( '2', unit1 );
+        unit1.getChildren().add( unit2 );
+        organisationUnitService.addOrganisationUnit( unit2 );
+
+        OrganisationUnit unit3 = createOrganisationUnit( '3', unit2 );
+        unit2.getChildren().add( unit3 );
+        organisationUnitService.addOrganisationUnit( unit3 );
+
+        OrganisationUnit unit4 = createOrganisationUnit( '4' );
+        organisationUnitService.addOrganisationUnit( unit4 );
+        
+        assertTrue( unit1.isDescendant( unit1 ) );
+        assertTrue( unit2.isDescendant( unit1 ) );
+        assertTrue( unit3.isDescendant( unit1 ) );
+        
+        assertFalse( unit2.isDescendant( unit3 ) );
+        assertFalse( unit4.isDescendant( unit1 ) );
+    }
+    
     @Test
     public void testGetOrganisationUnitAtLevelAndBranch()
         throws Exception

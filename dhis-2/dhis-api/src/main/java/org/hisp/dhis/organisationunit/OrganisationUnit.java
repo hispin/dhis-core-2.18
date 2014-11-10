@@ -350,7 +350,29 @@ public class OrganisationUnit
         return false;
     }
 
-    public boolean isEqualOrChildOf( Set<OrganisationUnit> ancestors )
+    public boolean isDescendant( OrganisationUnit ancestor )
+    {
+        if ( ancestor == null )
+        {
+            return false;
+        }
+
+        OrganisationUnit unit = this;
+
+        while ( unit != null )
+        {
+            if ( ancestor.equals( unit ) )
+            {
+                return true;
+            }
+            
+            unit = unit.getParent();
+        }
+        
+        return false;
+    }
+    
+    public boolean isDescendant( Set<OrganisationUnit> ancestors )
     {
         if ( ancestors == null || ancestors.isEmpty() )
         {

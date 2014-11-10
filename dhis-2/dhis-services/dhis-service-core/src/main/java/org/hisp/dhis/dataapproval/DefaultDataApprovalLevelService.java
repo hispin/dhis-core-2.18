@@ -476,18 +476,23 @@ public class DefaultDataApprovalLevelService
     @Override
     public DataApprovalLevel getUserApprovalLevel( User user, OrganisationUnit orgUnit )
     {
-        if ( user != null )
+        if ( user == null || orgUnit == null )
         {
-            for ( OrganisationUnit ou : user.getOrganisationUnits() )
+            return null;
+        }
+        
+        OrganisationUnit organisationUnit = null;
+        
+        for ( OrganisationUnit unit : user.getOrganisationUnits() )
+        {
+            if ( orgUnit.isDescendant( unit ) )
             {
-                if ( orgUnit.isEqualOrChildOf( org.hisp.dhis.system.util.CollectionUtils.asSet( ou ) ) )
-                {
-                    return userApprovalLevel( ou, user );
-                }
+                organisationUnit = unit;
+                break;
             }
         }
 
-        return null;
+        return organisationUnit != null ? getUserApprovalLevel( organisationUnit, user ) : null;
     }
 
     @Override
@@ -628,11 +633,11 @@ public class DefaultDataApprovalLevelService
      */
     private int requiredApprovalLevel( OrganisationUnit orgUnit, User user )
     {
-        DataApprovalLevel userLevel = userApprovalLevel( orgUnit, user );
+        DataApprovalLevel userLevel = getUserApprovalLevel( orgUnit, user );
 
-        return userLevel == null ? 0 :
-                userLevel.getLevel() == getAllDataApprovalLevels().size() ? APPROVAL_LEVEL_UNAPPROVED :
-                        userLevel.getLevel() + 1;
+        return userLevel == null ? 0 : 
+            userLevel.getLevel() == getAllDataApprovalLevels().size() ? APPROVAL_LEVEL_UNAPPROVED :
+            userLevel.getLevel() + 1;
     }
 
     /**
@@ -657,7 +662,7 @@ public class DefaultDataApprovalLevelService
      * @param orgUnit organisation unit to test.
      * @return approval level for user.
      */
-    private DataApprovalLevel userApprovalLevel( OrganisationUnit orgUnit, User user )
+    private DataApprovalLevel getUserApprovalLevel( OrganisationUnit orgUnit, User user )
     {
         int orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
 

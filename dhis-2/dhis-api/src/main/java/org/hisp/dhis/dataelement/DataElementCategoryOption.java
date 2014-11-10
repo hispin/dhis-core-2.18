@@ -143,8 +143,7 @@ public class DataElementCategoryOption
 
     public boolean includes( OrganisationUnit ou )
     {
-        return organisationUnits == null || organisationUnits.isEmpty()
-                || ou.isEqualOrChildOf( organisationUnits );
+        return organisationUnits == null || organisationUnits.isEmpty() || ou.isDescendant( organisationUnits );
     }
 
     public boolean includesAny( Set<OrganisationUnit> orgUnits )
@@ -156,6 +155,7 @@ public class DataElementCategoryOption
                 return true;
             }
         }
+        
         return false;
     }
 
