@@ -202,6 +202,7 @@ public class CompleteDataSetRegistration
     }
 
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Period getPeriod()
     {
@@ -226,6 +227,7 @@ public class CompleteDataSetRegistration
         this.source = source;
     }
 
+    @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DataElementCategoryOptionCombo getAttributeOptionCombo()
@@ -262,8 +264,6 @@ public class CompleteDataSetRegistration
         this.storedBy = storedBy;
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getPeriodName()
     {
         return periodName;
