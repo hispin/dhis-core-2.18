@@ -816,8 +816,8 @@ public class DefaultChartService
 
         BaseAnalyticalObject.sortKeys( valueMap );
         
-        List<NameableObject> seriez = chart.series();
-        List<NameableObject> categories = chart.category();
+        List<NameableObject> seriez = new ArrayList<>( chart.series() );
+        List<NameableObject> categories = new ArrayList<>( chart.category() );
         
         for ( NameableObject series : seriez )
         {
@@ -827,18 +827,8 @@ public class DefaultChartService
             {
                 categoryIndex++;
 
-                String key = series.getUid() + DIMENSION_SEP + category.getUid();
-
-                // Replace potential operand separator with dimension separator
-
-                key = chart.isAnalyticsType( AnalyticsType.AGGREGATE ) ? key.replace( DataElementOperand.SEPARATOR, DIMENSION_SEP ) : key; 
+                String key = getKey( series, category, chart.getAnalyticsType() );
                 
-                // TODO fix issue with keys including -
-                
-                // Sort key on components to remove significance of column order
-                
-                key = BaseAnalyticalObject.sortKey( key );
-
                 Object object = valueMap.get( key );
                 
                 Number value = object != null && object instanceof Number ? (Number) object : null;
@@ -870,6 +860,23 @@ public class DefaultChartService
         }
 
         return new CategoryDataset[]{ regularDataSet, regressionDataSet };
+    }
+    
+    /**
+     * Creates a key based on the given input. Sorts the key on its components
+     * to remove significance of column order.
+     */
+    private String getKey( NameableObject series, NameableObject category, AnalyticsType analyticsType )
+    {
+        String key = series.getUid() + DIMENSION_SEP + category.getUid();
+
+        // Replace potential operand separator with dimension separator
+
+        key = AnalyticsType.AGGREGATE.equals( analyticsType ) ? key.replace( DataElementOperand.SEPARATOR, DIMENSION_SEP ) : key; 
+        
+        // TODO fix issue with keys including -.
+        
+        return BaseAnalyticalObject.sortKey( key );
     }
 
     // -------------------------------------------------------------------------

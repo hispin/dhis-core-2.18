@@ -202,7 +202,7 @@ public abstract class BaseChart
     {
         return title != null && !title.isEmpty();
     }
-
+    
     // -------------------------------------------------------------------------
     // Getters and setters for transient properties
     // -------------------------------------------------------------------------
