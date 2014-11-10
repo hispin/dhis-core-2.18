@@ -279,6 +279,7 @@ public class HibernateDataApprovalStore
             {
                 orgUnitLevel = dal.getOrgUnitLevel(); // Get lowest (last level -> greatest number) level.
             }
+            
             orgUnitJoinOn = "o.level = " + orgUnitLevel;
         }
 

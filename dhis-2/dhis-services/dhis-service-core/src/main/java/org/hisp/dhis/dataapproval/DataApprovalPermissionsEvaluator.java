@@ -59,7 +59,7 @@ class DataApprovalPermissionsEvaluator
     private boolean authorizedToAcceptAtLowerLevels;
     private boolean authorizedToViewUnapprovedData;
 
-    int maxApprovalLevel;
+    private int maxApprovalLevel;
 
     private DataApprovalPermissionsEvaluator()
     {
@@ -129,8 +129,7 @@ class DataApprovalPermissionsEvaluator
 
         if ( userApprovalLevel == null )
         {
-            tracePrint( "getPermissions userApprovalLevel is null for user " + ( user == null ? "(null)" : user.getUsername() )
-                    + " orgUnit " +  da.getOrganisationUnit().getName() );
+            tracePrint( "getPermissions userApprovalLevel null for user " + ( user == null ? "(null)" : user.getUsername() ) + " orgUnit " +  da.getOrganisationUnit().getName() );
 
             return permissions; // Can't find user approval level, so no permissions are set.
         }

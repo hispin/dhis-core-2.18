@@ -309,7 +309,7 @@ public class DefaultDataApprovalService
 
     @Override
     public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
-                                                     DataElementCategoryOptionCombo attributeOptionCombo )
+        DataElementCategoryOptionCombo attributeOptionCombo )
     {
         log.debug( "getDataApprovalStatus( " + dataSet.getName() + ", "
                 + period.getPeriodType().getName() + " " + period.getName() + " " + period + ", "
@@ -342,7 +342,7 @@ public class DefaultDataApprovalService
 
     @Override
     public DataApprovalStatus getDataApprovalStatusAndPermissions( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
-                                                                   DataElementCategoryOptionCombo attributeOptionCombo )
+        DataElementCategoryOptionCombo attributeOptionCombo )
     {
         DataApprovalStatus status = getDataApprovalStatus( dataSet, period, organisationUnit, attributeOptionCombo );
 

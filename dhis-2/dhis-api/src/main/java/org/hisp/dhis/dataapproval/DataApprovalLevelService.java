@@ -178,10 +178,10 @@ public interface DataApprovalLevelService
      * position possible (to facilitate the use case where users add the
      * approval levels from low to high.)
      *
-     * @param newLevel the new level to add.
+     * @param level the new level to add.
      * @return the identifier of the added level, or -1 if not well formed or duplicate.
      */
-    int addDataApprovalLevel( DataApprovalLevel newLevel );
+    int addDataApprovalLevel( DataApprovalLevel level );
     
     /**
      * Adds a new data approval level. Sets the level epxlicitl.
