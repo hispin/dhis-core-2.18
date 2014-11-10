@@ -100,7 +100,7 @@ public class DefaultAnalyticsSecurityManager
         {
             OrganisationUnit queryOrgUnit = (OrganisationUnit) object;
             
-            if ( !queryOrgUnit.isEqualOrChildOf( viewOrgUnits ) )
+            if ( !queryOrgUnit.isDescendant( viewOrgUnits ) )
             {
                 throw new IllegalQueryException( "User: " + user.getUsername() + " is not allowed to view org unit: " + queryOrgUnit.getUid() );
             }
