@@ -277,9 +277,9 @@ public class DefaultDataApprovalLevelService
                     ( cogs == null && canSeeAllDimensions ) ||
                     ( cogs != null && securityService.canRead( cogs ) && !CollectionUtils.isEmpty( categoryService.getCategoryOptionGroups( cogs ) ) ) ) );
 
-                //
+                
                 // Test using assignedAtLevel and approvableAtLevel values from the previous (higher) level.
-                //
+                
                 Boolean addBecauseOfPreviousLevel = false;
 
                 if ( canReadThisLevel && ( approvableAtLevel // Approve at previous higher level implies unapprove at current level.
@@ -292,17 +292,15 @@ public class DefaultDataApprovalLevelService
                 {
                     approvableAtAllLowerLevels = true;
                 }
-
-                //
+                
                 // Get new values of assignedAtLevel and approvableAtLevel for the current approval level.
-                //
+                
                 assignedAtLevel = canReadThisLevel && userOrgUnitLevels.contains( approvalLevel.getOrgUnitLevel() );
 
                 approvableAtLevel = canReadThisLevel && ( ( mayApprove && assignedAtLevel ) || approvableAtAllLowerLevels );
-
-                //
+                
                 // Test using assignedAtLevel and approvableAtLevel values from the current level.
-                //
+                
                 if ( approvableAtLevel || addBecauseOfPreviousLevel )
                 {
                     userDataApprovalLevels.add( approvalLevel );
@@ -412,18 +410,18 @@ public class DefaultDataApprovalLevelService
     }
 
     @Override
-    public int addDataApprovalLevel( DataApprovalLevel newLevel )
+    public int addDataApprovalLevel( DataApprovalLevel level )
     {
         List<DataApprovalLevel> dataApprovalLevels = getAllDataApprovalLevels();
 
-        int index = getInsertIndex( dataApprovalLevels, newLevel );
+        int index = getInsertIndex( dataApprovalLevels, level );
 
         if ( index < 0 )
         {
             return -1;
         }
 
-        dataApprovalLevels.add( index, newLevel );
+        dataApprovalLevels.add( index, level );
 
         // Move down from end to here, to avoid duplicate level in database.
 
@@ -432,9 +430,9 @@ public class DefaultDataApprovalLevelService
             update( dataApprovalLevels.get( i ), i );
         }
 
-        newLevel.setLevel( index + 1 );
+        level.setLevel( index + 1 );
 
-        return dataApprovalLevelStore.save( newLevel );
+        return dataApprovalLevelStore.save( level );
     }
 
     @Override
