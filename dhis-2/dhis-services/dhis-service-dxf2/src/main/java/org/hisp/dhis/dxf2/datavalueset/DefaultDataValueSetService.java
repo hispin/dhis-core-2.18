@@ -289,6 +289,41 @@ public class DefaultDataValueSetService
     }
 
     @Override
+    public void writeDataValueSetCsv( String dataSet, String period, String orgUnit, Writer writer, ExportOptions exportOptions )
+    {
+        DataSet dataSet_ = dataSetService.getDataSet( dataSet );
+        Period period_ = PeriodType.getPeriodFromIsoString( period );
+        OrganisationUnit orgUnit_ = organisationUnitService.getOrganisationUnit( orgUnit );
+
+        if ( dataSet_ == null )
+        {
+            throw new IllegalArgumentException( ERROR_INVALID_DATA_SET + dataSet );
+        }
+
+        if ( period_ == null )
+        {
+            throw new IllegalArgumentException( ERROR_INVALID_PERIOD + period );
+        }
+
+        if ( orgUnit_ == null )
+        {
+            throw new IllegalArgumentException( ERROR_INVALID_ORG_UNIT + orgUnit );
+        }
+
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo(); //TODO
+
+        CompleteDataSetRegistration registration = registrationService
+            .getCompleteDataSetRegistration( dataSet_, period_, orgUnit_, optionCombo );
+
+        Date completeDate = registration != null ? registration.getDate() : null;
+
+        period_ = periodService.reloadPeriod( period_ );
+
+        dataValueSetStore.writeDataValueSetCsv( newHashSet( dataSet_ ), completeDate, period_, orgUnit_, wrap( period_ ),
+            wrap( orgUnit_ ), writer, exportOptions );
+    }
+
+    @Override
     public void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits,
         boolean includeChildren, Writer writer, ExportOptions exportOptions )
     {
@@ -316,7 +351,7 @@ public class DefaultDataValueSetService
             ou = new HashSet<>( organisationUnitService.getOrganisationUnitsWithChildren( IdentifiableObjectUtils.getUids( ou ) ) );
         }
 
-        dataValueSetStore.writeDataValueSetCsv( ds, pe, ou, writer, exportOptions );
+        dataValueSetStore.writeDataValueSetCsv( ds, null, null, null, pe, ou, writer, exportOptions );
     }
 
     @Override

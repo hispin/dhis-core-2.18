@@ -96,11 +96,14 @@ public class SpringDataValueSetStore
     }
 
     @Override
-    public void writeDataValueSetCsv( Set<DataSet> dataSets, Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer, ExportOptions exportOptions )
+    public void writeDataValueSetCsv( Set<DataSet> dataSets, Date completeDate, Period period, OrganisationUnit orgUnit, 
+        Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer, ExportOptions exportOptions )
     {
         DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CsvWriter( writer, CSV_DELIM ) );
 
-        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits, exportOptions ), dataSets, null, null, null, dataValueSet );
+        writeDataValueSet( getDataValueSql( dataSets, periods, orgUnits, exportOptions ), dataSets, completeDate, period, orgUnit, dataValueSet );
+        
+        StreamUtils.closeWriter( writer );
     }
 
     @Override
