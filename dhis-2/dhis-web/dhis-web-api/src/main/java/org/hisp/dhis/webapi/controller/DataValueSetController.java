@@ -32,20 +32,12 @@ import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_CSV;
 import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_JSON;
 import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_XML;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.util.Date;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,9 +48,7 @@ import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.view.ClassPathUriResolver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -196,27 +186,6 @@ public class DataValueSetController
 
         response.setContentType( CONTENT_TYPE_JSON );
         JacksonUtils.toJson( response.getOutputStream(), summary );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/sdmx+xml" )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
-    public void postSDMXDataValueSet( ImportOptions importOptions,
-        HttpServletResponse response, InputStream in, Model model ) throws
-        IOException, TransformerConfigurationException, TransformerException
-    {
-        TransformerFactory tf = TransformerFactory.newInstance();
-        tf.setURIResolver( new ClassPathUriResolver() );
-
-        Transformer transformer = tf.newTransformer( new StreamSource( new ClassPathResource( SDMXCROSS2DXF2_TRANSFORM ).getInputStream() ) );
-
-        StringWriter dxf2 = new StringWriter();
-        transformer.transform( new StreamSource( in ), new StreamResult( dxf2 ) );
-
-        importOptions.setOrgUnitIdScheme( "CODE" ); // Override id scheme
-        importOptions.setDataElementIdScheme( "CODE" );
-
-        dataValueSetService.saveDataValueSetJson(
-            new ByteArrayInputStream( dxf2.toString().getBytes( "UTF-8" ) ), importOptions );
     }
 
     // -------------------------------------------------------------------------
