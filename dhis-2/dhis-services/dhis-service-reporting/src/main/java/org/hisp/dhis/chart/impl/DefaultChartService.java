@@ -45,6 +45,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +68,7 @@ import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.NumericSortWrapper;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -819,6 +821,11 @@ public class DefaultChartService
         List<NameableObject> seriez = new ArrayList<>( chart.series() );
         List<NameableObject> categories = new ArrayList<>( chart.category() );
         
+        if ( chart.hasSortOrder() )
+        {
+            categories = getSortedCategories( categories, chart, valueMap );
+        }
+        
         for ( NameableObject series : seriez )
         {
             double categoryIndex = 0;
@@ -879,6 +886,35 @@ public class DefaultChartService
         return BaseAnalyticalObject.sortKey( key );
     }
 
+    /**
+     * Returns a list of sorted nameable objects. Sorting is defined per the
+     * corresponding value in the given value map.
+     */
+    private List<NameableObject> getSortedCategories( List<NameableObject> categories, BaseChart chart, Map<String, Object> valueMap )
+    {
+        NameableObject series = chart.series().get( 0 );
+        
+        int sortOrder = chart.getSortOrder() * -1;
+        
+        List<NumericSortWrapper<NameableObject>> list = new ArrayList<>();
+        
+        for ( NameableObject category : categories )
+        {
+            String key = getKey( series, category, chart.getAnalyticsType() );
+            
+            Object value = valueMap.get( key );
+            
+            if ( value != null && value instanceof Number )
+            {
+                list.add( new NumericSortWrapper<NameableObject>( category, (Double ) value, sortOrder ) );
+            }
+        }
+        
+        Collections.sort( list );
+        
+        return NumericSortWrapper.getObjectList( list );
+    }
+    
     // -------------------------------------------------------------------------
     // CRUD operations
     // -------------------------------------------------------------------------
