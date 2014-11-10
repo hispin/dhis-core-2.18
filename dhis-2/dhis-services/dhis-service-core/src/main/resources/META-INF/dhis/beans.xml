@@ -431,7 +431,6 @@
     <property name="dataApprovalStore" ref="org.hisp.dhis.dataapproval.DataApprovalStore" />
     <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>

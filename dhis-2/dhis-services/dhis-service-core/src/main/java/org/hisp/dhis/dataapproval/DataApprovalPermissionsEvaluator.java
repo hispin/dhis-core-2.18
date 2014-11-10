@@ -28,16 +28,12 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS;
+
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS;
 
 /**
  * This package private class holds the context for deciding on data approval permissions.
@@ -50,10 +46,10 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_HIDE_UNAPPROVED_DAT
  * @author Jim Grace
  */
 class DataApprovalPermissionsEvaluator
-{
-    DataApprovalLevelService dataApprovalLevelService;
+{    
+    private DataApprovalLevelService dataApprovalLevelService;
 
-    User user;
+    private User user;
 
     private boolean acceptanceRequiredForApproval;
     private boolean hideUnapprovedData;
