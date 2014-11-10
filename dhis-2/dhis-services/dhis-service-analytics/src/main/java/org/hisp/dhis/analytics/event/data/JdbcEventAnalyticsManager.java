@@ -250,7 +250,7 @@ public class JdbcEventAnalyticsManager
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
         log.debug( "Analytics event query SQL: " + sql );
-z        
+        
         while ( rowSet.next() )
         {
             grid.addRow();
