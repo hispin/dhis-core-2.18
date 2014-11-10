@@ -466,15 +466,15 @@ public class DefaultDataApprovalLevelService
     }
 
     @Override
-    public DataApprovalLevel getUserApprovalLevel( OrganisationUnit orgUnit, boolean includeDataViewOrgUnits )
+    public DataApprovalLevel getUserApprovalLevel( OrganisationUnit orgUnit )
     {
         User user = currentUserService.getCurrentUser();
         
-        return getUserApprovalLevel( user, orgUnit, includeDataViewOrgUnits );
+        return getUserApprovalLevel( user, orgUnit );
     }
     
     @Override
-    public DataApprovalLevel getUserApprovalLevel( User user, OrganisationUnit orgUnit, boolean includeDataViewOrgUnits )
+    public DataApprovalLevel getUserApprovalLevel( User user, OrganisationUnit orgUnit )
     {
         if ( user != null )
         {
@@ -483,17 +483,6 @@ public class DefaultDataApprovalLevelService
                 if ( orgUnit.isEqualOrChildOf( org.hisp.dhis.system.util.CollectionUtils.asSet( ou ) ) )
                 {
                     return userApprovalLevel( ou, user );
-                }
-            }
-
-            if ( includeDataViewOrgUnits && user.getDataViewOrganisationUnits() != null )
-            {
-                for ( OrganisationUnit ou : user.getDataViewOrganisationUnits() )
-                {
-                    if ( orgUnit.isEqualOrChildOf( org.hisp.dhis.system.util.CollectionUtils.asSet( ou ) ) )
-                    {
-                        return userApprovalLevel( ou, user );
-                    }
                 }
             }
         }
