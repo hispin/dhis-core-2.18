@@ -218,7 +218,7 @@ public class CompleteDataSetRegistrationController
     }
 
     @SuppressWarnings( "unchecked" )
-    private <TT extends IdentifiableObject> TT getObject( TT object )
+    private <T extends IdentifiableObject> T getObject( T object )
     {
         if ( object == null )
         {
@@ -227,17 +227,17 @@ public class CompleteDataSetRegistrationController
 
         if ( Period.class.isInstance( object ) )
         {
-            return (TT) periodService.reloadIsoPeriod( ((Period) object).getRealUid() );
+            return (T) periodService.reloadIsoPeriod( ((Period) object).getRealUid() );
         }
 
         if ( object.getUid() != null )
         {
-            return (TT) manager.get( object.getClass(), object.getUid() );
+            return (T) manager.get( object.getClass(), object.getUid() );
         }
 
         if ( object.getCode() != null )
         {
-            return (TT) manager.get( object.getClass(), object.getCode() );
+            return (T) manager.get( object.getClass(), object.getCode() );
         }
 
         return null;
