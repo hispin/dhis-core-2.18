@@ -125,7 +125,7 @@ class DataApprovalPermissionsEvaluator
             return permissions; // No permissions are set.
         }
 
-        DataApprovalLevel userApprovalLevel = dataApprovalLevelService.getUserApprovalLevel( user, da.getOrganisationUnit(), false );
+        DataApprovalLevel userApprovalLevel = dataApprovalLevelService.getUserApprovalLevel( user, da.getOrganisationUnit() );
 
         if ( userApprovalLevel == null )
         {
