@@ -2921,12 +2921,18 @@ Ext.onReady( function() {
 		});
 
 		dataElementsByStageStore = Ext.create('Ext.data.Store', {
-			fields: [''],
+			fields: ['id', 'name', 'isAttribute'],
 			data: [],
-			sorters: [{
-				property: 'name',
-				direction: 'ASC'
-			}]
+			sorters: [
+                {
+                    property: 'isAttribute',
+                    direction: 'DESC'
+                },
+                {
+                    property: 'name',
+                    direction: 'ASC'
+                }
+            ]
 		});
 
 		organisationUnitGroupStore = Ext.create('Ext.data.Store', {
@@ -3166,6 +3172,11 @@ Ext.onReady( function() {
 
                         stages = program.programStages;
                         attributes = Ext.Array.pluck(program.programTrackedEntityAttributes, 'trackedEntityAttribute');
+
+                        // mark as attribute
+                        for (var i = 0; i < attributes.length; i++) {
+                            attributes[i].isAttribute = true;
+                        }
 
                         // attributes cache
                         if (Ext.isArray(attributes) && attributes.length) {
