@@ -188,6 +188,19 @@ public class DataValueSetController
         JacksonUtils.toJson( response.getOutputStream(), summary );
     }
 
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/csv" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
+    public void postCsvDataValueSet( ImportOptions importOptions,
+        HttpServletResponse response, InputStream in, Model model ) throws IOException
+    {
+        ImportSummary summary = dataValueSetService.saveDataValueSetCsv( in, importOptions );
+
+        log.info( "Data values set saved " + importOptions );
+
+        response.setContentType( CONTENT_TYPE_XML );
+        JacksonUtils.toXml( response.getOutputStream(), summary );
+    }
+
     // -------------------------------------------------------------------------
     // Supportive
     // -------------------------------------------------------------------------

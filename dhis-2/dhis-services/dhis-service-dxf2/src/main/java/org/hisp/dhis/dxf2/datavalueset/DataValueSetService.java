@@ -70,6 +70,8 @@ public interface DataValueSetService
     ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions );
 
     ImportSummary saveDataValueSetJson( InputStream in, ImportOptions importOptions );
+    
+    ImportSummary saveDataValueSetCsv( InputStream in, ImportOptions importOptions );
 
     ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId taskId );
 
