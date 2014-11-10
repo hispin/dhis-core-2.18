@@ -31,9 +31,16 @@ package org.hisp.dhis.dataapproval;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This package private class holds the context for deciding on data approval permissions.
@@ -64,6 +71,10 @@ class DataApprovalPermissionsEvaluator
     private DataApprovalPermissionsEvaluator()
     {
     }
+
+    private static Cache<String, DataApprovalLevel> USER_APPROVAL_LEVEL_CACHE = CacheBuilder.newBuilder()
+            .expireAfterAccess( 10, TimeUnit.MINUTES ).initialCapacity( 10000 )
+            .maximumSize( 50000 ).build();
 
     /**
      * Allocates and populates the context for determining user permissions
@@ -112,7 +123,7 @@ class DataApprovalPermissionsEvaluator
      */
     DataApprovalPermissions getPermissions( DataApprovalStatus status )
     {
-        DataApproval da = status.getDataApproval();
+        final DataApproval da = status.getDataApproval();
 
         DataApprovalState s = status.getState();
 
@@ -125,7 +136,22 @@ class DataApprovalPermissionsEvaluator
             return permissions; // No permissions are set.
         }
 
-        DataApprovalLevel userApprovalLevel = dataApprovalLevelService.getUserApprovalLevel( user, da.getOrganisationUnit() );
+        DataApprovalLevel userApprovalLevel;
+
+        try
+        {
+            userApprovalLevel = ( USER_APPROVAL_LEVEL_CACHE.get( user.getId() + "-" + da.getOrganisationUnit().getId(), new Callable<DataApprovalLevel>()
+            {
+                public DataApprovalLevel call() throws ExecutionException
+                {
+                    return dataApprovalLevelService.getUserApprovalLevel( user, da.getOrganisationUnit() );
+                }
+            } ) );
+        }
+        catch ( ExecutionException ex )
+        {
+            throw new RuntimeException( ex );
+        }
 
         if ( userApprovalLevel == null )
         {
