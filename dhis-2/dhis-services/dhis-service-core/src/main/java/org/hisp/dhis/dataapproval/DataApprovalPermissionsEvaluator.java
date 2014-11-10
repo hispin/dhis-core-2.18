@@ -155,6 +155,7 @@ class DataApprovalPermissionsEvaluator
         boolean mayReadData = authorizedToViewUnapprovedData || !hideUnapprovedData || mayApprove
                 || userLevel >= dataLevel;
 
+        /*
         tracePrint( "getPermissions orgUnit " + ( da.getOrganisationUnit() == null ? "(null)" : da.getOrganisationUnit().getName() )
                 + " combo " + da.getAttributeOptionCombo().getName() + " state " + s.name()
                 + " isApproved " + s.isApproved()+ " isApprovable " + s.isApprovable()+ " isUnapprovable " + s.isUnapprovable()
@@ -164,6 +165,7 @@ class DataApprovalPermissionsEvaluator
                 + " mayApprove " + mayApprove + " mayUnapprove " + mayUnapprove
                 + " mayAccept " + mayAccept + " mayUnaccept " + mayUnaccept
                 + " mayReadData " + mayReadData );
+        */
 
         permissions.setMayApprove( mayApprove );
         permissions.setMayUnapprove( mayUnapprove );
@@ -176,6 +178,6 @@ class DataApprovalPermissionsEvaluator
 
     private static void tracePrint( String s )
     {
-        System.out.println( s );
+        //System.out.println( s );
     }
 }
