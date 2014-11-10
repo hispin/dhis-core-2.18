@@ -193,6 +193,11 @@ public abstract class BaseAnalyticalObject
     {
         return itemOrganisationUnitGroups != null && !itemOrganisationUnitGroups.isEmpty();
     }
+    
+    public boolean hasSortOrder()
+    {
+        return sortOrder != 0;
+    }
 
     protected void addTransientOrganisationUnits( Collection<OrganisationUnit> organisationUnits )
     {
