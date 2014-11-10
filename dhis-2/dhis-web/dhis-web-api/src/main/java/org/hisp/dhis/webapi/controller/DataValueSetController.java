@@ -144,18 +144,33 @@ public class DataValueSetController
     @RequestMapping( method = RequestMethod.GET, produces = CONTENT_TYPE_CSV )
     public void getDataValueSetCsv(
         @RequestParam Set<String> dataSet,
-        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
-        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
+        @RequestParam( required = false ) String period,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Set<String> orgUnit,
         @RequestParam( required = false ) boolean children,
         ExportOptions exportOptions,
         HttpServletResponse response ) throws IOException
     {
-        log.info( "Get CSV bulk data value set for start date: " + startDate + ", end date: " + endDate );
-
         response.setContentType( CONTENT_TYPE_CSV );
         
-        dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, orgUnit, children, response.getWriter(), exportOptions );
+        boolean isSingleDataValueSet = dataSet.size() == 1 && period != null && orgUnit.size() == 1;
+
+        if ( isSingleDataValueSet )
+        {
+            String ds = dataSet.iterator().next();
+            String ou = orgUnit.iterator().next();
+
+            log.info( "Get CSV data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
+
+            dataValueSetService.writeDataValueSetCsv( ds, period, ou, response.getWriter(), exportOptions );
+        }
+        else
+        {
+            log.info( "Get CSV bulk data value set for start date: " + startDate + ", end date: " + endDate );
+            
+            dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, orgUnit, children, response.getWriter(), exportOptions );
+        }        
     }
 
     // -------------------------------------------------------------------------
