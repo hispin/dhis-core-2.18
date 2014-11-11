@@ -506,7 +506,7 @@ public class DefaultObjectBridge
                 }
             }
 
-            if ( identifiableObject.getCode() != null )
+            if ( identifiableObject.haveUniqueCode() && identifiableObject.getCode() != null )
             {
                 Map<String, IdentifiableObject> map = codeMap.get( identifiableObject.getClass() );
 
