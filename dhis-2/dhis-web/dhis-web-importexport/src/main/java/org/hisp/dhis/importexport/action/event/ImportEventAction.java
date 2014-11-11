@@ -89,11 +89,11 @@ public class ImportEventAction implements Action
         this.dryRun = dryRun;
     }
 
-    public String format;
+    public String payloadFormat;
 
-    public void setFormat( String format )
+    public void setPayloadFormat( String payloadFormat )
     {
-        this.format = format;
+        this.payloadFormat = payloadFormat;
     }
 
     private String orgUnitIdScheme = "UID";
@@ -128,14 +128,14 @@ public class ImportEventAction implements Action
         importOptions.setDryRun( dryRun );
         importOptions.setOrgUnitIdScheme( orgUnitIdScheme );
 
-        if ( "csv".equals( format ) )
+        if ( "csv".equals( payloadFormat ) )
         {
             Events events = csvEventService.readEvents( in, skipFirst );
             scheduler.executeTask( new ImportEventsTask( events.getEvents(), eventService, importOptions, taskId ) );
         }
         else
         {
-            boolean jsonInput = "json".equals( format );
+            boolean jsonInput = "json".equals( payloadFormat );
             scheduler.executeTask( new ImportEventTask( in, eventService, importOptions, taskId, jsonInput ) );
         }
 

@@ -1,4 +1,14 @@
-
+<script>
+$(function() {
+    $('#payloadFormat').on('change', function( e ) {
+        if( "csv" === $('#payloadFormat').val() ) {
+            $('#trSkipFirst').show();
+        } else {
+            $('#trSkipFirst').hide();
+        }
+    });
+})
+</script>
 <h3>$i18n.getString( "event_data_import" )</h3>
 
 <div id="inputCriteria" class="inputCriteria" style="width: 380px">
@@ -20,10 +30,19 @@
 <tr>
     <td>$i18n.getString( "format" )</td>
     <td>
-        <select id="format" style="width: 190px;">
+        <select id="payloadFormat" name="payloadFormat" style="width: 190px;">
             <option value="xml">XML</option>
             <option value="json">JSON</option>
             <option value="csv">CSV</option>
+        </select>
+    </td>
+</tr>
+<tr id="trSkipFirst" style="display: none;">
+    <td>$i18n.getString( "skip_first" )</td>
+    <td>
+        <select id="skipFirst" name="skipFirst" style="width: 190px;">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
         </select>
     </td>
 </tr>
