@@ -69,7 +69,7 @@ import static org.hisp.dhis.analytics.DataType.TEXT;
 import static org.hisp.dhis.analytics.MeasureFilter.*;
 import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getIsoPeriods;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriods;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.system.util.TextUtils.*;
 
@@ -316,7 +316,7 @@ public class JdbcAnalyticsManager
 
                 if ( !calendar.isIso8601() && PERIOD_DIM_ID.equals( dim.getDimension() ) )
                 {
-                    sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( getIsoPeriods( dim.getItems(), calendar ) ) + ") ";
+                    sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( getLocalPeriods( dim.getItems(), calendar ) ) + ") ";
                 }
                 else
                 {
@@ -343,7 +343,7 @@ public class JdbcAnalyticsManager
 
                         if ( !calendar.isIso8601() && PERIOD_DIM_ID.equals( filter.getDimension() ) )
                         {
-                            sql += col + " in (" + getQuotedCommaDelimitedString( getIsoPeriods( filter.getItems(), calendar ) ) + ") or ";
+                            sql += col + " in (" + getQuotedCommaDelimitedString( getLocalPeriods( filter.getItems(), calendar ) ) + ") or ";
                         }
                         else
                         {
