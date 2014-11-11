@@ -86,11 +86,11 @@ public class HibernateDataApprovalStore
     private static final Log log = LogFactory.getLog( HibernateDataApprovalStore.class );
 
     private static Cache<Integer, DataElementCategoryOptionCombo> OPTION_COMBO_CACHE = CacheBuilder.newBuilder()
-            .expireAfterAccess( 10, TimeUnit.MINUTES ).initialCapacity( 10000 )
+            .expireAfterAccess( 15, TimeUnit.MINUTES ).initialCapacity( 5000 )
             .maximumSize( 50000 ).build();
 
     private static Cache<Integer, OrganisationUnit> ORG_UNIT_CACHE = CacheBuilder.newBuilder()
-            .expireAfterAccess( 10, TimeUnit.MINUTES ).initialCapacity( 10000 )
+            .expireAfterAccess( 15, TimeUnit.MINUTES ).initialCapacity( 5000 )
             .maximumSize( 50000 ).build();
 
     // -------------------------------------------------------------------------
@@ -404,7 +404,7 @@ public class HibernateDataApprovalStore
                 {
                     public DataElementCategoryOptionCombo call() throws ExecutionException
                     {
-                        return categoryService.getDataElementCategoryOptionCombo( aoc );
+                        return categoryService.getDataElementCategoryOptionCombo( aoc ).initialize();
                     }
                 } ) );
 

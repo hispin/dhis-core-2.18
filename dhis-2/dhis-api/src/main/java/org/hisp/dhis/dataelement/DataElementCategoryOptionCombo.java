@@ -290,6 +290,12 @@ public class DataElementCategoryOptionCombo
 
         return map;
     }
+    
+    public DataElementCategoryOptionCombo initialize()
+    {
+        this.hashCode();
+        return this;
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
