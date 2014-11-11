@@ -28,7 +28,6 @@ package org.hisp.dhis.importexport.action.imp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_IMPORT;
 import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.*;
 
 import org.amplecode.cave.process.ProcessCoordinator;

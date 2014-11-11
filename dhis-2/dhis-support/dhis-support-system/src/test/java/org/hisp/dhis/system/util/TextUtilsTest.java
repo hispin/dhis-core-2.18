@@ -29,8 +29,6 @@ package org.hisp.dhis.system.util;
  */
 
 import static org.junit.Assert.assertEquals;
-import static org.hisp.dhis.system.util.TextUtils.subString;
-import static org.hisp.dhis.system.util.TextUtils.trimEnd;
 import static org.hisp.dhis.system.util.TextUtils.*;
 
 import java.util.ArrayList;
