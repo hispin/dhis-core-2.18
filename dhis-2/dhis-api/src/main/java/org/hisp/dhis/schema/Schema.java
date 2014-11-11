@@ -47,7 +47,7 @@ import java.util.Map;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement(localName = "schema", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "schema", namespace = DxfNamespaces.DXF_2_0 )
 public class Schema implements Ordered
 {
     /**
@@ -150,7 +150,7 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty(isAttribute = true)
+    @JacksonXmlProperty( isAttribute = true )
     public Class<?> getKlass()
     {
         return klass;
@@ -162,21 +162,21 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isIdentifiableObject()
     {
         return identifiableObject;
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isNameableObject()
     {
         return nameableObject;
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getSingular()
     {
         return singular;
@@ -188,7 +188,7 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getPlural()
     {
         return plural;
@@ -200,7 +200,7 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getNamespace()
     {
         return namespace;
@@ -212,7 +212,7 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getCollectionName()
     {
         return collectionName == null ? plural : collectionName;
@@ -224,7 +224,7 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getName()
     {
         return name == null ? singular : name;
@@ -236,7 +236,7 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDisplayName()
     {
         return displayName != null ? displayName : getName();
@@ -248,7 +248,7 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isShareable()
     {
         return shareable;
@@ -260,7 +260,7 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getApiEndpoint()
     {
         return apiEndpoint;
@@ -277,7 +277,7 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isMetadata()
     {
         return metadata;
@@ -289,7 +289,7 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isPersisted()
     {
         return persisted;
@@ -301,8 +301,8 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper(localName = "authorities", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "authority", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper( localName = "authorities", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "authority", namespace = DxfNamespaces.DXF_2_0 )
     public List<Authority> getAuthorities()
     {
         return authorities;
@@ -314,8 +314,8 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper(localName = "properties", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "property", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper( localName = "properties", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "property", namespace = DxfNamespaces.DXF_2_0 )
     public List<Property> getProperties()
     {
         return Lists.newArrayList( propertyMap.values() );
