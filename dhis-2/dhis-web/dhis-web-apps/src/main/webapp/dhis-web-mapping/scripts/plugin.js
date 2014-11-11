@@ -5228,9 +5228,9 @@ mapfish.GeoStat.createThematic('Thematic4');
                                                 init.namePropertyUrl = namePropertyUrl;
 
                                                 // dhis2
-                                                dhis2.util.namespace('dhis2.er');
+                                                dhis2.util.namespace('dhis2.gis');
 
-                                                dhis2.er.store = dhis2.er.store || new dhis2.storage.Store({
+                                                dhis2.gis.store = dhis2.gis.store || new dhis2.storage.Store({
                                                     name: 'dhis2',
                                                     adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
                                                     objectStores: ['optionSets']
@@ -5241,7 +5241,7 @@ mapfish.GeoStat.createThematic('Thematic4');
                                                     url: contextPath + '/api/optionSets.jsonp?fields=id,version&paging=false',
                                                     success: function(r) {
                                                         var optionSets = r.optionSets || [],
-                                                            store = dhis2.er.store,
+                                                            store = dhis2.gis.store,
                                                             ids = [],
                                                             url = '',
                                                             callbacks = 0,
