@@ -188,15 +188,15 @@ public class ProgramStage
         dout.writeBoolean( isSingleEvent );
 
         dout.writeInt( dataElements.size() );
-        for ( int i = 0; i < dataElements.size(); i++ )
+        for ( ProgramStageDataElement dataElement : dataElements )
         {
-            dataElements.get( i ).serialize( dout );
+            dataElement.serialize( dout );
         }
 
         dout.writeInt( sections.size() );
-        for ( int i = 0; i < sections.size(); i++ )
+        for ( Section section : sections )
         {
-            sections.get( i ).serialize( dout );
+            section.serialize( dout );
         }
     }
 

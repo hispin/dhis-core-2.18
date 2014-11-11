@@ -496,11 +496,11 @@ public class ActivityReportingServiceImpl
             List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement> dataElements = mobileProgramStage
                 .getDataElements();
 
-            for ( int i = 0; i < dataElements.size(); i++ )
+            for ( org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement dataElement1 : dataElements )
             {
-                DataElement dataElement = dataElementService.getDataElement( dataElements.get( i ).getId() );
+                DataElement dataElement = dataElementService.getDataElement( dataElement1.getId() );
 
-                String value = dataElements.get( i ).getValue();
+                String value = dataElement1.getValue();
 
                 if ( dataElement.getType().equalsIgnoreCase( "date" ) && !value.trim().equals( "" ) )
                 {
@@ -528,10 +528,10 @@ public class ActivityReportingServiceImpl
             List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement> dataElements = mobileProgramStage
                 .getDataElements();
 
-            for ( int i = 0; i < dataElements.size(); i++ )
+            for ( org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement dataElement1 : dataElements )
             {
-                DataElement dataElement = dataElementService.getDataElement( dataElements.get( i ).getId() );
-                String value = dataElements.get( i ).getValue();
+                DataElement dataElement = dataElementService.getDataElement( dataElement1.getId() );
+                String value = dataElement1.getValue();
                 if ( value != null )
                 {
 
@@ -1560,7 +1560,7 @@ public class ActivityReportingServiceImpl
             items[0] = keyword;
         }
 
-        for ( int i = 0; i < items.length; i++ )
+        for ( String item : items )
         {
             String[] split = keyword.split( ":" );
             if ( split == null || (split.length != 3 && split.length != 2) )

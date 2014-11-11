@@ -96,9 +96,8 @@ public class Section
         else
         {
             dout.writeInt( dataElements.size() );
-            for ( int i = 0; i < dataElements.size(); i++ )
+            for ( DataElement de : dataElements )
             {
-                DataElement de = dataElements.get( i );
                 de.setClientVersion( TWO_POINT_EIGHT );
                 de.serialize( dout );
             }
@@ -119,10 +118,9 @@ public class Section
         else
         {
             dout.writeInt( dataElements.size() );
-            for ( int i = 0; i < dataElements.size(); i++ )
+            for ( DataElement de : dataElements )
             {
-                DataElement de = dataElements.get( i );
-                de.setClientVersion( TWO_POINT_NINE);
+                de.setClientVersion( TWO_POINT_NINE );
                 de.serialize( dout );
             }
         }
@@ -142,10 +140,9 @@ public class Section
         else
         {
             dout.writeInt( dataElements.size() );
-            for ( int i = 0; i < dataElements.size(); i++ )
+            for ( DataElement de : dataElements )
             {
-                DataElement de = dataElements.get( i );
-                de.setClientVersion( TWO_POINT_TEN);
+                de.setClientVersion( TWO_POINT_TEN );
                 de.serialize( dout );
             }
         }

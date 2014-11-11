@@ -159,17 +159,15 @@ public class Program
 
         // Write program stage
         dout.writeInt( programStages.size() );
-        for ( int i = 0; i < programStages.size(); i++ )
+        for ( ProgramStage ps : programStages )
         {
-            ProgramStage ps = programStages.get( i );
             ps.serialize( dout );
         }
 
         // Write program attribute
         dout.writeInt( programAttributes.size() );
-        for ( int i = 0; i < programAttributes.size(); i++ )
+        for ( PatientAttribute pa : programAttributes )
         {
-            PatientAttribute pa = programAttributes.get( i );
             pa.serialize( dout );
         }
 

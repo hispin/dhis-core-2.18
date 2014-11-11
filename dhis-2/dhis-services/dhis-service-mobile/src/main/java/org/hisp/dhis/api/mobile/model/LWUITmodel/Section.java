@@ -82,9 +82,9 @@ public class Section
         else
         {
             dout.writeInt( dataElementIds.size() );
-            for ( int i = 0; i < dataElementIds.size(); i++ )
+            for ( Integer dataElementId : dataElementIds )
             {
-                dout.writeInt( dataElementIds.get( i ) );
+                dout.writeInt( dataElementId );
             }
         }
     }

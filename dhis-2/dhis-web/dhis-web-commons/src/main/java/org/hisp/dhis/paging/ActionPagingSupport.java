@@ -110,9 +110,9 @@ public abstract class ActionPagingSupport<T>
             if ( !paramName.equalsIgnoreCase( "pageSize" ) && !paramName.equalsIgnoreCase( "currentPage" ) )
             {
                 String[] values = request.getParameterValues( paramName );
-                for( int i=0; i<values.length; i++ )
+                for ( String value : values )
                 {
-                    baseLink += paramName + "=" + values[i] + "&";
+                    baseLink += paramName + "=" + value + "&";
                 }
             }
         }

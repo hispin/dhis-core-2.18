@@ -1361,9 +1361,9 @@ public abstract class DhisConvenienceTest
         {
             String[] children = dir.list();
 
-            for ( int i = 0; i < children.length; i++ )
+            for ( String aChildren : children )
             {
-                boolean success = deleteDir( new File( dir, children[i] ) );
+                boolean success = deleteDir( new File( dir, aChildren ) );
 
                 if ( !success )
                 {

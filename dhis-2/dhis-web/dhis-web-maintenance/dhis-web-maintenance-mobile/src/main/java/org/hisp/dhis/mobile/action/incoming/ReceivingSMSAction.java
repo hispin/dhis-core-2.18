@@ -208,15 +208,15 @@ public class ReceivingSMSAction
         {
             SmsMessageStatus[] statusArray = SmsMessageStatus.values();
 
-            for ( int i = 0; i < statusArray.length; i++ )
+            for ( SmsMessageStatus aStatusArray : statusArray )
             {
-                if ( statusArray[i].toString().equalsIgnoreCase( smsStatus ) )
+                if ( aStatusArray.toString().equalsIgnoreCase( smsStatus ) )
                 {
-                    total = incomingSmsService.getSmsByStatus( statusArray[i], keyword ).size();
+                    total = incomingSmsService.getSmsByStatus( aStatusArray, keyword ).size();
 
                     this.paging = createPaging( total );
 
-                    listIncomingSms = new ArrayList<>( incomingSmsService.getSmsByStatus( statusArray[i],
+                    listIncomingSms = new ArrayList<>( incomingSmsService.getSmsByStatus( aStatusArray,
                         keyword.trim(), this.paging.getStartPos(), this.paging.getPageSize() ) );
 
                     break;

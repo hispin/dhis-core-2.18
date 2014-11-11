@@ -75,9 +75,9 @@ public class ModelList
 
         dataOutputStream.writeInt( models.size() );
 
-        for ( int i = 0; i < models.size(); i++ )
+        for ( Model model : models )
         {
-            models.get( i ).serialize( dataOutputStream );
+            model.serialize( dataOutputStream );
         }
     }
 
@@ -108,9 +108,9 @@ public class ModelList
 
         dataOutputStream.writeInt( models.size() );
 
-        for ( int i = 0; i < models.size(); i++ )
+        for ( Model model : models )
         {
-            models.get( i ).serialize( dataOutputStream );
+            model.serialize( dataOutputStream );
         }
 
     }
@@ -126,9 +126,9 @@ public class ModelList
 
         dataOutputStream.writeInt( models.size() );
 
-        for ( int i = 0; i < models.size(); i++ )
+        for ( Model model : models )
         {
-            models.get( i ).serializeVersion2_9( dataOutputStream );
+            model.serializeVersion2_9( dataOutputStream );
         }
     }
 

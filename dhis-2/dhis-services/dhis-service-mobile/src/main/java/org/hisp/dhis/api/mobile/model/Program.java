@@ -109,9 +109,8 @@ public class Program
         dout.writeUTF( this.getName() );
         dout.writeInt( this.getVersion() );
         dout.writeInt( programStages.size() );
-        for ( int i = 0; i < programStages.size(); i++ )
+        for ( ProgramStage programStage : programStages )
         {
-            ProgramStage programStage = programStages.get( i );
             programStage.setClientVersion( TWO_POINT_EIGHT );
             programStage.serialize( dout );
         }
@@ -125,9 +124,8 @@ public class Program
         dout.writeUTF( this.getName() );
         dout.writeInt( this.getVersion() );
         dout.writeInt( programStages.size() );
-        for ( int i = 0; i < programStages.size(); i++ )
+        for ( ProgramStage programStage : programStages )
         {
-            ProgramStage programStage = programStages.get( i );
             programStage.setClientVersion( TWO_POINT_NINE );
             programStage.serialize( dout );
         }
@@ -141,9 +139,8 @@ public class Program
         dout.writeUTF( this.getName() );
         dout.writeInt( this.getVersion() );
         dout.writeInt( programStages.size() );
-        for ( int i = 0; i < programStages.size(); i++ )
+        for ( ProgramStage programStage : programStages )
         {
-            ProgramStage programStage = programStages.get( i );
             programStage.setClientVersion( TWO_POINT_TEN );
             programStage.serialize( dout );
         }

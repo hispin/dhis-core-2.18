@@ -110,9 +110,8 @@ public class ActivityPlan
         else
         {
             dout.writeInt( activitiesList.size() );
-            for ( int i = 0; i < activitiesList.size(); i++ )
+            for ( Activity activity : activitiesList )
             {
-                Activity activity = activitiesList.get( i );
                 activity.setClientVersion( TWO_POINT_EIGHT );
                 activity.serialize( dout );
             }
@@ -130,9 +129,8 @@ public class ActivityPlan
         else
         {
             dout.writeInt( activitiesList.size() );
-            for ( int i = 0; i < activitiesList.size(); i++ )
+            for ( Activity activity : activitiesList )
             {
-                Activity activity = activitiesList.get( i );
                 activity.setClientVersion( TWO_POINT_NINE );
                 activity.serialize( dout );
             }
@@ -150,9 +148,8 @@ public class ActivityPlan
         else
         {
             dout.writeInt( activitiesList.size() );
-            for ( int i = 0; i < activitiesList.size(); i++ )
+            for ( Activity activity : activitiesList )
             {
-                Activity activity = activitiesList.get( i );
                 activity.setClientVersion( TWO_POINT_TEN );
                 activity.serialize( dout );
             }
