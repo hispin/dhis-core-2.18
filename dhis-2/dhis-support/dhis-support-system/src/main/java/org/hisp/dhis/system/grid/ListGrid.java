@@ -421,7 +421,7 @@ public class ListGrid
             throw new IllegalStateException( "Number of column values (" + columnValues.size() + ") is not equal to number of rows (" + grid.size() + ")" );
         }
 
-        for ( List<Object> aGrid : grid )
+        for ( int i = 0; i < grid.size(); i++ )
         {
             grid.get( rowIndex++ ).add( columnValues.get( columnIndex++ ) );
         }
