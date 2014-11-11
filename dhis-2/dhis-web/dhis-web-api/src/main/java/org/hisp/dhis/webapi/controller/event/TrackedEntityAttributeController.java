@@ -30,7 +30,6 @@ package org.hisp.dhis.webapi.controller.event;
 
 import com.google.common.collect.Lists;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.schema.descriptors.TrackedEntityAttributeSchemaDescriptor;
@@ -39,18 +38,10 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
-import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +49,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = TrackedEntityAttributeSchemaDescriptor.API_ENDPOINT )
+@RequestMapping(value = TrackedEntityAttributeSchemaDescriptor.API_ENDPOINT)
 public class TrackedEntityAttributeController
     extends AbstractCrudController<TrackedEntityAttribute>
 {
@@ -111,95 +102,5 @@ public class TrackedEntityAttributeController
         }
 
         return entityList;
-    }
-
-    //--------------------------------------------------------------------------
-    // POST
-    //--------------------------------------------------------------------------
-
-    @Override
-    @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
-    @ResponseStatus( HttpStatus.CREATED )
-    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
-    {
-        TrackedEntityAttribute trackedEntityAttribute = JacksonUtils.fromXml( input, TrackedEntityAttribute.class );
-        trackedEntityAttributeService.addTrackedEntityAttribute( trackedEntityAttribute );
-
-        response.setHeader( "Location", ContextUtils.getRootPath( request ) + TrackedEntityAttributeSchemaDescriptor.API_ENDPOINT + "/" + trackedEntityAttribute.getUid() );
-    }
-
-    @Override
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    @ResponseStatus( HttpStatus.CREATED )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
-    {
-        TrackedEntityAttribute trackedEntityAttribute = JacksonUtils.fromJson( input, TrackedEntityAttribute.class );
-        trackedEntityAttributeService.addTrackedEntityAttribute( trackedEntityAttribute );
-
-        response.setHeader( "Location", ContextUtils.getRootPath( request ) + TrackedEntityAttributeSchemaDescriptor.API_ENDPOINT + "/" + trackedEntityAttribute.getUid() );
-    }
-
-    //--------------------------------------------------------------------------
-    // PUT
-    //--------------------------------------------------------------------------
-
-    @Override
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
-    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        TrackedEntityAttribute trackedEntityAttribute = trackedEntityAttributeService.getTrackedEntityAttribute( uid );
-
-        if ( trackedEntityAttribute == null )
-        {
-            ContextUtils.conflictResponse( response, "TrackedEntityAttribute does not exist: " + uid );
-            return;
-        }
-
-        TrackedEntityAttribute newTrackedEntityAttribute = JacksonUtils.fromXml( input, TrackedEntityAttribute.class );
-        newTrackedEntityAttribute.setUid( trackedEntityAttribute.getUid() );
-        trackedEntityAttribute.mergeWith( newTrackedEntityAttribute );
-
-        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
-        trackedEntityAttributeService.updateTrackedEntityAttribute( trackedEntityAttribute );
-    }
-
-    @Override
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        TrackedEntityAttribute trackedEntityAttribute = trackedEntityAttributeService.getTrackedEntityAttribute( uid );
-
-        if ( trackedEntityAttribute == null )
-        {
-            ContextUtils.conflictResponse( response, "TrackedEntityAttribute does not exist: " + uid );
-            return;
-        }
-
-        TrackedEntityAttribute newTrackedEntityAttribute = JacksonUtils.fromJson( input, TrackedEntityAttribute.class );
-        newTrackedEntityAttribute.setUid( trackedEntityAttribute.getUid() );
-        trackedEntityAttribute.mergeWith( newTrackedEntityAttribute );
-
-        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
-        trackedEntityAttributeService.updateTrackedEntityAttribute( trackedEntityAttribute );
-    }
-
-    //--------------------------------------------------------------------------
-    // DELETE
-    //--------------------------------------------------------------------------
-
-    @Override
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        TrackedEntityAttribute trackedEntityAttribute = trackedEntityAttributeService.getTrackedEntityAttribute( uid );
-
-        if ( trackedEntityAttribute == null )
-        {
-            ContextUtils.conflictResponse( response, "TrackedEntityAttribute does not exist: " + uid );
-            return;
-        }
-
-        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
-        trackedEntityAttributeService.deleteTrackedEntityAttribute( trackedEntityAttribute );
     }
 }
