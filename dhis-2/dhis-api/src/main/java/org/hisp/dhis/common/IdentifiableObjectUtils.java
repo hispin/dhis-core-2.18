@@ -121,18 +121,18 @@ public class IdentifiableObjectUtils
      * @param calendar the calendar to use for generation of iso periods.
      * @return a list of iso period identifiers.
      */
-    public static <T extends IdentifiableObject> List<String> getLocalPeriods( Collection<T> periods, Calendar calendar )
+    public static <T extends IdentifiableObject> List<String> getLocalPeriodIdentifiers( Collection<T> periods, Calendar calendar )
     {
-        List<String> isoPeriods = new ArrayList<>();
+        List<String> localIdentifiers = new ArrayList<>();
 
         for ( IdentifiableObject object : periods )
         {
             Period period = (Period) object;
             DateTimeUnit dateTimeUnit = calendar.fromIso( period.getStartDate() );
-            isoPeriods.add( period.getPeriodType().getIsoDate( dateTimeUnit ) );
+            localIdentifiers.add( period.getPeriodType().getIsoDate( dateTimeUnit ) );
         }
 
-        return isoPeriods;
+        return localIdentifiers;
     }
 
     /**
@@ -143,7 +143,7 @@ public class IdentifiableObjectUtils
      * @param calendar   Calendar to create from
      * @return Period identifier based on given calendar
      */
-    public static String getLocalPeriod( Date date, PeriodType periodType, Calendar calendar )
+    public static String getLocalPeriodIdentifier( Date date, PeriodType periodType, Calendar calendar )
     {
         return getLocalPeriod( periodType.createPeriod( date, calendar ), calendar );
     }

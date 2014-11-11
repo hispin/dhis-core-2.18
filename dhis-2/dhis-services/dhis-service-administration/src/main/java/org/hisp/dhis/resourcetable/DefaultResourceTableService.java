@@ -31,6 +31,7 @@ package org.hisp.dhis.resourcetable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
@@ -66,7 +67,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriod;
 import static org.hisp.dhis.dataapproval.DataApprovalLevelService.APPROVAL_LEVEL_UNAPPROVED;
 import static org.hisp.dhis.resourcetable.ResourceTableStore.*;
 
@@ -481,7 +481,7 @@ public class DefaultResourceTableService
                 {
                     if ( rowType.getFrequencyOrder() <= periodType.getFrequencyOrder() )
                     {
-                        values.add( getLocalPeriod( startDate, periodType, calendar ) );
+                        values.add( IdentifiableObjectUtils.getLocalPeriodIdentifier( startDate, periodType, calendar ) );
                     }
                     else
                     {

@@ -112,7 +112,7 @@ import static org.hisp.dhis.analytics.AnalyticsTableManager.*;
 import static org.hisp.dhis.analytics.DataQueryParams.*;
 import static org.hisp.dhis.common.DimensionalObject.*;
 import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriods;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriodIdentifiers;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.common.NameableObjectUtils.asList;
 import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
@@ -479,7 +479,7 @@ public class DefaultAnalyticsService
             }
             else
             {
-                periodUids = getLocalPeriods( params.getDimensionOrFilter( PERIOD_DIM_ID ), calendar );
+                periodUids = getLocalPeriodIdentifiers( params.getDimensionOrFilter( PERIOD_DIM_ID ), calendar );
             }
 
             metaData.put( PERIOD_DIM_ID, periodUids );
