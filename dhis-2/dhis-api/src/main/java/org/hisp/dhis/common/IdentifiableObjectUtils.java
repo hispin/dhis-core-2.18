@@ -145,7 +145,7 @@ public class IdentifiableObjectUtils
      */
     public static String getLocalPeriodIdentifier( Date date, PeriodType periodType, Calendar calendar )
     {
-        return getLocalPeriod( periodType.createPeriod( date, calendar ), calendar );
+        return getLocalPeriodIdentifier( periodType.createPeriod( date, calendar ), calendar );
     }
 
     /**
@@ -155,7 +155,7 @@ public class IdentifiableObjectUtils
      * @param calendar the calendar to use for generation of iso periods.
      * @return Period identifier based on given calendar
      */
-    public static String getLocalPeriod( Period period, Calendar calendar )
+    public static String getLocalPeriodIdentifier( Period period, Calendar calendar )
     {
         if ( calendar.isIso8601() )
         {
