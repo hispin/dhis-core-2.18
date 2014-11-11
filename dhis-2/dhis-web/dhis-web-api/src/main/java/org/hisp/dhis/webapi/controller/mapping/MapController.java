@@ -28,24 +28,10 @@ package org.hisp.dhis.webapi.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
-
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.Iterator;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.common.DimensionService;
-import org.hisp.dhis.dataelement.DataElementOperandService;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.mapgeneration.MapGenerationService;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapView;
@@ -54,7 +40,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.schema.descriptors.MapSchemaDescriptor;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserService;
@@ -69,6 +54,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Iterator;
+
+import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  * @author Lars Helge Overland
@@ -80,7 +75,7 @@ public class MapController
 {
     private static final int MAP_MIN_WIDTH = 140;
     private static final int MAP_MIN_HEIGHT = 25;
-    
+
     @Autowired
     private MappingService mappingService;
 
@@ -89,18 +84,6 @@ public class MapController
 
     @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
-
-    @Autowired
-    private IndicatorService indicatorService;
-
-    @Autowired
-    private DataElementService dataElementService;
-
-    @Autowired
-    private DataElementOperandService operandService;
-
-    @Autowired
-    private PeriodService periodService;
 
     @Autowired
     private CurrentUserService currentUserService;
@@ -220,21 +203,21 @@ public class MapController
             ContextUtils.notFoundResponse( response, "Map does not exist: " + uid );
             return;
         }
-        
+
         if ( width != null && width < MAP_MIN_WIDTH )
         {
             ContextUtils.conflictResponse( response, "Min map width is " + MAP_MIN_WIDTH + ": " + width );
             return;
         }
-        
+
         if ( height != null && height < MAP_MIN_HEIGHT )
         {
             ContextUtils.conflictResponse( response, "Min map height is " + MAP_MIN_HEIGHT + ": " + height );
-            return;            
+            return;
         }
 
         OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
-        
+
         renderMapViewPng( map, date, unit, width, height, response );
     }
 
