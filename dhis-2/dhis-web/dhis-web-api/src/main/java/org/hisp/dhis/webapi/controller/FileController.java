@@ -28,11 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.io.Writer;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.webapi.utils.ContextUtils;
@@ -44,6 +39,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Writer;
+
 /**
  * @author Lars Helge Overland
  */
@@ -52,13 +51,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class FileController
 {
     public static final String RESOURCE_PATH = "/files";
-    
+
     private static final String KEY_CUSTOM_JS = "keyCustomJs";
     private static final String KEY_CUSTOM_CSS = "keyCustomCss";
 
     @Autowired
     private SystemSettingManager systemSettingManager;
-    
+
     @Autowired
     private ContextUtils contextUtils;
 
@@ -71,9 +70,9 @@ public class FileController
         throws IOException
     {
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JAVASCRIPT, CacheStrategy.CACHE_TWO_WEEKS );
-        
+
         String content = (String) systemSettingManager.getSystemSetting( KEY_CUSTOM_JS, StringUtils.EMPTY );
-        
+
         writer.write( content );
     }
 
@@ -94,7 +93,7 @@ public class FileController
     {
         systemSettingManager.deleteSystemSetting( KEY_CUSTOM_JS );
     }
-    
+
     // -------------------------------------------------------------------------
     // Custom style
     // -------------------------------------------------------------------------
@@ -107,9 +106,9 @@ public class FileController
         throws IOException
     {
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSS, CacheStrategy.CACHE_TWO_WEEKS );
-        
+
         String content = (String) systemSettingManager.getSystemSetting( KEY_CUSTOM_CSS, StringUtils.EMPTY );
-        
+
         writer.write( content );
     }
 
@@ -129,5 +128,5 @@ public class FileController
     public void removeCustomStyle( HttpServletResponse response )
     {
         systemSettingManager.deleteSystemSetting( KEY_CUSTOM_CSS );
-    }    
+    }
 }

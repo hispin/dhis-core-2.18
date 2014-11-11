@@ -28,9 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-import java.util.Locale;
-
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +36,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+import java.util.Locale;
+
 @Controller
 @RequestMapping( value = "/locales" )
 public class LocaleController
 {
     @Autowired
     private LocaleManager localeManager;
-    
+
     @Autowired
     private I18nService i18nService;
-    
+
     @RequestMapping( value = "/ui", method = RequestMethod.GET )
     public String getUiLocales( Model model )
     {
@@ -56,7 +56,7 @@ public class LocaleController
         model.addAttribute( "model", locales );
         return "locales";
     }
-    
+
     @RequestMapping( value = "/db", method = RequestMethod.GET )
     public String getDbLocales( Model model )
     {

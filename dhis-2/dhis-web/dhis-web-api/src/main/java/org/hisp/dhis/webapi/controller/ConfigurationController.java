@@ -28,8 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +35,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Lars Helge Overland
@@ -47,7 +47,7 @@ public class ConfigurationController
 {
     @Autowired
     private ConfigurationService configurationService;
-    
+
     @RequestMapping( value = "/systemId", method = RequestMethod.GET )
     private String getSystemId( Model model, HttpServletRequest request )
     {
@@ -55,13 +55,13 @@ public class ConfigurationController
     }
 
     @RequestMapping( value = "/feedbackRecipients", method = RequestMethod.GET )
-    private String getFeedbackRecipients(  Model model, HttpServletRequest request )
+    private String getFeedbackRecipients( Model model, HttpServletRequest request )
     {
         return setModel( model, configurationService.getConfiguration().getFeedbackRecipients() );
     }
-    
+
     @RequestMapping( value = "/offlineOrganisationUnitLevel", method = RequestMethod.GET )
-    private String getOfflineOrganisationUnitLevel(  Model model, HttpServletRequest request )
+    private String getOfflineOrganisationUnitLevel( Model model, HttpServletRequest request )
     {
         return setModel( model, configurationService.getConfiguration().getOfflineOrganisationUnitLevel() );
     }
@@ -77,7 +77,7 @@ public class ConfigurationController
     {
         String name = configurationService.getConfiguration().getInfrastructuralPeriodTypeDefaultIfNull().getName();
         BaseIdentifiableObject entity = new BaseIdentifiableObject( name, name, name );
-        
+
         return setModel( model, entity );
     }
 

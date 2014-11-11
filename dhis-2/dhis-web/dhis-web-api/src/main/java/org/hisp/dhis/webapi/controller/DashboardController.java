@@ -28,16 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dashboard.Dashboard.MAX_ITEMS;
-
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.dashboard.DashboardItem;
@@ -57,19 +47,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hisp.dhis.dashboard.Dashboard.MAX_ITEMS;
+
 /**
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping(value = DashboardSchemaDescriptor.API_ENDPOINT)
+@RequestMapping( value = DashboardSchemaDescriptor.API_ENDPOINT )
 public class DashboardController
     extends AbstractCrudController<Dashboard>
 {
     @Autowired
     private DashboardService dashboardService;
 
-    @RequestMapping(value = "/q/{query}", method = RequestMethod.GET)
-    public String search( @PathVariable String query, @RequestParam(required = false) Set<String> max,
+    @RequestMapping( value = "/q/{query}", method = RequestMethod.GET )
+    public String search( @PathVariable String query, @RequestParam( required = false ) Set<String> max,
         Model model, HttpServletResponse response ) throws Exception
     {
         DashboardSearchResult result = dashboardService.search( query, max );
@@ -80,7 +79,7 @@ public class DashboardController
     }
 
     @Override
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         Dashboard dashboard = JacksonUtils.fromJson( input, Dashboard.class );
@@ -92,8 +91,8 @@ public class DashboardController
     }
 
     @Override
-    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json")
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid, InputStream input ) throws Exception
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         Dashboard dashboard = dashboardService.getDashboard( uid );
 

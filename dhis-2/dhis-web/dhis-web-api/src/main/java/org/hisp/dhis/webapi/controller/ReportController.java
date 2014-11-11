@@ -28,18 +28,9 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
-import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
-
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.j2ee.servlets.BaseHttpServlet;
 import net.sf.jasperreports.j2ee.servlets.ImageServlet;
-
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -62,6 +53,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+
+import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
+import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>

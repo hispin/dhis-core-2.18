@@ -28,14 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -56,6 +48,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping( value = DimensionController.RESOURCE_PATH )
 public class DimensionController
@@ -71,7 +70,7 @@ public class DimensionController
 
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
-    
+
     @Autowired
     private LinkService linkService;
 
@@ -159,37 +158,37 @@ public class DimensionController
     }
 
     @RequestMapping( value = "/dataSet/{uid}", method = RequestMethod.GET )
-    public String getDimensionsForDataSet( @PathVariable String uid, 
+    public String getDimensionsForDataSet( @PathVariable String uid,
         @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links,
         Model model, HttpServletResponse response )
     {
         WebMetaData metaData = new WebMetaData();
 
         DataSet dataSet = identifiableObjectManager.get( DataSet.class, uid );
-        
+
         if ( dataSet == null )
         {
             ContextUtils.notFoundResponse( response, "Data set does not exist: " + uid );
             return null;
         }
-        
+
         if ( !dataSet.hasCategoryCombo() )
         {
             ContextUtils.conflictResponse( response, "Data set does not have a category combination: " + uid );
             return null;
         }
-        
+
         List<DimensionalObject> dimensions = new ArrayList<>();
         dimensions.addAll( dataSet.getCategoryCombo().getCategories() );
         dimensions.addAll( dataSet.getCategoryOptionGroupSets() );
-        
+
         dimensions = dimensionService.getCanReadObjects( dimensions );
-        
+
         for ( DimensionalObject dim : dimensions )
         {
             metaData.getDimensions().add( dimensionService.getDimensionalObjectCopy( dim.getUid(), true ) );
         }
-        
+
         model.addAttribute( "model", metaData );
 
         if ( links )

@@ -28,15 +28,6 @@ package org.hisp.dhis.webapi.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -46,13 +37,20 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.filter.OrganisationUnitPolygonCoveringCoordinateFilter;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author James Chang <jamesbchang@gmail.com>
@@ -62,76 +60,73 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class OrganisationUnitLocationController
 {
     public static final String RESOURCE_PATH = "/organisationUnitLocations";
-    
+
     private static final String ORGUNIGROUP_SYMBOL = "orgUnitGroupSymbol";
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
-    @Autowired
-    private CurrentUserService currentUserService;
-
     /**
      * Get Organisation Units within a distance from a location
      */
     @RequestMapping( value = "/withinRange", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
-    public void getEntitiesWithinRange( 
-        @RequestParam Double longitude, 
-        @RequestParam Double latitude, 
-        @RequestParam Double distance, 
-        @RequestParam( required = false ) String orgUnitGroupSetId, 
+    public void getEntitiesWithinRange(
+        @RequestParam Double longitude,
+        @RequestParam Double latitude,
+        @RequestParam Double distance,
+        @RequestParam( required = false ) String orgUnitGroupSetId,
         Model model, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
         List<OrganisationUnit> entityList = new ArrayList<>(
             organisationUnitService.getOrganisationUnitWithinDistance( longitude, latitude, distance ) );
 
-        for ( OrganisationUnit orgunit : entityList )
+        for ( OrganisationUnit organisationUnit : entityList )
         {
-            Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
+            Set<AttributeValue> attributeValues = organisationUnit.getAttributeValues();
             attributeValues.clear();
 
             if ( orgUnitGroupSetId != null )
             {
-                for ( OrganisationUnitGroup orgunitGroup : orgunit.getGroups() )
+                for ( OrganisationUnitGroup organisationUnitGroup : organisationUnit.getGroups() )
                 {
-                    if ( orgunitGroup.getGroupSet() != null )
+                    if ( organisationUnitGroup.getGroupSet() != null )
                     {
-                        OrganisationUnitGroupSet orgunitGroupSet = orgunitGroup.getGroupSet();
+                        OrganisationUnitGroupSet orgunitGroupSet = organisationUnitGroup.getGroupSet();
 
                         if ( orgunitGroupSet.getUid().compareTo( orgUnitGroupSetId ) == 0 )
                         {
                             AttributeValue attributeValue = new AttributeValue();
                             attributeValue.setAttribute( new Attribute( ORGUNIGROUP_SYMBOL, ORGUNIGROUP_SYMBOL ) );
-                            attributeValue.setValue( orgunitGroup.getSymbol() );
+                            attributeValue.setValue( organisationUnitGroup.getSymbol() );
                             attributeValues.add( attributeValue );
                         }
                     }
                 }
             }
 
-            orgunit.setAttributeValues( attributeValues );
+            organisationUnit.setAttributeValues( attributeValues );
 
             // Clear out all data not needed for this task
-            
-            orgunit.removeAllDataSets();
-            orgunit.removeAllUsers();
-            orgunit.removeAllOrganisationUnitGroups();
+
+            organisationUnit.removeAllDataSets();
+            organisationUnit.removeAllUsers();
+            organisationUnit.removeAllOrganisationUnitGroups();
         }
 
         JacksonUtils.toJson( response.getOutputStream(), entityList );
     }
 
     /**
-     * Get lowest level Org Units that includes the location in their polygon shape.  
+     * Get lowest level Org Units that includes the location in their polygon shape.
      */
     @RequestMapping( value = "/orgUnitByLocation", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
-    public void getParentByLocation( 
-        @RequestParam Double longitude, 
+    public void getParentByLocation(
+        @RequestParam Double longitude,
         @RequestParam Double latitude,
-        @RequestParam(required=false) String topOrgUnit,
-        @RequestParam(required=false) Integer targetLevel,
-        @RequestParam Map<String, String> parameters, 
+        @RequestParam( required = false ) String topOrgUnit,
+        @RequestParam( required = false ) Integer targetLevel,
+        @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
@@ -139,14 +134,14 @@ public class OrganisationUnitLocationController
             organisationUnitService.getOrganisationUnitByCoordinate( longitude, latitude, topOrgUnit, targetLevel ) );
 
         // Remove unrelated details and output in JSON format
-        
-        for ( OrganisationUnit orgunit : entityList )
+
+        for ( OrganisationUnit organisationUnit : entityList )
         {
-            Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
+            Set<AttributeValue> attributeValues = organisationUnit.getAttributeValues();
             attributeValues.clear();
-            orgunit.removeAllDataSets();
-            orgunit.removeAllUsers();
-            orgunit.removeAllOrganisationUnitGroups();
+            organisationUnit.removeAllDataSets();
+            organisationUnit.removeAllUsers();
+            organisationUnit.removeAllOrganisationUnitGroups();
         }
 
         JacksonUtils.toJson( response.getOutputStream(), entityList );
@@ -156,20 +151,20 @@ public class OrganisationUnitLocationController
      * Check if the location lies within the organisation unit boundary
      */
     @RequestMapping( value = "/locationWithinOrgUnitBoundary", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
-    public void checkLocationWithinOrgUnit( 
-        @RequestParam String orgUnitUid, 
-        @RequestParam Double longitude, 
-        @RequestParam Double latitude, 
+    public void checkLocationWithinOrgUnit(
+        @RequestParam String orgUnitUid,
+        @RequestParam Double longitude,
+        @RequestParam Double latitude,
         Model model, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
         boolean withinOrgUnit = false;
 
-        Collection<OrganisationUnit> orgUnits = new ArrayList<>();
-        orgUnits.add( organisationUnitService.getOrganisationUnit( orgUnitUid ) );
-        FilterUtils.filter( orgUnits, new OrganisationUnitPolygonCoveringCoordinateFilter( longitude, latitude ) );
-        
-        if ( !orgUnits.isEmpty() )
+        Collection<OrganisationUnit> organisationUnits = new ArrayList<>();
+        organisationUnits.add( organisationUnitService.getOrganisationUnit( orgUnitUid ) );
+        FilterUtils.filter( organisationUnits, new OrganisationUnitPolygonCoveringCoordinateFilter( longitude, latitude ) );
+
+        if ( !organisationUnits.isEmpty() )
         {
             withinOrgUnit = true;
         }

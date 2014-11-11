@@ -28,9 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.email.EmailService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
@@ -38,6 +35,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Halvdan Hoem Grelland <halvdanhg@gmail.com>
@@ -58,7 +58,7 @@ public class EmailController
     @Autowired
     private CurrentUserService currentUserService;
 
-    @RequestMapping( value = "/test" , method = RequestMethod.POST )
+    @RequestMapping( value = "/test", method = RequestMethod.POST )
     public void sendTestEmail( HttpServletRequest request, HttpServletResponse response )
     {
         String userEmail = currentUserService.getCurrentUser().getEmail();
@@ -67,7 +67,7 @@ public class EmailController
 
         if ( smtpConfigured && userEmailConfigured )
         {
-            emailService.sendTestEmail( );
+            emailService.sendTestEmail();
 
             ContextUtils.okResponse( response, "A test email was sent to " + userEmail );
         }
