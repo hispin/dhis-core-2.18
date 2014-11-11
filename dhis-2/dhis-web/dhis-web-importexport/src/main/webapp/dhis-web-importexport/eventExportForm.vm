@@ -34,9 +34,9 @@ $( function() {
 
         if( inclusion ) {
           if( "children" == inclusion ) {
-            url += "&includeChildren=true";
+            url += "&ouMode=CHILDREN";
           } else if( "descendants" == inclusion ) {
-            url += "&includeDescendants=true";
+            url += "&ouMode=DESCENDANTS";
           }
         }
 
@@ -156,7 +156,8 @@ $( function() {
     <td>
         <select id="format" style="width: 300px;">
             <option value=".xml">XML</option>
-            <option value=".json">Json</option>
+            <option value=".json">JSON</option>
+            <option value=".csv">CSV</option>
         </select>
     </td>
 </tr>
