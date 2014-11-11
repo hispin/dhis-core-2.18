@@ -34,9 +34,6 @@ import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATAMART_LAST_YEAR
 import static org.hisp.dhis.scheduling.SchedulingManager.TASK_RESOURCE_TABLE;
 import static org.hisp.dhis.scheduling.SchedulingManager.TASK_MONITORING_LAST_DAY;
 import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATA_SYNCH;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.setting.SystemSettingManager.*;
 import static org.hisp.dhis.system.scheduling.Scheduler.CRON_DAILY_0AM;
 import static org.hisp.dhis.system.scheduling.Scheduler.CRON_EVERY_MIN;

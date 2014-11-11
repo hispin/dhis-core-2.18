@@ -33,7 +33,6 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_HIDE_UNAPPROVED_DAT
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
