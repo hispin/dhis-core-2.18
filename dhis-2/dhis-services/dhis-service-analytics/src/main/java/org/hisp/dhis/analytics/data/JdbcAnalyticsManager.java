@@ -28,42 +28,12 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT;
-import static org.hisp.dhis.analytics.AggregationType.COUNT;
-import static org.hisp.dhis.analytics.AggregationType.MAX;
-import static org.hisp.dhis.analytics.AggregationType.MIN;
-import static org.hisp.dhis.analytics.AggregationType.STDDEV;
-import static org.hisp.dhis.analytics.AggregationType.VARIANCE;
-import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
-import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
-import static org.hisp.dhis.analytics.DataType.TEXT;
-import static org.hisp.dhis.analytics.MeasureFilter.EQ;
-import static org.hisp.dhis.analytics.MeasureFilter.GE;
-import static org.hisp.dhis.analytics.MeasureFilter.GT;
-import static org.hisp.dhis.analytics.MeasureFilter.LE;
-import static org.hisp.dhis.analytics.MeasureFilter.LT;
-import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
-import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
-import static org.hisp.dhis.system.util.TextUtils.removeLastOr;
-import static org.hisp.dhis.system.util.TextUtils.trimEnd;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Future;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.MeasureFilter;
+import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.ListMap;
@@ -84,32 +54,51 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.Assert;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Future;
+
+import static org.hisp.dhis.analytics.AggregationType.*;
+import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
+import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
+import static org.hisp.dhis.analytics.DataType.TEXT;
+import static org.hisp.dhis.analytics.MeasureFilter.*;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
+import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getIsoPeriods;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.system.util.TextUtils.*;
+
 /**
  * This class is responsible for producing aggregated data values. It reads data
  * from the analytics table. Organisation units provided as arguments must be on
  * the same level in the hierarchy.
- * 
+ *
  * @author Lars Helge Overland
  */
 public class JdbcAnalyticsManager
     implements AnalyticsManager
 {
     //TODO optimize when all options in dimensions are selected
-    
+
     private static final Log log = LogFactory.getLog( JdbcAnalyticsManager.class );
-        
+
     private static final String COL_APPROVALLEVEL = "approvallevel";
-    
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
+
     @Autowired
     private StatementBuilder statementBuilder;
-    
+
     // -------------------------------------------------------------------------
     // Implementation
     // -------------------------------------------------------------------------
-    
+
     @Override
     @Async
     public Future<Map<String, Object>> getAggregatedDataValues( DataQueryParams params )
@@ -117,11 +106,11 @@ public class JdbcAnalyticsManager
         try
         {
             ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
-            
+
             params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
-            
+
             String sql = getSelectClause( params );
-            
+
             if ( params.spansMultiplePartitions() )
             {
                 sql += getFromWhereClauseMultiplePartitionFilters( params );
@@ -130,13 +119,13 @@ public class JdbcAnalyticsManager
             {
                 sql += getFromWhereClause( params, params.getPartitions().getSinglePartition() );
             }
-            
+
             sql += getGroupByClause( params );
-        
+
             log.debug( sql );
-    
-            Map<String, Object> map = null;
-            
+
+            Map<String, Object> map;
+
             try
             {
                 map = getKeyValueMap( params, sql );
@@ -144,55 +133,55 @@ public class JdbcAnalyticsManager
             catch ( BadSqlGrammarException ex )
             {
                 log.info( "Query failed, likely because the requested analytics table does not exist", ex );
-                
+
                 return new AsyncResult<Map<String, Object>>( new HashMap<String, Object>() );
             }
-            
+
             replaceDataPeriodsWithAggregationPeriods( map, params, dataPeriodAggregationPeriodMap );
-            
+
             return new AsyncResult<>( map );
         }
         catch ( RuntimeException ex )
         {
             log.error( DebugUtils.getStackTrace( ex ) );
-            
+
             throw ex;
         }
     }
-    
+
     @Override
     public void replaceDataPeriodsWithAggregationPeriods( Map<String, Object> dataValueMap, DataQueryParams params, ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap )
     {
         if ( params.isDisaggregation() )
         {
             int periodIndex = params.getPeriodDimensionIndex();
-            
+
             if ( periodIndex == -1 )
             {
                 return; // Period is filter, nothing to replace
             }
-            
+
             Set<String> keys = new HashSet<>( dataValueMap.keySet() );
-            
+
             for ( String key : keys )
             {
                 String[] keyArray = key.split( DIMENSION_SEP );
-                
+
                 Assert.notNull( keyArray[periodIndex] );
-                
+
                 List<NameableObject> periods = dataPeriodAggregationPeriodMap.get( PeriodType.getPeriodFromIsoString( keyArray[periodIndex] ) );
-                
+
                 Assert.notNull( periods, dataPeriodAggregationPeriodMap.toString() );
-                
+
                 Object value = dataValueMap.get( key );
-                
+
                 for ( NameableObject period : periods )
                 {
                     String[] keyCopy = keyArray.clone();
                     keyCopy[periodIndex] = ((Period) period).getIsoDate();
                     dataValueMap.put( TextUtils.toString( keyCopy, DIMENSION_SEP ), value );
                 }
-                
+
                 dataValueMap.remove( key );
             }
         }
@@ -217,20 +206,20 @@ public class JdbcAnalyticsManager
         {
             sql += getNumericValueColumn( params );
         }
-        
+
         sql += " as value ";
-        
-        return sql;        
+
+        return sql;
     }
-    
+
     private String getNumericValueColumn( DataQueryParams params )
     {
         String sql = "";
-        
+
         if ( params.isAggregationType( AVERAGE_SUM_INT ) )
         {
             int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
-            
+
             sql += "sum(daysxvalue) / " + days;
         }
         else if ( params.isAggregationType( AVERAGE_INT ) || params.isAggregationType( AVERAGE_INT_DISAGGREGATION ) )
@@ -265,10 +254,10 @@ public class JdbcAnalyticsManager
         {
             sql += "sum(value)";
         }
-        
+
         return sql;
     }
-    
+
     /**
      * Generates the from clause of the SQL query. This method should be used for
      * queries where the period filter spans multiple partitions. This query
@@ -277,7 +266,7 @@ public class JdbcAnalyticsManager
     private String getFromWhereClauseMultiplePartitionFilters( DataQueryParams params )
     {
         String sql = "from (";
-        
+
         for ( String partition : params.getPartitions().getPartitions() )
         {
             sql += "select " + getCommaDelimitedQuotedColumns( params.getQueryDimensions() ) + ", ";
@@ -298,90 +287,105 @@ public class JdbcAnalyticsManager
             {
                 sql += "value";
             }
-            
+
             sql += " " + getFromWhereClause( params, partition );
-            
+
             sql += "union all ";
         }
-        
+
         sql = trimEnd( sql, "union all ".length() ) + ") as data ";
-        
+
         return sql;
     }
-    
+
     /**
      * Generates the from clause of the query SQL.
      */
     private String getFromWhereClause( DataQueryParams params, String partition )
     {
         SqlHelper sqlHelper = new SqlHelper();
+        Calendar calendar = PeriodType.getCalendar();
 
         String sql = "from " + partition + " ";
-        
+
         for ( DimensionalObject dim : params.getQueryDimensions() )
         {
             if ( !dim.isAllItems() )
             {
                 String col = statementBuilder.columnQuote( dim.getDimensionName() );
-                
-                sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
+
+                if ( !calendar.isIso8601() && PERIOD_DIM_ID.equals( dim.getDimension() ) )
+                {
+                    sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( getIsoPeriods( dim.getItems(), calendar ) ) + ") ";
+                }
+                else
+                {
+                    sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
+                }
             }
         }
 
         ListMap<String, DimensionalObject> filterMap = params.getDimensionFilterMap();
-        
+
         for ( String dimension : filterMap.keySet() )
         {
             List<DimensionalObject> filters = filterMap.get( dimension );
-            
+
             if ( DimensionalObjectUtils.anyDimensionHasItems( filters ) )
             {
                 sql += sqlHelper.whereAnd() + " ( ";
-                
+
                 for ( DimensionalObject filter : filters )
                 {
                     if ( filter.hasItems() )
                     {
                         String col = statementBuilder.columnQuote( filter.getDimensionName() );
-                        
-                        sql += col + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
+
+                        if ( !calendar.isIso8601() && PERIOD_DIM_ID.equals( filter.getDimension() ) )
+                        {
+                            sql += col + " in (" + getQuotedCommaDelimitedString( getIsoPeriods( filter.getItems(), calendar ) ) + ") or ";
+                        }
+                        else
+                        {
+                            sql += col + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
+                        }
                     }
                 }
-                
+
                 sql = removeLastOr( sql ) + ") ";
             }
         }
-        
+
         if ( params.isDataApproval() )
         {
             sql += sqlHelper.whereAnd() + " ( ";
-            
+
             for ( OrganisationUnit unit : params.getDataApprovalLevels().keySet() )
             {
                 String ouCol = LEVEL_PREFIX + unit.getLevel();
                 Integer level = params.getDataApprovalLevels().get( unit );
-                
+
                 sql += "(" + ouCol + " = '" + unit.getUid() + "' and " + COL_APPROVALLEVEL + " <= " + level + ") or ";
             }
-            
+
             sql = removeLastOr( sql ) + ") ";
         }
-        
+
         return sql;
     }
-    
+
     /**
      * Generates the group by clause of the query SQL.
      */
     private String getGroupByClause( DataQueryParams params )
     {
         String sql = "";
-        
+
         if ( params.isAggregation() )
         {
             sql = "group by " + getCommaDelimitedQuotedColumns( params.getQueryDimensions() );
         }
-        
+
         return sql;
     }
 
@@ -393,47 +397,47 @@ public class JdbcAnalyticsManager
         throws BadSqlGrammarException
     {
         Map<String, Object> map = new HashMap<>();
-        
+
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-        
+
         log.debug( "Analytics SQL: " + sql );
-        
+
         while ( rowSet.next() )
         {
             StringBuilder key = new StringBuilder();
-            
+
             for ( DimensionalObject dim : params.getQueryDimensions() )
             {
                 key.append( rowSet.getString( dim.getDimensionName() ) ).append( DIMENSION_SEP );
             }
-            
+
             key.deleteCharAt( key.length() - 1 );
-            
+
             if ( params.isDataType( TEXT ) )
             {
                 String value = rowSet.getString( VALUE_ID );
-                
+
                 map.put( key.toString(), value );
             }
             else // NUMERIC
             {
                 Double value = rowSet.getDouble( VALUE_ID );
-    
+
                 if ( value != null && Double.class.equals( value.getClass() ) )
                 {
-                    if ( !measureCriteriaSatisfied( params, (Double) value ) )
+                    if ( !measureCriteriaSatisfied( params, value ) )
                     {
                         continue;
                     }
                 }
-                
+
                 map.put( key.toString(), value );
-            }            
+            }
         }
-        
+
         return map;
     }
-    
+
     /**
      * Checks if the measure criteria specified for the given query are satisfied
      * for the given value.
@@ -444,58 +448,58 @@ public class JdbcAnalyticsManager
         {
             return false;
         }
-        
+
         for ( MeasureFilter filter : params.getMeasureCriteria().keySet() )
         {
             Double criterion = params.getMeasureCriteria().get( filter );
-            
+
             if ( EQ.equals( filter ) && !MathUtils.isEqual( value, criterion ) )
             {
                 return false;
             }
-            
+
             if ( GT.equals( filter ) && Double.compare( value, criterion ) <= 0 )
             {
                 return false;
             }
-            
+
             if ( GE.equals( filter ) && Double.compare( value, criterion ) < 0 )
             {
                 return false;
             }
-            
+
             if ( LT.equals( filter ) && Double.compare( value, criterion ) >= 0 )
             {
                 return false;
             }
-            
+
             if ( LE.equals( filter ) && Double.compare( value, criterion ) > 0 )
             {
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * Generates a comma-delimited string based on the dimension names of the
      * given dimensions where each dimension name is quoted.
      */
     private String getCommaDelimitedQuotedColumns( Collection<DimensionalObject> dimensions )
-    {        
+    {
         final StringBuilder builder = new StringBuilder();
-        
+
         if ( dimensions != null && !dimensions.isEmpty() )
         {
             for ( DimensionalObject dimension : dimensions )
             {
                 builder.append( statementBuilder.columnQuote( dimension.getDimensionName() ) ).append( "," );
             }
-            
+
             return builder.substring( 0, builder.length() - 1 );
         }
-        
+
         return builder.toString();
     }
 }

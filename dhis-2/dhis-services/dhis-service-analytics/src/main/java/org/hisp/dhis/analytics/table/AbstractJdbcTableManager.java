@@ -126,7 +126,7 @@ public abstract class AbstractJdbcTableManager
     @Transactional
     public List<AnalyticsTable> getTables( Integer lastYears )
     {
-        Date earliest = null;
+        Date earliest;
         
         if ( lastYears != null )
         {
