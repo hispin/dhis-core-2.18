@@ -96,7 +96,7 @@ $( function() {
 });
 </script>
 
-<h3>$i18n.getString( "event_data_export" )</h3>
+<h3>$i18n.getString( "event_export" )</h3>
 
 <div id="inputCriteria" class="inputCriteria" style="width: 730px;">
 <form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="importMetaData.action">
