@@ -138,21 +138,31 @@ public class IdentifiableObjectUtils
     /**
      * Returns a local period identifier for a specific date / periodType / calendar.
      *
-     * @param date Date to create from
+     * @param date       Date to create from
      * @param periodType PeriodType to create from
-     * @param calendar Calendar to create from
+     * @param calendar   Calendar to create from
      * @return Period identifier based on given calendar
      */
     public static String getLocalPeriod( Date date, PeriodType periodType, Calendar calendar )
     {
-        Period period = periodType.createPeriod( date, calendar );
+        return getLocalPeriod( periodType.createPeriod( date, calendar ), calendar );
+    }
 
+    /**
+     * Returns a local period identifier for a specific period / calendar.
+     *
+     * @param period   the list of periods.
+     * @param calendar the calendar to use for generation of iso periods.
+     * @return Period identifier based on given calendar
+     */
+    public static String getLocalPeriod( Period period, Calendar calendar )
+    {
         if ( calendar.isIso8601() )
         {
             return period.getIsoDate();
         }
 
-        return periodType.getIsoDate( calendar.fromIso( period.getStartDate() ) );
+        return period.getPeriodType().getIsoDate( calendar.fromIso( period.getStartDate() ) );
     }
 
     /**
