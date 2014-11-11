@@ -28,6 +28,14 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.calendar.DateTimeUnit;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,13 +47,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import org.hisp.dhis.calendar.Calendar;
-import org.hisp.dhis.calendar.DateTimeUnit;
-import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.period.Period;
-
 /**
  * @author Lars Helge Overland
  */
@@ -55,12 +56,15 @@ public class IdentifiableObjectUtils
     private static final String SEPARATOR = "-";
     private static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" );
 
-    public static final Map<String, String> CLASS_ALIAS = new HashMap<String, String>() {{
-        put( "CategoryOption", DataElementCategoryOption.class.getSimpleName() );
-        put( "Category", DataElementCategory.class.getSimpleName() );
-        put( "CategoryCombo", DataElementCategoryCombo.class.getSimpleName() );
-    } };
-    
+    public static final Map<String, String> CLASS_ALIAS = new HashMap<String, String>()
+    {
+        {
+            put( "CategoryOption", DataElementCategoryOption.class.getSimpleName() );
+            put( "Category", DataElementCategory.class.getSimpleName() );
+            put( "CategoryCombo", DataElementCategoryCombo.class.getSimpleName() );
+        }
+    };
+
     /**
      * Joins the names of the IdentifiableObjects in the given list and separates
      * them with a comma and space. Returns null if the given list is null or has
@@ -108,27 +112,47 @@ public class IdentifiableObjectUtils
 
         return uids;
     }
-    
+
     /**
-     * Returns a list of iso period identifiers for the given collection of 
+     * Returns a list of calendar specific period identifiers for the given collection of
      * periods and calendar.
-     * 
-     * @param periods the list of periods.
+     *
+     * @param periods  the list of periods.
      * @param calendar the calendar to use for generation of iso periods.
      * @return a list of iso period identifiers.
      */
-    public static <T extends IdentifiableObject> List<String> getIsoPeriods( Collection<T> periods, Calendar calendar )
+    public static <T extends IdentifiableObject> List<String> getLocalPeriods( Collection<T> periods, Calendar calendar )
     {
         List<String> isoPeriods = new ArrayList<>();
-        
+
         for ( IdentifiableObject object : periods )
         {
             Period period = (Period) object;
             DateTimeUnit dateTimeUnit = calendar.fromIso( period.getStartDate() );
             isoPeriods.add( period.getPeriodType().getIsoDate( dateTimeUnit ) );
         }
-        
+
         return isoPeriods;
+    }
+
+    /**
+     * Returns a local period identifier for a specific date / periodType / calendar.
+     *
+     * @param date Date to create from
+     * @param periodType PeriodType to create from
+     * @param calendar Calendar to create from
+     * @return Period identifier based on given calendar
+     */
+    public static String getLocalPeriod( Date date, PeriodType periodType, Calendar calendar )
+    {
+        Period period = periodType.createPeriod( date, calendar );
+
+        if ( calendar.isIso8601() )
+        {
+            return period.getIsoDate();
+        }
+
+        return periodType.getIsoDate( calendar.fromIso( period.getStartDate() ) );
     }
 
     /**
@@ -224,7 +248,7 @@ public class IdentifiableObjectUtils
      * @param collection the collection.
      * @return a list.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T extends IdentifiableObject> List<T> asTypedList( Collection<IdentifiableObject> collection )
     {
         List<T> list = new ArrayList<>();

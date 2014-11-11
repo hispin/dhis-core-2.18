@@ -266,7 +266,7 @@ public class DefaultReportService
             }
             else
             {
-                periods = IdentifiableObjectUtils.getIsoPeriods( report.getRelatives().getRelativePeriods( date, format, true ), calendar );
+                periods = IdentifiableObjectUtils.getLocalPeriods( report.getRelatives().getRelativePeriods( date, format, true ), calendar );
             }
         }
 

@@ -66,6 +66,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriod;
 import static org.hisp.dhis.dataapproval.DataApprovalLevelService.APPROVAL_LEVEL_UNAPPROVED;
 import static org.hisp.dhis.resourcetable.ResourceTableStore.*;
 
@@ -480,7 +481,7 @@ public class DefaultResourceTableService
                 {
                     if ( rowType.getFrequencyOrder() <= periodType.getFrequencyOrder() )
                     {
-                        values.add( getPeriodString( startDate, periodType, calendar ) );
+                        values.add( getLocalPeriod( startDate, periodType, calendar ) );
                     }
                     else
                     {
@@ -495,18 +496,6 @@ public class DefaultResourceTableService
         resourceTableStore.batchUpdate( PeriodType.PERIOD_TYPES.size() + 3, TABLE_NAME_PERIOD_STRUCTURE, batchArgs );
 
         log.info( "Date period table generated" );
-    }
-
-    private String getPeriodString( Date date, PeriodType periodType, Calendar calendar )
-    {
-        Period period = periodType.createPeriod( date, calendar );
-
-        if ( calendar.isIso8601() )
-        {
-            return period.getIsoDate();
-        }
-
-        return periodType.getIsoDate( calendar.fromIso( period.getStartDate() ) );
     }
 
     // -------------------------------------------------------------------------
