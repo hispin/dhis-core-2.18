@@ -1055,11 +1055,11 @@ Ext.onReady( function() {
                     lonIndex,
                     latIndex,
                     optionSetIndex,
-                    optionSet,
+                    optionSetHeader,
                     map = Ext.clone(r.metaData.names),
                     updateFeatures;
 
-                updateFeatures = function(map) {
+                updateFeatures = function() {
                     for (var i = 0, header; i < r.headers.length; i++) {
                         header = r.headers[i];
                         map[header.name] = header.column;
@@ -1071,7 +1071,7 @@ Ext.onReady( function() {
                         obj = {};
 
                         for (var j = 0; j < row.length; j++) {
-                            obj[r.headers[j].name] = j === optionSetIndex ? map[row[j]] : row[j];
+                            obj[r.headers[j].name] = j === optionSetIndex ? r.metaData.optionNames[row[j]] || map[row[j]] : row[j];
                         }
 
                         obj[gis.conf.finals.widget.value] = 0;
@@ -1097,6 +1097,19 @@ Ext.onReady( function() {
                     loadLegend(view);
                 };
 
+                getOptionSets = function() {
+                    if (!optionSetHeader) {
+                        updateFeatures();
+                    }
+
+                    dhis2.gis.store.get('optionSets', optionSetHeader.optionSet).done( function(obj) {
+                        Ext.apply(r.metaData.optionNames, gis.util.array.getObjectMap(obj.options, 'code', 'name'));
+                        updateFeatures();
+                    });
+                };
+
+                r.metaData.optionNames = {};
+
                 // name-column map, lonIndex, latIndex, optionSet
                 for (var i = 0, header; i < r.headers.length; i++) {
                     header = r.headers[i];
@@ -1113,7 +1126,7 @@ Ext.onReady( function() {
 
                     if (Ext.isString(header.optionSet) && header.optionSet.length) {
                         optionSetIndex = i;
-                        optionSet = header.optionSet;
+                        optionSetHeader = header;
                     }
                 }
 
@@ -1135,13 +1148,7 @@ Ext.onReady( function() {
                 }
 
                 // option set
-                if (optionSet) {
-                    updateFeatures(r.metaData.names);
-                }
-                else {
-                    updateFeatures(r.metaData.names);
-                }
-
+                getOptionSets();
             };
 
 			if (Ext.isObject(GIS.app)) {
@@ -2739,6 +2746,25 @@ Ext.onReady( function() {
 
 				return array;
 			};
+
+            util.array.getObjectMap = function(array, idProperty, nameProperty, namePrefix) {
+                if (!(Ext.isArray(array) && array.length)) {
+                    return {};
+                }
+
+                var o = {};
+                idProperty = idProperty || 'id';
+                nameProperty = nameProperty || 'name';
+                namePrefix = namePrefix || '';
+
+                for (var i = 0, obj; i < array.length; i++) {
+                    obj = array[i];
+
+                    o[namePrefix + obj[idProperty]] = obj[nameProperty];
+                }
+
+                return o;
+            };
 
             util.layout = {};
 
