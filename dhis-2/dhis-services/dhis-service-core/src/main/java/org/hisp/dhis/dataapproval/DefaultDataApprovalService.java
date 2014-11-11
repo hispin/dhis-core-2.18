@@ -370,6 +370,13 @@ public class DefaultDataApprovalService
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns an list of data approval expanded based on periods. In the cases
+     * where the data set of the approval has a more frequent period type than
+     * the period of the approval, additional approval objects are included for
+     * that period type for each period between the start date and end date of the
+     * approval period.
+     */
     private List<DataApproval> expandPeriods( List<DataApproval> approvalList )
     {
         List<DataApproval> expandedList = new ArrayList<>();
@@ -378,16 +385,14 @@ public class DefaultDataApprovalService
         {
             if ( da.getPeriod().getPeriodType().getFrequencyOrder() > da.getDataSet().getPeriodType().getFrequencyOrder() )
             {
-                Collection<Period> periods = periodService.getPeriodsBetweenDates(
-                        da.getDataSet().getPeriodType(),
-                        da.getPeriod().getStartDate(),
-                        da.getPeriod().getEndDate() );
+                Collection<Period> periods = periodService.getPeriodsBetweenDates( da.getDataSet().getPeriodType(), 
+                    da.getPeriod().getStartDate(), da.getPeriod().getEndDate() );
 
                 for ( Period period : periods )
                 {
                     expandedList.add( new DataApproval( da.getDataApprovalLevel(), da.getDataSet(),
-                            period, da.getOrganisationUnit(), da.getAttributeOptionCombo(), da.isAccepted(),
-                            da.getCreated(), da.getCreator() ) );
+                        period, da.getOrganisationUnit(), da.getAttributeOptionCombo(), da.isAccepted(),
+                        da.getCreated(), da.getCreator() ) );
                 }
             }
             else
@@ -399,30 +404,42 @@ public class DefaultDataApprovalService
         return expandedList;
     }
 
+    /**
+     * Returns the data approval status of the given data approval based on the
+     * given status map.
+     */
     private DataApprovalStatus getStatus( DataApproval da, Map<DataApproval, DataApprovalStatus> statusMap )
     {
         return statusMap.get( new DataApproval( null, da.getDataSet(), da.getPeriod(),
-                da.getOrganisationUnit(), da.getAttributeOptionCombo(), false, null, null ) );
+            da.getOrganisationUnit(), da.getAttributeOptionCombo(), false, null, null ) );
     }
 
+    /**
+     * Returns a mapping from data approval to data approval status for the given
+     * list of data approvals.
+     */
     private Map<DataApproval, DataApprovalStatus> getStatusMap( List<DataApproval> dataApprovalList )
     {
         Map<DataApproval, DataApprovalStatus> statusMap = new HashMap<>();
 
         DataApprovalPermissionsEvaluator evaluator = makePermissionsEvaluator();
 
-        for ( Map.Entry<String, List<DataApproval>> entry : getIndexedMapList( dataApprovalList ).entrySet() )
+        ListMap<String, DataApproval> listMap = getIndexedListMap( dataApprovalList );
+        
+        for ( String key : listMap.keySet() )
         {
+            List<DataApproval> dataApprovals = listMap.get( key );
+            
             Set<DataSet> dataSets = new HashSet<>();
 
-            for ( DataApproval da : entry.getValue() )
+            for ( DataApproval da : dataApprovals )
             {
                 dataSets.add( da.getDataSet() );
             }
 
-            Period period = entry.getValue().get(0).getPeriod();
+            Period period = dataApprovals.get(0).getPeriod();
 
-            OrganisationUnit orgUnit = entry.getValue().get(0).getOrganisationUnit();
+            OrganisationUnit orgUnit = dataApprovals.get(0).getOrganisationUnit();
 
             List<DataApprovalStatus> statuses = dataApprovalStore.getDataApprovals( dataSets, period, orgUnit, null );
 
@@ -435,7 +452,7 @@ public class DefaultDataApprovalService
                 for ( DataSet ds : dataSets )
                 {
                     statusMap.put( new DataApproval( null, ds, da.getPeriod(), da.getOrganisationUnit(),
-                            da.getAttributeOptionCombo(), false, null, null ), status );
+                        da.getAttributeOptionCombo(), false, null, null ), status );
                 }
             }
         }
@@ -443,13 +460,17 @@ public class DefaultDataApprovalService
         return statusMap;
     }
 
-    private ListMap<String, DataApproval> getIndexedMapList( List<DataApproval> dataApprovalList )
+    /**
+     * Returns an indexed map where the key is based on organisation unit and period.
+     */
+    private ListMap<String, DataApproval> getIndexedListMap( List<DataApproval> dataApprovalList )
     {
         ListMap<String, DataApproval> map = new ListMap<>();
 
         for ( DataApproval approval : dataApprovalList )
         {
             String key = approval == null ? null : approval.getOrganisationUnit().getId() + "-" + approval.getPeriod().getId();
+            
             map.putValue( key, approval );
         }
 
@@ -459,6 +480,6 @@ public class DefaultDataApprovalService
     private DataApprovalPermissionsEvaluator makePermissionsEvaluator()
     {
         return DataApprovalPermissionsEvaluator.makePermissionsEvaluator(
-                currentUserService, systemSettingManager, dataApprovalLevelService );
+            currentUserService, systemSettingManager, dataApprovalLevelService );
     }
 }
