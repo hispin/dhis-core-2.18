@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping( value = RelationshipTypeSchemaDescriptor.API_ENDPOINT )
-public class RelationshipTypeController extends AbstractCrudController<RelationshipType>
+public class RelationshipTypeController
+    extends AbstractCrudController<RelationshipType>
 {
 }
