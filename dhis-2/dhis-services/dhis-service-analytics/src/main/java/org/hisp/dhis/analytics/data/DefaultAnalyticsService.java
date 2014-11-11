@@ -28,54 +28,6 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
-import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TABLE_NAME;
-import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TARGET_TABLE_NAME;
-import static org.hisp.dhis.analytics.AnalyticsTableManager.ORGUNIT_TARGET_TABLE_NAME;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_CATEGORYOPTIONCOMBO;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LATITUDE;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LONGITUDE;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_ORGUNIT;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_PERIOD;
-import static org.hisp.dhis.analytics.DataQueryParams.FIXED_DIMS;
-import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
-import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.LATITUDE_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.LONGITUDE_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriods;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
-import static org.hisp.dhis.common.NameableObjectUtils.asList;
-import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_GRANDCHILDREN;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentNameGraphMap;
-import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
-import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
-import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Future;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -145,6 +97,30 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Future;
+
+import static org.hisp.dhis.analytics.AnalyticsTableManager.*;
+import static org.hisp.dhis.analytics.DataQueryParams.*;
+import static org.hisp.dhis.common.DimensionalObject.*;
+import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriods;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.common.NameableObjectUtils.asList;
+import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.*;
+import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
+import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
+import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
+
 /**
  * @author Lars Helge Overland
  */
@@ -198,7 +174,7 @@ public class DefaultAnalyticsService
 
     @Autowired
     private DataElementOperandService operandService;
-    
+
     @Autowired
     private DimensionService dimensionService;
 
@@ -528,7 +504,7 @@ public class DefaultAnalyticsService
     public Grid getAggregatedDataValues( DataQueryParams params, boolean tableLayout, List<String> columns, List<String> rows )
     {
         Grid grid = getAggregatedDataValues( params );
-        
+
         if ( !tableLayout )
         {
             return grid;
@@ -575,7 +551,7 @@ public class DefaultAnalyticsService
         reportTable.setShowHierarchy( params.isShowHierarchy() );
 
         Map<String, Object> valueMap = getAggregatedDataValueMapping( grid );
-        
+
         return reportTable.getGrid( new ListGrid( grid.getMetaData() ), valueMap, false );
     }
 
@@ -788,7 +764,7 @@ public class DefaultAnalyticsService
 
     @Override
     public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, AggregationType aggregationType,
-        String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, 
+        String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit,
         boolean hideEmptyRows, boolean showHierarchy, DisplayProperty displayProperty, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
@@ -855,7 +831,7 @@ public class DefaultAnalyticsService
     public List<DimensionalObject> getDimensionalObjects( Set<String> dimensionParams, I18nFormat format )
     {
         List<DimensionalObject> list = new ArrayList<>();
-        
+
         if ( dimensionParams != null )
         {
             for ( String param : dimensionParams )
@@ -869,10 +845,10 @@ public class DefaultAnalyticsService
                 }
             }
         }
-        
+
         return list;
     }
-    
+
     // TODO verify that current user can read each dimension and dimension item
     // TODO optimize so that org unit levels + boundary are used in query instead of fetching all org units one by one
 
@@ -888,7 +864,8 @@ public class DefaultAnalyticsService
             List<NameableObject> dataSets = new ArrayList<>();
             List<NameableObject> operandDataElements = new ArrayList<>();
 
-            options: for ( String uid : items )
+            options:
+            for ( String uid : items )
             {
                 Indicator in = indicatorService.getIndicator( uid );
 
@@ -964,7 +941,7 @@ public class DefaultAnalyticsService
         if ( PERIOD_DIM_ID.equals( dimension ) )
         {
             Calendar calendar = PeriodType.getCalendar();
-            
+
             Set<Period> periods = new HashSet<>();
 
             for ( String isoPeriod : items )
@@ -994,11 +971,10 @@ public class DefaultAnalyticsService
             for ( Period period : periods )
             {
                 period.setName( format != null ? format.formatPeriod( period ) : null );
-                
+
                 if ( !calendar.isIso8601() )
                 {
-                    DateTimeUnit dateTimeUnit = calendar.fromIso( period.getStartDate() );
-                    period.setUid( period.getPeriodType().getIsoDate( dateTimeUnit ) );
+                    period.setUid( IdentifiableObjectUtils.getLocalPeriod( period, calendar ) );
                 }
             }
 
@@ -1165,7 +1141,7 @@ public class DefaultAnalyticsService
      * Replaces the indicator dimension including items with the data elements
      * part of the indicator expressions.
      *
-     * @param params the data query parameters.
+     * @param params         the data query parameters.
      * @param indicatorIndex the index of the indicator dimension in the given query.
      */
     private DataQueryParams replaceIndicatorsWithDataElements( DataQueryParams params, int indicatorIndex )
@@ -1199,9 +1175,9 @@ public class DefaultAnalyticsService
      * Returns a mapping between identifiers and names for the given dimensional
      * objects.
      *
-     * @param dimensions the dimensional objects.
+     * @param dimensions    the dimensional objects.
      * @param hierarchyMeta indicates whether to include meta data of the
-     *        organisation unit hierarchy.
+     *                      organisation unit hierarchy.
      */
     private Map<String, String> getUidNameMap( List<DimensionalObject> dimensions, boolean hierarchyMeta, DisplayProperty displayProperty )
     {
@@ -1220,7 +1196,7 @@ public class DefaultAnalyticsService
             if ( !FIXED_DIMS.contains( dimension.getDimension() ) && items.isEmpty() )
             {
                 DimensionalObject dynamicDim = dimensionService.getDimension( dimension.getDimension(), dimension.getDimensionType() );
-                
+
                 items = dynamicDim != null ? dynamicDim.getItems() : items;
             }
 
@@ -1280,7 +1256,7 @@ public class DefaultAnalyticsService
 
     /**
      * Returns a mapping between the category option combo identifiers and names
-     * in the given grid. 
+     * in the given grid.
      *
      * @param params the data query parameters.
      */
@@ -1289,21 +1265,21 @@ public class DefaultAnalyticsService
         Map<String, String> metaData = new HashMap<>();
 
         List<NameableObject> des = params.getDimensionOrFilter( DATAELEMENT_DIM_ID );
-        
+
         if ( des != null && !des.isEmpty() )
         {
             Set<DataElementCategoryCombo> categoryCombos = new HashSet<>();
-            
+
             for ( NameableObject de : des )
             {
                 DataElement dataElement = (DataElement) de;
-                
+
                 if ( dataElement.getCategoryCombo() != null )
                 {
                     categoryCombos.add( dataElement.getCategoryCombo() );
                 }
             }
-            
+
             for ( DataElementCategoryCombo cc : categoryCombos )
             {
                 for ( DataElementCategoryOptionCombo coc : cc.getOptionCombos() )
@@ -1327,32 +1303,32 @@ public class DefaultAnalyticsService
 
         return (cores == null || cores == 0) ? SystemUtils.getCpuCores() : cores;
     }
-    
+
     /**
      * Converts a String, Object map into a specific String, Double map.
-     * 
+     *
      * @param map the map to convert.
      */
     private Map<String, Double> getDoubleMap( Map<String, Object> map )
     {
         Map<String, Double> typedMap = new HashMap<>();
-        
+
         for ( Map.Entry<String, Object> entry : map.entrySet() )
         {
             final Object value = entry.getValue();
-            
+
             if ( value != null && Double.class.equals( value.getClass() ) )
             {
                 typedMap.put( entry.getKey(), (Double) entry.getValue() );
             }
         }
-        
+
         return typedMap;
     }
-    
+
     /**
      * Returns the given value. If of class Double the value is rounded.
-     * 
+     *
      * @param value the value to return and potentially round.
      */
     private Object getRounded( Object value )
