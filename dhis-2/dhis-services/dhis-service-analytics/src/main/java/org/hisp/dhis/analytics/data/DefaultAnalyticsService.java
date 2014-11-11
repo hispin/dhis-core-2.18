@@ -112,6 +112,7 @@ import static org.hisp.dhis.analytics.AnalyticsTableManager.*;
 import static org.hisp.dhis.analytics.DataQueryParams.*;
 import static org.hisp.dhis.common.DimensionalObject.*;
 import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriodIdentifier;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriodIdentifiers;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.common.NameableObjectUtils.asList;
@@ -974,7 +975,7 @@ public class DefaultAnalyticsService
 
                 if ( !calendar.isIso8601() )
                 {
-                    period.setUid( IdentifiableObjectUtils.getLocalPeriodIdentifier( period, calendar ) );
+                    period.setUid( getLocalPeriodIdentifier( period, calendar ) );
                 }
             }
 
