@@ -129,7 +129,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public @ResponseBody RootNode getObjectList( @RequestParam Map<String, String> parameters, 
+    public @ResponseBody RootNode getObjectList( @RequestParam Map<String, String> parameters,
         HttpServletResponse response, HttpServletRequest request )
     {
         List<String> fields = Lists.newArrayList( contextService.getParameterValues( "fields" ) );
@@ -137,6 +137,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         WebOptions options = new WebOptions( parameters );
         WebMetaData metaData = new WebMetaData();
+
+        Schema schema = getSchema();
 
         if ( fields.isEmpty() )
         {
@@ -156,15 +158,18 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             Iterator<String> iterator = filters.iterator();
             String name = null;
 
-            while ( iterator.hasNext() )
+            if ( schema.getProperty( "name" ) != null && schema.getProperty( "name" ).isPersisted() )
             {
-                String filter = iterator.next();
-
-                if ( filter.startsWith( "name:like:" ) )
+                while ( iterator.hasNext() )
                 {
-                    name = filter.substring( "name:like:".length() );
-                    iterator.remove();
-                    break;
+                    String filter = iterator.next();
+
+                    if ( filter.startsWith( "name:like:" ) )
+                    {
+                        name = filter.substring( "name:like:".length() );
+                        iterator.remove();
+                        break;
+                    }
                 }
             }
 
@@ -334,7 +339,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
-    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) 
+    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input )
         throws Exception
     {
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
@@ -363,7 +368,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) 
+    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input )
         throws Exception
     {
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
@@ -396,7 +401,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE } )
-    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, 
+    public void putXmlObject( HttpServletResponse response, HttpServletRequest request,
         @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         List<T> objects = getEntity( uid );
@@ -428,7 +433,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, 
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request,
         @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         List<T> objects = getEntity( uid );
@@ -464,7 +469,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, 
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request,
         @PathVariable( "uid" ) String uid ) throws Exception
     {
         List<T> objects = getEntity( uid );
