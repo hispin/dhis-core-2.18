@@ -119,10 +119,16 @@ public class Period
     // Logic
     // -------------------------------------------------------------------------
 
+
+    @Override
+    public void setAutoFields()
+    {
+    }
+
     @Override
     public String getUid()
     {
-        return getIsoDate();
+        return uid != null ? uid : getIsoDate();
     }
 
     public String getRealUid()
