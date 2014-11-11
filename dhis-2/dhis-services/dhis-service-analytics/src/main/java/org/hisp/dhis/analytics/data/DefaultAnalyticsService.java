@@ -963,6 +963,8 @@ public class DefaultAnalyticsService
 
         if ( PERIOD_DIM_ID.equals( dimension ) )
         {
+            Calendar calendar = PeriodType.getCalendar();
+            
             Set<Period> periods = new HashSet<>();
 
             for ( String isoPeriod : items )
@@ -992,6 +994,12 @@ public class DefaultAnalyticsService
             for ( Period period : periods )
             {
                 period.setName( format != null ? format.formatPeriod( period ) : null );
+                
+                if ( !calendar.isIso8601() )
+                {
+                    DateTimeUnit dateTimeUnit = calendar.fromIso( period.getStartDate() );
+                    period.setUid( period.getPeriodType().getIsoDate( dateTimeUnit ) );
+                }
             }
 
             List<Period> periodList = new ArrayList<>( periods );

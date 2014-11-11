@@ -28,12 +28,42 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT;
+import static org.hisp.dhis.analytics.AggregationType.COUNT;
+import static org.hisp.dhis.analytics.AggregationType.MAX;
+import static org.hisp.dhis.analytics.AggregationType.MIN;
+import static org.hisp.dhis.analytics.AggregationType.STDDEV;
+import static org.hisp.dhis.analytics.AggregationType.VARIANCE;
+import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
+import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
+import static org.hisp.dhis.analytics.DataType.TEXT;
+import static org.hisp.dhis.analytics.MeasureFilter.EQ;
+import static org.hisp.dhis.analytics.MeasureFilter.GE;
+import static org.hisp.dhis.analytics.MeasureFilter.GT;
+import static org.hisp.dhis.analytics.MeasureFilter.LE;
+import static org.hisp.dhis.analytics.MeasureFilter.LT;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
+import static org.hisp.dhis.system.util.TextUtils.removeLastOr;
+import static org.hisp.dhis.system.util.TextUtils.trimEnd;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Future;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.MeasureFilter;
-import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.ListMap;
@@ -53,25 +83,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.Assert;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Future;
-
-import static org.hisp.dhis.analytics.AggregationType.*;
-import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
-import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
-import static org.hisp.dhis.analytics.DataType.TEXT;
-import static org.hisp.dhis.analytics.MeasureFilter.*;
-import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
-import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriods;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
-import static org.hisp.dhis.system.util.TextUtils.*;
 
 /**
  * This class is responsible for producing aggregated data values. It reads data
@@ -303,8 +314,7 @@ public class JdbcAnalyticsManager
      */
     private String getFromWhereClause( DataQueryParams params, String partition )
     {
-        SqlHelper sqlHelper = new SqlHelper();
-        Calendar calendar = PeriodType.getCalendar();
+        SqlHelper sqlHelper = new SqlHelper();        
 
         String sql = "from " + partition + " ";
 
@@ -314,14 +324,7 @@ public class JdbcAnalyticsManager
             {
                 String col = statementBuilder.columnQuote( dim.getDimensionName() );
 
-                if ( !calendar.isIso8601() && PERIOD_DIM_ID.equals( dim.getDimension() ) )
-                {
-                    sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( getLocalPeriods( dim.getItems(), calendar ) ) + ") ";
-                }
-                else
-                {
-                    sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
-                }
+                sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
             }
         }
 
@@ -341,14 +344,7 @@ public class JdbcAnalyticsManager
                     {
                         String col = statementBuilder.columnQuote( filter.getDimensionName() );
 
-                        if ( !calendar.isIso8601() && PERIOD_DIM_ID.equals( filter.getDimension() ) )
-                        {
-                            sql += col + " in (" + getQuotedCommaDelimitedString( getLocalPeriods( filter.getItems(), calendar ) ) + ") or ";
-                        }
-                        else
-                        {
-                            sql += col + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
-                        }
+                        sql += col + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
                     }
                 }
 
