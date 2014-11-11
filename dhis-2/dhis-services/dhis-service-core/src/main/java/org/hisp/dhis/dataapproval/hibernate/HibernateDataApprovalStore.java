@@ -28,7 +28,11 @@ package org.hisp.dhis.dataapproval.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataapproval.DataApprovalState.*;
+import static org.hisp.dhis.dataapproval.DataApprovalState.ACCEPTED_HERE;
+import static org.hisp.dhis.dataapproval.DataApprovalState.APPROVED_ABOVE;
+import static org.hisp.dhis.dataapproval.DataApprovalState.APPROVED_HERE;
+import static org.hisp.dhis.dataapproval.DataApprovalState.UNAPPROVED_READY;
+import static org.hisp.dhis.dataapproval.DataApprovalState.UNAPPROVED_WAITING;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL;
 import static org.hisp.dhis.system.util.CollectionUtils.asSet;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
@@ -42,7 +46,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
@@ -84,14 +87,6 @@ public class HibernateDataApprovalStore
     implements DataApprovalStore
 {
     private static final Log log = LogFactory.getLog( HibernateDataApprovalStore.class );
-
-    private static Cache<Integer, DataElementCategoryOptionCombo> OPTION_COMBO_CACHE = CacheBuilder.newBuilder()
-            .expireAfterAccess( 15, TimeUnit.MINUTES ).initialCapacity( 5000 )
-            .maximumSize( 50000 ).build();
-
-    private static Cache<Integer, OrganisationUnit> ORG_UNIT_CACHE = CacheBuilder.newBuilder()
-            .expireAfterAccess( 15, TimeUnit.MINUTES ).initialCapacity( 5000 )
-            .maximumSize( 50000 ).build();
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -194,6 +189,9 @@ public class HibernateDataApprovalStore
     public List<DataApprovalStatus> getDataApprovals( Set<DataSet> dataSets, Period period,
         OrganisationUnit orgUnit, DataElementCategoryOptionCombo attributeOptionCombo )
     {
+        final Cache<Integer, DataElementCategoryOptionCombo> optionComboCache = CacheBuilder.newBuilder().build();
+        final Cache<Integer, OrganisationUnit> orgUnitCache = CacheBuilder.newBuilder().build();
+
         final User user = currentUserService.getCurrentUser();
 
         if ( CollectionUtils.isEmpty( dataSets ) )
@@ -400,15 +398,15 @@ public class HibernateDataApprovalStore
                 DataApprovalLevel statusLevel = ( level == null || level == 0 ? null : levelMap.get( level ) ); // null if not approved
                 DataApprovalLevel daLevel = ( statusLevel == null ? lowestApprovalLevelForOrgUnit : statusLevel );
 
-                DataElementCategoryOptionCombo optionCombo = ( aoc == null || aoc == 0 ? null : OPTION_COMBO_CACHE.get( aoc, new Callable<DataElementCategoryOptionCombo>()
+                DataElementCategoryOptionCombo optionCombo = ( aoc == null || aoc == 0 ? null : optionComboCache.get( aoc, new Callable<DataElementCategoryOptionCombo>()
                 {
                     public DataElementCategoryOptionCombo call() throws ExecutionException
                     {
-                        return categoryService.getDataElementCategoryOptionCombo( aoc ).initialize();
+                        return categoryService.getDataElementCategoryOptionCombo( aoc );
                     }
                 } ) );
 
-                OrganisationUnit ou = ( orgUnit != null ? orgUnit : ORG_UNIT_CACHE.get( ouId, new Callable<OrganisationUnit>()
+                OrganisationUnit ou = ( orgUnit != null ? orgUnit : orgUnitCache.get( ouId, new Callable<OrganisationUnit>()
                 {
                     public OrganisationUnit call() throws ExecutionException
                     {
@@ -419,15 +417,15 @@ public class HibernateDataApprovalStore
                 DataApproval da = new DataApproval( daLevel, dataSet, period, ou, optionCombo, accepted, null, null );
 
                 DataApprovalState state = (
-                        statusLevel == null ?
-                                readyBelow ?
-                                        UNAPPROVED_READY :
-                                        UNAPPROVED_WAITING :
-                                approvedAbove ?
-                                        APPROVED_ABOVE :
-                                        accepted ?
-                                                ACCEPTED_HERE :
-                                                APPROVED_HERE );
+                    statusLevel == null ?
+                        readyBelow ?
+                            UNAPPROVED_READY :
+                            UNAPPROVED_WAITING :
+                        approvedAbove ?
+                            APPROVED_ABOVE :
+                            accepted ?
+                                ACCEPTED_HERE :
+                                APPROVED_HERE );
 
                 statusList.add( new DataApprovalStatus( state, da, statusLevel, null ) );
 
