@@ -42,8 +42,9 @@ import java.io.InputStream;
 public class ImportDataValueTask
     implements Runnable
 {
+    public static final String FORMAT_XML = "xml";
+    public static final String FORMAT_JSON = "json";
     public static final String FORMAT_CSV = "csv";
-
     public static final String FORMAT_PDF = "pdf";
 
     private DataValueSetService dataValueSetService;
@@ -73,7 +74,11 @@ public class ImportDataValueTask
     {
         SecurityContextHolder.getContext().setAuthentication( authentication );
 
-        if ( FORMAT_CSV.equals( format ) )
+        if ( FORMAT_JSON.equals( format ) )
+        {
+            dataValueSetService.saveDataValueSetJson( inputStream, options, taskId );
+        }
+        else if ( FORMAT_CSV.equals( format ) )
         {
             dataValueSetService.saveDataValueSetCsv( inputStream, options, taskId );
         }
@@ -81,7 +86,7 @@ public class ImportDataValueTask
         {
             dataValueSetService.saveDataValueSetPdf( inputStream, options, taskId );
         }
-        else
+        else // FORMAT_XML
         {
             dataValueSetService.saveDataValueSet( inputStream, options, taskId );
         }
