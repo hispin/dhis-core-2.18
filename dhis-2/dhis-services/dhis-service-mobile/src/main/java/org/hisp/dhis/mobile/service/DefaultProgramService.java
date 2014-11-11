@@ -293,9 +293,8 @@ public class DefaultProgramService
         List<ProgramTrackedEntityAttribute> programPatientAttributes = new ArrayList<>(
             program.getProgramAttributes() );
 
-        for ( int i = 0; i < programPatientAttributes.size(); i++ )
+        for ( ProgramTrackedEntityAttribute ppa : programPatientAttributes )
         {
-            ProgramTrackedEntityAttribute ppa = programPatientAttributes.get( i );
             pr.getProgramAttributes().add( this.getPatientAttributeForMobile( ppa ) );
         }
 
