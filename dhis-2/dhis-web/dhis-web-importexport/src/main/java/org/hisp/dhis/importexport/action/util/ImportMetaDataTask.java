@@ -35,6 +35,7 @@ import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.system.util.DebugUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,6 +48,8 @@ public class ImportMetaDataTask
 {
     private static final Log log = LogFactory.getLog( ImportMetaDataTask.class );
 
+    private String userUid;
+
     private ImportService importService;
 
     private ImportOptions importOptions;
@@ -55,16 +58,17 @@ public class ImportMetaDataTask
 
     private TaskId taskId;
 
-    private String userUid;
+    private String format;
 
-    public ImportMetaDataTask( String userUid, ImportService importService, ImportOptions importOptions, InputStream inputStream,
-        TaskId taskId )
+    public ImportMetaDataTask( String userUid, ImportService importService, ImportOptions importOptions, 
+        InputStream inputStream, TaskId taskId, String format )
     {
+        this.userUid = userUid;
         this.importService = importService;
         this.importOptions = importOptions;
         this.inputStream = inputStream;
         this.taskId = taskId;
-        this.userUid = userUid;
+        this.format = format;
     }
 
     @Override
@@ -74,20 +78,20 @@ public class ImportMetaDataTask
 
         try
         {
-            // TODO sniff if its xml or json, but this works for now
-            metaData = JacksonUtils.fromXml( inputStream, MetaData.class );
-        }
-        catch ( IOException ignored )
-        {
-            try
+            if ( "json".equals( format ) )
             {
                 metaData = JacksonUtils.fromJson( inputStream, MetaData.class );
             }
-            catch ( IOException ex )
+            else
             {
-                log.error( "(IOException) Unable to parse meta-data while reading input stream", ex );
-                return;
+                metaData = JacksonUtils.fromXml( inputStream, MetaData.class );
             }
+        }
+        catch ( IOException ex )
+        {
+            log.error( DebugUtils.getStackTrace( ex ) );
+            
+            throw new RuntimeException( "Failed to parse meta data input stream", ex );
         }
 
         importService.importMetaData( userUid, metaData, importOptions, taskId );

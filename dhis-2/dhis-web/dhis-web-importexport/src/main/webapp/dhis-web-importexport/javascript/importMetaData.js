@@ -17,6 +17,18 @@ function importMetaData()
 	$( "#importForm" ).submit();
 }
 
+function metaDataImportFormatChanged()
+{
+	if ( $( "#importFormat" ).val() == "csv" )
+	{
+		$( "#csvImportTr" ).show();
+	}
+	else
+	{
+		$( "#csvImportTr" ).hide();
+	}
+}
+
 function pingNotificationsTimeout()
 {
 	pingNotifications( 'METADATA_IMPORT', 'notificationTable', displaySummaryLink );

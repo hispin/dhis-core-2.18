@@ -128,7 +128,7 @@
       <td colspan="2">
         <select id="format" style="width: 204px;">
           <option value="xml">XML</option>
-          <option value="json">Json</option>
+          <option value="json">JSON</option>
         </select>
       </td>
     </tr>

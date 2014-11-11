@@ -168,21 +168,21 @@ public class MetaDataImportAction
 
         String userId = user != null ? user.getUid() : null;
 
-        switch( importFormat )
+        if ( "csv".equals( importFormat ) )
         {
-            case "csv":
-                if( classKey != null && KEY_CLASS_MAP.get( classKey ) != null )
-                {
-                    scheduler.executeTask( new ImportMetaDataCsvTask( userId, importService, csvImportService,
-                        importOptions, in, taskId, KEY_CLASS_MAP.get( classKey ) ) );
-                }
-                break;
-            case "gml":
-                scheduler.executeTask( new ImportMetaDataGmlTask( userId, gmlImportService, importOptions, in, taskId ) );
-                break;
-            default:
-                scheduler.executeTask( new ImportMetaDataTask( userId, importService, importOptions, in, taskId ) );
-                break;
+            if( classKey != null && KEY_CLASS_MAP.get( classKey ) != null )
+            {
+                scheduler.executeTask( new ImportMetaDataCsvTask( userId, importService, csvImportService,
+                    importOptions, in, taskId, KEY_CLASS_MAP.get( classKey ) ) );
+            }
+        }
+        else if ( "gml".equals( importFormat ) )
+        {
+            scheduler.executeTask( new ImportMetaDataGmlTask( userId, gmlImportService, importOptions, in, taskId ) );
+        }
+        else if ( "json".equals( importFormat ) || "xml".equals( importFormat ) )
+        {
+            scheduler.executeTask( new ImportMetaDataTask( userId, importService, importOptions, in, taskId, importFormat ) );
         }
         
         return SUCCESS;
