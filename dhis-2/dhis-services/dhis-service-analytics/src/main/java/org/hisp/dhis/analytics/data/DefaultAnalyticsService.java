@@ -974,7 +974,7 @@ public class DefaultAnalyticsService
 
                 if ( !calendar.isIso8601() )
                 {
-                    period.setUid( IdentifiableObjectUtils.getLocalPeriod( period, calendar ) );
+                    period.setUid( IdentifiableObjectUtils.getLocalPeriodIdentifier( period, calendar ) );
                 }
             }
 
