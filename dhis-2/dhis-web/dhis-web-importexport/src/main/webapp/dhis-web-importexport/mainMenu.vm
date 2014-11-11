@@ -18,9 +18,3 @@
   <li><a href="displayEventExportForm.action">$i18n.getString( "event_export" )&nbsp;</a></li>
   <li><a href="displayExternalExportMenu.action">$i18n.getString( "export_to_other_systems" )&nbsp;</a></li>
 </ul>
-
-<h2>$i18n.getString( "configuration" )&nbsp;</h2>
-
-<ul>
-  <li><a href="displayConfigDhis14Form.action">$i18n.getString( "dhis14_file_configuration" )&nbsp;</a></li>
-</ul>
