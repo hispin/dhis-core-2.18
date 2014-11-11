@@ -28,12 +28,15 @@ package org.hisp.dhis.dxf2.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
@@ -45,15 +48,11 @@ import org.hisp.dhis.common.view.ShortNameView;
 import org.hisp.dhis.common.view.UuidView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -110,12 +109,7 @@ public class JacksonUtils
         viewClasses.put( "withoutOrganisationUnits", WithoutOrganisationUnitsView.class );
     }
 
-    public static boolean isSharingView( String view )
-    {
-        return view.equals( "sharing" ) || view.equals( "sharingBasic" ) || view.equals( "sharingDetailed" )
-            || view.equals( "sharingExport" );
-    }
-
+    @Deprecated
     public static Class<?> getViewClass( Object viewName )
     {
         if ( viewName == null || !(viewName instanceof String && ((String) viewName).length() != 0) )
@@ -154,23 +148,25 @@ public class JacksonUtils
         return jsonMapper.writeValueAsString( value );
     }
 
+    @Deprecated
     public static void toJsonWithView( OutputStream output, Object value, Class<?> viewClass ) throws IOException
     {
         jsonMapper.writerWithView( viewClass ).writeValue( output, value );
     }
 
+    @Deprecated
     public static String toJsonWithViewAsString( Object value, Class<?> viewClass ) throws IOException
     {
         return jsonMapper.writerWithView( viewClass ).writeValueAsString( value );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T fromJson( InputStream input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T fromJson( String input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
@@ -190,29 +186,31 @@ public class JacksonUtils
         return xmlMapper.writeValueAsString( value );
     }
 
+    @Deprecated
     public static void toXmlWithView( OutputStream output, Object value, Class<?> viewClass ) throws IOException
     {
         xmlMapper.writerWithView( viewClass ).writeValue( output, value );
     }
 
+    @Deprecated
     public static String toXmlWithViewAsString( Object value, Class<?> viewClass ) throws IOException
     {
         return xmlMapper.writerWithView( viewClass ).writeValueAsString( value );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T fromXml( InputStream input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T fromXml( String input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T fromJson( InputStream inputStream, TypeReference<?> typeReference ) throws IOException
     {
         return (T) jsonMapper.readValue( inputStream, typeReference );

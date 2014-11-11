@@ -151,34 +151,34 @@ public class GeoFeatureController
 
         List<GeoFeature> features = new ArrayList<>();
 
-        for ( OrganisationUnit unit : organisationUnits )
+        for ( OrganisationUnit organisationUnit : organisationUnits )
         {
             GeoFeature feature = new GeoFeature();
-            feature.setId( unit.getUid() );
-            feature.setCode( unit.getCode() );
-            feature.setHcd( unit.hasChildrenWithCoordinates() );
-            feature.setHcu( unit.hasCoordinatesUp() );
-            feature.setLe( unit.getLevel() );
-            feature.setPg( unit.getParentGraph() );
-            feature.setPi( unit.getParent() != null ? unit.getParent().getUid() : null );
-            feature.setPn( unit.getParent() != null ? unit.getParent().getDisplayName() : null );
-            feature.setTy( FEATURE_TYPE_MAP.get( unit.getFeatureType() ) );
-            feature.setCo( unit.getCoordinates() );
+            feature.setId( organisationUnit.getUid() );
+            feature.setCode( organisationUnit.getCode() );
+            feature.setHcd( organisationUnit.hasChildrenWithCoordinates() );
+            feature.setHcu( organisationUnit.hasCoordinatesUp() );
+            feature.setLe( organisationUnit.getLevel() );
+            feature.setPg( organisationUnit.getParentGraph() );
+            feature.setPi( organisationUnit.getParent() != null ? organisationUnit.getParent().getUid() : null );
+            feature.setPn( organisationUnit.getParent() != null ? organisationUnit.getParent().getDisplayName() : null );
+            feature.setTy( FEATURE_TYPE_MAP.get( organisationUnit.getFeatureType() ) );
+            feature.setCo( organisationUnit.getCoordinates() );
 
             if ( DisplayProperty.SHORTNAME.equals( params.getDisplayProperty() ) )
             {
-                feature.setNa( unit.getDisplayShortName() );
+                feature.setNa( organisationUnit.getDisplayShortName() );
             }
             else
             {
-                feature.setNa( unit.getDisplayName() );
+                feature.setNa( organisationUnit.getDisplayName() );
             }
 
             if ( includeGroupSets )
             {
                 for ( OrganisationUnitGroupSet groupSet : groupSets )
                 {
-                    OrganisationUnitGroup group = unit.getGroupInGroupSet( groupSet );
+                    OrganisationUnitGroup group = organisationUnit.getGroupInGroupSet( groupSet );
 
                     if ( group != null )
                     {
