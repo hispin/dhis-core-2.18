@@ -314,14 +314,18 @@ public class JdbcAnalyticsManager
             {
                 String col = statementBuilder.columnQuote( dim.getDimensionName() );
 
+                List<String> periods;
+
                 if ( !calendar.isIso8601() && PERIOD_DIM_ID.equals( dim.getDimension() ) )
                 {
-                    sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( getLocalPeriods( dim.getItems(), calendar ) ) + ") ";
+                    periods = getLocalPeriods( dim.getItems(), calendar );
                 }
                 else
                 {
-                    sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
+                    periods = getUids( dim.getItems() );
                 }
+
+                sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( periods ) + ") ";
             }
         }
 
@@ -341,14 +345,18 @@ public class JdbcAnalyticsManager
                     {
                         String col = statementBuilder.columnQuote( filter.getDimensionName() );
 
+                        List<String> periods;
+
                         if ( !calendar.isIso8601() && PERIOD_DIM_ID.equals( filter.getDimension() ) )
                         {
-                            sql += col + " in (" + getQuotedCommaDelimitedString( getLocalPeriods( filter.getItems(), calendar ) ) + ") or ";
+                            periods = getLocalPeriods( filter.getItems(), calendar );
                         }
                         else
                         {
-                            sql += col + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
+                            periods = getUids( filter.getItems() );
                         }
+
+                        sql += col + " in (" + getQuotedCommaDelimitedString( periods ) + ") or ";
                     }
                 }
 
