@@ -28,119 +28,18 @@ package org.hisp.dhis.webapi.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.schema.descriptors.TrackedEntityAttributeGroupSchemaDescriptor;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = TrackedEntityAttributeGroupSchemaDescriptor.API_ENDPOINT )
+@RequestMapping(value = TrackedEntityAttributeGroupSchemaDescriptor.API_ENDPOINT)
 public class TrackedEntityAttributeGroupController
     extends AbstractCrudController<TrackedEntityAttributeGroup>
 {
-    @Autowired
-    private TrackedEntityAttributeGroupService trackedEntityAttributeGroupService;
-
-    //--------------------------------------------------------------------------
-    // POST
-    //--------------------------------------------------------------------------
-
-    @Override
-    @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
-    @ResponseStatus( HttpStatus.CREATED )
-    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
-    {
-        TrackedEntityAttributeGroup trackedEntityAttributeGroup = JacksonUtils.fromXml( input, TrackedEntityAttributeGroup.class );
-        trackedEntityAttributeGroupService.addTrackedEntityAttributeGroup( trackedEntityAttributeGroup );
-
-        response.setHeader( "Location", ContextUtils.getRootPath( request ) + TrackedEntityAttributeGroupSchemaDescriptor.API_ENDPOINT + "/" + trackedEntityAttributeGroup.getUid() );
-    }
-
-    @Override
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    @ResponseStatus( HttpStatus.CREATED )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
-    {
-        TrackedEntityAttributeGroup trackedEntityAttributeGroup = JacksonUtils.fromJson( input, TrackedEntityAttributeGroup.class );
-        trackedEntityAttributeGroupService.addTrackedEntityAttributeGroup( trackedEntityAttributeGroup );
-
-        response.setHeader( "Location", ContextUtils.getRootPath( request ) + TrackedEntityAttributeGroupSchemaDescriptor.API_ENDPOINT + "/" + trackedEntityAttributeGroup.getUid() );
-    }
-
-    //--------------------------------------------------------------------------
-    // PUT
-    //--------------------------------------------------------------------------
-
-    @Override
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
-    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        TrackedEntityAttributeGroup trackedEntityAttributeGroup = trackedEntityAttributeGroupService.getTrackedEntityAttributeGroup( uid );
-
-        if ( trackedEntityAttributeGroup == null )
-        {
-            ContextUtils.conflictResponse( response, "TrackedEntityAttributeGroup does not exist: " + uid );
-            return;
-        }
-
-        TrackedEntityAttributeGroup newTrackedEntityAttributeGroup = JacksonUtils.fromXml( input, TrackedEntityAttributeGroup.class );
-        newTrackedEntityAttributeGroup.setUid( trackedEntityAttributeGroup.getUid() );
-        trackedEntityAttributeGroup.mergeWith( newTrackedEntityAttributeGroup );
-
-        trackedEntityAttributeGroupService.updateTrackedEntityAttributeGroup( trackedEntityAttributeGroup );
-    }
-
-    @Override
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        TrackedEntityAttributeGroup trackedEntityAttributeGroup = trackedEntityAttributeGroupService.getTrackedEntityAttributeGroup( uid );
-
-        if ( trackedEntityAttributeGroup == null )
-        {
-            ContextUtils.conflictResponse( response, "TrackedEntityAttributeGroup does not exist: " + uid );
-            return;
-        }
-
-        TrackedEntityAttributeGroup newTrackedEntityAttributeGroup = JacksonUtils.fromJson( input, TrackedEntityAttributeGroup.class );
-        newTrackedEntityAttributeGroup.setUid( trackedEntityAttributeGroup.getUid() );
-        trackedEntityAttributeGroup.mergeWith( newTrackedEntityAttributeGroup );
-
-        trackedEntityAttributeGroupService.updateTrackedEntityAttributeGroup( trackedEntityAttributeGroup );
-    }
-
-    //--------------------------------------------------------------------------
-    // DELETE
-    //--------------------------------------------------------------------------
-
-    @Override
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        TrackedEntityAttributeGroup trackedEntityAttributeGroup = trackedEntityAttributeGroupService.getTrackedEntityAttributeGroup( uid );
-
-        if ( trackedEntityAttributeGroup == null )
-        {
-            ContextUtils.conflictResponse( response, "TrackedEntityAttributeGroup does not exist: " + uid );
-            return;
-        }
-
-        trackedEntityAttributeGroupService.deleteTrackedEntityAttributeGroup( trackedEntityAttributeGroup );
-    }
 }
