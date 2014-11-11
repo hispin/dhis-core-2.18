@@ -122,7 +122,7 @@ public class Period
     @Override
     public String getUid()
     {
-        return uid != null ? uid : getIsoDate();
+        return getIsoDate();
     }
 
     public String getRealUid()
