@@ -4,4 +4,5 @@
 <ul class="introList">
     #introListImgItem( "setImportFormat.action?importFormat=DHIS14XML" "DHIS14_xml_import" "dhis14" )
     #introListImgItem( "setImportFormat.action?importFormat=DHIS14FILE" "DHIS14_file_import" "dhis14" )
+    #introListImgItem( "displayConfigDhis14Form.action" "dhis14_file_configuration" "configuration" )
 </ul>
