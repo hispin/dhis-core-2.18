@@ -715,7 +715,7 @@ Ext.onReady( function() {
 				fillOpacity: 0.9,
 				strokeColor: '#fff',
 				strokeWidth: 1,
-                pointRadius: 8,
+                //pointRadius: 8,
 				cursor: 'pointer',
                 labelAlign: 'cr',
                 labelYOffset: 13
