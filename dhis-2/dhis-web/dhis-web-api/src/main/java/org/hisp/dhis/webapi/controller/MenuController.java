@@ -55,6 +55,7 @@ public class MenuController
     @Autowired
     private RenderService renderService;
 
+    @SuppressWarnings("unchecked")
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     public void saveMenuOrder( InputStream input )
         throws Exception

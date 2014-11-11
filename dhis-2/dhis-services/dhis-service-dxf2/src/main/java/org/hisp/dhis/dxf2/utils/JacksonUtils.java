@@ -109,7 +109,9 @@ public class JacksonUtils
         viewClasses.put( "withoutOrganisationUnits", WithoutOrganisationUnitsView.class );
     }
 
-    @Deprecated
+    /**
+     * TODO remove
+     */
     public static Class<?> getViewClass( Object viewName )
     {
         if ( viewName == null || !(viewName instanceof String && ((String) viewName).length() != 0) )
@@ -148,13 +150,17 @@ public class JacksonUtils
         return jsonMapper.writeValueAsString( value );
     }
 
-    @Deprecated
+    /**
+     * TODO remove
+     */
     public static void toJsonWithView( OutputStream output, Object value, Class<?> viewClass ) throws IOException
     {
         jsonMapper.writerWithView( viewClass ).writeValue( output, value );
     }
 
-    @Deprecated
+    /**
+     * TODO remove
+     */
     public static String toJsonWithViewAsString( Object value, Class<?> viewClass ) throws IOException
     {
         return jsonMapper.writerWithView( viewClass ).writeValueAsString( value );
@@ -186,13 +192,17 @@ public class JacksonUtils
         return xmlMapper.writeValueAsString( value );
     }
 
-    @Deprecated
+    /**
+     * TODO remove
+     */
     public static void toXmlWithView( OutputStream output, Object value, Class<?> viewClass ) throws IOException
     {
         xmlMapper.writerWithView( viewClass ).writeValue( output, value );
     }
 
-    @Deprecated
+    /**
+     * TODO remove
+     */
     public static String toXmlWithViewAsString( Object value, Class<?> viewClass ) throws IOException
     {
         return xmlMapper.writerWithView( viewClass ).writeValueAsString( value );
