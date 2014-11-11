@@ -28,12 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_JSON;
-
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.synch.AvailabilityStatus;
 import org.hisp.dhis.dxf2.synch.SynchronizationManager;
@@ -45,6 +39,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_JSON;
+
 /**
  * @author Lars Helge Overland
  */
@@ -53,10 +52,7 @@ import org.springframework.web.client.RestTemplate;
 public class SynchronizationController
 {
     public static final String RESOURCE_PATH = "/synchronization";
-    
-    @Autowired
-    private RestTemplate restTemplate;
-    
+
     @Autowired
     private SynchronizationManager synchronizationManager;
 
@@ -69,7 +65,7 @@ public class SynchronizationController
         response.setContentType( CONTENT_TYPE_JSON );
         JacksonUtils.toJson( response.getOutputStream(), summary );
     }
-    
+
     @RequestMapping( value = "/availability", method = RequestMethod.GET, produces = "application/json" )
     public @ResponseBody AvailabilityStatus isRemoteServerAvailable()
     {

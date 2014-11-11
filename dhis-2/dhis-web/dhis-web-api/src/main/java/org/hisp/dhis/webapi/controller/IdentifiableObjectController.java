@@ -30,7 +30,6 @@ package org.hisp.dhis.webapi.controller;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.stereotype.Controller;
@@ -40,7 +39,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.InputStream;
 import java.util.List;
 
@@ -48,7 +46,7 @@ import java.util.List;
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping(value = IdentifiableObjectController.RESOURCE_PATH)
+@RequestMapping( value = IdentifiableObjectController.RESOURCE_PATH )
 public class IdentifiableObjectController
     extends AbstractCrudController<IdentifiableObject>
 {

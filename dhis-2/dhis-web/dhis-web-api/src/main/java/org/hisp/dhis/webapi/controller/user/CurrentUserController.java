@@ -94,7 +94,7 @@ import static org.hisp.dhis.user.UserSettingService.*;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = { CurrentUserController.RESOURCE_PATH, "/me" }, method = RequestMethod.GET)
+@RequestMapping( value = { CurrentUserController.RESOURCE_PATH, "/me" }, method = RequestMethod.GET )
 public class CurrentUserController
 {
     public static final String RESOURCE_PATH = "/currentUser";
@@ -162,7 +162,7 @@ public class CurrentUserController
         renderService.toJson( response.getOutputStream(), currentUser, DetailedView.class );
     }
 
-    @RequestMapping(value = "/dashboards", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/dashboards", produces = { "application/json", "text/*" } )
     public void getDashboards( HttpServletResponse response ) throws NotAuthenticatedException, IOException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -188,7 +188,7 @@ public class CurrentUserController
         renderService.toJson( response.getOutputStream(), dashboards, DetailedView.class );
     }
 
-    @RequestMapping(value = "/inbox", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/inbox", produces = { "application/json", "text/*" } )
     public void getInbox( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -216,7 +216,7 @@ public class CurrentUserController
         renderService.toJson( response.getOutputStream(), inbox );
     }
 
-    @RequestMapping(value = "/inbox/messageConversations", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/inbox/messageConversations", produces = { "application/json", "text/*" } )
     public void getInboxMessageConversations( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -238,7 +238,7 @@ public class CurrentUserController
         renderService.toJson( response.getOutputStream(), messageConversations );
     }
 
-    @RequestMapping(value = "/inbox/interpretations", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/inbox/interpretations", produces = { "application/json", "text/*" } )
     public void getInboxInterpretations( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -259,7 +259,7 @@ public class CurrentUserController
         renderService.toJson( response.getOutputStream(), interpretations );
     }
 
-    @RequestMapping(value = "/dashboard", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/dashboard", produces = { "application/json", "text/*" } )
     public void getDashboard( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -337,7 +337,7 @@ public class CurrentUserController
         return userAccount;
     }
 
-    @RequestMapping(value = { "/profile", "/user-account" }, method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping( value = { "/profile", "/user-account" }, method = RequestMethod.POST, consumes = "application/json" )
     public void postUserAccountJson( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         UserAccount userAccount = renderService.fromJson( request.getInputStream(), UserAccount.class );
@@ -373,7 +373,7 @@ public class CurrentUserController
         userService.updateUser( currentUser );
     }
 
-    @RequestMapping(value = "/authorization", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/authorization", produces = { "application/json", "text/*" } )
     public void getAuthorization( HttpServletResponse response ) throws IOException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -382,7 +382,7 @@ public class CurrentUserController
         renderService.toJson( response.getOutputStream(), currentUser.getUserCredentials().getAllAuthorities() );
     }
 
-    @RequestMapping(value = "/authorization/{auth}", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/authorization/{auth}", produces = { "application/json", "text/*" } )
     public void hasAuthorization( @PathVariable String auth, HttpServletResponse response ) throws IOException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -393,9 +393,9 @@ public class CurrentUserController
         renderService.toJson( response.getOutputStream(), hasAuth );
     }
 
-    @RequestMapping(value = "/recipients", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/recipients", produces = { "application/json", "text/*" } )
     public void recipientsJson( HttpServletResponse response,
-        @RequestParam(value = "filter") String filter ) throws IOException, NotAuthenticatedException, FilterTooShortException
+        @RequestParam( value = "filter" ) String filter ) throws IOException, NotAuthenticatedException, FilterTooShortException
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -421,7 +421,7 @@ public class CurrentUserController
         renderService.toJson( response.getOutputStream(), recipients );
     }
 
-    @RequestMapping(value = { "/assignedOrganisationUnits", "/organisationUnits" }, produces = { "application/json", "text/*" })
+    @RequestMapping( value = { "/assignedOrganisationUnits", "/organisationUnits" }, produces = { "application/json", "text/*" } )
     public void getAssignedOrganisationUnits( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -470,9 +470,9 @@ public class CurrentUserController
         renderService.toJson( response.getOutputStream(), userOrganisationUnits, viewClass );
     }
 
-    @RequestMapping(value = { "/assignedPrograms", "/programs" }, produces = { "application/json", "text/*" })
+    @RequestMapping( value = { "/assignedPrograms", "/programs" }, produces = { "application/json", "text/*" } )
     public void getPrograms( HttpServletResponse response, @RequestParam Map<String, String> parameters,
-        @RequestParam(required = false) Integer type )
+        @RequestParam( required = false ) Integer type )
         throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -590,9 +590,9 @@ public class CurrentUserController
         renderService.toJson( response.getOutputStream(), forms );
     }
 
-    @SuppressWarnings("unchecked")
-    @RequestMapping(value = { "/assignedDataSets", "/dataSets" }, produces = { "application/json", "text/*" })
-    public void getDataSets( @RequestParam(defaultValue = "false") boolean optionSets, @RequestParam(defaultValue = "50") int maxOptions,
+    @SuppressWarnings( "unchecked" )
+    @RequestMapping( value = { "/assignedDataSets", "/dataSets" }, produces = { "application/json", "text/*" } )
+    public void getDataSets( @RequestParam( defaultValue = "false" ) boolean optionSets, @RequestParam( defaultValue = "50" ) int maxOptions,
         HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -712,7 +712,7 @@ public class CurrentUserController
         renderService.toJson( response.getOutputStream(), forms );
     }
 
-    @RequestMapping(value = "/dataApprovalLevels", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/dataApprovalLevels", produces = { "application/json", "text/*" } )
     public void getApprovalLevels( HttpServletResponse response ) throws IOException
     {
         List<DataApprovalLevel> approvalLevels = approvalLevelService.getUserDataApprovalLevels();

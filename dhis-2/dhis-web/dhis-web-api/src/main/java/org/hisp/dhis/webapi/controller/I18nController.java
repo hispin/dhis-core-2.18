@@ -29,6 +29,7 @@ package org.hisp.dhis.webapi.controller;
  */
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.hisp.dhis.dxf2.render.RenderService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nManager;
@@ -48,13 +49,16 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = "/i18n")
+@RequestMapping( value = "/i18n" )
 public class I18nController
 {
     @Autowired
     private I18nManager i18nManager;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @Autowired
+    private RenderService renderService;
+
+    @RequestMapping( method = RequestMethod.POST )
     public void postI18n( @RequestParam( value = "package", required = false, defaultValue = "org.hisp.dhis" ) String searchPackage,
         OutputStream outputStream, InputStream inputStream ) throws Exception
     {
@@ -75,6 +79,6 @@ public class I18nController
             }
         }
 
-        JacksonUtils.getJsonMapper().writeValue( outputStream, output );
+        renderService.toJson( outputStream, output );
     }
 }

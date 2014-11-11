@@ -304,7 +304,7 @@ public class AccountController
             return;
         }
 
-        if ( password.trim().equals( username.trim() ) )
+        if ( password.trim().equals( username != null ? username.trim() : null ) )
         {
             ContextUtils.badRequestResponse( response, "Password cannot be equal to username" );
             return;
