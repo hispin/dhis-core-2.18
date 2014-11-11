@@ -30,7 +30,10 @@ package org.hisp.dhis.importexport.action.event;
 
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dxf2.events.event.EventService;
+import org.hisp.dhis.dxf2.events.event.Events;
 import org.hisp.dhis.dxf2.events.event.ImportEventTask;
+import org.hisp.dhis.dxf2.events.event.ImportEventsTask;
+import org.hisp.dhis.dxf2.events.event.csv.CsvEventService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
@@ -65,6 +68,9 @@ public class ImportEventAction implements Action
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private CsvEventService csvEventService;
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -83,11 +89,11 @@ public class ImportEventAction implements Action
         this.dryRun = dryRun;
     }
 
-    public boolean jsonInput;
+    public String format;
 
-    public void setJsonInput( boolean jsonInput )
+    public void setFormat( String format )
     {
-        this.jsonInput = jsonInput;
+        this.format = format;
     }
 
     private String orgUnitIdScheme = "UID";
@@ -95,6 +101,13 @@ public class ImportEventAction implements Action
     public void setOrgUnitIdScheme( String orgUnitIdScheme )
     {
         this.orgUnitIdScheme = orgUnitIdScheme;
+    }
+
+    private boolean skipFirst;
+
+    public void setSkipFirst( boolean skipFirst )
+    {
+        this.skipFirst = skipFirst;
     }
 
     // -------------------------------------------------------------------------
@@ -115,7 +128,16 @@ public class ImportEventAction implements Action
         importOptions.setDryRun( dryRun );
         importOptions.setOrgUnitIdScheme( orgUnitIdScheme );
 
-        scheduler.executeTask( new ImportEventTask( in, eventService, importOptions, taskId, jsonInput ) );
+        if ( "csv".equals( format ) )
+        {
+            Events events = csvEventService.readEvents( in, skipFirst );
+            scheduler.executeTask( new ImportEventsTask( events.getEvents(), eventService, importOptions, taskId ) );
+        }
+        else
+        {
+            boolean jsonInput = "json".equals( format );
+            scheduler.executeTask( new ImportEventTask( in, eventService, importOptions, taskId, jsonInput ) );
+        }
 
         return SUCCESS;
     }

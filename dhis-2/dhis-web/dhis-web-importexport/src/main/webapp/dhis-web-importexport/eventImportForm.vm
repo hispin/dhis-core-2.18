@@ -18,11 +18,14 @@
     </select></td>
 </tr>
 <tr>
-	<td>$i18n.getString( "format" )</td>
-	<td><select id="jsonInput" name="jsonInput" style="width:190px">
-		<option value="false">$i18n.getString( "xml" )</option>
-		<option value="true">$i18n.getString( "json" )</option>
-    </select></td>
+    <td>$i18n.getString( "format" )</td>
+    <td>
+        <select id="format" style="width: 190px;">
+            <option value="xml">XML</option>
+            <option value="json">JSON</option>
+            <option value="csv">CSV</option>
+        </select>
+    </td>
 </tr>
 <tr>
 	<td>$i18n.getString( "orgunit_scheme" )</td>
