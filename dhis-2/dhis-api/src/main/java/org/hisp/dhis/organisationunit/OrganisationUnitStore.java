@@ -129,6 +129,12 @@ public interface OrganisationUnitStore
      */
     Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String query, Collection<OrganisationUnitGroup> groups, boolean limit );
 
+    /**
+     * Creates a mapping between organisation unit UID and set of data set UIDs
+     * being assigned to the organisation unit.
+     * 
+     * @return a map of sets.
+     */
     Map<String, Set<String>> getOrganisationUnitDataSetAssocationMap();
 
     Set<Integer> getOrganisationUnitIdsWithoutData();
