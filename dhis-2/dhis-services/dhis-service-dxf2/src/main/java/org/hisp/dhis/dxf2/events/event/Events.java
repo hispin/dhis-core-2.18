@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.Pager;
@@ -104,6 +105,7 @@ public class Events
         return metaData;
     }
 
+    @JsonIgnore
     public void setMetaData( Map<Object, Object> metaData )
     {
         this.metaData = metaData;
@@ -116,6 +118,7 @@ public class Events
         return pager;
     }
 
+    @JsonIgnore
     public void setPager( Pager pager )
     {
         this.pager = pager;

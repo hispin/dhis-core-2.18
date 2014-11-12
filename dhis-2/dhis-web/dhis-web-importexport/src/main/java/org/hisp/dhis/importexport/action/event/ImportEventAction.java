@@ -52,6 +52,12 @@ import java.io.InputStream;
  */
 public class ImportEventAction implements Action
 {
+    public static final String FORMAT_CSV = "csv";
+
+    public static final String FORMAT_JSON = "json";
+
+    public static final String FORMAT_XML = "xml";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -128,14 +134,14 @@ public class ImportEventAction implements Action
         importOptions.setDryRun( dryRun );
         importOptions.setOrgUnitIdScheme( orgUnitIdScheme );
 
-        if ( "csv".equals( payloadFormat ) )
+        if ( FORMAT_CSV.equals( payloadFormat ) )
         {
             Events events = csvEventService.readEvents( in, skipFirst );
             scheduler.executeTask( new ImportEventsTask( events.getEvents(), eventService, importOptions, taskId ) );
         }
         else
         {
-            boolean jsonInput = "json".equals( payloadFormat );
+            boolean jsonInput = FORMAT_JSON.equals( payloadFormat );
             scheduler.executeTask( new ImportEventTask( in, eventService, importOptions, taskId, jsonInput ) );
         }
 
