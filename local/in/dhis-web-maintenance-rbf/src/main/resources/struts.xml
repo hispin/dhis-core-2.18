@@ -134,8 +134,14 @@
 		<param name="page">/dhis-web-maintenance-rbf/loadDataEntryForm.vm</param>		
 	 	<param name="requiredAuthorities">F_QUANTITY_EXTERNAL_VERIFICATION</param>		
 	</action>	
-	
-	
+
+	<!-- for PBF Admin DataEntry Role Quanitity External Verification-->	 
+	<action name="quanitityReported" class="org.hisp.dhis.rbf.action.NoAction">
+		<result name="success" type="velocity">/content.vm</result>
+		<param name="page">/dhis-web-maintenance-rbf/loadDataEntryForm.vm</param>		
+	 	<param name="requiredAuthorities">F_QUANTITY_REPORTED</param>		
+	</action>
+
 	<!-- for PBF Admin DataEntry Role Quanitity External Verification-->	 
 	<action name="pbfAdminDataEntry" class="org.hisp.dhis.rbf.action.NoAction">
 		<result name="success" type="velocity">/content.vm</result>

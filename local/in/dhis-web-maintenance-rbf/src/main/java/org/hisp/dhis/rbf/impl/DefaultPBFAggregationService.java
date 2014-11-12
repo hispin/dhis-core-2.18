@@ -24,6 +24,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.rbf.api.Lookup;
+import org.hisp.dhis.rbf.api.LookupService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -80,6 +81,9 @@ public class DefaultPBFAggregationService
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private LookupService lookupService;
     
     // -------------------------------------------------------------------------
     //
@@ -138,8 +142,6 @@ public class DefaultPBFAggregationService
         Map<String, Double> aggregationResultMap = new HashMap<String, Double>();
         
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-        
-        
         
         try
         {
@@ -236,6 +238,8 @@ public class DefaultPBFAggregationService
                 Integer periodId = rs.getInt( 2 );
                 Double value = rs.getDouble( 3 );
                 
+                
+                
                 try
                 {
                     Double maxScore = maxScoreResultMap.get( orgUnitId+":"+periodId );
@@ -243,7 +247,7 @@ public class DefaultPBFAggregationService
                     {
                         Double overAllQualityScore = ( value / maxScore ) * 100.0;
                         
-                        aggregationResultMap.put( orgUnitId+":"+dataElement.getId()+":"+periodId, overAllQualityScore );                            
+                        aggregationResultMap.put( orgUnitId+ ":" +dataElement.getId() +":" +dataElementCategoryService.getDefaultDataElementCategoryOptionCombo().getId() + ":" +periodId, overAllQualityScore );                            
                     }
                 }
                 catch( Exception e )
@@ -305,7 +309,7 @@ public class DefaultPBFAggregationService
                 Integer orgUnitId = rs.getInt( 1 );
                 Integer periodId = rs.getInt( 2 );
                 Double countValue = rs.getDouble( 3 );
-                aggregationResultMap.put( orgUnitId+":"+dataElement.getId()+":"+periodId, countValue );
+                aggregationResultMap.put( orgUnitId+":"+dataElement.getId()+ ":" +dataElementCategoryService.getDefaultDataElementCategoryOptionCombo().getId() + ":"+periodId, countValue );
             }
         }
         catch( Exception e )
@@ -320,12 +324,27 @@ public class DefaultPBFAggregationService
     {
         Map<String, Double> aggregationResultMap = new HashMap<String, Double>();
         
+        Lookup catQtyReportedLookup = lookupService.getLookupByName( Lookup.CATEGORY_QUANTITY_REPORTED );
+        
+        Lookup catQtyValidatedLookup = lookupService.getLookupByName( Lookup.CATEGORY_QUANTITY_VALIDATED );
+        
+        Lookup catQtyExternalVerificationLookup = lookupService.getLookupByName( Lookup.CATEGORY_QUANTITY_EXTERNAL_VERIFICATION );
+        
         try
-        {
+        {   
+            /*
             String query = "SELECT organisationunitid, dataelementid, periodid, qtyvalidated FROM pbfdatavalue " +
                             " WHERE " + 
                                 " periodid IN ( "+ Lookup.PERIODID_BY_COMMA +" ) AND "+
                                 " organisationunitid IN ( " + Lookup.ORGUNITID_BY_COMMA + " ) ";
+            
+            */
+            
+            String query = "SELECT organisationunitid, dataelementid, periodid, qtyreported, qtyvalidated, qtyexternalverification FROM pbfdatavalue " +
+                " WHERE " + 
+                    " periodid IN ( "+ Lookup.PERIODID_BY_COMMA +" ) AND "+
+                    " organisationunitid IN ( " + Lookup.ORGUNITID_BY_COMMA + " ) ";
+            
             
             //System.out.println( "Query Before Replace : --" +  orgUnits.size() + " -- "+  query  );
             
@@ -359,11 +378,29 @@ public class DefaultPBFAggregationService
                 Integer orgUnitId = rs.getInt( 1 );
                 Integer dataElementId = rs.getInt( 2 );
                 Integer periodId = rs.getInt( 3 );
-                Double qtyValidated = rs.getDouble( 4 );
-                if( qtyValidated != null )
+                
+                Double qtyReported = rs.getDouble( 4 );
+                Double qtyValidated = rs.getDouble( 5 );
+                Double qtyExternalVerification = rs.getDouble( 6 );
+                
+                if( qtyReported != null && catQtyReportedLookup != null  )
                 {
-                    aggregationResultMap.put( orgUnitId+":"+dataElementId+":"+periodId, qtyValidated );
+                    //aggregationResultMap.put( orgUnitId+":"+dataElementId+":"+periodId, qtyValidated );
+                    aggregationResultMap.put( orgUnitId+":"+dataElementId +":" +catQtyReportedLookup.getValue() + ":"+periodId, qtyReported );
                 }
+                
+                if( qtyValidated != null && catQtyValidatedLookup != null )
+                {
+                    //aggregationResultMap.put( orgUnitId+":"+dataElementId+":"+periodId, qtyValidated );
+                    aggregationResultMap.put( orgUnitId+":"+dataElementId +":" +catQtyValidatedLookup.getValue() + ":"+periodId, qtyValidated );
+                }
+                
+                if( qtyExternalVerification != null && catQtyExternalVerificationLookup != null )
+                {
+                    //aggregationResultMap.put( orgUnitId+":"+dataElementId+":"+periodId, qtyValidated );
+                    aggregationResultMap.put( orgUnitId+":"+dataElementId +":" +catQtyExternalVerificationLookup.getValue() + ":"+periodId, qtyExternalVerification );
+                }
+                
             }
         }
         catch( Exception e )
@@ -497,10 +534,13 @@ public class DefaultPBFAggregationService
                 String[] oneRow = cellKey.split( ":" );
                 Integer orgUnitId = Integer.parseInt( oneRow[0] );
                 Integer deId = Integer.parseInt( oneRow[1] );
-                //Integer periodId = period.getId();
-                Integer periodId = Integer.parseInt( oneRow[2] );
+                Integer deCOCId = Integer.parseInt( oneRow[2] );
                 
-                Integer deCOCId = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo().getId();
+                //Integer periodId = period.getId();
+                Integer periodId = Integer.parseInt( oneRow[3] );
+                
+                //Integer deCOCId = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo().getId();
+                
                 String value = aggregationResultMap.get( cellKey ) + "";
 
                 query = "SELECT value FROM datavalue WHERE dataelementid = " + deId + " AND categoryoptioncomboid = " + deCOCId + " AND periodid = " + periodId + " AND sourceid = " + orgUnitId;
@@ -606,13 +646,8 @@ public class DefaultPBFAggregationService
         return orgUnitGroupId;
         
         
-        
-        
         //"SELECT orgunitgroupid from orgunitgroupsetmembers where orgunitgroupsetid = 1372 and orgunitgroupid in ( select orgunitgroupid from orgunitgroupmembers where organisationunitid = 1230 )";
 
-        
-        
-        
         
     }    
     
