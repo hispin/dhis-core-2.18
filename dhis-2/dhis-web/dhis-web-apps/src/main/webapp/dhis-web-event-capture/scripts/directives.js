@@ -17,14 +17,14 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
     };   
 })
 
-.directive('selectedOrgUnit', function() {        
+.directive('selectedOrgUnit', function($timeout, storage) {        
 
     return {        
         restrict: 'A',        
-        link: function(scope, element, attrs){           
+        link: function(scope, element, attrs){
             
             //when tree has loaded, get selected orgunit - if there is any - and inform angular           
-            $(function() {                 
+            /*$(function() {                 
                 
                 var adapters = [];
                 var partial_adapters = [];
@@ -73,6 +73,39 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
             function organisationUnitSelected( orgUnits, orgUnitNames ) {
                 scope.selectedOrgUnit = {id: orgUnits[0], name: orgUnitNames[0], programs: []};    
                 scope.$apply();                
+            }*/
+            
+            //reloadtree, incase not loaded
+            $(function() {                
+                dhis2.ou.store.open().done( function() {
+                    selection.load();
+                    $( "#orgUnitTree" ).one( "ouwtLoaded", function() {
+                        var selected = selection.getSelected()[0];
+                        selection.getOrganisationUnit(selected).done(function(data){
+                            if( data ){
+                                $timeout(function() {
+                                    scope.selectedOrgUnit = {id: selected, name: data[selected].n, programs: []};
+                                    scope.$apply();
+                                });
+                            }                        
+                        });
+                    });                    
+                });
+            });
+            
+            //listen to user selection, and inform angular         
+            selection.responseReceived();
+            selection.setListenerFunction( organisationUnitSelected );
+            
+            function organisationUnitSelected( orgUnits, orgUnitNames ) {
+                var ou = {id: orgUnits[0], name: orgUnitNames[0]};
+                var selectedOld = storage.get('SELECTED_OU');
+                if(!selectedOld || ou.id !== selectedOld.id){
+                    $timeout(function() {
+                        scope.selectedOrgUnit = ou;
+                        scope.$apply();
+                    });
+                }
             }
         }  
     };
