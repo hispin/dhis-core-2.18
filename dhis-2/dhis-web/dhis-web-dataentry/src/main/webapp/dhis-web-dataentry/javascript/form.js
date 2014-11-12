@@ -986,6 +986,8 @@ dhis2.de.getOrFetchDataSetList = function( ou ) {
         });
     }
 
+    /* TODO check if data sets are accessible for current user */
+    
     return def.promise();
 };
 
@@ -1003,12 +1005,16 @@ function getSortedDataSetList( orgUnit )
     $.safeEach( orgUnitDataSets, function( idx, item ) 
     {
         var dataSetId = orgUnitDataSets[idx];
-        var dataSetName = dhis2.de.dataSets[dataSetId].name;
-
-        var row = [];
-        row['id'] = dataSetId;
-        row['name'] = dataSetName;
-        dataSetList[idx] = row;
+        
+        if ( dhis2.de.dataSets[dataSetId] )
+        {
+	        var dataSetName = dhis2.de.dataSets[dataSetId].name;
+	
+	        var row = [];
+	        row['id'] = dataSetId;
+	        row['name'] = dataSetName;
+	        dataSetList[idx] = row;
+        }
     } );
 
     dataSetList.sort( function( a, b )
