@@ -46,15 +46,15 @@ var validationRules = {
             "required" : true
         }
     },
-	"profile" : {
-		"email" : {
+    "profile" : {
+        "email" : {
             "email" : true,
             "rangelength" : [ 0, 160 ]
         },
-		"phoneNumber" : {
+        "phoneNumber" : {
             "rangelength" : [ 0, 80 ]
         }
-	},
+    },
     "role" : {
         "name" : {
             "required" : true,
@@ -89,14 +89,14 @@ var validationRules = {
             "required" : true
         },
         "longitude" : {
-        	"number" : true,
-        	"min": -180,
-        	"max": 180
+            "number" : true,
+            "min": -180,
+            "max": 180
         },
         "latitude" : {
-        	"number" : true,
-        	"min": -90,
-        	"max": 90
+            "number" : true,
+            "min": -90,
+            "max": 90
         },
         "url" : {
             "url" : true,
@@ -441,225 +441,225 @@ var validationRules = {
             "alphanumericwithbasicpuncspaces" : true
         }
     },
-	"dataMart" : {
-		"name" : {
-			"required": true
-		}
-	},
-	"trackedEntityAttribute" : {
-		"name" : {
-			"required" : true,
-			"rangelength" : [ 2,160 ]
-		},
-		"shortName" : {
-			"required" : true,
-			"rangelength" : [ 2, 50 ]
-		},
-		"description" : {
-			"required" : true,
-			"minlength" : 2
-		}
-	},
-	"trackedEntityAttributeGroup" : {
-		"name" : {
-			"required" : true,
-			"rangelength" : [ 2,160 ]
-		},
-		"description" : {
-			"required" : true,
-			"rangelength" : [ 2, 255 ]
-		},
-		"attributeList" : {
-			"required" : true
-		}
-	},
-	"relationshipType" : {
-		"aIsToB" : {
-			"required" : true,
-			"rangelength" : [ 2,160 ]
-		},
-		"bIsToA" : {
-			"required" : true,
-			"rangelength" : [ 2, 160 ]
-		},
-		"name" : {
-			"required" : true,
-			"rangelength" : [ 2, 160 ]
-		}
-	},
-	"trackedEntity" : {
-		"name" : {
-			"required" : true,
-			"rangelength" : [ 2,160 ]
-		},
-		"description" : {
-			"required" : true,
-			"minlength" : 2
-		}
-	},
-	"program" : {
-		"name" : {
-			"required" : true,
-			"rangelength" : [ 2,160 ]
-		},
-		"description" : {
-			"required" : true,
-			"minlength" : 2
-		},
-		"trackedEntityId" : {
-			"required" : true
-		},
-		"dateOfIncidentDescription" : {
-			"required" : true,
-			"rangelength" : [ 2,160 ]
-		},
-		"dateOfEnrollmentDescription" : {
-			"required" : true,
-			"rangelength" : [ 2,160 ]
-		},
-		"compulsaryIdentifier" : {
-			"required" : true
-		},
-		"version" : {
-			"required" : true,
-			"integer":true
-		}
-	},
-	"programStage" : {
-		"name" : {
-			"required" : true,
-			"rangelength" : [2,160]
-		},
-		"description" : {
-			"required" : true,
-			"rangelength" : [2,254]
-		},
-		"reportDateDescription" : {
-			"required" : true,
-			"rangelength" : [2,160]
-		},
-		"minDaysFromStart" : {
-			"number" : true,
-			"min" : 0
-		},
-		"reportDateToUse" : {
-			"required" : true
-		},
-		"standardInterval" : {
-			"number" : true
-		}
-	},
-	"trackedEntityInstanceReminder" : {
-		"name" : {
-			"required" : true,
-			"rangelength" : [2,160]
-		},
-		"days" : {
-			"required": true,
-			"number" : true
-		},
-		"sendTo" : {
-			"required": true
-		},
-		"messageType" : {
-			"required": true,
-			"number" : true
-		},
-		"templateMessage" : {
-			"required": true
-		}
-	},
-	"programIndicator" : {
-		"name" : {
-			"required" : true,
-			"rangelength" : [2,160]
-		},
-		"shortName" : {
-			"required" : true,
-			"rangelength" : [2,50]
-		},
-		"code" : {
-			"rangelength" : [2,160]
-		},
-		"rootDate" : {
-			"required" : true
-		},
-		"expression" : {
-			"required" : true,
-			"maxlength" : 254
-		},
-		"valueType" : {
-			"required" : true
-		}
-	},
-	"caseAggregation" : {
-		"name" : {
-			"required" : true,
-			"rangelength" : [2,160]
-		},
-		"aggregationDataElementId" : {
-			"required" : true
-		},
-		"deSumId" : {
-			"required" : true
-		},
-		"aggregationCondition" : {
-			"required" : true,
-			"rangelength" : [2,1000]
-		}
-	},
-	"programStageSection" : {
-		"name" : {
-			"required" : true,
-			"rangelength" : [2,160]
-		},
-		"dataElementList" : {
-			"required" : true
-		}
-	},
-	"programValidation" : {
-		"name" : {
-			"required" : true,
-			"rangelength" : [2,160]
-		},
-		"operator" : {
-			"required" : true
-		},
-		"description" : {
-			"required" : true
-		},
-		"expression" : {
-			"required" : true
-		}
-	},
-	"validationCriteria" : {
-		"name" : {
-			"required" : true,
-			"rangelength" : [2,160]
-		},
-		"description" : {
-			"required" : true,
-			"rangelength" : [2,254]
-		},
-		"property" : {
-			"required" : true
-		},
-		"value" : {
-			"required" : true
-		}
-	},
-	"SMSConfig" : {
-		"pollingInterval" : {
-			"required" : true,
-			"digits" : true
-		}
-	},
-	"autoUpdateClient" : {
-		"version" : {
-			"required" : true,
-			"number" : true
-		}
-	},
+    "dataMart" : {
+        "name" : {
+            "required": true
+        }
+    },
+    "trackedEntityAttribute" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [ 2,160 ]
+        },
+        "shortName" : {
+            "required" : true,
+            "rangelength" : [ 2, 50 ]
+        },
+        "description" : {
+            "required" : true,
+            "minlength" : 2
+        }
+    },
+    "trackedEntityAttributeGroup" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [ 2,160 ]
+        },
+        "description" : {
+            "required" : true,
+            "rangelength" : [ 2, 255 ]
+        },
+        "attributeList" : {
+            "required" : true
+        }
+    },
+    "relationshipType" : {
+        "aIsToB" : {
+            "required" : true,
+            "rangelength" : [ 2,160 ]
+        },
+        "bIsToA" : {
+            "required" : true,
+            "rangelength" : [ 2, 160 ]
+        },
+        "name" : {
+            "required" : true,
+            "rangelength" : [ 2, 160 ]
+        }
+    },
+    "trackedEntity" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [ 2,160 ]
+        },
+        "description" : {
+            "required" : true,
+            "minlength" : 2
+        }
+    },
+    "program" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [ 2,160 ]
+        },
+        "description" : {
+            "required" : true,
+            "minlength" : 2
+        },
+        "trackedEntityId" : {
+            "required" : true
+        },
+        "dateOfIncidentDescription" : {
+            "required" : true,
+            "rangelength" : [ 2,160 ]
+        },
+        "dateOfEnrollmentDescription" : {
+            "required" : true,
+            "rangelength" : [ 2,160 ]
+        },
+        "compulsaryIdentifier" : {
+            "required" : true
+        },
+        "version" : {
+            "required" : true,
+            "integer":true
+        }
+    },
+    "programStage" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [2,160]
+        },
+        "description" : {
+            "required" : true,
+            "rangelength" : [2,254]
+        },
+        "reportDateDescription" : {
+            "required" : true,
+            "rangelength" : [2,160]
+        },
+        "minDaysFromStart" : {
+            "number" : true,
+            "min" : 0
+        },
+        "reportDateToUse" : {
+            "required" : true
+        },
+        "standardInterval" : {
+            "number" : true
+        }
+    },
+    "trackedEntityInstanceReminder" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [2,160]
+        },
+        "days" : {
+            "required": true,
+            "number" : true
+        },
+        "sendTo" : {
+            "required": true
+        },
+        "messageType" : {
+            "required": true,
+            "number" : true
+        },
+        "templateMessage" : {
+            "required": true
+        }
+    },
+    "programIndicator" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [2,160]
+        },
+        "shortName" : {
+            "required" : true,
+            "rangelength" : [2,50]
+        },
+        "code" : {
+            "rangelength" : [2,160]
+        },
+        "rootDate" : {
+            "required" : true
+        },
+        "expression" : {
+            "required" : true,
+            "maxlength" : 254
+        },
+        "valueType" : {
+            "required" : true
+        }
+    },
+    "caseAggregation" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [2,160]
+        },
+        "aggregationDataElementId" : {
+            "required" : true
+        },
+        "deSumId" : {
+            "required" : true
+        },
+        "aggregationCondition" : {
+            "required" : true,
+            "rangelength" : [2,1000]
+        }
+    },
+    "programStageSection" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [2,160]
+        },
+        "dataElementList" : {
+            "required" : true
+        }
+    },
+    "programValidation" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [2,160]
+        },
+        "operator" : {
+            "required" : true
+        },
+        "description" : {
+            "required" : true
+        },
+        "expression" : {
+            "required" : true
+        }
+    },
+    "validationCriteria" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [2,160]
+        },
+        "description" : {
+            "required" : true,
+            "rangelength" : [2,254]
+        },
+        "property" : {
+            "required" : true
+        },
+        "value" : {
+            "required" : true
+        }
+    },
+    "SMSConfig" : {
+        "pollingInterval" : {
+            "required" : true,
+            "digits" : true
+        }
+    },
+    "autoUpdateClient" : {
+        "version" : {
+            "required" : true,
+            "number" : true
+        }
+    },
     "dataApprovalLevel" : {
         "organisationUnitLevel" : {
             "required" : true
