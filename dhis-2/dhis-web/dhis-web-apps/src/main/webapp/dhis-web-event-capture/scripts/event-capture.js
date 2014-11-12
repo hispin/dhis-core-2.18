@@ -25,6 +25,34 @@ var EVENT_VALUES = 'EVENT_VALUES';
 
 dhis2.ec.store = null;
 dhis2.ec.memoryOnly = $('html').hasClass('ie7') || $('html').hasClass('ie8');
+var adapters = [];    
+if( dhis2.ec.memoryOnly ) {
+    adapters = [ dhis2.storage.InMemoryAdapter ];
+} else {
+    adapters = [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ];
+}
+
+dhis2.ec.store = new dhis2.storage.Store({
+    name: EC_STORE_NAME,
+    objectStores: [
+        {
+            name: 'ecPrograms',
+            adapters: adapters
+        },
+        {
+            name: 'programStages',
+            adapters: adapters
+        },
+        {
+            name: 'geoJsons',
+            adapters: adapters
+        },
+        {
+            name: 'optionSets',
+            adapters: adapters
+        }            
+    ]        
+});
 
 (function($) {
     $.safeEach = function(arr, fn)
@@ -45,6 +73,8 @@ dhis2.ec.memoryOnly = $('html').hasClass('ie7') || $('html').hasClass('ie8');
  */
 $(document).ready(function()
 {
+    downloadMetaData();
+    
     $.ajaxSetup({
         type: 'POST',
         cache: false
@@ -136,7 +166,7 @@ function ajax_login()
 }
 
 function downloadMetaData(){
-    var adapters = [];    
+    /*var adapters = [];    
     if( dhis2.ec.memoryOnly ) {
         adapters = [ dhis2.storage.InMemoryAdapter ];
     } else {
@@ -164,7 +194,7 @@ function downloadMetaData(){
                 adapters: adapters
             }            
         ]        
-    });
+    });*/
     
     var def = $.Deferred();
     var promise = def.promise();
@@ -174,7 +204,7 @@ function downloadMetaData(){
     promise = promise.then( getCalendarSetting );
     promise = promise.then( getLoginDetails );
     promise = promise.then( getOrgUnitLevels );
-    promise = promise.then( getGeoJsonsByLevel );
+    //promise = promise.then( getGeoJsonsByLevel );
     promise = promise.then( getMetaPrograms );     
     promise = promise.then( getPrograms );     
     promise = promise.then( getProgramStages );
@@ -257,7 +287,7 @@ function getGeoJsonsByLevel( ouLevels )
     if( !ouLevels ){
         return;
     }
-    
+
     var mainDef = $.Deferred();
     var mainPromise = mainDef.promise();
 

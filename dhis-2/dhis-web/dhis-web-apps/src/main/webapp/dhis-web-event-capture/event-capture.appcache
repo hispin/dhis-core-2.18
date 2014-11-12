@@ -20,6 +20,7 @@ CACHE:
 
 ../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css
 ../dhis-web-commons/javascripts/jQuery/calendars/css/ui-redmond.calendars.picker.css    
+../dhis-web-commons/javascripts/jQuery/calendars/css/ui.calendars.picker.css 
 
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.eot
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.woff
