@@ -39,6 +39,7 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,11 +88,11 @@ public class UpdateUserGroupAction
     // Parameters
     // -------------------------------------------------------------------------
 
-    private List<Integer> groupMembersList;
+    private List<String> usersSelected;
 
-    public void setGroupMembersList( List<Integer> groupMembersList )
+    public void setUsersSelected( List<String> usersSelected )
     {
-        this.groupMembersList = groupMembersList;
+        this.usersSelected = usersSelected;
     }
 
     private String name;
@@ -123,16 +124,27 @@ public class UpdateUserGroupAction
     public String execute()
         throws Exception
     {
+        if ( usersSelected == null )
+        {
+            usersSelected = new ArrayList<>();
+        }
+
         boolean writeGroupRequired = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
 
         UserGroup userGroup = userGroupService.getUserGroup( userGroupId );
 
-        Set<User> userList = new HashSet<>();
+        Set<User> users = new HashSet<>();
 
-        for ( Integer groupMember : groupMembersList )
+        for ( String userUid : usersSelected )
         {
-            User user = userService.getUser( groupMember );
-            userList.add( user );
+            User user = userService.getUser( userUid );
+
+            if( user == null)
+            {
+                continue;
+            }
+
+            users.add( user );
 
             if ( writeGroupRequired && !userGroup.getMembers().contains( user ) && !userService.canUpdate( user.getUserCredentials() ) )
             {
@@ -144,7 +156,7 @@ public class UpdateUserGroupAction
         {
             for ( User member : userGroup.getMembers() )
             {
-                if ( !userList.contains( member ) ) // Trying to remove member user from group.
+                if ( !users.contains( member ) ) // Trying to remove member user from group.
                 {
                     boolean otherGroupFound = false;
 
@@ -166,12 +178,11 @@ public class UpdateUserGroupAction
         }
 
         userGroup.setName( name );
-        userGroup.updateUsers( userList );
+        userGroup.updateUsers( users );
 
         if ( jsonAttributeValues != null )
         {
-            AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), 
-                jsonAttributeValues, attributeService );
+            AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), jsonAttributeValues, attributeService );
         }
 
         userGroupService.updateUserGroup( userGroup );
