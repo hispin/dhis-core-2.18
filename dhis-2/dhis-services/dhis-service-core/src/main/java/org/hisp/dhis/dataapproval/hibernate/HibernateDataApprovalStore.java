@@ -256,7 +256,7 @@ public class HibernateDataApprovalStore
 
         if ( categoryComboIds.isEmpty() )
         {
-            log.debug( "No dataset categorycombos to check for approval, user " + ( user == null ? "(null)" : user.getUsername() ) + " datasetIds " + dataSetIds );
+            log.warn( "No dataset categorycombos to check for approval, user " + ( user == null ? "(null)" : user.getUsername() ) + " datasetIds " + dataSetIds );
 
             return new ArrayList<>();
         }

@@ -1560,7 +1560,7 @@ public class ActivityReportingServiceImpl
             items[0] = keyword;
         }
 
-        for ( String item : items )
+        for ( int i = 0; i < items.length; i++ )
         {
             String[] split = keyword.split( ":" );
             if ( split == null || (split.length != 3 && split.length != 2) )
