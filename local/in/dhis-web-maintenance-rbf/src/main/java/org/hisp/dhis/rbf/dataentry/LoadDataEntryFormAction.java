@@ -316,21 +316,26 @@ public class LoadDataEntryFormAction implements Action
             totalDataElementId = totalDataElement.getId();
         }
         
+        optionsMap = new HashMap<Integer, Option>();
+        
         Lookup partnerOptionSetLookup = lookupService.getLookupByName( Lookup.OPTION_SET_PARTNER );
         
-        OptionSet activitesOptionSet = optionService.getOptionSet( Integer.parseInt( partnerOptionSetLookup.getValue() ) );
-        
-        List<Option> options = new ArrayList<Option>();
-        if( activitesOptionSet != null )
+        if( partnerOptionSetLookup != null )
         {
-            options.addAll( activitesOptionSet.getOptions() );
+            OptionSet activitesOptionSet = optionService.getOptionSet( Integer.parseInt( partnerOptionSetLookup.getValue() ) );
+            
+            List<Option> options = new ArrayList<Option>();
+            if( activitesOptionSet != null )
+            {
+                options.addAll( activitesOptionSet.getOptions() );
+            }
+            
+            for( Option option : options )
+            {
+                optionsMap.put( option.getId(), option );
+            }
         }
-        
-        for( Option option : options )
-        {
-            optionsMap.put( option.getId(), option );
-        }
-        
+                
         /*
         String abc = null;
         System.out.println( " Test ABC " +  abc );

@@ -139,7 +139,8 @@
 					<td>
         				<input onblur="savePBFDataValue('$dataElement.id', 1 )" type="text" name="pbfdv_qty_reported_$dataElement.id" id="pbfdv_qty_reported_$dataElement.id" 
         						value="$!pbfDataValue.quantityReported" tabindex="$tabIndex" style="text-align: center;" 
-        						#if($dataElement.type =='number') class="{validate:{number:true}}" 
+        						#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfAdminDataEntry" ) || $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityReported") )  #else readonly = "readonly" #end
+								#if($dataElement.type =='number') class="{validate:{number:true}}" 
         						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
         						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
         						#elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}"
