@@ -34,12 +34,11 @@ import static org.hisp.dhis.dataapproval.DataApprovalState.APPROVED_HERE;
 import static org.hisp.dhis.dataapproval.DataApprovalState.UNAPPROVED_READY;
 import static org.hisp.dhis.dataapproval.DataApprovalState.UNAPPROVED_WAITING;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL;
-import static org.hisp.dhis.system.util.CollectionUtils.asSet;
+import static org.hisp.dhis.system.util.CollectionUtils.asList;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -48,10 +47,12 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dataapproval.DataApproval;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
@@ -204,18 +205,16 @@ public class HibernateDataApprovalStore
 
         PeriodType dataSetPeriodType = dataSets.iterator().next().getPeriodType();
 
-        Collection<Period> periods;
+        List<Period> periods;
 
         if ( period.getPeriodType().equals( dataSetPeriodType ) )
         {
-            periods = asSet( period );
+            periods = asList( period );
         }
         else if ( period.getPeriodType().getFrequencyOrder() > dataSetPeriodType.getFrequencyOrder() )
         {
-            periods = periodService.getPeriodsBetweenDates(
-                    dataSetPeriodType,
-                    period.getStartDate(),
-                    period.getEndDate() );
+            periods = new ArrayList<>( periodService.getPeriodsBetweenDates( dataSetPeriodType,
+                    period.getStartDate(), period.getEndDate() ) );
         }
         else
         {
@@ -228,13 +227,6 @@ public class HibernateDataApprovalStore
 
         final String minDate = DateUtils.getMediumDateString( period.getStartDate() );
         final String maxDate = DateUtils.getMediumDateString( period.getEndDate() );
-
-        String periodIds = "";
-
-        for ( Period p : periods )
-        {
-            periodIds += ( periodIds.isEmpty() ? "" : ", " ) + periodService.reloadPeriod( p ).getId();
-        }
 
         boolean maySeeDefaultCategoryCombo = user == null || user.getUserCredentials() == null ||
                 ( CollectionUtils.isEmpty( user.getUserCredentials().getCogsDimensionConstraints() )
@@ -280,6 +272,10 @@ public class HibernateDataApprovalStore
             
             orgUnitJoinOn = "o.level = " + orgUnitLevel;
         }
+
+        periods = periodService.reloadPeriods( periods );
+        
+        String periodIds = StringUtils.join( IdentifiableObjectUtils.getIdentifiers( periods ), "," );
 
         boolean isSuperUser = currentUserService.currentUserIsSuper();
 
