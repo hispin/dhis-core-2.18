@@ -28,6 +28,8 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.locale.LocaleManager.DHIS_STANDARD_LOCALE;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
@@ -50,7 +52,7 @@ public class MathUtils
     private static DoubleValidator DOUBLE_VALIDATOR = new DoubleValidator();
     private static IntegerValidator INT_VALIDATOR = new IntegerValidator();
     
-    private static final double TOLERANCE = 0.01; 
+    private static final double TOLERANCE = 0.01;
     
     public static final String NUMERIC_REGEXP = "^(-?0|-?[1-9]\\d*)(\\.\\d+)?(E\\d+)?$";
     public static final String NUMERIC_LENIENT_REGEXP = "^(-?[0-9]+)(\\.[0-9]+)?(E\\d+)?$";
@@ -317,7 +319,7 @@ public class MathUtils
      */
     public static boolean isNumeric( String value )
     {
-        return value != null && DOUBLE_VALIDATOR.isValid( value ) && NUMERIC_PATTERN.matcher( value ).matches();
+        return value != null && DOUBLE_VALIDATOR.isValid( value, DHIS_STANDARD_LOCALE ) && NUMERIC_PATTERN.matcher( value ).matches();
     }
 
     /**
@@ -329,7 +331,7 @@ public class MathUtils
      */
     public static boolean isNumericLenient( String value )
     {
-        return value != null && DOUBLE_VALIDATOR.isValid( value ) && NUMERIC_LENIENT_PATTERN.matcher( value ).matches();
+        return value != null && DOUBLE_VALIDATOR.isValid( value, DHIS_STANDARD_LOCALE ) && NUMERIC_LENIENT_PATTERN.matcher( value ).matches();
     }
     
     /**
