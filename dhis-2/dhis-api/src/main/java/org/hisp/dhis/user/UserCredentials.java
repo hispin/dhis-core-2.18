@@ -347,6 +347,7 @@ public class UserCredentials
      * Tests whether the credentials contain all needed parameters to
      * perform an account restore.
      * If a parameter is missing a descriptive error string is returned.
+     *
      * @return null on success, a descriptive error string on failure.
      */
     public String isRestorable()
