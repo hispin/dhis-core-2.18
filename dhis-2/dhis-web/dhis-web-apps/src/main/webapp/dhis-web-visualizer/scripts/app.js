@@ -415,7 +415,7 @@ Ext.onReady( function() {
             dimensionStore.removeAll();
 
 			if (!isAll) {
-				colStore.add({id: dimConf.data.dimensionName, name: dimConf.data.name});
+				//colStore.add({id: dimConf.data.dimensionName, name: dimConf.data.name});
 				rowStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name});
 				filterStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
 				dimensionStore.add({id: dimConf.category.dimensionName, name: dimConf.category.name});
@@ -2254,6 +2254,10 @@ Ext.onReady( function() {
 					}
 				}
 
+                config.columns = columnDimNames.length ? config.columns : null;
+                config.rows = rowDimNames ? config.rows : null;
+                config.filters = filterDimNames ? config.filters : null;
+
 				return config;
             };
 
@@ -2453,6 +2457,7 @@ Ext.onReady( function() {
 			organisationUnitGroupStore,
 
             isScrolled,
+            onDataSelect,
             indicatorLabel,
             indicatorSearch,
             indicatorFilter,
@@ -2780,7 +2785,18 @@ Ext.onReady( function() {
 
 		indicatorSelectedStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
-			data: []
+			data: [],
+            listeners: {
+                add: function() {
+                    onDataSelect();
+                },
+                remove: function() {
+                    onDataSelect();
+                },
+                clear: function() {
+                    onDataSelect();
+                }
+            }
 		});
 		ns.app.stores.indicatorSelected = indicatorSelectedStore;
 
@@ -2958,7 +2974,18 @@ Ext.onReady( function() {
 
 		dataElementSelectedStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
-			data: []
+			data: [],
+            listeners: {
+                add: function() {
+                    onDataSelect();
+                },
+                remove: function() {
+                    onDataSelect();
+                },
+                clear: function() {
+                    onDataSelect();
+                }
+            }
 		});
 		ns.app.stores.dataElementSelected = dataElementSelectedStore;
 
@@ -3065,7 +3092,18 @@ Ext.onReady( function() {
 
 		dataSetSelectedStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
-			data: []
+			data: [],
+            listeners: {
+                add: function() {
+                    onDataSelect();
+                },
+                remove: function() {
+                    onDataSelect();
+                },
+                clear: function() {
+                    onDataSelect();
+                }
+            }
 		});
 		ns.app.stores.dataSetSelected = dataSetSelectedStore;
 
@@ -3170,6 +3208,30 @@ Ext.onReady( function() {
 
 			return scrollBottom / el.scrollHeight > 0.9;
 		};
+
+        onDataSelect = function() {
+            var win = ns.app.layoutWindow,
+                stores = [indicatorSelectedStore, dataElementSelectedStore, dataSetSelectedStore],
+                dimension = dimConf.data,
+                hasItems;
+
+            hasItems = function(storeArray) {
+                for (var i = 0; i < storeArray.length; i++) {
+                    if (storeArray[i].getRange().length) {
+                        return true;
+                    }
+                }
+
+                return false;
+            };
+
+            if (hasItems(stores)) {
+                win.addDimension({id: dimension.dimensionName, name: dimension.name});
+            }
+            else if (!hasItems(stores) && win.hasDimension(dimension.dimensionName)) {
+                win.removeDimension(dimension.dimensionName);
+            }
+        };
 
         indicatorLabel = Ext.create('Ext.form.Label', {
             text: NS.i18n.available,
