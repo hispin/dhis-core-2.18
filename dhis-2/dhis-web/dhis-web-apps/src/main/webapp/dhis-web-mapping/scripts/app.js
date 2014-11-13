@@ -4619,12 +4619,13 @@ Ext.onReady( function() {
 			labelSeparator: '',
             columnWidth: 0.5,
             height: 41,
-            value: function() {
-                var greg = $.calendars.instance('gregorian'),
-                    date = greg.parseDate('yyyy-mm-dd', (new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))).toJSON().slice(0,10));
+            //value: function() {
+                ////var greg = $.calendars.instance('gregorian'),
+                //var date = gis.init.calendar.parseDate('yyyy-mm-dd', (new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))).toJSON().slice(0,10));
 
-                return gis.init.calendar.formatDate(gis.init.systemInfo.dateFormat, date);
-            }(),
+                //return gis.init.calendar.formatDate(gis.init.systemInfo.dateFormat, date);
+            //}(),
+            value: gis.init.calendar.formatDate(gis.init.systemInfo.dateFormat, gis.init.calendar.today()),
             listeners: {
                 render: function(c) {
                     onDateFieldRender(c);
