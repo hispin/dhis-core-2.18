@@ -5401,6 +5401,138 @@ Ext.onReady( function() {
 			}
 		});
 
+		downloadButton = Ext.create('Ext.button.Button', {
+			text: 'Download',
+			disabled: true,
+			menu: function() {
+                var b = this;
+
+                b.menu = Ext.create('Ext.menu.Menu', {
+                    closeAction: 'destroy',
+                    //cls: 'ns-menu',
+                    shadow: false,
+                    showSeparator: false,
+                    items: function() {
+                        var items = [
+                            {
+                                xtype: 'label',
+                                text: NS.i18n.table_layout,
+                                style: 'padding:7px 5px 5px 7px; font-weight:bold; border:0 none'
+                            },
+                            {
+                                text: 'Microsoft Excel (.xls)',
+                                iconCls: 'ns-menu-item-tablelayout',
+                                handler: function() {
+                                    openTableLayoutTab('xls');
+                                }
+                            },
+                            {
+                                text: 'CSV (.csv)',
+                                iconCls: 'ns-menu-item-tablelayout',
+                                handler: function() {
+                                    openTableLayoutTab('csv');
+                                }
+                            },
+                            {
+                                text: 'HTML (.html)',
+                                iconCls: 'ns-menu-item-tablelayout',
+                                handler: function() {
+                                    openTableLayoutTab('html+css', true);
+                                }
+                            },
+                            {
+                                xtype: 'label',
+                                text: NS.i18n.plain_data_sources,
+                                style: 'padding:7px 5px 5px 7px; font-weight:bold'
+                            },
+                            {
+                                text: 'JSON',
+                                iconCls: 'ns-menu-item-datasource',
+                                handler: function() {
+                                    if (ns.core.init.contextPath && ns.app.paramString) {
+                                        window.open(ns.core.init.contextPath + '/api/analytics.json' + getParamString(), '_blank');
+                                    }
+                                }
+                            },
+                            {
+                                text: 'XML',
+                                iconCls: 'ns-menu-item-datasource',
+                                handler: function() {
+                                    if (ns.core.init.contextPath && ns.app.paramString) {
+                                        window.open(ns.core.init.contextPath + '/api/analytics.xml' + getParamString(), '_blank');
+                                    }
+                                }
+                            },
+                            {
+                                text: 'Microsoft Excel',
+                                iconCls: 'ns-menu-item-datasource',
+                                handler: function() {
+                                    if (ns.core.init.contextPath && ns.app.paramString) {
+                                        window.location.href = ns.core.init.contextPath + '/api/analytics.xls' + getParamString();
+                                    }
+                                }
+                            },
+                            {
+                                text: 'CSV',
+                                iconCls: 'ns-menu-item-datasource',
+                                handler: function() {
+                                    if (ns.core.init.contextPath && ns.app.paramString) {
+                                        window.location.href = ns.core.init.contextPath + '/api/analytics.csv' + getParamString();
+                                    }
+                                }
+                            },
+                            {
+                                text: 'JRXML',
+                                iconCls: 'ns-menu-item-datasource',
+                                handler: function() {
+                                    if (ns.core.init.contextPath && ns.app.paramString) {
+                                        window.open(ns.core.init.contextPath + '/api/analytics.jrxml' + getParamString(), '_blank');
+                                    }
+                                }
+                            }
+                        ];
+
+                        if (ns.app.layout && !!ns.app.layout.showHierarchy && ns.app.xResponse.nameHeaderMap.hasOwnProperty('ou')) {
+                            items.push({
+                                xtype: 'label',
+                                text: NS.i18n.plain_data_sources + ' w/ hierarchy',
+                                style: 'padding:7px 8px 5px 7px; font-weight:bold'
+                            });
+
+                            items.push({
+                                text: 'CSV',
+                                iconCls: 'ns-menu-item-datasource',
+                                hidden: !(ns.app.layout && !!ns.app.layout.showHierarchy && ns.app.xResponse.nameHeaderMap.hasOwnProperty('ou')),
+                                handler: function() {
+                                    var response = ns.core.service.response.addOuHierarchyDimensions(Ext.clone(ns.app.response));
+
+                                    ns.core.web.document.printResponseCSV(response);
+                                }
+                            });
+                        }
+
+                        return items;
+                    }(),
+                    listeners: {
+                        added: function() {
+                            ns.app.downloadButton = this;
+                        },
+                        show: function() {
+                            ns.core.web.window.setAnchorPosition(b.menu, b);
+                        },
+                        hide: function() {
+                            b.menu.destroy();
+                        },
+                        destroy: function(m) {
+                            b.menu = null;
+                        }
+                    }
+                });
+
+                return b.menu;
+			}()
+		});
+
 		interpretationItem = Ext.create('Ext.menu.Item', {
 			text: 'Write interpretation' + '&nbsp;&nbsp;',
 			iconCls: 'ns-menu-item-tablelayout',
@@ -6176,7 +6308,7 @@ Ext.onReady( function() {
 				ns.app.viewport = createViewport();
 			}
 		};
-        
+
 		// requests
 		Ext.Ajax.request({
 			url: 'manifest.webapp',

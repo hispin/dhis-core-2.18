@@ -4619,13 +4619,7 @@ Ext.onReady( function() {
 			labelSeparator: '',
             columnWidth: 0.5,
             height: 41,
-            //value: function() {
-                ////var greg = $.calendars.instance('gregorian'),
-                //var date = gis.init.calendar.parseDate('yyyy-mm-dd', (new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))).toJSON().slice(0,10));
-
-                //return gis.init.calendar.formatDate(gis.init.systemInfo.dateFormat, date);
-            //}(),
-            value: gis.init.calendar.formatDate(gis.init.systemInfo.dateFormat, gis.init.calendar.today()),
+            value: gis.init.calendar.formatDate(gis.init.systemInfo.dateFormat, gis.init.calendar.today().add(-3, 'm')),
             listeners: {
                 render: function(c) {
                     onDateFieldRender(c);
@@ -4970,7 +4964,6 @@ Ext.onReady( function() {
 			displayField: 'name',
 			emptyText: GIS.i18n.select_organisation_unit_levels,
 			editable: false,
-			hidden: true,
 			store: {
 				fields: ['id', 'name', 'level'],
 				data: gis.init.organisationUnitLevels
@@ -4986,7 +4979,6 @@ Ext.onReady( function() {
 			displayField: 'name',
 			emptyText: GIS.i18n.select_organisation_unit_groups,
 			editable: false,
-			hidden: true,
 			store: gis.store.organisationUnitGroup
 		});
 
@@ -5006,11 +4998,9 @@ Ext.onReady( function() {
 		toolMenu = Ext.create('Ext.menu.Menu', {
 			shadow: false,
 			showSeparator: false,
-			menuValue: 'orgunit',
+			menuValue: 'level',
 			clickHandler: function(param) {
-				if (!param) {
-					return;
-				}
+				param = param || this.menuValue;
 
 				var items = this.items.items;
 				this.menuValue = param;
@@ -5064,18 +5054,15 @@ Ext.onReady( function() {
 				},
 				{
 					text: GIS.i18n.select_organisation_units + '&nbsp;&nbsp;',
-					param: 'orgunit',
-					iconCls: 'gis-menu-item-selected'
+					param: 'orgunit'
 				},
 				{
 					text: 'Select levels' + '&nbsp;&nbsp;',
-					param: 'level',
-					iconCls: 'gis-menu-item-unselected'
+					param: 'level'
 				},
 				{
 					text: 'Select groups' + '&nbsp;&nbsp;',
-					param: 'group',
-					iconCls: 'gis-menu-item-unselected'
+					param: 'group'
 				}
 			],
 			listeners: {
@@ -5120,7 +5107,12 @@ Ext.onReady( function() {
                     ]
                 },
                 treePanel
-            ]
+            ],
+			listeners: {
+				render: function() {
+                    toolMenu.clickHandler();
+                }
+            }
         });
 
             // accordion
