@@ -328,21 +328,22 @@ public class HibernateDataApprovalStore
         {
             approvedAboveSubquery = "exists(select 1 from dataapproval da " +
                     "join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
+                    "join dataset ds on ds.datasetid in (" + dataSetIds + ") and ds.categorycomboid = a.categorycomboid " +
                     "join _orgunitstructure ou on ou.organisationunitid = a.organisationunitid and ou.idlevel" + orgUnitLevelAbove + " = da.organisationunitid " +
-                    "where da.periodid in (" + periodIds + ") and da.datasetid in (" + dataSetIds + ") and da.attributeoptioncomboid = a.categoryoptioncomboid)";
+                    "where da.periodid in (" + periodIds + ") and da.attributeoptioncomboid = a.categoryoptioncomboid) ";
         }
 
         final String sql =
                 "select a.categoryoptioncomboid, a.organisationunitid, " +
                 "(select min(coalesce(dal.level, 0)) from period p " +
-                    "join dataset ds on ds.datasetid in (" + dataSetIds + ") " +
+                    "join dataset ds on ds.datasetid in (" + dataSetIds + ") and ds.categorycomboid = a.categorycomboid " +
                     "left join dataapproval da on da.datasetid = ds.datasetid and da.periodid = p.periodid " +
                         "and da.attributeoptioncomboid = a.categoryoptioncomboid and da.organisationunitid = a.organisationunitid " +
                     "left join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
                     "where p.periodid in (" + periodIds + ") " +
                 ") as highest_approved_level, " +
                 "(select substring(min(concat(100000 + coalesce(dal.level, 0), coalesce(da.accepted, FALSE))) from 7) from period p " +
-                    "join dataset ds on ds.datasetid in (" + dataSetIds + ") " +
+                    "join dataset ds on ds.datasetid in (" + dataSetIds + ") and ds.categorycomboid = a.categorycomboid " +
                     "left join dataapproval da on da.datasetid = ds.datasetid and da.periodid = p.periodid " +
                         "and da.attributeoptioncomboid = a.categoryoptioncomboid and da.organisationunitid = a.organisationunitid " +
                     "left join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
@@ -351,7 +352,7 @@ public class HibernateDataApprovalStore
                 readyBelowSubquery + " as ready_below, " +
                 approvedAboveSubquery + " as approved_above " +
                 "from ( " + // subquery to get combinations of organisation unit and category option combo
-                    "select distinct cocco.categoryoptioncomboid, o.organisationunitid " +
+                    "select distinct cocco.categoryoptioncomboid, ccoc.categorycomboid, o.organisationunitid " +
                     "from categoryoptioncombos_categoryoptions cocco " +
                     "join categorycombos_optioncombos ccoc on ccoc.categoryoptioncomboid = cocco.categoryoptioncomboid and ccoc.categorycomboid in (" + dataSetCcIds + ") " +
                     "join dataelementcategoryoption co on co.categoryoptionid = cocco.categoryoptionid " +
