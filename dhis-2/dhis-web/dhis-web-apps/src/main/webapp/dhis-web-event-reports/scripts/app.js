@@ -4048,12 +4048,7 @@ Ext.onReady( function() {
 			labelSeparator: '',
             columnWidth: 0.5,
             height: 44,
-            value: function() {
-                var greg = $.calendars.instance('gregorian'),
-                    date = greg.parseDate('yyyy-mm-dd', (new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))).toJSON().slice(0,10));
-
-                return ns.core.init.calendar.formatDate(ns.core.init.systemInfo.dateFormat, date);
-            }(),
+            value: ns.core.init.calendar.formatDate(ns.core.init.systemInfo.dateFormat, ns.core.init.calendar.today().add(-3, 'm')),
             listeners: {
                 render: function(c) {
                     onDateFieldRender(c);
