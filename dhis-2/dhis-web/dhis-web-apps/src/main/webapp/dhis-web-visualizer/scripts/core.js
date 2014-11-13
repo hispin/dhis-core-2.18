@@ -549,6 +549,17 @@ Ext.onReady( function() {
 						return;
 					}
 
+					// check dimensions: null means no dimension in layout
+					if (!config.columns) {
+						alert('No series dimension selected. Please go to Layout and add a dimension to the Series area.');
+						return;
+					}
+
+					if (!config.rows) {
+						alert('No category dimension selected. Please go to Layout and add a dimension to the Category area.');
+						return;
+					}
+
                     config.columns = getValidatedDimensionArray(config.columns);
                     config.rows = getValidatedDimensionArray(config.rows);
                     config.filters = getValidatedDimensionArray(config.filters);
@@ -2365,7 +2376,7 @@ Ext.onReady( function() {
                                 legend = this.legend,
                                 legendCenterX,
                                 titleX;
-                                
+
                             if (this.legend.position === 'top') {
                                 legendCenterX = legend.x + (legend.width / 2);
                                 titleX = titleWidth ? legendCenterX - (titleWidth / 2) : titleXFallback;
