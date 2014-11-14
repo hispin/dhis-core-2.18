@@ -1,4 +1,4 @@
-package org.hisp.dhis.webapi.webdomain.sharing;
+package org.hisp.dhis.webapi.webdomain.sharing.comparator;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,60 +28,19 @@ package org.hisp.dhis.webapi.webdomain.sharing;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import java.util.Comparator;
 
-/**
- * @author Morten Olav Hansen <mortenoh@gmail.com>
- */
-public class SharingUserGroupAccess
+import org.hisp.dhis.webapi.webdomain.sharing.SharingUserGroupAccess;
+
+public class SharingUserGroupAccessNameComparator
+    implements Comparator<SharingUserGroupAccess>
 {
-    @JsonProperty
-    private String id;
+    public static final SharingUserGroupAccessNameComparator INSTANCE = new SharingUserGroupAccessNameComparator();
 
-    @JsonProperty
-    private String name;
-
-    @JsonProperty
-    private String access;
-
-    public SharingUserGroupAccess()
+    @Override
+    public int compare( SharingUserGroupAccess s1, SharingUserGroupAccess s2 )
     {
-    }
-
-    public String getId()
-    {
-        return id;
-    }
-
-    public void setId( String id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public String getAccess()
-    {
-        return access;
-    }
-
-    public void setAccess( String access )
-    {
-        this.access = access;
-    }
-    
-    public String toString()
-    {
-        return Objects.toStringHelper( this ).
-            add( "id", id ).add( "name", name ).add( "access", access ).toString();
+        return s1 != null && s1.getName() != null ? s2 != null && s2.getName() != null ? 
+            s1.getName().compareToIgnoreCase( s2.getName() ) : -1 : 1;
     }
 }
