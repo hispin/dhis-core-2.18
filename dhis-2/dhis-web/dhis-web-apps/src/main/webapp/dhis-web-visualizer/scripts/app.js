@@ -2204,6 +2204,8 @@ Ext.onReady( function() {
 					config = ns.app.optionsWindow.getOptions(),
 					dx = dimConf.data.dimensionName,
 					co = dimConf.category.dimensionName,
+                    pe = dimConf.period.dimensionName,
+                    ou = dimConf.organisationUnit.dimensionName,
 					nameDimArrayMap = {};
 
                 config.type = ns.app.viewport.chartType.getChartType();
@@ -2228,6 +2230,9 @@ Ext.onReady( function() {
 					nameDimArrayMap[dimConf.dataSet.objectName] || []
 				));
 
+                nameDimArrayMap[pe] = nameDimArrayMap[pe] || [];
+                nameDimArrayMap[ou] = nameDimArrayMap[ou] || [];
+
 				// columns, rows, filters
 				for (var i = 0, nameArrays = [columnDimNames, rowDimNames, filterDimNames], axes = [config.columns, config.rows, config.filters], dimNames; i < nameArrays.length; i++) {
 					dimNames = nameArrays[i];
@@ -2247,16 +2252,24 @@ Ext.onReady( function() {
 							}
 						}
 						else if (nameDimArrayMap.hasOwnProperty(dimName) && nameDimArrayMap[dimName]) {
-							for (var k = 0; k < nameDimArrayMap[dimName].length; k++) {
-								axes[i].push(Ext.clone(nameDimArrayMap[dimName][k]));
-							}
+                            if (nameDimArrayMap[dimName].length) {
+                                for (var k = 0; k < nameDimArrayMap[dimName].length; k++) {
+                                    axes[i].push(Ext.clone(nameDimArrayMap[dimName][k]));
+                                }
+                            }
+                            else {
+                                axes[i].push({
+                                    dimension: dimName,
+                                    items: []
+                                });
+                            }
 						}
 					}
 				}
 
                 config.columns = columnDimNames.length ? config.columns : null;
-                config.rows = rowDimNames ? config.rows : null;
-                config.filters = filterDimNames ? config.filters : null;
+                config.rows = rowDimNames.length ? config.rows : null;
+                config.filters = filterDimNames.length ? config.filters : null;
 
 				return config;
             };
