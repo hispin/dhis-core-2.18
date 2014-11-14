@@ -28,10 +28,18 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ANALYTICS_MAINTENANCE_MODE;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ANALYTICS_MAX_LIMIT;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_DATABASE_SERVER_CPUS;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_GOOGLE_ANALYTICS_UA;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_HELP_PAGE_LINK;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_MULTI_ORGANISATION_UNIT_FORMS;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -41,13 +49,11 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserGroupService;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.hisp.dhis.setting.SystemSettingManager.*;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class SetGeneralSettingsAction
     implements Action
@@ -98,9 +104,6 @@ public class SetGeneralSettingsAction
         this.organisationUnitService = organisationUnitService;
     }
     
-    @Autowired
-    private CalendarService calendarService;
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -196,20 +199,6 @@ public class SetGeneralSettingsAction
         this.analyticsMaintenanceMode = analyticsMaintenanceMode;
     }
     
-    private String calendar;
-
-    public void setCalendar( String calendar )
-    {
-        this.calendar = calendar;
-    }
-
-    private String dateFormat;
-
-    public void setDateFormat( String dateFormat )
-    {
-        this.dateFormat = dateFormat;
-    }
-
     private String helpPageLink;
     
     public void setHelpPageLink( String helpPageLink )
@@ -249,9 +238,6 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_ANALYTICS_MAINTENANCE_MODE, analyticsMaintenanceMode );
         systemSettingManager.saveSystemSetting( KEY_HELP_PAGE_LINK, StringUtils.trimToNull( helpPageLink ) );
 
-        calendarService.setSystemCalendarKey( calendar );
-        calendarService.setSystemDateFormatKey( dateFormat );
-        
         Configuration configuration = configurationService.getConfiguration();
 
         if ( feedbackRecipients != null )

@@ -650,8 +650,13 @@
 
    <!-- PBF Reports -->
    <action name="partnerForm" class="org.hisp.dhis.rbf.partner.action.PartnerFormAction">
-        <result name="success" type="velocity">/main.vm</result>
+       <result name="success" type="velocity">/content.vm</result>
         <param name="page">/dhis-web-maintenance-rbf/partnerForm.vm</param>
+    </action>
+   
+   <action name="partnerFundManagementForm" class="org.hisp.dhis.rbf.partner.action.PartnerFundManagement">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-rbf/partnerFundManagement.vm</param>
         <param name="javascripts">javascript/partner.js</param>
         <param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
         <param name="requiredAuthorities">F_PBF_PARTNER</param>
@@ -673,14 +678,5 @@
     </action>
 
 
-
-
-
-
-
-
-
-
-	
 	</package>
 </struts>

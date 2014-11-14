@@ -801,6 +801,13 @@
 	
 	
     <!-- Partner Form -->
+
+    <bean id="org.hisp.dhis.rbf.partner.action.PartnerFundManagement"
+          class="org.hisp.dhis.rbf.partner.action.PartnerFundManagement"
+          scope="prototype">
+    </bean>
+
+
     <bean id="org.hisp.dhis.rbf.partner.action.PartnerFormAction"
         class="org.hisp.dhis.rbf.partner.action.PartnerFormAction"
         scope="prototype">

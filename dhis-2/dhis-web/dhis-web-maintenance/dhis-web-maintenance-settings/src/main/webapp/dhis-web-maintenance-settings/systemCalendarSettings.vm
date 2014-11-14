@@ -1,7 +1,7 @@
 <script>
   jQuery(document).ready(function() {
     jQuery("input[type=button]").click(function() {
-      jQuery.postUTF8('setSystemGeneralSettings.action', {
+      jQuery.postUTF8('setSystemCalendarSettings.action', {
         calendar: getFieldValue('calendar'),
         dateFormat: getFieldValue('dateFormat')
       }, function( json ) {
