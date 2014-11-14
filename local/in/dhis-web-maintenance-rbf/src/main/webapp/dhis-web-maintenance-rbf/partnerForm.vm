@@ -1,95 +1,113 @@
 
 <script type="text/javascript">
 
-function formValidations()
-{
-   	//alert("validation");
-    
-	/*
-    var startPeriodList = document.getElementById("dataSetId");
-    var startPeriodIndex = startPeriodList.selectedIndex;
-    
-    if( startPeriodList.options[startPeriodIndex].value == null || startPeriodList.options[startPeriodIndex].value== "-1" ) 
-   	{ 
-        showWarningMessage( "Please Select Period" );
-        //alert("Please Select Period"); 
-        return false; 
-    }
-    */
-	
-	var dataSetId = $( '#dataSetId' ).val();
-	var optionSetId = $( '#optionSetId' ).val();
-	var dataElementId = $( '#dataElementId' ).val();
-	var periodId = $( '#periodId' ).val();
-	
-	if ( dataSetId == "-1" )
-	{
-		showWarningMessage( "Please Select DataSet" );
-		
-		return false;
-	}
-	
-	else if( optionSetId == "-1" )
-	{
-		showWarningMessage( "Please Select Partner" );
-		return false;
-	}
-	
-	else if( dataElementId == "-1" )
-	{
-		showWarningMessage( "Please Select DataElement" );
-		return false;
-	}	
-	
-	else if( periodId == "-1" )
-	{
-		showWarningMessage( "Please Select Period" );
-		return false;
-	}	
+    function formValidations()
+    {
+        //alert("validation");
 
-	return true;
-}
+        /*
+        var startPeriodList = document.getElementById("dataSetId");
+        var startPeriodIndex = startPeriodList.selectedIndex;
+
+        if( startPeriodList.options[startPeriodIndex].value == null || startPeriodList.options[startPeriodIndex].value== "-1" )
+           {
+            showWarningMessage( "Please Select Period" );
+            //alert("Please Select Period");
+            return false;
+        }
+        */
+
+        var dataSetId = $( '#dataSetId' ).val();
+        var optionSetId = $( '#optionSetId' ).val();
+        var dataElementId = $( '#dataElementId' ).val();
+//	var periodId = $( '#periodId' ).val();
+
+        if ( dataSetId == "-1" )
+        {
+            showWarningMessage( "Please Select DataSet" );
+
+            return false;
+        }
+
+        else if( optionSetId == "-1" )
+        {
+            showWarningMessage( "Please Select Partner" );
+            return false;
+        }
+
+        else if( dataElementId == "-1" )
+        {
+            showWarningMessage( "Please Select DataElement" );
+            return false;
+        }
+        else if( $("#startDate").val() == ""  )
+        {
+            showWarningMessage( "Please Select Start Date" );
+            return false;
+        }
+        else if( $("#endDate").val() == "" )
+        {
+            showWarningMessage( "Please Select End Date" );
+            return false;
+        }
+
+
+        /*	else if( periodId == "-1" )
+            {
+                showWarningMessage( "Please Select Period" );
+                return false;
+            }
+        */
+        return true;
+    }
+
 
 </script>
+
 
 
 <h3>$i18n.getString( "partner_management" )</h3>
 
 <form id="partnerForm" name="partnerForm" action="partnerFormResult.action" method="post" onsubmit="return formValidations()" >
 
-	
-<table>
-	<tr>
-		<td><label for="dataSetId">$i18n.getString( "dataSet" )</label></td>
-		<td><select id="dataSetId" name="dataSetId" style="width:220px" onchange="loadDataElementAndPeriod()" >
-				<option value="-1">[$i18n.getString( "select" )]</option>
-					#foreach( $dataSet in $dataSets )
-						<option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
-					#end
-			</select>
-		</td>
-	</tr>
-	
-	<tr>
-		<td><label for="partner">$i18n.getString( "partner" )</label></td>
-		<td><select id="optionSetId" name="optionSetId" style="width:220px" >
-				<option value="-1">[$i18n.getString( "select" )]</option>
-					#foreach( $option in $options )
-						<option value="$option.id">$encoder.htmlEncode( $option.name )</option>
-					#end
-			</select>
-		</td>
-	</tr>
 
-	<tr>
-		<td><label>$i18n.getString( "dataElement" )</label></td>
-		<td>
-			<select id="dataElementId" name = "dataElementId" style="width:220px" >
-				<option value="-1">[$i18n.getString( "select" )]</option>
-			</select>
-		</td>
-    </tr>	
-	
+    <table>
+        <tr>
+            <td><label for="dataSetId">$i18n.getString( "dataSet" )</label></td>
+            <td>
+         <!--   <select id="dataSetId" name="dataSetId" style="width:220px" onchange="loadDataElementAndPeriod()" >
+                <option value="-1">[$i18n.getString( "select" )]</option>
+                #foreach( $dataSet in $dataSets )
+                    <option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
+                #end
+            </select> -->
+            <input type="text" name="dataset" value="$dataSetName" readonly>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="partner">$i18n.getString( "partner" )</label></td>
+            <td>
+               <!-- <select id="optionSetId" name="optionSetId" style="width:220px" >
+                <option value="-1">[$i18n.getString( "select" )]</option>
+                #foreach( $option in $options )
+                    <option value="$option.id">$encoder.htmlEncode( $option.name )</option>
+                #end
+            </select> -->
+                <input type="text" name="partner" value="$partenrName" readonly>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label>$i18n.getString( "dataElement" )</label></td>
+            <td>
+              <!--  <select id="dataElementId" name = "dataElementId" style="width:220px" >
+                    <option value="-1">[$i18n.getString( "select" )]</option>
+                </select> -->
+                <input type="text" name="dataElement" value="$dataElementName" readonly>
+            </td>
+        </tr>
+        <!--
 	<tr>
 		<td><label>$i18n.getString( "period" )</label></td>
 		<td>
@@ -97,25 +115,41 @@ function formValidations()
 				<option value="-1">[$i18n.getString( "select" )]</option>
 			</select>
 		</td>
-    </tr>		
-	
-	
-</table>	
-	
-	
-	
-	
-<table id="selectionTable">
-    <tr>
-        <td>
-			#organisationUnitSelectionTree( false, true, false )
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <input type="submit" id="saveButton" value="$i18n.getString( 'save' )" style="width:10em"/>
-        </td>
-    </tr>
-</table>
+    </tr>-->
+
+        <tr >
+            <td style="width:40%;">Start Date <b class="mandatory">*</b> </td>
+            <td style="width:60%;"><input type="text" id="startDate" style="width:100%;" name = "startDate" />
+                <script type="text/javascript">
+                    datePicker( 'startDate' );
+                </script>
+            </td>
+        </tr>
+
+        <tr >
+            <td style="width:40%;">End Date <b class="mandatory">*</b> </td>
+            <td style="width:60%;"><input type="text" id="endDate" style="width:100%;" name = "endDate"  />
+                <script type="text/javascript">
+                    datePicker( 'endDate' );
+                </script>
+            </td>
+        </tr>
+
+
+    </table>
+
+
+    <table id="selectionTable">
+        <tr>
+            <td>
+                #organisationUnitSelectionTree( false, true, false )
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" id="saveButton" value="$i18n.getString( 'save' )" style="width:10em"/>
+            </td>
+        </tr>
+    </table>
 
 </form>

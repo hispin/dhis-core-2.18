@@ -28,6 +28,11 @@
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
+  <bean id="org.hisp.dhis.settings.action.system.SetCalendarSettingsAction"
+    class="org.hisp.dhis.settings.action.system.SetCalendarSettingsAction"
+    scope="prototype">
+  </bean>
+
   <bean id="org.hisp.dhis.settings.action.system.GetAppearanceSettingsAction"
     class="org.hisp.dhis.settings.action.system.GetAppearanceSettingsAction"
     scope="prototype">

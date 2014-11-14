@@ -1,8 +1,6 @@
-
 <h2>$i18n.getString( "pbf_setup" )</h2>
-<ul>	
 
-   	
+<ul>	
 	
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfDataEntry") )
     	<li><a href="pbfDataEntry.action">$i18n.getString( "pbf_dataentry" )</a></li>
@@ -21,7 +19,7 @@
     #end	
 
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "partnerForm") )
-        <li><a href="partnerForm.action">$i18n.getString( "partner_management" )</a></li>
+        <li><a href="partnerFundManagementForm.action">$i18n.getString( "partner_management" )</a></li>
     #end
 	
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "bankDetailsManagement") )

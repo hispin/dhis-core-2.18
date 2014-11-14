@@ -42,8 +42,8 @@ function populateDataElementAndPeriodList( data )
 	var dataElementId = document.getElementById("dataElementId");
 	clearList( dataElementId );
 	
-	var periodId = document.getElementById("periodId");
-	clearList( periodId );
+	//var periodId = document.getElementById("periodId");
+	//clearList( periodId );
 	
 	var dataElementList = data.getElementsByTagName("dataelement");
 	
@@ -61,7 +61,7 @@ function populateDataElementAndPeriodList( data )
 		dataElementId.add(option, null);
 	} 
 	
-	var periodList = data.getElementsByTagName("period");
+	/*var periodList = data.getElementsByTagName("period");
 	
 	periodId.options[0] = new Option( "Select", "-1" , false, false);
 	
@@ -75,7 +75,7 @@ function populateDataElementAndPeriodList( data )
 		option.text = name;
 		option.title = name;
 		periodId.add(option, null);
-	} 
+	} */
 	
 }
 

@@ -22,6 +22,14 @@
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
+    
+    <action name="setSystemCalendarSettings" class="org.hisp.dhis.settings.action.system.SetCalendarSettingsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+    </action>
 
     <!-- General settings -->
 
