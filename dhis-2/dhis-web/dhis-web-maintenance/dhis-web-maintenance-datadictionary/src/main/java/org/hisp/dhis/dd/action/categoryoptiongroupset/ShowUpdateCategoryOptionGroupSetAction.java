@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -86,6 +87,8 @@ public class ShowUpdateCategoryOptionGroupSetAction
         categoryOptionGroupSet = dataElementCategoryService.getCategoryOptionGroupSet( id );
 
         categoryOptionGroups = new ArrayList<>( categoryOptionGroupSet.getMembers() );
+
+        Collections.sort( categoryOptionGroups );
 
         return SUCCESS;
     }
