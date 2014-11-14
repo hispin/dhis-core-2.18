@@ -120,9 +120,17 @@ public class DefaultDataApprovalService
         {
             DataApprovalStatus status = getStatus( da, statusMap );
 
-            if ( da.getDataApprovalLevel() == null )
+            if ( da.getDataApprovalLevel() == null ) // Determine the approval level.
             {
-                da.setDataApprovalLevel( status.getDataApproval().getDataApprovalLevel() );
+                if ( status.getState().isApproved() ) // If approved already, approve at next level up (lower level number).
+                {
+                    da.setDataApprovalLevel( dataApprovalLevelService.getDataApprovalLevelByLevelNumber(
+                            status.getDataApproval().getDataApprovalLevel().getLevel() - 1 ) );
+                }
+                else
+                {
+                    da.setDataApprovalLevel( status.getDataApproval().getDataApprovalLevel() );
+                }
             }
 
             if ( status != null && status.getState().isApproved() &&
