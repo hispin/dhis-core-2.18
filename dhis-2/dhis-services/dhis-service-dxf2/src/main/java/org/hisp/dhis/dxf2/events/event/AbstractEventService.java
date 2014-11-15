@@ -28,10 +28,22 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
@@ -61,9 +73,8 @@ import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
-import org.hisp.dhis.system.timer.SystemTimer;
-import org.hisp.dhis.system.timer.Timer;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
@@ -75,19 +86,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -180,23 +182,24 @@ public abstract class AbstractEventService
     {
         notifier.clear( taskId ).notify( taskId, "Importing events" );
 
-        Timer timer = new SystemTimer().start();
-
-        ImportSummaries importSummaries = addEvents( events, importOptions );
-
-        timer.stop();
-
-        if ( taskId != null )
+        try
         {
-            notifier.notify( taskId, NotificationLevel.INFO, "Import done. Completed in " + timer.toString() + ".", true ).
-                addTaskSummary( taskId, importSummaries );
+            ImportSummaries importSummaries = addEvents( events, importOptions );
+    
+            if ( taskId != null )
+            {
+                notifier.notify( taskId, NotificationLevel.INFO, "Import done", true ).addTaskSummary( taskId, importSummaries );
+            }
+            
+            return importSummaries;
         }
-        else
+        catch ( RuntimeException ex )
         {
-            log.info( "Import done, completed in " + timer.toString() );
+            log.error( DebugUtils.getStackTrace( ex ) );
+            notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
+            return new ImportSummaries().addImportSummary( new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() ) );
         }
-
-        return importSummaries;
+        
     }
 
     @Override

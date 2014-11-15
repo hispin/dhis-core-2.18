@@ -55,7 +55,7 @@ public class ImportSummaries
     {
     }
 
-    public void addImportSummary( ImportSummary importSummary )
+    public ImportSummaries addImportSummary( ImportSummary importSummary )
     {
         if ( importSummary.getDataValueCount() != null )
         {
@@ -72,6 +72,8 @@ public class ImportSummaries
         }
 
         importSummaries.add( importSummary );
+        
+        return this;
     }
 
     @JsonProperty
