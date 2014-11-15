@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 import com.opensymphony.xwork2.Action;
+
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -72,6 +73,13 @@ public class AddDataElementCategoryOptionAction
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    private String shortName;
+
+    public void setShortName( String shortName )
+    {
+        this.shortName = shortName;
     }
 
     private String code;
@@ -131,6 +139,7 @@ public class AddDataElementCategoryOptionAction
         }
 
         dataElementCategoryOption = new DataElementCategoryOption( name );
+        dataElementCategoryOption.setShortName( shortName );
         dataElementCategoryOption.setCode( code );
         dataElementCategoryOption.setStartDate( sDate );
         dataElementCategoryOption.setEndDate( eDate );

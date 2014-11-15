@@ -69,6 +69,13 @@ public class ValidateDataElementCategoryOptionAction
     {
         this.name = name;
     }
+    
+    private String shortName;
+
+    public void setShortName( String shortName )
+    {
+        this.shortName = shortName;
+    }
 
     private String code;
 
@@ -109,6 +116,18 @@ public class ValidateDataElementCategoryOptionAction
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_in_use" );
+
+                return ERROR;
+            }
+        }
+
+        if ( shortName != null )
+        {
+            DataElementCategoryOption match = dataElementCategoryService.getDataElementCategoryOptionByShortName( shortName );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "short_name_in_use" );
 
                 return ERROR;
             }

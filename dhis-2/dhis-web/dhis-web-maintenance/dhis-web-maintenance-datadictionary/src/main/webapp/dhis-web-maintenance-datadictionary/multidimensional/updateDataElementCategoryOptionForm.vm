@@ -5,9 +5,6 @@
 			'rules': getValidationRules("dateElementCategoryOption")
 		});
 
-        dhis2.period.picker.createInstance('#startDate');
-        dhis2.period.picker.createInstance('#endDate');
-
         $('#startDate').calendarsPicker('option', 'maxDate', dhis2.period.calendar.add(dhis2.period.calendar.today(), 100, 'y'));
         $('#endDate').calendarsPicker('option', 'maxDate', dhis2.period.calendar.add(dhis2.period.calendar.today(), 100, 'y'));
 
@@ -19,6 +16,11 @@
         #if ( $moreOptionsPresent ) showMoreOrFewerOptions(); #end
 
         checkValueIsExist( "name", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.id} );
+        checkValueIsExist( "shortName", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.id} );
+        checkValueIsExist( "code", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.id} );
+        
+        dhis2.period.picker.createInstance('#startDate');
+        dhis2.period.picker.createInstance('#endDate');
 	});
 
     var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_category_option" ) , "'")';
@@ -48,7 +50,11 @@
     <tr>
       <td style="width: 100px"><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
       <td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $dataElementCategoryOption.name )" class="{validate:{required:true,rangelength:[2,150]}}"/></td>
-    </tr>      
+    </tr>
+    <tr>
+      <td style="width: 100px"><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+      <td><input type="text" id="shortName" name="shortName" value="$!encoder.htmlEncode( $dataElementCategoryOption.shortName )" class="{validate:{rangelength:[2,50]}}"/></td>
+    </tr>
 	<tr>
 	  <td><label>$i18n.getString( "code" )</label></td>
 	  <td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $dataElementCategoryOption.code )" /></td>
@@ -65,7 +71,7 @@
       <td><input type="text" id="startDate" name="startDate" value="$!format.formatDate( $!dataElementCategoryOption.startDate )"></td>
     </tr>
     <tr>
-      <td><label for="endDate">$i18n.getString( 'end_date' )</label></td>
+      <td style="width: 100px"><label for="endDate">$i18n.getString( 'end_date' )</label></td>
       <td><input type="text" id="endDate" name="endDate" value="$!format.formatDate( $!dataElementCategoryOption.endDate )"></td>
     </tr>
   </table>

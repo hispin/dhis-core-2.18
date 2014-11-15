@@ -227,6 +227,14 @@ public interface DataElementCategoryService
     DataElementCategoryOption getDataElementCategoryOptionByName( String name );
 
     /**
+     * Retrieves the DataElementCategoryOption with the given short name.
+     * 
+     * @param shortName the short name.
+     * @return the DataElementCategoryOption with the given short name.
+     */
+    DataElementCategoryOption getDataElementCategoryOptionByShortName( String shortName );
+
+    /**
      * Retrieves the DataElementCategoryOption with the given code.
      * 
      * @param code the code.

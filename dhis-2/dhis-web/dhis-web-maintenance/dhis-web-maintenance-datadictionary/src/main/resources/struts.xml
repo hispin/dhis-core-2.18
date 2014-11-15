@@ -474,6 +474,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryOption.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+      <param name="javascripts">javascript/categoryOption.js</param>
       <param name="anyAuthorities">F_CATEGORY_OPTION_PUBLIC_ADD, F_CATEGORY_OPTION_PRIVATE_ADD</param>
     </action>
 

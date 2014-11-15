@@ -310,6 +310,12 @@ public class DefaultDataElementCategoryService
     }
 
     @Override
+    public DataElementCategoryOption getDataElementCategoryOptionByShortName( String shortName )
+    {
+        return i18n( i18nService, categoryOptionStore.getByShortName( shortName ) );
+    }
+    
+    @Override
     public DataElementCategoryOption getDataElementCategoryOptionByCode( String code )
     {
         return i18n( i18nService, categoryOptionStore.getByCode( code ) );
