@@ -125,7 +125,8 @@ public class HibernatePartnerStore implements PartnerStore
 
         return criteria.list();
     }    
-    
+
+        
     // get OrgUnit Count FromPartner
     public Map<String, Integer> getOrgUnitCountFromPartner( Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate )
     {
