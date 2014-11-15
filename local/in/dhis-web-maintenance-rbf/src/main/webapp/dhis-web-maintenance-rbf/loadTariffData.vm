@@ -5,9 +5,6 @@ window.onload=function(){
 	jQuery('#addTariff').dialog({autoOpen: false});	
 }
 
-
-
-
 	Ext.Loader.setConfig({
 		enabled: true
 	});
@@ -272,9 +269,6 @@ function deleteTariffDataValue( organisationUnitId, orgUnitGroupId, dataElementI
 			getTariffData();
 			$( "#addTariff" ).dialog( "close" );
 	    }
-	
-	
-
 	
 	function dialogWindowClose()
 	{

@@ -807,6 +807,10 @@
           scope="prototype">
     </bean>
 
+    <bean id="org.hisp.dhis.rbf.partner.action.PartnerDataListAction"
+          class="org.hisp.dhis.rbf.partner.action.PartnerDataListAction"
+          scope="prototype">
+    </bean>
 
     <bean id="org.hisp.dhis.rbf.partner.action.PartnerFormAction"
         class="org.hisp.dhis.rbf.partner.action.PartnerFormAction"
