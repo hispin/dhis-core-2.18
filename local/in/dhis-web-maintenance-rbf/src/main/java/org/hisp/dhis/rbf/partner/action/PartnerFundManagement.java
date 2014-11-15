@@ -17,56 +17,62 @@ import com.opensymphony.xwork2.Action;
 /**
  * Created by Ganesh on 14/11/14.
  */
-public class PartnerFundManagement implements Action {
+public class PartnerFundManagement
+    implements Action
+{
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	@Autowired
-	private OptionService optionService;
+    @Autowired
+    private OptionService optionService;
 
-	@Autowired
-	private DataSetService dataSetService;
+    @Autowired
+    private DataSetService dataSetService;
 
-	@Autowired
-	private LookupService lookupService;
+    @Autowired
+    private LookupService lookupService;
 
-	// -------------------------------------------------------------------------
-	// Input & Output
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
 
-	private List<DataSet> dataSets = new ArrayList<DataSet>();
+    private List<DataSet> dataSets = new ArrayList<DataSet>();
 
-	public List<DataSet> getDataSets() {
-		return dataSets;
-	}
+    public List<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
 
-	private List<Option> options = new ArrayList<Option>();
+    private List<Option> options = new ArrayList<Option>();
 
-	public List<Option> getOptions() {
-		return options;
-	}
+    public List<Option> getOptions()
+    {
+        return options;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action Implementation
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
 
-	@java.lang.Override
-	public String execute() throws Exception {
+    @java.lang.Override
+    public String execute()
+        throws Exception
+    {
 
-		Lookup partnerOptionSetLookup = lookupService
-				.getLookupByName(Lookup.OPTION_SET_PARTNER);
+        Lookup partnerOptionSetLookup = lookupService.getLookupByName( Lookup.OPTION_SET_PARTNER );
 
-		OptionSet activitesOptionSet = optionService.getOptionSet(Integer
-				.parseInt(partnerOptionSetLookup.getValue()));
+        OptionSet activitesOptionSet = optionService
+            .getOptionSet( Integer.parseInt( partnerOptionSetLookup.getValue() ) );
 
-		if (activitesOptionSet != null) {
-			options = new ArrayList<Option>(activitesOptionSet.getOptions());
-		}
+        if ( activitesOptionSet != null )
+        {
+            options = new ArrayList<Option>( activitesOptionSet.getOptions() );
+        }
 
-		dataSets = new ArrayList<DataSet>(dataSetService.getAllDataSets());
+        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

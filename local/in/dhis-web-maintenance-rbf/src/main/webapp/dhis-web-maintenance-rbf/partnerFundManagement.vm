@@ -9,28 +9,42 @@
     {
         jQuery('#addPeriod').dialog('destroy').remove();
 
-        var dataSetId = document.getElementById('dataSetId');
-        var dataSetName =  dataSetId.options[ dataSetId.selectedIndex ].text;
+		var dataSetId = $( "#dataSetId" ).val();
+       	var optionSetId = $( "#optionSetId" ).val();
+ 		var dataElementId = $( "#dataElementId" ).val();
+		
+		if ( dataSetId == "-1" )
+        {
+            showWarningMessage( "Please Select DataSet" );
 
-        var partnerId = document.getElementById('optionSetId');
-        var partnerName =  partnerId.options[ partnerId.selectedIndex ].text;
+            return false;
+        }
 
-        var dataElementId = document.getElementById('dataElementId');
-        var dataElementName = dataElementId.options[ dataElementId.selectedIndex ].text;
+        else if( optionSetId == "-1" )
+        {
+            showWarningMessage( "Please Select Partner" );
+            return false;
+        }
 
-
-        jQuery('<div id="addPeriod">' ).load( 'partnerForm.action').dialog({
+        else if( dataElementId == "-1" )
+        {
+            showWarningMessage( "Please Select DataElement" );
+            return false;
+        }
+		else
+		{ 		
+        jQuery('<div id="addNewPeriod">' ).load( 'partnerForm.action?dataSetId='+ dataSetId + "&optionSetId=" + optionSetId + "&dataElementId=" + dataElementId).dialog({
             title: 'Add New Period',
             maximize: true,
             closable: true,
             modal:true,
             overlay:{background:'#000000', opacity:0.1},
             width: 600,
-            height: 450
+            height: 500
         });
-
-        //validateAddTariff();
-    }
+	}
+        
+ }
 
 </script>
 
