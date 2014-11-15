@@ -143,7 +143,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE reporttable DROP column docategoryoptioncombos" );
         executeSql( "ALTER TABLE reporttable DROP column mode" );
         executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );
-        executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN shortname" );
         executeSql( "ALTER TABLE section DROP COLUMN label" );
         executeSql( "ALTER TABLE section DROP COLUMN title" );
         executeSql( "ALTER TABLE organisationunit DROP COLUMN polygoncoordinates" );

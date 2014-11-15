@@ -30,13 +30,13 @@ package org.hisp.dhis.dataelement;
 
 import java.util.List;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.GenericNameableObjectStore;
 
 /**
  * @author Lars Helge Overland
  */
 public interface CategoryOptionStore
-    extends GenericIdentifiableObjectStore<DataElementCategoryOption>
+    extends GenericNameableObjectStore<DataElementCategoryOption>
 {
     List<DataElementCategoryOption> getCategoryOptions( DataElementCategory category );
 }

@@ -3,10 +3,6 @@
 		validation( 'addDataElementCategoryOptionForm', function(form){
 		form.submit();
 	});
-
-        dhis2.period.picker.createInstance('#startDate');
-        dhis2.period.picker.createInstance('#endDate');
-
         $('#startDate').calendarsPicker('option', 'maxDate', dhis2.period.calendar.add(dhis2.period.calendar.today(), 100, 'y'));
         $('#endDate').calendarsPicker('option', 'maxDate', dhis2.period.calendar.add(dhis2.period.calendar.today(), 100, 'y'));
 
@@ -16,7 +12,11 @@
         selection.clearSelected();
 
         checkValueIsExist( "name", "validateDataElementCategoryOption.action" );
+        checkValueIsExist( "shortName", "validateDataElementCategoryOption.action" );
         checkValueIsExist( "code", "validateDataElementCategoryOption.action" );
+        
+        dhis2.period.picker.createInstance('#startDate');
+        dhis2.period.picker.createInstance('#endDate');        
 	});
 
     var i18n_specify_category_option_name = '$encoder.jsEscape( $i18n.getString( "specify_category_option_name" ) , "'")';
@@ -43,7 +43,11 @@
     <tr>
       <td style="width: 100px"><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
       <td><input type="text" id="name" name="name" class="{validate:{required:true,rangelength:[2,150]}}"/></td>
-    </tr>   
+    </tr>
+    <tr>
+      <td style="width: 100px"><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+      <td><input type="text" id="shortName" name="shortName" class="{validate:{rangelength:[2,50]}}"/></td>
+    </tr>
 	<tr>
 	  <td><label>$i18n.getString( "code" )</td>
 	  <td><input type="text" id="code" name="code"/></td>
@@ -60,7 +64,7 @@
       <td><input type="text" id="startDate" name="startDate"></td>
     </tr>
     <tr>
-      <td><label for="endDate">$i18n.getString( 'end_date' )</label></td>
+      <td style="width: 100px"><label for="endDate">$i18n.getString( 'end_date' )</label></td>
       <td><input type="text" id="endDate" name="endDate"></td>
     </tr>
   </table>

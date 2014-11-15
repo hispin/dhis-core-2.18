@@ -11,28 +11,6 @@
     });
 	});
 	
-	function showDataElementCategoryOptionDetails( context ) {
-		jQuery.post( 'getDataElementCategoryOption.action', { id: context.id } ,
-			function ( json ) {
-			
-				setInnerHTML( 'nameField', json.dataElementCategoryOption.name );
-				setInnerHTML( 'codeField', json.dataElementCategoryOption.code );
-				setInnerHTML( 'startDateField', json.dataElementCategoryOption.startDate );
-				setInnerHTML( 'endDateField', json.dataElementCategoryOption.endDate );
-				setInnerHTML( 'conceptField', json.dataElementCategoryOption.concept );
-				setInnerHTML( 'idField', json.dataElementCategoryOption.uid );
-
-                showDetails();
-		});
-	}
-	
-	function removeDataElementCategoryOption( context ) {
-		removeItem( context.id, context.name, i18n_confirm_delete, 'removeDataElementCategoryOption.action' );
-	}
-
-  function showUpdateDataElementCategoryOptionForm( context ) {
-    location.href = 'showUpdateDataElementCategoryOptionForm.action?id=' + context.id;
-  }
 
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_category_option" ) , "'" )';
 </script>
@@ -87,11 +65,11 @@
         <div id="hideDetailsArea">
         <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/></a>
       </div>
-      <p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
+          <p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
+          <p><label>$i18n.getString( "short_name" ):</label><br/><span id="shortNameField"></span></p>
           <p><label>$i18n.getString( "code" ):</label><br/><span id="codeField"></span></p>
           <p><label>$i18n.getString( "start_date" ):</label><br/><span id="startDateField"></span></p>
           <p><label>$i18n.getString( "end_date" ):</label><br/><span id="endDateField"></span></p>
-		  <p><label>$i18n.getString( "concept" ):</label><br/><span id="conceptField"></span></p>
 		  <p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
 	  </div>
 

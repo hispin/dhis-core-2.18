@@ -111,8 +111,10 @@ dhis2.period.DatePicker.prototype.createInstance = function( el, fromIso, option
     $el.val(localDate);
   });
 
-  options.altField = '#' + isoFieldId;
-
+  if (options) {
+	  options.altField = '#' + isoFieldId;
+  }
+  
   $el.calendarsPicker($.extend({}, this.defaults, options));
 };
 

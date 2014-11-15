@@ -63,3 +63,22 @@ function showMoreOrFewerOptions()
     $( "#moreOptions" ).toggle();
 }
 
+function showDataElementCategoryOptionDetails( context ) {
+	jQuery.post( 'getDataElementCategoryOption.action', { id: context.id } ,function ( json ) {		
+		setInnerHTML( 'nameField', json.dataElementCategoryOption.name );
+		setInnerHTML( 'shortNameField', json.dataElementCategoryOption.shortName );
+		setInnerHTML( 'codeField', json.dataElementCategoryOption.code );
+		setInnerHTML( 'startDateField', json.dataElementCategoryOption.startDate );
+		setInnerHTML( 'endDateField', json.dataElementCategoryOption.endDate );
+		setInnerHTML( 'idField', json.dataElementCategoryOption.uid );
+        showDetails();
+	});
+}
+
+function removeDataElementCategoryOption( context ) {
+	removeItem( context.id, context.name, i18n_confirm_delete, 'removeDataElementCategoryOption.action' );
+}
+
+function showUpdateDataElementCategoryOptionForm( context ) {
+    location.href = 'showUpdateDataElementCategoryOptionForm.action?id=' + context.id;
+}
