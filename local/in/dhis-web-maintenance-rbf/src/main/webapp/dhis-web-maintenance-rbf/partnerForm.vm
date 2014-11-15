@@ -15,12 +15,12 @@
             //alert("Please Select Period");
             return false;
         }
-        */
+        
 
         var dataSetId = $( '#dataSetId' ).val();
         var optionSetId = $( '#optionSetId' ).val();
         var dataElementId = $( '#dataElementId' ).val();
-//	var periodId = $( '#periodId' ).val();
+		var periodId = $( '#periodId' ).val();
 
         if ( dataSetId == "-1" )
         {
@@ -40,6 +40,9 @@
             showWarningMessage( "Please Select DataElement" );
             return false;
         }
+		*/
+		
+		/*
         else if( $("#startDate").val() == ""  )
         {
             showWarningMessage( "Please Select Start Date" );
@@ -50,7 +53,7 @@
             showWarningMessage( "Please Select End Date" );
             return false;
         }
-
+		*/
 
         /*	else if( periodId == "-1" )
             {
@@ -74,38 +77,36 @@
     <table>
         <tr>
             <td><label for="dataSetId">$i18n.getString( "dataSet" )</label></td>
-            <td>
          <!--   <select id="dataSetId" name="dataSetId" style="width:220px" onchange="loadDataElementAndPeriod()" >
                 <option value="-1">[$i18n.getString( "select" )]</option>
                 #foreach( $dataSet in $dataSets )
                     <option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
                 #end
             </select> -->
-            <input type="text" name="dataset" value="$dataSetName" readonly>
-            </td>
+            <td><input type="hidden" id="dataSetId" name="dataSetId" value="$dataSet.id">$dataSet.name</td>
         </tr>
 
         <tr>
             <td><label for="partner">$i18n.getString( "partner" )</label></td>
-            <td>
+           
                <!-- <select id="optionSetId" name="optionSetId" style="width:220px" >
                 <option value="-1">[$i18n.getString( "select" )]</option>
                 #foreach( $option in $options )
                     <option value="$option.id">$encoder.htmlEncode( $option.name )</option>
                 #end
             </select> -->
-                <input type="text" name="partner" value="$partenrName" readonly>
-            </td>
+            <td><input type="hidden" id="optionSetId" name="optionSetId" value="$option.id">$option.name</td>
+            
         </tr>
 
         <tr>
             <td><label>$i18n.getString( "dataElement" )</label></td>
-            <td>
+            
               <!--  <select id="dataElementId" name = "dataElementId" style="width:220px" >
                     <option value="-1">[$i18n.getString( "select" )]</option>
                 </select> -->
-                <input type="text" name="dataElement" value="$dataElementName" readonly>
-            </td>
+			  <td><input type="hidden"  id="dataElementId" name="dataElementId" value="$dataElement.id">$dataElement.name</td>
+            
         </tr>
         <!--
 	<tr>
@@ -135,9 +136,7 @@
             </td>
         </tr>
 
-
     </table>
-
 
     <table id="selectionTable">
         <tr>

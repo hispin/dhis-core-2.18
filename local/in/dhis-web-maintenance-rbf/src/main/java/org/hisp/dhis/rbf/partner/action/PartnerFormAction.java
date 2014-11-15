@@ -1,15 +1,11 @@
 package org.hisp.dhis.rbf.partner.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionService;
-import org.hisp.dhis.option.OptionSet;
-import org.hisp.dhis.rbf.api.Lookup;
-import org.hisp.dhis.rbf.api.LookupService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -32,25 +28,54 @@ public class PartnerFormAction implements Action
     private DataSetService dataSetService;
     
     @Autowired
-    private LookupService lookupService;
+    private DataElementService dataElementService;
     
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
- 
-    private List<DataSet> dataSets = new ArrayList<DataSet>();
 
-    public List<DataSet> getDataSets()
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
     {
-        return dataSets;
+        this.dataSetId = dataSetId;
+    }
+
+    private Integer optionSetId;
+
+    public void setOptionSetId( Integer optionSetId )
+    {
+        this.optionSetId = optionSetId;
+    }
+
+    private Integer dataElementId;
+
+    public void setDataElementId( Integer dataElementId )
+    {
+        this.dataElementId = dataElementId;
+    }
+
+    private DataSet dataSet;
+    
+    public DataSet getDataSet()
+    {
+        return dataSet;
+    }
+
+    private DataElement dataElement;
+    
+    public DataElement getDataElement()
+    {
+        return dataElement;
+    }
+
+    private Option option;
+    
+    public Option getOption()
+    {
+        return option;
     }
     
-    private List<Option> options = new ArrayList<Option>();
-    
-    public List<Option> getOptions()
-    {
-        return options;
-    }
     
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -58,6 +83,7 @@ public class PartnerFormAction implements Action
 
     public String execute() throws Exception
     {
+        /*
         Lookup partnerOptionSetLookup = lookupService.getLookupByName( Lookup.OPTION_SET_PARTNER );
         
         OptionSet activitesOptionSet = optionService.getOptionSet( Integer.parseInt( partnerOptionSetLookup.getValue() ) );
@@ -68,6 +94,15 @@ public class PartnerFormAction implements Action
         }
         
         dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        */
+        
+        
+        dataSet = dataSetService.getDataSet( dataSetId );
+        
+        dataElement = dataElementService.getDataElement( dataElementId );
+        
+        option = optionService.getOption( optionSetId );
+        
         
         /*
         for ( Option option : options )
@@ -80,5 +115,12 @@ public class PartnerFormAction implements Action
         
         return SUCCESS;
     }
+
+
+ 
+
+
+
+
 
 }

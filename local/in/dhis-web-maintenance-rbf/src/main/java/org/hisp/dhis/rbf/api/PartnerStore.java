@@ -29,6 +29,6 @@ public interface PartnerStore
     
     Collection<Partner> getPartner( OrganisationUnit organisationUnit, DataElement dataElement );
     
-    Map<String, Integer> getOrgUnitCountFromPartner( Integer organisationUnitId, Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate );
+    Map<String, Integer> getOrgUnitCountFromPartner( Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate );
     
 }

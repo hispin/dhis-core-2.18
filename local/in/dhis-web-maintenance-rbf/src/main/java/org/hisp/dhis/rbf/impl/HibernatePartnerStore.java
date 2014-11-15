@@ -18,10 +18,12 @@ import org.hisp.dhis.rbf.api.Partner;
 import org.hisp.dhis.rbf.api.PartnerStore;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Mithilesh Kumar Thakur
  */
+@Transactional
 public class HibernatePartnerStore implements PartnerStore
 {
     
@@ -125,7 +127,7 @@ public class HibernatePartnerStore implements PartnerStore
     }    
     
     // get OrgUnit Count FromPartner
-    public Map<String, Integer> getOrgUnitCountFromPartner( Integer organisationUnitId, Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate )
+    public Map<String, Integer> getOrgUnitCountFromPartner( Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate )
     {
         Map<String, Integer> partnerOrgUnitCountMap = new HashMap<String, Integer>();
         
@@ -134,13 +136,12 @@ public class HibernatePartnerStore implements PartnerStore
         
         try
         {
-            String query = "SELECT datasetid, dataelementid, optionid, startdate, enddate ,COUNT( organisationunitid) FROM partner " +
+            String query = "SELECT datasetid, dataelementid, optionid, startdate, enddate ,COUNT( organisationunitid ) FROM partner " +
                             " WHERE " +
-                                " organisationunitid = " + organisationUnitId + " AND " +
                                 " datasetid = " + dataSetId + " AND " +
                                 " dataelementid = " + dataElementId + " AND " +
                                 " optionid = " + optionId + " AND " +
-                                " startdate = '" + startDate + "' AND  enddate >= '" + endDate +"' GROUP BY datasetid, dataelementid, startdate, enddate, optionid ";
+                                " startdate >= '" + startDate + "' AND  enddate <= '" + endDate +"' GROUP BY datasetid, dataelementid, startdate, enddate, optionid ";
             
             
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
