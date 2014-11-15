@@ -653,6 +653,11 @@
        <result name="success" type="velocity">/content.vm</result>
         <param name="page">/dhis-web-maintenance-rbf/partnerForm.vm</param>
     </action>
+
+        <action name="partnerDataList" class="org.hisp.dhis.rbf.partner.action.PartnerDataListAction">
+            <result name="success" type="velocity">/content.vm</result>
+            <param name="page">/dhis-web-maintenance-rbf/partnerDataList.vm</param>
+        </action>
    
    <action name="partnerFundManagementForm" class="org.hisp.dhis.rbf.partner.action.PartnerFundManagement">
         <result name="success" type="velocity">/main.vm</result>

@@ -1,10 +1,7 @@
 package org.hisp.dhis.rbf.impl;
 
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -16,6 +13,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.rbf.api.Partner;
 import org.hisp.dhis.rbf.api.PartnerStore;
+import org.jfree.data.general.Dataset;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.transaction.annotation.Transactional;
@@ -114,16 +112,36 @@ public class HibernatePartnerStore implements PartnerStore
     
     @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<Partner> getPartner( OrganisationUnit organisationUnit, DataElement dataElement )
+    public Collection<String> getStartAndEndDate( Integer dataSetId, Integer dataElementId, Integer optionId )
     {
-        Session session = sessionFactory.getCurrentSession();
+        List<String> dateList = new ArrayList<String>();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        Criteria criteria = session.createCriteria( Partner.class );
-        criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
-        criteria.add( Restrictions.eq( "dataElement", dataElement ) );
-        criteria.addOrder(Order.asc("dataSet"));
+        try
+        {
+            String query = "SELECT startdate, enddate FROM (" +
+                    "  SELECT Distinct (startdate , enddate),startdate , enddate FROM partner WHERE" +
+                    " datasetid = " + dataSetId + " AND " +
+                    " dataelementid = " + dataElementId + " AND " +
+                    " optionid = " + optionId +") asd" ;
 
-        return criteria.list();
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                String startDate = simpleDateFormat.format( rs.getDate( 1 ) );
+                String endDate = simpleDateFormat.format(rs.getDate(2));
+
+                String date = startDate+":"+endDate;
+
+                dateList.add(date);
+            }
+        }
+        catch (Exception ex){
+            System.out.println(" In Partner Data Exception :"+ ex.getMessage() );
+            ex.printStackTrace();
+        }
+    return dateList;
+
     }    
 
         
@@ -166,6 +184,7 @@ public class HibernatePartnerStore implements PartnerStore
         catch( Exception e )
         {
             System.out.println(" In Partner Data Exception :"+ e.getMessage() );
+            e.printStackTrace();
         }
         
         return partnerOrgUnitCountMap;

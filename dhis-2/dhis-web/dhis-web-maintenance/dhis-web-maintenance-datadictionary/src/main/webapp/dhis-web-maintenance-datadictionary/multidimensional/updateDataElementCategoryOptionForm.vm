@@ -48,7 +48,6 @@
     <tr>
       <td style="width: 100px"><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
       <td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $dataElementCategoryOption.name )" class="{validate:{required:true,rangelength:[2,150]}}"/></td>
-      <td></td>
     </tr>      
 	<tr>
 	  <td><label>$i18n.getString( "code" )</label></td>
