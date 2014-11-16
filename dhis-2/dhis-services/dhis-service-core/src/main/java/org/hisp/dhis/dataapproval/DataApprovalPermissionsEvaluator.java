@@ -154,7 +154,7 @@ class DataApprovalPermissionsEvaluator
         }
         catch ( CacheLoader.InvalidCacheLoadException ex )
         {
-            userApprovalLevel = null; // Google cache doesn't like to cache a null value even when that's what we need.
+            userApprovalLevel = null; // Google cache doesn't like to cache a null value.
         }
         catch ( ExecutionException ex )
         {
