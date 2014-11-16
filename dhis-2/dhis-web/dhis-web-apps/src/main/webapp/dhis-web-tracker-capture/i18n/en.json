@@ -232,6 +232,7 @@
     "update_error": "Error in update",
     "event_creation_error": "Error in event creation",
     "relationship_error": "Error in relationship assignment",
+    "event_orgunit_name": "Organisation unit",
     "category": "Category",
     "entity_type": "Entity type",
     "save": "Save",
