@@ -28,12 +28,7 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -44,7 +39,11 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.Version;
 import org.hisp.dhis.version.VersionService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author mortenoh
@@ -135,6 +134,13 @@ public class GetOrganisationUnitTreeAction
         this.parentId = parentId;
     }
 
+    private String leafId;
+
+    public void setLeafId( String leafId )
+    {
+        this.leafId = leafId;
+    }
+
     private String byName;
 
     public void setByName( String byName )
@@ -157,6 +163,10 @@ public class GetOrganisationUnitTreeAction
     public String execute()
         throws Exception
     {
+        version = getVersionString();
+
+        username = currentUserService.getCurrentUsername();
+
         if ( byName != null )
         {
             List<OrganisationUnit> organisationUnitByName = organisationUnitService.getOrganisationUnitByName( byName );
@@ -179,6 +189,25 @@ public class GetOrganisationUnitTreeAction
 
                 return "partial";
             }
+        }
+
+        if ( leafId != null )
+        {
+            OrganisationUnit leaf = organisationUnitService.getOrganisationUnit( leafId );
+
+            if ( leaf != null )
+            {
+                organisationUnits.add( leaf );
+                organisationUnits.addAll( leaf.getChildren() );
+
+                for ( OrganisationUnit organisationUnit : leaf.getAncestors() )
+                {
+                    organisationUnits.add( organisationUnit );
+                    organisationUnits.addAll( organisationUnit.getChildren() );
+                }
+            }
+
+            return "partial";
         }
 
         if ( parentId != null )
@@ -213,9 +242,9 @@ public class GetOrganisationUnitTreeAction
             OrganisationUnitLevel offlineOrgUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
 
             List<OrganisationUnitLevel> orgUnitLevels = organisationUnitService.getOrganisationUnitLevels();
-            
-            final Integer maxLevels = ( offlineOrgUnitLevel != null && !orgUnitLevels.isEmpty() ) ? offlineOrgUnitLevel.getLevel() : null;
-            
+
+            final Integer maxLevels = (offlineOrgUnitLevel != null && !orgUnitLevels.isEmpty()) ? offlineOrgUnitLevel.getLevel() : null;
+
             for ( OrganisationUnit unit : userOrganisationUnits )
             {
                 organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId(), maxLevels ) );
@@ -231,10 +260,6 @@ public class GetOrganisationUnitTreeAction
         }
 
         Collections.sort( rootOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
-
-        version = getVersionString();
-
-        username = currentUserService.getCurrentUsername();
 
         return SUCCESS;
     }

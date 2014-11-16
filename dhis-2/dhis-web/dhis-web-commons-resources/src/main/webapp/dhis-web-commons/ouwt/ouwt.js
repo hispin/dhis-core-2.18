@@ -188,6 +188,7 @@ function Selection()
     };
 
     this.setOrganisationUnits = function( ous ) {
+        organisationUnits = [];
         $.extend( organisationUnits, ous );
         ous = ous ? _.values( ous ) : [];
 
@@ -202,6 +203,20 @@ function Selection()
         });
 
         return def.promise();
+    };
+
+    this.clearOrganisationUnits = function() {
+      organisationUnits = [];
+
+      var def = $.Deferred();
+
+      dhis2.ou.store.removeAll(OU_KEY).always(function() {
+        dhis2.ou.store.removeAll(OU_PARTIAL_KEY).always(function() {
+          def.resolve();
+        });
+      });
+
+      return def.promise();
     };
 
     this.getOrganisationUnit = function( id ) {
@@ -351,11 +366,12 @@ function Selection()
                     selection.setVersion( data.version );
                     selection.setUsername( data.username );
 
-                    selection.setOrganisationUnits( data.organisationUnits ).done(function() {
-                        sync_and_reload();
-                        $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
+                    selection.clearOrganisationUnits().always(function() {
+                      selection.setOrganisationUnits( data.organisationUnits ).done(function() {
+                          sync_and_reload();
+                          $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
+                      });
                     });
-
                 } ).fail( function() {
                     sync_and_reload();
                     $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
@@ -675,6 +691,14 @@ function Selection()
 // -----------------------------------------------------------------------------
 
 function Subtree() {
+    this.ajaxGetChildren = function( parentId ) {
+        return $.post( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action?parentId=' + parentId);
+    };
+
+    this.ajaxGetLeaf = function( parentId ) {
+        return $.post( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action?leafId=' + parentId);
+    };
+
     this.toggle = function( unitId ) {
         var children = $( "#" + getTagId( unitId ) ).find( "ul" );
         var ou = organisationUnits[unitId];
@@ -697,15 +721,25 @@ function Subtree() {
         $( "#" + getTagId( ou ) + " > a" ).addClass( "selected" );
     };
 
-    var expandTreeAtOrgUnits = function( ous ) {
+    var expandTreeAtOrgUnits = function( ous, select ) {
         $.each( ous, function( i, item ) {
-            expandTreeAtOrgUnit( item );
+            expandTreeAtOrgUnit( item, select );
         } );
     };
 
-    var expandTreeAtOrgUnit = function( ou ) {
-        if( organisationUnits[ou] == null ) {
-            return;
+    var expandTreeAtOrgUnit = function( ou, select ) {
+        select = select || false;
+
+      if( organisationUnits[ou] == null ) {
+          subtree.ajaxGetLeaf(ou).done(function( data ) {
+            $.extend( organisationUnits, data.organisationUnits);
+
+            if(organisationUnits[ou]) {
+              expandTreeAtOrgUnit(ou, select);
+            }
+          });
+
+          return;
         }
 
         var ouEl = organisationUnits[ou];
@@ -746,6 +780,10 @@ function Subtree() {
             var expand = organisationUnits[item];
             processExpand( expand );
         } );
+
+        if( select ) {
+          selectOrgUnit(ou);
+        }
     };
 
     this.reloadTree = function() {
@@ -756,7 +794,7 @@ function Subtree() {
         var selected = selection.getSelected();
 
         expandTreeAtOrgUnits( roots );
-        expandTreeAtOrgUnits( selected );
+        expandTreeAtOrgUnits( selected, true );
 
         selectOrgUnits( selected );
     };
@@ -787,10 +825,6 @@ function Subtree() {
             setToggle( $parentTag, true );
         }
     }
-
-    this.ajaxGetChildren = function( parentId ) {
-        return $.post( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action?parentId=' + parentId);
-    };
 
     this.getChildren = function( parentId ) {
         var def = $.Deferred();
