@@ -77,6 +77,13 @@ public class GridPdfResult
     {
         this.grids = grids;
     }
+   
+    private boolean attachment = true;
+    
+    protected boolean isAttachment()
+    {
+        return attachment;
+    }
 
     // -------------------------------------------------------------------------
     // Result implementation
@@ -109,7 +116,7 @@ public class GridPdfResult
 
         String filename = filenameEncode( defaultIfEmpty( grid != null ? grid.getTitle() : grids.iterator().next().getTitle(), DEFAULT_NAME ) ) + ".pdf";
         
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, true, filename, false );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, true, filename, isAttachment() );
 
         // ---------------------------------------------------------------------
         // Write PDF to output stream
