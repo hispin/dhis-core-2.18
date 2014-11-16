@@ -35,7 +35,7 @@
     <div id="downloadButtons">
       <input type="button" value="$i18n.getString( 'get_report_as_pdf' )" style="width:140px" onclick="exportAnalysisResult( 'pdf' )">
       <input type="button" value="$i18n.getString( 'get_report_as_xls' )" style="width:140px" onclick="exportAnalysisResult( 'xls' )">
-      <input type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:140px" onclick="exportAnalysisResult( 'cvs' )">
+      <input type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:140px" onclick="exportAnalysisResult( 'csv' )">
     </div>
   </div>
 </div>
