@@ -84,6 +84,8 @@ dhis2.de.cst.dropDownMaxItems = 30;
 dhis2.de.cst.formulaPattern = /#\{.+?\}/g;
 dhis2.de.cst.separator = '.';
 dhis2.de.cst.valueMaxLength = 50000;
+dhis2.de.cst.metaData = 'dhis2.de.cst.metaData';
+dhis2.de.cst.dataSetAssociations = 'dhis2.de.cst.dataSetAssociations';
 
 // Colors
 
@@ -172,7 +174,10 @@ $( document ).ready( function()
     $( '#orgUnitTree' ).one( 'ouwtLoaded', function()
     {
         console.log( 'Ouwt loaded' );
-        dhis2.de.loadMetaData();
+        
+        $.when( dhis2.de.loadMetaData(), dhis2.de.loadDataSetAssociations() ).done( function() {
+        	dhis2.de.setMetaDataLoaded();
+        } );
     } );
 
     $( document ).bind( 'dhis2.online', function( event, loggedIn )
@@ -252,40 +257,66 @@ dhis2.de.ajaxLogin = function()
 
 dhis2.de.loadMetaData = function()
 {
-    var KEY_METADATA = 'metadata';
-
+	var def = $.Deferred();
+	
     $.ajax( {
     	url: 'getMetaData.action',
     	dataType: 'json',
     	success: function( json )
 	    {
-	        sessionStorage[KEY_METADATA] = JSON.stringify( json.metaData );
+	        sessionStorage[dhis2.de.cst.metaData] = JSON.stringify( json.metaData );
 	    },
 	    complete: function()
 	    {
-	        var metaData = JSON.parse( sessionStorage[KEY_METADATA] );
-
+	        var metaData = JSON.parse( sessionStorage[dhis2.de.cst.metaData] );
 	        dhis2.de.emptyOrganisationUnits = metaData.emptyOrganisationUnits;
 	        dhis2.de.significantZeros = metaData.significantZeros;
 	        dhis2.de.dataElements = metaData.dataElements;
 	        dhis2.de.indicatorFormulas = metaData.indicatorFormulas;
 	        dhis2.de.dataSets = metaData.dataSets;
 	        dhis2.de.optionSets = metaData.optionSets;
-	        dhis2.de.dataSetAssociationSets = metaData.dataSetAssociationSets;
-	        dhis2.de.organisationUnitAssociationSetMap = metaData.organisationUnitAssociationSetMap;
 	        dhis2.de.defaultCategoryCombo = metaData.defaultCategoryCombo;
 	        dhis2.de.categoryCombos = metaData.categoryCombos;
-	        dhis2.de.categories = metaData.categories;
-
-	        dhis2.de.metaDataIsLoaded = true;
-	        selection.responseReceived(); // Notify that meta data is loaded
-	        $( '#loaderSpan' ).hide();
-	        console.log( 'Meta-data loaded' );
-
-	        updateForms();
+	        dhis2.de.categories = metaData.categories;	        
+	        def.resolve();
 	    }
 	} );
+    
+    return def.promise();
 };
+
+dhis2.de.loadDataSetAssociations = function()
+{
+	var def = $.Deferred();
+	
+	$.ajax( {
+    	url: 'getDataSetAssociations.action',
+    	dataType: 'json',
+    	success: function( json )
+	    {
+	        sessionStorage[dhis2.de.cst.dataSetAssociations] = JSON.stringify( json.dataSetAssociations );
+	    },
+	    complete: function()
+	    {
+	        var metaData = JSON.parse( sessionStorage[dhis2.de.cst.dataSetAssociations] );
+	        dhis2.de.dataSetAssociationSets = metaData.dataSetAssociationSets;
+	        dhis2.de.organisationUnitAssociationSetMap = metaData.organisationUnitAssociationSetMap;	        
+	        def.resolve();
+	    }
+	} );
+	
+	return def.promise();
+}
+
+dhis2.de.setMetaDataLoaded = function()
+{
+    dhis2.de.metaDataIsLoaded = true;
+    selection.responseReceived(); // Notify that meta data is loaded
+    $( '#loaderSpan' ).hide();
+    console.log( 'Meta-data loaded' );
+
+    updateForms();
+}
 
 dhis2.de.discardLocalData = function() {
     if( confirm( i18n_remove_local_data ) ) {

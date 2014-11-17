@@ -50,9 +50,6 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,13 +92,6 @@ public class GetMetaDataAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
     private DataElementCategoryService categoryService;
@@ -240,16 +230,6 @@ public class GetMetaDataAction
         indicators = indicatorService.getIndicatorsWithDataSets();
 
         expressionService.substituteExpressions( indicators, null );
-
-        OrganisationUnitLevel offlineOrgUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
-
-        Integer level = offlineOrgUnitLevel != null ? offlineOrgUnitLevel.getLevel() : null;
-
-        OrganisationUnitDataSetAssociationSet organisationUnitSet = organisationUnitService.getOrganisationUnitDataSetAssociationSet( level );
-
-        dataSetAssociationSets = organisationUnitSet.getDataSetAssociationSets();
-
-        organisationUnitAssociationSetMap = organisationUnitSet.getOrganisationUnitAssociationSetMap();
 
         if ( currentUserService.currentUserIsSuper() )
         {

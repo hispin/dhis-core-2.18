@@ -6,19 +6,18 @@
 
   <bean id="org.hisp.dhis.de.action.PageInitAction" class="org.hisp.dhis.de.action.PageInitAction" scope="prototype" />
 
-  <bean id="org.hisp.dhis.de.action.GetMetaDataAction" class="org.hisp.dhis.de.action.GetMetaDataAction"
-      scope="prototype">
+  <bean id="org.hisp.dhis.de.action.GetMetaDataAction" class="org.hisp.dhis.de.action.GetMetaDataAction" scope="prototype">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
-  <bean id="org.hisp.dhis.de.action.GetDataValuesForDataSetAction"
-      class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction" scope="prototype">
+  <bean id="org.hisp.dhis.de.action.GetDataSetAssociationsAction" class="org.hisp.dhis.de.action.GetDataSetAssociationsAction" scope="prototype"/>
+
+  <bean id="org.hisp.dhis.de.action.GetDataValuesForDataSetAction" class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction" scope="prototype">
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -33,16 +32,14 @@
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
-  <bean id="org.hisp.dhis.de.action.SaveMinMaxLimitsAction" class="org.hisp.dhis.de.action.SaveMinMaxLimitsAction"
-      scope="prototype">
+  <bean id="org.hisp.dhis.de.action.SaveMinMaxLimitsAction" class="org.hisp.dhis.de.action.SaveMinMaxLimitsAction" scope="prototype">
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
-  <bean id="org.hisp.dhis.de.action.RemoveMinMaxLimitsAction" class="org.hisp.dhis.de.action.RemoveMinMaxLimitsAction"
-      scope="prototype">
+  <bean id="org.hisp.dhis.de.action.RemoveMinMaxLimitsAction" class="org.hisp.dhis.de.action.RemoveMinMaxLimitsAction" scope="prototype">
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
@@ -59,8 +56,7 @@
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
-  <bean id="org.hisp.dhis.de.action.ValidationAction" class="org.hisp.dhis.de.action.ValidationAction"
-      scope="prototype">
+  <bean id="org.hisp.dhis.de.action.ValidationAction" class="org.hisp.dhis.de.action.ValidationAction" scope="prototype">
     <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="minMaxOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />

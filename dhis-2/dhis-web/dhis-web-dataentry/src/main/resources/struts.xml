@@ -21,6 +21,10 @@
     <action name="getMetaData" class="org.hisp.dhis.de.action.GetMetaDataAction">
       <result name="success" type="velocity-json">/dhis-web-dataentry/responseMetaData.vm</result>
     </action>
+    
+    <action name="getDataSetAssociations" class="org.hisp.dhis.de.action.GetDataSetAssociationsAction">
+      <result name="success" type="velocity-json">/dhis-web-dataentry/responseDataSetAssociations.vm</result>
+    </action>
 
     <action name="getDataValues" class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction">
       <result name="success" type="velocity-json">/dhis-web-dataentry/responseDataValues.vm</result>
