@@ -182,11 +182,13 @@ $( document ).ready( function()
 	        if ( dhis2.de.storageManager.hasLocalData() )
 	        {
 	            var message = i18n_need_to_sync_notification
-	            	+ ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+	            	+ ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>'
+	            	+ ' <button id="discard_button" type="button">' + i18n_discard + '</button>';
 
 	            setHeaderMessage( message );
 
 	            $( '#sync_button' ).bind( 'click', dhis2.de.uploadLocalData );
+	            $( '#discard_button' ).bind( 'click', dhis2.de.discardLocalData );
 	        }
 	        else
 	        {
@@ -285,7 +287,12 @@ dhis2.de.loadMetaData = function()
 	        updateForms();
 	    }
 	} );
-}
+};
+
+dhis2.de.discardLocalData = function() {
+    dhis2.de.storageManager.clearAllDataValues();
+    hideHeaderMessage();
+};
 
 dhis2.de.uploadLocalData = function()
 {
@@ -2544,7 +2551,12 @@ function StorageManager()
     {
         return localStorage[KEY_DATAVALUES] != null ? JSON.parse( localStorage[KEY_DATAVALUES] ) : null;
     };
-    
+
+    this.clearAllDataValues = function()
+    {
+        localStorage[KEY_DATAVALUES] = "";
+    };
+
     /**
      * Returns all data value objects in an array. Returns an empty array if no
      * data values exist. Items in array are guaranteed not to be undefined.
