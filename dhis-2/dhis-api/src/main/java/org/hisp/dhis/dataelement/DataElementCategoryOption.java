@@ -175,13 +175,6 @@ public class DataElementCategoryOption
         return name != null && name.equals( DEFAULT_NAME );
     }
 
-    @Override
-    @JsonIgnore
-    public String getShortName()
-    {
-        return name;
-    }
-
     @JsonProperty
     @JsonView( {DetailedView.class } )
     public Date getStartDate()
