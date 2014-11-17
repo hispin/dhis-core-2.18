@@ -28,14 +28,23 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -51,19 +60,22 @@ public class GetDataSetAssociationsAction
     
     @Autowired
     private ConfigurationService configurationService;
+    
+    @Autowired
+    private IdentifiableObjectManager identifiableObjectManager;
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<Set<String>> dataSetAssociationSets;
+    private List<Set<String>> dataSetAssociationSets = new ArrayList<>();
 
     public List<Set<String>> getDataSetAssociationSets()
     {
         return dataSetAssociationSets;
     }
 
-    private Map<String, Integer> organisationUnitAssociationSetMap;
+    private Map<String, Integer> organisationUnitAssociationSetMap = new HashMap<>();
 
     public Map<String, Integer> getOrganisationUnitAssociationSetMap()
     {
@@ -77,6 +89,15 @@ public class GetDataSetAssociationsAction
     @Override
     public String execute()
     {
+        Date lastUpdated = DateUtils.max( identifiableObjectManager.getLastUpdated( DataSet.class ), 
+            identifiableObjectManager.getLastUpdated( OrganisationUnit.class ) );
+        String tag = lastUpdated != null ? DateUtils.LONG_DATE_FORMAT.format( lastUpdated ) : null;
+        
+        if ( ContextUtils.isNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), tag ) )
+        {
+            return SUCCESS;
+        }
+        
         OrganisationUnitLevel offlineOrgUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
 
         Integer level = offlineOrgUnitLevel != null ? offlineOrgUnitLevel.getLevel() : null;

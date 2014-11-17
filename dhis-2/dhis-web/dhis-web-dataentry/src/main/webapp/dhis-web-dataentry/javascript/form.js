@@ -162,8 +162,10 @@ DAO.store = new dhis2.storage.Store( {
  */
 $( document ).ready( function()
 {
+    /**
+     * Cache false necessary to prevent IE from caching by default.
+     */
     $.ajaxSetup( {
-        type: 'POST',
         cache: false
     } );
 
@@ -291,6 +293,7 @@ dhis2.de.loadDataSetAssociations = function()
 	$.ajax( {
     	url: 'getDataSetAssociations.action',
     	dataType: 'json',
+    	cache: true,
     	success: function( json )
 	    {
 	        sessionStorage[dhis2.de.cst.dataSetAssociations] = JSON.stringify( json.dataSetAssociations );

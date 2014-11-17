@@ -354,7 +354,7 @@ public class ContextUtils
      * the "If-None-Match" header value, generates an ETag based on the given 
      * collection of IdentifiableObjects and compares them for equality. If this
      * evaluates to true, it will set status code 304 Not Modified on the response
-     * and remove all elements from the given list. It will also set the ETag header
+     * and remove all elements from the given list. It will set the ETag header
      * on the response in any case.
      * 
      * @param request the HttpServletRequest.
@@ -374,6 +374,36 @@ public class ContextUtils
             response.setStatus( HttpServletResponse.SC_NOT_MODIFIED );
             
             objects.clear();
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * This method looks up the ETag sent in the request from the "If-None-Match" 
+     * header value and compares it to the given tag. If they match, it will set 
+     * status code 304 Not Modified on the response. It will set the ETag header
+     * on the response in any case. It will wrap the given tag in quotes.
+     * 
+     * @param request the HttpServletRequest.
+     * @param response the HttpServletResponse.
+     * @param tag the tag to compare.
+     * @return true if the given tag match the request tag and the response is
+     *         considered not modified, false if not.
+     */
+    public static boolean isNotModified( HttpServletRequest request, HttpServletResponse response, String tag )
+    {
+        tag = tag != null ? ( QUOTE + tag + QUOTE ) : null;
+        
+        String inputTag = request.getHeader( HEADER_IF_NONE_MATCH );
+
+        response.setHeader( HEADER_ETAG, tag );
+        
+        if ( inputTag != null && inputTag.equals( tag ) )
+        {
+            response.setStatus( HttpServletResponse.SC_NOT_MODIFIED );
             
             return true;
         }
