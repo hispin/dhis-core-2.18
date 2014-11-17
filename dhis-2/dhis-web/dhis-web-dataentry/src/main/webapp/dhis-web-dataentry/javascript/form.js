@@ -1348,8 +1348,8 @@ dhis2.de.getCurrentCategoryOptionsQueryValue = function()
  */
 dhis2.de.optionValidWithinPeriod = function( option, period )
 {
-    return ( !option.startDate || option.startDate <= dhis2.de.periodChoices[ period ].endDate )
-        && ( !option.endDate || option.endDate >= dhis2.de.periodChoices[ period ].startDate )
+    return ( !option.start || option.start <= dhis2.de.periodChoices[ period ].end )
+        && ( !option.end || option.end >= dhis2.de.periodChoices[ period ].start )
 }
 
 /**
