@@ -167,8 +167,8 @@ $( function() {
     <td>$i18n.getString( "compression" )</td>
     <td>
         <select id="compression" style="width: 300px;">
-            <option value="">$i18n.getString( "uncompressed" )</option>
             <option value=".gz">$i18n.getString( "compression_gzip" )</option>
+            <option value="">$i18n.getString( "uncompressed" )</option>
         </select>
     </td>
 </tr>
