@@ -8479,11 +8479,37 @@ Ext.onReady( function() {
 			iconCls: 'gis-button-icon-map',
 			toggleGroup: 'module',
 			pressed: true,
-			handler: function() {
-				if (!this.pressed) {
-					this.toggle();
-				}
-			}
+            menu: {},
+            handler: function(b) {
+                b.menu = Ext.create('Ext.menu.Menu', {
+                    closeAction: 'destroy',
+                    shadow: false,
+                    showSeparator: false,
+                    items: [
+                        {
+                            text: GIS.i18n.clear_map + '&nbsp;&nbsp;', //i18n
+                            cls: 'gis-menu-item-noicon',
+                            handler: function() {
+                                window.location.href = gis.init.contextPath + '/dhis-web-mapping';
+                            }
+                        }
+                    ],
+                    listeners: {
+                        show: function() {
+                            gis.util.gui.window.setAnchorPosition(b.menu, b);
+                        },
+                        hide: function() {
+                            b.menu.destroy();
+                            defaultButton.toggle();
+                        },
+                        destroy: function(m) {
+                            b.menu = null;
+                        }
+                    }
+                });
+
+                b.menu.show();
+            }
 		});
 
 		interpretationItem = Ext.create('Ext.menu.Item', {
@@ -8849,7 +8875,7 @@ Ext.onReady( function() {
 										text: GIS.i18n.go_to_pivot_tables + '&nbsp;&nbsp;', //i18n
 										cls: 'gis-menu-item-noicon',
 										handler: function() {
-											window.location.href = gis.init.contextPath + '/dhis-web-pivot/index.html';
+											window.location.href = gis.init.contextPath + '/dhis-web-pivot';
 										}
 									},
 									'-',
@@ -8905,7 +8931,7 @@ Ext.onReady( function() {
 										text: GIS.i18n.go_to_charts + '&nbsp;&nbsp;', //i18n
 										cls: 'gis-menu-item-noicon',
 										handler: function() {
-											window.location.href = gis.init.contextPath + '/dhis-web-visualizer/index.html';
+											window.location.href = gis.init.contextPath + '/dhis-web-visualizer';
 										}
 									},
 									'-',

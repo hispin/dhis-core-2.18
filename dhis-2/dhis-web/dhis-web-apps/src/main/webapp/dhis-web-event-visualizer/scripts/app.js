@@ -6665,11 +6665,37 @@ Ext.onReady( function() {
 			iconCls: 'ns-button-icon-chart',
 			toggleGroup: 'module',
 			pressed: true,
-			handler: function() {
-				if (!this.pressed) {
-					this.toggle();
-				}
-			}
+            menu: {},
+            handler: function(b) {
+                b.menu = Ext.create('Ext.menu.Menu', {
+                    closeAction: 'destroy',
+                    shadow: false,
+                    showSeparator: false,
+                    items: [
+                        {
+                            text: NS.i18n.clear_event_chart + '&nbsp;&nbsp;', //i18n
+                            cls: 'ns-menu-item-noicon',
+                            handler: function() {
+                                window.location.href = ns.core.init.contextPath + '/dhis-web-event-visualizer';
+                            }
+                        }
+                    ],
+                    listeners: {
+                        show: function() {
+                            ns.core.web.window.setAnchorPosition(b.menu, b);
+                        },
+                        hide: function() {
+                            b.menu.destroy();
+                            defaultButton.toggle();
+                        },
+                        destroy: function(m) {
+                            b.menu = null;
+                        }
+                    }
+                });
+
+                b.menu.show();
+            }
 		});
 
 		centerRegion = Ext.create('Ext.panel.Panel', {
@@ -6723,7 +6749,7 @@ Ext.onReady( function() {
 										text: NS.i18n.go_to_event_reports + '&nbsp;&nbsp;', //i18n
 										cls: 'ns-menu-item-noicon',
 										handler: function() {
-											window.location.href = ns.core.init.contextPath + '/dhis-web-event-reports/index.html';
+											window.location.href = ns.core.init.contextPath + '/dhis-web-event-reports';
 										}
 									},
 									'-',
