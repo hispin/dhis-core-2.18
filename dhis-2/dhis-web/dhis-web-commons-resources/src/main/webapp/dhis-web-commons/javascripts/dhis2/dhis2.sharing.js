@@ -85,6 +85,8 @@ function setUserGroupAccesses( userGroupAccesses ) {
   clearUserGroupAccesses();
 
   if( userGroupAccesses ) {
+    userGroupAccesses.reverse();
+
     $.each(userGroupAccesses, function( idx, item ) {
       var tmpl_html = renderUserGroupAccessTemplate({
         label: item.name,
