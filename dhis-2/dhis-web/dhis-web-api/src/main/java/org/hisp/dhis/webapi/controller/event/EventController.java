@@ -205,7 +205,15 @@ public class EventController
             events.setEvents( PagerUtils.pageCollection( events.getEvents(), pager ) );
         }
 
-        OutputStream outputStream = isGzip( request ) ? new GZIPOutputStream( response.getOutputStream() ) : response.getOutputStream();
+        OutputStream outputStream = response.getOutputStream();
+        response.setContentType( "application/csv" );
+
+        if ( isGzip( request ) )
+        {
+            response.addHeader( ContextUtils.HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
+            outputStream = new GZIPOutputStream( outputStream );
+            response.setContentType( "application/csv+gzip" );
+        }
 
         if ( !StringUtils.isEmpty( attachment ) )
         {

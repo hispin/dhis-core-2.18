@@ -10,8 +10,9 @@ $( function() {
         var program = $( '#programs' ).val();
         var programStage = $( '#programStages' ).val();
         var inclusion = $( '#inclusion' ).val();
+        var file = "events" + format + compression;
 
-        var url = '../api/events' + format + compression + "?program=" + program;
+        var url = '../api/' + file + "?attachment=" + file + "&program=" + program;
 
         if( programStage && programStage.length > 0 ) {
             url += "&programStage=" + programStage;
