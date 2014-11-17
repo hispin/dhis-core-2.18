@@ -154,8 +154,6 @@ DAO.store = new dhis2.storage.Store( {
     };
 } )( jQuery );
 
-selection.setListenerFunction( organisationUnitSelected );
-
 /**
  * Page init. The order of events is:
  *
@@ -171,12 +169,13 @@ $( document ).ready( function()
 
     $( '#loaderSpan' ).show();
 
-    $( '#orgUnitTree' ).one( 'ouwtLoaded', function()
+    $( '#orgUnitTree' ).one( 'ouwtLoaded', function( event, ids, names )
     {
         console.log( 'Ouwt loaded' );
         
         $.when( dhis2.de.loadMetaData(), dhis2.de.loadDataSetAssociations() ).done( function() {
         	dhis2.de.setMetaDataLoaded();
+        	organisationUnitSelected( ids, names );
         } );
     } );
 
@@ -311,7 +310,6 @@ dhis2.de.loadDataSetAssociations = function()
 dhis2.de.setMetaDataLoaded = function()
 {
     dhis2.de.metaDataIsLoaded = true;
-    selection.responseReceived(); // Notify that meta data is loaded
     $( '#loaderSpan' ).hide();
     console.log( 'Meta-data loaded' );
 
