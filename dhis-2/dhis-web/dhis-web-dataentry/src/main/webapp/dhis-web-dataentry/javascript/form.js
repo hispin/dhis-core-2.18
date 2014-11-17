@@ -182,13 +182,11 @@ $( document ).ready( function()
 	        if ( dhis2.de.storageManager.hasLocalData() )
 	        {
 	            var message = i18n_need_to_sync_notification
-	            	+ ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>'
-	            	+ ' <button id="discard_button" type="button">' + i18n_discard + '</button>';
+	            	+ ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
 
 	            setHeaderMessage( message );
 
 	            $( '#sync_button' ).bind( 'click', dhis2.de.uploadLocalData );
-	            $( '#discard_button' ).bind( 'click', dhis2.de.discardLocalData );
 	        }
 	        else
 	        {
@@ -349,10 +347,13 @@ dhis2.de.uploadLocalData = function()
             	else // Connection lost during upload
         		{
                     var message = i18n_sync_failed
-                        + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+                        + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>'
+                        + ' <button id="discard_button" type="button">' + i18n_discard + '</button>';
 
                     setHeaderMessage( message );
+
                     $( '#sync_button' ).bind( 'click', dhis2.de.uploadLocalData );
+                    $( '#discard_button' ).bind( 'click', dhis2.de.discardLocalData );
         		}
             }
         } );
@@ -410,10 +411,13 @@ dhis2.de.uploadLocalData = function()
             	else // Connection lost during upload
             	{
 	                var message = i18n_sync_failed
-	                    + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
-	
+                    + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>'
+                    + ' <button id="discard_button" type="button">' + i18n_discard + '</button>';
+
 	                setHeaderMessage( message );
+
 	                $( '#sync_button' ).bind( 'click', dhis2.de.uploadLocalData );
+                  $( '#discard_button' ).bind( 'click', dhis2.de.discardLocalData );
             	}
             }
         } );
