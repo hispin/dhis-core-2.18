@@ -70,15 +70,16 @@ public class DefaultPartnerService implements PartnerService
         return partnerStore.getPartner( organisationUnit, dataSet );
     }
 
-    @Override
-    public Collection<Partner> getPartner( OrganisationUnit organisationUnit, DataElement dataElement )
-    {
-        return partnerStore.getPartner( organisationUnit, dataElement );
-    }    
-    
+
     public Map<String, Integer> getOrgUnitCountFromPartner( Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate )
     {
         return partnerStore.getOrgUnitCountFromPartner( dataSetId, dataElementId, optionId, startDate, endDate );
     }    
+    
+    public Collection<String> getStartAndEndDate( Integer dataSetId, Integer dataElementId, Integer optionId )
+    {
+        return partnerStore.getStartAndEndDate( dataSetId, dataElementId, optionId );
+    }
+    
     
 }
