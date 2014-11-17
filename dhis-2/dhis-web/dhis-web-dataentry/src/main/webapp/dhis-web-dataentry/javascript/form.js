@@ -134,7 +134,7 @@ dhis2.de.getCurrentOrganisationUnit = function()
     }
 
     return dhis2.de.currentOrganisationUnitId;
-}
+};
 
 DAO.store = new dhis2.storage.Store( {
     name: 'dhis2',
