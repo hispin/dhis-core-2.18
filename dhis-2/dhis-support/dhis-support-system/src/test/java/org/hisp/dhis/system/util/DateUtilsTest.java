@@ -31,7 +31,10 @@ package org.hisp.dhis.system.util;
 import static org.hisp.dhis.system.util.DateUtils.dateIsValid;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Date;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -64,5 +67,21 @@ public class DateUtilsTest
     public void testDaysBetween()
     {
         assertEquals( 6, DateUtils.daysBetween( new DateTime( 2014, 3, 1, 0, 0 ).toDate(), new DateTime( 2014, 3, 7, 0, 0 ).toDate() ) );
+    }
+    
+    @Test
+    public void testMax()
+    {
+        Date date1 = new DateTime( 2014, 5, 15, 3, 3 ).toDate();
+        Date date2 = new DateTime( 2014, 5, 18, 1, 1 ).toDate();
+        Date date3 = null;
+        Date date4 = null;
+        
+        assertEquals( date1, DateUtils.max( date1, date2 ) );
+        assertEquals( date1, DateUtils.max( date2, date1 ) );
+        assertEquals( date1, DateUtils.max( date1, date3 ) );
+        assertEquals( date1, DateUtils.max( date3, date1 ) );
+        
+        assertNull( DateUtils.max( date3, date4 ) );
     }
 }
