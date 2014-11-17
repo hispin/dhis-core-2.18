@@ -486,7 +486,10 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+
+        preDeleteEntity( objects.get( 0 ) );
         manager.delete( objects.get( 0 ) );
+        postDeleteEntity();
     }
 
     //--------------------------------------------------------------------------
@@ -712,6 +715,14 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     protected void postUpdateEntity( T entity )
+    {
+    }
+
+    protected void preDeleteEntity( T entity )
+    {
+    }
+
+    protected void postDeleteEntity()
     {
     }
 

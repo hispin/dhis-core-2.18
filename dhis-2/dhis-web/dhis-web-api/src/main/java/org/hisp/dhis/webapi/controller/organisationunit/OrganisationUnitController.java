@@ -38,6 +38,7 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitByLevelComparat
 import org.hisp.dhis.schema.descriptors.OrganisationUnitSchemaDescriptor;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.version.VersionService;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
@@ -67,6 +68,9 @@ public class OrganisationUnitController
 {
     @Autowired
     private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private VersionService versionService;
 
     @Autowired
     private CurrentUserService currentUserService;
@@ -312,5 +316,23 @@ public class OrganisationUnitController
         generator.writeEndObject();
 
         generator.writeEndObject();
+    }
+
+    @Override
+    protected void postCreateEntity( OrganisationUnit entity )
+    {
+        versionService.updateVersion( VersionService.ORGANISATIONUNIT_VERSION );
+    }
+
+    @Override
+    protected void postUpdateEntity( OrganisationUnit entity )
+    {
+        versionService.updateVersion( VersionService.ORGANISATIONUNIT_VERSION );
+    }
+
+    @Override
+    protected void postDeleteEntity()
+    {
+        versionService.updateVersion( VersionService.ORGANISATIONUNIT_VERSION );
     }
 }
