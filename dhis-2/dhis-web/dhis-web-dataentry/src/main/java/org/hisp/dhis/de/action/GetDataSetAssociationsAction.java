@@ -52,11 +52,11 @@ public class GetDataSetAssociationsAction
     @Autowired
     private ConfigurationService configurationService;
 
-    private List<Set<String>> dataSetAssociationSets;
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+
+    private List<Set<String>> dataSetAssociationSets;
 
     public List<Set<String>> getDataSetAssociationSets()
     {
