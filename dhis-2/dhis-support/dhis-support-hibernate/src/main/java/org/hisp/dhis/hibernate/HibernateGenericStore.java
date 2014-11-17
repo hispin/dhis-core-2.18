@@ -227,7 +227,7 @@ public class HibernateGenericStore<T>
     {
         return sessionFactory.getCurrentSession().createCriteria( getClazz() );
     }
-
+    
     /**
      * Creates a Criteria for the implementation Class type restricted by the
      * given Criterions.

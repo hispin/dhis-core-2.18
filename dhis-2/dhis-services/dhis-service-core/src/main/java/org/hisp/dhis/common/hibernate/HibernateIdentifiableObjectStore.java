@@ -28,6 +28,11 @@ package org.hisp.dhis.common.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
@@ -40,11 +45,6 @@ import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.hibernate.exception.ReadAccessDeniedException;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author bobj
@@ -391,6 +391,15 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
             .add( Restrictions.ge( "lastUpdated", lastUpdated ) )
             .addOrder( Order.asc( "name" ) )
             .list();
+    }
+
+    @Override
+    public Date getLastUpdated()
+    {
+        return (Date) getClazzCriteria().setProjection( Projections.property( "lastUpdated" ) )
+            .addOrder( Order.desc( "lastUpdated" ) )
+            .setMaxResults( 1 )
+            .setCacheable( true ).uniqueResult();            
     }
 
     @Override

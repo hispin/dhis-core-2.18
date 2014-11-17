@@ -532,6 +532,19 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
+    public <T extends IdentifiableObject> Date getLastUpdated( Class<T> clazz )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return null;
+        }
+
+        return store.getLastUpdated();
+    }
+
+    @Override
     public <T extends IdentifiableObject> Set<Integer> convertToId( Class<T> clazz, Collection<String> uids )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
