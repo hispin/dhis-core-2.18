@@ -62,6 +62,8 @@ names(template)<-c("key","value_template")
 template$template_order<-row.names(template)
 #Remove the periods formats. They will never be translated
 template<-template[!grepl("^format\\.",template$key),]
+#Remove any duplicate keys as this causes big problems
+template<-template[!duplicated(template$key),]
 
 #Loop through each file, cleaning out needless translations
 for (j in 1:length(this.files)) {
