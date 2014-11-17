@@ -92,6 +92,8 @@ public interface IdentifiableObjectManager
     <T extends IdentifiableObject> Collection<T> getByLastUpdatedSorted( Class<T> clazz, Date lastUpdated );
 
     <T extends IdentifiableObject> Collection<T> getByCreatedSorted( Class<T> clazz, Date created );
+    
+    <T extends IdentifiableObject> Date getLastUpdated( Class<T> clazz );
 
     void delete( IdentifiableObject object );
 
