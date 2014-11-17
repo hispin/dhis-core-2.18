@@ -369,17 +369,14 @@ function Selection()
                     selection.clearOrganisationUnits().always(function() {
                       selection.setOrganisationUnits( data.organisationUnits ).done(function() {
                           sync_and_reload();
-                          $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
                       });
                     });
                 } ).fail( function() {
                     sync_and_reload();
-                    $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
                 } );
             }
             else {
                 sync_and_reload();
-                $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
             }
         } );
     };
@@ -459,11 +456,7 @@ function Selection()
             
           selection.busy( true );
 
-          if( selection.getSelected() && selection.getSelected().length === 0 ) {
-              setTimeout(doSync, 1000);
-          } else {
-              doSync();
-          }
+          doSync();
         }
     };
 
