@@ -314,8 +314,18 @@ function Selection()
                     selection.sync();
                     subtree.reloadTree();
 
+                    var ids = [];
+                    var names = [];
+
+                    $.each( selection.getSelected(), function( i, id ) {
+                    	var ou = organisationUnits[id];
+                        var name = !!ou ? ou.n : '';
+                        ids.push( id );
+                        names.push( name );
+                    } );
+                    
                     $( "#ouwt_loader" ).hide();
-                    $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
+                    $( "#orgUnitTree" ).trigger( "ouwtLoaded", [ids, names] );
                 } );
             } );
         }
