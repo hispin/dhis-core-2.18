@@ -290,8 +290,10 @@ dhis2.de.loadMetaData = function()
 };
 
 dhis2.de.discardLocalData = function() {
-    dhis2.de.storageManager.clearAllDataValues();
-    hideHeaderMessage();
+    if( confirm( i18n_remove_local_data ) ) {
+        dhis2.de.storageManager.clearAllDataValues();
+        hideHeaderMessage();
+    }
 };
 
 dhis2.de.uploadLocalData = function()
