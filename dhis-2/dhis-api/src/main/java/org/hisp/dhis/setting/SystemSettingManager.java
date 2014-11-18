@@ -103,6 +103,7 @@ public interface SystemSettingManager
     final String KEY_LAST_SUCCESSFUL_RESOURCE_TABLES_UPDATE = "keyLastSuccessfulResourceTablesUpdate";
     final String KEY_HELP_PAGE_LINK = "helpPageLink";
     final String KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL = "keyAcceptanceRequiredForApproval";
+    final String KEY_SYSTEM_NOTIFICATIONS_EMAIL = "keySystemNotificationsEmail";
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";

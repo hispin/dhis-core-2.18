@@ -38,6 +38,7 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_HELP_PAGE_LINK;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_MULTI_ORGANISATION_UNIT_FORMS;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_SYSTEM_NOTIFICATIONS_EMAIL;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hisp.dhis.configuration.Configuration;
@@ -170,6 +171,13 @@ public class SetGeneralSettingsAction
     {
         this.offlineOrganisationUnitLevel = offlineOrganisationUnitLevel;
     }
+    
+    private String systemNotificationsEmail;
+
+    public void setSystemNotificationsEmail( String systemNotificationsEmail )
+    {
+        this.systemNotificationsEmail = systemNotificationsEmail;
+    }
 
     private String phoneNumberAreaCode;
 
@@ -237,6 +245,7 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_GOOGLE_ANALYTICS_UA, googleAnalyticsUA );
         systemSettingManager.saveSystemSetting( KEY_ANALYTICS_MAINTENANCE_MODE, analyticsMaintenanceMode );
         systemSettingManager.saveSystemSetting( KEY_HELP_PAGE_LINK, StringUtils.trimToNull( helpPageLink ) );
+        systemSettingManager.saveSystemSetting( KEY_SYSTEM_NOTIFICATIONS_EMAIL, systemNotificationsEmail );
 
         Configuration configuration = configurationService.getConfiguration();
 

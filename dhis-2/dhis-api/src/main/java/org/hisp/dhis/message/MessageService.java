@@ -73,6 +73,8 @@ public interface MessageService
     int sendMessage( String subject, String text, String metaData, Set<User> users, User sender, boolean includeFeedbackRecipients, boolean forceNotifications );
 
     int sendFeedback( String subject, String text, String metaData );
+    
+    int sendSystemNotification( String subject, String text );
 
     void sendReply( MessageConversation conversation, String text, String metaData );
 
