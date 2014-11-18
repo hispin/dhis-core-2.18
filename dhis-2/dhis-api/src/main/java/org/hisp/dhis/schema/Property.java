@@ -154,6 +154,16 @@ public class Property implements Ordered
      */
     private boolean writable;
 
+    /**
+     * Are the values for this property required to be unique?
+     */
+    private boolean unique;
+
+    /**
+     * Are the values for this property required to be not-null?
+     */
+    private boolean notNull;
+
     public Property()
     {
     }
@@ -394,6 +404,30 @@ public class Property implements Ordered
     public void setWritable( boolean writable )
     {
         this.writable = writable;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isUnique()
+    {
+        return unique;
+    }
+
+    public void setUnique( boolean unique )
+    {
+        this.unique = unique;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isNotNull()
+    {
+        return notNull;
+    }
+
+    public void setNotNull( boolean notNull )
+    {
+        this.notNull = notNull;
     }
 
     public String key()

@@ -59,7 +59,7 @@ import java.util.Map;
  *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class Jackson2PropertyIntrospectorService 
+public class Jackson2PropertyIntrospectorService
     extends AbstractPropertyIntrospectorService
 {
     @Autowired
@@ -115,6 +115,31 @@ public class Jackson2PropertyIntrospectorService
                 property.setFieldName( fieldName );
                 property.setPersisted( classPropertyNames.contains( property.getFieldName() ) );
                 property.setWritable( property.isPersisted() );
+            }
+
+            // This will be replaced later and fetched from hibernate mapping files instead
+            if ( property.isPersisted() && ("name".equals( fieldName ) || "code".equals( fieldName )) )
+            {
+                IdentifiableObject identifiableObject;
+
+                try
+                {
+                    identifiableObject = (IdentifiableObject) clazz.newInstance();
+
+                    if ( "name".equals( fieldName ) )
+                    {
+                        property.setUnique( identifiableObject.haveUniqueNames() );
+                        property.setNotNull( true );
+                    }
+                    else if ( "code".equals( fieldName ) )
+                    {
+                        property.setUnique( identifiableObject.haveUniqueCode() );
+                        property.setNotNull( true );
+                    }
+                }
+                catch ( InstantiationException | IllegalAccessException ignored )
+                {
+                }
             }
 
             if ( method.isAnnotationPresent( Description.class ) )
