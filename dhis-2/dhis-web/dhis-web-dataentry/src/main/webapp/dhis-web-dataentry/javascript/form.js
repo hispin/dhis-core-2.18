@@ -2814,12 +2814,14 @@ dhis2.de.setOptionNameInField = function( fieldId, value )
  */
 dhis2.de.searchOptionSet = function( uid, query, success ) 
 {
+	var noneVal = '[No value]';
+	
     if ( window.DAO !== undefined && window.DAO.store !== undefined ) {
         DAO.store.get( 'optionSets', uid ).done( function ( obj ) {
             if ( obj && obj.optionSet ) {
                 var options = [];
 
-                if ( query == null || query == '' ) {
+                if ( query == null || query == '' || query == noneVal ) {
                     options = obj.optionSet.options.slice( 0, dhis2.de.cst.dropDownMaxItems - 1 );
                 } 
                 else {
@@ -2836,6 +2838,10 @@ dhis2.de.searchOptionSet = function( uid, query, success )
                             options.push( item );
                         }
                     }
+                }
+                
+                if ( options && options.length > 0 ) {
+                	options.push( { name: noneVal, code: '' } );
                 }
 
                 success( $.map( options, function ( item ) {
