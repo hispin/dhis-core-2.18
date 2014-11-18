@@ -253,9 +253,11 @@ public class DataElementOperand
      */
     public Integer getRelevantAggregationLevel( int organisationUnitLevel )
     {
-        Collections.sort( aggregationLevels );
+        List<Integer> levels = new ArrayList<>( aggregationLevels );
+        
+        Collections.sort( levels );
 
-        for ( final Integer aggregationLevel : aggregationLevels )
+        for ( final Integer aggregationLevel : levels )
         {
             if ( aggregationLevel >= organisationUnitLevel )
             {
