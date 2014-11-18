@@ -157,12 +157,11 @@ public class AnalyticsTableTask
         {
             notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
             
-            messageService.sendFeedback( 
+            messageService.sendSystemNotification( 
                 "Analytics table process failed", 
                 "Analytics table process failed, please check the logs. " +
                 "Message: " + ex.getMessage() + " " +
-                "Cause: " + DebugUtils.getStackTrace( ex.getCause() ), 
-                null );
+                "Cause: " + DebugUtils.getStackTrace( ex.getCause() ) );
             
             throw ex;
         }

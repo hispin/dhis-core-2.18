@@ -9,6 +9,7 @@
         infrastructuralPeriodType: getFieldValue('infrastructuralPeriodType'),
         feedbackRecipients: getFieldValue('feedbackRecipients'),
         offlineOrganisationUnitLevel: getFieldValue('offlineOrganisationUnitLevel'),
+        systemNotificationsEmail: getFieldValue('systemNotificationsEmail'),
         omitIndicatorsZeroNumeratorDataMart: jQuery('#omitIndicatorsZeroNumeratorDataMart').is(':checked'),
         factorDeviation: getFieldValue('factorDeviation'),
         phoneNumberAreaCode: getFieldValue('phoneNumberAreaCode'),
@@ -108,6 +109,11 @@
     #set( $level = $level + 1)
 	#end
 </select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "system_notifications_email_address" )</div>
+<div class="setting">
+	<input type="text" id="systemNotificationsEmail" name="systemNotificationsEmail" value="$!keySystemNotificationsEmail"/>
 </div>
 
 <div class="settingLabel">$i18n.getString( "data_analysis_factor" )</div>

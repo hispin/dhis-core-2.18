@@ -39,6 +39,7 @@ import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.Clock;
+import org.hisp.dhis.system.util.DebugUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -88,7 +89,11 @@ public class ResourceTableTask
         {
             notifier.notify( taskId, NotificationLevel.ERROR, "Process failed: " + ex.getMessage(), true );
             
-            messageService.sendFeedback( "Resource table process failed", "Resource table process failed, please check the logs.", null );
+            messageService.sendSystemNotification( 
+                "Resource table process failed", 
+                "Resource table process failed, please check the logs. " +
+                "Message: " + ex.getMessage() + " " +
+                "Cause: " + DebugUtils.getStackTrace( ex.getCause() ) );
             
             throw ex;
         }

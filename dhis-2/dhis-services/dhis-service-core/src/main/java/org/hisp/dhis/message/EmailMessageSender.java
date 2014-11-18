@@ -110,7 +110,7 @@ public class EmailMessageSender
 
         text = sender == null ? text : ( text + LB + LB + 
             sender.getName() + LB + 
-            sender.getOrganisationUnitsName() + LB +
+            ( sender.getOrganisationUnitsName() != null ? ( sender.getOrganisationUnitsName() + LB ) : StringUtils.EMPTY ) +
             ( sender.getEmail() != null ? ( sender.getEmail() + LB ) : StringUtils.EMPTY ) +
             ( sender.getPhoneNumber() != null ? ( sender.getPhoneNumber() + LB ) : StringUtils.EMPTY ) );
         
@@ -119,15 +119,13 @@ public class EmailMessageSender
             Email email = getEmail( hostName, port, username, password, tls, from );
             email.setSubject( customizeTitle( DEFAULT_SUBJECT_PREFIX ) + subject );
             email.setMsg( text );
-            
+                        
             boolean hasRecipients = false;
             
             for ( User user : users )
             {
-                boolean emailNotification = (Boolean) userService.getUserSettingValue( user, KEY_MESSAGE_EMAIL_NOTIFICATION, false );
+                boolean doSend = forceSend || (Boolean) userService.getUserSettingValue( user, KEY_MESSAGE_EMAIL_NOTIFICATION, false );
                 
-                boolean doSend = forceSend || emailNotification;
-    
                 if ( doSend && user.getEmail() != null && !user.getEmail().trim().isEmpty() )
                 {
                     email.addBcc( user.getEmail() );
