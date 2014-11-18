@@ -77,8 +77,8 @@ public class DateUtilsTest
         Date date3 = null;
         Date date4 = null;
         
-        assertEquals( date1, DateUtils.max( date1, date2 ) );
-        assertEquals( date1, DateUtils.max( date2, date1 ) );
+        assertEquals( date2, DateUtils.max( date1, date2 ) );
+        assertEquals( date2, DateUtils.max( date2, date1 ) );
         assertEquals( date1, DateUtils.max( date1, date3 ) );
         assertEquals( date1, DateUtils.max( date3, date1 ) );
         

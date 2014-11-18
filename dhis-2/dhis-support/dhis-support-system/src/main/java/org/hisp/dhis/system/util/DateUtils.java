@@ -131,7 +131,7 @@ public class DateUtils
             return date2 != null ? date2 : null;
         }
         
-        return date2 != null ? ( date1.before( date2 ) ? date1 : date2 ) : date1;        
+        return date2 != null ? ( date1.after( date2 ) ? date1 : date2 ) : date1;        
     }
 
     /**
