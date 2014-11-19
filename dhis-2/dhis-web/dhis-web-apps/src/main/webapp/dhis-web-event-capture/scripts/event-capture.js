@@ -164,36 +164,7 @@ function ajax_login()
     });
 }
 
-function downloadMetaData(){
-    /*var adapters = [];    
-    if( dhis2.ec.memoryOnly ) {
-        adapters = [ dhis2.storage.InMemoryAdapter ];
-    } else {
-        adapters = [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ];
-    }
-    
-    
-    dhis2.ec.store = new dhis2.storage.Store({
-        name: EC_STORE_NAME,
-        objectStores: [
-            {
-                name: 'ecPrograms',
-                adapters: adapters
-            },
-            {
-                name: 'programStages',
-                adapters: adapters
-            },
-            {
-                name: 'geoJsons',
-                adapters: adapters
-            },
-            {
-                name: 'optionSets',
-                adapters: adapters
-            }            
-        ]        
-    });*/
+function downloadMetaData(){    
     
     var def = $.Deferred();
     var promise = def.promise();
@@ -209,8 +180,8 @@ function downloadMetaData(){
     promise = promise.then( getProgramStages );
     promise = promise.then( getOptionSets );
     promise.done( function() {           
-        selection.responseReceived();            
-    });           
+        selection.responseReceived();
+    });         
 
     def.resolve();
 }

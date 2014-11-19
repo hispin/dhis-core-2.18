@@ -47,7 +47,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     
     var loginDetails = storage.get('LOGIN_DETAILS');
     var storedBy = '';
-    if(loginDetails){
+    if(loginDetails && loginDetails.userCredentials){
         storedBy = loginDetails.userCredentials.username;
     }
     $scope.noteExists = false;
@@ -57,8 +57,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         
         $scope.dhis2Events = [];
         if( angular.isObject($scope.selectedOrgUnit)){            
+            //storage.set('SELECTED_OU', $scope.selectedOrgUnit);            
             //apply translation - by now user's profile is fetched from server.
-            TranslationService.translate(); 
+
+            TranslationService.translate();            
             $scope.loadPrograms();
         }
     });
@@ -66,8 +68,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     GeoJsonFactory.getAll().then(function(geoJsons){
         $scope.geoJsons = geoJsons;
     });
-            
-    
     
     //load programs associated with the selected org unit.
     $scope.loadPrograms = function() {
