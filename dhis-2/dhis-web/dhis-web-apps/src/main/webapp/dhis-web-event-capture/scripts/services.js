@@ -391,6 +391,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                                             ' ng-required="prStDes.' + deId + '.compulsory"' +
                                             ' typeahead="option.name as option.name for option in optionSets.'+optionSetId+'.options | filter:$viewValue | limitTo:20"' +
                                             ' typeahead-editable="false" ' +
+                                            ' d2-typeahead-validation ' +
                                             ' typeahead-open-on-focus ng-required="prStDes.'+deId+'.compulsory"> ' +
                                             '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'option_required\'| translate}}</span>';
                         	}
@@ -400,7 +401,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                                             ' ng-model="currentEvent.' + deId + '" ' +
                                             ' ng-disabled="currentEvent[uid] == \'uid\'" ' +
                                             ' ng-required="prStDes.' + deId + '.compulsory"> ' +
-                                            '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'text_required\'| translate}}</span>';                                     
+                                            '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'string_required\'| translate}}</span>';                                     
                         	}
                         }
                         if(programStageDataElements[deId].dataElement.type == "bool"){

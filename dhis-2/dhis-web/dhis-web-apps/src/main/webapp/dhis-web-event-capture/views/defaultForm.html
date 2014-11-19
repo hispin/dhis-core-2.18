@@ -86,10 +86,13 @@
                                 <div class="container-fluid" ng-if="prStDes[eventGridColumn.id].dataElement.optionSet">
                                     <span ng-if="!selectedProgram.dataEntryMethod || optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id].options.length >= 7">
                                         <input type="text"
+                                               class="typeahead"
+                                               placeholder="&#xf0d7;&nbsp;&nbsp;"
                                                ng-model="currentEvent[eventGridColumn.id]"                                                                    
                                                typeahead="option.name as option.name for option in optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id].options | filter:$viewValue | limitTo:20" 
                                                typeahead-open-on-focus   
                                                typeahead-editable=false
+                                               d2-typeahead-validation
                                                ng-required={{eventGridColumn.compulsory}}
                                                name="foo" 
                                                style="width:99%;"/>
@@ -119,7 +122,7 @@
                                         ng-required={{eventGridColumn.compulsory}}
                                         name="foo" 
                                         style="width:99%;"/>
-                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'text_required'| translate}}</span>
+                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'string_required'| translate}}</span>
                                 </div>                                
                             </div>
                             <div ng-switch-when="bool">
@@ -264,6 +267,7 @@
                                                        typeahead="option.name as option.name for option in prStDes[de.dataElement.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
                                                        typeahead-open-on-focus   
                                                        typeahead-editable="false"
+                                                       d2-typeahead-validation
                                                        ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                        name="foo" 
                                                        style="width:99%;"/>
@@ -293,7 +297,7 @@
                                                 ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                 name="foo" 
                                                 style="width:99%;"/>
-                                            <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'text_required'| translate}}</span>
+                                            <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'string_required'| translate}}</span>
                                         </div>
                                     </div>
                                     <div ng-switch-when="bool">
