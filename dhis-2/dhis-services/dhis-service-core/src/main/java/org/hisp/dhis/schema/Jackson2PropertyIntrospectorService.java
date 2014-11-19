@@ -118,7 +118,7 @@ public class Jackson2PropertyIntrospectorService
             }
 
             // This will be replaced later and fetched from hibernate mapping files instead
-            if ( property.isPersisted() && ("name".equals( fieldName ) || "code".equals( fieldName )) )
+            if ( property.isPersisted() && ("name".equals( fieldName ) || "code".equals( fieldName )) && IdentifiableObject.class.isAssignableFrom( clazz ) )
             {
                 IdentifiableObject identifiableObject;
 
