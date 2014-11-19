@@ -89,7 +89,8 @@ public class GetDataSetAssociationsAction
     @Override
     public String execute()
     {
-        Date lastUpdated = DateUtils.max( identifiableObjectManager.getLastUpdated( DataSet.class ), 
+        Date lastUpdated = DateUtils.max( 
+            identifiableObjectManager.getLastUpdated( DataSet.class ), 
             identifiableObjectManager.getLastUpdated( OrganisationUnit.class ) );
         String tag = lastUpdated != null ? DateUtils.LONG_DATE_FORMAT.format( lastUpdated ) : null;
         
