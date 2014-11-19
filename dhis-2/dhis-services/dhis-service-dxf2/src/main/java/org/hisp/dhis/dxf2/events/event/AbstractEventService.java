@@ -40,9 +40,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -88,8 +85,6 @@ import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -211,9 +206,9 @@ public abstract class AbstractEventService
     @Override
     public ImportSummary addEvent( Event event, ImportOptions importOptions )
     {
-        Program program = getProgram( event.getProgram() );
+        Program program = programService.getProgram( event.getProgram() );
         ProgramInstance programInstance;
-        ProgramStage programStage = getProgramStage( event.getProgramStage() );
+        ProgramStage programStage = programStageService.getProgramStage( event.getProgramStage() );
         ProgramStageInstance programStageInstance = null;
 
         if ( importOptions == null )
@@ -981,36 +976,5 @@ public abstract class AbstractEventService
         }
 
         return organisationUnit;
-    }
-
-    private static Cache<String, Program> programCache = CacheBuilder.newBuilder()
-        .expireAfterAccess( 30, TimeUnit.SECONDS )
-        .initialCapacity( 10 )
-        .maximumSize( 50 )
-        .build();
-
-    private Program getProgram( final String id )
-    {
-        try
-        {
-            return programCache.get( id, new Callable<Program>()
-            {
-                @Override
-                public Program call() throws Exception
-                {
-                    return programService.getProgram( id );
-                }
-            } );
-        }
-        catch ( ExecutionException ignored )
-        {
-        }
-
-        return null;
-    }
-
-    private ProgramStage getProgramStage( String id )
-    {
-        return programStageService.getProgramStage( id );
     }
 }
