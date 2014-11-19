@@ -74,7 +74,7 @@ public class GenericBatchHandler
     @Override
     protected void setUniqueValues( Object object )
     {
-        throw new UnsupportedOperationException();
+        // Cannot be known
     }
     
     @Override
