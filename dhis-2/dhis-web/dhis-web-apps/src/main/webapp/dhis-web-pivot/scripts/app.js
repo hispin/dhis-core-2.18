@@ -2692,8 +2692,9 @@ Ext.onReady( function() {
                 this.isPending = false;
                 indicatorSearch.hideFilter();
             },
-            loadPage: function(uid, filter, append) {
+            loadPage: function(uid, filter, append, noPaging, fn) {
                 var store = this,
+					params = {},
                     path;
 
                 uid = (Ext.isString(uid) || Ext.isNumber(uid)) ? uid : indicatorGroup.getValue();
@@ -2714,27 +2715,32 @@ Ext.onReady( function() {
 				else if (uid === 0) {
 					path = '/indicators.json?fields=id,' + ns.core.init.namePropertyUrl + '' + (filter ? '&filter=name:like:' + filter : '');
 				}
-
+				
 				if (!path) {
 					console.log('Available indicators: invalid id');
 					return;
 				}
 
+				if (noPaging) {
+					params.paging = false;
+				}
+				else {
+					params.page = store.nextPage;
+					params.pageSize = 50;
+				}
+				
                 store.isPending = true;
                 ns.core.web.mask.show(indicatorAvailable.boundList);
 
                 Ext.Ajax.request({
                     url: ns.core.init.contextPath + '/api' + path,
-                    params: {
-                        page: store.nextPage,
-                        pageSize: 50
-                    },
+                    params: params,
                     success: function(r) {
                         var response = Ext.decode(r.responseText),
                             data = response.indicators || [],
                             pager = response.pager;
 
-                        store.loadStore(data, pager, append);
+                        store.loadStore(data, pager, append, fn);
                     },
                     callback: function() {
                         store.isPending = false;
@@ -2742,7 +2748,9 @@ Ext.onReady( function() {
                     }
                 });
             },
-            loadStore: function(data, pager, append) {
+            loadStore: function(data, pager, append, fn) {
+				pager = pager || {};
+				
                 this.loadData(data, append);
                 this.sortStore();
 
@@ -2753,7 +2761,13 @@ Ext.onReady( function() {
                 }
 
                 this.isPending = false;
-                ns.core.web.multiSelect.filterAvailable({store: indicatorAvailableStore}, {store: indicatorSelectedStore});
+
+                if (fn) {
+					fn();
+				}
+				else {
+					ns.core.web.multiSelect.filterAvailable({store: indicatorAvailableStore}, {store: indicatorSelectedStore});
+				}
             },
 			storage: {},
 			parent: null,
@@ -3292,7 +3306,9 @@ Ext.onReady( function() {
 					icon: 'images/arrowrightdouble.png',
 					width: 22,
 					handler: function() {
-						ns.core.web.multiSelect.selectAll(indicatorAvailable, indicatorSelected);
+						indicatorAvailableStore.loadPage(null, null, null, true, function() {
+							ns.core.web.multiSelect.selectAll(indicatorAvailable, indicatorSelected);
+						});
 					}
 				}
 			],
@@ -4821,6 +4837,9 @@ Ext.onReady( function() {
 			var	onSelect,
                 availableStore,
 				selectedStore,
+				//dataLabel,
+				//dataSearch,
+				//dataFilter,
 				available,
 				selected,
 				panel,
@@ -4924,6 +4943,75 @@ Ext.onReady( function() {
                 }
 			});
 
+			//dataLabel = Ext.create('Ext.form.Label', {
+				//text: NS.i18n.available,
+				//cls: 'ns-toolbar-multiselect-left-label',
+				//style: 'margin-right:5px'
+			//});
+
+			//dataSearch = Ext.create('Ext.button.Button', {
+				//width: 22,
+				//height: 22,
+				//cls: 'ns-button-icon',
+				//style: 'background: url(images/search_14.png) 3px 3px no-repeat',
+				//showFilter: function() {
+					//dataLabel.hide();
+					//this.hide();
+					//dataFilter.show();
+					//dataFilter.reset();
+				//},
+				//hideFilter: function() {
+					//dataLabel.show();
+					//this.show();
+					//dataFilter.hide();
+					//dataFilter.reset();
+				//},
+				//handler: function() {
+					//this.showFilter();
+				//}
+			//});
+
+			//dataFilter = Ext.create('Ext.form.field.Trigger', {
+				//cls: 'ns-trigger-filter',
+				//emptyText: 'Filter available..',
+				//height: 22,
+				//hidden: true,
+				//enableKeyEvents: true,
+				//fieldStyle: 'height:22px; border-right:0 none',
+				//style: 'height:22px',
+				//onTriggerClick: function() {
+					//if (this.getValue()) {
+						//this.reset();
+						//this.onKeyUp();
+					//}
+				//},
+				//onKeyUp: function() {
+					//var value = indicatorGroup.getValue(),
+						//store = availableStore;
+
+					//if (Ext.isString(value) || Ext.isNumber(value)) {
+						//store.loadPage(null, this.getValue(), false);
+					//}
+				//},
+				//listeners: {
+					//keyup: {
+						//fn: function(cmp) {
+							//cmp.onKeyUp();
+						//},
+						//buffer: 100
+					//},
+					//show: function(cmp) {
+						//cmp.focus(false, 50);
+					//},
+					//focus: function(cmp) {
+						//cmp.addCls('ns-trigger-filter-focused');
+					//},
+					//blur: function(cmp) {
+						//cmp.removeCls('ns-trigger-filter-focused');
+					//}
+				//}
+			//});
+
 			available = Ext.create('Ext.ux.form.MultiSelect', {
 				cls: 'ns-toolbar-multiselect-left',
 				width: (ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding) / 2,
@@ -4931,11 +5019,6 @@ Ext.onReady( function() {
 				displayField: 'name',
 				store: availableStore,
 				tbar: [
-					{
-						xtype: 'label',
-						text: NS.i18n.available,
-						cls: 'ns-toolbar-multiselect-left-label'
-					},
 					'->',
 					{
 						xtype: 'button',
