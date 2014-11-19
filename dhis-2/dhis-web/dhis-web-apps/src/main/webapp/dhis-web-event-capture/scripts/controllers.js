@@ -412,7 +412,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         //check for form validity
         $scope.outerForm.submitted = true;        
-        if( $scope.outerForm.$invalid ){            
+        if( $scope.outerForm.$invalid ){
             angular.forEach($scope.selectedProgramStage.programStageSections, function(section){
                 section.open = true;
             });
