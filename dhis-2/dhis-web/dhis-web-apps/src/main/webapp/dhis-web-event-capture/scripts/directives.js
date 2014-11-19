@@ -248,10 +248,26 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
     };
 })
 
+.directive('d2TypeaheadValidation', function() {
+    
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function (scope, element, attrs, ctrl) {
+            element.bind('blur', function () {                
+                if(ctrl.$viewValue && !ctrl.$modelValue){
+                    ctrl.$setViewValue();
+                    ctrl.$render();
+                }                
+            });
+        }
+    };
+})
+
 .directive('typeaheadOpenOnFocus', function () {
   return {
         require: ['typeahead', 'ngModel'],
-        link: function (scope, element, attr, ctrls) {        
+        link: function (scope, element, attr, ctrls) {
             element.bind('focus', function () {
                 ctrls[0].getMatchesAsync(ctrls[1].$viewValue);
                 

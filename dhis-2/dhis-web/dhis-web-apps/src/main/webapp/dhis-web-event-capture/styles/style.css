@@ -866,6 +866,25 @@ select {
     margin-right: 20px;    
 }
 
+input.typeahead::-webkit-input-placeholder {
+    font-family: fontAwesome;
+    content: "\f0d7";
+    text-align: right;
+    font-weight: bold;
+}
+input.typeahead::-moz-placeholder {
+    font-family: fontAwesome;
+    content: "\f0d7";
+    text-align: right;
+    font-weight: bold;
+}
+input.typeahead::-ms-input-placeholder {
+    font-family: fontAwesome;
+    content: "\f0d7";
+    text-align: right;
+    font-weight: bold;
+}
+
 
 @media print {
     #header, #leftBar, .not-printable {

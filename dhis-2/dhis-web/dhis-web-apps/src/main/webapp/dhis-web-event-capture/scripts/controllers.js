@@ -121,7 +121,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         $scope.eventFetched = false;
                
-        if( $scope.selectedProgram && $scope.selectedProgram.programStages[0].id){
+        if( $scope.selectedProgram && 
+                $scope.selectedProgram.programStages && 
+                $scope.selectedProgram.programStages[0] && 
+                $scope.selectedProgram.programStages[0].id){
             
             $scope.optionSets = [];
             OptionSetService.getAll().then(function(optionSets){
@@ -231,7 +234,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                                     }                                        
                                                 }
                                                 if($scope.prStDes[dataValue.dataElement].dataElement.type === 'string'){
-                                                    if($scope.prStDes[dataValue.dataElement].dataElement.optionSet ){
+                                                    if($scope.prStDes[dataValue.dataElement].dataElement.optionSet &&
+                                                            $scope.prStDes[dataValue.dataElement].dataElement.optionSet.id &&
+                                                            $scope.optionSets[$scope.prStDes[dataValue.dataElement].dataElement.optionSet.id] &&
+                                                            $scope.optionSets[$scope.prStDes[dataValue.dataElement].dataElement.optionSet.id].options ){
                                                         val = OptionSetService.getNameOrCode($scope.optionSets[$scope.prStDes[dataValue.dataElement].dataElement.optionSet.id].options, val);
                                                     }                                                
                                                 }
