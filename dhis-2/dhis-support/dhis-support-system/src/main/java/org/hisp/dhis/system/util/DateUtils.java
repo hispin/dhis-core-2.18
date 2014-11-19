@@ -135,6 +135,24 @@ public class DateUtils
     }
 
     /**
+     * Returns the latest of the given dates.
+     * 
+     * @param date the dates.
+     * @return the latest of the given dates.
+     */
+    public static Date max( Date... date )
+    {
+        Date latest = null;
+        
+        for ( Date d : date )
+        {
+            latest = max( d, latest );
+        }
+        
+        return latest;
+    }
+
+    /**
      * Formats a Date to the format YYYY-MM-DD.
      *
      * @param date         the Date to parse.

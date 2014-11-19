@@ -84,4 +84,25 @@ public class DateUtilsTest
         
         assertNull( DateUtils.max( date3, date4 ) );
     }
+    
+    @Test
+    public void testMaxArray()
+    {
+        Date date1 = new DateTime( 2014, 5, 15, 3, 3 ).toDate();
+        Date date2 = new DateTime( 2014, 5, 18, 1, 1 ).toDate();
+        Date date3 = new DateTime( 2014, 6, 10, 1, 1 ).toDate();
+        Date date4 = null;
+        Date date5 = null;
+        Date date6 = null;
+        
+        assertEquals( date2, DateUtils.max( date1, date2, date4 ) );
+        assertEquals( date2, DateUtils.max( date2, date1, date4 ) );
+        assertEquals( date3, DateUtils.max( date1, date2, date3 ) );
+        assertEquals( date3, DateUtils.max( date1, date2, date3 ) );
+        assertEquals( date3, DateUtils.max( date3, date4, date5 ) );
+        assertEquals( date4, DateUtils.max( date4, date5, date6 ) );
+        assertEquals( date1, DateUtils.max( date1, date5, date4 ) );
+        
+        assertNull( DateUtils.max( date4, date5, date6 ) );
+    }
 }
