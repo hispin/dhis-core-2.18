@@ -2715,7 +2715,7 @@ Ext.onReady( function() {
 				else if (uid === 0) {
 					path = '/indicators.json?fields=id,' + ns.core.init.namePropertyUrl + '' + (filter ? '&filter=name:like:' + filter : '');
 				}
-				
+
 				if (!path) {
 					console.log('Available indicators: invalid id');
 					return;
@@ -2728,7 +2728,7 @@ Ext.onReady( function() {
 					params.page = store.nextPage;
 					params.pageSize = 50;
 				}
-				
+
                 store.isPending = true;
                 ns.core.web.mask.show(indicatorAvailable.boundList);
 
@@ -2750,7 +2750,7 @@ Ext.onReady( function() {
             },
             loadStore: function(data, pager, append, fn) {
 				pager = pager || {};
-				
+
                 this.loadData(data, append);
                 this.sortStore();
 
@@ -2948,7 +2948,7 @@ Ext.onReady( function() {
 			},
             loadStore: function(data, pager, append, fn) {
 				pager = pager || {};
-				
+
                 this.loadData(data, append);
                 this.sortStore();
 
@@ -3068,7 +3068,7 @@ Ext.onReady( function() {
             },
             loadStore: function(data, pager, append, fn) {
 				pager = pager || {};
-				
+
                 this.loadData(data, append);
                 this.sortStore();
 
@@ -4958,7 +4958,7 @@ Ext.onReady( function() {
 				},
 				loadStore: function(data, pager, append, fn) {
 					pager = pager || {};
-					
+
 					this.loadData(data, append);
 					this.lastPage = this.nextPage;
 
@@ -5085,7 +5085,7 @@ Ext.onReady( function() {
 						xtype: 'button',
 						icon: 'images/arrowrightdouble.png',
 						width: 22,
-						handler: function() {							
+						handler: function() {
 							availableStore.loadPage(null, null, true, function() {
 								ns.core.web.multiSelect.selectAll(available, selected);
 							});
