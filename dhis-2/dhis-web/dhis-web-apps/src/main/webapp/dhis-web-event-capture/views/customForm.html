@@ -20,7 +20,7 @@
                    ng-disabled="editingEventInFull"    
                    ng-required="true" 
                    name="eventDate"/>
-            <span ng-show="outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{'required'| translate}}</span>
+            <span ng-show="outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{'date_required'| translate}}</span>
         </td>
     </tr>
     <tr ng-if="selectedProgramStage.captureCoordinates">
@@ -37,7 +37,7 @@
                    max="90"
                    ng-required="false"
                    style="min-width:128px"/>
-                <span ng-show="outerForm.submitted && outerForm.latitude.$invalid" class="required">{{'number_required'| translate}} [-90 ... 90]</span>
+                <span ng-show="outerForm.submitted && outerForm.latitude.$invalid" class="required">{{'int_required'| translate}} [-90 ... 90]</span>
             </span>
             <span class="coordinate-container">
                 <input type="number"
@@ -48,7 +48,7 @@
                    max="180"
                    ng-required="false"
                    style="min-width:128px"/>
-                <span ng-show="outerForm.submitted && outerForm.longitude.$invalid" class="required">{{'number_required'| translate}}[-180 ... 180]</span>
+                <span ng-show="outerForm.submitted && outerForm.longitude.$invalid" class="required">{{'int_required'| translate}}[-180 ... 180]</span>
             </span>
             <!--<span class='pull-right'>
                 <a href ng-click="showMap(currentEvent)" title="{{'get_from_map'| translate}}"><i class="fa fa-map-marker fa-2x"></i></a>
@@ -92,6 +92,7 @@
         <button ng-disabled="disableSaveAndAddNew" ng-click="addEvent(true)" class="button not-printable">{{'save_and_add_new'| translate}}</button>
         <button ng-click="addEvent()" class="button not-printable">{{'save_and_back'| translate}}</button>
         <button ng-click="showEventList(null)" class="button not-printable">{{'go_back'| translate}}</button>
-    </span> 
+    </span>
+    <span ng-if="outerForm.submitted && outerForm.$invalid" class="horizontal-spacing red">{{'form_invalid' | translate}}</span>
 </div>
 <!-- buttons for event registration / update ends -->
