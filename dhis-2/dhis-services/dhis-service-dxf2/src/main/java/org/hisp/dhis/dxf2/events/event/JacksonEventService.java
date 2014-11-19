@@ -31,6 +31,7 @@ package org.hisp.dhis.dxf2.events.event;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
@@ -38,6 +39,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.system.timer.SystemTimer;
 import org.hisp.dhis.system.timer.Timer;
+import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.springframework.transaction.annotation.Transactional;
@@ -191,6 +193,8 @@ public class JacksonEventService extends AbstractEventService
         }
         catch ( Exception ex )
         {
+            log.debug( ex );
+            
             Event event = fromJson( input, Event.class );
             importSummaries.addImportSummary( addEvent( event, importOptions ) );
         }
