@@ -392,6 +392,8 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                                             ' typeahead="option.name as option.name for option in optionSets.'+optionSetId+'.options | filter:$viewValue | limitTo:20"' +
                                             ' typeahead-editable="false" ' +
                                             ' d2-typeahead-validation ' +
+                                            ' class="typeahead" ' +
+                                            ' placeholder="&#xf0d7;&nbsp;&nbsp;" ' +
                                             ' typeahead-open-on-focus ng-required="prStDes.'+deId+'.compulsory"> ' +
                                             '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'option_required\'| translate}}</span>';
                         	}
@@ -576,7 +578,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
     
     this.translate = function(){
         var profile = storage.get('USER_PROFILE');        
-        if( profile ){        
+        if( profile && profile.settings ){        
             $translate.uses(profile.settings.keyUiLocale);
         }
     };
