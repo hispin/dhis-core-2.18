@@ -150,20 +150,6 @@ public class GetMetaDataAction
         return dataSets;
     }
 
-    private List<Set<String>> dataSetAssociationSets;
-
-    public List<Set<String>> getDataSetAssociationSets()
-    {
-        return dataSetAssociationSets;
-    }
-
-    private Map<String, Integer> organisationUnitAssociationSetMap;
-
-    public Map<String, Integer> getOrganisationUnitAssociationSetMap()
-    {
-        return organisationUnitAssociationSetMap;
-    }
-
     private boolean emptyOrganisationUnits;
 
     public boolean isEmptyOrganisationUnits()
@@ -206,6 +192,8 @@ public class GetMetaDataAction
     @Override
     public String execute()
     {
+        //TODO 403
+        
         User user = currentUserService.getCurrentUser();
 
         if ( user != null && user.getOrganisationUnits().isEmpty() )
