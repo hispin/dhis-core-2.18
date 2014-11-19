@@ -263,6 +263,7 @@ dhis2.de.loadMetaData = function()
     $.ajax( {
     	url: 'getMetaData.action',
     	dataType: 'json',
+    	cache: true,
     	success: function( json )
 	    {
 	        sessionStorage[dhis2.de.cst.metaData] = JSON.stringify( json.metaData );
