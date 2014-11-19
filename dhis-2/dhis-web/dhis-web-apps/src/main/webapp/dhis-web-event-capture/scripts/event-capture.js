@@ -135,7 +135,6 @@ $(document).ready(function()
         }
         else {
             setHeaderMessage(i18n_offline_notification);
-            selection.responseReceived(); //notify angular 
         }
     });
    
