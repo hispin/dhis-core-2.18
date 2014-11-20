@@ -131,7 +131,8 @@ public class GetPaymentAdjustmentDetailsAction
         }
 
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
-
+        
+        dataSets = new ArrayList<DataSet>();
         for ( Lookup lookup : lookups )
         {
             Integer dataSetId = Integer.parseInt( lookup.getValue() );

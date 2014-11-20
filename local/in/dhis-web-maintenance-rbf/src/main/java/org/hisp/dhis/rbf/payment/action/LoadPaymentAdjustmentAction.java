@@ -84,20 +84,20 @@ public class LoadPaymentAdjustmentAction
     // Input / Output
     // -------------------------------------------------------------------------
     private MathTool mathTool = new MathTool();
-    
-    public MathTool getMathTool() 
+
+    public MathTool getMathTool()
     {
-		return mathTool;
-	}
+        return mathTool;
+    }
 
     private String availableAmount = "";
 
-    public String getAvailableAmount() 
+    public String getAvailableAmount()
     {
-		return availableAmount;
-	}
+        return availableAmount;
+    }
 
-	private Map<Integer, Double> pbfQtyMap = new HashMap<Integer, Double>();
+    private Map<Integer, Double> pbfQtyMap = new HashMap<Integer, Double>();
 
     public Map<Integer, Double> getPbfQtyMap()
     {
@@ -146,13 +146,11 @@ public class LoadPaymentAdjustmentAction
         this.periodIso = periodIso;
     }
 
-    
-    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-	public String execute()
+    public String execute()
         throws Exception
     {
         System.out.println( "Inside Adjustment screen" );
@@ -170,7 +168,8 @@ public class LoadPaymentAdjustmentAction
 
         period = periodService.reloadPeriod( period );
 
-        Set<Period> periods = new HashSet<Period>( periodService.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ) );
+        Set<Period> periods = new HashSet<Period>( periodService.getIntersectingPeriods( period.getStartDate(),
+            period.getEndDate() ) );
         Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers( Period.class, periods ) );
         String periodIdsByComma = getCommaDelimitedString( periodIds );
 
@@ -179,7 +178,8 @@ public class LoadPaymentAdjustmentAction
         Set<OrganisationUnit> pbfQtyOrgUnits = new HashSet<OrganisationUnit>();
         pbfQtyOrgUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
         pbfQtyOrgUnits.retainAll( selDataSet.getSources() );
-        Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, pbfQtyOrgUnits ) );
+        Collection<Integer> orgUnitIds = new ArrayList<Integer>(
+            getIdentifiers( OrganisationUnit.class, pbfQtyOrgUnits ) );
         String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
 
         // --------------------------------------------------------
@@ -214,29 +214,31 @@ public class LoadPaymentAdjustmentAction
         for ( Lookup lookup : lookups )
         {
             String[] lookupType = lookup.getValue().split( ":" );
-            System.out.println( lookup.getValue() +"  " + Integer.parseInt( lookupType[0] ) + "  " + Integer.parseInt( dataSetId ) );
+            System.out.println( lookup.getValue() + "  " + Integer.parseInt( lookupType[0] ) + "  "
+                + Integer.parseInt( dataSetId ) );
             if ( Integer.parseInt( lookupType[0] ) == Integer.parseInt( dataSetId ) )
             {
-                qualityScoreDataSet = dataSetService.getDataSet( Integer.parseInt(  lookupType[1] ) );
+                qualityScoreDataSet = dataSetService.getDataSet( Integer.parseInt( lookupType[1] ) );
                 break;
             }
         }
 
         if ( qualityScoreDataSet != null )
         {
-            overAllQualityScore = defaultPBFAggregationService.calculateOverallQualityScore( period, qualityScoreDataSet.getSources(), qualityScoreDataSet.getId(), tariffOrgUnit.getId() );
+            overAllQualityScore = defaultPBFAggregationService.calculateOverallQualityScore( period,
+                qualityScoreDataSet.getSources(), qualityScoreDataSet.getId(), tariffOrgUnit.getId() );
         }
 
-        //-------------------------------------------------------------
+        // -------------------------------------------------------------
         // Availbale Amount
-        //-------------------------------------------------------------
+        // -------------------------------------------------------------
         Constant paymentAmount = constantService.getConstantByName( Lookup.PAYMENT_ADJUSTMENT_AMOUNT_DE );
         DataElement dataElement = dataElementService.getDataElement( (int) paymentAmount.getValue() );
         DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         DataValue dataValue = dataValueService.getDataValue( dataElement, period, selOrgUnit, optionCombo );
         if ( dataValue != null )
         {
-        	availableAmount = dataValue.getValue();
+            availableAmount = dataValue.getValue();
         }
 
         return SUCCESS;
@@ -245,7 +247,7 @@ public class LoadPaymentAdjustmentAction
     public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
     {
         Integer ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );
-        
+
         if ( tariffOULevel == ouLevel )
         {
             return organisationUnit;

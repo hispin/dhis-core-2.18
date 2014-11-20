@@ -106,6 +106,7 @@ public class QualityScoreInitAction implements Action
     	 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         
+        dataSets = new ArrayList<DataSet>();
         if( organisationUnit == null )
         {
             System.out.println("Organisationunit is null");
@@ -143,6 +144,7 @@ public class QualityScoreInitAction implements Action
         }
         
         dataSets.retainAll( pbfDataSets );
+        
         Collections.sort(dataSets);
         return SUCCESS;
     }

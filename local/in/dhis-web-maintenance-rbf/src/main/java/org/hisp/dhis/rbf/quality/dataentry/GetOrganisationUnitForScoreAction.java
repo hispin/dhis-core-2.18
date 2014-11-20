@@ -105,8 +105,8 @@ public class GetOrganisationUnitForScoreAction implements Action
         }
         
         dataSets.retainAll( pbfDataSets );
-        Collections.sort(dataSets);
         
+        Collections.sort(dataSets);
        
         System.out.println( dataSets.size() );
         if ( dataSets.size() > 0 )
