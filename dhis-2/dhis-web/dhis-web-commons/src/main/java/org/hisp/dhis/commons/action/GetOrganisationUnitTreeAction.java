@@ -155,6 +155,13 @@ public class GetOrganisationUnitTreeAction
         return realRoot;
     }
 
+    private Integer offlineLevel;
+
+    public void setOfflineLevel( Integer offlineLevel )
+    {
+        this.offlineLevel = offlineLevel;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -239,7 +246,8 @@ public class GetOrganisationUnitTreeAction
 
         if ( !versionOnly && !rootOrganisationUnits.isEmpty() )
         {
-            OrganisationUnitLevel offlineOrgUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
+            OrganisationUnitLevel offlineOrgUnitLevel = offlineLevel != null ? new OrganisationUnitLevel( offlineLevel, "<no-name>" )
+                : configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
 
             List<OrganisationUnitLevel> orgUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
