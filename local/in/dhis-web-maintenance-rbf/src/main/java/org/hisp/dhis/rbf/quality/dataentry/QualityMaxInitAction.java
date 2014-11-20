@@ -166,6 +166,8 @@ public class QualityMaxInitAction implements Action
         
         List<DataSet> pbfDataSets = new ArrayList<DataSet>();
         
+        dataSets = new ArrayList<DataSet>();
+        
         for( Lookup lookup : lookups )
         {
             Integer dataSetId = Integer.parseInt( lookup.getValue() );
@@ -179,6 +181,7 @@ public class QualityMaxInitAction implements Action
         }
         
         dataSets.addAll( pbfDataSets );
+        
         Collections.sort(dataSets);
         return SUCCESS;
     }

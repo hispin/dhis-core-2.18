@@ -123,7 +123,9 @@ public class GetOrganisationUnitForMaxAction
         dataSets.addAll( tempDataSets );
         */
         
-        dataSets.retainAll( dataSetService.getDataSetsBySources( orgUnitGroup.getMembers() ) );
+        dataSets = new ArrayList<DataSet>();
+        
+        dataSets.addAll( dataSetService.getDataSetsBySources( orgUnitGroup.getMembers() ) );
         
         //dataSets.addAll( orgUnitGroup.getDataSets() );
 

@@ -79,6 +79,7 @@ public class GetOrganisationUnitAction implements Action
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         //organisationUnit.get
         
+        dataSets = new ArrayList<DataSet>();
         dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
         
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
