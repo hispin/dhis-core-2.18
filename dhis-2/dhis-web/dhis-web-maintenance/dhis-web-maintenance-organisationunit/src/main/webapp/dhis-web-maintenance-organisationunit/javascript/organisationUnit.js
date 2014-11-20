@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------------
 
 $( document ).ready( function() {
+	selection.setOfflineLevel(1);
   selection.setAutoSelectRoot( false );
   selection.setRootUnselectAllowed( true );
   selection.setListenerFunction( organisationUnitSelected, true );
