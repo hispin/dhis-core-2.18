@@ -8748,8 +8748,17 @@ Ext.onReady( function() {
 		centerRegion = new GeoExt.panel.Map({
 			region: 'center',
 			map: gis.olmap,
-			cmp: {
-				tbar: {}
+			fullSize: true,
+			cmp: [defaultButton],
+			toggleCmp: function(show) {
+				for (var i = 0; i < this.cmp.length; i++) {
+					if (show) {
+						this.cmp[i].show();
+					}
+					else {
+						this.cmp[i].hide();
+					}
+				}
 			},
 			tbar: {
 				defaults: {
@@ -8913,6 +8922,11 @@ Ext.onReady( function() {
 							});
 
 							b.menu.show();
+						},
+						listeners: {
+							render: function() {
+								centerRegion.cmp.push(this);
+							}
 						}
 					});
 
@@ -8969,6 +8983,11 @@ Ext.onReady( function() {
 							});
 
 							b.menu.show();
+						},
+						listeners: {
+							render: function() {
+								centerRegion.cmp.push(this);
+							}
 						}
 					});
 
@@ -8978,6 +8997,11 @@ Ext.onReady( function() {
 						xtype: 'tbseparator',
 						height: 18,
 						style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 6px; margin-left: 3px',
+						listeners: {
+							render: function() {
+								centerRegion.cmp.push(this);
+							}
+						}
 					});
 
 					a.push({
@@ -8992,7 +9016,21 @@ Ext.onReady( function() {
 
 					return a;
 				}()
-			}
+			},
+            listeners: {
+                resize: function() {
+                    var width = this.getWidth();
+                    
+                    if (width < 800 && this.fullSize) {
+                        this.toggleCmp(false);
+                        this.fullSize = false;
+                    }
+                    else if (width >= 800 && !this.fullSize) {
+                        this.toggleCmp(true);
+                        this.fullSize = true;
+                    }
+                }
+            }
 		});
 
 		eastRegion = Ext.create('Ext.panel.Panel', {
