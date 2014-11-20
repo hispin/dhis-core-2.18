@@ -45,8 +45,6 @@ public @interface NodeRoot
 
     String namespace() default "";
 
-    boolean isPersisted() default true;
-
     boolean isWritable() default true;
 
     boolean isReadable() default true;

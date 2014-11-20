@@ -47,8 +47,6 @@ public @interface NodeSimple
 
     boolean isAttribute() default false;
 
-    boolean isPersisted() default true;
-
     boolean isWritable() default true;
 
     boolean isReadable() default true;

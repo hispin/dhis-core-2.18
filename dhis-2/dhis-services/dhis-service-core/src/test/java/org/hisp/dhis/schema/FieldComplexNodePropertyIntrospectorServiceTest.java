@@ -57,9 +57,6 @@ class ComplexFields
     @NodeComplex( isReadable = false, isWritable = true )
     private Value writeOnly;
 
-    @NodeComplex( isPersisted = false )
-    private Value notPersistedProperty;
-
     @NodeComplex( namespace = "http://ns.example.org" )
     private Value propertyWithNamespace;
 
@@ -95,15 +92,7 @@ public class FieldComplexNodePropertyIntrospectorServiceTest
         assertTrue( propertyMap.containsKey( "renamedProperty" ) );
         assertTrue( propertyMap.containsKey( "readOnly" ) );
         assertTrue( propertyMap.containsKey( "writeOnly" ) );
-        assertTrue( propertyMap.containsKey( "notPersistedProperty" ) );
         assertTrue( propertyMap.containsKey( "propertyWithNamespace" ) );
-    }
-
-    @Test
-    public void testPersisted()
-    {
-        assertTrue( propertyMap.get( "property" ).isPersisted() );
-        assertFalse( propertyMap.get( "notPersistedProperty" ).isPersisted() );
     }
 
     @Test
