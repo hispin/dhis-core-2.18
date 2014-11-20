@@ -83,6 +83,7 @@ function Selection()
     var autoSelectRoot = true;
     var realRoot = true;
     var includeChildren = false;
+    var offlineLevel;
 
     this.setListenerFunction = function( listenerFunction_, skipInitialCall ) {
         listenerFunction = listenerFunction_;
@@ -92,6 +93,10 @@ function Selection()
                 selection.responseReceived();
             } );
         }
+    };
+
+    this.setOfflineLevel = function( level ) {
+        offlineLevel = level;
     };
 
     this.setMultipleSelectionAllowed = function( allowed ) {
@@ -269,7 +274,8 @@ function Selection()
         return $.ajax( {
             url: '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action',
             data: {
-                versionOnly: versionOnly
+                versionOnly: versionOnly,
+                offlineLevel: offlineLevel
             },
             type: 'POST',
             dataType: format
