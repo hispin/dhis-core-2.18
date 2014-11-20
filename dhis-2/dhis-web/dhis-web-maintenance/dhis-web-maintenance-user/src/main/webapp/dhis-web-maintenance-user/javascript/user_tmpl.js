@@ -2,6 +2,7 @@
 
 jQuery(document).ready(function() {
   tableSorter('userList');
+  selection.setOfflineLevel(1);
   selection.setListenerFunction(orgUnitSelected, true);
 
   dhis2.contextmenu.makeContextMenu({
