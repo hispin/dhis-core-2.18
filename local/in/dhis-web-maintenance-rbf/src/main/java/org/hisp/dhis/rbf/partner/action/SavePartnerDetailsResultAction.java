@@ -140,13 +140,15 @@ public class SavePartnerDetailsResultAction implements Action
         
         //Period period = periodService.getPeriod( periodId );
         
-        Period period = periodService.getPeriod( sDate, eDate, dataSet.getPeriodType() );
+        //Period period = periodService.getPeriod( sDate, eDate, dataSet.getPeriodType() );
         //periodService.getPeriod( arg0, arg1, arg2 )
         
         
+        List<Period> periodsBetweenDates = new ArrayList<Period>();
+        
+        periodsBetweenDates =  new ArrayList<Period>( periodService.getPeriodsBetweenDates( dataSet.getPeriodType(), sDate, eDate ) );
+        
         Option option = optionService.getOption( optionSetId );
-        
-        
         
         /*
         System.out.println( " Option name -- " + option.getName() );
@@ -156,6 +158,9 @@ public class SavePartnerDetailsResultAction implements Action
         */
         
         Set<OrganisationUnit> selectedOrgUnitList = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
+        
+        //System.out.println( " selectedOrgUnitList " + selectedOrgUnitList.size() );
+        
         List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>();
         
         for ( OrganisationUnit organisationUnit : selectedOrgUnitList )
@@ -163,21 +168,49 @@ public class SavePartnerDetailsResultAction implements Action
             orgUnitList.addAll( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() )  );
         }
         
+        //System.out.println( " Size of Children " + orgUnitList.size() );
+        
+        //System.out.println( " Size of Period List is  " + periodsBetweenDates.size() );
 
         for ( OrganisationUnit organisationUnit : orgUnitList )
         {
-            if( period!= null )
+            if( periodsBetweenDates!= null  && periodsBetweenDates.size() > 0 )
             {
-                System.out.println( " Inside save partner PBF Data Value" );
-             // save partner in pbf datavalue
-                PBFDataValue pbfDataValue = pbfDataValueService.getPBFDataValue( organisationUnit, dataSet, period, dataElement );
-                
-                if ( pbfDataValue != null )
+                for( Period period : periodsBetweenDates )
                 {
-                    pbfDataValue.setOption( option );
-                    pbfDataValue.setTimestamp( new Date() );
+                    if( period != null )
+                    {
+                        //System.out.println( " Inside add partner PBF Data Value Period Id is : " + period.getIsoDate() );
+                        // save partner in pbf datavalue
+                        PBFDataValue pbfDataValue = pbfDataValueService.getPBFDataValue( organisationUnit, dataSet, period, dataElement );
+                        
+                        if( pbfDataValue == null )
+                        {
+                            pbfDataValue = new PBFDataValue();
+                            
+                            pbfDataValue.setDataSet( dataSet );
+                            pbfDataValue.setDataElement( dataElement );
+                            pbfDataValue.setPeriod( period );
+                            pbfDataValue.setOrganisationUnit( organisationUnit );
+                            
+                            pbfDataValue.setOption( option );
+                            pbfDataValue.setTimestamp( new Date() );
+                            
+                            
+                            pbfDataValueService.addPBFDataValue( pbfDataValue );
+                        }
 
-                    pbfDataValueService.updatePBFDataValue( pbfDataValue );
+                        else
+                        {
+                            //System.out.println( " Inside update partner PBF Data Value Period Id is : " + period.getIsoDate() );
+                            
+                            pbfDataValue.setOption( option );
+                            pbfDataValue.setTimestamp( new Date() );
+
+                            pbfDataValueService.updatePBFDataValue( pbfDataValue );
+                        }
+                    }
+                    
                 }
             }
             
@@ -189,11 +222,11 @@ public class SavePartnerDetailsResultAction implements Action
         
         dataSetSources.retainAll( orgUnitList );
         
-        System.out.println( " Data Set source size "  + dataSetSources.size() );
+        //System.out.println( " Data Set source size "  + dataSetSources.size() );
         
         for ( OrganisationUnit organisationUnit : dataSetSources )
         {
-            System.out.println( " Inside save partner Partner Table"  + dataSetSources.size() );
+            //System.out.println( " Inside save partner Partner Table"  + dataSetSources.size() );
             Partner partner = partnerService.getPartner( organisationUnit, dataSet, dataElement, sDate, eDate );
             
             if ( partner == null )

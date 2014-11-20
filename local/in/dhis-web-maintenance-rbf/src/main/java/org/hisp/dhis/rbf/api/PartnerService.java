@@ -3,6 +3,7 @@ package org.hisp.dhis.rbf.api;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -30,5 +31,9 @@ public interface PartnerService
     Collection<String> getStartAndEndDate( Integer dataSetId, Integer dataElementId, Integer optionId );
     
     Map<String, Integer> getOrgUnitCountFromPartner( Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate );
+    
+    Map<String, Integer> getOrgUnitCountFromPartner( Integer dataSetId, Integer dataElementId, Integer optionId );
+    
+    Set<OrganisationUnit> getPartnerOrganisationUnits( Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate );
     
 }

@@ -136,7 +136,7 @@
             <!--<td><label>$!pbfDataValue.getOption().getDisplayName()</label></td>-->				
 			
 			#if( $pbfDataValue.getOption().getDisplayName() && $!pbfDataValue.getOption().getDisplayName() != "" )
-					<td><label>$!pbfDataValue.getOption().getDisplayName()</label></td>
+				<td><label>$!pbfDataValue.getOption().getDisplayName()</label></td>
 			#else
 				<td><label>Ministry of Health</label></td>
 			#end

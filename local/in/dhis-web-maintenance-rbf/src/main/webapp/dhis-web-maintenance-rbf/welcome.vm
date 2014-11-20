@@ -5,11 +5,11 @@
     <!-- action name, Text Title, image id -->
 
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfDataEntry") )
-	    #introListImgItem( "pbfDataEntry.action" "pbf_dataentry" "dataelement" )
+	    #introListImgItem( "pbfDataEntry.action" "pbf_dataentry" "pbf_data_entry" )
 	#end
 
 	#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "qualityScoreDataEntry") )
-	    #introListImgItem( "qualityScoreDataEntry.action" "quality_score_entry" "dataelement" )
+	    #introListImgItem( "qualityScoreDataEntry.action" "quality_score_entry" "minmaxvaluegeneration" )
 	#end
 
 	#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "qualityMaxDataEntry") )
@@ -17,19 +17,19 @@
     #end
 
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "dataElementTariffManagement") )
-        #introListImgItem( "dataElementTariffManagement.action" "dataelement_tariff_target_management" "groupset" )
+        #introListImgItem( "dataElementTariffManagement.action" "dataelement_tariff_target_management" "dataelement_tariff_target" )
     #end
 
-    #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "partnerForm") )
-        #introListImgItem( "partnerForm.action" "partner_management" "category" )
+    #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "partnerFundManagementForm") )
+        #introListImgItem( "partnerFundManagementForm.action" "partner_management" "partner" )
     #end
 
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "bankDetailsManagement") )
-        #introListImgItem( "bankDetailsManagement.action" "bank_details_management" "category" )
+        #introListImgItem( "bankDetailsManagement.action" "bank_details_management" "bank_details" )
     #end
 
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "utilizationRuleManagement") )
-        #introListImgItem( "utilizationRuleManagement.action" "utilization_rule_management" "category" )
+        #introListImgItem( "utilizationRuleManagement.action" "utilization_rule_management" "utilization" )
     #end
 
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "qualityScorePaymentList") )
@@ -37,20 +37,20 @@
     #end
 
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "aggregationQueryList") )
-        #introListImgItem( "aggregationQueryList.action" "aggregation_query_list" "sqlview" )
+		 #introListImgItem( "aggregationQueryList.action" "aggregation_query_list" "sqlview" )
          #introListImgItem( "runAggregationQueryForm.action" "manual_aggregation" "scheduling" )
     #end
 
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "reportManagement") )
-        #introListImgItem( "reportManagement.action" "Report Management" "indicator" )
+        #introListImgItem( "reportManagement.action" "report_management" "indicator" )
         #introListImgItem( "pbfReportForm.action" "pbf_report" "reporttable" )
     #end
 
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "getAllLookups") )
-        #introListImgItem( "getAllLookups.action" "Lookup" "search" )
+        #introListImgItem( "getAllLookups.action" "lookup" "search" )
     #end
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "getPaymentAdjustmentDetail") )
-        #introListImgItem( "getPaymentAdjustmentDetail.action" "payment_adjustment" "sqlview" )
+        #introListImgItem( "getPaymentAdjustmentDetail.action" "payment_adjustment" "payment" )
     #end
 
 

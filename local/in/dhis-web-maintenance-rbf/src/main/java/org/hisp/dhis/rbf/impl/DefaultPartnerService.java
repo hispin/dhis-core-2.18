@@ -3,6 +3,7 @@ package org.hisp.dhis.rbf.impl;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -71,15 +72,24 @@ public class DefaultPartnerService implements PartnerService
     }
 
 
-    public Map<String, Integer> getOrgUnitCountFromPartner( Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate )
-    {
-        return partnerStore.getOrgUnitCountFromPartner( dataSetId, dataElementId, optionId, startDate, endDate );
-    }    
-    
     public Collection<String> getStartAndEndDate( Integer dataSetId, Integer dataElementId, Integer optionId )
     {
         return partnerStore.getStartAndEndDate( dataSetId, dataElementId, optionId );
     }
     
+    public Map<String, Integer> getOrgUnitCountFromPartner( Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate )
+    {
+        return partnerStore.getOrgUnitCountFromPartner( dataSetId, dataElementId, optionId, startDate, endDate );
+    }    
+    
+    public Map<String, Integer> getOrgUnitCountFromPartner( Integer dataSetId, Integer dataElementId, Integer optionId )
+    {
+        return partnerStore.getOrgUnitCountFromPartner( dataSetId, dataElementId, optionId );
+    }     
+    
+    public Set<OrganisationUnit> getPartnerOrganisationUnits( Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate )
+    {
+        return partnerStore.getPartnerOrganisationUnits( dataSetId, dataElementId, optionId, startDate, endDate );
+    }   
     
 }
