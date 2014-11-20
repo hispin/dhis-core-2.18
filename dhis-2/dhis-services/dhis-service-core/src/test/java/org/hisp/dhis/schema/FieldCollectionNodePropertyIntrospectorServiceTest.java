@@ -60,9 +60,6 @@ class CollectionFields
     @NodeCollection( isReadable = false, isWritable = true )
     private List<String> writeOnly = new ArrayList<>();
 
-    @NodeCollection( isPersisted = false )
-    private List<String> notPersistedProperty = new ArrayList<>();
-
     @NodeCollection( namespace = "http://ns.example.org" )
     private List<String> propertyWithNamespace = new ArrayList<>();
 
@@ -104,17 +101,9 @@ public class FieldCollectionNodePropertyIntrospectorServiceTest
         assertTrue( propertyMap.containsKey( "renamedProperty" ) );
         assertTrue( propertyMap.containsKey( "readOnly" ) );
         assertTrue( propertyMap.containsKey( "writeOnly" ) );
-        assertTrue( propertyMap.containsKey( "notPersistedProperty" ) );
         assertTrue( propertyMap.containsKey( "propertyWithNamespace" ) );
         assertTrue( propertyMap.containsKey( "items1" ) );
         assertTrue( propertyMap.containsKey( "items" ) );
-    }
-
-    @Test
-    public void testPersisted()
-    {
-        assertTrue( propertyMap.get( "property" ).isPersisted() );
-        assertFalse( propertyMap.get( "notPersistedProperty" ).isPersisted() );
     }
 
     @Test

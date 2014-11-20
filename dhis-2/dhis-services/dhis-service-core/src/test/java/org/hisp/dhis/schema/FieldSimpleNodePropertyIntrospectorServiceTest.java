@@ -44,9 +44,6 @@ class SimpleFields
     @NodeSimple( value = "renamedProperty", isAttribute = true )
     private String propertyToBeRenamed;
 
-    @NodeSimple( isPersisted = false )
-    private String notPersistedProperty;
-
     @NodeSimple( isReadable = true, isWritable = false )
     private String readOnly;
 
@@ -95,13 +92,6 @@ public class FieldSimpleNodePropertyIntrospectorServiceTest
     {
         assertFalse( propertyMap.get( "property" ).isAttribute() );
         assertTrue( propertyMap.get( "renamedProperty" ).isAttribute() );
-    }
-
-    @Test
-    public void testPersisted()
-    {
-        assertTrue( propertyMap.get( "property" ).isPersisted() );
-        assertFalse( propertyMap.get( "notPersistedProperty" ).isPersisted() );
     }
 
     @Test
