@@ -9,10 +9,53 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
     var store = new dhis2.storage.Store({
         name: 'dhis2ec',
         adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-        objectStores: ['ecPrograms', 'programStages', 'geoJsons', 'optionSets']
+        objectStores: ['ecPrograms', 'programStages', 'geoJsons', 'optionSets', 'events']
     });
     return{
         currentStore: store
+    };
+})
+
+.factory('OfflineStorageService', function($http, $q, $rootScope, StorageService){
+    return {        
+        hasLocalData: function() {
+            var def = $q.defer();
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.getKeys('events').done(function(events){
+                    $rootScope.$apply(function(){
+                        def.resolve( events.length > 0 );
+                    });                    
+                });
+            });            
+            return def.promise;
+        },
+        getLocalData: function(){
+            var def = $q.defer();            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.getAll('events').done(function(events){
+                    $rootScope.$apply(function(){
+                        def.resolve({events: events});
+                    });                    
+                });
+            });            
+            return def.promise;
+        },
+        uploadLocalData: function(){            
+            var def = $q.defer();
+            this.getLocalData().then(function(localData){                
+                var evs = {events: []};
+                angular.forEach(localData.events, function(ev){
+                    ev.event = ev.id;
+                    delete ev.id;
+                    evs.events.push(ev);
+                });
+
+                $http.post('../api/events', evs).then(function(evResponse){                            
+                    def.resolve();
+                });                      
+            });
+            return def.promise;
+        }
     };
 })
 
@@ -106,8 +149,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 .factory('GeoJsonFactory', function($q, $rootScope, StorageService) { 
     return {
         getAll: function(){
-            
-            //console.log('I am trying to fetch geojsons');
+
             var def = $q.defer();
             
             StorageService.currentStore.open().done(function(){
@@ -228,7 +270,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 })
 
 /* factory for handling events */
-.factory('DHIS2EventFactory', function($http) {   
+.factory('DHIS2EventFactory', function($http, $q, StorageService, $rootScope) {   
     
     return {
         getByStage: function(orgUnit, programStage, pager){
@@ -239,59 +281,77 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             var promise = $http.get( url ).then(function(response){                    
                 return response.data;        
             }, function(){     
-                return dhis2.ec.storageManager.getEvents(orgUnit, programStage);                
+                //return dhis2.ec.storageManager.getEvents(orgUnit, programStage);                
+
+                var def = $q.defer();
+                StorageService.currentStore.open().done(function(){
+                    StorageService.currentStore.getAll('events').done(function(evs){
+                        var result = {events: [], pager: {pageSize: '', page: 1, toolBarDisplay: 5, pageCount: 1}};
+                        angular.forEach(evs, function(ev){                            
+                            if(ev.programStage === programStage && ev.orgUnit === orgUnit){
+                                ev.event = ev.id;
+                                result.events.push(ev);
+                            }
+                        }); 
+                        $rootScope.$apply(function(){
+                            def.resolve( result );
+                        });                    
+                    });
+                });            
+                return def.promise;
             });            
             
             return promise;
-        },
-        
+        },        
         get: function(eventUid){            
             var promise = $http.get('../api/events/' + eventUid + '.json').then(function(response){               
                 return response.data;                
             }, function(){
-                return dhis2.ec.storageManager.getEvent(eventUid);
+                //return dhis2.ec.storageManager.getEvent(eventUid);
+                var p = dhis2.ec.store.get('events', eventUid).then(function(ev){
+                    ev.event = eventUid;
+                    return ev;
+                });
+                return p;
             });            
             return promise;
-        },
-        
-        create: function(dhis2Event){            
-            var e = angular.copy(dhis2Event);            
-            dhis2.ec.storageManager.saveEvent(e);            
-        
+        },        
+        create: function(dhis2Event){
             var promise = $http.post('../api/events.json', dhis2Event).then(function(response){
-                dhis2.ec.storageManager.clearEvent(e);
                 return response.data;
-            }, function(){
-                return {importSummaries: [{status: 'SUCCESS', reference: e.event}]};
+            }, function(){            
+                dhis2Event.id = dhis2.util.uid();  
+                dhis2Event.event = dhis2Event.id;
+                dhis2.ec.store.set( 'events', dhis2Event );                
+                return {importSummaries: [{status: 'SUCCESS', reference: dhis2Event.id}]};
             });
             return promise;            
-        },
-        
+        },        
         delete: function(dhis2Event){
-            dhis2.ec.storageManager.clearEvent(dhis2Event);
             var promise = $http.delete('../api/events/' + dhis2Event.event).then(function(response){
                 return response.data;
-            }, function(){                
+            }, function(){
+                dhis2.ec.store.remove( 'events', dhis2Event.event );
             });
             return promise;           
-        },
-    
-        update: function(dhis2Event){  
-            dhis2.ec.storageManager.saveEvent(dhis2Event);
-            var promise = $http.put('../api/events/' + dhis2Event.event, dhis2Event).then(function(response){
-                dhis2.ec.storageManager.clearEvent(dhis2Event);
+        },    
+        update: function(dhis2Event){
+            var promise = $http.put('../api/events/' + dhis2Event.event, dhis2Event).then(function(response){              
                 return response.data;
             }, function(){
+                dhis2.ec.store.remove('events', dhis2Event.event);
+                dhis2Event.id = dhis2Event.event;
+                dhis2.ec.store.set('events', dhis2Event);
             });
             return promise;
-        },
-        
-        updateForSingleValue: function(singleValue, fullValue){            
-            dhis2.ec.storageManager.saveEvent(fullValue);            
+        },        
+        updateForSingleValue: function(singleValue, fullValue){        
             var promise = $http.put('../api/events/' + singleValue.event + '/' + singleValue.dataValues[0].dataElement, singleValue ).then(function(response){
-                dhis2.ec.storageManager.clearEvent(fullValue);
-                return response.data;
-            }, function(){                
+                 return response.data;
+            }, function(){
+                dhis2.ec.store.remove('events', fullValue.event);
+                fullValue.id = fullValue.event;
+                dhis2.ec.store.set('events', fullValue);
             });
             return promise;
         }
@@ -323,8 +383,13 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             });
 
             e.dataValues = dvs;
+            
+            if(event.coordinate){
+                e.coordinate = {latitude: event.coordinate.latitude ? event.coordinate.latitude : '',
+                                     longitude: event.coordinate.longitude ? event.coordinate.longitude : ''};
+            }
 
-            return e;  
+            return e;
         }        
     };
 })
