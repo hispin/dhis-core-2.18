@@ -2750,7 +2750,6 @@ Ext.onReady( function() {
 				}
 				
 				if (!path) {
-					console.log('Available indicators: invalid id');
 					return;
 				}
 
@@ -2795,11 +2794,10 @@ Ext.onReady( function() {
 
                 this.isPending = false;
 
+                ns.core.web.multiSelect.filterAvailable({store: indicatorAvailableStore}, {store: indicatorSelectedStore});
+
                 if (fn) {
 					fn();
-				}
-				else {
-					ns.core.web.multiSelect.filterAvailable({store: indicatorAvailableStore}, {store: indicatorSelectedStore});
 				}
             },
 			storage: {},
@@ -2907,7 +2905,6 @@ Ext.onReady( function() {
 				}
 
 				if (!path) {
-					alert('Available data elements: invalid id');
 					return;
 				}
 
@@ -2955,7 +2952,6 @@ Ext.onReady( function() {
 				}
 
 				if (!path) {
-					alert('Available data elements: invalid id');
 					return;
 				}
 
@@ -3004,11 +3000,10 @@ Ext.onReady( function() {
 
                 this.isPending = false;
 
+				ns.core.web.multiSelect.filterAvailable({store: dataElementAvailableStore}, {store: dataElementSelectedStore});
+
                 if (fn) {
 					fn();
-				}
-				else {
-					ns.core.web.multiSelect.filterAvailable({store: dataElementAvailableStore}, {store: dataElementSelectedStore});
 				}
             },
             sortStore: function() {
@@ -3135,11 +3130,10 @@ Ext.onReady( function() {
 
                 this.isPending = false;
 
+				ns.core.web.multiSelect.filterAvailable({store: dataSetAvailableStore}, {store: dataSetSelectedStore});
+
                 if (fn) {
 					fn();
-				}
-				else {
-					ns.core.web.multiSelect.filterAvailable({store: dataSetAvailableStore}, {store: dataSetSelectedStore});
 				}
             },
 			storage: {},
@@ -5041,11 +5035,10 @@ Ext.onReady( function() {
 
 					this.isPending = false;
 
+					ns.core.web.multiSelect.filterAvailable({store: availableStore}, {store: selectedStore});
+
 					if (fn) {
 						fn();
-					}
-					else {
-						ns.core.web.multiSelect.filterAvailable({store: availableStore}, {store: selectedStore});
 					}
 				},
 				sortStore: function() {
