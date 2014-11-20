@@ -28,8 +28,7 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -44,23 +43,28 @@ public class LinearNodePipeline implements NodePipeline
     private class NodeTransformerWithArgs
     {
         NodeTransformer transformer;
-        List<String> args;
+        List<String> arguments;
 
-        private NodeTransformerWithArgs( NodeTransformer transformer, List<String> args )
+        NodeTransformerWithArgs( NodeTransformer transformer, List<String> arguments )
         {
             this.transformer = transformer;
-            this.args = args;
+            this.arguments = arguments;
+        }
+
+        Node transform( Node node )
+        {
+            return transformer.transform( node, arguments );
         }
     }
 
-    private List<NodeTransformerWithArgs> nodeTransformers = Lists.newArrayList();
+    private List<NodeTransformerWithArgs> nodeTransformers = new ArrayList<>();
 
     @Override
     public Node process( Node node )
     {
-        for ( NodeTransformerWithArgs nodeTransformerWithArgs : nodeTransformers )
+        for ( NodeTransformerWithArgs nodeTransformer : nodeTransformers )
         {
-            node = nodeTransformerWithArgs.transformer.transform( node, nodeTransformerWithArgs.args );
+            node = nodeTransformer.transform( node );
 
             if ( node == null )
             {
@@ -73,11 +77,11 @@ public class LinearNodePipeline implements NodePipeline
 
     public void addTransformer( NodeTransformer nodeTransformer )
     {
-        nodeTransformers.add( new NodeTransformerWithArgs( checkNotNull( nodeTransformer ), Lists.<String>newArrayList() ) );
+        nodeTransformers.add( new NodeTransformerWithArgs( checkNotNull( nodeTransformer ), new ArrayList<String>() ) );
     }
 
-    public void addTransformer( NodeTransformer nodeTransformer, List<String> args )
+    public void addTransformer( NodeTransformer nodeTransformer, List<String> arguments )
     {
-        nodeTransformers.add( new NodeTransformerWithArgs( checkNotNull( nodeTransformer ), args ) );
+        nodeTransformers.add( new NodeTransformerWithArgs( checkNotNull( nodeTransformer ), arguments ) );
     }
 }
