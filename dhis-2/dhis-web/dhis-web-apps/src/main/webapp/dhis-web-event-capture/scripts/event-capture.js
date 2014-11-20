@@ -4,9 +4,6 @@ dhis2.util.namespace('dhis2.ec');
 // whether current user has any organisation units
 dhis2.ec.emptyOrganisationUnits = false;
 
-// Instance of the StorageManager
-dhis2.ec.storageManager = new StorageManager();
-
 var EC_STORE_NAME = "dhis2ec";
 var i18n_no_orgunits = 'No organisation unit attached to current user, no data entry possible';
 var i18n_offline_notification = 'You are offline, data will be stored locally';
@@ -50,7 +47,11 @@ dhis2.ec.store = new dhis2.storage.Store({
         {
             name: 'optionSets',
             adapters: adapters
-        }            
+        },
+        {
+            name: 'events',
+            adapters: adapters
+        }
     ]        
 });
 
@@ -89,27 +90,29 @@ $(document).ready(function()
     });
     
     $(document).bind('dhis2.online', function(event, loggedIn)
-    {        
+    {
         if (loggedIn)
-        {
-            if (dhis2.ec.storageManager.hasLocalData())
-            {
-                var message = i18n_need_to_sync_notification
+        {   
+            var OfflineStorageService = angular.element('body').injector().get('OfflineStorageService');
+            
+            OfflineStorageService.hasLocalData().then(function(localData){
+                if(localData){
+                    var message = i18n_need_to_sync_notification
                         + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
 
-                setHeaderMessage(message);
+                    setHeaderMessage(message);
 
-                $('#sync_button').bind('click', uploadLocalData);
-            }
-            else
-            {
-                if (dhis2.ec.emptyOrganisationUnits) {
-                    setHeaderMessage(i18n_no_orgunits);
+                    $('#sync_button').bind('click', uploadLocalData);
                 }
-                else {
-                    setHeaderDelayMessage(i18n_online_notification);
+                else{
+                    if (dhis2.ec.emptyOrganisationUnits) {
+                        setHeaderMessage(i18n_no_orgunits);
+                    }
+                    else {
+                        setHeaderDelayMessage(i18n_online_notification);
+                    }
                 }
-            }
+            });
         }
         else
         {
@@ -532,264 +535,14 @@ function getOptionSet( id )
 
 function uploadLocalData()
 {
-    if ( !dhis2.ec.storageManager.hasLocalData() )
-    {
-        return;
-    }
-
-    setHeaderWaitMessage( i18n_uploading_data_notification );
-    
-    var events = dhis2.ec.storageManager.getEventsAsArray();   
-    
-    _.each( _.values( events ), function( event ) {
-        
-        if( event.hasOwnProperty('src')){ 
-            delete event.src;            
-        }       
-        delete event.event;
-    });    
-    
-    events = {events: events};
-    
-    //jackson insists for valid json, where properties are bounded with ""    
-    events = JSON.stringify(events);  
-    
-    $.ajax( {
-        url: '../api/events',
-        type: 'POST',
-        data: events,
-        contentType: 'application/json',              
-        success: function()
-        {
-            dhis2.ec.storageManager.clear();
-            log( 'Successfully uploaded local events' );      
-            setHeaderDelayMessage( i18n_sync_success );
-            selection.responseReceived(); //notify angular 
-        },
-        error: function( xhr )
-        {
-            if ( 409 == xhr.status ) // Invalid event
-            {
-                // there is something wrong with the data - ignore for now.
-
-                dhis2.ec.storageManager.clear();
-            }
-            else // Connection lost during upload
-            {
-                var message = i18n_sync_failed
-                    + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
-
-                setHeaderMessage( message );
-                $( '#sync_button' ).bind( 'click', uploadLocalData );
-            }
-        }
-    } );
+    var OfflineStorageService = angular.element('body').injector().get('OfflineStorageService');
+    setHeaderWaitMessage(i18n_uploading_data_notification);
+     
+    OfflineStorageService.uploadLocalData().then(function(){
+        dhis2.ec.store.removeAll( 'events' );
+        log( 'Successfully uploaded local events' );      
+        setHeaderDelayMessage( i18n_sync_success );
+        selection.responseReceived(); //notify angular
+    });
 }
 
-// -----------------------------------------------------------------------------
-// StorageManager
-// -----------------------------------------------------------------------------
-
-/**
- * This object provides utility methods for localStorage and manages data entry
- * forms and data values.
- */
-function StorageManager()
-{
-    var MAX_SIZE = new Number(2600000);
-
-    /**
-     * Returns the total number of characters currently in the local storage.
-     *
-     * @return number of characters.
-     */
-    this.totalSize = function()
-    {
-        var totalSize = new Number();
-
-        for (var i = 0; i < localStorage.length; i++)
-        {
-            var value = localStorage.key(i);
-
-            if (value)
-            {
-                totalSize += value.length;
-            }
-        }
-
-        return totalSize;
-    };
-
-    /**
-     * Return the remaining capacity of the local storage in characters, ie. the
-     * maximum size minus the current size.
-     */
-    this.remainingStorage = function()
-    {
-        return MAX_SIZE - this.totalSize();
-    };
-    
-    /**
-     * Clears stored events. 
-     */
-    this.clear = function ()
-    {
-        localStorage.removeItem(EVENT_VALUES);        
-    };    
-    
-    /**
-     * Saves an event
-     *
-     * @param event The event in json format.
-     */
-    this.saveEvent = function(event)
-    {
-        //var newEvent = event;
-        
-        if( !event.hasOwnProperty('src') )
-        {
-            if( !event.event){
-                event.event = this.generatePseudoUid();
-                event.src = 'local';
-            }            
-        }        
-
-        var events = {};
-
-        if (localStorage[EVENT_VALUES] != null)
-        {
-            events = JSON.parse(localStorage[EVENT_VALUES]);
-        }
-
-        events[event.event] = event;
-
-        try
-        {
-            localStorage[EVENT_VALUES] = JSON.stringify(events);
-
-            log('Successfully stored event - locally');
-        }
-        catch (e)
-        {
-            log('Max local storage quota reached, not storing data value locally');
-        }
-    };
-    
-    /**
-     * Gets the value for the event with the given arguments, or null if it
-     * does not exist.
-     *
-     * @param id the event identifier.
-     *
-     */
-    this.getEvent = function(id)
-    {
-        if (localStorage[EVENT_VALUES] != null)
-        {
-            var events = JSON.parse(localStorage[EVENT_VALUES]);
-
-            return events[id];
-        }
-
-        return null;
-    };
-
-    /**
-     * Removes the given event from localStorage.
-     *
-     * @param event and identifiers in json format.
-     */
-    this.clearEvent = function(event)
-    {
-        var events = this.getAllEvents();
-
-        if (events != null && events[event.event] != null)
-        {
-            delete events[event.event];
-            localStorage[EVENT_VALUES] = JSON.stringify(events);
-        }
-    };
-    
-    /**
-     * Returns events matching the arguments provided
-     * 
-     * @param orgUnit 
-     * @param programStage
-     * 
-     * @return a JSON associative array.
-     */
-    this.getEvents = function(orgUnit, programStage)
-    {
-        var events = this.getEventsAsArray();
-        var match = [];
-        for( var i=0; i<events.length; i++){
-            if(events[i].orgUnit == orgUnit && events[i].programStage == programStage ){
-                match.push(events[i]);
-            }
-        }
-        
-        var pager = {pageSize: 50, page: 1, toolBarDisplay: 5, pageCount: 1};  
-        return {events: match, pager: pager};
-    };
-    
-    /**
-     *
-     * @return a JSON associative array.
-     */
-    this.getAllEvents = function()
-    {
-        return localStorage[EVENT_VALUES] != null ? JSON.parse( localStorage[EVENT_VALUES] ) : null;
-    };    
-
-    /**
-     * Returns all event objects in an array. Returns an empty array if no
-     * event exist. Items in array are guaranteed not to be undefined.
-     */
-    this.getEventsAsArray = function()
-    {
-        var values = new Array();
-        var events = this.getAllEvents();
-
-        if (undefined == events)
-        {
-            return values;
-        }
-
-        for (i in events)
-        {
-            if (events.hasOwnProperty(i) && undefined !== events[i])
-            {
-                values.push(events[i]);
-            }
-        }
-
-        return values;
-    };
-    
-    /**
-     * Indicates whether there exists data values or complete data set
-     * registrations in the local storage.
-     *
-     * @return true if local data exists, false otherwise.
-     */
-    this.hasLocalData = function()
-    {
-        var events = this.getAllEvents();        
-
-        if (events == null)
-        {
-            return false;
-        }
-        if (Object.keys(events).length < 1)
-        {
-            return false;
-        }    
-
-        return true;
-    };
-    
-    this.generatePseudoUid = function () 
-    {
-        return Math.random().toString(36).substr(2, 11);
-    };
-}
