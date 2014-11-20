@@ -5,8 +5,9 @@ import com.opensymphony.xwork2.Action;
 /**
  * Created by Ganesh on 15/11/14.
  */
-public class PartnerDataListAction implements Action {
-
+public class PartnerDataListAction
+    implements Action
+{
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -33,9 +34,10 @@ public class PartnerDataListAction implements Action {
         this.dataElementId = dataElementId;
     }
 
-
     @Override
-    public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
         return SUCCESS;
     }
 }

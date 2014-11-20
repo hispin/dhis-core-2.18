@@ -18,7 +18,7 @@
     	<li><a href="dataElementTariffManagement.action">$i18n.getString( "dataelement_tariff_target_management" )</a></li>
     #end	
 
-    #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "partnerForm") )
+    #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "partnerFundManagementForm") )
         <li><a href="partnerFundManagementForm.action">$i18n.getString( "partner_management" )</a></li>
     #end
 	

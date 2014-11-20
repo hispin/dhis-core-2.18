@@ -134,11 +134,11 @@ function updateUtilizationRate()
 }
 
 
-function getParamsForDiv( equipmentDiv )
+function getParamsForDiv( utilizationRateDiv )
 {
 	var params = '';
 	
-	jQuery("#" + equipmentDiv + " :input").each(function()
+	jQuery("#" + utilizationRateDiv + " :input").each(function()
 		{
 			var elementId = $(this).attr('id');
 			

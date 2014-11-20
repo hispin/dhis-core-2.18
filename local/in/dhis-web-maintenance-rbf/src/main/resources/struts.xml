@@ -648,24 +648,50 @@
 	-->	
 
 
-   <!-- PBF Reports -->
-   <action name="partnerForm" class="org.hisp.dhis.rbf.partner.action.PartnerFormAction">
+   <!-- PBF Partner Fund Management -->
+   
+	<action name="partnerFundManagementForm" class="org.hisp.dhis.rbf.partner.action.PartnerFundManagement">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-maintenance-rbf/partnerFundManagement.vm</param>
+		<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/partner.js</param>
+		<param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
+		<param name="requiredAuthorities">F_PBF_PARTNER</param>
+	</action>   
+
+	<!--  Load Partner List -->
+	<action name="getpartnerDateList" class="org.hisp.dhis.rbf.partner.action.GetPartnerDateListAction">
+	    <result name="success" type="velocity">/content.vm</result>
+	    <param name="page">/dhis-web-maintenance-rbf/partnerDateList.vm</param>
+	</action>
+	
+	<!--  Show Add Partner form -->	
+   	<action name="showAddPartnerForm" class="org.hisp.dhis.rbf.partner.action.PartnerFormAction">
        <result name="success" type="velocity">/content.vm</result>
         <param name="page">/dhis-web-maintenance-rbf/partnerForm.vm</param>
     </action>
 
-        <action name="partnerDataList" class="org.hisp.dhis.rbf.partner.action.PartnerDataListAction">
-            <result name="success" type="velocity">/content.vm</result>
-            <param name="page">/dhis-web-maintenance-rbf/partnerDataList.vm</param>
-        </action>
-   
-   <action name="partnerFundManagementForm" class="org.hisp.dhis.rbf.partner.action.PartnerFundManagement">
-        <result name="success" type="velocity">/main.vm</result>
-        <param name="page">/dhis-web-maintenance-rbf/partnerFundManagement.vm</param>
-        <param name="javascripts">javascript/partner.js</param>
-        <param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
-        <param name="requiredAuthorities">F_PBF_PARTNER</param>
-   </action>
+   	<!-- Add Partner -->
+   	<action name="addPartnerForm" class="org.hisp.dhis.rbf.partner.action.SavePartnerDetailsResultAction">
+   		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+   	</action>
+   	
+	<!--  Show Update Partner form -->	
+   	<action name="showUpdatePartnerForm" class="org.hisp.dhis.rbf.partner.action.UpdatePartnerFormAction">
+       <result name="success" type="velocity">/content.vm</result>
+        <param name="page">/dhis-web-maintenance-rbf/updatePartnerForm.vm</param>
+    </action>   	
+
+   	<!-- Update Partner -->
+   	<action name="updatePartnerForm" class="org.hisp.dhis.rbf.partner.action.SavePartnerDetailsResultAction">
+   		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+   	</action>
+   	
+   	
+	<!--  Remove Partner -->
+	<action name="removePartner" class="org.hisp.dhis.rbf.partner.action.RemovePartnerAction">
+		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+	</action>    	
 
 
 	<!-- Get DataElements and Periods List-->
@@ -677,11 +703,26 @@
 
 
 
+
+
+
+	<!-- 
+	<action name="partnerDataList" class="org.hisp.dhis.rbf.partner.action.PartnerDataListAction">
+	    <result name="success" type="velocity">/content.vm</result>
+	    <param name="page">/dhis-web-maintenance-rbf/partnerDataList.vm</param>
+	</action>
+   	
+   	<action name="partnerForm" class="org.hisp.dhis.rbf.partner.action.PartnerFormAction">
+       <result name="success" type="velocity">/content.vm</result>
+        <param name="page">/dhis-web-maintenance-rbf/partnerForm.vm</param>
+    </action>
+	
     <action name="partnerFormResult" class="org.hisp.dhis.rbf.partner.action.SavePartnerDetailsResultAction">
         <result name="success" type="redirect">index.action</result>
         <param name="requiredAuthorities">F_PBF_PARTNER</param>
     </action>
-
+	
+	-->
 
 	</package>
 </struts>
