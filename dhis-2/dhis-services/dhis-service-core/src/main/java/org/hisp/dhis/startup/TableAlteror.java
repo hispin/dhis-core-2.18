@@ -763,6 +763,8 @@ public class TableAlteror
         executeSql( "alter table dataelement drop column sortorder" );
         executeSql( "alter table indicator drop column sortorder" );
         executeSql( "alter table dataset drop column sortorder" );
+        
+        executeSql( "alter table dataelement drop column active" );
 
         executeSql( "alter table datavalue alter column value type varchar(50000)" );
         executeSql( "alter table datavalue alter column comment type varchar(50000)" );
@@ -771,12 +773,12 @@ public class TableAlteror
         executeSql( "update datavalueaudit set attributeoptioncomboid = " + defaultOptionComboId + " where attributeoptioncomboid is null" );
         executeSql( "alter table datavalueaudit alter column attributeoptioncomboid set not null;" );
         
+        executeSql( "update dataelementcategoryoption set shortname = substring(name,0,50) where shortname is null" );
+        
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeCompleteDataSetRegistrationsWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
         upgradeTranslations();
-
-        executeSql( "ALTER TABLE dataelement DROP COLUMN active" );
 
         updateOptions();
 

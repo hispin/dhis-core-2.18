@@ -46,7 +46,7 @@
     </tr>
     <tr>
       <td style="width: 100px"><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-      <td><input type="text" id="shortName" name="shortName" class="{validate:{rangelength:[2,50]}}"/></td>
+      <td><input type="text" id="shortName" name="shortName" class="{validate:{required:true,rangelength:[2,50]}}"/></td>
     </tr>
 	<tr>
 	  <td><label>$i18n.getString( "code" )</td>
