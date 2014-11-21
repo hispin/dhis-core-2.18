@@ -28,17 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_CSV;
-import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_JSON;
-import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_XML;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
@@ -46,7 +35,6 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ExportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -58,20 +46,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Set;
+
+import static org.hisp.dhis.webapi.utils.ContextUtils.*;
+
 @Controller
 @RequestMapping( value = DataValueSetController.RESOURCE_PATH )
 public class DataValueSetController
 {
     public static final String RESOURCE_PATH = "/dataValueSets";
-    public static final String SDMXCROSS2DXF2_TRANSFORM = "/templates/cross2dxf2.xsl";
 
     private static final Log log = LogFactory.getLog( DataValueSetController.class );
 
     @Autowired
     private DataValueSetService dataValueSetService;
-
-    @Autowired
-    private OrganisationUnitService organisationUnitService;
 
     // -------------------------------------------------------------------------
     // Get
@@ -104,7 +96,7 @@ public class DataValueSetController
         else
         {
             log.info( "Get XML bulk data value set for start date: " + startDate + ", end date: " + endDate );
-            
+
             dataValueSetService.writeDataValueSetXml( dataSet, startDate, endDate, orgUnit, children, response.getOutputStream(), exportOptions );
         }
     }
@@ -136,7 +128,7 @@ public class DataValueSetController
         else
         {
             log.info( "Get JSON bulk data value set for start date: " + startDate + ", end date: " + endDate );
-            
+
             dataValueSetService.writeDataValueSetJson( dataSet, startDate, endDate, orgUnit, children, response.getOutputStream(), exportOptions );
         }
     }
@@ -153,7 +145,7 @@ public class DataValueSetController
         HttpServletResponse response ) throws IOException
     {
         response.setContentType( CONTENT_TYPE_CSV );
-        
+
         boolean isSingleDataValueSet = dataSet.size() == 1 && period != null && orgUnit.size() == 1;
 
         if ( isSingleDataValueSet )
@@ -168,9 +160,9 @@ public class DataValueSetController
         else
         {
             log.info( "Get CSV bulk data value set for start date: " + startDate + ", end date: " + endDate );
-            
+
             dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, orgUnit, children, response.getWriter(), exportOptions );
-        }        
+        }
     }
 
     // -------------------------------------------------------------------------
