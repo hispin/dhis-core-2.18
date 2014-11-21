@@ -283,8 +283,17 @@ dhis2.util.namespace( 'dhis2.storage' );
             value: function( store ) {
                 var self = this;
                 var deferred = $.Deferred();
+
                 var keys = [];
-                var tx = self._db.transaction( [ store ], "readonly" );
+                var tx;
+
+                try {
+                    tx = self._db.transaction([store], "readonly");
+                } catch(e) {
+                    console.log('Could not find store, returning empty keys.');
+                    deferred.resolveWith(self, []);
+                }
+
                 var objectStore = tx.objectStore( store );
                 var request = objectStore.openCursor();
 
