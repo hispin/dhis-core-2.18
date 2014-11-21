@@ -894,7 +894,7 @@ public class DefaultChartService
     {
         NameableObject series = chart.series().get( 0 );
         
-        int sortOrder = chart.getSortOrder() * -1;
+        int sortOrder = chart.getSortOrder();
         
         List<NumericSortWrapper<NameableObject>> list = new ArrayList<>();
         
