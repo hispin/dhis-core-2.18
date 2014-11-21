@@ -243,7 +243,7 @@ public class DataApprovalController
 
         DataApproval dataApproval = status.getDataApproval();
         Date createdDate = dataApproval == null ? null : dataApproval.getCreated();
-        String createdByUsername = dataApproval == null ? null : dataApproval.getCreator().getUsername();
+        String createdByUsername = dataApproval == null || dataApproval.getCreator() == null ? null : dataApproval.getCreator().getUsername();
 
         String state = status.getState().toString();
 
