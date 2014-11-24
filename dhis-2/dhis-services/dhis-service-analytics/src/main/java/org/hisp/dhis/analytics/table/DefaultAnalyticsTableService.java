@@ -300,10 +300,14 @@ public class DefaultAnalyticsTableService
     
     private void swapTables( List<AnalyticsTable> tables )
     {
+        resourceTableService.dropAllSqlViews();
+        
         for ( AnalyticsTable table : tables )
         {
             tableManager.swapTable( table );
         }
+        
+        resourceTableService.createAllSqlViews();
     }
     
     /**
