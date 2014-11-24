@@ -282,8 +282,6 @@ public class InterpretationController
             throw new AccessDeniedException( "You are not allowed to update this interpretation." );
         }
 
-        System.err.println( content );
-
         interpretation.setText( content );
 
         interpretationService.updateInterpretation( interpretation );
