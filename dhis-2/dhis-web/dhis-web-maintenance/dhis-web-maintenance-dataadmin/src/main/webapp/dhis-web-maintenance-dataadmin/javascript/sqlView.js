@@ -4,14 +4,16 @@ function validateAddUpdateSqlView( mode ) {
   var name = $("#name").val();
   var sqlquery = $("#sqlquery").val();
 
-  $.getJSON(
-    "validateAddUpdateSqlView.action",
-    {
+  $.ajax( {
+    url: "validateAddUpdateSqlView.action",
+    type: "post",
+    data: {
       "name": name,
       "sqlquery": sqlquery,
       "mode": mode
     },
-    function( json ) {
+    dataType: "json",
+    success: function( json ) {
       if( json.response == "success" ) {
         if( mode == "add" ) {
           byId("addSqlViewForm").submit();
@@ -23,7 +25,7 @@ function validateAddUpdateSqlView( mode ) {
         setHeaderDelayMessage(json.message);
       }
     }
-  );
+  } );
 }
 
 function removeSqlViewObject( context ) {
