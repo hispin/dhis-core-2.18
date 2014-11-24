@@ -166,7 +166,7 @@ public class JdbcSqlViewExpandStore
         {
             final String sql = "DROP VIEW IF EXISTS " + statementBuilder.columnQuote( viewName );
             
-            log.info( "Drop view SQL: " + sql );
+            log.debug( "Drop view SQL: " + sql );
             
             jdbcTemplate.update( sql );
         }
