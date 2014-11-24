@@ -410,4 +410,18 @@ public class ContextUtils
         
         return false;
     }
+    
+    /**
+     * Indicates whether the given requests indicates that it accepts a compressed
+     * response.
+     * 
+     * @param request the HttpServletRequest.
+     * @return whether the given requests indicates that it accepts a compressed
+     * response.
+     */
+    public static boolean isAcceptGzip( HttpServletRequest request )
+    {
+        return request != null && ( ( request.getPathInfo() != null && request.getPathInfo().endsWith( ".gz" ) )
+            || ( request.getHeader( "Accept" ) != null && request.getHeader( "Accept" ).contains( "application/csv+gzip" ) ) );
+    }
 }
