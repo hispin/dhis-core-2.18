@@ -175,7 +175,8 @@ public class DataElementCategoryOption
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class } )
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getStartDate()
     {
         return startDate;
@@ -187,7 +188,8 @@ public class DataElementCategoryOption
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class } )
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getEndDate()
     {
         return endDate;
