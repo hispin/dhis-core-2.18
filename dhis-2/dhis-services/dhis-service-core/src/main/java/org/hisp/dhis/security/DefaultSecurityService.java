@@ -144,7 +144,7 @@ public class DefaultSecurityService
 
         user.setSurname( "(TBD)" );
         user.setFirstName( "(TBD)" );
-        user.getUserCredentials().setPassword( passwordManager.encodePassword( rawPassword ) );
+        user.getUserCredentials().setPassword( passwordManager.encode( rawPassword ) );
 
         return true;
     }
@@ -249,8 +249,8 @@ public class DefaultSecurityService
         String token = restoreOptions.getTokenPrefix() + CodeGenerator.generateCode( RESTORE_TOKEN_LENGTH );
         String code = CodeGenerator.generateCode( RESTORE_CODE_LENGTH );
 
-        String hashedToken = passwordManager.encodePassword( token );
-        String hashedCode = passwordManager.encodePassword( code );
+        String hashedToken = passwordManager.encode( token );
+        String hashedCode = passwordManager.encode( code );
 
         RestoreType restoreType = restoreOptions.getRestoreType();
 
@@ -280,7 +280,7 @@ public class DefaultSecurityService
             return false;
         }
 
-        newPassword = passwordManager.encodePassword( newPassword );
+        newPassword = passwordManager.encode( newPassword );
 
         credentials.setPassword( newPassword );
 
@@ -375,7 +375,7 @@ public class DefaultSecurityService
             return "account_restore_code_is_null";
         }
 
-        boolean validCode = passwordManager.tokenMatches( code, restoreCode, credentials.getUsername() );
+        boolean validCode = passwordManager.legacyOrCurrentMatches( code, restoreCode, credentials.getUsername() );
 
         return validCode ? null : "code_does_not_match_restoreCode - code: '"+ code + "' restoreCode: '" + restoreCode + "'" ;
     }
@@ -437,7 +437,7 @@ public class DefaultSecurityService
             return "could_not_verify_token";
         }
 
-        boolean validToken = passwordManager.tokenMatches( token, restoreToken, credentials.getUsername() );
+        boolean validToken = passwordManager.legacyOrCurrentMatches( token, restoreToken, credentials.getUsername() );
 
         return validToken ? null : "restore_token_does_not_match_supplied_token";
     }

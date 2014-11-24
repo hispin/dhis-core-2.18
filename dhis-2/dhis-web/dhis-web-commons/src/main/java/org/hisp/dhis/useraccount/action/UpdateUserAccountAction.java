@@ -29,7 +29,7 @@ package org.hisp.dhis.useraccount.action;
  */
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.security.PasswordManager;
+import org.hisp.dhis.security.migration.MigrationPasswordManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
@@ -48,7 +48,7 @@ public class UpdateUserAccountAction
 
     private UserService userService;
 
-    private PasswordManager passwordManager;
+    private MigrationPasswordManager passwordManager;
 
     // -------------------------------------------------------------------------
     // Input
@@ -76,7 +76,7 @@ public class UpdateUserAccountAction
     // Getters && Setters
     // -------------------------------------------------------------------------
 
-    public void setPasswordManager( PasswordManager passwordManager )
+    public void setPasswordManager( MigrationPasswordManager passwordManager )
     {
         this.passwordManager = passwordManager;
     }
@@ -159,7 +159,7 @@ public class UpdateUserAccountAction
 
         String currentPassword = userCredentials.getPassword();
         
-        if ( !passwordManager.matches( oldPassword, currentPassword ) )
+        if ( !passwordManager.legacyOrCurrentMatches( oldPassword, currentPassword, user.getUsername() ) )
         {
             message = i18n.getString( "wrong_password" );
             return INPUT;
@@ -179,7 +179,7 @@ public class UpdateUserAccountAction
 
         if ( rawPassword != null )
         {
-            userCredentials.setPassword( passwordManager.encodePassword( rawPassword ) );
+            userCredentials.setPassword( passwordManager.encode( rawPassword ) );
 
             userService.updateUserCredentials( userCredentials );
         }

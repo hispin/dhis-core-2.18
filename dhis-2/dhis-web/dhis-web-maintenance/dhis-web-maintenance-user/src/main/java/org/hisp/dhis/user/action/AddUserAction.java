@@ -364,7 +364,7 @@ public class AddUserAction
             user.setEmail( email );
             user.setPhoneNumber( phoneNumber );
 
-            userCredentials.setPassword( passwordManager.encodePassword( rawPassword ) );
+            userCredentials.setPassword( passwordManager.encode( rawPassword ) );
         }
 
         if ( jsonAttributeValues != null )

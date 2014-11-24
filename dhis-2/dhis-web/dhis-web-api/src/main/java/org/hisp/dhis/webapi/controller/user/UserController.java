@@ -318,7 +318,7 @@ public class UserController
         user.getUserCredentials().getCatDimensionConstraints().addAll(
             currentUserService.getCurrentUser().getUserCredentials().getCatDimensionConstraints() );
 
-        String encodedPassword = passwordManager.encodePassword( user.getUserCredentials().getPassword() );
+        String encodedPassword = passwordManager.encode( user.getUserCredentials().getPassword() );
         user.getUserCredentials().setPassword( encodedPassword );
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), user, ImportStrategy.CREATE );

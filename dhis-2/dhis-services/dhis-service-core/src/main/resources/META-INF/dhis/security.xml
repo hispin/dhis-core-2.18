@@ -14,26 +14,25 @@
 
   <!--
     As of version 2.17 the password hashing method has been switched from MD5 to bCrypt. In order to migrate user records
-    seamlessly to the new hashing scheme, the MigrationSpringSecurityPasswordManager and MigrationAuthenticationProvider should
+    seamlessly to the new hashing scheme, the SpringSecurityMigrationPasswordManager and MigrationAuthenticationProvider should
     be used in lieu of SpringSecurityPasswordManager and the default spring AuthenticationProvider respectively.
 
     As soon as migration is deemed complete (in a later version, most likely 2.18 or 2.19) the org.hisp.dhis.security.migration
     package components should be replaced.
 
-    The (working) configuration SpringSecurityPasswordManager as it should be used in later versions is shown
-    (commented out) below. The authentication provider will need no bean definition as the default configuration (with bCryptPasswordEncoder
-    chosen as the password-encoder) should be used.
+    The configuration for SpringSecurityPasswordManager as it should be used in later versions is shown int the comments below.
+    To disable migration mode enable this and change any in class references from MigrationPasswordManager to PasswordManager.
   -->
 
   <!--
-    Replaced by MigrationSpringSecurityPasswordManager as long as the system is not fully migrated to bCrypt password hashes.
+    Replaced by MigrationSpringSecurityPasswordManager as while the system is not fully migrated to bCrypt password hashes.
 
   <bean id="org.hisp.dhis.security.PasswordManager" class="org.hisp.dhis.security.spring.SpringSecurityPasswordManager">
     <property name="passwordEncoder" ref="bCryptPasswordEncoder" />
   </bean>
   -->
 
-  <bean id="org.hisp.dhis.security.PasswordManager" class="org.hisp.dhis.security.migration.MigrationSpringSecurityPasswordManager">
+  <bean id="org.hisp.dhis.security.PasswordManager" class="org.hisp.dhis.security.migration.SpringSecurityMigrationPasswordManager">
     <property name="passwordEncoder" ref="bCryptPasswordEncoder" />
     <property name="legacyPasswordEncoder" ref="md5PasswordEncoder" />
     <property name="usernameSaltSource" ref="usernameSaltSource" />
