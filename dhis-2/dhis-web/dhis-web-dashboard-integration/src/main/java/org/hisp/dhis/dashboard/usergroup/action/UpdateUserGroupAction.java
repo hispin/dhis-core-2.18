@@ -30,7 +30,6 @@ package org.hisp.dhis.dashboard.usergroup.action;
 
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.AttributeUtils;
@@ -43,8 +42,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
 public class UpdateUserGroupAction
     implements Action
@@ -129,8 +126,6 @@ public class UpdateUserGroupAction
             usersSelected = new ArrayList<>();
         }
 
-        boolean writeGroupRequired = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
-
         UserGroup userGroup = userGroupService.getUserGroup( userGroupId );
 
         Set<User> users = new HashSet<>();
@@ -145,36 +140,6 @@ public class UpdateUserGroupAction
             }
 
             users.add( user );
-
-            if ( writeGroupRequired && !userGroup.getMembers().contains( user ) && !userService.canUpdate( user.getUserCredentials() ) )
-            {
-                throw new UpdateAccessDeniedException( "You don't have permission to add all selected users to this group" );
-            }
-        }
-
-        if ( writeGroupRequired )
-        {
-            for ( User member : userGroup.getMembers() )
-            {
-                if ( !users.contains( member ) ) // Trying to remove member user from group.
-                {
-                    boolean otherGroupFound = false;
-
-                    for ( UserGroup ug : member.getGroups() )
-                    {
-                        if ( !userGroup.equals( ug ) && securityService.canWrite( ug ) )
-                        {
-                            otherGroupFound = true;
-                            break;
-                        }
-                    }
-
-                    if ( !otherGroupFound )
-                    {
-                        throw new UpdateAccessDeniedException( "You can't remove member who belongs to no other user groups that you control" );
-                    }
-                }
-            }
         }
 
         userGroup.setName( name );

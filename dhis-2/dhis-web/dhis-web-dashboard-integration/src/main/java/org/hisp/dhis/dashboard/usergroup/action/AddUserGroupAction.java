@@ -28,8 +28,6 @@ package org.hisp.dhis.dashboard.usergroup.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,8 +115,6 @@ public class AddUserGroupAction
             usersSelected = new ArrayList<>();
         }
 
-        boolean writeGroupRequired = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
-
         UserGroup userGroup = new UserGroup( name );
 
         for ( String userUid : usersSelected )
@@ -131,11 +127,6 @@ public class AddUserGroupAction
             }
 
             userGroup.addUser( user );
-
-            if ( writeGroupRequired && !userGroup.getMembers().contains( user) && !userService.canUpdate( user.getUserCredentials() ) )
-            {
-                throw new CreateAccessDeniedException( "- You don't have permission to add all selected users to this group." );
-            }
         }
 
         if ( jsonAttributeValues != null )

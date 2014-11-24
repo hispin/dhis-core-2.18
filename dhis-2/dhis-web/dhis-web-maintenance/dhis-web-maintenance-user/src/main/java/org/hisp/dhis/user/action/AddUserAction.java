@@ -64,8 +64,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
-
 /**
  * @author Torgeir Lorange Ostby
  */
@@ -302,36 +300,6 @@ public class AddUserAction
         inviteEmail = inviteEmail.trim();
 
         User currentUser = currentUserService.getCurrentUser();
-
-        // ---------------------------------------------------------------------
-        // Check if user group is required, before we add the user
-        // ---------------------------------------------------------------------
-
-        boolean canManageGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
-
-        if ( canManageGroups && !currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
-        {
-            boolean groupFound = false;
-
-            for ( String ug : ugSelected )
-            {
-                UserGroup group = userGroupService.getUserGroup( ug );
-
-                if ( group != null && securityService.canWrite( group ) )
-                {
-                    groupFound = true;
-
-                    break;
-                }
-            }
-
-            if ( !groupFound )
-            {
-                message = i18n.getString( "users_must_belong_to_a_group_controlled_by_the_user_manager" );
-
-                return ERROR;
-            }
-        }
 
         // ---------------------------------------------------------------------
         // User credentials and user
