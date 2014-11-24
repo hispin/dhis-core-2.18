@@ -151,7 +151,8 @@ dhis2.de.generateExpression = function( expression )
 function saveVal( dataElementId, optionComboId, fieldId, feedbackId )
 {
 	var fieldIds = fieldId.split( "-" );
-  feedbackId = '#' + (feedbackId || fieldId);
+
+	feedbackId = '#' + ( feedbackId || fieldId );
 
 	if ( fieldIds.length > 3 )
 	{
@@ -168,16 +169,11 @@ function saveVal( dataElementId, optionComboId, fieldId, feedbackId )
 
     var periodId = $( '#selectedPeriodId' ).val();
 
-	if ( value == null )
-	{
-		value = '';
-	}
-
 	var warning = undefined;
 
 	var existing = !!( dhis2.de.currentExistingValue && dhis2.de.currentExistingValue != '' );
 	
-    if ( value != '' )
+    if ( value )
     {
         if ( type == 'string' || type == 'int' || type == 'number' || type == 'posInt' || type == 'negInt' || type == 'zeroPositiveInt' || type == 'unitInterval' || type == 'percentage' )
         {

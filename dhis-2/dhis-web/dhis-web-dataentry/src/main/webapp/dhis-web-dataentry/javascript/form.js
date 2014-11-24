@@ -607,7 +607,8 @@ dhis2.de.addEventListeners = function()
         
         $( this ).css( "cursor", "pointer" );
         
-        $( this ).click ( function() {
+        $( this ).click ( function() 
+        {
         	viewHist( dataElementId, optionComboId );
         } );
     } );
