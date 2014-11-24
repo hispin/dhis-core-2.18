@@ -208,7 +208,7 @@ public class EventController
         OutputStream outputStream = response.getOutputStream();
         response.setContentType( "application/csv" );
 
-        if ( isGzip( request ) )
+        if ( ContextUtils.isAcceptGzip( request ) )
         {
             response.addHeader( ContextUtils.HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
             outputStream = new GZIPOutputStream( outputStream );
@@ -522,7 +522,7 @@ public class EventController
         @RequestParam( required = false, defaultValue = "false" ) boolean skipFirst,
         HttpServletResponse response, HttpServletRequest request, ImportOptions importOptions ) throws IOException
     {
-        InputStream inputStream = isGzip( request ) ? new GZIPInputStream( request.getInputStream() ) : request.getInputStream();
+        InputStream inputStream = ContextUtils.isAcceptGzip( request ) ? new GZIPInputStream( request.getInputStream() ) : request.getInputStream();
 
         Events events = csvEventService.readEvents( inputStream, skipFirst );
 
@@ -666,12 +666,5 @@ public class EventController
 
         response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         eventService.deleteEvent( event );
-    }
-
-    private boolean isGzip( HttpServletRequest request )
-    {
-        return request != null && (
-            (request.getPathInfo() != null && request.getPathInfo().endsWith( ".gz" ))
-                || (request.getHeader( "Accept" ) != null && request.getHeader( "Accept" ).contains( "application/csv+gzip" )));
     }
 }
