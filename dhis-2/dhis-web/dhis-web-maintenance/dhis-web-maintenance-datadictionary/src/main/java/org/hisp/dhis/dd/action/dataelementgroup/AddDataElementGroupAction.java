@@ -128,7 +128,6 @@ public class AddDataElementGroupAction
 
         for ( String id : deSelected )
         {
-            System.err.println( "id: " + id );
             dataElementGroup.addDataElement( dataElementService.getDataElement( id ) );
         }
 
