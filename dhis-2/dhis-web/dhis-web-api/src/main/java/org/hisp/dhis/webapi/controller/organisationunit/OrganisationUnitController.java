@@ -240,6 +240,7 @@ public class OrganisationUnitController
     public void getGeoJson(
         @RequestParam( value = "level", required = false ) List<Integer> rpLevels,
         @RequestParam( value = "parent", required = false ) List<String> rpParents,
+        @RequestParam( value = "properties", required = false, defaultValue = "true" ) boolean rpProperties,
         HttpServletResponse response ) throws IOException
     {
         rpLevels = rpLevels != null ? rpLevels : new ArrayList<Integer>();
@@ -270,7 +271,7 @@ public class OrganisationUnitController
 
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
-            writeFeature( generator, organisationUnit );
+            writeFeature( generator, organisationUnit, rpProperties );
         }
 
         generator.writeEndArray();
@@ -279,7 +280,7 @@ public class OrganisationUnitController
         generator.close();
     }
 
-    public void writeFeature( JsonGenerator generator, OrganisationUnit organisationUnit ) throws IOException
+    public void writeFeature( JsonGenerator generator, OrganisationUnit organisationUnit, boolean includeProperties ) throws IOException
     {
         if ( organisationUnit.getFeatureType() == null || organisationUnit.getCoordinates() == null )
         {
@@ -308,11 +309,16 @@ public class OrganisationUnitController
         generator.writeEndObject();
 
         generator.writeObjectFieldStart( "properties" );
-        generator.writeStringField( "code", organisationUnit.getCode() );
-        generator.writeStringField( "name", organisationUnit.getName() );
-        generator.writeStringField( "level", String.valueOf( organisationUnit.getLevel() ) );
-        generator.writeStringField( "parent", organisationUnit.getParent().getUid() );
-        generator.writeStringField( "parentGraph", organisationUnit.getParentGraph() );
+
+        if ( includeProperties )
+        {
+            generator.writeStringField( "code", organisationUnit.getCode() );
+            generator.writeStringField( "name", organisationUnit.getName() );
+            generator.writeStringField( "level", String.valueOf( organisationUnit.getLevel() ) );
+            generator.writeStringField( "parent", organisationUnit.getParent().getUid() );
+            generator.writeStringField( "parentGraph", organisationUnit.getParentGraph() );
+        }
+
         generator.writeEndObject();
 
         generator.writeEndObject();
