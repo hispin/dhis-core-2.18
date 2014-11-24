@@ -64,13 +64,13 @@ public class MigrationAuthenticationProvider
         String username = userDetails.getUsername();
 
         // If legacyHash(password, username) matches stored hash, re-hash password with current method and switch with stored hash
-        if( passwordManager.legacyMatches( userDetails.getPassword(), password, username ) )
+        if( passwordManager.legacyMatches( password, userDetails.getPassword(), username ) )
         {
             UserCredentials userCredentials = userService.getUserCredentialsByUsername( username );
 
             if ( userCredentials != null )
             {
-                userCredentials.setPassword( passwordManager.encodePassword( password ) );
+                userCredentials.setPassword( passwordManager.encode( password ) );
                 userCredentials.setPasswordLastUpdated( new Date() );
                 userService.updateUser( userCredentials.getUser() );
 

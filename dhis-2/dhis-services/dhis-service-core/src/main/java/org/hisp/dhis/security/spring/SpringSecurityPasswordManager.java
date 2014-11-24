@@ -54,7 +54,7 @@ public class SpringSecurityPasswordManager
     // -------------------------------------------------------------------------
 
     @Override
-    public final String encodePassword( String password )
+    public final String encode( String password )
     {
         return passwordEncoder.encode( password );
     }

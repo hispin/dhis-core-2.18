@@ -7,7 +7,7 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
 /**
  * @author Halvdan Hoem Grelland
  */
-public class MigrationSpringSecurityPasswordManager
+public class SpringSecurityMigrationPasswordManager
     extends SpringSecurityPasswordManager
     implements MigrationPasswordManager
 {
@@ -37,21 +37,21 @@ public class MigrationSpringSecurityPasswordManager
     // -------------------------------------------------------------------------
 
     @Override
-    public String legacyEncodePassword( String password, String username )
+    public final String legacyEncode( String password, String username )
     {
         return legacyPasswordEncoder.encodePassword( password, usernameSaltSource.getSalt( username ) );
     }
 
     @Override
-    public boolean legacyMatches( String encodedPassword, String password, String username )
+    public boolean legacyMatches( String rawPassword, String encodedPassword, String username )
     {
-        return legacyPasswordEncoder.isPasswordValid( encodedPassword, password, usernameSaltSource.getSalt( username ) );
+        return legacyPasswordEncoder.isPasswordValid( encodedPassword, rawPassword, usernameSaltSource.getSalt( username ) );
     }
 
     @Override
-    public boolean tokenMatches( String token, String encodedToken, String username )
+    public boolean legacyOrCurrentMatches( String rawPassword, String encodedPassword, String username )
     {
-        return legacyMatches( encodedToken, token, username ) || super.matches( token, encodedToken );
+        return legacyMatches( rawPassword, encodedPassword, username ) || super.matches( rawPassword, encodedPassword );
     }
 
     @Override

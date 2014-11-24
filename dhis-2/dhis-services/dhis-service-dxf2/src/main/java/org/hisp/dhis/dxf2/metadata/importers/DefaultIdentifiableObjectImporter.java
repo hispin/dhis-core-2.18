@@ -317,7 +317,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( userCredentials.getPassword() != null )
             {
-                userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getPassword() ) );
+                userCredentials.setPassword( passwordManager.encode( userCredentials.getPassword() ) );
             }
 
             Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
@@ -417,7 +417,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
                 if ( userCredentials != null && userCredentials.getPassword() != null )
                 {
-                    userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getPassword() ) );
+                    userCredentials.setPassword( passwordManager.encode( userCredentials.getPassword() ) );
                 }
 
                 ((User) persistedObject).getUserCredentials().mergeWith( userCredentials );

@@ -29,6 +29,11 @@ package org.hisp.dhis.security;
  */
 
 /**
+ * This interface provides access to the system configured password hashing method.
+ * It is used for encoding passwords and tokens as well as checking the authenticity
+ * of a given password or token. The underlying PasswordEncoder should be the same as
+ * used by Spring Security to perform password checking on user authentication.
+ *
  * @author Torgeir Lorange Ostby
  * @author Halvdan Hoem Grelland
  */
@@ -43,7 +48,7 @@ public interface PasswordManager
      * @param password password to encode.
      * @return the hashed password.
      */
-    String encodePassword( String password );
+    String encode( String password );
 
     /**
      * Determines whether the supplied password equals the encoded password or not.

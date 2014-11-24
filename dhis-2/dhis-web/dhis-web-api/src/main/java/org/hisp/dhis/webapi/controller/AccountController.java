@@ -34,10 +34,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.RestoreType;
 import org.hisp.dhis.security.SecurityService;
+import org.hisp.dhis.security.migration.MigrationPasswordManager;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.User;
@@ -100,7 +100,7 @@ public class AccountController
     private ConfigurationService configurationService;
 
     @Autowired
-    private PasswordManager passwordManager;
+    private MigrationPasswordManager passwordManager;
 
     @Autowired
     private SecurityService securityService;
@@ -399,7 +399,7 @@ public class AccountController
                 username = credentials.getUsername();
             }
 
-            credentials.setPassword( passwordManager.encodePassword( password ) );
+            credentials.setPassword( passwordManager.encode( password ) );
 
             userService.updateUser( user );
             userService.updateUserCredentials( credentials );
@@ -421,7 +421,7 @@ public class AccountController
 
             credentials = new UserCredentials();
             credentials.setUsername( username );
-            credentials.setPassword( passwordManager.encodePassword( password ) );
+            credentials.setPassword( passwordManager.encode( password ) );
             credentials.setSelfRegistered( true );
             credentials.setUser( user );
             credentials.getUserAuthorityGroups().add( userRole );
@@ -472,7 +472,7 @@ public class AccountController
             return;
         }
 
-        if( !passwordManager.matches( oldPassword, credentials.getPassword() ) )
+        if( !passwordManager.legacyOrCurrentMatches( oldPassword, credentials.getPassword(), credentials.getUsername() ) )
         {
             result.put( "status", "NON_MATCHING_PASSWORD" );
             result.put( "message", "Old password is wrong, please correct and try again." );
@@ -499,7 +499,7 @@ public class AccountController
             return;
         }
 
-        String passwordEncoded = passwordManager.encodePassword( password );
+        String passwordEncoded = passwordManager.encode( password );
 
         credentials.setPassword( passwordEncoded );
         credentials.setPasswordLastUpdated( new Date() );
