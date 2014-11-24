@@ -91,7 +91,6 @@ public interface SystemSettingManager
     final String KEY_OPENID_PROVIDER = "keyOpenIdProvider";
     final String KEY_OPENID_PROVIDER_LABEL = "keyOpenIdProviderLabel";
     final String KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS = "keyCanGrantOwnUserAuthorityGroups";
-    final String KEY_ONLY_MANAGE_WITHIN_USER_GROUPS = "keyOnlyManageWithinUserGroups";
     final String KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS = "keyHideUnapprovedDataInAnalytics";
     final String KEY_ANALYTICS_MAX_LIMIT = "keyAnalyticsMaxLimit";
     final String KEY_CUSTOM_LOGIN_PAGE_LOGO = "keyCustomLoginPageLogo";

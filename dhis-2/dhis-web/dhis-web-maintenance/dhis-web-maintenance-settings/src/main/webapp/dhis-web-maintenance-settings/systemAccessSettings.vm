@@ -8,7 +8,6 @@ jQuery( document ).ready( function() {
             accountRecovery: jQuery( '#accountRecovery' ).is( ':checked' ),
             accountInvite: jQuery( '#accountInvite' ).is( ':checked' ),
             canGrantOwnUserAuthorityGroups: jQuery( '#canGrantOwnUserAuthorityGroups' ).is( ':checked' ),
-            onlyManageWithinUserGroups: jQuery( '#onlyManageWithinUserGroups' ).is( ':checked' ),
             credentialsExpires: jQuery( '#credentialsExpires' ).val(),
             openIdProvider: jQuery( '#openIdProvider' ).val(),
             openIdProviderLabel: jQuery( '#openIdProviderLabel' ).val()
@@ -67,11 +66,6 @@ jQuery( document ).ready( function() {
 <div class="setting">
     <input type="checkbox" id="canGrantOwnUserAuthorityGroups" name="canGrantOwnUserAuthorityGroups"#if( $keyCanGrantOwnUserAuthorityGroups ) checked="checked"#end>
     <label for="canGrantOwnUserAuthorityGroups">$i18n.getString( "allow_users_to_grant_own_user_roles" )</label>
-</div>
-
-<div class="setting">
-    <input type="checkbox" id="onlyManageWithinUserGroups" name="onlyManageWithinUserGroups"#if( $keyOnlyManageWithinUserGroups ) checked="checked"#end>
-    <label for="onlyManageWithinUserGroups">$i18n.getString( "users_must_belong_to_a_group_controlled_by_the_user_manager" )</label>
 </div>
 
 <div class="settingLabel">$i18n.getString( "user_credentials_expires" )</div>

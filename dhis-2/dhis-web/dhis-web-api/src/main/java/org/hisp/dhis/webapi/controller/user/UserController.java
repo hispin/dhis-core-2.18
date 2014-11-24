@@ -28,8 +28,6 @@ package org.hisp.dhis.webapi.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -330,18 +328,12 @@ public class UserController
 
     /**
      * Before adding the user, checks to see that any specified user groups
-     * exist. Also checks to see that user can be created by the current
-     * user, if it is required that the current user have read/write access
-     * to a user group that is assigned to the new user.
+     * exist.
      *
      * @param user user object parsed from the POST request
      */
     private void checkUserGroups( User user )
     {
-        boolean writeGroupRequired = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
-
-        boolean writeGroupFound = false;
-
         if ( currentUserService.getCurrentUser() != null && user.getGroups() != null )
         {
             for ( UserGroup ug : user.getGroups() )
@@ -353,18 +345,11 @@ public class UserController
                     throw new CreateAccessDeniedException( "Can't add user: Can't find user group with UID = " + ug.getUid() );
                 }
 
-                if ( writeGroupRequired && securityService.canWrite( group ) )
+                if ( !securityService.canRead( group ) )
                 {
-                    writeGroupFound = true;
-
-                    break;
+                    throw new CreateAccessDeniedException( "Can't add user: Can't read the group with UID = " + ug.getUid() );
                 }
             }
-        }
-
-        if ( writeGroupRequired && !writeGroupFound && !currentUserService.currentUserIsSuper() )
-        {
-            throw new CreateAccessDeniedException( "The new user must be assigned to a user group to which you have write access." );
         }
     }
 
@@ -377,18 +362,13 @@ public class UserController
     {
         if ( user.getGroups() != null )
         {
-            boolean writeGroupRequired = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
-
             for ( UserGroup ug : new ArrayList<>( user.getGroups() ) )
             {
                 UserGroup group = userGroupService.getUserGroup( ug.getUid() );
 
-                if ( group != null && ( !writeGroupRequired || securityService.canRead( group ) ) )
-                {
-                    group.addUser( user );
+                group.addUser( user );
 
-                    userGroupService.updateUserGroup( group );
-                }
+                userGroupService.updateUserGroup( group );
             }
         }
     }

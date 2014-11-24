@@ -29,7 +29,6 @@ package org.hisp.dhis.user;
  */
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -680,7 +679,7 @@ public class DefaultUserService
     @Override
     public boolean canUpdate( UserCredentials userCredentials )
     {
-        return hasAuthorityToUpdateUser( userCredentials ) && hasGroupsToUpdateUser( userCredentials );
+        return hasAuthorityToUpdateUser( userCredentials );
     }
 
     // -------------------------------------------------------------------------
@@ -818,39 +817,5 @@ public class DefaultUserService
 
         return currentUserCredentials != null && userCredentials != null
                 && currentUserCredentials.canIssueAll( userCredentials.getUserAuthorityGroups(), canGrantOwnUserAuthorityGroups );
-    }
-
-    /**
-     * Determines if the current user read/write access to at least one group
-     * to which the user belongs, if this is a requirement on this system
-     * for updating a user.
-     *
-     * @param userCredentials The user to be updated.
-     * @return true if current user has read/write access to a group to which
-     * the user belongs, or if this requirement is not applicable, else false.
-     */
-    private boolean hasGroupsToUpdateUser( UserCredentials userCredentials )
-    {
-        User user = currentUserService.getCurrentUser();
-
-        boolean onlyManageWithinUserGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
-
-        if ( onlyManageWithinUserGroups && !user.getUserCredentials().getAllAuthorities().contains( UserAuthorityGroup.AUTHORITY_ALL ) )
-        {
-            if ( userCredentials.getUser().getGroups() != null )
-            {
-                for ( UserGroup group : userCredentials.getUser().getGroups() )
-                {
-                    if ( securityService.canWrite( group ) )
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        return true;
     }
 }
