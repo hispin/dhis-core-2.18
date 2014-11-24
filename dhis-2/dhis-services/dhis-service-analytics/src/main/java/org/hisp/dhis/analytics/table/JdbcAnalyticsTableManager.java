@@ -325,9 +325,10 @@ public class JdbcAnalyticsTableManager
         
         String[] de = { quote( "de" ), "character(11) not null", "de.uid" };
         String[] co = { quote( "co" ), "character(11) not null", "co.uid" };
+        String[] ou = { quote( "ou" ), "character(11) not null", "ous.organisationunituid" };
         String[] level = { quote( "level" ), "integer", "ous.level" };
         
-        columns.addAll( Arrays.asList( de, co, level ) );
+        columns.addAll( Arrays.asList( de, co, ou, level ) );
 
         if ( isApprovalEnabled() )
         {            
