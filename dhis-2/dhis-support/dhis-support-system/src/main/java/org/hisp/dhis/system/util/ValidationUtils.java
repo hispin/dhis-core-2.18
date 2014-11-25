@@ -362,7 +362,7 @@ public class ValidationUtils
      * if invalid, possible values are:
      * </p>
      * <ul>
-     * <li>comment_too_long</li>
+     * <li>comment_length_greater_than_max_length</li>
      * </ul>
      * 
      * @param comment the comment.
@@ -377,7 +377,7 @@ public class ValidationUtils
         
         if ( comment.length() > VALUE_MAX_LENGTH )
         {
-            return "comment_too_long";
+            return "comment_length_greater_than_max_length";
         }
         
         return null;
