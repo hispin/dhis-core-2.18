@@ -163,6 +163,19 @@ public class MessageConversation
         return false;
     }
 
+    public boolean isRead( User user )
+    {
+        for( UserMessage userMessage : userMessages )
+        {
+            if( userMessage.getUser() != null && userMessage.getUser().equals( user ) )
+            {
+                return userMessage.isRead();
+            }
+        }
+
+        return false;
+    }
+
     public boolean markRead( User user )
     {
         for ( UserMessage userMessage : userMessages )

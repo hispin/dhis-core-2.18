@@ -307,6 +307,23 @@ public class DefaultMessageService
     @Override
     public MessageConversation getMessageConversation( String uid )
     {
+        /*
+         * TODO:
+         * This is a temporary workaround to ensure transient fields followUp and read
+         * are set correctly (and not just to false). Issue should be tackled in
+         * HibernateIdentifiableObjectStore and/or HibernateMessageConversationStore.
+         */
+
+        MessageConversation mc = messageConversationStore.getByUid( uid );
+
+        if( mc == null )
+        {
+            return null;
+        }
+
+        mc.setFollowUp( mc.isFollowUp( currentUserService.getCurrentUser() ) );
+        mc.setRead( mc.isRead( currentUserService.getCurrentUser() ) );
+
         return messageConversationStore.getByUid( uid );
     }
 
