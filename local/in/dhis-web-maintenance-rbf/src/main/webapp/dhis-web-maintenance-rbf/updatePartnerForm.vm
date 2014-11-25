@@ -20,7 +20,8 @@
                     {
                         if( isSubmit ) 
                         {
-                            updatePartner();
+                            //updatePartner();
+							validateUpdatePartner();
                         }
                     }
             });
@@ -49,7 +50,7 @@
             
         </tr>
         <tr>
-            <td style="width:40%;">Start Date <b class="mandatory">*</b> </td>
+            <td style="width:40%;">Start Date <em title="$i18n.getString( 'required' )" class="required">*</em></td>
             <td style="width:60%;"><input type="text" id="startDate" style="width:100%;" name = "startDate" class="{validate:{required:true}}" value="$startDate" />
                 <script type="text/javascript">
                     datePicker( 'startDate' );
@@ -58,7 +59,7 @@
         </tr>
 
         <tr >
-            <td style="width:40%;">End Date <b class="mandatory">*</b> </td>
+            <td style="width:40%;">End Date <em title="$i18n.getString( 'required' )" class="required">*</em></td>
             <td style="width:60%;"><input type="text" id="endDate" style="width:100%;" name = "endDate" class="{validate:{required:true}}" value="$endDate" />
                 <script type="text/javascript">
                     datePicker( 'endDate' );
