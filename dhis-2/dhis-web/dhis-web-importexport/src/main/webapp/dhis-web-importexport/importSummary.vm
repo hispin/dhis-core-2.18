@@ -8,23 +8,23 @@
 <h4>$i18n.getString( "import_count" )</h4>
 #if( $summary.dataValueCount )
 <table>
-<col width="110">
-<col width="110">
+<col width="120">
+<col width="260">
 <tr>
 	<th>$i18n.getString( "type" )</th>
-	<th style="text-align:center">$i18n.getString( "count" )</th>
+	<th>$i18n.getString( "count" )</th>
 </tr>
 <tr>
 	<td>$i18n.getString( "imported" )</td>
-	<td style="text-align:center">${summary.dataValueCount.imported}</td>
+	<td>${summary.dataValueCount.imported}</td>
 </tr>
 <tr>
 	<td>$i18n.getString( "updated" )</td>
-	<td style="text-align:center">${summary.dataValueCount.updated}</td>
+	<td>${summary.dataValueCount.updated}</td>
 </tr>
 <tr>
 	<td>$i18n.getString( "ignored" )</td>
-	<td style="text-align:center">${summary.dataValueCount.ignored}</td>
+	<td>${summary.dataValueCount.ignored}</td>
 </tr>
 </table>
 #else
@@ -34,8 +34,8 @@
 <h4>$i18n.getString( "conflicts" )</h4>
 #if( $summary.conflicts.size() > 0 )
 <table>
-<col width="110">
-<col width="110">
+<col width="120">
+<col width="260">
 <tr>
 	<th>$i18n.getString( "element" )</th>
 	<th>$i18n.getString( "description" )</th>

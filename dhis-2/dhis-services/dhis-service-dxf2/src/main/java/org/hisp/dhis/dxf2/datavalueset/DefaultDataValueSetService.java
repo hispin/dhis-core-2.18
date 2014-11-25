@@ -74,6 +74,8 @@ import org.hisp.dhis.dxf2.metadata.ExportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.pdfform.PdfDataEntryFormUtil;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.node.types.CollectionNode;
@@ -103,14 +105,13 @@ public class DefaultDataValueSetService
 {
     private static final Log log = LogFactory.getLog( DefaultDataValueSetService.class );
 
+    private static final String ERROR_SEP = ": ";
     private static final String ERROR_INVALID_DATA_SET = "Invalid data set: ";
-
     private static final String ERROR_INVALID_PERIOD = "Invalid period: ";
-
     private static final String ERROR_INVALID_ORG_UNIT = "Invalid org unit: ";
-
     private static final String ERROR_OBJECT_NEEDED_TO_COMPLETE = "Must be provided to complete data set";
-
+    private static final String ERROR_INSIGNIFICANT_ZERO = "Value is zero and not significant";
+    
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
 
@@ -137,6 +138,9 @@ public class DefaultDataValueSetService
 
     @Autowired
     private DataValueSetStore dataValueSetStore;
+    
+    @Autowired
+    private I18nManager i18nManager;
 
     @Autowired
     private Notifier notifier;
@@ -558,6 +562,8 @@ public class DefaultDataValueSetService
         notifier.clear( id ).notify( id, "Process started" );
 
         ImportSummary summary = new ImportSummary();
+        
+        I18n i18n = i18nManager.getI18n();
 
         importOptions = importOptions != null ? importOptions : ImportOptions.getDefaultImportOptions();
 
@@ -685,7 +691,7 @@ public class DefaultDataValueSetService
 
             if ( valueValid != null )
             {
-                summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), valueValid ) );
+                summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), i18n.getString( valueValid ) + ERROR_SEP + dataValue.getValue() ) );
                 continue;
             }
 
@@ -693,7 +699,7 @@ public class DefaultDataValueSetService
 
             if ( commentValid != null )
             {
-                summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), commentValid ) );
+                summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), i18n.getString( commentValid ) ) );
                 continue;
             }
 
@@ -728,13 +734,11 @@ public class DefaultDataValueSetService
             internalValue.setComment( trimToNull( dataValue.getComment() ) );
             internalValue.setFollowup( dataValue.getFollowup() );
 
-            String valid = ValidationUtils.dataValueIsValid( internalValue.getValue(), dataElement );
-
             boolean zeroInsignificant = ValidationUtils.dataValueIsZeroAndInsignificant( internalValue.getValue(), dataElement );
             
-            if ( valid != null || zeroInsignificant )
+            if ( zeroInsignificant )
             {
-                summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), internalValue.getValue() ) );
+                summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), ERROR_INSIGNIFICANT_ZERO ) );
                 continue;
             }
             
