@@ -7,6 +7,7 @@
         databaseServerCpus: getFieldValue('databaseServerCpus'),
         infrastructuralDataElements: getFieldValue('infrastructuralDataElements'),
         infrastructuralPeriodType: getFieldValue('infrastructuralPeriodType'),
+        analysisRelativePeriod: getFieldValue('analysisRelativePeriod'),
         feedbackRecipients: getFieldValue('feedbackRecipients'),
         offlineOrganisationUnitLevel: getFieldValue('offlineOrganisationUnitLevel'),
         systemNotificationsEmail: getFieldValue('systemNotificationsEmail'),
@@ -83,6 +84,16 @@
 <select id="infrastructuralPeriodType" name="infrastructuralPeriodType">
     #foreach ( $type in $periodTypes )
     <option value="$type.name" #if( $type.name == $configuration.infrastructuralPeriodTypeDefaultIfNull.name )selected="selected"#end>$type.name</option>
+    #end
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "default_analysis_relative_period" )</div>
+
+<div class="setting">
+<select id="analysisRelativePeriod" name="analysisRelativePeriod">
+    #foreach ( $period in $relativePeriods )
+    <option value="$period" #if( $period == $keyAnalysisRelativePeriod )selected="selected"#end>$i18n.getString( $period )</option>
     #end
 </select>
 </div>
