@@ -693,6 +693,13 @@
 		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
 	</action>    	
 
+   	
+	<!--  Validate Partner -->
+	<action name="validatePartner" class="org.hisp.dhis.rbf.partner.action.ValidatePartnerAction">
+	  <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	  <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
+	</action>    	
 
 	<!-- Get DataElements and Periods List-->
 	<action name="getDataElementsAndPeriodList" class="org.hisp.dhis.rbf.partner.action.GetDataElementAndPeriodListAction">

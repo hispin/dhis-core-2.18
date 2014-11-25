@@ -1,6 +1,7 @@
 package org.hisp.dhis.rbf.partner.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
@@ -63,15 +64,33 @@ public class PartnerFundManagement
 
         Lookup partnerOptionSetLookup = lookupService.getLookupByName( Lookup.OPTION_SET_PARTNER );
 
-        OptionSet activitesOptionSet = optionService
-            .getOptionSet( Integer.parseInt( partnerOptionSetLookup.getValue() ) );
+        OptionSet activitesOptionSet = optionService.getOptionSet( Integer.parseInt( partnerOptionSetLookup.getValue() ) );
 
         if ( activitesOptionSet != null )
         {
             options = new ArrayList<Option>( activitesOptionSet.getOptions() );
+            
+            dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+            
+            List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
+            
+            List<DataSet> pbfDataSets = new ArrayList<DataSet>();
+            
+            for( Lookup lookup : lookups )
+            {
+                Integer dataSetId = Integer.parseInt( lookup.getValue() );
+                
+                DataSet dataSet = dataSetService.getDataSet( dataSetId );
+                if( dataSet != null )
+                {
+                    pbfDataSets.add(dataSet);
+                }
+            }
+            
+            dataSets.retainAll( pbfDataSets );
+            Collections.sort(dataSets);
+            
         }
-
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
         return SUCCESS;
     }

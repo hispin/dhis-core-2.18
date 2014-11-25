@@ -95,6 +95,32 @@ function showAddParentForm()
 }
 
 
+//Validation of Partner Add
+function validateAddPartner()
+{
+
+	var url = "validatePartner.action?";
+		url += '&dataSetId=' + $("#dataSetId").val();
+		url += '&optionSetId=' + $("#optionSetId").val();
+		url += '&dataElementId=' + $("#dataElementId").val();
+		
+	//alert( " In Validation :" + url );
+	$.postJSON( url, {}, function( json )
+	{
+		if ( json.response == "input" )
+		{
+			//setHeaderDelayMessage( json.message );
+			//showWarningMessage( json.message )
+			setHeaderDelayMessage( json.message );
+		}
+		else if ( json.response == "success" )
+		{
+			addPartner();
+		}
+	});
+}
+
+
 function addPartner()
 {	
 	//document.forms['addPartnerForm'].submit();
@@ -171,6 +197,33 @@ function showUpdatePartnerForm( dataSetId, dataElementId, optionSetId, partnerSt
 	}
     
 }
+
+
+//Validation of Partner Update
+function validateUpdatePartner()
+{
+
+	var url = "validatePartner.action?";
+		url += '&dataSetId=' + $("#dataSetId").val();
+		url += '&optionSetId=' + $("#optionSetId").val();
+		url += '&dataElementId=' + $("#dataElementId").val();
+		
+	//alert( " In Validation :" + url );
+	$.postJSON( url, {}, function( json )
+	{
+		if ( json.response == "input" )
+		{
+			//setHeaderDelayMessage( json.message );
+			//showWarningMessage( json.message )
+			setHeaderDelayMessage( json.message );
+		}
+		else if ( json.response == "success" )
+		{
+			updatePartner();
+		}
+	});
+}
+
 
 // update partner form
 function updatePartner()
@@ -356,6 +409,9 @@ function populateDataElementAndPeriodList( data )
 		option.title = name;
 		dataElementId.add(option, null);
 	} 
+	
+	loadPartnerList();
+	
 	
 	/*var periodList = data.getElementsByTagName("period");
 	

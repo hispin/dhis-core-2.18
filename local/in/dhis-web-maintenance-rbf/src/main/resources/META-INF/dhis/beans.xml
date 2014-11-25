@@ -839,11 +839,18 @@
     </bean>	
 
 	<!--  Remove Partner -->
-	
     <bean id="org.hisp.dhis.rbf.partner.action.RemovePartnerAction"
           class="org.hisp.dhis.rbf.partner.action.RemovePartnerAction"
           scope="prototype">
     </bean>		
+
+	<!--  Validate Partner -->
+    <bean id="org.hisp.dhis.rbf.partner.action.ValidatePartnerAction"
+          class="org.hisp.dhis.rbf.partner.action.ValidatePartnerAction"
+          scope="prototype">
+          <property name="selectionTreeManager" 
+          	ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+    </bean>	
 
 
     <!-- Get DataElements and Periods List-->

@@ -75,6 +75,8 @@ public class GetDataElementAndPeriodListAction implements Action
         
         dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
         
+        Collections.sort( dataElements );
+        
         String periodTypeName = dataSet.getPeriodType().getName();
         
         PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );

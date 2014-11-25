@@ -36,7 +36,7 @@
 
         <tr>
             <td><label for="partner">$i18n.getString( "partner" )</label></td>
-            <td><select id="optionSetId" name="optionSetId" style="width:220px" #if( $dataSets.size() == 0 ) disabled="disabled" #end >
+            <td><select id="optionSetId" name="optionSetId" style="width:220px" #if( $options.size() == 0 ) disabled="disabled" #end onchange="loadPartnerList();" >
                 <option value="-1">[$i18n.getString( "select" )]</option>
                 #foreach( $option in $options )
                     <option value="$option.id" text="$option.name">$encoder.htmlEncode( $option.name )</option>
@@ -48,7 +48,7 @@
         <tr>
             <td><label>$i18n.getString( "dataElement" )</label></td>
             <td>
-                <select id="dataElementId" name = "dataElementId" style="width:220px"  onchange="loadPartnerList();" #if( $dataSets.size() == 0 ) disabled="disabled" #end >
+                <select id="dataElementId" name = "dataElementId" style="width:220px"  onchange="loadPartnerList();" #if( $dataSets.size() == 0 || $options.size() == 0 ) disabled="disabled" #end >
                     <option value="-1">[$i18n.getString( "select" )]</option>
                 </select>
             </td>

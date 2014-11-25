@@ -171,8 +171,13 @@ public class SavePartnerDetailsResultAction implements Action
         //System.out.println( " Size of Children " + orgUnitList.size() );
         
         //System.out.println( " Size of Period List is  " + periodsBetweenDates.size() );
-
-        for ( OrganisationUnit organisationUnit : orgUnitList )
+        
+        
+        Set<OrganisationUnit> dataSetSources = new HashSet<OrganisationUnit>( dataSet.getSources() );
+        
+        dataSetSources.retainAll( orgUnitList );
+        
+        for ( OrganisationUnit organisationUnit : dataSetSources )
         {
             if( periodsBetweenDates!= null  && periodsBetweenDates.size() > 0 )
             {
@@ -218,9 +223,6 @@ public class SavePartnerDetailsResultAction implements Action
         }
         
         // save partnet in partner
-        Set<OrganisationUnit> dataSetSources = new HashSet<OrganisationUnit>( dataSet.getSources() );
-        
-        dataSetSources.retainAll( orgUnitList );
         
         //System.out.println( " Data Set source size "  + dataSetSources.size() );
         
