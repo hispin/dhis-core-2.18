@@ -97,6 +97,7 @@
   <bean id="org.hisp.dhis.dashboard.usergroup.action.UpdateUserGroupAction" class="org.hisp.dhis.dashboard.usergroup.action.UpdateUserGroupAction"
     scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />

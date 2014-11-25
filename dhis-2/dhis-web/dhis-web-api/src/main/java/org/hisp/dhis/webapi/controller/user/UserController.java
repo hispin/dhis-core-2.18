@@ -59,6 +59,7 @@ import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -94,10 +95,16 @@ public class UserController
     @Autowired
     private SystemSettingManager systemSettingManager;
 
+    //--------------------------------------------------------------------------
+    // GET
+    //--------------------------------------------------------------------------
+
     @Override
     @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
     public RootNode getObjectList( @RequestParam Map<String, String> parameters, HttpServletResponse response, HttpServletRequest request )
     {
+        //TODO: Allow user with F_USER_VIEW_WITHIN_MANAGED_GROUP and restrict viewing to within managed groups.
+
         return super.getObjectList( parameters, response, request );
     }
 
@@ -106,6 +113,8 @@ public class UserController
     public RootNode getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
+        //TODO: Allow user with F_USER_VIEW_WITHIN_MANAGED_GROUP and restrict viewing to within managed groups.
+
         return super.getObject( uid, parameters, request, response );
     }
 
@@ -233,6 +242,7 @@ public class UserController
 
         User parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
         parsed.setUid( uid );
+        checkUserGroups( parsed );
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed,
             ImportStrategy.UPDATE );
@@ -259,6 +269,7 @@ public class UserController
 
         User parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
         parsed.setUid( uid );
+        checkUserGroups( parsed );
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed,
             ImportStrategy.UPDATE );
@@ -327,28 +338,48 @@ public class UserController
     }
 
     /**
-     * Before adding the user, checks to see that any specified user groups
-     * exist.
+     * Before adding or updating the user, checks to see that any specified user
+     * groups exist.
+     * <p>
+     * Also, if the current user doesn't have the F_USER_ADD authority, that
+     * means they have the weaker F_USER_ADD_WITHIN_MANAGED_GROUP authority.
+     * In this case, the new user must be added to a group that is managed
+     * by the current user.
      *
-     * @param user user object parsed from the POST request
+     * @param user user object parsed from the request
      */
     private void checkUserGroups( User user )
     {
-        if ( currentUserService.getCurrentUser() != null && user.getGroups() != null )
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( currentUser != null && user.getGroups() != null )
         {
+            boolean authorizedToAdd = currentUserService.currentUserIsSuper() ||
+                    currentUser.getUserCredentials().isAuthorized( UserGroup.AUTH_USER_ADD );
+
             for ( UserGroup ug : user.getGroups() )
             {
                 UserGroup group = userGroupService.getUserGroup( ug.getUid() );
 
                 if ( group == null )
                 {
-                    throw new CreateAccessDeniedException( "Can't add user: Can't find user group with UID = " + ug.getUid() );
+                    throw new CreateAccessDeniedException( "Can't add/update user: Can't find user group with UID = " + ug.getUid() );
                 }
 
                 if ( !securityService.canRead( group ) )
                 {
-                    throw new CreateAccessDeniedException( "Can't add user: Can't read the group with UID = " + ug.getUid() );
+                    throw new CreateAccessDeniedException( "Can't add/update user: Can't read the group with UID = " + ug.getUid() );
                 }
+
+                if ( !authorizedToAdd && CollectionUtils.containsAny( group.getManagedByGroups(), currentUser.getGroups() ) )
+                {
+                    authorizedToAdd = true;
+                }
+            }
+
+            if ( !authorizedToAdd )
+            {
+                throw new CreateAccessDeniedException( "Can't add user: User must belong to a group that you manage." );
             }
         }
     }

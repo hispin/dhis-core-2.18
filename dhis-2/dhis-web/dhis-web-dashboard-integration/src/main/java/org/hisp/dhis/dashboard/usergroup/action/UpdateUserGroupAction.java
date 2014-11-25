@@ -33,6 +33,7 @@ import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.AttributeUtils;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
@@ -51,6 +52,13 @@ public class UpdateUserGroupAction
     public void setUserService( UserService userService )
     {
         this.userService = userService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     private UserGroupService userGroupService;
@@ -128,13 +136,21 @@ public class UpdateUserGroupAction
 
         UserGroup userGroup = userGroupService.getUserGroup( userGroupId );
 
+        if ( !userGroup.getManagedByGroups().isEmpty() && !currentUserService.currentUserIsSuper() )
+        {
+            //TODO: Allow user with F_USER_ADD_WITHIN_MANAGED_GROUP to modify their managed groups
+            //as long as they are not loosing or gaining users to manage.
+
+            return ERROR;
+        }
+
         Set<User> users = new HashSet<>();
 
         for ( String userUid : usersSelected )
         {
             User user = userService.getUser( userUid );
 
-            if( user == null)
+            if ( user == null )
             {
                 continue;
             }

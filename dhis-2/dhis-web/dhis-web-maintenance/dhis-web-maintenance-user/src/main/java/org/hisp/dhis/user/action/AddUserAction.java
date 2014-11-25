@@ -290,6 +290,8 @@ public class AddUserAction
     public String execute()
         throws Exception
     {
+        //TODO: Allow user with F_USER_ADD_WITHIN_MANAGED_GROUP to add a user within managed groups.
+
         if ( email != null && email.trim().length() == 0 )
         {
             email = null;
