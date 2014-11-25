@@ -294,7 +294,9 @@ public class HibernateDataApprovalStore
 
         int orgUnitLevelAbove = 0;
 
-        for ( DataApprovalLevel dal : dataApprovalLevelService.getAllDataApprovalLevels() )
+        List<DataApprovalLevel> approvalLevels = dataApprovalLevelService.getAllDataApprovalLevels();
+        
+        for ( DataApprovalLevel dal : approvalLevels )
         {
             if ( dal.getOrgUnitLevel() < orgUnitLevel )
             {
