@@ -42,6 +42,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.comparator.UserGroupComparator;
+import org.hisp.dhis.period.RelativePeriodEnum;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -158,6 +159,13 @@ public class GetGeneralSettingsAction
     {
         return configuration;
     }
+    
+    private List<String> relativePeriods;
+    
+    public List<String> getRelativePeriods()
+    {
+        return relativePeriods;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -192,7 +200,9 @@ public class GetGeneralSettingsAction
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
         Collections.sort( organisationUnitLevels, OrganisationUnitLevelComparator.INSTANCE );
-
+        
+        relativePeriods = new ArrayList<>( RelativePeriodEnum.OPTIONS );
+        
         return SUCCESS;
     }
 }

@@ -3947,6 +3947,10 @@ Ext.onReady( function() {
                     if (chb.xtype === 'checkbox') {
                         period.checkboxes.push(chb);
                         relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
+                        
+                        if (chb.relativePeriodId === ns.core.init.systemInfo.analysisRelativePeriod) {
+                            chb.setValue(true);
+                        }
                     }
                 }
             }
@@ -4026,8 +4030,7 @@ Ext.onReady( function() {
 								{
 									xtype: 'checkbox',
 									relativePeriodId: 'LAST_12_MONTHS',
-									boxLabel: NS.i18n.last_12_months,
-									checked: true
+									boxLabel: NS.i18n.last_12_months
 								}
 							]
 						},
@@ -6388,11 +6391,12 @@ Ext.onReady( function() {
 
                         // date, calendar
                         Ext.Ajax.request({
-                            url: init.contextPath + '/api/systemSettings.json?key=keyCalendar&key=keyDateFormat',
+                            url: init.contextPath + '/api/systemSettings.json?key=keyCalendar&key=keyDateFormat&key=keyAnalysisRelativePeriod',
                             success: function(r) {
                                 var systemSettings = Ext.decode(r.responseText);
                                 init.systemInfo.dateFormat = Ext.isString(systemSettings.keyDateFormat) ? systemSettings.keyDateFormat.toLowerCase() : 'yyyy-mm-dd';
                                 init.systemInfo.calendar = systemSettings.keyCalendar;
+                                init.systemInfo.analysisRelativePeriod = systemSettings.keyAnalysisRelativePeriod || 'LAST_12_MONTHS';
 
                                 // user-account
                                 Ext.Ajax.request({

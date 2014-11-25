@@ -39,6 +39,7 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_MULTI_ORGANISATION_
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SYSTEM_NOTIFICATIONS_EMAIL;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ANALYSIS_RELATIVE_PERIOD;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hisp.dhis.configuration.Configuration;
@@ -143,6 +144,13 @@ public class SetGeneralSettingsAction
     {
         this.infrastructuralPeriodType = infrastructuralPeriodType;
     }
+    
+    private String analysisRelativePeriod;
+    
+    public void setAnalysisRelativePeriod( String analysisRelativePeriod )
+    {
+        this.analysisRelativePeriod = analysisRelativePeriod;
+    }
 
     private Boolean omitIndicatorsZeroNumeratorDataMart;
 
@@ -234,7 +242,7 @@ public class SetGeneralSettingsAction
 
     @Override
     public String execute()
-    {
+    { 
         systemSettingManager.saveSystemSetting( KEY_CACHE_STRATEGY, cacheStrategy );
         systemSettingManager.saveSystemSetting( KEY_ANALYTICS_MAX_LIMIT, analyticsMaxLimit );
         systemSettingManager.saveSystemSetting( KEY_DATABASE_SERVER_CPUS, databaseServerCpus );
@@ -246,6 +254,7 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_ANALYTICS_MAINTENANCE_MODE, analyticsMaintenanceMode );
         systemSettingManager.saveSystemSetting( KEY_HELP_PAGE_LINK, StringUtils.trimToNull( helpPageLink ) );
         systemSettingManager.saveSystemSetting( KEY_SYSTEM_NOTIFICATIONS_EMAIL, systemNotificationsEmail );
+        systemSettingManager.saveSystemSetting( KEY_ANALYSIS_RELATIVE_PERIOD, analysisRelativePeriod );
 
         Configuration configuration = configurationService.getConfiguration();
 
