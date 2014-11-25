@@ -50,6 +50,10 @@ import java.util.Set;
 public class UserGroup
     extends BaseIdentifiableObject
 {
+    public static final String AUTH_USER_ADD = "F_USER_ADD";
+    public static final String AUTH_USER_DELETE = "F_USER_DELETE";
+    public static final String AUTH_USER_VIEW = "F_USER_VIEW";
+
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -60,6 +64,18 @@ public class UserGroup
      */
     @Scanned
     private Set<User> members = new HashSet<>();
+
+    /**
+     * User groups (if any) that members of this user group can manage
+     * the members within.
+     */
+    private Set<UserGroup> managedGroups = new HashSet<>();
+
+    /**
+     * User groups (if any) whose members can manage the members of this
+     * user group.
+     */
+    private Set<UserGroup> managedByGroups = new HashSet<>();
 
     /**
      * Set of the dynamic attributes values that belong to this user group.
@@ -154,6 +170,36 @@ public class UserGroup
     public void setMembers( Set<User> members )
     {
         this.members = members;
+    }
+
+    @JsonProperty(value = "managedGroups")
+    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlElementWrapper(localName = "managedGroups", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "managedGroup", namespace = DxfNamespaces.DXF_2_0)
+    public Set<UserGroup> getManagedGroups()
+    {
+        return managedGroups;
+    }
+
+    public void setManagedGroups( Set<UserGroup> managedGroups )
+    {
+        this.managedGroups = managedGroups;
+    }
+
+    @JsonProperty(value = "managedByGroups")
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlElementWrapper( localName = "managedByGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "managedByGroup", namespace = DxfNamespaces.DXF_2_0 )
+    public Set<UserGroup> getManagedByGroups()
+    {
+        return managedByGroups;
+    }
+
+    public void setManagedByGroups( Set<UserGroup> managedByGroups )
+    {
+        this.managedByGroups = managedByGroups;
     }
 
     @JsonProperty( value = "attributeValues" )

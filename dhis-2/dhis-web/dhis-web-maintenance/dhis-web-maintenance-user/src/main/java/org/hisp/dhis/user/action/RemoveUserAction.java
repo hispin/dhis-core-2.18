@@ -93,6 +93,8 @@ public class RemoveUserAction
     public String execute()
         throws Exception
     {
+        //TODO: Allow user with F_USER_DELETE_WITHIN_MANAGED_GROUP to delete a user within managed groups.
+
         User user = userService.getUser( id );
 
         User currentUser = currentUserService.getCurrentUser();
