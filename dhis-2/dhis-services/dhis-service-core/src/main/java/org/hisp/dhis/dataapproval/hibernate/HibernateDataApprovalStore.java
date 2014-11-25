@@ -286,7 +286,7 @@ public class HibernateDataApprovalStore
 
         for ( int i = 1; i < orgUnitLevel; i++ )
         {
-            joinAncestors += "left join _orgunitstructure o" + i + " on o" + i + ".idlevel" + orgUnitLevel + " = o.organisationunitid and o" + i + ".idlevel" + i + " = coo.organisationunitid ";
+            joinAncestors += "left join _orgunitstructure o" + i + " on o" + i + ".organisationunitid = o.organisationunitid and o" + i + ".idlevel" + i + " = coo.organisationunitid ";
             testAncestors += "or o" + i + ".organisationunitid is not null ";
         }
 
