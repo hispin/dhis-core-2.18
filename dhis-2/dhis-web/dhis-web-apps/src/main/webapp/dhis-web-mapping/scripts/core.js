@@ -2220,6 +2220,7 @@ Ext.onReady( function() {
 				Ext.Ajax.request({
 					url: gis.init.contextPath + '/api/mapLegendSets/' + view.legendSet.id + '.json?fields=' + gis.conf.url.mapLegendSetFields.join(','),
 					scope: this,
+                    disableCaching: false,
 					success: function(r) {
 						legends = Ext.decode(r.responseText).mapLegends;
 
