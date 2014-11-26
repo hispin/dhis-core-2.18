@@ -413,10 +413,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             return false;
         }
         
-        if(addingAnotherEvent){
-            $scope.disableSaveAndAddNew = true;
-        }
-        
         //the form is valid, get the values
         //but there could be a case where all dataelements are non-mandatory and
         //the event form comes empty, in this case enforce at least one value
@@ -448,6 +444,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             DialogService.showDialog({}, dialogOptions);
             return false;
         }        
+        
+        if(addingAnotherEvent){
+            $scope.disableSaveAndAddNew = true;
+        }
         
         var newEvent = angular.copy($scope.currentEvent);        
         
