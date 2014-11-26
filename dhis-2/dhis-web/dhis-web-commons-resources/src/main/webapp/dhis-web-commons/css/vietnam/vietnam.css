@@ -57,7 +57,7 @@ input[type=text],input[type=password],textarea
   background-color: #b40303;
   height: 44px;
   position: fixed;
-  z-index: 10;
+  z-index: 15;
   top: 0px;
   left: 0px;
   right: 0px;
