@@ -28,9 +28,9 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public enum RelativePeriodEnum
 {
@@ -59,7 +59,7 @@ public enum RelativePeriodEnum
     LAST_12_WEEKS,
     LAST_52_WEEKS;
     
-    public static Set<String> OPTIONS = new HashSet<String>() { {
+    public static List<String> OPTIONS = new ArrayList<String>() { {
         addAll( Arrays.asList( LAST_MONTH.toString(), LAST_BIMONTH.toString(), LAST_QUARTER.toString(), LAST_SIX_MONTH.toString(),
             MONTHS_THIS_YEAR.toString(), QUARTERS_THIS_YEAR.toString(), THIS_YEAR.toString(), MONTHS_LAST_YEAR.toString(), QUARTERS_LAST_YEAR.toString(),
             LAST_YEAR.toString(), LAST_5_YEARS.toString(), LAST_12_MONTHS.toString(), LAST_6_MONTHS.toString(), LAST_3_MONTHS.toString(), LAST_6_BIMONTHS.toString(), 
