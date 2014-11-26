@@ -138,6 +138,24 @@ public class OrganisationUnitTest
 
         assertEquals( expected, unitD.getParentGraph( null ) );        
     }
+
+    @Test
+    public void testGetParentNameGraph()
+    {
+        unitD.setParent( unitC );
+        unitC.setParent( unitB );
+        unitB.setParent( unitA );
+        
+        List<OrganisationUnit> roots = new ArrayList<>( Arrays.asList( unitB ) );
+        
+        String expected = "/OrgUnitB/OrgUnitC";
+        
+        assertEquals( expected, unitD.getParentNameGraph( roots, false ) );
+        
+        expected = "/OrgUnitA/OrgUnitB/OrgUnitC";
+
+        assertEquals( expected, unitD.getParentNameGraph( null, false ) );        
+    }
     
     @Test
     public void testSetMultiPolygonCoordinatesFromCollection()
