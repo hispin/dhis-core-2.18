@@ -31,6 +31,7 @@ package org.hisp.dhis.organisationunit;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -51,6 +52,11 @@ public class OrganisationUnitTest
     private CoordinatesTuple tupleB;
     private CoordinatesTuple tupleC;
     private CoordinatesTuple tupleD;
+    
+    private OrganisationUnit unitA;
+    private OrganisationUnit unitB;
+    private OrganisationUnit unitC;
+    private OrganisationUnit unitD;    
     
     @Before
     public void before()
@@ -77,8 +83,62 @@ public class OrganisationUnitTest
         multiPolygonCoordinatesList.add( tupleB );
         multiPolygonCoordinatesList.add( tupleC );
         pointCoordinatesList.add( tupleD );
+        
+        unitA = new OrganisationUnit( "OrgUnitA" );
+        unitB = new OrganisationUnit( "OrgUnitB" );
+        unitC = new OrganisationUnit( "OrgUnitC" );
+        unitD = new OrganisationUnit( "OrgUnitD" );
+        
+        unitA.setUid( "uidA" );
+        unitB.setUid( "uidB" );
+        unitC.setUid( "uidC" );
+        unitD.setUid( "uidD" );
     }
 
+    @Test
+    public void testGetAncestors()
+    {
+        unitD.setParent( unitC );
+        unitC.setParent( unitB );
+        unitB.setParent( unitA );
+        
+        List<OrganisationUnit> expected = new ArrayList<>( Arrays.asList( unitA, unitB, unitC ) );
+        
+        assertEquals( expected, unitD.getAncestors() );
+    }
+
+    @Test
+    public void testGetAncestorsWithRoots()
+    {
+        unitD.setParent( unitC );
+        unitC.setParent( unitB );
+        unitB.setParent( unitA );
+        
+        List<OrganisationUnit> roots = new ArrayList<>( Arrays.asList( unitB ) );
+        
+        List<OrganisationUnit> expected = new ArrayList<>( Arrays.asList( unitB, unitC ) );
+        
+        assertEquals( expected, unitD.getAncestors( roots ) );
+    }
+    
+    @Test
+    public void testGetParentGraph()
+    {
+        unitD.setParent( unitC );
+        unitC.setParent( unitB );
+        unitB.setParent( unitA );
+        
+        List<OrganisationUnit> roots = new ArrayList<>( Arrays.asList( unitB ) );
+        
+        String expected = "/uidB/uidC";
+        
+        assertEquals( expected, unitD.getParentGraph( roots ) );
+        
+        expected = "/uidA/uidB/uidC";
+
+        assertEquals( expected, unitD.getParentGraph( null ) );        
+    }
+    
     @Test
     public void testSetMultiPolygonCoordinatesFromCollection()
     {

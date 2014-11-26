@@ -31,6 +31,7 @@ package org.hisp.dhis.webapi.controller.event;
 import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensions;
 
 import java.io.InputStream;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -140,9 +141,11 @@ public class EventReportController
     {
         report.populateAnalyticalProperties();
 
+        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+        
         for ( OrganisationUnit organisationUnit : report.getOrganisationUnits() )
         {
-            report.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
+            report.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph( roots ) );
         }
 
         I18nFormat format = i18nManager.getI18nFormat();

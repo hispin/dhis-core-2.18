@@ -57,10 +57,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Set;
 
 import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
 
@@ -230,13 +232,15 @@ public class MapController
     {
         I18nFormat format = i18nManager.getI18nFormat();
 
+        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+        
         for ( MapView view : map.getMapViews() )
         {
             view.populateAnalyticalProperties();
 
             for ( OrganisationUnit organisationUnit : view.getOrganisationUnits() )
             {
-                view.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
+                view.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph( roots ) );
             }
 
             if ( view.getPeriods() != null && !view.getPeriods().isEmpty() )
