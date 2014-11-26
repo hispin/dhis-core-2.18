@@ -255,6 +255,7 @@ public class DataApprovalController
     public void getApprovalByCategoryOptionCombos( 
         @RequestParam Set<String> ds, 
         @RequestParam String pe,
+        @RequestParam(required = false) String ou,
         HttpServletResponse response ) throws IOException
     {
         Set<DataSet> dataSets = new HashSet<>( objectManager.getByUid( DataSet.class, ds ) );
@@ -266,8 +267,10 @@ public class DataApprovalController
             ContextUtils.conflictResponse( response, "Illegal period identifier: " + pe );
             return;
         }
+        
+        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ou );
 
-        List<DataApprovalStatus> statusList = dataApprovalService.getUserDataApprovalsAndPermissions( dataSets, period, null );
+        List<DataApprovalStatus> statusList = dataApprovalService.getUserDataApprovalsAndPermissions( dataSets, period, orgUnit );
 
         List<Map<String, Object>> list = new ArrayList<>();
 

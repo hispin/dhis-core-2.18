@@ -198,7 +198,7 @@ public class HibernateDataApprovalStore
         if ( CollectionUtils.isEmpty( dataSets ) )
         {
             log.warn( " No data sets specified for getting approvals, period " + period.getName()
-                    + " user " + ( user == null ? "(null)" : user.getUsername() ) );
+                + " user " + ( user == null ? "(null)" : user.getUsername() ) );
 
             return new ArrayList<>();
         }
@@ -214,13 +214,13 @@ public class HibernateDataApprovalStore
         else if ( period.getPeriodType().getFrequencyOrder() > dataSetPeriodType.getFrequencyOrder() )
         {
             periods = new ArrayList<>( periodService.getPeriodsBetweenDates( dataSetPeriodType,
-                    period.getStartDate(), period.getEndDate() ) );
+                period.getStartDate(), period.getEndDate() ) );
         }
         else
         {
             log.warn( "Selected period type " + period.getPeriodType().getName() + " is incompatible with data set '"
-                    + dataSets.iterator().next().getName() + "' period type " + dataSetPeriodType.getName()
-                    + " user " + ( user == null ? "(null)" : user.getUsername() ) );
+                + dataSets.iterator().next().getName() + "' period type " + dataSetPeriodType.getName()
+                + " user " + ( user == null ? "(null)" : user.getUsername() ) );
 
             return new ArrayList<>();
         }
@@ -229,8 +229,8 @@ public class HibernateDataApprovalStore
         final String maxDate = DateUtils.getMediumDateString( period.getEndDate() );
 
         boolean maySeeDefaultCategoryCombo = user == null || user.getUserCredentials() == null ||
-                ( CollectionUtils.isEmpty( user.getUserCredentials().getCogsDimensionConstraints() )
-                && CollectionUtils.isEmpty( user.getUserCredentials().getCatDimensionConstraints() ) );
+            ( CollectionUtils.isEmpty( user.getUserCredentials().getCogsDimensionConstraints() )
+            && CollectionUtils.isEmpty( user.getUserCredentials().getCatDimensionConstraints() ) );
 
         DataElementCategoryCombo defaultCategoryCombo = categoryService.getDefaultDataElementCategoryCombo();
 
@@ -281,8 +281,8 @@ public class HibernateDataApprovalStore
 
         DataApprovalLevel lowestApprovalLevelForOrgUnit = null;
 
-        String joinAncestors = "";
-        String testAncestors = "";
+        String joinAncestors = StringUtils.EMPTY;
+        String testAncestors = StringUtils.EMPTY;
 
         for ( int i = 1; i < orgUnitLevel; i++ )
         {
