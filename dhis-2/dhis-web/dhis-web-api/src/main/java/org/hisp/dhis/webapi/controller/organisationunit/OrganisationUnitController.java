@@ -315,7 +315,7 @@ public class OrganisationUnitController
 
         if ( includeProperties )
         {
-            Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+            Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnitsWithFallback();
             
             generator.writeStringField( "code", organisationUnit.getCode() );
             generator.writeStringField( "name", organisationUnit.getName() );

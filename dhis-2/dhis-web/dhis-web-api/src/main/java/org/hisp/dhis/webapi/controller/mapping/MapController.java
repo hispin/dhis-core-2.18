@@ -232,7 +232,7 @@ public class MapController
     {
         I18nFormat format = i18nManager.getI18nFormat();
 
-        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnitsWithFallback();
         
         for ( MapView view : map.getMapViews() )
         {

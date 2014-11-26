@@ -268,7 +268,7 @@ public class ReportTableController
     {
         reportTable.populateAnalyticalProperties();
 
-        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnitsWithFallback();
         
         for ( OrganisationUnit organisationUnit : reportTable.getOrganisationUnits() )
         {

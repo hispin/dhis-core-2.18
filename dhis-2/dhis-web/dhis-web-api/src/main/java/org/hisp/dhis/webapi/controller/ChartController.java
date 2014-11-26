@@ -279,7 +279,7 @@ public class ChartController
     {
         chart.populateAnalyticalProperties();
 
-        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnitsWithFallback();
         
         for ( OrganisationUnit organisationUnit : chart.getOrganisationUnits() )
         {
