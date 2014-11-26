@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
@@ -68,13 +66,6 @@ public class AddUserGroupAction
     public void setAttributeService( AttributeService attributeService )
     {
         this.attributeService = attributeService;
-    }
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------

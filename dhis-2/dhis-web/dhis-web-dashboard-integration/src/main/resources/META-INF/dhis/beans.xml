@@ -75,7 +75,6 @@
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 
   <bean id="org.hisp.dhis.dashboard.usergroup.action.AddUserGroupFormAction" class="org.hisp.dhis.dashboard.usergroup.action.AddUserGroupFormAction">
@@ -100,8 +99,6 @@
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
-    <property name="securityService" ref="org.hisp.dhis.security.SecurityService" />
   </bean>
 
   <bean id="org.hisp.dhis.dashboard.usergroup.action.RemoveUserGroupAction" class="org.hisp.dhis.dashboard.usergroup.action.RemoveUserGroupAction"
