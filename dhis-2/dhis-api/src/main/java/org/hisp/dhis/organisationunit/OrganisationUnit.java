@@ -716,11 +716,11 @@ public class OrganisationUnit
         return builder.toString();
     }
 
-    public String getParentNameGraph( boolean includeThis )
+    public String getParentNameGraph( Collection<OrganisationUnit> roots, boolean includeThis )
     {
         StringBuilder builder = new StringBuilder();
 
-        List<OrganisationUnit> ancestors = getAncestors();
+        List<OrganisationUnit> ancestors = getAncestors( roots );
 
         for ( OrganisationUnit unit : ancestors )
         {
@@ -739,7 +739,7 @@ public class OrganisationUnit
      * Returns a mapping between the uid and the uid parent graph of the given
      * organisation units.
      */
-    public static Map<String, String> getParentGraphMap( List<OrganisationUnit> organisationUnits )
+    public static Map<String, String> getParentGraphMap( List<OrganisationUnit> organisationUnits, Collection<OrganisationUnit> roots )
     {
         Map<String, String> map = new HashMap<>();
         
@@ -747,7 +747,7 @@ public class OrganisationUnit
         {
             for ( OrganisationUnit unit : organisationUnits )
             {
-                map.put( unit.getUid(), unit.getParentGraph( null ) );
+                map.put( unit.getUid(), unit.getParentGraph( roots ) );
             }
         }
         
@@ -758,7 +758,7 @@ public class OrganisationUnit
      * Returns a mapping between the uid and the uid parent graph of the given
      * organisation units.
      */
-    public static Map<String, String> getParentNameGraphMap( List<OrganisationUnit> organisationUnits, boolean includeThis )
+    public static Map<String, String> getParentNameGraphMap( List<OrganisationUnit> organisationUnits, Collection<OrganisationUnit> roots, boolean includeThis )
     {
         Map<String, String> map = new HashMap<>();
         
@@ -766,7 +766,7 @@ public class OrganisationUnit
         {
             for ( OrganisationUnit unit : organisationUnits )
             {
-                map.put( unit.getName(), unit.getParentNameGraph( includeThis ) );
+                map.put( unit.getName(), unit.getParentNameGraph( roots, includeThis ) );
             }
         }
         

@@ -41,6 +41,7 @@ import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -85,6 +86,8 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -136,6 +139,9 @@ public class DefaultEventAnalyticsService
     @Autowired
     private SystemSettingManager systemSettingManager;
 
+    @Autowired
+    private CurrentUserService currentUserService;
+    
     // -------------------------------------------------------------------------
     // EventAnalyticsService implementation
     // -------------------------------------------------------------------------
@@ -219,11 +225,15 @@ public class DefaultEventAnalyticsService
             metaData.put( NAMES_META_KEY, uidNameMap );
             metaData.put( PERIOD_DIM_ID, getUids( params.getDimensionOrFilter( PERIOD_DIM_ID ) ) );
             metaData.put( ORGUNIT_DIM_ID, getUids( params.getDimensionOrFilter( ORGUNIT_DIM_ID ) ) );
-    
+
+            User user = currentUserService.getCurrentUser();
+            
+            Collection<OrganisationUnit> roots = user != null ? user.getDataViewOrganisationUnitsWithFallback() : null;
+            
             if ( params.isHierarchyMeta() )
             {
                 metaData.put( OU_HIERARCHY_KEY, getParentGraphMap( asTypedList( 
-                    params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
+                    params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ), roots ) );
             }
 
             grid.setMetaData( metaData );
@@ -307,10 +317,14 @@ public class DefaultEventAnalyticsService
 
         metaData.put( NAMES_META_KEY, uidNameMap );
 
+        User user = currentUserService.getCurrentUser();
+
+        Collection<OrganisationUnit> roots = user != null ? user.getDataViewOrganisationUnitsWithFallback() : null;
+        
         if ( params.isHierarchyMeta() )
         {
             metaData.put( OU_HIERARCHY_KEY, getParentGraphMap( asTypedList( 
-                params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
+                params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ), roots ) );
         }
 
         if ( params.isPaging() )

@@ -463,7 +463,7 @@ public class DefaultAnalyticsService
         if ( !params.isSkipMeta() )
         {
             Map<Object, Object> metaData = new HashMap<>();
-
+            
             Map<String, String> uidNameMap = getUidNameMap( params );
             Map<String, String> cocNameMap = getCocNameMap( params );
             uidNameMap.putAll( cocNameMap );
@@ -487,14 +487,19 @@ public class DefaultAnalyticsService
             metaData.put( ORGUNIT_DIM_ID, getUids( params.getDimensionOrFilter( ORGUNIT_DIM_ID ) ) );
             metaData.put( CATEGORYOPTIONCOMBO_DIM_ID, cocNameMap.keySet() );
 
+            User user = currentUserService.getCurrentUser();
+            
+            List<OrganisationUnit> organisationUnits = asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class );
+            Collection<OrganisationUnit> roots = user != null ? user.getDataViewOrganisationUnitsWithFallback() : null;
+            
             if ( params.isHierarchyMeta() )
             {
-                metaData.put( OU_HIERARCHY_KEY, getParentGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
+                metaData.put( OU_HIERARCHY_KEY, getParentGraphMap( organisationUnits, roots ) );
             }
 
             if ( params.isShowHierarchy() )
             {
-                metaData.put( OU_NAME_HIERARCHY_KEY, getParentNameGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ), true ) );
+                metaData.put( OU_NAME_HIERARCHY_KEY, getParentNameGraphMap( organisationUnits, roots, true ) );
             }
 
             grid.setMetaData( metaData );
