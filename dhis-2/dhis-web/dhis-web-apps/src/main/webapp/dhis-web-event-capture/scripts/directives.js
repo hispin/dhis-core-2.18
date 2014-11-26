@@ -28,6 +28,7 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
                 dhis2.ou.store.open().done( function() {
                     selection.load();
                     $( "#orgUnitTree" ).one( "ouwtLoaded", function(event, ids, names) {
+                        dhis2.availability.startAvailabilityCheck();
                         setSelectedOu(ids, names);
                     });
                 });
