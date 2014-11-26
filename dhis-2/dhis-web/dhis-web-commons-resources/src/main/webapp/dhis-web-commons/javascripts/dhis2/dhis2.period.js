@@ -591,7 +591,7 @@ $.extend(dhis2.period.BiMonthlyGenerator.prototype, {
     var year = offset + this.calendar.today().year();
     var periods = [];
 
-    for( var month = 1; month <= this.calendar.monthsInYear(year); month += 2 ) {
+    for( var month = 1, idx = 1; month <= this.calendar.monthsInYear(year); month += 2, idx++ ) {
       var startDate = this.calendar.newDate(year, month, 1);
       var endDate = this.calendar.newDate(startDate).set(month + 1, 'm');
       endDate.set(endDate.daysInMonth(month + 1), 'd');
@@ -601,7 +601,7 @@ $.extend(dhis2.period.BiMonthlyGenerator.prototype, {
       period['endDate'] = endDate.formatDate(this.format);
       period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
       period['id'] = 'BiMonthly_' + period['startDate'];
-      period['iso'] = startDate.formatDate("yyyymm") + 'B';
+      period['iso'] = startDate.formatDate("yyyy") + '0' + idx + 'B';
 
       period['_startDate'] = this.calendar.newDate(startDate);
       period['_endDate'] = this.calendar.newDate(endDate);
