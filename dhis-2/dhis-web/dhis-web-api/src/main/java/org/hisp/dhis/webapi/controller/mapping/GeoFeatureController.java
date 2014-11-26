@@ -156,7 +156,7 @@ public class GeoFeatureController
 
         List<GeoFeature> features = new ArrayList<>();
 
-        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnitsWithFallback();
         
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {

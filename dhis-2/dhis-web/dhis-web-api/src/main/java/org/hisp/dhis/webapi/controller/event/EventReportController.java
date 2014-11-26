@@ -141,7 +141,7 @@ public class EventReportController
     {
         report.populateAnalyticalProperties();
 
-        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnitsWithFallback();
         
         for ( OrganisationUnit organisationUnit : report.getOrganisationUnits() )
         {
