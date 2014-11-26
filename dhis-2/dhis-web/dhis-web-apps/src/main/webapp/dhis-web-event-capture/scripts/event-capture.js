@@ -82,69 +82,62 @@ $(document).ready(function()
     });
 
     $('#loaderSpan').show();
-
-    $('#orgUnitTree').one('ouwtLoaded', function()
-    { 
-        downloadMetaData();
-        
-    });
-    
-    $(document).bind('dhis2.online', function(event, loggedIn)
-    {
-        if (loggedIn)
-        {   
-            var OfflineStorageService = angular.element('body').injector().get('OfflineStorageService');
-            
-            OfflineStorageService.hasLocalData().then(function(localData){
-                if(localData){
-                    var message = i18n_need_to_sync_notification
-                        + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
-
-                    setHeaderMessage(message);
-
-                    $('#sync_button').bind('click', uploadLocalData);
-                }
-                else{
-                    if (dhis2.ec.emptyOrganisationUnits) {
-                        setHeaderMessage(i18n_no_orgunits);
-                    }
-                    else {
-                        setHeaderDelayMessage(i18n_online_notification);
-                    }
-                }
-            });
-        }
-        else
-        {
-            var form = [
-                '<form style="display:inline;">',
-                '<label for="username">Username</label>',
-                '<input name="username" id="username" type="text" style="width: 70px; margin-left: 10px; margin-right: 10px" size="10"/>',
-                '<label for="password">Password</label>',
-                '<input name="password" id="password" type="password" style="width: 70px; margin-left: 10px; margin-right: 10px" size="10"/>',
-                '<button id="login_button" type="button">Login</button>',
-                '</form>'
-            ].join('');
-
-            setHeaderMessage(form);
-            ajax_login();
-        }
-    });
-
-    $(document).bind('dhis2.offline', function()
-    {
-        if (dhis2.ec.emptyOrganisationUnits) {
-            setHeaderMessage(i18n_no_orgunits);
-        }
-        else {
-            setHeaderMessage(i18n_offline_notification);
-        }
-    });
-   
-    dhis2.availability.startAvailabilityCheck();
     
 });
 
+
+$(document).bind('dhis2.online', function(event, loggedIn)
+{
+    if (loggedIn)
+    {   
+        var OfflineStorageService = angular.element('body').injector().get('OfflineStorageService');
+
+        OfflineStorageService.hasLocalData().then(function(localData){
+            if(localData){
+                var message = i18n_need_to_sync_notification
+                    + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+
+                setHeaderMessage(message);
+
+                $('#sync_button').bind('click', uploadLocalData);
+            }
+            else{
+                if (dhis2.ec.emptyOrganisationUnits) {
+                    setHeaderMessage(i18n_no_orgunits);
+                }
+                else {
+                    setHeaderDelayMessage(i18n_online_notification);
+                }
+            }
+        });
+    }
+    else
+    {
+        var form = [
+            '<form style="display:inline;">',
+            '<label for="username">Username</label>',
+            '<input name="username" id="username" type="text" style="width: 70px; margin-left: 10px; margin-right: 10px" size="10"/>',
+            '<label for="password">Password</label>',
+            '<input name="password" id="password" type="password" style="width: 70px; margin-left: 10px; margin-right: 10px" size="10"/>',
+            '<button id="login_button" type="button">Login</button>',
+            '</form>'
+        ].join('');
+
+        setHeaderMessage(form);
+        ajax_login();
+    }
+});
+
+$(document).bind('dhis2.offline', function()
+{
+    if (dhis2.ec.emptyOrganisationUnits) {
+        setHeaderMessage(i18n_no_orgunits);
+    }
+    else {
+        setHeaderMessage(i18n_offline_notification);
+    }
+});
+    
 function ajax_login()
 {
     $('#login_button').bind('click', function()
