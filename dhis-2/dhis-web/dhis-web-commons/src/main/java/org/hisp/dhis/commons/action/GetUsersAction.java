@@ -35,7 +35,6 @@ import java.util.ListIterator;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.comparator.UserComparator;
@@ -56,13 +55,6 @@ public class GetUsersAction
     public void setUserService( UserService userService )
     {
         this.userService = userService;
-    }
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------
