@@ -219,13 +219,13 @@ $( document ).ready( function()
     {
         console.log( 'Ouwt loaded' );
         
+        dhis2.availability.startAvailabilityCheck();
+        
         $.when( dhis2.de.loadMetaData(), dhis2.de.loadDataSetAssociations() ).done( function() {
         	dhis2.de.setMetaDataLoaded();
         	organisationUnitSelected( ids, names );
         } );
     } );
-
-    dhis2.availability.startAvailabilityCheck();
 } );
 
 dhis2.de.ajaxLogin = function()
