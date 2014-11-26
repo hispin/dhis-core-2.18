@@ -34,6 +34,7 @@ import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -192,9 +193,11 @@ public class EventChartController
     {
         eventChart.populateAnalyticalProperties();
 
+        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+        
         for ( OrganisationUnit organisationUnit : eventChart.getOrganisationUnits() )
         {
-            eventChart.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
+            eventChart.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph( roots ) );
         }
 
         I18nFormat format = i18nManager.getI18nFormat();

@@ -34,6 +34,7 @@ import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
 
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -267,9 +268,11 @@ public class ReportTableController
     {
         reportTable.populateAnalyticalProperties();
 
+        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+        
         for ( OrganisationUnit organisationUnit : reportTable.getOrganisationUnits() )
         {
-            reportTable.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
+            reportTable.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph( roots ) );
         }
 
         I18nFormat format = i18nManager.getI18nFormat();

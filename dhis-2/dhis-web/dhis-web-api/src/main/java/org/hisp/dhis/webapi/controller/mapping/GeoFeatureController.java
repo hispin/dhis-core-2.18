@@ -41,6 +41,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.system.filter.OrganisationUnitWithValidCoordinatesFilter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.GeoFeature;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
@@ -53,6 +54,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -91,6 +93,9 @@ public class GeoFeatureController
 
     @Autowired
     private RenderService renderService;
+    
+    @Autowired
+    private CurrentUserService currentUserService;
 
     @RequestMapping( method = RequestMethod.GET, produces = { ContextUtils.CONTENT_TYPE_JSON, ContextUtils.CONTENT_TYPE_HTML } )
     public void getGeoFeaturesJson(
@@ -151,6 +156,8 @@ public class GeoFeatureController
 
         List<GeoFeature> features = new ArrayList<>();
 
+        Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+        
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
             GeoFeature feature = new GeoFeature();
@@ -159,7 +166,7 @@ public class GeoFeatureController
             feature.setHcd( organisationUnit.hasChildrenWithCoordinates() );
             feature.setHcu( organisationUnit.hasCoordinatesUp() );
             feature.setLe( organisationUnit.getLevel() );
-            feature.setPg( organisationUnit.getParentGraph() );
+            feature.setPg( organisationUnit.getParentGraph( roots ) );
             feature.setPi( organisationUnit.getParent() != null ? organisationUnit.getParent().getUid() : null );
             feature.setPn( organisationUnit.getParent() != null ? organisationUnit.getParent().getDisplayName() : null );
             feature.setTy( FEATURE_TYPE_MAP.get( organisationUnit.getFeatureType() ) );

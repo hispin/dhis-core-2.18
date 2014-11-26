@@ -31,6 +31,7 @@ package org.hisp.dhis.webapi.controller.organisationunit;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.google.common.collect.Lists;
+
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -52,11 +53,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -312,11 +315,13 @@ public class OrganisationUnitController
 
         if ( includeProperties )
         {
+            Set<OrganisationUnit> roots = currentUserService.getCurrentUser().getDataViewOrganisationUnits();
+            
             generator.writeStringField( "code", organisationUnit.getCode() );
             generator.writeStringField( "name", organisationUnit.getName() );
             generator.writeStringField( "level", String.valueOf( organisationUnit.getLevel() ) );
             generator.writeStringField( "parent", organisationUnit.getParent().getUid() );
-            generator.writeStringField( "parentGraph", organisationUnit.getParentGraph() );
+            generator.writeStringField( "parentGraph", organisationUnit.getParentGraph( roots ) );
         }
 
         generator.writeEndObject();
