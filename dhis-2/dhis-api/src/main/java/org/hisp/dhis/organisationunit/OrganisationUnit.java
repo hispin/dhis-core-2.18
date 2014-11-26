@@ -747,7 +747,7 @@ public class OrganisationUnit
         {
             for ( OrganisationUnit unit : organisationUnits )
             {
-                map.put( unit.getUid(), unit.getParentGraph( organisationUnits ) );
+                map.put( unit.getUid(), unit.getParentGraph( null ) );
             }
         }
         
