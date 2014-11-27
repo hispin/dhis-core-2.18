@@ -725,35 +725,26 @@ mapfish.GeoStat.createThematic = function(name) {
 		updateLegend: function() {
 			var	element = document.createElement("div"),
 				child,
-				legendNames;
+                id,
+                name;
 
 			// data
+            id = this.view.columns[0].items[0].id;
+            name = this.view.columns[0].items[0].name;
 			child = document.createElement("div");
-			child.style.height = "14px";
-			child.title = this.view.columns[0].items[0].name;
-			child.innerHTML = this.view.columns[0].items[0].name;
-			element.appendChild(child);
-
-			child = document.createElement("div");
-			child.style.clear = "left";
-			element.appendChild(child);
+            child.style.lineHeight = "14px";
+            child.style.paddingBottom = "3px";
+            child.innerHTML += this.gis.response.metaData.names[id] || name || id;
+            child.innerHTML += "<br/>";
 
 			// period
-			child = document.createElement("div");
-			child.style.height = "14px";
-			child.style.overflow = "hidden";
-			child.title = this.view.filters[0].items[0].name;
-			child.innerHTML = this.view.filters[0].items[0].name;
+            id = this.view.filters[0].items[0].id;
+            name = this.view.filters[0].items[0].name;
+            child.innerHTML += this.gis.response.metaData.names[id] || name || id;
 			element.appendChild(child);
 
 			child = document.createElement("div");
 			child.style.clear = "left";
-			element.appendChild(child);
-
-			// separator
-			child = document.createElement("div");
-			child.style.width = "1px";
-			child.style.height = "5px";
 			element.appendChild(child);
 
 			// legends
