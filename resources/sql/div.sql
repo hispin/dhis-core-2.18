@@ -103,6 +103,13 @@ where u.userid in (
   where ura.authority = 'ALL'
 );
 
+-- User roles with authority
+
+select ur.userroleid, ur.name
+from userrole ur
+inner join userroleauthorities ura on ur.userroleid=ura.userroleid 
+where ura.authority = 'ALL';
+
 -- Turn longitude/latitude around for organisationunit coordinates (adjust the like clause)
 
 update organisationunit set coordinates=regexp_replace(coordinates,'\[(.+?\..+?),(.+?\..+?)\]','[\2,\1]')
