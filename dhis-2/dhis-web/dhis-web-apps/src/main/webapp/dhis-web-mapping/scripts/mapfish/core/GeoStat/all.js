@@ -730,7 +730,6 @@ mapfish.GeoStat.createThematic = function(name) {
 			// data
 			child = document.createElement("div");
 			child.style.height = "14px";
-			child.style.overflow = "hidden";
 			child.title = this.view.columns[0].items[0].name;
 			child.innerHTML = this.view.columns[0].items[0].name;
 			element.appendChild(child);
