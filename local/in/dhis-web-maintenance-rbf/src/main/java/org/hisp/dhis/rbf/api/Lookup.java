@@ -32,6 +32,9 @@ public class Lookup extends BaseNameableObject implements Serializable
     public static final String CATEGORY_QUANTITY_VALIDATED = "CATEGORY_QUANTITY_VALIDATED";
     public static final String CATEGORY_QUANTITY_EXTERNAL_VERIFICATION = "CATEGORY_QUANTITY_EXTERNAL_VERIFICATION";
     
+    public static final String QUALITY_OVERHEAD_PAYMENT = "QUALITY_OVERHEAD_PAYMENT";
+    
+    
     private String type;
     
     private String value;

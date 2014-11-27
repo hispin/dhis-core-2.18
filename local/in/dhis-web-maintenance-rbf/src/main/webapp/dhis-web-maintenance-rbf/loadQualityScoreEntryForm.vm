@@ -27,6 +27,7 @@
 </select>
 
 <input type="hidden" id='overAllQtyDataElementId' name = 'overAllQtyDataElementId' value="$!overAllQtyDataElementId" />
+<input type="hidden" id='overHeadPaymentDataElementId' name = 'overHeadPaymentDataElementId' value="$!overHeadPaymentDataElementId" />
 <input type="hidden" id='dataSetLockStatus' name = 'dataSetLockStatus' value="$locked" />
 
 #set( $tabIndex = 1 )
@@ -120,7 +121,7 @@
         <tr>
             <td colspan="3" style="text-align: right;">Quality overhead payment</td>           
             <td >
-                <input type="text" id="qualityOverHeadPayment" style="text-align: center;" readonly size="18"/>%
+                <input type="text" id="qualityOverHeadPayment" style="text-align: center;" readonly size="18" value="$!overHeadPaymentDEValue" />%
             </td>
         </tr>       
 
