@@ -119,6 +119,12 @@ function saveValue(dataElementId)
 	
 	var overAllScorefieldId = "#"+overAllScoreDeId;
 	
+	var overHeadPaymentValue = document.getElementById("qualityOverHeadPayment").value;
+	
+	var overHeadPaymentDeId  = document.getElementById("overHeadPaymentDataElementId").value;
+	
+	var overHeadPaymentfieldId = "#"+overHeadPaymentDeId;
+	
 	var fieldId = "#"+valueId;
 	var defaultValue = document.getElementById(valueId).defaultValue;
 	var value = document.getElementById(valueId).value;
@@ -131,7 +137,9 @@ function saveValue(dataElementId)
         'periodIso' : period,
         'value' : value,
         'overAllScoreValue' : overAllScoreValue,
-        'overAllScoreDeId'  : overAllScoreDeId
+        'overAllScoreDeId'  : overAllScoreDeId,
+        'overHeadPaymentValue' : overHeadPaymentValue,
+        'overHeadPaymentDeId' : overHeadPaymentDeId
     };
 	    jQuery.ajax( {
 	            url: 'saveDataValue.action',
@@ -150,18 +158,21 @@ function saveValue(dataElementId)
 	    {
 	    	 markValue( fieldId, COLOR_GREEN );
 	    	 markValue( overAllScorefieldId, COLOR_GREEN );
+	    	 markValue( overHeadPaymentfieldId, COLOR_GREEN );
 	    	 
 	    }
 	    else if ( code == 2 )
 	    {
 	        markValue( fieldId, COLOR_RED );
 	        markValue( overAllScorefieldId, COLOR_RED );
+	        markValue( overHeadPaymentfieldId, COLOR_RED );
 	        window.alert( i18n_saving_value_failed_dataset_is_locked );
 	    }
 	    else // Server error during save
 	    {
 	        markValue( fieldId, COLOR_RED );
 	        markValue( overAllScorefieldId, COLOR_RED );
+	        markValue( overHeadPaymentfieldId, COLOR_RED );
 	        window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
 	    }            
 	}
@@ -169,12 +180,15 @@ function saveValue(dataElementId)
 	function handleError( jqXHR, textStatus, errorThrown )
 	{       
 	    markValue( fieldId, COLOR_GREEN );
+	    markValue( overAllScorefieldId, COLOR_GREEN );
+   	 	markValue( overHeadPaymentfieldId, COLOR_GREEN );
 	}
 
 	function markValue( fieldId, color )
 	{
 	    document.getElementById(valueId).style.backgroundColor = color;
 	    document.getElementById("all-total").style.backgroundColor = color;
+	    document.getElementById("qualityOverHeadPayment").style.backgroundColor = color;
 	}
 }
 

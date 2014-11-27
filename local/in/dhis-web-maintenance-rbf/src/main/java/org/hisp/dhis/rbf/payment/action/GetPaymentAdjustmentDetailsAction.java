@@ -119,17 +119,24 @@ public class GetPaymentAdjustmentDetailsAction
         Constant orgUnitGrp = constantService.getConstantByName( PAYMENT_ADJUSTMENT_LEVEL_ORG_GROUP );
 
         Constant paymentAmount = constantService.getConstantByName( PAYMENT_ADJUSTMENT_AMOUNT_DE );
-
-        amountDEId = paymentAmount.getValue() + "";
-
-        List<OrganisationUnit> organisationUnitList = new ArrayList<OrganisationUnit>( organisationUnitGroupService
-            .getOrganisationUnitGroup( (int) orgUnitGrp.getValue() ).getMembers() );
-
-        for ( OrganisationUnit org : organisationUnitList )
+        
+        if( paymentAmount != null )
         {
-            orgUnitList.add( "\"" + org.getUid() + "\"" );
+            amountDEId = paymentAmount.getValue() + "";
         }
-
+        
+        List<OrganisationUnit> organisationUnitList = new ArrayList<OrganisationUnit>();
+        
+        if( orgUnitGrp != null )
+        {
+            organisationUnitList = new ArrayList<OrganisationUnit>( organisationUnitGroupService.getOrganisationUnitGroup( (int) orgUnitGrp.getValue() ).getMembers() );
+            
+            for ( OrganisationUnit org : organisationUnitList )
+            {
+                orgUnitList.add( "\"" + org.getUid() + "\"" );
+            }
+        }
+        
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
         
         dataSets = new ArrayList<DataSet>();
@@ -141,6 +148,7 @@ public class GetPaymentAdjustmentDetailsAction
 
             dataSets.add( dataSet );
         }
+        
         String periodType = "Quarterly";
 
         CalendarPeriodType _periodType = (CalendarPeriodType) CalendarPeriodType.getPeriodTypeByName( periodType );

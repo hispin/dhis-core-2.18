@@ -216,10 +216,23 @@ public class LoadQualityScoreDetailsAction
         return locked;
     }
     
+    private int overHeadPaymentDataElementId;
+    
+    public int getOverHeadPaymentDataElementId()
+    {
+        return overHeadPaymentDataElementId;
+    }
+    
+    private String overHeadPaymentDEValue = "";
+    
+    public String getOverHeadPaymentDEValue()
+    {
+        return overHeadPaymentDEValue;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
 
     public String execute()
         throws Exception
@@ -241,6 +254,11 @@ public class LoadQualityScoreDetailsAction
             tariff_setting_authority = (int) tariff_authority.getValue();
         }
         
+        Constant qualityMaxDataElement = constantService.getConstantByName( QUALITY_MAX_DATAELEMENT );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+        
+        
+        
         Constant overAllQtyDetId = constantService.getConstantByName( OVER_ALL_QUALITY_SCORE_DATAELEMENT_ID );
         DataElement overAllDataElement = dataElementService.getDataElement( (int) overAllQtyDetId.getValue() );
         overAllQtyDataElementId = 0;
@@ -249,8 +267,26 @@ public class LoadQualityScoreDetailsAction
             overAllQtyDataElementId = overAllDataElement.getId();
         }
         
-        Constant qualityMaxDataElement = constantService.getConstantByName( QUALITY_MAX_DATAELEMENT );
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+        
+        Lookup ohPaymentlookup =  lookupService.getLookupByName( Lookup.QUALITY_OVERHEAD_PAYMENT );
+        
+        if( ohPaymentlookup != null )
+        {
+            DataElement overHeadPaymentDataElement = dataElementService.getDataElement( Integer.parseInt( ohPaymentlookup.getValue() ) );
+            overHeadPaymentDataElementId = 0;
+            if( overHeadPaymentDataElement != null )
+            {
+                overHeadPaymentDataElementId = overHeadPaymentDataElement.getId();
+            }
+            
+            DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+            DataValue dataValue = dataValueService.getDataValue( overHeadPaymentDataElement, period, organisationUnit, optionCombo );
+            if ( dataValue != null )
+            {
+                overHeadPaymentDEValue = dataValue.getValue();
+            }        
+            
+        }
         
         List<OrganisationUnit> orgUnitBranch = organisationUnitService.getOrganisationUnitBranch( organisationUnit.getId() );
         String orgUnitBranchIds = "-1";

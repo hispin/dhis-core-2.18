@@ -336,11 +336,25 @@ public class SaveValueAction
             	else if( valueType.equals("2") )
             	{
             	    pbfDataValue.setQuantityValidated( Integer.parseInt( value ) );
+            	    try
+            	    {
+            	        pbfDataValue.setTariffAmount( Double.parseDouble( tariffAmt ) );
+            	    }
+            	    catch( Exception e )
+            	    {
+            	    }
             	}
             	
             	else if( valueType.equals("3") )
                 {
                     pbfDataValue.setQuantityExternalVerification( Integer.parseInt( value ) );
+                    try
+                    {
+                        pbfDataValue.setTariffAmount( Double.parseDouble( tariffAmt ) );
+                    }
+                    catch( Exception e )
+                    {
+                    }
                 }
                 
             	pbfDataValue.setStoredBy(storedBy);
@@ -361,6 +375,14 @@ public class SaveValueAction
                 }
         	pbfDataValue.setQuantityReported( intVal );
         	
+        	try
+                {
+                    pbfDataValue.setTariffAmount( Double.parseDouble( tariffAmt ) );
+                }
+                catch( Exception e )
+                {
+                }
+        	
         	System.out.println(" PBF Value 1 " + intVal );
             }
             else if( valueType.equals("2") )
@@ -375,6 +397,14 @@ public class SaveValueAction
                 
         	pbfDataValue.setQuantityValidated( intVal );
         	
+        	try
+                {
+                    pbfDataValue.setTariffAmount( Double.parseDouble( tariffAmt ) );
+                }
+                catch( Exception e )
+                {
+                }
+        	
             }
             
             else if( valueType.equals("3") )
@@ -387,6 +417,14 @@ public class SaveValueAction
                 System.out.println(" PBF Value 3 " + intVal );
                 
                 pbfDataValue.setQuantityExternalVerification( intVal );
+                
+                try
+                {
+                    pbfDataValue.setTariffAmount( Double.parseDouble( tariffAmt ) );
+                }
+                catch( Exception e )
+                {
+                }
             }
             
             pbfDataValue.setStoredBy(storedBy);
