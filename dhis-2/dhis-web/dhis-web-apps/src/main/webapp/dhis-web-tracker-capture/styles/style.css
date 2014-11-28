@@ -802,7 +802,7 @@ a:active {
 }
 
 #ui-datepicker-div, .calendars-popup {
-	z-index: 1000; //has to be greater than bootsrap's modal z-index
+	z-index: 2000; //has to be greater than bootsrap's modal z-index
 }
 
 @media print {
