@@ -9,6 +9,7 @@ trackerCapture.controller('DataEntryController',
                 ModalService,
                 DialogService,
                 CurrentSelection,
+                CustomFormService,
                 TranslationService) {
 
     TranslationService.translate();
@@ -304,7 +305,7 @@ trackerCapture.controller('DataEntryController',
             $scope.programStageDataElements[prStDe.dataElement.id] = prStDe; 
         }); 
 
-        $scope.customForm = $scope.currentStage.dataEntryForm ? $scope.currentStage.dataEntryForm.htmlCode : null; 
+        $scope.customForm = CustomFormService.getForProgramStage($scope.currentStage);
         $scope.displayCustomForm = $scope.customForm ? true:false;
 
         $scope.allowProvidedElsewhereExists = false;
