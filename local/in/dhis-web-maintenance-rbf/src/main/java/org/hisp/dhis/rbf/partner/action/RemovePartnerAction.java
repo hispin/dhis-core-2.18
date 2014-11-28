@@ -1,10 +1,8 @@
 package org.hisp.dhis.rbf.partner.action;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -14,10 +12,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.rbf.api.PBFDataValue;
-import org.hisp.dhis.rbf.api.PBFDataValueService;
 import org.hisp.dhis.rbf.api.Partner;
 import org.hisp.dhis.rbf.api.PartnerService;
 import org.hisp.dhis.user.CurrentUserService;
@@ -33,9 +28,10 @@ public class RemovePartnerAction implements Action
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+    /*
     @Autowired
     private PBFDataValueService pbfDataValueService;
+    */
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -120,16 +116,21 @@ public class RemovePartnerAction implements Action
         
         //Period period = periodService.getPeriod( sDate, eDate, dataSet.getPeriodType() );
         
+        /*
         List<Period> periodsBetweenDates = new ArrayList<Period>();
         
         periodsBetweenDates =  new ArrayList<Period>( periodService.getPeriodsBetweenDates( dataSet.getPeriodType(), sDate, eDate ) );
+        
+        */
         
         //periodService.getPeriod( arg0, arg1, arg2 )
         
         //Option option = optionService.getOption( optionSetId );
         
         Set<OrganisationUnit> partnerOrgUnits = new HashSet<OrganisationUnit>( partnerService.getPartnerOrganisationUnits( dataSetId, dataElementId, optionSetId, startDate, endDate ) );
-
+        
+        // Delete partner from PBF dataValue
+        /*
         for ( OrganisationUnit organisationUnit : partnerOrgUnits )
         {
             //System.out.println( " Period Id " + period.getId() );
@@ -160,6 +161,7 @@ public class RemovePartnerAction implements Action
             
             //System.out.println( " orgUnit name -- " + organisationUnit.getName() );
         }
+        */
         
         // Delete partner from partner
       
