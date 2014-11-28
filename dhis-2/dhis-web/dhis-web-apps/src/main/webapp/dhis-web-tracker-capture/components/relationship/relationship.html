@@ -3,7 +3,7 @@
 
         <a href ng-click="showAddRelationship()"><span ng-class="{'light-blue': showAddRelationshipDiv}">{{relationshipWidget.title| translate}}</span></a>
         <span class="nav-pills" ng-if="selectedTei">
-            | <a href ng-click="showAddRelationship()" title="{{'add_relationship'| translate}}"><span ng-class="{'light-blue': !showAddRelationshipDiv}">{{'add'| translate}}</span></a>
+            | <a href ng-click="showAddRelationship()" title="{{'add_relationship'| translate}}"><span ng-class="{'light-blue': !showAddRelationshipDiv}">{{addRelationshipLabel}}</span></a>
         </span>        
         
         <span class="pull-right">
