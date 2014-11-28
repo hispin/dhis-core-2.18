@@ -16,10 +16,7 @@ import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.rbf.api.PBFDataValue;
-import org.hisp.dhis.rbf.api.PBFDataValueService;
 import org.hisp.dhis.rbf.api.Partner;
 import org.hisp.dhis.rbf.api.PartnerService;
 import org.hisp.dhis.user.CurrentUserService;
@@ -42,13 +39,14 @@ public class SavePartnerDetailsResultAction implements Action
     {
         this.selectionTreeManager = selectionTreeManager;
     }
-    
+    /*
     private PBFDataValueService pbfDataValueService;
     
     public void setPbfDataValueService(PBFDataValueService pbfDataValueService) 
     {
         this.pbfDataValueService = pbfDataValueService;
     }
+    */
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -144,9 +142,9 @@ public class SavePartnerDetailsResultAction implements Action
         //periodService.getPeriod( arg0, arg1, arg2 )
         
         
-        List<Period> periodsBetweenDates = new ArrayList<Period>();
+        //List<Period> periodsBetweenDates = new ArrayList<Period>();
         
-        periodsBetweenDates =  new ArrayList<Period>( periodService.getPeriodsBetweenDates( dataSet.getPeriodType(), sDate, eDate ) );
+        //periodsBetweenDates =  new ArrayList<Period>( periodService.getPeriodsBetweenDates( dataSet.getPeriodType(), sDate, eDate ) );
         
         Option option = optionService.getOption( optionSetId );
         
@@ -177,6 +175,7 @@ public class SavePartnerDetailsResultAction implements Action
         
         dataSetSources.retainAll( orgUnitList );
         
+        /*
         for ( OrganisationUnit organisationUnit : dataSetSources )
         {
             if( periodsBetweenDates!= null  && periodsBetweenDates.size() > 0 )
@@ -221,6 +220,8 @@ public class SavePartnerDetailsResultAction implements Action
             
             //System.out.println( " orgUnit name -- " + organisationUnit.getName() );
         }
+        
+        */
         
         // save partnet in partner
         

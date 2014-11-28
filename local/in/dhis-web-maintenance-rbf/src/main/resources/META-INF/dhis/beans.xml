@@ -825,7 +825,7 @@
         class="org.hisp.dhis.rbf.partner.action.SavePartnerDetailsResultAction"
         scope="prototype">
         <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-        <property name="pbfDataValueService" ref="org.hisp.dhis.rbf.api.PBFDataValueService" />
+        <!--<property name="pbfDataValueService" ref="org.hisp.dhis.rbf.api.PBFDataValueService" />-->
     </bean>		
 	
 

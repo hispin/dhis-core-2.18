@@ -41,6 +41,7 @@ import org.hisp.dhis.rbf.api.Lookup;
 import org.hisp.dhis.rbf.api.LookupService;
 import org.hisp.dhis.rbf.api.PBFDataValue;
 import org.hisp.dhis.rbf.api.PBFDataValueService;
+import org.hisp.dhis.rbf.api.PartnerService;
 import org.hisp.dhis.rbf.api.TariffDataValueService;
 import org.hisp.dhis.rbf.api.UtilizationRateService;
 import org.hisp.dhis.user.CurrentUserService;
@@ -142,6 +143,10 @@ public class LoadDataEntryFormAction implements Action
     
     @Autowired
     private DataElementService dataElementService;
+    
+    @Autowired
+    private PartnerService partnerService;
+
     
     @Autowired
     private DataElementCategoryService categoryService;
@@ -403,6 +408,7 @@ public class LoadDataEntryFormAction implements Action
 
         // find parent
         Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+        
         int tariff_setting_authority = 0;
         if ( tariff_authority == null )
         {
@@ -424,16 +430,61 @@ public class LoadDataEntryFormAction implements Action
         }
         
         
-        
-        
-        
-        
         OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( organisationUnit, dataSet.getId(), orgUnitBranchIds );
         if( orgUnitGroup != null )
         {
             tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( orgUnitGroup, orgUnitBranchIds, dataSet, period ) );
         }
         
+        Map<Integer, Option> partnerMap = new HashMap<Integer, Option>();
+        
+        if( organisationUnit != null && dataSet != null && period != null  )
+        {
+            partnerMap.putAll( partnerService.getPartners( organisationUnit, dataSet, period ) );
+        }
+        
+        // setting partner in PBF DataValue
+        
+        for ( DataElement de : dataElements )
+        {
+            Option option = partnerMap.get( de.getId() );
+            
+            if ( option != null )
+            {   
+                //System.out.println( " Inside add partner in PBF Data Value  is : " + de.getName() );
+                
+                PBFDataValue pbfDataValue = pbfDataValueService.getPBFDataValue( organisationUnit, dataSet, period, de );
+                
+                if( pbfDataValue == null )
+                {
+                    pbfDataValue = new PBFDataValue();
+                    
+                    pbfDataValue.setDataSet( dataSet );
+                    pbfDataValue.setDataElement( de );
+                    pbfDataValue.setPeriod( period );
+                    pbfDataValue.setOrganisationUnit( organisationUnit );
+                    pbfDataValue.setStoredBy( currentUserService.getCurrentUsername() );
+                    pbfDataValue.setOption( option );
+                    pbfDataValue.setTimestamp( new Date() );
+                    
+                    pbfDataValueService.addPBFDataValue( pbfDataValue );
+                }
+
+                else
+                {
+                    //System.out.println( " Inside update partner In PBF Data Value is : " +  de.getName() );
+                    
+                    pbfDataValue.setOption( option );
+                    pbfDataValue.setTimestamp( new Date() );
+                    pbfDataValue.setStoredBy( currentUserService.getCurrentUsername() );
+                    
+                    pbfDataValueService.updatePBFDataValue( pbfDataValue );
+                }
+                                
+            }
+            
+        }
+
         //System.out.println( orgUnitBranchIds + " : " + orgUnitGroup.getId() + " : " + organisationUnit.getId() + " : " + dataSet.getId() );
         
         
@@ -465,6 +516,23 @@ public class LoadDataEntryFormAction implements Action
                     pbfDataValueService.updatePBFDataValue( pbfDataValue );
                 }
             }
+            
+            /*
+            if ( pbfDataValue.getOption() == null || pbfDataValue.getOption().toString().trim().equals( "" ) )
+            {
+                Option option = partnerMap.get( de.getId() );
+                if ( option != null )
+                {
+                    pbfDataValue.setOption( option );
+                    pbfDataValue.setStoredBy( currentUserService.getCurrentUsername() );
+                    pbfDataValue.setTimestamp( new Date() );
+                                        
+                    pbfDataValueService.updatePBFDataValue( pbfDataValue );
+                }
+                
+            }
+            */
+            
             pbfDataValueMap.put( de, pbfDataValue );
         }
 
@@ -472,7 +540,7 @@ public class LoadDataEntryFormAction implements Action
         tempDes.addAll( dataElements );
 
         tempDes.removeAll( pbfDataValueMap.keySet() );
-
+               
         for ( DataElement de : tempDes )
         {
             Double tariffAmount = tariffDataValueMap.get( de.getId() );
@@ -503,9 +571,37 @@ public class LoadDataEntryFormAction implements Action
 
                 pbfDataValueMap.put( de, pbfDataValue );
             }
+            
+            Option option = partnerMap.get( de.getId() );
+            if ( option != null )
+            {
+                PBFDataValue pbfDataValue = new PBFDataValue();
+
+                pbfDataValue.setDataSet( dataSet );
+                pbfDataValue.setDataElement( de );
+                pbfDataValue.setPeriod( period );
+                pbfDataValue.setOrganisationUnit( organisationUnit );
+                pbfDataValue.setOption( option );
+                pbfDataValue.setStoredBy( currentUserService.getCurrentUsername() );
+                pbfDataValue.setTimestamp( new Date() );
+
+                //pbfDataValueService.addPBFDataValue( pbfDataValue );
+                pbfDataValueMap.put( de, pbfDataValue );
+            }
+            else
+            {
+                PBFDataValue pbfDataValue = new PBFDataValue();
+
+                pbfDataValue.setDataSet( dataSet );
+                pbfDataValue.setDataElement( de );
+                pbfDataValue.setPeriod( period );
+                pbfDataValue.setOrganisationUnit( organisationUnit );
+                pbfDataValue.setOption( null );
+
+                pbfDataValueMap.put( de, pbfDataValue );
+            }
         }
         
-
         /*
          * for( DataElement dataElement : dataElements ) {
          * //DataElementCategoryOptionCombo decoc =

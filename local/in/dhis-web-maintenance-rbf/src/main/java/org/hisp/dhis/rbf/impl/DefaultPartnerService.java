@@ -7,7 +7,9 @@ import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.option.Option;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.rbf.api.Partner;
 import org.hisp.dhis.rbf.api.PartnerService;
 import org.hisp.dhis.rbf.api.PartnerStore;
@@ -90,6 +92,11 @@ public class DefaultPartnerService implements PartnerService
     public Set<OrganisationUnit> getPartnerOrganisationUnits( Integer dataSetId, Integer dataElementId, Integer optionId, String startDate, String endDate )
     {
         return partnerStore.getPartnerOrganisationUnits( dataSetId, dataElementId, optionId, startDate, endDate );
-    }   
+    } 
+    
+    public Map<Integer, Option> getPartners( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    {
+        return partnerStore.getPartners( organisationUnit, dataSet, period );
+    }     
     
 }

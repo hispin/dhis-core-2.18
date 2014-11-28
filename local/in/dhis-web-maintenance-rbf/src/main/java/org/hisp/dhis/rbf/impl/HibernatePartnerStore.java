@@ -16,8 +16,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.option.Option;
+import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.rbf.api.Partner;
 import org.hisp.dhis.rbf.api.PartnerStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +56,9 @@ public class HibernatePartnerStore
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
-
+    
+    @Autowired
+    private OptionService optionService;
     // -------------------------------------------------------------------------
     // Partner
     // -------------------------------------------------------------------------
@@ -295,5 +300,68 @@ public class HibernatePartnerStore
         return organisationUnits;
 
     }
-
+    
+    // getPartners
+    
+    public Map<Integer, Option> getPartners( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    {
+        Map<Integer, Option> partnerMap = new HashMap<Integer, Option>();
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
+        String curPeriodStartDate = simpleDateFormat.format( period.getStartDate() );
+        
+        String curPeriodEndDate = simpleDateFormat.format( period.getEndDate() );
+        
+        try
+        {
+            String query = "SELECT dataelementid, optionid FROM partner " +
+                " WHERE " +
+                    " organisationunitid = " + organisationUnit.getId() + " AND " +
+                    " datasetid = " + dataSet.getId() + " AND " +
+                    " startdate BETWEEN '" + curPeriodStartDate + "' AND '" + curPeriodEndDate + "' AND " +  
+                    " enddate BETWEEN '" + curPeriodStartDate + "' AND '" + curPeriodEndDate + "' ";
+            
+            
+            /*
+            String query = "SELECT dataelementid, optionid FROM partner " +
+                            " WHERE " +
+                                " organisationunitid = " + organisationUnit.getId() + " AND " +
+                                " datasetid = " + dataSet.getId() + " AND " +
+                                " startdate >= '" + curPeriodStartDate + "' AND "+ 
+                                " enddate <= '" + curPeriodEndDate +"'";
+            
+            
+                        
+            String query = "SELECT dataelementid, optionid FROM partner " +
+                " WHERE " +
+                    " organisationunitid = " + organisationUnit.getId() + " AND " +
+                    " datasetid = " + dataSet.getId() + " AND " +
+                    " startdate <= '" + curPeriodEndDate + "' AND "+ 
+                    " enddate >= '" + curPeriodEndDate +"'";
+            
+            
+            */
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer dataElementId = rs.getInt( 1 );
+                Integer optionId = rs.getInt( 2 );
+                
+                if ( optionId != null )
+                {
+                    Option option = optionService.getOption( optionId );
+                    partnerMap.put( dataElementId, option );
+                    
+                }
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("In getPartner Exception :"+ e.getMessage() );
+        }
+        
+        return partnerMap;
+    }
 }
