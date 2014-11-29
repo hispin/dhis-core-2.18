@@ -218,9 +218,7 @@ $( document ).ready( function()
     $( '#orgUnitTree' ).one( 'ouwtLoaded', function( event, ids, names )
     {
         console.log( 'Ouwt loaded' );
-        
-        dhis2.availability.startAvailabilityCheck();
-        
+                
         $.when( dhis2.de.loadMetaData(), dhis2.de.loadDataSetAssociations() ).done( function() {
         	dhis2.de.setMetaDataLoaded();
         	organisationUnitSelected( ids, names );
@@ -2157,7 +2155,11 @@ function updateForms()
         .then(purgeLocalForms)
         .then(updateExistingLocalForms)
         .then(downloadRemoteForms)
-        .then(dhis2.de.loadOptionSets);
+        .then(dhis2.de.loadOptionSets)
+        .done( function() {
+        	dhis2.availability.startAvailabilityCheck();
+        	console.log( 'Started availability check' );
+        } );
 }
 
 function purgeLocalForms()
