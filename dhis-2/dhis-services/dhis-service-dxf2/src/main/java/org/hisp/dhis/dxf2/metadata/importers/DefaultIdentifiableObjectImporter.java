@@ -1020,14 +1020,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 dataElementOperandService.addDataElementOperand( dataElementOperand );
             }
 
-            /*
-            if ( detachedDataElementOperands == null )
-            {
-                detachedDataElementOperands = ReflectionUtils.newCollectionInstance( dataElementOperands.getClass() );
-                ReflectionUtils.invokeSetterMethod( fieldName, object, detachedDataElementOperands );
-            }
-            */
-
             detachedDataElementOperands.clear();
             detachedDataElementOperands.addAll( dataElementOperands );
             sessionFactory.getCurrentSession().flush();
