@@ -131,7 +131,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SchemaService schemaService;
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
 
     @Autowired
@@ -674,6 +674,12 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     private Map<Field, Object> detachFields( final Object object )
     {
         final Map<Field, Object> fieldMap = Maps.newHashMap();
+
+        if ( object == null )
+        {
+            return fieldMap;
+        }
+
         final Collection<Field> fieldCollection = ReflectionUtils.collectFields( object.getClass(), idObjects );
 
         for ( Field field : fieldCollection )
@@ -832,6 +838,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         private Set<DataElementOperand> compulsoryDataElementOperands = Sets.newHashSet();
         private Set<DataElementOperand> greyedFields = Sets.newHashSet();
+        private List<DataElementOperand> dataElementOperands = Lists.newArrayList();
 
         private Collection<ProgramStageDataElement> programStageDataElements = Lists.newArrayList();
         private List<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = new ArrayList<>();
@@ -842,8 +849,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             leftSide = extractExpression( object, "leftSide" );
             rightSide = extractExpression( object, "rightSide" );
             dataEntryForm = extractDataEntryForm( object, "dataEntryForm" );
-            compulsoryDataElementOperands = extractDataElementOperands( object, "compulsoryDataElementOperands" );
-            greyedFields = extractDataElementOperands( object, "greyedFields" );
+            compulsoryDataElementOperands = Sets.newHashSet( extractDataElementOperands( object, "compulsoryDataElementOperands" ) );
+            greyedFields = Sets.newHashSet( extractDataElementOperands( object, "greyedFields" ) );
+            dataElementOperands = Lists.newArrayList( extractDataElementOperands( object, "dataElementOperands" ) );
             programStageDataElements = extractProgramStageDataElements( object );
             programTrackedEntityAttributes = extractProgramTrackedEntityAttributes( object );
         }
@@ -860,9 +868,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 if ( options.getImportStrategy().isDelete() )
                 {
                     deleteDataElementOperands( object, "compulsoryDataElementOperands" );
+                    deleteDataElementOperands( object, "dataElementOperands" );
+                    deleteDataElementOperands( object, "greyedFields" );
                 }
 
-                deleteDataElementOperands( object, "greyedFields" );
                 deleteProgramStageDataElements( object );
                 deleteProgramTrackedEntityAttributes( object );
             }
@@ -876,6 +885,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             saveDataEntryForm( object, "dataEntryForm", dataEntryForm );
             saveDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
             saveDataElementOperands( object, "greyedFields", greyedFields );
+            saveDataElementOperands( object, "dataElementOperands", dataElementOperands );
             saveProgramStageDataElements( object, programStageDataElements );
             saveProgramTrackedEntityAttributes( object, programTrackedEntityAttributes );
         }
@@ -944,20 +954,18 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return expression;
         }
 
-        private Set<DataElementOperand> extractDataElementOperands( T object, String fieldName )
+        private Collection<DataElementOperand> extractDataElementOperands( T object, String fieldName )
         {
-            Set<DataElementOperand> dataElementOperands = Sets.newHashSet();
+            Collection<DataElementOperand> dataElementOperands = Sets.newHashSet();
 
             if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
             {
-                Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
-                dataElementOperands = Sets.newHashSet( detachedDataElementOperands );
+                Collection<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
 
-                if ( detachedDataElementOperands.size() > 0 )
-                {
-                    detachedDataElementOperands.clear();
-                    ReflectionUtils.invokeSetterMethod( fieldName, object, Sets.newHashSet() );
-                }
+                dataElementOperands = ReflectionUtils.newCollectionInstance( detachedDataElementOperands.getClass() );
+                dataElementOperands.addAll( detachedDataElementOperands );
+                detachedDataElementOperands.clear();
+                // ReflectionUtils.invokeSetterMethod( fieldName, object, ReflectionUtils.newCollectionInstance( detachedDataElementOperands.getClass() ) );
             }
 
             return dataElementOperands;
@@ -994,38 +1002,28 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             }
         }
 
-        private void saveDataElementOperands( T object, String fieldName, Set<DataElementOperand> dataElementOperands )
+        private void saveDataElementOperands( T object, String fieldName, Collection<DataElementOperand> dataElementOperands )
         {
-            if ( dataElementOperands.size() > 0 )
+            for ( DataElementOperand dataElementOperand : dataElementOperands )
             {
-                // need special handling for compulsoryDataElementOperands since they cascade with all-delete-orphan
-                if ( "compulsoryDataElementOperands".equals( fieldName ) )
-                {
-                    for ( DataElementOperand dataElementOperand : dataElementOperands )
-                    {
-                        Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
-                        reattachFields( dataElementOperand, identifiableObjects );
-                    }
+                Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
+                reattachFields( dataElementOperand, identifiableObjects );
 
-                    Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
-                    detachedDataElementOperands.clear();
-                    detachedDataElementOperands.addAll( dataElementOperands );
-                    sessionFactory.getCurrentSession().flush();
-                }
-                else
-                {
-                    for ( DataElementOperand dataElementOperand : dataElementOperands )
-                    {
-                        Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
-                        reattachFields( dataElementOperand, identifiableObjects );
-
-                        dataElementOperand.setId( 0 );
-                        dataElementOperandService.addDataElementOperand( dataElementOperand );
-                    }
-
-                    ReflectionUtils.invokeSetterMethod( fieldName, object, dataElementOperands );
-                }
+                dataElementOperandService.addDataElementOperand( dataElementOperand );
+                sessionFactory.getCurrentSession().flush();
             }
+
+            Collection<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
+
+            if ( detachedDataElementOperands == null )
+            {
+                detachedDataElementOperands = ReflectionUtils.newCollectionInstance( dataElementOperands.getClass() );
+                ReflectionUtils.invokeSetterMethod( fieldName, object, detachedDataElementOperands );
+            }
+
+            detachedDataElementOperands.clear();
+            detachedDataElementOperands.addAll( dataElementOperands );
+            sessionFactory.getCurrentSession().flush();
         }
 
         private void deleteAttributeValues( T object )
@@ -1080,7 +1078,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         private void deleteDataElementOperands( T object, String fieldName )
         {
-            Set<DataElementOperand> dataElementOperands = extractDataElementOperands( object, fieldName );
+            Collection<DataElementOperand> dataElementOperands = extractDataElementOperands( object, fieldName );
 
             for ( DataElementOperand dataElementOperand : dataElementOperands )
             {
