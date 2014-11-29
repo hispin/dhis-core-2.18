@@ -30,26 +30,24 @@ package org.hisp.dhis.dxf2.metadata;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IdentifiableProperty;
-import org.hisp.dhis.system.timer.SystemTimer;
-import org.hisp.dhis.system.timer.Timer;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.deletion.DeletionManager;
+import org.hisp.dhis.system.timer.SystemTimer;
+import org.hisp.dhis.system.timer.Timer;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -570,10 +568,20 @@ public class DefaultObjectBridge
         {
             entity = map.get( identifiableObject.getUid() );
         }
+        else
+        {
+            uidMap.put( identifiableObject.getClass(), new HashMap<String, IdentifiableObject>() );
+            map = uidMap.get( identifiableObject.getClass() );
+        }
 
         if ( !preheatCache && entity == null )
         {
             entity = manager.get( identifiableObject.getClass(), identifiableObject.getUid() );
+
+            if ( entity != null )
+            {
+                map.put( entity.getUid(), entity );
+            }
         }
 
         return entity;
@@ -588,10 +596,20 @@ public class DefaultObjectBridge
         {
             entity = map.get( identifiableObject.getCode() );
         }
+        else
+        {
+            codeMap.put( identifiableObject.getClass(), new HashMap<String, IdentifiableObject>() );
+            map = codeMap.get( identifiableObject.getClass() );
+        }
 
         if ( !preheatCache && entity == null )
         {
             entity = manager.getByCode( identifiableObject.getClass(), identifiableObject.getCode() );
+
+            if ( entity != null )
+            {
+                map.put( entity.getCode(), entity );
+            }
         }
 
         return entity;
@@ -606,10 +624,20 @@ public class DefaultObjectBridge
         {
             entity = map.get( identifiableObject.getName() );
         }
+        else
+        {
+            nameMap.put( identifiableObject.getClass(), new HashMap<String, IdentifiableObject>() );
+            map = nameMap.get( identifiableObject.getClass() );
+        }
 
         if ( !preheatCache && identifiableObject.haveUniqueNames() && entity == null )
         {
             entity = manager.getByName( identifiableObject.getClass(), identifiableObject.getName() );
+
+            if ( entity != null )
+            {
+                map.put( entity.getName(), entity );
+            }
         }
 
         return entity;
