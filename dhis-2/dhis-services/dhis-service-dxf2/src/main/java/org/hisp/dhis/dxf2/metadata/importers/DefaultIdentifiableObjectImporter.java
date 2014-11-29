@@ -1004,22 +1004,29 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         private void saveDataElementOperands( T object, String fieldName, Collection<DataElementOperand> dataElementOperands )
         {
+            Collection<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
+
+            if ( detachedDataElementOperands == null )
+            {
+                return;
+            }
+
             for ( DataElementOperand dataElementOperand : dataElementOperands )
             {
                 Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
                 reattachFields( dataElementOperand, identifiableObjects );
 
+                dataElementOperand.setId( 0 );
                 dataElementOperandService.addDataElementOperand( dataElementOperand );
-                sessionFactory.getCurrentSession().flush();
             }
 
-            Collection<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
-
+            /*
             if ( detachedDataElementOperands == null )
             {
                 detachedDataElementOperands = ReflectionUtils.newCollectionInstance( dataElementOperands.getClass() );
                 ReflectionUtils.invokeSetterMethod( fieldName, object, detachedDataElementOperands );
             }
+            */
 
             detachedDataElementOperands.clear();
             detachedDataElementOperands.addAll( dataElementOperands );
