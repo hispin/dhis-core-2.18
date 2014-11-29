@@ -209,16 +209,12 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         Pager pager = metaData.getPager();
 
-        // enable object filter
-        if ( !filters.isEmpty() )
-        {
-            entityList = objectFilterService.filter( entityList, filters );
+        entityList = objectFilterService.filter( entityList, filters );
 
-            if ( hasPaging )
-            {
-                pager = new Pager( options.getPage(), entityList.size(), options.getPageSize() );
-                entityList = PagerUtils.pageCollection( entityList, pager );
-            }
+        if ( hasPaging )
+        {
+            pager = new Pager( options.getPage(), entityList.size(), options.getPageSize() );
+            entityList = PagerUtils.pageCollection( entityList, pager );
         }
 
         postProcessEntities( entityList );
