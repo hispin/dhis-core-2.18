@@ -149,7 +149,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         List<T> entityList;
 
-        if ( filters.isEmpty() || DataElementOperand.class.isAssignableFrom( getEntityClass() ) )
+        if ( filters.isEmpty() )
         {
             entityList = getEntityList( metaData, options, filters );
         }
