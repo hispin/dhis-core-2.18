@@ -117,11 +117,11 @@ public class RelativePeriodTest
         assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 12, 31 ) ) ) );
         assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 2001, 1, 1 ), getDate( 2001, 12, 31 ) ) ) );
 
-        assertTrue( relatives.contains( new Period( new FinancialJulyPeriodType(), getDate( 1996, 7, 1 ), getDate( 1997, 6, 30 ) ) ) );
-        assertTrue( relatives.contains( new Period( new FinancialJulyPeriodType(), getDate( 1997, 7, 1 ), getDate( 1998, 6, 30 ) ) ) );
-        assertTrue( relatives.contains( new Period( new FinancialJulyPeriodType(), getDate( 1998, 7, 1 ), getDate( 1999, 6, 30 ) ) ) );
-        assertTrue( relatives.contains( new Period( new FinancialJulyPeriodType(), getDate( 1999, 7, 1 ), getDate( 2000, 6, 30 ) ) ) );
-        assertTrue( relatives.contains( new Period( new FinancialJulyPeriodType(), getDate( 2000, 7, 1 ), getDate( 2001, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new FinancialOctoberPeriodType(), getDate( 1996, 10, 1 ), getDate( 1997, 9, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new FinancialOctoberPeriodType(), getDate( 1997, 10, 1 ), getDate( 1998, 9, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new FinancialOctoberPeriodType(), getDate( 1998, 10, 1 ), getDate( 1999, 9, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new FinancialOctoberPeriodType(), getDate( 1999, 10, 1 ), getDate( 2000, 9, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new FinancialOctoberPeriodType(), getDate( 2000, 10, 1 ), getDate( 2001, 9, 30 ) ) ) );
 
         assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2000, 1, 10 ), getDate( 2000, 1, 16 ) ) ) );
         assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2000, 1, 17 ), getDate( 2000, 1, 23 ) ) ) );
@@ -328,7 +328,7 @@ public class RelativePeriodTest
         periodTypes.add( QuarterlyPeriodType.NAME );
         periodTypes.add( SixMonthlyPeriodType.NAME );
         periodTypes.add( YearlyPeriodType.NAME );
-        periodTypes.add( FinancialJulyPeriodType.NAME );
+        periodTypes.add( FinancialOctoberPeriodType.NAME );
 
         List<Period> periods = new RelativePeriods().getLast12Months( periodTypes );
 

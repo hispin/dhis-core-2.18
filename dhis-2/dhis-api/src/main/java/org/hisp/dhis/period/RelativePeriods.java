@@ -346,7 +346,7 @@ public class RelativePeriods
         
         if ( isThisFinancialYear() || isLastFinancialYear() || isLast5FinancialYears() )
         {
-            return PeriodType.getPeriodTypeByName( FinancialJulyPeriodType.NAME );
+            return PeriodType.getPeriodTypeByName( FinancialOctoberPeriodType.NAME );
         }
 
         return PeriodType.getPeriodTypeByName( YearlyPeriodType.NAME );
@@ -539,12 +539,12 @@ public class RelativePeriods
 
         if ( isThisFinancialYear() )
         {
-            periods.add( getRelativePeriod( new FinancialJulyPeriodType(), THIS_FINANCIAL_YEAR, monthDate, dynamicNames, format ) );
+            periods.add( getRelativePeriod( new FinancialOctoberPeriodType(), THIS_FINANCIAL_YEAR, monthDate, dynamicNames, format ) );
         }
 
         if ( isLast5FinancialYears() )
         {
-            periods.addAll( getRollingRelativePeriodList( new FinancialJulyPeriodType(), LAST_5_FINANCIAL_YEARS, monthDate, dynamicNames, format ) );
+            periods.addAll( getRollingRelativePeriodList( new FinancialOctoberPeriodType(), LAST_5_FINANCIAL_YEARS, monthDate, dynamicNames, format ) );
         }
 
         if ( isLastWeek() )
@@ -586,7 +586,7 @@ public class RelativePeriods
         
         if ( isLastFinancialYear() )
         {
-            periods.add( getRelativePeriod( new FinancialJulyPeriodType(), LAST_FINANCIAL_YEAR, monthDate, dynamicNames, format ) );
+            periods.add( getRelativePeriod( new FinancialOctoberPeriodType(), LAST_FINANCIAL_YEAR, monthDate, dynamicNames, format ) );
         }
         
         return periods;
@@ -611,7 +611,7 @@ public class RelativePeriods
         periods.addAll( periodTypes.contains( QuarterlyPeriodType.NAME ) ? new QuarterlyPeriodType().generateRollingPeriods( date ) : NO );
         periods.addAll( periodTypes.contains( SixMonthlyPeriodType.NAME ) ? new SixMonthlyPeriodType().generateRollingPeriods( date ) : NO );        
         periods.addAll( periodTypes.contains( YearlyPeriodType.NAME ) ? new YearlyPeriodType().generateRollingPeriods( date ).subList( 4, 5 ) : NO );
-        periods.addAll( periodTypes.contains( FinancialJulyPeriodType.NAME ) ? new FinancialJulyPeriodType().generateRollingPeriods( date ).subList( 4, 5 ) : NO );
+        periods.addAll( periodTypes.contains( FinancialOctoberPeriodType.NAME ) ? new FinancialOctoberPeriodType().generateRollingPeriods( date ).subList( 4, 5 ) : NO );
         
         return periods;
     }
