@@ -807,10 +807,6 @@ public abstract class BaseAnalyticalObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "categoryDimensions", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "categoryDimension", namespace = DxfNamespaces.DXF_2_0 )
     public List<DataElementCategoryDimension> getCategoryDimensions()
     {
         return categoryDimensions;
