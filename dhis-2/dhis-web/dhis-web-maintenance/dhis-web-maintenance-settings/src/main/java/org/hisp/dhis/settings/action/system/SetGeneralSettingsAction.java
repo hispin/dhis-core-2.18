@@ -44,6 +44,7 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_ANALYSIS_RELATIVE_P
 import org.apache.commons.lang3.StringUtils;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -83,6 +84,13 @@ public class SetGeneralSettingsAction
     public void setConfigurationService( ConfigurationService configurationService )
     {
         this.configurationService = configurationService;
+    }
+    
+    private IndicatorService indicatorService;
+    
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
 
     private DataElementService dataElementService;
@@ -129,6 +137,13 @@ public class SetGeneralSettingsAction
     public void setDatabaseServerCpus( Integer databaseServerCpus )
     {
         this.databaseServerCpus = databaseServerCpus;
+    }
+
+    private Integer infrastructuralIndicators;
+
+    public void setInfrastructuralIndicators( Integer infrastructuralIndicators )
+    {
+        this.infrastructuralIndicators = infrastructuralIndicators;
     }
 
     private Integer infrastructuralDataElements;
@@ -269,6 +284,11 @@ public class SetGeneralSettingsAction
                 organisationUnitService.getOrganisationUnitLevel( offlineOrganisationUnitLevel ) );
 
             organisationUnitService.updateVersion();
+        }
+
+        if ( infrastructuralIndicators != null )
+        {
+            configuration.setInfrastructuralIndicators( indicatorService.getIndicatorGroup( infrastructuralIndicators ) );
         }
 
         if ( infrastructuralDataElements != null )

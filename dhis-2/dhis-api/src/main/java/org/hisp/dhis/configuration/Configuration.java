@@ -30,6 +30,7 @@ package org.hisp.dhis.configuration;
 
 import java.io.Serializable;
 
+import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -62,6 +63,8 @@ public class Configuration
     private UserGroup feedbackRecipients;
     
     private OrganisationUnitLevel offlineOrganisationUnitLevel;
+
+    private IndicatorGroup infrastructuralIndicators;
 
     private DataElementGroup infrastructuralDataElements;
     
@@ -151,6 +154,16 @@ public class Configuration
     public OrganisationUnitLevel getOfflineOrganisationUnitLevel()
     {
         return offlineOrganisationUnitLevel;
+    }
+
+    public IndicatorGroup getInfrastructuralIndicators()
+    {
+        return infrastructuralIndicators;
+    }
+
+    public void setInfrastructuralIndicators( IndicatorGroup infrastructuralIndicators )
+    {
+        this.infrastructuralIndicators = infrastructuralIndicators;
     }
 
     public DataElementGroup getInfrastructuralDataElements()

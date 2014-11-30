@@ -5,6 +5,7 @@
         cacheStrategy: getFieldValue('cacheStrategy'),
         analyticsMaxLimit: getFieldValue('analyticsMaxLimit'),
         databaseServerCpus: getFieldValue('databaseServerCpus'),
+        infrastructuralIndicators: getFieldValue('infrastructuralIndicators'),
         infrastructuralDataElements: getFieldValue('infrastructuralDataElements'),
         infrastructuralPeriodType: getFieldValue('infrastructuralPeriodType'),
         analysisRelativePeriod: getFieldValue('analysisRelativePeriod'),
@@ -65,6 +66,16 @@
 	<option value="8" #if( $keyDatabaseServerCpus == "8" )selected="selected"#end>8</option>
 	<option value="16" #if( $keyDatabaseServerCpus == "16" )selected="selected"#end>16</option>
 	<option value="32" #if( $keyDatabaseServerCpus == "32" )selected="selected"#end>32</option>
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "infrastructural_indicators" )</div>
+
+<div class="setting">
+<select id="infrastructuralIndicators" name="infrastructuralIndicators">
+    #foreach ( $group in $indicatorGroups )
+    <option value="$group.id" #if( $group.id == $configuration.infrastructuralIndicators.id )selected="selected"#end>$group.name</option>
+    #end
 </select>
 </div>
 
