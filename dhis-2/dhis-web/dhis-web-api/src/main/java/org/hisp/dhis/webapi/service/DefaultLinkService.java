@@ -199,19 +199,20 @@ public class DefaultLinkService implements LinkService
 
         Schema schema = schemaService.getDynamicSchema( klass );
 
-        if ( !schema.haveApiEndpoint() )
+        if ( !schema.haveApiEndpoint() || schema.getProperty( "id" ) == null || schema.getProperty( "id" ).getGetterMethod() == null )
         {
             return;
         }
 
+        Property id = schema.getProperty( "id" );
+
         try
         {
-            Method getUid = object.getClass().getMethod( "getUid" );
-            Object value = getUid.invoke( object );
+            Object value = id.getGetterMethod().invoke( object );
 
             if ( !String.class.isInstance( value ) )
             {
-                log.warn( "getUid on object of type " + object.getClass().getName() + " does not return a String." );
+                log.warn( "id on object of type " + object.getClass().getName() + " does not return a String." );
                 return;
             }
 
