@@ -490,7 +490,7 @@ public class DefaultAnalyticsService
             User user = currentUserService.getCurrentUser();
             
             List<OrganisationUnit> organisationUnits = asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class );
-            Collection<OrganisationUnit> roots = user != null ? user.getDataViewOrganisationUnitsWithFallback() : null;
+            Collection<OrganisationUnit> roots = user != null ? user.getDataViewOrganisationUnits() : null;
             
             if ( params.isHierarchyMeta() )
             {
