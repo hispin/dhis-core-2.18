@@ -602,7 +602,7 @@ public class DefaultObjectBridge
             map = codeMap.get( identifiableObject.getClass() );
         }
 
-        if ( !preheatCache && entity == null )
+        if ( !preheatCache && entity == null && identifiableObject.haveUniqueCode() )
         {
             entity = manager.getByCode( identifiableObject.getClass(), identifiableObject.getCode() );
 
@@ -630,7 +630,7 @@ public class DefaultObjectBridge
             map = nameMap.get( identifiableObject.getClass() );
         }
 
-        if ( !preheatCache && identifiableObject.haveUniqueNames() && entity == null )
+        if ( !preheatCache && entity == null && identifiableObject.haveUniqueNames() )
         {
             entity = manager.getByName( identifiableObject.getClass(), identifiableObject.getName() );
 
