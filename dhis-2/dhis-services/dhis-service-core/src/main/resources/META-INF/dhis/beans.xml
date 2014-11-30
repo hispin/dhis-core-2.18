@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
-    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
   <context:component-scan base-package="org.hisp.dhis.schema" />
 
@@ -926,7 +926,7 @@
   <bean id="org.hisp.dhis.i18n.I18nManager" class="org.hisp.dhis.i18n.ui.DefaultI18nManager">
     <property name="resourceBundleManager" ref="org.hisp.dhis.i18n.ui.resourcebundle.ResourceBundleManager" />
     <property name="localeManager">
-      <ref local="org.hisp.dhis.i18n.locale.LocaleManager" />
+      <ref bean="org.hisp.dhis.i18n.locale.LocaleManager" />
     </property>
   </bean>
 
@@ -1046,17 +1046,17 @@
     <property name="arguments">
       <list>
         <list>
-          <ref local="org.hisp.dhis.startup.InitTableAlteror" />
-          <ref local="org.hisp.dhis.startup.TableAlteror" />
-          <ref local="org.hisp.dhis.startup.MapViewUpgrader" />
-          <ref local="org.hisp.dhis.common.IdentityPopulator" />
-          <ref local="org.hisp.dhis.period.PeriodTypePopulator" />
-          <ref local="org.hisp.dhis.startup.TableCreator" />
-          <ref local="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator" />
-          <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />
-          <ref local="org.hisp.dhis.startup.ExpressionUpgrader" />
-          <ref local="org.hisp.dhis.startup.ConfigurationPopulator" />
-          <ref local="org.hisp.dhis.startup.I18nLocalePopulator" />
+          <ref bean="org.hisp.dhis.startup.InitTableAlteror" />
+          <ref bean="org.hisp.dhis.startup.TableAlteror" />
+          <ref bean="org.hisp.dhis.startup.MapViewUpgrader" />
+          <ref bean="org.hisp.dhis.common.IdentityPopulator" />
+          <ref bean="org.hisp.dhis.period.PeriodTypePopulator" />
+          <ref bean="org.hisp.dhis.startup.TableCreator" />
+          <ref bean="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator" />
+          <ref bean="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />
+          <ref bean="org.hisp.dhis.startup.ExpressionUpgrader" />
+          <ref bean="org.hisp.dhis.startup.ConfigurationPopulator" />
+          <ref bean="org.hisp.dhis.startup.I18nLocalePopulator" />
         </list>
       </list>
     </property>
@@ -1233,43 +1233,43 @@
     <property name="arguments">
       <list>
         <list>
-          <ref local="org.hisp.dhis.dataapproval.DataApprovalDeletionHandler" />
-          <ref local="org.hisp.dhis.dataelement.DataElementDeletionHandler" />
-          <ref local="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" />
-          <ref local="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler" />
-          <ref local="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler" />
-          <ref local="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler" />
-          <ref local="org.hisp.dhis.dataset.DataSetDeletionHandler" />
-          <ref local="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler" />
-          <ref local="org.hisp.dhis.dataset.SectionDeletionHandler" />
-          <ref local="org.hisp.dhis.expression.ExpressionDeletionHandler" />
-          <ref local="org.hisp.dhis.indicator.IndicatorDeletionHandler" />
-          <ref local="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" />
-          <ref local="org.hisp.dhis.indicator.IndicatorGroupSetDeletionHandler" />
-          <ref local="org.hisp.dhis.minmax.MinMaxDataElementDeletionHandler" />
-          <ref local="org.hisp.dhis.validation.ValidationRuleDeletionHandler" />
-          <ref local="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler" />
-          <ref local="org.hisp.dhis.datavalue.DataValueDeletionHandler" />
-          <ref local="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler" />
-          <ref local="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler" />
-          <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler" />
-          <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler" />
-          <ref local="org.hisp.dhis.user.UserDeletionHandler" />
-          <ref local="org.hisp.dhis.user.UserGroupDeletionHandler" />
-          <ref local="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler" />
-          <ref local="org.hisp.dhis.user.UserSettingDeletionHandler" />
-          <ref local="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" />
-          <ref local="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" />
-          <ref local="org.hisp.dhis.dataelement.CategoryOptionGroupDeletionHandler" />
-          <ref local="org.hisp.dhis.dataelement.CategoryOptionGroupSetDeletionHandler" />
-          <ref local="org.hisp.dhis.configuration.ConfigurationDeletionHandler" />
-          <ref local="org.hisp.dhis.message.MessageConversationDeletionHandler" />
-          <ref local="org.hisp.dhis.translation.TranslationDeletionHandler" />
-          <ref local="org.hisp.dhis.attribute.AttributeValueDeletionHandler" />
-          <ref local="org.hisp.dhis.mapping.MapLegendSetDeletionHandler" />
-          <ref local="org.hisp.dhis.mapping.MapViewDeletionHandler" />
-          <ref local="org.hisp.dhis.sms.SMSCommandDeletionHandler" />
-          <ref local="org.hisp.dhis.sms.SMSCodesDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataapproval.DataApprovalDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataelement.DataElementDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataset.DataSetDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataset.SectionDeletionHandler" />
+          <ref bean="org.hisp.dhis.expression.ExpressionDeletionHandler" />
+          <ref bean="org.hisp.dhis.indicator.IndicatorDeletionHandler" />
+          <ref bean="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" />
+          <ref bean="org.hisp.dhis.indicator.IndicatorGroupSetDeletionHandler" />
+          <ref bean="org.hisp.dhis.minmax.MinMaxDataElementDeletionHandler" />
+          <ref bean="org.hisp.dhis.validation.ValidationRuleDeletionHandler" />
+          <ref bean="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler" />
+          <ref bean="org.hisp.dhis.datavalue.DataValueDeletionHandler" />
+          <ref bean="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler" />
+          <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler" />
+          <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler" />
+          <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler" />
+          <ref bean="org.hisp.dhis.user.UserDeletionHandler" />
+          <ref bean="org.hisp.dhis.user.UserGroupDeletionHandler" />
+          <ref bean="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler" />
+          <ref bean="org.hisp.dhis.user.UserSettingDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataelement.CategoryOptionGroupDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataelement.CategoryOptionGroupSetDeletionHandler" />
+          <ref bean="org.hisp.dhis.configuration.ConfigurationDeletionHandler" />
+          <ref bean="org.hisp.dhis.message.MessageConversationDeletionHandler" />
+          <ref bean="org.hisp.dhis.translation.TranslationDeletionHandler" />
+          <ref bean="org.hisp.dhis.attribute.AttributeValueDeletionHandler" />
+          <ref bean="org.hisp.dhis.mapping.MapLegendSetDeletionHandler" />
+          <ref bean="org.hisp.dhis.mapping.MapViewDeletionHandler" />
+          <ref bean="org.hisp.dhis.sms.SMSCommandDeletionHandler" />
+          <ref bean="org.hisp.dhis.sms.SMSCodesDeletionHandler" />
         </list>
       </list>
     </property>
@@ -1278,7 +1278,6 @@
   <!-- AOP definitions -->
 
   <aop:config>
-
     <aop:aspect ref="deletionInterceptor">
       <aop:before pointcut="execution( * org.hisp.dhis.dataapproval.DataApprovalLevelService.delete*(..) )" method="intercept" />
       <aop:before pointcut="execution( * org.hisp.dhis.dataelement.DataElementService.delete*(..) )" method="intercept" />
