@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
 	<!-- Store definitions -->
 
@@ -399,8 +399,8 @@
 		<property name="arguments">
 			<list>
 				<list>
-					<ref local="org.hisp.dhis.trackedentity.startup.TableAlteror" />
-					<ref local="org.hisp.dhis.common.TrackerIdentityPopulator" />
+					<ref bean="org.hisp.dhis.trackedentity.startup.TableAlteror" />
+					<ref bean="org.hisp.dhis.common.TrackerIdentityPopulator" />
 				</list>
 			</list>
 		</property>
@@ -517,27 +517,23 @@
 		<property name="arguments">
 			<list>
 				<list>
-					<ref
-						local="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler" />
-					<ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler" />
-					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
-					<ref local="org.hisp.dhis.program.ProgramStageDeletionHandler" />
-					<ref local="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />
-					<ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler" />
-					<ref local="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler" />
-					<ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler" />
-					<ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler" />
-					<ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
-					<ref local="org.hisp.dhis.program.ProgramIndicatorDeletionHandler" />
-					<ref local="org.hisp.dhis.trackedentity.TrackedEntityFormDeletionHandler" />
-					<ref local="org.hisp.dhis.eventchart.EventChartDeletionHandler" />
-					<ref local="org.hisp.dhis.eventreport.EventReportDeletionHandler" />
+					<ref bean="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler" />
+					<ref bean="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler" />
+					<ref bean="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
+					<ref bean="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler" />
+					<ref bean="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramStageDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramInstanceDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramValidationDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramIndicatorDeletionHandler" />
+					<ref bean="org.hisp.dhis.trackedentity.TrackedEntityFormDeletionHandler" />
+					<ref bean="org.hisp.dhis.eventchart.EventChartDeletionHandler" />
+					<ref bean="org.hisp.dhis.eventreport.EventReportDeletionHandler" />
 				</list>
 			</list>
 		</property>

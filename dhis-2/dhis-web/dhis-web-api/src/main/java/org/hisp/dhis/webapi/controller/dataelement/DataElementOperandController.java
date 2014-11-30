@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.schema.descriptors.DataElementOperandSchemaDescriptor;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
@@ -55,7 +56,7 @@ import java.util.List;
 public class DataElementOperandController extends AbstractCrudController<DataElementOperand>
 {
     @Autowired
-    private DataElementCategoryService categoryService;
+    private DataElementCategoryService dataElementCategoryService;
 
     @Override
     protected List<DataElementOperand> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
@@ -86,12 +87,12 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
             if ( deGroup != null )
             {
                 DataElementGroup dataElementGroup = manager.get( DataElementGroup.class, deGroup );
-                dataElementOperands = new ArrayList<>( categoryService.getFullOperands( dataElementGroup.getMembers() ) );
+                dataElementOperands = new ArrayList<>( dataElementCategoryService.getFullOperands( dataElementGroup.getMembers() ) );
             }
             else
             {
                 List<DataElement> dataElements = new ArrayList<>( manager.getAllSorted( DataElement.class ) );
-                dataElementOperands = new ArrayList<>( categoryService.getFullOperands( dataElements ) );
+                dataElementOperands = new ArrayList<>( dataElementCategoryService.getFullOperands( dataElements ) );
             }
         }
 

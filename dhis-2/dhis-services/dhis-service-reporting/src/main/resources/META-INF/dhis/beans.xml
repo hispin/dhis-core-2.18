@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:aop="http://www.springframework.org/schema/aop"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
   <!-- ReportTable -->
 
@@ -231,7 +231,7 @@
     <property name="arguments">
       <list>
         <list>
-          <ref local="org.hisp.dhis.common.ReportingIdentityPopulator" />
+          <ref bean="org.hisp.dhis.common.ReportingIdentityPopulator" />
         </list>
       </list>
     </property>
@@ -262,11 +262,11 @@
     <property name="arguments">
       <list>
         <list>
-          <ref local="org.hisp.dhis.report.ReportDeletionHandler" />
-          <ref local="org.hisp.dhis.reporttable.ReportTableDeletionHandler" />
-          <ref local="org.hisp.dhis.chart.ChartDeletionHandler" />
-          <ref local="org.hisp.dhis.interpretation.InterpretationDeletionHandler" />
-          <ref local="org.hisp.dhis.dashboard.impl.DashboardItemDeletionHandler" />
+          <ref bean="org.hisp.dhis.report.ReportDeletionHandler" />
+          <ref bean="org.hisp.dhis.reporttable.ReportTableDeletionHandler" />
+          <ref bean="org.hisp.dhis.chart.ChartDeletionHandler" />
+          <ref bean="org.hisp.dhis.interpretation.InterpretationDeletionHandler" />
+          <ref bean="org.hisp.dhis.dashboard.impl.DashboardItemDeletionHandler" />
         </list>
       </list>
     </property>
