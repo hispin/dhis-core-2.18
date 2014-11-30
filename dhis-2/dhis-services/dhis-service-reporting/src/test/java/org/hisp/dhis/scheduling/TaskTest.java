@@ -28,20 +28,21 @@ package org.hisp.dhis.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.period.BiMonthlyPeriodType;
-import org.hisp.dhis.period.FinancialJulyPeriodType;
+import org.hisp.dhis.period.FinancialOctoberPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.SixMonthlyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -57,7 +58,7 @@ public class TaskTest
         periodTypes.add( QuarterlyPeriodType.NAME );
         periodTypes.add( SixMonthlyPeriodType.NAME );
         periodTypes.add( YearlyPeriodType.NAME );
-        periodTypes.add( FinancialJulyPeriodType.NAME );
+        periodTypes.add( FinancialOctoberPeriodType.NAME );
         
         DataMartTask dataMartTask = new DataMartTask();
 
