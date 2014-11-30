@@ -66,6 +66,12 @@ public class ConfigurationController
         return setModel( model, configurationService.getConfiguration().getOfflineOrganisationUnitLevel() );
     }
 
+    @RequestMapping( value = "/infrastructuralIndicators", method = RequestMethod.GET )
+    private String getInfrastructuralIndicators( Model model, HttpServletRequest request )
+    {
+        return setModel( model, configurationService.getConfiguration().getInfrastructuralIndicators() );
+    }
+
     @RequestMapping( value = "/infrastructuralDataElements", method = RequestMethod.GET )
     private String getInfrastructuralDataElements( Model model, HttpServletRequest request )
     {

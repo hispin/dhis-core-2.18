@@ -5331,7 +5331,11 @@ Ext.onReady( function() {
 		// Stores
 
 		infrastructuralDataElementValuesStore = Ext.create('Ext.data.Store', {
-			fields: ['name', 'value']
+			fields: ['name', 'value'],
+            sorters: [{
+                property: 'name',
+                direction: 'ASC'
+            }]
 		});
 
 		// Components
@@ -6114,7 +6118,11 @@ Ext.onReady( function() {
 		// Stores
 
 		infrastructuralDataElementValuesStore = Ext.create('Ext.data.Store', {
-			fields: ['name', 'value']
+			fields: ['name', 'value'],
+            sorters: [{
+                property: 'name',
+                direction: 'ASC'
+            }]
 		});
 
 		// Components
@@ -7021,7 +7029,11 @@ Ext.onReady( function() {
 		});
 
 		infrastructuralDataElementValuesStore = Ext.create('Ext.data.Store', {
-			fields: ['name', 'value']
+			fields: ['name', 'value'],
+            sorters: [{
+                property: 'name',
+                direction: 'ASC'
+            }]
 		});
 
 		legendsByLegendSetStore = Ext.create('Ext.data.Store', {
@@ -9020,7 +9032,7 @@ Ext.onReady( function() {
             listeners: {
                 resize: function() {
                     var width = this.getWidth();
-                    
+
                     if (width < 800 && this.fullSize) {
                         this.toggleCmp(false);
                         this.fullSize = false;
@@ -9500,14 +9512,49 @@ Ext.onReady( function() {
                                             }
                                         });
 
+                                        // infrastructural indicator group
+                                        requests.push({
+                                            url: init.contextPath + '/api/configuration/infrastructuralIndicators.json',
+                                            success: function(r) {
+                                                var obj = Ext.decode(r.responseText);
+                                                init.systemSettings.infrastructuralIndicatorGroup = Ext.isObject(obj) ? obj : null;
+
+                                                if (!Ext.isObject(obj)) {
+                                                    Ext.Ajax.request({
+                                                        url: init.contextPath + '/api/indicatorGroups.json?fields=id,name,indicators[id,name]&pageSize=1',
+                                                        success: function(r) {
+                                                            r = Ext.decode(r.responseText);
+                                                            init.systemSettings.infrastructuralIndicatorGroup = r.indicatorGroups ? r.indicatorGroups[0] : null;
+                                                        },
+                                                        callback: fn
+                                                    });
+                                                }
+                                                else {
+                                                    fn();
+                                                }
+                                            }
+                                        });
+
                                         // infrastructural data element group
                                         requests.push({
                                             url: init.contextPath + '/api/configuration/infrastructuralDataElements.json',
                                             success: function(r) {
                                                 var obj = Ext.decode(r.responseText);
-
                                                 init.systemSettings.infrastructuralDataElementGroup = Ext.isObject(obj) ? obj : null;
-                                                fn();
+
+                                                if (!Ext.isObject(obj)) {
+                                                    Ext.Ajax.request({
+                                                        url: init.contextPath + '/api/dataElementGroups.json?fields=id,name,dataElements[id,name]&pageSize=1',
+                                                        success: function(r) {
+                                                            r = Ext.decode(r.responseText);
+                                                            init.systemSettings.infrastructuralDataElementGroup = r.dataElementGroups ? r.dataElementGroups[0] : null;
+                                                        },
+                                                        callback: fn
+                                                    });
+                                                }
+                                                else {
+                                                    fn();
+                                                }
                                             }
                                         });
 
@@ -9517,7 +9564,7 @@ Ext.onReady( function() {
                                             success: function(r) {
                                                 var obj = Ext.decode(r.responseText);
 
-                                                init.systemSettings.infrastructuralPeriodType = Ext.isObject(obj) ? obj : null;
+                                                init.systemSettings.infrastructuralPeriodType = Ext.isObject(obj) ? obj : {id: 'Yearly', code: 'Yearly', name: 'Yearly'};
                                                 fn();
                                             }
                                         });

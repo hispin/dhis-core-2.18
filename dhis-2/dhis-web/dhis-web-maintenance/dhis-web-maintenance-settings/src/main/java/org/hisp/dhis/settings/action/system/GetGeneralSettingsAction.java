@@ -32,6 +32,8 @@ import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -65,6 +67,13 @@ public class GetGeneralSettingsAction
     public void setConfigurationService( ConfigurationService configurationService )
     {
         this.configurationService = configurationService;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
 
     private DataElementService dataElementService;
@@ -123,6 +132,13 @@ public class GetGeneralSettingsAction
     public Collection<String> getAggregationStrategies()
     {
         return aggregationStrategies;
+    }
+    
+    private List<IndicatorGroup> indicatorGroups;
+    
+    public List<IndicatorGroup> getIndicatorGroups()
+    {
+        return indicatorGroups;
     }
 
     private List<DataElementGroup> dataElementGroups;
@@ -186,6 +202,10 @@ public class GetGeneralSettingsAction
 
             offlineOrganisationUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size );
         }
+        
+        indicatorGroups = new ArrayList<>( indicatorService.getAllIndicatorGroups() );
+        
+        Collections.sort( indicatorGroups, IdentifiableObjectNameComparator.INSTANCE );
 
         dataElementGroups = new ArrayList<>( dataElementService.getAllDataElementGroups() );
 

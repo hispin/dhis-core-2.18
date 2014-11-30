@@ -181,17 +181,53 @@ Ext.onReady( function() {
 
 	GIS.core.createSelectHandlers = function(gis, layer) {
 		var isRelocate = !!GIS.app ? !!gis.init.user.isAdmin : false,
-			options = {},
 			infrastructuralPeriod,
+            destroyDataPopups,
 			defaultHoverSelect,
 			defaultHoverUnselect,
-			defaultClickSelect,
+            defaultLeftClickSelect,
+			defaultRightClickSelect,
             selectHandlers,
 			dimConf = gis.conf.finals.dimension,
             defaultHoverWindow,
             eventWindow,
             isBoundary = layer.id === 'boundary',
             isEvent = layer.id === 'event';
+
+        layer.dataPopups = [];
+
+        destroyDataPopups = function() {
+            if (layer.dataPopups) {
+                for (var i = 0, popup; i < layer.dataPopups.length; i++) {
+                    popup = layer.dataPopups[i];
+
+                    if (popup && popup.destroy) {
+                        popup.destroy();
+                        popup = null;
+                        layer.dataPopups[i] = null;
+                    }
+                }
+
+                layer.dataPopups = Ext.clean(layer.dataPopups);
+            }
+        };
+
+        layer.onMouseDown = function(e) {
+            if (OpenLayers.Event.isRightClick(e)) {
+                defaultRightClickSelect(layer.getFeatureFromEvent(e), e);
+            }
+            else {
+                defaultLeftClickSelect(layer.getFeatureFromEvent(e), e);
+            }
+        };
+
+        layer.registerMouseDownEvent = function() {
+            layer.events.register('mousedown', null, layer.onMouseDown);
+        };
+
+        layer.unregisterMouseDownEvent = function() {
+            layer.events.unregister('mousedown', null, layer.onMouseDown);
+        };
 
 		defaultHoverSelect = function fn(feature) {
             if (isBoundary) {
@@ -230,13 +266,168 @@ Ext.onReady( function() {
 				centerRegionY = gis.viewport.centerRegion.getPosition()[1] + (GIS.app ? 32 : 0);
 
 			defaultHoverWindow.setPosition(centerRegionCenterX - (defaultHoverWindow.getWidth() / 2), centerRegionY);
+
+            layer.registerMouseDownEvent();
 		};
 
 		defaultHoverUnselect = function fn(feature) {
 			defaultHoverWindow.destroy();
+
+            // remove mouse click event
+            layer.unregisterMouseDownEvent();
+
+            // destroy popups
+            //destroyDataPopups();
 		};
 
-		defaultClickSelect = function fn(feature) {
+        defaultLeftClickSelect = function fn(feature, e) {
+            var generator = gis.init.periodGenerator,
+                periodType = gis.init.systemSettings.infrastructuralPeriodType.name,
+                attr = feature.attributes,
+                iig = gis.init.systemSettings.infrastructuralIndicatorGroup || gis.init.systemSettings.indicatorGroups[0] || {},
+                ideg = gis.init.systemSettings.infrastructuralDataElementGroup || {},
+
+                indicators = iig.indicators || [],
+                dataElements = ideg.dataElements || [],
+                data = [].concat(indicators, dataElements),
+                period = generator.filterFuturePeriodsExceptCurrent(generator.generateReversedPeriods(periodType))[0],
+                paramString = '?',
+                showWindow,
+                success,
+                failure,
+                getData,
+                getParamString;
+
+            showWindow = function(html) {
+                destroyDataPopups();
+
+                win = Ext.create('Ext.window.Window', {
+                    bodyStyle: 'background-color: #fff; padding: 5px; line-height: 13px',
+                    autoScroll: true,
+                    closeAction: 'destroy',
+                    title: 'Infrastructural data',
+                    resizable: false,
+                    html: html,
+                    listeners: {
+                        show: function() {
+                            var winHeight = this.getHeight(),
+                                viewportHeight = gis.viewport.getHeight(),
+                                diff = (winHeight + e.y) - viewportHeight;
+
+                            if (diff > 0) {
+                                this.setHeight(winHeight - diff - 5);
+                                this.setWidth(this.getWidth() + 18);
+                            }
+                        }
+                    }
+                });
+
+                win.showAt(e.x + 20, e.y);
+
+                layer.dataPopups.push(win);
+            };
+
+            success = function(r) {
+                var html = '',
+                    records = [],
+                    dxIndex,
+                    valueIndex,
+                    win;
+
+                if (r.rows && r.rows.length) {
+
+                    // index
+                    for (var i = 0; i < r.headers.length; i++) {
+                        if (r.headers[i].name === 'dx') {
+                            dxIndex = i;
+                        }
+
+                        if (r.headers[i].name === 'value') {
+                            valueIndex = i;
+                        }
+                    }
+
+                    // records
+                    for (var i = 0; i < r.rows.length; i++) {
+                        records.push({
+                            name: r.metaData.names[r.rows[i][dxIndex]],
+                            value: r.rows[i][valueIndex]
+                        });
+                    }
+
+                    gis.util.array.sort(records);
+
+                    // html
+                    html += '<div style="font-weight: bold; color: #333">' + attr.name + '</div>';
+                    html += '<div style="font-weight: bold; color: #333; padding-bottom: 5px">' + r.metaData.names[period.iso] + '</div>';
+
+                    for (var i = 0; i < records.length; i++) {
+                        html += records[i].name + ': ' + '<span style="color:#333">' + records[i].value + '</span>' + (i < records.length - 1 ? '<br/>' : '');
+                    }
+                }
+                else {
+                    html = 'No data found for<br/><br/>Indicators in group: <span style="color:#333">' + iig.name + '</span>' +
+                           '<br/>Data elements in group: <span style="color:#333">' + ideg.name + '</span>' +
+                           '<br/>Period: <span style="color:#333">' + period.name + '</span>' +
+                           '<br/><br/>To change groups, please go to general settings.';
+                }
+
+                showWindow(html);
+            };
+
+            failure = function(r) {
+                console.log(r);
+            };
+
+            getData = function(paramString) {
+                if (GIS.plugin && !GIS.app) {
+                    Ext.data.JsonP.request({
+                        url: gis.init.contextPath + '/api/analytics.jsonp' + paramString,
+                        success: success,
+                        failure: failure
+                    });
+                }
+                else {
+                    Ext.Ajax.request({
+                        url: gis.init.contextPath + '/api/analytics.json' + paramString,
+                        disableCaching: false,
+                        success: function(r) {
+                            success(Ext.decode(r.responseText));
+                        },
+                        failure: failure
+                    });
+                }
+            };
+
+            getParamString = function(data) {
+
+                // data
+                paramString += 'dimension=dx:';
+
+                for (var i = 0; i < data.length; i++) {
+                    paramString += data[i].id + (i < data.length - 1 ? ';' : '');
+                }
+
+                // period
+                paramString += '&filter=pe:' + period.iso;
+
+                // orgunit
+                paramString += '&dimension=ou:' + attr.id;
+
+                getData(paramString);
+            };
+
+            // init
+            if (!data.length) {
+                showWindow('No indicator or data element groups found.');
+                return;
+            }
+
+            getParamString(data);
+
+        };
+
+		defaultRightClickSelect = function fn(feature) {
 			var showInfo,
 				showRelocate,
 				drill,
@@ -293,7 +484,7 @@ Ext.onReady( function() {
 			// Infrastructural data
 			showInfo = function() {
 				Ext.Ajax.request({
-					url: gis.init.contextPath + '/api/organisationUnits/' + att.id + '.json?links=false',
+					url: gis.init.contextPath + '/api/organisationUnits/' + att.id + '.json?fields=id,name,code,address,email,phoneNumber,coordinates,parent[id,name],organisationUnitGroups[id,name]',
 					success: function(r) {
 						var ou = Ext.decode(r.responseText);
 
@@ -343,7 +534,7 @@ Ext.onReady( function() {
 
                                         if (Ext.isString(ou.coordinates)) {
                                             var co = ou.coordinates.replace("[","").replace("]","").replace(",",", ");
-											a.push({html: GIS.i18n.coordinate, cls: 'gis-panel-html-title'}, {html: co, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+											a.push({html: GIS.i18n.coordinates, cls: 'gis-panel-html-title'}, {html: co, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
                                         }
 
                                         if (Ext.isArray(ou.organisationUnitGroups) && ou.organisationUnitGroups.length) {
@@ -406,52 +597,68 @@ Ext.onReady( function() {
 												select: function(cmp) {
 													var period = cmp.getValue(),
 														url = gis.init.contextPath + '/api/analytics.json?',
-														group = gis.init.systemSettings.infrastructuralDataElementGroup;
+                                                        iig = gis.init.systemSettings.infrastructuralIndicatorGroup || {},
+                                                        ideg = gis.init.systemSettings.infrastructuralDataElementGroup || {},
 
-													if (group && group.dataElements) {
-														url += 'dimension=dx:';
+                                                        indicators = iig.indicators || [],
+                                                        dataElements = ideg.dataElements || [],
+                                                        data = [].concat(indicators, dataElements),
+                                                        paramString = '';
 
-														for (var i = 0; i < group.dataElements.length; i++) {
-															url += group.dataElements[i].id;
-															url += i < group.dataElements.length - 1 ? ';' : '';
-														}
-													}
+                                                    // data
+                                                    paramString += 'dimension=dx:';
 
-													url += '&filter=pe:' + period;
-													url += '&filter=ou:' + att.id;
+                                                    for (var i = 0; i < data.length; i++) {
+                                                        paramString += data[i].id + (i < data.length - 1 ? ';' : '');
+                                                    }
+
+                                                    // period
+                                                    paramString += '&filter=pe:' + period;
+
+                                                    // orgunit
+                                                    paramString += '&dimension=ou:' + att.id;
 
 													Ext.Ajax.request({
-														url: url,
+														url: url + paramString,
 														success: function(r) {
-															var response = Ext.decode(r.responseText),
-																data = [];
+                                                            var records = [];
 
-															if (Ext.isArray(response.rows)) {
-																for (var i = 0; i < response.rows.length; i++) {
-																	data.push({
-																		name: response.metaData.names[response.rows[i][0]],
-																		value: response.rows[i][1]
-																	});
-																}
-															}
+                                                            r = Ext.decode(r.responseText);
 
-															layer.widget.infrastructuralDataElementValuesStore.loadData(data);
+                                                            if (!r.rows && r.rows.length) {
+                                                                return;
+                                                            }
+                                                            else {
+                                                                // index
+                                                                for (var i = 0; i < r.headers.length; i++) {
+                                                                    if (r.headers[i].name === 'dx') {
+                                                                        dxIndex = i;
+                                                                    }
+
+                                                                    if (r.headers[i].name === 'value') {
+                                                                        valueIndex = i;
+                                                                    }
+                                                                }
+
+                                                                // records
+                                                                for (var i = 0; i < r.rows.length; i++) {
+                                                                    records.push({
+                                                                        name: r.metaData.names[r.rows[i][dxIndex]],
+                                                                        value: parseFloat(r.rows[i][valueIndex])
+                                                                    });
+                                                                }
+
+                                                                layer.widget.infrastructuralDataElementValuesStore.loadData(records);
+                                                            }
 														}
 													});
-
-													//layer.widget.infrastructuralDataElementValuesStore.load({
-														//params: {
-															//periodId: infrastructuralPeriod,
-															//organisationUnitId: att.internalId
-														//}
-													//});
 												}
 											}
 										},
 										{
 											xtype: 'grid',
-											cls: 'gis-grid',
-											height: 300, //todo
+											cls: 'gis-grid plain',
+											height: 313, //todo
 											width: 258,
 											scroll: 'vertical',
 											columns: [
@@ -635,14 +842,8 @@ Ext.onReady( function() {
 			menu.showAt([gis.olmap.mouseMove.x, gis.olmap.mouseMove.y]);
 		};
 
-		options = {
-            onHoverSelect: defaultHoverSelect,
-            onHoverUnselect: defaultHoverUnselect,
-            onClickSelect: defaultClickSelect
-        };
-
 		if (isEvent) {
-			options.onClickSelect = function fn(feature) {
+			defaultLeftClickSelect = function fn(feature) {
                 var ignoreKeys = ['label', 'value', 'nameColumnMap', 'psi', 'ps', 'longitude', 'latitude', 'eventdate', 'ou', 'oucode', 'ouname', 'popupText'],
                     attributes = feature.attributes,
                     map = attributes.nameColumnMap,
@@ -673,6 +874,7 @@ Ext.onReady( function() {
 
                 eventWindow = Ext.create('Ext.window.Window', {
                     title: 'Event',
+                    title: 'Event',
                     layout: 'fit',
                     resizable: false,
                     bodyStyle: 'background-color:#fff; padding:5px',
@@ -695,7 +897,10 @@ Ext.onReady( function() {
             };
 		}
 
-		selectHandlers = new OpenLayers.Control.newSelectFeature(layer, options);
+		selectHandlers = new OpenLayers.Control.newSelectFeature(layer, {
+            onHoverSelect: defaultHoverSelect,
+            onHoverUnselect: defaultHoverUnselect
+        });
 
 		gis.olmap.addControl(selectHandlers);
 		selectHandlers.activate();
@@ -1784,6 +1989,11 @@ Ext.onReady( function() {
                     gis.viewport.shareButton.enable();
 				}
 			}
+
+            // mouse events
+            if (layer.unregisterMouseDownEvent) {
+                layer.unregisterMouseDownEvent();
+            }
 		};
 
 		loader = {
@@ -2715,6 +2925,7 @@ Ext.onReady( function() {
 				}
 
 				key = key || 'name';
+                direction = direction || 'ASC';
 
 				array.sort( function(a, b) {
 

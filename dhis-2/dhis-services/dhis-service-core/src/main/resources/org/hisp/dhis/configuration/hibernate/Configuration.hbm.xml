@@ -20,6 +20,9 @@
     <many-to-one name="offlineOrganisationUnitLevel" class="org.hisp.dhis.organisationunit.OrganisationUnitLevel"
         column="offlineorgunitlevelid" foreign-key="fk_configuration_offline_orgunit_level" />
 
+    <many-to-one name="infrastructuralIndicators" class="org.hisp.dhis.indicator.IndicatorGroup"
+        column="infrastructuralindicatorsid" foreign-key="fk_configuration_infrastructural_indicators" />
+
     <many-to-one name="infrastructuralDataElements" class="org.hisp.dhis.dataelement.DataElementGroup"
         column="infrastructuraldataelementsid" foreign-key="fk_configuration_infrastructural_dataelements" />
 

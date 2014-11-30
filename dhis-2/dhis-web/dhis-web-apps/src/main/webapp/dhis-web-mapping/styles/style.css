@@ -996,6 +996,9 @@ gis-combo .x-form-item-label {
 .gis-grid .x-grid-row .x-grid-cell { /* remove blurry borders */
 	border-top: 0 none;
 }
+.gis-grid.plain .x-grid-row .x-grid-cell {
+	border-style: none;
+}
 
 .gis-grid .link,
 .gis-grid .link * {
