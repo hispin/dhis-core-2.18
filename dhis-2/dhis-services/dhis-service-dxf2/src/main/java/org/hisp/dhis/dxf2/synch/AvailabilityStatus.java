@@ -28,42 +28,45 @@ package org.hisp.dhis.dxf2.synch;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 
 /**
  * @author Lars Helge Overland
  */
-@XmlRootElement(name = "availabilityStatus")
+@JacksonXmlRootElement( localName = "availabilityStatus", namespace = DxfNamespaces.DXF_2_0 )
 public class AvailabilityStatus
 {
     private boolean available;
-    
+
     private String message;
-    
+
     protected AvailabilityStatus()
     {
     }
-    
+
     public AvailabilityStatus( boolean available, String message )
     {
         this.available = available;
         this.message = message;
     }
-    
+
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isAvailable()
     {
         return available;
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getMessage()
     {
         return message;
     }
-    
+
     @Override
     public String toString()
     {
