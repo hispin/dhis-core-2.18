@@ -154,8 +154,14 @@ public class DefaultFieldFilterService implements FieldFilterService
     private AbstractNode buildNode( FieldMap fieldMap, Class<?> klass, Object object )
     {
         Schema schema = schemaService.getDynamicSchema( klass );
+        return buildNode( fieldMap, klass, object, schema.getName() );
+    }
 
-        ComplexNode complexNode = new ComplexNode( schema.getName() );
+    private AbstractNode buildNode( FieldMap fieldMap, Class<?> klass, Object object, String nodeName )
+    {
+        Schema schema = schemaService.getDynamicSchema( klass );
+
+        ComplexNode complexNode = new ComplexNode( nodeName );
         complexNode.setNamespace( schema.getNamespace() );
 
         if ( object == null )
@@ -268,7 +274,7 @@ public class DefaultFieldFilterService implements FieldFilterService
 
                     for ( Object collectionObject : (Collection<?>) returnValue )
                     {
-                        Node node = buildNode( fieldValue, property.getItemKlass(), collectionObject );
+                        Node node = buildNode( fieldValue, property.getItemKlass(), collectionObject, property.getName() );
 
                         if ( !node.getChildren().isEmpty() )
                         {
