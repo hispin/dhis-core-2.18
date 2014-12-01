@@ -121,13 +121,14 @@ public class DefaultSchemaService implements SchemaService
             return schema;
         }
 
-        klass = ReflectionUtils.getRealClass( klass );
+        klass = propertyIntrospectorService.getConcreteClass( ReflectionUtils.getRealClass( klass ) );
 
         String name = getName( klass );
 
         schema = new Schema( klass, name, name + "s" );
         schema.setDisplayName( beautify( schema.getName() ) );
         schema.setPropertyMap( Maps.newHashMap( propertyIntrospectorService.getPropertiesMap( schema.getKlass() ) ) );
+        schema.setMetadata( false );
 
         updateSelf( schema );
 
@@ -198,6 +199,7 @@ public class DefaultSchemaService implements SchemaService
         {
             Property property = schema.getPropertyMap().get( "__self__" );
             schema.setName( property.getName() );
+            schema.setCollectionName( schema.getPlural() );
             schema.setNamespace( property.getNamespace() );
 
             schema.getPropertyMap().remove( "__self__" );

@@ -51,4 +51,7 @@ public interface PropertyIntrospectorService
      * @return Map with key property-name and value Property
      */
     Map<String, Property> getPropertiesMap( Class<?> klass );
+
+    // TODO should probably be moved out of PropertyIntrospectorService, useful other places also
+    Class<?> getConcreteClass( Class<?> klass );
 }

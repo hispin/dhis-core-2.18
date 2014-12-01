@@ -42,7 +42,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-@JacksonXmlRootElement( localName = "dimensionalObject", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement( localName = "dimension", namespace = DxfNamespaces.DXF_2_0 )
 public class BaseDimensionalObject
     extends BaseNameableObject implements DimensionalObject
 {

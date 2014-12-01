@@ -46,7 +46,7 @@ import java.util.Map;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractPropertyIntrospectorService 
+public abstract class AbstractPropertyIntrospectorService
     implements PropertyIntrospectorService
 {
     // simple alias map for our concrete implementations of the core interfaces.
@@ -79,6 +79,17 @@ public abstract class AbstractPropertyIntrospectorService
         }
 
         return classMapCache.get( klass );
+    }
+
+    @Override
+    public Class<?> getConcreteClass( Class<?> klass )
+    {
+        if ( BASE_ALIAS_MAP.containsKey( klass ) )
+        {
+            return BASE_ALIAS_MAP.get( klass );
+        }
+
+        return klass;
     }
 
     /**
