@@ -1,6 +1,7 @@
 CACHE MANIFEST
-# 2.15 $!systemInfo.revision
+# 2.18-SNAPSHOT $!systemInfo.revision
 # appcache for user: $username
+# system calendar: $keyCalendar
 
 NETWORK:
 *
@@ -105,3 +106,14 @@ images/rightarrow.png
 images/sms.png
 images/save.png
 style/style.css?_rev=$!{buildRevision}
+
+# Calendar
+../dhis-web-commons/javascripts/jQuery/calendars/css/jquery.calendars.picker.css?_rev=$!{buildRevision}
+
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.min.js?_rev=$!{buildRevision}
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.plus.min.js?_rev=$!{buildRevision}
+#if( $keyCalendar == "coptic" || $keyCalendar == "ethiopian" || $keyCalendar == "islamic"  || $keyCalendar == "julian" || $keyCalendar == "nepali" || $keyCalendar == "thai" )
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.${keyCalendar}.min.js?_rev=$!{buildRevision}">
+#end
+../dhis-web-commons/javascripts/dhis2/dhis2.period.js?_rev=$!{buildRevision}
+../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.picker.min.js?_rev=$!{buildRevision}
