@@ -12,6 +12,9 @@
     </id>
 
     <property name="code" type="text" />
+    
+    <property name="formula" type="text" />
+    
     <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
       foreign-key="fk_dataelement_dataelementid" />
       

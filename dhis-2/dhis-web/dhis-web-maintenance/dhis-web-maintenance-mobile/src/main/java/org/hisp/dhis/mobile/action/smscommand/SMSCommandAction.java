@@ -139,6 +139,18 @@ public class SMSCommandAction
         this.codes = codes;
     }
 
+    private Map<String, String> formulas = new HashMap<>();
+
+    public Map<String, String> getFormulas()
+    {
+        return formulas;
+    }
+
+    public void setFormulas( Map<String, String> formulas )
+    {
+        this.formulas = formulas;
+    }
+
     public ParserType[] getParserType()
     {
         return ParserType.values();
@@ -168,6 +180,11 @@ public class SMSCommandAction
                 else
                 {
                     codes.put( "" + x.getDataElement().getId() + x.getOptionId(), x.getCode() );
+                }
+
+                if ( x.getFormula() != null )
+                {
+                    formulas.put( "" + x.getDataElement().getId() + x.getOptionId(), x.getFormula() );
                 }
 
             }

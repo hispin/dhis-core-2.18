@@ -37,24 +37,24 @@ import java.util.Set;
 
 public class SMSCommand
 {
-    //Default message
-    
+    // Default message
+
     public static final String WRONG_FORMAT_MESSAGE = "Wrong format for command";
-    
+
     public static final String MORE_THAN_ONE_ORGUNIT_MESSAGE = "Found more than one org unit for this number. Please specify one organisation unit";
-    
+
     public static final String NO_USER_MESSAGE = "No user associated with this phone number. Please contact your supervisor.";
-    
+
     public static final String ALERT_FEEDBACK = "Your alert message sent";
-    
-    //Completeness method code
-    
+
+    // Completeness method code
+
     public static final int RECEIVE_ALL_DATAVALUE = 1;
-    
+
     public static final int RECEIVE_AT_LEAST_ONE_DATAVALUE = 2;
-    
+
     public static final int DO_NOT_MARK_COMPLETE = 3;
-    
+
     private int id;
 
     private String name;
@@ -64,46 +64,46 @@ public class SMSCommand
     private ParserType parserType;
 
     private String separator;
-    
-    //Dataset
+
+    // Dataset
 
     private DataSet dataset;
 
     private Set<SMSCode> codes;
 
     private String codeSeparator;
-    
-    //Usergroup
+
+    // Usergroup
 
     private UserGroup userGroup;
-    
-    //Program
-    
+
+    // Program
+
     private Program program;
 
     private Set<SMSSpecialCharacter> specialCharacters;
 
     private boolean currentPeriodUsedForReporting = false; // default is prev
-    
+
     private Integer completenessMethod;
-    
-    //Messages
-    
+
+    // Messages
+
     private String defaultMessage;
 
     private String receivedMessage;
-    
+
     private String wrongFormatMessage;
-    
+
     private String noUserMessage;
-    
+
     private String moreThanOneOrgUnitMessage;
-    
+
     private String successMessage;
-    
 
     public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
-        Set<SMSCode> codes, String codeSeparator, String defaultMessage, UserGroup userGroup, String receivedMessage, Set<SMSSpecialCharacter> specialCharacters )
+        Set<SMSCode> codes, String codeSeparator, String defaultMessage, UserGroup userGroup, String receivedMessage,
+        Set<SMSSpecialCharacter> specialCharacters )
     {
         super();
         this.name = name;

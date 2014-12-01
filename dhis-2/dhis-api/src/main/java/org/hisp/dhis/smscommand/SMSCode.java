@@ -42,6 +42,8 @@ public class SMSCode
     private TrackedEntityAttribute trackedEntityAttribute;
 
     private int optionId;
+    
+    private String formula;
 
     public SMSCode( String code, DataElement dataElement, int optionId )
     {
@@ -110,6 +112,14 @@ public class SMSCode
     {
         this.trackedEntityAttribute = trackedEntityAttribute;
     }
-    
-    
+
+    public String getFormula()
+    {
+        return formula;
+    }
+
+    public void setFormula( String formula )
+    {
+        this.formula = formula;
+    }
 }

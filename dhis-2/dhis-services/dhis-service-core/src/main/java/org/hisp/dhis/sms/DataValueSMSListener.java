@@ -47,6 +47,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -91,6 +92,8 @@ public class DataValueSMSListener
     private DataSetService dataSetService;
 
     private IncomingSmsService incomingSmsService;
+
+    private DataElementService dataElementService;
 
     @Transactional
     @Override
@@ -420,6 +423,77 @@ public class DataValueSMSListener
             }
         }
 
+        if ( code.getFormula() != null )
+        {
+            try
+            {
+
+                // +de
+                String formula = code.getFormula();
+
+                String targetDataElementId = formula.substring( 1, formula.length() );
+                String operation = String.valueOf( formula.charAt( 0 ) );
+
+                System.out.println( "Operation: " + operation );
+
+                DataElement targetDataElement = dataElementService.getDataElement( Integer
+                    .parseInt( targetDataElementId ) );
+
+                if ( targetDataElement == null )
+                {
+                    return false;
+                }
+
+                DataValue targetDataValue = dataValueService.getDataValue( targetDataElement, period, orgunit,
+                    dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+                int targetValue = 0;
+                boolean newTargetDataValue = false;
+                if ( targetDataValue == null )
+                {
+                    targetDataValue = new DataValue();
+                    targetDataValue.setCategoryOptionCombo( dataElementCategoryService
+                        .getDefaultDataElementCategoryOptionCombo() );
+                    targetDataValue.setSource( orgunit );
+                    targetDataValue.setDataElement( targetDataElement );
+                    targetDataValue.setPeriod( period );
+                    targetDataValue.setComment( "" );
+                    newTargetDataValue = true;
+                }
+                else
+                {
+                    targetValue = Integer.parseInt( targetDataValue.getValue() );
+                }
+
+                if ( operation.equals( "+" ) )
+                {
+                    targetValue = targetValue + Integer.parseInt( value );
+                }
+                else if ( operation.equals( "-" ) )
+                {
+                    targetValue = targetValue - Integer.parseInt( value );
+                }
+
+
+                targetDataValue.setValue( String.valueOf( targetValue ) );
+                targetDataValue.setLastUpdated( new java.util.Date() );
+                targetDataValue.setStoredBy( storedBy );
+                if ( newTargetDataValue )
+                {
+                    dataValueService.addDataValue( targetDataValue );
+                }
+                else
+                {
+                    dataValueService.updateDataValue( targetDataValue );
+                }
+
+            }
+            catch ( Exception e )
+            {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -586,14 +660,14 @@ public class DataValueSMSListener
         }
         else
         {
-            if ( codesWithoutDataValues.size() > 0 )
-            {
-                smsSender.sendMessage( reportBack + notInReport, sender );
-            }
-            else
-            {
-                smsSender.sendMessage( reportBack, sender );
-            }
+            // if ( codesWithoutDataValues.size() > 0 )
+            // {
+            // smsSender.sendMessage( reportBack + notInReport, sender );
+            // }
+            // else
+            // {
+            smsSender.sendMessage( reportBack, sender );
+            // }
         }
 
     }
@@ -711,4 +785,15 @@ public class DataValueSMSListener
     {
         this.incomingSmsService = incomingSmsService;
     }
+
+    public DataElementService getDataElementService()
+    {
+        return dataElementService;
+    }
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
 }
