@@ -56,7 +56,7 @@ public class EditSMSCommandForm
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private SMSCommandService smsCommandService;
 
     public void setSmsCommandService( SMSCommandService smsCommandService )
@@ -154,6 +154,14 @@ public class EditSMSCommandForm
             c.setCode( x.getString( "code" ) );
             c.setDataElement( dataElementService.getDataElement( x.getInt( "dataElementId" ) ) );
             c.setOptionId( x.getInt( "optionId" ) );
+            if ( !x.getString( "formula" ).trim().equals( "" ) )
+            {
+                c.setFormula( x.getString( "formula" ) );
+            }
+            else
+            {
+                c.setFormula( null );
+            }
             codeSet.add( c );
         }
 

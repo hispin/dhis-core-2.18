@@ -50,3 +50,49 @@ function removeSpecialCharactersForm( rowId )
 {
 	jQuery("[name=trSpecialCharacter" + rowId + "]").remove();
 }
+
+function openFormulaForm(displayName, index)
+{
+	$("#displayName").html(displayName);
+	$("#index").val(index);
+	
+	$("#removeButton").hide();
+	$('#targetDataElement option').prop('selected', false);
+	$('#operator option').prop('selected', false);
+	$("#selectedTargetDataElement").html($("#targetDataElement option:selected").text());
+	
+	var formulaText = $("#" + "formula" + index).val();
+
+	if (formulaText != "") {
+		var operator = formulaText.substring(0,1);
+		var dataElementId = formulaText.substring(1,formulaText.length);
+		
+		$("#removeButton").show();
+		$('#targetDataElement  option[value="' + dataElementId + '"]').prop("selected", true);
+		$('#operator  option[value="' + operator + '"]').prop("selected", true);
+		$("#selectedTargetDataElement").html($("#targetDataElement option:selected").text());
+	}
+	
+	dialog.dialog("option", "title", "Formula Form");
+	dialog.dialog("open");
+}
+	
+function collectFormula() {
+	var operator = $("#operator option:selected").text();
+	var deId = $("#targetDataElement option:selected").val();
+	var index = $("#index").val();
+	$("#addFormula" + index).val("Edit Formula");
+	$("#" + "formula" + index).val(operator + "" + deId);
+	dialog.dialog( "close" );
+}
+
+function closeFormulaForm() {
+	dialog.dialog( "close" );
+}
+
+function closeAndFormulaForm() {
+	var index = $("#index").val();
+	$("#" + "formula" + index).val("");
+	$("#addFormula" + index).val("Add Formula");
+	dialog.dialog( "close" );
+}

@@ -870,6 +870,7 @@
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="incomingSmsService" ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
 
   <bean id="org.hisp.dhis.sms.J2MEDataValueSMSListener" class="org.hisp.dhis.sms.J2MEDataValueSMSListener">

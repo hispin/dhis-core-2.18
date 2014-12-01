@@ -12,7 +12,8 @@
 		{
 			selectedDataOptions += '{"dataElementId" :' + document.getElementById('codeId'+i).value.split('.')[0] +  ','; 
 			selectedDataOptions += '"optionId" :' + document.getElementById('codeId'+i).value.split('.')[1] +  ','; 
-			selectedDataOptions += '"code" :"' + document.getElementById('codeValue'+i).value + '"},';
+			selectedDataOptions += '"code" :"' + document.getElementById('codeValue'+i).value + '",';
+			selectedDataOptions += '"formula" :"' + document.getElementById('formula'+i).value + '"},';
 		}
 		selectedDataOptions += ']}';
 		$("#codeDataelementOption").val(selectedDataOptions);
@@ -118,7 +119,15 @@
 		changeParserType( getFieldValue( 'parserType' ) );
 		validation( "updateSMSCommandForm" );
 		checkValueIsExist( "name", "validateSMSCommand.action", {id:"$selectedCommandID"});
+		
+		$("#targetDataElement").change( function() {
+			$("#selectedTargetDataElement").html($("#targetDataElement option:selected").text());
+		});
+		
 	});
+	
+
+	
 </script>
 
 <h3>$i18n.getString( "edit_command" )</h3>
@@ -235,6 +244,16 @@
 								<input type="hidden" id="codeId$index" name="codeId$index" value="$dataElement.id.$x.id"/>
 								<input type="text" id="codeValue$index" name="codeValue$index" class="{validate:{required:true}}" value='$!codes[$str]' onblur="checkDuplicatedCode(this.value, $index)"/>
 						   </td>
+						   <td>
+								#if($dataElement.type == "int" || $dataElement.type == "number")
+									#if ($formulas[$str])
+										<input type="button" name="addFormula$index" id="addFormula$index" value="Edit Formula" onclick="openFormulaForm('$dataElement.name $x.name', '$index')"/>
+									#else
+										<input type="button" name="addFormula$index" id="addFormula$index" value="Add Formula" onclick="openFormulaForm('$dataElement.name $x.name', '$index')"/>
+									#end
+								#end
+								<input type="hidden" id="formula$index" value='$!formulas[$str]'/>
+						   </td>
                        </tr>
 				#end
             #else
@@ -292,3 +311,45 @@
     <input type="button" style="width: 100px" onclick="prepSubmit()" value="$i18n.getString( 'save' )" />
     <input type="button" id="btnBack" name="btnBack" value="$i18n.getString('cancel')" style="width:8em" onclick="window.location.href='SMSCommands.action'"/>
 </form>
+
+<script type="text/javascript">
+var i18n_no_constant_to_select = '$encoder.jsEscape( $i18n.getString( "no_constant_to_select" ) , "'")';
+var i18n_no_dataelement_to_select = '$encoder.jsEscape( $i18n.getString( "no_dataelement_to_select" ) , "'")';
+var i18n_edit_numerator = '$encoder.jsEscape( $i18n.getString( "edit_numerator" ) , "'")';
+var i18n_edit_denominator = '$encoder.jsEscape( $i18n.getString( "edit_denominator" ) , "'")';
+
+jQuery( document ).ready( function(){
+
+	dialog = jQuery("#formula-form-container").dialog({
+		modal: true,
+		autoOpen: false,
+		minWidth: 500,
+		width: 500
+	});
+});
+</script>
+
+<div id="formula-form-container">
+	<select id="targetDataElement">
+		<option value="">Please select</option>
+		#foreach( $dataElement in $dataElements)
+			#if($dataElement.type == "int" || $dataElement.type == "number")
+				<option value="$dataElement.id">$dataElement.name</option>
+			#end
+		#end
+	<select/><br>
+	= <br>
+	<label id="selectedTargetDataElement"></label><br>
+	<select name="operator" id="operator">
+		<option value="">Please select</option>
+		<option value="+">+</option>
+		<option value="-">-</option>
+	<select><br>
+	<label id="displayName"></label><br>
+	<input type="hidden" id="index"/>
+	<div>
+		<input type="button" value="$i18n.getString( 'save' )" style="width:125px" onclick="collectFormula()"/>
+		<input type="button" value="$i18n.getString( 'cancel' )" style="width:125px" onclick="closeFormulaForm()"/>
+		<input type="button" name="removeButton" id="removeButton" value="$i18n.getString( 'remove' )" style="width:125px" onclick="closeAndFormulaForm()"/>
+	</div>
+</div>
