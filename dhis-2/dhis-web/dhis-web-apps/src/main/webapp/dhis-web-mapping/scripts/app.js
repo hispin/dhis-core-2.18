@@ -3105,7 +3105,7 @@ Ext.onReady( function() {
 		});
 
 		favoriteWindow = Ext.create('Ext.window.Window', {
-			title: 'Manage favorites',
+			title: GIS.i18n.manage_favorites + (gis.map ? '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + gis.map.name + '</span>' : ''),
 			iconCls: 'gis-window-title-icon-favorite',
 			cls: 'gis-container-default',
 			bodyStyle: 'padding:1px',
@@ -3958,7 +3958,7 @@ Ext.onReady( function() {
 			});
 
             window = Ext.create('Ext.window.Window', {
-                title: gis.map.name,
+				title: 'Write interpretation' + '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + gis.map.name + '</span>',
                 layout: 'fit',
                 iconCls: 'gis-window-title-icon-interpretation',
                 cls: 'gis-container-default',
@@ -8611,7 +8611,7 @@ Ext.onReady( function() {
 				});
 
 				window = Ext.create('Ext.window.Window', {
-					title: 'Plugin configuration',
+                    title: 'Embed in web page' + '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + gis.map.name + '</span>',
 					layout: 'fit',
 					modal: true,
 					resizable: false,
@@ -8659,7 +8659,7 @@ Ext.onReady( function() {
                 });
 
 				window = Ext.create('Ext.window.Window', {
-					title: 'Favorite link',
+                    title: 'Favorite link' + '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + gis.map.name + '</span>',
 					layout: 'fit',
 					modal: true,
 					resizable: false,
@@ -8704,7 +8704,7 @@ Ext.onReady( function() {
                 });
 
 				window = Ext.create('Ext.window.Window', {
-					title: 'API link',
+                    title: 'API link' + '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + gis.map.name + '</span>',
 					layout: 'fit',
 					modal: true,
 					resizable: false,
