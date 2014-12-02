@@ -44,11 +44,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
+import static org.hisp.dhis.system.util.TextUtils.SEP;
 /**
  * @author Lars Helge Overland
  */
@@ -64,6 +67,9 @@ public class GetDataSetAssociationsAction
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
 
+    @Autowired
+    private CurrentUserService currentUserService;
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -89,10 +95,12 @@ public class GetDataSetAssociationsAction
     @Override
     public String execute()
     {
+        User user = currentUserService.getCurrentUser();
+        
         Date lastUpdated = DateUtils.max( 
             identifiableObjectManager.getLastUpdated( DataSet.class ), 
             identifiableObjectManager.getLastUpdated( OrganisationUnit.class ) );
-        String tag = lastUpdated != null ? DateUtils.LONG_DATE_FORMAT.format( lastUpdated ) : null;
+        String tag = lastUpdated != null && user != null ? ( DateUtils.LONG_DATE_FORMAT.format( lastUpdated ) + SEP + user.getUid() ): null;
         
         if ( ContextUtils.isNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), tag ) )
         {
