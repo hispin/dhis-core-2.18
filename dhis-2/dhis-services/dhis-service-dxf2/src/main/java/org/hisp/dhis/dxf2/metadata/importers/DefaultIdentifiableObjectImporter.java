@@ -989,7 +989,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             {
                 List<DataElementCategoryDimension> detachedCategoryDimensions = ReflectionUtils.invokeMethod( object, getterMethod );
                 dataElementCategoryDimensions.addAll( detachedCategoryDimensions );
-                detachedCategoryDimensions.clear();
+
+                if ( !options.isDryRun() )
+                {
+                    detachedCategoryDimensions.clear();
+                }
             }
 
             return dataElementCategoryDimensions;
@@ -1011,8 +1015,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     Map<Field, Collection<Object>> detachCollectionFields = detachCollectionFields( categoryDimension );
                     reattachCollectionFields( categoryDimension, detachCollectionFields );
 
-                    categoryDimension.setId( 0 );
-                    detachedCategoryDimensions.add( categoryDimension );
+                    if ( !options.isDryRun() )
+                    {
+                        categoryDimension.setId( 0 );
+                        detachedCategoryDimensions.add( categoryDimension );
+                    }
                 }
 
             }
