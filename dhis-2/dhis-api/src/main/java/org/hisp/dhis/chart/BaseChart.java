@@ -28,11 +28,12 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.join;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.AnalyticsType;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DimensionalObject;
@@ -50,12 +51,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.user.User;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.join;
 
 /**
  * @author Lars Helge Overland
@@ -76,7 +75,7 @@ public abstract class BaseChart
     public static final String TYPE_PIE = "pie";
     public static final String TYPE_RADAR = "radar";
     public static final String TYPE_METER = "gauge";
-    
+
     protected String domainAxisLabel;
 
     protected String rangeAxisLabel;
@@ -134,17 +133,17 @@ public abstract class BaseChart
     protected transient List<OrganisationUnit> organisationUnitsInGroups = new ArrayList<>();
 
     protected transient Grid dataItemGrid = null;
-    
+
     // -------------------------------------------------------------------------
     // Abstract methods
     // -------------------------------------------------------------------------
 
     public abstract List<NameableObject> series();
-    
+
     public abstract List<NameableObject> category();
-    
+
     public abstract AnalyticsType getAnalyticsType();
-    
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -167,7 +166,7 @@ public abstract class BaseChart
     public String generateTitle()
     {
         List<String> titleItems = new ArrayList<>();
-        
+
         for ( String filter : filterDimensions )
         {
             DimensionalObject object = getDimensionalObject( filter, relativePeriodDate, user, true,
@@ -177,32 +176,38 @@ public abstract class BaseChart
             {
                 String item = IdentifiableObjectUtils.join( object.getItems() );
                 String filt = DimensionalObjectUtils.getPrettyFilter( object.getFilter() );
-                
+
                 if ( item != null )
                 {
                     titleItems.add( item );
                 }
-                
+
                 if ( filt != null )
                 {
                     titleItems.add( filt );
                 }
             }
         }
-        
+
         return join( titleItems, DimensionalObjectUtils.TITLE_ITEM_SEP );
     }
-    
+
     public boolean isAnalyticsType( AnalyticsType type )
     {
         return getAnalyticsType().equals( type );
     }
-    
+
     public boolean hasTitle()
     {
         return title != null && !title.isEmpty();
     }
-    
+
+    @Override
+    public boolean haveUniqueNames()
+    {
+        return false;
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters for transient properties
     // -------------------------------------------------------------------------
@@ -242,7 +247,7 @@ public abstract class BaseChart
     {
         this.dataItemGrid = dataItemGrid;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -507,7 +512,7 @@ public abstract class BaseChart
         if ( other.getClass().isInstance( this ) )
         {
             BaseChart chart = (BaseChart) other;
-            
+
             domainAxisLabel = chart.getDomainAxisLabel();
             rangeAxisLabel = chart.getRangeAxisLabel();
             type = chart.getType();

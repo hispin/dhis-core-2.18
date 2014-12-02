@@ -28,31 +28,14 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_OPERAND_ID;
-import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
-import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.STATIC_DIMS;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_GRANDCHILDREN;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
@@ -75,14 +58,17 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeDimension;
 import org.hisp.dhis.trackedentity.TrackedEntityDataElementDimension;
 import org.hisp.dhis.user.User;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.hisp.dhis.common.DimensionalObject.*;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.*;
 
 /**
  * This class contains associations to dimensional meta-data. Should typically
@@ -111,7 +97,6 @@ public abstract class BaseAnalyticalObject
     // Persisted properties
     // -------------------------------------------------------------------------
 
-    @Scanned
     protected List<DataElementCategoryDimension> categoryDimensions = new ArrayList<>();
 
     @Scanned
@@ -193,7 +178,7 @@ public abstract class BaseAnalyticalObject
     {
         return itemOrganisationUnitGroups != null && !itemOrganisationUnitGroups.isEmpty();
     }
-    
+
     public boolean hasSortOrder()
     {
         return sortOrder != 0;
@@ -214,7 +199,7 @@ public abstract class BaseAnalyticalObject
             this.transientOrganisationUnits.add( organisationUnit );
         }
     }
-    
+
     /**
      * Assembles a DimensionalObject based on the persisted properties of this
      * AnalyticalObject. Collapses indicators, data elements, data element
@@ -396,7 +381,7 @@ public abstract class BaseAnalyticalObject
             // Tracked entity data element
 
             Map<String, TrackedEntityDataElementDimension> dataElements = new HashMap<>();
-            
+
             for ( TrackedEntityDataElementDimension dataElement : dataElementDimensions )
             {
                 dataElements.put( dataElement.getUid(), dataElement );
@@ -641,11 +626,11 @@ public abstract class BaseAnalyticalObject
             RelativePeriods.setName( period, null, dynamicNames, format );
         }
     }
-    
+
     /**
-     * Sorts the keys in the given map by splitting on the '-' character and 
+     * Sorts the keys in the given map by splitting on the '-' character and
      * sorting the components alphabetically.
-     * 
+     *
      * @param valueMap the mapping of keys and values.
      */
     public static void sortKeys( Map<String, Object> valueMap )
@@ -655,7 +640,7 @@ public abstract class BaseAnalyticalObject
         for ( String key : valueMap.keySet() )
         {
             String sortKey = sortKey( key );
-            
+
             if ( sortKey != null )
             {
                 map.put( sortKey, valueMap.get( key ) );
@@ -667,9 +652,9 @@ public abstract class BaseAnalyticalObject
     }
 
     /**
-     * Sorts the given key by splitting on the '-' character and sorting the 
+     * Sorts the given key by splitting on the '-' character and sorting the
      * components alphabetically.
-     * 
+     *
      * @param valueMap the mapping of keys and values.
      */
     public static String sortKey( String key )
@@ -682,7 +667,7 @@ public abstract class BaseAnalyticalObject
 
             key = StringUtils.join( ids, DIMENSION_SEP );
         }
-        
+
         return key;
     }
 
@@ -807,6 +792,10 @@ public abstract class BaseAnalyticalObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "categoryDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "categoryDimension", namespace = DxfNamespaces.DXF_2_0 )
     public List<DataElementCategoryDimension> getCategoryDimensions()
     {
         return categoryDimensions;
