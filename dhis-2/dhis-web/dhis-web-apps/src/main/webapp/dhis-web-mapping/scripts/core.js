@@ -325,6 +325,8 @@ Ext.onReady( function() {
                 win.showAt(e.x + 20, e.y);
 
                 layer.dataPopups.push(win);
+
+                gis.olmap.mask.hide();
             };
 
             success = function(r) {
@@ -377,9 +379,12 @@ Ext.onReady( function() {
 
             failure = function(r) {
                 console.log(r);
+                gis.olmap.mask.hide();
             };
 
             getData = function(paramString) {
+                gis.olmap.mask.show();
+
                 if (GIS.plugin && !GIS.app) {
                     Ext.data.JsonP.request({
                         url: gis.init.contextPath + '/api/analytics.jsonp' + paramString,
