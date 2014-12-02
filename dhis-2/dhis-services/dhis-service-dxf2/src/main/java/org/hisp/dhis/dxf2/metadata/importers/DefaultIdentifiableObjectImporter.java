@@ -42,6 +42,8 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dashboard.DashboardItem;
+import org.hisp.dhis.dataelement.DataElementCategoryDimension;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -80,6 +82,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -136,6 +139,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     @Autowired
     private PasswordManager passwordManager;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
 
     //-------------------------------------------------------------------------------------------------------
     // Constructor
@@ -836,12 +842,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         private DataEntryForm dataEntryForm;
 
-        private Set<DataElementOperand> compulsoryDataElementOperands = Sets.newHashSet();
-        private Set<DataElementOperand> greyedFields = Sets.newHashSet();
-        private List<DataElementOperand> dataElementOperands = Lists.newArrayList();
+        private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<>();
+        private Set<DataElementOperand> greyedFields = new HashSet<>();
+        private List<DataElementOperand> dataElementOperands = new ArrayList<>();
 
-        private Collection<ProgramStageDataElement> programStageDataElements = Lists.newArrayList();
+        private Collection<ProgramStageDataElement> programStageDataElements = new ArrayList<>();
         private List<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = new ArrayList<>();
+
+        private List<DataElementCategoryDimension> categoryDimensions = new ArrayList<>();
 
         public void extract( T object )
         {
@@ -854,6 +862,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             dataElementOperands = Lists.newArrayList( extractDataElementOperands( object, "dataElementOperands" ) );
             programStageDataElements = extractProgramStageDataElements( object );
             programTrackedEntityAttributes = extractProgramTrackedEntityAttributes( object );
+            categoryDimensions = extractCategoryDimensions( object );
         }
 
         public void delete( T object )
@@ -888,6 +897,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             saveDataElementOperands( object, "dataElementOperands", dataElementOperands );
             saveProgramStageDataElements( object, programStageDataElements );
             saveProgramTrackedEntityAttributes( object, programTrackedEntityAttributes );
+            saveCategoryDimensions( object, categoryDimensions );
         }
 
         private void saveDataEntryForm( T object, String fieldName, DataEntryForm dataEntryForm )
@@ -965,10 +975,47 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 dataElementOperands = ReflectionUtils.newCollectionInstance( detachedDataElementOperands.getClass() );
                 dataElementOperands.addAll( detachedDataElementOperands );
                 detachedDataElementOperands.clear();
-                // ReflectionUtils.invokeSetterMethod( fieldName, object, ReflectionUtils.newCollectionInstance( detachedDataElementOperands.getClass() ) );
             }
 
             return dataElementOperands;
+        }
+
+        private List<DataElementCategoryDimension> extractCategoryDimensions( T object )
+        {
+            List<DataElementCategoryDimension> dataElementCategoryDimensions = new ArrayList<>();
+            Method getterMethod = ReflectionUtils.findGetterMethod( "categoryDimensions", object );
+
+            if ( getterMethod != null )
+            {
+                List<DataElementCategoryDimension> detachedCategoryDimensions = ReflectionUtils.invokeMethod( object, getterMethod );
+                dataElementCategoryDimensions.addAll( detachedCategoryDimensions );
+                detachedCategoryDimensions.clear();
+            }
+
+            return dataElementCategoryDimensions;
+        }
+
+        private void saveCategoryDimensions( T object, List<DataElementCategoryDimension> categoryDimensions )
+        {
+            Method getterMethod = ReflectionUtils.findGetterMethod( "categoryDimensions", object );
+
+            if ( categoryDimensions != null && !categoryDimensions.isEmpty() && getterMethod != null )
+            {
+                List<DataElementCategoryDimension> detachedCategoryDimensions = ReflectionUtils.invokeMethod( object, getterMethod );
+
+                for ( DataElementCategoryDimension categoryDimension : categoryDimensions )
+                {
+                    Map<Field, Object> detachFields = detachFields( categoryDimension );
+                    reattachFields( categoryDimension, detachFields );
+
+                    Map<Field, Collection<Object>> detachCollectionFields = detachCollectionFields( categoryDimension );
+                    reattachCollectionFields( categoryDimension, detachCollectionFields );
+
+                    categoryDimension.setId( 0 );
+                    detachedCategoryDimensions.add( categoryDimension );
+                }
+
+            }
         }
 
         private Set<AttributeValue> extractAttributeValues( T object )

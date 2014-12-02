@@ -28,18 +28,32 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.annotation.Scanned;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
-* @author Lars Helge Overland
-*/
+ * @author Lars Helge Overland
+ */
+@JacksonXmlRootElement( localName = "categoryDimension", namespace = DxfNamespaces.DXF_2_0 )
 public class DataElementCategoryDimension
 {
     private int id;
-    
+
     private DataElementCategory dimension;
-    
+
+    @Scanned
     private List<DataElementCategoryOption> items = new ArrayList<>();
 
     public int getId()
@@ -52,6 +66,10 @@ public class DataElementCategoryDimension
         this.id = id;
     }
 
+    @JsonProperty( "dataElementCategory" )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( localName = "dataElementCategory", namespace = DxfNamespaces.DXF_2_0 )
     public DataElementCategory getDimension()
     {
         return dimension;
@@ -62,6 +80,10 @@ public class DataElementCategoryDimension
         this.dimension = dimension;
     }
 
+    @JsonProperty( "categoryOptions" )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "categoryOptions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "categoryOption", namespace = DxfNamespaces.DXF_2_0 )
     public List<DataElementCategoryOption> getItems()
     {
         return items;
@@ -70,5 +92,17 @@ public class DataElementCategoryDimension
     public void setItems( List<DataElementCategoryOption> items )
     {
         this.items = items;
+    }
+
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder sb = new StringBuilder( "DataElementCategoryDimension{" );
+        sb.append( "id=" ).append( id );
+        sb.append( ", dimension=" ).append( dimension );
+        sb.append( ", items=" ).append( items );
+        sb.append( '}' );
+        return sb.toString();
     }
 }

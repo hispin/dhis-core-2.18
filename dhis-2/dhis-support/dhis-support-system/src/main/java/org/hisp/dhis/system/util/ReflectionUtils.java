@@ -429,11 +429,7 @@ public class ReflectionUtils
         {
             return (T) method.invoke( target, args );
         }
-        catch ( InvocationTargetException e )
-        {
-            throw new RuntimeException( e );
-        }
-        catch ( IllegalAccessException e )
+        catch ( InvocationTargetException | IllegalAccessException e )
         {
             throw new RuntimeException( e );
         }
