@@ -28,8 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.base.Enums;
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionalObject;
@@ -39,7 +37,6 @@ import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.node.config.InclusionStrategy;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
@@ -55,6 +52,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -96,6 +94,28 @@ public class DimensionController extends AbstractCrudController<DimensionalObjec
     {
         WebOptions options = new WebOptions( parameters );
         List<NameableObject> items = dimensionService.getCanReadDimensionItems( uid );
+
+        if ( parameters.containsKey( "filter" ) )
+        {
+            String filter = parameters.get( "filter" );
+
+            if ( filter.startsWith( "name:like:" ) )
+            {
+                filter = filter.substring( "name:like:".length() );
+
+                Iterator<NameableObject> iterator = items.iterator();
+
+                while ( iterator.hasNext() )
+                {
+                    NameableObject nameableObject = iterator.next();
+
+                    if ( !nameableObject.getName().toLowerCase().contains( filter.toLowerCase() ) )
+                    {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
 
         WebMetaData metaData = new WebMetaData();
         Collections.sort( items, IdentifiableObjectNameComparator.INSTANCE );
