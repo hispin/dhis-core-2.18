@@ -1509,7 +1509,7 @@ Ext.onReady( function() {
 		});
 
 		favoriteWindow = Ext.create('Ext.window.Window', {
-			title: NS.i18n.manage_favorites,
+			title: NS.i18n.favorites + (ns.app.layout && ns.app.layout.name ? '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + ns.app.layout.name + '</span>' : ''),
 			bodyStyle: 'padding:1px; background-color:#fff',
 			resizable: false,
 			modal: true,
@@ -1873,7 +1873,7 @@ Ext.onReady( function() {
 			});
 
 			window = Ext.create('Ext.window.Window', {
-				title: ns.app.layout.name,
+				title: 'Write interpretation' + '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + ns.app.layout.name + '</span>',
 				layout: 'fit',
 				//iconCls: 'ns-window-title-interpretation',
 				width: 500,
@@ -5534,7 +5534,7 @@ Ext.onReady( function() {
 				});
 
 				window = Ext.create('Ext.window.Window', {
-					title: 'Plugin configuration',
+                    title: 'Embed in web page' + '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + ns.app.layout.name + '</span>',
 					layout: 'fit',
 					modal: true,
 					resizable: false,
@@ -5591,7 +5591,7 @@ Ext.onReady( function() {
                 });
 
 				window = Ext.create('Ext.window.Window', {
-					title: 'Favorite link',
+                    title: 'Favorite link' + '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + ns.app.layout.name + '</span>',
 					layout: 'fit',
 					modal: true,
 					resizable: false,
@@ -5640,7 +5640,7 @@ Ext.onReady( function() {
                 });
 
 				window = Ext.create('Ext.window.Window', {
-					title: 'API link',
+                    title: 'API link' + '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + ns.app.layout.name + '</span>',
 					layout: 'fit',
 					modal: true,
 					resizable: false,
