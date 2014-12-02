@@ -62,6 +62,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
+import static org.hisp.dhis.system.util.TextUtils.SEP;
+
 /**
  * @author Lars Helge Overland
  */
@@ -119,7 +121,7 @@ public class GetMetaDataAction
 
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -201,6 +203,8 @@ public class GetMetaDataAction
     @Override
     public String execute()
     {
+        User user = currentUserService.getCurrentUser();
+
         Date lastUpdated = DateUtils.max( 
             identifiableObjectManager.getLastUpdated( DataElement.class ), 
             identifiableObjectManager.getLastUpdated( OptionSet.class ),
@@ -209,15 +213,13 @@ public class GetMetaDataAction
             identifiableObjectManager.getLastUpdated( DataElementCategoryCombo.class ),
             identifiableObjectManager.getLastUpdated( DataElementCategory.class ),
             identifiableObjectManager.getLastUpdated( DataElementCategoryOption.class ));
-        String tag = lastUpdated != null ? DateUtils.LONG_DATE_FORMAT.format( lastUpdated ) : null;
+        String tag = lastUpdated != null && user != null ? ( DateUtils.LONG_DATE_FORMAT.format( lastUpdated ) + SEP + user.getUid() ): null;
         
         if ( ContextUtils.isNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), tag ) )
         {
             return SUCCESS;
         }
                 
-        User user = currentUserService.getCurrentUser();
-
         if ( user != null && user.getOrganisationUnits().isEmpty() )
         {
             emptyOrganisationUnits = true;
