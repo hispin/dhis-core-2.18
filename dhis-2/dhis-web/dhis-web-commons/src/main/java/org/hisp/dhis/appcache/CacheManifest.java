@@ -99,12 +99,10 @@ public class CacheManifest
         String translationFile = "";
         if ( locale.equalsIgnoreCase( "en" ) )
         {
-            System.out.println( "EN" );
             translationFile = defaultTranslationFile;
         }
         else
         {
-            System.out.println( locale );
             translationFile = "i18n_app_" + locale + ".properties";
         }
 
@@ -154,7 +152,6 @@ public class CacheManifest
                     {
                         if ( i18nfiles[i].isFile() && i18nfiles[i].getName().equalsIgnoreCase( translationFile ) )
                         {
-                            System.out.println("tx file");
                             fileExists = true;
                             stringBuffer.append( i18nPath + "/" + translationFile );
                             stringBuffer.append( "\n" );
@@ -164,7 +161,6 @@ public class CacheManifest
 
                     if ( !fileExists )
                     {
-                        System.out.println("No tx file");
                         stringBuffer.append( i18nPath + "/" + defaultTranslationFile );
                         stringBuffer.append( "\n" );
                         
@@ -173,7 +169,6 @@ public class CacheManifest
                     stringBuffer.append( "\n" );
                     stringBuffer.append( "*" );
 
-                    System.out.println( "The manifest:  " + stringBuffer.toString() );
                     inputStream = new ByteArrayInputStream( stringBuffer.toString().getBytes() );
 
                     return SUCCESS;
