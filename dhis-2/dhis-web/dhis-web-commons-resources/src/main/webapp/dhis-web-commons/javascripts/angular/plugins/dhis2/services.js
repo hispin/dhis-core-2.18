@@ -103,7 +103,7 @@ var d2Services = angular.module('d2Services', ['ngResource'])
 .service('TranslationService', function($translate, storage){
     
     this.translate = function(){
-        $translate.uses(storage.get('USER_PROFILE'));
+        $translate.uses(storage.get('LOCALE'));
     };
 })
 
