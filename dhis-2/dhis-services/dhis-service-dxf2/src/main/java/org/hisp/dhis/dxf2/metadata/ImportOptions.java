@@ -83,6 +83,18 @@ public class ImportOptions
         this.skipExistingCheck = skipExistingCheck;
     }
 
+    public ImportOptions( IdentifiableProperty idScheme, IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, 
+        boolean dryRun, boolean preheatCache, ImportStrategy importStrategy, boolean skipExistingCheck )
+    {
+        this.idScheme = idScheme;
+        this.dataElementIdScheme = dataElementIdScheme;
+        this.orgUnitIdScheme = orgUnitIdScheme;
+        this.preheatCache = preheatCache;
+        this.dryRun = dryRun;
+        this.importStrategy = importStrategy;
+        this.skipExistingCheck = skipExistingCheck;
+    }
+
     //--------------------------------------------------------------------------
     // Logic
     //--------------------------------------------------------------------------

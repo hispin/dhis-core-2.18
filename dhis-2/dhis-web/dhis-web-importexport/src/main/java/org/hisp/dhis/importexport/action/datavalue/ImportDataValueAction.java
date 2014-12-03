@@ -92,6 +92,13 @@ public class ImportDataValueAction
     {
         this.strategy = ImportStrategy.valueOf( stgy );
     }
+    
+    private IdentifiableProperty idScheme;
+
+    public void setIdScheme( IdentifiableProperty idScheme )
+    {
+        this.idScheme = idScheme;
+    }
 
     private IdentifiableProperty dataElementIdScheme;
 
@@ -146,7 +153,7 @@ public class ImportDataValueAction
 
         in = StreamUtils.wrapAndCheckCompressionFormat( in );
 
-        ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, true, strategy, skipExistingCheck );
+        ImportOptions options = new ImportOptions( idScheme, dataElementIdScheme, orgUnitIdScheme, dryRun, true, strategy, skipExistingCheck );
 
         log.info( options );
 
