@@ -57,6 +57,11 @@ styles/style.css
 ../dhis-web-commons/javascripts/angular/plugins/angular-translate.min.js
 ../dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-static-files.min.js
 ../dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-url.min.js
+../dhis-web-commons/javascripts/angular/plugins/dhis2/providers.js
+../dhis-web-commons/javascripts/angular/plugins/dhis2/directives.js
+../dhis-web-commons/javascripts/angular/plugins/dhis2/filters.js
+../dhis-web-commons/javascripts/angular/plugins/dhis2/services.js
+../dhis-web-commons/javascripts/angular/plugins/dhis2/controllers.js
 
 ../dhis-web-commons/javascripts/moment/moment-with-langs.min.js       
 
@@ -105,12 +110,10 @@ styles/style.css
 
 scripts/event-capture.js
 scripts/app.js
+scripts/d2Providers.js
 scripts/services.js
 scripts/directives.js
 scripts/controllers.js        
-scripts/column-display-controller.js
-scripts/header-controller.js
-scripts/map-controller.js
 scripts/notes-controller.js        
 scripts/filters.js
 scripts/orgunitTreeSearch.js
@@ -126,7 +129,3 @@ views/modal.html
 views/notes.html
 views/serverside-pagination.html
 
-i18n/en.json
-
-NETWORK:
-*

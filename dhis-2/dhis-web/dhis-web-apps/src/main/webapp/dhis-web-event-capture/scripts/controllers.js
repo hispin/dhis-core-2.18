@@ -22,7 +22,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 ModalService,
                 DialogService) {   
    
-                      
     //selected org unit
     $scope.selectedOrgUnit = '';
     
@@ -45,11 +44,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.note = {};
     $scope.today = DateUtils.getToday();
     
-    var loginDetails = storage.get('LOGIN_DETAILS');
-    var storedBy = '';
-    if(loginDetails && loginDetails.userCredentials){
-        storedBy = loginDetails.userCredentials.username;
-    }
+    var userAccount = storage.get('USER_PROFILE');
+    var storedBy = userAccount ? userAccount.userName : '';    
     $scope.noteExists = false;
         
     //watch for selection of org unit from tree
@@ -310,7 +306,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             templateUrl: 'views/column-modal.html',
             controller: 'ColumnDisplayController',
             resolve: {
-                eventGridColumns: function () {
+                gridColumns: function () {
                     return $scope.eventGridColumns;
                 },
                 hiddenGridColumns: function(){
