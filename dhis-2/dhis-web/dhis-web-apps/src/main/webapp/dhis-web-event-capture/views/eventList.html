@@ -46,8 +46,7 @@
                                     
                                     <!-- sort icon begins -->                                
                                     <span ng-hide="eventGridColumn.showFilter" class="bold" ng-click="sortEventGrid(eventGridColumn)">
-                                        <i ng-show="sortHeader == eventGridColumn.id && !reverse" class="fa fa-sort-desc"></i>
-                                        <i ng-show="sortHeader == eventGridColumn.id && reverse" class="fa fa-sort-asc"></i>
+                                        <span ng-class="{true: 'red'} [sortHeader == eventGridColumn.id]"><i class="fa fa-sort"></i></span>
                                         <span ng-if="eventGridColumn.id !== 'uid'">{{eventGridColumn.name}}</span>
                                         <span ng-if="eventGridColumn.id == 'uid'">{{eventGridColumn.name | translate}}</span>
                                     </span>
@@ -95,7 +94,7 @@
                         </tr>                        
                     </thead>
                     <tbody id="list">
-                        <tr ng-repeat="dhis2Event in dhis2Events | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes">
+                        <tr title="{{'click_for_action' | translate}}" ng-repeat="dhis2Event in dhis2Events | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes">
                            
                             <!-- Visible when event is not under editing -->
                             <td d2-context-menu 

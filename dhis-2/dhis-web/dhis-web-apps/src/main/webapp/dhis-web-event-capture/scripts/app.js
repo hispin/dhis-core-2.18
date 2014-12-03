@@ -9,14 +9,18 @@ var eventCapture = angular.module('eventCapture',
 		  'eventCaptureDirectives', 
 		  'eventCaptureControllers', 
 		  'eventCaptureServices',
-		  'eventCaptureFilters',
+		  'd2Filters',
+          'd2Directives',
+          'd2Services',
+          'd2Controllers',
 		  'angularLocalStorage', 
 		  'pascalprecht.translate',
+          'd2Providers',
           'd2Menu'])
               
 .value('DHIS2URL', '..')
 
-.config(function($httpProvider, $routeProvider, $translateProvider) {    
+.config(function($httpProvider, $routeProvider, d2I18nProvider) {    
             
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -33,10 +37,7 @@ var eventCapture = angular.module('eventCapture',
         redirectTo : '/'
     });
     
-    $translateProvider.useStaticFilesLoader({
-        prefix: 'i18n/',
-        suffix: '.json'
-    });
     
-    $translateProvider.preferredLanguage('en');    
+    d2I18nProvider.initialize();
+    
 });

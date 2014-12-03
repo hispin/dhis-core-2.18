@@ -74,8 +74,6 @@ dhis2.ec.store = new dhis2.storage.Store({
  */
 $(document).ready(function()
 {
-    downloadMetaData();
-    
     $.ajaxSetup({
         type: 'POST',
         cache: false
@@ -162,13 +160,12 @@ function ajax_login()
 
 function downloadMetaData(){    
     
+    console.log('Loading required meta-data');
     var def = $.Deferred();
     var promise = def.promise();
     
     promise = promise.then( dhis2.ec.store.open );
-    promise = promise.then( getUserProfile );
     promise = promise.then( getCalendarSetting );
-    promise = promise.then( getLoginDetails );
     promise = promise.then( getOrgUnitLevels );
     //promise = promise.then( getGeoJsonsByLevel );
     promise = promise.then( getMetaPrograms );     
@@ -176,25 +173,13 @@ function downloadMetaData(){
     promise = promise.then( getProgramStages );
     promise = promise.then( getOptionSets );
     promise.done( function() {           
+        console.log( 'Finished loading meta-data' ); 
+        dhis2.availability.startAvailabilityCheck();
+        console.log( 'Started availability check' );
         selection.responseReceived();
     });         
 
     def.resolve();
-}
-
-function getUserProfile()
-{
-    var def = $.Deferred();
-
-    $.ajax({
-        url: '../api/me/profile',
-        type: 'GET'
-    }).done( function(response) {            
-        localStorage['USER_PROFILE'] = JSON.stringify(response);           
-        def.resolve();
-    });
-    
-    return def.promise(); 
 }
 
 function getCalendarSetting()
@@ -207,24 +192,11 @@ function getCalendarSetting()
     }).done(function(response) {
         localStorage['CALENDAR_SETTING'] = JSON.stringify(response);
         def.resolve();
+    }).fail(function(){
+        def.resolve();
     });
 
     return def.promise();
-}
-
-function getLoginDetails()
-{
-    var def = $.Deferred();
-
-    $.ajax({
-        url: '../api/me',
-        type: 'GET'
-    }).done( function(response) {            
-        localStorage['LOGIN_DETAILS'] = JSON.stringify(response);           
-        def.resolve();
-    });
-    
-    return def.promise(); 
 }
 
 function getOrgUnitLevels()
@@ -243,6 +215,8 @@ function getOrgUnitLevels()
             });
         }
         def.resolve( ouLevels );
+    }).fail(function(){
+        def.resolve(null);
     });
     
     return def.promise();    
@@ -282,10 +256,11 @@ function getGeoJsonsByLevel( ouLevels )
 
     build.done(function() {
         def.resolve();
-
         promise = promise.done( function () {
             mainDef.resolve();
-        } );
+        });
+    }).fail(function(){
+        mainDef.resolve();
     });
 
     builder.resolve();
@@ -325,6 +300,8 @@ function getMetaPrograms()
         });
         
         def.resolve( programs );
+    }).fail(function(){
+        def.resolve( null );
     });
     
     return def.promise(); 
@@ -367,6 +344,8 @@ function getPrograms( programs )
         promise = promise.done( function () {
             mainDef.resolve( programs );
         } );
+    }).fail(function(){
+        mainDef.resolve( null );
     });
 
     builder.resolve();
@@ -444,6 +423,8 @@ function getProgramStages( programs )
         promise = promise.done( function () {
             mainDef.resolve( programs );
         } );
+    }).fail(function(){
+        mainDef.resolve( null );
     });
 
     builder.resolve();
@@ -505,6 +486,8 @@ function getOptionSets( programs )
         promise = promise.done( function () {
             mainDef.resolve( programs );
         } );
+    }).fail(function(){
+        mainDef.resolve( null );
     });
 
     builder.resolve();
@@ -538,4 +521,3 @@ function uploadLocalData()
         selection.responseReceived(); //notify angular
     });
 }
-
