@@ -132,6 +132,6 @@ public class GmlConversionUtils
     private static String parseCoordinate( String number, int precision, NumberFormat nf )
         throws ParseException
     {
-        return Double.toString( MathUtils.round( nf.parse( number).doubleValue(), precision ) );
+        return Double.toString( MathUtils.round( nf.parse( number ).doubleValue(), precision ) );
     }
 }
