@@ -27,12 +27,10 @@ var d2Providers = angular.module('d2Providers', [])
                     url: url,
                     type: 'GET'
                 }).done(function(response) {
-                    console.log('custom locale');
                     translation.keys = response;
                     localStorage['LOCALE'] = locale;
                     def.resolve(translation);
                 }).fail(function(){
-                    console.log('default locale');
                     $.ajax({
                         url: defaultUrl ,
                         type: 'GET'
@@ -77,13 +75,11 @@ var d2Providers = angular.module('d2Providers', [])
             
             if(userProfile && userProfile.settings && userProfile.settings.keyUiLocale){
                 getTranslations(userProfile.settings.keyUiLocale).done(function(response){
-                    console.log('the locale is:  ', response.locale);
                     $translateProvider.translations(response.locale, dhis2.util.parseJavaProperties(response.keys));
                 });
             }
             else{
                 getLocale().done(function(response){
-                    console.log('the locale is:  ', response.locale);
                     $translateProvider.translations(response.locale, dhis2.util.parseJavaProperties(response.keys));
                 });
             }
