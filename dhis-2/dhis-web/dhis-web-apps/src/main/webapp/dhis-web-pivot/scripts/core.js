@@ -2005,6 +2005,8 @@ Ext.onReady( function() {
 					direction = xLayout.sorting ? xLayout.sorting.direction : 'DESC',
 					layout;
 
+                id = Ext.isString(id) ? id.replace('#', '') : id;
+
 				dim.ids = [];
 
 				// relative id?
