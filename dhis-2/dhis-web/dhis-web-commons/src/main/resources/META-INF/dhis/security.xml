@@ -315,6 +315,8 @@
         <value>F_ACCEPT_DATA_LOWER_LEVELS</value>
         <value>F_INSERT_CUSTOM_JS_CSS</value>
         <value>F_VIEW_UNAPPROVED_DATA</value>
+        <value>F_USERGROUP_MANAGING_RELATIONSHIPS_ADD</value>
+        <value>F_USERGROUP_MANAGING_RELATIONSHIPS_VIEW</value>
       </set>
     </property>
   </bean>
