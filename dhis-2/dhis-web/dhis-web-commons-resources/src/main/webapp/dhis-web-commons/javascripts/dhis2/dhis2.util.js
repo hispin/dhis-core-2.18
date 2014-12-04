@@ -176,6 +176,16 @@ dhis2.util.on = function( event, fn )
 };
 
 /**
+ * Returns a query parameter string where _ is the parameter and the time stamp
+ * in milliseconds is the value, intended to force fresh non-cached responses
+ * from server.
+ */
+dhis2.util.cacheBust = function()
+{
+	return "_=" + new Date().getTime();
+}
+
+/**
  * adds ':containsNC' to filtering.
  * $(sel).find(':containsNC(key)').doSomething();
  */
