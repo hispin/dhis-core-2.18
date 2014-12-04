@@ -78,7 +78,7 @@ public class UserAuthorityGroup
     {
         setAutoFields();
     }
-    
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -94,12 +94,12 @@ public class UserAuthorityGroup
         members.remove( userCredentials );
         userCredentials.getUserAuthorityGroups().remove( this );
     }
-    
+
     public boolean isSuper()
     {
         return authorities != null && authorities.contains( AUTHORITY_ALL );
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
