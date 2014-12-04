@@ -71,7 +71,6 @@ public class DataElementCategoryOption
 
     private Set<DataElementCategory> categories = new HashSet<>();
 
-    @Scanned
     private Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<>();
 
     private Set<CategoryOptionGroup> groups = new HashSet<>();
