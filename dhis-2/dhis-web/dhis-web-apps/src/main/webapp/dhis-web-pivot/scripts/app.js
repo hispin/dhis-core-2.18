@@ -2133,7 +2133,7 @@ Ext.onReady( function() {
 
                 // headers
                 for (var i = 0; i < headers.length; i++) {
-                    csv += headers[i].column + (i < headers.length - 1 ? ',' : '\n');
+                    csv += '"' + headers[i].column + '"' + (i < headers.length - 1 ? ',' : '\n');
                 }
 
                 // rows
@@ -2142,7 +2142,7 @@ Ext.onReady( function() {
                         val = rows[i][j];
                         isMeta = headers[j].meta;
 
-                        csv += isMeta && names[val] ? names[val] : val;
+                        csv += '"' + (isMeta && names[val] ? names[val] : val) + '"';
                         csv += j < rows[i].length - 1 ? ',' : '\n';
                     }
                 }
