@@ -49,7 +49,7 @@ $( document ).ready( function()
 	$( "#searchField" ).focus();
 	$( "#searchField" ).keyup( dhis2.db.search );
 	
-	$.getJSON( "../api/me/user-account.json", function( json ) {
+	$.getJSON( "../api/me/user-account.json?" + dhis2.util.cacheBust(), function( json ) {
 		dhis2.db.currentKey = "dhis2.dashboard.current." + json.username;
 		dhis2.db.renderDashboardListLoadFirst();
 	} );
@@ -329,7 +329,7 @@ dhis2.db.renderDashboardListLoadFirst = function()
 	
 	$l.empty();
 	
-	$.getJSON( "../api/dashboards.json?paging=false&links=false", function( data )
+	$.getJSON( "../api/dashboards.json?paging=false&links=false&" + dhis2.util.cacheBust(), function( data )
 	{
 		if ( undefined !== data.dashboards )
 		{
@@ -385,7 +385,7 @@ dhis2.db.renderDashboard = function( id )
 	
 	$( "#dashboard-" + dhis2.db.current() ).addClass( "currentDashboard" );
 	
-	$.getJSON( "../api/dashboards/" + id + '/?fields=:all,dashboardItems[:all]', function( data )
+	$.getJSON( "../api/dashboards/" + id + "/?fields=:all,dashboardItems[:all]&" + dhis2.util.cacheBust(), function( data )
 	{
         $d = $( "#contentList" ).empty();
 		
