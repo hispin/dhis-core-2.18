@@ -33,14 +33,13 @@ import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,8 +49,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -117,22 +118,63 @@ public class DimensionController extends AbstractCrudController<DimensionalObjec
             }
         }
 
-        WebMetaData metaData = new WebMetaData();
         Collections.sort( items, IdentifiableObjectNameComparator.INSTANCE );
 
-        if ( options.hasPaging() )
-        {
-            Pager pager = new Pager( options.getPage(), items.size(), options.getPageSize() );
-            metaData.setPager( pager );
-            items = PagerUtils.pageCollection( items, pager );
-        }
-
+        WebMetaData metaData = new WebMetaData();
         metaData.setItems( items );
 
         model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
 
         return "items";
+    }
+
+    @RequestMapping( value = "/{uid}/items", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE )
+    public void getItemsJson( @PathVariable String uid, @RequestParam Map<String, String> parameters,
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        WebOptions options = new WebOptions( parameters );
+        List<NameableObject> items = dimensionService.getCanReadDimensionItems( uid );
+
+        if ( parameters.containsKey( "filter" ) )
+        {
+            String filter = parameters.get( "filter" );
+
+            if ( filter.startsWith( "name:like:" ) )
+            {
+                filter = filter.substring( "name:like:".length() );
+
+                Iterator<NameableObject> iterator = items.iterator();
+
+                while ( iterator.hasNext() )
+                {
+                    NameableObject nameableObject = iterator.next();
+
+                    if ( !nameableObject.getName().toLowerCase().contains( filter.toLowerCase() ) )
+                    {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
+        Collections.sort( items, IdentifiableObjectNameComparator.INSTANCE );
+
+        Map<String, List<?>> output = new HashMap<>();
+        List<Map<?, ?>> itemCollection = new ArrayList<>();
+        output.put( "items", itemCollection );
+
+        for ( NameableObject item : items )
+        {
+            Map<String, Object> o = new HashMap<>();
+            o.put( "id", item.getUid() );
+            o.put( "name", item.getName() );
+
+            itemCollection.add( o );
+        }
+
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+        renderService.toJson( response.getOutputStream(), output );
     }
 
     @RequestMapping( value = "/constraints", method = RequestMethod.GET )
