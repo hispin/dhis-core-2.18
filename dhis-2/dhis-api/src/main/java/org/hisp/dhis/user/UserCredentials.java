@@ -445,7 +445,6 @@ public class UserCredentials
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @JsonIgnore
     public String getPassword()
     {
         return password;
