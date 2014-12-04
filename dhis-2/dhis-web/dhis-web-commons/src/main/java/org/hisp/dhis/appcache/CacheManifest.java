@@ -100,7 +100,7 @@ public class CacheManifest
 
         String locale = userSettingService.getUserSetting( UserSettingService.KEY_UI_LOCALE ).toString();
         SystemInfo info = systemService.getSystemInfo();
-        String revisionTag = "#Revision:";
+        String revisionTag = "#Revision:" + info.getRevision();
 
         String defaultTranslationFile = "i18n_app.properties";
         String translationFile = "";
@@ -146,13 +146,12 @@ public class CacheManifest
                 String line;
                 while ( (line = bufferedReader.readLine()) != null )
                 {
-                    if ( line.startsWith( revisionTag ) )
-                    {
-                        line = revisionTag + info.getRevision();
-                    }
                     stringBuffer.append( line );
                     stringBuffer.append( "\n" );
                 }
+                stringBuffer.append( revisionTag );
+                stringBuffer.append( "\n" );
+
                 fileReader.close();
 
                 if ( i18nFolder != null )
@@ -175,9 +174,9 @@ public class CacheManifest
                         stringBuffer.append( i18nPath + "/" + defaultTranslationFile );
                         stringBuffer.append( "\n" );
 
-                    }                    
+                    }
                 }
-                
+
                 inputStream = new ByteArrayInputStream( stringBuffer.toString().getBytes() );
 
                 return SUCCESS;
@@ -192,7 +191,7 @@ public class CacheManifest
 
         stringBuffer = new StringBuffer();
         stringBuffer.append( "CACHE MANIFEST" );
-        stringBuffer.append( revisionTag + info.getRevision() );
+        stringBuffer.append( revisionTag );
         stringBuffer.append( "\n" );
         stringBuffer.append( "NETWORK:" );
         stringBuffer.append( "\n" );

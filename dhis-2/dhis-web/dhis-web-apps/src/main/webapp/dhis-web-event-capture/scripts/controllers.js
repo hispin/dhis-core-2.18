@@ -28,6 +28,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     
     $scope.calendarSetting = CalendarService.getSetting();
     
+    console.log('controller started...');
+    
     //Paging
     $scope.pager = {pageSize: 50, page: 1, toolBarDisplay: 5};   
     
