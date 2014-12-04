@@ -97,15 +97,6 @@ var d2Services = angular.module('d2Services', ['ngResource'])
     };
 })
 
-/* Translation service - gets logged in user profile for the server, 
- * and apply user's locale to translation
- */
-.service('TranslationService', function($translate, storage){
-    
-    this.translate = function(){
-        $translate.uses(storage.get('LOCALE'));
-    };
-})
 
 /* service for getting calendar setting */
 .service('CalendarService', function(storage, $rootScope){    
@@ -131,6 +122,65 @@ var d2Services = angular.module('d2Services', ['ngResource'])
             return dhis2CalendarFormat;
         }
     };            
+})
+
+/* service for dealing with dates */
+.service('DateUtils', function($filter, CalendarService){
+    
+    return {        
+        getDate: function(dateValue){
+            if(!dateValue){
+                return;
+            }            
+            var calendarSetting = CalendarService.getSetting();
+            dateValue = moment(dateValue, calendarSetting.momentFormat)._d;
+            return Date.parse(dateValue);
+        },
+        format: function(dateValue) {            
+            if(!dateValue){
+                return;
+            }            
+            var calendarSetting = CalendarService.getSetting();
+            dateValue = $filter('date')(dateValue, calendarSetting.keyDateFormat);            
+            return dateValue;
+        },
+        formatToHrsMins: function(dateValue) {
+            var calendarSetting = CalendarService.getSetting();
+            var dateFormat = 'YYYY-MM-DD @ hh:mm A';
+            if(calendarSetting.keyDateFormat === 'dd-MM-yyyy'){
+                dateFormat = 'DD-MM-YYYY @ hh:mm A';
+            }            
+            return moment(dateValue).format(dateFormat);
+        },
+        getToday: function(){  
+            var calendarSetting = CalendarService.getSetting();
+            var tdy = $.calendars.instance(calendarSetting.keyCalendar).newDate();            
+            var today = moment(tdy._year + '-' + tdy._month + '-' + tdy._day, 'YYYY-MM-DD')._d;            
+            today = Date.parse(today);     
+            today = $filter('date')(today,  calendarSetting.keyDateFormat);
+            return today;
+        },
+        formatFromUserToApi: function(dateValue){            
+            if(!dateValue){
+                return;
+            }
+            var calendarSetting = CalendarService.getSetting();
+            dateValue = moment(dateValue, calendarSetting.momentFormat)._d;
+            dateValue = Date.parse(dateValue);     
+            dateValue = $filter('date')(dateValue, 'yyyy-MM-dd'); 
+            return dateValue;            
+        },
+        formatFromApiToUser: function(dateValue){            
+            if(!dateValue){
+                return;
+            }            
+            var calendarSetting = CalendarService.getSetting();
+            dateValue = moment(dateValue, 'YYYY-MM-DD')._d;
+            dateValue = Date.parse(dateValue);     
+            dateValue = $filter('date')(dateValue, calendarSetting.keyDateFormat); 
+            return dateValue;
+        }
+    };
 })
 
 /* service for dealing with custom form */

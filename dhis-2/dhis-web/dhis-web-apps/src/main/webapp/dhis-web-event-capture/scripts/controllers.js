@@ -19,11 +19,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 GeoJsonFactory,
                 ContextMenuSelectedItem,                
                 DateUtils,
+                CalendarService,
                 ModalService,
                 DialogService) {   
    
     //selected org unit
     $scope.selectedOrgUnit = '';
+    
+    $scope.calendarSetting = CalendarService.getSetting();
     
     //Paging
     $scope.pager = {pageSize: 50, page: 1, toolBarDisplay: 5};   
@@ -106,6 +109,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         
         //Filtering
         $scope.reverse = false;
+        $scope.sortHeader = {};
         $scope.filterText = {}; 
     
         $scope.dhis2Events = [];
@@ -282,14 +286,21 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.loadEvents();
     };
     
-    $scope.sortEventGrid = function(gridHeader){
-        
-        if ($scope.sortHeader === gridHeader.id){
+    $scope.sortEventGrid = function(gridHeader){        
+        if ($scope.sortHeader && $scope.sortHeader.id === gridHeader.id){
             $scope.reverse = !$scope.reverse;
             return;
         }        
-        $scope.sortHeader = gridHeader.id;
+        $scope.sortHeader = gridHeader;
         $scope.reverse = false;    
+    };
+    
+    $scope.d2Sort = function(dhis2Event){        
+        if($scope.sortHeader && $scope.sortHeader.type === 'date'){            
+            var d = dhis2Event[$scope.sortHeader.id];         
+            return DateUtils.getDate(d);
+        }
+        return dhis2Event[$scope.sortHeader.id];
     };
     
     $scope.showHideColumns = function(){

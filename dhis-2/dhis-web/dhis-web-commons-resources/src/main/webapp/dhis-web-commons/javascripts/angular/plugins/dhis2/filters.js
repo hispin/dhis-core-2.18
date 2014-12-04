@@ -4,7 +4,7 @@
 
 var d2Filters = angular.module('d2Filters', [])
 
-.filter('gridFilter', function($filter){    
+.filter('gridFilter', function($filter, CalendarService){    
     
     return function(data, filters, filterTypes){
 
@@ -48,9 +48,10 @@ var d2Filters = angular.module('d2Filters', [])
     }; 
     
     function dateComparator(data,filter){
-        var start = moment(filter.start, 'YYYY-MM-DD');
-        var end = moment(filter.end, 'YYYY-MM-DD');  
-        var date = moment(data, 'YYYY-MM-DD'); 
+    	var calendarSetting = CalendarService.getSetting(); 
+        var start = moment(filter.start, calendarSetting.momentFormat);
+        var end = moment(filter.end, calendarSetting.momentFormat);  
+        var date = moment(data, calendarSetting.momentFormat); 
         
         if(filter.start && filter.end){
             return ( Date.parse(date) <= Date.parse(end) ) && (Date.parse(date) >= Date.parse(start));
