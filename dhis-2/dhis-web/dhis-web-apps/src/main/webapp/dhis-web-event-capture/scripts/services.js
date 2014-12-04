@@ -4,6 +4,17 @@
 
 var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource'])
 
+
+/* Translation service - gets logged in user profile for the server, 
+ * and apply user's locale to translation
+ */
+.service('TranslationService', function($translate, storage){
+    
+    this.translate = function(){
+        $translate.uses(storage.get('LOCALE'));
+    };
+})
+
 .factory('StorageService', function(){
     var store = new dhis2.storage.Store({
         name: 'dhis2ec',
@@ -54,56 +65,6 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                 });                      
             });
             return def.promise;
-        }
-    };
-})
-
-.service('DateUtils', function($filter, CalendarService){
-    
-    return {
-        format: function(dateValue) {            
-            if(!dateValue){
-                return;
-            }            
-            var calendarSetting = CalendarService.getSetting();
-            dateValue = $filter('date')(dateValue, calendarSetting.keyDateFormat);            
-            return dateValue;
-        },
-        formatToHrsMins: function(dateValue) {
-            var calendarSetting = CalendarService.getSetting();
-            var dateFormat = 'YYYY-MM-DD @ hh:mm A';
-            if(calendarSetting.keyDateFormat === 'dd-MM-yyyy'){
-                dateFormat = 'DD-MM-YYYY @ hh:mm A';
-            }            
-            return moment(dateValue).format(dateFormat);
-        },
-        getToday: function(){  
-            var calendarSetting = CalendarService.getSetting();
-            var tdy = $.calendars.instance(calendarSetting.keyCalendar).newDate();            
-            var today = moment(tdy._year + '-' + tdy._month + '-' + tdy._day, 'YYYY-MM-DD')._d;            
-            today = Date.parse(today);     
-            today = $filter('date')(today,  calendarSetting.keyDateFormat);
-            return today;
-        },
-        formatFromUserToApi: function(dateValue){            
-            if(!dateValue){
-                return;
-            }
-            var calendarSetting = CalendarService.getSetting();            
-            dateValue = moment(dateValue, calendarSetting.momentFormat)._d;
-            dateValue = Date.parse(dateValue);     
-            dateValue = $filter('date')(dateValue, 'yyyy-MM-dd'); 
-            return dateValue;            
-        },
-        formatFromApiToUser: function(dateValue){            
-            if(!dateValue){
-                return;
-            }            
-            var calendarSetting = CalendarService.getSetting();
-            dateValue = moment(dateValue, 'YYYY-MM-DD')._d;
-            dateValue = Date.parse(dateValue);     
-            dateValue = $filter('date')(dateValue, calendarSetting.keyDateFormat); 
-            return dateValue;
         }
     };
 })
@@ -161,8 +122,6 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             var promise = $http.get( url ).then(function(response){                    
                 return response.data;        
             }, function(){     
-                //return dhis2.ec.storageManager.getEvents(orgUnit, programStage);                
-
                 var def = $q.defer();
                 StorageService.currentStore.open().done(function(){
                     StorageService.currentStore.getAll('events').done(function(evs){
@@ -187,7 +146,6 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             var promise = $http.get('../api/events/' + eventUid + '.json').then(function(response){               
                 return response.data;                
             }, function(){
-                //return dhis2.ec.storageManager.getEvent(eventUid);
                 var p = dhis2.ec.store.get('events', eventUid).then(function(ev){
                     ev.event = eventUid;
                     return ev;

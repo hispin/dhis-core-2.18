@@ -1,6 +1,11 @@
 CACHE MANIFEST
 # 2.18-SNAPSHOT.0
 
+#Revision:17657 
+
+NETWORK:
+*
+
 CACHE:
 
 ../dhis-web-commons/javascripts/jQuery/jquery.min.js

@@ -38,6 +38,8 @@ import java.io.InputStream;
 import javax.servlet.ServletContext;
 
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.system.SystemInfo;
+import org.hisp.dhis.system.SystemService;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -53,6 +55,9 @@ public class CacheManifest
 
     @Autowired
     private UserSettingService userSettingService;
+
+    @Autowired
+    private SystemService systemService;
 
     private String appPath;
 
@@ -94,8 +99,10 @@ public class CacheManifest
         StringBuffer stringBuffer = null;
 
         String locale = userSettingService.getUserSetting( UserSettingService.KEY_UI_LOCALE ).toString();
+        SystemInfo info = systemService.getSystemInfo();
+        String revisionTag = "#Revision:";
 
-        String defaultTranslationFile = "i18n_app.properties";;
+        String defaultTranslationFile = "i18n_app.properties";
         String translationFile = "";
         if ( locale.equalsIgnoreCase( "en" ) )
         {
@@ -106,7 +113,7 @@ public class CacheManifest
             translationFile = "i18n_app_" + locale + ".properties";
         }
 
-        if ( appPath != null && appCache != null && i18nPath != null )
+        if ( appPath != null && appCache != null )
         {
 
             ServletContext servletContext = ServletActionContext.getServletContext();
@@ -122,7 +129,7 @@ public class CacheManifest
                     cacheManifest = new File( files[i].getAbsolutePath() );
                 }
 
-                if ( files[i].isDirectory() && files[i].getName().equalsIgnoreCase( i18nPath ) )
+                if ( i18nPath != null && files[i].isDirectory() && files[i].getName().equalsIgnoreCase( i18nPath ) )
                 {
                     i18nFolder = new File( files[i].getAbsolutePath() );
                 }
@@ -139,6 +146,10 @@ public class CacheManifest
                 String line;
                 while ( (line = bufferedReader.readLine()) != null )
                 {
+                    if ( line.startsWith( revisionTag ) )
+                    {
+                        line = revisionTag + info.getRevision();
+                    }
                     stringBuffer.append( line );
                     stringBuffer.append( "\n" );
                 }
@@ -163,16 +174,13 @@ public class CacheManifest
                     {
                         stringBuffer.append( i18nPath + "/" + defaultTranslationFile );
                         stringBuffer.append( "\n" );
-                        
-                    }
-                    stringBuffer.append( "NETWORK:" );
-                    stringBuffer.append( "\n" );
-                    stringBuffer.append( "*" );
 
-                    inputStream = new ByteArrayInputStream( stringBuffer.toString().getBytes() );
-
-                    return SUCCESS;
+                    }                    
                 }
+                
+                inputStream = new ByteArrayInputStream( stringBuffer.toString().getBytes() );
+
+                return SUCCESS;
 
             }
             catch ( IOException e )
@@ -184,6 +192,7 @@ public class CacheManifest
 
         stringBuffer = new StringBuffer();
         stringBuffer.append( "CACHE MANIFEST" );
+        stringBuffer.append( revisionTag + info.getRevision() );
         stringBuffer.append( "\n" );
         stringBuffer.append( "NETWORK:" );
         stringBuffer.append( "\n" );
