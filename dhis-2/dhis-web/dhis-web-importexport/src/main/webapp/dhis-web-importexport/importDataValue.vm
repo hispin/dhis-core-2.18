@@ -41,13 +41,6 @@
 	<td><a href="javascript:toggleOptions()">$i18n.getString( "more_options" )</a></td>
 </tr>
 <tr class="moreOptions" style="display:none">
-	<td>$i18n.getString( "id_scheme" ) ($i18n.getString( "all_objects" ))</td>	
-	<td><select id="idScheme" name="idScheme" style="width:190px">
-		<option value="UID">$i18n.getString( "uid" )</option>
-		<option value="CODE">$i18n.getString( "code" )</option>
-    </select></td>
-</tr>
-<tr class="moreOptions" style="display:none">
 	<td>$i18n.getString( "data_element_id_scheme" )</td>	
 	<td><select id="dataElementIdScheme" name="dataElementIdScheme" style="width:190px">
 		<option value="UID">$i18n.getString( "uid" )</option>
@@ -61,6 +54,14 @@
 		<option value="UID">$i18n.getString( "uid" )</option>
 		<option value="CODE">$i18n.getString( "code" )</option>
 		<option value="NAME">$i18n.getString( "name" )</option>
+    </select></td>
+</tr>
+<tr class="moreOptions" style="display:none">
+	<td>$i18n.getString( "id_scheme" ) ($i18n.getString( "all_objects" ))</td>	
+	<td><select id="idScheme" name="idScheme" style="width:190px">
+		<option>[ $i18n.getString( "select" ) ]</option>
+		<option value="UID">$i18n.getString( "uid" )</option>
+		<option value="CODE">$i18n.getString( "code" )</option>
     </select></td>
 </tr>
 <tr class="moreOptions" style="display:none">
