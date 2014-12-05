@@ -141,6 +141,10 @@ select categoryid, categoryoptionid, count(*) from categories_categoryoptions gr
 
 select categorycomboid, categoryid, count(*) from categorycombos_categories group by categorycomboid, categoryid having count(*) > 1;
 
+-- Category option combos members of more than one category combo
+
+select categoryoptioncomboid, count(categoryoptioncomboid) as count from categorycombos_optioncombos group by categoryoptioncomboid having count(categoryoptioncomboid) > 1;
+
 -- Get category options with count of memberships in categories
 
 select cc.categoryoptionid, co.name, (
