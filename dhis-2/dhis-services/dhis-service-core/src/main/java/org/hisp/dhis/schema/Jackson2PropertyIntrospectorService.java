@@ -35,14 +35,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.hibernate.SessionFactory;
-import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Description;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.system.util.ReflectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
@@ -62,19 +60,20 @@ import java.util.Map;
 public class Jackson2PropertyIntrospectorService
     extends AbstractPropertyIntrospectorService
 {
-    @Autowired
-    private SessionFactory sessionFactory;
 
     @Override
     protected Map<String, Property> scanClass( Class<?> clazz )
     {
         Map<String, Property> propertyMap = Maps.newHashMap();
-        ClassMetadata classMetadata = sessionFactory.getClassMetadata( clazz );
         List<String> classPropertyNames = new ArrayList<>();
 
-        if ( classMetadata != null )
+        if ( sessionFactory.getClassMetadata( clazz ) != null )
         {
-            classPropertyNames = Lists.newArrayList( classMetadata.getPropertyNames() );
+            AbstractEntityPersister metadata = (AbstractEntityPersister) sessionFactory.getClassMetadata( clazz );
+
+            classPropertyNames = Lists.newArrayList( metadata.getPropertyNames() );
+            getPropertiesFromHibernate( clazz );
+
         }
 
         List<String> classFieldNames = ReflectionUtils.getAllFieldNames( clazz );
@@ -129,12 +128,12 @@ public class Jackson2PropertyIntrospectorService
                     if ( "name".equals( fieldName ) )
                     {
                         property.setUnique( identifiableObject.haveUniqueNames() );
-                        property.setNotNull( true );
+                        property.setNullable( true );
                     }
                     else if ( "code".equals( fieldName ) )
                     {
                         property.setUnique( identifiableObject.haveUniqueCode() );
-                        property.setNotNull( true );
+                        property.setNullable( true );
                     }
                 }
                 catch ( InstantiationException | IllegalAccessException ignored )

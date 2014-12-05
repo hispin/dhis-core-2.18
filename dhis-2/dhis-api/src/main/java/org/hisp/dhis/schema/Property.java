@@ -160,9 +160,19 @@ public class Property implements Ordered
     private boolean unique;
 
     /**
-     * Are the values for this property required to be not-null?
+     * Nullability of this property.
      */
-    private boolean notNull;
+    private boolean nullable;
+
+    /**
+     * Maximum length of this property.
+     */
+    private Integer maxLength;
+
+    /**
+     * Minimum length of this property.
+     */
+    private Integer minLength;
 
     public Property()
     {
@@ -420,14 +430,38 @@ public class Property implements Ordered
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isNotNull()
+    public boolean isNullable()
     {
-        return notNull;
+        return nullable;
     }
 
-    public void setNotNull( boolean notNull )
+    public void setNullable( boolean nullable )
     {
-        this.notNull = notNull;
+        this.nullable = nullable;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Integer getMaxLength()
+    {
+        return maxLength;
+    }
+
+    public void setMaxLength( Integer maxLength )
+    {
+        this.maxLength = maxLength;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Integer getMinLength()
+    {
+        return minLength;
+    }
+
+    public void setMinLength( Integer minLength )
+    {
+        this.minLength = minLength;
     }
 
     public String key()

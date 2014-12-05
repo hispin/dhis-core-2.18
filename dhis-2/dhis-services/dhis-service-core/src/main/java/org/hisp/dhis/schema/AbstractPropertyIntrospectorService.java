@@ -31,6 +31,15 @@ package org.hisp.dhis.schema;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.hibernate.SessionFactory;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.type.AnyType;
+import org.hibernate.type.AssociationType;
+import org.hibernate.type.CollectionType;
+import org.hibernate.type.EntityType;
+import org.hibernate.type.Type;
 import org.hisp.dhis.common.AnalyticalObject;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.BaseDimensionalObject;
@@ -39,7 +48,12 @@ import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +72,12 @@ public abstract class AbstractPropertyIntrospectorService
         .build();
 
     private Map<Class<?>, Map<String, Property>> classMapCache = Maps.newHashMap();
+
+    @Autowired
+    protected ApplicationContext context;
+
+    @Autowired
+    protected SessionFactory sessionFactory;
 
     @Override
     public List<Property> getProperties( Class<?> klass )
@@ -99,4 +119,72 @@ public abstract class AbstractPropertyIntrospectorService
      * @return Map with key=property-name, and value=Property class
      */
     protected abstract Map<String, Property> scanClass( Class<?> klass );
+
+    protected LocalSessionFactoryBean getLocalSessionFactoryBean()
+    {
+        return (LocalSessionFactoryBean) context.getBean( "&sessionFactory" );
+    }
+
+    protected Map<String, Property> getPropertiesFromHibernate( Class<?> klass )
+    {
+        ClassMetadata classMetadata = sessionFactory.getClassMetadata( klass );
+
+        // is class persisted with hibernate
+        if ( classMetadata == null )
+        {
+            return new HashMap<>();
+        }
+
+        LocalSessionFactoryBean sessionFactoryBean = getLocalSessionFactoryBean();
+        PersistentClass persistentClass = sessionFactoryBean.getConfiguration().getClassMapping( klass.getName() );
+
+        Iterator propertyIterator = persistentClass.getPropertyClosureIterator();
+
+        Map<String, Property> properties = new HashMap<>();
+
+        while ( propertyIterator.hasNext() )
+        {
+            Property property = new Property( klass );
+
+            org.hibernate.mapping.Property hibernateProperty = (org.hibernate.mapping.Property) propertyIterator.next();
+            Type type = hibernateProperty.getType();
+
+            property.setName( hibernateProperty.getName() );
+
+            property.setSetterMethod( hibernateProperty.getSetter( klass ).getMethod() );
+            property.setGetterMethod( hibernateProperty.getGetter( klass ).getMethod() );
+
+            if ( type.isCollectionType() )
+            {
+                CollectionType collectionType = (CollectionType) type;
+                property.setCollection( true );
+            }
+            else if ( type.isEntityType() )
+            {
+                EntityType entityType = (EntityType) type;
+            }
+            else if ( type.isAssociationType() )
+            {
+                AssociationType associationType = (AssociationType) type;
+            }
+            else if ( type.isAnyType() )
+            {
+                AnyType anyType = (AnyType) type;
+            }
+            else
+            {
+                Column column = (Column) hibernateProperty.getColumnIterator().next();
+
+                property.setUnique( column.isUnique() );
+                property.setNullable( column.isNullable() );
+
+                property.setMaxLength( column.getLength() );
+                property.setMinLength( 0 );
+            }
+
+            properties.put( property.getName(), property );
+        }
+
+        return properties;
+    }
 }
