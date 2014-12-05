@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.hibernate.SessionFactory;
+import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.metadata.ClassMetadata;
@@ -145,11 +146,15 @@ public abstract class AbstractPropertyIntrospectorService
         while ( propertyIterator.hasNext() )
         {
             Property property = new Property( klass );
+            property.setNullable( true );
+            property.setPersisted( true );
+            property.setOwner( true );
 
             org.hibernate.mapping.Property hibernateProperty = (org.hibernate.mapping.Property) propertyIterator.next();
             Type type = hibernateProperty.getType();
 
             property.setName( hibernateProperty.getName() );
+            property.setCascade( hibernateProperty.getCascade() );
 
             property.setSetterMethod( hibernateProperty.getSetter( klass ).getMethod() );
             property.setGetterMethod( hibernateProperty.getGetter( klass ).getMethod() );
@@ -158,6 +163,10 @@ public abstract class AbstractPropertyIntrospectorService
             {
                 CollectionType collectionType = (CollectionType) type;
                 property.setCollection( true );
+
+                Collection collection = sessionFactoryBean.getConfiguration().getCollectionMapping( collectionType.getRole() );
+                property.setOwner( !collection.isInverse() );
+
             }
             else if ( type.isEntityType() )
             {
