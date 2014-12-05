@@ -100,57 +100,29 @@ public class Jackson2PropertyIntrospectorService
             if ( classFieldNames.contains( fieldName ) )
             {
                 property.setFieldName( fieldName );
-                property.setPersisted( hibernatePropertyMap.containsKey( property.getFieldName() ) );
-                property.setWritable( property.isPersisted() );
             }
 
-            // This will be replaced later and fetched from hibernate mapping files instead
-            if ( property.isPersisted() && ("name".equals( fieldName ) || "code".equals( fieldName )) && IdentifiableObject.class.isAssignableFrom( clazz ) )
+            if ( hibernatePropertyMap.containsKey( fieldName ) )
             {
-                IdentifiableObject identifiableObject;
+                Property hibernateProperty = hibernatePropertyMap.get( fieldName );
+                property.setPersisted( true );
+                property.setWritable( true );
+                property.setUnique( hibernateProperty.isUnique() );
+                property.setNullable( hibernateProperty.isNullable() );
+                property.setMaxLength( hibernateProperty.getMaxLength() );
+                property.setMinLength( hibernateProperty.getMinLength() );
+                property.setCollection( hibernateProperty.isCollection() );
+                property.setCascade( hibernateProperty.getCascade() );
+                property.setOwner( hibernateProperty.isOwner() );
 
-                try
-                {
-                    identifiableObject = (IdentifiableObject) clazz.newInstance();
-
-                    if ( "name".equals( fieldName ) )
-                    {
-                        property.setUnique( identifiableObject.haveUniqueNames() );
-                        property.setNullable( true );
-                    }
-                    else if ( "code".equals( fieldName ) )
-                    {
-                        property.setUnique( identifiableObject.haveUniqueCode() );
-                        property.setNullable( true );
-                    }
-                }
-                catch ( InstantiationException | IllegalAccessException ignored )
-                {
-                }
+                property.setGetterMethod( hibernateProperty.getGetterMethod() );
+                property.setSetterMethod( hibernateProperty.getSetterMethod() );
             }
 
             if ( method.isAnnotationPresent( Description.class ) )
             {
                 Description description = method.getAnnotation( Description.class );
                 property.setDescription( description.value() );
-            }
-
-            if ( method.isAnnotationPresent( JsonView.class ) )
-            {
-                JsonView jsonView = method.getAnnotation( JsonView.class );
-
-                for ( Class<?> klass : jsonView.value() )
-                {
-                    if ( ExportView.class.isAssignableFrom( klass ) )
-                    {
-                        property.setOwner( true );
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                property.setOwner( true );
             }
 
             if ( method.isAnnotationPresent( JacksonXmlProperty.class ) )
@@ -177,7 +149,7 @@ public class Jackson2PropertyIntrospectorService
             Class<?> returnType = method.getReturnType();
             property.setKlass( returnType );
 
-            if ( Collection.class.isAssignableFrom( returnType ) )
+            if ( property.isCollection() )
             {
                 property.setCollection( true );
                 property.setCollectionName( property.getName() );
@@ -219,6 +191,7 @@ public class Jackson2PropertyIntrospectorService
                 if ( method.isAnnotationPresent( JacksonXmlElementWrapper.class ) )
                 {
                     JacksonXmlElementWrapper jacksonXmlElementWrapper = method.getAnnotation( JacksonXmlElementWrapper.class );
+                    property.setCollectionWrapping( jacksonXmlElementWrapper.useWrapping() );
 
                     // TODO what if element-wrapper have different namespace?
                     if ( !StringUtils.isEmpty( jacksonXmlElementWrapper.localName() ) )

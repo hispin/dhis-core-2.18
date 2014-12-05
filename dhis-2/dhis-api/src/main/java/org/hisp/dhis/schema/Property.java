@@ -90,7 +90,7 @@ public class Property implements Ordered
     /**
      * If this Property is a collection, should it be wrapped with collectionName?
      */
-    private boolean collectionWrapping;
+    private Boolean collectionWrapping;
 
     /**
      * Description if provided, will be fetched from @Description annotation.
@@ -173,6 +173,11 @@ public class Property implements Ordered
      * Minimum length of this property.
      */
     private Integer minLength;
+
+    /**
+     * Cascading used when doing CRUD operations.
+     */
+    private String cascade;
 
     public Property()
     {
@@ -276,7 +281,7 @@ public class Property implements Ordered
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getCollectionName()
     {
-        return collectionName == null ? name : collectionName;
+        return collectionName;
     }
 
     public void setCollectionName( String collectionName )
@@ -286,12 +291,12 @@ public class Property implements Ordered
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isCollectionWrapping()
+    public Boolean isCollectionWrapping()
     {
         return collectionWrapping;
     }
 
-    public void setCollectionWrapping( boolean collectionWrapping )
+    public void setCollectionWrapping( Boolean collectionWrapping )
     {
         this.collectionWrapping = collectionWrapping;
     }
@@ -462,6 +467,18 @@ public class Property implements Ordered
     public void setMinLength( Integer minLength )
     {
         this.minLength = minLength;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getCascade()
+    {
+        return cascade;
+    }
+
+    public void setCascade( String cascade )
+    {
+        this.cascade = cascade;
     }
 
     public String key()
