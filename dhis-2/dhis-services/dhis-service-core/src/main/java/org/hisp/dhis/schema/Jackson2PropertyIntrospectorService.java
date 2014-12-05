@@ -35,7 +35,6 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Description;
@@ -46,7 +45,6 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -65,17 +63,7 @@ public class Jackson2PropertyIntrospectorService
     protected Map<String, Property> scanClass( Class<?> clazz )
     {
         Map<String, Property> propertyMap = Maps.newHashMap();
-        List<String> classPropertyNames = new ArrayList<>();
-
-        if ( sessionFactory.getClassMetadata( clazz ) != null )
-        {
-            AbstractEntityPersister metadata = (AbstractEntityPersister) sessionFactory.getClassMetadata( clazz );
-
-            classPropertyNames = Lists.newArrayList( metadata.getPropertyNames() );
-            getPropertiesFromHibernate( clazz );
-
-        }
-
+        Map<String, Property> hibernatePropertyMap = getPropertiesFromHibernate( clazz );
         List<String> classFieldNames = ReflectionUtils.getAllFieldNames( clazz );
 
         // TODO this is quite nasty, should find a better way of exposing properties at class-level
@@ -112,7 +100,7 @@ public class Jackson2PropertyIntrospectorService
             if ( classFieldNames.contains( fieldName ) )
             {
                 property.setFieldName( fieldName );
-                property.setPersisted( classPropertyNames.contains( property.getFieldName() ) );
+                property.setPersisted( hibernatePropertyMap.containsKey( property.getFieldName() ) );
                 property.setWritable( property.isPersisted() );
             }
 
