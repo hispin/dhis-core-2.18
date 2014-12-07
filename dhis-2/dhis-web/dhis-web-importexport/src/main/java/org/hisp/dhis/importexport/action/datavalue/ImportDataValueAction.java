@@ -128,11 +128,6 @@ public class ImportDataValueAction
         this.importFormat = importFormat;
     }
 
-    public String getImportFormat()
-    {
-        return importFormat;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -142,8 +137,6 @@ public class ImportDataValueAction
         throws Exception
     {
         strategy = strategy != null ? strategy : ImportStrategy.NEW_AND_UPDATES;
-        dataElementIdScheme = dataElementIdScheme != null ? dataElementIdScheme : IdentifiableProperty.UID;
-        orgUnitIdScheme = orgUnitIdScheme != null ? orgUnitIdScheme : IdentifiableProperty.UID;
 
         TaskId taskId = new TaskId( TaskCategory.DATAVALUE_IMPORT, currentUserService.getCurrentUser() );
 

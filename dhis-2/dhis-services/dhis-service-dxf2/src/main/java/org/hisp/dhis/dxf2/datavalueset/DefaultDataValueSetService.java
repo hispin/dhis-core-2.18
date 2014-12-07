@@ -154,6 +154,10 @@ public class DefaultDataValueSetService
     // DataValueSet implementation
     //--------------------------------------------------------------------------
 
+    //--------------------------------------------------------------------------
+    // Write
+    //--------------------------------------------------------------------------
+
     @Override
     public void writeDataValueSetXml( String dataSet, String period, String orgUnit, OutputStream out, ExportOptions exportOptions )
     {
@@ -462,6 +466,10 @@ public class DefaultDataValueSetService
         return collectionNode;
     }
 
+    //--------------------------------------------------------------------------
+    // Save
+    //--------------------------------------------------------------------------
+
     @Override
     public ImportSummary saveDataValueSet( InputStream in )
     {
@@ -556,6 +564,28 @@ public class DefaultDataValueSetService
         }
     }
 
+    /**
+     * There are specific id schemes for data elements and organisation units and
+     * a generic id scheme for all objects. The specific id schemes will take
+     * precedence over the generic id scheme. The generic id scheme also applies
+     * to data set and category option combo.
+     * 
+     * The id schemes uses the following order of precedence:
+     * 
+     * <ul>
+     * <li>Id scheme from the data value set</li>
+     * <li>Id scheme from the import options</li>
+     * <li>Default id scheme which is UID</li>
+     * <ul>
+     * 
+     * If id scheme is specific in the data value set, any id schemes in the import
+     * options will be ignored.
+     * 
+     * @param importOptions
+     * @param id
+     * @param dataValueSet
+     * @return
+     */
     private ImportSummary saveDataValueSet( ImportOptions importOptions, TaskId id, DataValueSet dataValueSet )
     {
         log.debug( "Import options: " + importOptions );
@@ -567,17 +597,24 @@ public class DefaultDataValueSetService
 
         importOptions = importOptions != null ? importOptions : ImportOptions.getDefaultImportOptions();
 
-        IdentifiableProperty idScheme = dataValueSet.getIdSchemeProperty() != null ?
-            dataValueSet.getIdSchemeProperty() : importOptions.getIdScheme();
-                    
-        IdentifiableProperty dataElementIdScheme = dataValueSet.getDataElementIdSchemeProperty() != null ?
-            dataValueSet.getDataElementIdSchemeProperty() : importOptions.getDataElementIdScheme();
-                
-        IdentifiableProperty orgUnitIdScheme = dataValueSet.getOrgUnitIdSchemeProperty() != null ?
-            dataValueSet.getOrgUnitIdSchemeProperty() : importOptions.getOrgUnitIdScheme();
-            
-        log.info( "Data element scheme: " + dataElementIdScheme + ", org unit scheme: " + orgUnitIdScheme + ", scheme: " + idScheme );
-            
+        log.info( "Import options: " + importOptions );
+        
+        //----------------------------------------------------------------------
+        // Get id scheme
+        //----------------------------------------------------------------------
+
+        IdentifiableProperty dvSetIdScheme = dataValueSet.getIdSchemeProperty();
+        IdentifiableProperty dvSetDataElementIdScheme = dataValueSet.getDataElementIdSchemeProperty();
+        IdentifiableProperty dvSetOrgUnitIdScheme = dataValueSet.getOrgUnitIdSchemeProperty();
+        
+        log.info( "Data value set scheme: " + dvSetIdScheme + ", data element scheme: " + dvSetDataElementIdScheme + ", org unit scheme: " + dvSetOrgUnitIdScheme );
+        
+        IdentifiableProperty idScheme = dvSetIdScheme != null ? dvSetIdScheme : importOptions.getIdScheme();                    
+        IdentifiableProperty dataElementIdScheme = dvSetDataElementIdScheme != null ? dvSetDataElementIdScheme : importOptions.getDataElementIdScheme();
+        IdentifiableProperty orgUnitIdScheme = dvSetOrgUnitIdScheme != null ? dvSetOrgUnitIdScheme : importOptions.getOrgUnitIdScheme();
+        
+        log.info( "Scheme: " + idScheme + ", data element scheme: " + dataElementIdScheme + ", org unit scheme: " + orgUnitIdScheme );
+        
         boolean dryRun = dataValueSet.getDryRun() != null ? dataValueSet.getDryRun() : importOptions.isDryRun();
         
         ImportStrategy strategy = dataValueSet.getStrategy() != null ?
@@ -585,6 +622,10 @@ public class DefaultDataValueSetService
             importOptions.getImportStrategy();
             
         boolean skipExistingCheck = importOptions.isSkipExistingCheck();
+
+        //----------------------------------------------------------------------
+        // Build meta-data maps
+        //----------------------------------------------------------------------
 
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
         Map<String, OrganisationUnit> orgUnitMap = orgUnitIdScheme == UUID ? getUuidOrgUnitMap() : identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
