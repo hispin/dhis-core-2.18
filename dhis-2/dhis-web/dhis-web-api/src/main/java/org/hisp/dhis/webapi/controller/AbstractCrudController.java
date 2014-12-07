@@ -151,6 +151,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( filters.isEmpty() )
         {
             entityList = getEntityList( metaData, options, filters );
+            hasPaging = false;
         }
         else
         {
@@ -182,6 +183,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
                     metaData.setPager( pager );
 
                     entityList = Lists.newArrayList( manager.getBetweenLikeName( getEntityClass(), name, pager.getOffset(), pager.getPageSize() ) );
+                    hasPaging = false;
                 }
                 else
                 {
