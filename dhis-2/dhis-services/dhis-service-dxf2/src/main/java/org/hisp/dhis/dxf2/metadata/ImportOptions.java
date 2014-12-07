@@ -45,9 +45,9 @@ public class ImportOptions
 
     private IdentifiableProperty idScheme;
     
-    private IdentifiableProperty dataElementIdScheme = IdentifiableProperty.UID;
+    private IdentifiableProperty dataElementIdScheme;
 
-    private IdentifiableProperty orgUnitIdScheme = IdentifiableProperty.UID;
+    private IdentifiableProperty orgUnitIdScheme;
 
     private boolean dryRun;
 
@@ -115,12 +115,12 @@ public class ImportOptions
 
     public IdentifiableProperty getDataElementIdScheme()
     {
-        return idScheme != null ? idScheme : ( dataElementIdScheme != null ? dataElementIdScheme : IdentifiableProperty.UID );
+        return dataElementIdScheme != null ? dataElementIdScheme : ( idScheme != null ? idScheme : IdentifiableProperty.UID );
     }
 
     public IdentifiableProperty getOrgUnitIdScheme()
     {
-        return idScheme != null ? idScheme : ( orgUnitIdScheme != null ? orgUnitIdScheme : IdentifiableProperty.UID );
+        return orgUnitIdScheme != null ? orgUnitIdScheme : ( idScheme != null ? idScheme : IdentifiableProperty.UID );
     }
     
     public boolean isDryRun()
@@ -200,7 +200,7 @@ public class ImportOptions
     @Override
     public String toString()
     {
-        return "[General id scheme: " + idScheme + ", data element id scheme: " + dataElementIdScheme + ", org unit id scheme: " +
+        return "[Id scheme: " + idScheme + ", data element id scheme: " + dataElementIdScheme + ", org unit id scheme: " +
             orgUnitIdScheme + ", dry run: " + dryRun + ", async: " + async + ", strategy: " + importStrategy + ", skip check: " + skipExistingCheck + "]";
     }
 }

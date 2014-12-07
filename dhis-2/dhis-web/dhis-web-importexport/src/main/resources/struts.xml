@@ -25,7 +25,7 @@
     </action>
 
     <action name="importDataValue" class="org.hisp.dhis.importexport.action.datavalue.ImportDataValueAction">
-      <result name="success" type="redirect">displayImportDataValueForm.action?importFormat=${importFormat}</result>
+      <result name="success" type="redirect">displayImportDataValueForm.action</result>
       <interceptor-ref name="fileUploadStack" />
       <param name="requiredAuthorities">F_IMPORT_DATA</param>
     </action>

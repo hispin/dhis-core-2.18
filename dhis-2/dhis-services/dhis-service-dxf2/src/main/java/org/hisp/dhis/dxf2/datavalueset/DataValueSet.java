@@ -300,19 +300,19 @@ public class DataValueSet
     
     public IdentifiableProperty getDataElementIdSchemeProperty()
     {
-        String scheme = getIdScheme();
         String dataElementScheme = getDataElementIdScheme();
+        String scheme = getIdScheme();
         
-        scheme = defaultIfEmpty( scheme, dataElementScheme );        
+        scheme = defaultIfEmpty( dataElementScheme, scheme );        
         return scheme != null ? IdentifiableProperty.valueOf( scheme.toUpperCase() ) : null;
     }
 
     public IdentifiableProperty getOrgUnitIdSchemeProperty()
     {
-        String scheme = getIdScheme();
         String orgUnitScheme = getOrgUnitIdScheme();
+        String scheme = getIdScheme();
         
-        scheme = defaultIfEmpty( scheme, orgUnitScheme );        
+        scheme = defaultIfEmpty( orgUnitScheme, scheme );        
         return scheme != null ? IdentifiableProperty.valueOf( scheme.toUpperCase() ) : null;
     }
 

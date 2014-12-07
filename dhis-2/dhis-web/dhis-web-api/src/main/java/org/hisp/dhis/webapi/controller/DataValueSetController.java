@@ -176,7 +176,7 @@ public class DataValueSetController
     {
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, importOptions );
 
-        log.info( "Data values set saved " + importOptions );
+        log.info( "Data values set saved" );
 
         response.setContentType( CONTENT_TYPE_XML );
         JacksonUtils.toXml( response.getOutputStream(), summary );
@@ -189,7 +189,7 @@ public class DataValueSetController
     {
         ImportSummary summary = dataValueSetService.saveDataValueSetJson( in, importOptions );
 
-        log.info( "Data values set saved " + importOptions );
+        log.info( "Data values set saved" );
 
         response.setContentType( CONTENT_TYPE_JSON );
         JacksonUtils.toJson( response.getOutputStream(), summary );
@@ -202,7 +202,7 @@ public class DataValueSetController
     {
         ImportSummary summary = dataValueSetService.saveDataValueSetCsv( in, importOptions );
 
-        log.info( "Data values set saved " + importOptions );
+        log.info( "Data values set saved" );
 
         response.setContentType( CONTENT_TYPE_XML );
         JacksonUtils.toXml( response.getOutputStream(), summary );
