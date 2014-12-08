@@ -323,12 +323,12 @@ public abstract class AbstractEventService
             if ( programInstances.isEmpty() )
             {
                 return new ImportSummary( ImportStatus.ERROR,
-                    "No active event exists for single event no registration program " + program.getUid() );
+                    "There is no program instance for program " + program.getUid() );
             }
             else if ( programInstances.size() > 1 )
             {
                 return new ImportSummary( ImportStatus.ERROR,
-                    "Multiple active events exists for single event no registration program " + program.getUid() );
+                    "Multiple active program instances exists for program " + program.getUid() );
             }
 
             programInstance = programInstances.get( 0 );
