@@ -58,13 +58,13 @@
       <param name="page">/dhis-web-importexport/eventImportForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/eventData.js</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_EVENTS</param>
     </action>
 
     <action name="importEvents" class="org.hisp.dhis.importexport.action.event.ImportEventAction">
       <result name="success" type="redirect">displayEventImportForm.action</result>
       <interceptor-ref name="fileUploadStack" />
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_EVENTS</param>
     </action>
 
     <action name="getImportEventSummaries" class="org.hisp.dhis.importexport.action.event.GetImportEventSummariesAction">
@@ -79,7 +79,7 @@
       <param name="page">/dhis-web-importexport/eventExportForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/eventData.js</param>
-      <param name="requiredAuthorities">F_EXPORT_DATA</param>
+      <param name="requiredAuthorities">F_EXPORT_EVENTS</param>
     </action>
 
     <!-- Menu -->
@@ -88,7 +88,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-importexport/externalImportMenu.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="displayExternalExportMenu" class="org.hisp.dhis.importexport.action.NoAction">
@@ -111,7 +111,7 @@
       <param name="page">/dhis-web-importexport/importForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/import.js,javascript/process.js</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="import" class="org.hisp.dhis.importexport.action.imp.ImportAction">
@@ -121,20 +121,20 @@
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/import.js,javascript/process.js</param>
       <interceptor-ref name="fileUploadStack" />
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="getImportStatus" class="org.hisp.dhis.importexport.action.imp.GetImportStatusAction">
       <result name="success" type="velocity-xml">/dhis-web-importexport/responseImportStatus.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="getImportAnalysis" class="org.hisp.dhis.importexport.action.imp.GetImportAnalysisAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-importexport/importAnalysisForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <!-- Object Ajax -->
@@ -143,14 +143,14 @@
       <result name="success" type="velocity-xml">/dhis-web-importexport/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-importexport/responseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="discardObjectsOfTypeAjax" class="org.hisp.dhis.importexport.action.object.DiscardObjectsOfTypeAction">
       <result name="success" type="velocity-xml">/dhis-web-importexport/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-importexport/responseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <!-- Preview -->
@@ -160,7 +160,7 @@
       <param name="page">/dhis-web-importexport/previewForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/import.js</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="displayMatchForm" class="org.hisp.dhis.importexport.action.imp.GetMatchOptionsAction">
@@ -168,7 +168,7 @@
       <param name="page">/dhis-web-importexport/matchToExistingForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/import.js</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="displayCompareForm" class="org.hisp.dhis.importexport.action.imp.GetCompareOptionsAction">
@@ -176,17 +176,17 @@
       <param name="page">/dhis-web-importexport/compareToExistingForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/import.js</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="importAllObjects" class="org.hisp.dhis.importexport.action.object.ImportAllObjectsAction">
       <result name="success" type="redirect">displayImportForm.action</result>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="discardAllObjects" class="org.hisp.dhis.importexport.action.object.DiscardAllObjectsAction">
       <result name="success" type="redirect">displayImportForm.action</result>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="matchObject" class="org.hisp.dhis.importexport.action.object.MatchObjectAction">
@@ -194,7 +194,7 @@
       <param name="page">/dhis-web-importexport/previewForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/import.js</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="discardObject" class="org.hisp.dhis.importexport.action.object.DiscardObjectAction">
@@ -202,7 +202,7 @@
       <param name="page">/dhis-web-importexport/previewForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/import.js</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <!-- Export -->
@@ -288,11 +288,12 @@
       <param name="page">/dhis-web-importexport/configDhis14Form.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/config.js</param>
-      <param name="requiredAuthorities">F_IMPORT_DATA</param>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="configDhis14" class="org.hisp.dhis.importexport.action.dhis14.SetDhis14ConfigurationAction">
       <result name="success" type="redirect">setImportFormat.action?importFormat=DHIS14FILE</result>
+      <param name="requiredAuthorities">F_IMPORT_OTHER_SYSTEMS</param>
     </action>
 
     <action name="validateConfigDhis14"
@@ -336,6 +337,7 @@
       <param name="strategy">update</param>
       <result name="success" type="redirect">gmlImport.action</result>
       <interceptor-ref name="fileUploadStack" />
+      <param name="requiredAuthorities">F_IMPORT_GML</param>
     </action>
 
     <action name="gmlImport" class="org.hisp.dhis.importexport.action.NoAction">
@@ -343,7 +345,7 @@
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="page">/dhis-web-importexport/gmlImport.vm</param>
       <param name="javascripts">javascript/importMetaData.js</param>
-      <param name="requiredAuthorities">F_METADATA_IMPORT</param>
+      <param name="requiredAuthorities">F_IMPORT_GML</param>
     </action>
 
     <!-- Detailed meta-data export -->
