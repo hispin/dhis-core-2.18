@@ -34,7 +34,7 @@ var d2Services = angular.module('d2Services', ['ngResource'])
     };
 })
 
-/* Factory to fetch optioSets */
+/* Factory to fetch optionSets */
 .factory('OptionSetService', function($q, $rootScope, StorageService) { 
     return {
         getAll: function(){
@@ -64,22 +64,27 @@ var d2Services = angular.module('d2Services', ['ngResource'])
             });                        
             return def.promise;            
         },
-        getNameOrCode: function(options, key){
-            var val = key;            
-
+        
+        getCode: function(options, key){
             if(options){
                 for(var i=0; i<options.length; i++){
                     if( key === options[i].name){
-                        val = options[i].code;
-                        break;
-                    }
-                    if( key === options[i].code){
-                        val = options[i].name;
-                        break;
+                        return options[i].code;
                     }
                 }
             }            
-            return val;
+            return key;
+        },
+        
+        getName: function(options, key){
+            if(options){
+                for(var i=0; i<options.length; i++){                    
+                    if( key === options[i].code){
+                        return options[i].name;
+                    }
+                }
+            }            
+            return key;
         }
     };
 })

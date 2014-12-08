@@ -19,6 +19,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 ContextMenuSelectedItem,                
                 DateUtils,
                 CalendarService,
+                CustomFormService,
                 ModalService,
                 DialogService) {
     //selected org unit
@@ -133,7 +134,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                         section.open = true;
                     });
                     
-                    $scope.customForm = $scope.selectedProgramStage.dataEntryForm ? $scope.selectedProgramStage.dataEntryForm.htmlCode : null; 
+                    //$scope.customForm = $scope.selectedProgramStage.dataEntryForm ? $scope.selectedProgramStage.dataEntryForm.htmlCode : null;
+                    $scope.customForm = CustomFormService.getForProgramStage($scope.selectedProgramStage);
 
                     $scope.prStDes = [];  
                     $scope.eventGridColumns = [];

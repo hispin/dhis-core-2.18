@@ -120,7 +120,7 @@
                 <div class='col-md-12' ng-if="customForm">
                     <a href ng-click="switchDataEntryForm()" title="{{displayCustomForm ? 'default_form' : 'custom_form'| translate}}"><span class="primary pull-right"><i class="fa fa-file-text fa-2x"></i></span></a>                
                 </div>
-                <div class="vertical-spacing" ng-if="displayCustomForm" ng-include="'components/dataentry/custom-form.html'"></div>  
+                <div class="vertical-spacing" ng-if="displayCustomForm" ng-include="'../dhis-web-commons/customform/custom-form.html'"></div>  
                 <div class="vertical-spacing" ng-if="!displayCustomForm" ng-include="'components/dataentry/default-form.html'"></div>
             </div>            
 
