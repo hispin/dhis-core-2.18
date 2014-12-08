@@ -15,29 +15,20 @@ var eventCapture = angular.module('eventCapture',
           'd2Controllers',
 		  'angularLocalStorage', 
 		  'pascalprecht.translate',
-          'd2Providers',
           'd2Menu'])
               
 .value('DHIS2URL', '..')
 
-.config(function($httpProvider, $routeProvider, d2I18nProvider) {    
-            
-    $httpProvider.defaults.useXDomain = true;
-    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+.config(function($routeProvider, $translateProvider) {    
     
     $routeProvider.when('/', {
         templateUrl: 'views/home.html',
-        controller: 'MainController'/*,
-        resolve: {
-            geoJsons: function(GeoJsonFactory){
-                return GeoJsonFactory.getAll();
-            }
-        }*/
+        controller: 'MainController'
     }).otherwise({
         redirectTo : '/'
     });
     
-    
-    d2I18nProvider.initialize();
+    $translateProvider.preferredLanguage('en');
+    $translateProvider.useLoader('i18nLoader');
     
 });

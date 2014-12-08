@@ -6,10 +6,7 @@ var d2Controllers = angular.module('d2Controllers', [])
 //Controller for header page
 .controller('HeaderController',
         function($scope,                
-                DHIS2URL,
-                TranslationService) {
-
-    TranslationService.translate();
+                DHIS2URL) {
     
     $scope.home = function(){        
         window.location = DHIS2URL;
@@ -46,11 +43,8 @@ var d2Controllers = angular.module('d2Controllers', [])
         function($scope, 
                 $modalInstance,
                 DHIS2URL,
-                TranslationService,
                 geoJsons,
                 location) {
-
-    TranslationService.translate();
     
     $scope.home = function(){        
         window.location = DHIS2URL;
