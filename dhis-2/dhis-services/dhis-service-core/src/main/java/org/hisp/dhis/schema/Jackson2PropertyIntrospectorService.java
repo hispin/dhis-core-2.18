@@ -149,7 +149,7 @@ public class Jackson2PropertyIntrospectorService
             Class<?> returnType = method.getReturnType();
             property.setKlass( returnType );
 
-            if ( property.isCollection() )
+            if ( Collection.class.isAssignableFrom( returnType ) )
             {
                 property.setCollection( true );
                 property.setCollectionName( property.getName() );

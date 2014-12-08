@@ -281,7 +281,7 @@ public class Property implements Ordered
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getCollectionName()
     {
-        return collectionName;
+        return collectionName != null ? collectionName : (isCollection() ? name : null);
     }
 
     public void setCollectionName( String collectionName )
