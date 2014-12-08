@@ -105,12 +105,10 @@ public class DefaultDataValueSetService
 {
     private static final Log log = LogFactory.getLog( DefaultDataValueSetService.class );
 
-    private static final String ERROR_SEP = ": ";
     private static final String ERROR_INVALID_DATA_SET = "Invalid data set: ";
     private static final String ERROR_INVALID_PERIOD = "Invalid period: ";
     private static final String ERROR_INVALID_ORG_UNIT = "Invalid org unit: ";
     private static final String ERROR_OBJECT_NEEDED_TO_COMPLETE = "Must be provided to complete data set";
-    private static final String ERROR_INSIGNIFICANT_ZERO = "Value is zero and not significant";
     
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
@@ -689,30 +687,42 @@ public class DefaultDataValueSetService
             totalCount++;
 
             DataElement dataElement = dataElementMap.get( trimToNull( dataValue.getDataElement() ) );
-            DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ) );
             Period period = outerPeriod != null ? outerPeriod : PeriodType.getPeriodFromIsoString( trimToNull( dataValue.getPeriod() ) );
             OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : orgUnitMap.get( trimToNull( dataValue.getOrgUnit() ) );
+            DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ) );
             DataElementCategoryOptionCombo attrOptionCombo = outerAttrOptionCombo != null ? outerAttrOptionCombo : 
                 categoryOptionComboMap.get( trimToNull( dataValue.getAttributeOptionCombo() ) );
 
             if ( dataElement == null )
             {
-                summary.getConflicts().add( new ImportConflict( DataElement.class.getSimpleName(), dataValue.getDataElement() ) );
+                summary.getConflicts().add( new ImportConflict( dataValue.getDataElement(), "Data element not found or not acccessible" ) );
                 continue;
             }
 
             if ( period == null )
             {
-                summary.getConflicts().add( new ImportConflict( Period.class.getSimpleName(), dataValue.getPeriod() ) );
+                summary.getConflicts().add( new ImportConflict( dataValue.getPeriod(), "Period not valid" ) );
                 continue;
             }
 
             if ( orgUnit == null )
             {
-                summary.getConflicts().add( new ImportConflict( OrganisationUnit.class.getSimpleName(), dataValue.getOrgUnit() ) );
+                summary.getConflicts().add( new ImportConflict( dataValue.getOrgUnit(), "Organisation unit not found or not acccessible" ) );
                 continue;
             }
 
+            if ( categoryOptionCombo == null && trimToNull( dataValue.getCategoryOptionCombo() ) != null )
+            {
+                summary.getConflicts().add( new ImportConflict( dataValue.getCategoryOptionCombo(), "Category option combo not found or not accessible" ) );
+                continue;
+            }
+            
+            if ( attrOptionCombo == null && trimToNull( dataValue.getAttributeOptionCombo() ) != null )
+            {
+                summary.getConflicts().add( new ImportConflict( dataValue.getAttributeOptionCombo(), "Attribute option combo not found or not accessible" ) );
+                continue;
+            }
+            
             if ( categoryOptionCombo == null )
             {
                 categoryOptionCombo = fallbackCategoryOptionCombo;
@@ -732,7 +742,7 @@ public class DefaultDataValueSetService
 
             if ( valueValid != null )
             {
-                summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), i18n.getString( valueValid ) + ERROR_SEP + dataValue.getValue() ) );
+                summary.getConflicts().add( new ImportConflict( dataValue.getValue(), i18n.getString( valueValid ) ) );
                 continue;
             }
 
@@ -740,7 +750,7 @@ public class DefaultDataValueSetService
 
             if ( commentValid != null )
             {
-                summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), i18n.getString( commentValid ) ) );
+                summary.getConflicts().add( new ImportConflict( "Comment", i18n.getString( commentValid ) ) );
                 continue;
             }
 
@@ -779,7 +789,7 @@ public class DefaultDataValueSetService
             
             if ( zeroInsignificant )
             {
-                summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), ERROR_INSIGNIFICANT_ZERO ) );
+                summary.getConflicts().add( new ImportConflict( internalValue.getValue(), "Value is zero and not significant" ) );
                 continue;
             }
             
