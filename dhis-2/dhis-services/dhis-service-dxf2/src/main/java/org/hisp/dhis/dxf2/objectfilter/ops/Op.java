@@ -44,6 +44,8 @@ public abstract class Op
         new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ),
         new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm" ),
         new SimpleDateFormat( "yyyy-MM-dd'T'HH" ),
+        new SimpleDateFormat( "yyyy-MM-dd" ),
+        new SimpleDateFormat( "yyyy-MM" ),
         new SimpleDateFormat( "yyyyMMdd" ),
         new SimpleDateFormat( "yyyyMM" ),
         new SimpleDateFormat( "yyyy" )
