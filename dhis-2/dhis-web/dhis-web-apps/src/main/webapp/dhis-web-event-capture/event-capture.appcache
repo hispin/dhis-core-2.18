@@ -112,6 +112,7 @@ styles/style.css
 ../dhis-web-commons/javascripts/dhis2/dhis2.menu.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js
 ../dhis-web-commons/paging/serverside-pagination.html
+../dhis-web-commons/customform/custom-form.html
 
 scripts/event-capture.js
 scripts/app.js
@@ -123,7 +124,7 @@ scripts/notes-controller.js
 scripts/orgunitTreeSearch.js
 
 views/column-modal.html
-views/customForm.html
+views/ec-custom-form.html
 views/defaultForm.html
 views/dialog.html
 views/eventList.html

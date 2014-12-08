@@ -304,16 +304,11 @@ var d2Directives = angular.module('d2Directives', [])
 .directive('d2CustomForm', function($compile, $parse, CustomFormService) {
     return{ 
         restrict: 'E',
-        link: function(scope, elm, attrs){   
-            
-            var customFormType = attrs.customFormType;
-            var customFormObject = $parse(attrs.customFormObject)(scope);
-            
-            if(customFormType === 'PROGRAM_STAGE'){                
-                var customForm = CustomFormService.getForProgramStage(customFormObject);                
-                elm.html(customForm ? customForm : '');
-                $compile(elm.contents())(scope);                
-            }
+        link: function(scope, elm, attrs){            
+             scope.$watch('customForm', function(){
+                 elm.html(scope.customForm);
+                 $compile(elm.contents())(scope);
+             });
         }
     };
 })
