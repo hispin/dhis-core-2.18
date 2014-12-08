@@ -195,8 +195,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
                 // get full list if we are using filters
                 if ( !filters.isEmpty() )
                 {
-                    options.getOptions().put( "links", "false" );
-
                     if ( options.hasPaging() )
                     {
                         hasPaging = true;
