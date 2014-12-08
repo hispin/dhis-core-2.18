@@ -5,10 +5,7 @@ trackerCapture.controller('ProfileController',
                 DateUtils,
                 TEIService,
                 DialogService,
-                AttributesFactory,
-                TranslationService) {
-
-    TranslationService.translate();
+                AttributesFactory) {
     
     //attributes for profile    
     $scope.attributes = [];    

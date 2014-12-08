@@ -12,11 +12,7 @@ trackerCapture.controller('RegistrationController',
                 CurrentSelection,
                 EventUtils,
                 DateUtils,
-                storage,
-                TranslationService) {
-
-    //do translation of the registration page
-    TranslationService.translate();    
+                storage) {
     
     $scope.today = DateUtils.getToday();
     

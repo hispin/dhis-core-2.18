@@ -5,10 +5,7 @@ trackerCapture.controller('NotesController',
                 TEIService,
                 EnrollmentService,
                 CurrentSelection,
-                orderByFilter,
-                TranslationService) {
-
-    TranslationService.translate();
+                orderByFilter) {
     
     var loginDetails = storage.get('LOGIN_DETAILS');
     var storedBy = '';

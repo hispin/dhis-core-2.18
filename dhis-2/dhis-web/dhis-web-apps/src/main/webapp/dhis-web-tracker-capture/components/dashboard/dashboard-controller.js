@@ -10,12 +10,7 @@ trackerCapture.controller('DashboardController',
                 TEService,
                 OptionSetService,
                 ProgramFactory,
-                CurrentSelection,
-                TranslationService) {
-
-    //do translation of the dashboard page
-    TranslationService.translate();    
- 
+                CurrentSelection) {
     //dashboard items   
     $rootScope.biggerDashboardWidgets = [];
     $rootScope.smallerDashboardWidgets = [];

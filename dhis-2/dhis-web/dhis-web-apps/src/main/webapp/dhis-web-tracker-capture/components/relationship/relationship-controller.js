@@ -6,11 +6,7 @@ trackerCapture.controller('RelationshipController',
                 $route,
                 $translate,
                 CurrentSelection,
-                RelationshipFactory,
-                TranslationService) {
-
-    TranslationService.translate();        
-
+                RelationshipFactory) {
     $rootScope.showAddRelationshipDiv = false;
     $scope.relationshipTypes = []; 
     $scope.relationships = [];
@@ -388,12 +384,7 @@ trackerCapture.controller('RelationshipController',
                 DialogService,
                 CurrentSelection,
                 DateUtils,
-                storage,
-                TranslationService) {
-
-    //do translation of the registration page
-    TranslationService.translate();   
-
+                storage) {
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
     $scope.enrollment = {enrollmentDate: '', incidentDate: ''};    
     

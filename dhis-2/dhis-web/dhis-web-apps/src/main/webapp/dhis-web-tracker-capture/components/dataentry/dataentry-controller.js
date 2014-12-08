@@ -9,10 +9,7 @@ trackerCapture.controller('DataEntryController',
                 ModalService,
                 DialogService,
                 CurrentSelection,
-                CustomFormService,
-                TranslationService) {
-
-    TranslationService.translate();
+                CustomFormService) {
     
     //Data entry form
     $scope.dataEntryOuterForm = {};

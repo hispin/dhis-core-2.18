@@ -24,6 +24,46 @@ var optionSetsInPromise = [];
 
 dhis2.tc.store = null;
 dhis2.tc.memoryOnly = $('html').hasClass('ie7') || $('html').hasClass('ie8');
+var adapters = [];    
+if( dhis2.tc.memoryOnly ) {
+    adapters = [ dhis2.storage.InMemoryAdapter ];
+} else {
+    adapters = [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ];
+}
+
+dhis2.tc.store = new dhis2.storage.Store({
+    name: TC_STORE_NAME,
+    objectStores: [
+        {
+            name: 'tcPrograms',
+            adapters: adapters
+        },
+        {
+            name: 'programStages',
+            adapters: adapters
+        },
+        {
+            name: 'trackedEntities',
+            adapters: adapters
+        },
+        {
+            name: 'trackedEntityForms',
+            adapters: adapters
+        },
+        {
+            name: 'attributes',
+            adapters: adapters
+        },
+        {
+            name: 'relationshipTypes',
+            adapters: adapters
+        },
+        {
+            name: 'optionSets',
+            adapters: adapters
+        }            
+    ]        
+});
 
 (function($) {
     $.safeEach = function(arr, fn)
@@ -49,90 +89,80 @@ $(document).ready(function()
     });
 
     $('#loaderSpan').show();
+});
 
-    $('#orgUnitTree').one('ouwtLoaded', function()
+$(document).bind('dhis2.online', function(event, loggedIn)
+{
+    if (loggedIn)
     {
-        loadMetaData();
-
-    });
-
-    $(document).bind('dhis2.online', function(event, loggedIn)
-    {
-        if (loggedIn)
+        if (dhis2.tc.storageManager.hasLocalData())
         {
-            if (dhis2.tc.storageManager.hasLocalData())
-            {
-                var message = i18n_need_to_sync_notification
-                        + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+            var message = i18n_need_to_sync_notification
+                    + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
 
-                setHeaderMessage(message);
+            setHeaderMessage(message);
 
-                $('#sync_button').bind('click', uploadLocalData);
-            }
-            else
-            {
-                if (dhis2.tc.emptyOrganisationUnits) {
-                    setHeaderMessage(i18n_no_orgunits);
-                }
-                else {
-                    setHeaderDelayMessage(i18n_online_notification);
-                }
-            }
+            $('#sync_button').bind('click', uploadLocalData);
         }
         else
         {
-            var form = [
-                '<form style="display:inline;">',
-                '<label for="username">Username</label>',
-                '<input name="username" id="username" type="text" style="width: 70px; margin-left: 10px; margin-right: 10px" size="10"/>',
-                '<label for="password">Password</label>',
-                '<input name="password" id="password" type="password" style="width: 70px; margin-left: 10px; margin-right: 10px" size="10"/>',
-                '<button id="login_button" type="button">Login</button>',
-                '</form>'
-            ].join('');
-
-            setHeaderMessage(form);
-            ajax_login();
+            if (dhis2.tc.emptyOrganisationUnits) {
+                setHeaderMessage(i18n_no_orgunits);
+            }
+            else {
+                setHeaderDelayMessage(i18n_online_notification);
+            }
         }
-    });
-
-    $(document).bind('dhis2.offline', function()
+    }
+    else
     {
-        if (dhis2.tc.emptyOrganisationUnits) {
-            setHeaderMessage(i18n_no_orgunits);
-        }
-        else {
-            setHeaderMessage(i18n_offline_notification);
-            //selection.responseReceived(); //notify angular 
-        }
-    });
+        var form = [
+            '<form style="display:inline;">',
+            '<label for="username">Username</label>',
+            '<input name="username" id="username" type="text" style="width: 70px; margin-left: 10px; margin-right: 10px" size="10"/>',
+            '<label for="password">Password</label>',
+            '<input name="password" id="password" type="password" style="width: 70px; margin-left: 10px; margin-right: 10px" size="10"/>',
+            '<button id="login_button" type="button">Login</button>',
+            '</form>'
+        ].join('');
 
-    //dhis2.availability.startAvailabilityCheck();    
-    
-    $(".select-dropdown-button").on('click', function(e) {
-        $("#selectDropDown").width($("#selectDropDownParent").width());
-        e.stopPropagation();
-        $("#selectDropDown").dropdown('toggle');
-    });  
-    
-    $(".select-dropdown-caret").on('click', function(e) {
-        $("#selectDropDown").width($("#selectDropDownParent").width());
-        e.stopPropagation();
-        $("#selectDropDown").dropdown('toggle');
-    }); 
-    
-    $(".search-dropdown-button").on('click', function() {
-        $("#searchDropDown").width($("#searchDropDownParent").width());
-    }); 
-    
-    $('#searchDropDown').on('click', "[data-stop-propagation]", function(e) {
-        e.stopPropagation();
-    });
-    
-    //stop date picker's event bubling
-    $(document).on('click.dropdown touchstart.dropdown.data-api', '#ui-datepicker-div', function (e) { e.stopPropagation() });
-
+        setHeaderMessage(form);
+        ajax_login();
+    }
 });
+
+$(document).bind('dhis2.offline', function()
+{
+    if (dhis2.tc.emptyOrganisationUnits) {
+        setHeaderMessage(i18n_no_orgunits);
+    }
+    else {
+        setHeaderMessage(i18n_offline_notification);
+    }
+});
+
+$(".select-dropdown-button").on('click', function(e) {
+    $("#selectDropDown").width($("#selectDropDownParent").width());
+    e.stopPropagation();
+    $("#selectDropDown").dropdown('toggle');
+});  
+
+$(".select-dropdown-caret").on('click', function(e) {
+    $("#selectDropDown").width($("#selectDropDownParent").width());
+    e.stopPropagation();
+    $("#selectDropDown").dropdown('toggle');
+}); 
+
+$(".search-dropdown-button").on('click', function() {
+    $("#searchDropDown").width($("#searchDropDownParent").width());
+}); 
+
+$('#searchDropDown').on('click', "[data-stop-propagation]", function(e) {
+    e.stopPropagation();
+});
+
+//stop date picker's event bubling
+$(document).on('click.dropdown touchstart.dropdown.data-api', '#ui-datepicker-div', function (e) { e.stopPropagation() });
 
 $(window).resize(function() {
     $("#selectDropDown").width($("#selectDropDownParent").width());
@@ -161,56 +191,8 @@ function ajax_login()
     });
 }
 
-function loadMetaData()
+function downloadMetaData()
 {
-    /*dhis2.tc.store = new dhis2.storage.Store({
-        name: TC_STORE_NAME,
-        adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-        objectStores: ['tcPrograms', 'programStages', 'trackedEntities', 'trackedEntityForms', 'attributes', 'relationshipTypes', 'optionSets']
-    });*/
-    
-    var adapters = [];    
-    if( dhis2.tc.memoryOnly ) {
-        adapters = [ dhis2.storage.InMemoryAdapter ];
-    } else {
-        adapters = [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ];
-    }
-    
-    dhis2.tc.store = new dhis2.storage.Store({
-        name: TC_STORE_NAME,
-        objectStores: [
-            {
-                name: 'tcPrograms',
-                adapters: adapters
-            },
-            {
-                name: 'programStages',
-                adapters: adapters
-            },
-            {
-                name: 'trackedEntities',
-                adapters: adapters
-            },
-            {
-                name: 'trackedEntityForms',
-                adapters: adapters
-            },
-            {
-                name: 'attributes',
-                adapters: adapters
-            },
-            {
-                name: 'relationshipTypes',
-                adapters: adapters
-            },
-            {
-                name: 'optionSets',
-                adapters: adapters
-            }            
-        ]        
-    });
-    
-    
     var def = $.Deferred();
     var promise = def.promise();
 

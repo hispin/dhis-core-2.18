@@ -1,11 +1,7 @@
 trackerCapture.controller('SelectedInfoController',
         function($scope,                
                 storage,
-                CurrentSelection,
-                TranslationService) {
-
-    TranslationService.translate();
-    
+                CurrentSelection) {
     //listen for the selected items
     $scope.$on('selectedItems', function(event, args) {
         

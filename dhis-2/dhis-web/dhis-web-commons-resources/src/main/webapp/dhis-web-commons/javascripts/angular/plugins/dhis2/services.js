@@ -168,7 +168,6 @@ var d2Services = angular.module('d2Services', ['ngResource'])
     };
 })
 
-
 /* service for getting calendar setting */
 .service('CalendarService', function(storage, $rootScope){    
 

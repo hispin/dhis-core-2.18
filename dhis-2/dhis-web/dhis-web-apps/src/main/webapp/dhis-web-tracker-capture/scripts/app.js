@@ -11,6 +11,10 @@ var trackerCapture = angular.module('trackerCapture',
          'trackerCaptureFilters',
          'trackerCaptureDirectives', 
          'trackerCaptureControllers',
+         'd2Filters',
+         'd2Directives',
+         'd2Services',
+         'd2Controllers',
          'angularLocalStorage',
          'ui.select2',
          'd2Menu',
@@ -50,16 +54,13 @@ var trackerCapture = angular.module('trackerCapture',
         redirectTo : '/'
     });  
     
-    $translateProvider.useStaticFilesLoader({
-        prefix: 'i18n/',
-        suffix: '.json'
-    });
-    
     $translateProvider.preferredLanguage('en');
-})
+    $translateProvider.useLoader('i18nLoader');
+    
+});
 
-.run(function($rootScope){    
+/*.run(function($rootScope){    
     setTimeout(function () {
         $rootScope.$apply(function () {});
     }, 1000);
-});
+});*/

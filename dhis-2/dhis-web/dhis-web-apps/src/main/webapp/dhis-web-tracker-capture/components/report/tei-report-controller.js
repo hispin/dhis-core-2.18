@@ -6,13 +6,10 @@ trackerCapture.controller('TeiReportController',
                 DateUtils,
                 EventUtils,
                 TEIService,
-                TranslationService,
                 ProgramFactory,
                 ProgramStageFactory,
                 EnrollmentService,
-                DHIS2EventFactory) {
-
-    TranslationService.translate();    
+                DHIS2EventFactory) {  
     $scope.showProgramReportDetailsDiv = false;
     $scope.programs = [];  
     $scope.programNames = [];  

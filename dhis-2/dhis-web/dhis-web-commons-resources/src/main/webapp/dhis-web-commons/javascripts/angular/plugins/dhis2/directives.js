@@ -118,24 +118,38 @@ var d2Directives = angular.module('d2Directives', [])
     };
 })
 
+.directive('sortable', function() {        
+
+    return {        
+        restrict: 'A',        
+        link: function(scope, element, attrs){
+            element.sortable({
+                connectWith: ".connectedSortable",
+                placeholder: "ui-state-highlight",
+                tolerance: "pointer",
+                handle: '.handle'
+            });
+        }  
+    };
+})
+
 .directive('serversidePaginator', function factory() {
     return {
         restrict: 'E',
         controller: function ($scope, Paginator) {
             $scope.paginator = Paginator;
         },
-        templateUrl: 'views/serverside-pagination.html'
+        templateUrl: '../dhis-web-commons/paging/serverside-pagination.html'
     };
 })
 
-.directive('clientsidePaginator', function factory() {
+.directive('draggableModal', function(){
     return {
-        restrict: 'E',
-        controller: function ($scope, Paginator) {
-            $scope.paginator = Paginator;
-        },
-        templateUrl: 'views/clientside-pagination.html'
-    };
+      restrict: 'EA',
+      link: function(scope, element) {
+        element.draggable();
+      }
+    };  
 })
 
 .directive('d2GoogleMap', function ($parse, $compile, storage) {

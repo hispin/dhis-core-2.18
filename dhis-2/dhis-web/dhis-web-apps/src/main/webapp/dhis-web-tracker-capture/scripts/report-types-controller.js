@@ -1,11 +1,7 @@
 //Controller for the header section
 trackerCapture.controller('ReportTypesController',
         function($scope,
-                $location,
-                TranslationService) {
-
-    TranslationService.translate();
-    
+                $location) {    
     $scope.programSummary = function(){   
         $location.path('/program-summary').search();
     };

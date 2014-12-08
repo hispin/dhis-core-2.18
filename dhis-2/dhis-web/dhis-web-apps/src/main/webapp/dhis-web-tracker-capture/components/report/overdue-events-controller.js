@@ -8,13 +8,9 @@ trackerCapture.controller('OverdueEventsController',
                 Paginator,
                 EventReportService,
                 TEIGridService,
-                TranslationService,
                 AttributesFactory,
                 ProgramFactory,
-                storage) {
-
-    TranslationService.translate();
-    
+                storage) {    
     $scope.today = DateUtils.getToday();
     
     $scope.selectedOuMode = 'SELECTED';
