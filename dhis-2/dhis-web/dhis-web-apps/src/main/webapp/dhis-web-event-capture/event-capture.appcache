@@ -56,11 +56,12 @@ styles/style.css
 ../dhis-web-commons/javascripts/angular/angular-animate.js        
 ../dhis-web-commons/javascripts/angular/ui-bootstrap-tpls-0.10.0-draggable-modal.js
 
+
+#scripts/angular-translate.min.js
 ../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js
 ../dhis-web-commons/javascripts/angular/plugins/angular-translate.min.js
 ../dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-static-files.min.js
 ../dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-url.min.js
-../dhis-web-commons/javascripts/angular/plugins/dhis2/providers.js
 ../dhis-web-commons/javascripts/angular/plugins/dhis2/directives.js
 ../dhis-web-commons/javascripts/angular/plugins/dhis2/filters.js
 ../dhis-web-commons/javascripts/angular/plugins/dhis2/services.js
@@ -113,12 +114,11 @@ styles/style.css
 
 scripts/event-capture.js
 scripts/app.js
-scripts/d2Providers.js
 scripts/services.js
+scripts/filters.js
 scripts/directives.js
 scripts/controllers.js        
 scripts/notes-controller.js        
-scripts/filters.js
 scripts/orgunitTreeSearch.js
 
 views/column-modal.html

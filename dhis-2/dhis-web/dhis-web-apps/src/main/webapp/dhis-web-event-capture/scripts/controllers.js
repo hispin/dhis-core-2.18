@@ -10,7 +10,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 $timeout,
                 storage,
                 Paginator,
-                TranslationService,
                 OptionSetService,
                 ProgramFactory,
                 ProgramStageFactory,                
@@ -21,14 +20,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 DateUtils,
                 CalendarService,
                 ModalService,
-                DialogService) {   
-   
+                DialogService) {
     //selected org unit
     $scope.selectedOrgUnit = '';
     
     $scope.calendarSetting = CalendarService.getSetting();
-    
-    console.log('controller started...');
     
     //Paging
     $scope.pager = {pageSize: 50, page: 1, toolBarDisplay: 5};   
@@ -54,13 +50,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.noteExists = false;
         
     //watch for selection of org unit from tree
-    $scope.$watch('selectedOrgUnit', function(newObj, oldObj) {
+    $scope.$watch('selectedOrgUnit', function() {
         
         $scope.dhis2Events = [];
         if( angular.isObject($scope.selectedOrgUnit)){
-            
-            //apply translation - by now user's profile is fetched from server.
-            TranslationService.translate();            
             $scope.loadPrograms();
         }
     });

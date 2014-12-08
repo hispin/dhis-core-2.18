@@ -4,17 +4,6 @@
 
 var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource'])
 
-
-/* Translation service - gets logged in user profile for the server, 
- * and apply user's locale to translation
- */
-.service('TranslationService', function($translate, storage){
-    
-    this.translate = function(){
-        $translate.uses(storage.get('LOCALE'));
-    };
-})
-
 .factory('StorageService', function(){
     var store = new dhis2.storage.Store({
         name: 'dhis2ec',
