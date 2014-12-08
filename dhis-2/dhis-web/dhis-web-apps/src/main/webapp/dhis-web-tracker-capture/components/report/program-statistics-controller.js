@@ -2,13 +2,9 @@ trackerCapture.controller('ProgramStatisticsController',
          function($scope,
                 DateUtils,                
                 EnrollmentService,
-                TranslationService,
                 ProgramFactory,
                 DHIS2EventFactory,
                 storage) {
-
-    TranslationService.translate();
-    
     $scope.today = DateUtils.getToday();
     
     $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];         

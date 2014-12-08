@@ -9,7 +9,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 $modal,
                 $location,
                 Paginator,
-                TranslationService, 
                 storage,
                 OptionSetService,
                 OperatorFactory,
@@ -56,9 +55,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             storage.set('SELECTED_OU', $scope.selectedOrgUnit);
             
             $scope.trackedEntityList = [];
-           
-            //apply translation - by now user's profile is fetched from server.
-            TranslationService.translate();
             
             if(!$scope.optionSets){
                 $scope.optionSets = {optionSets: [], optionNamesByCode: new Object(), optionCodesByName: new Object()};

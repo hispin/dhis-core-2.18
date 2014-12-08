@@ -12,10 +12,8 @@ trackerCapture.controller('EnrollmentController',
                 TEIService,
                 TEFormService,
                 EnrollmentService,
-                TranslationService,
                 ModalService,
                 DialogService) {
-    TranslationService.translate();
     
     $scope.today = DateUtils.getToday();
     

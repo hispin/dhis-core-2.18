@@ -2,9 +2,9 @@
 
 /* Directives */
 
-var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
+var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', []);
 
-.directive('inputValidator', function() {
+/*.directive('inputValidator', function() {
     
     return {
         require: 'ngModel',
@@ -16,7 +16,6 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
         }
     };   
 })
-
 .directive('selectedOrgUnit', function(storage) {
     return {        
         restrict: 'A',        
@@ -221,44 +220,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
   };
 })
 
-.directive('paginator', function factory() {
-    return {
-        restrict: 'E',
-        controller: function ($scope, Paginator) {
-            $scope.paginator = Paginator;
-        },
-        templateUrl: 'views/pagination.html'
-    };
-})
 
-.directive('draggableModal', function(){
-    return {
-      restrict: 'EA',
-      link: function(scope, element) {
-        element.draggable();
-      }
-    };  
-})
-
-.directive('serversidePaginator', function factory() {
-    return {
-        restrict: 'E',
-        controller: function ($scope, Paginator) {
-            $scope.paginator = Paginator;
-        },
-        templateUrl: 'views/serverside-pagination.html'
-    };
-})
-
-.directive('clientsidePaginator', function factory() {
-    return {
-        restrict: 'E',
-        controller: function ($scope, Paginator) {
-            $scope.paginator = Paginator;
-        },
-        templateUrl: 'views/clientside-pagination.html'
-    };
-})
 
 .directive('d2Enter', function () {
     return function (scope, element, attrs) {
@@ -271,5 +233,4 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
             }
         });
     };
-});
-
+})*/

@@ -5,14 +5,10 @@ trackerCapture.controller('ProgramSummaryController',
                 EventUtils,
                 TEIService,
                 TEIGridService,
-                TranslationService,
                 AttributesFactory,
                 ProgramFactory,
                 DHIS2EventFactory,
-                storage) {
-
-    TranslationService.translate();
-    
+                storage) {    
     $scope.today = DateUtils.getToday();
     
     $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];         

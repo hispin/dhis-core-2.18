@@ -111,6 +111,7 @@ styles/style.css
 ../dhis-web-commons/javascripts/dhis2/dhis2.translate.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.menu.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js
+../dhis-web-commons/paging/serverside-pagination.html
 
 scripts/event-capture.js
 scripts/app.js
@@ -130,5 +131,4 @@ views/home.html
 views/map.html
 views/modal.html
 views/notes.html
-views/serverside-pagination.html
 

@@ -8,13 +8,9 @@ trackerCapture.controller('UpcomingEventsController',
                 Paginator,
                 EventReportService,
                 TEIGridService,
-                TranslationService,
                 AttributesFactory,
                 ProgramFactory,
                 storage) {
-
-    TranslationService.translate();
-    
     $scope.today = DateUtils.getToday();
     
     $scope.selectedOuMode = 'SELECTED';

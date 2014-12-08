@@ -1,11 +1,7 @@
 //Controller for column show/hide
 trackerCapture.controller('LeftBarMenuController',
         function($scope,
-                $location,
-                TranslationService) {
-
-    TranslationService.translate();
-    
+                $location) {
     $scope.showHome = function(){
         $location.path('/').search();
     }; 
