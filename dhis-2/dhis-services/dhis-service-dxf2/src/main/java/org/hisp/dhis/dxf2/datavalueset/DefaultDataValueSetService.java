@@ -635,7 +635,7 @@ public class DefaultDataValueSetService
 
         Period outerPeriod = PeriodType.getPeriodFromIsoString( trimToNull( dataValueSet.getPeriod() ) );
 
-        OrganisationUnit outerOrgUnit;
+        OrganisationUnit outerOrgUnit = null;
 
         DataElementCategoryOptionCombo fallbackCategoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
@@ -651,6 +651,36 @@ public class DefaultDataValueSetService
         DataElementCategoryOptionCombo outerAttrOptionCombo = dataValueSet.getAttributeOptionCombo() != null ?
             identifiableObjectManager.getObject( DataElementCategoryOptionCombo.class, idScheme, trimToNull( dataValueSet.getAttributeOptionCombo() ) ) : null;
 
+        // ---------------------------------------------------------------------
+        // Validation
+        // ---------------------------------------------------------------------
+
+        if ( dataSet == null && trimToNull( dataValueSet.getDataSet() ) != null )
+        {
+            summary.getConflicts().add( new ImportConflict( dataValueSet.getDataSet(), "Data set not found or not accessible" ) );
+            summary.setStatus( ImportStatus.ERROR );
+        }
+        
+        if ( outerOrgUnit == null && trimToNull( dataValueSet.getOrgUnit() ) != null )
+        {
+            summary.getConflicts().add( new ImportConflict( dataValueSet.getDataSet(), "Org unit not found or not accessible" ) );
+            summary.setStatus( ImportStatus.ERROR );            
+        }
+        
+        if ( outerAttrOptionCombo == null && trimToNull( dataValueSet.getAttributeOptionCombo() ) != null )
+        {
+            summary.getConflicts().add( new ImportConflict( dataValueSet.getDataSet(), "Attribute option combo not found or not accessible" ) );
+            summary.setStatus( ImportStatus.ERROR );             
+        }
+        
+        if ( ImportStatus.ERROR.equals( summary.getStatus() ) )
+        {
+            summary.setDescription( "Import process was aborted" );
+            notifier.notify( id, INFO, "Import process aborted", true ).addTaskSummary( id, summary );
+            dataValueSet.close();
+            return summary;
+        }
+            
         if ( dataSet != null && completeDate != null )
         {
             notifier.notify( id, "Completing data set" );
@@ -692,6 +722,10 @@ public class DefaultDataValueSetService
             DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ) );
             DataElementCategoryOptionCombo attrOptionCombo = outerAttrOptionCombo != null ? outerAttrOptionCombo : 
                 categoryOptionComboMap.get( trimToNull( dataValue.getAttributeOptionCombo() ) );
+
+            // -----------------------------------------------------------------
+            // Validation
+            // -----------------------------------------------------------------
 
             if ( dataElement == null )
             {
@@ -792,7 +826,11 @@ public class DefaultDataValueSetService
                 summary.getConflicts().add( new ImportConflict( internalValue.getValue(), "Value is zero and not significant" ) );
                 continue;
             }
-            
+
+            // -----------------------------------------------------------------
+            // Save, update or delete data value
+            // -----------------------------------------------------------------
+
             if ( !skipExistingCheck && batchHandler.objectExists( internalValue ) )
             {
                 if ( strategy.isCreateAndUpdate() || strategy.isUpdate() )
