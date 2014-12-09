@@ -62,17 +62,52 @@ var d2Directives = angular.module('d2Directives', [])
     };
 })
 
-.directive('d2TypeaheadValidation', function() {
+.directive('d2NumberValidation', function() {
     
     return {
         require: 'ngModel',
         restrict: 'A',
         link: function (scope, element, attrs, ctrl) {
-            element.bind('blur', function () {                
-                if(ctrl.$viewValue && !ctrl.$modelValue){
-                    ctrl.$setViewValue();
-                    ctrl.$render();
-                }                
+            
+            function checkValidity(numberType, value){
+                var isValid = false;
+                switch(numberType){
+                    case "number":
+                        isValid = dhis2.validation.isNumber(value);
+                        break;
+                    case "posInt":
+                        isValid = dhis2.validation.isPositiveInt(value);
+                        break;
+                    case "negInt":
+                        isValid = dhis2.validation.isNegativeInt(value);
+                        break;
+                    case "zeroPostitiveInt":
+                        isValid = dhis2.validation.isZeroOrPositiveInt(value);
+                        break;
+                    case "int":
+                        isValid = dhis2.validation.isInt(value);
+                        break;
+                    default:
+                        isValid = true;
+                }
+                return isValid;
+            }
+            
+            var fieldName = element.attr('name');
+            var numberType = attrs.numberType;
+            
+            ctrl.$parsers.unshift(function(value) {
+                var isValid = checkValidity(numberType, value);
+                ctrl.$setValidity(fieldName, isValid);
+                return isValid ? value : undefined;
+            });            
+           
+            ctrl.$formatters.unshift(function(value) {
+                if(value){
+                    var isValid = checkValidity(numberType, value);
+                    ctrl.$setValidity(fieldName, isValid);
+                    return value;
+                }
             });
         }
     };
@@ -90,6 +125,22 @@ var d2Directives = angular.module('d2Directives', [])
                         ctrls[0].getMatchesAsync(ctrls[1].$viewValue);
                     }                
                 });
+            });
+        }
+    };
+})
+
+.directive('d2TypeaheadValidation', function() {
+    
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function (scope, element, attrs, ctrl) {
+            element.bind('blur', function () {                
+                if(ctrl.$viewValue && !ctrl.$modelValue){
+                    ctrl.$setViewValue();
+                    ctrl.$render();
+                }                
             });
         }
     };
@@ -392,28 +443,21 @@ var d2Directives = angular.module('d2Directives', [])
                 showAnim: "",
                 renderer: $.calendars.picker.themeRollerRenderer,
                 onSelect: function(date) {
-                    //scope.date = date;
                     ctrl.$setViewValue(date);
                     $(this).change();                    
                     scope.$apply();
                 }
             })
-            .change(function() {                
-                var rawDate = this.value;
+            .change(function() {
+            	var rawDate = this.value;
                 var convertedDate = DateUtils.format(this.value);
-
-                if(rawDate != convertedDate){
-                    scope.invalidDate = true;
-                    ctrl.$setViewValue(this.value);                                   
-                    ctrl.$setValidity('foo', false);                    
-                    scope.$apply();     
-                }
-                else{
-                    scope.invalidDate = false;
-                    ctrl.$setViewValue(this.value);                                   
-                    ctrl.$setValidity('foo', true);                    
-                    scope.$apply();     
-                }
+                
+                var isValid = rawDate == convertedDate;                
+                var fieldName = element.attr('name');
+                
+                ctrl.$setViewValue(isValid ? this.value : undefined);                                   
+                ctrl.$setValidity(fieldName, isValid);	            
+	            scope.$apply();
             });    
         }      
     };   

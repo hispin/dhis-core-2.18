@@ -2,9 +2,9 @@
 
 /* Directives */
 
-var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', []);
+var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
 
-/*.directive('inputValidator', function() {
+.directive('inputValidator', function() {
     
     return {
         require: 'ngModel',
@@ -16,19 +16,34 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', []);
         }
     };   
 })
-.directive('selectedOrgUnit', function(storage) {
+
+.directive('selectedOrgUnit', function($timeout, storage) {        
+
     return {        
         restrict: 'A',        
-        link: function(scope, element, attrs){  
-           
-            //listen to user selection, and inform angular         
-            selection.setListenerFunction( organisationUnitSelected, true );
-            selection.responseReceived();
+        link: function(scope, element, attrs){
             
-            function organisationUnitSelected( orgUnits, orgUnitNames ) {                
-                scope.selectedOrgUnit = {id: orgUnits[0], name: orgUnitNames[0]};
-                scope.$apply();
-            }            
+            //once ou tree is loaded, start meta-data download
+            $(function() {
+                dhis2.ou.store.open().done( function() {
+                    selection.load();
+                    $( "#orgUnitTree" ).one( "ouwtLoaded", function(event, ids, names) {
+                        console.log('Finished loading orgunit tree');                        
+                        downloadMetaData();
+                    });
+                });
+            });
+            
+            //listen to user selection, and inform angular         
+            selection.setListenerFunction( setSelectedOu, true );
+            
+            function setSelectedOu( ids, names ) {
+                var ou = {id: ids[0], name: names[0]};
+                $timeout(function() {
+                    scope.selectedOrgUnit = ou;
+                    scope.$apply();
+                });
+            }
         }  
     };
 })
@@ -172,8 +187,12 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', []);
                 
                 var rawDate = this.value;
                 var convertedDate = DateUtils.format(this.value);
+                
+                console.log('raw date:  ', rawDate);
+                console.log('cnv date:  ', convertedDate);
 
                 if(rawDate != convertedDate){
+                    console.log('It is invalid...');
                     scope.invalidDate = true;
                     ctrl.$setViewValue(this.value);                                   
                     ctrl.$setValidity('foo', false);                    
@@ -204,6 +223,22 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', []);
     };
 })
 
+.directive('d2TypeaheadValidation', function() {
+    
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function (scope, element, attrs, ctrl) {
+            element.bind('blur', function () {                
+                if(ctrl.$viewValue && !ctrl.$modelValue){
+                    ctrl.$setViewValue();
+                    ctrl.$render();
+                }                
+            });
+        }
+    };
+})
+
 .directive('typeaheadOpenOnFocus', function ($compile) {
   return {
     require: ['typeahead', 'ngModel'],
@@ -220,7 +255,15 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', []);
   };
 })
 
-
+.directive('serversidePaginator', function factory() {
+    return {
+        restrict: 'E',
+        controller: function ($scope, Paginator) {
+            $scope.paginator = Paginator;
+        },
+        templateUrl: '../dhis-web-commons/paging/serverside-pagination.html'
+    };
+})
 
 .directive('d2Enter', function () {
     return function (scope, element, attrs) {
@@ -233,4 +276,4 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', []);
             }
         });
     };
-})*/
+});

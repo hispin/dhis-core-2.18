@@ -62,16 +62,10 @@ trackerCapture.controller('DashboardController',
                         }
                     });
                     
-                    $scope.optionSets = {optionSets: [], optionNamesByCode: new Object(), optionCodesByName: new Object()};
+                    $scope.optionSets = [];
                     OptionSetService.getAll().then(function(optionSets){
-                        angular.forEach(optionSets, function(optionSet){
-                            angular.forEach(optionSet.options, function(option){
-                                if(option.name && option.code){
-                                    $scope.optionSets.optionNamesByCode[ '"' + option.code + '"'] = option.name;
-                                    $scope.optionSets.optionCodesByName[ '"' + option.name + '"'] = option.code;
-                                }                       
-                            });
-                            $scope.optionSets.optionSets[optionSet.id] = optionSet;
+                        angular.forEach(optionSets, function(optionSet){                            
+                            $scope.optionSets[optionSet.id] = optionSet;
                         });
                         
                         //broadcast selected items for dashboard controllers

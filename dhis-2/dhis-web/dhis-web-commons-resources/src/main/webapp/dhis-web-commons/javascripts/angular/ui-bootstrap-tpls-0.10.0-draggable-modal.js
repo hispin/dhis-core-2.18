@@ -3256,8 +3256,12 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
         if (isEditable) {
           return inputValue;
         } else {
-          modelCtrl.$setValidity('editable', false);
-          return undefined;
+          /*modelCtrl.$setValidity('editable', false);
+          return undefined;*/
+          if(inputValue){ //make sure empty values - though not part of the drop down - are accepted
+            modelCtrl.$setValidity('editable', false);
+            return undefined;
+          }
         }
       });
       

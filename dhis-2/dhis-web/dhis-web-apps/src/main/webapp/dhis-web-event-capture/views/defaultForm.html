@@ -56,7 +56,7 @@
                     {{'longitude'| translate}}
                 </td>
                 <td>
-                    <input type="number"
+                    <input type="number"  
                            ng-model="currentEvent.coordinate.longitude"                                                                
                            name="longitude" 
                            min="-180"
@@ -77,19 +77,23 @@
                     <ng-form name="innerForm">
                         <div ng-switch="eventGridColumn.type">
                             <div ng-switch-when="int">
-                                <input type="number"
+                                <input type="number" 
+                                       d2-validation 
+                                       d2-number-validation 
+                                       number-type={{prStDes[eventGridColumn.id].dataElement.numberType}}
                                        ng-model="currentEvent[eventGridColumn.id]"                                                                
                                        ng-required={{eventGridColumn.compulsory}}
                                        name="foo" 
                                        style="width:99%;"/>
-                                <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'int_required'| translate}}</span>
+                                <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'value_must_be'| translate}} - {{prStDes[eventGridColumn.id].dataElement.numberType | translate}}</span>
                             </div>
                             <div ng-switch-when="string">                                
                                 <div class="container-fluid" ng-if="prStDes[eventGridColumn.id].dataElement.optionSet">
                                     <span ng-if="!selectedProgram.dataEntryMethod || optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id].options.length >= 7">
                                         <input type="text"
                                                class="typeahead"
-                                               placeholder="&#xf0d7;&nbsp;&nbsp;"
+                                               placeholder="&#xf0d7;&nbsp;&nbsp;" 
+                                               d2-validation 
                                                ng-model="currentEvent[eventGridColumn.id]"                                                                    
                                                typeahead="option.name as option.name for option in optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id].options | filter:$viewValue | limitTo:20" 
                                                typeahead-open-on-focus   
@@ -103,7 +107,8 @@
                                     <span ng-if="selectedProgram.dataEntryMethod && optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id].options.length < 7">                                    
                                         <label>
                                             <input type="radio" 
-                                                   name="foo" 
+                                                   name="foo"  
+                                                   d2-validation  
                                                    ng-required={{eventGridColumn.compulsory}}
                                                    ng-model="currentEvent[eventGridColumn.id]"
                                                    value=""> {{'no_value' | translate}}<br>
@@ -111,6 +116,7 @@
                                         <label ng-repeat="option in  optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id].options">
                                             <input type="radio" 
                                                    name={{eventGridColumn.id}}   
+                                                   d2-validation 
                                                    ng-required={{eventGridColumn.compulsory}}
                                                    ng-model="currentEvent[eventGridColumn.id]"
                                                    value={{option.name}}> {{option.name}}<br>                                        
@@ -119,7 +125,8 @@
                                     </span>
                                 </div>
                                 <div ng-if="!prStDes[eventGridColumn.id].dataElement.optionSet">
-                                    <input type="text"
+                                    <input type="text" 
+                                        d2-validation    
                                         ng-model="currentEvent[eventGridColumn.id]"                                        
                                         ng-required={{eventGridColumn.compulsory}}
                                         name="foo" 
@@ -128,7 +135,8 @@
                                 </div>                                
                             </div>
                             <div ng-switch-when="bool">
-                                <select ng-model="currentEvent[eventGridColumn.id]"                                                                
+                                <select d2-validation 
+                                        ng-model="currentEvent[eventGridColumn.id]"                                                                
                                         ng-required={{eventGridColumn.compulsory}}
                                         name="foo" 
                                         style="width:99%;">
@@ -142,7 +150,8 @@
                                 <input type="text"                                                                
                                        placeholder="{{dhis2CalendarFormat.keyDateFormat}}"
                                        d2-date
-                                       max-date="prStDes[eventGridColumn.id].allowFutureDate ? '' : 0"
+                                       max-date="prStDes[eventGridColumn.id].allowFutureDate ? '' : 0" 
+                                       d2-validation 
                                        ng-model="currentEvent[eventGridColumn.id]"                                                               
                                        ng-required={{eventGridColumn.compulsory}}
                                        name="foo" 
@@ -150,7 +159,8 @@
                                 <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'date_required'| translate}}</span>
                             </div>
                             <div ng-switch-when="trueOnly">
-                                <input type="checkbox"                                                                      
+                                <input type="checkbox"          
+                                       d2-validation 
                                        ng-model="currentEvent[eventGridColumn.id]"                                                               
                                        ng-required={{eventGridColumn.compulsory}}
                                        name="foo"/>
@@ -206,7 +216,7 @@
                     {{'latitude'| translate}}
                 </td>
                 <td>
-                    <input type="number"
+                    <input type="number" 
                            ng-model="currentEvent.coordinate.latitude"                                                                
                            name="latitude"
                            min="-90"
@@ -221,7 +231,7 @@
                     {{'longitude'| translate}}
                 </td>
                 <td>
-                    <input type="number"
+                    <input type="number" 
                            ng-model="currentEvent.coordinate.longitude"                                                                
                            name="longitude" 
                            min="-180"
@@ -255,18 +265,23 @@
                             <ng-form name="innerForm">
                                 <div ng-switch="prStDes[de.dataElement.id].dataElement.type">
                                     <div ng-switch-when="int">
-                                        <input type="number"
+                                        <input type="number" 
+                                               d2-validation 
+                                               d2-number-validation 
+                                               number-type={{prStDes[de.dataElement.id].dataElement.numberType}}
                                                ng-model="currentEvent[de.dataElement.id]"                                                                
                                                ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                name="foo" 
-                                               style="width:99%;"/>                                        
+                                               style="width:99%;"/>
+                                        <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'value_must_be'| translate}} - {{prStDes[de.dataElement.id].dataElement.numberType | translate}}</span>
                                     </div>
                                     <div ng-switch-when="string">
                                         <div class="container-fluid" ng-if="prStDes[de.dataElement.id].dataElement.optionSet">                                
                                             <span ng-if="!selectedProgram.dataEntryMethod || optionSets[prStDes[de.dataElement.id].dataElement.optionSet.id].options.length > 8">
                                                 <input type="text"
                                                        class="typeahead"
-                                                       placeholder="&#xf0d7;&nbsp;&nbsp;"
+                                                       placeholder="&#xf0d7;&nbsp;&nbsp;" 
+                                                       d2-validation 
                                                        ng-model="currentEvent[de.dataElement.id]"                                                                    
                                                        typeahead="option.name as option.name for option in optionSets[prStDes[de.dataElement.id].dataElement.optionSet.id].options | filter:$viewValue | limitTo:20" 
                                                        typeahead-open-on-focus   
@@ -281,13 +296,15 @@
                                                 <label>
                                                     <input type="radio" 
                                                            name="foo" 
+                                                           d2-validation 
                                                            ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                            ng-model="currentEvent[de.dataElement.id]"
                                                            value=""> {{'no_value' | translate}}<br>
                                                 </label>                                    
                                                 <label ng-repeat="option in optionSets[prStDes[de.dataElement.id].dataElement.optionSet.id].options">
                                                     <input type="radio" 
-                                                           name={{de.dataElement.id}}   
+                                                           name={{de.dataElement.id}} 
+                                                           d2-validation 
                                                            ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                            ng-model="currentEvent[de.dataElement.id]"
                                                            value={{option.name}}> {{option.name}}<br>                                        
@@ -296,7 +313,8 @@
                                             </span>
                                         </div>
                                         <div ng-if="!prStDes[de.dataElement.id].dataElement.optionSet">
-                                            <input type="text"
+                                            <input type="text" 
+                                                d2-validation 
                                                 ng-model="currentEvent[de.dataElement.id]"
                                                 ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                 name="foo" 
@@ -305,7 +323,8 @@
                                         </div>
                                     </div>
                                     <div ng-switch-when="bool">
-                                        <select ng-model="currentEvent[de.dataElement.id]"                                                                
+                                        <select d2-validation 
+                                                ng-model="currentEvent[de.dataElement.id]"                                                                
                                                 ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                 name="foo" 
                                                 style="width:99%;">
@@ -319,7 +338,8 @@
                                         <input type="text"                                                                
                                                placeholder="{{dhis2CalendarFormat.keyDateFormat}}"
                                                d2-date
-                                               max-date="prStDes[de.dataElement.id].allowFutureDate ? '' : 0"
+                                               max-date="prStDes[de.dataElement.id].allowFutureDate ? '' : 0" 
+                                               d2-validation 
                                                ng-model="currentEvent[de.dataElement.id]"                                                               
                                                ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                name="foo" 
@@ -327,7 +347,8 @@
                                         <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'date_required'| translate}}</span>
                                     </div>
                                     <div ng-switch-when="trueOnly">
-                                        <input type="checkbox"                                                                      
+                                        <input type="checkbox"       
+                                               d2-validation  
                                                ng-model="currentEvent[de.dataElement.id]"                                                               
                                                ng-required={{prStDes[de.dataElement.id].compulsory}}
                                                name="foo"/>
