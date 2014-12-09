@@ -216,21 +216,18 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                             var val = dataValue.value;
                                             if(angular.isObject($scope.prStDes[dataValue.dataElement].dataElement)){                               
 
-                                                //converting int string value to integer for proper sorting.
+                                                //converting int string value to number for proper sorting.
                                                 if($scope.prStDes[dataValue.dataElement].dataElement.type === 'int'){
-                                                    if( !isNaN(parseInt(val)) ){
-                                                        val = parseInt(val);
-                                                    }
-                                                    else{
-                                                        val = '';
-                                                    }                                        
+                                                    if( dhis2.validation.isNumber(val)  ){
+                                                        val = new Number(val);
+                                                    }                                
                                                 }
                                                 if($scope.prStDes[dataValue.dataElement].dataElement.type === 'string'){
                                                     if($scope.prStDes[dataValue.dataElement].dataElement.optionSet &&
                                                             $scope.prStDes[dataValue.dataElement].dataElement.optionSet.id &&
                                                             $scope.optionSets[$scope.prStDes[dataValue.dataElement].dataElement.optionSet.id] &&
                                                             $scope.optionSets[$scope.prStDes[dataValue.dataElement].dataElement.optionSet.id].options ){
-                                                        val = OptionSetService.getNameOrCode($scope.optionSets[$scope.prStDes[dataValue.dataElement].dataElement.optionSet.id].options, val);
+                                                        val = OptionSetService.getName($scope.optionSets[$scope.prStDes[dataValue.dataElement].dataElement.optionSet.id].options, val);
                                                     }                                                
                                                 }
                                                 if($scope.prStDes[dataValue.dataElement].dataElement.type === 'date'){
@@ -428,7 +425,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 valueExists = true;            
                 if($scope.prStDes[dataElement].dataElement.type === 'string'){
                     if($scope.prStDes[dataElement].dataElement.optionSet){                        
-                        val = OptionSetService.getNameOrCode($scope.optionSets[$scope.prStDes[dataElement].dataElement.optionSet.id].options,val); //$scope.optionSets[].options$scope.optionCodesByName[  '"' + val + '"'];
+                        val = OptionSetService.getCode($scope.optionSets[$scope.prStDes[dataElement].dataElement.optionSet.id].options,val);
                     }
                 }
 
@@ -545,7 +542,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             
             if(val && $scope.prStDes[dataElement].dataElement.type === 'string'){
                 if($scope.prStDes[dataElement].dataElement.optionSet){                    
-                    val = OptionSetService.getNameOrCode($scope.optionSets[$scope.prStDes[dataElement].dataElement.optionSet.id].options,val); 
+                    val = OptionSetService.getCode($scope.optionSets[$scope.prStDes[dataElement].dataElement.optionSet.id].options,val); 
                 }    
             }
             if(val && $scope.prStDes[dataElement].dataElement.type === 'date'){
@@ -613,7 +610,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         var oldValue = $scope.currentEventOrginialValue[dataElement];
         
         //check for form validity
-        $scope.outerForm.submitted = true;        
+        $scope.outerForm.submitted = true;
         if( $scope.outerForm.$invalid ){
             $scope.currentElement.updated = false;
             currentEvent[dataElement] = oldValue;
@@ -630,7 +627,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             
             if($scope.prStDes[dataElement].dataElement.type === 'string'){
                 if($scope.prStDes[dataElement].dataElement.optionSet){                    
-                    newValue = OptionSetService.getNameOrCode($scope.optionSets[$scope.prStDes[dataElement].dataElement.optionSet.id].options, newValue);//$scope.optionCodesByName[  '"' + newValue + '"'];
+                    newValue = OptionSetService.getCode($scope.optionSets[$scope.prStDes[dataElement].dataElement.optionSet.id].options, newValue);//$scope.optionCodesByName[  '"' + newValue + '"'];
                 }
             }            
             if($scope.prStDes[dataElement].dataElement.type === 'date'){
