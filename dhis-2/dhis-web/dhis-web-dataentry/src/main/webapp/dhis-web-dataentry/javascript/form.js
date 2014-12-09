@@ -255,7 +255,6 @@ dhis2.de.loadMetaData = function()
     $.ajax( {
     	url: 'getMetaData.action',
     	dataType: 'json',
-    	cache: true,
     	success: function( json )
 	    {
 	        sessionStorage[dhis2.de.cst.metaData] = JSON.stringify( json.metaData );
@@ -286,7 +285,6 @@ dhis2.de.loadDataSetAssociations = function()
 	$.ajax( {
     	url: 'getDataSetAssociations.action',
     	dataType: 'json',
-    	cache: true,
     	success: function( json )
 	    {
 	        sessionStorage[dhis2.de.cst.dataSetAssociations] = JSON.stringify( json.dataSetAssociations );
