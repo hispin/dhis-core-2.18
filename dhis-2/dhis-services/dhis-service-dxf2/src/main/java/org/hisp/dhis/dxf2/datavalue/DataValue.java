@@ -40,7 +40,7 @@ import org.hisp.dhis.common.view.ExportView;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "dataValue", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "dataValue", namespace = DxfNamespaces.DXF_2_0 )
 public class DataValue
 {
     //--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ public class DataValue
     protected String orgUnit;
 
     protected String categoryOptionCombo;
-    
+
     protected String attributeOptionCombo;
 
     protected String value;
@@ -86,7 +86,7 @@ public class DataValue
         String updated = getLastUpdated();
         return updated != null && !updated.isEmpty();
     }
-    
+
     public boolean hasCreated()
     {
         String creat = getCreated();
@@ -99,7 +99,7 @@ public class DataValue
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDataElement()
     {
         return dataElement;
@@ -112,7 +112,7 @@ public class DataValue
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getPeriod()
     {
         return period;
@@ -125,7 +125,7 @@ public class DataValue
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getOrgUnit()
     {
         return orgUnit;
@@ -138,7 +138,7 @@ public class DataValue
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getCategoryOptionCombo()
     {
         return categoryOptionCombo;
@@ -151,12 +151,12 @@ public class DataValue
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getAttributeOptionCombo()
     {
         return attributeOptionCombo;
     }
-    
+
     public void setAttributeOptionCombo( String attributeOptionCombo )
     {
         this.attributeOptionCombo = attributeOptionCombo;
@@ -164,7 +164,7 @@ public class DataValue
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getValue()
     {
         return value;
@@ -177,7 +177,7 @@ public class DataValue
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getStoredBy()
     {
         return storedBy;
@@ -190,7 +190,7 @@ public class DataValue
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getCreated()
     {
         return created;
@@ -203,7 +203,7 @@ public class DataValue
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getLastUpdated()
     {
         return lastUpdated;
@@ -216,7 +216,7 @@ public class DataValue
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getComment()
     {
         return comment;
@@ -229,7 +229,7 @@ public class DataValue
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getFollowup()
     {
         return followup;
