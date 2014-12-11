@@ -573,6 +573,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         // if it already contains this object, don't add it. It might be a list and not set, and we don't want duplicates.
         if ( identifiableObjects.contains( candidate ) )
         {
+            response.setStatus( HttpServletResponse.SC_NO_CONTENT );
             return; // nothing to do, just return with OK
         }
 
