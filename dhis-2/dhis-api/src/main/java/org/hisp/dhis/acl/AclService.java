@@ -39,7 +39,7 @@ import java.util.List;
  */
 public interface AclService
 {
-    public static final List<String> ACL_OVERRIDE_AUTHORITIES = Arrays.asList( "ALL", "F_METADATA_IMPORT" );
+    public static final List<String> ACL_OVERRIDE_AUTHORITIES = Arrays.asList( "ALL" );
 
     /**
      * Is type supported for acl?
