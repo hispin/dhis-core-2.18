@@ -15,6 +15,8 @@
 
   <bean id="org.hisp.dhis.dxf2.fieldfilter.FieldFilterService" class="org.hisp.dhis.dxf2.fieldfilter.DefaultFieldFilterService" />
 
+  <bean id="org.hisp.dhis.dxf2.schema.SchemaValidator" class="org.hisp.dhis.dxf2.schema.DefaultSchemaValidator" />
+
   <bean id="org.hisp.dhis.dxf2.parser.ParserService" class="org.hisp.dhis.dxf2.parser.DefaultParserService" />
 
   <bean id="org.hisp.dhis.dxf2.metadata.ExportService" class="org.hisp.dhis.dxf2.metadata.DefaultExportService" scope="prototype" />
