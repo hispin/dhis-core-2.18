@@ -139,7 +139,7 @@ dhis2.de.getCurrentOrganisationUnit = function()
 };
 
 DAO.store = new dhis2.storage.Store( {
-    name: 'dhis2',
+    name: 'dhis2de',
     adapters: [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ],
     objectStores: [ 'optionSets', 'forms' ]
 } );
