@@ -160,7 +160,7 @@ public class OrganisationUnitController
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+            entityList = new ArrayList<>( manager.getBetweenSorted( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {

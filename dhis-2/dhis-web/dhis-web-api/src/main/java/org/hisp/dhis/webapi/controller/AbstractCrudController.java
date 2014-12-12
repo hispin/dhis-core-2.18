@@ -741,7 +741,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = Lists.newArrayList( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+            entityList = Lists.newArrayList( manager.getBetweenSorted( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {

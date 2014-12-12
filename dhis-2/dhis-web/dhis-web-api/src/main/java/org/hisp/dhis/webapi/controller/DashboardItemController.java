@@ -1,4 +1,4 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.webapi.controller;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,76 +28,44 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.dashboard.DashboardItem;
+import org.hisp.dhis.schema.descriptors.DashboardItemSchemaDescriptor;
+import org.hisp.dhis.webapi.webdomain.WebMetaData;
+import org.hisp.dhis.webapi.webdomain.WebOptions;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.util.List;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface GenericStore<T>
+@Controller
+@RequestMapping( value = DashboardItemSchemaDescriptor.API_ENDPOINT )
+public class DashboardItemController
+    extends AbstractCrudController<DashboardItem>
 {
-    /**
-     * Class of the object for this store.
-     */
-    Class<T> getClazz();
+    @Override
+    protected List<DashboardItem> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
+    {
+        List<DashboardItem> entityList;
 
-    /**
-     * Saves the given object instance.
-     *
-     * @param object the object instance.
-     * @return the generated identifier.
-     */
-    int save( T object );
+        if ( options.hasPaging() )
+        {
+            int count = manager.getCount( getEntityClass() );
 
-    /**
-     * Updates the given object instance.
-     *
-     * @param object the object instance.
-     */
-    void update( T object );
+            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
+            metaData.setPager( pager );
 
-    /**
-     * Retrieves the object with the given identifier. This method will first
-     * look in the current Session, then hit the database if not existing.
-     *
-     * @param id the object identifier.
-     * @return the object identified by the given identifier.
-     */
-    T get( int id );
+            entityList = Lists.newArrayList( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+        }
+        else
+        {
+            entityList = Lists.newArrayList( manager.getAll( getEntityClass() ) );
+        }
 
-    /**
-     * Retrieves the object with the given identifier, assuming it exists.
-     *
-     * @param id the object identifier.
-     * @return the object identified by the given identifier or a generated
-     * proxy.
-     */
-    T load( int id );
-
-    /**
-     * Retrieves a List of all objects.
-     *
-     * @return a List of all objects.
-     */
-    List<T> getAll();
-
-    /**
-     * Retrieves a List of all objects.
-     *
-     * @return a List of all objects.
-     */
-    List<T> getAll( int first, int max );
-
-    /**
-     * Removes the given object instance.
-     *
-     * @param object the object instance to delete.
-     */
-    void delete( T object );
-
-    /**
-     * Gets the count of objects.
-     *
-     * @return the count of objects.
-     */
-    int getCount();
+        return entityList;
+    }
 }

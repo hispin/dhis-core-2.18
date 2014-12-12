@@ -227,7 +227,7 @@ public class HibernateGenericStore<T>
     {
         return sessionFactory.getCurrentSession().createCriteria( getClazz() );
     }
-    
+
     /**
      * Creates a Criteria for the implementation Class type restricted by the
      * given Criterions.
@@ -267,13 +267,14 @@ public class HibernateGenericStore<T>
         criteria.setCacheable( cacheable );
         return criteria;
     }
+
     /**
      * Retrieves an object based on the given Criterions.
      *
      * @param expressions the Criterions for the Criteria.
      * @return an object of the implementation Class type.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected final T getObject( Criterion... expressions )
     {
         return (T) getCriteria( expressions ).uniqueResult();
@@ -285,7 +286,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return a List with objects of the implementation Class type.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected final List<T> getList( Criterion... expressions )
     {
         return getCriteria( expressions ).list();
@@ -356,7 +357,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final T get( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().get( getClazz(), id );
@@ -371,7 +372,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final T load( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().load( getClazz(), id );
@@ -403,10 +404,20 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final List<T> getAll()
     {
         return getSharingCriteria().list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public final List<T> getAll( int first, int max )
+    {
+        return getSharingCriteria()
+            .setFirstResult( first )
+            .setMaxResults( max )
+            .list();
     }
 
     @Override
