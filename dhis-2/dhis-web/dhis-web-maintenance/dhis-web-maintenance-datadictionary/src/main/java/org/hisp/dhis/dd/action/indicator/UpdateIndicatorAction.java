@@ -31,6 +31,7 @@ package org.hisp.dhis.dd.action.indicator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -120,6 +121,13 @@ public class UpdateIndicatorAction
         this.annualized = annualized;
     }
 
+    private Integer decimals;
+
+    public void setDecimals( Integer decimals )
+    {
+        this.decimals = decimals;
+    }
+
     private Integer indicatorTypeId;
 
     public void setIndicatorTypeId( Integer indicatorTypeId )
@@ -203,21 +211,15 @@ public class UpdateIndicatorAction
 
         MapLegendSet legendSet = mappingService.getMapLegendSet( selectedLegendSetId );
         
-        if ( code != null && code.trim().length() == 0 )
-        {
-            code = null;
-        }
-
-        if ( description != null && description.trim().length() == 0 )
-        {
-            description = null;
-        }
+        code = StringUtils.trimToNull( code );
+        description = StringUtils.trimToNull( description );
 
         indicator.setName( name );
         indicator.setShortName( shortName );
         indicator.setCode( code );
         indicator.setDescription( description );
         indicator.setAnnualized( annualized );
+        indicator.setDecimals( decimals );
         indicator.setIndicatorType( indicatorType );
         indicator.setLegendSet( legendSet );
         indicator.setUrl( url );

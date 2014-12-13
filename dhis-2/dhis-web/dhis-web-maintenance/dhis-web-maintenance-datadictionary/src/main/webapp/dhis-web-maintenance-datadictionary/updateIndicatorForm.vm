@@ -30,7 +30,7 @@
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td style="width:120px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td style="width:140px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicator.name )"></td>
 	</tr>
 	<tr>
@@ -51,6 +51,20 @@
 			<select id="annualized" name="annualized">
 				<option value="false">$i18n.getString( "no" )</option>
 				<option value="true"#if( $indicator.annualized ) selected="selected"#end>$i18n.getString( "yes" )</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="decimals">$i18n.getString( "decimals_in_data_output" )</label></td>
+		<td>
+			<select id="decimals" name="decimals">
+				<option>[$i18n.getString( "default" )]</option>
+				<option value="0"#if( $indicator.decimals == 0 ) selected="selected"#end>0</option>
+				<option value="1"#if( $indicator.decimals == 1 ) selected="selected"#end>1</option>
+				<option value="2"#if( $indicator.decimals == 2 ) selected="selected"#end>2</option>
+				<option value="3"#if( $indicator.decimals == 3 ) selected="selected"#end>3</option>
+				<option value="4"#if( $indicator.decimals == 4 ) selected="selected"#end>4</option>
+				<option value="5"#if( $indicator.decimals == 5 ) selected="selected"#end>5</option>
 			</select>
 		</td>
 	</tr>
@@ -85,7 +99,7 @@
 
 <table>
 	<tr>
-		<td style="width:120px"></td>
+		<td style="width:140px"></td>
 		<td>
 			<input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="indicatorNumeratorForm()" style="width:200px"/>
 			<input type="hidden" id="numerator" name="numerator" value="$!indicator.numerator"/>
@@ -115,7 +129,7 @@
 		<td><label>$encoder.htmlEncode( $groupSet.name )</label></td>
 		<td>
 			<select id="indicatorGroups" name="indicatorGroups">
-				<option value="-1">[ $i18n.getString( "select_group" ) ]</option>
+				<option value="-1">[$i18n.getString( "select_group" )]</option>
 				#foreach ( $group in $groupSet.getSortedGroups() )
 				<option value="$group.id" #if( $group.members.contains( $indicator ) ) selected="selected" #end>$group.name</option>
 				#end

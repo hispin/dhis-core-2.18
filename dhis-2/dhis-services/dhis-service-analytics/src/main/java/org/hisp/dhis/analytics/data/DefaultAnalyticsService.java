@@ -320,9 +320,11 @@ public class DefaultAnalyticsService
 
                         row.add( indicatorIndex, new DimensionItem( INDICATOR_DIM_ID, indicator ) );
 
+                        Double roundedValue = indicator.hasDecimals() ? MathUtils.getRounded( value, indicator.getDecimals() ) : MathUtils.getRounded( value );
+                        
                         grid.addRow();
                         grid.addValues( DimensionItem.getItemIdentifiers( row ) );
-                        grid.addValue( params.isSkipRounding() ? value : MathUtils.getRounded( value ) );
+                        grid.addValue( params.isSkipRounding() ? value : roundedValue );
                     }
                 }
             }

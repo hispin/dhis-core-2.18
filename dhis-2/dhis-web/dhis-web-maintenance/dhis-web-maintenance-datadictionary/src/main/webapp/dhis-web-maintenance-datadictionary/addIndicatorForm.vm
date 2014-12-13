@@ -31,7 +31,7 @@
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td style="width:120px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td style="width:140px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="name" name="name" onchange="nameChanged()" /></td>
 	</tr>
 	<tr>
@@ -56,10 +56,24 @@
 		</td>
 	</tr>
 	<tr>
+		<td><label for="decimals">$i18n.getString( "decimals_in_data_output" )</label></td>
+		<td>
+			<select id="decimals" name="decimals">
+				<option>[$i18n.getString( "default" )]</option>
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
 		<td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="indicatorTypeId" name="indicatorTypeId" onchange='indicatorTypeChanged();'>
-				<option value="">[ $i18n.getString('select') ]</option>
+				<option value="">[$i18n.getString('select')]</option>
 			#foreach( $indicatorType in $indicatorTypes )
 				<option value="$indicatorType.id" number="$indicatorType.number">$encoder.htmlEncode( $indicatorType.name )</option>
 			#end
@@ -87,7 +101,7 @@
 
 <table>
 	<tr>
-		<td style="width:120px"></td>
+		<td style="width:140px"></td>
 		<td>
 			<input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="indicatorNumeratorForm()" style="width:200px"/>
 			<input type="hidden" id="numerator" name="numerator"/>
@@ -118,7 +132,7 @@
 		<td><label>$encoder.htmlEncode( $groupSet.name )</label></td>			
 		<td>
 			<select id="selectedGroups" name="selectedGroups">
-				<option value="-1">[ $i18n.getString( "select_group" ) ]</option>
+				<option value="-1">[$i18n.getString( "select_group" )]</option>
 				#foreach ( $group in $groupSet.getSortedGroups() )
 				<option value="$group.id">$group.name</option>
 				#end
