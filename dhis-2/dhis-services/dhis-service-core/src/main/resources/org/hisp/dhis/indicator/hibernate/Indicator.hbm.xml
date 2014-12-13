@@ -22,6 +22,8 @@
     <property name="description" type="text" />
 
     <property name="annualized" column="annualized" not-null="true" />
+    
+    <property name="decimals" />
 
     <many-to-one name="indicatorType" class="org.hisp.dhis.indicator.IndicatorType" column="indicatortypeid"
       foreign-key="fk_indicator_indicatortypeid" />

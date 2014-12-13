@@ -63,6 +63,11 @@ public class Indicator
 
     private boolean annualized;
 
+    /**
+     * Number of decimals to use for indicator value, null implies default.
+     */
+    private Integer decimals;
+
     private IndicatorType indicatorType;
 
     private String numerator;
@@ -156,6 +161,11 @@ public class Indicator
     {
         return explodedDenominator != null ? explodedDenominator : denominator;
     }
+    
+    public boolean hasDecimals()
+    {
+        return decimals != null && decimals >= 0;
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
@@ -179,6 +189,19 @@ public class Indicator
     public void setAnnualized( boolean annualized )
     {
         this.annualized = annualized;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public Integer getDecimals()
+    {
+        return decimals;
+    }
+
+    public void setDecimals( Integer decimals )
+    {
+        this.decimals = decimals;
     }
 
     @JsonProperty
