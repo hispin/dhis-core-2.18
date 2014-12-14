@@ -191,7 +191,7 @@ public class BaseNameableObject
     @Override
     public String getDisplayShortName()
     {
-        return displayShortName != null && !displayShortName.trim().isEmpty() ? displayShortName : shortName;
+        return displayShortName != null && !displayShortName.trim().isEmpty() ? displayShortName : getShortName();
     }
 
     public void setDisplayShortName( String displayShortName )
@@ -202,7 +202,7 @@ public class BaseNameableObject
     @Override
     public String getDisplayDescription()
     {
-        return displayDescription != null && !displayDescription.trim().isEmpty() ? displayDescription : description;
+        return displayDescription != null && !displayDescription.trim().isEmpty() ? displayDescription : getDescription();
     }
 
     public void setDisplayDescription( String displayDescription )
