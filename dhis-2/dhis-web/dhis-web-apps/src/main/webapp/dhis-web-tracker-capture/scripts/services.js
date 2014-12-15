@@ -4,26 +4,113 @@
 
 var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResource'])
 
-.factory('StorageService', function(){
+.factory('TCStorageService', function(){
     var store = new dhis2.storage.Store({
         name: "dhis2tc",
         adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-        objectStores: ['tcPrograms', 'programStages', 'trackedEntities', 'trackedEntityForms', 'attributes','optionSets']
+        objectStores: ['programs', 'programStages', 'trackedEntities', 'trackedEntityForms', 'attributes', 'relationshipTypes', 'optionSets']
     });
     return{
         currentStore: store
     };
 })
 
-/* Factory to fetch relationships */
-.factory('RelationshipFactory', function($q, $rootScope, StorageService) { 
+/* Factory to fetch geojsons */
+.factory('GeoJsonFactory', function($q, $rootScope, TCStorageService) { 
+    return {
+        getAll: function(){
+
+            var def = $q.defer();
+            
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.getAll('geoJsons').done(function(geoJsons){
+                    $rootScope.$apply(function(){
+                        def.resolve(geoJsons);
+                    });                    
+                });
+            });
+            
+            return def.promise;            
+        },
+        get: function(level){
+            
+            var def = $q.defer();
+            
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.get('geoJsons', level).done(function(geoJson){                    
+                    $rootScope.$apply(function(){
+                        def.resolve(geoJson);
+                    });
+                });
+            });                        
+            return def.promise;            
+        }
+    };
+})
+
+/* Factory to fetch optionSets */
+.factory('OptionSetService', function($q, $rootScope, TCStorageService) { 
     return {
         getAll: function(){
             
             var def = $q.defer();
             
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.getAll('relationshipTypes').done(function(relationshipTypes){
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.getAll('optionSets').done(function(optionSets){
+                    $rootScope.$apply(function(){
+                        def.resolve(optionSets);
+                    });                    
+                });
+            });            
+            
+            return def.promise;            
+        },
+        get: function(uid){
+            
+            var def = $q.defer();
+            
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.get('optionSets', uid).done(function(optionSet){                    
+                    $rootScope.$apply(function(){
+                        def.resolve(optionSet);
+                    });
+                });
+            });                        
+            return def.promise;            
+        },        
+        getCode: function(options, key){
+            if(options){
+                for(var i=0; i<options.length; i++){
+                    if( key === options[i].name){
+                        return options[i].code;
+                    }
+                }
+            }            
+            return key;
+        },        
+        getName: function(options, key){
+            if(options){
+                for(var i=0; i<options.length; i++){                    
+                    if( key === options[i].code){
+                        return options[i].name;
+                    }
+                }
+            }            
+            return key;
+        }
+    };
+})
+
+
+/* Factory to fetch relationships */
+.factory('RelationshipFactory', function($q, $rootScope, TCStorageService) { 
+    return {
+        getAll: function(){
+            
+            var def = $q.defer();
+            
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.getAll('relationshipTypes').done(function(relationshipTypes){
                     $rootScope.$apply(function(){
                         def.resolve(relationshipTypes);
                     });                    
@@ -36,8 +123,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             
             var def = $q.defer();
             
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.get('relationshipTypes', uid).done(function(relationshipType){                    
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.get('relationshipTypes', uid).done(function(relationshipType){                    
                     $rootScope.$apply(function(){
                         def.resolve(relationshipType);
                     });
@@ -49,19 +136,25 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Factory to fetch programs */
-.factory('ProgramFactory', function($q, $rootScope, StorageService) { 
+.factory('ProgramFactory', function($q, $rootScope, TCStorageService) { 
     return {
         getAll: function(){
             
             var def = $q.defer();
             
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.getAll('tcPrograms').done(function(programs){
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.getAll('programs').done(function(prs){
+                    var programs = [];
+                    angular.forEach(prs, function(pr){
+                        if(pr.type === 1){
+                            programs.push(pr);
+                        }
+                    });
                     $rootScope.$apply(function(){
                         def.resolve(programs);
-                    });                    
+                    });                      
                 });
-            });            
+            });
             
             return def.promise;            
         },
@@ -69,8 +162,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             
             var def = $q.defer();
             
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.get('tcPrograms', uid).done(function(pr){                    
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.get('programs', uid).done(function(pr){                    
                     $rootScope.$apply(function(){
                         def.resolve(pr);
                     });
@@ -82,13 +175,13 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Factory to fetch programStages */
-.factory('ProgramStageFactory', function($q, $rootScope, StorageService) {  
+.factory('ProgramStageFactory', function($q, $rootScope, TCStorageService) {  
     
     return {        
         get: function(uid){            
             var def = $q.defer();
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.get('programStages', uid).done(function(pst){                    
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.get('programStages', uid).done(function(pst){                    
                     $rootScope.$apply(function(){
                         def.resolve(pst);
                     });
@@ -104,8 +197,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 stageIds.push(stage.id);
             });
             
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.getAll('programStages').done(function(stages){   
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.getAll('programStages').done(function(stages){   
                     angular.forEach(stages, function(stage){
                         if(stageIds.indexOf(stage.id) !== -1){                            
                             programStages.push(stage);                               
@@ -225,15 +318,15 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service for getting tracked entity */
-.factory('TEService', function(StorageService, $q, $rootScope) {
+.factory('TEService', function(TCStorageService, $q, $rootScope) {
 
     return {
         
         getAll: function(){            
             var def = $q.defer();
             
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.getAll('trackedEntities').done(function(entities){
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.getAll('trackedEntities').done(function(entities){
                     $rootScope.$apply(function(){
                         def.resolve(entities);
                     });                    
@@ -244,8 +337,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         get: function(uid){            
             var def = $q.defer();
             
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.get('trackedEntities', uid).done(function(te){                    
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.get('trackedEntities', uid).done(function(te){                    
                     $rootScope.$apply(function(){
                         def.resolve(te);
                     });
@@ -257,14 +350,14 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service for getting tracked entity Form */
-.factory('TEFormService', function(StorageService, $q, $rootScope) {
+.factory('TEFormService', function(TCStorageService, $q, $rootScope) {
 
     return {
         getByProgram: function(programUid){            
             var def = $q.defer();
             
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.get('trackedEntityForms', programUid).done(function(te){                    
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.get('trackedEntityForms', programUid).done(function(te){                    
                     $rootScope.$apply(function(){
                         def.resolve(te);
                     });
@@ -380,15 +473,15 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Factory for getting tracked entity attributes */
-.factory('AttributesFactory', function($q, $rootScope, StorageService, orderByFilter, DateUtils) {      
+.factory('AttributesFactory', function($q, $rootScope, TCStorageService, orderByFilter, DateUtils) {      
 
     return {
         getAll: function(){
             
             var def = $q.defer();
             
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.getAll('attributes').done(function(attributes){                    
+            TCStorageService.currentStore.open().done(function(){
+                TCStorageService.currentStore.getAll('attributes').done(function(attributes){                    
                     $rootScope.$apply(function(){
                         def.resolve(attributes);
                     });

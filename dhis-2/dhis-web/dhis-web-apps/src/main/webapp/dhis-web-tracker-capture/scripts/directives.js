@@ -2,9 +2,9 @@
 
 /* Directives */
 
-var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
+var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', []);
 
-.directive('inputValidator', function() {
+/*.directive('inputValidator', function() {
     
     return {
         require: 'ngModel',
@@ -276,4 +276,4 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
             }
         });
     };
-});
+});*/
