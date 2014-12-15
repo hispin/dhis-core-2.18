@@ -4,23 +4,23 @@
 
 var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource'])
 
-.factory('StorageService', function(){
+.factory('ECStorageService', function(){
     var store = new dhis2.storage.Store({
         name: 'dhis2ec',
         adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-        objectStores: ['ecPrograms', 'programStages', 'geoJsons', 'optionSets', 'events']
+        objectStores: ['programs', 'programStages', 'geoJsons', 'optionSets', 'events']
     });
     return{
         currentStore: store
     };
 })
 
-.factory('OfflineStorageService', function($http, $q, $rootScope, StorageService){
+.factory('OfflineECStorageService', function($http, $q, $rootScope, ECStorageService){
     return {        
         hasLocalData: function() {
             var def = $q.defer();
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.getKeys('events').done(function(events){
+            ECStorageService.currentStore.open().done(function(){
+                ECStorageService.currentStore.getKeys('events').done(function(events){
                     $rootScope.$apply(function(){
                         def.resolve( events.length > 0 );
                     });                    
@@ -30,8 +30,8 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
         },
         getLocalData: function(){
             var def = $q.defer();            
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.getAll('events').done(function(events){
+            ECStorageService.currentStore.open().done(function(){
+                ECStorageService.currentStore.getAll('events').done(function(events){
                     $rootScope.$apply(function(){
                         def.resolve({events: events});
                     });                    
@@ -58,8 +58,94 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
     };
 })
 
+/* Factory to fetch optionSets */
+.factory('OptionSetService', function($q, $rootScope, ECStorageService) { 
+    return {
+        getAll: function(){
+            
+            var def = $q.defer();
+            
+            ECStorageService.currentStore.open().done(function(){
+                ECStorageService.currentStore.getAll('optionSets').done(function(optionSets){
+                    $rootScope.$apply(function(){
+                        def.resolve(optionSets);
+                    });                    
+                });
+            });            
+            
+            return def.promise;            
+        },
+        get: function(uid){
+            
+            var def = $q.defer();
+            
+            ECStorageService.currentStore.open().done(function(){
+                ECStorageService.currentStore.get('optionSets', uid).done(function(optionSet){                    
+                    $rootScope.$apply(function(){
+                        def.resolve(optionSet);
+                    });
+                });
+            });                        
+            return def.promise;            
+        },        
+        getCode: function(options, key){
+            if(options){
+                for(var i=0; i<options.length; i++){
+                    if( key === options[i].name){
+                        return options[i].code;
+                    }
+                }
+            }            
+            return key;
+        },        
+        getName: function(options, key){
+            if(options){
+                for(var i=0; i<options.length; i++){                    
+                    if( key === options[i].code){
+                        return options[i].name;
+                    }
+                }
+            }            
+            return key;
+        }
+    };
+})
+
+/* Factory to fetch geojsons */
+.factory('GeoJsonFactory', function($q, $rootScope, ECStorageService) { 
+    return {
+        getAll: function(){
+
+            var def = $q.defer();
+            
+            ECStorageService.currentStore.open().done(function(){
+                ECStorageService.currentStore.getAll('geoJsons').done(function(geoJsons){
+                    $rootScope.$apply(function(){
+                        def.resolve(geoJsons);
+                    });                    
+                });
+            });
+            
+            return def.promise;            
+        },
+        get: function(level){
+            
+            var def = $q.defer();
+            
+            ECStorageService.currentStore.open().done(function(){
+                ECStorageService.currentStore.get('geoJsons', level).done(function(geoJson){                    
+                    $rootScope.$apply(function(){
+                        def.resolve(geoJson);
+                    });
+                });
+            });                        
+            return def.promise;            
+        }
+    };
+})
+
 /* Factory to fetch programs */
-.factory('ProgramFactory', function($q, $rootScope, StorageService) {  
+.factory('ProgramFactory', function($q, $rootScope, ECStorageService) {  
         
     return {
         
@@ -67,8 +153,14 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             
             var def = $q.defer();
             
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.getAll('ecPrograms').done(function(programs){                    
+            ECStorageService.currentStore.open().done(function(){
+                ECStorageService.currentStore.getAll('programs').done(function(prs){
+                    var programs = [];
+                    angular.forEach(prs, function(pr){
+                        if(pr.type === 3){
+                            programs.push(pr);
+                        }
+                    });
                     $rootScope.$apply(function(){
                         def.resolve(programs);
                     });                    
@@ -80,15 +172,15 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 })
 
 /* Factory to fetch programStages */
-.factory('ProgramStageFactory', function($q, $rootScope, StorageService) {  
+.factory('ProgramStageFactory', function($q, $rootScope, ECStorageService) {  
     
     return {        
         get: function(uid){
             
             var def = $q.defer();
             
-            StorageService.currentStore.open().done(function(){
-                StorageService.currentStore.get('programStages', uid).done(function(pst){                    
+            ECStorageService.currentStore.open().done(function(){
+                ECStorageService.currentStore.get('programStages', uid).done(function(pst){                    
                     $rootScope.$apply(function(){
                         def.resolve(pst);
                     });
@@ -100,7 +192,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 })
 
 /* factory for handling events */
-.factory('DHIS2EventFactory', function($http, $q, StorageService, $rootScope) {   
+.factory('DHIS2EventFactory', function($http, $q, ECStorageService, $rootScope) {   
     
     return {
         getByStage: function(orgUnit, programStage, pager){
@@ -112,8 +204,8 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                 return response.data;        
             }, function(){     
                 var def = $q.defer();
-                StorageService.currentStore.open().done(function(){
-                    StorageService.currentStore.getAll('events').done(function(evs){
+                ECStorageService.currentStore.open().done(function(){
+                    ECStorageService.currentStore.getAll('events').done(function(evs){
                         var result = {events: [], pager: {pageSize: '', page: 1, toolBarDisplay: 5, pageCount: 1}};
                         angular.forEach(evs, function(ev){                            
                             if(ev.programStage === programStage && ev.orgUnit === orgUnit){

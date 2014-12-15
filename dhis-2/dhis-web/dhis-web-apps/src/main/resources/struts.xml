@@ -63,4 +63,10 @@
 		</action>
     </package>
     
+    <package name="dhis-web-cache-cleaner" extends="dhis-web-commons" namespace="/dhis-web-cache-cleaner">
+		<action name="index" class="org.hisp.dhis.commons.action.NoAction">
+			<result name="success" type="redirect">index.html</result>
+		</action>
+    </package>
+    
 </struts>
