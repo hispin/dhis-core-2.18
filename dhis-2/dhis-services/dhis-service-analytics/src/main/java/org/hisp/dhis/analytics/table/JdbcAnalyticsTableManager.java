@@ -213,12 +213,13 @@ public class JdbcAnalyticsTableManager
             "left join _categoryoptiongroupsetstructure cogs on dv.attributeoptioncomboid=cogs.categoryoptioncomboid " +
             "left join _categorystructure dcs on dv.categoryoptioncomboid=dcs.categoryoptioncomboid " +
             "left join _categorystructure acs on dv.attributeoptioncomboid=acs.categoryoptioncomboid " +
-            "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
             "left join _periodstructure ps on dv.periodid=ps.periodid " +
-            "left join dataelement de on dv.dataelementid=de.dataelementid " +
-            "left join _dataelementstructure des on de.dataelementid = des.dataelementid " +
-            "left join categoryoptioncombo co on dv.categoryoptioncomboid=co.categoryoptioncomboid " +
-            "left join period pe on dv.periodid=pe.periodid " +
+            "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
+            "left join _dataelementstructure des on dv.dataelementid = des.dataelementid " +
+            "inner join dataelement de on dv.dataelementid=de.dataelementid " +
+            "inner join categoryoptioncombo co on dv.categoryoptioncomboid=co.categoryoptioncomboid " +
+            "inner join period pe on dv.periodid=pe.periodid " +
+            "inner join organisationunit ou on dv.sourceid=ou.organisationunitid " +
             "where de.valuetype = '" + valueType + "' " +
             "and de.domaintype = 'AGGREGATE' " +
             "and pe.startdate >= '" + start + "' " +
@@ -325,7 +326,7 @@ public class JdbcAnalyticsTableManager
         
         String[] de = { quote( "de" ), "character(11) not null", "de.uid" };
         String[] co = { quote( "co" ), "character(11) not null", "co.uid" };
-        String[] ou = { quote( "ou" ), "character(11) not null", "ous.organisationunituid" };
+        String[] ou = { quote( "ou" ), "character(11) not null", "ou.uid" };
         String[] level = { quote( "level" ), "integer", "ous.level" };
         
         columns.addAll( Arrays.asList( de, co, ou, level ) );
