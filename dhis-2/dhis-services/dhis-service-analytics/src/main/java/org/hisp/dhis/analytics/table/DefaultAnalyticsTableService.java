@@ -99,8 +99,9 @@ public class DefaultAnalyticsTableService
     public void update( Integer lastYears, TaskId taskId )
     {
         int processNo = getProcessNo();
+        int orgUnitLevelNo = organisationUnitService.getMaxOfOrganisationUnitLevels();
         
-        Clock clock = new Clock().startClock().logTime( "Starting update, no of processes: " + processNo );
+        Clock clock = new Clock().startClock().logTime( "Starting update, processes: " + processNo + ", org unit levels: " + orgUnitLevelNo );
         
         String validState = tableManager.validState();
         
@@ -113,7 +114,7 @@ public class DefaultAnalyticsTableService
         final List<AnalyticsTable> tables = tableManager.getTables( lastYears );
         
         clock.logTime( "Partition tables: " + tables + ", last years: " + lastYears );        
-        notifier.notify( taskId, "Creating analytics tables, processes: " + processNo );
+        notifier.notify( taskId, "Creating analytics tables, processes: " + processNo + ", org unit levels: " + orgUnitLevelNo );
         
         createTables( tables );
         

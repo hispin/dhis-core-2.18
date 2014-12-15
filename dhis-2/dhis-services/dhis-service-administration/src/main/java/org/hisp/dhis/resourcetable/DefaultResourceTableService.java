@@ -148,6 +148,8 @@ public class DefaultResourceTableService
     {
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
+        log.info( "Using " + maxLevel + " organisation unit levels for org unit structure table" );
+        
         resourceTableStore.createOrganisationUnitStructure( maxLevel );
 
         List<Object[]> batchArgs = new ArrayList<>();
