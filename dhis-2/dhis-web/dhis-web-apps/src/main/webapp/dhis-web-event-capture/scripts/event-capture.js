@@ -4,7 +4,6 @@ dhis2.util.namespace('dhis2.ec');
 // whether current user has any organisation units
 dhis2.ec.emptyOrganisationUnits = false;
 
-var EC_STORE_NAME = "dhis2ec";
 var i18n_no_orgunits = 'No organisation unit attached to current user, no data entry possible';
 var i18n_offline_notification = 'You are offline, data will be stored locally';
 var i18n_online_notification = 'You are online';
@@ -18,8 +17,6 @@ var PROGRAMS_METADATA = 'EVENT_PROGRAMS';
 
 var EVENT_VALUES = 'EVENT_VALUES';
 
-//var ecDAO = {};
-
 dhis2.ec.store = null;
 dhis2.ec.memoryOnly = $('html').hasClass('ie7') || $('html').hasClass('ie8');
 var adapters = [];    
@@ -30,10 +27,12 @@ if( dhis2.ec.memoryOnly ) {
 }
 
 dhis2.ec.store = new dhis2.storage.Store({
-    name: EC_STORE_NAME,
-    objectStores: [
+    name: 'dhis2ec',
+    adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+    objectStores: ['programs', 'programStages', 'geoJsons', 'optionSets', 'events']
+    /*objectStores: [
         {
-            name: 'ecPrograms',
+            name: 'programs',
             adapters: adapters
         },
         {
@@ -52,7 +51,7 @@ dhis2.ec.store = new dhis2.storage.Store({
             name: 'events',
             adapters: adapters
         }
-    ]        
+    ]*/        
 });
 
 (function($) {
@@ -88,9 +87,9 @@ $(document).bind('dhis2.online', function(event, loggedIn)
 {
     if (loggedIn)
     {   
-        var OfflineStorageService = angular.element('body').injector().get('OfflineStorageService');
+        var OfflineECStorageService = angular.element('body').injector().get('OfflineECStorageService');
 
-        OfflineStorageService.hasLocalData().then(function(localData){
+        OfflineECStorageService.hasLocalData().then(function(localData){
             if(localData){
                 var message = i18n_need_to_sync_notification
                     + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
@@ -326,7 +325,7 @@ function getPrograms( programs )
         build = build.then(function() {
             var d = $.Deferred();
             var p = d.promise();
-            dhis2.ec.store.get('ecPrograms', program.id).done(function(obj) {
+            dhis2.ec.store.get('programs', program.id).done(function(obj) {
                 if(!obj || obj.version !== program.version) {
                     promise = promise.then( getProgram( program.id ) );
                 }
@@ -357,7 +356,7 @@ function getProgram( id )
 {
     return function() {
         return $.ajax( {
-            url: '../api/programs.json?filter=id:eq:' + id +'&fields=id,name,version,dataEntryMethod,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name,version]',
+            url: '../api/programs.json?filter=id:eq:' + id +'&fields=id,name,type,version,dataEntryMethod,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name,version]',
             type: 'GET'
         }).done( function( response ){
             
@@ -377,7 +376,7 @@ function getProgram( id )
 
                 program.userRoles = ur;
 
-                dhis2.ec.store.set( 'ecPrograms', program );
+                dhis2.ec.store.set( 'programs', program );
 
             });         
         });
@@ -511,10 +510,10 @@ function getOptionSet( id )
 
 function uploadLocalData()
 {
-    var OfflineStorageService = angular.element('body').injector().get('OfflineStorageService');
+    var OfflineECStorageService = angular.element('body').injector().get('OfflineECStorageService');
     setHeaderWaitMessage(i18n_uploading_data_notification);
      
-    OfflineStorageService.uploadLocalData().then(function(){
+    OfflineECStorageService.uploadLocalData().then(function(){
         dhis2.ec.store.removeAll( 'events' );
         log( 'Successfully uploaded local events' );      
         setHeaderDelayMessage( i18n_sync_success );

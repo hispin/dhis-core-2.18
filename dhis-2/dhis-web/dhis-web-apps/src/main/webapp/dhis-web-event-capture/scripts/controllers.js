@@ -15,7 +15,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 ProgramStageFactory,                
                 DHIS2EventFactory,
                 DHIS2EventService,
-                GeoJsonFactory,
                 ContextMenuSelectedItem,                
                 DateUtils,
                 CalendarService,
@@ -57,10 +56,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         if( angular.isObject($scope.selectedOrgUnit)){
             $scope.loadPrograms();
         }
-    });
-    
-    GeoJsonFactory.getAll().then(function(geoJsons){
-        $scope.geoJsons = geoJsons;
     });
     
     //load programs associated with the selected org unit.
