@@ -65,9 +65,18 @@ var cacheCleanerControllers = angular.module('cacheCleanerControllers', [])
                         
                     });
                 }
-            });
-            
+            });            
             getItemsToClear();            
+        });
+    };
+    
+    $scope.selectAll = function(){
+        angular.forEach($scope.lsKeys, function(lsKey){
+            lsKey.remove = true;
+        });
+
+        angular.forEach($scope.dbKeys, function(dbKey){
+            dbKey.remove = true;
         });
     };
 });
