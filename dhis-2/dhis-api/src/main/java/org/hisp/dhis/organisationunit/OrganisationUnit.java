@@ -784,6 +784,11 @@ public class OrganisationUnit
         return false;
     }
 
+    public boolean isRoot()
+    {
+        return parent == null;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

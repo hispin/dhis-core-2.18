@@ -108,6 +108,11 @@ public class GetOrganisationUnitListAction
         {
             for ( OrganisationUnit selectedUnit : selectedUnits )
             {
+                if ( selectedUnit.isRoot() )
+                {
+                    organisationUnits.add( selectedUnit ); // Add to list if root
+                }
+                
                 organisationUnits.addAll( selectedUnit.getChildren() );
             }
         }
