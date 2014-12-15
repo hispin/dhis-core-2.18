@@ -25,6 +25,7 @@ trackerCapture.controller('RelationshipController',
         $scope.trackedEntity = $scope.selections.te;
         $scope.selectedEnrollment = $scope.selections.enrollment;
         $scope.selectedProgram = $scope.selections.pr;
+        console.log('the program leading to relationship is:  ', $scope.selectedProgram);
         if($scope.selectedProgram && $scope.selectedProgram.relationshipText){
             $scope.addRelationshipLabel = $scope.selectedProgram.relationshipText;
         }
