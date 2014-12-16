@@ -21,6 +21,8 @@ bzr revert
 echo "Reverted local changes"
 bzr up
 echo "Updated branch"
+
+# Update lp:dhis2 with local repo for faster merge
 bzr merge lp:dhis2 -r ${REV}..${TOREV}
 echo "Merged revision ${TOREV}"
 echo "To commit changes: bzr commit -m \"R ${TOREV}\""

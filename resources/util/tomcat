@@ -5,7 +5,8 @@ DHIS2_SOURCE_HOME=~/dev/src/dhis2
 
 case $1 in
 start) 
-  ${TOMCAT_LOCAL}/bin/startup.sh 
+  ${TOMCAT_LOCAL}/bin/startup.sh
+  tail -f ${TOMCAT_LOCAL}/logs/catalina.out
   ;;
 stop)
   ${TOMCAT_LOCAL}/bin/shutdown.sh
