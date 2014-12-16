@@ -39,42 +39,46 @@ trackerCapture.controller('DashboardController',
     $scope.selectedTei;    
     
     if($scope.selectedTeiId){
-        //Fetch the selected entity
-        TEIService.get($scope.selectedTeiId).then(function(data){
-            $scope.selectedTei = data;
+        
+        //get option sets
+        $scope.optionSets = [];
+        OptionSetService.getAll().then(function(optionSets){
             
-            //get the entity type
-            TEService.get($scope.selectedTei.trackedEntity).then(function(te){
-                $scope.trackedEntity = te;
-                
-                ProgramFactory.getAll().then(function(programs){  
-                    
-                    $scope.programs = []; 
-                    //get programs valid for the selected ou and tei
-                    angular.forEach(programs, function(program){
-                        if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
-                           program.trackedEntity.id === $scope.selectedTei.trackedEntity){
-                            $scope.programs.push(program);
-                        }
+            angular.forEach(optionSets, function(optionSet){                            
+                $scope.optionSets[optionSet.id] = optionSet;
+            });
+        
+            //Fetch the selected entity
+            TEIService.get($scope.selectedTeiId, $scope.optionSets).then(function(response){
+                $scope.selectedTei = response.data;
 
-                        if($scope.selectedProgramId && program.id === $scope.selectedProgramId){
-                            $scope.selectedProgram = program;
-                        }
-                    });
-                    
-                    $scope.optionSets = [];
-                    OptionSetService.getAll().then(function(optionSets){
-                        angular.forEach(optionSets, function(optionSet){                            
-                            $scope.optionSets[optionSet.id] = optionSet;
-                        });
+                //get the entity type
+                TEService.get($scope.selectedTei.trackedEntity).then(function(te){                    
+                    $scope.trackedEntity = te;
+
+                    ProgramFactory.getAll().then(function(programs){  
+
+                        $scope.programs = [];
+                        
+                        //get programs valid for the selected ou and tei
+                        angular.forEach(programs, function(program){
+                            if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
+                               program.trackedEntity.id === $scope.selectedTei.trackedEntity){
+                                $scope.programs.push(program);
+                            }
+
+                            if($scope.selectedProgramId && program.id === $scope.selectedProgramId){
+                                $scope.selectedProgram = program;
+                            }
+                        }); 
                         
                         //broadcast selected items for dashboard controllers
                         CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: null, optionSets: $scope.optionSets});
-                        $scope.broadCastSelections();  
+                        $scope.broadCastSelections();                        
                     });
-                });
-            });            
-        });      
+                });            
+            });    
+        });
     }    
     
     //listen for any change to program selection

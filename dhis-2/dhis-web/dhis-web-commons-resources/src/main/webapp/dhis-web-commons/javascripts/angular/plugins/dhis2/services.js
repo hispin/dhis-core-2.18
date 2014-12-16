@@ -127,10 +127,7 @@ var d2Services = angular.module('d2Services', ['ngResource'])
             if(!dateValue){
                 return;
             }
-            
-            if( isNaN( Date.parse(dateValue) ) ){
-                return;
-            }
+
             var calendarSetting = CalendarService.getSetting();            
             dateValue = moment(dateValue, calendarSetting.momentFormat)._d;
             dateValue = $filter('date')(dateValue, calendarSetting.keyDateFormat);            

@@ -4,7 +4,7 @@
 
 <div class="modal-body page">   
     <table class="listTable dhis2-table-striped-border">
-        <tr ng-repeat="eventGridColumn in eventGridColumns">
+        <tr ng-repeat="eventGridColumn in gridColumns">
             <td>
                 <span ng-if="eventGridColumn.id !== 'comment' && eventGridColumn.id !== 'uid'">{{eventGridColumn.name}}</span>
                 <span ng-if="eventGridColumn.id === 'comment' || eventGridColumn.id === 'uid'">{{eventGridColumn.name | translate}}</span>

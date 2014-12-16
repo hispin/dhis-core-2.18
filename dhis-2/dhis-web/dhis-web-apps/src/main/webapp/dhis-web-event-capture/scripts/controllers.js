@@ -315,8 +315,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             }
         });
 
-        modalInstance.result.then(function (eventGridColumns) {
-            $scope.eventGridColumns = eventGridColumns;
+        modalInstance.result.then(function (gridColumns) {
+            $scope.eventGridColumns = gridColumns;
         }, function () {
         });
     };

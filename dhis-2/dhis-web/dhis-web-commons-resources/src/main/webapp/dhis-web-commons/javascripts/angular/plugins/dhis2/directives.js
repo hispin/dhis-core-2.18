@@ -154,7 +154,7 @@ var d2Directives = angular.module('d2Directives', [])
             content = $compile(content)(scope);
             var options = {
                     content: content,
-                    placement: 'right',
+                    placement: 'bottom',
                     trigger: 'hover',
                     html: true,
                     title: scope.title               

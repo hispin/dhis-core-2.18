@@ -19,7 +19,6 @@ trackerCapture.controller('EnrollmentController',
     
     //listen for the selected items
     $scope.$on('selectedItems', function(event, args) {   
-        //programs for enrollment        
         $scope.enrollments = [];
         $scope.showEnrollmentDiv = false;
         $scope.showReSchedulingDiv = false;
@@ -27,11 +26,13 @@ trackerCapture.controller('EnrollmentController',
         $scope.hasEnrollmentHistory = false;
         $scope.selectedEnrollment = null;
         $scope.newEnrollment = {};
+        
         var selections = CurrentSelection.get();
         $scope.selectedTei = angular.copy(selections.tei); 
         $scope.selectedEntity = selections.te;
         $scope.selectedProgram = selections.pr;
         $scope.optionSets = selections.optionSets;
+        
         $scope.programExists = args.programExists;
         
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');
@@ -78,10 +79,6 @@ trackerCapture.controller('EnrollmentController',
             if($scope.selectedEnrollment){//enrollment exists
                 $scope.selectedEnrollment.dateOfIncident = DateUtils.formatFromApiToUser($scope.selectedEnrollment.dateOfIncident);
                 $scope.selectedEnrollment.dateOfEnrollment = DateUtils.formatFromApiToUser($scope.selectedEnrollment.dateOfEnrollment);
-                
-                /*angular.forEach($scope.selectedProgram.programStages, function(stage){                    
-                    stage.dueDate = EventUtils.getEventDueDate(stage, $scope.selectedEnrollment);
-                });*/
             }
             else{//prepare for possible enrollment
                 AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
@@ -144,47 +141,10 @@ trackerCapture.controller('EnrollmentController',
         
         //form is valid, continue with enrollment
         var tei = angular.copy($scope.selectedTei);
-        tei.attributes = [];
-        
-        //existing attributes
-        angular.forEach($scope.selectedTei.attributes, function(attribute){
-            if(!angular.isUndefined(attribute.value)){
-                if(attribute.type === 'date'){
-                    attribute.value = DateUtils.formatFromUserToApi(attribute.value);
-                }
-                if(attribute.type === 'optionSet' && $scope.optionSets.optionCodesByName[  '"' + attribute.value + '"']){   
-                    attribute.value = $scope.optionSets.optionCodesByName[  '"' + attribute.value + '"'];
-                }
-                tei.attributes.push({attribute: attribute.attribute, value: attribute.value});
-            } 
-        });
         
         //get enrollment attributes and their values - new attributes because of enrollment
-        angular.forEach($scope.attributesForEnrollment, function(attribute){
-            
-            if(attribute.valueType === 'trueOnly'){ 
-                if(!attribute.value){
-                    tei.attributes.push({attribute: attribute.id, value: ''});
-                    $scope.formEmpty = false;                    
-                }
-                else{
-                    tei.attributes.push({attribute: attribute.id, value: 'true'});
-                    $scope.formEmpty = false;
-                }
-            }            
-            else{
-                var val = attribute.value;
-                if(!angular.isUndefined(val) && val !== ''){
-                    if(attribute.valueType === 'date'){
-                        val = DateUtils.formatFromUserToApi(val);
-                    }
-                    if(attribute.valueType === 'optionSet' && $scope.optionSets.optionCodesByName[  '"' + val + '"']){   
-                        val = $scope.optionSets.optionCodesByName[  '"' + val + '"'];
-                    }                    
-                    $scope.formEmpty = false;
-                    tei.attributes.push({attribute: attribute.id, value: val});
-                }                
-            }
+        angular.forEach($scope.attributesForEnrollment, function(attribute){            
+            tei.attributes.push({attribute: attribute.id, value: attribute.value, type: attribute.valueType, displayName: attribute.name});                        
         });
         
         console.log('Finally:  ', tei);
@@ -195,7 +155,7 @@ trackerCapture.controller('EnrollmentController',
                             dateOfIncident: $scope.newEnrollment.dateOfIncident ? DateUtils.formatFromUserToApi($scope.newEnrollment.dateOfIncident) : DateUtils.formatFromUserToApi($scope.newEnrollment.dateOfEnrollment)
                         };
                         
-        TEIService.update(tei).then(function(updateResponse){
+        TEIService.update(tei, $scope.optionSets).then(function(updateResponse){            
             
             if(updateResponse.status === 'SUCCESS'){
                 //registration is successful, continue for enrollment               
@@ -211,23 +171,7 @@ trackerCapture.controller('EnrollmentController',
                     }
                     
                     //update tei attributes without refetching from the server
-                    angular.forEach($scope.attributesForEnrollment, function(attribute){
-                        $scope.selectedTei.attributes.push({attribute: attribute.id, value: attribute.value, type: attribute.valueType, displayName: attribute.name});
-                        /*var val = attribute.value;
-                        if(!angular.isUndefined(val)){
-                            if(attribute.valueType === 'number' && !isNaN(parseInt(val))){
-                                val = parseInt(val);
-                            }
-                            if(attribute.valueType === 'date'){
-                                val = DateUtils.formatFromApiToUser(val);
-                            }
-                            if(attribute.valueType === 'optionSet' && $scope.optionSets.optionNamesByCode[  '"' + attribute.value + '"']){   
-                                attribute.value = $scope.optionSets.optionNamesByCode[  '"' + attribute.value + '"'];
-                            } 
-                            
-                            $scope.selectedTei.attributes.push({attribute: attribute.id, value: attribute.value, type: attribute.valueType, displayName: attribute.name});
-                        }*/
-                    });
+                    $scope.selectedTei.attributes = tei.attributes;
                     
                     enrollment.enrollment = enrollmentResponse.reference;
                     $scope.selectedEnrollment = enrollment;

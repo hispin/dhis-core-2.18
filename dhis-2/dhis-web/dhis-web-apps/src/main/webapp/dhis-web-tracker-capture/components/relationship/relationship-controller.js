@@ -21,11 +21,12 @@ trackerCapture.controller('RelationshipController',
     //listen for the selected entity       
     $scope.$on('dashboardWidgets', function(event, args) { 
         $scope.selections = CurrentSelection.get();
+        $scope.optionSets = $scope.selections.optionSets;
         $scope.selectedTei = angular.copy($scope.selections.tei);        
         $scope.trackedEntity = $scope.selections.te;
         $scope.selectedEnrollment = $scope.selections.enrollment;
         $scope.selectedProgram = $scope.selections.pr;
-        console.log('the program leading to relationship is:  ', $scope.selectedProgram);
+        
         if($scope.selectedProgram && $scope.selectedProgram.relationshipText){
             $scope.addRelationshipLabel = $scope.selectedProgram.relationshipText;
         }
@@ -105,19 +106,7 @@ trackerCapture.controller('RelationshipController',
     //Selection
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
     $scope.optionSets = selections.optionSets;
-    
-    //format tei values
-    $scope.selectedTeiForDisplay = angular.copy($scope.selectedTei);
-    angular.forEach($scope.selectedTeiForDisplay.attributes, function(attribute){
-        if(!angular.isUndefined(attribute.value) && attribute.value !== ''){
-            if(attribute.type === 'date'){   
-                attribute.value = DateUtils.formatFromApiToUser(attribute.value);
-            }
-            if(attribute.type === 'optionSet' && $scope.optionSets.optionNamesByCode[  '"' + attribute.value + '"']){   
-                attribute.value = $scope.optionSets.optionNamesByCode[  '"' + attribute.value + '"'];
-            }
-        }
-    });    
+    $scope.selectedTeiForDisplay = angular.copy($scope.selectedTei);       
    
     ProgramFactory.getAll().then(function(programs){
         $scope.programs = [];
