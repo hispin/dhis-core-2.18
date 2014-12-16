@@ -345,10 +345,6 @@ trackerCapture.controller('DataEntryController',
         //input is valid        
         var value = $scope.currentEvent[prStDe.dataElement.id];
         
-        $scope.updateSuccess = false;
-        
-        $scope.currentElement = {id: prStDe.dataElement.id, saved: false};
-                
         if(!angular.isUndefined(value)){
             if(prStDe.dataElement.type === 'date'){                    
                 value = DateUtils.formatFromUserToApi(value);
@@ -361,7 +357,9 @@ trackerCapture.controller('DataEntryController',
 
             if($scope.currentEventOriginal[prStDe.dataElement.id] !== value){
 
-                
+                $scope.updateSuccess = false;
+        
+                $scope.currentElement = {id: prStDe.dataElement.id, saved: false};
         
                 var ev = {  event: $scope.currentEvent.event,
                             orgUnit: $scope.currentEvent.orgUnit,
