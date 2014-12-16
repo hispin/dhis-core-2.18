@@ -44,7 +44,7 @@
       <sec:frame-options />
       <sec:xss-protection />
     </sec:headers>
-    
+
     <sec:http-basic />
     <sec:logout logout-url="/dhis-web-commons-security/logout.action" />
     <sec:intercept-url pattern="/dhis-web-commons/i18nJavaScript.action" access="permitAll()" />
@@ -70,7 +70,7 @@
   </bean>
 
   <!-- Security : Action -->
-  
+
   <bean id="restrictOrganisationUnitsAction" class="org.hisp.dhis.security.action.RestrictOrganisationUnitsAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
@@ -250,17 +250,19 @@
   </bean>
 
   <bean id="org.hisp.dhis.security.authority.SystemAuthoritiesProvider"
-    class="org.hisp.dhis.security.authority.CachingSystemAuthoritiesProvider">
-    <property name="source" ref="compositeSystemAuthoritiesProvider" />
-  </bean>
-
-  <bean id="compositeSystemAuthoritiesProvider"
     class="org.hisp.dhis.security.authority.CompositeSystemAuthoritiesProvider">
     <property name="sources">
       <set>
-        <ref bean="detectingSystemAuthoritiesProvider" />
-        <ref bean="moduleSystemAuthoritiesProvider" />
-        <ref bean="simpleSystemAuthoritiesProvider" />
+        <bean class="org.hisp.dhis.security.authority.CachingSystemAuthoritiesProvider">
+          <property name="source" ref="detectingSystemAuthoritiesProvider" />
+        </bean>
+        <bean class="org.hisp.dhis.security.authority.CachingSystemAuthoritiesProvider">
+          <property name="source" ref="moduleSystemAuthoritiesProvider" />
+        </bean>
+        <bean class="org.hisp.dhis.security.authority.CachingSystemAuthoritiesProvider">
+          <property name="source" ref="simpleSystemAuthoritiesProvider" />
+        </bean>
+        <ref bean="appsSystemAuthoritiesProvider" />
       </set>
     </property>
   </bean>
@@ -318,4 +320,7 @@
       </set>
     </property>
   </bean>
+
+  <bean id="appsSystemAuthoritiesProvider" class="org.hisp.dhis.security.authority.AppsSystemAuthoritiesProvider" />
+
 </beans>
