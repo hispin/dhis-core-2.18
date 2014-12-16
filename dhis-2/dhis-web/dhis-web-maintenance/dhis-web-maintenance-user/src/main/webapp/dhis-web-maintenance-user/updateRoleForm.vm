@@ -21,7 +21,7 @@
 			handler: function(item) {
 				var option = jQuery("<option />");
 				option.text( item.name );
-				option.attr( "value", item.id );
+        option.attr( "value", item.id );
 
 				return option;
 			}
@@ -104,7 +104,7 @@
         	<td>
           		<select id="selectedListAuthority" name="selectedListAuthority" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
             	#foreach ( $selectedAuthority in $roleAuthorities )
-					<option value="$selectedAuthority">$i18n.getString( $selectedAuthority )</option>
+								<option value="$selectedAuthority">$i18n.getString( $selectedAuthority )</option>
             	#end
           		</select>
         	</td>
