@@ -29,7 +29,14 @@ package org.hisp.dhis.node.serializers;
  */
 
 import com.google.common.collect.Lists;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hisp.dhis.node.AbstractNodeSerializer;
+import org.hisp.dhis.node.Node;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
@@ -59,11 +66,60 @@ public class ExcelNodeSerializer extends AbstractNodeSerializer
         return Lists.newArrayList( CONTENT_TYPES );
     }
 
+    private XSSFWorkbook workbook;
+
+    private XSSFSheet sheet;
+
     @Override
     protected void startSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
     {
-        outputStream.write( "Hello Excel".getBytes() );
-        outputStream.flush();
+        workbook = new XSSFWorkbook();
+        sheet = workbook.createSheet();
+
+        XSSFFont boldFont = workbook.createFont();
+        boldFont.setBold( true );
+
+        XSSFCellStyle boldCellStyle = workbook.createCellStyle();
+        boldCellStyle.setFont( boldFont );
+
+        // build schema
+        for ( Node child : rootNode.getChildren() )
+        {
+            if ( child.isCollection() )
+            {
+                if ( !child.getChildren().isEmpty() )
+                {
+                    Node node = child.getChildren().get( 0 );
+
+                    XSSFRow row = sheet.createRow( 0 );
+
+                    int cellIdx = 0;
+
+                    for ( Node property : node.getChildren() )
+                    {
+                        if ( property.isSimple() )
+                        {
+                            XSSFCell cell = row.createCell( cellIdx++ );
+                            cell.setCellValue( property.getName() );
+                            cell.setCellStyle( boldCellStyle );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void endSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
+    {
+        int columns = sheet.getRow( 0 ).getPhysicalNumberOfCells();
+
+        for ( int i = 0; i < columns; i++ )
+        {
+            sheet.autoSizeColumn( i );
+        }
+
+        workbook.write( outputStream );
     }
 
     @Override
@@ -75,7 +131,47 @@ public class ExcelNodeSerializer extends AbstractNodeSerializer
     @Override
     protected void startWriteRootNode( RootNode rootNode ) throws Exception
     {
+        int rowIdx = 1;
 
+        for ( Node child : rootNode.getChildren() )
+        {
+            if ( child.isCollection() )
+            {
+                for ( Node node : child.getChildren() )
+                {
+                    XSSFRow row = sheet.createRow( rowIdx++ );
+                    int cellIdx = 0;
+
+                    for ( Node property : node.getChildren() )
+                    {
+                        if ( property.isSimple() )
+                        {
+                            XSSFCell cell = row.createCell( cellIdx++ );
+                            cell.setCellValue( getValue( (SimpleNode) property ) );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public String getValue( SimpleNode simpleNode )
+    {
+        if ( simpleNode.getValue() == null )
+        {
+            return "";
+        }
+
+        String value = String.format( "%s", simpleNode.getValue() );
+
+        if ( Date.class.isAssignableFrom( simpleNode.getValue().getClass() ) )
+        {
+            SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" );
+            dateFormat.setTimeZone( TimeZone.getTimeZone( "UTC" ) );
+            value = dateFormat.format( (Date) simpleNode.getValue() );
+        }
+
+        return value;
     }
 
     @Override
@@ -87,14 +183,6 @@ public class ExcelNodeSerializer extends AbstractNodeSerializer
     @Override
     protected void startWriteSimpleNode( SimpleNode simpleNode ) throws Exception
     {
-        String value = String.format( "%s", simpleNode.getValue() );
-
-        if ( Date.class.isAssignableFrom( simpleNode.getValue().getClass() ) )
-        {
-            SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" );
-            dateFormat.setTimeZone( TimeZone.getTimeZone( "UTC" ) );
-            value = dateFormat.format( (Date) simpleNode.getValue() );
-        }
     }
 
     @Override
