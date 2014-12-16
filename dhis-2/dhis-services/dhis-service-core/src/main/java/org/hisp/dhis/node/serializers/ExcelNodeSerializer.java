@@ -29,9 +29,12 @@ package org.hisp.dhis.node.serializers;
  */
 
 import com.google.common.collect.Lists;
+import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -74,7 +77,7 @@ public class ExcelNodeSerializer extends AbstractNodeSerializer
     protected void startSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
     {
         workbook = new XSSFWorkbook();
-        sheet = workbook.createSheet("Sheet1");
+        sheet = workbook.createSheet( "Sheet1" );
 
         XSSFFont boldFont = workbook.createFont();
         boldFont.setBold( true );
@@ -131,6 +134,8 @@ public class ExcelNodeSerializer extends AbstractNodeSerializer
     @Override
     protected void startWriteRootNode( RootNode rootNode ) throws Exception
     {
+        XSSFCreationHelper creationHelper = workbook.getCreationHelper();
+
         int rowIdx = 1;
 
         for ( Node child : rootNode.getChildren() )
@@ -148,6 +153,15 @@ public class ExcelNodeSerializer extends AbstractNodeSerializer
                         {
                             XSSFCell cell = row.createCell( cellIdx++ );
                             cell.setCellValue( getValue( (SimpleNode) property ) );
+
+                            if ( "href".equals( property.getName() ) )
+                            {
+                                XSSFHyperlink hyperlink = creationHelper.createHyperlink( Hyperlink.LINK_URL );
+                                hyperlink.setAddress( getValue( (SimpleNode) property ) );
+                                hyperlink.setLabel( getValue( (SimpleNode) property ) );
+
+                                cell.setHyperlink( hyperlink );
+                            }
                         }
                     }
                 }
