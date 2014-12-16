@@ -856,10 +856,11 @@ public class DefaultDataValueSetService
                 {
                     if ( !dryRun && !internalValue.isNullValue() )
                     {
-                        batchHandler.addObject( internalValue );
+                        if ( batchHandler.addObject( internalValue ) )
+                        {
+                            importCount++;
+                        }
                     }
-
-                    importCount++;
                 }
             }
         }
