@@ -65,9 +65,9 @@ public class MockBatchHandler<T>
     }
 
     @Override
-    public void addObject( T object )
+    public boolean addObject( T object )
     {
-        inserts.add( object );
+        return inserts.add( object );
     }
 
     @Override
