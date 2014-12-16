@@ -28,16 +28,8 @@ package org.hisp.dhis.appmanager;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
-import javax.annotation.PostConstruct;
-
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ant.compress.taskdefs.Unzip;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -45,10 +37,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.datavalue.DefaultDataValueService;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * @author Saptarshi Purkayastha
@@ -72,6 +74,9 @@ public class DefaultAppManager
     @Autowired
     private SystemSettingManager appSettingManager;
 
+    @Autowired
+    private CurrentUserService currentUserService;
+
     // -------------------------------------------------------------------------
     // AppManagerService implementation
     // -------------------------------------------------------------------------
@@ -90,6 +95,25 @@ public class DefaultAppManager
     }
 
     @Override
+    public List<App> getAccessibleApps()
+    {
+        List<App> applications = new ArrayList<>( getApps() );
+        Iterator<App> iterator = applications.iterator();
+
+        while ( iterator.hasNext() )
+        {
+            App app = iterator.next();
+
+            if ( !isAccessible( app ) )
+            {
+                iterator.remove();
+            }
+        }
+
+        return applications;
+    }
+
+    @Override
     public void installApp( File file, String fileName, String rootPath )
         throws IOException
     {
@@ -99,7 +123,7 @@ public class DefaultAppManager
         InputStream inputStream = zip.getInputStream( entry );
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
-        
+
         App app = mapper.readValue( inputStream, App.class );
 
         // ---------------------------------------------------------------------
@@ -178,7 +202,7 @@ public class DefaultAppManager
 
         return false;
     }
-    
+
     @Override
     public String getAppFolderPath()
     {
@@ -224,7 +248,7 @@ public class DefaultAppManager
     {
         return StringUtils.trimToNull( (String) appSettingManager.getSystemSetting( KEY_APP_STORE_URL, DEFAULT_APP_STORE_URL ) );
     }
-    
+
     @Override
     public void setAppStoreUrl( String appStoreUrl )
     {
@@ -248,14 +272,17 @@ public class DefaultAppManager
         if ( null != getAppFolderPath() )
         {
             File appFolderPath = new File( getAppFolderPath() );
+
             if ( appFolderPath.isDirectory() )
             {
                 File[] listFiles = appFolderPath.listFiles();
+
                 for ( File folder : listFiles )
                 {
                     if ( folder.isDirectory() )
                     {
                         File appManifest = new File( folder, "manifest.webapp" );
+
                         if ( appManifest.exists() )
                         {
                             try
@@ -277,5 +304,26 @@ public class DefaultAppManager
         this.apps = appList;
 
         log.info( "Detected apps: " + apps );
+    }
+
+    @Override
+    public boolean isAccessible( App app )
+    {
+        return isAccessible( app, currentUserService.getCurrentUser() );
+    }
+
+    @Override
+    public boolean isAccessible( App app, User user )
+    {
+        if ( user == null || user.getUserCredentials() == null || app == null || app.getName() == null )
+        {
+            return false;
+        }
+
+        UserCredentials userCredentials = user.getUserCredentials();
+
+        return userCredentials.getAllAuthorities().contains( "ALL" ) ||
+            userCredentials.getAllAuthorities().contains( "M_dhis-web-maintenance-appmanager" ) ||
+            userCredentials.getAllAuthorities().contains( "See " + app.getName().trim() );
     }
 }

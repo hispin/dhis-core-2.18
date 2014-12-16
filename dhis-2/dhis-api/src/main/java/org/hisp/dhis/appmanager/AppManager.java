@@ -28,6 +28,8 @@ package org.hisp.dhis.appmanager;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.user.User;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -50,6 +52,8 @@ public interface AppManager
      * @return list of installed apps
      */
     List<App> getApps();
+
+    List<App> getAccessibleApps();
 
     /**
      * Installs the app.
@@ -126,4 +130,8 @@ public interface AppManager
      * @param appStoreUrl
      */
     void setAppStoreUrl( String appStoreUrl );
+
+    boolean isAccessible( App app );
+
+    boolean isAccessible( App app, User user );
 }
