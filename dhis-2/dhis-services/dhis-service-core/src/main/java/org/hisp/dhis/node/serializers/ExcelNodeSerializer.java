@@ -74,7 +74,7 @@ public class ExcelNodeSerializer extends AbstractNodeSerializer
     protected void startSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
     {
         workbook = new XSSFWorkbook();
-        sheet = workbook.createSheet();
+        sheet = workbook.createSheet("Sheet1");
 
         XSSFFont boldFont = workbook.createFont();
         boldFont.setBold( true );
