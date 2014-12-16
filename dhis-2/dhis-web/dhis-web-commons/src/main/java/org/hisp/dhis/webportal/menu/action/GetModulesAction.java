@@ -76,10 +76,13 @@ public class GetModulesAction
                 @Override
                 public int compare( Module m1, Module m2 )
                 {
-                    Integer i1 = userApps.indexOf( m1.getName() );
-                    Integer i2 = userApps.indexOf( m2.getName() );
+                    int i1 = userApps.indexOf( m1.getName() );
+                    int i2 = userApps.indexOf( m2.getName() );
+
+                    i1 = i1 == -1 ? 9999 : i1;
+                    i2 = i2 == -1 ? 9999 : i2;
                     
-                    return i1 != -1 ? ( i2 != -1 ? i1.compareTo( i2 ) : -1 ) : 1;
+                    return Integer.valueOf( i1 ).compareTo( Integer.valueOf( i2 ) );
                 }
             } );
         }
