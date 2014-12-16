@@ -28,28 +28,26 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.hisp.dhis.node.types.RootNode;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
-import org.hisp.dhis.node.types.RootNode;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class DefaultNodeService implements NodeService
 {
-    @Autowired(required = false)
+    @Autowired( required = false )
     private List<NodeSerializer> nodeSerializers = Lists.newArrayList();
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private List<NodeDeserializer> nodeDeserializers = Lists.newArrayList();
 
     private Map<String, NodeSerializer> nodeSerializerMap = Maps.newHashMap();
