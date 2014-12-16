@@ -23,7 +23,7 @@ var cacheCleanerControllers = angular.module('cacheCleanerControllers', [])
             }
         }
 
-        var idxDBs = ['dhis2ou', 'dhis2', 'dhis2tc', 'dhis2ec'];    
+        var idxDBs = ['dhis2ou', 'dhis2', 'dhis2tc', 'dhis2ec', 'dhis2de'];    
         angular.forEach(idxDBs, function(db){
             idbStorageService.dbExists(db).then(function(res){
                 if( res ){
