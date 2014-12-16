@@ -78,8 +78,7 @@ trackerCapture.controller('ProfileController',
                     $scope.formEmpty = false;
                 }
                 tei.attributes.push({attribute: attribute.attribute, value: val});
-            }           
-             
+            }             
         });
         
         if($scope.formEmpty){

@@ -69,7 +69,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                         $scope.optionSets.optionSets[optionSet.id] = optionSet;
                     });
                 });
-            }            
+            }
             $scope.loadPrograms($scope.selectedOrgUnit);                                
         }
     });
@@ -327,7 +327,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };
     
     $scope.showHideColumns = function(){
-        
         $scope.hiddenGridColumns = 0;
         
         angular.forEach($scope.gridColumns, function(gridColumn){

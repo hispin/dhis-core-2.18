@@ -20,11 +20,11 @@ var d2Controllers = angular.module('d2Controllers', [])
             hiddenGridColumns,
             gridColumns){
     
-    $scope.eventGridColumns = gridColumns;
+    $scope.gridColumns = gridColumns;
     $scope.hiddenGridColumns = hiddenGridColumns;
     
     $scope.close = function () {
-      $modalInstance.close($scope.eventGridColumns);
+      $modalInstance.close($scope.gridColumns);
     };
     
     $scope.showHideColumns = function(gridColumn){

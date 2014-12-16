@@ -101,7 +101,6 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };
 })
 
-
 /* Factory to fetch relationships */
 .factory('RelationshipFactory', function($q, $rootScope, TCStorageService) { 
     return {
@@ -369,34 +368,89 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service for getting tracked entity instances */
-.factory('TEIService', function($http, $q, AttributesFactory, DateUtils) {
+.factory('TEIService', function($http, $q, AttributesFactory, OptionSetService, DateUtils) {
 
-    return {
-        
-        get: function(entityUid) {
-            var promise = $http.get(  '../api/trackedEntityInstances/' +  entityUid ).then(function(response){     
-                return response.data;
-            });            
-            return promise;
-        },        
-        getByOrgUnitAndProgram: function(orgUnitUid, programUid) {
+    return {        
+        convertFromApiToUser: function(promise, optionSets){            
+            promise.then(function(response){
+                var tei = response.data;
+                var attsById = [];                
+                AttributesFactory.getAll().then(function(atts){
+                    angular.forEach(atts, function(att){                        
+                        attsById[att.id] = att;
+                    });
 
-            var url = '../api/trackedEntityInstances.json?ou=' + orgUnitUid + '&program=' + programUid;
-            
-            var promise = $http.get( url ).then(function(response){
-                return response.data;
+                    angular.forEach(tei.attributes, function(att){                        
+                        var val = att.value;
+                        if(val){
+                            if(att.type === 'date'){
+                                val = DateUtils.formatFromApiToUser(val);
+                            }
+                            if(att.type === 'optionSet' && 
+                                    attsById[att.attribute] && 
+                                    attsById[att.attribute].optionSet && 
+                                    attsById[att.attribute].optionSet.id && 
+                                    optionSets[attsById[att.attribute].optionSet.id]){   
+                                val = OptionSetService.getName(optionSets[attsById[att.attribute].optionSet.id].options, val);                                
+                            }
+                            att.value = val;
+                        }                        
+                    });                    
+                });    
+                return tei;
             });            
             return promise;
         },
-        getByOrgUnit: function(orgUnitUid) {           
+        convertFromUserToApi: function(_tei, optionSets){            
+            var attsById = [];      
+            var def = $q.defer();
             
-            var url =  '../api/trackedEntityInstances.json?ou=' + orgUnitUid;
+            var tei = angular.copy(_tei);
+            AttributesFactory.getAll().then(function(atts){
+                angular.forEach(atts, function(att){                        
+                    attsById[att.id] = att;
+                });
+
+                angular.forEach(tei.attributes, function(att){                        
+                    
+                    if(att.type === 'trueOnly'){ 
+                        if(!att.value){
+                            att.value = '';
+                        }
+                        else{
+                            att.value = true;
+                        }
+                    }            
+                    else{
+                        var val = att.value;
+                        if(val){
+                            if(att.type === 'date'){
+                                val = DateUtils.formatFromUserToApi(val);
+                            }
+                            if(att.type === 'optionSet' && 
+                                    attsById[att.attribute] && 
+                                    attsById[att.attribute].optionSet && 
+                                    attsById[att.attribute].optionSet.id && 
+                                    optionSets[attsById[att.attribute].optionSet.id]){   
+                                val = OptionSetService.getCode(optionSets[attsById[att.attribute].optionSet.id].options, val);                                
+                            }
+                            att.value = val;
+                        }
+                    }                                            
+                });     
+                
+                def.resolve(tei);
+            });
             
-            var promise = $http.get( url ).then(function(response){
-                return response.data;
-            });            
+            return def.promise;
+        },
+        get: function(entityUid, optionSets){            
+            var promise = $http.get(  '../api/trackedEntityInstances/' +  entityUid );
+            this.convertFromApiToUser(promise, optionSets).then(function(response){
+                return response.data; 
+            });
             return promise;
-        },        
+        },
         search: function(ouId, ouMode, queryUrl, programUrl, attributeUrl, pager, paging) {
                 
             var url =  '../api/trackedEntityInstances.json?ou=' + ouId + '&ouMode='+ ouMode;
@@ -425,13 +479,17 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });            
             return promise;
         },                
-        update: function(tei){
-            
+        update: function(tei, optionSets){   
             var url = '../api/trackedEntityInstances';
-            var promise = $http.put( url + '/' + tei.trackedEntityInstance , tei).then(function(response){
-                return response.data;
+            var def = $q.defer();
+           
+            this.convertFromUserToApi(tei, optionSets).then(function(formattedTei){                
+                $http.put( url + '/' + formattedTei.trackedEntityInstance , formattedTei ).then(function(response){                    
+                    def.resolve( response.data );
+                });
             });
-            return promise;
+            
+            return def.promise;       
         },
         register: function(tei){
             
@@ -508,7 +566,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                     }                    
                     programAttributes.push(att);                
                 });
-                def.resolve(programAttributes);                                  
+                def.resolve(programAttributes);
             });
             return def.promise;    
         },
@@ -550,8 +608,6 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         },
         showRequiredAttributes: function(requiredAttributes, teiAttributes, fromEnrollment, optionSets){        
             
-            console.log('required attribtues:  ', requiredAttributes);
-            console.log('tei attribtue:  ', teiAttributes);
             //first reset teiAttributes
             for(var j=0; j<teiAttributes.length; j++){
                 teiAttributes[j].show = false;                
@@ -1084,95 +1140,4 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             return e;
         }
     }; 
-})
-
-/* service for getting calendar setting */
-.service('CalendarService', function(storage, $rootScope){    
-
-    return {
-        getSetting: function() {
-            
-            var dhis2CalendarFormat = {keyDateFormat: 'yyyy-MM-dd', keyCalendar: 'gregorian', momentFormat: 'YYYY-MM-DD'};                
-            var storedFormat = storage.get('CALENDAR_SETTING');
-            if(angular.isObject(storedFormat) && storedFormat.keyDateFormat && storedFormat.keyCalendar){
-                if(storedFormat.keyCalendar === 'iso8601'){
-                    storedFormat.keyCalendar = 'gregorian';
-                }
-
-                if(storedFormat.keyDateFormat === 'dd-MM-yyyy'){
-                    dhis2CalendarFormat.momentFormat = 'DD-MM-YYYY';
-                }
-                
-                dhis2CalendarFormat.keyCalendar = storedFormat.keyCalendar;
-                dhis2CalendarFormat.keyDateFormat = storedFormat.keyDateFormat;
-            }
-            $rootScope.dhis2CalendarFormat = dhis2CalendarFormat;
-            return dhis2CalendarFormat;
-        }
-    };            
-})
-
-/* service for dealing with dates */
-.service('DateUtils', function($filter, CalendarService){
-    
-    return {        
-        getDate: function(dateValue){
-            if(!dateValue){
-                return;
-            }            
-            var calendarSetting = CalendarService.getSetting();
-            dateValue = moment(dateValue, calendarSetting.momentFormat)._d;
-            return Date.parse(dateValue);
-        },
-        format: function(dateValue) {            
-            if(!dateValue){
-                return;
-            }
-            
-            if( isNaN( Date.parse(dateValue) ) ){
-                return;
-            }
-            var calendarSetting = CalendarService.getSetting();            
-            dateValue = moment(dateValue, calendarSetting.momentFormat)._d;
-            dateValue = $filter('date')(dateValue, calendarSetting.keyDateFormat);            
-            return dateValue;
-        },
-        formatToHrsMins: function(dateValue) {
-            var calendarSetting = CalendarService.getSetting();
-            var dateFormat = 'YYYY-MM-DD @ hh:mm A';
-            if(calendarSetting.keyDateFormat === 'dd-MM-yyyy'){
-                dateFormat = 'DD-MM-YYYY @ hh:mm A';
-            }            
-            return moment(dateValue).format(dateFormat);
-        },
-        getToday: function(){  
-            var calendarSetting = CalendarService.getSetting();
-            var tdy = $.calendars.instance(calendarSetting.keyCalendar).newDate();            
-            var today = moment(tdy._year + '-' + tdy._month + '-' + tdy._day, 'YYYY-MM-DD')._d;            
-            today = Date.parse(today);     
-            today = $filter('date')(today,  calendarSetting.keyDateFormat);
-            return today;
-        },
-        formatFromUserToApi: function(dateValue){            
-            if(!dateValue){
-                return;
-            }
-            var calendarSetting = CalendarService.getSetting();
-            dateValue = moment(dateValue, calendarSetting.momentFormat)._d;
-            dateValue = Date.parse(dateValue);     
-            dateValue = $filter('date')(dateValue, 'yyyy-MM-dd'); 
-            return dateValue;            
-        },
-        formatFromApiToUser: function(dateValue){            
-            if(!dateValue){
-                return;
-            }            
-            var calendarSetting = CalendarService.getSetting();
-            dateValue = moment(dateValue, 'YYYY-MM-DD')._d;
-            dateValue = Date.parse(dateValue);     
-            dateValue = $filter('date')(dateValue, calendarSetting.keyDateFormat); 
-            return dateValue;
-        }
-    };
 });
-

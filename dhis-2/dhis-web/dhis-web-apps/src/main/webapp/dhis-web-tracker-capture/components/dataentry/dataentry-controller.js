@@ -6,6 +6,7 @@ trackerCapture.controller('DataEntryController',
                 storage,
                 ProgramStageFactory,
                 DHIS2EventFactory,
+                OptionSetService,
                 ModalService,
                 DialogService,
                 CurrentSelection,
@@ -335,29 +336,33 @@ trackerCapture.controller('DataEntryController',
     
     $scope.saveDatavalue = function(prStDe){
         
-        $scope.currentElement = {id: prStDe.dataElement.id, saved: false};
-        
         //check for input validity
         $scope.dataEntryOuterForm.submitted = true;        
         if( $scope.dataEntryOuterForm.$invalid ){            
             return false;
         }
          
-        //input is valid
+        //input is valid        
+        var value = $scope.currentEvent[prStDe.dataElement.id];
+        
         $scope.updateSuccess = false;
-        var value = $scope.currentEvent[prStDe.dataElement.id];        
+        
+        $scope.currentElement = {id: prStDe.dataElement.id, saved: false};
+                
         if(!angular.isUndefined(value)){
             if(prStDe.dataElement.type === 'date'){                    
                 value = DateUtils.formatFromUserToApi(value);
             }
             if(prStDe.dataElement.type === 'string'){                    
-                if(prStDe.dataElement.optionSet && $scope.optionSets.optionCodesByName[  '"' + value + '"']){                        
-                    value = $scope.optionSets.optionCodesByName[  '"' + value + '"'];                                                      
+                if(prStDe.dataElement.optionSet && $scope.optionSets[prStDe.dataElement.optionSet.id] &&  $scope.optionSets[prStDe.dataElement.optionSet.id].options ) {
+                    value = OptionSetService.getCode($scope.optionSets[prStDe.dataElement.optionSet.id].options, value);
                 }                    
             }
 
             if($scope.currentEventOriginal[prStDe.dataElement.id] !== value){
+
                 
+        
                 var ev = {  event: $scope.currentEvent.event,
                             orgUnit: $scope.currentEvent.orgUnit,
                             program: $scope.currentEvent.program,
