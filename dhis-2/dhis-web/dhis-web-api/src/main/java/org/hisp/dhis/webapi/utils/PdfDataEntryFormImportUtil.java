@@ -28,13 +28,8 @@ package org.hisp.dhis.webapi.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.pdfform.PdfDataEntryFormUtil;
@@ -53,8 +48,12 @@ import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.lowagie.text.pdf.AcroFields;
-import com.lowagie.text.pdf.PdfReader;
+import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class PdfDataEntryFormImportUtil
 {
@@ -87,7 +86,7 @@ public class PdfDataEntryFormImportUtil
     // METHODS
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public void ImportProgramStage( InputStream in, I18nFormat format )
         throws Exception
     {
@@ -145,12 +144,12 @@ public class PdfDataEntryFormImportUtil
 
         // For each row, add new programStageInstance and add data elements
         // to it.
-        for ( Map.Entry<Integer, ProgramStageInstanceStoage> entry : programStageInstanceDataManager
+        for ( Map.Entry<Integer, ProgramStageInstanceStorage> entry : programStageInstanceDataManager
             .getProgramStageInstanceData().entrySet() )
         {
-            ProgramStageInstanceStoage programStageInstanceStoage = entry.getValue();
+            ProgramStageInstanceStorage programStageInstanceStorage = entry.getValue();
 
-            int date = programStageInstanceStoage.getDate();
+            int date = programStageInstanceStorage.getDate();
             executeDateCal.set( Calendar.DATE, date );
             Date executionDate = executeDateCal.getTime();
 
@@ -160,7 +159,7 @@ public class PdfDataEntryFormImportUtil
 
             programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
-            for ( Map.Entry<Integer, String> dataElementsEntry : programStageInstanceStoage.getDataElementsValue()
+            for ( Map.Entry<Integer, String> dataElementsEntry : programStageInstanceStorage.getDataElementsValue()
                 .entrySet() )
             {
                 Integer dataElementId = dataElementsEntry.getKey();
@@ -263,9 +262,9 @@ public class PdfDataEntryFormImportUtil
 
     class ProgramStageInstanceDataManager
     {
-        Map<Integer, ProgramStageInstanceStoage> programStageInstanceData;
+        Map<Integer, ProgramStageInstanceStorage> programStageInstanceData;
 
-        public Map<Integer, ProgramStageInstanceStoage> getProgramStageInstanceData()
+        public Map<Integer, ProgramStageInstanceStorage> getProgramStageInstanceData()
         {
             return programStageInstanceData;
         }
@@ -289,10 +288,10 @@ public class PdfDataEntryFormImportUtil
             else
             {
                 // Create and add
-                ProgramStageInstanceStoage programStageInstanceStoage = new ProgramStageInstanceStoage();
-                programStageInstanceStoage.setDate( date );
+                ProgramStageInstanceStorage programStageInstanceStorage = new ProgramStageInstanceStorage();
+                programStageInstanceStorage.setDate( date );
 
-                programStageInstanceData.put( rowNumber, programStageInstanceStoage );
+                programStageInstanceData.put( rowNumber, programStageInstanceStorage );
             }
 
         }
@@ -309,17 +308,16 @@ public class PdfDataEntryFormImportUtil
             else
             {
                 // Create and add
-                ProgramStageInstanceStoage programStageInstanceStoage = new ProgramStageInstanceStoage();
-                programStageInstanceStoage.addDataElements( dataElementId, value );
+                ProgramStageInstanceStorage programStageInstanceStorage = new ProgramStageInstanceStorage();
+                programStageInstanceStorage.addDataElements( dataElementId, value );
 
-                programStageInstanceData.put( rowNumber, programStageInstanceStoage );
+                programStageInstanceData.put( rowNumber, programStageInstanceStorage );
             }
 
         }
-
     }
 
-    class ProgramStageInstanceStoage
+    class ProgramStageInstanceStorage
     {
         int date;
 
@@ -348,7 +346,7 @@ public class PdfDataEntryFormImportUtil
         // CONSTRUCTOR
         // -------------------------------------------------------------------------
 
-        public ProgramStageInstanceStoage()
+        public ProgramStageInstanceStorage()
         {
             dataElementsValue = new HashMap<>();
         }
