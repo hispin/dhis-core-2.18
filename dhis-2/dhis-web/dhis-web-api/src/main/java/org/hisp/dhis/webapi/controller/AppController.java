@@ -32,6 +32,7 @@ import com.google.common.collect.Lists;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.hibernate.exception.ReadAccessDeniedException;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +102,6 @@ public class AppController
     }
 
     @RequestMapping( value = "/apps/{app}/**", method = RequestMethod.GET )
-    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
     public void renderApp( @PathVariable( "app" ) String app, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         Iterable<Resource> locations = Lists.newArrayList(
@@ -118,6 +118,12 @@ public class AppController
         }
 
         App application = JacksonUtils.getJsonMapper().readValue( manifest.getInputStream(), App.class );
+
+        if ( application.getName() == null || !appManager.isAccessible( application ) )
+        {
+            throw new ReadAccessDeniedException( "You don't have access to application " + app + "." );
+        }
+
         String pageName = findPage( request.getPathInfo(), app );
 
         // if request was for manifest.webapp, check for * and replace with host

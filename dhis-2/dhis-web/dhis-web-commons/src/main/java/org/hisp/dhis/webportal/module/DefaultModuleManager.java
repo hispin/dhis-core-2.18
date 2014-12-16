@@ -28,6 +28,18 @@ package org.hisp.dhis.webportal.module;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.config.Configuration;
+import com.opensymphony.xwork2.config.entities.PackageConfig;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.dispatcher.Dispatcher;
+import org.hisp.dhis.appmanager.App;
+import org.hisp.dhis.appmanager.AppManager;
+import org.hisp.dhis.security.ActionAccessResolver;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,17 +49,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.struts2.dispatcher.Dispatcher;
-import org.hisp.dhis.appmanager.App;
-import org.hisp.dhis.appmanager.AppManager;
-import org.hisp.dhis.security.ActionAccessResolver;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.config.Configuration;
-import com.opensymphony.xwork2.config.entities.PackageConfig;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -65,7 +66,7 @@ public class DefaultModuleManager
     private Map<String, Module> modulesByNamespace = new HashMap<>();
 
     private List<Module> menuModules = new ArrayList<>();
-    
+
     private ThreadLocal<Module> currentModule = new ThreadLocal<>();
 
     // -------------------------------------------------------------------------
@@ -74,7 +75,10 @@ public class DefaultModuleManager
 
     @Autowired
     private AppManager appManager;
-    
+
+    @Autowired
+    private CurrentUserService currentUserService;
+
     private ActionAccessResolver actionAccessResolver;
 
     public void setActionAccessResolver( ActionAccessResolver actionAccessResolver )
@@ -95,14 +99,14 @@ public class DefaultModuleManager
     {
         this.defaultActionName = defaultActionName;
     }
-    
+
     private Set<String> menuModuleExclusions = new HashSet<>();
-    
+
     public void setMenuModuleExclusions( Set<String> menuModuleExclusions )
     {
         this.menuModuleExclusions = menuModuleExclusions;
     }
-    
+
     // -------------------------------------------------------------------------
     // ModuleManager
     // -------------------------------------------------------------------------
@@ -122,7 +126,7 @@ public class DefaultModuleManager
 
         return modulesByNamespace.get( namespace );
     }
-    
+
     @Override
     public boolean moduleExists( String name )
     {
@@ -141,22 +145,21 @@ public class DefaultModuleManager
     public List<Module> getAccessibleMenuModules()
     {
         detectModules();
-        
+
         return getAccessibleModules( menuModules );
     }
-    
+
     @Override
     public List<Module> getAccessibleMenuModulesAndApps()
     {
         List<Module> modules = getAccessibleMenuModules();
-        
-        List<App> apps = appManager.getApps();
-        
+        List<App> apps = appManager.getAccessibleApps();
+
         for ( App app : apps )
-        {   
+        {
             modules.add( Module.getModule( app ) );
         }
-        
+
         return modules;
     }
 
@@ -167,7 +170,7 @@ public class DefaultModuleManager
 
         return new ArrayList<>( modulesByName.values() );
     }
-    
+
     @Override
     public Module getCurrentModule()
     {
@@ -192,12 +195,12 @@ public class DefaultModuleManager
         }
 
         for ( PackageConfig packageConfig : getPackageConfigs() )
-        {            
+        {
             String name = packageConfig.getName();
             String namespace = packageConfig.getNamespace();
 
             log.debug( "Package config: " + name + ", " + namespace );
-            
+
             if ( packageConfig.getAllActionConfigs().size() == 0 )
             {
                 log.debug( "Ignoring action package with no actions: " + name );
@@ -219,14 +222,14 @@ public class DefaultModuleManager
             {
                 Module module = modulesByNamespace.get( namespace );
 
-                throw new RuntimeException( "These action packages have the same namespace: " + 
+                throw new RuntimeException( "These action packages have the same namespace: " +
                     name + " and " + module.getName() );
             }
 
             Module module = new Module( name, namespace );
             modulesByName.put( name, module );
             modulesByNamespace.put( namespace, module );
-            
+
             boolean include = !menuModuleExclusions.contains( name );
 
             if ( packageConfig.getActionConfigs().containsKey( defaultActionName ) && include )
@@ -246,7 +249,7 @@ public class DefaultModuleManager
         Collections.sort( menuModules, moduleComparator );
 
         log.debug( "Menu modules detected: " + menuModules );
-        
+
         modulesDetected = true;
     }
 
@@ -262,11 +265,11 @@ public class DefaultModuleManager
 
         return packageConfigs.values();
     }
-    
+
     private List<Module> getAccessibleModules( List<Module> modules )
     {
         List<Module> allowed = new ArrayList<>();
-        
+
         for ( Module module : modules )
         {
             if ( module != null && actionAccessResolver.hasAccess( module.getName(), defaultActionName ) )
@@ -274,15 +277,15 @@ public class DefaultModuleManager
                 allowed.add( module );
             }
         }
-        
+
         if ( modules.size() > allowed.size() )
         {
             List<Module> denied = new ArrayList<>( modules );
             denied.removeAll( allowed );
-            
+
             log.debug( "User denied access to modules: " + denied );
         }
-        
+
         return allowed;
     }
 }
