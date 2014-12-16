@@ -28,6 +28,9 @@
       <ref bean="jsonMessageConverter" />
       <ref bean="jsonPMessageConverter" />
       <ref bean="xmlMessageConverter" />
+      <ref bean="csvMessageConverter" />
+      <ref bean="pdfMessageConverter" />
+      <ref bean="excelMessageConverter" />
       <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
       <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
       <bean class="org.springframework.http.converter.FormHttpMessageConverter"/>

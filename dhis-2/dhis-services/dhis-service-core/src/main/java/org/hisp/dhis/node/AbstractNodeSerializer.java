@@ -140,7 +140,7 @@ public abstract class AbstractNodeSerializer implements NodeSerializer
 
     protected abstract void endWriteCollectionNode( CollectionNode collectionNode ) throws Exception;
 
-    private void dispatcher( Node node ) throws Exception
+    protected void dispatcher( Node node ) throws Exception
     {
         switch ( node.getType() )
         {
