@@ -126,7 +126,7 @@
             </div>
             
             <div class="row col-sm-4" ng-if="!lsCacheExists && !idxCacheExists">                
-                <div class="alert alert-info">{{'cache_empty'| translate}}</div>                
+                <div class="alert alert-info">{{ afterClearing ? 'cache_cleared' : 'nothing_to_clear' | translate}}</div>                
             </div>
             
         </div>
