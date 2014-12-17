@@ -29,29 +29,7 @@ if( dhis2.ec.memoryOnly ) {
 dhis2.ec.store = new dhis2.storage.Store({
     name: 'dhis2ec',
     adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-    objectStores: ['programs', 'programStages', 'geoJsons', 'optionSets', 'events']
-    /*objectStores: [
-        {
-            name: 'programs',
-            adapters: adapters
-        },
-        {
-            name: 'programStages',
-            adapters: adapters
-        },
-        {
-            name: 'geoJsons',
-            adapters: adapters
-        },
-        {
-            name: 'optionSets',
-            adapters: adapters
-        },
-        {
-            name: 'events',
-            adapters: adapters
-        }
-    ]*/        
+    objectStores: ['programs', 'programStages', 'geoJsons', 'optionSets', 'events']       
 });
 
 (function($) {
@@ -171,7 +149,10 @@ function downloadMetaData(){
     promise = promise.then( getPrograms );     
     promise = promise.then( getProgramStages );
     promise = promise.then( getOptionSets );
-    promise.done( function() {           
+    promise.done( function() {    
+        //Enable ou selection after meta-data has downloaded
+        $( "#orgUnitTree" ).removeClass( "disable-clicks" );
+        
         console.log( 'Finished loading meta-data' ); 
         dhis2.availability.startAvailabilityCheck();
         console.log( 'Started availability check' );
