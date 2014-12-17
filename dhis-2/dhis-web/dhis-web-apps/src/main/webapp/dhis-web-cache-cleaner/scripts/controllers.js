@@ -6,6 +6,8 @@ var cacheCleanerControllers = angular.module('cacheCleanerControllers', [])
 //Controller for settings page
 .controller('MainController', function($scope, storage, $window, idbStorageService, ModalService) {
     
+    $scope.afterClearing = false;
+    
     var getItemsToClear = function(){
         
         $scope.lsCacheExists = false;
@@ -65,7 +67,8 @@ var cacheCleanerControllers = angular.module('cacheCleanerControllers', [])
                         
                     });
                 }
-            });            
+            });   
+            $scope.afterClearing = true;
             getItemsToClear();            
         });
     };

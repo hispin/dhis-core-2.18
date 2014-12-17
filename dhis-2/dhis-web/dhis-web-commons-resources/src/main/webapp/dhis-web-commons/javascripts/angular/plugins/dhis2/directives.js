@@ -14,7 +14,7 @@ var d2Directives = angular.module('d2Directives', [])
                 return parseFloat(value || '');
             });
         }
-    };   
+    };
 })
 
 .directive('selectedOrgUnit', function($timeout, storage) {        
@@ -28,7 +28,11 @@ var d2Directives = angular.module('d2Directives', [])
                 dhis2.ou.store.open().done( function() {
                     selection.load();
                     $( "#orgUnitTree" ).one( "ouwtLoaded", function(event, ids, names) {
-                        console.log('Finished loading orgunit tree');                        
+                        console.log('Finished loading orgunit tree');
+                        
+                        //Disable ou selection until meta-data has downloaded
+                        $( "#orgUnitTree" ).addClass( "disable-clicks" );
+                        
                         downloadMetaData();
                     });
                 });
@@ -114,7 +118,8 @@ var d2Directives = angular.module('d2Directives', [])
 })
 
 .directive('typeaheadOpenOnFocus', function () {
-  return {
+  	
+  	return {
         require: ['typeahead', 'ngModel'],
         link: function (scope, element, attr, ctrls) {
             element.bind('focus', function () {
@@ -147,10 +152,11 @@ var d2Directives = angular.module('d2Directives', [])
 })
 
 .directive('d2PopOver', function($compile, $templateCache){
+    
     return {        
         restrict: 'EA',
         link: function(scope, element, attrs){
-            var content = $templateCache.get("note.html");
+            var content = $templateCache.get("popover.html");
             content = $compile(content)(scope);
             var options = {
                     content: content,
@@ -185,6 +191,7 @@ var d2Directives = angular.module('d2Directives', [])
 })
 
 .directive('serversidePaginator', function factory() {
+    
     return {
         restrict: 'E',
         controller: function ($scope, Paginator) {
@@ -195,11 +202,12 @@ var d2Directives = angular.module('d2Directives', [])
 })
 
 .directive('draggableModal', function(){
+    
     return {
-      restrict: 'EA',
-      link: function(scope, element) {
-        element.draggable();
-      }
+      	restrict: 'EA',
+      	link: function(scope, element) {
+        	element.draggable();
+      	}
     };  
 })
 
