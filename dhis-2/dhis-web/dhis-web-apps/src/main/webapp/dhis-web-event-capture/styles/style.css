@@ -885,6 +885,9 @@ input.typeahead::-ms-input-placeholder {
     font-weight: bold;
 }
 
+.disable-clicks {
+    pointer-events: none;
+}
 
 @media print {
     #header, #leftBar, .not-printable {
