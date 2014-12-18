@@ -163,5 +163,50 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <!-- User Group -->
+
+    <action name="getAllUserGroups" class="org.hisp.dhis.user.action.usergroup.GetUserGroupListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-user/userGroupList.vm</param>
+      <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
+      <param name="javascripts">javascript/usergroup.js</param>
+    </action>
+
+    <action name="getUserGroup" class="org.hisp.dhis.user.action.usergroup.GetUserGroupAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonUserGroup.vm</result>
+    </action>
+
+    <action name="addUserGroupForm" class="org.hisp.dhis.user.action.usergroup.AddUserGroupFormAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-user/addUserGroupForm.vm</param>
+      <param name="javascripts">javascript/usergroup.js</param>
+    </action>
+
+    <action name="addUserGroup" class="org.hisp.dhis.user.action.usergroup.AddUserGroupAction">
+      <param name="javascripts">javascript/usergroup.js</param>
+      <result name="success" type="redirect">getAllUserGroups.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
+    </action>
+
+    <action name="editUserGroupForm" class="org.hisp.dhis.user.action.usergroup.EditUserGroupFormAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-user/updateUserGroupForm.vm</param>
+    </action>
+
+    <action name="updateUserGroup" class="org.hisp.dhis.user.action.usergroup.UpdateUserGroupAction">
+      <result name="success" type="redirect">getAllUserGroups.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
+    </action>
+
+    <action name="removeUserGroup" class="org.hisp.dhis.user.action.usergroup.RemoveUserGroupAction">
+      <result name="success" type="velocity">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+    </action>
+    
+    <action name="validateUserGroup" class="org.hisp.dhis.user.action.usergroup.ValidateUserGroupAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+
   </package>
 </struts>

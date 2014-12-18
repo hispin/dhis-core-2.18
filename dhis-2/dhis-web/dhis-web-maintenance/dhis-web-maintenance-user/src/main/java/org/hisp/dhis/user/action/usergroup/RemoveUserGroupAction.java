@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.usergroup.action;
+package org.hisp.dhis.user.action.usergroup;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,51 +28,76 @@ package org.hisp.dhis.dashboard.usergroup.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.hisp.dhis.attribute.Attribute;
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
+import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
-public class AddUserGroupFormAction
+public class RemoveUserGroupAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
 
-    private AttributeService attributeService;
+    private UserGroupService userGroupService;
 
-    public void setAttributeService( AttributeService attributeService )
+    public void setUserGroupService( UserGroupService userGroupService )
     {
-        this.attributeService = attributeService;
+        this.userGroupService = userGroupService;
     }
 
     // -------------------------------------------------------------------------
-    // Parameters
+    // I18n
     // -------------------------------------------------------------------------
 
-    private List<Attribute> attributes;
+    private I18n i18n;
 
-    public List<Attribute> getAttributes()
+    public void setI18n( I18n i18n )
     {
-        return attributes;
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
-    // Action Implementation
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+    
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override
     public String execute()
-        throws Exception
     {
-        attributes = new ArrayList<>( attributeService.getUserGroupAttributes() );
-        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
+        try
+        {
+            userGroupService.deleteUserGroup( userGroupService.getUserGroup( id ) );
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
+
+                return ERROR;
+            }
+        }
 
         return SUCCESS;
     }

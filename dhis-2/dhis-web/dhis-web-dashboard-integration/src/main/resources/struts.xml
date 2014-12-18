@@ -138,43 +138,5 @@
       <param name="stylesheets">style/dashboard.css</param>
     </action>
 
-    <!-- User Group -->
-
-    <action name="getAllUserGroups" class="org.hisp.dhis.dashboard.usergroup.action.GetUserGroupListAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-dashboard-integration/userGroupList.vm</param>
-      <param name="menu">/dhis-web-commons/about/menuDashboard.vm</param>
-      <param name="javascripts">javascript/usergroup.js</param>
-    </action>
-
-    <action name="getUserGroup" class="org.hisp.dhis.dashboard.usergroup.action.GetUserGroupAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonUserGroup.vm</result>
-    </action>
-
-    <action name="addUserGroupForm" class="org.hisp.dhis.dashboard.usergroup.action.AddUserGroupFormAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-dashboard-integration/addUserGroupForm.vm</param>
-      <param name="javascripts">javascript/usergroup.js</param>
-    </action>
-
-    <action name="addUserGroup" class="org.hisp.dhis.dashboard.usergroup.action.AddUserGroupAction">
-      <param name="javascripts">javascript/usergroup.js</param>
-      <result name="success" type="redirect">getAllUserGroups.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-    </action>
-
-    <action name="editUserGroupForm" class="org.hisp.dhis.dashboard.usergroup.action.EditUserGroupFormAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-dashboard-integration/updateUserGroupForm.vm</param>
-    </action>
-
-    <action name="updateUserGroup" class="org.hisp.dhis.dashboard.usergroup.action.UpdateUserGroupAction">
-      <result name="success" type="redirect">getAllUserGroups.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-    </action>
-
-    <action name="removeUserGroup" class="org.hisp.dhis.dashboard.usergroup.action.RemoveUserGroupAction">
-      <result name="success" type="velocity">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="error" type="velocity">/dhis-web-commons/ajax/jsonResponseError.vm</result>
-    </action>
-
   </package>
 </struts>

@@ -104,4 +104,52 @@
     <property name="authoritiesProvider" ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider" />
   </bean>
 
+  <!-- User groups -->
+
+  <bean id="org.hisp.dhis.user.action.usergroup.AddUserGroupAction" class="org.hisp.dhis.user.action.usergroup.AddUserGroupAction"
+    scope="prototype">
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.user.action.usergroup.AddUserGroupFormAction" class="org.hisp.dhis.user.action.usergroup.AddUserGroupFormAction">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.user.action.usergroup.GetUserGroupListAction" class="org.hisp.dhis.user.action.usergroup.GetUserGroupListAction"
+    scope="prototype">
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.user.action.usergroup.EditUserGroupFormAction" class="org.hisp.dhis.user.action.usergroup.EditUserGroupFormAction"
+    scope="prototype">
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.user.action.usergroup.UpdateUserGroupAction" class="org.hisp.dhis.user.action.usergroup.UpdateUserGroupAction"
+    scope="prototype">
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.user.action.usergroup.RemoveUserGroupAction" class="org.hisp.dhis.user.action.usergroup.RemoveUserGroupAction"
+    scope="prototype">
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.user.action.usergroup.GetUserGroupAction" class="org.hisp.dhis.user.action.usergroup.GetUserGroupAction"
+    scope="prototype">
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.user.action.usergroup.ValidateUserGroupAction" class="org.hisp.dhis.user.action.usergroup.ValidateUserGroupAction"
+    scope="prototype">
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+  </bean>
+  
 </beans>

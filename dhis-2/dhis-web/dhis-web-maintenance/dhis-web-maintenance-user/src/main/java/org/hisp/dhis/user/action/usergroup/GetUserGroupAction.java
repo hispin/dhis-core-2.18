@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.usergroup.action;
+package org.hisp.dhis.user.action.usergroup;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,27 +28,13 @@ package org.hisp.dhis.dashboard.usergroup.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.hisp.dhis.attribute.Attribute;
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
-import org.hisp.dhis.system.util.AttributeUtils;
-import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
-
-/**
- * @author Lars Helge Overland
- */
-public class EditUserGroupFormAction
-    implements Action
+ 
+public class GetUserGroupAction 
+    implements Action 
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -61,15 +47,8 @@ public class EditUserGroupFormAction
         this.userGroupService = userGroupService;
     }
 
-    private AttributeService attributeService;
-
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
-
     // -------------------------------------------------------------------------
-    // Parameters
+    // Input/output
     // -------------------------------------------------------------------------
 
     private Integer userGroupId;
@@ -78,58 +57,37 @@ public class EditUserGroupFormAction
     {
         this.userGroupId = userGroupId;
     }
-
+    
     public Integer getUserGroupId()
     {
         return userGroupId;
     }
 
-    private List<User> groupMembers = new ArrayList<>();
-
-    public List<User> getGroupMembers()
-    {
-        return groupMembers;
-    }
-
-    private UserGroup group;
-
+    private  UserGroup group ;
+    
     public UserGroup getGroup()
     {
         return group;
     }
 
-    private List<Attribute> attributes;
+    private int memberCount;
 
-    public List<Attribute> getAttributes()
+    public int getMemberCount()
     {
-        return attributes;
-    }
-
-    public Map<Integer, String> attributeValues = new HashMap<>();
-
-    public Map<Integer, String> getAttributeValues()
-    {
-        return attributeValues;
+        return memberCount;
     }
 
     // -------------------------------------------------------------------------
-    // Action Implementation
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override
     public String execute()
-        throws Exception
     {
         group = userGroupService.getUserGroup( userGroupId );
 
-        groupMembers = new ArrayList<>( group.getMembers() );
-
-        attributes = new ArrayList<>( attributeService.getUserGroupAttributes() );
-
-        attributeValues = AttributeUtils.getAttributeValueMap( group.getAttributeValues() );
-
-        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
+        memberCount = group.getMembers().size();
 
         return SUCCESS;
-    }
+    }    
 }

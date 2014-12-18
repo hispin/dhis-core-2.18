@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.usergroup.action;
+package org.hisp.dhis.user.action.usergroup;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,15 +28,20 @@ package org.hisp.dhis.dashboard.usergroup.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.DeleteNotAllowedException;
+import java.util.List;
+
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
-public class RemoveUserGroupAction
+public class ValidateUserGroupAction
     implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
     private UserGroupService userGroupService;
 
@@ -44,10 +49,6 @@ public class RemoveUserGroupAction
     {
         this.userGroupService = userGroupService;
     }
-
-    // -------------------------------------------------------------------------
-    // I18n
-    // -------------------------------------------------------------------------
 
     private I18n i18n;
 
@@ -57,19 +58,22 @@ public class RemoveUserGroupAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Parameters
     // -------------------------------------------------------------------------
 
     private Integer id;
-    
+
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
     private String message;
 
@@ -79,25 +83,31 @@ public class RemoveUserGroupAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action Implementation
     // -------------------------------------------------------------------------
 
     @Override
     public String execute()
+        throws Exception
     {
-        try
+
+        if ( name != null )
         {
-            userGroupService.deleteUserGroup( userGroupService.getUserGroup( id ) );
-        }
-        catch ( DeleteNotAllowedException ex )
-        {
-            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            List<UserGroup> matches = userGroupService.getUserGroupByName( name );
+            if( matches != null && matches.size() > 0 )
             {
-                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
+                UserGroup match = matches.get( 0 );
+                
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "name_in_use" );
 
                 return ERROR;
             }
+            }
         }
+
+        message = i18n.getString( "ok" );
 
         return SUCCESS;
     }
