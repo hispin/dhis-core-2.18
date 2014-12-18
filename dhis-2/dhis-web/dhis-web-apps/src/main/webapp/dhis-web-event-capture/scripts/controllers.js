@@ -23,6 +23,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 DialogService) {
     //selected org unit
     $scope.selectedOrgUnit = '';
+    $scope.treeLoaded = false;
     
     $scope.calendarSetting = CalendarService.getSetting();
     
