@@ -33,6 +33,11 @@ var d2Directives = angular.module('d2Directives', [])
                         //Disable ou selection until meta-data has downloaded
                         $( "#orgUnitTree" ).addClass( "disable-clicks" );
                         
+                        $timeout(function() {
+                            scope.treeLoaded = true;
+                            scope.$apply();
+                        });
+                        
                         downloadMetaData();
                     });
                 });
@@ -66,6 +71,19 @@ var d2Directives = angular.module('d2Directives', [])
     };
 })
 
+.directive('d2Enter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.d2Enter);
+                });
+                event.preventDefault();
+            }
+        });
+    };
+})
+
 .directive('d2NumberValidation', function() {
     
     return {
@@ -85,7 +103,7 @@ var d2Directives = angular.module('d2Directives', [])
                     case "negInt":
                         isValid = dhis2.validation.isNegativeInt(value);
                         break;
-                    case "zeroPostitiveInt":
+                    case "zeroPositiveInt":
                         isValid = dhis2.validation.isZeroOrPositiveInt(value);
                         break;
                     case "int":

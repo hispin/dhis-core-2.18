@@ -16,11 +16,16 @@
         </ul>
     </div>
     <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
+    <div class="small-horizonal-spacing" ng-if='!treeLoaded'>
+        {{'loading_tree'| translate}}
+    </div>
 </div>
 
 <div class="page" id="mainPage">    
+    
     <div ng-if="!selectedOrgUnit">
-        <img src="../images/ajax-loader-bar.gif" alt="{{'in_progress'| translate}}" ng-if="!selectedOrgUnit"/>
+        <img src="../images/ajax-loader-bar.gif" alt="{{'in_progress'| translate}}" ng-if="!selectedOrgUnit"/><br>
+        {{'loading_metadata'| translate}}
     </div> 
     
     <!-- selection begins-->
