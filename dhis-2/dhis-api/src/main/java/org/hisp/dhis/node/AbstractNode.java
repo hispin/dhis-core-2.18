@@ -28,16 +28,18 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 import org.hisp.dhis.node.exception.InvalidTypeException;
 import org.hisp.dhis.node.types.SimpleNode;
 import org.springframework.core.OrderComparator;
 import org.springframework.core.Ordered;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -230,7 +232,7 @@ public abstract class AbstractNode implements Node
     @Override
     public String toString()
     {
-        return com.google.common.base.Objects.toStringHelper( this )
+        return MoreObjects.toStringHelper( this )
             .add( "name", name )
             .add( "nodeType", nodeType )
             .add( "parent", (parent != null ? parent.getName() : null) )

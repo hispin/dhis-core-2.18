@@ -28,11 +28,13 @@ package org.hisp.dhis.dxf2.events.event.csv;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.Objects;
+
 import org.springframework.util.Assert;
 
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.common.base.MoreObjects;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -294,7 +296,7 @@ public class CsvEventDataValue
     @Override
     public String toString()
     {
-        return com.google.common.base.Objects.toStringHelper( this )
+        return MoreObjects.toStringHelper( this )
             .add( "event", event )
             .add( "status", status )
             .add( "program", program )
