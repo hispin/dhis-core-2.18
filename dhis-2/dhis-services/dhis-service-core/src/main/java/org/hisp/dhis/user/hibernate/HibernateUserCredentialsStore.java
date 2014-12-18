@@ -85,9 +85,7 @@ public class HibernateUserCredentialsStore
 
     @Override
     public void updateUserCredentials( UserCredentials userCredentials )
-    {
-        userCredentials.setPasswordLastUpdated( new Date() ); //TODO only update when password changed
-        
+    {        
         sessionFactory.getCurrentSession().update( userCredentials );
     }
 
