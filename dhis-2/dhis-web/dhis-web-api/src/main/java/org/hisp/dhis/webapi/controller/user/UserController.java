@@ -48,6 +48,7 @@ import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
@@ -292,6 +293,9 @@ public class UserController
         RestoreOptions restoreOptions = user.getUsername() == null || user.getUsername().isEmpty() ?
             RestoreOptions.INVITE_WITH_USERNAME_CHOICE : RestoreOptions.INVITE_WITH_DEFINED_USERNAME;
 
+        UserCredentials credentials = user.getUserCredentials();
+        credentials.setUser( user );
+        
         securityService.prepareUserForInvite( user );
 
         createUser( user, response );
