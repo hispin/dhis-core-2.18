@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.usergroup.action;
+package org.hisp.dhis.user.action.usergroup;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -29,36 +29,30 @@ package org.hisp.dhis.dashboard.usergroup.action;
  */
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
+import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.system.util.AttributeUtils;
-import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
-public class UpdateUserGroupAction
+/**
+ * @author Lars Helge Overland
+ */
+public class EditUserGroupFormAction
     implements Action
 {
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
     private UserGroupService userGroupService;
 
@@ -78,20 +72,6 @@ public class UpdateUserGroupAction
     // Parameters
     // -------------------------------------------------------------------------
 
-    private List<String> usersSelected;
-
-    public void setUsersSelected( List<String> usersSelected )
-    {
-        this.usersSelected = usersSelected;
-    }
-
-    private String name;
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
     private Integer userGroupId;
 
     public void setUserGroupId( Integer userGroupId )
@@ -99,11 +79,37 @@ public class UpdateUserGroupAction
         this.userGroupId = userGroupId;
     }
 
-    private List<String> jsonAttributeValues;
-
-    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    public Integer getUserGroupId()
     {
-        this.jsonAttributeValues = jsonAttributeValues;
+        return userGroupId;
+    }
+
+    private List<User> groupMembers = new ArrayList<>();
+
+    public List<User> getGroupMembers()
+    {
+        return groupMembers;
+    }
+
+    private UserGroup group;
+
+    public UserGroup getGroup()
+    {
+        return group;
+    }
+
+    private List<Attribute> attributes;
+
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    public Map<Integer, String> attributeValues = new HashMap<>();
+
+    public Map<Integer, String> getAttributeValues()
+    {
+        return attributeValues;
     }
 
     // -------------------------------------------------------------------------
@@ -114,44 +120,15 @@ public class UpdateUserGroupAction
     public String execute()
         throws Exception
     {
-        if ( usersSelected == null )
-        {
-            usersSelected = new ArrayList<>();
-        }
+        group = userGroupService.getUserGroup( userGroupId );
 
-        UserGroup userGroup = userGroupService.getUserGroup( userGroupId );
+        groupMembers = new ArrayList<>( group.getMembers() );
 
-        if ( !userGroup.getManagedByGroups().isEmpty() && !currentUserService.currentUserIsSuper() )
-        {
-            //TODO: Allow user with F_USER_ADD_WITHIN_MANAGED_GROUP to modify their managed groups
-            //as long as they are not loosing or gaining users to manage.
+        attributes = new ArrayList<>( attributeService.getUserGroupAttributes() );
 
-            return ERROR;
-        }
+        attributeValues = AttributeUtils.getAttributeValueMap( group.getAttributeValues() );
 
-        Set<User> users = new HashSet<>();
-
-        for ( String userUid : usersSelected )
-        {
-            User user = userService.getUser( userUid );
-
-            if ( user == null )
-            {
-                continue;
-            }
-
-            users.add( user );
-        }
-
-        userGroup.setName( name );
-        userGroup.updateUsers( users );
-
-        if ( jsonAttributeValues != null )
-        {
-            AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), jsonAttributeValues, attributeService );
-        }
-
-        userGroupService.updateUserGroup( userGroup );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;
     }
