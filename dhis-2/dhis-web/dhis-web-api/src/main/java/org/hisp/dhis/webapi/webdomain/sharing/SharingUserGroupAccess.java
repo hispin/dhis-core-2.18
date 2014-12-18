@@ -29,7 +29,7 @@ package org.hisp.dhis.webapi.webdomain.sharing;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -81,7 +81,7 @@ public class SharingUserGroupAccess
     
     public String toString()
     {
-        return Objects.toStringHelper( this ).
+        return MoreObjects.toStringHelper( this ).
             add( "id", id ).add( "name", name ).add( "access", access ).toString();
     }
 }

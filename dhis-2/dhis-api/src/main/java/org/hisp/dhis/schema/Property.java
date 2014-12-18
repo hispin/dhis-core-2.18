@@ -28,16 +28,18 @@ package org.hisp.dhis.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.google.common.base.Objects;
+import java.lang.reflect.Method;
+
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.springframework.core.Ordered;
 
-import java.lang.reflect.Method;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -526,7 +528,7 @@ public class Property implements Ordered
     @Override
     public String toString()
     {
-        return Objects.toStringHelper( this )
+        return MoreObjects.toStringHelper( this )
             .add( "klass", klass )
             .add( "itemKlass", itemKlass )
             .add( "getterMethod", getterMethod )

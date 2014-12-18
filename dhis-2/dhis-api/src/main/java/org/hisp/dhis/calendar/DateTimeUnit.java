@@ -28,7 +28,11 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.base.Objects;
+import java.util.Date;
+import java.util.TimeZone;
+
+import javax.validation.constraints.NotNull;
+
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -36,9 +40,7 @@ import org.joda.time.IllegalInstantException;
 import org.joda.time.LocalDateTime;
 import org.joda.time.chrono.ISOChronology;
 
-import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.TimeZone;
+import com.google.common.base.MoreObjects;
 
 /**
  * Class representing a specific calendar date.
@@ -421,7 +423,7 @@ public class DateTimeUnit
     @Override
     public String toString()
     {
-        return Objects.toStringHelper( this )
+        return MoreObjects.toStringHelper( this )
             .add( "year", year )
             .add( "month", month )
             .add( "day", day )

@@ -28,13 +28,14 @@ package org.hisp.dhis.dxf2.fieldfilter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.Maps;
+import java.util.Map;
+
 import org.hisp.dhis.node.LinearNodePipeline;
 import org.hisp.dhis.node.NodePropertyConverter;
 
-import java.util.Map;
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ForwardingMap;
+import com.google.common.collect.Maps;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -76,7 +77,7 @@ public class FieldMap extends ForwardingMap<String, FieldMap>
     @Override
     public String toString()
     {
-        return Objects.toStringHelper( this )
+        return MoreObjects.toStringHelper( this )
             .add( "map", standardToString() )
             .add( "nodePropertyConverter", nodePropertyConverter )
             .toString();

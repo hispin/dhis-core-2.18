@@ -28,21 +28,23 @@ package org.hisp.dhis.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.util.List;
+import java.util.Map;
+
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.springframework.core.Ordered;
 
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -412,7 +414,7 @@ public class Schema implements Ordered
     @Override
     public String toString()
     {
-        return Objects.toStringHelper( this )
+        return MoreObjects.toStringHelper( this )
             .add( "klass", klass )
             .add( "identifiableObject", identifiableObject )
             .add( "nameableObject", nameableObject )
