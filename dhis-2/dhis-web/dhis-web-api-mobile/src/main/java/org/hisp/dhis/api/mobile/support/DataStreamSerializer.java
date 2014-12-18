@@ -36,7 +36,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
-import org.jfree.util.Log;
 
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;

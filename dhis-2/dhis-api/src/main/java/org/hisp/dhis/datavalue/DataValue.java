@@ -148,11 +148,6 @@ public class DataValue
     // Dimension
     // -------------------------------------------------------------------------
 
-    public String getMeasure()
-    {
-        return value;
-    }
-
     @Override
     public String getName()
     {
@@ -328,7 +323,7 @@ public class DataValue
 
     public void setValue( String value )
     {
-        if( !auditValueIsSet )
+        if ( !auditValueIsSet )
         {
             this.auditValue = valueIsSet ? this.value : value;
             auditValueIsSet = true;
