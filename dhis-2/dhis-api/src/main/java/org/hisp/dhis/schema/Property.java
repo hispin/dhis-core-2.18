@@ -178,12 +178,12 @@ public class Property implements Ordered
     /**
      * Maximum length/size/value of this property.
      */
-    private Integer max;
+    private int max = Integer.MAX_VALUE;
 
     /**
      * Minimum length/size/value of this property.
      */
-    private Integer min;
+    private int min;
 
     /**
      * Cascading used when doing CRUD operations.
@@ -482,24 +482,24 @@ public class Property implements Ordered
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Integer getMax()
+    public int getMax()
     {
         return max;
     }
 
-    public void setMax( Integer max )
+    public void setMax( int max )
     {
         this.max = max;
     }
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Integer getMin()
+    public int getMin()
     {
         return min;
     }
 
-    public void setMin( Integer min )
+    public void setMin( int min )
     {
         this.min = min;
     }
