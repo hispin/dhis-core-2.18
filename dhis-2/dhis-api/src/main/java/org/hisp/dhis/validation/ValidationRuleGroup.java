@@ -37,6 +37,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 import org.hisp.dhis.user.UserGroup;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -121,6 +122,7 @@ public class ValidationRuleGroup
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @PropertyRange( min = 2 )
     public String getDescription()
     {
         return description;

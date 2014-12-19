@@ -33,7 +33,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -43,6 +42,7 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionSet;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 
 /**
  * @author Abyot Asalefew
@@ -75,7 +75,7 @@ public class TrackedEntityAttribute
     public static final String TYPE_TRACKER_ASSOCIATE = "trackerAssociate";
 
     public static final String TYPE_USERS = "users";
-    
+
     public static final String TYPE_EMAIL = "email";
 
     private String description;
@@ -147,8 +147,8 @@ public class TrackedEntityAttribute
     public boolean hasOptionSet()
     {
         return optionSet != null;
-    }    
-    
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -170,6 +170,7 @@ public class TrackedEntityAttribute
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 2 )
     public String getDescription()
     {
         return description;

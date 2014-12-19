@@ -47,6 +47,9 @@ import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.schema.PropertyType;
+import org.hisp.dhis.schema.annotation.Property;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -107,7 +110,7 @@ public class DataElement
     public static final String AGGREGATION_OPERATOR_MIN = "min";
     public static final String AGGREGATION_OPERATOR_MAX = "max";
     public static final String AGGREGATION_OPERATOR_NONE = "none";
-    
+
     /**
      * The name to appear in forms.
      */
@@ -303,7 +306,7 @@ public class DataElement
             return type;
         }
     }
-    
+
     /**
      * Returns whether aggregation should be skipped for this data element, based
      * on the setting of the data set which this data element is a members of,
@@ -338,7 +341,7 @@ public class DataElement
 
         return dataSet != null ? dataSet.getPeriodType() : null;
     }
-    
+
     /**
      * Indicates whether this data element requires approval of data. Returns true
      * if only one of the data sets associated with this data element requires
@@ -353,7 +356,7 @@ public class DataElement
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -491,6 +494,7 @@ public class DataElement
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 2 )
     public String getFormName()
     {
         return formName;
@@ -570,6 +574,7 @@ public class DataElement
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @Property( PropertyType.URL )
     public String getUrl()
     {
         return url;

@@ -37,6 +37,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 
 /**
  * @author Abyot Asalefew
@@ -77,6 +78,7 @@ public class RelationshipType
     @JsonProperty
     @JsonView({ DetailedView.class, ExportView.class })
     @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @PropertyRange( min = 2 )
     public String getaIsToB()
     {
         return aIsToB;
@@ -90,6 +92,7 @@ public class RelationshipType
     @JsonProperty
     @JsonView({ DetailedView.class, ExportView.class })
     @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @PropertyRange( min = 2 )
     public String getbIsToA()
     {
         return bIsToA;
