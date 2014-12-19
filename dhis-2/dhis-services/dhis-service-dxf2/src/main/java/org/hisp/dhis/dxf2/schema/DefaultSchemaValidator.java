@@ -76,10 +76,10 @@ public class DefaultSchemaValidator implements SchemaValidator
                 continue;
             }
 
-            if ( String.class.isInstance( value ) && property.getMaxLength() < ((String) value).length() )
+            if ( String.class.isInstance( value ) && property.getMax() < ((String) value).length() )
             {
                 validationViolations.getValidationViolations().add( new ValidationViolation( "Property '" + property.getName() + "' is too long ("
-                    + ((String) value).length() + "), maximum length is " + property.getMaxLength() ) );
+                    + ((String) value).length() + "), maximum length is " + property.getMax() ) );
                 continue;
             }
         }

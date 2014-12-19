@@ -108,8 +108,8 @@ public class Jackson2PropertyIntrospectorService
                 property.setWritable( true );
                 property.setUnique( hibernateProperty.isUnique() );
                 property.setNullable( hibernateProperty.isNullable() );
-                property.setMaxLength( hibernateProperty.getMaxLength() );
-                property.setMinLength( hibernateProperty.getMinLength() );
+                property.setMax( hibernateProperty.getMax() );
+                property.setMin( hibernateProperty.getMin() );
                 property.setCollection( hibernateProperty.isCollection() );
                 property.setCascade( hibernateProperty.getCascade() );
                 property.setOwner( hibernateProperty.isOwner() );

@@ -30,6 +30,7 @@ package org.hisp.dhis.schema;
 
 import com.google.common.primitives.Primitives;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 import org.springframework.util.Assert;
 
 import java.util.Collection;
@@ -50,6 +51,32 @@ public final class SchemaUtils
         if ( property.isCollection() )
         {
             property.setItemPropertyType( getPropertyType( property.getItemKlass() ) );
+        }
+
+        if ( property.getGetterMethod() != null )
+        {
+            if ( property.getGetterMethod().isAnnotationPresent( org.hisp.dhis.schema.annotation.Property.class ) )
+            {
+                property.setPropertyType( property.getGetterMethod().getAnnotation( org.hisp.dhis.schema.annotation.Property.class ).value() );
+            }
+
+            if ( property.getGetterMethod().isAnnotationPresent( PropertyRange.class ) )
+            {
+                PropertyRange propertyRange = property.getGetterMethod().getAnnotation( PropertyRange.class );
+
+                int propertyMax = property.getMax() != null ? property.getMax() : Integer.MAX_VALUE;
+                int propertyMin = property.getMin() != null ? property.getMin() : 0;
+
+                if ( propertyRange.max() >= 0 && propertyRange.max() <= propertyMax )
+                {
+                    property.setMax( propertyRange.max() );
+                }
+
+                if ( propertyRange.min() >= 0 && propertyRange.min() <= propertyMax )
+                {
+                    property.setMin( propertyRange.min() > property.getMax() ? property.getMax() : propertyRange.min() );
+                }
+            }
         }
     }
 

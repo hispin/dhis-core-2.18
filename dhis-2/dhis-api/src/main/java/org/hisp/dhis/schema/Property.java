@@ -176,24 +176,14 @@ public class Property implements Ordered
     private boolean nullable;
 
     /**
-     * Maximum length of this property.
+     * Maximum length/size/value of this property.
      */
-    private Integer maxLength;
+    private Integer max;
 
     /**
-     * Minimum length of this property.
+     * Minimum length/size/value of this property.
      */
-    private Integer minLength;
-
-    /**
-     * If type is numeric (or collection), this is the maximum value (or size)
-     */
-    private Integer maxValue;
-
-    /**
-     * If type is numeric (or collection), this is the minimum value (or size)
-     */
-    private Integer minValue;
+    private Integer min;
 
     /**
      * Cascading used when doing CRUD operations.
@@ -492,50 +482,26 @@ public class Property implements Ordered
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Integer getMaxLength()
+    public Integer getMax()
     {
-        return maxLength;
+        return max;
     }
 
-    public void setMaxLength( Integer maxLength )
+    public void setMax( Integer max )
     {
-        this.maxLength = maxLength;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Integer getMinLength()
-    {
-        return minLength;
-    }
-
-    public void setMinLength( Integer minLength )
-    {
-        this.minLength = minLength;
+        this.max = max;
     }
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Integer getMaxValue()
+    public Integer getMin()
     {
-        return maxValue;
+        return min;
     }
 
-    public void setMaxValue( Integer maxValue )
+    public void setMin( Integer min )
     {
-        this.maxValue = maxValue;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Integer getMinValue()
-    {
-        return minValue;
-    }
-
-    public void setMinValue( Integer minValue )
-    {
-        this.minValue = minValue;
+        this.min = min;
     }
 
     @JsonProperty
