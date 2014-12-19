@@ -160,7 +160,7 @@ public class DefaultSecurityService
 
         if ( credentials == null || credentials.getUser() == null )
         {
-            log.warn( "Could not send restore/invite message as user does not exist: " + credentials );
+            log.warn( "Could not send restore/invite message as user is null: " + credentials );
             return "no_user_credentials";
         }
 
@@ -179,6 +179,23 @@ public class DefaultSecurityService
         return null;
     }
 
+    public String validateInvite( UserCredentials credentials )
+    {
+        if ( credentials == null )
+        {
+            log.warn( "Could not send invite message as user does is null: " + credentials );
+            return "no_user_credentials";
+        }
+        
+        if ( credentials.getUsername() != null && userService.getUserCredentialsByUsername( credentials.getUsername() ) != null )
+        {
+            log.warn( "Could not send invite message as username is already taken: " + credentials );
+            return "username_taken";
+        }
+        
+        return validateRestore( credentials );
+    }
+    
     @Override
     public boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreOptions restoreOptions )
     {

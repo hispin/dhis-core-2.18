@@ -57,10 +57,24 @@ public interface SecurityService
      * <li>user_has_critical_authorities</li>
      * </ul>
      * 
-     * @param credentials
+     * @param credentials the user credentials.
      * @return a string if restore cannot be performed, null otherwise.
      */
     String validateRestore( UserCredentials credentials );
+    
+    /**
+     * Indicates whether an invite is allowed for the given user. Delegates to
+     * validateRestore( UserCredentials ). The requirements are.
+     * 
+     * <ul>
+     * <li>no_user_credentials</li>
+     * <li>username_taken</li>
+     * </ul>
+     * 
+     * @param credentials the user credentials.
+     * @return a string if invite cannot be performed, null otherwise.
+     */
+    String validateInvite( UserCredentials credentials );
 
     /**
      * Invokes the initRestore method and dispatches email messages with
