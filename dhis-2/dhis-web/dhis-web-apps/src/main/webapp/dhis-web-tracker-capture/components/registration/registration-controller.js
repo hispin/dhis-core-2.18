@@ -39,11 +39,19 @@ trackerCapture.controller('RegistrationController',
         if($scope.selectedProgram){
             AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
                 $scope.attributes = atts;
+                $scope.attributesById = [];
+                angular.forEach(atts, function(att){
+                    $scope.attributesById[att.id] = att;
+                });
             });           
         }
         else{            
             AttributesFactory.getWithoutProgram().then(function(atts){
                 $scope.attributes = atts;
+                $scope.attributesById = [];
+                angular.forEach(atts, function(att){
+                    $scope.attributesById[att.id] = att;
+                });
             });
         }
     };
@@ -66,9 +74,10 @@ trackerCapture.controller('RegistrationController',
         //get tei attributes and their values
         //but there could be a case where attributes are non-mandatory and
         //registration form comes empty, in this case enforce at least one value
-        $scope.valueExists = false;
-        var registrationAttributes = [];    
-        angular.forEach($scope.attributes, function(attribute){            
+        $scope.valueExists = false;          
+        var result = TEIService.reconstructForWebApi($scope.attributes, $scope.attributesById, $scope.optionSets);
+        $scope.valueExists = result.formEmpty;
+        /*angular.forEach($scope.attributes, function(attribute){            
             var val = attribute.value;
             if(!angular.isUndefined(val)){
                 
@@ -81,7 +90,7 @@ trackerCapture.controller('RegistrationController',
                 registrationAttributes.push({attribute: attribute.id, value: val});
                 $scope.valueExists = true;
             } 
-        });       
+        });*/       
         
         if(!$scope.valueExists){
             //registration form is empty
@@ -89,7 +98,7 @@ trackerCapture.controller('RegistrationController',
         }
         
         //prepare tei model and do registration
-        $scope.tei = {trackedEntity: selectedTrackedEntity, orgUnit: $scope.selectedOrgUnit.id, attributes: registrationAttributes };   
+        $scope.tei = {trackedEntity: selectedTrackedEntity, orgUnit: $scope.selectedOrgUnit.id, attributes: result.attributes };   
         var teiId = '';
         TEIService.register($scope.tei).then(function(tei){
             

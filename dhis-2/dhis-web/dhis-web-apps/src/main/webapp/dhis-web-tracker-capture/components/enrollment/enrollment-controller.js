@@ -32,6 +32,8 @@ trackerCapture.controller('EnrollmentController',
         $scope.selectedEntity = selections.te;
         $scope.selectedProgram = selections.pr;
         $scope.optionSets = selections.optionSets;
+        $scope.programs = selections.prs;
+        $scope.selectedEnrollment = selections.enrollment;
         
         $scope.programExists = args.programExists;
         
@@ -101,16 +103,10 @@ trackerCapture.controller('EnrollmentController',
     };
         
     $scope.showNewEnrollment = function(){       
-        if($scope.showEnrollmentDiv){//this is hiding enrollment div
-            /*currently the only way to cancel enrollment window is by going through
-            * the main dashboard controller. Here I am mixing program and programId, 
-            * as I didn't want to refetch program from server, the main dashboard
-            * has already fetched the programs. With the ID passed to it, it will
-            * pass back the actual program than ID. 
-            */
-           $scope.selectedProgram = ($location.search()).program;
-           $scope.broadCastSelections('mainDashboard');
+        if($scope.showEnrollmentDiv){
+            $scope.hideEnrollmentDiv();
         }
+        
         $scope.showEnrollmentDiv = !$scope.showEnrollmentDiv;
         
         if($scope.showEnrollmentDiv){
@@ -147,7 +143,6 @@ trackerCapture.controller('EnrollmentController',
             tei.attributes.push({attribute: attribute.id, value: attribute.value, type: attribute.valueType, displayName: attribute.name});                        
         });
         
-        console.log('Finally:  ', tei);
         var enrollment = {trackedEntityInstance: tei.trackedEntityInstance,
                             program: $scope.selectedProgram.id,
                             status: 'ACTIVE',
@@ -197,7 +192,7 @@ trackerCapture.controller('EnrollmentController',
     };
     
     $scope.broadCastSelections = function(listeners){
-        CurrentSelection.set({tei: $scope.selectedTei, te: $scope.selectedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment, optionSets: $scope.optionSets});
+        CurrentSelection.set({tei: $scope.selectedTei, te: $scope.selectedEntity, prs: $scope.programs, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment, optionSets: $scope.optionSets});
         $timeout(function(){
             $rootScope.$broadcast(listeners, {});
         }, 100);

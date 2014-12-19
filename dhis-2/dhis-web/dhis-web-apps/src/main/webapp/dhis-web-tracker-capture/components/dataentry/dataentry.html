@@ -103,7 +103,7 @@
                         {{'due_date'| translate}}
                     </span>
                     <span ng-if="!currentEvent.eventDate && currentEvent.status !== 'SKIPPED'">
-                        <a href ng-click="enableRescheduling()" title="{{ schedulingEnabled ? 'disable_rescheduling' : 'enable_rescheduling' | translate}}"><span class="text-primary bold">{{'due_date'| translate}}</span></a>                        
+                        <a href ng-click="enableRescheduling()" title="{{ schedulingEnabled ? 'disable_rescheduling' : 'enable_rescheduling' | translate}}"><span class="text-primary bold">{{'reschedule_duedate'| translate}}</span></a>                        
                     </span>                    
                     <input type="text" 
                            placeholder="{{dhis2CalendarFormat.keyDateFormat}}"
@@ -153,7 +153,7 @@
             <table class="table table-striped dhis2-table-hover">
                 <tr ng-repeat="note in currentEvent.notes">
                     <td class="overflow-ellipsis">
-                        <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
+                        <d2-pop-over content="note" template="popover.html" details="{{'details'| translate}}">
                             <div>{{note.value}}</div>
                         </d2-pop-over>
                         <script type="text/ng-template" id="note.html">

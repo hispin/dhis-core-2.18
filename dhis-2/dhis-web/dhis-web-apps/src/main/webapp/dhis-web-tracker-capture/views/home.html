@@ -41,11 +41,17 @@
         </ul>
     </div>
     <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
+    <div class="small-horizonal-spacing" ng-if='!treeLoaded'>
+        {{'loading_tree'| translate}}
+    </div> 
 </div>
 
 <div class="page" id="mainPage">
     
-    <img src="../images/ajax-loader-bar.gif" alt="{{'in_progress'| translate}}" ng-if="!selectedOrgUnit"/>
+    <div ng-if="!selectedOrgUnit">
+        <img src="../images/ajax-loader-bar.gif" alt="{{'in_progress'| translate}}" ng-if="!selectedOrgUnit"/><br>
+        {{'loading_metadata'| translate}}
+    </div> 
 
     <div ng-show="selectedOrgUnit">
 		
@@ -88,7 +94,9 @@
                 <input type="text" class="form-control" ng-disabled='true' value="{{selectedOrgUnit.name}}">
             </div>
         </div>
-        <div class="row"> 
+        <div class="row">
+            
+            <!-- program selection begins -->
             <div id="selectDropDownParent" class="input-group col-md-4">            
                 <button type="button" class="select-dropdown-button form-control" ng-show="programs.length > 0">{{selectedProgram ? selectedProgram.name : 'please_select_a_program'| translate}}</button>
                 <button type="button" class="select-dropdown-button form-control" ng-show="programs.length < 1" ng-disabled="true">{{programs.length > 0 ? 'please_select_a_program' : 'no_program_exists' | translate}}</button>
@@ -104,6 +112,9 @@
                     </ul>
                 </div>                
             </div>
+            <!-- program selection ends -->
+            
+            <!-- simple/advanced search begins -->
             <div id="searchDropDownParent" class="input-group col-md-4 not-printable">
                 <input type="text" placeholder="{{'type_here_for_simple_search'| translate}}" ng-model="searchText" class="form-control expanded" d2-enter="search(searchMode.freeText)" ng-class="{true: 'invalid-input'} [!searchText && emptySearchText]" ng-focus="showHideSearch()" ng-disabled="showRegistrationDiv || showReportDiv">
                 <div class="input-group-btn">
@@ -112,6 +123,7 @@
                     <div id="searchDropDown" class="dropdown-menu dropdown-menu-right">
                         <form name="searchForm">
                             <div class="search-container-main">
+                                
                                 <div class="search-container">    
                                     <table data-stop-propagation="true" class="table-borderless table-striped">
                                         <tr>
@@ -224,7 +236,10 @@
                         </form>
                     </div>
                 </div>                
-            </div>        
+            </div>
+            <!-- simple/advanced search ends -->
+            
+            <!--search/registration buttons begin-->
             <div class="col-md-4 trim not-printable">            
                 <button type="button" 
                         class="btn btn-success"
@@ -245,6 +260,8 @@
                     {{'print'| translate}}
                 </button>
             </div>
+            <!--search/registration buttons end-->
+            
         </div>
         <!--- search, registration and reporting menu ends -->
 

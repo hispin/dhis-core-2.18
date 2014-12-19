@@ -2,7 +2,6 @@ trackerCapture.controller('NotesController',
         function($scope,
                 storage,
                 DateUtils,
-                TEIService,
                 EnrollmentService,
                 CurrentSelection,
                 orderByFilter) {
@@ -18,12 +17,11 @@ trackerCapture.controller('NotesController',
     $scope.showMessagingDiv = false;
     $scope.showNotesDiv = true;
     
-    $scope.$on('dashboardWidgets', function(event, args) {
+    $scope.$on('dashboardWidgets', function() {
         $scope.selectedEnrollment = null;
         var selections = CurrentSelection.get();                    
         $scope.selectedTei = angular.copy(selections.tei);
         $scope.selectedProgram = selections.pr;
-        $scope.optionSets = selections.optionSets;
         
         var selections = CurrentSelection.get();
         if(selections.enrollment){
@@ -38,20 +36,17 @@ trackerCapture.controller('NotesController',
             });
         }
         
-        if($scope.selectedProgram && $scope.selectedTei){
+        if($scope.selectedTei){
             //check if the selected TEI has any of the contact attributes
             //that can be used for communication
-            TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.selectedEnrollment, $scope.optionSets).then(function(tei){
-                $scope.selectedTei = tei; 
-                var continueLoop = true;
-                for(var i=0; i<$scope.selectedTei.attributes.length && continueLoop; i++){
-                    if( ($scope.selectedTei.attributes[i].type === 'phoneNumber' && $scope.selectedTei.attributes[i].show) || 
-                        ($scope.selectedTei.attributes[i].type === 'email' && $scope.selectedTei.attributes[i].show) ){
-                        $scope.messagingPossible = true;
-                        continueLoop = false;
-                    }
+            var continueLoop = true;
+            for(var i=0; i<$scope.selectedTei.attributes.length && continueLoop; i++){
+                if( ($scope.selectedTei.attributes[i].type === 'phoneNumber' && $scope.selectedTei.attributes[i].show) || 
+                    ($scope.selectedTei.attributes[i].type === 'email' && $scope.selectedTei.attributes[i].show) ){
+                    $scope.messagingPossible = true;
+                    continueLoop = false;
                 }
-            });
+            }
         }
     });
    
@@ -74,7 +69,7 @@ trackerCapture.controller('NotesController',
             var e = angular.copy($scope.selectedEnrollment);
 
             e.notes = [newNote];
-            EnrollmentService.update(e).then(function(data){
+            EnrollmentService.update(e).then(function(){
                 $scope.note = '';
                 $scope.addNoteField = false; //note is added, hence no need to show note field.                
             });
