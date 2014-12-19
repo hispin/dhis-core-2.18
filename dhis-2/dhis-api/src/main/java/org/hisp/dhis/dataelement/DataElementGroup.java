@@ -157,7 +157,7 @@ public class DataElementGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @JsonProperty( value = "dataElements" )
+    @JsonProperty( "dataElements" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "dataElements", namespace = DxfNamespaces.DXF_2_0)
@@ -172,7 +172,7 @@ public class DataElementGroup
         this.members = members;
     }
 
-    @JsonProperty( value = "dataElementGroupSet" )
+    @JsonProperty( "dataElementGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
@@ -186,7 +186,7 @@ public class DataElementGroup
         this.groupSet = groupSet;
     }
 
-    @JsonProperty( value = "attributeValues" )
+    @JsonProperty( "attributeValues" )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "attributeValues", namespace = DxfNamespaces.DXF_2_0)
     @JacksonXmlProperty( localName = "attributeValue", namespace = DxfNamespaces.DXF_2_0)
