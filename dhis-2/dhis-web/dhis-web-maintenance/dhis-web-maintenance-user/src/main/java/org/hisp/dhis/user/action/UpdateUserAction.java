@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
@@ -41,7 +42,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.LocaleUtils;
@@ -55,7 +55,6 @@ import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
 import com.opensymphony.xwork2.Action;
@@ -75,13 +74,6 @@ public class UpdateUserAction
     public void setUserService( UserService userService )
     {
         this.userService = userService;
-    }
-
-    private PasswordManager passwordManager;
-
-    public void setPasswordManager( PasswordManager passwordManager )
-    {
-        this.passwordManager = passwordManager;
     }
 
     private SelectionTreeManager selectionTreeManager;
@@ -243,15 +235,8 @@ public class UpdateUserAction
     {
         //TODO: Allow user with F_USER_ADD_WITHIN_MANAGED_GROUP to update a user within managed groups.
 
-        if ( email != null && email.trim().length() == 0 )
-        {
-            email = null;
-        }
-
-        if ( rawPassword != null && rawPassword.trim().length() == 0 )
-        {
-            rawPassword = null;
-        }
+        email = StringUtils.trimToNull( email );
+        rawPassword = StringUtils.trimToNull( rawPassword );
 
         User currentUser = currentUserService.getCurrentUser();
 
@@ -274,11 +259,6 @@ public class UpdateUserAction
         else
         {
             userCredentials.setOpenId( null );
-        }
-
-        if ( rawPassword != null )
-        {
-            userCredentials.setPassword( passwordManager.encode( rawPassword ) );
         }
 
         if ( jsonAttributeValues != null )
@@ -349,6 +329,11 @@ public class UpdateUserAction
         // ---------------------------------------------------------------------
         // Update User
         // ---------------------------------------------------------------------
+
+        if ( rawPassword != null )
+        {
+            userService.encodeAndSetPassword( userCredentials, rawPassword );
+        }
 
         userService.updateUserCredentials( userCredentials );
         userService.updateUser( user );

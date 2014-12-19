@@ -224,6 +224,32 @@ public interface UserService
     Collection<UserCredentials> getAllUserCredentials();
 
     /**
+     * Encodes and sets the password of the User.
+     * Due to business logic required on password updates the password for a user
+     * should only be changed using this method or {@link #encodeAndSetPassword(UserCredentials, String) encodeAndSetPassword}
+     * and not directly on the User or UserCredentials object.
+     *
+     * Note that the changes made to the User object are not persisted.
+     *
+     * @param user the User.
+     * @param rawPassword the raw password.
+     */
+    void encodeAndSetPassword( User user, String rawPassword );
+
+    /**
+     * Encodes and sets the password of the UserCredentials.
+     * Due to business logic required on password updates the password for a user
+     * should only be changed using this method or {@link #encodeAndSetPassword(User, String) encodeAndSetPassword}
+     * and not directly on the User or UserCredentials object.
+     *
+     * Note that the changes made to the UserCredentials object are not persisted.
+     *
+     * @param userCredentials the UserCredentials.
+     * @param rawPassword the raw password.
+     */
+    void encodeAndSetPassword( UserCredentials userCredentials, String rawPassword );
+
+    /**
      * Updates the last login date of UserCredentials with the given username
      * with the current date.
      *

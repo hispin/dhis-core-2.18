@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -59,7 +60,6 @@ import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserSettingService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
 import com.opensymphony.xwork2.Action;
@@ -285,11 +285,7 @@ public class AddUserAction
     {
         //TODO: Allow user with F_USER_ADD_WITHIN_MANAGED_GROUP to add a user within managed groups.
 
-        if ( email != null && email.trim().length() == 0 )
-        {
-            email = null;
-        }
-
+        email = StringUtils.trimToNull( email );
         username = username.trim();
         inviteUsername = inviteUsername.trim();
         inviteEmail = inviteEmail.trim();
@@ -327,7 +323,7 @@ public class AddUserAction
             user.setEmail( email );
             user.setPhoneNumber( phoneNumber );
 
-            userCredentials.setPassword( passwordManager.encode( rawPassword ) );
+            userService.encodeAndSetPassword( userCredentials, rawPassword );
         }
 
         if ( jsonAttributeValues != null )

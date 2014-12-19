@@ -75,6 +75,7 @@ import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -134,11 +135,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SchemaService schemaService;
 
+    @Autowired
+    private UserService userService;
+
     @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
-
-    @Autowired
-    private PasswordManager passwordManager;
 
     @Autowired
     private DataElementCategoryService categoryService;
@@ -323,7 +324,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( userCredentials.getPassword() != null )
             {
-                userCredentials.setPassword( passwordManager.encode( userCredentials.getPassword() ) );
+                userService.encodeAndSetPassword( userCredentials, userCredentials.getPassword() );
             }
 
             Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
@@ -423,7 +424,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
                 if ( userCredentials != null && userCredentials.getPassword() != null )
                 {
-                    userCredentials.setPassword( passwordManager.encode( userCredentials.getPassword() ) );
+                    userService.encodeAndSetPassword( userCredentials, userCredentials.getPassword() );
                 }
 
                 ((User) persistedObject).getUserCredentials().mergeWith( userCredentials );

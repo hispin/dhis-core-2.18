@@ -28,10 +28,10 @@ package org.hisp.dhis.useraccount.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.security.migration.MigrationPasswordManager;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
@@ -143,21 +143,11 @@ public class UpdateUserAccountAction
         // Prepare values
         // ---------------------------------------------------------------------
 
-        if ( email != null && email.trim().length() == 0 )
-        {
-            email = null;
-        }
-
-        if ( rawPassword != null && rawPassword.trim().length() == 0 )
-        {
-            rawPassword = null;
-        }
+        email = StringUtils.trimToNull( email );
+        rawPassword = StringUtils.trimToNull( rawPassword );
 
         User user = userService.getUser( id );
-
-        UserCredentials userCredentials = userService.getUserCredentials( user );
-
-        String currentPassword = userCredentials.getPassword();
+        String currentPassword = userService.getUserCredentials( user ).getPassword();
         
         if ( !passwordManager.legacyOrCurrentMatches( oldPassword, currentPassword, user.getUsername() ) )
         {
@@ -170,20 +160,16 @@ public class UpdateUserAccountAction
         // ---------------------------------------------------------------------
 
         user.setSurname( surname );
-
         user.setFirstName( firstName );
-
         user.setEmail( email );
-
         user.setPhoneNumber( phoneNumber );
 
         if ( rawPassword != null )
         {
-            userCredentials.setPassword( passwordManager.encode( rawPassword ) );
-
-            userService.updateUserCredentials( userCredentials );
+            userService.encodeAndSetPassword( user, rawPassword );
         }
 
+        userService.updateUserCredentials( user.getUserCredentials() );
         userService.updateUser( user );
 
         message = i18n.getString( "update_user_success" );

@@ -119,7 +119,6 @@
   <bean id="databaseAutomaticAccessProvider" class="org.hisp.dhis.security.DatabaseAutomaticAccessProvider">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="systemAuthoritiesProvider" ref="simpleSystemAuthoritiesProvider" />
-    <property name="passwordManager" ref="org.hisp.dhis.security.PasswordManager" />
   </bean>
 
   <bean id="ghostAutomaticAccessProvider" class="org.hisp.dhis.security.GhostAutomaticAccessProvider">

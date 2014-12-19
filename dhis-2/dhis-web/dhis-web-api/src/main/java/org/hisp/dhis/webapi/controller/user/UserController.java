@@ -45,7 +45,6 @@ import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.schema.descriptors.UserSchemaDescriptor;
-import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -89,9 +88,6 @@ public class UserController
 
     @Autowired
     private UserGroupService userGroupService;
-
-    @Autowired
-    private PasswordManager passwordManager;
 
     @Autowired
     private SecurityService securityService;

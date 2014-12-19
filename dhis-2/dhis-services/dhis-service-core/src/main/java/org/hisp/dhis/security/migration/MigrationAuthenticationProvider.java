@@ -70,8 +70,7 @@ public class MigrationAuthenticationProvider
 
             if ( userCredentials != null )
             {
-                userCredentials.setPassword( passwordManager.encode( password ) );
-                userCredentials.setPasswordLastUpdated( new Date() );
+                userService.encodeAndSetPassword( userCredentials, password );
                 userService.updateUser( userCredentials.getUser() );
 
                 log.info( "User " + userCredentials.getUsername() + " was migrated from " + passwordManager.getLegacyPasswordEncoderClassName() +
