@@ -1,4 +1,4 @@
-package org.hisp.dhis.schema;
+package org.hisp.dhis.schema.annotation;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,28 +28,30 @@ package org.hisp.dhis.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.DxfNamespaces;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
+ * Property annotation for setting min/max range.
+ * <p/>
+ * Behavior changes according to type:
+ * <ul>
+ * <ol>PropertyType.TEXT: min/max length of TEXT</li>
+ * <ol>PropertyType.COLLECTION: min/max size of collection</li>
+ * <ol>PropertyType.NUMBER: min/max values (only integer min/max currently allowed)</li>
+ * <ol>PropertyType.INTEGER: min/max values</li>
+ * </ul>
+ *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @see Property
  */
-@JacksonXmlRootElement( localName = "propertyType", namespace = DxfNamespaces.DXF_2_0 )
-public enum PropertyType
+@Target( { ElementType.FIELD, ElementType.METHOD } )
+@Retention( RetentionPolicy.RUNTIME )
+public @interface PropertyRange
 {
-    IDENTIFIER,
-    TEXT,
-    NUMBER,
-    INTEGER,
-    BOOLEAN,
-    EMAIL,
-    PASSWORD,
-    URL,
-    DATE,
-    PHONENUMBER,
-    GEOLOCATION,
-    COLOR,
-    COMPLEX,
-    COLLECTION,
-    REFERENCE
+    int min() default 0;
+
+    int max() default Integer.MAX_VALUE;
 }
