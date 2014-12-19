@@ -207,6 +207,14 @@ public class UserController
 
         for ( User user : users.getUsers() )
         {
+            if ( !validateInviteUser( user, response ) )
+            {
+                return;
+            }
+        }
+        
+        for ( User user : users.getUsers() )
+        {
             inviteUser( user, request, response );
         }
     }
@@ -216,6 +224,14 @@ public class UserController
     {
         Users users = renderService.fromJson( request.getInputStream(), Users.class );
 
+        for ( User user : users.getUsers() )
+        {
+            if ( !validateInviteUser( user, response ) )
+            {
+                return;
+            }
+        }
+        
         for ( User user : users.getUsers() )
         {
             inviteUser( user, request, response );
@@ -284,25 +300,14 @@ public class UserController
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    /**
-     * Creates a user invitation and invites the user
-     *
-     * @param user     user object parsed from the POST request
-     * @param response response for created user invitation
-     * @throws Exception
-     */
-    private void inviteUser( User user, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    private boolean validateInviteUser( User user, HttpServletResponse response )
     {
         UserCredentials credentials = user.getUserCredentials();
-
-        // ---------------------------------------------------------------------
-        // Validation
-        // ---------------------------------------------------------------------
 
         if ( credentials == null )
         {
             ContextUtils.conflictResponse( response, "User credentials is not present" );
-            return;
+            return false;
         }
         
         credentials.setUser( user );
@@ -314,7 +319,7 @@ public class UserController
             if ( role != null && role.hasCriticalAuthorities() )
             {
                 ContextUtils.conflictResponse( response, "User cannot be invited with user role which has critical authorities: " + role );
-                return;
+                return false;
             }
         }
         
@@ -323,13 +328,25 @@ public class UserController
         if ( valid != null )
         {
             ContextUtils.conflictResponse( response, valid );
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Creates a user invitation and invites the user
+     *
+     * @param user user object parsed from the POST request
+     * @param response response for created user invitation
+     */
+    private void inviteUser( User user, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        if ( !validateInviteUser( user, response ) )
+        {
             return;
         }
-
-        // ---------------------------------------------------------------------
-        // Prepare, create and invite user
-        // ---------------------------------------------------------------------
-
+        
         RestoreOptions restoreOptions = user.getUsername() == null || user.getUsername().isEmpty() ?
             RestoreOptions.INVITE_WITH_USERNAME_CHOICE : RestoreOptions.INVITE_WITH_DEFINED_USERNAME;
 
@@ -344,9 +361,8 @@ public class UserController
     /**
      * Creates a user
      *
-     * @param user     user object parsed from the POST request
+     * @param user user object parsed from the POST request
      * @param response response for created user
-     * @throws Exception
      */
     private void createUser( User user, HttpServletResponse response ) throws Exception
     {
