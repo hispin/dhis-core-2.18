@@ -453,7 +453,7 @@ public class User
         this.userCredentials = userCredentials;
     }
 
-    @JsonProperty
+    @JsonProperty( "userGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "userGroups", namespace = DxfNamespaces.DXF_2_0 )

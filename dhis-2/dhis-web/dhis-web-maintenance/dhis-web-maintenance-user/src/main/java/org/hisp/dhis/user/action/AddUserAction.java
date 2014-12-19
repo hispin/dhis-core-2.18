@@ -366,10 +366,8 @@ public class AddUserAction
         userCredentials.setUserAuthorityGroups( userAuthorityGroups );
 
         // ---------------------------------------------------------------------
-        // Dimension constraints
-        //
-        // Note that any new user must inherit dimension constraints (if any)
-        // from the current user.
+        // Dimension constraints. Note that any new user must inherit dimension 
+        // constraints if any from the current user.
         // ---------------------------------------------------------------------
 
         userCredentials.setCogsDimensionConstraints( new HashSet<>( currentUser.getUserCredentials().getCogsDimensionConstraints() ) );
