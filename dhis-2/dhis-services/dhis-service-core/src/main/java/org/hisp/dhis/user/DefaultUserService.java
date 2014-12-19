@@ -182,7 +182,7 @@ public class DefaultUserService
             return false;
         }
 
-        return (userAuthorityGroup.getAuthorities().contains( "ALL" )) ? true : false;
+        return ( userAuthorityGroup.getAuthorities().contains( "ALL" ) );
     }
 
     @Override
