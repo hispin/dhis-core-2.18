@@ -57,7 +57,7 @@ import java.util.List;
  *
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement(localName = "dataElementGroupSet", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "dataElementGroupSet", namespace = DxfNamespaces.DXF_2_0 )
 public class DataElementGroupSet
     extends BaseDimensionalObject
 {
@@ -194,10 +194,10 @@ public class DataElementGroupSet
 
     @Override
     @JsonProperty
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DimensionalView.class })
-    @JacksonXmlElementWrapper(localName = "items", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "item", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DimensionalView.class } )
+    @JacksonXmlElementWrapper( localName = "items", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "item", namespace = DxfNamespaces.DXF_2_0 )
     public List<NameableObject> getItems()
     {
         return new ArrayList<NameableObject>( members );
@@ -222,8 +222,8 @@ public class DataElementGroupSet
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean isCompulsory()
     {
         if ( compulsory == null )
@@ -239,11 +239,11 @@ public class DataElementGroupSet
         this.compulsory = compulsory;
     }
 
-    @JsonProperty(value = "dataElementGroups")
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "dataElementGroups", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "dataElementGroup", namespace = DxfNamespaces.DXF_2_0)
+    @JsonProperty( "dataElementGroups" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "dataElementGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataElementGroup", namespace = DxfNamespaces.DXF_2_0 )
     public List<DataElementGroup> getMembers()
     {
         return members;
@@ -255,8 +255,8 @@ public class DataElementGroupSet
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isDataDimension()
     {
         return dataDimension;

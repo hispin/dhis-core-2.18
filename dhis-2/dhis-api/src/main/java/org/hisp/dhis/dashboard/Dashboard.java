@@ -175,7 +175,7 @@ public class Dashboard
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @JsonProperty( value = "dashboardItems" )
+    @JsonProperty( "dashboardItems" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "dashboardItems", namespace = DxfNamespaces.DXF_2_0 )

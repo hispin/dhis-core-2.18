@@ -34,7 +34,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -297,12 +296,12 @@ public class DashboardItem
     {
         return eventChart;
     }
-    
+
     public void setEventChart( EventChart eventChart )
     {
         this.eventChart = eventChart;
     }
-    
+
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JsonSerialize( as = BaseIdentifiableObject.class )
@@ -331,7 +330,7 @@ public class DashboardItem
         this.reportTable = reportTable;
     }
 
-    @JsonProperty( value = "users" )
+    @JsonProperty( "users" )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JacksonXmlElementWrapper( localName = "users", namespace = DxfNamespaces.DXF_2_0 )
@@ -346,7 +345,7 @@ public class DashboardItem
         this.users = users;
     }
 
-    @JsonProperty( value = "reportTables" )
+    @JsonProperty( "reportTables" )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JacksonXmlElementWrapper( localName = "reportTables", namespace = DxfNamespaces.DXF_2_0 )
@@ -361,7 +360,7 @@ public class DashboardItem
         this.reportTables = reportTables;
     }
 
-    @JsonProperty( value = "reports" )
+    @JsonProperty( "reports" )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JacksonXmlElementWrapper( localName = "reports", namespace = DxfNamespaces.DXF_2_0 )
@@ -376,7 +375,7 @@ public class DashboardItem
         this.reports = reports;
     }
 
-    @JsonProperty( value = "resources" )
+    @JsonProperty( "resources" )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JacksonXmlElementWrapper( localName = "resources", namespace = DxfNamespaces.DXF_2_0 )

@@ -585,7 +585,7 @@ public class DataElement
         this.url = url;
     }
 
-    @JsonProperty( value = "dataElementGroups" )
+    @JsonProperty( "dataElementGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "dataElementGroups", namespace = DxfNamespaces.DXF_2_0 )
@@ -654,7 +654,7 @@ public class DataElement
         this.numberType = numberType;
     }
 
-    @JsonProperty( value = "attributeValues" )
+    @JsonProperty( "attributeValues" )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "attributeValues", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "attributeValue", namespace = DxfNamespaces.DXF_2_0 )
