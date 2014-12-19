@@ -327,7 +327,7 @@ public class UserController
         
         if ( valid != null )
         {
-            ContextUtils.conflictResponse( response, valid );
+            ContextUtils.conflictResponse( response, valid + ": " + user.getUserCredentials() );
             return false;
         }
         
@@ -387,7 +387,7 @@ public class UserController
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), user, ImportStrategy.CREATE );
 
         renderService.toJson( response.getOutputStream(), summary );
-
+        
         addUserGroups( user );
     }
 
@@ -444,7 +444,7 @@ public class UserController
      * @param user user object (including user groups) parsed from the POST request
      */
     private void addUserGroups( User user )
-    {
+    {        
         if ( user.getGroups() != null )
         {
             for ( UserGroup ug : new ArrayList<>( user.getGroups() ) )
