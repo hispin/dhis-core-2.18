@@ -595,7 +595,6 @@
     <property name="userSettingStore" ref="org.hisp.dhis.user.UserSettingStore" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="securityService" ref="org.hisp.dhis.security.SecurityService" />
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 

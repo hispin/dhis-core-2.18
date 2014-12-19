@@ -154,25 +154,25 @@ public class DefaultSecurityService
     {
         if ( !systemSettingManager.emailEnabled() )
         {
-            log.info( "Could not send restore/invite message as email is not configured" );
+            log.warn( "Could not send restore/invite message as email is not configured" );
             return "email_not_configured_for_system";
         }
 
         if ( credentials == null || credentials.getUser() == null )
         {
-            log.info( "Could not send restore/invite message as user does not exist: " + credentials );
+            log.warn( "Could not send restore/invite message as user does not exist: " + credentials );
             return "no_user_credentials";
         }
 
         if ( credentials.getUser().getEmail() == null || !ValidationUtils.emailIsValid( credentials.getUser().getEmail() ) )
         {
-            log.info( "Could not send restore/invite message as user has no email or email is invalid" );
+            log.warn( "Could not send restore/invite message as user has no email or email is invalid" );
             return "user_does_not_have_valid_email";
         }
 
         if ( credentials.hasAnyAuthority( Arrays.asList( UserAuthorityGroup.CRITICAL_AUTHS ) ) )
         {
-            log.info( "Not allowed to restore/invite users with critical authorities" );
+            log.warn( "Not allowed to restore/invite users with critical authorities" );
             return "user_has_critical_authorities";
         }
 

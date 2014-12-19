@@ -28,6 +28,8 @@ package org.hisp.dhis.webapi.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,7 @@ import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
@@ -95,10 +98,10 @@ public class UserController
 
     @Autowired
     private SystemSettingManager systemSettingManager;
-
-    //--------------------------------------------------------------------------
+    
+    // -------------------------------------------------------------------------
     // GET
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
@@ -159,9 +162,9 @@ public class UserController
         return users;
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // POST
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
@@ -219,9 +222,9 @@ public class UserController
         }
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // PUT
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
@@ -277,9 +280,9 @@ public class UserController
         renderService.toJson( response.getOutputStream(), summary );
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Supportive methods
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Creates a user invitation and invites the user
@@ -290,12 +293,46 @@ public class UserController
      */
     private void inviteUser( User user, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
+        UserCredentials credentials = user.getUserCredentials();
+
+        // ---------------------------------------------------------------------
+        // Validation
+        // ---------------------------------------------------------------------
+
+        if ( credentials == null )
+        {
+            ContextUtils.conflictResponse( response, "User credentials is not present" );
+            return;
+        }
+        
+        credentials.setUser( user );
+        
+        List<UserAuthorityGroup> userRoles = userService.getUserRolesByUid( getUids( credentials.getUserAuthorityGroups() ) );
+
+        for ( UserAuthorityGroup role : userRoles )
+        {
+            if ( role != null && role.hasCriticalAuthorities() )
+            {
+                ContextUtils.conflictResponse( response, "User cannot be invited with user role which has critical authorities: " + role );
+                return;
+            }
+        }
+        
+        String valid = securityService.validateRestore( user.getUserCredentials() );
+        
+        if ( valid != null )
+        {
+            ContextUtils.conflictResponse( response, valid );
+            return;
+        }
+
+        // ---------------------------------------------------------------------
+        // Prepare, create and invite user
+        // ---------------------------------------------------------------------
+
         RestoreOptions restoreOptions = user.getUsername() == null || user.getUsername().isEmpty() ?
             RestoreOptions.INVITE_WITH_USERNAME_CHOICE : RestoreOptions.INVITE_WITH_DEFINED_USERNAME;
 
-        UserCredentials credentials = user.getUserCredentials();
-        credentials.setUser( user );
-        
         securityService.prepareUserForInvite( user );
 
         createUser( user, response );

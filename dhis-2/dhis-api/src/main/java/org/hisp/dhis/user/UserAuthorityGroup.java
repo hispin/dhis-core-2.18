@@ -34,6 +34,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.google.common.collect.Sets;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -98,6 +101,11 @@ public class UserAuthorityGroup
     public boolean isSuper()
     {
         return authorities != null && authorities.contains( AUTHORITY_ALL );
+    }
+    
+    public boolean hasCriticalAuthorities()
+    {
+        return authorities != null && CollectionUtils.containsAny( authorities, Sets.newHashSet( CRITICAL_AUTHS ) );
     }
 
     // -------------------------------------------------------------------------
