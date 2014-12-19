@@ -45,7 +45,7 @@ import org.springframework.web.client.HttpClientErrorException;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = "/schemas", method = RequestMethod.GET)
+@RequestMapping( value = "/schemas", method = RequestMethod.GET )
 public class SchemaController
 {
     @Autowired
@@ -57,7 +57,7 @@ public class SchemaController
         return new Schemas( schemaService.getSortedSchemas() );
     }
 
-    @RequestMapping(value = "/{type}")
+    @RequestMapping( value = "/{type:.*}" )
     public @ResponseBody Schema getSchema( @PathVariable String type )
     {
         Schema schema = schemaService.getSchemaBySingularName( type );
@@ -67,13 +67,42 @@ public class SchemaController
             return schema;
         }
 
+        try
+        {
+            schema = schemaService.getSchema( Class.forName( type ) );
+
+            if ( schema != null )
+            {
+                return schema;
+            }
+        }
+        catch ( ClassNotFoundException ignored )
+        {
+        }
+
         throw new HttpClientErrorException( HttpStatus.NOT_FOUND, "Type " + type + " does not exist." );
     }
 
-    @RequestMapping( value = "/{type}/{property}" )
+    @RequestMapping( value = "/{type:.*}/{property}" )
     public @ResponseBody Property getSchemaProperty( @PathVariable String type, @PathVariable String property )
     {
         Schema schema = schemaService.getSchemaBySingularName( type );
+
+        if ( schema == null )
+        {
+            try
+            {
+                schema = schemaService.getSchema( Class.forName( type ) );
+            }
+            catch ( ClassNotFoundException ignored )
+            {
+            }
+        }
+
+        if ( schema == null )
+        {
+            throw new HttpClientErrorException( HttpStatus.NOT_FOUND, "Type " + type + " does not exist." );
+        }
 
         if ( schema.getPropertyMap().containsKey( property ) )
         {
