@@ -29,7 +29,7 @@ trackerCapture.controller('ProfileController',
 
         //display only those attributes that belong to the selected program
         //if no program, display attributesInNoProgram
-        TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.selectedEnrollment, $scope.optionSets).then(function(tei){
+        TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.selectedEnrollment).then(function(tei){
             $scope.selectedTei = tei;
         });
     });
@@ -52,6 +52,9 @@ trackerCapture.controller('ProfileController',
         //get tei attributes and their values
         //but there could be a case where attributes are non-mandatory and
         //form comes empty, in this case enforce at least one value
+        
+        console.log('the tei:  ', $scope.selectedTei);
+        
         $scope.formEmpty = true;
         var tei = angular.copy($scope.selectedTei);
         tei.attributes = [];

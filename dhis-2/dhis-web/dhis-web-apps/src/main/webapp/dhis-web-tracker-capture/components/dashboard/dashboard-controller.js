@@ -9,6 +9,7 @@ trackerCapture.controller('DashboardController',
                 TEIService, 
                 TEService,
                 OptionSetService,
+                EnrollmentService,
                 ProgramFactory,
                 CurrentSelection) {
     //dashboard items   
@@ -56,25 +57,33 @@ trackerCapture.controller('DashboardController',
                 TEService.get($scope.selectedTei.trackedEntity).then(function(te){                    
                     $scope.trackedEntity = te;
 
-                    ProgramFactory.getAll().then(function(programs){  
+                    //get enrollments for the selected tei
+                    EnrollmentService.getByEntity($scope.selectedTeiId).then(function(response){                    
 
-                        $scope.programs = [];
+                        var selectedEnrollment = null;
+                        if(response.enrollments.length === 1 && response.enrollments[0].status === 'ACTIVE'){
+                            selectedEnrollment = response.enrollments[0];                            
+                        }
                         
-                        //get programs valid for the selected ou and tei
-                        angular.forEach(programs, function(program){
-                            if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
-                               program.trackedEntity.id === $scope.selectedTei.trackedEntity){
-                                $scope.programs.push(program);
-                            }
+                        ProgramFactory.getAll().then(function(programs){
+                            $scope.programs = [];
 
-                            if($scope.selectedProgramId && program.id === $scope.selectedProgramId){
-                                $scope.selectedProgram = program;
-                            }
-                        }); 
-                        
-                        //broadcast selected items for dashboard controllers
-                        CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: null, optionSets: $scope.optionSets});
-                        $scope.broadCastSelections();                        
+                            //get programs valid for the selected ou and tei
+                            angular.forEach(programs, function(program){
+                                if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
+                                   program.trackedEntity.id === $scope.selectedTei.trackedEntity){
+                                    $scope.programs.push(program);
+                                }
+
+                                if($scope.selectedProgramId && program.id === $scope.selectedProgramId || selectedEnrollment && selectedEnrollment.program === program.id){
+                                    $scope.selectedProgram = program;
+                                }
+                            }); 
+
+                            //broadcast selected items for dashboard controllers
+                            CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, prs: $scope.programs, pr: $scope.selectedProgram, enrollment: selectedEnrollment, optionSets: $scope.optionSets});
+                            $scope.broadCastSelections();                        
+                        });
                     });
                 });            
             });    
@@ -101,7 +110,7 @@ trackerCapture.controller('DashboardController',
         $scope.trackedEntity = selections.te;
         $scope.optionSets = selections.optionSets;
         
-        CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: null, optionSets: $scope.optionSets});
+        CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, prs: $scope.programs, pr: $scope.selectedProgram, enrollment: null, optionSets: $scope.optionSets});
         $timeout(function() { 
             $rootScope.$broadcast('selectedItems', {programExists: $scope.programs.length > 0});            
         }, 100); 

@@ -106,7 +106,7 @@ trackerCapture.controller('TeiReportController',
 
         //process tei attributes, this is to have consistent display so that the tei 
         //contains program attributes whether it has value or not
-        TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, null, $scope.optionSets).then(function(tei){
+        TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, null).then(function(tei){
             $scope.tei = tei;  
         });
         

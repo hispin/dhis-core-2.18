@@ -40,7 +40,7 @@ trackerCapture.controller('DataEntryController',
     $scope.showEventColors = false;
     
     //listen for the selected items
-    $scope.$on('dashboardWidgets', function(event, args) {  
+    $scope.$on('dashboardWidgets', function() {  
         $scope.showDataEntryDiv = false;
         $scope.showEventCreationDiv = false;
         $scope.showDummyEventDiv = false;        
@@ -60,19 +60,20 @@ trackerCapture.controller('DataEntryController',
         $scope.optionSets = selections.optionSets;
         $scope.selectedProgramWithStage = [];
         
-        if($scope.selectedOrgUnit && $scope.selectedProgram && $scope.selectedEntity && $scope.selectedEnrollment){            
-            angular.forEach($scope.selectedProgram.programStages, function(st){                
-                ProgramStageFactory.get(st.id).then(function(stage){
+        if($scope.selectedOrgUnit && $scope.selectedProgram && $scope.selectedEntity && $scope.selectedEnrollment){
+            
+            ProgramStageFactory.getByProgram($scope.selectedProgram).then(function(stages){
+                
+                angular.forEach(stages, function(stage){
                     if(stage.openAfterEnrollment){
                         $scope.currentStage = stage;
                     }
                     $scope.selectedProgramWithStage[stage.id] = stage;
                 });
-            });
-            
-            setTimeout(function () {
+                
                 $scope.getEvents();
-            }, 100);
+                
+            });
         }
     });
     
@@ -104,16 +105,17 @@ trackerCapture.controller('DataEntryController',
                                 dhis2Event.sortingDate = dhis2Event.eventDate;
                             }                       
 
-                            dhis2Event.statusColor = EventUtils.getEventStatusColor(dhis2Event);  
-                            //dhis2Event = EventUtils.setEventOrgUnitName(dhis2Event);
+                            dhis2Event.statusColor = EventUtils.getEventStatusColor(dhis2Event);
                             
                             if($scope.currentStage && $scope.currentStage.id === dhis2Event.programStage){
                                 $scope.currentEvent = dhis2Event;                                
                                 $scope.showDataEntry($scope.currentEvent, true);
                             }
                         } 
-                    }                    
+                    }
                 });
+                
+                $scope.dhis2Events = orderByFilter($scope.dhis2Events, '-sortingDate');
             }
             
             $scope.dummyEvents = $scope.checkForEventCreation($scope.dhis2Events, $scope.selectedProgram);
