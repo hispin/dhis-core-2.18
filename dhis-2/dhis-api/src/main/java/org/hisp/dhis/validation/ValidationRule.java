@@ -46,6 +46,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -288,6 +289,7 @@ public class ValidationRule
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 2 )
     public String getDescription()
     {
         return description;
@@ -327,6 +329,7 @@ public class ValidationRule
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 1, max = 999 )
     public Integer getOrganisationUnitLevel()
     {
         return organisationUnitLevel;
@@ -381,6 +384,7 @@ public class ValidationRule
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 0, max = 10 )
     public Integer getAnnualSampleCount()
     {
         return annualSampleCount;
@@ -394,6 +398,7 @@ public class ValidationRule
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 0, max = 99 )
     public Integer getHighOutliers()
     {
         return highOutliers;
@@ -407,6 +412,7 @@ public class ValidationRule
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 0, max = 99 )
     public Integer getLowOutliers()
     {
         return lowOutliers;

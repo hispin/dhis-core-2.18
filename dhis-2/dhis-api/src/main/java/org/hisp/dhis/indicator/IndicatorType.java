@@ -37,11 +37,12 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "indicatorType", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "indicatorType", namespace = DxfNamespaces.DXF_2_0 )
 public class IndicatorType
     extends BaseIdentifiableObject
 {
@@ -76,8 +77,9 @@ public class IndicatorType
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 1, max = 10 )
     public int getFactor()
     {
         return factor;
@@ -89,8 +91,8 @@ public class IndicatorType
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isNumber()
     {
         return number;
@@ -106,7 +108,7 @@ public class IndicatorType
     {
         super.mergeWith( other );
 
-        if(other.getClass().isInstance( this ))
+        if ( other.getClass().isInstance( this ) )
         {
             IndicatorType indicatorType = (IndicatorType) other;
 

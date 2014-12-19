@@ -219,6 +219,7 @@ public class BaseIdentifiableObject
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
     @Description( "The name of this Object. Required and unique." )
+    @PropertyRange( min = 2 )
     public String getName()
     {
         return name;
@@ -279,6 +280,7 @@ public class BaseIdentifiableObject
     @JsonProperty
     @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 8, max = 8 )
     public String getPublicAccess()
     {
         return publicAccess;

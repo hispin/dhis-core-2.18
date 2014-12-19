@@ -36,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 
 /**
  * @author Bob Jolliffe
@@ -164,6 +165,7 @@ public class BaseNameableObject
     @JsonProperty
     @JsonView( { ShortNameView.class, DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
+    @PropertyRange( min = 2 )
     public String getShortName()
     {
         return shortName;
@@ -178,6 +180,7 @@ public class BaseNameableObject
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 2 )
     public String getDescription()
     {
         return description;
