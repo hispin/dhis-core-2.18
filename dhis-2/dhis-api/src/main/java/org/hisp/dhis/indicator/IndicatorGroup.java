@@ -48,7 +48,7 @@ import java.util.Set;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "indicatorGroup", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "indicatorGroup", namespace = DxfNamespaces.DXF_2_0 )
 public class IndicatorGroup
     extends BaseIdentifiableObject
 {
@@ -134,11 +134,11 @@ public class IndicatorGroup
         return false;
     }
 
-    @JsonProperty( value = "indicators" )
+    @JsonProperty( "indicators" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "indicators", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "indicator", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper( localName = "indicators", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "indicator", namespace = DxfNamespaces.DXF_2_0 )
     public Set<Indicator> getMembers()
     {
         return members;
@@ -149,10 +149,10 @@ public class IndicatorGroup
         this.members = members;
     }
 
-    @JsonProperty( value = "indicatorGroupSet" )
+    @JsonProperty( "indicatorGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
-    @JacksonXmlProperty( localName = "indicatorGroupSet", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "indicatorGroupSet", namespace = DxfNamespaces.DXF_2_0 )
     public IndicatorGroupSet getGroupSet()
     {
         return groupSet;
@@ -163,10 +163,10 @@ public class IndicatorGroup
         this.groupSet = groupSet;
     }
 
-    @JsonProperty( value = "attributeValues" )
+    @JsonProperty( "attributeValues" )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "attributeValues", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "attributeValue", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper( localName = "attributeValues", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "attributeValue", namespace = DxfNamespaces.DXF_2_0 )
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;

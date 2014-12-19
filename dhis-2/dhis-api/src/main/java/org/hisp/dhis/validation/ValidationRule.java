@@ -462,7 +462,7 @@ public class ValidationRule
         this.rightSide = rightSide;
     }
 
-    @JsonProperty( value = "validationRuleGroups" )
+    @JsonProperty( "validationRuleGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "validationRuleGroups", namespace = DxfNamespaces.DXF_2_0 )

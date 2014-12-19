@@ -28,18 +28,12 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.CombinationGenerator;
@@ -65,17 +59,19 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.user.User;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.hisp.dhis.common.DimensionalObject.*;
 
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "reportTable", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "reportTable", namespace = DxfNamespaces.DXF_2_0 )
 public class ReportTable
     extends BaseAnalyticalObject
 {
@@ -89,7 +85,7 @@ public class ReportTable
 
     public static final String TOTAL_COLUMN_NAME = "total";
     public static final String TOTAL_COLUMN_PRETTY_NAME = "Total";
-    
+
     public static final String AGGREGATION_TYPE_DEFAULT = "default";
     public static final String AGGREGATION_TYPE_COUNT = "count";
     public static final String AGGREGATION_TYPE_SUM = "sum";
@@ -97,7 +93,7 @@ public class ReportTable
     public static final String DISPLAY_DENSITY_COMFORTABLE = "comfortable";
     public static final String DISPLAY_DENSITY_NORMAL = "normal";
     public static final String DISPLAY_DENSITY_COMPACT = "compact";
-    
+
     public static final String FONT_SIZE_LARGE = "large";
     public static final String FONT_SIZE_NORMAL = "normal";
     public static final String FONT_SIZE_SMALL = "small";
@@ -109,13 +105,13 @@ public class ReportTable
 
     private static final String ILLEGAL_FILENAME_CHARS_REGEX = "[/\\?%*:|\"'<>.]";
 
-    private static final Map<String, String> COLUMN_NAMES = DimensionalObjectUtils.asMap( 
+    private static final Map<String, String> COLUMN_NAMES = DimensionalObjectUtils.asMap(
         DATA_X_DIM_ID, "data",
         CATEGORYOPTIONCOMBO_DIM_ID, "categoryoptioncombo",
         PERIOD_DIM_ID, "period",
         ORGUNIT_DIM_ID, "organisationunit"
     );
-    
+
     // -------------------------------------------------------------------------
     // Persisted properties
     // -------------------------------------------------------------------------
@@ -134,17 +130,17 @@ public class ReportTable
      * Dimensions to crosstabulate / use as columns.
      */
     private List<String> columnDimensions = new ArrayList<>();
-    
+
     /**
      * Dimensions to use as rows.
      */
     private List<String> rowDimensions = new ArrayList<>();
-    
+
     /**
      * Dimensions to use as filter.
      */
     private List<String> filterDimensions = new ArrayList<>();
-    
+
     /**
      * The ReportParams of the ReportTable.
      */
@@ -174,37 +170,37 @@ public class ReportTable
      * Indicates rendering of empty rows for the table.
      */
     private boolean hideEmptyRows;
-    
+
     /**
      * The display density of the text in the table.
      */
     private String displayDensity;
-    
+
     /**
      * The font size of the text in the table.
      */
     private String fontSize;
-    
+
     /**
      * The legend set in the table.
      */
     private MapLegendSet legendSet;
-    
+
     /**
      * Indicates showing organisation unit hierarchy names.
      */
     private boolean showHierarchy;
-    
+
     /**
      * Indicates the aggregation type.
      */
     private String aggregationType;
-    
+
     /**
      * Indicates showing organisation unit hierarchy names.
      */
     private boolean showDimensionLabels;
-    
+
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -243,26 +239,26 @@ public class ReportTable
     /**
      * Default constructor.
      *
-     * @param name the name.
-     * @param dataElements the data elements.
-     * @param indicators the indicators.
-     * @param dataSets the data sets.
-     * @param periods the periods. Cannot have the name property set.
-     * @param relativePeriods the relative periods. These periods must have the
-     *                        name property set. Not persisted.
+     * @param name              the name.
+     * @param dataElements      the data elements.
+     * @param indicators        the indicators.
+     * @param dataSets          the data sets.
+     * @param periods           the periods. Cannot have the name property set.
+     * @param relativePeriods   the relative periods. These periods must have the
+     *                          name property set. Not persisted.
      * @param organisationUnits the organisation units.
-     * @param relativeUnits the organisation units. Not persisted.
-     * @param doIndicators indicating whether indicators should be crosstabulated.
-     * @param doPeriods indicating whether periods should be crosstabulated.
-     * @param doUnits indicating whether organisation units should be crosstabulated.
-     * @param relatives the relative periods.
-     * @param i18nFormat the i18n format. Not persisted.
+     * @param relativeUnits     the organisation units. Not persisted.
+     * @param doIndicators      indicating whether indicators should be crosstabulated.
+     * @param doPeriods         indicating whether periods should be crosstabulated.
+     * @param doUnits           indicating whether organisation units should be crosstabulated.
+     * @param relatives         the relative periods.
+     * @param i18nFormat        the i18n format. Not persisted.
      */
     public ReportTable( String name, List<DataElement> dataElements, List<Indicator> indicators,
-                        List<DataSet> dataSets, List<Period> periods,
-                        List<OrganisationUnit> organisationUnits,
-                        boolean doIndicators, boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
-                        String reportingPeriodName )
+        List<DataSet> dataSets, List<Period> periods,
+        List<OrganisationUnit> organisationUnits,
+        boolean doIndicators, boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
+        String reportingPeriodName )
     {
         this.name = name;
         this.dataElements = dataElements;
@@ -273,7 +269,7 @@ public class ReportTable
         this.relatives = relatives;
         this.reportParams = reportParams;
         this.reportingPeriodName = reportingPeriodName;
-        
+
         if ( doIndicators )
         {
             columnDimensions.add( DATA_X_DIM_ID );
@@ -282,7 +278,7 @@ public class ReportTable
         {
             rowDimensions.add( DATA_X_DIM_ID );
         }
-        
+
         if ( doPeriods )
         {
             columnDimensions.add( PERIOD_DIM_ID );
@@ -291,7 +287,7 @@ public class ReportTable
         {
             rowDimensions.add( PERIOD_DIM_ID );
         }
-        
+
         if ( doUnits )
         {
             columnDimensions.add( ORGUNIT_DIM_ID );
@@ -307,15 +303,15 @@ public class ReportTable
     // -------------------------------------------------------------------------
 
     @Override
-    public void init( User user, Date date, OrganisationUnit organisationUnit, 
+    public void init( User user, Date date, OrganisationUnit organisationUnit,
         List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups, I18nFormat format )
     {
-        verify( ( periods != null && !periods.isEmpty() ) || hasRelativePeriods(), "Must contain periods or relative periods" );
+        verify( (periods != null && !periods.isEmpty()) || hasRelativePeriods(), "Must contain periods or relative periods" );
 
         this.relativePeriodDate = date;
-        
+
         // Handle report parameters
-        
+
         if ( hasRelativePeriods() )
         {
             this.reportingPeriodName = relatives.getReportingPeriodName( date, format );
@@ -336,39 +332,39 @@ public class ReportTable
         }
 
         // Handle special dimension
-        
+
         if ( isDimensional() )
         {
             transientCategoryOptionCombos.addAll( getCategoryCombo().getSortedOptionCombos() );
             verify( nonEmptyLists( transientCategoryOptionCombos ) == 1, "Category option combos size must be larger than 0" );
         }
-        
+
         // Populate grid
-        
+
         this.populateGridColumnsAndRows( date, user, organisationUnitsAtLevel, organisationUnitsInGroups, format );
     }
-    
+
     // -------------------------------------------------------------------------
     // Public methods
     // -------------------------------------------------------------------------
-    
-    public void populateGridColumnsAndRows( Date date, User user, 
+
+    public void populateGridColumnsAndRows( Date date, User user,
         List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups, I18nFormat format )
     {
         List<NameableObject[]> tableColumns = new ArrayList<>();
         List<NameableObject[]> tableRows = new ArrayList<>();
         List<NameableObject> filterItems = new ArrayList<>();
-        
+
         for ( String dimension : columnDimensions )
         {
             tableColumns.add( getDimensionalObject( dimension, date, user, false, organisationUnitsAtLevel, organisationUnitsInGroups, format ).getItems().toArray( IRT ) );
         }
-        
+
         for ( String dimension : rowDimensions )
         {
             tableRows.add( getDimensionalObject( dimension, date, user, true, organisationUnitsAtLevel, organisationUnitsInGroups, format ).getItems().toArray( IRT ) );
         }
-        
+
         for ( String filter : filterDimensions )
         {
             filterItems.addAll( getDimensionalObject( filter, date, user, true, organisationUnitsAtLevel, organisationUnitsInGroups, format ).getItems() );
@@ -377,12 +373,12 @@ public class ReportTable
         gridColumns = new CombinationGenerator<>( tableColumns.toArray( IRT2D ) ).getCombinations();
         gridRows = new CombinationGenerator<>( tableRows.toArray( IRT2D ) ).getCombinations();
 
-        addIfEmpty( gridColumns ); 
+        addIfEmpty( gridColumns );
         addIfEmpty( gridRows );
-        
+
         title = IdentifiableObjectUtils.join( filterItems );
     }
-    
+
     @Override
     public void populateAnalyticalProperties()
     {
@@ -390,25 +386,25 @@ public class ReportTable
         {
             columns.addAll( getDimensionalObjectList( column ) );
         }
-        
+
         for ( String row : rowDimensions )
         {
             rows.addAll( getDimensionalObjectList( row ) );
         }
-        
+
         for ( String filter : filterDimensions )
         {
             filters.addAll( getDimensionalObjectList( filter ) );
         }
     }
-    
+
     /**
      * Indicates whether this ReportTable is multi-dimensional.
      */
     public boolean isDimensional()
     {
-        return dataElements != null && !dataElements.isEmpty() && ( 
-            columnDimensions.contains( CATEGORYOPTIONCOMBO_DIM_ID ) || rowDimensions.contains( CATEGORYOPTIONCOMBO_DIM_ID ) );
+        return dataElements != null && !dataElements.isEmpty() && (
+            columnDimensions.contains( CATEGORYOPTIONCOMBO_DIM_ID ) || rowDimensions.contains( CATEGORYOPTIONCOMBO_DIM_ID ));
     }
 
     /**
@@ -421,7 +417,7 @@ public class ReportTable
 
         for ( NameableObject object : objects )
         {
-            buffer.append( object != null ? ( object.getShortName() + SPACE ) : EMPTY );
+            buffer.append( object != null ? (object.getShortName() + SPACE) : EMPTY );
         }
 
         return buffer.length() > 0 ? buffer.substring( 0, buffer.lastIndexOf( SPACE ) ) : TOTAL_COLUMN_PRETTY_NAME;
@@ -430,7 +426,7 @@ public class ReportTable
     /**
      * Generates a column name based on short-names of the argument objects.
      * Null arguments are ignored in the name.
-     * 
+     * <p/>
      * The period column name must be static when on columns so it can be
      * re-used in reports, hence the name property is used which will be formatted
      * only when the period dimension is on rows.
@@ -447,7 +443,7 @@ public class ReportTable
             }
             else
             {
-                buffer.append( object != null ? ( object.getShortName() + SEPARATOR ) : EMPTY );
+                buffer.append( object != null ? (object.getShortName() + SEPARATOR) : EMPTY );
             }
         }
 
@@ -492,7 +488,7 @@ public class ReportTable
 
         return false;
     }
-    
+
     /**
      * Tests whether this report table has report params.
      */
@@ -517,13 +513,13 @@ public class ReportTable
     public void setDoIndicators( boolean doIndicators )
     {
         this.columnDimensions.remove( DATA_X_DIM_ID );
-        
+
         if ( doIndicators )
         {
             this.columnDimensions.add( DATA_X_DIM_ID );
         }
     }
-    
+
     public boolean isDoPeriods()
     {
         return columnDimensions.contains( PERIOD_DIM_ID );
@@ -532,22 +528,22 @@ public class ReportTable
     public void setDoPeriods( boolean doPeriods )
     {
         this.columnDimensions.remove( PERIOD_DIM_ID );
-        
+
         if ( doPeriods )
         {
             this.columnDimensions.add( PERIOD_DIM_ID );
         }
     }
-    
+
     public boolean isDoUnits()
     {
         return columnDimensions.contains( ORGUNIT_DIM_ID );
     }
-    
+
     public void setDoUnits( boolean doUnits )
     {
         this.columnDimensions.remove( ORGUNIT_DIM_ID );
-        
+
         if ( doUnits )
         {
             this.columnDimensions.add( ORGUNIT_DIM_ID );
@@ -569,16 +565,16 @@ public class ReportTable
      * Generates a grid for this report table based on the given aggregate value
      * map.
      *
-     * @param grid the grid, should be empty and not null.
-     * @param valueMap the mapping of identifiers to aggregate values.
+     * @param grid         the grid, should be empty and not null.
+     * @param valueMap     the mapping of identifiers to aggregate values.
      * @param paramColumns whether to include report parameter columns.
      * @return a grid.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Grid getGrid( Grid grid, Map<String, Object> valueMap, boolean paramColumns )
     {
         valueMap = new HashMap<>( valueMap );
-        
+
         sortKeys( valueMap );
 
         // ---------------------------------------------------------------------
@@ -586,7 +582,7 @@ public class ReportTable
         // ---------------------------------------------------------------------
 
         if ( name != null )
-        {        
+        {
             grid.setTitle( name );
             grid.setSubtitle( title );
         }
@@ -601,18 +597,18 @@ public class ReportTable
 
         Map<String, String> metaData = getMetaData();
         metaData.putAll( DimensionalObject.PRETTY_NAMES );
-        
+
         for ( String row : rowDimensions )
         {
-            String name = StringUtils.defaultIfEmpty( metaData.get( row ), row );            
+            String name = StringUtils.defaultIfEmpty( metaData.get( row ), row );
             String col = StringUtils.defaultIfEmpty( COLUMN_NAMES.get( row ), row );
-            
+
             grid.addHeader( new GridHeader( name + " ID", col + "id", String.class.getName(), true, true ) );
             grid.addHeader( new GridHeader( name, col + "name", String.class.getName(), false, true ) );
             grid.addHeader( new GridHeader( name + " code", col + "code", String.class.getName(), true, true ) );
             grid.addHeader( new GridHeader( name + " description", col + "description", String.class.getName(), true, true ) );
         }
-        
+
         if ( paramColumns )
         {
             grid.addHeader( new GridHeader( "Reporting month", REPORTING_MONTH_COLUMN_NAME,
@@ -651,7 +647,7 @@ public class ReportTable
                 grid.addValue( object.getCode() );
                 grid.addValue( object.getDescription() );
             }
-            
+
             if ( paramColumns )
             {
                 grid.addValue( reportingPeriodName );
@@ -664,18 +660,18 @@ public class ReportTable
             // -----------------------------------------------------------------
 
             boolean hasValue = false;
-            
+
             for ( List<NameableObject> column : gridColumns )
             {
                 String key = getIdentifier( column, row );
-                
+
                 Object value = valueMap.get( key );
-                
+
                 grid.addValue( value );
-                
+
                 hasValue = !hasValue ? value != null : true;
             }
-            
+
             if ( hideEmptyRows && !hasValue )
             {
                 grid.removeCurrentWriteRow();
@@ -712,14 +708,14 @@ public class ReportTable
 
         if ( showHierarchy && rowDimensions.indexOf( ORGUNIT_DIM_ID ) != -1 && grid.hasMetaDataKey( "ouNameHierarchy" ) )
         {
-            int ouNameIndex = ( rowDimensions.indexOf( ORGUNIT_DIM_ID ) * 4 ) + 1; // Ou name position            
+            int ouNameIndex = (rowDimensions.indexOf( ORGUNIT_DIM_ID ) * 4) + 1; // Ou name position
             Map<Object, Object> hierarchyNameMap = (Map<Object, Object>) grid.getMetaData().get( "ouNameHierarchy" );
             grid.substituteMetaData( ouNameIndex, hierarchyNameMap );
         }
 
         return grid;
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -762,7 +758,7 @@ public class ReportTable
         {
             return dataElements.get( 0 ).getCategoryCombo();
         }
-        
+
         return null;
     }
 
@@ -777,8 +773,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isRegression()
     {
         return regression;
@@ -790,8 +786,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isCumulative()
     {
         return cumulative;
@@ -803,9 +799,9 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "columnDimensions", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "column", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "columnDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "column", namespace = DxfNamespaces.DXF_2_0 )
     public List<String> getColumnDimensions()
     {
         return columnDimensions;
@@ -817,9 +813,9 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "rowDimensions", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "row", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "rowDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "row", namespace = DxfNamespaces.DXF_2_0 )
     public List<String> getRowDimensions()
     {
         return rowDimensions;
@@ -831,9 +827,9 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "filter", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "filter", namespace = DxfNamespaces.DXF_2_0 )
     public List<String> getFilterDimensions()
     {
         return filterDimensions;
@@ -845,8 +841,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ReportParams getReportParams()
     {
         return reportParams;
@@ -859,8 +855,8 @@ public class ReportTable
 
     @Override
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getSortOrder()
     {
         return sortOrder;
@@ -874,8 +870,8 @@ public class ReportTable
 
     @Override
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getTopLimit()
     {
         return topLimit;
@@ -888,8 +884,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isRowTotals()
     {
         return rowTotals;
@@ -901,8 +897,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isColTotals()
     {
         return colTotals;
@@ -914,8 +910,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isRowSubTotals()
     {
         return rowSubTotals;
@@ -924,11 +920,11 @@ public class ReportTable
     public void setRowSubTotals( boolean rowSubTotals )
     {
         this.rowSubTotals = rowSubTotals;
-    }    
+    }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isColSubTotals()
     {
         return colSubTotals;
@@ -940,8 +936,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isHideEmptyRows()
     {
         return hideEmptyRows;
@@ -954,8 +950,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getAggregationType()
     {
         return aggregationType;
@@ -967,8 +963,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDisplayDensity()
     {
         return displayDensity;
@@ -980,8 +976,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getFontSize()
     {
         return fontSize;
@@ -993,8 +989,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public MapLegendSet getLegendSet()
     {
         return legendSet;
@@ -1006,8 +1002,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isShowHierarchy()
     {
         return showHierarchy;
@@ -1020,8 +1016,8 @@ public class ReportTable
 
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isShowDimensionLabels()
     {
         return showDimensionLabels;
@@ -1107,13 +1103,13 @@ public class ReportTable
             legendSet = reportTable.getLegendSet();
             showDimensionLabels = reportTable.isShowDimensionLabels();
             hideEmptyRows = reportTable.isHideEmptyRows();
-            
+
             columnDimensions.clear();
             columnDimensions.addAll( reportTable.getColumnDimensions() );
-            
+
             rowDimensions.clear();
             rowDimensions.addAll( reportTable.getRowDimensions() );
-            
+
             filterDimensions.clear();
             filterDimensions.addAll( reportTable.getFilterDimensions() );
         }

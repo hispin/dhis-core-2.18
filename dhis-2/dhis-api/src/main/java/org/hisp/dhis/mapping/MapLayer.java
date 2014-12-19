@@ -37,6 +37,8 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.schema.PropertyType;
+import org.hisp.dhis.schema.annotation.Property;
 
 /**
  * @author Jan Henrik Overland
@@ -66,7 +68,7 @@ public class MapLayer
     }
 
     public MapLayer( String name, String type, String url, String layers, String time, String fillColor,
-                     double fillOpacity, String strokeColor, int strokeWidth )
+        double fillOpacity, String strokeColor, int strokeWidth )
     {
         this.name = name;
         this.type = type;
@@ -84,7 +86,7 @@ public class MapLayer
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getType()
     {
@@ -97,8 +99,9 @@ public class MapLayer
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @Property( PropertyType.URL )
     public String getUrl()
     {
         return url;
@@ -110,7 +113,7 @@ public class MapLayer
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getLayers()
     {
@@ -123,7 +126,7 @@ public class MapLayer
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getTime()
     {
@@ -136,8 +139,9 @@ public class MapLayer
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @Property( PropertyType.COLOR )
     public String getFillColor()
     {
         return fillColor;
@@ -149,7 +153,7 @@ public class MapLayer
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public double getFillOpacity()
     {
@@ -162,8 +166,9 @@ public class MapLayer
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @Property( PropertyType.COLOR )
     public String getStrokeColor()
     {
         return strokeColor;
@@ -175,7 +180,7 @@ public class MapLayer
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getStrokeWidth()
     {
