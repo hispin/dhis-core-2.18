@@ -55,7 +55,7 @@ import java.util.List;
  *
  * @author Abyot Asalefew
  */
-@JacksonXmlRootElement(localName = "category", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "category", namespace = DxfNamespaces.DXF_2_0 )
 public class DataElementCategory
     extends BaseDimensionalObject
 {
@@ -144,10 +144,10 @@ public class DataElementCategory
 
     @Override
     @JsonProperty
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, DimensionalView.class })
-    @JacksonXmlElementWrapper(localName = "items", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "item", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, DimensionalView.class } )
+    @JacksonXmlElementWrapper( localName = "items", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "item", namespace = DxfNamespaces.DXF_2_0 )
     public List<NameableObject> getItems()
     {
         return new ArrayList<NameableObject>( categoryOptions );
@@ -181,8 +181,8 @@ public class DataElementCategory
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDataDimensionType()
     {
         return dataDimensionType;
@@ -194,10 +194,10 @@ public class DataElementCategory
     }
 
     @JsonProperty
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "categoryOptions", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "categoryOption", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "categoryOptions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "categoryOption", namespace = DxfNamespaces.DXF_2_0 )
     public List<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;
@@ -209,8 +209,8 @@ public class DataElementCategory
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isDataDimension()
     {
         return dataDimension;
