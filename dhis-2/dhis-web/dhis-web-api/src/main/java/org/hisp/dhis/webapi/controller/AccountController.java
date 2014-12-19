@@ -65,7 +65,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -399,7 +398,7 @@ public class AccountController
                 username = credentials.getUsername();
             }
 
-            credentials.setPassword( passwordManager.encode( password ) );
+            userService.encodeAndSetPassword( credentials, password );
 
             userService.updateUser( user );
             userService.updateUserCredentials( credentials );
@@ -421,7 +420,7 @@ public class AccountController
 
             credentials = new UserCredentials();
             credentials.setUsername( username );
-            credentials.setPassword( passwordManager.encode( password ) );
+            userService.encodeAndSetPassword( credentials, password );
             credentials.setSelfRegistered( true );
             credentials.setUser( user );
             credentials.getUserAuthorityGroups().add( userRole );
@@ -499,10 +498,7 @@ public class AccountController
             return;
         }
 
-        String passwordEncoded = passwordManager.encode( password );
-
-        credentials.setPassword( passwordEncoded );
-        credentials.setPasswordLastUpdated( new Date() );
+        userService.encodeAndSetPassword( credentials, password );
         userService.updateUserCredentials( credentials );
 
         authenticate( username, password, getAuthorities( credentials.getUserAuthorityGroups() ), request );

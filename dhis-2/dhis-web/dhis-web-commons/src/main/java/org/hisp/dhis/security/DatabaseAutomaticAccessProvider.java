@@ -38,23 +38,10 @@ import org.hisp.dhis.user.UserCredentials;
  * This access provider will put a user with all granted authorities in the database.
  * 
  * @author Torgeir Lorange Ostby
- * @version $Id: DatabaseAutomaticAccessProvider.java 3513 2007-08-04 16:16:40Z
- *          torgeilo $
  */
 public class DatabaseAutomaticAccessProvider
     extends AbstractAutomaticAccessProvider
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private PasswordManager passwordManager;
-
-    public void setPasswordManager( PasswordManager passwordManager )
-    {
-        this.passwordManager = passwordManager;
-    }
-
     // -------------------------------------------------------------------------
     // AdminAccessManager implementation
     // -------------------------------------------------------------------------
@@ -84,9 +71,10 @@ public class DatabaseAutomaticAccessProvider
 
         UserCredentials userCredentials = new UserCredentials();
         userCredentials.setUsername( username );
-        userCredentials.setPassword( passwordManager.encode( password ) );
         userCredentials.setUser( user );
         userCredentials.getUserAuthorityGroups().add( userAuthorityGroup );
+
+        userService.encodeAndSetPassword( userCredentials, password );
 
         userService.addUserCredentials( userCredentials );
     }

@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.AuditLogUtil;
@@ -52,6 +53,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.security.migration.MigrationPasswordManager;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.UserAuthorityGroupCanIssueFilter;
 import org.hisp.dhis.system.util.DateUtils;
@@ -119,6 +121,13 @@ public class DefaultUserService
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
         this.systemSettingManager = systemSettingManager;
+    }
+
+    private MigrationPasswordManager passwordManager;
+
+    public void setPasswordManager( MigrationPasswordManager passwordManager )
+    {
+        this.passwordManager = passwordManager;
     }
 
     // -------------------------------------------------------------------------
@@ -514,6 +523,26 @@ public class DefaultUserService
     public Collection<UserCredentials> getAllUserCredentials()
     {
         return userCredentialsStore.getAllUserCredentials();
+    }
+
+    @Override
+    public void encodeAndSetPassword( User user, String rawPassword )
+    {
+        encodeAndSetPassword( user.getUserCredentials(), rawPassword );
+    }
+
+    @Override
+    public void encodeAndSetPassword( UserCredentials userCredentials, String rawPassword )
+    {
+        boolean isNewPassword = StringUtils.isBlank( userCredentials.getPassword() ) ||
+            !passwordManager.legacyOrCurrentMatches( rawPassword, userCredentials.getPassword(), userCredentials.getUsername() );
+
+        if ( isNewPassword )
+        {
+            userCredentials.setPasswordLastUpdated( new Date() );
+        }
+
+        userCredentials.setPassword( passwordManager.encode( rawPassword ) );
     }
 
     @Override

@@ -144,7 +144,7 @@ public class DefaultSecurityService
 
         user.setSurname( "(TBD)" );
         user.setFirstName( "(TBD)" );
-        user.getUserCredentials().setPassword( passwordManager.encode( rawPassword ) );
+        userService.encodeAndSetPassword( user, rawPassword );
 
         return true;
     }
@@ -297,14 +297,11 @@ public class DefaultSecurityService
             return false;
         }
 
-        newPassword = passwordManager.encode( newPassword );
-
-        credentials.setPassword( newPassword );
-
         credentials.setRestoreCode( null );
         credentials.setRestoreToken( null );
         credentials.setRestoreExpiry( null );
 
+        userService.encodeAndSetPassword( credentials, newPassword );
         userService.updateUserCredentials( credentials );
 
         return true;

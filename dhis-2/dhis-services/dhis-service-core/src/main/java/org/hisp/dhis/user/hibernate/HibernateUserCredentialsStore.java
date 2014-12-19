@@ -85,7 +85,7 @@ public class HibernateUserCredentialsStore
 
     @Override
     public void updateUserCredentials( UserCredentials userCredentials )
-    {        
+    {
         sessionFactory.getCurrentSession().update( userCredentials );
     }
 
