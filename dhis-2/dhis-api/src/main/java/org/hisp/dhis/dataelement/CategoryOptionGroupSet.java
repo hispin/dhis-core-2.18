@@ -112,12 +112,12 @@ public class CategoryOptionGroupSet
     {
         return new ArrayList<NameableObject>( members );
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @JsonProperty( value = "categoryOptionGroups" )
+    @JsonProperty( "categoryOptionGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "categoryOptionGroups", namespace = DxfNamespaces.DXF_2_0 )

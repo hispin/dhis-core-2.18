@@ -48,7 +48,7 @@ import java.util.Set;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement(localName = "categoryOptionGroup", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "categoryOptionGroup", namespace = DxfNamespaces.DXF_2_0 )
 public class CategoryOptionGroup
     extends BaseNameableObject
 {
@@ -92,7 +92,7 @@ public class CategoryOptionGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @JsonProperty( value = "categoryOptions" )
+    @JsonProperty( "categoryOptions" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "categoryOptions", namespace = DxfNamespaces.DXF_2_0 )
