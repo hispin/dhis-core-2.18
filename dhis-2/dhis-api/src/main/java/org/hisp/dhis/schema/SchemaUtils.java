@@ -72,7 +72,7 @@ public final class SchemaUtils
                     property.setMax( propertyRange.max() );
                 }
 
-                if ( propertyRange.min() >= 0 && propertyRange.min() <= propertyMax )
+                if ( propertyRange.min() >= propertyMin && propertyRange.min() <= propertyMax )
                 {
                     property.setMin( propertyRange.min() > property.getMax() ? property.getMax() : propertyRange.min() );
                 }
