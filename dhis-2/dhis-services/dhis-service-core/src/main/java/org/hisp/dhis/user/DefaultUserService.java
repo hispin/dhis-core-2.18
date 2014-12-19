@@ -52,7 +52,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.UserAuthorityGroupCanIssueFilter;
 import org.hisp.dhis.system.util.DateUtils;
@@ -115,13 +114,6 @@ public class DefaultUserService
         this.categoryService = categoryService;
     }
     
-    private SecurityService securityService;
-    
-    public void setSecurityService( SecurityService securityService )
-    {
-        this.securityService = securityService;
-    }
-
     private SystemSettingManager systemSettingManager;
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
@@ -442,6 +434,12 @@ public class DefaultUserService
     public UserAuthorityGroup getUserAuthorityGroupByName( String name )
     {
         return userAuthorityGroupStore.getByName( name );
+    }
+
+    @Override
+    public List<UserAuthorityGroup> getUserRolesByUid( Collection<String> uids )
+    {
+        return userAuthorityGroupStore.getByUid( uids );
     }
 
     @Override

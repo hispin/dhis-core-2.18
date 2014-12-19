@@ -341,6 +341,14 @@ public interface UserService
      * @return a Collection of UserAuthorityGroups.
      */
     Collection<UserAuthorityGroup> getAllUserAuthorityGroups();
+    
+    /**
+     * Retrieves UserAuthorityGroups with the given UIDs.
+     * 
+     * @param uids the UIDs.
+     * @return a List of UserAuthorityGroups.
+     */
+    List<UserAuthorityGroup> getUserRolesByUid( Collection<String> uids );
 
     /**
      * Retrieves all UserAuthorityGroups.
