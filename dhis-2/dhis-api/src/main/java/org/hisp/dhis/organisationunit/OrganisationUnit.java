@@ -50,6 +50,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.schema.PropertyType;
 import org.hisp.dhis.schema.annotation.Property;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 import org.hisp.dhis.user.User;
 
 import java.util.ArrayList;
@@ -797,6 +798,7 @@ public class OrganisationUnit
     @JsonProperty
     @JsonView( UuidView.class )
     @JacksonXmlProperty( isAttribute = true )
+    @PropertyRange( min = 36, max = 36 )
     public String getUuid()
     {
         return uuid;
@@ -887,6 +889,7 @@ public class OrganisationUnit
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 2 )
     public String getComment()
     {
         return comment;
@@ -1005,7 +1008,7 @@ public class OrganisationUnit
         this.type = type;
     }
 
-    @JsonProperty( value = "organisationUnitGroups" )
+    @JsonProperty( "organisationUnitGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = DxfNamespaces.DXF_2_0 )
@@ -1050,7 +1053,7 @@ public class OrganisationUnit
         this.users = users;
     }
 
-    @JsonProperty( value = "attributeValues" )
+    @JsonProperty( "attributeValues" )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "attributeValues", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "attributeValue", namespace = DxfNamespaces.DXF_2_0 )

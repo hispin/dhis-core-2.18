@@ -43,7 +43,7 @@ import java.util.Date;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement(localName = "interpretationComment", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement( localName = "interpretationComment", namespace = DxfNamespaces.DXF_2_0 )
 public class InterpretationComment
     extends BaseIdentifiableObject
 {
@@ -68,8 +68,8 @@ public class InterpretationComment
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getText()
     {
         return text;

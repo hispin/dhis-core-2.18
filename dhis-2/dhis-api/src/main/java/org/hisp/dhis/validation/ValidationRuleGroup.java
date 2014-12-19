@@ -28,9 +28,12 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -40,17 +43,13 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.schema.annotation.PropertyRange;
 import org.hisp.dhis.user.UserGroup;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "validationRuleGroup", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "validationRuleGroup", namespace = DxfNamespaces.DXF_2_0 )
 public class ValidationRuleGroup
     extends BaseIdentifiableObject
 {
@@ -106,7 +105,7 @@ public class ValidationRuleGroup
     {
         members.clear();
     }
-    
+
     /**
      * Indicates whether this group has user roles to alert.
      */
@@ -120,8 +119,8 @@ public class ValidationRuleGroup
     // -------------------------------------------------------------------------     
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     @PropertyRange( min = 2 )
     public String getDescription()
     {
@@ -133,11 +132,11 @@ public class ValidationRuleGroup
         this.description = description;
     }
 
-    @JsonProperty( value = "validationRules" )
+    @JsonProperty( "validationRules" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "validationRules", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "validationRule", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "validationRules", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "validationRule", namespace = DxfNamespaces.DXF_2_0 )
     public Set<ValidationRule> getMembers()
     {
         return members;
@@ -150,9 +149,9 @@ public class ValidationRuleGroup
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "userGroupsToAlert", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "userGroupToAlert", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "userGroupsToAlert", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "userGroupToAlert", namespace = DxfNamespaces.DXF_2_0 )
     public Set<UserGroup> getUserGroupsToAlert()
     {
         return userGroupsToAlert;
@@ -164,8 +163,8 @@ public class ValidationRuleGroup
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isAlertByOrgUnits()
     {
         return alertByOrgUnits;

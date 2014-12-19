@@ -28,9 +28,11 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -38,13 +40,11 @@ import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 import org.hisp.dhis.user.User;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -69,7 +69,7 @@ public class Map
     public Map()
     {
     }
-    
+
     public Map( String name, User user, Double longitude, Double latitude, Integer zoom )
     {
         this.name = name;
@@ -84,8 +84,9 @@ public class Map
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = -180, max = 180 )
     public Double getLongitude()
     {
         return longitude;
@@ -97,8 +98,9 @@ public class Map
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = -90, max = 90 )
     public Double getLatitude()
     {
         return latitude;
@@ -110,7 +112,7 @@ public class Map
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getZoom()
     {
@@ -123,7 +125,7 @@ public class Map
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlElementWrapper( localName = "mapViews", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "mapView", namespace = DxfNamespaces.DXF_2_0 )
     public List<MapView> getMapViews()
@@ -140,18 +142,18 @@ public class Map
     public void mergeWith( IdentifiableObject other )
     {
         super.mergeWith( other );
-        
+
         if ( other.getClass().isInstance( this ) )
         {
             Map map = (Map) other;
-            
+
             user = map.getUser();
             longitude = map.getLongitude();
             latitude = map.getLatitude();
             zoom = map.getZoom();
-            
+
             mapViews.clear();
             mapViews.addAll( map.getMapViews() );
-        }            
+        }
     }
 }

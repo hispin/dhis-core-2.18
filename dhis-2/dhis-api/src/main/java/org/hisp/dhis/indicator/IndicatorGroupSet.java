@@ -41,6 +41,7 @@ import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,7 +55,7 @@ import java.util.List;
  *
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement(localName = "indicatorGroupSet", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "indicatorGroupSet", namespace = DxfNamespaces.DXF_2_0 )
 public class IndicatorGroupSet
     extends BaseIdentifiableObject
 {
@@ -186,8 +187,9 @@ public class IndicatorGroupSet
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @PropertyRange( min = 2 )
     public String getDescription()
     {
         return description;
@@ -199,8 +201,8 @@ public class IndicatorGroupSet
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean isCompulsory()
     {
         if ( compulsory == null )
@@ -216,11 +218,11 @@ public class IndicatorGroupSet
         this.compulsory = compulsory;
     }
 
-    @JsonProperty(value = "indicatorGroups")
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "indicatorGroups", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "indicatorGroup", namespace = DxfNamespaces.DXF_2_0)
+    @JsonProperty( "indicatorGroups" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "indicatorGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "indicatorGroup", namespace = DxfNamespaces.DXF_2_0 )
     public List<IndicatorGroup> getMembers()
     {
         return members;

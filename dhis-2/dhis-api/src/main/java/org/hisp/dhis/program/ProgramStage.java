@@ -178,7 +178,7 @@ public class ProgramStage
         this.remindCompleted = remindCompleted;
     }
 
-    @JsonProperty( value = "trackedEntityInstanceReminders" )
+    @JsonProperty( "trackedEntityInstanceReminders" )
     @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "trackedEntityInstanceReminders", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "trackedEntityInstanceReminder", namespace = DxfNamespaces.DXF_2_0 )
@@ -219,7 +219,7 @@ public class ProgramStage
         this.description = description;
     }
 
-    @JsonProperty( value = "programStageSections" )
+    @JsonProperty( "programStageSections" )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "programStageSections", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "programStageSection", namespace = DxfNamespaces.DXF_2_0 )

@@ -34,7 +34,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -129,12 +128,12 @@ public class OptionSet
             options.addAll( optionSet.getOptions() );
         }
     }
-    
+
     public List<String> getOptionValues()
     {
         List<String> result = new ArrayList<>();
 
-        for( Option option : options )
+        for ( Option option : options )
         {
             result.add( option.getName() );
         }
