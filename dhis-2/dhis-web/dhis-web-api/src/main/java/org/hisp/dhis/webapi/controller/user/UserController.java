@@ -318,7 +318,7 @@ public class UserController
             }
         }
         
-        String valid = securityService.validateRestore( user.getUserCredentials() );
+        String valid = securityService.validateInvite( user.getUserCredentials() );
         
         if ( valid != null )
         {
