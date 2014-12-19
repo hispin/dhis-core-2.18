@@ -44,6 +44,7 @@ import org.hisp.dhis.common.view.SharingDetailedView;
 import org.hisp.dhis.common.view.SharingExportView;
 import org.hisp.dhis.schema.PropertyType;
 import org.hisp.dhis.schema.annotation.Property;
+import org.hisp.dhis.schema.annotation.PropertyRange;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroupAccess;
 
@@ -189,6 +190,7 @@ public class BaseIdentifiableObject
     @JacksonXmlProperty( localName = "id", isAttribute = true )
     @Description( "The Unique Identifier for this Object." )
     @Property( PropertyType.IDENTIFIER )
+    @PropertyRange( min = 11, max = 11 )
     public String getUid()
     {
         return uid;
