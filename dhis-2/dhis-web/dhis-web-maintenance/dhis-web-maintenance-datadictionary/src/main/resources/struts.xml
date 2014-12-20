@@ -504,7 +504,8 @@
 
     <action name="removeDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryOptionAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <!--<param name="requiredAuthorities">F_CATEGORY_OPTION_DELETE</param>-->
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_DELETE</param>
     </action>
 
     <action name="getDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction">
@@ -590,6 +591,7 @@
     <action name="removeCategoryOptionGroup"
       class="org.hisp.dhis.dd.action.categoryoptiongroup.RemoveCategoryOptionGroupAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_DELETE</param>
     </action>
 
@@ -647,7 +649,8 @@
 
     <action name="removeCategoryOptionGroupSet"
       class="org.hisp.dhis.dd.action.categoryoptiongroupset.RemoveCategoryOptionGroupSetAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>      
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_DELETE</param>
     </action>
 
