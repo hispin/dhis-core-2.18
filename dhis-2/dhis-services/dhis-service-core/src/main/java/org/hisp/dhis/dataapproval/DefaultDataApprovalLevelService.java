@@ -277,7 +277,9 @@ public class DefaultDataApprovalLevelService
             boolean canSeeAllDimensions = CollectionUtils.isEmpty( userService.getCoDimensionConstraints( user.getUserCredentials() ) )
                 && CollectionUtils.isEmpty( userService.getCogDimensionConstraints( user.getUserCredentials() ) );
 
-            for ( DataApprovalLevel approvalLevel : getAllDataApprovalLevels() )
+            List<DataApprovalLevel> approvalLevels = getAllDataApprovalLevels();
+            
+            for ( DataApprovalLevel approvalLevel : approvalLevels )
             {
                 CategoryOptionGroupSet cogs = approvalLevel.getCategoryOptionGroupSet();
 
