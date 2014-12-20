@@ -31,6 +31,7 @@ package org.hisp.dhis.dd.action.category;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
 
@@ -51,6 +52,13 @@ public class RemoveDataElementCategoryOptionAction
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -90,7 +98,12 @@ public class RemoveDataElementCategoryOptionAction
         }
         catch ( DeleteNotAllowedException ex )
         {
-            message = ex.getMessage();
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
+                
+                return ERROR;
+            }
             
             return ERROR;
         }
