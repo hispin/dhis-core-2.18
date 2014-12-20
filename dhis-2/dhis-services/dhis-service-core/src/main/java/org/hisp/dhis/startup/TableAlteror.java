@@ -132,6 +132,10 @@ public class TableAlteror
         executeSql( "DROP TABLE expressionoptioncombo" );
         executeSql( "DROP TABLE orgunitgroupdatasets" );
         executeSql( "DROP TABLE datavalue_audit" );
+        executeSql( "DROP TABLE datadictionaryusergroupaccesses" );
+        executeSql( "DROP TABLE datadictionaryindicators" );
+        executeSql( "DROP TABLE datadictionarydataelements" );
+        executeSql( "DROP TABLE datadictionary" );
         executeSql( "ALTER TABLE categoryoptioncombo drop column userid" );
         executeSql( "ALTER TABLE categoryoptioncombo drop column publicaccess" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
