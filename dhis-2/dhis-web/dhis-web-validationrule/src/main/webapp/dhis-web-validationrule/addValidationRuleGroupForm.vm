@@ -35,15 +35,17 @@
 <form id="addValidationRuleGroupForm" action="addValidationRuleGroup.action" method="post" class="inputForm">
 
 <table>
+	<colgroup>
+      <col style="width: 120px">
+      <col>
+    </colgroup>
     <tr>
         <th colspan="2">$i18n.getString( "details" )</th>
     </tr>
-
     <tr>
         <td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td><input type="text" id="name" name="name"></td>
     </tr>
-
     <tr>
         <td><label for="description">$i18n.getString( "description" )</label></td>
         <td><input type="text" id="description" name="description"></td>
@@ -52,10 +54,10 @@
 
 <table style="margin-top: 15px;">
     <colgroup>
-      <col style="width: 120px"/>
-      <col style="width: 500px;"/>
-      <col/>
-      <col style="width: 500px;"/>
+      <col style="width: 120px">
+      <col style="width: 500px;">
+      <col>
+      <col style="width: 500px;">
     </colgroup>
 
     <tr>
@@ -103,6 +105,10 @@
 </table>
 
 <table>
+	<colgroup>
+      <col style="width: 120px">
+      <col>
+    </colgroup>
     <tr>
         <td><label for="alertByOrgUnits">$i18n.getString( "alert_by_org_units" )</label></td>
         <td>
