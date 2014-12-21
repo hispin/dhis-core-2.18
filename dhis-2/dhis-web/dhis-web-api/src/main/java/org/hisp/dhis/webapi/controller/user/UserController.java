@@ -416,11 +416,6 @@ public class UserController
                     throw new CreateAccessDeniedException( "Can't add/update user: Can't find user group with UID = " + ug.getUid() );
                 }
 
-                if ( !securityService.canRead( group ) )
-                {
-                    throw new CreateAccessDeniedException( "Can't add/update user: Can't read the group with UID = " + ug.getUid() );
-                }
-
                 if ( !authorizedToAdd && CollectionUtils.containsAny( group.getManagedByGroups(), currentUser.getGroups() ) )
                 {
                     authorizedToAdd = true;
