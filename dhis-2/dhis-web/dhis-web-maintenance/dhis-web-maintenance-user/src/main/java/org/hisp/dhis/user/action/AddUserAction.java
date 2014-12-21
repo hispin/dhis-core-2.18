@@ -43,7 +43,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -102,13 +101,6 @@ public class AddUserAction
     public void setSecurityService( SecurityService securityService )
     {
         this.securityService = securityService;
-    }
-
-    private PasswordManager passwordManager;
-
-    public void setPasswordManager( PasswordManager passwordManager )
-    {
-        this.passwordManager = passwordManager;
     }
 
     private AttributeService attributeService;
