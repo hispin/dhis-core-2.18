@@ -29,6 +29,7 @@ package org.hisp.dhis.setting;
  */
 
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -195,6 +196,14 @@ public class DefaultSystemSettingManager
     public boolean emailEnabled()
     {
         return getEmailHostName() != null;
+    }
+
+    @Override
+    public boolean systemNotificationEmailValid()
+    {
+        String address = (String) getSystemSetting( KEY_SYSTEM_NOTIFICATIONS_EMAIL );
+        
+        return address != null && ValidationUtils.emailIsValid( address );
     }
 
     @Override

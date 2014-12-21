@@ -28,16 +28,18 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.hisp.dhis.email.Email;
 import org.hisp.dhis.email.EmailService;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Halvdan Hoem Grelland <halvdanhg@gmail.com>
@@ -57,27 +59,54 @@ public class EmailController
 
     @Autowired
     private CurrentUserService currentUserService;
+    
+    @Autowired
+    private SystemSettingManager systemSettingManager;
 
     @RequestMapping( value = "/test", method = RequestMethod.POST )
-    public void sendTestEmail( HttpServletRequest request, HttpServletResponse response )
+    public void sendTestEmail( HttpServletResponse response )
     {
         String userEmail = currentUserService.getCurrentUser().getEmail();
         boolean smtpConfigured = emailService.emailEnabled();
         boolean userEmailConfigured = userEmail != null && !userEmail.isEmpty();
 
-        if ( smtpConfigured && userEmailConfigured )
-        {
-            emailService.sendTestEmail();
-
-            ContextUtils.okResponse( response, "A test email was sent to " + userEmail );
-        }
-        else if ( !smtpConfigured )
+        if ( !smtpConfigured )
         {
             ContextUtils.conflictResponse( response, "Could not send test email, SMTP server not configured" );
+            return;
         }
-        else
+        
+        if ( !userEmailConfigured )
         {
             ContextUtils.conflictResponse( response, "Could not send test email, no email configured for current user" );
+            return;
         }
+        
+        emailService.sendTestEmail();
+
+        ContextUtils.okResponse( response, "Test email was sent to " + userEmail );
+    }
+    
+    @RequestMapping( value = "/notification", method = RequestMethod.POST )
+    public void sendSystemNotificationEmail( @RequestBody Email email, HttpServletResponse response )
+    {
+        boolean smtpConfigured = emailService.emailEnabled();
+        boolean systemNotificationEmailValid = systemSettingManager.systemNotificationEmailValid();
+
+        if ( !smtpConfigured )
+        {
+            ContextUtils.conflictResponse( response, "Could not send email, SMTP server not configured" );
+            return;
+        }
+        
+        if ( !systemNotificationEmailValid )
+        {
+            ContextUtils.conflictResponse( response, "Could not send email, system notification email address not set or not valid" );
+            return;
+        }
+        
+        emailService.sendSystemEmail( email );
+        
+        ContextUtils.okResponse( response, "System notification email sent" );
     }
 }

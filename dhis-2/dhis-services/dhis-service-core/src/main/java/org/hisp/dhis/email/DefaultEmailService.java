@@ -28,15 +28,16 @@ package org.hisp.dhis.email;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Sets;
 
 /**
  * @author Halvdan Hoem Grelland <halvdanhg@gmail.com>
@@ -85,26 +86,44 @@ public class DefaultEmailService
     }
 
     @Override
-    public void sendEmail( String subject, String text, User sender, User recipient, boolean forceSend )
+    public void sendEmail( Email email )
     {
-        Set<User> recipients = new HashSet<>();
-        recipients.add( recipient );
-
-        emailMessageSender.sendMessage( subject, text, sender, new HashSet<>( recipients ), forceSend );
+        emailMessageSender.sendMessage( email.getSubject(), email.getText(), email.getSender(), email.getRecipients(), true );
     }
 
     @Override
-    public void sendEmail( String subject, String text, User sender, Set<User> recipients, boolean forceSend )
-    {
-        emailMessageSender.sendMessage( subject, text, sender, new HashSet<>( recipients ), forceSend );
-    }
-
-    @Override
-    public void sendTestEmail( )
+    public void sendTestEmail()
     {
         String instanceName = StringUtils.defaultIfBlank( (String) systemSettingManager.getSystemSetting( 
             SystemSettingManager.KEY_APPLICATION_TITLE ), TEST_DEFAULT_SENDER );
         
-        sendEmail( TEST_EMAIL_SUBJECT, TEST_EMAIL_TEXT + instanceName, null, currentUserService.getCurrentUser(), true );
+        Email email = new Email( TEST_EMAIL_SUBJECT, TEST_EMAIL_TEXT + instanceName, null, Sets.newHashSet( currentUserService.getCurrentUser() ) );
+        
+        sendEmail( email );
+    }
+
+    @Override
+    public boolean sendSystemEmail( Email email )
+    {
+        String recipient = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_SYSTEM_NOTIFICATIONS_EMAIL );
+        String appTitle = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_APPLICATION_TITLE );
+
+        if ( recipient == null || !ValidationUtils.emailIsValid( recipient ) )
+        {
+            return false;
+        }        
+        
+        User user = new User();
+        UserCredentials credentials = new UserCredentials();
+        credentials.setUsername( recipient );
+        user.setEmail( recipient );
+        
+        User sender = new User();
+        sender.setFirstName( StringUtils.trimToEmpty( appTitle ) );
+        sender.setSurname( recipient );
+        
+        emailMessageSender.sendMessage( email.getSubject(), email.getText(), sender, Sets.newHashSet( user ), true );
+        
+        return true;
     }
 }

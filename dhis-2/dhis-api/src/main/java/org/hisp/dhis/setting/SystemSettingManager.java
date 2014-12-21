@@ -184,6 +184,8 @@ public interface SystemSettingManager
     boolean selfRegistrationNoRecaptcha();
 
     boolean emailEnabled();
+    
+    boolean systemNotificationEmailValid();
 
     String googleAnalyticsUA();
 
