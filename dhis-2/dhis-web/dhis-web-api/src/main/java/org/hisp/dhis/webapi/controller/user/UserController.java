@@ -404,8 +404,7 @@ public class UserController
 
         if ( currentUser != null && user.getGroups() != null )
         {
-            boolean authorizedToAdd = currentUserService.currentUserIsSuper() ||
-                    currentUser.getUserCredentials().isAuthorized( UserGroup.AUTH_USER_ADD );
+            boolean authorizedToAdd = currentUser.getUserCredentials().isAuthorized( UserGroup.AUTH_USER_ADD );
 
             for ( UserGroup ug : user.getGroups() )
             {
@@ -413,7 +412,7 @@ public class UserController
 
                 if ( group == null )
                 {
-                    throw new CreateAccessDeniedException( "Can't add/update user: Can't find user group with UID = " + ug.getUid() );
+                    throw new CreateAccessDeniedException( "Can't add/update user, can't find user group: " + ug.getUid() );
                 }
 
                 if ( !authorizedToAdd && CollectionUtils.containsAny( group.getManagedByGroups(), currentUser.getGroups() ) )
@@ -424,7 +423,7 @@ public class UserController
 
             if ( !authorizedToAdd )
             {
-                throw new CreateAccessDeniedException( "Can't add user: User must belong to a group that you manage." );
+                throw new CreateAccessDeniedException( "Can't add user, user must belong to a group that you manage." );
             }
         }
     }
