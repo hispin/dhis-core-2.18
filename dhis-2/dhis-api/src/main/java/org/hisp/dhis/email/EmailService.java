@@ -28,10 +28,6 @@ package org.hisp.dhis.email;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.User;
-
-import java.util.Set;
-
 /**
  * @author Halvdan Hoem Grelland <halvdanhg@gmail.com>
  */
@@ -46,28 +42,24 @@ public interface EmailService
     /**
      * Sends an email to the recipient user from the sender.
      *
-     * @param subject the subject text of the email.
-     * @param text the text (body) of the email.
-     * @param sender the sender of the email.
-     * @param recipient the recipient of the email.
-     * @param forceSend if true the email is sent regardless of the recipients' email notification settings.
+     * @param email the email to send.
      */
-    void sendEmail( String subject, String text, User sender, User recipient, boolean forceSend );
-
-    /**
-     * Sends an email to multiple recipients from the sender.
-     *
-     * @param subject the subject text of the email.
-     * @param text the text (body) of the email.
-     * @param sender the sender of the email.
-     * @param recipients the recipients of the email.
-     * @param forceSend if true the email is sent regardless of the email notification settings of the recipients.
-     */
-    void sendEmail( String subject, String text, User sender, Set<User> recipients, boolean forceSend);
+    void sendEmail( Email email );
 
     /**
      * Sends an automatically generated email message to the current user.
      * Useful for testing the SMTP configuration of the system.
      */
-    void sendTestEmail( );
+    void sendTestEmail();
+    
+    /**
+     * Sends an email using the system notification email as recipient. Requires
+     * that a valid system notification email address has been specified. Only
+     * the subject and text properties of the given email are read.
+     * 
+     * @param subject the subject text of the email.
+     * @param text the text (body) of the email.
+     * @return true if an email was sent, false if not.
+     */
+    boolean sendSystemEmail( Email email );
 }
