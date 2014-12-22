@@ -205,6 +205,7 @@ public class BaseIdentifiableObject
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
     @Description( "The unique code for this Object." )
+    @Property( PropertyType.IDENTIFIER )
     public String getCode()
     {
         return code;
