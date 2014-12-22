@@ -28,29 +28,19 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE_SUM;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_DATE;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_NEGATIVE_INT;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_NUMBER;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_PERCENTAGE;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_POSITIVE_INT;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_TRUE_ONLY;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_UNIT_INTERVAL;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_ZERO_OR_POSITIVE_INT;
+import org.apache.commons.validator.routines.DateValidator;
+import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.commons.validator.routines.UrlValidator;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.datavalue.DataValue;
+import org.jdom.Verifier;
 
 import java.awt.geom.Point2D;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.validator.routines.DateValidator;
-import org.apache.commons.validator.routines.EmailValidator;
-import org.apache.commons.validator.routines.UrlValidator;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datavalue.DataValue;
+import static org.hisp.dhis.dataelement.DataElement.*;
 
 /**
  * @author Lars Helge Overland
@@ -226,11 +216,11 @@ public class ValidationUtils
 
         Matcher matcher = POINT_PATTERN.matcher( coordinate );
 
-        if( matcher.find() && matcher.groupCount() == 2 )
+        if ( matcher.find() && matcher.groupCount() == 2 )
         {
             return new Point2D.Double( Double.parseDouble( matcher.group( 1 ) ), Double.parseDouble( matcher.group( 2 ) ) );
         }
-        else return null;        
+        else return null;
     }
 
     /**
@@ -251,7 +241,7 @@ public class ValidationUtils
      * given data element. Considers the value to be valid if null or empty.
      * Returns a string if the valid is invalid, possible
      * values are:
-     * 
+     * <p/>
      * <ul>
      * <li>data_element_or_type_null_or_empty</li>
      * <li>value_length_greater_than_max_length</li>
@@ -266,7 +256,7 @@ public class ValidationUtils
      * <li>value_not_valid_date</li>
      * </ul>
      *
-     * @param value the data value.
+     * @param value       the data value.
      * @param dataElement the data element.
      * @return null if the value is valid, a string if not.
      */
@@ -293,12 +283,12 @@ public class ValidationUtils
         {
             return "value_not_numeric";
         }
-        
+
         if ( VALUE_TYPE_UNIT_INTERVAL.equals( type ) && !MathUtils.isUnitInterval( value ) )
         {
             return "value_not_unit_interval";
         }
-        
+
         if ( VALUE_TYPE_PERCENTAGE.equals( type ) && !MathUtils.isPercentage( value ) )
         {
             return "value_not_percentage";
@@ -318,12 +308,12 @@ public class ValidationUtils
         {
             return "value_not_negative_integer";
         }
-        
+
         if ( VALUE_TYPE_ZERO_OR_POSITIVE_INT.equals( type ) && !MathUtils.isZeroOrPositiveInteger( value ) )
         {
             return "value_not_zero_or_positive_integer";
         }
-        
+
         if ( VALUE_TYPE_BOOL.equals( type ) && !MathUtils.isBool( value ) )
         {
             return "value_not_bool";
@@ -333,30 +323,30 @@ public class ValidationUtils
         {
             return "value_not_true_only";
         }
-        
+
         if ( VALUE_TYPE_DATE.equals( type ) && !DateUtils.dateIsValid( value ) )
         {
             return "value_not_valid_date";
-        }        
+        }
 
         return null;
     }
-    
+
     /**
      * Indicates whether the given value is zero and not zero significant according
      * to its data element.
-     * 
-     * @param value the data value.
+     *
+     * @param value       the data value.
      * @param dataElement the data element.
      */
     public static boolean dataValueIsZeroAndInsignificant( String value, DataElement dataElement )
     {
         String aggOperator = dataElement.getAggregationOperator();
-        
-        return VALUE_TYPE_INT.equals( dataElement.getType() ) && MathUtils.isZero( value ) && !dataElement.isZeroIsSignificant() && 
-            !( AGGREGATION_OPERATOR_AVERAGE_SUM.equals( aggOperator ) || AGGREGATION_OPERATOR_AVERAGE.equals( aggOperator ) );
+
+        return VALUE_TYPE_INT.equals( dataElement.getType() ) && MathUtils.isZero( value ) && !dataElement.isZeroIsSignificant() &&
+            !(AGGREGATION_OPERATOR_AVERAGE_SUM.equals( aggOperator ) || AGGREGATION_OPERATOR_AVERAGE.equals( aggOperator ));
     }
-    
+
     /**
      * Checks if the given comment is valid. Returns null if valid and a string
      * if invalid, possible values are:
@@ -364,7 +354,7 @@ public class ValidationUtils
      * <ul>
      * <li>comment_length_greater_than_max_length</li>
      * </ul>
-     * 
+     *
      * @param comment the comment.
      * @return null if the comment is valid, a string if not.
      */
@@ -374,12 +364,48 @@ public class ValidationUtils
         {
             return null;
         }
-        
+
         if ( comment.length() > VALUE_MAX_LENGTH )
         {
             return "comment_length_greater_than_max_length";
         }
-        
+
         return null;
+    }
+
+    /**
+     * Checks to see if given parameter is a valid hex color string (#xxx and #xxxxxx).
+     *
+     * @param value Value to check against
+     * @return true if value is a hex color string, false otherwise
+     */
+    public static boolean isValidHexColor( String value )
+    {
+        if ( value == null )
+        {
+            return false;
+        }
+
+        if ( !value.startsWith( "#" ) )
+        {
+            return false;
+        }
+
+        if ( !(value.length() == 4 || value.length() == 7) )
+        {
+            return false;
+        }
+
+        byte[] bytes = value.getBytes();
+
+        for ( int i = 1; i < bytes.length; i++ )
+        {
+            if ( !Verifier.isHexDigit( (char) bytes[i] ) )
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

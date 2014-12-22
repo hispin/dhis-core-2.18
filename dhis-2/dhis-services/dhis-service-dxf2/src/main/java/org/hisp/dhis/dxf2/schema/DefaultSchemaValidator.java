@@ -118,6 +118,11 @@ public class DefaultSchemaValidator implements SchemaValidator
             validationViolations.add( new ValidationViolation( "Value is not a valid password." ) );
         }
 
+        if ( PropertyType.COLOR == property.getPropertyType() && !ValidationUtils.isValidHexColor( value ) )
+        {
+            validationViolations.add( new ValidationViolation( "Value is not a valid color (in hex format)." ) );
+        }
+
         /* TODO add proper validation for both Points and Polygons, ValidationUtils only supports points at this time
         if ( PropertyType.GEOLOCATION == property.getPropertyType() && !ValidationUtils.coordinateIsValid( value ) )
         {
