@@ -127,7 +127,7 @@ public class ValidationUtils
      */
     public static boolean passwordIsValid( String password )
     {
-        if ( password == null || password.trim().length() < 8 || password.trim().length() > 80 )
+        if ( password == null || password.trim().length() < 8 || password.trim().length() > 35 )
         {
             return false;
         }
