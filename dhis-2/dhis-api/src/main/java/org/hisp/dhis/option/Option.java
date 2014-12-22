@@ -28,10 +28,13 @@
 
 package org.hisp.dhis.option;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
-
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.schema.PropertyType;
+import org.hisp.dhis.schema.annotation.Property;
 
 /**
  * @author Chau Thu Tran
@@ -44,7 +47,7 @@ public class Option
     {
         setAutoFields();
     }
-    
+
     public Option( String name, String code )
     {
         setAutoFields();
@@ -62,5 +65,14 @@ public class Option
     public boolean haveUniqueCode()
     {
         return false;
+    }
+
+    @Override
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    @Property( PropertyType.TEXT )
+    public String getCode()
+    {
+        return super.getCode();
     }
 }
