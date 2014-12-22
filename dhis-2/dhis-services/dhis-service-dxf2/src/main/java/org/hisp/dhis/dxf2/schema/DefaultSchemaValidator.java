@@ -29,7 +29,6 @@ package org.hisp.dhis.dxf2.schema;
  */
 
 import org.apache.commons.validator.GenericValidator;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.schema.Property;
 import org.hisp.dhis.schema.PropertyType;
 import org.hisp.dhis.schema.Schema;
@@ -51,7 +50,7 @@ public class DefaultSchemaValidator implements SchemaValidator
     private SchemaService schemaService;
 
     @Override
-    public <T extends IdentifiableObject> List<ValidationViolation> validate( T object )
+    public List<ValidationViolation> validate( Object object )
     {
         if ( object == null || schemaService.getSchema( object.getClass() ) == null )
         {
@@ -68,7 +67,7 @@ public class DefaultSchemaValidator implements SchemaValidator
 
             if ( value == null )
             {
-                if ( !property.isNullable() )
+                if ( !property.isRequired() )
                 {
                     validationViolations.add( new ValidationViolation( "Property '" + property.getName() + "' can not be null." ) );
                 }

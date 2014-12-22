@@ -28,9 +28,6 @@ package org.hisp.dhis.dxf2.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dxf2.webmessage.WebMessage;
-
 import java.util.List;
 
 /**
@@ -44,5 +41,5 @@ public interface SchemaValidator
      * @param object Object to validate
      * @return WebMessage containing validation response
      */
-    <T extends IdentifiableObject> List<ValidationViolation> validate( T object );
+    List<ValidationViolation> validate( Object object );
 }

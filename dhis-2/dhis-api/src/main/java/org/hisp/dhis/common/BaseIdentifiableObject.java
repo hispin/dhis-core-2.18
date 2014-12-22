@@ -37,6 +37,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.Validate;
 import org.hisp.dhis.acl.Access;
+import org.hisp.dhis.acl.AccessStringHelper;
 import org.hisp.dhis.common.annotation.Description;
 import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.SharingBasicView;
@@ -106,7 +107,7 @@ public class BaseIdentifiableObject
     /**
      * Access string for public access.
      */
-    protected String publicAccess;
+    protected String publicAccess = AccessStringHelper.DEFAULT;
 
     /**
      * Owner of this object.

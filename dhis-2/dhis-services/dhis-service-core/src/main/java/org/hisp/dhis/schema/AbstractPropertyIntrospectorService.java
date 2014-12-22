@@ -147,7 +147,7 @@ public abstract class AbstractPropertyIntrospectorService
         while ( propertyIterator.hasNext() )
         {
             Property property = new Property( klass );
-            property.setNullable( true );
+            property.setRequired( false );
             property.setPersisted( true );
             property.setOwner( true );
 
@@ -186,7 +186,7 @@ public abstract class AbstractPropertyIntrospectorService
                 Column column = (Column) hibernateProperty.getColumnIterator().next();
 
                 property.setUnique( column.isUnique() );
-                property.setNullable( column.isNullable() );
+                property.setRequired( !column.isNullable() );
 
                 property.setMax( column.getLength() );
                 property.setMin( 0 );
