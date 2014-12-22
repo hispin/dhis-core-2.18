@@ -396,11 +396,11 @@ public class ValidationUtils
             return false;
         }
 
-        byte[] bytes = value.getBytes();
+        char[] chars = value.toCharArray();
 
-        for ( int i = 1; i < bytes.length; i++ )
+        for ( int i = 1; i < chars.length; i++ )
         {
-            if ( !Verifier.isHexDigit( (char) bytes[i] ) )
+            if ( !Verifier.isHexDigit( chars[i] ) )
             {
                 return false;
             }
