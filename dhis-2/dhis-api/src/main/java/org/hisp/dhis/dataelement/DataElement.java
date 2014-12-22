@@ -361,6 +361,24 @@ public class DataElement
     }
 
     /**
+     * Indicates whether collecting data for future periods should be allowed for
+     * this data element.
+     * @return true if all the associated data sets allow future periods, false otherwise.
+     */
+    public boolean isAllowFuturePeriods()
+    {
+        for ( DataSet dataSet : dataSets )
+        {
+            if( dataSet != null && !dataSet.isAllowFuturePeriods() )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Returns the frequency order for the PeriodType of this DataElement. If no
      * PeriodType exists, 0 is returned.
      */
