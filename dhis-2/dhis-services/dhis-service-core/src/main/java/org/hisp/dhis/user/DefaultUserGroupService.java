@@ -28,11 +28,13 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Collection;
 import java.util.List;
+
+import org.hisp.dhis.acl.AclService;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class DefaultUserGroupService
@@ -49,6 +51,20 @@ public class DefaultUserGroupService
         this.userGroupStore = userGroupStore;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
+    private AclService aclService;
+
+    public void setAclService( AclService aclService )
+    {
+        this.aclService = aclService;
+    }
+    
     // -------------------------------------------------------------------------
     // UserGroup
     // -------------------------------------------------------------------------
@@ -87,6 +103,66 @@ public class DefaultUserGroupService
     public UserGroup getUserGroup( String uid )
     {
         return userGroupStore.getByUid( uid );
+    }
+
+    @Override
+    public boolean canAddOrRemove( User user, Collection<String> uids )
+    {
+        User currentUser = currentUserService.getCurrentUser();
+        
+        for ( String uid : uids )
+        {
+            UserGroup userGroup = getUserGroup( uid );
+            
+            if ( userGroup == null )
+            {
+                return false;
+            }
+            
+            boolean canUpdate = aclService.canUpdate( currentUser, userGroup );
+            boolean canManage = currentUser.canManage( userGroup );
+            
+            if ( !canUpdate && !canManage )
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    @Override
+    public void addUserToGroups( User user, Collection<String> uids )
+    {
+        if ( !canAddOrRemove( user, uids ) )
+        {
+            throw new UpdateAccessDeniedException( user.toString() );
+        }
+        
+        for ( String uid : uids )
+        {
+            UserGroup userGroup = getUserGroup( uid );
+            user.getGroups().add( userGroup );
+            userGroup.getMembers().add( user );
+            userGroupStore.updateNoAcl( userGroup );
+        }
+    }
+
+    @Override
+    public void removeUserFromGroups( User user, Collection<String> uids )
+    {
+        if ( !canAddOrRemove( user, uids ) )
+        {
+            throw new UpdateAccessDeniedException( user.toString() );
+        }
+        
+        for ( String uid : uids )
+        {
+            UserGroup userGroup = getUserGroup( uid );
+            user.getGroups().remove( userGroup );
+            userGroup.getMembers().remove( user );
+            userGroupStore.updateNoAcl( userGroup );
+        }        
     }
 
     @Override
