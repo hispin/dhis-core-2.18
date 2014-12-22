@@ -66,9 +66,13 @@ public class DefaultSchemaValidator implements SchemaValidator
         {
             Object value = ReflectionUtils.invokeMethod( object, property.getGetterMethod() );
 
-            if ( !property.isNullable() && value == null )
+            if ( value == null )
             {
-                validationViolations.add( new ValidationViolation( "Property '" + property.getName() + "' can not be null." ) );
+                if ( !property.isNullable() )
+                {
+                    validationViolations.add( new ValidationViolation( "Property '" + property.getName() + "' can not be null." ) );
+                }
+
                 continue;
             }
 
