@@ -33,7 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class UserSettingDeletionHandler
     extends DeletionHandler
@@ -43,7 +42,7 @@ public class UserSettingDeletionHandler
     // -------------------------------------------------------------------------
 
     @Autowired
-    private UserService userService;
+    private UserSettingService userSettingService;
     
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
@@ -58,9 +57,9 @@ public class UserSettingDeletionHandler
     @Override
     public void deleteUser( User user )
     {
-        for ( UserSetting setting : userService.getAllUserSettings( user ) )
+        for ( UserSetting setting : userSettingService.getAllUserSettings( user ) )
         {
-            userService.deleteUserSetting( setting );
+            userSettingService.deleteUserSetting( setting );
         }
     }
 }

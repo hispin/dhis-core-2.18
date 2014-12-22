@@ -50,4 +50,11 @@ public interface UserSettingStore
      * @return a Collection of UserSettings.
      */
     Collection<UserSetting> getUserSettings( String name );
+
+    /**
+     * Removes all user settings associated with the given user.
+     * 
+     * @param user the user.
+     */
+    void removeUserSettings( User user );
 }

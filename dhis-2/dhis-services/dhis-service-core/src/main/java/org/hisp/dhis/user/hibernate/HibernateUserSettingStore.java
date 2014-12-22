@@ -117,4 +117,14 @@ public class HibernateUserSettingStore
 
         session.delete( userSetting );
     }
+
+    @Override
+    public void removeUserSettings( User user )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        String hql = "delete from UserSetting us where us.user = :user";
+
+        session.createQuery( hql ).setEntity( "user", user ).executeUpdate();
+    }
 }

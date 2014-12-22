@@ -115,6 +115,9 @@ public class AddUserAction
 
     @Autowired
     private CurrentUserService currentUserService;
+    
+    @Autowired
+    private UserSettingService userSettingService;
 
     @Autowired
     private UserGroupService userGroupService;
@@ -391,8 +394,8 @@ public class AddUserAction
         // User settings
         // ---------------------------------------------------------------------
 
-        userService.addUserSetting( new UserSetting( user, UserSettingService.KEY_UI_LOCALE, LocaleUtils.getLocale( localeUi ) ) );
-        userService.addUserSetting( new UserSetting( user, UserSettingService.KEY_DB_LOCALE, LocaleUtils.getLocale( localeDb ) ) );
+        userSettingService.addUserSetting( new UserSetting( user, UserSettingService.KEY_UI_LOCALE, LocaleUtils.getLocale( localeUi ) ) );
+        userSettingService.addUserSetting( new UserSetting( user, UserSettingService.KEY_DB_LOCALE, LocaleUtils.getLocale( localeDb ) ) );
 
         if ( ACCOUNT_ACTION_INVITE.equals( accountAction ) )
         {

@@ -68,12 +68,11 @@ public interface UserStore
     Collection<User> getUsersByPhoneNumber( String phoneNumber );
 
     /**
-     * Removes all user settings associated with the given user.
+     * Returns all users with the given name. Matches on the first name and
+     * surname properties of the user.
      * 
-     * @param user the user.
+     * @param name the name.
+     * @return a Collection of Users.
      */
-    void removeUserSettings( User user );
-
     Collection<User> getUsersByName( String name );
-
 }

@@ -32,6 +32,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The main interface for working with user settings. Implementation need to get
@@ -59,6 +60,94 @@ public interface UserSettingService
     final String DEFAULT_ANALYSIS_DISPLAY_PROPERTY = "name";
     
     final List<Integer> DASHBOARD_CHARTS_TO_DISPLAY = Arrays.asList( 4, 6, 8 );
+
+    // -------------------------------------------------------------------------
+    // UserSettings
+    // -------------------------------------------------------------------------
+
+    /**
+     * Adds a UserSetting.
+     *
+     * @param userSetting the UserSetting to add.
+     */
+    void addUserSetting( UserSetting userSetting );
+
+    /**
+     * If a matching UserSetting exists, based on its user and name, it will be
+     * updated, if not, the given UserSetting will be added.
+     *
+     * @param userSetting the UserSetting.
+     */
+    void addOrUpdateUserSetting( UserSetting userSetting );
+
+    /**
+     * Updates a UserSetting.
+     *
+     * @param userSetting the UserSetting to update.
+     */
+    void updateUserSetting( UserSetting userSetting );
+
+    /**
+     * Retrieves the UserSetting associated with the given User for the given
+     * UserSetting name.
+     *
+     * @param user the User.
+     * @param name the name of the UserSetting.
+     * @return the UserSetting.
+     */
+    UserSetting getUserSetting( User user, String name );
+
+    /**
+     * Retrieves a user setting value for the given user and setting name. Returns
+     * the given default value if the setting does not exist or the setting value
+     * is null.
+     *
+     * @param user         the user.
+     * @param name         the setting name.
+     * @param defaultValue the default value.
+     * @return a setting value.
+     */
+    Serializable getUserSettingValue( User user, String name, Serializable defaultValue );
+
+    /**
+     * Retrieves all UserSettings for the given User.
+     *
+     * @param user the User.
+     * @return a Collection of UserSettings.
+     */
+    Collection<UserSetting> getAllUserSettings( User user );
+
+    /**
+     * Retrieves all UserSettings with the given name.
+     * 
+     * @param name the name.
+     * @return a Collection of UserSettings.
+     */
+    Collection<UserSetting> getUserSettings( String name );
+
+    /**
+     * Deletes a UserSetting.
+     *
+     * @param userSetting the UserSetting to delete.
+     */
+    void deleteUserSetting( UserSetting userSetting );
+
+    /**
+     * Returns a Map with an entry for all UserSettings with the given name where
+     * the key is the user and the value is the value of the user setting.
+     *
+     * @param name         the name of the UserSetting.
+     * @param defaultValue the value to return if the UserSetting value is null.
+     * @return a Map.
+     */
+    Map<User, Serializable> getUserSettings( String name, Serializable defaultValue );
+
+    /**
+     * Removes all user settings associated with the given user.
+     *
+     * @param user the user.
+     */
+    void removeUserSettings( User user );
 
     /**
      * Saves the name/value pair as a user setting connected to the currently
@@ -107,7 +196,7 @@ public interface UserSettingService
      * 
      * @param name the name of the user setting.
      * @param defaultValue the value to return if there is no current user or no
-     *        user setting correspoinding to the given name.
+     *        user setting corresponding to the given name.
      * @return the value corresponding to the names user setting, or the default
      *         value if there is no current user or matching user setting.
      */

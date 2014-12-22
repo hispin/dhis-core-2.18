@@ -108,6 +108,9 @@ public class UpdateUserAction
     private IdentifiableObjectManager manager;
 
     @Autowired
+    private UserSettingService userSettingService;
+
+    @Autowired
     private UserGroupService userGroupService;
 
     @Autowired
@@ -371,8 +374,8 @@ public class UpdateUserAction
         // User settings
         // ---------------------------------------------------------------------
 
-        userService.addOrUpdateUserSetting( new UserSetting( user, UserSettingService.KEY_UI_LOCALE, LocaleUtils.getLocale( localeUi ) ) );
-        userService.addOrUpdateUserSetting( new UserSetting( user, UserSettingService.KEY_DB_LOCALE, LocaleUtils.getLocale( localeDb ) ) );
+        userSettingService.addOrUpdateUserSetting( new UserSetting( user, UserSettingService.KEY_UI_LOCALE, LocaleUtils.getLocale( localeUi ) ) );
+        userSettingService.addOrUpdateUserSetting( new UserSetting( user, UserSettingService.KEY_DB_LOCALE, LocaleUtils.getLocale( localeDb ) ) );
 
         // ---------------------------------------------------------------------
         // User groups
