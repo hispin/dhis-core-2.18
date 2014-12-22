@@ -248,6 +248,18 @@ public class User
     {
         return userCredentials != null && userCredentials.isSuper();
     }
+    
+    /**
+     * Indicates whether this user can manage the given user group. This is derived
+     * from which user groups are managed by the given group.
+     * 
+     * @param userGroup the user group to test.
+     * @return true if the given user group can be managed by this user, false if not.
+     */
+    public boolean canManage( UserGroup userGroup )
+    {
+        return userGroup != null && CollectionUtils.containsAny( groups, userGroup.getManagedByGroups() );
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
