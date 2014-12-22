@@ -44,7 +44,7 @@ import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.UserSettingService;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -78,11 +78,11 @@ public class EmailMessageSender
         this.configurationService = configurationService;
     }
     
-    private UserService userService;
+    private UserSettingService userSettingService;
 
-    public void setUserService( UserService userService )
+    public void setUserSettingService( UserSettingService userSettingService )
     {
-        this.userService = userService;
+        this.userSettingService = userSettingService;
     }
 
     // -------------------------------------------------------------------------
@@ -124,7 +124,7 @@ public class EmailMessageSender
             
             for ( User user : users )
             {
-                boolean doSend = forceSend || (Boolean) userService.getUserSettingValue( user, KEY_MESSAGE_EMAIL_NOTIFICATION, false );
+                boolean doSend = forceSend || (Boolean) userSettingService.getUserSettingValue( user, KEY_MESSAGE_EMAIL_NOTIFICATION, false );
                 
                 if ( doSend && user.getEmail() != null && !user.getEmail().trim().isEmpty() )
                 {

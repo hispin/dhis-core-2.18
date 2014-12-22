@@ -1,17 +1,5 @@
 package org.hisp.dhis.user;
 
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -39,6 +27,16 @@ import java.util.Set;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Chau Thu Tran
@@ -404,88 +402,6 @@ public interface UserService
      */
     void canIssueFilter( Collection<UserAuthorityGroup> userRoles );
     
-    // -------------------------------------------------------------------------
-    // UserSettings
-    // -------------------------------------------------------------------------
-
-    /**
-     * Adds a UserSetting.
-     *
-     * @param userSetting the UserSetting to add.
-     */
-    void addUserSetting( UserSetting userSetting );
-
-    /**
-     * If a matching UserSetting exists, based on its user and name, it will be
-     * updated, if not, the given UserSetting will be added.
-     *
-     * @param userSetting the UserSetting.
-     */
-    void addOrUpdateUserSetting( UserSetting userSetting );
-
-    /**
-     * Updates a UserSetting.
-     *
-     * @param userSetting the UserSetting to update.
-     */
-    void updateUserSetting( UserSetting userSetting );
-
-    /**
-     * Retrieves the UserSetting associated with the given User for the given
-     * UserSetting name.
-     *
-     * @param user the User.
-     * @param name the name of the UserSetting.
-     * @return the UserSetting.
-     */
-    UserSetting getUserSetting( User user, String name );
-
-    /**
-     * Retrieves a user setting value for the given user and setting name. Returns
-     * the given default value if the setting does not exist or the setting value
-     * is null.
-     *
-     * @param user         the user.
-     * @param name         the setting name.
-     * @param defaultValue the default value.
-     * @return a setting value.
-     */
-    Serializable getUserSettingValue( User user, String name, Serializable defaultValue );
-
-    /**
-     * Retrieves all UserSettings for the given User.
-     *
-     * @param user the User.
-     * @return a Collection of UserSettings.
-     */
-    Collection<UserSetting> getAllUserSettings( User user );
-
-    Collection<UserSetting> getUserSettings( String name );
-
-    /**
-     * Deletes a UserSetting.
-     *
-     * @param userSetting the UserSetting to delete.
-     */
-    void deleteUserSetting( UserSetting userSetting );
-
-    /**
-     * Returns a Map with an entry for all UserSettings with the given name where
-     * the key is the user and the value is the value of the user setting.
-     *
-     * @param name         the name of the UserSetting.
-     * @param defaultValue the value to return if the UserSetting value is null.
-     * @return a Map.
-     */
-    Map<User, Serializable> getUserSettings( String name, Serializable defaultValue );
-
-    /**
-     * Removes all user settings associated with the given user.
-     *
-     * @param user the user.
-     */
-    void removeUserSettings( User user );
-
     Collection<User> getUsersByName( String name );
 
     Collection<String> getUsernames( String query, Integer max );

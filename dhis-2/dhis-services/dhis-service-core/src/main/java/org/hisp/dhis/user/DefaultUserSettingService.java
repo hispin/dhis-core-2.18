@@ -33,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -53,11 +55,101 @@ public class DefaultUserSettingService
         this.currentUserService = currentUserService;
     }
 
+    private UserSettingStore userSettingStore;
+
+    public void setUserSettingStore( UserSettingStore userSettingStore )
+    {
+        this.userSettingStore = userSettingStore;
+    }
+
     private UserService userService;
 
     public void setUserService( UserService userService )
     {
         this.userService = userService;
+    }
+
+    // -------------------------------------------------------------------------
+    // UserSettingService implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void addUserSetting( UserSetting userSetting )
+    {
+        userSettingStore.addUserSetting( userSetting );
+    }
+
+    @Override
+    public void addOrUpdateUserSetting( UserSetting userSetting )
+    {
+        UserSetting setting = getUserSetting( userSetting.getUser(), userSetting.getName() );
+
+        if ( setting != null )
+        {
+            setting.mergeWith( userSetting );
+            updateUserSetting( setting );
+        }
+        else
+        {
+            addUserSetting( userSetting );
+        }
+    }
+
+    @Override
+    public void updateUserSetting( UserSetting userSetting )
+    {
+        userSettingStore.updateUserSetting( userSetting );
+    }
+
+    @Override
+    public void deleteUserSetting( UserSetting userSetting )
+    {
+        userSettingStore.deleteUserSetting( userSetting );
+    }
+
+    @Override
+    public Collection<UserSetting> getAllUserSettings( User user )
+    {
+        return userSettingStore.getAllUserSettings( user );
+    }
+
+    @Override
+    public Collection<UserSetting> getUserSettings( String name )
+    {
+        return userSettingStore.getUserSettings( name );
+    }
+
+    @Override
+    public UserSetting getUserSetting( User user, String name )
+    {
+        return userSettingStore.getUserSetting( user, name );
+    }
+
+    @Override
+    public Serializable getUserSettingValue( User user, String name, Serializable defaultValue )
+    {
+        UserSetting setting = getUserSetting( user, name );
+
+        return setting != null && setting.getValue() != null ? setting.getValue() : defaultValue;
+    }
+
+    @Override
+    public Map<User, Serializable> getUserSettings( String name, Serializable defaultValue )
+    {
+        Map<User, Serializable> map = new HashMap<>();
+
+        for ( UserSetting setting : userSettingStore.getUserSettings( name ) )
+        {
+            map.put( setting.getUser(), setting.getValue() != null ? setting.getValue() : defaultValue );
+        }
+
+        return map;
+    }
+
+    @Override
+    public void removeUserSettings( User user )
+    {
+        userSettingStore.removeUserSettings( user );
     }
 
     // -------------------------------------------------------------------------
@@ -90,7 +182,7 @@ public class DefaultUserSettingService
             return;
         }
 
-        UserSetting userSetting = userService.getUserSetting( user, name );
+        UserSetting userSetting = getUserSetting( user, name );
 
         if ( userSetting == null )
         {
@@ -99,13 +191,13 @@ public class DefaultUserSettingService
             userSetting.setName( name );
             userSetting.setValue( value );
 
-            userService.addUserSetting( userSetting );
+            addUserSetting( userSetting );
         }
         else
         {
             userSetting.setValue( value );
 
-            userService.updateUserSetting( userSetting );
+            updateUserSetting( userSetting );
         }
     }
 
@@ -132,7 +224,7 @@ public class DefaultUserSettingService
             return null;
         }
 
-        UserSetting userSetting = userService.getUserSetting( currentUser, name );
+        UserSetting userSetting = getUserSetting( currentUser, name );
 
         if ( userSetting != null )
         {
@@ -152,7 +244,7 @@ public class DefaultUserSettingService
             return defaultValue;
         }
 
-        UserSetting userSetting = userService.getUserSetting( currentUser, name );
+        UserSetting userSetting = getUserSetting( currentUser, name );
 
         if ( userSetting != null )
         {
@@ -172,7 +264,7 @@ public class DefaultUserSettingService
             return Collections.emptySet();
         }
 
-        return userService.getAllUserSettings( currentUser );
+        return getAllUserSettings( currentUser );
     }
 
     @Override
@@ -182,7 +274,7 @@ public class DefaultUserSettingService
 
         if ( currentUser != null )
         {
-            userService.deleteUserSetting( userService.getUserSetting( currentUser, name ) );
+            deleteUserSetting( getUserSetting( currentUser, name ) );
         }
     }
 }

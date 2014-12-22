@@ -52,6 +52,8 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.UserSettingService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -107,6 +109,9 @@ public class SetupTreeAction
     {
         this.localeManager = localeManager;
     }
+
+    @Autowired
+    private UserSettingService userSettingService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -233,9 +238,9 @@ public class SetupTreeAction
 
             attributeValues = AttributeUtils.getAttributeValueMap( user.getAttributeValues() );
             
-            currentLocale = (Locale) userService.getUserSettingValue( user, KEY_UI_LOCALE, LocaleManager.DHIS_STANDARD_LOCALE );
+            currentLocale = (Locale) userSettingService.getUserSettingValue( user, KEY_UI_LOCALE, LocaleManager.DHIS_STANDARD_LOCALE );
             
-            currentLocaleDb = (Locale) userService.getUserSettingValue( user, KEY_DB_LOCALE, null );
+            currentLocaleDb = (Locale) userSettingService.getUserSettingValue( user, KEY_DB_LOCALE, null );
         }
         else
         {            

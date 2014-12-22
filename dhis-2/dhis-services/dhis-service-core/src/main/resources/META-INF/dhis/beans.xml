@@ -585,6 +585,7 @@
 
   <bean id="org.hisp.dhis.user.UserSettingService" class="org.hisp.dhis.user.DefaultUserSettingService">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="userSettingStore" ref="org.hisp.dhis.user.UserSettingStore" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
@@ -592,7 +593,6 @@
     <property name="userStore" ref="org.hisp.dhis.user.UserStore" />
     <property name="userCredentialsStore" ref="org.hisp.dhis.user.UserCredentialsStore" />
     <property name="userAuthorityGroupStore" ref="org.hisp.dhis.user.UserAuthorityGroupStore" />
-    <property name="userSettingStore" ref="org.hisp.dhis.user.UserSettingStore" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
@@ -637,7 +637,7 @@
   <bean id="emailMessageSender" class="org.hisp.dhis.message.EmailMessageSender">
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
   </bean>
 
   <bean id="org.hisp.dhis.email.EmailService" class="org.hisp.dhis.email.DefaultEmailService">
@@ -888,7 +888,6 @@
     <property name="smsCommandService" ref="smsCommandService" />
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
     <property name="smsMessageSender" ref="org.hisp.dhis.sms.SmsMessageSender" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="incomingSmsService" ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
   </bean>
 
@@ -900,10 +899,7 @@
     <property name="incomingSmsService" ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
   </bean>
 
-  <bean id="org.hisp.dhis.sms.SmsMessageSender" class="org.hisp.dhis.sms.SmsMessageSender">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
-  </bean>
+  <bean id="org.hisp.dhis.sms.SmsMessageSender" class="org.hisp.dhis.sms.SmsMessageSender"/>
 
   <bean id="org.hisp.dhis.sms.task.SendSmsTask" class="org.hisp.dhis.sms.task.SendSmsTask" />
 

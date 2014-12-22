@@ -117,6 +117,9 @@ public class DefaultSecurityService
 
     @Autowired
     private CurrentUserService currentUserService;
+    
+    @Autowired
+    private UserSettingService userSettingService;
 
     @Autowired
     private AclService aclService;
@@ -231,7 +234,7 @@ public class DefaultSecurityService
         vars.put( "username", credentials.getUsername() );
 
         User user = credentials.getUser();
-        Locale locale = (Locale) userService.getUserSettingValue( user, UserSettingService.KEY_UI_LOCALE, LocaleManager.DHIS_STANDARD_LOCALE );
+        Locale locale = (Locale) userSettingService.getUserSettingValue( user, UserSettingService.KEY_UI_LOCALE, LocaleManager.DHIS_STANDARD_LOCALE );
 
         I18n i18n = i18nManager.getI18n( locale );
         vars.put( "i18n" , i18n );

@@ -29,7 +29,9 @@ package org.hisp.dhis.user.action;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import java.util.Collection;
+
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.security.migration.MigrationPasswordManager;
 import org.hisp.dhis.user.CurrentUserService;
@@ -37,6 +39,8 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSetting;
+import org.hisp.dhis.user.UserSettingService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class DeleteCurrentUserAction 
     implements Action
@@ -61,6 +65,13 @@ public class DeleteCurrentUserAction
     {
         this.userService = userService;
     }
+
+    @Autowired
+    private UserSettingService userSettingService;
+
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
 
     private I18n i18n;
 
@@ -100,10 +111,14 @@ public class DeleteCurrentUserAction
         this.oldPassword = oldPassword;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute() throws Exception
     {
-        message = " ";
+        message = "";
         User user = userService.getUser( currentUserService.getCurrentUser().getId() );
 
         UserCredentials userCredentials = userService.getUserCredentials( user );
@@ -130,11 +145,11 @@ public class DeleteCurrentUserAction
         }
         else
         {
-            Collection<UserSetting> userSettings = userService.getAllUserSettings( user );
+            Collection<UserSetting> userSettings = userSettingService.getAllUserSettings( user );
 
             for ( UserSetting userSetting : userSettings )
             {
-                userService.deleteUserSetting( userSetting );
+                userSettingService.deleteUserSetting( userSetting );
             }
 
             if ( userService.isLastSuperUser( userCredentials ) )

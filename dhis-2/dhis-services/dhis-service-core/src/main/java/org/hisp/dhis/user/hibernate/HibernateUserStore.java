@@ -116,14 +116,6 @@ public class HibernateUserStore
     }
 
     @Override
-    public void removeUserSettings( User user )
-    {
-        String hql = "delete from UserSetting us where us.user = :user";
-
-        getQuery( hql ).setEntity( "user", user ).executeUpdate();
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public List<User> getUsersByName( String name )
     {

@@ -30,15 +30,12 @@ package org.hisp.dhis.user;
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -95,13 +92,6 @@ public class DefaultUserService
         this.userAuthorityGroupStore = userAuthorityGroupStore;
     }
     
-    private UserSettingStore userSettingStore;
-
-    public void setUserSettingStore( UserSettingStore userSettingStore )
-    {
-        this.userSettingStore = userSettingStore;
-    }
-
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -714,88 +704,9 @@ public class DefaultUserService
     // -------------------------------------------------------------------------
 
     @Override
-    public void addUserSetting( UserSetting userSetting )
-    {
-        userSettingStore.addUserSetting( userSetting );
-    }
-
-    @Override
-    public void addOrUpdateUserSetting( UserSetting userSetting )
-    {
-        UserSetting setting = getUserSetting( userSetting.getUser(), userSetting.getName() );
-
-        if ( setting != null )
-        {
-            setting.mergeWith( userSetting );
-            updateUserSetting( setting );
-        }
-        else
-        {
-            addUserSetting( userSetting );
-        }
-    }
-
-    @Override
-    public void updateUserSetting( UserSetting userSetting )
-    {
-        userSettingStore.updateUserSetting( userSetting );
-    }
-
-    @Override
-    public void deleteUserSetting( UserSetting userSetting )
-    {
-        userSettingStore.deleteUserSetting( userSetting );
-    }
-
-    @Override
-    public Collection<UserSetting> getAllUserSettings( User user )
-    {
-        return userSettingStore.getAllUserSettings( user );
-    }
-
-    @Override
-    public Collection<UserSetting> getUserSettings( String name )
-    {
-        return userSettingStore.getUserSettings( name );
-    }
-
-    @Override
-    public UserSetting getUserSetting( User user, String name )
-    {
-        return userSettingStore.getUserSetting( user, name );
-    }
-
-    @Override
-    public Serializable getUserSettingValue( User user, String name, Serializable defaultValue )
-    {
-        UserSetting setting = getUserSetting( user, name );
-
-        return setting != null && setting.getValue() != null ? setting.getValue() : defaultValue;
-    }
-
-    @Override
-    public Map<User, Serializable> getUserSettings( String name, Serializable defaultValue )
-    {
-        Map<User, Serializable> map = new HashMap<>();
-
-        for ( UserSetting setting : userSettingStore.getUserSettings( name ) )
-        {
-            map.put( setting.getUser(), setting.getValue() != null ? setting.getValue() : defaultValue );
-        }
-
-        return map;
-    }
-
-    @Override
     public Collection<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> units )
     {
         return userStore.getUsersByOrganisationUnits( units );
-    }
-
-    @Override
-    public void removeUserSettings( User user )
-    {
-        userStore.removeUserSettings( user );
     }
 
     @Override

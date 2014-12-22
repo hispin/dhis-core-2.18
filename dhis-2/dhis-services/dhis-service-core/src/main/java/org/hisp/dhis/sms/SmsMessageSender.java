@@ -43,7 +43,6 @@ import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,26 +63,15 @@ public class SmsMessageSender
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private CurrentUserService currentUserService;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserSettingService userSettingService;
 
     @Autowired
     private OutboundSmsTransportService outboundSmsTransportService;
 
-    /**
-     * Note this methods is invoked asynchronously.
-     */
     // @Async
     @Override
     public String sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
@@ -187,8 +175,7 @@ public class SmsMessageSender
         else
         // Receiver is user
         {
-            UserSetting userSetting = userService
-                .getUserSetting( user, UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION );
+            UserSetting userSetting = userSettingService.getUserSetting( user, UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION );
 
             return (userSetting != null && userSetting.getValue() != null) ? (Boolean) userSetting.getValue() : false;
         }
