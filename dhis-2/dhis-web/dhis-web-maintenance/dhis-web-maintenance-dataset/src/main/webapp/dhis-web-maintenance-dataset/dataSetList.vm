@@ -19,6 +19,7 @@
 <div id="contextMenu" class="contextMenu" style="width: 240px;">
   <ul id="contextMenuItems" class="contextMenuItems">
     <li data-enabled="canUpdate"><a data-target-fn="defineDataSetAssociationsForm"><i class="fa fa-plus"></i>&nbsp;&nbsp;$i18n.getString( "define_associations" )</a></li>
+	 <li data-enabled="canUpdate"><a data-target-fn="viewSectionList"><i class="fa fa-plus"></i>&nbsp;&nbsp;$i18n.getString( "view_sections" )</a></li>
     <li data-enabled="canManage"><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>
     <li data-enabled="canUpdate"><a data-target-fn="editDataSetForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
     <li data-enabled="canUpdate"><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>

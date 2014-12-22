@@ -63,7 +63,7 @@ public class EditSectionAction
     {
         return sectionId;
     }
-    
+
     public void setSectionId( Integer sectionId )
     {
         this.sectionId = sectionId;
@@ -111,7 +111,7 @@ public class EditSectionAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     @Override
     public String execute()
         throws Exception
@@ -121,7 +121,7 @@ public class EditSectionAction
         dataSet = section.getDataSet();
 
         categoryCombo = section.getCategoryCombo();
-        
+
         return SUCCESS;
     }
 }

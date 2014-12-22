@@ -72,6 +72,11 @@ public class SaveSectionSortOrderAction
         this.dataSetId = dataSetId;
     }
 
+    public int getDataSetId()
+    {
+        return dataSetId;
+    }
+
     private List<String> sections;
         
     public void setSections( List<String> sections )

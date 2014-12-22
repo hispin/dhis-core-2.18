@@ -19,20 +19,18 @@
     <action name="section" class="org.hisp.dhis.dataset.action.section.SectionListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/sectionList.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">javascript/section.js</param>
     </action>
 
     <action name="getSectionOptions" class="org.hisp.dhis.dataset.action.section.GetSectionOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/addSection.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">javascript/section.js</param>
       <param name="requiredAuthorities">F_SECTION_ADD</param>
     </action>
 
     <action name="addSection" class="org.hisp.dhis.dataset.action.section.AddSectionAction">
-      <result name="success" type="redirect">section.action</result>
+      <result name="success" type="redirect">section.action?dataSetId=${dataSetId}&amp;categoryComboId=${categoryComboId}</result>
       <param name="requiredAuthorities">F_SECTION_ADD</param>
     </action>
 
@@ -52,13 +50,12 @@
     <action name="editSection" class="org.hisp.dhis.dataset.action.section.EditSectionAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/editSection.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">javascript/section.js</param>
       <param name="requiredAuthorities">F_SECTION_ADD</param>
     </action>
 
     <action name="updateSection" class="org.hisp.dhis.dataset.action.section.UpdateSectionAction">
-      <result name="success" type="redirect">section.action</result>
+      <result name="success" type="redirect">section.action?dataSetId=${section.dataSet.id}&amp;categoryComboId=${categoryComboId}</result>
       <param name="requiredAuthorities">F_SECTION_ADD</param>
     </action>
 
@@ -70,7 +67,6 @@
     <action name="greySection" class="org.hisp.dhis.dataset.action.section.GreySectionAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/greySection.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">javascript/dataSet.js,javascript/section.js</param>
       <param name="requiredAuthorities">F_SECTION_ADD</param>
     </action>
@@ -84,12 +80,11 @@
     <action name="showSortSectionForm" class="org.hisp.dhis.dataset.action.section.GetSectionListSortOrderAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/sortSectionForm.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">javascript/dataSet.js,javascript/section.js</param>
     </action>
 
     <action name="saveSectionSortOrder" class="org.hisp.dhis.dataset.action.section.SaveSectionSortOrderAction">
-      <result name="success" type="redirect">section.action</result>
+      <result name="success" type="redirect">section.action?dataSetId=${dataSetId}</result>
     </action>
 
     <!-- Dataset -->

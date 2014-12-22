@@ -35,7 +35,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -71,9 +70,19 @@ public class SectionListAction
     // Input & output
     // -------------------------------------------------------------------------
 
-    private List<Section> sections = new ArrayList<>();
+    private Integer categoryComboId;
+    
+    public Integer getCategoryComboId()
+    {
+        return categoryComboId;
+    }
 
-    private List<DataSet> datasets = new ArrayList<>();
+    public void setCategoryComboId( Integer categoryComboId )
+    {
+        this.categoryComboId = categoryComboId;
+    }
+
+    private List<Section> sections = new ArrayList<>();
 
     private Set<DataElementCategoryCombo> categoryCombos = new HashSet<>();
 
@@ -92,16 +101,6 @@ public class SectionListAction
     public SectionService getSectionService()
     {
         return sectionService;
-    }
-
-    public List<DataSet> getDatasets()
-    {
-        return datasets;
-    }
-
-    public void setDatasets( List<DataSet> datasets )
-    {
-        this.datasets = datasets;
     }
 
     public Integer getDataSetId()
@@ -132,25 +131,15 @@ public class SectionListAction
     public String execute()
         throws Exception
     {
-        datasets = new ArrayList<>( dataSetService.getAllDataSets() );
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        
+        sections = new ArrayList<>( dataSet.getSections() );
 
-        Collections.sort( datasets, IdentifiableObjectNameComparator.INSTANCE );
-
-        if ( dataSetId != null && dataSetId != -1 )
+        for ( DataElement de : dataSet.getDataElements() )
         {
-            DataSet dataSet = dataSetService.getDataSet( dataSetId );
-            
-            sections = new ArrayList<>( dataSet.getSections() );
-
-            for ( DataElement de : dataSet.getDataElements() )
-            {
-                categoryCombos.add( de.getCategoryCombo() );
-            }            
-        }
-        else
-        {
-            sections = new ArrayList<>( sectionService.getAllSections() );
-        }
+            categoryCombos.add( de.getCategoryCombo() );
+        }            
+       
         
         Collections.sort( sections, new SectionOrderComparator() );
 

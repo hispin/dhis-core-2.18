@@ -88,6 +88,23 @@ public class AddSectionAction
         this.dataSetId = dataSetId;
     }
 
+    public Integer getDataSetId()
+    {
+        return dataSetId;
+    }
+
+    private Integer categoryComboId;
+
+    public void setCategoryComboId( Integer categoryComboId )
+    {
+        this.categoryComboId = categoryComboId;
+    }
+
+    public Integer getCategoryComboId()
+    {
+        return categoryComboId;
+    }
+    
     private String sectionName;
 
     public void setSectionName( String sectionName )
@@ -115,7 +132,7 @@ public class AddSectionAction
     {
         this.selectedIndicatorList = selectedIndicatorList;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

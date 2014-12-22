@@ -23,19 +23,13 @@
   </ul>
 </div>
 
+<input type='hidden' id="dataSetId" name="dataSetId" value='$dataSetId' >
+
 <table class="mainPageTable">
 	<tr>
 		<td>
 		<table width="100%">
 			<tr>
-				<td><label>$i18n.getString( "select_dataset" )</label><br/>
-					<select id="dataSetId" name="dataSetId" style="min-width:20em" onchange="javascript:getSectionByDataSet(this.options[this.selectedIndex].value)">
-						<option value="-1">[ $i18n.getString( "all" ) ]</option>
-						#foreach ( $dataset in $datasets )
-						  <option value="$dataset.id" #if($dataSetId==$dataset.id) selected="selected" #end>$dataset.displayName</option>
-						#end
-					</select>
-				</td>
 				<td>	
 					<label>$i18n.getString( "select_categorycombo" )</label><br/>			  
 					<select id="categoryComboId" name="categoryComboId" style="min-width:20em">
@@ -48,7 +42,7 @@
 				<td style="text-align:right">
 					<input type="button" value="$i18n.getString( 'add_new' )" onclick="javascript:addSectionSubmit()" style="width:80px"/><br/>
 					<input type="button" value="$i18n.getString( 'sort_section' )" onclick="javascript:sortOrderSubmit()" style="width:80px"/><br/>
-					<input type="button" value="$i18n.getString( 'cancel' )" onclick="javascript:window.location.href='dataSet.action'" style="width:80px"/>
+					<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='dataSet.action'" style="width:80px"/>
 				</td>		
 			</tr>
 		</table>
@@ -60,15 +54,15 @@
 			<col/>
 			<thead>
 				<tr>
-					<th>$i18n.getString( "dataset" )</th>	
-					<th>$i18n.getString( "name" )</th>			
+					<th>$i18n.getString( "name" )</th>	
+					<th>$i18n.getString( "category_combo" )</th>			
 				</tr>
 			</thead>
 			<tbody id="list">
 				#foreach( $section in $sections )
 				<tr id="tr${section.id}" data-id="$!section.id" data-uid="$!section.uid" data-type="Section" data-name="$encoder.htmlEncode( $!section.displayName )">
-					<td>$encoder.htmlEncode( $section.dataSet.displayName )</td>
 					<td>$encoder.htmlEncode( $section.displayName )</td>
+					<td>$!encoder.htmlEncode( $section.categoryCombo.name )</td>
 				</tr>
 				#end
 			</tbody>

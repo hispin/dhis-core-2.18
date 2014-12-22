@@ -12,24 +12,27 @@
 
 <input type="hidden" name="dataSetId" value="${dataSetId}">
 
-<p>
-<input type="button" value="$i18n.getString( 'move_up' )" style="width:130px" onclick="moveUpSelectedOption( 'sections' )"><input 
-type="button" value="$i18n.getString( 'move_down' )" style="width:130px" onclick="moveDownSelectedOption( 'sections' )"><input
-type="button" value="$i18n.getString( 'move_to_top' )" style="width:130px" onclick="moveSelectedOptionToTop( 'sections' )"><input
-type="button" value="$i18n.getString( 'move_to_bottom' )" style="width:130px" onclick="moveSelectedOptionToBottom( 'sections' )">
-</p>
-
-<p>
-<select multiple id="sections" name="sections" size="25" style="width:680px">
-#foreach ( $section in $sections )
-    <option value="$section.id">$section.displayName</option>
-#end
-</select>
-</p>
+<table>
+	<tr>
+		<td>
+			<select multiple id="sections" name="sections" size="25" style="width:680px">
+			#foreach ( $section in $sections )
+				<option value="$section.id">$section.displayName</option>
+			#end
+			</select>
+		</td>
+		<td valign='center'>
+			<img type="button" src="../images/move_top.png" title="$i18n.getString( 'move_to_top' )" onclick="moveSelectedOptionToTop( 'sections' )"><br><br>			
+			<img type="button" src="../images/move_up.png" title="$i18n.getString( 'move_up' )" onclick="moveUpSelectedOption( 'sections' )"><br><br>				
+			<img type="button" src="../images/move_down.png" title="$i18n.getString( 'move_down' )" onclick="moveDownSelectedOption( 'sections' )"><br><br>				
+			<img type="button" src="../images/move_bottom.png" title="$i18n.getString( 'move_to_bottom' )" onclick="moveSelectedOptionToBottom( 'sections' )"><br><br>
+		</td>
+	</tr>
+</table>
 
 <p>
 <input type="button" value="$i18n.getString( 'save' )" style="width:130px" onclick="submitForm()"><input 
-type="button" value="$i18n.getString( 'cancel' )" style="width:130px" onclick="window.location.href='section.action'">
+type="button" value="$i18n.getString( 'cancel' )" style="width:130px" onclick="window.location.href='section.action?dataSetId=${dataSetId}'">
 </p>
 
 </form>
