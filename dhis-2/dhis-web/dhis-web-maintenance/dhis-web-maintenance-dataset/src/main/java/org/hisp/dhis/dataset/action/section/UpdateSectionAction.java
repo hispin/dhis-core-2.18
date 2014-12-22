@@ -66,19 +66,19 @@ public class UpdateSectionAction
     }
 
     private IndicatorService indicatorService;
-    
+
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
     }
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -98,7 +98,7 @@ public class UpdateSectionAction
     }
 
     private String description;
-    
+
     public void setDescription( String description )
     {
         this.description = description;
@@ -118,6 +118,13 @@ public class UpdateSectionAction
         this.selectedIndicatorList = selectedIndicatorList;
     }
 
+    private Section section;
+
+    public Section getSection()
+    {
+        return section;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -126,7 +133,7 @@ public class UpdateSectionAction
     public String execute()
         throws Exception
     {
-        Section section = sectionService.getSection( sectionId.intValue() );
+        section = sectionService.getSection( sectionId.intValue() );
 
         List<DataElement> dataElements = new ArrayList<>();
 
@@ -134,9 +141,9 @@ public class UpdateSectionAction
         {
             dataElements.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
         }
-        
+
         List<Indicator> indicators = new ArrayList<>();
-        
+
         for ( String id : selectedIndicatorList )
         {
             indicators.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
@@ -152,14 +159,14 @@ public class UpdateSectionAction
                 dataSetService.updateDataSet( dataSet.increaseVersion() );
             }
         }
-        
+
         section.setDataElements( dataElements );
         section.setIndicators( indicators );
         section.setName( sectionName );
         section.setDescription( description );
 
         sectionService.updateSection( section );
-        
+
         return SUCCESS;
     }
 }

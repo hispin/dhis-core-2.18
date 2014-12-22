@@ -40,7 +40,8 @@
 
 <h3>$i18n.getString( "add_section" ) #openHelp( "dataset_sections_edit" )</h3>
 
-<form id="addSectionForm" name="addSectionForm" action="addSection.action" method="post" class="inputForm">
+<form id="addSectionForm" name="addSectionForm" action="addSection.action" method="get" class="inputForm">
+
   <table id="detailsList" style="margin-bottom: 20px">
     <col/>
     <col/>
@@ -156,7 +157,7 @@
       <tr>
         <td colspan="4">
           <input type="submit" value="$i18n.getString( 'save' )" style="width:120px" />
-          <input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( 'cancel' )" style="width:120px" />
+          <input type="button" onclick="window.location.href='section.action?dataSetId=$dataSet.id&categoryComboId=$categoryCombo.id'" value="$i18n.getString( 'cancel' )" style="width:120px" />
         </td>
       </tr>
     </tbody>

@@ -167,7 +167,7 @@
       <tr>
         <td colspan="4">
           <input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:120px" />
-          <input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( 'cancel' )" style="width:120px" />
+          <input type="button" onclick="window.location.href='section.action?dataSetId=$dataSet.id&categoryComboId=$categoryCombo.id'" value="$i18n.getString( 'cancel' )" style="width:120px" />
         </td>
       </tr>
     </tbody>

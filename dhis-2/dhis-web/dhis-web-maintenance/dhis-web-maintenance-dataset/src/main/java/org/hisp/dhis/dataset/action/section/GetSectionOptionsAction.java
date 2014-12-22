@@ -58,7 +58,7 @@ public class GetSectionOptionsAction
     }
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
@@ -76,7 +76,7 @@ public class GetSectionOptionsAction
     }
 
     private Integer categoryComboId;
-    
+
     public void setCategoryComboId( Integer categoryComboId )
     {
         this.categoryComboId = categoryComboId;
@@ -94,14 +94,14 @@ public class GetSectionOptionsAction
     }
 
     private DataElementCategoryCombo categoryCombo;
-    
+
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
     }
-    
+
     private List<DataElement> dataElements = new ArrayList<>();
-    
+
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -116,9 +116,9 @@ public class GetSectionOptionsAction
         throws Exception
     {
         dataSet = dataSetService.getDataSet( dataSetId );
-        
+
         categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
-        
+
         dataElements = new ArrayList<>( dataSet.getDataElements() ); // Available data elements must be member of data set
 
         for ( Section section : dataSet.getSections() )

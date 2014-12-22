@@ -51,3 +51,8 @@ function editDataSetForm( context ) {
 function defineDataSetAssociationsForm( context ) {
   location.href = 'defineDataSetAssociationsForm.action?dataSetId=' + context.id;
 }
+
+function viewSectionList( context ) {
+  location.href = 'section.action?dataSetId=' + context.id;
+}
+
