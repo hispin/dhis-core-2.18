@@ -62,7 +62,6 @@ import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -415,7 +414,7 @@ public class UserController
                     throw new CreateAccessDeniedException( "Can't add/update user, can't find user group: " + ug.getUid() );
                 }
 
-                if ( !authorizedToAdd && CollectionUtils.containsAny( group.getManagedByGroups(), currentUser.getGroups() ) )
+                if ( !authorizedToAdd && currentUser.canManage( group ) )
                 {
                     authorizedToAdd = true;
                 }
