@@ -41,11 +41,26 @@ import org.hisp.dhis.common.DxfNamespaces;
 } )
 public class ValidationViolation
 {
+    private String property;
+
     private String message;
 
-    public ValidationViolation( String message )
+    public ValidationViolation( String property, String message )
     {
+        this.property = property;
         this.message = message;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getProperty()
+    {
+        return property;
+    }
+
+    public void setProperty( String property )
+    {
+        this.property = property;
     }
 
     @JsonProperty
@@ -64,7 +79,8 @@ public class ValidationViolation
     public String toString()
     {
         final StringBuilder sb = new StringBuilder( "ValidationViolation{" );
-        sb.append( "message='" ).append( message ).append( '\'' );
+        sb.append( "property='" ).append( property ).append( '\'' );
+        sb.append( ", message='" ).append( message ).append( '\'' );
         sb.append( '}' );
         return sb.toString();
     }
