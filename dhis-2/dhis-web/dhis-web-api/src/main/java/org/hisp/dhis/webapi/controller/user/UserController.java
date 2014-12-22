@@ -38,6 +38,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
@@ -383,7 +384,7 @@ public class UserController
 
         renderService.toJson( response.getOutputStream(), summary );
         
-        addUserGroups( user );
+        userGroupService.addUserToGroups( user, IdentifiableObjectUtils.getUids( user.getGroups() ) );
     }
 
     /**
@@ -423,26 +424,6 @@ public class UserController
             if ( !authorizedToAdd )
             {
                 throw new CreateAccessDeniedException( "Can't add user, user must belong to a group that you manage." );
-            }
-        }
-    }
-
-    /**
-     * Adds user groups (if any) to the newly-created user
-     *
-     * @param user user object (including user groups) parsed from the POST request
-     */
-    private void addUserGroups( User user )
-    {        
-        if ( user.getGroups() != null )
-        {
-            for ( UserGroup ug : new ArrayList<>( user.getGroups() ) )
-            {
-                UserGroup group = userGroupService.getUserGroup( ug.getUid() );
-
-                group.addUser( user );
-
-                userGroupService.updateUserGroup( group );
             }
         }
     }
