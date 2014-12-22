@@ -67,7 +67,7 @@ public class DefaultSchemaValidator implements SchemaValidator
 
             if ( value == null )
             {
-                if ( !property.isRequired() )
+                if ( property.isRequired() )
                 {
                     validationViolations.add( new ValidationViolation( "Property '" + property.getName() + "' can not be null." ) );
                 }
