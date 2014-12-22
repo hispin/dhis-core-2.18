@@ -89,8 +89,8 @@ public class JdbcDataMergeStore
         jdbcTemplate.execute( sql );
 
         // Delete remaining source data value audits
-        
-        sql = "DELETE FROM datavalue_audit WHERE dataelementid=" + sourceDataElementId + " AND categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
+
+        sql = "DELETE FROM datavalueaudit WHERE dataelementid=" + sourceDataElementId + " AND categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
 
         log.info( sql );        
         jdbcTemplate.execute( sql );
@@ -125,7 +125,7 @@ public class JdbcDataMergeStore
             
         // Delete remaining source data value audits
         
-        sql = "DELETE FROM datavalue_audit WHERE sourceid=" + sourceId + ";";
+        sql = "DELETE FROM datavalueaudit WHERE organisationunitid=" + sourceId + ";";
 
         log.info( sql );        
         jdbcTemplate.execute( sql );
