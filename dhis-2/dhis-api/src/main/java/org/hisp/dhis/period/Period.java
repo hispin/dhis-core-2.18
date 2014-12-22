@@ -276,6 +276,15 @@ public class Period
         return true;
     }
 
+    /**
+     * Determines whether this is a future period in relation to the current time.
+     * @return true if this period ends in the future, false otherwise (the period has ended).
+     */
+    public boolean isFuture()
+    {
+        return getEndDate().after( new Date() );
+    }
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
