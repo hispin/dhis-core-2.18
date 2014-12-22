@@ -29,17 +29,14 @@ package org.hisp.dhis.dxf2.schema;
  */
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dxf2.webmessage.WebMessage;
-import org.hisp.dhis.dxf2.webmessage.WebMessageStatus;
-import org.hisp.dhis.dxf2.webmessage.responses.ValidationViolation;
-import org.hisp.dhis.dxf2.webmessage.responses.ValidationViolationsWebMessageResponse;
 import org.hisp.dhis.schema.Property;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -50,47 +47,35 @@ public class DefaultSchemaValidator implements SchemaValidator
     private SchemaService schemaService;
 
     @Override
-    public <T extends IdentifiableObject> WebMessage validate( T object )
+    public <T extends IdentifiableObject> List<ValidationViolation> validate( T object )
     {
-        Assert.notNull( object, "SchemaValidator.validate requires a non-null object to validate." );
+        if ( object == null || schemaService.getSchema( object.getClass() ) == null )
+        {
+            return new ArrayList<>();
+        }
 
         Schema schema = schemaService.getSchema( object.getClass() );
 
-        Assert.notNull( schema, "Could not validate object, no schema exists for objects of this type." );
-
-        WebMessage message = new WebMessage( WebMessageStatus.OK, HttpStatus.OK.value() );
-        ValidationViolationsWebMessageResponse validationViolations = new ValidationViolationsWebMessageResponse();
+        List<ValidationViolation> validationViolations = new ArrayList<>();
 
         for ( Property property : schema.getProperties() )
         {
-            if ( !property.isPersisted() )
-            {
-                continue;
-            }
-
             Object value = ReflectionUtils.invokeMethod( object, property.getGetterMethod() );
 
             if ( !property.isNullable() && value == null )
             {
-                validationViolations.getValidationViolations().add( new ValidationViolation( "Property '" + property.getName() + "' can not be null." ) );
+                validationViolations.add( new ValidationViolation( "Property '" + property.getName() + "' can not be null." ) );
                 continue;
             }
 
             if ( String.class.isInstance( value ) && property.getMax() < ((String) value).length() )
             {
-                validationViolations.getValidationViolations().add( new ValidationViolation( "Property '" + property.getName() + "' is too long ("
+                validationViolations.add( new ValidationViolation( "Property '" + property.getName() + "' is too long ("
                     + ((String) value).length() + "), maximum length is " + property.getMax() ) );
                 continue;
             }
         }
 
-        if ( !validationViolations.getValidationViolations().isEmpty() )
-        {
-            message.setStatus( WebMessageStatus.ERROR );
-            message.setHttpStatusCode( HttpStatus.BAD_REQUEST.value() );
-            message.setResponse( validationViolations );
-        }
-
-        return message;
+        return validationViolations;
     }
 }

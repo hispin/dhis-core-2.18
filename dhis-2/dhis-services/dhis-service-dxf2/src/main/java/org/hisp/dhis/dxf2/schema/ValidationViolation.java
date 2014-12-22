@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.webmessage.responses;
+package org.hisp.dhis.dxf2.schema;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -32,34 +32,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.dxf2.webmessage.AbstractWebMessageResponse;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @JsonPropertyOrder( {
-    "validationViolations"
+    "message"
 } )
-public class ValidationViolationsWebMessageResponse extends AbstractWebMessageResponse
+public class ValidationViolation
 {
-    private List<ValidationViolation> validationViolations = new ArrayList<>();
+    private String message;
 
-    public ValidationViolationsWebMessageResponse()
+    public ValidationViolation( String message )
     {
+        this.message = message;
     }
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public List<ValidationViolation> getValidationViolations()
+    public String getMessage()
     {
-        return validationViolations;
+        return message;
     }
 
-    public void setValidationViolations( List<ValidationViolation> validationViolations )
+    public void setMessage( String message )
     {
-        this.validationViolations = validationViolations;
+        this.message = message;
     }
 }
