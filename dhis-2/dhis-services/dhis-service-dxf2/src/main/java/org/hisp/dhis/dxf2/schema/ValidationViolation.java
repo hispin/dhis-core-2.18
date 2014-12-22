@@ -59,4 +59,13 @@ public class ValidationViolation
     {
         this.message = message;
     }
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder sb = new StringBuilder( "ValidationViolation{" );
+        sb.append( "message='" ).append( message ).append( '\'' );
+        sb.append( '}' );
+        return sb.toString();
+    }
 }

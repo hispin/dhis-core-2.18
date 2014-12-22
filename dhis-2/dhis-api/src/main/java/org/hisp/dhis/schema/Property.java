@@ -173,7 +173,7 @@ public class Property implements Ordered
     /**
      * Nullability of this property.
      */
-    private boolean nullable;
+    private boolean required;
 
     /**
      * Maximum length/size/value of this property.
@@ -470,14 +470,14 @@ public class Property implements Ordered
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isNullable()
+    public boolean isRequired()
     {
-        return nullable;
+        return required;
     }
 
-    public void setNullable( boolean nullable )
+    public void setRequired( boolean required )
     {
-        this.nullable = nullable;
+        this.required = required;
     }
 
     @JsonProperty
