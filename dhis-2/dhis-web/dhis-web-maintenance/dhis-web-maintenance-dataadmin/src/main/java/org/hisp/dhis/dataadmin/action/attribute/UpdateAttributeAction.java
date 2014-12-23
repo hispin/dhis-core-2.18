@@ -160,6 +160,13 @@ public class UpdateAttributeAction
         this.userGroupAttribute = userGroupAttribute;
     }
     
+    private boolean programAttribute;
+
+    public void setProgramAttribute( boolean programAttribute )
+    {
+        this.programAttribute = programAttribute;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -185,6 +192,7 @@ public class UpdateAttributeAction
             attribute.setOrganisationUnitGroupSetAttribute( organisationUnitGroupSetAttribute );
             attribute.setUserAttribute( userAttribute );
             attribute.setUserGroupAttribute( userGroupAttribute );
+            attribute.setProgramAttribute( programAttribute );
 
             attributeService.updateAttribute( attribute );
 

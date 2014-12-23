@@ -75,6 +75,8 @@ public class Attribute
 
     private boolean userGroupAttribute;
 
+    private boolean programAttribute;
+
     private boolean mandatory;
 
     private Integer sortOrder;
@@ -248,6 +250,19 @@ public class Attribute
         this.userGroupAttribute = userGroupAttribute;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isProgramAttribute()
+    {
+        return programAttribute;
+    }
+
+    public void setProgramAttribute( boolean programAttribute )
+    {
+        this.programAttribute = programAttribute;
+    }
+
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;
@@ -291,6 +306,7 @@ public class Attribute
             organisationUnitGroupSetAttribute = attribute.isOrganisationUnitGroupSetAttribute();
             userAttribute = attribute.isUserAttribute();
             userGroupAttribute = attribute.isUserGroupAttribute();
+            programAttribute = attribute.isProgramAttribute();
             mandatory = attribute.isMandatory();
             sortOrder = attribute.getSortOrder() == null ? sortOrder : attribute.getSortOrder();
 

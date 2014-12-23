@@ -41,6 +41,8 @@
 
     <property name="userGroupAttribute" not-null="false" />
 
+    <property name="programAttribute" not-null="false" />
+
     <property name="sortOrder" />
 
     <set name="attributeValues" inverse="true" lazy="true">
