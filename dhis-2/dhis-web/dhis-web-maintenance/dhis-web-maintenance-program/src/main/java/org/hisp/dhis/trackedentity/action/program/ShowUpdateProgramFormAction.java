@@ -28,10 +28,9 @@ package org.hisp.dhis.trackedentity.action.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -40,6 +39,7 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
@@ -48,7 +48,11 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Chau Thu Tran
@@ -68,11 +72,11 @@ public class ShowUpdateProgramFormAction
         this.programService = programService;
     }
 
-    private TrackedEntityAttributeService attributeService;
+    private TrackedEntityAttributeService trackedEntityAttributeService;
 
-    public void setAttributeService( TrackedEntityAttributeService attributeService )
+    public void setTrackedEntityAttributeService( TrackedEntityAttributeService trackedEntityAttributeService )
     {
-        this.attributeService = attributeService;
+        this.trackedEntityAttributeService = trackedEntityAttributeService;
     }
 
     private UserGroupService userGroupService;
@@ -91,6 +95,9 @@ public class ShowUpdateProgramFormAction
 
     @Autowired
     private TrackedEntityService trackedEntityService;
+
+    @Autowired
+    private AttributeService attributeService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -188,6 +195,20 @@ public class ShowUpdateProgramFormAction
         return trackedEntities;
     }
 
+    private List<Attribute> attributes;
+
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    private Map<Integer, String> attributeValues = new HashMap<>();
+
+    public Map<Integer, String> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -198,13 +219,15 @@ public class ShowUpdateProgramFormAction
     {
         program = programService.getProgram( id );
 
-        availableAttributes = new ArrayList<>( attributeService.getAllTrackedEntityAttributes() );
-        
-        for ( ProgramTrackedEntityAttribute programAttribue : program.getProgramAttributes() )
+        attributeValues = AttributeUtils.getAttributeValueMap( program.getAttributeValues() );
+
+        availableAttributes = new ArrayList<>( trackedEntityAttributeService.getAllTrackedEntityAttributes() );
+
+        for ( ProgramTrackedEntityAttribute programTrackedEntityAttribute : program.getProgramAttributes() )
         {
-            availableAttributes.remove( programAttribue.getAttribute() );
+            availableAttributes.remove( programTrackedEntityAttribute.getAttribute() );
         }
-        
+
         Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
         programs = new ArrayList<>( programService.getAllPrograms() );
@@ -219,6 +242,8 @@ public class ShowUpdateProgramFormAction
 
         trackedEntities = new ArrayList<>( trackedEntityService.getAllTrackedEntity() );
         Collections.sort( trackedEntities, IdentifiableObjectNameComparator.INSTANCE );
+
+        attributes = new ArrayList<>( attributeService.getProgramAttributes() );
 
         return SUCCESS;
     }

@@ -9,6 +9,8 @@
 		},{
 			'beforeValidateHandler' : function()
 			{
+				#tblDynamicAttributesJavascript()
+
 				var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
 				selectedPropertyIds.empty();
 				var personDisplayNames = jQuery( "#personDisplayNames" );
@@ -229,9 +231,11 @@
     </tbody>
 </table>
 
-  <br />
+<br />
+#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
+<br />
 
-	<table name='nonAnonymous' class='multiEvents'>
+<table name='nonAnonymous' class='multiEvents'>
 		<colgroup>
 			<col style="width:400px;"/>
 			<col/>

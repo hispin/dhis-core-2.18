@@ -28,13 +28,13 @@ package org.hisp.dhis.attribute.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeStore;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author mortenoh
@@ -111,5 +111,12 @@ public class HibernateAttributeStore
     public Set<Attribute> getUserGroupAttributes()
     {
         return new HashSet<Attribute>( getCriteria( Restrictions.eq( "userGroupAttribute", true ) ).list() );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Set<Attribute> getProgramAttributes()
+    {
+        return new HashSet<Attribute>( getCriteria( Restrictions.eq( "programAttribute", true ) ).list() );
     }
 }

@@ -172,6 +172,13 @@ public interface AttributeService
     Set<Attribute> getUserGroupAttributes();
 
     /**
+     * Gets attributes which are associated with programs.
+     *
+     * @return a set of attributes which are associated with programs.
+     */
+    Set<Attribute> getProgramAttributes();
+
+    /**
      * Gets the number of attributes.
      * 
      * @return the number of attributes.

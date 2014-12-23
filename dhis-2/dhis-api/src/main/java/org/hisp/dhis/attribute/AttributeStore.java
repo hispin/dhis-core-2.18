@@ -28,9 +28,9 @@ package org.hisp.dhis.attribute;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Set;
-
 import org.hisp.dhis.common.GenericNameableObjectStore;
+
+import java.util.Set;
 
 /**
  * @author mortenoh
@@ -42,7 +42,7 @@ public interface AttributeStore
 
     /**
      * Get all attributes that are enabled for data elements.
-     * 
+     *
      * @return All attributes with attribute.dataElement = true
      */
     Set<Attribute> getDataElementAttributes();
@@ -56,7 +56,7 @@ public interface AttributeStore
 
     /**
      * Get all attributes that are enabled for indicators.
-     * 
+     *
      * @return All attributes with attribute.indicator = true
      */
     Set<Attribute> getIndicatorAttributes();
@@ -77,7 +77,7 @@ public interface AttributeStore
 
     /**
      * Get all attributes that are enabled for organisation units.
-     * 
+     *
      * @return All attributes with attribute.organisationUnit = true
      */
     Set<Attribute> getOrganisationUnitAttributes();
@@ -98,7 +98,7 @@ public interface AttributeStore
 
     /**
      * Get all attributes that are enabled for users.
-     * 
+     *
      * @return All attributes with attribute.organisationUnit = true
      */
     Set<Attribute> getUserAttributes();
@@ -109,4 +109,11 @@ public interface AttributeStore
      * @return All attributes with attribute.organisationUnitGroup = true
      */
     Set<Attribute> getUserGroupAttributes();
+
+    /**
+     * Get all attributes that are enabled for program.
+     *
+     * @return All attributes with attribute.program = true
+     */
+    Set<Attribute> getProgramAttributes();
 }
