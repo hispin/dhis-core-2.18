@@ -387,8 +387,8 @@ public class UserController
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), user, ImportStrategy.CREATE );
 
-        renderService.toJson( response.getOutputStream(), summary );
-        
         userGroupService.addUserToGroups( user, IdentifiableObjectUtils.getUids( user.getGroups() ) );
+        
+        renderService.toJson( response.getOutputStream(), summary );        
     }
 }
