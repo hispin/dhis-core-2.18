@@ -45,7 +45,9 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.schema.annotation.PropertyRange;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -154,6 +156,25 @@ public class UserAuthorityGroup
     public void setMembers( Set<UserCredentials> members )
     {
         this.members = members;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlElementWrapper( localName = "users", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "user", namespace = DxfNamespaces.DXF_2_0 )
+    public List<User> getUsers()
+    {
+        List<User> users = new ArrayList<>();
+
+        for ( UserCredentials userCredentials : members )
+        {
+            if ( userCredentials.getUser() != null )
+            {
+                users.add( userCredentials.getUser() );
+            }
+        }
+
+        return users;
     }
 
     @JsonProperty
