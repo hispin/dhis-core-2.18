@@ -591,6 +591,7 @@
 
   <bean id="org.hisp.dhis.user.UserService" class="org.hisp.dhis.user.DefaultUserService">
     <property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
     <property name="userCredentialsStore" ref="org.hisp.dhis.user.UserCredentialsStore" />
     <property name="userAuthorityGroupStore" ref="org.hisp.dhis.user.UserAuthorityGroupStore" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />

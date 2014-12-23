@@ -77,6 +77,13 @@ public class DefaultUserService
     {
         this.userStore = userStore;
     }
+    
+    private UserGroupService userGroupService;
+
+    public void setUserGroupService( UserGroupService userGroupService )
+    {
+        this.userGroupService = userGroupService;
+    }
 
     private UserCredentialsStore userCredentialsStore;
 
@@ -407,6 +414,42 @@ public class DefaultUserService
         return true;
     }
 
+    public boolean canAddOrUpdateUser( Collection<String> uids )
+    {
+    	User currentUser = currentUserService.getCurrentUser();
+    	
+    	if ( currentUser == null )
+    	{
+    	    return false;
+    	}
+    	
+    	boolean canAdd = currentUser.getUserCredentials().isAuthorized( UserGroup.AUTH_USER_ADD );
+    	
+    	if ( canAdd )
+    	{
+    	    return true;
+    	}
+    	
+    	boolean canAddInGroup = currentUser.getUserCredentials().isAuthorized( UserGroup.AUTH_USER_ADD_IN_GROUP );
+    	
+    	if ( !canAddInGroup )
+    	{
+    	    return false;
+    	}
+    	
+    	for ( String uid : uids )
+    	{
+    	    UserGroup userGroup = userGroupService.getUserGroup( uid );
+            
+            if ( currentUser.canManage( userGroup ) )
+            {
+                return true;
+            }
+    	}
+    	
+    	return true;
+    }
+    
     // -------------------------------------------------------------------------
     // UserAuthorityGroup
     // -------------------------------------------------------------------------
