@@ -52,7 +52,6 @@ import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.Users;
@@ -258,7 +257,11 @@ public class UserController
 
         User parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
         parsed.setUid( uid );
-        checkUserGroups( parsed );
+
+        if ( !userService.canAddOrUpdateUser( IdentifiableObjectUtils.getUids( parsed.getGroups() ) ) )
+        {
+            throw new CreateAccessDeniedException( "You must have permissions to create user, or ability to manage at least one user group for the user." );
+        }
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed,
             ImportStrategy.UPDATE );
@@ -285,7 +288,11 @@ public class UserController
 
         User parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
         parsed.setUid( uid );
-        checkUserGroups( parsed );
+        
+        if ( !userService.canAddOrUpdateUser( IdentifiableObjectUtils.getUids( parsed.getGroups() ) ) )
+        {
+            throw new CreateAccessDeniedException( "You must have permissions to create user, or ability to manage at least one user group for the user." );
+        }
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed,
             ImportStrategy.UPDATE );
@@ -362,17 +369,15 @@ public class UserController
      */
     private void createUser( User user, HttpServletResponse response ) throws Exception
     {
-        if ( currentUserService.getCurrentUser() == null )
-        {
-            throw new CreateAccessDeniedException( "Internal error: currentUserService.getCurrentUser() returns null." );
-        }
-
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
         {
             throw new CreateAccessDeniedException( "You don't have the proper permissions to create this object." );
         }
 
-        checkUserGroups( user );
+        if ( !userService.canAddOrUpdateUser( IdentifiableObjectUtils.getUids( user.getGroups() ) ) )
+        {
+            throw new CreateAccessDeniedException( "You must have permissions to create user, or ability to manage at least one user group for the user." );
+        }
 
         user.getUserCredentials().getCogsDimensionConstraints().addAll(
             currentUserService.getCurrentUser().getUserCredentials().getCogsDimensionConstraints() );
@@ -385,46 +390,5 @@ public class UserController
         renderService.toJson( response.getOutputStream(), summary );
         
         userGroupService.addUserToGroups( user, IdentifiableObjectUtils.getUids( user.getGroups() ) );
-    }
-
-    /**
-     * Before adding or updating the user, checks to see that any specified user
-     * groups exist.
-     * <p>
-     * Also, if the current user doesn't have the F_USER_ADD authority, that
-     * means they have the weaker F_USER_ADD_WITHIN_MANAGED_GROUP authority.
-     * In this case, the new user must be added to a group that is managed
-     * by the current user.
-     *
-     * @param user user object parsed from the request
-     */
-    private void checkUserGroups( User user )
-    {
-        User currentUser = currentUserService.getCurrentUser();
-
-        if ( currentUser != null && user.getGroups() != null )
-        {
-            boolean authorizedToAdd = currentUser.getUserCredentials().isAuthorized( UserGroup.AUTH_USER_ADD );
-
-            for ( UserGroup ug : user.getGroups() )
-            {
-                UserGroup group = userGroupService.getUserGroup( ug.getUid() );
-
-                if ( group == null )
-                {
-                    throw new CreateAccessDeniedException( "Can't add/update user, can't find user group: " + ug.getUid() );
-                }
-
-                if ( !authorizedToAdd && currentUser.canManage( group ) )
-                {
-                    authorizedToAdd = true;
-                }
-            }
-
-            if ( !authorizedToAdd )
-            {
-                throw new CreateAccessDeniedException( "Can't add user, user must belong to a group that you manage." );
-            }
-        }
     }
 }
