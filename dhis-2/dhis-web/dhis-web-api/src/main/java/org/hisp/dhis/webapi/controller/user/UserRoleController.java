@@ -28,16 +28,23 @@ package org.hisp.dhis.webapi.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
+import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.schema.descriptors.UserRoleSchemaDescriptor;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -62,5 +69,71 @@ public class UserRoleController
         }
 
         return entityList;
+    }
+
+    @RequestMapping( value = "/{id}/users/{userId}", method = { RequestMethod.POST, RequestMethod.PUT } )
+    public void addUserToRole( @PathVariable( value = "id" ) String pvId, @PathVariable( "userId" ) String pvUserId, HttpServletResponse response )
+    {
+        UserAuthorityGroup userAuthorityGroup = userService.getUserAuthorityGroup( pvId );
+
+        if ( userAuthorityGroup == null )
+        {
+            ContextUtils.notFoundResponse( response, "UserRole does not exist: " + pvId );
+            return;
+        }
+
+        User user = userService.getUser( pvUserId );
+
+        if ( user == null )
+        {
+            ContextUtils.notFoundResponse( response, "User does not exist: " + pvId );
+            return;
+        }
+
+        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), userAuthorityGroup ) )
+        {
+            throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this object." );
+        }
+
+        if ( !user.getUserCredentials().getUserAuthorityGroups().contains( userAuthorityGroup ) )
+        {
+            user.getUserCredentials().getUserAuthorityGroups().add( userAuthorityGroup );
+            userService.updateUserCredentials( user.getUserCredentials() );
+        }
+
+        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+    }
+
+    @RequestMapping( value = "/{id}/users/{userId}", method = RequestMethod.DELETE )
+    public void removeUserFromRole( @PathVariable( value = "id" ) String pvId, @PathVariable( "userId" ) String pvUserId, HttpServletResponse response )
+    {
+        UserAuthorityGroup userAuthorityGroup = userService.getUserAuthorityGroup( pvId );
+
+        if ( userAuthorityGroup == null )
+        {
+            ContextUtils.notFoundResponse( response, "UserRole does not exist: " + pvId );
+            return;
+        }
+
+        User user = userService.getUser( pvUserId );
+
+        if ( user == null || user.getUserCredentials() == null )
+        {
+            ContextUtils.notFoundResponse( response, "User does not exist: " + pvId );
+            return;
+        }
+
+        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), userAuthorityGroup ) )
+        {
+            throw new DeleteAccessDeniedException( "You don't have the proper permissions to delete this object." );
+        }
+
+        if ( user.getUserCredentials().getUserAuthorityGroups().contains( userAuthorityGroup ) )
+        {
+            user.getUserCredentials().getUserAuthorityGroups().remove( userAuthorityGroup );
+            userService.updateUserCredentials( user.getUserCredentials() );
+        }
+
+        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
     }
 }
