@@ -31,6 +31,7 @@ package org.hisp.dhis.webapi.controller;
 import org.hisp.dhis.dxf2.render.RenderService;
 import org.hisp.dhis.dxf2.schema.SchemaValidator;
 import org.hisp.dhis.dxf2.schema.ValidationViolation;
+import org.hisp.dhis.dxf2.schema.ValidationViolations;
 import org.hisp.dhis.schema.Property;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
@@ -86,7 +87,7 @@ public class SchemaController
     }
 
     @RequestMapping( value = "/{type}", method = { RequestMethod.POST, RequestMethod.PUT }, consumes = MediaType.APPLICATION_JSON_VALUE )
-    public void validateSchema( @PathVariable String type, HttpServletRequest request, HttpServletResponse response ) throws IOException
+    public void validateSchemaJson( @PathVariable String type, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         Schema schema = getSchemaFromType( type );
 
@@ -99,6 +100,22 @@ public class SchemaController
         List<ValidationViolation> validationViolations = schemaValidator.validate( object );
 
         renderService.toJson( response.getOutputStream(), validationViolations );
+    }
+
+    @RequestMapping( value = "/{type}", method = { RequestMethod.POST, RequestMethod.PUT }, consumes = MediaType.APPLICATION_XML_VALUE )
+    public void validateSchemaXml( @PathVariable String type, HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        Schema schema = getSchemaFromType( type );
+
+        if ( schema == null )
+        {
+            throw new HttpClientErrorException( HttpStatus.NOT_FOUND, "Type " + type + " does not exist." );
+        }
+
+        Object object = renderService.fromXml( request.getInputStream(), schema.getKlass() );
+        List<ValidationViolation> validationViolations = schemaValidator.validate( object );
+
+        renderService.toXml( response.getOutputStream(), new ValidationViolations( validationViolations ) );
     }
 
     @RequestMapping( value = "/{type}/{property}", method = RequestMethod.GET )
