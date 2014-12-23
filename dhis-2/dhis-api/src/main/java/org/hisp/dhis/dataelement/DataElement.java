@@ -369,7 +369,7 @@ public class DataElement
     {
         for ( DataSet dataSet : dataSets )
         {
-            if( dataSet != null && !dataSet.isAllowFuturePeriods() )
+            if ( dataSet != null && !dataSet.isAllowFuturePeriods() )
             {
                 return false;
             }
