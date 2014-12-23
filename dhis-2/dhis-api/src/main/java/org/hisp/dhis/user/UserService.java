@@ -174,6 +174,18 @@ public interface UserService
 
     int countDataSetUserAuthorityGroups( DataSet dataSet );
 
+    /**
+     * Tests whether the current user is allowed to create a user associated
+     * with the given user group identifiers. Returns true if current user has 
+     * the F_USER_ADD authority. Returns true if the current user has the 
+     * F_USER_ADD_WITHIN_MANAGED_GROUP authority and can manage any of the given
+     * user groups. Returns false otherwise.
+     * 
+     * @param userGroups the user group identifiers.
+     * @return true if the current user can create user, false if not.
+     */
+    boolean canAddOrUpdateUser( Collection<String> userGroups );
+    
     // -------------------------------------------------------------------------
     // UserCredentials
     // -------------------------------------------------------------------------
