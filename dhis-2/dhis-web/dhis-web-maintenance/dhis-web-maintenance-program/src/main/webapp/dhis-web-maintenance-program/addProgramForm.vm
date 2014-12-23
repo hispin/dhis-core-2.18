@@ -11,6 +11,8 @@
 		},{
 			'beforeValidateHandler' : function()
 			{
+				#tblDynamicAttributesJavascript()
+
 				var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
 				selectedPropertyIds.empty();
 				var personDisplayNames = jQuery( "#personDisplayNames" );
@@ -183,7 +185,7 @@
 		</tr>
 
 		<tr name='nonAnonymous'>
-			<td><label for="relationshipFromA">$i18n.getString("who_is_the_new_relative_to_the_existing_tracked_entity_instance")</a></td>
+			<td><label for="relationshipFromA">$i18n.getString("who_is_the_new_relative_to_the_existing_tracked_entity_instance")</label></td>
 			<td>
 				<select type='text' id='relationshipFromA' name='relationshipFromA'></select>
 			</td>
@@ -215,6 +217,8 @@
 	</tbody>
 </table>
 
+<br />
+#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
 <br />
 
 <table name='nonAnonymous' class='multiEvents'>

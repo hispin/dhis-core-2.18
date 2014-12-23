@@ -28,10 +28,8 @@ package org.hisp.dhis.trackedentity.action.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -41,6 +39,7 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
@@ -48,7 +47,9 @@ import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -65,43 +66,26 @@ public class AddProgramAction
     // Dependency
     // -------------------------------------------------------------------------
 
+    @Autowired
     private ProgramService programService;
 
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
+    @Autowired
     private ProgramStageService programStageService;
 
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
-
+    @Autowired
     private ProgramInstanceService programInstanceService;
 
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
-    }
+    @Autowired
+    private TrackedEntityAttributeService trackedEntityAttributeService;
 
-    private TrackedEntityAttributeService attributeService;
-
-    public void setAttributeService( TrackedEntityAttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
-
+    @Autowired
     private RelationshipTypeService relationshipTypeService;
-
-    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
-    {
-        this.relationshipTypeService = relationshipTypeService;
-    }
 
     @Autowired
     private TrackedEntityService trackedEntityService;
+
+    @Autowired
+    private AttributeService attributeService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -247,6 +231,13 @@ public class AddProgramAction
         this.trackedEntityId = trackedEntityId;
     }
 
+    private List<String> jsonAttributeValues = new ArrayList<>();
+
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    {
+        this.jsonAttributeValues = jsonAttributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -315,7 +306,7 @@ public class AddProgramAction
 
             if ( ids[0].equals( TrackedEntityInstance.PREFIX_TRACKED_ENTITY_ATTRIBUTE ) )
             {
-                TrackedEntityAttribute attribute = attributeService.getTrackedEntityAttribute( Integer
+                TrackedEntityAttribute attribute = trackedEntityAttributeService.getTrackedEntityAttribute( Integer
                     .parseInt( ids[1] ) );
 
                 ProgramTrackedEntityAttribute programAttribute = new ProgramTrackedEntityAttribute( attribute,
@@ -325,6 +316,11 @@ public class AddProgramAction
             }
 
             index++;
+        }
+
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( program.getAttributeValues(), jsonAttributeValues, attributeService );
         }
 
         programService.updateProgram( program );

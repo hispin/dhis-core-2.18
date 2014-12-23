@@ -28,15 +28,15 @@ package org.hisp.dhis.trackedentity.action.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
@@ -45,11 +45,14 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Abyot Asalefew Gizaw
- * @version $Id$
  */
 public class ShowAddProgramFormAction
     implements Action
@@ -65,11 +68,11 @@ public class ShowAddProgramFormAction
         this.programService = programService;
     }
 
-    private TrackedEntityAttributeService attributeService;
+    private TrackedEntityAttributeService trackedEntityAttributeService;
 
-    public void setAttributeService( TrackedEntityAttributeService attributeService )
+    public void setTrackedEntityAttributeService( TrackedEntityAttributeService trackedEntityAttributeService )
     {
-        this.attributeService = attributeService;
+        this.trackedEntityAttributeService = trackedEntityAttributeService;
     }
 
     private UserGroupService userGroupService;
@@ -88,6 +91,9 @@ public class ShowAddProgramFormAction
 
     @Autowired
     private TrackedEntityService trackedEntityService;
+
+    @Autowired
+    private AttributeService attributeService;
 
     // -------------------------------------------------------------------------
     // Output
@@ -128,6 +134,20 @@ public class ShowAddProgramFormAction
         return trackedEntities;
     }
 
+    private List<Attribute> attributes;
+
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    private Map<Integer, String> attributeValues = new HashMap<>();
+
+    public Map<Integer, String> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -136,10 +156,11 @@ public class ShowAddProgramFormAction
     public String execute()
     {
         programs = new ArrayList<>( programService.getAllPrograms() );
+
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
 
-        availableAttributes = new ArrayList<>( attributeService.getAllTrackedEntityAttributes() );
+        availableAttributes = new ArrayList<>( trackedEntityAttributeService.getAllTrackedEntityAttributes() );
         Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
         userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
@@ -148,8 +169,10 @@ public class ShowAddProgramFormAction
         relationshipTypes = new ArrayList<>( relationshipTypeService.getAllRelationshipTypes() );
         Collections.sort( relationshipTypes, IdentifiableObjectNameComparator.INSTANCE );
 
-        trackedEntities = new ArrayList<>(trackedEntityService.getAllTrackedEntity());
+        trackedEntities = new ArrayList<>( trackedEntityService.getAllTrackedEntity() );
         Collections.sort( trackedEntities, IdentifiableObjectNameComparator.INSTANCE );
+
+        attributes = new ArrayList<>( attributeService.getProgramAttributes() );
 
         return SUCCESS;
     }

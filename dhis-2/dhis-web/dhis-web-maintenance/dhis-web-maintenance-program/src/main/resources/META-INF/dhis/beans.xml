@@ -173,13 +173,11 @@
 	<bean id="org.hisp.dhis.trackedentity.action.program.AddProgramAction"
 		class="org.hisp.dhis.trackedentity.action.program.AddProgramAction"
 		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="attributeService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
-		<property name="relationshipTypeService"
-			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.action.program.UpdateProgramAction"
+		class="org.hisp.dhis.trackedentity.action.program.UpdateProgramAction"
+		scope="prototype">
 	</bean>
 
 	<bean id="org.hisp.dhis.trackedentity.action.program.GetProgramListAction"
@@ -215,7 +213,7 @@
 		class="org.hisp.dhis.trackedentity.action.program.ShowAddProgramFormAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="attributeService"
+		<property name="trackedEntityAttributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 		<property name="relationshipTypeService"
@@ -227,19 +225,9 @@
 		class="org.hisp.dhis.trackedentity.action.program.ShowUpdateProgramFormAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="attributeService"
+		<property name="trackedEntityAttributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
-		<property name="relationshipTypeService"
-			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.trackedentity.action.program.UpdateProgramAction"
-		class="org.hisp.dhis.trackedentity.action.program.UpdateProgramAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="attributeService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 	</bean>
