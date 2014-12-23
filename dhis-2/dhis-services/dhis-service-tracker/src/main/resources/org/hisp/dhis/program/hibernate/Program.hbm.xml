@@ -86,6 +86,14 @@
     <many-to-one name="trackedEntity" class="org.hisp.dhis.trackedentity.TrackedEntity"
       column="trackedentityid" foreign-key="fk_program_trackedentityid" />
 
+    <!-- Dynamic attribute values -->
+
+    <set name="attributeValues" table="programattributevalues">
+      <cache usage="read-write" />
+      <key column="programid" />
+      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" unique="true" />
+    </set>
+
     <!-- Access properties -->
 
     <many-to-one name="user" class="org.hisp.dhis.user.User"

@@ -59,6 +59,7 @@
             <input type="checkbox" id="organisationUnitGroupSetAttribute" name="organisationUnitGroupSetAttribute" value="true" /><label for="organisationUnitGroupSetAttribute">$i18n.getString( 'organisation_unit_group_set' )</label> <br />
             <input type="checkbox" id="userAttribute" name="userAttribute" value="true" /><label for="userAttribute">$i18n.getString( 'user' )</label> <br />
             <input type="checkbox" id="userGroupAttribute" name="userGroupAttribute" value="true" /><label for="userGroupAttribute">$i18n.getString( 'user_group' )</label> <br />
+            <input type="checkbox" id="programAttribute" name="programAttribute" value="true" /><label for="programAttribute">$i18n.getString( 'program' )</label> <br />
 		</td>
 	</tr>
 

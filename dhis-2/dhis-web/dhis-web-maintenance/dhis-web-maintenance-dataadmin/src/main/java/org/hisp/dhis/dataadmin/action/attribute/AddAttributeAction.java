@@ -152,6 +152,13 @@ public class AddAttributeAction
         this.userGroupAttribute = userGroupAttribute;
     }
 
+    private boolean programAttribute;
+
+    public void setProgramAttribute( boolean programAttribute )
+    {
+        this.programAttribute = programAttribute;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -172,6 +179,7 @@ public class AddAttributeAction
         attribute.setOrganisationUnitGroupSetAttribute( organisationUnitGroupSetAttribute );
         attribute.setUserAttribute( userAttribute );
         attribute.setUserGroupAttribute( userGroupAttribute );
+        attribute.setProgramAttribute( programAttribute );
 
         attributeService.addAttribute( attribute );
 
