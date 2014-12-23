@@ -121,75 +121,8 @@ public class DefaultUserService
     }
 
     // -------------------------------------------------------------------------
-    // Implementing methods
+    // UserService implementation
     // -------------------------------------------------------------------------
-
-    @Override
-    public boolean isSuperUser( UserCredentials userCredentials )
-    {
-        if ( userCredentials == null )
-        {
-            return false;
-        }
-
-        for ( UserAuthorityGroup group : userCredentials.getUserAuthorityGroups() )
-        {
-            if ( group.getAuthorities().contains( "ALL" ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean isLastSuperUser( UserCredentials userCredentials )
-    {
-        if ( !isSuperUser( userCredentials ) )
-        {
-            return false; // Cannot be last if not super user
-        }
-
-        Collection<UserCredentials> users = userCredentialsStore.getAllUserCredentials();
-
-        for ( UserCredentials user : users )
-        {
-            if ( isSuperUser( user ) && !user.equals( userCredentials ) )
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean isSuperRole( UserAuthorityGroup userAuthorityGroup )
-    {
-        if ( userAuthorityGroup == null )
-        {
-            return false;
-        }
-
-        return ( userAuthorityGroup.getAuthorities().contains( "ALL" ) );
-    }
-
-    @Override
-    public boolean isLastSuperRole( UserAuthorityGroup userAuthorityGroup )
-    {
-        Collection<UserAuthorityGroup> groups = userAuthorityGroupStore.getAll();
-
-        for ( UserAuthorityGroup group : groups )
-        {
-            if ( isSuperRole( group ) && group.getId() != userAuthorityGroup.getId() )
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     // -------------------------------------------------------------------------
     // User
@@ -387,6 +320,91 @@ public class DefaultUserService
         }
 
         return options;
+    }
+
+    @Override
+    public Collection<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> units )
+    {
+        return userStore.getUsersByOrganisationUnits( units );
+    }
+
+    @Override
+    public Collection<String> getUsernames( String query, Integer max )
+    {
+        return userCredentialsStore.getUsernames( query, max );
+    }
+
+    @Override
+    public int countDataSetUserAuthorityGroups( DataSet dataSet )
+    {
+        return userAuthorityGroupStore.countDataSetUserAuthorityGroups( dataSet );
+    }
+
+    @Override
+    public boolean isSuperUser( UserCredentials userCredentials )
+    {
+        if ( userCredentials == null )
+        {
+            return false;
+        }
+
+        for ( UserAuthorityGroup group : userCredentials.getUserAuthorityGroups() )
+        {
+            if ( group.getAuthorities().contains( "ALL" ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isLastSuperUser( UserCredentials userCredentials )
+    {
+        if ( !isSuperUser( userCredentials ) )
+        {
+            return false; // Cannot be last if not super user
+        }
+
+        Collection<UserCredentials> users = userCredentialsStore.getAllUserCredentials();
+
+        for ( UserCredentials user : users )
+        {
+            if ( isSuperUser( user ) && !user.equals( userCredentials ) )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean isSuperRole( UserAuthorityGroup userAuthorityGroup )
+    {
+        if ( userAuthorityGroup == null )
+        {
+            return false;
+        }
+
+        return ( userAuthorityGroup.getAuthorities().contains( "ALL" ) );
+    }
+
+    @Override
+    public boolean isLastSuperRole( UserAuthorityGroup userAuthorityGroup )
+    {
+        Collection<UserAuthorityGroup> groups = userAuthorityGroupStore.getAll();
+
+        for ( UserAuthorityGroup group : groups )
+        {
+            if ( isSuperRole( group ) && group.getId() != userAuthorityGroup.getId() )
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // -------------------------------------------------------------------------
@@ -697,28 +715,6 @@ public class DefaultUserService
     public boolean canUpdate( UserCredentials userCredentials )
     {
         return hasAuthorityToUpdateUser( userCredentials );
-    }
-
-    // -------------------------------------------------------------------------
-    // UserSettings
-    // -------------------------------------------------------------------------
-
-    @Override
-    public Collection<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> units )
-    {
-        return userStore.getUsersByOrganisationUnits( units );
-    }
-
-    @Override
-    public Collection<String> getUsernames( String query, Integer max )
-    {
-        return userCredentialsStore.getUsernames( query, max );
-    }
-
-    @Override
-    public int countDataSetUserAuthorityGroups( DataSet dataSet )
-    {
-        return userAuthorityGroupStore.countDataSetUserAuthorityGroups( dataSet );
     }
 
     @Override

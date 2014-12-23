@@ -40,19 +40,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Chau Thu Tran
- * @version $Id$
  */
 public interface UserService
 {
     String ID = UserService.class.getName();
-
-    boolean isSuperUser( UserCredentials userCredentials );
-
-    boolean isLastSuperUser( UserCredentials userCredentials );
-
-    boolean isSuperRole( UserAuthorityGroup userAuthorityGroup );
-
-    boolean isLastSuperRole( UserAuthorityGroup userAuthorityGroup );
 
     // -------------------------------------------------------------------------
     // User
@@ -168,6 +159,20 @@ public interface UserService
      * @return Set of CategoryOptions if constrained, else null.
      */
     public Set<DataElementCategoryOption> getCoDimensionConstraints( UserCredentials userCredentials );
+
+    boolean isSuperUser( UserCredentials userCredentials );
+
+    boolean isLastSuperUser( UserCredentials userCredentials );
+
+    boolean isSuperRole( UserAuthorityGroup userAuthorityGroup );
+
+    boolean isLastSuperRole( UserAuthorityGroup userAuthorityGroup );
+
+    Collection<User> getUsersByName( String name );
+
+    Collection<String> getUsernames( String query, Integer max );
+
+    int countDataSetUserAuthorityGroups( DataSet dataSet );
 
     // -------------------------------------------------------------------------
     // UserCredentials
@@ -308,7 +313,9 @@ public interface UserService
      * @return true if current user can update this user, else false.
      */
     boolean canUpdate( UserCredentials userCredentials );
-
+    
+    boolean credentialsNonExpired( UserCredentials credentials );
+    
     // -------------------------------------------------------------------------
     // UserAuthorityGroup
     // -------------------------------------------------------------------------
@@ -401,12 +408,4 @@ public interface UserService
      * @param userRoles the collection of user roles.
      */
     void canIssueFilter( Collection<UserAuthorityGroup> userRoles );
-    
-    Collection<User> getUsersByName( String name );
-
-    Collection<String> getUsernames( String query, Integer max );
-
-    int countDataSetUserAuthorityGroups( DataSet dataSet );
-
-    boolean credentialsNonExpired( UserCredentials credentials );
 }
