@@ -65,6 +65,10 @@ public class ImportTypeSummary
         this.type = type;
     }
 
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
     public String getType()

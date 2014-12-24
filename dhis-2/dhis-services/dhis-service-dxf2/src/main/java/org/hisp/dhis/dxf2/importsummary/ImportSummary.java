@@ -44,7 +44,7 @@ public class ImportSummary
 
     private String description;
 
-    /* we want to phase out this at some point, use importCount instead */
+    /* Phase out this at some point, use importCount instead */
     private ImportCount dataValueCount = new ImportCount();
 
     private ImportCount importCount = new ImportCount();
@@ -61,16 +61,29 @@ public class ImportSummary
     {
     }
 
+    public ImportSummary( ImportStatus status )
+    {
+        this.status = status;
+    }
+
     public ImportSummary( ImportStatus status, String description )
     {
         this.status = status;
         this.description = description;
     }
 
-    public ImportSummary( ImportStatus status )
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public boolean isStatus( ImportStatus status )
     {
-        this.status = status;
+        return this.status != null && this.status.equals( status );
     }
+    
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
