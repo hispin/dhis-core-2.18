@@ -33,7 +33,6 @@ import java.util.List;
 
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -106,62 +105,50 @@ public class DefaultUserGroupService
     }
 
     @Override
-    public boolean canAddOrRemove( User user, Collection<String> uids )
+    public boolean canAddOrRemove( String uid )
     {
         User currentUser = currentUserService.getCurrentUser();
         
-        for ( String uid : uids )
+        UserGroup userGroup = getUserGroup( uid );
+        
+        if ( userGroup == null )
         {
-            UserGroup userGroup = getUserGroup( uid );
-            
-            if ( userGroup == null )
-            {
-                return false;
-            }
-            
-            boolean canUpdate = aclService.canUpdate( currentUser, userGroup );
-            boolean canManage = currentUser.canManage( userGroup );
-            
-            if ( !canUpdate && !canManage )
-            {
-                return false;
-            }
+            return false;
         }
         
-        return true;
+        boolean canUpdate = aclService.canUpdate( currentUser, userGroup );
+        boolean canManage = currentUser.canManage( userGroup );
+        
+        return canUpdate || canManage;
     }
     
     @Override
     public void addUserToGroups( User user, Collection<String> uids )
-    {
-        if ( !canAddOrRemove( user, uids ) )
-        {
-            throw new UpdateAccessDeniedException( user.toString() );
-        }
-        
+    {        
         for ( String uid : uids )
         {
-            UserGroup userGroup = getUserGroup( uid );
-            user.getGroups().add( userGroup );
-            userGroup.getMembers().add( user );
-            userGroupStore.updateNoAcl( userGroup );
+            if ( canAddOrRemove( uid ) )
+            {
+                UserGroup userGroup = getUserGroup( uid );
+                user.getGroups().add( userGroup );
+                userGroup.getMembers().add( user );
+                userGroupStore.updateNoAcl( userGroup );
+            }
         }
     }
 
     @Override
     public void removeUserFromGroups( User user, Collection<String> uids )
     {
-        if ( !canAddOrRemove( user, uids ) )
-        {
-            throw new UpdateAccessDeniedException( user.toString() );
-        }
-        
         for ( String uid : uids )
         {
-            UserGroup userGroup = getUserGroup( uid );
-            user.getGroups().remove( userGroup );
-            userGroup.getMembers().remove( user );
-            userGroupStore.updateNoAcl( userGroup );
+            if ( canAddOrRemove( uid ) )
+            {
+                UserGroup userGroup = getUserGroup( uid );
+                user.getGroups().remove( userGroup );
+                userGroup.getMembers().remove( user );
+                userGroupStore.updateNoAcl( userGroup );
+            }
         }        
     }
 
