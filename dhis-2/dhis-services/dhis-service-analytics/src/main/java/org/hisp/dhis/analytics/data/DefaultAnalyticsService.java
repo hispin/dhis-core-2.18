@@ -1027,7 +1027,7 @@ public class DefaultAnalyticsService
                 }
                 else if ( ou != null && ou.startsWith( KEY_ORGUNIT_GROUP ) )
                 {
-                    String uid = DimensionalObjectUtils.getUidFromOrgUnitGroupParam( ou );
+                    String uid = DimensionalObjectUtils.getUidFromGroupParam( ou );
 
                     OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
 
