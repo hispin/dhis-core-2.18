@@ -63,6 +63,7 @@ import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
@@ -866,7 +867,8 @@ public class DefaultAnalyticsService
         if ( DATA_X_DIM_ID.equals( dimension ) )
         {
             List<DimensionalObject> dataDimensions = new ArrayList<>();
-
+            List<DataElementGroup> dataElementGroups = new ArrayList<>();
+            
             List<NameableObject> indicators = new ArrayList<>();
             List<NameableObject> dataElements = new ArrayList<>();
             List<NameableObject> dataSets = new ArrayList<>();
@@ -875,6 +877,20 @@ public class DefaultAnalyticsService
             options:
             for ( String uid : items )
             {
+                if ( uid != null && uid.startsWith( KEY_DE_GROUP ) )
+                {
+                    String groupUid = DimensionalObjectUtils.getUidFromGroupParam( uid );
+                    
+                    DataElementGroup group = dataElementService.getDataElementGroup( groupUid );
+                    
+                    if ( group != null )
+                    {
+                        dataElementGroups.add( group );
+                    }
+                    
+                    continue options;
+                }
+                
                 Indicator in = indicatorService.getIndicator( uid );
 
                 if ( in != null )
@@ -909,7 +925,15 @@ public class DefaultAnalyticsService
 
                 throw new IllegalQueryException( "Data dimension option identifier does not reference any option: " + uid );
             }
-
+            
+            if ( !dataElementGroups.isEmpty() )
+            {
+                for ( DataElementGroup group : dataElementGroups )
+                {
+                    dataElements.addAll( group.getMembers() );
+                }
+            }
+            
             if ( !indicators.isEmpty() )
             {
                 dataDimensions.add( new BaseDimensionalObject( INDICATOR_DIM_ID, DimensionType.INDICATOR, indicators ) );
