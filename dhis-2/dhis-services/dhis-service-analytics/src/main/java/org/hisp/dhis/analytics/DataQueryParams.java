@@ -88,6 +88,7 @@ public class DataQueryParams
 {
     public static final String VALUE_ID = "value";    
     public static final String LEVEL_PREFIX = "uidlevel";
+    public static final String KEY_DE_GROUP = "DE_GROUP-";
     
     public static final String DISPLAY_NAME_DATA_X = "Data";
     public static final String DISPLAY_NAME_CATEGORYOPTIONCOMBO = "Category";

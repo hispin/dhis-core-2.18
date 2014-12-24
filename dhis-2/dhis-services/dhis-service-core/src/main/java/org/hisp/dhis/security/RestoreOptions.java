@@ -1,4 +1,5 @@
 package org.hisp.dhis.security;
+
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
