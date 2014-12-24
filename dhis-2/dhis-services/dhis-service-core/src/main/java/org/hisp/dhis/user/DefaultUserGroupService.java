@@ -105,7 +105,7 @@ public class DefaultUserGroupService
     }
 
     @Override
-    public boolean canAddOrRemove( String uid )
+    public boolean canAddOrRemoveMember( String uid )
     {
         User currentUser = currentUserService.getCurrentUser();
         
@@ -127,7 +127,7 @@ public class DefaultUserGroupService
     {        
         for ( String uid : uids )
         {
-            if ( canAddOrRemove( uid ) )
+            if ( canAddOrRemoveMember( uid ) )
             {
                 UserGroup userGroup = getUserGroup( uid );
                 user.getGroups().add( userGroup );
@@ -142,7 +142,7 @@ public class DefaultUserGroupService
     {
         for ( String uid : uids )
         {
-            if ( canAddOrRemove( uid ) )
+            if ( canAddOrRemoveMember( uid ) )
             {
                 UserGroup userGroup = getUserGroup( uid );
                 user.getGroups().remove( userGroup );
