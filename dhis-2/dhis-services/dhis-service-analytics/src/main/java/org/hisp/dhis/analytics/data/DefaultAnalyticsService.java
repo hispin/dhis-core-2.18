@@ -1031,7 +1031,7 @@ public class DefaultAnalyticsService
 
                     OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
 
-                    if ( uid != null )
+                    if ( group != null )
                     {
                         groups.add( group );
                     }
