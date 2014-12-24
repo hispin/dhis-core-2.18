@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
@@ -167,7 +168,7 @@ public class UserController
     {
         User user = renderService.fromXml( request.getInputStream(), getEntityClass() );
 
-        createUser( user, response );
+        createUser( user );
     }
 
     @Override
@@ -176,7 +177,7 @@ public class UserController
     {
         User user = renderService.fromJson( request.getInputStream(), getEntityClass() );
 
-        createUser( user, response );
+        createUser( user );
     }
 
     @RequestMapping( value = INVITE_PATH, method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
@@ -349,16 +350,18 @@ public class UserController
         {
             return;
         }
-        
+
         RestoreOptions restoreOptions = user.getUsername() == null || user.getUsername().isEmpty() ?
             RestoreOptions.INVITE_WITH_USERNAME_CHOICE : RestoreOptions.INVITE_WITH_DEFINED_USERNAME;
 
         securityService.prepareUserForInvite( user );
 
-        createUser( user, response );
+        ImportSummary summary = createUser( user );
 
         securityService.sendRestoreMessage( user.getUserCredentials(),
             ContextUtils.getContextPath( request ), restoreOptions );
+
+        renderService.toJson( response.getOutputStream(), summary );
     }
 
     /**
@@ -367,7 +370,7 @@ public class UserController
      * @param user user object parsed from the POST request
      * @param response response for created user
      */
-    private void createUser( User user, HttpServletResponse response ) throws Exception
+    private ImportSummary createUser( User user ) throws Exception
     {
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
         {
@@ -377,6 +380,16 @@ public class UserController
         if ( !userService.canAddOrUpdateUser( IdentifiableObjectUtils.getUids( user.getGroups() ) ) )
         {
             throw new CreateAccessDeniedException( "You must have permissions to create user, or ability to manage at least one user group for the user." );
+        }
+        
+        List<String> uids = IdentifiableObjectUtils.getUids( user.getGroups() );
+        
+        for ( String uid : uids )
+        {
+            if ( !userGroupService.canAddOrRemove( uid ) )
+            {
+                throw new CreateAccessDeniedException( "You don't have permissions to add user to user group: " + uid );
+            }
         }
 
         user.getUserCredentials().getCogsDimensionConstraints().addAll(
@@ -388,7 +401,7 @@ public class UserController
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), user, ImportStrategy.CREATE );
 
         userGroupService.addUserToGroups( user, IdentifiableObjectUtils.getUids( user.getGroups() ) );
-        
-        renderService.toJson( response.getOutputStream(), summary );        
+
+        return summary;             
     }
 }

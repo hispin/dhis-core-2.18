@@ -45,7 +45,7 @@ public interface UserGroupService
 
     UserGroup getUserGroup( String uid );
 
-    boolean canAddOrRemove( User user, Collection<String> uids );
+    boolean canAddOrRemove( String uid );
     
     void addUserToGroups( User user, Collection<String> uids );
     
