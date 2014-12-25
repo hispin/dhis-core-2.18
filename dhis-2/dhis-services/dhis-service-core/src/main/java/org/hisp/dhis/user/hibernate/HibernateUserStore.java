@@ -28,6 +28,7 @@ package org.hisp.dhis.user.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,6 +36,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserStore;
@@ -114,5 +116,30 @@ public class HibernateUserStore
         criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
 
         return criteria.list();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<User> getManagedUsers( User user )
+    {
+        Collection<Integer> managedGroups = IdentifiableObjectUtils.getIdentifiers( user.getManagedGroups() );
+        
+        String hql = "select distinct u from User u join u.groups g where g.id in (:ids) order by u.surname, u.firstName";
+        
+        return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", managedGroups ).list();
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<User> getManagedUsers( User user, int first, int max )
+    {
+        Collection<Integer> managedGroups = IdentifiableObjectUtils.getIdentifiers( user.getManagedGroups() );
+        
+        String hql = "select distinct u from User u join u.groups g where g.id in (:ids) order by u.surname, u.firstName";
+        
+        return sessionFactory.getCurrentSession().createQuery( hql ).
+            setParameterList( "ids", managedGroups ).
+            setFirstResult( first ).
+            setMaxResults( max ).list();
     }
 }
