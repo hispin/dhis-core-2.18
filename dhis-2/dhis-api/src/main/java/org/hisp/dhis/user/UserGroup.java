@@ -46,6 +46,9 @@ import org.hisp.dhis.common.view.ExportView;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author Lars Helge Overland
+ */
 @JacksonXmlRootElement( localName = "userGroup", namespace = DxfNamespaces.DXF_2_0 )
 public class UserGroup
     extends BaseIdentifiableObject

@@ -35,6 +35,9 @@ import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author Lars Helge Overland
+ */
 @Transactional
 public class DefaultUserGroupService
     implements UserGroupService
