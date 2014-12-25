@@ -35,7 +35,7 @@ public interface UserGroupService
 {
     String ID = UserGroupService.class.getName();
 
-    void addUserGroup( UserGroup userGroup );
+    int addUserGroup( UserGroup userGroup );
     
     void updateUserGroup( UserGroup userGroup );
 

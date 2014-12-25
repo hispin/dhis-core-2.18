@@ -248,10 +248,9 @@ public class User
     {
         return userCredentials != null && userCredentials.isSuper();
     }
-    
+        
     /**
-     * Indicates whether this user can manage the given user group. This is derived
-     * from which user groups are managed by the given group.
+     * Indicates whether this user can manage the given user group.
      * 
      * @param userGroup the user group to test.
      * @return true if the given user group can be managed by this user, false if not.
@@ -259,6 +258,65 @@ public class User
     public boolean canManage( UserGroup userGroup )
     {
         return userGroup != null && CollectionUtils.containsAny( groups, userGroup.getManagedByGroups() );
+    }
+    
+    /**
+     * Indicates whether this user can manage the given user.
+     * 
+     * @param user the user to test.
+     * @return true if the given user can be managed by this user, false if not.
+     */
+    public boolean canManage( User user )
+    {
+        if ( user == null || user.getGroups() == null )
+        {
+            return false;
+        }
+        
+        for ( UserGroup group : user.getGroups() )
+        {
+            if ( canManage( group ) )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Indicates whether this user is managed by the given user group.
+     * 
+     * @param userGroup the user group to test.
+     * @return true if the given user group is managed by this user, false if not.
+     */
+    public boolean isManagedBy( UserGroup userGroup )
+    {
+        return userGroup != null && CollectionUtils.containsAny( groups, userGroup.getManagedGroups() );
+    }
+
+    /**
+     * Indicates whether this user is managed by the given user.
+     * 
+     * @param userGroup the user  to test.
+     * @return true if the given user is managed by this user, false if not.
+     */
+    public boolean isManagedBy( User user )
+    {
+        if ( user == null || user.getGroups() == null )
+        {
+            return false;
+        }
+        
+        for ( UserGroup group : user.getGroups() )
+        {
+            if ( isManagedBy( group ) )
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     // -------------------------------------------------------------------------
