@@ -158,6 +158,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             Iterator<String> iterator = filters.iterator();
             String name = null;
 
+            // Use database query for name filter
+
             if ( schema.getProperty( "name" ) != null && schema.getProperty( "name" ).isPersisted() )
             {
                 while ( iterator.hasNext() )
@@ -192,7 +194,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             }
             else
             {
-                // get full list if we are using filters
+                // Get full list when using filters other than name
+                
                 if ( !filters.isEmpty() )
                 {
                     if ( options.hasPaging() )

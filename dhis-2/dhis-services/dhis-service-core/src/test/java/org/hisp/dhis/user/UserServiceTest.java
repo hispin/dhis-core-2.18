@@ -42,13 +42,13 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author Nguyen Hong Duc
+ * @author Lars Helge Overland
  */
-public class UserStoreTest
+public class UserServiceTest
     extends DhisSpringTest
 {
     @Autowired
-    private UserStore userStore;
+    private UserService userService;
 
     @Autowired
     private UserCredentialsStore userCredentialsStore;
@@ -84,14 +84,14 @@ public class UserStoreTest
         userA.setOrganisationUnits( units );
         userB.setOrganisationUnits( units );
 
-        int idA = userStore.save( userA );
-        int idB = userStore.save( userB );
+        int idA = userService.addUser( userA );
+        int idB = userService.addUser( userB );
         
-        assertEquals( userA, userStore.get( idA ) );
-        assertEquals( userB, userStore.get( idB ) );
+        assertEquals( userA, userService.getUser( idA ) );
+        assertEquals( userB, userService.getUser( idB ) );
         
-        assertEquals( units, userStore.get( idA ).getOrganisationUnits() );
-        assertEquals( units, userStore.get( idB ).getOrganisationUnits() );
+        assertEquals( units, userService.getUser( idA ).getOrganisationUnits() );
+        assertEquals( units, userService.getUser( idB ).getOrganisationUnits() );
     }
 
     @Test
@@ -100,17 +100,17 @@ public class UserStoreTest
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
 
-        int idA = userStore.save( userA );
-        int idB = userStore.save( userB );
+        int idA = userService.addUser( userA );
+        int idB = userService.addUser( userB );
 
-        assertEquals( userA, userStore.get( idA ) );
-        assertEquals( userB, userStore.get( idB ) );
+        assertEquals( userA, userService.getUser( idA ) );
+        assertEquals( userB, userService.getUser( idB ) );
         
         userA.setSurname( "UpdatedSurnameA" );
         
-        userStore.update( userA );
+        userService.updateUser( userA );
         
-        assertEquals( userStore.get( idA ).getSurname(), "UpdatedSurnameA" );
+        assertEquals( userService.getUser( idA ).getSurname(), "UpdatedSurnameA" );
     }
     
     @Test
@@ -119,16 +119,16 @@ public class UserStoreTest
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
 
-        int idA = userStore.save( userA );
-        int idB = userStore.save( userB );
+        int idA = userService.addUser( userA );
+        int idB = userService.addUser( userB );
 
-        assertEquals( userA, userStore.get( idA ) );
-        assertEquals( userB, userStore.get( idB ) );
+        assertEquals( userA, userService.getUser( idA ) );
+        assertEquals( userB, userService.getUser( idB ) );
         
-        userStore.delete( userA );
+        userService.deleteUser( userA );
         
-        assertNull( userStore.get( idA ) );
-        assertNotNull( userStore.get( idB ) );
+        assertNull( userService.getUser( idA ) );
+        assertNotNull( userService.getUser( idB ) );
     }
 
     @Test
