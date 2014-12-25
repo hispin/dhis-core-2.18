@@ -35,6 +35,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -189,5 +190,52 @@ public class UserServiceTest
         assertTrue( userD.isManagedBy( userB ) );
         assertFalse( userA.isManagedBy( userC ) );
         assertFalse( userA.isManagedBy( userD ) );
+    }
+
+    @Test
+    public void testGetManagedGroups()
+    {
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
+        User userC = createUser( 'C' );
+        User userD = createUser( 'D' );
+        
+        userService.addUser( userA );
+        userService.addUser( userB );
+        userService.addUser( userC );
+        userService.addUser( userD );
+        
+        UserGroup userGroup1 = createUserGroup( 'A', Sets.newHashSet( userA, userB ) );
+        UserGroup userGroup2 = createUserGroup( 'B', Sets.newHashSet( userC, userD ) );
+        userA.getGroups().add( userGroup1 );
+        userB.getGroups().add( userGroup1 );
+        userC.getGroups().add( userGroup2 );
+        userD.getGroups().add( userGroup2 );
+        
+        userGroup1.setManagedGroups( Sets.newHashSet( userGroup2 ) );
+        userGroup2.setManagedByGroups( Sets.newHashSet( userGroup1 ) );
+        
+        userGroupService.addUserGroup( userGroup1 );
+        userGroupService.addUserGroup( userGroup2 );
+        
+        List<User> users = userService.getManagedUsers( userA );
+        
+        assertEquals( 2, users.size() );
+        assertTrue( users.contains( userC ) );
+        assertTrue( users.contains( userD ) );
+
+        users = userService.getManagedUsers( userA, 0, 1 );
+        
+        assertEquals( 1, users.size() );
+
+        users = userService.getManagedUsers( userB );
+        
+        assertEquals( 2, users.size() );
+        assertTrue( users.contains( userC ) );
+        assertTrue( users.contains( userD ) );
+
+        users = userService.getManagedUsers( userC );
+        
+        assertEquals( 0, users.size() );
     }
 }

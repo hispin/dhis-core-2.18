@@ -204,6 +204,18 @@ public class DefaultUserService
     }
 
     @Override
+    public List<User> getManagedUsers( User user )
+    {
+        return userStore.getManagedUsers( user );
+    }
+
+    @Override
+    public List<User> getManagedUsers( User user, int first, int max )
+    {
+        return userStore.getManagedUsers( user, first, max );
+    }
+
+    @Override
     public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit unit, int first, int max )
     {
         return userCredentialsStore.getUsersByOrganisationUnitBetween( unit, first, max );
@@ -340,7 +352,7 @@ public class DefaultUserService
     {
         return userAuthorityGroupStore.countDataSetUserAuthorityGroups( dataSet );
     }
-
+    
     @Override
     public boolean isSuperUser( UserCredentials userCredentials )
     {

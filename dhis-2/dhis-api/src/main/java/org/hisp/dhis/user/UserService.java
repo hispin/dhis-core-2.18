@@ -164,6 +164,26 @@ public interface UserService
 
     Collection<String> getUsernames( String query, Integer max );
 
+    /**
+     * Returns all users which are managed by the given user through its managed
+     * groups association.
+     * 
+     * @param user the user.
+     * @return a List of users.
+     */
+    List<User> getManagedUsers( User user );
+    
+    /**
+     * Returns all users which are managed by the given user through its managed
+     * groups association.
+     * 
+     * @param user the user.
+     * @param first the first record to return.
+     * @param max the max number of records to return.
+     * @return a List of users.
+     */
+    List<User> getManagedUsers( User user, int first, int max );
+    
     int countDataSetUserAuthorityGroups( DataSet dataSet );
 
     /**
