@@ -184,8 +184,6 @@ public interface UserService
      */
     List<User> getManagedUsers( User user, int first, int max );
     
-    int countDataSetUserAuthorityGroups( DataSet dataSet );
-
     /**
      * Tests whether the current user is allowed to create a user associated
      * with the given user group identifiers. Returns true if current user has 
@@ -418,6 +416,15 @@ public interface UserService
      * @return a Collection of UserAuthorityGroups.
      */
     Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max );
+
+    /**
+     * Returns the number of UserAuthorityGroups which are associated with the
+     * given DataSet.
+     *  
+     * @param dataSet the DataSet.
+     * @return number of UserAuthorityGroups.
+     */
+    int countDataSetUserAuthorityGroups( DataSet dataSet );
 
     void assignDataSetToUserRole( DataSet dataSet );
 
