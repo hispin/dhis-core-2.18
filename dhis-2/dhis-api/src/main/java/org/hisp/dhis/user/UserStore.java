@@ -31,7 +31,6 @@ package org.hisp.dhis.user;
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Nguyen Hong Duc
@@ -48,16 +47,6 @@ public interface UserStore
      * @return a Collection of Users.
      */
     Collection<User> getUsersWithoutOrganisationUnit();
-
-    /**
-     * Returns a Collection of the Users which are associated with
-     * OrganisationUnits.
-     * 
-     * @param orgunits a Collection of the organization units.
-     * 
-     * @return a Collection of Users.
-     */
-    Collection<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> orgunits );
 
     /**
      * Returns a Collection of Users which are having given Phone number.

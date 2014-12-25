@@ -330,12 +330,6 @@ public class DefaultUserService
     }
 
     @Override
-    public Collection<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> units )
-    {
-        return userStore.getUsersByOrganisationUnits( units );
-    }
-
-    @Override
     public Collection<String> getUsernames( String query, Integer max )
     {
         return userCredentialsStore.getUsernames( query, max );
