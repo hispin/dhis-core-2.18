@@ -248,7 +248,19 @@ public class User
     {
         return userCredentials != null && userCredentials.isSuper();
     }
+    
+    public Set<UserGroup> getManagedGroups()
+    {
+        Set<UserGroup> managedGroups = new HashSet<>();
         
+        for ( UserGroup group : groups )
+        {
+            managedGroups.addAll( group.getManagedGroups() );
+        }
+        
+        return managedGroups;
+    }
+    
     /**
      * Indicates whether this user can manage the given user group.
      * 
