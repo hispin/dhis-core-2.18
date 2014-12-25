@@ -31,6 +31,8 @@ package org.hisp.dhis.user;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -41,6 +43,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.collect.Sets;
+
 /**
  * @author Lars Helge Overland
  */
@@ -49,9 +53,9 @@ public class UserServiceTest
 {
     @Autowired
     private UserService userService;
-
+    
     @Autowired
-    private UserCredentialsStore userCredentialsStore;
+    private UserGroupService userGroupService;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -130,20 +134,60 @@ public class UserServiceTest
         assertNull( userService.getUser( idA ) );
         assertNotNull( userService.getUser( idB ) );
     }
-
+    
     @Test
-    public void testAddGetUserCredentials()
+    public void testManagedGroups()
     {
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
+        User userC = createUser( 'C' );
+        User userD = createUser( 'D' );
         
-        UserCredentials credentialsA = createUserCredentials( 'A', userA );
-        UserCredentials credentialsB = createUserCredentials( 'B', userB );
+        userService.addUser( userA );
+        userService.addUser( userB );
+        userService.addUser( userC );
+        userService.addUser( userD );
         
-        int idA = userCredentialsStore.addUserCredentials( credentialsA );
-        int idB = userCredentialsStore.addUserCredentials( credentialsB );
+        UserGroup userGroup1 = createUserGroup( 'A', Sets.newHashSet( userA, userB ) );
+        UserGroup userGroup2 = createUserGroup( 'B', Sets.newHashSet( userC, userD ) );
+        userA.getGroups().add( userGroup1 );
+        userB.getGroups().add( userGroup1 );
+        userC.getGroups().add( userGroup2 );
+        userD.getGroups().add( userGroup2 );
         
-        assertEquals( credentialsA, userCredentialsStore.getUserCredentials( idA ) );
-        assertEquals( credentialsB, userCredentialsStore.getUserCredentials( idB ) );
+        userGroup1.setManagedGroups( Sets.newHashSet( userGroup2 ) );
+        userGroup2.setManagedByGroups( Sets.newHashSet( userGroup1 ) );
+        
+        int group1 = userGroupService.addUserGroup( userGroup1 );
+        int group2 = userGroupService.addUserGroup( userGroup2 );
+
+        assertEquals( 1, userGroupService.getUserGroup( group1 ).getManagedGroups().size() );
+        assertTrue( userGroupService.getUserGroup( group1 ).getManagedGroups().contains( userGroup2 ) );
+        assertEquals( 1, userGroupService.getUserGroup( group2 ).getManagedByGroups().size() );
+        assertTrue( userGroupService.getUserGroup( group2 ).getManagedByGroups().contains( userGroup1 ) );
+        
+        assertTrue( userA.canManage( userGroup2 ) );
+        assertTrue( userB.canManage( userGroup2 ) );
+        assertFalse( userC.canManage( userGroup1 ) );
+        assertFalse( userD.canManage( userGroup1 ) );
+
+        assertTrue( userA.canManage( userC ) );
+        assertTrue( userA.canManage( userD ) );
+        assertTrue( userB.canManage( userC ) );
+        assertTrue( userA.canManage( userD ) );
+        assertFalse( userC.canManage( userA ) );
+        assertFalse( userC.canManage( userB ) );
+        
+        assertTrue( userC.isManagedBy( userGroup1 ) );
+        assertTrue( userD.isManagedBy( userGroup1 ) );
+        assertFalse( userA.isManagedBy( userGroup2 ) );
+        assertFalse( userB.isManagedBy( userGroup2 ) );
+
+        assertTrue( userC.isManagedBy( userA ) );
+        assertTrue( userC.isManagedBy( userB ) );
+        assertTrue( userD.isManagedBy( userA ) );
+        assertTrue( userD.isManagedBy( userB ) );
+        assertFalse( userA.isManagedBy( userC ) );
+        assertFalse( userA.isManagedBy( userD ) );
     }
 }
