@@ -28,18 +28,16 @@ package org.hisp.dhis.user.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserStore;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author Nguyen Hong Duc
@@ -104,15 +102,6 @@ public class HibernateUserStore
         query.setString( "phoneNumber", phoneNumber );
 
         return query.list();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> orgunits )
-    {
-        String hql = "select distinct u from User u join u.organisationUnits o where o.id in (:ids)";
-
-        return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", orgunits ).list();
     }
 
     @Override
