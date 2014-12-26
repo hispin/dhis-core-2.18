@@ -32,6 +32,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -98,6 +99,10 @@ public interface UserCredentialsStore
      */
     void deleteUserCredentials( UserCredentials userCredentials );
 
+    UserCredentials getUserCredentialsByOpenID( String openId );
+    
+    List<UserCredentials> getUserCredentialsWithLessAuthorities( UserCredentials userCredentials );
+    
     Collection<UserCredentials> searchUsersByName( String key );
 
     Collection<UserCredentials> searchUsersByName( String key, int first, int max );
@@ -140,6 +145,4 @@ public interface UserCredentialsStore
     int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name );
 
     Collection<String> getUsernames( String key, Integer max );
-
-    UserCredentials getUserCredentialsByOpenID( String openId );
 }

@@ -53,9 +53,6 @@ public class UserStoreTest
     private UserStore userStore;
 
     @Autowired
-    private UserCredentialsStore userCredentialsStore;
-
-    @Autowired
     private OrganisationUnitService organisationUnitService;
 
     private OrganisationUnit unit1;
@@ -131,22 +128,6 @@ public class UserStoreTest
         
         assertNull( userStore.get( idA ) );
         assertNotNull( userStore.get( idB ) );
-    }
-
-    @Test
-    public void testAddGetUserCredentials()
-    {
-        User userA = createUser( 'A' );
-        User userB = createUser( 'B' );
-        
-        UserCredentials credentialsA = createUserCredentials( 'A', userA );
-        UserCredentials credentialsB = createUserCredentials( 'B', userB );
-        
-        int idA = userCredentialsStore.addUserCredentials( credentialsA );
-        int idB = userCredentialsStore.addUserCredentials( credentialsB );
-        
-        assertEquals( credentialsA, userCredentialsStore.getUserCredentials( idA ) );
-        assertEquals( credentialsB, userCredentialsStore.getUserCredentials( idB ) );
     }
 
     @Test

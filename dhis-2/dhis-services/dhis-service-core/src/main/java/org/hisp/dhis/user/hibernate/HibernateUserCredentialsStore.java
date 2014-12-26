@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -72,7 +73,7 @@ public class HibernateUserCredentialsStore
     {
         this.userService = userService;
     }
-
+    
     // -------------------------------------------------------------------------
     // UserCredentials
     // -------------------------------------------------------------------------
@@ -134,6 +135,25 @@ public class HibernateUserCredentialsStore
         return (UserCredentials) query.uniqueResult();
     }
 
+    @SuppressWarnings("unchecked")
+    public List<UserCredentials> getUserCredentialsWithLessAuthorities( UserCredentials userCredentials )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Set<String> auths = userCredentials.getAllAuthorities();
+        
+        String hql = 
+            "select uc from UserCredentials uc " +
+            "where not exists (" +
+                "select uc2 from UserCredentials uc2 " +
+                "inner join uc2.userAuthorityGroups ag " +
+                "inner join ag.authorities a " +
+                "where uc2.id = uc.id " +
+                "and a not in (:auths) )";
+        
+        return session.createQuery( hql ).setParameterList( "auths", auths ).list();
+    }
+    
     @Override
     @SuppressWarnings("unchecked")
     public Collection<UserCredentials> getAllUserCredentials()
