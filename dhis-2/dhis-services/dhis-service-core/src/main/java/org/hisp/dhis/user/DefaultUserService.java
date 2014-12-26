@@ -204,14 +204,19 @@ public class DefaultUserService
     }
 
     @Override
-    public List<User> getManagedUsers( User user )
+    public Collection<User> getManagedUsers( User user )
     {
-        return userStore.getManagedUsers( user );
+        return userStore.getManagedUsersBetween( user, null, null );
     }
 
     @Override
-    public List<User> getManagedUsersBetween( User user, int first, int max )
+    public Collection<User> getManagedUsersBetween( User user, int first, int max )
     {
+        if ( user != null && user.isSuper() )
+        {
+            return getAllUsers();
+        }
+        
         return userStore.getManagedUsersBetween( user, first, max );
     }
 
