@@ -326,16 +326,8 @@ public interface UserService
      *
      * @param userCredentials the list of user credentials.
      */
-    void canUpdateFilter( Collection<UserCredentials> userCredentials );
+    void canUpdateUserCredentialsFilter( Collection<UserCredentials> userCredentials );
 
-    /**
-     * Is the current user allowed to update this user?
-     *
-     * @param userCredentials credentials to check for allowing update.
-     * @return true if current user can update this user, else false.
-     */
-    boolean canUpdate( UserCredentials userCredentials );
-    
     boolean credentialsNonExpired( UserCredentials credentials );
     
     // -------------------------------------------------------------------------

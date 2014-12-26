@@ -146,7 +146,7 @@ public class GetUserListAction
             Collections.sort( userCredentialsList, new UsernameComparator() );
         }
 
-        userService.canUpdateFilter( userCredentialsList );
+        userService.canUpdateUserCredentialsFilter( userCredentialsList );
 
         return SUCCESS;
     }

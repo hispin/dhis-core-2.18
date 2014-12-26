@@ -104,7 +104,7 @@ public class RemoveUserAction
             return ERROR;
         }
         
-        if ( !currentUser.getUserCredentials().canModify( user.getUserCredentials() ) )
+        if ( !currentUser.getUserCredentials().canModifyUser( user.getUserCredentials() ) )
         {
             return ERROR;
         }

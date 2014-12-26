@@ -131,7 +131,7 @@ public class GetOrgunitUserListAction
             }
         }
         
-        userService.canUpdateFilter( userCredentialsList );
+        userService.canUpdateUserCredentialsFilter( userCredentialsList );
         
         Collections.sort( userCredentialsList, new UsernameComparator() );
 

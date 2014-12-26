@@ -59,6 +59,6 @@ public class UserAuthorityGroupCanIssueFilter
     @Override
     public boolean retain( UserAuthorityGroup group )
     {
-        return userCredentials != null && userCredentials.canIssue( group, canGrantOwnUserAuthorityGroups );
+        return userCredentials != null && userCredentials.canIssueUserRole( group, canGrantOwnUserAuthorityGroups );
     }
 }
