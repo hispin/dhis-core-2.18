@@ -30,6 +30,7 @@ package org.hisp.dhis.user.hibernate;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -107,29 +108,42 @@ public class HibernateUserStore
 
         return criteria.list();
     }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<User> getManagedUsers( User user )
-    {
-        Collection<Integer> managedGroups = IdentifiableObjectUtils.getIdentifiers( user.getManagedGroups() );
-        
-        String hql = "select distinct u from User u join u.groups g where g.id in (:ids) order by u.surname, u.firstName";
-        
-        return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", managedGroups ).list();
-    }
     
     @Override
     @SuppressWarnings("unchecked")
-    public List<User> getManagedUsersBetween( User user, int first, int max )
+    public List<User> getManagedUsersBetween( User user, Integer first, Integer max )
     {
         Collection<Integer> managedGroups = IdentifiableObjectUtils.getIdentifiers( user.getManagedGroups() );
+
+        Set<String> auths = user.getUserCredentials().getAllAuthorities();
         
-        String hql = "select distinct u from User u join u.groups g where g.id in (:ids) order by u.surname, u.firstName";
+        String hql = 
+            "select distinct u from User u " +
+            "inner join u.userCredentials uc " +
+            "inner join u.groups g " +
+            "where g.id in (:ids) " + 
+            "and not exists (" +
+                "select uc2 from UserCredentials uc2 " +
+                "inner join uc2.userAuthorityGroups ag " +
+                "inner join ag.authorities a " +
+                "where uc2.id = uc.id " +
+                "and a not in (:auths) ) " +
+            "order by u.surname, u.firstName";
         
-        return sessionFactory.getCurrentSession().createQuery( hql ).
+        Query query = sessionFactory.getCurrentSession().createQuery( hql ).
             setParameterList( "ids", managedGroups ).
-            setFirstResult( first ).
-            setMaxResults( max ).list();
+            setParameterList( "auths", auths );
+        
+        if ( first != null )
+        {
+            query.setFirstResult( first );
+        }
+        
+        if ( max != null )
+        {
+            query.setMaxResults( max ).list();
+        }
+        
+        return query.list();
     }
 }

@@ -71,18 +71,9 @@ public interface UserStore
      * groups association.
      * 
      * @param user the user.
+     * @param first the first record to return, null if 0.
+     * @param max the max number of records to return, null if none.
      * @return a List of users.
      */
-    List<User> getManagedUsers( User user );
-
-    /**
-     * Returns all users which are managed by the given user through its managed
-     * groups association.
-     * 
-     * @param user the user.
-     * @param first the first record to return.
-     * @param max the max number of records to return.
-     * @return a List of users.
-     */
-    List<User> getManagedUsersBetween( User user, int first, int max );
+    List<User> getManagedUsersBetween( User user, Integer first, Integer max );
 }

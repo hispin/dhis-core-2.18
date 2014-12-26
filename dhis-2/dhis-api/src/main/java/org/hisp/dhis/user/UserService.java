@@ -169,9 +169,9 @@ public interface UserService
      * groups association.
      * 
      * @param user the user.
-     * @return a List of users.
+     * @return a Collection of users.
      */
-    List<User> getManagedUsers( User user );
+    Collection<User> getManagedUsers( User user );
     
     /**
      * Returns all users which are managed by the given user through its managed
@@ -180,9 +180,9 @@ public interface UserService
      * @param user the user.
      * @param first the first record to return.
      * @param max the max number of records to return.
-     * @return a List of users.
+     * @return a Collection of users.
      */
-    List<User> getManagedUsersBetween( User user, int first, int max );
+    Collection<User> getManagedUsersBetween( User user, int first, int max );
     
     /**
      * Tests whether the current user is allowed to create a user associated

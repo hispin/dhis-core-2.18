@@ -29,13 +29,13 @@ package org.hisp.dhis.user;
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -64,6 +64,10 @@ public class UserServiceTest
     private OrganisationUnit unit1;
     private OrganisationUnit unit2;
 
+    private UserAuthorityGroup roleA;
+    private UserAuthorityGroup roleB;
+    private UserAuthorityGroup roleC;
+    
     @Override
     public void setUpTest()
         throws Exception
@@ -72,7 +76,25 @@ public class UserServiceTest
         unit2 = createOrganisationUnit( 'B' );
 
         organisationUnitService.addOrganisationUnit( unit1 );
-        organisationUnitService.addOrganisationUnit( unit2 );        
+        organisationUnitService.addOrganisationUnit( unit2 );
+        
+        roleA = createUserAuthorityGroup( 'A' );
+        roleB = createUserAuthorityGroup( 'B' );
+        roleC = createUserAuthorityGroup( 'C' );
+        
+        roleA.getAuthorities().add( "AuthA" );
+        roleA.getAuthorities().add( "AuthB" );
+        roleA.getAuthorities().add( "AuthC" );
+        roleA.getAuthorities().add( "AuthD" );
+        
+        roleB.getAuthorities().add( "AuthA" );
+        roleB.getAuthorities().add( "AuthB" );
+        
+        roleC.getAuthorities().add( "AuthC" );
+        
+        userService.addUserAuthorityGroup( roleA );
+        userService.addUserAuthorityGroup( roleB );
+        userService.addUserAuthorityGroup( roleC );
     }
 
     @Test
@@ -199,18 +221,38 @@ public class UserServiceTest
         User userB = createUser( 'B' );
         User userC = createUser( 'C' );
         User userD = createUser( 'D' );
+        User userE = createUser( 'E' );
+        User userF = createUser( 'F' );
+
+        UserCredentials credentialsA = createUserCredentials( 'A', userA );
+        UserCredentials credentialsB = createUserCredentials( 'B', userB );
+        UserCredentials credentialsC = createUserCredentials( 'C', userC );
+        UserCredentials credentialsD = createUserCredentials( 'D', userD );
+        UserCredentials credentialsE = createUserCredentials( 'E', userE );
+        UserCredentials credentialsF = createUserCredentials( 'F', userF );
         
         userService.addUser( userA );
         userService.addUser( userB );
         userService.addUser( userC );
         userService.addUser( userD );
+        userService.addUser( userE );
+        userService.addUser( userF );
+        
+        userService.addUserCredentials( credentialsA );
+        userService.addUserCredentials( credentialsB );
+        userService.addUserCredentials( credentialsC );
+        userService.addUserCredentials( credentialsD );
+        userService.addUserCredentials( credentialsE );
+        userService.addUserCredentials( credentialsF );
         
         UserGroup userGroup1 = createUserGroup( 'A', Sets.newHashSet( userA, userB ) );
-        UserGroup userGroup2 = createUserGroup( 'B', Sets.newHashSet( userC, userD ) );
+        UserGroup userGroup2 = createUserGroup( 'B', Sets.newHashSet( userC, userD, userE, userF ) );
         userA.getGroups().add( userGroup1 );
         userB.getGroups().add( userGroup1 );
         userC.getGroups().add( userGroup2 );
         userD.getGroups().add( userGroup2 );
+        userE.getGroups().add( userGroup2 );
+        userF.getGroups().add( userGroup2 );
         
         userGroup1.setManagedGroups( Sets.newHashSet( userGroup2 ) );
         userGroup2.setManagedByGroups( Sets.newHashSet( userGroup1 ) );
@@ -218,11 +260,13 @@ public class UserServiceTest
         userGroupService.addUserGroup( userGroup1 );
         userGroupService.addUserGroup( userGroup2 );
         
-        List<User> users = userService.getManagedUsers( userA );
+        Collection<User> users = userService.getManagedUsers( userA );
         
-        assertEquals( 2, users.size() );
+        assertEquals( 4, users.size() );
         assertTrue( users.contains( userC ) );
         assertTrue( users.contains( userD ) );
+        assertTrue( users.contains( userE ) );
+        assertTrue( users.contains( userF ) );
 
         users = userService.getManagedUsersBetween( userA, 0, 1 );
         
@@ -230,13 +274,90 @@ public class UserServiceTest
 
         users = userService.getManagedUsers( userB );
         
-        assertEquals( 2, users.size() );
+        assertEquals( 4, users.size() );
         assertTrue( users.contains( userC ) );
         assertTrue( users.contains( userD ) );
+        assertTrue( users.contains( userE ) );
+        assertTrue( users.contains( userF ) );
 
         users = userService.getManagedUsersBetween( userB, 0, 1 );
         
         assertEquals( 1, users.size() );
+
+        users = userService.getManagedUsers( userC );
+        
+        assertEquals( 0, users.size() );
+    }
+
+    @Test
+    public void testGetManagedGroupsLessAuthorities()
+    {
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
+        User userC = createUser( 'C' );
+        User userD = createUser( 'D' );
+        User userE = createUser( 'E' );
+        User userF = createUser( 'F' );
+
+        UserCredentials credentialsA = createUserCredentials( 'A', userA );
+        UserCredentials credentialsB = createUserCredentials( 'B', userB );
+        UserCredentials credentialsC = createUserCredentials( 'C', userC );
+        UserCredentials credentialsD = createUserCredentials( 'D', userD );
+        UserCredentials credentialsE = createUserCredentials( 'E', userE );
+        UserCredentials credentialsF = createUserCredentials( 'F', userF );
+
+        credentialsA.getUserAuthorityGroups().add( roleA );
+        credentialsB.getUserAuthorityGroups().add( roleB );
+        credentialsB.getUserAuthorityGroups().add( roleC );
+        credentialsC.getUserAuthorityGroups().add( roleA );
+        credentialsC.getUserAuthorityGroups().add( roleB );
+        credentialsD.getUserAuthorityGroups().add( roleC );
+        credentialsE.getUserAuthorityGroups().add( roleA );
+        credentialsE.getUserAuthorityGroups().add( roleB );
+        credentialsF.getUserAuthorityGroups().add( roleC );
+        
+        userService.addUser( userA );
+        userService.addUser( userB );
+        userService.addUser( userC );
+        userService.addUser( userD );
+        userService.addUser( userE );
+        userService.addUser( userF );
+        
+        userService.addUserCredentials( credentialsA );
+        userService.addUserCredentials( credentialsB );
+        userService.addUserCredentials( credentialsC );
+        userService.addUserCredentials( credentialsD );
+        userService.addUserCredentials( credentialsE );
+        userService.addUserCredentials( credentialsF );
+        
+        UserGroup userGroup1 = createUserGroup( 'A', Sets.newHashSet( userA, userB ) );
+        UserGroup userGroup2 = createUserGroup( 'B', Sets.newHashSet( userC, userD, userE, userF ) );
+        userA.getGroups().add( userGroup1 );
+        userB.getGroups().add( userGroup1 );
+        userC.getGroups().add( userGroup2 );
+        userD.getGroups().add( userGroup2 );
+        userE.getGroups().add( userGroup2 );
+        userF.getGroups().add( userGroup2 );
+        
+        userGroup1.setManagedGroups( Sets.newHashSet( userGroup2 ) );
+        userGroup2.setManagedByGroups( Sets.newHashSet( userGroup1 ) );
+        
+        userGroupService.addUserGroup( userGroup1 );
+        userGroupService.addUserGroup( userGroup2 );
+        
+        Collection<User> users = userService.getManagedUsers( userA );
+        
+        assertEquals( 4, users.size() );
+        assertTrue( users.contains( userC ) );
+        assertTrue( users.contains( userD ) );
+        assertTrue( users.contains( userE ) );
+        assertTrue( users.contains( userF ) );
+
+        users = userService.getManagedUsers( userB );
+        
+        assertEquals( 2, users.size() );
+        assertTrue( users.contains( userD ) );
+        assertTrue( users.contains( userF ) );
 
         users = userService.getManagedUsers( userC );
         
