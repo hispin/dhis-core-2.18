@@ -210,9 +210,9 @@ public class DefaultUserService
     }
 
     @Override
-    public List<User> getManagedUsers( User user, int first, int max )
+    public List<User> getManagedUsersBetween( User user, int first, int max )
     {
-        return userStore.getManagedUsers( user, first, max );
+        return userStore.getManagedUsersBetween( user, first, max );
     }
 
     @Override

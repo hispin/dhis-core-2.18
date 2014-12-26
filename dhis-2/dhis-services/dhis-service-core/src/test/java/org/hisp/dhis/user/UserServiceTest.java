@@ -224,7 +224,7 @@ public class UserServiceTest
         assertTrue( users.contains( userC ) );
         assertTrue( users.contains( userD ) );
 
-        users = userService.getManagedUsers( userA, 0, 1 );
+        users = userService.getManagedUsersBetween( userA, 0, 1 );
         
         assertEquals( 1, users.size() );
 
@@ -233,6 +233,10 @@ public class UserServiceTest
         assertEquals( 2, users.size() );
         assertTrue( users.contains( userC ) );
         assertTrue( users.contains( userD ) );
+
+        users = userService.getManagedUsersBetween( userB, 0, 1 );
+        
+        assertEquals( 1, users.size() );
 
         users = userService.getManagedUsers( userC );
         

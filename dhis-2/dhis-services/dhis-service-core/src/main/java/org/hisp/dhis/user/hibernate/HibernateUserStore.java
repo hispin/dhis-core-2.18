@@ -131,7 +131,7 @@ public class HibernateUserStore
     
     @Override
     @SuppressWarnings("unchecked")
-    public List<User> getManagedUsers( User user, int first, int max )
+    public List<User> getManagedUsersBetween( User user, int first, int max )
     {
         Collection<Integer> managedGroups = IdentifiableObjectUtils.getIdentifiers( user.getManagedGroups() );
         

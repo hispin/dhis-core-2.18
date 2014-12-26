@@ -33,7 +33,6 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,11 +43,11 @@ import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
 import org.hisp.dhis.importexport.ImportStrategy;
-import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.schema.descriptors.UserSchemaDescriptor;
 import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -60,12 +59,10 @@ import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
@@ -87,6 +84,9 @@ public class UserController
 
     @Autowired
     private UserGroupService userGroupService;
+    
+    @Autowired
+    private CurrentUserService currentUserService;
 
     @Autowired
     private SecurityService securityService;
@@ -99,27 +99,10 @@ public class UserController
     // -------------------------------------------------------------------------
 
     @Override
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
-    public RootNode getObjectList( @RequestParam Map<String, String> parameters, HttpServletResponse response, HttpServletRequest request )
-    {
-        //TODO: Allow user with F_USER_VIEW_WITHIN_MANAGED_GROUP and restrict viewing to within managed groups.
-
-        return super.getObjectList( parameters, response, request );
-    }
-
-    @Override
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
-    public RootNode getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
-        HttpServletRequest request, HttpServletResponse response ) throws Exception
-    {
-        //TODO: Allow user with F_USER_VIEW_WITHIN_MANAGED_GROUP and restrict viewing to within managed groups.
-
-        return super.getObject( uid, parameters, request, response );
-    }
-
-    @Override
     protected List<User> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
+        User user = currentUserService.getCurrentUser();
+        
         List<User> entityList;
 
         if ( options.getOptions().containsKey( "query" ) )
@@ -133,11 +116,25 @@ public class UserController
             Pager pager = new Pager( options.getPage(), count );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<>( userService.getAllUsersBetween( pager.getOffset(), pager.getPageSize() ) );
+            if ( options.isManage() )
+            {
+                entityList = new ArrayList<>( userService.getManagedUsersBetween( user, pager.getOffset(), pager.getPageSize() ) );
+            }
+            else
+            {
+                entityList = new ArrayList<>( userService.getAllUsersBetween( pager.getOffset(), pager.getPageSize() ) );
+            }
         }
         else
         {
-            entityList = new ArrayList<>( userService.getAllUsers() );
+            if ( options.isManage() )
+            {
+                entityList = new ArrayList<>( userService.getManagedUsers( user ) );
+            }
+            else
+            {
+                entityList = new ArrayList<>( userService.getAllUsers() );
+            }
         }
 
         return entityList;

@@ -84,5 +84,5 @@ public interface UserStore
      * @param max the max number of records to return.
      * @return a List of users.
      */
-    List<User> getManagedUsers( User user, int first, int max );
+    List<User> getManagedUsersBetween( User user, int first, int max );
 }

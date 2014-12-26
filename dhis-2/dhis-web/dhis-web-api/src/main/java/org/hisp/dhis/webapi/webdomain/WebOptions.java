@@ -67,7 +67,7 @@ public class WebOptions
     {
         return stringAsInt( options.get( "page" ), 1 );
     }
-
+    
     public String getViewClass()
     {
         return stringAsString( options.get( "viewClass" ), null );
@@ -81,5 +81,10 @@ public class WebOptions
     public int getPageSize()
     {
         return stringAsInt( options.get( "pageSize" ), Pager.DEFAULT_PAGE_SIZE );
+    }
+    
+    public boolean isManage()
+    {
+        return stringAsBoolean( options.get( "manage" ), false );
     }
 }
