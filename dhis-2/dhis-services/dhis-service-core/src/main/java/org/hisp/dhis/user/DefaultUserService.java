@@ -729,7 +729,7 @@ public class DefaultUserService
     {
         return userCredentialsStore.getActiveUsersCount( since );
     }
-
+    
     @Override
     public void canUpdateUsersFilter( Collection<User> users )
     {
