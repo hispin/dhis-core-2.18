@@ -101,6 +101,10 @@ public interface UserService
      */
     Collection<User> getUsersWithoutOrganisationUnit();
 
+    int getUsersWithoutOrganisationUnitCount();
+
+    int getUsersWithoutOrganisationUnitCountByName( String name );
+
     /**
      * Returns a Collection of Users which are having given Phone number.
      *
@@ -119,10 +123,6 @@ public interface UserService
     int getUserCount();
 
     int getUserCountByName( String name );
-
-    int getUsersWithoutOrganisationUnitCount();
-
-    int getUsersWithoutOrganisationUnitCountByName( String name );
 
     int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit );
 

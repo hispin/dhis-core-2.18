@@ -29,7 +29,6 @@ package org.hisp.dhis.user.hibernate;
  */
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -77,21 +76,12 @@ public class HibernateUserStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<User> getUsersWithoutOrganisationUnit()
     {
-        List<User> users = getAll();
-
-        Iterator<User> iterator = users.iterator();
-
-        while ( iterator.hasNext() )
-        {
-            if ( iterator.next().getOrganisationUnits().size() > 0 )
-            {
-                iterator.remove();
-            }
-        }
-
-        return users;
+        String hql = "from User u where u.organisationUnits.size = 0";
+        
+        return sessionFactory.getCurrentSession().createQuery( hql ).list();
     }
 
     @Override
