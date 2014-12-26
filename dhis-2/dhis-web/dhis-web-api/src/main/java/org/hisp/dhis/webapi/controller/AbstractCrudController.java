@@ -194,7 +194,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             }
             else
             {
-                // Get full list when using filters other than name
+                // Get full list when using filters other than name / objects without persisted name
                 
                 if ( !filters.isEmpty() )
                 {
