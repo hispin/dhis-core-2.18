@@ -255,11 +255,11 @@ public class UserCredentials
      * of this user credentials, or this user credentials must have the ALL
      * authority.
      *
-     * @param group                          the user authority group.
+     * @param group the user authority group.
      * @param canGrantOwnUserAuthorityGroups indicates whether this users can grant
-     *                                       its own authoritiy groups to others.
+     *        its own authority groups to others.
      */
-    public boolean canIssue( UserAuthorityGroup group, boolean canGrantOwnUserAuthorityGroups )
+    public boolean canIssueUserRole( UserAuthorityGroup group, boolean canGrantOwnUserAuthorityGroups )
     {
         if ( group == null )
         {
@@ -282,13 +282,34 @@ public class UserCredentials
     }
 
     /**
+     * Indicates whether this user credentials can issue all of the user authority
+     * groups in the given collection.
+     *
+     * @param groups the collection of user authority groups.
+     * @param canGrantOwnUserAuthorityGroups indicates whether this users can grant
+     *        its own authority groups to others.
+     */
+    public boolean canIssueUserRoles( Collection<UserAuthorityGroup> groups, boolean canGrantOwnUserAuthorityGroups )
+    {
+        for ( UserAuthorityGroup group : groups )
+        {
+            if ( !canIssueUserRole( group, canGrantOwnUserAuthorityGroups ) )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Indicates whether this user credentials can modify the given user
      * credentials. This user credentials must have the ALL authority or possess
      * all user authorities of the other user credentials to do so.
      *
      * @param other the user credentials to modify.
      */
-    public boolean canModify( UserCredentials other )
+    public boolean canModifyUser( UserCredentials other )
     {
         if ( other == null )
         {
@@ -303,27 +324,6 @@ public class UserCredentials
         }
 
         return authorities.containsAll( other.getAllAuthorities() );
-    }
-
-    /**
-     * Indicates whether this user credentials can issue all of the user authority
-     * groups in the given collection.
-     *
-     * @param groups                         the collection of user authority groups.
-     * @param canGrantOwnUserAuthorityGroups indicates whether this users can grant
-     *                                       its own authoritiy groups to others.
-     */
-    public boolean canIssueAll( Collection<UserAuthorityGroup> groups, boolean canGrantOwnUserAuthorityGroups )
-    {
-        for ( UserAuthorityGroup group : groups )
-        {
-            if ( !canIssue( group, canGrantOwnUserAuthorityGroups ) )
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**

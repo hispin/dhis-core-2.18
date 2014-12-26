@@ -733,37 +733,35 @@ public class DefaultUserService
     @Override
     public void canUpdateUsersFilter( Collection<User> users )
     {
-        FilterUtils.filter( users,
-            new Filter<User>()
+        final UserCredentials currentUserCredentials = currentUserService.getCurrentUser().getUserCredentials();
+        final boolean canGrantOwnUserAuthorityGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
+
+        FilterUtils.filter( users, new Filter<User>() {
+            @Override
+            public boolean retain( User user )
             {
-                @Override
-                public boolean retain( User object )
-                {
-                    return canUpdate( object.getUserCredentials() );
-                }
+                UserCredentials userCredentials = user.getUserCredentials();
+                
+                return currentUserCredentials != null && userCredentials != null
+                    && currentUserCredentials.canIssueUserRoles( userCredentials.getUserAuthorityGroups(), canGrantOwnUserAuthorityGroups );
             }
-        );
+        } );
     }
 
     @Override
-    public void canUpdateFilter( Collection<UserCredentials> userCredentials )
+    public void canUpdateUserCredentialsFilter( Collection<UserCredentials> userCredentials )
     {
-        FilterUtils.filter( userCredentials,
-            new Filter<UserCredentials>()
-            {
-                @Override
-                public boolean retain( UserCredentials object )
-                {
-                    return canUpdate( object );
-                }
-            }
-        );
-    }
+        final UserCredentials currentUserCredentials = currentUserService.getCurrentUser().getUserCredentials();
+        final boolean canGrantOwnUserAuthorityGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
 
-    @Override
-    public boolean canUpdate( UserCredentials userCredentials )
-    {
-        return hasAuthorityToUpdateUser( userCredentials );
+        FilterUtils.filter( userCredentials, new Filter<UserCredentials>() {
+            @Override
+            public boolean retain( UserCredentials userCredentials )
+            {
+                return currentUserCredentials != null && userCredentials != null
+                    && currentUserCredentials.canIssueUserRoles( userCredentials.getUserAuthorityGroups(), canGrantOwnUserAuthorityGroups );
+            }
+        } );
     }
 
     @Override
@@ -779,26 +777,5 @@ public class DefaultUserService
         int months = DateUtils.monthsBetween( credentials.getPasswordLastUpdated(), new Date() );
 
         return months < credentialsExpires;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    /**
-     * Determines if the current user has all the authorities required to
-     * update a user.
-     *
-     * @param userCredentials The user to be updated.
-     * @return true if current user has authorities, else false.
-     */
-    private boolean hasAuthorityToUpdateUser( UserCredentials userCredentials )
-    {
-        UserCredentials currentUserCredentials = currentUserService.getCurrentUser().getUserCredentials();
-
-        boolean canGrantOwnUserAuthorityGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
-
-        return currentUserCredentials != null && userCredentials != null
-                && currentUserCredentials.canIssueAll( userCredentials.getUserAuthorityGroups(), canGrantOwnUserAuthorityGroups );
     }
 }
