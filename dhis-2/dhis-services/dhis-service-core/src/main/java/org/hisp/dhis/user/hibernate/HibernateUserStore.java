@@ -130,14 +130,21 @@ public class HibernateUserStore
         {
             hql += hlp.whereAnd() + " not exists (" +
                 "select uc2 from UserCredentials uc2 " +
-                "inner join uc2.userAuthorityGroups ag " +
-                "inner join ag.authorities a " +
+                "inner join uc2.userAuthorityGroups ag2 " +
+                "inner join ag2.authorities a " +
                 "where uc2.id = uc.id " +
                 "and a not in (:auths) ) ";
         }
         
-        //TODO constrain by own user roles
-
+        if ( params.isDisjointRoles() )
+        {
+            hql += hlp.whereAnd() + " not exists (" +
+                "select uc3 from UserCredentials uc3 " +
+                "inner join uc3.userAuthorityGroups ag3 " +
+                "where uc3.id = uc.id " +
+                "and ag3.id in (:roles) ) ";
+        }
+        
         if ( params.getInactiveSince() != null )
         {
             hql += hlp.whereAnd() + " uc.lastLogin < :inactiveSince ";
@@ -174,6 +181,13 @@ public class HibernateUserStore
             Set<String> auths = params.getUser().getUserCredentials().getAllAuthorities();
             
             query.setParameterList( "auths", auths );
+        }
+        
+        if ( params.isDisjointRoles() && params.getUser() != null )
+        {
+            Collection<Integer> roles = IdentifiableObjectUtils.getIdentifiers( params.getUser().getUserCredentials().getUserAuthorityGroups() );
+            
+            query.setParameterList( "roles", roles );
         }
         
         if ( params.getInactiveSince() != null )
