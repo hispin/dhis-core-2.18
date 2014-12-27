@@ -29,7 +29,6 @@ package org.hisp.dhis.user.hibernate;
  */
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -39,9 +38,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserStore;
 
 /**
@@ -105,9 +104,7 @@ public class HibernateUserStore
     
     @Override
     @SuppressWarnings("unchecked")
-    public List<User> getManagedUsersBetween( String searchKey, User user, 
-        boolean constrainManagedGroups, boolean constrainAuthSubset, 
-        Date inactiveSince, boolean selfRegistered, OrganisationUnit organisationUnit, Integer first, Integer max )
+    public List<User> getUsers( UserQueryParams params )
     {
         SqlHelper hlp = new SqlHelper();
         
@@ -116,7 +113,7 @@ public class HibernateUserStore
             "inner join u.userCredentials uc " +
             "left join u.groups g ";
 
-        if ( searchKey != null )
+        if ( params.getSearchKey() != null )
         {
             hql += hlp.whereAnd() + " (" +
                 "lower(u.firstName) like :key " +
@@ -124,12 +121,12 @@ public class HibernateUserStore
                 "or lower(uc.username) like :key) ";
         }
         
-        if ( constrainManagedGroups )
+        if ( params.isCanManage() )
         {
             hql += hlp.whereAnd() + " g.id in (:ids) ";
         }
         
-        if ( constrainAuthSubset )
+        if ( params.isAuthSubset() )
         {
             hql += hlp.whereAnd() + " not exists (" +
                 "select uc2 from UserCredentials uc2 " +
@@ -141,17 +138,17 @@ public class HibernateUserStore
         
         //TODO constrain by own user roles
 
-        if ( inactiveSince != null )
+        if ( params.getInactiveSince() != null )
         {
             hql += hlp.whereAnd() + " uc.lastLogin < :inactiveSince ";
         }
         
-        if ( selfRegistered )
+        if ( params.isSelfRegistered() )
         {
             hql += hlp.whereAnd() + " uc.selfRegistered = true ";
         }
         
-        if ( organisationUnit != null )
+        if ( params.getOrganisationUnit() != null )
         {
             hql += hlp.whereAnd() + " :organisationUnit in elements(u.organisationUnits) ";
         }
@@ -160,43 +157,43 @@ public class HibernateUserStore
         
         Query query = sessionFactory.getCurrentSession().createQuery( hql );
         
-        if ( searchKey != null )
+        if ( params.getSearchKey() != null )
         {
-            query.setString( "key", "%" + searchKey.toLowerCase() + "%" );
+            query.setString( "key", "%" + params.getSearchKey().toLowerCase() + "%" );
         }
         
-        if ( constrainManagedGroups )
+        if ( params.isCanManage() && params.getUser() != null )
         {
-            Collection<Integer> managedGroups = IdentifiableObjectUtils.getIdentifiers( user.getManagedGroups() );
+            Collection<Integer> managedGroups = IdentifiableObjectUtils.getIdentifiers( params.getUser().getManagedGroups() );
 
             query.setParameterList( "ids", managedGroups );
         }
         
-        if ( constrainAuthSubset )
+        if ( params.isAuthSubset() && params.getUser() != null )
         {
-            Set<String> auths = user.getUserCredentials().getAllAuthorities();
+            Set<String> auths = params.getUser().getUserCredentials().getAllAuthorities();
             
             query.setParameterList( "auths", auths );
         }
         
-        if ( inactiveSince != null )
+        if ( params.getInactiveSince() != null )
         {
-            query.setDate( "inactiveSince", inactiveSince );
+            query.setDate( "inactiveSince", params.getInactiveSince() );
         }
         
-        if ( organisationUnit != null )
+        if ( params.getOrganisationUnit() != null )
         {
-            query.setEntity( "organisationUnit", organisationUnit );
+            query.setEntity( "organisationUnit", params.getOrganisationUnit() );
         }
         
-        if ( first != null )
+        if ( params.getFirst() != null )
         {
-            query.setFirstResult( first );
+            query.setFirstResult( params.getFirst() );
         }
         
-        if ( max != null )
+        if ( params.getMax() != null )
         {
-            query.setMaxResults( max ).list();
+            query.setMaxResults( params.getMax() ).list();
         }
         
         return query.list();

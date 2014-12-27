@@ -206,36 +206,44 @@ public class DefaultUserService
     @Override
     public Collection<User> getManagedUsers( User user )
     {
-        return userStore.getManagedUsersBetween( null, user, true, true, null, false, null, null, null );
+        UserQueryParams params = new UserQueryParams();
+        params.setUser( user );
+        params.setCanManage( true );
+        params.setAuthSubset( true );
+        
+        return userStore.getUsers( params );
     }
 
     @Override
     public Collection<User> getManagedUsersBetween( User user, int first, int max )
     {
-        return userStore.getManagedUsersBetween( null, user, true, true, null, false, null, first, max );
+        UserQueryParams params = new UserQueryParams();
+        params.setUser( user );
+        params.setCanManage( true );
+        params.setAuthSubset( true );
+        params.setFirst( first );
+        params.setMax( max );
+        
+        return userStore.getUsers( params );
     }
 
     @Override
-    public Collection<User> getManagedUsersBetween( String searchKey, User user, 
-        boolean constrainManagedGroups, boolean constrainAuthSubset, 
-        Integer inactiveMonths, boolean selfRegistered, OrganisationUnit organisationUnit, Integer first, Integer max )
+    public Collection<User> getUsers( UserQueryParams params )
     {
-        Date inactiveSince = null;
-        
-        if ( inactiveMonths != null )
+        if ( params.getInactiveMonths() != null )
         {
             Calendar cal = PeriodType.createCalendarInstance();
-            cal.add( Calendar.MONTH, ( inactiveMonths * -1 ) );
-            inactiveSince = cal.getTime();
+            cal.add( Calendar.MONTH, ( params.getInactiveMonths() * -1 ) );
+            params.setInactiveSince( cal.getTime() );
         }
         
-        if ( user != null && user.isSuper() )
+        if ( params.getUser() != null && params.getUser().isSuper() )
         {
-            return userStore.getManagedUsersBetween( searchKey, user, false, false, inactiveSince, selfRegistered, organisationUnit, first, max );
+            params.setCanManage( false );
+            params.setAuthSubset( false );
         }
         
-        return userStore.getManagedUsersBetween( searchKey, user, 
-            constrainManagedGroups, constrainAuthSubset, inactiveSince, selfRegistered, organisationUnit, first, max );
+        return userStore.getUsers( params );
     }
 
     @Override
