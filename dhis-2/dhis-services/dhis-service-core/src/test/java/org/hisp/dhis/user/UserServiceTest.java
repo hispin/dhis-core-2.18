@@ -394,8 +394,11 @@ public class UserServiceTest
         userService.addUserCredentials( credentialsD );
         userService.addUserCredentials( credentialsE );
         userService.addUserCredentials( credentialsF );
+
+        UserQueryParams params = new UserQueryParams();
+        params.setSearchKey( "rstnameA" );
         
-        Collection<User> users = userService.getManagedUsersBetween( "rstnameA", null, false, false, null, false, null, null, null );
+        Collection<User> users = userService.getUsers( params );
         
         assertEquals( 1, users.size() );
         assertTrue( users.contains( userA ) );
@@ -427,7 +430,10 @@ public class UserServiceTest
         userService.addUserCredentials( credentialsC );
         userService.addUserCredentials( credentialsD );
         
-        Collection<User> users = userService.getManagedUsersBetween( null, null, false, false, null, true, null, null, null );
+        UserQueryParams params = new UserQueryParams();
+        params.setSelfRegistered( true );
+        
+        Collection<User> users = userService.getUsers( params );
         
         assertEquals( 2, users.size() );
         assertTrue( users.contains( userA ) );
@@ -462,8 +468,11 @@ public class UserServiceTest
         userService.addUserCredentials( credentialsB );
         userService.addUserCredentials( credentialsC );
         userService.addUserCredentials( credentialsD );
+
+        UserQueryParams params = new UserQueryParams();
+        params.setOrganisationUnit( unit1 );
         
-        Collection<User> users = userService.getManagedUsersBetween( null, null, false, false, null, false, unit1, null, null );
+        Collection<User> users = userService.getUsers( params );
         
         assertEquals( 2, users.size() );
         assertTrue( users.contains( userA ) );
