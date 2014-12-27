@@ -31,9 +31,7 @@ package org.hisp.dhis.user;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -129,30 +127,4 @@ public class UserStoreTest
         assertNull( userStore.get( idA ) );
         assertNotNull( userStore.get( idB ) );
     }
-
-    @Test
-    public void testGetUsersWithoutOrganisationUnit()
-    {
-        User userA = createUser( 'A' );
-        User userB = createUser( 'B' );
-        User userC = createUser( 'C' );
-        User userD = createUser( 'D' );
-
-        userA.getOrganisationUnits().add( unit1 );
-        userA.getOrganisationUnits().add( unit2 );
-
-        userC.getOrganisationUnits().add( unit1 );
-        userC.getOrganisationUnits().add( unit2 );
-        
-        userStore.save( userA );
-        userStore.save( userB );
-        userStore.save( userC );
-        userStore.save( userD );
-        
-        Collection<User> users = userStore.getUsersWithoutOrganisationUnit();
-        
-        assertEquals( 2, users.size() );
-        assertTrue( users.contains( userB ) );
-        assertTrue( users.contains( userD ) );
-    }   
 }

@@ -46,7 +46,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserCredentialsStore;
-import org.hisp.dhis.user.UserService;
 
 /**
  * TODO extend BaseIdentifiableObjectStore
@@ -65,13 +64,6 @@ public class HibernateUserCredentialsStore
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
-    }
-
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
     }
     
     // -------------------------------------------------------------------------
@@ -291,30 +283,6 @@ public class HibernateUserCredentialsStore
     public int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name )
     {
         return findByName( toUserCredentials( orgUnit.getUsers() ), name ).size();
-    }
-
-    @Override
-    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
-    {
-        return getBlockUser( toUserCredentials( userService.getUsersWithoutOrganisationUnit() ), first, max );
-    }
-
-    @Override
-    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max )
-    {
-        return getBlockUser( findByName( toUserCredentials( userService.getUsersWithoutOrganisationUnit() ), name ), first, max );
-    }
-
-    @Override
-    public int getUsersWithoutOrganisationUnitCount()
-    {
-        return userService.getUsersWithoutOrganisationUnit().size();
-    }
-
-    @Override
-    public int getUsersWithoutOrganisationUnitCountByName( String name )
-    {
-        return findByName( toUserCredentials( userService.getUsersWithoutOrganisationUnit() ), name ).size();
     }
 
     @Override

@@ -94,18 +94,6 @@ public interface UserService
     Collection<User> getUsersByLastUpdated( Date lastUpdated );
 
     /**
-     * Returns a Collection of the Users which are not associated with any
-     * OrganisationUnits.
-     *
-     * @return a Collection of Users.
-     */
-    Collection<User> getUsersWithoutOrganisationUnit();
-
-    int getUsersWithoutOrganisationUnitCount();
-
-    int getUsersWithoutOrganisationUnitCountByName( String name );
-
-    /**
      * Returns a Collection of Users which are having given Phone number.
      *
      * @param phoneNumber
@@ -289,10 +277,6 @@ public interface UserService
     Collection<UserCredentials> getUsersBetween( int first, int max );
 
     Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max );
-
-    Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max );
-
-    Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max );
 
     Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max );
 

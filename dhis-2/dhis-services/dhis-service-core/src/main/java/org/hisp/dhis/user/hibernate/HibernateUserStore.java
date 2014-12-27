@@ -78,15 +78,6 @@ public class HibernateUserStore
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<User> getUsersWithoutOrganisationUnit()
-    {
-        String hql = "from User u where u.organisationUnits.size = 0";
-        
-        return sessionFactory.getCurrentSession().createQuery( hql ).list();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
     public List<User> getUsersByPhoneNumber( String phoneNumber )
     {
         String hql = "from User u where u.phoneNumber = :phoneNumber";
