@@ -365,6 +365,87 @@ public class UserServiceTest
     }
 
     @Test
+    public void testGetManagedGroupsLessAuthoritiesDisjointRoles()
+    {
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
+        User userC = createUser( 'C' );
+        User userD = createUser( 'D' );
+        User userE = createUser( 'E' );
+        User userF = createUser( 'F' );
+
+        UserCredentials credentialsA = createUserCredentials( 'A', userA );
+        UserCredentials credentialsB = createUserCredentials( 'B', userB );
+        UserCredentials credentialsC = createUserCredentials( 'C', userC );
+        UserCredentials credentialsD = createUserCredentials( 'D', userD );
+        UserCredentials credentialsE = createUserCredentials( 'E', userE );
+        UserCredentials credentialsF = createUserCredentials( 'F', userF );
+
+        credentialsA.getUserAuthorityGroups().add( roleA );
+        credentialsB.getUserAuthorityGroups().add( roleB );
+        credentialsB.getUserAuthorityGroups().add( roleC );
+        credentialsC.getUserAuthorityGroups().add( roleA );
+        credentialsC.getUserAuthorityGroups().add( roleB );
+        credentialsD.getUserAuthorityGroups().add( roleC );
+        credentialsE.getUserAuthorityGroups().add( roleA );
+        credentialsE.getUserAuthorityGroups().add( roleB );
+        credentialsF.getUserAuthorityGroups().add( roleC );
+        
+        userService.addUser( userA );
+        userService.addUser( userB );
+        userService.addUser( userC );
+        userService.addUser( userD );
+        userService.addUser( userE );
+        userService.addUser( userF );
+        
+        userService.addUserCredentials( credentialsA );
+        userService.addUserCredentials( credentialsB );
+        userService.addUserCredentials( credentialsC );
+        userService.addUserCredentials( credentialsD );
+        userService.addUserCredentials( credentialsE );
+        userService.addUserCredentials( credentialsF );
+        
+        UserGroup userGroup1 = createUserGroup( 'A', Sets.newHashSet( userA, userB ) );
+        UserGroup userGroup2 = createUserGroup( 'B', Sets.newHashSet( userC, userD, userE, userF ) );
+        userA.getGroups().add( userGroup1 );
+        userB.getGroups().add( userGroup1 );
+        userC.getGroups().add( userGroup2 );
+        userD.getGroups().add( userGroup2 );
+        userE.getGroups().add( userGroup2 );
+        userF.getGroups().add( userGroup2 );
+        
+        userGroup1.setManagedGroups( Sets.newHashSet( userGroup2 ) );
+        userGroup2.setManagedByGroups( Sets.newHashSet( userGroup1 ) );
+        
+        userGroupService.addUserGroup( userGroup1 );
+        userGroupService.addUserGroup( userGroup2 );
+        
+        UserQueryParams params = new UserQueryParams();
+        params.setCanManage( true );
+        params.setAuthSubset( true );
+        params.setDisjointRoles( true );
+        params.setUser( userA );
+        
+        Collection<User> users = userService.getUsers( params);
+        
+        assertEquals( 2, users.size() );
+        assertTrue( users.contains( userD ) );
+        assertTrue( users.contains( userF ) );
+
+        params.setUser( userB );
+        
+        users = userService.getUsers( params);
+
+        assertEquals( 0, users.size() );
+
+        params.setUser( userC );
+        
+        users = userService.getUsers( params);
+        
+        assertEquals( 0, users.size() );
+    }
+
+    @Test
     public void testGetManagedGroupsSearch()
     {
         User userA = createUser( 'A' );

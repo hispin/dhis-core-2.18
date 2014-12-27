@@ -45,6 +45,8 @@ public class UserQueryParams
     
     private boolean authSubset;
     
+    private boolean disjointRoles;
+    
     private Date inactiveSince;
     
     private Integer inactiveMonths;
@@ -107,6 +109,16 @@ public class UserQueryParams
     public void setAuthSubset( boolean authSubset )
     {
         this.authSubset = authSubset;
+    }
+
+    public boolean isDisjointRoles()
+    {
+        return disjointRoles;
+    }
+
+    public void setDisjointRoles( boolean disjointRoles )
+    {
+        this.disjointRoles = disjointRoles;
     }
 
     public Date getInactiveSince()
