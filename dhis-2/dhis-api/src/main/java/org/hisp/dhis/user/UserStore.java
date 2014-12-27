@@ -29,9 +29,11 @@ package org.hisp.dhis.user;
  */
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Nguyen Hong Duc
@@ -62,10 +64,21 @@ public interface UserStore
      * Returns all users which are managed by the given user through its managed
      * groups association.
      * 
+     * @param searchKey the string to search by first name, surname and user name, 
+     *        no search if null.
      * @param user the user.
+     * @param constrainManagedGroups constrain the result to users within managed groups.
+     * @param constrainAuthSubset constrain the result to users with a subset of
+     *        authorities.
+     * @param inactiveSince date for last login.
+     * @param selfRegistered constrain the result to self-registered users.
+     * @param organisationUnit constrain the result to users associated with the
+     *        organisation unit.
      * @param first the first record to return, null if 0.
      * @param max the max number of records to return, null if none.
      * @return a List of users.
      */
-    List<User> getManagedUsersBetween( User user, Integer first, Integer max );
+    List<User> getManagedUsersBetween( String searchKey, User user, 
+        boolean constrainManagedGroups, boolean constrainAuthSubset, 
+        Date inactiveSince, boolean selfRegistered, OrganisationUnit organisationUnit, Integer first, Integer max );
 }
