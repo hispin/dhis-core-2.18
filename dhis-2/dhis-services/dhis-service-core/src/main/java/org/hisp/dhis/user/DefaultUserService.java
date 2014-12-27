@@ -258,24 +258,6 @@ public class DefaultUserService
     }
 
     @Override
-    public Collection<User> getUsersWithoutOrganisationUnit()
-    {
-        return userStore.getUsersWithoutOrganisationUnit();
-    }
-
-    @Override
-    public int getUsersWithoutOrganisationUnitCount()
-    {
-        return userCredentialsStore.getUsersWithoutOrganisationUnitCount();
-    }
-
-    @Override
-    public int getUsersWithoutOrganisationUnitCountByName( String userName )
-    {
-        return userCredentialsStore.getUsersWithoutOrganisationUnitCountByName( userName );
-    }
-
-    @Override
     public User searchForUser( String query )
     {
         User user = userStore.getByUid( query );
@@ -647,18 +629,6 @@ public class DefaultUserService
     public int getUserCountByName( String userName )
     {
         return userCredentialsStore.getUserCountByName( userName );
-    }
-
-    @Override
-    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
-    {
-        return userCredentialsStore.getUsersWithoutOrganisationUnitBetween( first, max );
-    }
-
-    @Override
-    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String username, int first, int max )
-    {
-        return userCredentialsStore.getUsersWithoutOrganisationUnitBetweenByName( username, first, max );
     }
 
     @Override

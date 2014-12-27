@@ -42,14 +42,6 @@ public interface UserStore
     String ID = UserStore.class.getName();
 
     /**
-     * Returns a Collection of the Users which are not associated with any
-     * OrganisationUnits.
-     * 
-     * @return a Collection of Users.
-     */
-    Collection<User> getUsersWithoutOrganisationUnit();
-
-    /**
      * Returns a Collection of Users which are having given Phone number.
      * 
      * @param phoneNumber

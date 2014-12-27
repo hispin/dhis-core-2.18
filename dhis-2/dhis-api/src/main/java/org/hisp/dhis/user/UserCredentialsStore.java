@@ -111,10 +111,6 @@ public interface UserCredentialsStore
 
     Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max );
 
-    Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max );
-
-    Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max );
-
     Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max );
 
     Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
@@ -135,10 +131,6 @@ public interface UserCredentialsStore
     int getUserCount();
 
     int getUserCountByName( String name );
-
-    int getUsersWithoutOrganisationUnitCount();
-
-    int getUsersWithoutOrganisationUnitCountByName( String name );
 
     int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit );
 
