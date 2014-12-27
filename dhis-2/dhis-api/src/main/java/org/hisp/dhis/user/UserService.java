@@ -160,17 +160,39 @@ public interface UserService
      * @return a Collection of users.
      */
     Collection<User> getManagedUsers( User user );
-    
+
     /**
      * Returns all users which are managed by the given user through its managed
      * groups association.
      * 
      * @param user the user.
-     * @param first the first record to return.
-     * @param max the max number of records to return.
+     * @param first the first record to return, null if 0.
+     * @param max the max number of records to return, null if none.
      * @return a Collection of users.
      */
     Collection<User> getManagedUsersBetween( User user, int first, int max );
+
+    /**
+     * Returns all users which are managed by the given user through its managed
+     * groups association.
+     * 
+     * @param searchKey the string to search by first name, surname and user name, 
+     *        no search if null.
+     * @param user the user.
+     * @param constrainManagedGroups constrain the result to users within managed groups.
+     * @param constrainAuthSubset constrain the result to users with a subset of
+     *        authorities.
+     * @param inactiveMonths number of months since user last logged in, null if none.
+     * @param selfRegistered constrain the result to self-registered users.
+     * @param organisationUnit constrain the result to users associated with the
+     *        organisation unit.
+     * @param first the first record to return, null if 0.
+     * @param max the max number of records to return, null if none.
+     * @return a List of users.
+     */
+    Collection<User> getManagedUsersBetween( String searchKey, User user, 
+        boolean constrainManagedGroups, boolean constrainAuthSubset, 
+        Integer inactiveMonths, boolean selfRegistered, OrganisationUnit organisationUnit, Integer first, Integer max );
     
     /**
      * Tests whether the current user is allowed to create a user associated

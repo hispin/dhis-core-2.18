@@ -1045,7 +1045,7 @@ public abstract class DhisConvenienceTest
         user.setPhoneNumber( "PhoneNumber" + uniqueCharacter );
 
         UserCredentials credentials = new UserCredentials();
-        credentials.setUsername( "username" );
+        credentials.setUsername( "username" ); //TODO include uniqueCharacter
         credentials.setPassword( "password" );
 
         user.setUserCredentials( credentials );

@@ -29,6 +29,7 @@ package org.hisp.dhis.user.hibernate;
  */
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -38,6 +39,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserStore;
 
@@ -102,28 +105,89 @@ public class HibernateUserStore
     
     @Override
     @SuppressWarnings("unchecked")
-    public List<User> getManagedUsersBetween( User user, Integer first, Integer max )
+    public List<User> getManagedUsersBetween( String searchKey, User user, 
+        boolean constrainManagedGroups, boolean constrainAuthSubset, 
+        Date inactiveSince, boolean selfRegistered, OrganisationUnit organisationUnit, Integer first, Integer max )
     {
-        Collection<Integer> managedGroups = IdentifiableObjectUtils.getIdentifiers( user.getManagedGroups() );
-
-        Set<String> auths = user.getUserCredentials().getAllAuthorities();
+        SqlHelper hlp = new SqlHelper();
         
         String hql = 
             "select distinct u from User u " +
             "inner join u.userCredentials uc " +
-            "inner join u.groups g " +
-            "where g.id in (:ids) " + 
-            "and not exists (" +
+            "left join u.groups g ";
+
+        if ( searchKey != null )
+        {
+            hql += hlp.whereAnd() + " (" +
+                "lower(u.firstName) like :key " +
+                "or lower(u.surname) like :key " +
+                "or lower(uc.username) like :key) ";
+        }
+        
+        if ( constrainManagedGroups )
+        {
+            hql += hlp.whereAnd() + " g.id in (:ids) ";
+        }
+        
+        if ( constrainAuthSubset )
+        {
+            hql += hlp.whereAnd() + " not exists (" +
                 "select uc2 from UserCredentials uc2 " +
                 "inner join uc2.userAuthorityGroups ag " +
                 "inner join ag.authorities a " +
                 "where uc2.id = uc.id " +
-                "and a not in (:auths) ) " +
-            "order by u.surname, u.firstName";
+                "and a not in (:auths) ) ";
+        }
         
-        Query query = sessionFactory.getCurrentSession().createQuery( hql ).
-            setParameterList( "ids", managedGroups ).
-            setParameterList( "auths", auths );
+        //TODO constrain by own user roles
+
+        if ( inactiveSince != null )
+        {
+            hql += hlp.whereAnd() + " uc.lastLogin < :inactiveSince ";
+        }
+        
+        if ( selfRegistered )
+        {
+            hql += hlp.whereAnd() + " uc.selfRegistered = true ";
+        }
+        
+        if ( organisationUnit != null )
+        {
+            hql += hlp.whereAnd() + " :organisationUnit in elements(u.organisationUnits) ";
+        }
+        
+        hql += "order by u.surname, u.firstName";
+        
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
+        
+        if ( searchKey != null )
+        {
+            query.setString( "key", "%" + searchKey.toLowerCase() + "%" );
+        }
+        
+        if ( constrainManagedGroups )
+        {
+            Collection<Integer> managedGroups = IdentifiableObjectUtils.getIdentifiers( user.getManagedGroups() );
+
+            query.setParameterList( "ids", managedGroups );
+        }
+        
+        if ( constrainAuthSubset )
+        {
+            Set<String> auths = user.getUserCredentials().getAllAuthorities();
+            
+            query.setParameterList( "auths", auths );
+        }
+        
+        if ( inactiveSince != null )
+        {
+            query.setDate( "inactiveSince", inactiveSince );
+        }
+        
+        if ( organisationUnit != null )
+        {
+            query.setEntity( "organisationUnit", organisationUnit );
+        }
         
         if ( first != null )
         {

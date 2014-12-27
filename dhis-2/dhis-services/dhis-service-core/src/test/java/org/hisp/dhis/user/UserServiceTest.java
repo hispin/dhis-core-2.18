@@ -363,4 +363,110 @@ public class UserServiceTest
         
         assertEquals( 0, users.size() );
     }
+
+    @Test
+    public void testGetManagedGroupsSearch()
+    {
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
+        User userC = createUser( 'C' );
+        User userD = createUser( 'D' );
+        User userE = createUser( 'E' );
+        User userF = createUser( 'F' );
+
+        UserCredentials credentialsA = createUserCredentials( 'A', userA );
+        UserCredentials credentialsB = createUserCredentials( 'B', userB );
+        UserCredentials credentialsC = createUserCredentials( 'C', userC );
+        UserCredentials credentialsD = createUserCredentials( 'D', userD );
+        UserCredentials credentialsE = createUserCredentials( 'E', userE );
+        UserCredentials credentialsF = createUserCredentials( 'F', userF );
+        
+        userService.addUser( userA );
+        userService.addUser( userB );
+        userService.addUser( userC );
+        userService.addUser( userD );
+        userService.addUser( userE );
+        userService.addUser( userF );
+        
+        userService.addUserCredentials( credentialsA );
+        userService.addUserCredentials( credentialsB );
+        userService.addUserCredentials( credentialsC );
+        userService.addUserCredentials( credentialsD );
+        userService.addUserCredentials( credentialsE );
+        userService.addUserCredentials( credentialsF );
+        
+        Collection<User> users = userService.getManagedUsersBetween( "rstnameA", null, false, false, null, false, null, null, null );
+        
+        assertEquals( 1, users.size() );
+        assertTrue( users.contains( userA ) );
+    }
+
+    @Test
+    public void testGetManagedGroupsSelfRegistered()
+    {
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
+        User userC = createUser( 'C' );
+        User userD = createUser( 'D' );
+
+        UserCredentials credentialsA = createUserCredentials( 'A', userA );
+        UserCredentials credentialsB = createUserCredentials( 'B', userB );
+        UserCredentials credentialsC = createUserCredentials( 'C', userC );
+        UserCredentials credentialsD = createUserCredentials( 'D', userD );
+        
+        credentialsA.setSelfRegistered( true );
+        credentialsC.setSelfRegistered( true );
+        
+        userService.addUser( userA );
+        userService.addUser( userB );
+        userService.addUser( userC );
+        userService.addUser( userD );
+        
+        userService.addUserCredentials( credentialsA );
+        userService.addUserCredentials( credentialsB );
+        userService.addUserCredentials( credentialsC );
+        userService.addUserCredentials( credentialsD );
+        
+        Collection<User> users = userService.getManagedUsersBetween( null, null, false, false, null, true, null, null, null );
+        
+        assertEquals( 2, users.size() );
+        assertTrue( users.contains( userA ) );
+        assertTrue( users.contains( userC ) );
+    }
+
+    @Test
+    public void testGetManagedGroupsOrganisationUnit()
+    {
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
+        User userC = createUser( 'C' );
+        User userD = createUser( 'D' );
+
+        userA.getOrganisationUnits().add( unit1 );
+        userA.getOrganisationUnits().add( unit2 );
+        userB.getOrganisationUnits().add( unit2 );
+        userC.getOrganisationUnits().add( unit1 );
+        userD.getOrganisationUnits().add( unit2 );
+        
+        UserCredentials credentialsA = createUserCredentials( 'A', userA );
+        UserCredentials credentialsB = createUserCredentials( 'B', userB );
+        UserCredentials credentialsC = createUserCredentials( 'C', userC );
+        UserCredentials credentialsD = createUserCredentials( 'D', userD );
+        
+        userService.addUser( userA );
+        userService.addUser( userB );
+        userService.addUser( userC );
+        userService.addUser( userD );
+        
+        userService.addUserCredentials( credentialsA );
+        userService.addUserCredentials( credentialsB );
+        userService.addUserCredentials( credentialsC );
+        userService.addUserCredentials( credentialsD );
+        
+        Collection<User> users = userService.getManagedUsersBetween( null, null, false, false, null, false, unit1, null, null );
+        
+        assertEquals( 2, users.size() );
+        assertTrue( users.contains( userA ) );
+        assertTrue( users.contains( userC ) );
+    }
 }

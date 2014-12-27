@@ -206,18 +206,36 @@ public class DefaultUserService
     @Override
     public Collection<User> getManagedUsers( User user )
     {
-        return userStore.getManagedUsersBetween( user, null, null );
+        return userStore.getManagedUsersBetween( null, user, true, true, null, false, null, null, null );
     }
 
     @Override
     public Collection<User> getManagedUsersBetween( User user, int first, int max )
     {
-        if ( user != null && user.isSuper() )
+        return userStore.getManagedUsersBetween( null, user, true, true, null, false, null, first, max );
+    }
+
+    @Override
+    public Collection<User> getManagedUsersBetween( String searchKey, User user, 
+        boolean constrainManagedGroups, boolean constrainAuthSubset, 
+        Integer inactiveMonths, boolean selfRegistered, OrganisationUnit organisationUnit, Integer first, Integer max )
+    {
+        Date inactiveSince = null;
+        
+        if ( inactiveMonths != null )
         {
-            return getAllUsers();
+            Calendar cal = PeriodType.createCalendarInstance();
+            cal.add( Calendar.MONTH, ( inactiveMonths * -1 ) );
+            inactiveSince = cal.getTime();
         }
         
-        return userStore.getManagedUsersBetween( user, first, max );
+        if ( user != null && user.isSuper() )
+        {
+            return userStore.getManagedUsersBetween( searchKey, user, false, false, inactiveSince, selfRegistered, organisationUnit, first, max );
+        }
+        
+        return userStore.getManagedUsersBetween( searchKey, user, 
+            constrainManagedGroups, constrainAuthSubset, inactiveSince, selfRegistered, organisationUnit, first, max );
     }
 
     @Override
@@ -227,8 +245,7 @@ public class DefaultUserService
     }
 
     @Override
-    public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit unit, String userName,
-        int first, int max )
+    public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit unit, String userName, int first, int max )
     {
         return userCredentialsStore.getUsersByOrganisationUnitBetweenByName( unit, userName, first, max );
     }
