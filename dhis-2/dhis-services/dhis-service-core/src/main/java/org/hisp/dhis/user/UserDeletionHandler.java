@@ -28,14 +28,11 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class UserDeletionHandler
     extends DeletionHandler
@@ -64,11 +61,8 @@ public class UserDeletionHandler
     @Override
     public void deleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
     {
-        Iterator<UserCredentials> iterator = authorityGroup.getMembers().iterator();
-        
-        while ( iterator.hasNext() )
+        for ( UserCredentials credentials : authorityGroup.getMembers() )
         {
-            UserCredentials credentials = iterator.next();
             credentials.getUserAuthorityGroups().remove( authorityGroup );
             userService.updateUserCredentials( credentials );
         }
@@ -77,12 +71,19 @@ public class UserDeletionHandler
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
-        Iterator<User> iterator = unit.getUsers().iterator();
-        
-        while ( iterator.hasNext() )
+        for ( User user : unit.getUsers() )
         {
-            User user = iterator.next();
             user.getOrganisationUnits().remove( unit );
+            userService.updateUser( user );
+        }
+    }
+
+    @Override
+    public void deleteUserGroup( UserGroup group )
+    {        
+        for ( User user : group.getMembers() )
+        {
+            user.getGroups().remove( user );
             userService.updateUser( user );
         }
     }
@@ -102,18 +103,5 @@ public class UserDeletionHandler
         }
 
         return null;
-    }
-    
-    @Override
-    public void deleteUserGroup( UserGroup group )
-    {
-        Iterator<User> iterator = group.getMembers().iterator();
-        
-        while ( iterator.hasNext() )
-        {
-            User user = iterator.next();
-            user.getGroups().remove( user );
-            userService.updateUser( user );
-        }
     }
 }
