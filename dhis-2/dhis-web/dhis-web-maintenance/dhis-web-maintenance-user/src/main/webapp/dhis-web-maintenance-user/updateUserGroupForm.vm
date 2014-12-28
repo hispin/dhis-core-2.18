@@ -7,11 +7,25 @@
             iterator: 'users'
         });
 
+		$( '#userGroupsAvailable' ).selected( {
+            url: '../api/userGroups.json',
+            target: $( '#userGroupsSelected' ),
+            search: $( '#managedGroupsAvailableSearch' ),
+            iterator: 'userGroups'
+        });
+		
+		$(document).ajaxStop(function() 
+		{
+			var selectedGroup = '$group.uid';
+			$( "#userGroupsAvailable option[value='" + selectedGroup + "']" ).remove();
+		});
+
         validation2( 'editUserGroupForm', function( form ) {
             form.submit();
         }, {
             'beforeValidateHandler': function() {
                 $( '#usersSelected' ).find( 'option' ).attr( 'selected', 'selected' );
+                $( '#userGroupsSelected' ).find( 'option' ).attr( 'selected', 'selected' );
                 #tblDynamicAttributesJavascript()
             },
             'rules': getValidationRules( 'userGroup' )
@@ -40,7 +54,7 @@
     </tr>
 
 </table>
-
+ 
 #tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
 
 #jqSelected({
@@ -49,6 +63,14 @@
     "i18n_selected": "group_members",
     "objects": $groupMembers
 })
+
+#jqSelected({
+  "prefix": "userGroups",
+  "i18n_available": "available_managed_user_groups",
+  "i18n_selected": "managed_user_groups",
+  "objects": $group.managedGroups
+})
+
 
 <p>
     <input type="submit" value="$i18n.getString( 'save' )" style="width:10em" />

@@ -29,7 +29,9 @@ package org.hisp.dhis.user.action.usergroup;
  */
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.system.util.AttributeUtils;
@@ -93,6 +95,13 @@ public class AddUserGroupAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
+    private Set<String> userGroupsSelected = new HashSet<>();
+
+    public void setUserGroupsSelected( Set<String> userGroupsSelected )
+    {
+        this.userGroupsSelected = userGroupsSelected;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -112,18 +121,27 @@ public class AddUserGroupAction
         {
             User user = userService.getUser( userUid );
 
-            if( user == null )
+            if ( user == null )
             {
                 continue;
             }
-
             userGroup.addUser( user );
         }
 
         if ( jsonAttributeValues != null )
         {
-            AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), jsonAttributeValues, attributeService );
+            AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), jsonAttributeValues,
+                attributeService );
         }
+
+        Set<UserGroup> managedGroups = new HashSet<>();
+
+        for ( String groupUid : userGroupsSelected )
+        {
+            UserGroup group = userGroupService.getUserGroup( groupUid );
+            managedGroups.add( group );
+        }
+        userGroup.setManagedGroups( managedGroups );
 
         userGroupService.addUserGroup( userGroup );
 
