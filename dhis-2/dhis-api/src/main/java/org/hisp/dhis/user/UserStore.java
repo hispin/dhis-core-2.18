@@ -65,4 +65,12 @@ public interface UserStore
      * @return a List of users.
      */
     List<User> getUsers( UserQueryParams params );
+
+    /**
+     * Returns the number of users based on the given query parameters.
+     * 
+     * @param params the user query parameters.
+     * @return number of users.
+     */
+    long getUserCount( UserQueryParams params );
 }

@@ -159,18 +159,16 @@ public interface UserService
      * @param user the user.
      * @return a Collection of users.
      */
-    Collection<User> getManagedUsers( User user );
+    List<User> getManagedUsers( User user );
 
     /**
-     * Returns all users which are managed by the given user through its managed
-     * groups association.
+     * Returns the number of users which are managed by the given user through its 
+     * managed groups association.
      * 
      * @param user the user.
-     * @param first the first record to return, null if 0.
-     * @param max the max number of records to return, null if none.
-     * @return a Collection of users.
+     * @return number of users.
      */
-    Collection<User> getManagedUsersBetween( User user, int first, int max );
+    long getManagedUserCount( User user );
 
     /**
      * Returns a list of users based on the given query parameters.
@@ -178,7 +176,15 @@ public interface UserService
      * @param params the user query parameters.
      * @return a List of users.
      */
-    Collection<User> getUsers( UserQueryParams params );
+    List<User> getUsers( UserQueryParams params );
+
+    /**
+     * Returns the number of users based on the given query parameters.
+     * 
+     * @param params the user query parameters.
+     * @return number of users.
+     */
+    long getUserCount( UserQueryParams params );
     
     /**
      * Tests whether the current user is allowed to create a user associated

@@ -106,10 +106,23 @@ public class HibernateUserStore
     @SuppressWarnings("unchecked")
     public List<User> getUsers( UserQueryParams params )
     {
+        return getUserQuery( params, false ).list();
+    }
+
+    @Override
+    public long getUserCount( UserQueryParams params )
+    {
+        return (Long) getUserQuery( params, true ).uniqueResult();
+    }
+
+    private Query getUserQuery( UserQueryParams params, boolean count )
+    {
         SqlHelper hlp = new SqlHelper();
         
-        String hql = 
-            "select distinct u from User u " +
+        String hql = count ? "select count(distinct u) " : "select distinct u ";
+        
+        hql +=
+            "from User u " +
             "inner join u.userCredentials uc " +
             "left join u.groups g ";
 
@@ -160,7 +173,10 @@ public class HibernateUserStore
             hql += hlp.whereAnd() + " :organisationUnit in elements(u.organisationUnits) ";
         }
         
-        hql += "order by u.surname, u.firstName";
+        if ( !count )
+        {
+            hql += "order by u.surname, u.firstName";
+        }
         
         Query query = sessionFactory.getCurrentSession().createQuery( hql );
         
@@ -210,6 +226,6 @@ public class HibernateUserStore
             query.setMaxResults( params.getMax() ).list();
         }
         
-        return query.list();
+        return query;
     }
 }

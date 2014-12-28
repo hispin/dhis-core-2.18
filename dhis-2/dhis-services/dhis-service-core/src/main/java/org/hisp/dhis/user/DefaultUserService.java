@@ -204,10 +204,9 @@ public class DefaultUserService
     }
 
     @Override
-    public Collection<User> getManagedUsers( User user )
+    public List<User> getManagedUsers( User user )
     {
-        UserQueryParams params = new UserQueryParams();
-        params.setUser( user );
+        UserQueryParams params = new UserQueryParams( user );
         params.setCanManage( true );
         params.setAuthSubset( true );
         
@@ -215,20 +214,30 @@ public class DefaultUserService
     }
 
     @Override
-    public Collection<User> getManagedUsersBetween( User user, int first, int max )
+    public long getManagedUserCount( User user )
     {
-        UserQueryParams params = new UserQueryParams();
-        params.setUser( user );
+        UserQueryParams params = new UserQueryParams( user );
         params.setCanManage( true );
         params.setAuthSubset( true );
-        params.setFirst( first );
-        params.setMax( max );
         
+        return userStore.getUserCount( params );
+    }
+    
+    @Override
+    public List<User> getUsers( UserQueryParams params )
+    {
+        handleUserQueryParams( params );
         return userStore.getUsers( params );
     }
 
     @Override
-    public Collection<User> getUsers( UserQueryParams params )
+    public long getUserCount( UserQueryParams params )
+    {
+        handleUserQueryParams( params );
+        return userStore.getUserCount( params );
+    }
+    
+    private void handleUserQueryParams( UserQueryParams params )
     {
         if ( params.getInactiveMonths() != null )
         {
@@ -242,10 +251,8 @@ public class DefaultUserService
             params.setCanManage( false );
             params.setAuthSubset( false );
         }
-        
-        return userStore.getUsers( params );
     }
-
+    
     @Override
     public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit unit, int first, int max )
     {

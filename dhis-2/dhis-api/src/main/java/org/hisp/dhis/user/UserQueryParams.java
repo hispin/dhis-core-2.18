@@ -67,6 +67,11 @@ public class UserQueryParams
     {
     }
 
+    public UserQueryParams( User user )
+    {
+        this.user = user;
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

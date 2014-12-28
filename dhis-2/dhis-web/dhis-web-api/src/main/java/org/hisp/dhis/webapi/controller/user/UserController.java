@@ -52,6 +52,7 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroupService;
+import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.Users;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
@@ -118,7 +119,13 @@ public class UserController
 
             if ( options.isManage() )
             {
-                entityList = new ArrayList<>( userService.getManagedUsersBetween( user, pager.getOffset(), pager.getPageSize() ) );
+                UserQueryParams params = new UserQueryParams( user );
+                params.setCanManage( true );
+                params.setAuthSubset( true );
+                params.setFirst( pager.getOffset() );
+                params.setMax( pager.getPageSize() );
+                
+                entityList = userService.getUsers( params );
             }
             else
             {
