@@ -47,6 +47,8 @@ public class UserQueryParams
     
     private boolean disjointRoles;
     
+    private Date lastLogin;
+    
     private Date inactiveSince;
     
     private Integer inactiveMonths;
@@ -124,6 +126,16 @@ public class UserQueryParams
     public void setDisjointRoles( boolean disjointRoles )
     {
         this.disjointRoles = disjointRoles;
+    }
+
+    public Date getLastLogin()
+    {
+        return lastLogin;
+    }
+
+    public void setLastLogin( Date lastLogin )
+    {
+        this.lastLogin = lastLogin;
     }
 
     public Date getInactiveSince()

@@ -297,18 +297,6 @@ public class HibernateUserCredentialsStore
     }
 
     @Override
-    public int getActiveUsersCount( Date date )
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
-        criteria.add( Restrictions.ge( "lastLogin", date ) );
-        criteria.setProjection( Projections.rowCount() );
-
-        Number rs = (Number) criteria.uniqueResult();
-
-        return rs != null ? rs.intValue() : 0;
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public Collection<String> getUsernames( String key, Integer max )
     {

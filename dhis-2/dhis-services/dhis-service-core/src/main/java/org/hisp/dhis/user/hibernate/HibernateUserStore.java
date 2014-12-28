@@ -161,6 +161,11 @@ public class HibernateUserStore
                 "and ag3.id in (:roles) ) ";
         }
         
+        if ( params.getLastLogin() != null )
+        {
+            hql += hlp.whereAnd() + " uc.lastLogin >= :lastLogin ";
+        }
+        
         if ( params.getInactiveSince() != null )
         {
             hql += hlp.whereAnd() + " uc.lastLogin < :inactiveSince ";
@@ -207,6 +212,11 @@ public class HibernateUserStore
             Collection<Integer> roles = IdentifiableObjectUtils.getIdentifiers( params.getUser().getUserCredentials().getUserAuthorityGroups() );
             
             query.setParameterList( "roles", roles );
+        }
+        
+        if ( params.getLastLogin() != null )
+        {
+            query.setDate( "lastLogin", params.getLastLogin() );
         }
         
         if ( params.getInactiveSince() != null )

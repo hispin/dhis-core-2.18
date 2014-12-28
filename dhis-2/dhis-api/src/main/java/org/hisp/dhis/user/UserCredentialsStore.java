@@ -116,8 +116,6 @@ public interface UserCredentialsStore
 
     int getInactiveUsersCount( Date date );
 
-    int getActiveUsersCount( Date date );
-
     int getUserCount();
 
     int getUserCountByName( String name );
