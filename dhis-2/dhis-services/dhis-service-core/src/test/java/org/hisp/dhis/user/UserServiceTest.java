@@ -28,15 +28,15 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -220,6 +220,35 @@ public class UserServiceTest
     }
 
     @Test
+    public void testGetByPhoneNumber()
+    {
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
+        User userC = createUser( 'C' );
+        
+        userA.setPhoneNumber( "73647271" );
+        userB.setPhoneNumber( "23452134" );
+        userC.setPhoneNumber( "14543232" );
+
+        UserCredentials credentialsA = createUserCredentials( 'A', userA );
+        UserCredentials credentialsB = createUserCredentials( 'B', userB );
+        UserCredentials credentialsC = createUserCredentials( 'C', userC );
+        
+        userService.addUser( userA );
+        userService.addUser( userB );
+        userService.addUser( userC );
+        
+        userService.addUserCredentials( credentialsA );
+        userService.addUserCredentials( credentialsB );
+        userService.addUserCredentials( credentialsC );
+               
+        List<User> users = userService.getUsersByPhoneNumber( "23452134" );
+        
+        assertEquals( 1, users.size() );
+        assertEquals( userB, users.get( 0 ) );
+    }
+
+    @Test
     public void testGetManagedGroups()
     {
         User userA = createUser( 'A' );
@@ -265,7 +294,7 @@ public class UserServiceTest
         userGroupService.addUserGroup( userGroup1 );
         userGroupService.addUserGroup( userGroup2 );
         
-        Collection<User> users = userService.getManagedUsers( userA );
+        List<User> users = userService.getManagedUsers( userA );
         
         assertEquals( 4, users.size() );
         assertTrue( users.contains( userC ) );
@@ -364,7 +393,7 @@ public class UserServiceTest
         userGroupService.addUserGroup( userGroup1 );
         userGroupService.addUserGroup( userGroup2 );
         
-        Collection<User> users = userService.getManagedUsers( userA );
+        List<User> users = userService.getManagedUsers( userA );
         
         assertEquals( 4, users.size() );
         assertTrue( users.contains( userC ) );
@@ -452,7 +481,7 @@ public class UserServiceTest
         params.setAuthSubset( true );
         params.setUser( userA );
         
-        Collection<User> users = userService.getUsers( params );
+        List<User> users = userService.getUsers( params );
         
         assertEquals( 2, users.size() );
         assertTrue( users.contains( userD ) );
@@ -511,7 +540,7 @@ public class UserServiceTest
         UserQueryParams params = new UserQueryParams();
         params.setQuery( "rstnameA" );
         
-        Collection<User> users = userService.getUsers( params );
+        List<User> users = userService.getUsers( params );
         
         assertEquals( 1, users.size() );
         assertTrue( users.contains( userA ) );
@@ -548,7 +577,7 @@ public class UserServiceTest
         UserQueryParams params = new UserQueryParams();
         params.setSelfRegistered( true );
         
-        Collection<User> users = userService.getUsers( params );
+        List<User> users = userService.getUsers( params );
         
         assertEquals( 2, users.size() );
         assertTrue( users.contains( userA ) );
@@ -589,7 +618,7 @@ public class UserServiceTest
         UserQueryParams params = new UserQueryParams();
         params.setOrganisationUnit( unit1 );
         
-        Collection<User> users = userService.getUsers( params );
+        List<User> users = userService.getUsers( params );
         
         assertEquals( 2, users.size() );
         assertTrue( users.contains( userA ) );

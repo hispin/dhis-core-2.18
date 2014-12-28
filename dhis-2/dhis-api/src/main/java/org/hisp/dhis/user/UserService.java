@@ -93,29 +93,13 @@ public interface UserService
     Collection<User> getUsersByLastUpdated( Date lastUpdated );
 
     /**
-     * Returns a Collection of Users which are having given Phone number.
-     *
-     * @param phoneNumber
-     * @return a Collection of Users.
-     */
-    Collection<User> getUsersByPhoneNumber( String phoneNumber );
-
-    /**
      * Deletes a User.
      *
      * @param user the User to delete.
      */
     void deleteUser( User user );
 
-    int getUserCount();
-
-    int getUserCountByName( String name );
-
     List<User> getUsersByUid( List<String> uids );
-
-    User searchForUser( String query );
-
-    List<User> queryForUsers( String query );
 
     /**
      * Returns a set of CategoryOptionGroups that may be seen by the current
@@ -142,10 +126,6 @@ public interface UserService
     boolean isSuperRole( UserAuthorityGroup userAuthorityGroup );
 
     boolean isLastSuperRole( UserAuthorityGroup userAuthorityGroup );
-
-    Collection<User> getUsersByName( String name );
-
-    Collection<String> getUsernames( String query, Integer max );
 
     /**
      * Returns all users which are managed by the given user through its managed
@@ -180,6 +160,8 @@ public interface UserService
      * @return number of users.
      */
     int getUserCount( UserQueryParams params );
+    
+    List<User> getUsersByPhoneNumber( String phoneNumber );
     
     /**
      * Tests whether the current user is allowed to create a user associated
@@ -279,43 +261,9 @@ public interface UserService
      */
     void setLastLogin( String username );
 
-    Collection<UserCredentials> searchUsersByName( String key );
-
-    Collection<UserCredentials> searchUsersByName( String name, int first, int max );
-
-    Collection<UserCredentials> getUsersBetween( int first, int max );
-
-    Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max );
-
-    Collection<UserCredentials> getSelfRegisteredUserCredentials( int first, int max );
-
-    int getSelfRegisteredUserCredentialsCount();
-
-    Collection<UserCredentials> getInactiveUsers( int months );
-
-    Collection<UserCredentials> getInactiveUsers( int months, int first, int max );
-
-    int getInactiveUsersCount( int months );
-
     int getActiveUsersCount( int days );
 
     int getActiveUsersCount( Date since );
-
-    /**
-     * Filters the given list of users based on whether the current
-     * user is allowed to update.
-     *
-     * @param users the list of users.
-     */
-    void canUpdateUsersFilter( Collection<User> users );
-
-    /**
-     * Filters the given list of user credentials based on whether the current
-     * user is allowed to update.
-     *
-     * @param userCredentials the list of user credentials.
-     */
-    void canUpdateUserCredentialsFilter( Collection<UserCredentials> userCredentials );
 
     boolean credentialsNonExpired( UserCredentials credentials );
     

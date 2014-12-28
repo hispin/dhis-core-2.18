@@ -32,10 +32,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.system.util.SqlHelper;
@@ -50,58 +47,6 @@ public class HibernateUserStore
     extends HibernateIdentifiableObjectStore<User>
     implements UserStore
 {
-    // -------------------------------------------------------------------------
-    // UserStore implementation
-    // -------------------------------------------------------------------------
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<User> getAllOrderedName( int first, int max )
-    {
-        Criteria criteria = getCriteria();
-        criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
-        criteria.setFirstResult( first );
-        criteria.setMaxResults( max );
-        return criteria.list();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<User> getAllLikeName( String name, int first, int max )
-    {
-        Criteria criteria = getCriteria();
-        criteria.add( Restrictions.or( Restrictions.ilike( "surname", "%" + name + "%" ),
-            Restrictions.ilike( "firstName", "%" + name + "%" ) ) );
-        criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
-        criteria.setFirstResult( first );
-        criteria.setMaxResults( max );
-        return criteria.list();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<User> getUsersByPhoneNumber( String phoneNumber )
-    {
-        String hql = "from User u where u.phoneNumber = :phoneNumber";
-
-        Query query = sessionFactory.getCurrentSession().createQuery( hql );
-        query.setString( "phoneNumber", phoneNumber );
-
-        return query.list();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<User> getUsersByName( String name )
-    {
-        Criteria criteria = getCriteria();
-        criteria.add( Restrictions.or( Restrictions.ilike( "surname", "%" + name + "%" ),
-            Restrictions.ilike( "firstName", "%" + name + "%" ) ) );
-        criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
-
-        return criteria.list();
-    }
-    
     @Override
     @SuppressWarnings("unchecked")
     public List<User> getUsers( UserQueryParams params )
@@ -132,9 +77,13 @@ public class HibernateUserStore
             hql += hlp.whereAnd() + " (" +
                 "lower(u.firstName) like :key " +
                 "or lower(u.email) like :key " +
-                "or lower(u.phoneNumber) like :key " +
                 "or lower(u.surname) like :key " +
                 "or lower(uc.username) like :key) ";
+        }
+        
+        if ( params.getPhoneNumber() != null )
+        {
+            hql += hlp.whereAnd() + " u.phoneNumber = :phoneNumber ";
         }
         
         if ( params.isCanManage() )
@@ -191,6 +140,11 @@ public class HibernateUserStore
         if ( params.getQuery() != null )
         {
             query.setString( "key", "%" + params.getQuery().toLowerCase() + "%" );
+        }
+        
+        if ( params.getPhoneNumber() != null )
+        {
+            query.setString( "phoneNumber", params.getPhoneNumber() );
         }
         
         if ( params.isCanManage() && params.getUser() != null )

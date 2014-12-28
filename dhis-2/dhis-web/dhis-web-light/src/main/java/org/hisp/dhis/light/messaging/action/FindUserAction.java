@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
@@ -157,7 +158,9 @@ public class FindUserAction
             }
         }
 
-        users = userService.getUsersByName( keyword );
+        UserQueryParams params = new UserQueryParams();
+        params.setQuery( keyword );        
+        users = userService.getUsers( params );
 
         if ( users.size() == 1 )
         {

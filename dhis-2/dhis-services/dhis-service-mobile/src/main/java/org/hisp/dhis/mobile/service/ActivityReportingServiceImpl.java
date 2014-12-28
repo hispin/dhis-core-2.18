@@ -114,6 +114,7 @@ import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
@@ -1935,7 +1936,9 @@ public class ActivityReportingServiceImpl
             }
         }
 
-        users = userService.getUsersByName( keyword );
+        UserQueryParams params = new UserQueryParams();
+        params.setQuery( keyword );        
+        users = userService.getUsers( params );
 
         for ( User userCore : users )
         {

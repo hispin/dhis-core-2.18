@@ -29,7 +29,6 @@ package org.hisp.dhis.mobile.action.incoming;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,6 +41,7 @@ import org.hisp.dhis.sms.incoming.IncomingSmsService;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -234,7 +234,10 @@ public class ReceivingSMSAction
             String phoneNumber = incomingSms.getOriginator();
             if ( !phoneNumber.isEmpty() )
             {
-                Collection<User> users = userService.getUsersByPhoneNumber( phoneNumber );
+                UserQueryParams params = new UserQueryParams();
+                params.setPhoneNumber( phoneNumber );                
+                List<User> users = userService.getUsers( params );
+                
                 if ( users == null || users.size() == 0 )
                 {
                     tempString += "[unknown]";

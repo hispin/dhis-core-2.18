@@ -107,12 +107,13 @@ public class UserController
     {
         UserQueryParams params = new UserQueryParams();
         params.setQuery( options.get( "query" ) );
+        params.setPhoneNumber( options.get( "phoneNumber" ) );
         params.setCanManage( options.isTrue( "canManage" ) );
         params.setAuthSubset( options.isTrue( "authSubset" ) );
+        params.setLastLogin( options.getDate( "lastLogin" ) );
         params.setInactiveMonths( options.getInt( "inactiveMonths" ) );
+        params.setInactiveSince( options.getDate( "inactiveSince" ) );
         params.setSelfRegistered( options.isTrue( "selfRegistered" ) );
-        params.setFirst( options.getInt( "first" ) );
-        params.setMax( options.getInt( "max" ) );
         
         String ou = options.get( "ou" );
         

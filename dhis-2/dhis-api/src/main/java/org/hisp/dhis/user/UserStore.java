@@ -28,7 +28,6 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
@@ -40,23 +39,6 @@ public interface UserStore
     extends GenericIdentifiableObjectStore<User>
 {
     String ID = UserStore.class.getName();
-
-    /**
-     * Returns a Collection of Users which are having given Phone number.
-     * 
-     * @param phoneNumber
-     * @return a Collection of Users.
-     */
-    Collection<User> getUsersByPhoneNumber( String phoneNumber );
-
-    /**
-     * Returns all users with the given name. Matches on the first name and
-     * surname properties of the user.
-     * 
-     * @param name the name.
-     * @return a Collection of Users.
-     */
-    Collection<User> getUsersByName( String name );
 
     /**
      * Returns a list of users based on the given query parameters.
