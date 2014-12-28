@@ -72,5 +72,5 @@ public interface UserStore
      * @param params the user query parameters.
      * @return number of users.
      */
-    long getUserCount( UserQueryParams params );
+    int getUserCount( UserQueryParams params );
 }

@@ -28,11 +28,8 @@ package org.hisp.dhis.user.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -42,7 +39,6 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserCredentialsStore;
@@ -125,25 +121,6 @@ public class HibernateUserCredentialsStore
         query.setCacheable( true );
 
         return (UserCredentials) query.uniqueResult();
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<UserCredentials> getUserCredentialsWithLessAuthorities( UserCredentials userCredentials )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        
-        Set<String> auths = userCredentials.getAllAuthorities();
-        
-        String hql = 
-            "select uc from UserCredentials uc " +
-            "where not exists (" +
-                "select uc2 from UserCredentials uc2 " +
-                "inner join uc2.userAuthorityGroups ag " +
-                "inner join ag.authorities a " +
-                "where uc2.id = uc.id " +
-                "and a not in (:auths) )";
-        
-        return session.createQuery( hql ).setParameterList( "auths", auths ).list();
     }
     
     @Override
@@ -261,31 +238,6 @@ public class HibernateUserCredentialsStore
     }
 
     @Override
-    public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max )
-    {
-        return getBlockUser( toUserCredentials( orgUnit.getUsers() ), first, max );
-    }
-
-    @Override
-    public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
-        int first, int max )
-    {
-        return getBlockUser( findByName( toUserCredentials( orgUnit.getUsers() ), name ), first, max );
-    }
-
-    @Override
-    public int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit )
-    {
-        return orgUnit.getUsers().size();
-    }
-
-    @Override
-    public int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name )
-    {
-        return findByName( toUserCredentials( orgUnit.getUsers() ), name ).size();
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public Collection<UserCredentials> getSelfRegisteredUserCredentials( int first, int max )
     {
@@ -377,48 +329,5 @@ public class HibernateUserCredentialsStore
         }
 
         return query.list();
-    }
-    
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Collection<UserCredentials> findByName( Collection<UserCredentials> users, String key )
-    {
-        List<UserCredentials> returnList = new ArrayList<>();
-
-        for ( UserCredentials user : users )
-        {
-            if ( user != null )
-            {
-                if ( user.getUsername().toLowerCase().contains( key.toLowerCase() ) )
-                {
-                    returnList.add( user );
-                }
-            }
-        }
-
-        return returnList;
-    }
-
-    private List<UserCredentials> getBlockUser( Collection<UserCredentials> usersList, int startPos, int pageSize )
-    {
-        List<UserCredentials> elementList = new ArrayList<>( usersList );
-
-        int toIndex = Math.min( startPos + pageSize, elementList.size() );
-
-        return elementList.subList( startPos, toIndex );
-    }
-
-    private List<UserCredentials> toUserCredentials( Collection<User> users )
-    {
-        List<UserCredentials> credentials = new ArrayList<>();
-
-        for ( User user : users )
-        {
-            credentials.add( user.getUserCredentials() );
-        }
-
-        return credentials;
     }
 }

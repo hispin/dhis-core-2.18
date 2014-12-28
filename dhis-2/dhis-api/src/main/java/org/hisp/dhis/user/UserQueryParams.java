@@ -37,7 +37,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
  */
 public class UserQueryParams
 {
-    private String searchKey;
+    private String query;
     
     private User user;
     
@@ -76,14 +76,14 @@ public class UserQueryParams
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public String getSearchKey()
+    public String getQuery()
     {
-        return searchKey;
+        return query;
     }
 
-    public void setSearchKey( String searchKey )
+    public void setQuery( String query )
     {
-        this.searchKey = searchKey;
+        this.query = query;
     }
 
     public User getUser()

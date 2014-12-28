@@ -31,7 +31,6 @@ package org.hisp.dhis.webapi.controller.user;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +42,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.schema.descriptors.UserSchemaDescriptor;
 import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.SecurityService;
@@ -95,6 +95,9 @@ public class UserController
     @Autowired
     private SystemSettingManager systemSettingManager;
     
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+    
     // -------------------------------------------------------------------------
     // GET
     // -------------------------------------------------------------------------
@@ -102,49 +105,39 @@ public class UserController
     @Override
     protected List<User> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
-        User user = currentUserService.getCurrentUser();
+        UserQueryParams params = new UserQueryParams();
+        params.setQuery( options.get( "query" ) );
+        params.setCanManage( options.isTrue( "canManage" ) );
+        params.setAuthSubset( options.isTrue( "authSubset" ) );
+        params.setInactiveMonths( options.getInt( "inactiveMonths" ) );
+        params.setSelfRegistered( options.isTrue( "selfRegistered" ) );
+        params.setFirst( options.getInt( "first" ) );
+        params.setMax( options.getInt( "max" ) );
         
-        List<User> entityList;
-
-        if ( options.getOptions().containsKey( "query" ) )
+        String ou = options.get( "ou" );
+        
+        if ( ou != null )
         {
-            entityList = Lists.newArrayList( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
+            params.setOrganisationUnit( organisationUnitService.getOrganisationUnit( ou ) );    
         }
-        else if ( options.hasPaging() )
+        
+        if ( options.isManage() )
         {
-            int count = userService.getUserCount();
-
-            Pager pager = new Pager( options.getPage(), count );
+            params.setCanManage( true );
+            params.setAuthSubset( true );
+        }
+        
+        int count = userService.getUserCount( params );
+        
+        if ( options.hasPaging() )
+        {
+            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
-
-            if ( options.isManage() )
-            {
-                UserQueryParams params = new UserQueryParams( user );
-                params.setCanManage( true );
-                params.setAuthSubset( true );
-                params.setFirst( pager.getOffset() );
-                params.setMax( pager.getPageSize() );
-                
-                entityList = userService.getUsers( params );
-            }
-            else
-            {
-                entityList = new ArrayList<>( userService.getAllUsersBetween( pager.getOffset(), pager.getPageSize() ) );
-            }
+            params.setFirst( pager.getOffset() );
+            params.setMax( pager.getPageSize() );
         }
-        else
-        {
-            if ( options.isManage() )
-            {
-                entityList = new ArrayList<>( userService.getManagedUsers( user ) );
-            }
-            else
-            {
-                entityList = new ArrayList<>( userService.getAllUsers() );
-            }
-        }
-
-        return entityList;
+        
+        return userService.getUsers( params );
     }
 
     @Override

@@ -33,6 +33,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -41,6 +42,7 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -61,6 +63,9 @@ public class UserServiceTest
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
+    @Autowired
+    private SystemSettingManager systemSettingManager;
+    
     private OrganisationUnit unit1;
     private OrganisationUnit unit2;
 
@@ -387,6 +392,8 @@ public class UserServiceTest
     @Test
     public void testGetManagedGroupsLessAuthoritiesDisjointRoles()
     {
+        systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, true );
+        
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
         User userC = createUser( 'C' );
@@ -443,7 +450,6 @@ public class UserServiceTest
         UserQueryParams params = new UserQueryParams();
         params.setCanManage( true );
         params.setAuthSubset( true );
-        params.setDisjointRoles( true );
         params.setUser( userA );
         
         Collection<User> users = userService.getUsers( params );
@@ -503,7 +509,7 @@ public class UserServiceTest
         userService.addUserCredentials( credentialsF );
 
         UserQueryParams params = new UserQueryParams();
-        params.setSearchKey( "rstnameA" );
+        params.setQuery( "rstnameA" );
         
         Collection<User> users = userService.getUsers( params );
         

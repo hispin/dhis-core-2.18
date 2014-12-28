@@ -28,23 +28,18 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.user.comparator.UsernameComparator;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetOrgunitUserListAction.java 5549 2008-08-20 05:23:35Z abyot $
  */
 public class GetOrgunitUserListAction
     extends ActionPagingSupport<User>
@@ -71,11 +66,11 @@ public class GetOrgunitUserListAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<UserCredentials> userCredentialsList;
+    private List<User> users = new ArrayList<>();
 
-    public List<UserCredentials> getUserCredentialsList()
+    public List<User> getUsers()
     {
-        return userCredentialsList;
+        return users;
     }
 
     private String key;
@@ -99,24 +94,20 @@ public class GetOrgunitUserListAction
         throws Exception
     {
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
-        if ( isNotBlank( key ) ) // Filter on key only if set
-        {
-            this.paging = createPaging( userService.getUsersByOrganisationUnitCountByName( organisationUnit, key ) );
-                
-            userCredentialsList = new ArrayList<>( userService.getUsersByOrganisationUnitBetweenByName( organisationUnit, key, paging.getStartPos(), paging.getPageSize() ) );
-        }
-        else
-        {
-            this.paging = createPaging( userService.getUsersByOrganisationUnitCount( organisationUnit ) );
-                
-            userCredentialsList = new ArrayList<>( userService.getUsersByOrganisationUnitBetween( organisationUnit, paging.getStartPos(), paging.getPageSize() ) );
-        }
         
-        userService.canUpdateUserCredentialsFilter( userCredentialsList );
+        UserQueryParams params = new UserQueryParams();
         
-        Collections.sort( userCredentialsList, new UsernameComparator() );
+        params.setQuery( key );
+        params.setOrganisationUnit( organisationUnit );
 
+        int count = userService.getUserCount( params );
+        
+        this.paging = createPaging( count );        
+        params.setFirst( paging.getStartPos() );
+        params.setMax( paging.getPageSize() );
+        
+        users = userService.getUsers( params );
+        
         return SUCCESS;
     }
 }

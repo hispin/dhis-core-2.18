@@ -28,11 +28,8 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -101,8 +98,6 @@ public interface UserCredentialsStore
 
     UserCredentials getUserCredentialsByOpenID( String openId );
     
-    List<UserCredentials> getUserCredentialsWithLessAuthorities( UserCredentials userCredentials );
-    
     Collection<UserCredentials> searchUsersByName( String key );
 
     Collection<UserCredentials> searchUsersByName( String key, int first, int max );
@@ -110,11 +105,6 @@ public interface UserCredentialsStore
     Collection<UserCredentials> getUsersBetween( int first, int max );
 
     Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max );
-
-    Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max );
-
-    Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
-        int first, int max );
 
     Collection<UserCredentials> getSelfRegisteredUserCredentials( int first, int max );
 
@@ -131,10 +121,6 @@ public interface UserCredentialsStore
     int getUserCount();
 
     int getUserCountByName( String name );
-
-    int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit );
-
-    int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name );
 
     Collection<String> getUsernames( String key, Integer max );
 }
