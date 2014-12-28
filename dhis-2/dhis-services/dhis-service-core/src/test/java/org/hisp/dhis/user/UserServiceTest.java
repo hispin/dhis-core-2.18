@@ -267,8 +267,16 @@ public class UserServiceTest
         assertTrue( users.contains( userD ) );
         assertTrue( users.contains( userE ) );
         assertTrue( users.contains( userF ) );
+        
+        assertEquals( 4, userService.getManagedUserCount( userA ) );
 
-        users = userService.getManagedUsersBetween( userA, 0, 1 );
+        UserQueryParams params = new UserQueryParams( userA );
+        params.setCanManage( true );
+        params.setAuthSubset( true );
+        params.setFirst( 0 );
+        params.setMax( 1 );
+
+        users = userService.getUsers( params );
         
         assertEquals( 1, users.size() );
 
@@ -280,13 +288,19 @@ public class UserServiceTest
         assertTrue( users.contains( userE ) );
         assertTrue( users.contains( userF ) );
 
-        users = userService.getManagedUsersBetween( userB, 0, 1 );
+        assertEquals( 4, userService.getManagedUserCount( userB ) );
+
+        params.setUser( userB );
+        
+        users = userService.getUsers( params );
         
         assertEquals( 1, users.size() );
 
         users = userService.getManagedUsers( userC );
         
         assertEquals( 0, users.size() );
+        
+        assertEquals( 0, userService.getManagedUserCount( userC ) );
     }
 
     @Test
@@ -353,15 +367,21 @@ public class UserServiceTest
         assertTrue( users.contains( userE ) );
         assertTrue( users.contains( userF ) );
 
+        assertEquals( 4, userService.getManagedUserCount( userA ) );
+
         users = userService.getManagedUsers( userB );
         
         assertEquals( 2, users.size() );
         assertTrue( users.contains( userD ) );
         assertTrue( users.contains( userF ) );
 
+        assertEquals( 2, userService.getManagedUserCount( userB ) );
+
         users = userService.getManagedUsers( userC );
         
         assertEquals( 0, users.size() );
+
+        assertEquals( 0, userService.getManagedUserCount( userC ) );
     }
 
     @Test
@@ -426,23 +446,29 @@ public class UserServiceTest
         params.setDisjointRoles( true );
         params.setUser( userA );
         
-        Collection<User> users = userService.getUsers( params);
+        Collection<User> users = userService.getUsers( params );
         
         assertEquals( 2, users.size() );
         assertTrue( users.contains( userD ) );
         assertTrue( users.contains( userF ) );
-
+        
+        assertEquals( 2, userService.getUserCount( params ) );
+        
         params.setUser( userB );
         
         users = userService.getUsers( params);
 
         assertEquals( 0, users.size() );
 
+        assertEquals( 0, userService.getUserCount( params ) );
+        
         params.setUser( userC );
         
         users = userService.getUsers( params);
         
         assertEquals( 0, users.size() );
+
+        assertEquals( 0, userService.getUserCount( params ) );        
     }
 
     @Test
@@ -483,6 +509,8 @@ public class UserServiceTest
         
         assertEquals( 1, users.size() );
         assertTrue( users.contains( userA ) );
+
+        assertEquals( 1, userService.getUserCount( params ) );        
     }
 
     @Test
@@ -519,6 +547,8 @@ public class UserServiceTest
         assertEquals( 2, users.size() );
         assertTrue( users.contains( userA ) );
         assertTrue( users.contains( userC ) );
+
+        assertEquals( 2, userService.getUserCount( params ) );
     }
 
     @Test
@@ -558,5 +588,7 @@ public class UserServiceTest
         assertEquals( 2, users.size() );
         assertTrue( users.contains( userA ) );
         assertTrue( users.contains( userC ) );
+
+        assertEquals( 2, userService.getUserCount( params ) );
     }
 }
