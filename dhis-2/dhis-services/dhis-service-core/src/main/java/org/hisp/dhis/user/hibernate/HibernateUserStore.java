@@ -110,9 +110,10 @@ public class HibernateUserStore
     }
 
     @Override
-    public long getUserCount( UserQueryParams params )
+    public int getUserCount( UserQueryParams params )
     {
-        return (Long) getUserQuery( params, true ).uniqueResult();
+        Long count = (Long) getUserQuery( params, true ).uniqueResult();
+        return count != null ? count.intValue() : 0;
     }
 
     private Query getUserQuery( UserQueryParams params, boolean count )
@@ -126,10 +127,12 @@ public class HibernateUserStore
             "inner join u.userCredentials uc " +
             "left join u.groups g ";
 
-        if ( params.getSearchKey() != null )
+        if ( params.getQuery() != null )
         {
             hql += hlp.whereAnd() + " (" +
                 "lower(u.firstName) like :key " +
+                "or lower(u.email) like :key " +
+                "or lower(u.phoneNumber) like :key " +
                 "or lower(u.surname) like :key " +
                 "or lower(uc.username) like :key) ";
         }
@@ -180,9 +183,9 @@ public class HibernateUserStore
         
         Query query = sessionFactory.getCurrentSession().createQuery( hql );
         
-        if ( params.getSearchKey() != null )
+        if ( params.getQuery() != null )
         {
-            query.setString( "key", "%" + params.getSearchKey().toLowerCase() + "%" );
+            query.setString( "key", "%" + params.getQuery().toLowerCase() + "%" );
         }
         
         if ( params.isCanManage() && params.getUser() != null )

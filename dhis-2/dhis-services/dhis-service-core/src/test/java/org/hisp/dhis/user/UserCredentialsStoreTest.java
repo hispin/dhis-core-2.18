@@ -29,9 +29,6 @@ package org.hisp.dhis.user;
  */
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
@@ -90,55 +87,5 @@ public class UserCredentialsStoreTest
         
         assertEquals( credentialsA, userCredentialsStore.getUserCredentials( idA ) );
         assertEquals( credentialsB, userCredentialsStore.getUserCredentials( idB ) );
-    }
-    
-    @Test
-    public void testGetUserCredentialsWithLessAuthorities()
-    {
-        User userA = createUser( 'A' );
-        User userB = createUser( 'B' );
-        User userC = createUser( 'C' );
-        User userD = createUser( 'D' );
-        
-        UserCredentials credentialsA = createUserCredentials( 'A', userA );
-        UserCredentials credentialsB = createUserCredentials( 'B', userB );
-        UserCredentials credentialsC = createUserCredentials( 'C', userC );
-        UserCredentials credentialsD = createUserCredentials( 'D', userD );
-        
-        credentialsA.getUserAuthorityGroups().add( roleA );
-        credentialsB.getUserAuthorityGroups().add( roleB );
-        credentialsB.getUserAuthorityGroups().add( roleC );
-        credentialsC.getUserAuthorityGroups().add( roleB );
-        credentialsD.getUserAuthorityGroups().add( roleC );
-        
-        userCredentialsStore.addUserCredentials( credentialsA );
-        userCredentialsStore.addUserCredentials( credentialsB );
-        userCredentialsStore.addUserCredentials( credentialsC );
-        userCredentialsStore.addUserCredentials( credentialsD );
-        
-        List<UserCredentials> userCredentials = userCredentialsStore.getUserCredentialsWithLessAuthorities( credentialsA );
-                
-        assertEquals( 4, userCredentials.size() );
-        assertTrue( userCredentials.contains( credentialsA ) );
-        assertTrue( userCredentials.contains( credentialsB ) );
-        assertTrue( userCredentials.contains( credentialsC ) );
-        assertTrue( userCredentials.contains( credentialsD ) );
-        
-        userCredentials = userCredentialsStore.getUserCredentialsWithLessAuthorities( credentialsB );
-        
-        assertEquals( 3, userCredentials.size() );
-        assertTrue( userCredentials.contains( credentialsB ) );
-        assertTrue( userCredentials.contains( credentialsC ) );
-        assertTrue( userCredentials.contains( credentialsD ) );
-        
-        userCredentials = userCredentialsStore.getUserCredentialsWithLessAuthorities( credentialsC );
-        
-        assertEquals( 1, userCredentials.size() );
-        assertTrue( userCredentials.contains( credentialsC ) );
-
-        userCredentials = userCredentialsStore.getUserCredentialsWithLessAuthorities( credentialsD );
-        
-        assertEquals( 1, userCredentials.size() );
-        assertTrue( userCredentials.contains( credentialsD ) );
     }
 }

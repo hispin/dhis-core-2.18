@@ -48,7 +48,6 @@ import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.security.migration.MigrationPasswordManager;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -214,7 +213,7 @@ public class DefaultUserService
     }
 
     @Override
-    public long getManagedUserCount( User user )
+    public int getManagedUserCount( User user )
     {
         UserQueryParams params = new UserQueryParams( user );
         params.setCanManage( true );
@@ -231,7 +230,7 @@ public class DefaultUserService
     }
 
     @Override
-    public long getUserCount( UserQueryParams params )
+    public int getUserCount( UserQueryParams params )
     {
         handleUserQueryParams( params );
         return userStore.getUserCount( params );
@@ -239,11 +238,12 @@ public class DefaultUserService
     
     private void handleUserQueryParams( UserQueryParams params )
     {
-        if ( params.getInactiveMonths() != null )
+        boolean disjointRoles = (Boolean) systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
+        params.setDisjointRoles( disjointRoles );
+        
+        if ( params.getUser() == null )
         {
-            Calendar cal = PeriodType.createCalendarInstance();
-            cal.add( Calendar.MONTH, ( params.getInactiveMonths() * -1 ) );
-            params.setInactiveSince( cal.getTime() );
+            params.setUser( currentUserService.getCurrentUser() );
         }
         
         if ( params.getUser() != null && params.getUser().isSuper() )
@@ -251,32 +251,15 @@ public class DefaultUserService
             params.setCanManage( false );
             params.setAuthSubset( false );
         }
+
+        if ( params.getInactiveMonths() != null )
+        {
+            Calendar cal = PeriodType.createCalendarInstance();
+            cal.add( Calendar.MONTH, ( params.getInactiveMonths() * -1 ) );
+            params.setInactiveSince( cal.getTime() );
+        }
     }
     
-    @Override
-    public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit unit, int first, int max )
-    {
-        return userCredentialsStore.getUsersByOrganisationUnitBetween( unit, first, max );
-    }
-
-    @Override
-    public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit unit, String userName, int first, int max )
-    {
-        return userCredentialsStore.getUsersByOrganisationUnitBetweenByName( unit, userName, first, max );
-    }
-
-    @Override
-    public int getUsersByOrganisationUnitCount( OrganisationUnit unit )
-    {
-        return userCredentialsStore.getUsersByOrganisationUnitCount( unit );
-    }
-
-    @Override
-    public int getUsersByOrganisationUnitCountByName( OrganisationUnit unit, String userName )
-    {
-        return userCredentialsStore.getUsersByOrganisationUnitCountByName( unit, userName );
-    }
-
     @Override
     public Collection<User> getUsersByPhoneNumber( String phoneNumber )
     {
@@ -366,12 +349,6 @@ public class DefaultUserService
         return userCredentialsStore.getUsernames( query, max );
     }
 
-    @Override
-    public int countDataSetUserAuthorityGroups( DataSet dataSet )
-    {
-        return userAuthorityGroupStore.countDataSetUserAuthorityGroups( dataSet );
-    }
-    
     @Override
     public boolean isSuperUser( UserCredentials userCredentials )
     {
@@ -551,6 +528,12 @@ public class DefaultUserService
         return userAuthorityGroupStore.getCountLikeName( name );
     }
 
+    @Override
+    public int countDataSetUserAuthorityGroups( DataSet dataSet )
+    {
+        return userAuthorityGroupStore.countDataSetUserAuthorityGroups( dataSet );
+    }
+    
     @Override
     public void assignDataSetToUserRole( DataSet dataSet )
     {

@@ -36,7 +36,6 @@ import java.util.Set;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Chau Thu Tran
@@ -112,10 +111,6 @@ public interface UserService
 
     int getUserCountByName( String name );
 
-    int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit );
-
-    int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name );
-
     List<User> getUsersByUid( List<String> uids );
 
     User searchForUser( String query );
@@ -168,7 +163,7 @@ public interface UserService
      * @param user the user.
      * @return number of users.
      */
-    long getManagedUserCount( User user );
+    int getManagedUserCount( User user );
 
     /**
      * Returns a list of users based on the given query parameters.
@@ -184,7 +179,7 @@ public interface UserService
      * @param params the user query parameters.
      * @return number of users.
      */
-    long getUserCount( UserQueryParams params );
+    int getUserCount( UserQueryParams params );
     
     /**
      * Tests whether the current user is allowed to create a user associated
@@ -291,10 +286,6 @@ public interface UserService
     Collection<UserCredentials> getUsersBetween( int first, int max );
 
     Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max );
-
-    Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max );
-
-    Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name, int first, int max );
 
     Collection<UserCredentials> getSelfRegisteredUserCredentials( int first, int max );
 

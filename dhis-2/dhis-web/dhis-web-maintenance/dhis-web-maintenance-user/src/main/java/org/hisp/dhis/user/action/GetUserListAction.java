@@ -28,21 +28,16 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.user.comparator.UsernameComparator;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetUserListAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class GetUserListAction
     extends ActionPagingSupport<User>
@@ -62,11 +57,11 @@ public class GetUserListAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<UserCredentials> userCredentialsList;
+    private List<User> users = new ArrayList<>();
 
-    public List<UserCredentials> getUserCredentialsList()
+    public List<User> getUsers()
     {
-        return userCredentialsList;
+        return users;
     }
 
     private String key;
@@ -93,14 +88,14 @@ public class GetUserListAction
         this.months = months;
     }
 
-    private Boolean selfRegistered;
+    private boolean selfRegistered;
 
-    public Boolean getSelfRegistered()
+    public boolean getSelfRegistered()
     {
         return selfRegistered;
     }
 
-    public void setSelfRegistered( Boolean selfRegistered )
+    public void setSelfRegistered( boolean selfRegistered )
     {
         this.selfRegistered = selfRegistered;
     }
@@ -113,41 +108,20 @@ public class GetUserListAction
     public String execute()
         throws Exception
     {
-        if ( isNotBlank( key ) ) // Filter on key only if set
-        {
-            this.paging = createPaging( userService.getUserCountByName( key ) );
-
-            userCredentialsList = new ArrayList<>( userService.searchUsersByName( key, paging.getStartPos(),
-                paging.getPageSize() ) );
-
-            Collections.sort( userCredentialsList, new UsernameComparator() );
-        }
-        else if ( months != null && months != 0 )
-        {
-            this.paging = createPaging( userService.getInactiveUsersCount( months ) );
-
-            userCredentialsList = new ArrayList<>( userService.getInactiveUsers( months, paging
-                .getStartPos(), paging.getPageSize() ) );
-        }
-        else if ( Boolean.TRUE.equals( selfRegistered ) )
-        {
-            this.paging = createPaging( userService.getSelfRegisteredUserCredentialsCount() );
-
-            userCredentialsList = new ArrayList<>( userService.getSelfRegisteredUserCredentials( paging.
-                getStartPos(), paging.getPageSize() ) );
-        }
-        else
-        {
-            this.paging = createPaging( userService.getUserCount() );
-
-            userCredentialsList = new ArrayList<>( userService.getUsersBetween( paging.getStartPos(),
-                paging.getPageSize() ) );
-
-            Collections.sort( userCredentialsList, new UsernameComparator() );
-        }
-
-        userService.canUpdateUserCredentialsFilter( userCredentialsList );
-
+        UserQueryParams params = new UserQueryParams();
+        
+        params.setQuery( key );
+        params.setInactiveMonths( months );
+        params.setSelfRegistered( selfRegistered );
+        
+        int count = userService.getUserCount( params );
+        
+        this.paging = createPaging( count );        
+        params.setFirst( paging.getStartPos() );
+        params.setMax( paging.getPageSize() );
+        
+        users = userService.getUsers( params );
+        
         return SUCCESS;
     }
 }
