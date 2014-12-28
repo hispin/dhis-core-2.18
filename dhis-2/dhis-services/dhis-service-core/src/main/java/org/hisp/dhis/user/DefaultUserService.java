@@ -30,7 +30,6 @@ package org.hisp.dhis.user;
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -53,7 +52,6 @@ import org.hisp.dhis.security.migration.MigrationPasswordManager;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.UserAuthorityGroupCanIssueFilter;
 import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -261,48 +259,13 @@ public class DefaultUserService
     }
     
     @Override
-    public Collection<User> getUsersByPhoneNumber( String phoneNumber )
+    public List<User> getUsersByPhoneNumber( String phoneNumber )
     {
-        return userStore.getUsersByPhoneNumber( phoneNumber );
+        UserQueryParams params = new UserQueryParams();
+        params.setPhoneNumber( phoneNumber );
+        return getUsers( params );   
     }
-
-    @Override
-    public Collection<User> getUsersByName( String name )
-    {
-        return userStore.getUsersByName( name );
-    }
-
-    @Override
-    public User searchForUser( String query )
-    {
-        User user = userStore.getByUid( query );
-
-        if ( user == null )
-        {
-            UserCredentials credentials = userCredentialsStore.getUserCredentialsByUsername( query );
-            user = credentials != null ? credentials.getUser() : null;
-        }
-
-        return user;
-    }
-
-    @Override
-    public List<User> queryForUsers( String query )
-    {
-        List<User> users = new ArrayList<>();
-
-        User uidUser = userStore.getByUid( query );
-
-        if ( uidUser != null )
-        {
-            users.add( uidUser );
-        }
-
-        users.addAll( userStore.getAllLikeName( query, 0, 1000 ) ); //TODO
-
-        return users;
-    }
-
+    
     @Override
     public Set<CategoryOptionGroup> getCogDimensionConstraints( UserCredentials userCredentials )
     {
@@ -341,12 +304,6 @@ public class DefaultUserService
         }
 
         return options;
-    }
-
-    @Override
-    public Collection<String> getUsernames( String query, Integer max )
-    {
-        return userCredentialsStore.getUsernames( query, max );
     }
 
     @Override
@@ -623,42 +580,6 @@ public class DefaultUserService
     }
 
     @Override
-    public Collection<UserCredentials> getUsersBetween( int first, int max )
-    {
-        return userCredentialsStore.getUsersBetween( first, max );
-    }
-
-    @Override
-    public Collection<UserCredentials> getUsersBetweenByName( String username, int first, int max )
-    {
-        return userCredentialsStore.getUsersBetweenByName( username, first, max );
-    }
-
-    @Override
-    public int getUserCount()
-    {
-        return userCredentialsStore.getUserCount();
-    }
-
-    @Override
-    public int getUserCountByName( String userName )
-    {
-        return userCredentialsStore.getUserCountByName( userName );
-    }
-
-    @Override
-    public Collection<UserCredentials> searchUsersByName( String name )
-    {
-        return userCredentialsStore.searchUsersByName( name );
-    }
-
-    @Override
-    public Collection<UserCredentials> searchUsersByName( String name, int first, int max )
-    {
-        return userCredentialsStore.searchUsersByName( name, first, max );
-    }
-
-    @Override
     public void setLastLogin( String username )
     {
         UserCredentials credentials = getUserCredentialsByUsername( username );
@@ -684,79 +605,6 @@ public class DefaultUserService
         return getUserCount( params );
     }
     
-    @Override
-    public Collection<UserCredentials> getSelfRegisteredUserCredentials( int first, int max )
-    {
-        return userCredentialsStore.getSelfRegisteredUserCredentials( first, max );
-    }
-
-    @Override
-    public int getSelfRegisteredUserCredentialsCount()
-    {
-        return userCredentialsStore.getSelfRegisteredUserCredentialsCount();
-    }
-
-    @Override
-    public Collection<UserCredentials> getInactiveUsers( int months )
-    {
-        Calendar cal = PeriodType.createCalendarInstance();
-        cal.add( Calendar.MONTH, (months * -1) );
-
-        return userCredentialsStore.getInactiveUsers( cal.getTime() );
-    }
-
-    @Override
-    public Collection<UserCredentials> getInactiveUsers( int months, int first, int max )
-    {
-        Calendar cal = PeriodType.createCalendarInstance();
-        cal.add( Calendar.MONTH, (months * -1) );
-
-        return userCredentialsStore.getInactiveUsers( cal.getTime(), first, max );
-    }
-
-    @Override
-    public int getInactiveUsersCount( int months )
-    {
-        Calendar cal = PeriodType.createCalendarInstance();
-        cal.add( Calendar.MONTH, (months * -1) );
-
-        return userCredentialsStore.getInactiveUsersCount( cal.getTime() );
-    }
-
-    @Override
-    public void canUpdateUsersFilter( Collection<User> users )
-    {
-        final UserCredentials currentUserCredentials = currentUserService.getCurrentUser().getUserCredentials();
-        final boolean canGrantOwnUserAuthorityGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
-
-        FilterUtils.filter( users, new Filter<User>() {
-            @Override
-            public boolean retain( User user )
-            {
-                UserCredentials userCredentials = user.getUserCredentials();
-                
-                return currentUserCredentials != null && userCredentials != null
-                    && currentUserCredentials.canIssueUserRoles( userCredentials.getUserAuthorityGroups(), canGrantOwnUserAuthorityGroups );
-            }
-        } );
-    }
-
-    @Override
-    public void canUpdateUserCredentialsFilter( Collection<UserCredentials> userCredentials )
-    {
-        final UserCredentials currentUserCredentials = currentUserService.getCurrentUser().getUserCredentials();
-        final boolean canGrantOwnUserAuthorityGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
-
-        FilterUtils.filter( userCredentials, new Filter<UserCredentials>() {
-            @Override
-            public boolean retain( UserCredentials userCredentials )
-            {
-                return currentUserCredentials != null && userCredentials != null
-                    && currentUserCredentials.canIssueUserRoles( userCredentials.getUserAuthorityGroups(), canGrantOwnUserAuthorityGroups );
-            }
-        } );
-    }
-
     @Override
     public boolean credentialsNonExpired( UserCredentials credentials )
     {

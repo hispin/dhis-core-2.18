@@ -28,8 +28,12 @@ package org.hisp.dhis.caseentry.action.caseentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
@@ -70,7 +74,7 @@ public class GetUsernameListAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<String> usernames;
+    private Collection<String> usernames = new ArrayList<>();
 
     public Collection<String> getUsernames()
     {
@@ -84,7 +88,16 @@ public class GetUsernameListAction
     @Override
     public String execute()
     {
-        usernames = userService.getUsernames( query, MAX_USER_DISPLAYED );
+        UserQueryParams params = new UserQueryParams();
+        params.setQuery( query );
+        params.setMax( MAX_USER_DISPLAYED );
+        
+        List<User> users = userService.getUsers( params );
+        
+        for ( User user : users )
+        {
+            usernames.add( user.getUsername() );
+        }
 
         return SUCCESS;
     }

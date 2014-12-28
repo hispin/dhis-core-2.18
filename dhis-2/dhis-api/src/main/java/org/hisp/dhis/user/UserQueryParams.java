@@ -39,6 +39,8 @@ public class UserQueryParams
 {
     private String query;
     
+    private String phoneNumber;
+    
     private User user;
     
     private boolean canManage;
@@ -86,6 +88,16 @@ public class UserQueryParams
     public void setQuery( String query )
     {
         this.query = query;
+    }
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
     }
 
     public User getUser()
