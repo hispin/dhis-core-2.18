@@ -105,7 +105,14 @@ public class UpdateUserGroupAction
     {
         this.jsonAttributeValues = jsonAttributeValues;
     }
+    
+    private Set<String> userGroupsSelected = new HashSet<>();
 
+    public void setUserGroupsSelected( Set<String> userGroupsSelected )
+    {
+        this.userGroupsSelected = userGroupsSelected;
+    }
+    
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -151,6 +158,16 @@ public class UpdateUserGroupAction
             AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), jsonAttributeValues, attributeService );
         }
 
+        
+        Set<UserGroup> managedGroups = new HashSet<>();
+        
+        for ( String groupUid : userGroupsSelected )
+        {
+            UserGroup group = userGroupService.getUserGroup( groupUid );
+            managedGroups.add( group );
+        }
+        userGroup.setManagedGroups(managedGroups);
+        
         userGroupService.updateUserGroup( userGroup );
 
         return SUCCESS;
