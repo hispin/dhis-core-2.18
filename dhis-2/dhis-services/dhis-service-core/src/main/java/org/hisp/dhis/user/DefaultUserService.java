@@ -667,6 +667,24 @@ public class DefaultUserService
     }
 
     @Override
+    public int getActiveUsersCount( int days )
+    {
+        Calendar cal = PeriodType.createCalendarInstance();
+        cal.add( Calendar.DAY_OF_YEAR, (days * -1) );
+
+        return getActiveUsersCount( cal.getTime() );
+    }
+
+    @Override
+    public int getActiveUsersCount( Date since )
+    {
+        UserQueryParams params = new UserQueryParams();
+        params.setLastLogin( since );
+        
+        return getUserCount( params );
+    }
+    
+    @Override
     public Collection<UserCredentials> getSelfRegisteredUserCredentials( int first, int max )
     {
         return userCredentialsStore.getSelfRegisteredUserCredentials( first, max );
@@ -705,21 +723,6 @@ public class DefaultUserService
         return userCredentialsStore.getInactiveUsersCount( cal.getTime() );
     }
 
-    @Override
-    public int getActiveUsersCount( int days )
-    {
-        Calendar cal = PeriodType.createCalendarInstance();
-        cal.add( Calendar.DAY_OF_YEAR, (days * -1) );
-
-        return userCredentialsStore.getActiveUsersCount( cal.getTime() );
-    }
-
-    @Override
-    public int getActiveUsersCount( Date since )
-    {
-        return userCredentialsStore.getActiveUsersCount( since );
-    }
-    
     @Override
     public void canUpdateUsersFilter( Collection<User> users )
     {
