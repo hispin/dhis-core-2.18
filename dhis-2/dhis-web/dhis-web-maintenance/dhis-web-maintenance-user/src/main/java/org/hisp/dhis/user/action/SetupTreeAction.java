@@ -41,16 +41,16 @@ import java.util.Map;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,11 +145,18 @@ public class SetupTreeAction
         return userAuthorityGroups;
     }
 
-    private List<OrganisationUnitGroup> organisationUnitGroups;
-
-    public List<OrganisationUnitGroup> getOrganisationUnitGroups()
+    private List<UserGroup> userGroups;
+    
+    public List<UserGroup> getUserGroups()
     {
-        return organisationUnitGroups;
+        return userGroups;
+    }
+    
+    private List<DimensionalObject> dimensionConstraints;
+
+    public List<DimensionalObject> getDimensionConstraints()
+    {
+        return dimensionConstraints;
     }
 
     private List<Locale> availableLocales;
@@ -202,14 +209,6 @@ public class SetupTreeAction
     public String execute()
         throws Exception
     {
-        userAuthorityGroups = new ArrayList<>( userService.getAllUserAuthorityGroups() );
-
-        userService.canIssueFilter( userAuthorityGroups );
-        
-        availableLocales = localeManager.getAvailableLocales();
-        
-        availableLocalesDb = i18nService.getAvailableLocales();
-        
         if ( id != null )
         {
             user = userService.getUser( id );
@@ -232,10 +231,18 @@ public class SetupTreeAction
                 selectionTreeManager.clearSelectedOrganisationUnits();
             }
             
-            userCredentials = userService.getUserCredentials( userService.getUser( id ) );
+            userCredentials = userService.getUserCredentials( user );
 
-            userAuthorityGroups.removeAll( userCredentials.getUserAuthorityGroups() );
+            userAuthorityGroups = new ArrayList<>( userCredentials.getUserAuthorityGroups() );            
+            userService.canIssueFilter( userAuthorityGroups );
+            Collections.sort( userAuthorityGroups );
 
+            userGroups = new ArrayList<>( user.getGroups() );
+            Collections.sort( userGroups );
+            
+            dimensionConstraints = new ArrayList<>( userCredentials.getDimensionConstraints() );
+            Collections.sort( dimensionConstraints );
+            
             attributeValues = AttributeUtils.getAttributeValueMap( user.getAttributeValues() );
             
             currentLocale = (Locale) userSettingService.getUserSettingValue( user, KEY_UI_LOCALE, LocaleManager.DHIS_STANDARD_LOCALE );
@@ -247,11 +254,13 @@ public class SetupTreeAction
             currentLocale = LocaleManager.DHIS_STANDARD_LOCALE;
         }
 
-        Collections.sort( userAuthorityGroups, IdentifiableObjectNameComparator.INSTANCE );
+        availableLocales = localeManager.getAvailableLocales();
+        
+        availableLocalesDb = i18nService.getAvailableLocales();
         
         attributes = new ArrayList<>( attributeService.getUserAttributes() );
         Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
-
+        
         return SUCCESS;
     }
 }
