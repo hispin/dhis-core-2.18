@@ -28,14 +28,12 @@ package org.hisp.dhis.user.action.usergroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.system.util.AttributeUtils;
-import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
@@ -51,13 +49,6 @@ public class UpdateUserGroupAction
     public void setUserService( UserService userService )
     {
         this.userService = userService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
     }
 
     private UserGroupService userGroupService;
@@ -78,9 +69,9 @@ public class UpdateUserGroupAction
     // Parameters
     // -------------------------------------------------------------------------
 
-    private List<String> usersSelected;
+    private Set<String> usersSelected = new HashSet<>();
 
-    public void setUsersSelected( List<String> usersSelected )
+    public void setUsersSelected( Set<String> usersSelected )
     {
         this.usersSelected = usersSelected;
     }
@@ -121,33 +112,15 @@ public class UpdateUserGroupAction
     public String execute()
         throws Exception
     {
-        if ( usersSelected == null )
-        {
-            usersSelected = new ArrayList<>();
-        }
-
+        //TODO managed groups access control
+        
         UserGroup userGroup = userGroupService.getUserGroup( userGroupId );
-
-        if ( !userGroup.getManagedByGroups().isEmpty() && !currentUserService.currentUserIsSuper() )
-        {
-            //TODO: Allow user with F_USER_ADD_WITHIN_MANAGED_GROUP to modify their managed groups
-            //as long as they are not loosing or gaining users to manage.
-
-            return ERROR;
-        }
 
         Set<User> users = new HashSet<>();
 
-        for ( String userUid : usersSelected )
+        for ( String uid : usersSelected )
         {
-            User user = userService.getUser( userUid );
-
-            if ( user == null )
-            {
-                continue;
-            }
-
-            users.add( user );
+            users.add( userService.getUser( uid ) );
         }
 
         userGroup.setName( name );
@@ -157,16 +130,15 @@ public class UpdateUserGroupAction
         {
             AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), jsonAttributeValues, attributeService );
         }
-
         
         Set<UserGroup> managedGroups = new HashSet<>();
         
-        for ( String groupUid : userGroupsSelected )
+        for ( String uid : userGroupsSelected )
         {
-            UserGroup group = userGroupService.getUserGroup( groupUid );
-            managedGroups.add( group );
+            managedGroups.add( userGroupService.getUserGroup( uid ) );
         }
-        userGroup.setManagedGroups(managedGroups);
+        
+        userGroup.updateManagedGroups( managedGroups );
         
         userGroupService.updateUserGroup( userGroup );
 

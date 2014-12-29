@@ -137,6 +137,34 @@ public class UserGroup
         }
     }
 
+    public void addManagedGroup( UserGroup group )
+    {
+        managedGroups.add( group );
+        group.getManagedByGroups().add( this );
+    }
+    
+    public void removeManagedGroup( UserGroup group )
+    {
+        managedByGroups.remove( group );
+        group.getManagedByGroups().remove( this );
+    }
+    
+    public void updateManagedGroups( Set<UserGroup> updates )
+    {
+        for ( UserGroup group : new HashSet<>( managedGroups ) )
+        {
+            if ( !updates.contains( group ) )
+            {
+                removeManagedGroup( group );
+            }
+        }
+        
+        for ( UserGroup group : updates )
+        {
+            addManagedGroup( group );
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

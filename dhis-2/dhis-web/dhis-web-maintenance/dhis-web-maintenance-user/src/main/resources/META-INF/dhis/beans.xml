@@ -14,8 +14,7 @@
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
-  <bean id="org.hisp.dhis.user.action.DeleteCurrentUserAction" class="org.hisp.dhis.user.action.DeleteCurrentUserAction"
-    scope="prototype">
+  <bean id="org.hisp.dhis.user.action.DeleteCurrentUserAction" class="org.hisp.dhis.user.action.DeleteCurrentUserAction" scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="passwordManager" ref="org.hisp.dhis.security.PasswordManager" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
@@ -48,8 +47,7 @@
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
-  <bean id="org.hisp.dhis.user.action.ValidateUserAction" class="org.hisp.dhis.user.action.ValidateUserAction"
-    scope="prototype">
+  <bean id="org.hisp.dhis.user.action.ValidateUserAction" class="org.hisp.dhis.user.action.ValidateUserAction" scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
@@ -111,7 +109,8 @@
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
-  <bean id="org.hisp.dhis.user.action.usergroup.AddUserGroupFormAction" class="org.hisp.dhis.user.action.usergroup.AddUserGroupFormAction">
+  <bean id="org.hisp.dhis.user.action.usergroup.AddUserGroupFormAction" class="org.hisp.dhis.user.action.usergroup.AddUserGroupFormAction"
+    scope="prototype">
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
@@ -130,7 +129,6 @@
   <bean id="org.hisp.dhis.user.action.usergroup.UpdateUserGroupAction" class="org.hisp.dhis.user.action.usergroup.UpdateUserGroupAction"
     scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
