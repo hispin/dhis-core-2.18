@@ -86,11 +86,16 @@ public interface UserService
      */
     Collection<User> getAllUsers();
 
-    List<User> getAllUsersBetween( int first, int max );
-
+    /**
+     * Retrieves all Users with first name, surname or user name like the given
+     * name.
+     * 
+     * @param name the name.
+     * @param first the first item to return.
+     * @param max the max number of item to return.
+     * @return a list of Users.
+     */
     List<User> getAllUsersBetweenByName( String name, int first, int max );
-
-    Collection<User> getUsersByLastUpdated( Date lastUpdated );
 
     /**
      * Deletes a User.
@@ -119,11 +124,7 @@ public interface UserService
      */
     public Set<DataElementCategoryOption> getCoDimensionConstraints( UserCredentials userCredentials );
 
-    boolean isSuperUser( UserCredentials userCredentials );
-
     boolean isLastSuperUser( UserCredentials userCredentials );
-
-    boolean isSuperRole( UserAuthorityGroup userAuthorityGroup );
 
     boolean isLastSuperRole( UserAuthorityGroup userAuthorityGroup );
 
@@ -357,8 +358,18 @@ public interface UserService
 
     void assignDataSetToUserRole( DataSet dataSet );
 
+    /**
+     * Returns the number of UserAuthorityGroups.
+     * 
+     * @return the number of UserAuthorityGroups.
+     */
     int getUserRoleCount();
 
+    /**
+     * Returns the number of UserAuthorityGroups with the given name.
+     * 
+     * @return the number of UserAuthorityGroups with the given name.
+     */
     int getUserRoleCountByName( String name );
 
     /**
