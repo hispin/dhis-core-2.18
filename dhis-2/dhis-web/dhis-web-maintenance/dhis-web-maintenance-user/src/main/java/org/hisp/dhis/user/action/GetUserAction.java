@@ -29,7 +29,8 @@ package org.hisp.dhis.user.action;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -73,9 +74,9 @@ public class GetUserAction
         return user;
     }
 
-    private Collection<UserAuthorityGroup> userAuthorityGroups;
+    private List<UserAuthorityGroup> userAuthorityGroups;
 
-    public Collection<UserAuthorityGroup> getUserAuthorityGroups()
+    public List<UserAuthorityGroup> getUserAuthorityGroups()
     {
         return userAuthorityGroups;
     }
@@ -96,6 +97,8 @@ public class GetUserAction
         {
             userAuthorityGroups.removeAll( user.getUserCredentials().getUserAuthorityGroups() );
         }
+        
+        Collections.sort( userAuthorityGroups );
         
         return SUCCESS;
     }
