@@ -50,9 +50,6 @@ public class UserSettingServiceTest
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserCredentialsStore userCredentialStore;
-
     private User testUser;
 
     @Override
@@ -63,7 +60,7 @@ public class UserSettingServiceTest
         userService.addUser( testUser );
         UserCredentials userCredentials = testUser.getUserCredentials();
         userCredentials.setUser( testUser );
-        userCredentialStore.addUserCredentials( userCredentials );
+        userService.addUserCredentials( userCredentials );
     }
 
     @Test
@@ -71,7 +68,7 @@ public class UserSettingServiceTest
     {
         UserCredentials userCredentials = testUser.getUserCredentials();
         userCredentials.setUser( testUser );
-        userCredentialStore.addUserCredentials( userCredentials );
+        userService.addUserCredentials( userCredentials );
         userSettingService.saveUserSetting( "mykey", "value", "username" );
         Serializable preference = userSettingService.getUserSetting( "mykey", "username" );
         assertEquals( preference, "value" );

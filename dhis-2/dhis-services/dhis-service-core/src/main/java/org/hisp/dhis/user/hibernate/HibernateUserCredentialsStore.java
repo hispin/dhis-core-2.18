@@ -28,109 +28,31 @@ package org.hisp.dhis.user.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hisp.dhis.user.User;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserCredentialsStore;
 
 /**
- * TODO extend BaseIdentifiableObjectStore
- * 
  * @author Lars Helge Overland
  */
 public class HibernateUserCredentialsStore
+    extends HibernateGenericStore<UserCredentials>
     implements UserCredentialsStore
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-    
-    // -------------------------------------------------------------------------
-    // UserCredentials
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int addUserCredentials( UserCredentials userCredentials )
-    {
-        return (Integer) sessionFactory.getCurrentSession().save( userCredentials );
-    }
-
-    @Override
-    public void updateUserCredentials( UserCredentials userCredentials )
-    {
-        sessionFactory.getCurrentSession().update( userCredentials );
-    }
-
-    @Override
-    public UserCredentials getUserCredentials( User user )
-    {
-        if ( user == null )
-        {
-            return null;
-        }
-
-        Session session = sessionFactory.getCurrentSession();
-
-        return (UserCredentials) session.get( UserCredentials.class, user.getId() );
-    }
-    
-    @Override
-    public UserCredentials getUserCredentials( int id )
-    {
-        return (UserCredentials) sessionFactory.getCurrentSession().get( UserCredentials.class, id );
-    }
-
     @Override
     public UserCredentials getUserCredentialsByUsername( String username )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from UserCredentials uc where uc.username = :username" );
-
+        Query query = getQuery( "from UserCredentials uc where uc.username = :username" );
         query.setString( "username", username );
-        query.setCacheable( true );
-
         return (UserCredentials) query.uniqueResult();
     }
 
     @Override
     public UserCredentials getUserCredentialsByOpenID( String openId )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from UserCredentials uc where uc.openId = :openId" );
-
+        Query query = getQuery( "from UserCredentials uc where uc.openId = :openId" );
         query.setString( "openId", openId );
-        query.setCacheable( true );
-
         return (UserCredentials) query.uniqueResult();
-    }
-    
-    @Override
-    @SuppressWarnings("unchecked")
-    public Collection<UserCredentials> getAllUserCredentials()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return session.createCriteria( UserCredentials.class ).list();
-    }
-
-    @Override
-    public void deleteUserCredentials( UserCredentials userCredentials )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( userCredentials );
     }
 }

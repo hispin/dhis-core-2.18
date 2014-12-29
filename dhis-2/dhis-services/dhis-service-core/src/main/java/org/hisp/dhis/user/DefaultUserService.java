@@ -153,7 +153,7 @@ public class DefaultUserService
     {
         AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), user, AuditLogUtil.ACTION_DELETE );
 
-        userCredentialsStore.deleteUserCredentials( user.getUserCredentials() );
+        userCredentialsStore.delete( user.getUserCredentials() );
 
         userStore.delete( user );
     }
@@ -307,7 +307,7 @@ public class DefaultUserService
             return false; // Cannot be last if not super user
         }
 
-        Collection<UserCredentials> users = userCredentialsStore.getAllUserCredentials();
+        Collection<UserCredentials> users = userCredentialsStore.getAll();
 
         for ( UserCredentials user : users )
         {
@@ -489,19 +489,19 @@ public class DefaultUserService
     @Override
     public int addUserCredentials( UserCredentials userCredentials )
     {
-        return userCredentialsStore.addUserCredentials( userCredentials );
+        return userCredentialsStore.save( userCredentials );
     }
 
     @Override
     public void updateUserCredentials( UserCredentials userCredentials )
     {
-        userCredentialsStore.updateUserCredentials( userCredentials );
+        userCredentialsStore.update( userCredentials );
     }
 
     @Override
     public Collection<UserCredentials> getAllUserCredentials()
     {
-        return userCredentialsStore.getAllUserCredentials();
+        return userCredentialsStore.getAll();
     }
 
     @Override
@@ -527,7 +527,12 @@ public class DefaultUserService
     @Override
     public UserCredentials getUserCredentials( User user )
     {
-        return userCredentialsStore.getUserCredentials( user );
+        if ( user == null )
+        {
+            return null;
+        }
+        
+        return userCredentialsStore.get( user.getId() );
     }
 
     @Override

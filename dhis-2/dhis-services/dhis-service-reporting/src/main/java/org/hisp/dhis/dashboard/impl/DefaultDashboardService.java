@@ -42,6 +42,7 @@ import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,6 +77,9 @@ public class DefaultDashboardService
 
     @Autowired
     private IdentifiableObjectManager objectManager;
+    
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private DashboardItemStore dashboardItemStore;
@@ -95,7 +99,7 @@ public class DefaultDashboardService
     {
         DashboardSearchResult result = new DashboardSearchResult();
 
-        result.setUsers( objectManager.getBetweenLikeName( User.class, query, 0, getMax( TYPE_USERS, maxTypes ) ) );
+        result.setUsers( userService.getAllUsersBetweenByName( query, 0, getMax( TYPE_USERS, maxTypes ) ) );
         result.setCharts( objectManager.getBetweenLikeName( Chart.class, query, 0, getMax( TYPE_CHART, maxTypes ) ) );
         result.setEventCharts( objectManager.getBetweenLikeName( EventChart.class, query, 0, getMax( TYPE_EVENT_CHART, maxTypes ) ) );
         result.setMaps( objectManager.getBetweenLikeName( Map.class, query, 0, getMax( TYPE_MAP, maxTypes ) ) );

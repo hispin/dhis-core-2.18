@@ -270,7 +270,9 @@
   </bean>
 
   <bean id="org.hisp.dhis.user.UserCredentialsStore" class="org.hisp.dhis.user.hibernate.HibernateUserCredentialsStore">
+    <property name="clazz" value="org.hisp.dhis.user.UserCredentials" />
     <property name="sessionFactory" ref="sessionFactory" />
+    <property name="cacheable" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.user.UserGroupStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
