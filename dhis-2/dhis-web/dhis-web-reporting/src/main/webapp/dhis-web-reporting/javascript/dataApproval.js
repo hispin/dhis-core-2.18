@@ -140,7 +140,11 @@ dhis2.appr.setApprovalState = function()
 	        case "UNAPPROVABLE":
 		        $( "#approvalNotification" ).html( i18n_approval_not_relevant );
 		        break;
-	    	
+
+            case "UNAPPROVED_ABOVE":
+                $( "#approvalNotification" ).html( i18n_ready_for_approval_at_a_higher_level );
+                break;
+
 		    case "UNAPPROVED_WAITING":
 		        $( "#approvalNotification" ).html( i18n_waiting_for_lower_level_approval );
 		        break;
@@ -151,7 +155,7 @@ dhis2.appr.setApprovalState = function()
 		        
 		    case "UNAPPROVED_READY":
 		        $( "#approvalNotification" ).html( i18n_ready_for_approval );
-		        
+
 		        if ( json.mayApprove ) {
 		            $( "#approvalDiv" ).show();
 		            $( "#approveButton" ).show();
@@ -172,6 +176,10 @@ dhis2.appr.setApprovalState = function()
                     $( "#unapproveButton" ).show();
                 }
 
+                break;
+
+            case "APPROVED_ABOVE":
+                $( "#approvalNotification" ).html( i18n_approved_at_a_higher_level );
                 break;
 
 		    case "APPROVED_HERE":
