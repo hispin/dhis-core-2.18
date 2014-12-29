@@ -623,19 +623,25 @@ public class UserCredentials
         {
             UserCredentials userCredentials = (UserCredentials) other;
 
+            username = userCredentials.getUsername();
             openId = userCredentials.getOpenId();
-            disabled = userCredentials.isDisabled();
-            selfRegistered = userCredentials.isSelfRegistered();
             password = StringUtils.isEmpty( userCredentials.getPassword() ) ? password : userCredentials.getPassword();
-
+            passwordLastUpdated = userCredentials.getPasswordLastUpdated();
+            
+            userAuthorityGroups.clear();
+            userAuthorityGroups.addAll( userCredentials.getUserAuthorityGroups() );
+            
             catDimensionConstraints.clear();
             catDimensionConstraints.addAll( userCredentials.getCatDimensionConstraints() );
 
             cogsDimensionConstraints.clear();
             cogsDimensionConstraints.addAll( userCredentials.getCogsDimensionConstraints() );
 
-            userAuthorityGroups.clear();
-            userAuthorityGroups.addAll( userCredentials.getUserAuthorityGroups() );
+            lastLogin = userCredentials.getLastLogin();
+            restoreToken = userCredentials.getRestoreToken();
+            restoreExpiry = userCredentials.getRestoreExpiry();
+            selfRegistered = userCredentials.isSelfRegistered();
+            disabled = userCredentials.isDisabled();
         }
     }
 
