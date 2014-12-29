@@ -32,6 +32,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.SessionFactory;
+import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IdentifiableProperty;
@@ -42,6 +44,7 @@ import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.deletion.DeletionManager;
 import org.hisp.dhis.system.timer.SystemTimer;
 import org.hisp.dhis.system.timer.Timer;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
@@ -82,6 +85,12 @@ public class DefaultObjectBridge
 
     @Autowired
     private SchemaService schemaService;
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    private CurrentUserService currentUserService;
 
     //-------------------------------------------------------------------------------------------------------
     // Internal and Semi-Public maps
@@ -299,7 +308,8 @@ public class DefaultObjectBridge
         {
             if ( writeEnabled )
             {
-                manager.update( (IdentifiableObject) object );
+                AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_UPDATE );
+                sessionFactory.getCurrentSession().update( object );
             }
 
             _updateInternalMaps( object, false );
@@ -318,7 +328,8 @@ public class DefaultObjectBridge
             if ( writeEnabled )
             {
                 deletionManager.execute( object );
-                manager.delete( (IdentifiableObject) object );
+                AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_DELETE );
+                sessionFactory.getCurrentSession().delete( object );
             }
 
             _updateInternalMaps( object, true );

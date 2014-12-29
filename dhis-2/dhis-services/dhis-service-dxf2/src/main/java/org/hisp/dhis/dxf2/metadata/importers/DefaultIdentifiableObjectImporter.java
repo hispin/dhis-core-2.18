@@ -896,7 +896,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             saveDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
             saveDataElementOperands( object, "greyedFields", greyedFields );
             saveDataElementOperands( object, "dataElementOperands", dataElementOperands );
-            saveProgramStageDataElements( object, programStageDataElements );
+            // saveProgramStageDataElements( object, programStageDataElements );
             saveProgramTrackedEntityAttributes( object, programTrackedEntityAttributes );
             saveCategoryDimensions( object, categoryDimensions );
         }
@@ -1184,7 +1184,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             {
                 Map<Field, Object> identifiableObjects = detachFields( programTrackedEntityAttribute );
                 reattachFields( programTrackedEntityAttribute, identifiableObjects );
-                sessionFactory.getCurrentSession().persist( programTrackedEntityAttribute );
+                sessionFactory.getCurrentSession().save( programTrackedEntityAttribute );
             }
 
             ReflectionUtils.invokeSetterMethod( "programAttributes", object, programTrackedEntityAttributes );
