@@ -39,7 +39,9 @@ import org.apache.commons.lang.Validate;
 import org.hisp.dhis.acl.Access;
 import org.hisp.dhis.acl.AccessStringHelper;
 import org.hisp.dhis.common.annotation.Description;
+import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.SharingBasicView;
 import org.hisp.dhis.common.view.SharingDetailedView;
 import org.hisp.dhis.common.view.SharingExportView;
@@ -107,7 +109,7 @@ public class BaseIdentifiableObject
     /**
      * Access string for public access.
      */
-    protected String publicAccess = AccessStringHelper.DEFAULT;
+    protected String publicAccess;
 
     /**
      * Owner of this object.
@@ -280,7 +282,7 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
+    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class, ExportView.class, DetailedView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     @PropertyRange( min = 8, max = 8 )
     public String getPublicAccess()
@@ -295,7 +297,7 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
+    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class, ExportView.class, DetailedView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean getExternalAccess()
     {
@@ -309,7 +311,7 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
+    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class, ExportView.class, DetailedView.class } )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public User getUser()
@@ -324,7 +326,7 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
+    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class, ExportView.class, DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "userGroupAccesses", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "userGroupAccess", namespace = DxfNamespaces.DXF_2_0 )
     public Set<UserGroupAccess> getUserGroupAccesses()
@@ -450,6 +452,23 @@ public class BaseIdentifiableObject
     }
 
     /**
+     * Clear out all sharing properties.
+     *
+     * @param clearUser Clear out user property
+     */
+    public void clearSharing( boolean clearUser )
+    {
+        if ( clearUser )
+        {
+            user = null;
+        }
+
+        publicAccess = AccessStringHelper.DEFAULT;
+        externalAccess = false;
+        userGroupAccesses.clear();
+    }
+
+    /**
      * Get a map of uids to internal identifiers
      *
      * @param objects the IdentifiableObjects to put in the map
@@ -527,11 +546,27 @@ public class BaseIdentifiableObject
     {
         Validate.notNull( other );
 
-        this.uid = other.getUid() == null ? this.uid : other.getUid();
-        this.name = other.getName() == null ? this.name : other.getName();
-        this.code = other.getCode() == null ? this.code : other.getCode();
-        this.lastUpdated = other.getLastUpdated() == null ? this.lastUpdated : other.getLastUpdated();
-        this.created = other.getCreated() == null ? this.created : other.getCreated();
-        this.user = other.getUser() == null ? this.user : other.getUser();
+        uid = other.getUid() == null ? uid : other.getUid();
+        name = other.getName() == null ? name : other.getName();
+        code = other.getCode() == null ? code : other.getCode();
+        lastUpdated = other.getLastUpdated() == null ? lastUpdated : other.getLastUpdated();
+        created = other.getCreated() == null ? created : other.getCreated();
+
+        // TODO leave this in? we might have sub-classes that have user which is not sharing related
+        user = other.getUser() == null ? user : other.getUser();
+    }
+
+    @Override
+    public void mergeSharingWith( IdentifiableObject other )
+    {
+        Validate.notNull( other );
+
+        // sharing
+        user = other.getUser() == null ? user : other.getUser();
+        publicAccess = other.getPublicAccess() == null ? publicAccess : other.getPublicAccess();
+        externalAccess = other.getExternalAccess();
+
+        userGroupAccesses.clear();
+        userGroupAccesses.addAll( other.getUserGroupAccesses() );
     }
 }

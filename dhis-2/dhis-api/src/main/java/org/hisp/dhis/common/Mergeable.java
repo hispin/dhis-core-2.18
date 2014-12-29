@@ -37,4 +37,6 @@ package org.hisp.dhis.common;
 public interface Mergeable<T>
 {
     void mergeWith( T other );
+
+    void mergeSharingWith( T other );
 }

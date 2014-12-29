@@ -56,14 +56,12 @@ import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserGroupAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -304,8 +302,8 @@ public class HibernateGenericStore<T>
         if ( IdentifiableObject.class.isAssignableFrom( object.getClass() ) )
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
-            identifiableObject.setPublicAccess( AccessStringHelper.newInstance().build() );
-            identifiableObject.setUserGroupAccesses( new HashSet<UserGroupAccess>() );
+            identifiableObject.setPublicAccess( AccessStringHelper.DEFAULT );
+            identifiableObject.getUserGroupAccesses().clear();
 
             if ( identifiableObject.getUser() == null )
             {

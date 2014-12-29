@@ -59,6 +59,8 @@ public class ImportOptions
 
     private boolean skipExistingCheck;
 
+    private boolean sharing;
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -195,6 +197,16 @@ public class ImportOptions
     public void setSkipExistingCheck( boolean skipExistingCheck )
     {
         this.skipExistingCheck = skipExistingCheck;
+    }
+
+    public boolean isSharing()
+    {
+        return sharing;
+    }
+
+    public void setSharing( boolean sharing )
+    {
+        this.sharing = sharing;
     }
 
     @Override
