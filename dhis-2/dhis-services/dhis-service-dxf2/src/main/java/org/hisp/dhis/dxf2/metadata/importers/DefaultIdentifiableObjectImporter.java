@@ -40,8 +40,10 @@ import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dashboard.DashboardItem;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryDimension;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -69,7 +71,6 @@ import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.schema.SchemaService;
-import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
@@ -143,6 +144,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     @Autowired
     private DataElementCategoryService categoryService;
+
+    @Autowired
+    private IdentifiableObjectManager manager;
 
     //-------------------------------------------------------------------------------------------------------
     // Constructor
@@ -896,7 +900,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             saveDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
             saveDataElementOperands( object, "greyedFields", greyedFields );
             saveDataElementOperands( object, "dataElementOperands", dataElementOperands );
-            // saveProgramStageDataElements( object, programStageDataElements );
+            saveProgramStageDataElements( object, programStageDataElements );
             saveProgramTrackedEntityAttributes( object, programTrackedEntityAttributes );
             saveCategoryDimensions( object, categoryDimensions );
         }
@@ -1243,7 +1247,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
                 if ( persisted == null )
                 {
-                    programStageDataElementService.addProgramStageDataElement( programStageDataElement );
+                    if ( programStageDataElement.getDataElement() != null && programStageDataElement.getProgramStage() != null )
+                    {
+                        programStageDataElementService.addProgramStageDataElement( programStageDataElement );
+                    }
                 }
                 else
                 {
