@@ -262,12 +262,19 @@ public class DefaultDataApprovalLevelService
         {
             Set<Integer> userOrgUnitLevels = new HashSet<>();
 
+            int lowestNumberOrgUnitLevel = 99999999;
+
             for ( OrganisationUnit orgUnit : user.getOrganisationUnits() )
             {
                 int orgUnitLevel = orgUnit.hasLevel() ?
                     orgUnit.getLevel() : organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() );
 
                 userOrgUnitLevels.add( orgUnitLevel );
+
+                if ( orgUnitLevel < lowestNumberOrgUnitLevel )
+                {
+                    lowestNumberOrgUnitLevel = orgUnitLevel;
+                }
             }
 
             boolean assignedAtLevel = false;
@@ -304,7 +311,8 @@ public class DefaultDataApprovalLevelService
                 
                 // Get new values of assignedAtLevel and approvableAtLevel for the current approval level.
                 
-                assignedAtLevel = canReadThisLevel && userOrgUnitLevels.contains( approvalLevel.getOrgUnitLevel() );
+                assignedAtLevel = canReadThisLevel && ( userOrgUnitLevels.contains( approvalLevel.getOrgUnitLevel() )
+                        || ( ( mayApproveAtLowerLevels || mayAcceptAtLowerLevels ) && approvalLevel.getOrgUnitLevel() > lowestNumberOrgUnitLevel ) );
 
                 approvableAtLevel = canReadThisLevel && ( ( mayApprove && assignedAtLevel ) || approvableAtAllLowerLevels );
                 
