@@ -616,9 +616,8 @@ public class User
         {
             User user = (User) other;
 
-            firstName = user.getFirstName();
             surname = user.getSurname();
-
+            firstName = user.getFirstName();
             email = user.getEmail();
             phoneNumber = user.getPhoneNumber();
             jobTitle = user.getJobTitle();
