@@ -83,7 +83,7 @@ public class UserDeletionHandler
     {        
         for ( User user : group.getMembers() )
         {
-            user.getGroups().remove( user );
+            user.getGroups().remove( group );
             userService.updateUser( user );
         }
     }
