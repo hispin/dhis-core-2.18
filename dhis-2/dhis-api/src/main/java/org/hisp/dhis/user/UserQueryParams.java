@@ -38,7 +38,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public class UserQueryParams
 {
     private String query;
-    
+        
     private String phoneNumber;
     
     private User user;

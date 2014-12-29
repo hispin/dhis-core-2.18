@@ -82,10 +82,10 @@ public class UserCredentialsStoreTest
         UserCredentials credentialsA = createUserCredentials( 'A', userA );
         UserCredentials credentialsB = createUserCredentials( 'B', userB );
         
-        int idA = userCredentialsStore.addUserCredentials( credentialsA );
-        int idB = userCredentialsStore.addUserCredentials( credentialsB );
+        int idA = userCredentialsStore.save( credentialsA );
+        int idB = userCredentialsStore.save( credentialsB );
         
-        assertEquals( credentialsA, userCredentialsStore.getUserCredentials( idA ) );
-        assertEquals( credentialsB, userCredentialsStore.getUserCredentials( idB ) );
+        assertEquals( credentialsA, userCredentialsStore.get( idA ) );
+        assertEquals( credentialsB, userCredentialsStore.get( idB ) );
     }
 }

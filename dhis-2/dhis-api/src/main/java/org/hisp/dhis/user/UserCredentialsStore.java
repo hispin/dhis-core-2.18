@@ -28,50 +28,16 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.hisp.dhis.common.GenericStore;
 
 /**
  * @author Lars Helge Overland
  */
 public interface UserCredentialsStore
+    extends GenericStore<UserCredentials>
 {
     String ID = UserCredentialsStore.class.getName();
 
-    // -------------------------------------------------------------------------
-    // UserCredentials
-    // -------------------------------------------------------------------------
-
-    /**
-     * Adds a UserCredentials.
-     *
-     * @param userCredentials the UserCredentials to add.
-     * @return the User which the UserCredentials is associated with.
-     */
-   int addUserCredentials( UserCredentials userCredentials );
-
-    /**
-     * Updates a UserCredentials.
-     *
-     * @param userCredentials the UserCredentials to update.
-     */
-    void updateUserCredentials( UserCredentials userCredentials );
-
-    /**
-     * Retrieves the UserCredentials of the given User.
-     *
-     * @param user the User.
-     * @return the UserCredentials.
-     */
-    UserCredentials getUserCredentials( User user );
-
-    /**
-     * Retrieves the UserCredentials with given identifier.
-     *
-     * @param id the identifier.
-     * @return the UserCredentials.
-     */
-    UserCredentials getUserCredentials( int id );
-    
     /**
      * Retrieves the UserCredentials associated with the User with the given
      * name.
@@ -82,18 +48,11 @@ public interface UserCredentialsStore
     UserCredentials getUserCredentialsByUsername( String username );
 
     /**
-     * Retrieves all UserCredentials.
+     * Retrieves the UserCredentials associated with the User with the given
+     * open ID.
      *
-     * @return a Collection of UserCredentials.
+     * @param openId open ID.
+     * @return the UserCredentials.
      */
-    Collection<UserCredentials> getAllUserCredentials();
-
-    /**
-     * Deletes a UserCredentials.
-     *
-     * @param userCredentials the UserCredentials.
-     */
-    void deleteUserCredentials( UserCredentials userCredentials );
-
     UserCredentials getUserCredentialsByOpenID( String openId );
 }
