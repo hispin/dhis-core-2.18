@@ -165,24 +165,6 @@ public class DefaultUserService
     }
 
     @Override
-    public List<User> getAllUsersBetween( int first, int max )
-    {
-        return userStore.getAllOrderedName( first, max );
-    }
-
-    @Override
-    public List<User> getAllUsersBetweenByName( String name, int first, int max )
-    {
-        return userStore.getAllLikeName( name, first, max );
-    }
-
-    @Override
-    public Collection<User> getUsersByLastUpdated( Date lastUpdated )
-    {
-        return userStore.getAllGeLastUpdated( lastUpdated );
-    }
-
-    @Override
     public User getUser( int userId )
     {
         return userStore.get( userId );
@@ -198,6 +180,17 @@ public class DefaultUserService
     public List<User> getUsersByUid( List<String> uids )
     {
         return userStore.getByUid( uids );
+    }
+
+    @Override
+    public List<User> getAllUsersBetweenByName( String name, int first, int max )
+    {
+        UserQueryParams params = new UserQueryParams();
+        params.setQuery( name );
+        params.setFirst( first );
+        params.setMax( max );
+        
+        return userStore.getUsers( params );
     }
 
     @Override
@@ -307,28 +300,9 @@ public class DefaultUserService
     }
 
     @Override
-    public boolean isSuperUser( UserCredentials userCredentials )
-    {
-        if ( userCredentials == null )
-        {
-            return false;
-        }
-
-        for ( UserAuthorityGroup group : userCredentials.getUserAuthorityGroups() )
-        {
-            if ( group.getAuthorities().contains( "ALL" ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
     public boolean isLastSuperUser( UserCredentials userCredentials )
     {
-        if ( !isSuperUser( userCredentials ) )
+        if ( !userCredentials.isSuper() )
         {
             return false; // Cannot be last if not super user
         }
@@ -337,7 +311,7 @@ public class DefaultUserService
 
         for ( UserCredentials user : users )
         {
-            if ( isSuperUser( user ) && !user.equals( userCredentials ) )
+            if ( user.isSuper() && !user.equals( userCredentials ) )
             {
                 return false;
             }
@@ -347,24 +321,13 @@ public class DefaultUserService
     }
 
     @Override
-    public boolean isSuperRole( UserAuthorityGroup userAuthorityGroup )
-    {
-        if ( userAuthorityGroup == null )
-        {
-            return false;
-        }
-
-        return ( userAuthorityGroup.getAuthorities().contains( "ALL" ) );
-    }
-
-    @Override
     public boolean isLastSuperRole( UserAuthorityGroup userAuthorityGroup )
     {
         Collection<UserAuthorityGroup> groups = userAuthorityGroupStore.getAll();
 
         for ( UserAuthorityGroup group : groups )
         {
-            if ( isSuperRole( group ) && group.getId() != userAuthorityGroup.getId() )
+            if ( group.isSuper() && group.getId() != userAuthorityGroup.getId() )
             {
                 return false;
             }
