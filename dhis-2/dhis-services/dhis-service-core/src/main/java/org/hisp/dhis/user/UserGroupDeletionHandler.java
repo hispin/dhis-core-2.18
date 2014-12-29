@@ -28,7 +28,7 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
+import java.util.Set;
 
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,11 +67,10 @@ public class UserGroupDeletionHandler
     @Override
     public void deleteUser( User user )
     {
-        Iterator<UserGroup> iterator = user.getGroups().iterator();
+        Set<UserGroup> userGroups = user.getGroups();
         
-        while ( iterator.hasNext() )
+        for ( UserGroup group : userGroups )
         {
-            UserGroup group = iterator.next();
             group.getMembers().remove( user );
             userGroupService.updateUserGroup( group );
         }

@@ -28,14 +28,12 @@ package org.hisp.dhis.user.action.usergroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.system.util.AttributeUtils;
-import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
@@ -74,9 +72,9 @@ public class AddUserGroupAction
     // Parameters
     // -------------------------------------------------------------------------
 
-    private List<String> usersSelected;
+    private Set<String> usersSelected = new HashSet<>();
 
-    public void setUsersSelected( List<String> usersSelected )
+    public void setUsersSelected( Set<String> usersSelected )
     {
         this.usersSelected = usersSelected;
     }
@@ -110,22 +108,11 @@ public class AddUserGroupAction
     public String execute()
         throws Exception
     {
-        if ( usersSelected == null )
-        {
-            usersSelected = new ArrayList<>();
-        }
-
         UserGroup userGroup = new UserGroup( name );
 
-        for ( String userUid : usersSelected )
+        for ( String uid : usersSelected )
         {
-            User user = userService.getUser( userUid );
-
-            if ( user == null )
-            {
-                continue;
-            }
-            userGroup.addUser( user );
+            userGroup.addUser( userService.getUser( uid ) );
         }
 
         if ( jsonAttributeValues != null )
@@ -134,15 +121,11 @@ public class AddUserGroupAction
                 attributeService );
         }
 
-        Set<UserGroup> managedGroups = new HashSet<>();
-
-        for ( String groupUid : userGroupsSelected )
+        for ( String uid : userGroupsSelected )
         {
-            UserGroup group = userGroupService.getUserGroup( groupUid );
-            managedGroups.add( group );
+            userGroup.addManagedGroup( userGroupService.getUserGroup( uid ) );
         }
-        userGroup.setManagedGroups( managedGroups );
-
+        
         userGroupService.addUserGroup( userGroup );
 
         return SUCCESS;
