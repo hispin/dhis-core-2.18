@@ -73,6 +73,7 @@ public class UserGroup
      * User groups (if any) that members of this user group can manage
      * the members within.
      */
+    @Scanned
     private Set<UserGroup> managedGroups = new HashSet<>();
 
     /**
