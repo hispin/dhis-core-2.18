@@ -31,6 +31,7 @@ package org.hisp.dhis.dataapproval.hibernate;
 import static org.hisp.dhis.dataapproval.DataApprovalState.ACCEPTED_HERE;
 import static org.hisp.dhis.dataapproval.DataApprovalState.APPROVED_ABOVE;
 import static org.hisp.dhis.dataapproval.DataApprovalState.APPROVED_HERE;
+import static org.hisp.dhis.dataapproval.DataApprovalState.UNAPPROVED_ABOVE;
 import static org.hisp.dhis.dataapproval.DataApprovalState.UNAPPROVED_READY;
 import static org.hisp.dhis.dataapproval.DataApprovalState.UNAPPROVED_WAITING;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL;
@@ -418,9 +419,11 @@ public class HibernateDataApprovalStore
 
                 DataApprovalState state = (
                     statusLevel == null ?
-                        readyBelow ?
-                            UNAPPROVED_READY :
-                            UNAPPROVED_WAITING :
+                        lowestApprovalLevelForOrgUnit == null ?
+                            UNAPPROVED_ABOVE :
+                            readyBelow ?
+                                UNAPPROVED_READY :
+                                UNAPPROVED_WAITING :
                         approvedAbove ?
                             APPROVED_ABOVE :
                             accepted ?
