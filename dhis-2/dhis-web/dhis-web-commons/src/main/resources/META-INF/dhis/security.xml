@@ -27,6 +27,19 @@
   <sec:http pattern="/external-static/**" security="none" />
   <sec:http pattern="/favicon.ico" security="none" />
 
+  <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2" pattern="/api/**">
+    <sec:http-basic />
+
+    <sec:headers>
+      <sec:content-type-options />
+      <sec:frame-options />
+      <sec:xss-protection />
+    </sec:headers>
+
+    <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
+    <sec:intercept-url pattern="/api/**" access="isAuthenticated()" />
+  </sec:http>
+
   <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2">
     <sec:openid-login user-service-ref="userDetailsService" default-target-url="/" always-use-default-target="false"
       authentication-failure-handler-ref="securityExceptionTranslationHandler"
