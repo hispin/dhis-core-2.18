@@ -296,13 +296,8 @@ public class DefaultDataApprovalLevelService
                 
                 // Test using assignedAtLevel and approvableAtLevel values from the previous (higher) level.
                 
-                Boolean addBecauseOfPreviousLevel = false;
-
-                if ( canReadThisLevel && ( approvableAtLevel // Approve at previous higher level implies unapprove at current level.
-                    || ( assignedAtLevel && mayAcceptAtLowerLevels ) ) ) // Assigned at previous level and mayAcceptAtLowerLevels means may accept here.
-                {
-                    addBecauseOfPreviousLevel = true;
-                }
+                Boolean addBecauseOfPreviousLevel = canReadThisLevel && ( approvableAtLevel // Approve at previous higher level implies unapprove at current level.
+                    || ( assignedAtLevel && mayAcceptAtLowerLevels ) ); // Assigned at previous level and mayAcceptAtLowerLevels means may accept here.
 
                 if ( assignedAtLevel && mayApproveAtLowerLevels )
                 {
