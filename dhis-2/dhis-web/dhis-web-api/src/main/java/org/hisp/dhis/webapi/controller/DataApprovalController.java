@@ -167,8 +167,10 @@ public class DataApprovalController
             return;
         }
 
+        DataElementCategoryOptionCombo combo = categoryService.getDefaultDataElementCategoryOptionCombo();
+
         DataApprovalStatus status = dataApprovalService
-            .getDataApprovalStatusAndPermissions( dataSet, period, organisationUnit, null );
+            .getDataApprovalStatusAndPermissions( dataSet, period, organisationUnit, combo );
         
         DataApprovalPermissions permissions = status.getPermissions();
         permissions.setState( status.getState().toString() );
@@ -238,8 +240,10 @@ public class DataApprovalController
     private DataApprovalStateResponse getDataApprovalStateResponse( DataSet dataSet, 
         OrganisationUnit organisationUnit, Period period )
     {
+        DataElementCategoryOptionCombo combo = categoryService.getDefaultDataElementCategoryOptionCombo();
+
         DataApprovalStatus status = dataApprovalService.getDataApprovalStatusAndPermissions( dataSet, period,
-            organisationUnit, null );
+            organisationUnit, combo );
 
         DataApproval dataApproval = status.getDataApproval();
         Date createdDate = dataApproval == null ? null : dataApproval.getCreated();

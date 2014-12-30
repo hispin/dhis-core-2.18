@@ -445,11 +445,10 @@ public class DefaultDataApprovalService
                 dataSets.add( da.getDataSet() );
             }
 
-            Period period = dataApprovals.get(0).getPeriod();
+            DataApproval da0 = dataApprovals.get( 0 );
 
-            OrganisationUnit orgUnit = dataApprovals.get(0).getOrganisationUnit();
-
-            List<DataApprovalStatus> statuses = dataApprovalStore.getDataApprovals( dataSets, period, orgUnit, null );
+            List<DataApprovalStatus> statuses = dataApprovalStore.getDataApprovals( dataSets,
+                    da0.getPeriod(), da0.getOrganisationUnit(), da0.getAttributeOptionCombo() );
 
             for ( DataApprovalStatus status : statuses )
             {
@@ -469,7 +468,9 @@ public class DefaultDataApprovalService
     }
 
     /**
-     * Returns an indexed map where the key is based on organisation unit and period.
+     * Returns an indexed map where the key is based on each distinct
+     * combination of organisation unit, period, and attributeOptionCombo.
+     * (attributeOptionCombo may be null.)
      */
     private ListMap<String, DataApproval> getIndexedListMap( List<DataApproval> dataApprovalList )
     {
@@ -477,7 +478,9 @@ public class DefaultDataApprovalService
 
         for ( DataApproval approval : dataApprovalList )
         {
-            String key = approval == null ? null : approval.getOrganisationUnit().getId() + "-" + approval.getPeriod().getId();
+            String key = approval == null ? null : approval.getOrganisationUnit().getId()
+                    + "-" + approval.getPeriod().getId()
+                    + "-" + ( approval.getAttributeOptionCombo() == null ? "null" : approval.getAttributeOptionCombo().getId() );
             
             map.putValue( key, approval );
         }
