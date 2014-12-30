@@ -182,7 +182,7 @@ public class DefaultObjectBridge
 
         if ( preheatCache && IdentifiableObject.class.isAssignableFrom( clazz ) )
         {
-            map = new HashSet<>( manager.getAll( (Class<IdentifiableObject>) clazz ) );
+            map = new HashSet<>( manager.getAllNoAcl( (Class<IdentifiableObject>) clazz ) );
         }
 
         masterMap.put( clazz, map );
@@ -195,7 +195,7 @@ public class DefaultObjectBridge
 
         if ( preheatCache && IdentifiableObject.class.isAssignableFrom( clazz ) )
         {
-            map = (Map<String, IdentifiableObject>) manager.getIdMap( (Class<? extends IdentifiableObject>) clazz, property );
+            map = (Map<String, IdentifiableObject>) manager.getIdMapNoAcl( (Class<? extends IdentifiableObject>) clazz, property );
         }
 
         if ( !preheatCache || map != null )
