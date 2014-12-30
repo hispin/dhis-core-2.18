@@ -29,6 +29,7 @@ package org.hisp.dhis.security.filter;
  */
 
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -59,9 +60,13 @@ public class CorsFilter implements Filter
 
     public static final String CORS_REQUEST_METHOD = "Access-Control-Request-Method";
 
+    public static final String CORS_ORIGIN = "Origin";
+
     private static final String ALLOWED_METHODS = "GET, OPTIONS";
 
     private static final String ALLOWED_HEADERS = "Accept, Content-Type, Authorization, X-Requested-With";
+
+    private static final Integer MAX_AGE = 60 * 60;
 
     @Override
     public void doFilter( ServletRequest req, ServletResponse res, FilterChain filterChain ) throws IOException, ServletException
@@ -69,32 +74,29 @@ public class CorsFilter implements Filter
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        String origin = request.getHeader( "Origin" );
+        String origin = request.getHeader( CORS_ORIGIN );
         origin = !StringUtils.isEmpty( origin ) ? origin : "*";
-
-        // String exposeHeaders = request.getHeader( CORS_REQUEST_HEADERS );
-        // exposeHeaders = !StringUtils.isEmpty( exposeHeaders ) ? exposeHeaders : "accept authorization";
-        String exposeHeaders = ALLOWED_HEADERS;
-
-        // String allowMethods = request.getHeader( CORS_REQUEST_METHOD );
-        // allowMethods = !StringUtils.isEmpty( allowMethods ) ? allowMethods : "GET, POST, PUT, DELETE, OPTIONS";
-        String allowMethods = ALLOWED_METHODS;
 
         response.addHeader( CORS_ALLOW_CREDENTIALS, "true" );
         response.addHeader( CORS_ALLOW_ORIGIN, origin );
-        response.addHeader( CORS_ALLOW_METHODS, allowMethods );
-        response.addHeader( CORS_MAX_AGE, "3600" );
-        response.addHeader( CORS_ALLOW_HEADERS, exposeHeaders );
+        response.addHeader( CORS_ALLOW_METHODS, ALLOWED_METHODS );
+        response.addHeader( CORS_MAX_AGE, String.valueOf( MAX_AGE ) );
+        response.addHeader( CORS_ALLOW_HEADERS, ALLOWED_HEADERS );
 
-        if ( "OPTIONS".equals( request.getMethod() ) )
+        if ( isPreflight( request ) )
         {
-            response.setStatus( HttpServletResponse.SC_OK );
-            response.getWriter().print( "OK" );
-            response.getWriter().flush();
-            return;
+            response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+            return; // CORS preflight requires a 2xx status code, so we need to short-circuit the filter chain here
         }
 
         filterChain.doFilter( request, response );
+    }
+
+    private boolean isPreflight( HttpServletRequest request )
+    {
+        return RequestMethod.OPTIONS.toString().equals( request.getMethod() )
+            && !StringUtils.isEmpty( request.getHeader( CORS_ORIGIN ) )
+            && !StringUtils.isEmpty( request.getHeader( CORS_REQUEST_METHOD ) );
     }
 
     @Override
