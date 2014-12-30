@@ -136,6 +136,11 @@ public class UserCredentials
      * Indicates whether this user was originally self registered.
      */
     private boolean selfRegistered;
+    
+    /**
+     * Indicates whether this credentials is currently an invitation.
+     */
+    private boolean invitation;
 
     /**
      * Indicates whether this is user is disabled, which means the user cannot
@@ -599,6 +604,19 @@ public class UserCredentials
     public void setSelfRegistered( boolean selfRegistered )
     {
         this.selfRegistered = selfRegistered;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isInvitation()
+    {
+        return invitation;
+    }
+
+    public void setInvitation( boolean invitation )
+    {
+        this.invitation = invitation;
     }
 
     @JsonProperty
