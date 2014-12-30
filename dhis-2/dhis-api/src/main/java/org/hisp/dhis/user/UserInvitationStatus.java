@@ -33,7 +33,7 @@ package org.hisp.dhis.user;
  */
 public enum UserInvitationStatus
 {
-    ALL( "all" ), EXPIRED( "expired" );
+    NONE( "none" ), ALL( "all" ), EXPIRED( "expired" );
 
     private final String value;
     
