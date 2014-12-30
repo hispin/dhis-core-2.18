@@ -314,12 +314,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             throw new UpdateAccessDeniedException( "This property is read-only." );
         }
 
-        if ( !property.isSimple() )
-        {
-            // TODO we need to split out the reference scanner from the importer for this to work with idObjects
-            throw new UpdateAccessDeniedException( "Only simple properties are currently supported for update." );
-        }
-
         T object = deserialize( request );
 
         if ( object == null )
@@ -332,8 +326,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         property.getSetterMethod().invoke( persistedObject, value );
 
-        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
-        manager.update( persistedObject );
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), persistedObject, ImportStrategy.UPDATE );
+        serialize( request, response, summary );
     }
 
     private RootNode getObjectInternal( String uid, Map<String, String> parameters,
@@ -875,6 +869,39 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     /**
+     * Serializes an object, tries to guess output format using this order.
+     *
+     * @param request  HttpServletRequest from current session
+     * @param response HttpServletResponse from current session
+     * @param object   Object to serialize
+     */
+    protected void serialize( HttpServletRequest request, HttpServletResponse response, Object object ) throws IOException
+    {
+        String type = request.getHeader( "Accept" );
+        type = !StringUtils.isEmpty( type ) ? type : request.getContentType();
+        type = !StringUtils.isEmpty( type ) ? type : MediaType.APPLICATION_JSON_VALUE;
+
+        // allow type to be overridden by path extension
+        if ( request.getPathInfo().endsWith( ".json" ) )
+        {
+            type = MediaType.APPLICATION_JSON_VALUE;
+        }
+        else if ( request.getPathInfo().endsWith( ".xml" ) )
+        {
+            type = MediaType.APPLICATION_XML_VALUE;
+        }
+
+        if ( isCompatibleWith( type, MediaType.APPLICATION_JSON ) )
+        {
+            renderService.toJson( response.getOutputStream(), object );
+        }
+        else if ( isCompatibleWith( type, MediaType.APPLICATION_XML ) )
+        {
+            renderService.toXml( response.getOutputStream(), object );
+        }
+    }
+
+    /**
      * Deserializes a payload from the request, handles JSON/XML payloads
      *
      * @param request HttpServletRequest from current session
@@ -882,11 +909,24 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
      */
     protected T deserialize( HttpServletRequest request ) throws IOException
     {
-        if ( isJson( request ) )
+        String type = request.getContentType();
+        type = !StringUtils.isEmpty( type ) ? type : MediaType.APPLICATION_JSON_VALUE;
+
+        // allow type to be overridden by path extension
+        if ( request.getPathInfo().endsWith( ".json" ) )
+        {
+            type = MediaType.APPLICATION_JSON_VALUE;
+        }
+        else if ( request.getPathInfo().endsWith( ".xml" ) )
+        {
+            type = MediaType.APPLICATION_XML_VALUE;
+        }
+
+        if ( isCompatibleWith( type, MediaType.APPLICATION_JSON ) )
         {
             return renderService.fromJson( request.getInputStream(), getEntityClass() );
         }
-        else if ( isXml( request ) )
+        else if ( isCompatibleWith( type, MediaType.APPLICATION_XML ) )
         {
             return renderService.fromXml( request.getInputStream(), getEntityClass() );
         }
@@ -902,8 +942,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
      */
     protected boolean isJson( HttpServletRequest request )
     {
-        String contentType = request.getContentType();
-        return !StringUtils.isEmpty( contentType ) && MediaType.parseMediaType( contentType ).isCompatibleWith( MediaType.APPLICATION_JSON );
+        return isCompatibleWith( request.getContentType(), MediaType.APPLICATION_JSON );
     }
 
     /**
@@ -914,8 +953,12 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
      */
     protected boolean isXml( HttpServletRequest request )
     {
-        String contentType = request.getContentType();
-        return !StringUtils.isEmpty( contentType ) && MediaType.parseMediaType( contentType ).isCompatibleWith( MediaType.APPLICATION_XML );
+        return isCompatibleWith( request.getContentType(), MediaType.APPLICATION_XML );
+    }
+
+    protected boolean isCompatibleWith( String type, MediaType mediaType )
+    {
+        return !StringUtils.isEmpty( type ) && MediaType.parseMediaType( type ).isCompatibleWith( mediaType );
     }
 
     //--------------------------------------------------------------------------
