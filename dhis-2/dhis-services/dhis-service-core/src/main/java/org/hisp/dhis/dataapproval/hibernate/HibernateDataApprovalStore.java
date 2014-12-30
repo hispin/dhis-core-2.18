@@ -237,24 +237,35 @@ public class HibernateDataApprovalStore
 
         final String dataSetIds = getCommaDelimitedString( getIdentifiers( DataSet.class, dataSets ) );
 
-        Set<Integer> categoryComboIds = new HashSet<>();
+        boolean isDefaultCombo = ( attributeOptionCombo == categoryService.getDefaultDataElementCategoryOptionCombo() );
 
-        for ( DataSet ds : dataSets )
+        final String categoryComboIds;
+
+        if ( isDefaultCombo )
         {
-            if ( ds.isApproveData() && ( maySeeDefaultCategoryCombo || ds.getCategoryCombo() != defaultCategoryCombo ) )
+            categoryComboIds = Integer.toString( categoryService.getDefaultDataElementCategoryCombo().getId() );
+        }
+        else
+        {
+            Set<Integer> catComboIds = new HashSet<>();
+
+            for ( DataSet ds : dataSets )
             {
-                categoryComboIds.add( ds.getCategoryCombo().getId() );
+                if ( ds.isApproveData() && ( maySeeDefaultCategoryCombo || ds.getCategoryCombo() != defaultCategoryCombo ) )
+                {
+                    catComboIds.add( ds.getCategoryCombo().getId() );
+                }
             }
+
+            if ( catComboIds.isEmpty() )
+            {
+                log.warn( "No dataset categorycombos to check for approval, user " + ( user == null ? "(null)" : user.getUsername() ) + " datasetIds " + dataSetIds );
+
+                return new ArrayList<>();
+            }
+
+            categoryComboIds = TextUtils.getCommaDelimitedString( catComboIds );
         }
-
-        if ( categoryComboIds.isEmpty() )
-        {
-            log.warn( "No dataset categorycombos to check for approval, user " + ( user == null ? "(null)" : user.getUsername() ) + " datasetIds " + dataSetIds );
-
-            return new ArrayList<>();
-        }
-
-        final String dataSetCcIds = TextUtils.getCommaDelimitedString( categoryComboIds );
 
         int orgUnitLevel = 1;
         String orgUnitJoinOn;
@@ -291,6 +302,8 @@ public class HibernateDataApprovalStore
             testAncestors += "or o" + i + ".organisationunitid is not null ";
         }
 
+        final String dsCategoryComboIdMatches = isDefaultCombo ? "" : "and ds.categorycomboid = a.categorycomboid "; // Default option combo matches any data set.
+
         String readyBelowSubquery = "true"; // Ready below if this is the lowest (highest number) approval orgUnit level.
 
         int orgUnitLevelAbove = 0;
@@ -314,9 +327,10 @@ public class HibernateDataApprovalStore
                 boolean acceptanceRequiredForApproval = (Boolean) systemSettingManager.getSystemSetting( KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL, false );
 
                 readyBelowSubquery = "not exists (select 1 from _orgunitstructure ous " +
+                        "join dataset ds on ds.datasetid in (" + dataSetIds + ") " + dsCategoryComboIdMatches +
                         "left join dataapproval da on da.organisationunitid = ous.organisationunitid " +
-                        "and da.dataapprovallevelid = " + dal.getLevel() + " and da.periodid in (" + periodIds + ") " +
-                        "and da.datasetid in (" + dataSetIds + ") " +
+                        "and da.dataapprovallevelid = " + dal.getId() + " and da.periodid in (" + periodIds + ") " +
+                        "and da.datasetid = ds.datasetid " +
                         "and da.attributeoptioncomboid = a.categoryoptioncomboid " +
                         "where ous.idlevel" + orgUnitLevel + " = a.organisationunitid " +
                         "and ous.level = " + dal.getOrgUnitLevel() + " " +
@@ -331,7 +345,7 @@ public class HibernateDataApprovalStore
         {
             approvedAboveSubquery = "exists(select 1 from dataapproval da " +
                     "join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
-                    "join dataset ds on ds.datasetid in (" + dataSetIds + ") and ds.categorycomboid = a.categorycomboid " +
+                    "join dataset ds on ds.datasetid = da.datasetid and ds.datasetid in (" + dataSetIds + ") " + dsCategoryComboIdMatches +
                     "join _orgunitstructure ou on ou.organisationunitid = a.organisationunitid and ou.idlevel" + orgUnitLevelAbove + " = da.organisationunitid " +
                     "where da.periodid in (" + periodIds + ") and da.attributeoptioncomboid = a.categoryoptioncomboid) ";
         }
@@ -339,14 +353,14 @@ public class HibernateDataApprovalStore
         final String sql =
                 "select a.categoryoptioncomboid, a.organisationunitid, " +
                 "(select min(coalesce(dal.level, 0)) from period p " +
-                    "join dataset ds on ds.datasetid in (" + dataSetIds + ") and ds.categorycomboid = a.categorycomboid " +
+                    "join dataset ds on ds.datasetid in (" + dataSetIds + ") " + dsCategoryComboIdMatches +
                     "left join dataapproval da on da.datasetid = ds.datasetid and da.periodid = p.periodid " +
                         "and da.attributeoptioncomboid = a.categoryoptioncomboid and da.organisationunitid = a.organisationunitid " +
                     "left join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
                     "where p.periodid in (" + periodIds + ") " +
                 ") as highest_approved_level, " +
                 "(select substring(min(concat(100000 + coalesce(dal.level, 0), coalesce(da.accepted, FALSE))) from 7) from period p " +
-                    "join dataset ds on ds.datasetid in (" + dataSetIds + ") and ds.categorycomboid = a.categorycomboid " +
+                    "join dataset ds on ds.datasetid in (" + dataSetIds + ") " + dsCategoryComboIdMatches +
                     "left join dataapproval da on da.datasetid = ds.datasetid and da.periodid = p.periodid " +
                         "and da.attributeoptioncomboid = a.categoryoptioncomboid and da.organisationunitid = a.organisationunitid " +
                     "left join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
@@ -357,7 +371,7 @@ public class HibernateDataApprovalStore
                 "from ( " + // subquery to get combinations of organisation unit and category option combo
                     "select distinct cocco.categoryoptioncomboid, ccoc.categorycomboid, o.organisationunitid " +
                     "from categoryoptioncombos_categoryoptions cocco " +
-                    "join categorycombos_optioncombos ccoc on ccoc.categoryoptioncomboid = cocco.categoryoptioncomboid and ccoc.categorycomboid in (" + dataSetCcIds + ") " +
+                    "join categorycombos_optioncombos ccoc on ccoc.categoryoptioncomboid = cocco.categoryoptioncomboid and ccoc.categorycomboid in (" + categoryComboIds + ") " +
                     "join dataelementcategoryoption co on co.categoryoptionid = cocco.categoryoptionid " +
                         "and (co.startdate is null or co.startdate <= '" + maxDate + "') and (co.enddate is null or co.enddate >= '" + minDate + "') " +
                     "join _orgunitstructure o on " + orgUnitJoinOn + " " +
