@@ -97,9 +97,9 @@ public class ReportTableController
 
     @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postJsonObject( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        ReportTable reportTable = JacksonUtils.fromJson( input, ReportTable.class );
+        ReportTable reportTable = JacksonUtils.fromJson( request.getInputStream(), ReportTable.class );
 
         mergeReportTable( reportTable );
 
@@ -110,7 +110,7 @@ public class ReportTableController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putJsonObject( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
 
@@ -120,7 +120,7 @@ public class ReportTableController
             return;
         }
 
-        ReportTable newReportTable = JacksonUtils.fromJson( input, ReportTable.class );
+        ReportTable newReportTable = JacksonUtils.fromJson( request.getInputStream(), ReportTable.class );
 
         mergeReportTable( newReportTable );
 
@@ -131,7 +131,7 @@ public class ReportTableController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteObject( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
 

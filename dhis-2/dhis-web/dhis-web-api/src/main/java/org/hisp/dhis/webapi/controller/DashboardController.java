@@ -80,9 +80,9 @@ public class DashboardController
 
     @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postJsonObject( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        Dashboard dashboard = JacksonUtils.fromJson( input, Dashboard.class );
+        Dashboard dashboard = JacksonUtils.fromJson( request.getInputStream(), Dashboard.class );
 
         dashboardService.mergeDashboard( dashboard );
         dashboardService.saveDashboard( dashboard );
@@ -92,17 +92,17 @@ public class DashboardController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putJsonObject( @PathVariable( "uid" ) String pvUid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        Dashboard dashboard = dashboardService.getDashboard( uid );
+        Dashboard dashboard = dashboardService.getDashboard( pvUid );
 
         if ( dashboard == null )
         {
-            ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + uid );
+            ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + pvUid );
             return;
         }
 
-        Dashboard newDashboard = JacksonUtils.fromJson( input, Dashboard.class );
+        Dashboard newDashboard = JacksonUtils.fromJson( request.getInputStream(), Dashboard.class );
 
         dashboard.setName( newDashboard.getName() ); // TODO Name only for now
 
@@ -111,14 +111,14 @@ public class DashboardController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid )
+    public void deleteObject( @PathVariable( "uid" ) String pvUid, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
-        List<Dashboard> objects = getEntity( uid );
+        List<Dashboard> objects = getEntity( pvUid );
 
         if ( objects.isEmpty() )
         {
-            ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
+            ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + pvUid );
             return;
         }
 
@@ -131,8 +131,7 @@ public class DashboardController
     }
 
     @RequestMapping( value = "/{uid}/items", method = RequestMethod.POST, consumes = "application/json" )
-    public void postJsonItem( HttpServletResponse response, HttpServletRequest request,
-        InputStream input, @PathVariable String uid ) throws Exception
+    public void postJsonItem( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         Dashboard dashboard = dashboardService.getDashboard( uid );
 
@@ -142,7 +141,7 @@ public class DashboardController
             return;
         }
 
-        DashboardItem item = JacksonUtils.fromJson( input, DashboardItem.class );
+        DashboardItem item = JacksonUtils.fromJson( request.getInputStream(), DashboardItem.class );
 
         dashboardService.mergeDashboardItem( item );
 

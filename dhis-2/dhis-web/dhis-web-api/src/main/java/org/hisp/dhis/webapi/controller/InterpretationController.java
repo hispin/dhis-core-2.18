@@ -246,7 +246,7 @@ public class InterpretationController
     }
 
     @Override
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteObject( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         Interpretation interpretation = interpretationService.getInterpretation( uid );
 

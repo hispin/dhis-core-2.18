@@ -84,9 +84,9 @@ public class EventReportController
 
     @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postJsonObject( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        EventReport report = JacksonUtils.fromJson( input, EventReport.class );
+        EventReport report = JacksonUtils.fromJson( request.getInputStream(), EventReport.class );
 
         mergeEventReport( report );
 
@@ -97,7 +97,7 @@ public class EventReportController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putJsonObject( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         EventReport report = eventReportService.getEventReport( uid );
 
@@ -107,7 +107,7 @@ public class EventReportController
             return;
         }
 
-        EventReport newReport = JacksonUtils.fromJson( input, EventReport.class );
+        EventReport newReport = JacksonUtils.fromJson( request.getInputStream(), EventReport.class );
 
         mergeEventReport( newReport );
 
@@ -118,7 +118,7 @@ public class EventReportController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteObject( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         EventReport report = eventReportService.getEventReport( uid );
 

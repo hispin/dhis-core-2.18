@@ -39,7 +39,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -67,25 +66,25 @@ public class IdentifiableObjectController
     }
 
     @Override
-    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postXmlObject( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( "POST" );
     }
 
     @Override
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postJsonObject( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( "POST" );
     }
 
     @Override
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putJsonObject( @PathVariable( "uid" ) String pvUid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( "PUT" );
     }
 
     @Override
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteObject( @PathVariable( "uid" ) String pvUid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( "PUT" );
     }
