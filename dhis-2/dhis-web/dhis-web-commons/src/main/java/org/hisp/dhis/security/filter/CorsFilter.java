@@ -100,6 +100,7 @@ public class CorsFilter implements Filter
 
         response.addHeader( CORS_ALLOW_CREDENTIALS, "true" );
         response.addHeader( CORS_ALLOW_ORIGIN, origin );
+        response.addHeader( "Vary", CORS_ORIGIN );
 
         if ( isPreflight( request ) )
         {
