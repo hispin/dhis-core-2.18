@@ -54,6 +54,8 @@ public class CorsFilter implements Filter
 
     public static final String CORS_ALLOW_HEADERS = "Access-Control-Allow-Headers";
 
+    public static final String CORS_EXPOSE_HEADERS = "Access-Control-Expose-Headers";
+
     public static final String CORS_REQUEST_HEADERS = "Access-Control-Request-Headers";
 
     public static final String CORS_ALLOW_METHODS = "Access-Control-Allow-Methods";
@@ -66,7 +68,7 @@ public class CorsFilter implements Filter
 
     private static final String ALLOWED_HEADERS = "Accept, Content-Type, Authorization, X-Requested-With";
 
-    private static final Integer MAX_AGE = 60 * 60;
+    private static final Integer MAX_AGE = 60 * 60; // 1hr max-age
 
     @Override
     public void doFilter( ServletRequest req, ServletResponse res, FilterChain filterChain ) throws IOException, ServletException
@@ -79,12 +81,13 @@ public class CorsFilter implements Filter
 
         response.addHeader( CORS_ALLOW_CREDENTIALS, "true" );
         response.addHeader( CORS_ALLOW_ORIGIN, origin );
-        response.addHeader( CORS_ALLOW_METHODS, ALLOWED_METHODS );
-        response.addHeader( CORS_MAX_AGE, String.valueOf( MAX_AGE ) );
-        response.addHeader( CORS_ALLOW_HEADERS, ALLOWED_HEADERS );
 
         if ( isPreflight( request ) )
         {
+            response.addHeader( CORS_ALLOW_METHODS, ALLOWED_METHODS );
+            response.addHeader( CORS_ALLOW_HEADERS, ALLOWED_HEADERS );
+            response.addHeader( CORS_MAX_AGE, String.valueOf( MAX_AGE ) );
+
             response.setStatus( HttpServletResponse.SC_NO_CONTENT );
             return; // CORS preflight requires a 2xx status code, so we need to short-circuit the filter chain here
         }
