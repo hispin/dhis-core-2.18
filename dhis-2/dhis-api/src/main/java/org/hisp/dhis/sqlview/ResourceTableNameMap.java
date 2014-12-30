@@ -35,23 +35,12 @@ import java.util.Map;
  * @version $Id ResourceTableNameMap.java Aug 10, 2010$
  */
 public class ResourceTableNameMap
-{
-    private static Map<String, String> resourceNameMap;
-    
+{    
     private static Map<String, String> ignoredNameMap;
 
     static
     {
-        resourceNameMap = new HashMap<>();
         ignoredNameMap = new HashMap<>();
-
-        resourceNameMap.put( "_cocn", "_categoryoptioncomboname" );
-        resourceNameMap.put( "_cs", "_categorystructure" );
-        resourceNameMap.put( "_degss", "_dataelementgroupsetstructure" );
-        resourceNameMap.put( "_icgss", "_indicatorgroupsetstructure" );
-        resourceNameMap.put( "_ous", "_orgunitstructure" );
-        resourceNameMap.put( "_ougss", "_orgunitgroupsetstructure" );
-        resourceNameMap.put( "_oustgss", "_organisationunitgroupsetstructure" );
 
         ignoredNameMap.put( "_users", "users" );
         ignoredNameMap.put( "_uinfo", "userinfo" );
@@ -61,11 +50,6 @@ public class ResourceTableNameMap
         ignoredNameMap.put( "_caseaggrcondition", "caseaggregationcondition" );
     }
 
-    public static String getResourceNameByAlias( String alias )
-    {
-        return resourceNameMap.get( alias );
-    }
-    
     public static String getIgnoredNameByAlias( String alias )
     {
         return ignoredNameMap.get( alias );
