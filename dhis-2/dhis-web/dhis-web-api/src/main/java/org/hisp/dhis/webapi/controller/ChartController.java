@@ -113,9 +113,9 @@ public class ChartController
 
     @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postJsonObject( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        Chart chart = JacksonUtils.fromJson( input, Chart.class );
+        Chart chart = JacksonUtils.fromJson( request.getInputStream(), Chart.class );
 
         mergeChart( chart );
 
@@ -126,7 +126,7 @@ public class ChartController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putJsonObject( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         Chart chart = chartService.getChart( uid );
 
@@ -136,7 +136,7 @@ public class ChartController
             return;
         }
 
-        Chart newChart = JacksonUtils.fromJson( input, Chart.class );
+        Chart newChart = JacksonUtils.fromJson( request.getInputStream(), Chart.class );
 
         mergeChart( newChart );
 
@@ -147,7 +147,7 @@ public class ChartController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteObject( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         Chart chart = chartService.getChart( uid );
 

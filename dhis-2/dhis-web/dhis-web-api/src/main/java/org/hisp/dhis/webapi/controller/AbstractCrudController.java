@@ -76,7 +76,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -130,13 +129,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public @ResponseBody RootNode getObjectList( @RequestParam Map<String, String> parameters,
-        HttpServletResponse response, HttpServletRequest request )
+    public @ResponseBody RootNode getObjectList(
+        @RequestParam Map<String, String> rpParameters, HttpServletResponse response, HttpServletRequest request )
     {
         List<String> fields = Lists.newArrayList( contextService.getParameterValues( "fields" ) );
         List<String> filters = Lists.newArrayList( contextService.getParameterValues( "filter" ) );
 
-        WebOptions options = new WebOptions( parameters );
+        WebOptions options = new WebOptions( rpParameters );
         WebMetaData metaData = new WebMetaData();
 
         Schema schema = getSchema();
@@ -222,7 +221,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         postProcessEntities( entityList );
-        postProcessEntities( entityList, options, parameters );
+        postProcessEntities( entityList, options, rpParameters );
 
         if ( fields.contains( "access" ) )
         {
@@ -237,7 +236,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         rootNode.setDefaultNamespace( DxfNamespaces.DXF_2_0 );
         rootNode.setNamespace( DxfNamespaces.DXF_2_0 );
 
-        rootNode.getConfig().setInclusionStrategy( getInclusionStrategy( parameters.get( "inclusionStrategy" ) ) );
+        rootNode.getConfig().setInclusionStrategy( getInclusionStrategy( rpParameters.get( "inclusionStrategy" ) ) );
 
         if ( pager != null )
         {
@@ -256,8 +255,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
     public @ResponseBody RootNode getObject(
-        @PathVariable( "uid" ) String pvUid,
-        @RequestParam Map<String, String> parameters,
+        @PathVariable( "uid" ) String pvUid, @RequestParam Map<String, String> rpParameters,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         List<String> fields = Lists.newArrayList( contextService.getParameterValues( "fields" ) );
@@ -268,25 +266,23 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             fields.add( ":all" );
         }
 
-        return getObjectInternal( pvUid, parameters, filters, fields );
+        return getObjectInternal( pvUid, rpParameters, filters, fields );
     }
 
     @RequestMapping( value = "/{uid}/{property}", method = RequestMethod.GET )
     public @ResponseBody RootNode getObjectProperty(
-        @PathVariable( "uid" ) String pvUid,
-        @PathVariable( "property" ) String pvProperty,
-        @RequestParam Map<String, String> parameters, HttpServletRequest request, HttpServletResponse response ) throws Exception
+        @PathVariable( "uid" ) String pvUid, @PathVariable( "property" ) String pvProperty, @RequestParam Map<String, String> rpParameters,
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        return getObjectInternal( pvUid, parameters, Lists.<String>newArrayList(), Lists.newArrayList( pvProperty + "[:all]" ) );
+        return getObjectInternal( pvUid, rpParameters, Lists.<String>newArrayList(), Lists.newArrayList( pvProperty + "[:all]" ) );
     }
 
     @RequestMapping( value = "/{uid}/{property}", method = { RequestMethod.PUT, RequestMethod.PATCH } )
     public void updateObjectProperty(
-        @PathVariable( "uid" ) String pvUid,
-        @PathVariable( "property" ) String pvProperty,
-        @RequestParam Map<String, String> parameters, HttpServletRequest request, HttpServletResponse response ) throws Exception
+        @PathVariable( "uid" ) String pvUid, @PathVariable( "property" ) String pvProperty, @RequestParam Map<String, String> rpParameters,
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        WebOptions options = new WebOptions( parameters );
+        WebOptions options = new WebOptions( rpParameters );
         List<T> entities = getEntity( pvUid, options );
 
         if ( entities.isEmpty() )
@@ -389,7 +385,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
-    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input )
+    public void postXmlObject( HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
@@ -418,7 +414,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input )
+    public void postJsonObject( HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
@@ -451,14 +447,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE } )
-    public void putXmlObject( HttpServletResponse response, HttpServletRequest request,
-        @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putXmlObject( @PathVariable( "uid" ) String pvUid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        List<T> objects = getEntity( uid );
+        List<T> objects = getEntity( pvUid );
 
         if ( objects.isEmpty() )
         {
-            ContextUtils.notFoundResponse( response, getEntityName() + " does not exist: " + uid );
+            ContextUtils.notFoundResponse( response, getEntityName() + " does not exist: " + pvUid );
             return;
         }
 
@@ -468,7 +463,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         T parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
-        ((BaseIdentifiableObject) parsed).setUid( uid );
+        ((BaseIdentifiableObject) parsed).setUid( pvUid );
 
         preUpdateEntity( parsed );
 
@@ -483,14 +478,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request,
-        @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putJsonObject( @PathVariable( "uid" ) String pvUid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        List<T> objects = getEntity( uid );
+        List<T> objects = getEntity( pvUid );
 
         if ( objects.isEmpty() )
         {
-            ContextUtils.notFoundResponse( response, getEntityName() + " does not exist: " + uid );
+            ContextUtils.notFoundResponse( response, getEntityName() + " does not exist: " + pvUid );
             return;
         }
 
@@ -500,7 +494,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         T parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
-        ((BaseIdentifiableObject) parsed).setUid( uid );
+        ((BaseIdentifiableObject) parsed).setUid( pvUid );
 
         preUpdateEntity( parsed );
 
@@ -519,14 +513,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request,
-        @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteObject( @PathVariable( "uid" ) String pvUid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        List<T> objects = getEntity( uid );
+        List<T> objects = getEntity( pvUid );
 
         if ( objects.isEmpty() )
         {
-            ContextUtils.notFoundResponse( response, getEntityName() + " does not exist: " + uid );
+            ContextUtils.notFoundResponse( response, getEntityName() + " does not exist: " + pvUid );
             return;
         }
 
@@ -551,7 +544,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         @PathVariable( "uid" ) String pvUid,
         @PathVariable( "property" ) String pvProperty,
         @PathVariable( "itemId" ) String pvItemId,
-        @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws Exception
+        @RequestParam Map<String, String> parameters,
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         RootNode rootNode = getObjectInternal( pvUid, parameters, Lists.<String>newArrayList(), Lists.newArrayList( pvProperty + "[:all]" ) );
 
@@ -584,7 +578,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     public void addCollectionItem(
         @PathVariable( "uid" ) String pvUid,
         @PathVariable( "property" ) String pvProperty,
-        @PathVariable( "itemId" ) String pvItemId, HttpServletResponse response ) throws Exception
+        @PathVariable( "itemId" ) String pvItemId,
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         List<T> objects = getEntity( pvUid );
 
@@ -650,7 +645,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     public void deleteCollectionItem(
         @PathVariable( "uid" ) String pvUid,
         @PathVariable( "property" ) String pvProperty,
-        @PathVariable( "itemId" ) String pvItemId, HttpServletResponse response ) throws Exception
+        @PathVariable( "itemId" ) String pvItemId,
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         List<T> objects = getEntity( pvUid );
 

@@ -31,7 +31,6 @@ package org.hisp.dhis.webapi.controller;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.webapi.webdomain.MessageConversation;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
@@ -48,6 +47,7 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.webdomain.MessageConversation;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -106,12 +105,12 @@ public class MessageConversationController
     }
 
     @Override
-    public RootNode getObject( @PathVariable String uid, Map<String, String> parameters, HttpServletRequest request, HttpServletResponse response )
+    public RootNode getObject( @PathVariable String uid, Map<String, String> rpParameters, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
         org.hisp.dhis.message.MessageConversation messageConversation = messageService.getMessageConversation( uid );
 
-        if( messageConversation == null )
+        if ( messageConversation == null )
         {
             response.setStatus( HttpServletResponse.SC_NOT_FOUND );
             RootNode responseNode = new RootNode( "reply" );
@@ -119,12 +118,12 @@ public class MessageConversationController
             return responseNode;
         }
 
-        if( !canReadMessageConversation( currentUserService.getCurrentUser(), messageConversation ) )
+        if ( !canReadMessageConversation( currentUserService.getCurrentUser(), messageConversation ) )
         {
             throw new AccessDeniedException( "Not authorized to access this conversation." );
         }
 
-        return super.getObject( uid, parameters, request, response );
+        return super.getObject( uid, rpParameters, request, response );
     }
 
     @Override
@@ -158,16 +157,16 @@ public class MessageConversationController
     //--------------------------------------------------------------------------
 
     @Override
-    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postXmlObject( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        MessageConversation messageConversation = JacksonUtils.fromXml( input, MessageConversation.class );
+        MessageConversation messageConversation = JacksonUtils.fromXml( request.getInputStream(), MessageConversation.class );
         postObject( response, request, messageConversation );
     }
 
     @Override
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postJsonObject( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        MessageConversation messageConversation = JacksonUtils.fromJson( input, MessageConversation.class );
+        MessageConversation messageConversation = JacksonUtils.fromJson( request.getInputStream(), MessageConversation.class );
         postObject( response, request, messageConversation );
     }
 
@@ -378,15 +377,16 @@ public class MessageConversationController
     /**
      * Deletes a MessageConversation.
      * Note that this is a HARD delete and therefore requires override authority for the current user.
+     *
      * @param uid the uid of the MessageConversation to delete.
      * @throws Exception
      */
     @Override
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable String uid )
+    public void deleteObject( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
-        super.deleteObject( response, request, uid );
+        super.deleteObject( uid, request, response );
     }
 
     //--------------------------------------------------------------------------
@@ -410,7 +410,7 @@ public class MessageConversationController
             return responseNode;
         }
 
-        if( !canModifyUserConversation( currentUserService.getCurrentUser(), user ) )
+        if ( !canModifyUserConversation( currentUserService.getCurrentUser(), user ) )
         {
 
             throw new DeleteAccessDeniedException( "Not authorized to modify user: " + user.getUid() );
@@ -451,7 +451,7 @@ public class MessageConversationController
 
         User currentUser = currentUserService.getCurrentUser();
 
-        User user = userUid == null ? currentUser : userService.getUser( userUid ) ;
+        User user = userUid == null ? currentUser : userService.getUser( userUid );
 
         if ( user == null )
         {
@@ -478,7 +478,7 @@ public class MessageConversationController
 
         for ( org.hisp.dhis.message.MessageConversation mc : messageConversations )
         {
-            if( mc.remove( user ) )
+            if ( mc.remove( user ) )
             {
                 messageService.updateMessageConversation( mc );
                 removed.addChild( new SimpleNode( "uid", mc.getUid() ) );
@@ -496,14 +496,14 @@ public class MessageConversationController
 
     /**
      * Determines whether the current user has permission to modify the given user in a MessageConversation.
-     *
+     * <p/>
      * The modification is either marking a conversation read/unread for the user or removing the user from the MessageConversation.
-     *
+     * <p/>
      * Since there are no per-conversation authorities provided the permission is given if the current user equals the user
      * or if the current user has update-permission to User objects.
      *
      * @param currentUser the current user to check authorization for.
-     * @param user the user to remove from a conversation.
+     * @param user        the user to remove from a conversation.
      * @return true if the current user is allowed to remove the user from a conversation, false otherwise.
      */
     private boolean canModifyUserConversation( User currentUser, User user )
@@ -514,7 +514,7 @@ public class MessageConversationController
     /**
      * Determines whether the given user has permission to read the MessageConversation.
      *
-     * @param user the user to check permission for.
+     * @param user                the user to check permission for.
      * @param messageConversation the MessageConversation to access.
      * @return true if the user can read the MessageConversation, false otherwise.
      */

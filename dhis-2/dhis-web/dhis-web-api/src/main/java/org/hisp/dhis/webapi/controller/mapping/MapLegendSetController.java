@@ -28,12 +28,6 @@ package org.hisp.dhis.webapi.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.util.Iterator;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
@@ -47,6 +41,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Iterator;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -62,9 +60,9 @@ public class MapLegendSetController
     @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postJsonObject( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        MapLegendSet legendSet = JacksonUtils.fromJson( input, MapLegendSet.class );
+        MapLegendSet legendSet = JacksonUtils.fromJson( request.getInputStream(), MapLegendSet.class );
 
         for ( MapLegend legend : legendSet.getMapLegends() )
         {
@@ -79,7 +77,7 @@ public class MapLegendSetController
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putJsonObject( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         MapLegendSet legendSet = mappingService.getMapLegendSet( uid );
 
@@ -98,7 +96,7 @@ public class MapLegendSetController
             mappingService.deleteMapLegend( legend );
         }
 
-        MapLegendSet newLegendSet = JacksonUtils.fromJson( input, MapLegendSet.class );
+        MapLegendSet newLegendSet = JacksonUtils.fromJson( request.getInputStream(), MapLegendSet.class );
 
         for ( MapLegend legend : newLegendSet.getMapLegends() )
         {
@@ -113,7 +111,7 @@ public class MapLegendSetController
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteObject( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         MapLegendSet legendSet = mappingService.getMapLegendSet( uid );
 

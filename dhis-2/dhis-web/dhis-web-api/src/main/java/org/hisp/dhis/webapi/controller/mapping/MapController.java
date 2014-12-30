@@ -111,9 +111,9 @@ public class MapController
 
     @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postJsonObject( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        Map map = JacksonUtils.fromJson( input, Map.class );
+        Map map = JacksonUtils.fromJson( request.getInputStream(), Map.class );
 
         mergeMap( map );
 
@@ -131,7 +131,7 @@ public class MapController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putJsonObject( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         Map map = mappingService.getMap( uid );
 
@@ -150,7 +150,7 @@ public class MapController
             mappingService.deleteMapView( view );
         }
 
-        Map newMap = JacksonUtils.fromJson( input, Map.class );
+        Map newMap = JacksonUtils.fromJson( request.getInputStream(), Map.class );
 
         mergeMap( newMap );
 
@@ -173,7 +173,7 @@ public class MapController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteObject( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         Map map = mappingService.getMap( uid );
 
