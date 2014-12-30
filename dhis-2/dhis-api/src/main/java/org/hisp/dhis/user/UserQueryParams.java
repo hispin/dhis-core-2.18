@@ -57,6 +57,8 @@ public class UserQueryParams
     
     private boolean selfRegistered;
     
+    private UserInvitationStatus invitationStatus;
+    
     private OrganisationUnit organisationUnit;
     
     private Integer first;
@@ -178,6 +180,16 @@ public class UserQueryParams
     public void setSelfRegistered( boolean selfRegistered )
     {
         this.selfRegistered = selfRegistered;
+    }
+
+    public UserInvitationStatus getInvitationStatus()
+    {
+        return invitationStatus;
+    }
+
+    public void setInvitationStatus( UserInvitationStatus invitationStatus )
+    {
+        this.invitationStatus = invitationStatus;
     }
 
     public OrganisationUnit getOrganisationUnit()

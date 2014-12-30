@@ -35,18 +35,28 @@
 					<td>
 						#filterDiv( "alluser" )
 					</td>
-					<td>						
-						<label>$i18n.getString( "inactive_for" ):</label><br>
-						<select id="months" style="width:85px" onchange="getInactiveUsers()">
-							<option value="0">[ $i18n.getString( "select" ) ]</option>
-							<option value="1"#if( $months && $months == 1 ) selected="selected"#end>1 $i18n.getString( "month" )</option>
-							#foreach( $m in [2..12] )
-							<option value="${m}"#if( $months && $months == $m ) selected="selected"#end>${m} $i18n.getString( "months" )</option>
-							#end
-						</select>
-					</td>
 					<td colspan="3" style="text-align:right">
 						<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddUserForm.action'"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<select id="months" style="width:155px" onchange="filterUsers()">
+							<option value="">[$i18n.getString( "show_by_inactivity" )]</option>
+							<option value="1"#if( $months == 1 ) selected="selected"#end>1 $i18n.getString( "month" )</option>
+							#foreach( $m in [2..12] )
+							<option value="${m}"#if( $$months == $m ) selected="selected"#end>${m} $i18n.getString( "months" )</option>
+							#end
+						</select>
+						<select id="selfRegistered" style="width:155px" onchange="filterUsers()">
+							<option value="false">[$i18n.getString( "show_self_registrations" )]</option>
+							<option value="true"#if( $selfRegistered == true ) selected="selected"#end>$i18n.getString( "self_registered_users" )</option>
+						</select>
+						<select id="invitationStatus" style="width:155px" onchange="filterUsers()">
+							<option value="">[$i18n.getString( "show_invitations" )]</option>
+							<option value="all"#if( $invitationStatus == "all" ) selected="selected"#end>$i18n.getString( "all_invitations" )</option>
+							<option value="expired"#if( $invitationStatus == "expired" ) selected="selected"#end>$i18n.getString( "expired_invitations" )</option>
+						</select>
 					</td>
 				</tr>
 			</table>

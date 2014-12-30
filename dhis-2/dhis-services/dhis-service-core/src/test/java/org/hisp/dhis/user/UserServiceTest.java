@@ -626,4 +626,50 @@ public class UserServiceTest
 
         assertEquals( 2, userService.getUserCount( params ) );
     }
+
+    @Test
+    public void testGetInvitations()
+    {
+        User userA = createUser( 'A' );
+        User userB = createUser( 'B' );
+        User userC = createUser( 'C' );
+        User userD = createUser( 'D' );
+
+        UserCredentials credentialsA = createUserCredentials( 'A', userA );
+        UserCredentials credentialsB = createUserCredentials( 'B', userB );
+        UserCredentials credentialsC = createUserCredentials( 'C', userC );
+        UserCredentials credentialsD = createUserCredentials( 'D', userD );
+        
+        credentialsB.setInvitation( true );
+        credentialsD.setInvitation( true );
+        
+        userService.addUser( userA );
+        userService.addUser( userB );
+        userService.addUser( userC );
+        userService.addUser( userD );
+        
+        userService.addUserCredentials( credentialsA );
+        userService.addUserCredentials( credentialsB );
+        userService.addUserCredentials( credentialsC );
+        userService.addUserCredentials( credentialsD );
+
+        UserQueryParams params = new UserQueryParams();
+        params.setInvitationStatus( UserInvitationStatus.ALL );
+        
+        List<User> users = userService.getUsers( params );
+        
+        assertEquals( 2, users.size() );
+        assertTrue( users.contains( userB ) );
+        assertTrue( users.contains( userD ) );
+
+        assertEquals( 2, userService.getUserCount( params ) );
+        
+        params.setInvitationStatus( UserInvitationStatus.EXPIRED );
+        
+        users = userService.getUsers( params );
+        
+        assertEquals( 0, users.size() );
+
+        assertEquals( 0, userService.getUserCount( params ) );
+    }
 }

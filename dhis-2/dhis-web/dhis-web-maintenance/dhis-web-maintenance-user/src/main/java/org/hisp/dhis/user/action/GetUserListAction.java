@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserInvitationStatus;
 import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserService;
 
@@ -99,6 +100,18 @@ public class GetUserListAction
     {
         this.selfRegistered = selfRegistered;
     }
+    
+    private String invitationStatus;
+
+    public String getInvitationStatus()
+    {
+        return invitationStatus;
+    }
+
+    public void setInvitationStatus( String invitationStatus )
+    {
+        this.invitationStatus = invitationStatus;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -113,10 +126,11 @@ public class GetUserListAction
         params.setQuery( key );
         params.setInactiveMonths( months );
         params.setSelfRegistered( selfRegistered );
+        params.setInvitationStatus( UserInvitationStatus.fromValue( invitationStatus ) );
         
         int count = userService.getUserCount( params );
         
-        this.paging = createPaging( count );        
+        this.paging = createPaging( count );
         params.setFirst( paging.getStartPos() );
         params.setMax( paging.getPageSize() );
         
