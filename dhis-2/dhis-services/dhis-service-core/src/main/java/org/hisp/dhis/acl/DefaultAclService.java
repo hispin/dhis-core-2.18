@@ -30,6 +30,7 @@ package org.hisp.dhis.acl;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dashboard.Dashboard;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
@@ -122,6 +123,11 @@ public class DefaultAclService implements AclService
     @Override
     public boolean canRead( User user, IdentifiableObject object )
     {
+        if ( object == null || Period.class.isInstance( object ) )
+        {
+            return true;
+        }
+
         Schema schema = schemaService.getSchema( object.getClass() );
 
         if ( schema == null )

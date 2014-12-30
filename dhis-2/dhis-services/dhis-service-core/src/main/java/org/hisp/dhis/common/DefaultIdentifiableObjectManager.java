@@ -630,6 +630,56 @@ public class DefaultIdentifiableObjectManager
 
     @Override
     @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> Map<String, T> getIdMapNoAcl( Class<T> clazz, IdentifiableProperty property )
+    {
+        Map<String, T> map = new HashMap<>();
+
+        GenericIdentifiableObjectStore<T> store = (GenericIdentifiableObjectStore<T>) getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return map;
+        }
+
+        Collection<T> objects = store.getAllNoAcl();
+
+        for ( T object : objects )
+        {
+            if ( IdentifiableProperty.ID.equals( property ) )
+            {
+                if ( object.getId() > 0 )
+                {
+                    map.put( String.valueOf( object.getId() ), object );
+                }
+            }
+            else if ( IdentifiableProperty.UID.equals( property ) )
+            {
+                if ( object.getUid() != null )
+                {
+                    map.put( object.getUid(), object );
+                }
+            }
+            else if ( IdentifiableProperty.CODE.equals( property ) )
+            {
+                if ( object.getCode() != null )
+                {
+                    map.put( object.getCode(), object );
+                }
+            }
+            else if ( IdentifiableProperty.NAME.equals( property ) )
+            {
+                if ( object.getName() != null )
+                {
+                    map.put( object.getName(), object );
+                }
+            }
+        }
+
+        return map;
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
     public <T extends NameableObject> Map<String, T> getIdMap( Class<T> clazz, NameableProperty property )
     {
         Map<String, T> map = new HashMap<>();
@@ -637,6 +687,30 @@ public class DefaultIdentifiableObjectManager
         GenericNameableObjectStore<T> store = (GenericNameableObjectStore<T>) getNameableObjectStore( clazz );
 
         Collection<T> objects = store.getAll();
+
+        for ( T object : objects )
+        {
+            if ( property == NameableProperty.SHORT_NAME )
+            {
+                if ( object.getShortName() != null )
+                {
+                    map.put( object.getShortName(), object );
+                }
+            }
+        }
+
+        return map;
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends NameableObject> Map<String, T> getIdMapNoAcl( Class<T> clazz, NameableProperty property )
+    {
+        Map<String, T> map = new HashMap<>();
+
+        GenericNameableObjectStore<T> store = (GenericNameableObjectStore<T>) getNameableObjectStore( clazz );
+
+        Collection<T> objects = store.getAllNoAcl();
 
         for ( T object : objects )
         {

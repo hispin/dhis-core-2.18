@@ -103,7 +103,11 @@ public interface IdentifiableObjectManager
 
     <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property );
 
+    <T extends IdentifiableObject> Map<String, T> getIdMapNoAcl( Class<T> clazz, IdentifiableProperty property );
+
     <T extends NameableObject> Map<String, T> getIdMap( Class<T> clazz, NameableProperty property );
+
+    <T extends NameableObject> Map<String, T> getIdMapNoAcl( Class<T> clazz, NameableProperty property );
 
     <T extends IdentifiableObject> T getObject( Class<T> clazz, IdentifiableProperty property, String id );
 

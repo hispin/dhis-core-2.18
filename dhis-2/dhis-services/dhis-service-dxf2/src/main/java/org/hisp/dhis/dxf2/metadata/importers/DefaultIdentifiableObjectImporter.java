@@ -43,7 +43,6 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dashboard.DashboardItem;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryDimension;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -289,7 +288,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         // object.setUser( user );
         object.setUser( null );
 
-        NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects();
+        NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects( user );
         nonIdentifiableObjects.extract( object );
 
         UserCredentials userCredentials = null;
@@ -310,14 +309,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         Map<Field, Object> fields = detachFields( object );
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
-        reattachFields( object, fields );
+        reattachFields( object, fields, user );
 
         log.debug( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" +
             "" );
         objectBridge.saveObject( object );
 
         updatePeriodTypes( object );
-        reattachCollectionFields( object, collectionFields );
+        reattachCollectionFields( object, collectionFields, user );
 
         objectBridge.updateObject( object );
 
@@ -335,7 +334,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             sessionFactory.getCurrentSession().save( userCredentials );
 
-            reattachCollectionFields( userCredentials, collectionFieldsUserCredentials );
+            reattachCollectionFields( userCredentials, collectionFieldsUserCredentials, user );
 
             sessionFactory.getCurrentSession().saveOrUpdate( userCredentials );
 
@@ -385,7 +384,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return true;
         }
 
-        NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects();
+        NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects( user );
         nonIdentifiableObjects.extract( object );
         nonIdentifiableObjects.delete( persistedObject );
 
@@ -407,13 +406,13 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         Map<Field, Object> fields = detachFields( object );
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
-        reattachFields( object, fields );
+        reattachFields( object, fields, user );
 
         persistedObject.mergeWith( object );
 
         updatePeriodTypes( persistedObject );
 
-        reattachCollectionFields( persistedObject, collectionFields );
+        reattachCollectionFields( persistedObject, collectionFields, user );
 
         log.debug( "Starting update of object " + ImportUtils.getDisplayName( persistedObject ) + " (" + persistedObject.getClass()
             .getSimpleName() + ")" );
@@ -432,7 +431,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
 
                 ((User) persistedObject).getUserCredentials().mergeWith( userCredentials );
-                reattachCollectionFields( ((User) persistedObject).getUserCredentials(), collectionFieldsUserCredentials );
+                reattachCollectionFields( ((User) persistedObject).getUserCredentials(), collectionFieldsUserCredentials, user );
 
                 sessionFactory.getCurrentSession().saveOrUpdate( ((User) persistedObject).getUserCredentials() );
             }
@@ -707,7 +706,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return fieldMap;
     }
 
-    private void reattachFields( Object object, Map<Field, Object> fields )
+    private void reattachFields( Object object, Map<Field, Object> fields, User user )
     {
         for ( Field field : fields.keySet() )
         {
@@ -719,6 +718,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 if ( schemaService.getSchema( idObject.getClass() ) != null )
                 {
                     reportReferenceError( object, idObject );
+                }
+            }
+            else
+            {
+                if ( !aclService.canRead( user, reference ) )
+                {
+                    reportReadAccessError( object, reference );
+                    reference = null;
                 }
             }
 
@@ -749,7 +756,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return collectionFields;
     }
 
-    private void reattachCollectionFields( final Object idObject, Map<Field, Collection<Object>> collectionFields )
+    private void reattachCollectionFields( final Object idObject, Map<Field, Collection<Object>> collectionFields, User user )
     {
         for ( Field field : collectionFields.keySet() )
         {
@@ -758,11 +765,18 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             for ( Object object : collection )
             {
-                IdentifiableObject ref = findObjectByReference( (IdentifiableObject) object );
+                IdentifiableObject reference = findObjectByReference( (IdentifiableObject) object );
 
-                if ( ref != null )
+                if ( reference != null )
                 {
-                    objects.add( ref );
+                    if ( !aclService.canRead( user, reference ) )
+                    {
+                        reportReadAccessError( idObject, reference );
+                    }
+                    else
+                    {
+                        objects.add( reference );
+                    }
                 }
                 else
                 {
@@ -829,6 +843,20 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         summaryType.getImportConflicts().add( importConflict );
     }
 
+    private void reportReadAccessError( Object object, Object reference )
+    {
+        String objectName = object != null ? object.getClass().getSimpleName() : "null";
+        String referenceName = reference != null ? reference.getClass().getSimpleName() : "null";
+
+        String logMsg = "User does not have read access to " + identifiableObjectToString( reference ) + " (" + referenceName + ")" +
+            " on object " + identifiableObjectToString( object ) + " (" + objectName + ").";
+
+        log.debug( logMsg );
+
+        ImportConflict importConflict = new ImportConflict( ImportUtils.getDisplayName( object ), logMsg );
+        summaryType.getImportConflicts().add( importConflict );
+    }
+
     //-------------------------------------------------------------------------------------------------------
     // Internal state
     //-------------------------------------------------------------------------------------------------------
@@ -855,6 +883,13 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         private List<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = new ArrayList<>();
 
         private List<DataElementCategoryDimension> categoryDimensions = new ArrayList<>();
+
+        private User user;
+
+        public NonIdentifiableObjects( User user )
+        {
+            this.user = user;
+        }
 
         public void extract( T object )
         {
@@ -910,7 +945,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             if ( dataEntryForm != null )
             {
                 Map<Field, Collection<Object>> identifiableObjectCollections = detachCollectionFields( dataEntryForm );
-                reattachCollectionFields( dataEntryForm, identifiableObjectCollections );
+                reattachCollectionFields( dataEntryForm, identifiableObjectCollections, user );
 
                 dataEntryForm.setId( 0 );
                 dataEntryFormService.addDataEntryForm( dataEntryForm );
@@ -1015,10 +1050,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 for ( DataElementCategoryDimension categoryDimension : categoryDimensions )
                 {
                     Map<Field, Object> detachFields = detachFields( categoryDimension );
-                    reattachFields( categoryDimension, detachFields );
+                    reattachFields( categoryDimension, detachFields, user );
 
                     Map<Field, Collection<Object>> detachCollectionFields = detachCollectionFields( categoryDimension );
-                    reattachCollectionFields( categoryDimension, detachCollectionFields );
+                    reattachCollectionFields( categoryDimension, detachCollectionFields, user );
 
                     if ( !options.isDryRun() )
                     {
@@ -1052,7 +1087,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             if ( expression != null )
             {
                 Map<Field, Collection<Object>> identifiableObjectCollections = detachCollectionFields( expression );
-                reattachCollectionFields( expression, identifiableObjectCollections );
+                reattachCollectionFields( expression, identifiableObjectCollections, user );
 
                 expression.setId( 0 );
                 expressionService.addExpression( expression );
@@ -1073,7 +1108,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             for ( DataElementOperand dataElementOperand : dataElementOperands )
             {
                 Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
-                reattachFields( dataElementOperand, identifiableObjects );
+                reattachFields( dataElementOperand, identifiableObjects, user );
 
                 dataElementOperand.setId( 0 );
                 dataElementOperandService.addDataElementOperand( dataElementOperand );
@@ -1187,7 +1222,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             for ( ProgramTrackedEntityAttribute programTrackedEntityAttribute : programTrackedEntityAttributes )
             {
                 Map<Field, Object> identifiableObjects = detachFields( programTrackedEntityAttribute );
-                reattachFields( programTrackedEntityAttribute, identifiableObjects );
+                reattachFields( programTrackedEntityAttribute, identifiableObjects, user );
                 sessionFactory.getCurrentSession().save( programTrackedEntityAttribute );
             }
 
@@ -1235,7 +1270,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
             {
                 Map<Field, Object> identifiableObjects = detachFields( programStageDataElement );
-                reattachFields( programStageDataElement, identifiableObjects );
+                reattachFields( programStageDataElement, identifiableObjects, user );
 
                 if ( ProgramStage.class.isAssignableFrom( object.getClass() ) )
                 {
