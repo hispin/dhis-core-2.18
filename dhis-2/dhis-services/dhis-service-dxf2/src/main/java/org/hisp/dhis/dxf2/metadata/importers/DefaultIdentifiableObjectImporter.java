@@ -43,6 +43,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dashboard.DashboardItem;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryDimension;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -560,6 +561,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 // this is nasty, but we have types in the system which have shortName, but which do -not- require not-null )
                 && !TrackedEntityAttribute.class.isAssignableFrom( object.getClass() )
                 && !TrackedEntity.class.isAssignableFrom( object.getClass() )
+                && !CategoryOptionGroupSet.class.isAssignableFrom( object.getClass() )
                 && !DashboardItem.class.isAssignableFrom( object.getClass() ) )
             {
                 conflict = new ImportConflict( ImportUtils.getDisplayName( object ), "Empty shortName for object " + object );
@@ -831,6 +833,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     private void reportReferenceError( Object object, Object reference )
     {
+        if ( UserCredentials.class.isInstance( object ) || UserCredentials.class.isInstance( reference ) )
+        {
+            return;
+        }
+
         String objectName = object != null ? object.getClass().getSimpleName() : "null";
         String referenceName = reference != null ? reference.getClass().getSimpleName() : "null";
 

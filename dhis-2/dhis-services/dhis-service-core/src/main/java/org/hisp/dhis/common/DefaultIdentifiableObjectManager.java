@@ -33,6 +33,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.common.NameableObject.NameableProperty;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.user.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -873,7 +874,7 @@ public class DefaultIdentifiableObjectManager
         {
             store = identifiableObjectStoreMap.get( clazz.getSuperclass() );
 
-            if ( store == null )
+            if ( store == null && !UserCredentials.class.isAssignableFrom( clazz ) )
             {
                 log.warn( "No IdentifiableObjectStore found for class: " + clazz );
             }
