@@ -83,7 +83,6 @@ public class CorsFilter implements Filter
 
         response.addHeader( CORS_ALLOW_CREDENTIALS, "true" );
         response.addHeader( CORS_ALLOW_ORIGIN, origin );
-        response.addHeader( CORS_EXPOSE_HEADERS, EXPOSED_HEADERS );
 
         if ( isPreflight( request ) )
         {
@@ -93,6 +92,10 @@ public class CorsFilter implements Filter
 
             response.setStatus( HttpServletResponse.SC_NO_CONTENT );
             return; // CORS preflight requires a 2xx status code, so we need to short-circuit the filter chain here
+        }
+        else
+        {
+            response.addHeader( CORS_EXPOSE_HEADERS, EXPOSED_HEADERS );
         }
 
         filterChain.doFilter( request, response );
