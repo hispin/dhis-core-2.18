@@ -28,6 +28,8 @@ package org.hisp.dhis.security.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -46,6 +48,8 @@ import java.io.IOException;
  */
 public class CorsFilter implements Filter
 {
+    private static final Log LOG = LogFactory.getLog( CorsFilter.class );
+
     public static final String CORS_ALLOW_CREDENTIALS = "Access-Control-Allow-Credentials";
 
     public static final String CORS_ALLOW_ORIGIN = "Access-Control-Allow-Origin";
@@ -78,14 +82,24 @@ public class CorsFilter implements Filter
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
+        String origin = request.getHeader( CORS_ORIGIN );
+
         // Origin header is required for CORS requests
-        if ( StringUtils.isEmpty( request.getHeader( CORS_ORIGIN ) ) )
+        if ( StringUtils.isEmpty( origin ) )
         {
             filterChain.doFilter( request, response );
+            return;
+        }
+
+        if ( !isOriginWhitelisted( origin ) )
+        {
+            LOG.warn( "CORS request with origin " + origin + " is not whitelisted." );
+            filterChain.doFilter( request, response );
+            return;
         }
 
         response.addHeader( CORS_ALLOW_CREDENTIALS, "true" );
-        response.addHeader( CORS_ALLOW_ORIGIN, request.getHeader( CORS_ORIGIN ) );
+        response.addHeader( CORS_ALLOW_ORIGIN, origin );
 
         if ( isPreflight( request ) )
         {
@@ -109,6 +123,12 @@ public class CorsFilter implements Filter
         return RequestMethod.OPTIONS.toString().equals( request.getMethod() )
             && !StringUtils.isEmpty( request.getHeader( CORS_ORIGIN ) )
             && !StringUtils.isEmpty( request.getHeader( CORS_REQUEST_METHOD ) );
+    }
+
+    private boolean isOriginWhitelisted( String origin )
+    {
+        // TODO add proper list of whitelisted origins
+        return !StringUtils.isEmpty( origin ) && (origin.startsWith( "http://" ) || origin.startsWith( "https://" ));
     }
 
     @Override
