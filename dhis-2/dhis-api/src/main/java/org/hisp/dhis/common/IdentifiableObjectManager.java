@@ -94,7 +94,7 @@ public interface IdentifiableObjectManager
     <T extends IdentifiableObject> Collection<T> getByLastUpdatedSorted( Class<T> clazz, Date lastUpdated );
 
     <T extends IdentifiableObject> Collection<T> getByCreatedSorted( Class<T> clazz, Date created );
-    
+
     <T extends IdentifiableObject> Date getLastUpdated( Class<T> clazz );
 
     void delete( IdentifiableObject object );
@@ -134,4 +134,10 @@ public interface IdentifiableObjectManager
     <T extends IdentifiableObject> T getNoAcl( Class<T> clazz, String uid );
 
     <T extends IdentifiableObject> void updateNoAcl( T object );
+
+    <T extends IdentifiableObject> int getCountNoAcl( Class<T> clazz );
+
+    <T extends IdentifiableObject> Collection<T> getAllNoAcl( Class<T> clazz );
+
+    <T extends IdentifiableObject> Collection<T> getBetweenNoAcl( Class<T> clazz, int first, int max );
 }

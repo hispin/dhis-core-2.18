@@ -743,6 +743,47 @@ public class DefaultIdentifiableObjectManager
         }
     }
 
+    @Override
+    public <T extends IdentifiableObject> int getCountNoAcl( Class<T> clazz )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store != null )
+        {
+            return store.getCountNoAcl();
+        }
+
+        return 0;
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> Collection<T> getAllNoAcl( Class<T> clazz )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return new ArrayList<>();
+        }
+
+        return (Collection<T>) store.getAllNoAcl();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> Collection<T> getBetweenNoAcl( Class<T> clazz, int first, int max )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return new ArrayList<>();
+        }
+
+        return (Collection<T>) store.getAllNoAcl( first, max );
+    }
+
     //--------------------------------------------------------------------------
     // Supportive methods
     //--------------------------------------------------------------------------
