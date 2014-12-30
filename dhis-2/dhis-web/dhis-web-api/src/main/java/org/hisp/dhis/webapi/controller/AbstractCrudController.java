@@ -66,6 +66,7 @@ import org.hisp.dhis.webapi.webdomain.WebMetaData;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -74,6 +75,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -195,7 +197,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             else
             {
                 // Get full list when using filters other than name / objects without persisted name
-                
+
                 if ( !filters.isEmpty() )
                 {
                     if ( options.hasPaging() )
@@ -271,11 +273,67 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @RequestMapping( value = "/{uid}/{property}", method = RequestMethod.GET )
     public @ResponseBody RootNode getObjectProperty(
-        @PathVariable( "uid" ) String uid,
+        @PathVariable( "uid" ) String pvUid,
         @PathVariable( "property" ) String pvProperty,
         @RequestParam Map<String, String> parameters, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        return getObjectInternal( uid, parameters, Lists.<String>newArrayList(), Lists.newArrayList( pvProperty + "[:all]" ) );
+        return getObjectInternal( pvUid, parameters, Lists.<String>newArrayList(), Lists.newArrayList( pvProperty + "[:all]" ) );
+    }
+
+    @RequestMapping( value = "/{uid}/{property}", method = { RequestMethod.PUT, RequestMethod.PATCH } )
+    public void updateObjectProperty(
+        @PathVariable( "uid" ) String pvUid,
+        @PathVariable( "property" ) String pvProperty,
+        @RequestParam Map<String, String> parameters, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        WebOptions options = new WebOptions( parameters );
+        List<T> entities = getEntity( pvUid, options );
+
+        if ( entities.isEmpty() )
+        {
+            ContextUtils.notFoundResponse( response, getEntityName() + " does not exist: " + pvUid );
+            return;
+        }
+
+        if ( !getSchema().getPropertyMap().containsKey( pvProperty ) )
+        {
+            ContextUtils.notFoundResponse( response, "Property " + pvProperty + " does not exist on " + getEntityName() );
+            return;
+        }
+
+        Property property = getSchema().getProperty( pvProperty );
+        T persistedObject = entities.get( 0 );
+
+        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), persistedObject ) )
+        {
+            throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this object." );
+        }
+
+        if ( !property.isWritable() )
+        {
+            throw new UpdateAccessDeniedException( "This property is read-only." );
+        }
+
+        if ( !property.isSimple() )
+        {
+            // TODO we need to split out the reference scanner from the importer for this to work with idObjects
+            throw new UpdateAccessDeniedException( "Only simple properties are currently supported for update." );
+        }
+
+        T object = deserialize( request );
+
+        if ( object == null )
+        {
+            ContextUtils.badRequestResponse( response, "Unknown payload format." );
+            return;
+        }
+
+        Object value = property.getGetterMethod().invoke( object );
+
+        property.getSetterMethod().invoke( persistedObject, value );
+
+        response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+        manager.update( persistedObject );
     }
 
     private RootNode getObjectInternal( String uid, Map<String, String> parameters,
@@ -814,6 +872,50 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         return InclusionStrategy.Include.NON_NULL;
+    }
+
+    /**
+     * Deserializes a payload from the request, handles JSON/XML payloads
+     *
+     * @param request HttpServletRequest from current session
+     * @return Parsed entity or null if invalid type
+     */
+    protected T deserialize( HttpServletRequest request ) throws IOException
+    {
+        if ( isJson( request ) )
+        {
+            return renderService.fromJson( request.getInputStream(), getEntityClass() );
+        }
+        else if ( isXml( request ) )
+        {
+            return renderService.fromXml( request.getInputStream(), getEntityClass() );
+        }
+
+        return null;
+    }
+
+    /**
+     * Are we receiving JSON data?
+     *
+     * @param request HttpServletRequest from current session
+     * @return true if JSON compatible
+     */
+    protected boolean isJson( HttpServletRequest request )
+    {
+        String contentType = request.getContentType();
+        return !StringUtils.isEmpty( contentType ) && MediaType.parseMediaType( contentType ).isCompatibleWith( MediaType.APPLICATION_JSON );
+    }
+
+    /**
+     * Are we receiving XML data?
+     *
+     * @param request HttpServletRequest from current session
+     * @return true if XML compatible
+     */
+    protected boolean isXml( HttpServletRequest request )
+    {
+        String contentType = request.getContentType();
+        return !StringUtils.isEmpty( contentType ) && MediaType.parseMediaType( contentType ).isCompatibleWith( MediaType.APPLICATION_XML );
     }
 
     //--------------------------------------------------------------------------
