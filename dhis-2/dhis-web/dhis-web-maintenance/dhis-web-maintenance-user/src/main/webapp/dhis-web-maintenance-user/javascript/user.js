@@ -25,10 +25,18 @@ function searchUserName() {
   }
 }
 
-function getInactiveUsers() {
+function filterUsers() {
   var months = $('#months').val();
+  var selfRegistered = $('#selfRegistered').val();
+  var invitationStatus = $('#invitationStatus').val();
 
-  window.location.href = 'alluser.action?months=' + months;
+  var url = 'alluser.action?';
+  
+  url += months ? 'months=' + months + '&' : '';
+  url += selfRegistered ? 'selfRegistered=' + selfRegistered + '&' : '';
+  url += invitationStatus ? 'invitationStatus=' + invitationStatus + '&' : '';
+  
+  window.location.href = url;
 }
 
 // -----------------------------------------------------------------------------

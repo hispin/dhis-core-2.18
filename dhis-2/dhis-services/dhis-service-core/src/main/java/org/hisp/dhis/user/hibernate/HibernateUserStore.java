@@ -37,6 +37,7 @@ import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserInvitationStatus;
 import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserStore;
 
@@ -123,6 +124,16 @@ public class HibernateUserStore
         if ( params.isSelfRegistered() )
         {
             hql += hlp.whereAnd() + " uc.selfRegistered = true ";
+        }
+        
+        if ( UserInvitationStatus.ALL.equals( params.getInvitationStatus() ) )
+        {
+            hql += hlp.whereAnd() + " uc.invitation = true ";
+        }
+        
+        if ( UserInvitationStatus.EXPIRED.equals( params.getInvitationStatus() ) )
+        {
+            hql += hlp.whereAnd() + " uc.invitation = true and uc.restoreExpiry < current_timestamp() ";
         }
                 
         if ( params.getOrganisationUnit() != null )

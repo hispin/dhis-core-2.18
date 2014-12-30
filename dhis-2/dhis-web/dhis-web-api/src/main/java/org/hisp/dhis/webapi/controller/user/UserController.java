@@ -52,6 +52,7 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroupService;
+import org.hisp.dhis.user.UserInvitationStatus;
 import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.Users;
@@ -114,6 +115,7 @@ public class UserController
         params.setInactiveMonths( options.getInt( "inactiveMonths" ) );
         params.setInactiveSince( options.getDate( "inactiveSince" ) );
         params.setSelfRegistered( options.isTrue( "selfRegistered" ) );
+        params.setInvitationStatus( UserInvitationStatus.fromValue( options.get( "invitationStatus" ) ) );
         
         String ou = options.get( "ou" );
         
