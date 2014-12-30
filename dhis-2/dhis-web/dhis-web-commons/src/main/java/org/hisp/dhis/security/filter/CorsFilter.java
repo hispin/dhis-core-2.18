@@ -68,6 +68,8 @@ public class CorsFilter implements Filter
 
     private static final String ALLOWED_HEADERS = "Accept, Content-Type, Authorization, X-Requested-With";
 
+    private static final String EXPOSED_HEADERS = "ETag";
+
     private static final Integer MAX_AGE = 60 * 60; // 1hr max-age
 
     @Override
@@ -81,6 +83,7 @@ public class CorsFilter implements Filter
 
         response.addHeader( CORS_ALLOW_CREDENTIALS, "true" );
         response.addHeader( CORS_ALLOW_ORIGIN, origin );
+        response.addHeader( CORS_EXPOSE_HEADERS, EXPOSED_HEADERS );
 
         if ( isPreflight( request ) )
         {
