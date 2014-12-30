@@ -94,7 +94,16 @@ public class Jackson2PropertyIntrospectorService
 
             String fieldName = getFieldName( method );
             property.setName( !StringUtils.isEmpty( jsonProperty.value() ) ? jsonProperty.value() : fieldName );
-            property.setReadable( true );
+
+            if ( property.getGetterMethod() != null )
+            {
+                property.setReadable( true );
+            }
+
+            if ( property.getSetterMethod() != null )
+            {
+                property.setWritable( true );
+            }
 
             if ( classFieldNames.contains( fieldName ) )
             {
