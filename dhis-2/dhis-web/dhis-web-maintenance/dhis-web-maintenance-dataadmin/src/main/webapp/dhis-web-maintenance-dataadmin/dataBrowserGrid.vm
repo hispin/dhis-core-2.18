@@ -1,8 +1,22 @@
 <style type="text/css">
 div#drillDownMenu
 {
-  position: absolute;
-  display: none;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    box-shadow: 0 1px 1px 0 #ccc;
+    color: #000;
+    font-size: 9pt;
+    max-height: 610px;
+    opacity: 0.98;
+    overflow-y: auto;
+    padding-left: 4px;
+    padding-right: 4px;
+    position: absolute;
+    width: 189px;
+    z-index: 9;
+	display:none;
 }
 
 th.formatLabel
@@ -10,15 +24,23 @@ th.formatLabel
   text-align: center;
 }
 
+.menuDropDownBox
+{
+    margin: 10px 0;
+    padding: 0;
+}
+
 .menuDropDownBox li
 {
-  cursor:pointer
+  cursor:pointer;  
+  padding: 10px 10px;
+  border-radius: 3px;
 }
 
 .menuDropDownBox li:hover
 {
   text-decoration: none;
-  background-color: #4A89BA;
+  background-color: #eee;
 }
 </style>
 
@@ -75,7 +97,7 @@ jQuery( document ).ready( function()
 
 <!-- Drill-down menu -->
 
-<div id="drillDownMenu" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
+<div id="drillDownMenu" class="menuDropDownArea">
   <ul class="menuDropDownBox">
 	<li onclick="viewDrillDownData( 'descendant_level' )">$i18n.getString( "view_data_at_descendant_levels" )&nbsp;</li>
 	<li onclick="viewDrillDownData( 'current_level' )">$i18n.getString( "view_data_at_this_level" )&nbsp;</li>
