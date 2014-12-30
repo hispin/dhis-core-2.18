@@ -147,6 +147,7 @@ public class DefaultSecurityService
 
         user.setSurname( "(TBD)" );
         user.setFirstName( "(TBD)" );
+        user.getUserCredentials().setInvitation( true );
         userService.encodeAndSetPassword( user, rawPassword );
 
         return true;
@@ -303,6 +304,7 @@ public class DefaultSecurityService
         credentials.setRestoreCode( null );
         credentials.setRestoreToken( null );
         credentials.setRestoreExpiry( null );
+        credentials.setInvitation( false );
 
         userService.encodeAndSetPassword( credentials, newPassword );
         userService.updateUserCredentials( credentials );

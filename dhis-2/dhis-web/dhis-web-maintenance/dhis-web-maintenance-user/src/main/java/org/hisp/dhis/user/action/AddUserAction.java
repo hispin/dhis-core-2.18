@@ -307,6 +307,7 @@ public class AddUserAction
         if ( ACCOUNT_ACTION_INVITE.equals( accountAction ) )
         {
             userCredentials.setUsername( inviteUsername );
+            userCredentials.setInvitation( true );
             user.setEmail( inviteEmail );
 
             securityService.prepareUserForInvite( user );

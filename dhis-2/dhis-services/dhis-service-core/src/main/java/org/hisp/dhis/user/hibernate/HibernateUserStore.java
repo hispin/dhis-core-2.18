@@ -124,7 +124,7 @@ public class HibernateUserStore
         {
             hql += hlp.whereAnd() + " uc.selfRegistered = true ";
         }
-        
+                
         if ( params.getOrganisationUnit() != null )
         {
             hql += hlp.whereAnd() + " :organisationUnit in elements(u.organisationUnits) ";
