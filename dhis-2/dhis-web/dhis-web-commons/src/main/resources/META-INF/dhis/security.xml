@@ -19,6 +19,8 @@
 
   <bean id="customAuthenticationFilter" class="org.hisp.dhis.security.filter.CustomAuthenticationFilter" />
 
+  <bean id="corsFilter" class="org.hisp.dhis.security.filter.CorsFilter" />
+
   <sec:http pattern="/dhis-web-commons/javascripts/**" security="none" />
   <sec:http pattern="/dhis-web-commons/css/**" security="none" />
   <sec:http pattern="/dhis-web-commons/flags/**" security="none" />
@@ -37,6 +39,7 @@
     </sec:headers>
 
     <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
+    <!-- <sec:custom-filter ref="corsFilter" before="BASIC_AUTH_FILTER" /> -->
     <sec:intercept-url pattern="/api/**" access="isAuthenticated()" />
   </sec:http>
 
