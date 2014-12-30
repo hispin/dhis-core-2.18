@@ -100,4 +100,10 @@ public interface GenericStore<T>
      * @return the count of objects.
      */
     int getCount();
+
+    List<T> getAllNoAcl();
+
+    List<T> getAllNoAcl( int first, int max );
+
+    int getCountNoAcl();
 }

@@ -426,6 +426,31 @@ public class HibernateGenericStore<T>
             .uniqueResult()).intValue();
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public final List<T> getAllNoAcl()
+    {
+        return getCriteria().list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public final List<T> getAllNoAcl( int first, int max )
+    {
+        return getCriteria()
+            .setFirstResult( first )
+            .setMaxResults( max )
+            .list();
+    }
+
+    @Override
+    public int getCountNoAcl()
+    {
+        return ((Number) getCriteria()
+            .setProjection( Projections.countDistinct( "id" ) )
+            .uniqueResult()).intValue();
+    }
+
     //----------------------------------------------------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------------------------------------------------
