@@ -78,11 +78,14 @@ public class CorsFilter implements Filter
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        String origin = request.getHeader( CORS_ORIGIN );
-        origin = !StringUtils.isEmpty( origin ) ? origin : "*";
+        // Origin header is required for CORS requests
+        if ( StringUtils.isEmpty( request.getHeader( CORS_ORIGIN ) ) )
+        {
+            filterChain.doFilter( request, response );
+        }
 
         response.addHeader( CORS_ALLOW_CREDENTIALS, "true" );
-        response.addHeader( CORS_ALLOW_ORIGIN, origin );
+        response.addHeader( CORS_ALLOW_ORIGIN, request.getHeader( CORS_ORIGIN ) );
 
         if ( isPreflight( request ) )
         {
