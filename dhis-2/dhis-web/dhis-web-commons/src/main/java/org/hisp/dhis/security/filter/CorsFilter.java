@@ -59,6 +59,10 @@ public class CorsFilter implements Filter
 
     public static final String CORS_REQUEST_METHOD = "Access-Control-Request-Method";
 
+    private static final String ALLOWED_METHODS = "GET, OPTIONS";
+
+    private static final String ALLOWED_HEADERS = "Accept, Content-Type, Authorization, X-Requested-With";
+
     @Override
     public void doFilter( ServletRequest req, ServletResponse res, FilterChain filterChain ) throws IOException, ServletException
     {
@@ -68,11 +72,13 @@ public class CorsFilter implements Filter
         String origin = request.getHeader( "Origin" );
         origin = !StringUtils.isEmpty( origin ) ? origin : "*";
 
-        String exposeHeaders = request.getHeader( CORS_REQUEST_HEADERS );
-        exposeHeaders = !StringUtils.isEmpty( exposeHeaders ) ? exposeHeaders : "accept authorization";
+        // String exposeHeaders = request.getHeader( CORS_REQUEST_HEADERS );
+        // exposeHeaders = !StringUtils.isEmpty( exposeHeaders ) ? exposeHeaders : "accept authorization";
+        String exposeHeaders = ALLOWED_HEADERS;
 
-        String allowMethods = request.getHeader( CORS_REQUEST_METHOD );
-        allowMethods = !StringUtils.isEmpty( allowMethods ) ? allowMethods : "GET, POST, PUT, DELETE, OPTIONS";
+        // String allowMethods = request.getHeader( CORS_REQUEST_METHOD );
+        // allowMethods = !StringUtils.isEmpty( allowMethods ) ? allowMethods : "GET, POST, PUT, DELETE, OPTIONS";
+        String allowMethods = ALLOWED_METHODS;
 
         response.addHeader( CORS_ALLOW_CREDENTIALS, "true" );
         response.addHeader( CORS_ALLOW_ORIGIN, origin );
