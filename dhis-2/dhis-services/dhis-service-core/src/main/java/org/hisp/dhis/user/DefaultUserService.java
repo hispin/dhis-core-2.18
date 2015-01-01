@@ -229,8 +229,8 @@ public class DefaultUserService
     
     private void handleUserQueryParams( UserQueryParams params )
     {
-        boolean disjointRoles = (Boolean) systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
-        params.setDisjointRoles( disjointRoles );
+        boolean canGrantOwnRoles = (Boolean) systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
+        params.setDisjointRoles( !canGrantOwnRoles );
         
         if ( params.getUser() == null )
         {
@@ -241,6 +241,7 @@ public class DefaultUserService
         {
             params.setCanManage( false );
             params.setAuthSubset( false );
+            params.setDisjointRoles( false );
         }
 
         if ( params.getInactiveMonths() != null )

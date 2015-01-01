@@ -421,7 +421,7 @@ public class UserServiceTest
     @Test
     public void testGetManagedGroupsLessAuthoritiesDisjointRoles()
     {
-        systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, true );
+        systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
         
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
