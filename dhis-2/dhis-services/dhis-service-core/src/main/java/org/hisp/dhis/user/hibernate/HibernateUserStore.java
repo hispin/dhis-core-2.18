@@ -87,12 +87,12 @@ public class HibernateUserStore
             hql += hlp.whereAnd() + " u.phoneNumber = :phoneNumber ";
         }
         
-        if ( params.isCanManage() )
+        if ( params.isCanManage() && params.getUser() != null )
         {
             hql += hlp.whereAnd() + " g.id in (:ids) ";
         }
         
-        if ( params.isAuthSubset() )
+        if ( params.isAuthSubset() && params.getUser() != null )
         {
             hql += hlp.whereAnd() + " not exists (" +
                 "select uc2 from UserCredentials uc2 " +
@@ -102,7 +102,7 @@ public class HibernateUserStore
                 "and a not in (:auths) ) ";
         }
         
-        if ( params.isDisjointRoles() )
+        if ( params.isDisjointRoles() && params.getUser() != null )
         {
             hql += hlp.whereAnd() + " not exists (" +
                 "select uc3 from UserCredentials uc3 " +
