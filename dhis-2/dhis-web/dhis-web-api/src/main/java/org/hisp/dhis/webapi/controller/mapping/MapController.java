@@ -28,6 +28,17 @@ package org.hisp.dhis.webapi.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
+
+import java.awt.image.BufferedImage;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -53,18 +64,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Set;
-
-import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>

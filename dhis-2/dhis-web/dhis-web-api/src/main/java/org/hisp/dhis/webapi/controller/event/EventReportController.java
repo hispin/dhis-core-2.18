@@ -30,7 +30,6 @@ package org.hisp.dhis.webapi.controller.event;
 
 import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensions;
 
-import java.io.InputStream;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;

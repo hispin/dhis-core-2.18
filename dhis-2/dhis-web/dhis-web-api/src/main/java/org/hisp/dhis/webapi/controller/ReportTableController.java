@@ -32,7 +32,6 @@ import static org.hisp.dhis.common.DimensionalObjectUtils.getUniqueDimensions;
 import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
 
-import java.io.InputStream;
 import java.util.Date;
 import java.util.Set;
 
