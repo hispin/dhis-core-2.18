@@ -36,7 +36,7 @@ import static org.junit.Assert.*;
 import org.hisp.dhis.DhisSpringTest;
 
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class AttributeValueServiceTest
     extends DhisSpringTest

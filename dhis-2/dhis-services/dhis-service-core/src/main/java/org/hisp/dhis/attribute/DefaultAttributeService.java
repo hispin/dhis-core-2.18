@@ -217,12 +217,14 @@ public class DefaultAttributeService
     @Override
     public void addAttributeValue( AttributeValue attributeValue )
     {
+        attributeValue.setAutoFields();
         attributeValueStore.save( attributeValue );
     }
 
     @Override
     public void updateAttributeValue( AttributeValue attributeValue )
     {
+        attributeValue.setAutoFields();
         attributeValueStore.update( attributeValue );
     }
 

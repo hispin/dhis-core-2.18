@@ -31,7 +31,7 @@ package org.hisp.dhis.attribute;
 import java.util.Set;
 
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public interface AttributeService
 {
