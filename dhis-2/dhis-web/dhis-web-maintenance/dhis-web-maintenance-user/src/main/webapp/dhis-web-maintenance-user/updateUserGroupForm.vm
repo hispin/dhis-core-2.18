@@ -68,7 +68,7 @@
   "prefix": "userGroups",
   "i18n_available": "available_managed_user_groups",
   "i18n_selected": "managed_user_groups",
-  "objects": $group.managedGroups
+  "objects": $managedGroups
 })
 
 
