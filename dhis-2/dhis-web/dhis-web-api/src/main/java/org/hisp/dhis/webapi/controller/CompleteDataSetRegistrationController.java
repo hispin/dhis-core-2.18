@@ -165,6 +165,11 @@ public class CompleteDataSetRegistrationController
             periods.addAll( periodService.getPeriodsBetweenDates( startDate, endDate ) );
         }
 
+        if ( periods.isEmpty() )
+        {
+            return new CompleteDataSetRegistrations();
+        }
+
         if ( children )
         {
             organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( orgUnit ) );
