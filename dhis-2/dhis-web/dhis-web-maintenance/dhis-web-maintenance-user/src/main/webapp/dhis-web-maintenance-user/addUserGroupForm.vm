@@ -1,19 +1,5 @@
 <script type="text/javascript">
-    $( document ).ready( function() {
-        $( '#usersAvailable' ).selected( {
-            url: '../api/users.json',
-            target: $( '#usersSelected' ),
-            search: $( '#usersAvailableSearch' ),
-            iterator: 'users'
-        });
-		
-		$( '#userGroupsAvailable' ).selected( {
-            url: '../api/userGroups.json',
-            target: $( '#userGroupsSelected' ),
-            search: $( '#managedGroupsAvailableSearch' ),
-            iterator: 'userGroups'
-        });
-
+    $( document ).ready( function() {    
         validation2( 'addUserGroupForm', function( form ) {
             form.submit();
         }, {
@@ -26,9 +12,21 @@
         } );
 		
 		checkValueIsExist("name", "validateUserGroup.action");
+		
+        $( '#usersAvailable' ).selected( {
+            url: '../api/users.json',
+            target: $( '#usersSelected' ),
+            search: $( '#usersAvailableSearch' ),
+            iterator: 'users'
+        });
+		
+		$( '#userGroupsAvailable' ).selected( {
+            url: '../api/userGroups.json',
+            target: $( '#userGroupsSelected' ),
+            search: $( '#userGroupsAvailableSearch' ),
+            iterator: 'userGroups'
+        });
     });
-	
-	 
 </script>
 
 <h3>$i18n.getString( "add_user_group" )</h3>

@@ -1,25 +1,5 @@
 <script type="text/javascript">
-    $( document ).ready( function() {
-        $( '#usersAvailable' ).selected( {
-            url: '../api/users.json',
-            target: $( '#usersSelected' ),
-            search: $( '#usersAvailableSearch' ),
-            iterator: 'users'
-        });
-
-		$( '#userGroupsAvailable' ).selected( {
-            url: '../api/userGroups.json',
-            target: $( '#userGroupsSelected' ),
-            search: $( '#managedGroupsAvailableSearch' ),
-            iterator: 'userGroups'
-        });
-		
-		$(document).ajaxStop(function() 
-		{
-			var selectedGroup = '$group.uid';
-			$( "#userGroupsAvailable option[value='" + selectedGroup + "']" ).remove();
-		});
-
+    $( document ).ready( function() {    
         validation2( 'editUserGroupForm', function( form ) {
             form.submit();
         }, {
@@ -30,9 +10,23 @@
             },
             'rules': getValidationRules( 'userGroup' )
         } );
+        
 		checkValueIsExist("name", "validateUserGroup.action", { id: userGroupId });
-    });
-	
+        
+        $( '#usersAvailable' ).selected( {
+            url: '../api/users.json',
+            target: $( '#usersSelected' ),
+            search: $( '#usersAvailableSearch' ),
+            iterator: 'users'
+        });
+
+		$( '#userGroupsAvailable' ).selected( {
+            url: '../api/userGroups.json',
+            target: $( '#userGroupsSelected' ),
+            search: $( '#userGroupsAvailableSearch' ),
+            iterator: 'userGroups'
+        });		
+    });	
 </script>
 
 <h3>$i18n.getString( "edit_user_group" )</h3>
