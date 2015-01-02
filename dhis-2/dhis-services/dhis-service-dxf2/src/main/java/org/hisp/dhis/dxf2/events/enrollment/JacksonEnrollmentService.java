@@ -54,25 +54,25 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
 
     private final static ObjectMapper jsonMapper = new ObjectMapper();
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromXml( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromXml( String input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromJson( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromJson( String input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
@@ -97,19 +97,21 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
     {
         ImportSummaries importSummaries = new ImportSummaries();
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
+        Enrollments enrollments = new Enrollments();
 
         try
         {
-            Enrollments enrollments = fromJson( input, Enrollments.class );
-
-            for ( Enrollment enrollment : enrollments.getEnrollments() )
-            {
-                importSummaries.addImportSummary( addEnrollment( enrollment ) );
-            }
+            Enrollments fromJson = fromJson( input, Enrollments.class );
+            enrollments.getEnrollments().addAll( fromJson.getEnrollments() );
         }
         catch ( Exception ex )
         {
             Enrollment enrollment = fromJson( input, Enrollment.class );
+            enrollments.getEnrollments().add( enrollment );
+        }
+
+        for ( Enrollment enrollment : enrollments.getEnrollments() )
+        {
             importSummaries.addImportSummary( addEnrollment( enrollment ) );
         }
 
@@ -121,19 +123,21 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
     {
         ImportSummaries importSummaries = new ImportSummaries();
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
+        Enrollments enrollments = new Enrollments();
 
         try
         {
-            Enrollments enrollments = fromXml( input, Enrollments.class );
-
-            for ( Enrollment enrollment : enrollments.getEnrollments() )
-            {
-                importSummaries.addImportSummary( addEnrollment( enrollment ) );
-            }
+            Enrollments fromJson = fromXml( input, Enrollments.class );
+            enrollments.getEnrollments().addAll( fromJson.getEnrollments() );
         }
         catch ( Exception ex )
         {
             Enrollment enrollment = fromXml( input, Enrollment.class );
+            enrollments.getEnrollments().add( enrollment );
+        }
+
+        for ( Enrollment enrollment : enrollments.getEnrollments() )
+        {
             importSummaries.addImportSummary( addEnrollment( enrollment ) );
         }
 
