@@ -38,6 +38,8 @@ import org.hisp.dhis.user.User;
 public class UserComparator
     implements Comparator<User>
 {
+    public static final UserComparator INSTANCE = new UserComparator(); 
+    
     @Override
     public int compare( User u0, User u1 )
     {
@@ -51,6 +53,13 @@ public class UserComparator
             return -1;
         }
 
-        return u0.getSurname().compareTo( u1.getSurname() );
+        int compare = u0.getSurname().compareTo( u1.getSurname() );
+        
+        if ( compare != 0 )
+        {
+            return compare;
+        }
+        
+        return u0.getFirstName().compareTo( u1.getFirstName() );
     }
 }
