@@ -114,15 +114,15 @@ public class DefaultUserGroupService
         
         UserGroup userGroup = getUserGroup( uid );
         
-        if ( userGroup == null )
+        if ( userGroup == null || currentUser == null || currentUser.getUserCredentials() == null )
         {
             return false;
         }
         
         boolean canUpdate = aclService.canUpdate( currentUser, userGroup );
-        boolean canManage = currentUser.canManage( userGroup );
+        boolean canAddMember = currentUser.getUserCredentials().isAuthorized( UserGroup.AUTH_ADD_MEMBERS_TO_READ_ONLY_USER_GROUPS );
         
-        return canUpdate || canManage;
+        return canUpdate || canAddMember;
     }
     
     @Override

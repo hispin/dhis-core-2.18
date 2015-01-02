@@ -337,7 +337,7 @@ public class DefaultUserService
         return true;
     }
 
-    public boolean canAddOrUpdateUser( Collection<String> uids )
+    public boolean canAddOrUpdateUser( Collection<String> userGroups )
     {
     	User currentUser = currentUserService.getCurrentUser();
     	
@@ -360,17 +360,20 @@ public class DefaultUserService
     	    return false;
     	}
     	
-    	for ( String uid : uids )
+    	boolean canManageAnyGroup = false;
+    	
+    	for ( String uid : userGroups )
     	{
     	    UserGroup userGroup = userGroupService.getUserGroup( uid );
             
             if ( currentUser.canManage( userGroup ) )
             {
-                return true;
+                canManageAnyGroup = true;
+                break;
             }
     	}
     	
-    	return true;
+    	return canManageAnyGroup;
     }
     
     // -------------------------------------------------------------------------

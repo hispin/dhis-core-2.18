@@ -268,7 +268,7 @@ public class UserController
 
         if ( !aclService.canUpdate( currentUserService.getCurrentUser(), users.get( 0 ) ) )
         {
-            ContextUtils.conflictResponse( response, "You don't have the proper permissions to update this object." );
+            ContextUtils.conflictResponse( response, "You don't have the proper permissions to update this user." );
             return;
         }
 
