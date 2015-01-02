@@ -39,7 +39,7 @@
     </sec:headers>
 
     <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
-    <!-- <sec:custom-filter ref="corsFilter" before="BASIC_AUTH_FILTER" /> -->
+    <sec:custom-filter ref="corsFilter" before="BASIC_AUTH_FILTER" />
     <sec:intercept-url pattern="/api/**" access="isAuthenticated()" />
   </sec:http>
 
