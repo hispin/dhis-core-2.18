@@ -40,11 +40,12 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "attributeValue", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "attributeValue", namespace = DxfNamespaces.DXF_2_0 )
 public class AttributeValue
     implements Serializable
 {
@@ -55,18 +56,40 @@ public class AttributeValue
 
     private int id;
 
+    /**
+     * The date this object was created.
+     */
+    private Date created;
+
+    /**
+     * The date this object was last updated.
+     */
+    private Date lastUpdated;
+
     private Attribute attribute;
 
     private String value;
 
     public AttributeValue()
     {
-
+        this.created = new Date();
+        this.lastUpdated = new Date();
     }
 
     public AttributeValue( String value )
     {
+        this();
         this.value = value;
+    }
+
+    public void setAutoFields()
+    {
+        if ( created == null )
+        {
+            created = new Date();
+        }
+
+        lastUpdated = new Date();
     }
 
     @Override
@@ -115,9 +138,35 @@ public class AttributeValue
     }
 
     @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( isAttribute = true )
+    public Date getCreated()
+    {
+        return created;
+    }
+
+    public void setCreated( Date created )
+    {
+        this.created = created;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( isAttribute = true )
+    public Date getLastUpdated()
+    {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated( Date lastUpdated )
+    {
+        this.lastUpdated = lastUpdated;
+    }
+
+    @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Attribute getAttribute()
     {
         return attribute;
@@ -129,8 +178,8 @@ public class AttributeValue
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getValue()
     {
         return value;

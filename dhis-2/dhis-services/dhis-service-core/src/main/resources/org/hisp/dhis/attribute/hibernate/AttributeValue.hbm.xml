@@ -12,6 +12,10 @@
       <generator class="native" />
     </id>
 
+    <property name="created" />
+
+    <property name="lastUpdated" />
+
     <property name="value" />
 
     <many-to-one name="attribute" class="org.hisp.dhis.attribute.Attribute" column="attributeid"

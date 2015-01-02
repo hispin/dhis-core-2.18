@@ -779,7 +779,11 @@ public class TableAlteror
         executeSql( "alter table datavalueaudit alter column attributeoptioncomboid set not null;" );
         
         executeSql( "update dataelementcategoryoption set shortname = substring(name,0,50) where shortname is null" );
-        
+
+        // AttributeValue
+        executeSql( "UPDATE attributevalue SET created=now() WHERE created IS NULL" );
+        executeSql( "UPDATE attributevalue SET lastupdated=now() WHERE lastupdated IS NULL" );
+
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeCompleteDataSetRegistrationsWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
