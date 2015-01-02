@@ -28,10 +28,9 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
@@ -44,9 +43,9 @@ import org.hisp.dhis.system.timer.Timer;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 /**
  * Implementation of EventService that uses Jackson for serialization and deserialization.
@@ -66,25 +65,25 @@ public class JacksonEventService extends AbstractEventService
 
     private final static ObjectMapper jsonMapper = new ObjectMapper();
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromXml( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromXml( String input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromJson( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromJson( String input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
@@ -122,17 +121,20 @@ public class JacksonEventService extends AbstractEventService
         notifier.clear( taskId ).notify( taskId, "Importing events" );
 
         Timer timer = new SystemTimer().start();
+        Events events = new Events();
 
         try
         {
-            Events events = fromXml( input, Events.class );
-            importSummaries = addEvents( events.getEvents(), importOptions );
+            Events fromXml = fromXml( input, Events.class );
+            events.getEvents().addAll( fromXml.getEvents() );
         }
         catch ( Exception ex )
         {
             Event event = fromXml( input, Event.class );
-            importSummaries.addImportSummary( addEvent( event, importOptions ) );
+            events.getEvents().add( event );
         }
+
+        importSummaries = addEvents( events.getEvents(), importOptions );
 
         timer.stop();
 
@@ -184,19 +186,20 @@ public class JacksonEventService extends AbstractEventService
         notifier.clear( taskId ).notify( taskId, "Importing events" );
 
         Timer timer = new SystemTimer().start();
+        Events events = new Events();
 
         try
         {
-            Events events = fromJson( input, Events.class );
-            importSummaries = addEvents( events.getEvents(), importOptions );
+            Events fromXml = fromXml( input, Events.class );
+            events.getEvents().addAll( fromXml.getEvents() );
         }
         catch ( Exception ex )
         {
-            log.debug( ex );
-            
-            Event event = fromJson( input, Event.class );
-            importSummaries.addImportSummary( addEvent( event, importOptions ) );
+            Event event = fromXml( input, Event.class );
+            events.getEvents().add( event );
         }
+
+        importSummaries = addEvents( events.getEvents(), importOptions );
 
         timer.stop();
 
