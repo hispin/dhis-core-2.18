@@ -36,7 +36,6 @@ import java.util.Map;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.comparator.UserGroupComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -95,7 +94,7 @@ public class ShowSendSMSFormAction
     {
         userGroups = new ArrayList<>( userGroupService.getAllUserGroups() );
 
-        Collections.sort( userGroups, new UserGroupComparator() );
+        Collections.sort( userGroups );
 
         return SUCCESS;
     }

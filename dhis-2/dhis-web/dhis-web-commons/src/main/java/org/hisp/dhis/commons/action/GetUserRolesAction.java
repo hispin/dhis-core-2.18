@@ -35,7 +35,6 @@ import java.util.List;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.user.comparator.UserRoleComparator;
 
 /**
  * @author mortenoh
@@ -77,7 +76,7 @@ public class GetUserRolesAction
 
         userService.canIssueFilter( userRoles );
         
-        Collections.sort( userRoles, new UserRoleComparator() );
+        Collections.sort( userRoles );
 
         if ( usePaging )
         {

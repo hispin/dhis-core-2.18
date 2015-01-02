@@ -32,11 +32,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.comparator.UserGroupComparator;
 
 /*
  * @author mortenoh
@@ -88,7 +87,7 @@ public class GetUserGroupsAction
             userGroups = IdentifiableObjectUtils.filterNameByKey( userGroups, key, true );
         }
 
-        Collections.sort( userGroups, new UserGroupComparator() );
+        Collections.sort( userGroups );
 
         if ( usePaging )
         {
