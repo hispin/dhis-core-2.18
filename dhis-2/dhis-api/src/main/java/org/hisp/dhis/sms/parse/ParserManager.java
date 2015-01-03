@@ -1,4 +1,4 @@
-        package org.hisp.dhis.sms.parse;
+package org.hisp.dhis.sms.parse;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo

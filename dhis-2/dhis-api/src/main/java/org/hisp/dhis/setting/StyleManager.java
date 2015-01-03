@@ -32,7 +32,6 @@ import java.util.SortedMap;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public interface StyleManager
 {
