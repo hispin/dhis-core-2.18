@@ -19,6 +19,8 @@ function getI18nAvailableMetaData( metaDataCategoryName )
             return i18n_available_attributeTypes;
         case "Categories":
             return i18n_available_categories;
+        case "CategoryCombos":
+            return i18n_available_category_combos;
         case "Charts":
             return i18n_available_charts;
         case "Constants":
@@ -85,6 +87,8 @@ function getI18nSelectedMetaData( metaDataCategoryName )
             return i18n_selected_attributeTypes;
         case "Categories":
             return i18n_selected_categories;
+        case "CategoryCombos":
+            return i18n_selected_category_combos;
         case "Charts":
             return i18n_selected_charts;
         case "Constants":
