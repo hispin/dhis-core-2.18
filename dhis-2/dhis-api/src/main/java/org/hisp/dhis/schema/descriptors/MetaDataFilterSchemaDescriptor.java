@@ -54,7 +54,6 @@ public class MetaDataFilterSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( MetaDataFilter.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
-        schema.setShareable( true );
         schema.setOrder( 1430 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_METADATA_EXPORT" ) ) );
