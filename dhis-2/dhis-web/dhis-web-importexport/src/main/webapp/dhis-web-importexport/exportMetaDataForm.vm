@@ -44,10 +44,6 @@
         <td><input id="indicatorGroupSets" name="indicatorGroupSets" type="checkbox" value="true" /></td>
         <td><label for="indicatorGroupSets">$i18n.getString( 'indicator_group_sets' )</label></td>
     </tr>
-  	<tr>
-  		<td><input id="dataDictionaries" name="dataDictionaries" type="checkbox" value="true" /></td>
-  		<td><label for="dataDictionaries">$i18n.getString( 'data_dictionaries' )</label></td>
-	</tr>
 	<tr>
 		<td><input id="dataSets" name="dataSets" type="checkbox" value="true" /></td>
 		<td><label for="dataSets">$i18n.getString( 'data_sets' )</label></td>
