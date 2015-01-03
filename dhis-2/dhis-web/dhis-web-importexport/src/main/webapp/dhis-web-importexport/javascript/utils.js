@@ -21,12 +21,8 @@ function getI18nAvailableMetaData( metaDataCategoryName )
             return i18n_available_categories;
         case "Charts":
             return i18n_available_charts;
-        case "Concepts":
-            return i18n_available_concepts;
         case "Constants":
             return i18n_available_constants;
-        case "DataDictionaries":
-            return i18n_available_dataDictionaries;
         case "DataElementGroupSets":
             return i18n_available_dataElementGroupSets;
         case "DataElementGroups":
@@ -91,12 +87,8 @@ function getI18nSelectedMetaData( metaDataCategoryName )
             return i18n_selected_categories;
         case "Charts":
             return i18n_selected_charts;
-        case "Concepts":
-            return i18n_selected_concepts;
         case "Constants":
             return i18n_selected_constants;
-        case "DataDictionaries":
-            return i18n_selected_dataDictionaries;
         case "DataElementGroupSets":
             return i18n_selected_dataElementGroupSets;
         case "DataElementGroups":
