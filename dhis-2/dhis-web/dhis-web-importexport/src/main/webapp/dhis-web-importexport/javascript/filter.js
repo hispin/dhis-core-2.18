@@ -75,9 +75,7 @@ function editFilterButton( context )
 }
 
 function removeFilterButton( context )
-{
-	// TODO this must be done properly
-	
+{	
 	$.ajax( {
 		url: '../api/metaDataFilters/' + context.uid,
 		type: 'delete',

@@ -54,6 +54,7 @@ import org.hisp.dhis.document.Document;
 import org.hisp.dhis.eventchart.EventChart;
 import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.expression.Expression;
+import org.hisp.dhis.filter.MetaDataFilter;
 import org.hisp.dhis.i18n.locale.I18nLocale;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -492,6 +493,15 @@ public abstract class DeletionHandler
     }
 
     public String allowDeleteMapView( MapView mapView )
+    {
+        return null;
+    }
+    
+    public void deleteMetaDataFilter( MetaDataFilter metaDataFilter )
+    {
+    }
+    
+    public String allowDeleteMetaDataFilter( MetaDataFilter metaDataFilter )
     {
         return null;
     }
