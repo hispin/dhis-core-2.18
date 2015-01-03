@@ -141,7 +141,7 @@ public class DefaultSchemaValidator implements SchemaValidator
             return validationViolations;
         }
 
-        Collection value = (Collection) object;
+        Collection<?> value = (Collection<?>) object;
 
         if ( value.size() < property.getMin() || value.size() > property.getMax() )
         {
