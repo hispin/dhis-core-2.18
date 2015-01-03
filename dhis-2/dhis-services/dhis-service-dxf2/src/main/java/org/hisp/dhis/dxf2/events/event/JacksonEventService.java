@@ -83,6 +83,12 @@ public class JacksonEventService extends AbstractEventService
         return (T) jsonMapper.readValue( inputStream, clazz );
     }
 
+    @SuppressWarnings( "unchecked" )
+    private static <T> T fromJson( String input, Class<?> clazz ) throws IOException
+    {
+        return (T) jsonMapper.readValue( input, clazz );
+    }
+
     static
     {
         xmlMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true );
