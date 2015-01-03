@@ -145,9 +145,9 @@
     <div id="mainDivAttributes" style="margin: 5px;"></div>
 
     <!-- CATEGORIES SELECTION -->
-    <h6 id="headingDimensions" style="font-size: 10pt;"><label>$i18n.getString( "categories" )</label></h6>
+    <h6 id="headingCategories" style="font-size: 10pt;"><label>$i18n.getString( "categories" )</label></h6>
 
-    <div id="mainDivDimensions" style="margin: 5px;"></div>
+    <div id="mainDivCategories" style="margin: 5px;"></div>
 
     <!-- CHARTS SELECTION -->
     <h6 id="headingCharts" style="font-size: 10pt;"><label>$i18n.getString( "charts" )</label></h6>

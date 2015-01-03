@@ -17,7 +17,7 @@ function getI18nAvailableMetaData( metaDataCategoryName )
     {
         case "Attributes":
             return i18n_available_attributeTypes;
-        case "Dimensions":
+        case "Categories":
             return i18n_available_categories;
         case "Charts":
             return i18n_available_charts;
@@ -83,7 +83,7 @@ function getI18nSelectedMetaData( metaDataCategoryName )
     {
         case "Attributes":
             return i18n_selected_attributeTypes;
-        case "Dimensions":
+        case "Categories":
             return i18n_selected_categories;
         case "Charts":
             return i18n_selected_charts;
