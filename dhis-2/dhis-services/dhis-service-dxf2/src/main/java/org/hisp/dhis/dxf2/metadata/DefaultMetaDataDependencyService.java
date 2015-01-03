@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.metadata;
  */
 
 import com.fasterxml.jackson.annotation.JsonView;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.proxy.HibernateProxy;
@@ -38,6 +39,7 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
@@ -71,7 +73,7 @@ public class DefaultMetaDataDependencyService
 {
     private static final Log log = LogFactory.getLog( DefaultMetaDataDependencyService.class );
 
-    private final Class<?>[] specialCases = new Class<?>[]{ DataElement.class, Indicator.class, OrganisationUnit.class, ValidationRule.class };
+    private final Class<?>[] SPECIAL_CASE_CLASSES = new Class<?>[]{ DataElement.class, DataElementCategoryCombo.class, Indicator.class, OrganisationUnit.class, ValidationRule.class };
 
     //-------------------------------------------------------------------------------------------------------
     // Dependencies
@@ -136,6 +138,7 @@ public class DefaultMetaDataDependencyService
     public Map<String, List<IdentifiableObject>> getIdentifiableObjectWithDependencyMap( Map<String, Object> identifiableObjectUidMap )
     {
         Map<String, List<IdentifiableObject>> identifiableObjectMap = getIdentifiableObjectMap( identifiableObjectUidMap );
+        
         Collection<IdentifiableObject> identifiableObjects = new HashSet<>();
 
         for ( Map.Entry<String, List<IdentifiableObject>> identifiableObjectEntry : identifiableObjectMap.entrySet() )
@@ -297,7 +300,7 @@ public class DefaultMetaDataDependencyService
 
     private boolean isSpecialCase( IdentifiableObject identifiableObject )
     {
-        for ( Class<?> specialCase : specialCases )
+        for ( Class<?> specialCase : SPECIAL_CASE_CLASSES )
         {
             if ( identifiableObject.getClass().equals( specialCase ) )
             {
@@ -362,6 +365,16 @@ public class DefaultMetaDataDependencyService
             resultSet.addAll( getDependencySet( constantSet ) );
 
             return resultSet;
+        }
+        else if ( identifiableObject instanceof DataElementCategoryCombo )
+        {
+            Set<DataElementCategoryOptionCombo> dataElementCategoryOptionComboSet = new HashSet<>();
+            dataElementCategoryOptionComboSet.addAll( ((DataElementCategoryCombo) identifiableObject).getOptionCombos() );
+
+            resultSet.addAll( dataElementCategoryOptionComboSet );
+            resultSet.addAll( getDependencySet( dataElementCategoryOptionComboSet ) );
+
+            return resultSet;            
         }
         else if ( identifiableObject instanceof DataElement )
         {
