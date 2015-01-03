@@ -1,5 +1,5 @@
 // Global Variables
-var metaDataArray = [ "AttributesTypes", "Dimensions", "Charts", "Constants", "DataElementGroupSets",
+var metaDataArray = [ "AttributesTypes", "Categories", "Charts", "Constants", "DataElementGroupSets",
     "DataElementGroups", "DataElements", "DataSets", "Documents", "IndicatorGroupSets", "IndicatorGroups", "Indicators",
     "IndicatorTypes", "MapLegendSets", "Maps", "OptionSets", "OrganisationUnitGroupSets", "OrganisationUnitGroups",
     "OrganisationUnitLevels", "OrganisationUnits", "ReportTables", "Reports", "SqlViews", "UserGroups", "UserRoles",
