@@ -230,5 +230,10 @@
   <bean id="org.hisp.dhis.importexport.action.dxf2.FilterExportFormAction"
     class="org.hisp.dhis.importexport.action.dxf2.FilterExportFormAction" scope="prototype">
   </bean>
-
+  
+  <bean id="org.hisp.dhis.importexport.action.dxf2.ShowUpdateFilterExportFormAction"
+    class="org.hisp.dhis.importexport.action.dxf2.ShowUpdateFilterExportFormAction" scope="prototype">
+    <property name="metaDataFilterService" ref="org.hisp.dhis.filter.MetaDataFilterService" />
+  </bean>
+  
 </beans>
