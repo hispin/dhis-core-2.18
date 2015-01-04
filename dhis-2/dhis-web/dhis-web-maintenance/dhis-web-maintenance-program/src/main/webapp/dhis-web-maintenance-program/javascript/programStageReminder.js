@@ -53,11 +53,11 @@ function showReminderDetails( context ) {
     setInnerHTML('idField', json.reminder.uid);
 	
 	var days = json.reminder.daysAllowedSendMessage;
-	if( eval(days)>=0 ){
-		setInnerHTML('daysAllowedSendMessageField', days + " " + i18n_days_before);
+	if( eval(days)<=0 ){
+		setInnerHTML('daysAllowedSendMessageField', -1 * days + " " + i18n_days_before);
 	}
 	else{
-		setInnerHTML('daysAllowedSendMessageField', -1 * eval(days) + " " + i18n_days_after);
+		setInnerHTML('daysAllowedSendMessageField', eval(days) + " " + i18n_days_after);
 	}
     setInnerHTML('templateMessageField', json.reminder.templateMessage);
     setInnerHTML('dateToCompareField', json.reminder.dateToCompare);
