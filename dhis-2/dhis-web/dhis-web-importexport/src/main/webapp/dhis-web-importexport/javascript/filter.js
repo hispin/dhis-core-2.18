@@ -69,9 +69,7 @@ function getURL()
 
 function editFilterButton( context )
 {
-	//TODO this must be done properly
-
-    $( "#formFilter" ).submit();
+    window.location.href = 'updateFilterExportForm.action?id=' + context.id;
 }
 
 function removeFilterButton( context )

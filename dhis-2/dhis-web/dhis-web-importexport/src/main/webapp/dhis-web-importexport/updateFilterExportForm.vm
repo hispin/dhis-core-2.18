@@ -100,21 +100,14 @@
 
 ##@author Ovidiu Rosu <rosu.ovi@gmail.com>
 
-#if ($command == "addNew")
-    <h3>$i18n.getString( "create_new_filter" )</h3>
-#elseif($command == "addAdHoc")
-    <h3>$i18n.getString( "ad_hoc_export" )</h3>
-#end
+<h3>$i18n.getString( "edit_filter" )</h3>
 
 <!-- FILTER FORM -->
 <form id="formFilter" name="formFilter" class="inputForm">
     <input type="hidden" id="jsonFilter" name="jsonFilter" value='$filter.jsonFilter'/>
-    #if ($command == "addNew" || $command == "addAdHoc")
-        <input type="hidden" id="uid" name="uid" value=""/>
-    #end
-
-    #if ($command == "addNew")
-        <div>
+    <input type="hidden" id="uid" name="uid" value="$filter.uid"/>
+	
+       <div>
             <table id="detailsList" style="width: 400px;">
                 <tr>
                     <th colspan="2">$i18n.getString( "filter_details" )</th>
@@ -133,7 +126,7 @@
                 </tr>
             </table>
         </div>
-    #end
+    
 </form>
 
 <!-- METADATA ACCORDION -->
@@ -294,57 +287,10 @@
             </td>
         </tr>
         <tr>
-            #if($command == "addNew")
-                <td colspan="2">
-                    <input type="button" value="$i18n.getString( 'add_new' )" onclick="saveFilter();" style="width:125px" />
-                    <input type="button" value="$i18n.getString( 'cancel' )" onclick="window.history.back();" style="width:125px" />
-                </td>
-            #elseif($command == "addAdHoc")
-                <td colspan="2">
-                    <input type="button" value="$i18n.getString( 'export' )" onclick="startExport();" style="width:125px" />
-                    <input type="button" value="$i18n.getString( 'cancel' )" onclick="window.history.back();" style="width:125px" />
-                </td>
-            #end
+			<td colspan="2">
+				<input type="button" value="$i18n.getString( 'save' )" onclick="updateFilter();" style="width:125px" />
+				<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href = 'dxf2FilteredMetaDataExport.action'" style="width:125px" />
+			</td>
         </tr>
     </table>
 </div>
-
-<!-- EXPORT DIALOG -->
-#if($command == "addAdHoc")
-    <div id="exportDialog" style="display: none;">
-        <form id="exportForm" action="" method="post">
-            <input type="hidden" id="exportJsonValue" name="exportJsonValue" >
-        </form>
-        <table>
-            <tr>
-                <td colspan="2">
-                    <select id="format" style="width: 250px; font-size: 10pt;">
-                        <option value="xml">XML</option>
-                        <option value="json">Json</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <select id="compression" style="width: 250px; font-size: 10pt;">
-                        <option value="zip">Zipped</option>
-                        <option value="gz">GZipped</option>
-                        <option value="uncompressed">Uncompressed</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="checkbox" id="exportDependencies" name="exportDependencies"/>
-                    <label for="exportDependencies" style="font-size: 10pt;">$i18n.getString( "export_with_dependencies" ) #openHelp( "exportDependencies" )</label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="hidden" id="exportJson" value=''/>
-                    <input type="button" id="exportButton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-active2" value="$i18n.getString( 'export' )" style="width:250px; font-size: 10pt;" onclick="exportFilteredMetaData();"/>
-                </td>
-            </tr>
-        </table>
-    </div>
-#end
