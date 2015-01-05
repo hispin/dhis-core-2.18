@@ -1,12 +1,16 @@
 <div class="panel panel-info" ng-controller="EnrollmentController">
-    <div class="panel-heading handle bold">                                            
+    <div class="panel-heading handle bold">
+        
         <span ng-class="{'light-blue': true}">{{enrollmentWidget.title| translate}}</span>
-        <span class="nav-pills" ng-show="selectedProgram && (!selectedEnrollment || selectedEnrollment.status === 'COMPLETED')">
+        <span class="nav-pills" ng-show="selectedProgram && currentEnrollment && currentEnrollment !== selectedEnrollment">
+            | <a href ng-click="loadEnrollmentDetails(currentEnrollment)" title="{{'current'| translate}}"><span ng-class="{'light-blue': !showEnrollmentDiv}">{{'current'| translate}}</span></a>
+        </span>
+        <span class="nav-pills" ng-show="selectedProgram && !currentEnrollment">
             | <a href ng-click="showNewEnrollment()" title="{{'new'| translate}}"><span ng-class="{'light-blue': !showEnrollmentDiv}">{{'new'| translate}}</span></a>
         </span>
         <span class="nav-pills" ng-show="terminatedEnrollments.length > 0 || completedEnrollments.length > 0">
             | <a href ng-click="showEnrollmentHistory()" title="{{'history'| translate}}"><span ng-class="{'light-blue': !showEnrollmentHistoryDiv}">{{'history'| translate}}</span></a>
-        </span>        
+        </span>       
 
         <span class="pull-right">
             <a class="small-horizonal-spacing" href ng-click="expandCollapse(enrollmentWidget)">
@@ -19,6 +23,7 @@
     <div ng-show="enrollmentWidget.expand" class="panel-body dashboard-widget-container">
         <!-- operations on selected enrollment begins -->
         <div ng-if="selectedEnrollment">
+            
             <table class="table-borderless table-striped">
                 <tr class="col-md-12">
                     <td class="col-md-6">
@@ -37,7 +42,6 @@
                     </td>
                 </tr>                
             </table>
-
 
             <div class="vertical-spacing horizonal-spacing">
 
@@ -72,6 +76,7 @@
                 </button>
 
             </div>
+            
         </div>
         <!-- operations on selected enrollment ends -->
 

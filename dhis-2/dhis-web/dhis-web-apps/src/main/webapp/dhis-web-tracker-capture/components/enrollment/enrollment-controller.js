@@ -61,6 +61,7 @@ trackerCapture.controller('EnrollmentController',
                 
                     if(enrollment.status === 'ACTIVE'){
                         selectedEnrollment = enrollment;
+                        $scope.currentEnrollment = enrollment;
                     }
                     if(enrollment.status === 'CANCELLED'){//check for cancelled ones
                         $scope.cancelledEnrollments.push(enrollment);
@@ -78,16 +79,19 @@ trackerCapture.controller('EnrollmentController',
                 $scope.loadEnrollmentDetails(selectedEnrollment);
             }
             else{
-                $scope.selectedEnrollment = null;                
+                $scope.selectedEnrollment = null;
+                $scope.broadCastSelections('dashboardWidgets');
             }
         }
+        else{
+            $scope.broadCastSelections('dashboardWidgets');
+        }
         
-        $scope.broadCastSelections('dashboardWidgets');
     });
     
-    $scope.loadEnrollmentDetails = function(enrollment) {        
+    $scope.loadEnrollmentDetails = function(enrollment) {
         
-        //$scope.showEnrollmentHistoryDiv = false;
+        $scope.showEnrollmentHistoryDiv = false;
         $scope.selectedEnrollment = enrollment;
         
         if(!$scope.selectedEnrollment){//prepare for possible enrollment
@@ -114,16 +118,13 @@ trackerCapture.controller('EnrollmentController',
         if($scope.showEnrollmentDiv){
             $scope.hideEnrollmentDiv();
         }
-        
-        if($scope.showEnrollmentHistoryDiv){
-            $scope.showEnrollmentHistoryDiv = !$scope.showEnrollmentHistoryDiv;
-        }
-        
+       
         $scope.showEnrollmentDiv = !$scope.showEnrollmentDiv;
         
         if($scope.showEnrollmentDiv){
-            $scope.selectedEnrollment = null;
-            $scope.broadCastSelections('dashboardWidgets');            
+            
+            $scope.showEnrollmentHistoryDiv = false;
+            $scope.selectedEnrollment = null;                        
             $scope.selectedProgram.hasCustomForm = false;
             $scope.registrationForm = '';
             TEFormService.getByProgram($scope.selectedProgram.id).then(function(teForm){
@@ -133,14 +134,21 @@ trackerCapture.controller('EnrollmentController',
                 }                
                 $scope.selectedProgram.displayCustomForm = $scope.selectedProgram.hasCustomForm ? true:false;
             });
+            
+            $scope.broadCastSelections('dashboardWidgets');
         }
     };
        
     $scope.showEnrollmentHistory = function(){
-        if($scope.showEnrollmentDiv){
-            $scope.showEnrollmentDiv = !$scope.showEnrollmentDiv;
-        }        
+        
         $scope.showEnrollmentHistoryDiv = !$scope.showEnrollmentHistoryDiv;
+        
+        if($scope.showEnrollmentHistoryDiv){
+            $scope.selectedEnrollment = null;
+            $scope.showEnrollmentDiv = false;
+            
+            $scope.broadCastSelections('dashboardWidgets');
+        }
     };
     
     $scope.enroll = function(){    
