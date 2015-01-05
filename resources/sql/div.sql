@@ -189,8 +189,15 @@ from datavalue dv
 where dv.periodid in (
   select pe.periodid
   from period pe
-  where pe.startdate < '1950-01-01'
-  or pe.enddate > '2050-01-01');
+  where pe.startdate < '1960-01-01'
+  or pe.enddate > '2020-01-01');
+
+-- Display events out of reasonable time range
+
+select *
+from programstageinstance psi
+where psi.executiondate < '1960-01-01'
+or psi.executiondate > '2020-01-01';
 
 -- Data value exploded view
 
