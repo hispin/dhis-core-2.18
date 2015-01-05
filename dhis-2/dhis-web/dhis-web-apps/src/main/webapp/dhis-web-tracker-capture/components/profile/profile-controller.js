@@ -51,10 +51,7 @@ trackerCapture.controller('ProfileController',
         //form is valid, continue the update process        
         //get tei attributes and their values
         //but there could be a case where attributes are non-mandatory and
-        //form comes empty, in this case enforce at least one value
-        
-        console.log('the tei:  ', $scope.selectedTei);
-        
+        //form comes empty, in this case enforce at least one value        
         $scope.formEmpty = true;
         var tei = angular.copy($scope.selectedTei);
         tei.attributes = [];
