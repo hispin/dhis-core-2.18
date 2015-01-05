@@ -15,6 +15,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 ProgramFactory,
                 AttributesFactory,
                 EntityQueryFactory,
+                CurrentSelection,
                 TEIGridService,
                 TEIService) {  
                     
@@ -57,18 +58,16 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             
             $scope.trackedEntityList = [];
             
+            $scope.optionSets = CurrentSelection.getOptionSets();
+            
             if(!$scope.optionSets){
-                $scope.optionSets = {optionSets: [], optionNamesByCode: new Object(), optionCodesByName: new Object()};
+                $scope.optionSets = [];
                 OptionSetService.getAll().then(function(optionSets){
-                    angular.forEach(optionSets, function(optionSet){
-                        angular.forEach(optionSet.options, function(option){
-                            if(option.name && option.code){
-                                $scope.optionSets.optionNamesByCode[ '"' + option.code + '"'] = option.name;
-                                $scope.optionSets.optionCodesByName[ '"' + option.name + '"'] = option.code;
-                            }                       
-                        });
-                        $scope.optionSets.optionSets[optionSet.id] = optionSet;
+                    angular.forEach(optionSets, function(optionSet){                        
+                        $scope.optionSets[optionSet.id] = optionSet;
                     });
+                    
+                    CurrentSelection.setOptionSets($scope.optionSets);
                 });
             }
             $scope.loadPrograms($scope.selectedOrgUnit);                                
@@ -262,7 +261,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             }
             
             //process tei grid
-            $scope.trackedEntityList = TEIGridService.format(data,false, $scope.optionSets.optionNamesByCode);
+            $scope.trackedEntityList = TEIGridService.format(data,false, $scope.optionSets);
             $scope.showTrackedEntityDiv = true;
             $scope.teiFetched = true;  
             $scope.doSearch = true;

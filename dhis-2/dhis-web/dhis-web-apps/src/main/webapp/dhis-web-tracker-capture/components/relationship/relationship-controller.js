@@ -22,7 +22,7 @@ trackerCapture.controller('RelationshipController',
     
     //listen for the selected entity       
     $scope.$on('dashboardWidgets', function(event, args) { 
-         $scope.relatedTeis = [];
+        $scope.relatedTeis = [];
         $scope.selections = CurrentSelection.get();
         $scope.optionSets = $scope.selections.optionSets;
         $scope.selectedTei = angular.copy($scope.selections.tei);        
@@ -38,16 +38,8 @@ trackerCapture.controller('RelationshipController',
             $scope.addRelationshipLabel = $translate('add');
         }
         
-        angular.forEach($scope.selectedTei.relationships, function(rel){
-            var teiId = rel.trackedEntityInstanceA;
-            if($scope.selectedTei.trackedEntityInstance === rel.trackedEntityInstanceA){
-                teiId = rel.trackedEntityInstanceB;
-            }
-            
-            TEIService.get(teiId, $scope.optionSets).then(function(tei){
-                $scope.relatedTeis[teiId] = tei.data;
-            });
-        });
+        setRelationships();
+        
     });
     
     $scope.showAddRelationship = function() {
@@ -75,30 +67,46 @@ trackerCapture.controller('RelationshipController',
             });
 
             modalInstance.result.then(function (relationships) {
-                $scope.selectedTei.relationships = relationships;           
+                $scope.selectedTei.relationships = relationships;
+                
+                setRelationships();
             });
-        }        
-    };    
+        }
+    };
     
-    $scope.showDashboard = function(rel){
+    $scope.showDashboard = function(teiId, relId){
         
-        var dashboardProgram = null, relativeTeiId = '';
+        var dashboardProgram = null;
         
         if($scope.selectedProgram && $scope.selectedProgram.relationshipType){
-            if($scope.selectedProgram.relationshipType.id === rel.relationship && $scope.selectedProgram.relatedProgram ){
+            if($scope.selectedProgram.relationshipType.id === relId && $scope.selectedProgram.relatedProgram ){
                 dashboardProgram = $scope.selectedProgram.relatedProgram.id;
             }
         }        
-        
-        if($scope.selectedTei.trackedEntityInstance === rel.trackedEntityInstanceA){
-            relativeTeiId = rel.trackedEntityInstanceB;
-        }
-        else{
-            relativeTeiId = rel.trackedEntityInstanceA;
-        }          
     
-        $location.path('/dashboard').search({tei: relativeTeiId, program: dashboardProgram}); 
+        $location.path('/dashboard').search({tei: teiId, program: dashboardProgram}); 
         $route.reload();                                 
+    };
+    
+    var setRelationships = function(){
+        $scope.relatedTeis = [];
+        angular.forEach($scope.selectedTei.relationships, function(rel){            
+            var teiId = rel.trackedEntityInstanceA;
+            var relName = $scope.relationships[rel.relationship].aIsToB;
+            if($scope.selectedTei.trackedEntityInstance === rel.trackedEntityInstanceA){
+                teiId = rel.trackedEntityInstanceB;
+                relName = $scope.relationships[rel.relationship].bIsToA;
+            }
+            var relative = {trackedEntityInstance: teiId, relName: relName, relId: rel.relationship};
+            $scope.relatedTeis.push(relative);
+            
+            /*TEIService.get(teiId, $scope.optionSets).then(function(tei){               
+               var relative = tei.data;
+               relative.relName = relName;
+               relative.relId = rel.relationship;               
+               $scope.relatedTeis.push(relative);
+            });*/
+        });
     };
 })
 
@@ -294,7 +302,7 @@ trackerCapture.controller('RelationshipController',
             }
             
             //process tei grid
-            $scope.trackedEntityList = TEIGridService.format(data,false, null);
+            $scope.trackedEntityList = TEIGridService.format(data,false, $scope.optionSets);
             $scope.showTrackedEntityDiv = true;
             $scope.teiFetched = true;            
         });
@@ -385,7 +393,7 @@ trackerCapture.controller('RelationshipController',
                 $scope.selectedTei.relationships = [relationship];
             }
             
-            TEIService.update($scope.selectedTei).then(function(response){
+            TEIService.update($scope.selectedTei, $scope.optionSets).then(function(response){
                 if(response.status !== 'SUCCESS'){//update has failed
                     var dialogOptions = {
                             headerText: 'relationship_error',
