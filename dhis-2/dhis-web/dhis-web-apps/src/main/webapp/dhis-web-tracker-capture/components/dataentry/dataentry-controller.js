@@ -40,7 +40,7 @@ trackerCapture.controller('DataEntryController',
     $scope.showEventColors = false;
     
     //listen for the selected items
-    $scope.$on('dashboardWidgets', function() {  
+    $scope.$on('dashboardWidgets', function() {        
         $scope.showDataEntryDiv = false;
         $scope.showEventCreationDiv = false;
         $scope.showDummyEventDiv = false;        
@@ -71,20 +71,17 @@ trackerCapture.controller('DataEntryController',
                     $scope.selectedProgramWithStage[stage.id] = stage;
                 });
                 
-                $scope.getEvents();
-                
+                $scope.getEvents();                
             });
         }
     });
     
-    $scope.getEvents = function(){        
-        $scope.dhis2Events = '';
-        DHIS2EventFactory.getEventsByProgram($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id).then(function(data){
-            $scope.dhis2Events = data;
-            if(angular.isObject($scope.dhis2Events)){
-                angular.forEach($scope.dhis2Events, function(dhis2Event){                    
+    $scope.getEvents = function(){
+        $scope.dhis2Events = [];
+        DHIS2EventFactory.getEventsByProgram($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id).then(function(events){
+            if(angular.isObject(events)){
+                angular.forEach(events, function(dhis2Event){                    
                     if(dhis2Event.enrollment === $scope.selectedEnrollment.enrollment){
-                        
                         if(dhis2Event.notes){
                             dhis2Event.notes = orderByFilter(dhis2Event.notes, '-storedDate');            
                             angular.forEach(dhis2Event.notes, function(note){
@@ -111,13 +108,14 @@ trackerCapture.controller('DataEntryController',
                                 $scope.currentEvent = dhis2Event;                                
                                 $scope.showDataEntry($scope.currentEvent, true);
                             }
-                        } 
+                        }
+                        
+                        $scope.dhis2Events.push(dhis2Event);
                     }
                 });
-                
-                $scope.dhis2Events = orderByFilter($scope.dhis2Events, '-sortingDate');
             }
             
+            $scope.dhis2Events = orderByFilter($scope.dhis2Events, '-sortingDate');            
             $scope.dummyEvents = $scope.checkForEventCreation($scope.dhis2Events, $scope.selectedProgram);
         });          
     };
