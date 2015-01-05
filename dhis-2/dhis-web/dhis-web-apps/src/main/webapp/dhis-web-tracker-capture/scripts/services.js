@@ -368,7 +368,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service for getting tracked entity instances */
-.factory('TEIService', function($http, $q, AttributesFactory, OptionSetService, DateUtils) {
+.factory('TEIService', function($http, $q, AttributesFactory, OptionSetService, CurrentSelection, DateUtils) {
 
     return {        
         convertFromApiToUser: function(promise, optionSets){            
@@ -527,29 +527,31 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             }       
             return def.promise;
         },
-        reconstructForWebApi: function(tei, attributes, attributesById, optionSets){
+        reconstructForWebApi: function(attributes, attributesById, optionSets){
+            
             var registrationAttributes = [];
             var formEmpty = true;
-            angular.forEach(attributes, function(att){            
-                if(att.valueType === 'trueOnly'){ 
-                    if(!tei[att.id]){
+            angular.forEach(attributes, function(att){
+                if(att.valueType === 'trueOnly'){
+                    if(att.value){
                         registrationAttributes.push({attribute: att.id, value: ''});
-                        formEmpty = false;                    
                     }
                     else{
                         registrationAttributes.push({attribute: att.id, value: 'true'});
-                        formEmpty = false;
                     }
+                    
+                    formEmpty = false;
                 }            
                 else{
-                    if(tei[att.id] !== '' && tei[att.id]){
-
-                        var val = tei[att.id];                    
+                    var val = att.value;
+                    if(val){
                         if(att.valueType === 'date'){   
                             val = DateUtils.formatFromUserToApi(val);
-                        }   
-
-                        if(att.valueType === 'optionSet' && attributesById[att.id] && attributesById[att.id].optionSet && optionSets[attributesById[att.id].optionSet.id]){                        
+                        }
+                        if(att.valueType === 'optionSet' && 
+                                attributesById[att.id] && 
+                                attributesById[att.id].optionSet && 
+                                optionSets[attributesById[att.id].optionSet.id]){                        
                             val = OptionSetService.getCode(optionSets[attributesById[att.id].optionSet.id].options, val);
                         }
 
@@ -951,28 +953,34 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 .service('CurrentSelection', function(){
     this.currentSelection = '';
     this.relationshipInfo = '';
+    this.optionSets = null;
     
     this.set = function(currentSelection){  
         this.currentSelection = currentSelection;        
-    };
-    
+    };    
     this.get = function(){
         return this.currentSelection;
     };
     
     this.setRelationshipInfo = function(relationshipInfo){  
         this.relationshipInfo = relationshipInfo;        
-    };
-    
+    };    
     this.getRelationshipInfo = function(){
         return this.relationshipInfo;
     };
+    
+    this.setOptionSets = function(optionSets){
+        this.optionSets = optionSets;
+    };
+    this.getOptionSets = function(){
+        return this.optionSets;
+    };    
 })
 
-.service('TEIGridService', function(OrgUnitService, DateUtils, $translate, AttributesFactory){
+.service('TEIGridService', function(OrgUnitService, OptionSetService, DateUtils, $translate, AttributesFactory){
     
     return {
-        format: function(grid, map, optionNamesByCode){
+        format: function(grid, map, optionSets){
             if(!grid || !grid.rows){
                 return;
             }
@@ -1014,11 +1022,13 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                             if(row[i] && row[i] !== ''){
                                 isEmpty = false;
                                 var val = row[i];
+                                
                                 if(attributes[grid.headers[i].name] && 
                                         attributes[grid.headers[i].name].valueType === 'optionSet' && 
-                                        optionNamesByCode &&    
-                                        optionNamesByCode[  '"' + val + '"']){
-                                    val = optionNamesByCode[  '"' + val + '"'];
+                                        optionSets &&    
+                                        attributes[grid.headers[i].name].optionSet &&
+                                        optionSets[attributes[grid.headers[i].name].optionSet.id] ){
+                                    val = OptionSetService.getName(optionSets[attributes[grid.headers[i].name].optionSet.id].options, val);
                                 }
                                 if(attributes[grid.headers[i].name] && attributes[grid.headers[i].name].valueType === 'date'){                                    
                                     val = DateUtils.formatFromApiToUser( val );
@@ -1035,7 +1045,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                             else{
                                 entityList.push(entity);
                             }
-                        }        
+                        }
                     });                
                 });
             }); 

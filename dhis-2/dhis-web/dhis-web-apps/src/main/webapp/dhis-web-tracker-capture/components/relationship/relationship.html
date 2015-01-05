@@ -19,6 +19,11 @@
 
         <div ng-show="selectedTei" class="remove-default-padding">
             <table class="table table-striped dhis2-table-hover">
+                <tr ng-click="showDashboard(rel.trackedEntityInstance, rel.relId)" ng-repeat="rel in relatedTeis" title="{{'go_to_dashboard'| translate}}">
+                    <td>{{rel.relName}}</td> 
+                </tr>
+            </table>
+            <!--<table class="table table-striped dhis2-table-hover">
                 <tr ng-click="showDashboard(rel)" ng-repeat="rel in selectedTei.relationships" title="{{'go_to_dashboard'| translate}}">
                      <td>                        
                         <d2-pop-over content="relatedTeis[rel.trackedEntityInstanceB]" template="popover.html" details="{{'details'| translate}}" ng-if="selectedTei.trackedEntityInstance === rel.trackedEntityInstanceA">
@@ -29,7 +34,7 @@
                             <div>{{relationships[rel.relationship].aIsToB}}</div>
                         </d2-pop-over>                
                         
-                        <script type="text/ng-template" id="popover.html">                            
+                        <script type="text/ng-template" id="popover.html">
                             <table class="table table-striped table-bordered">
                                 <tr ng-repeat="att in content.attributes">
                                     <td>
@@ -40,11 +45,10 @@
                                     </td>                                    
                                 </tr>
                             </table>
-                        </script>
-                        
+                        </script>                        
                     </td> 
                 </tr>
-            </table>
+            </table>-->
         </div>
     </div>
 </div>

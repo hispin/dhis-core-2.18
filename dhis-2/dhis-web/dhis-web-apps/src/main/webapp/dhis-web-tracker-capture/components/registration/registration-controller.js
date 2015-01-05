@@ -10,11 +10,25 @@ trackerCapture.controller('RegistrationController',
                 EnrollmentService,
                 DialogService,
                 CurrentSelection,
+                OptionSetService,
                 EventUtils,
                 DateUtils,
                 storage) {
     
     $scope.today = DateUtils.getToday();
+    
+    $scope.optionSets = CurrentSelection.getOptionSets();
+            
+    if(!$scope.optionSets){
+        $scope.optionSets = [];
+        OptionSetService.getAll().then(function(optionSets){
+            angular.forEach(optionSets, function(optionSet){                        
+                $scope.optionSets[optionSet.id] = optionSet;
+            });
+
+            CurrentSelection.setOptionSets($scope.optionSets);
+        });
+    }
     
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
     $scope.enrollment = {dateOfEnrollment: '', dateOfIncident: ''};   
@@ -73,26 +87,11 @@ trackerCapture.controller('RegistrationController',
         
         //get tei attributes and their values
         //but there could be a case where attributes are non-mandatory and
-        //registration form comes empty, in this case enforce at least one value
-        $scope.valueExists = false;          
-        var result = TEIService.reconstructForWebApi($scope.attributes, $scope.attributesById, $scope.optionSets);
-        $scope.valueExists = result.formEmpty;
-        /*angular.forEach($scope.attributes, function(attribute){            
-            var val = attribute.value;
-            if(!angular.isUndefined(val)){
-                
-                if(attribute.valueType === 'date'){
-                    val = DateUtils.formatFromUserToApi(val);
-                }
-                if(attribute.valueType === 'optionSet' && $scope.optionSets.optionCodesByName[  '"' + val + '"']){   
-                    val = $scope.optionSets.optionCodesByName[  '"' + val + '"'];
-                }
-                registrationAttributes.push({attribute: attribute.id, value: val});
-                $scope.valueExists = true;
-            } 
-        });*/       
+        //registration form comes empty, in this case enforce at least one value        
+        var result = TEIService.reconstructForWebApi($scope.attributes, $scope.attributesById, $scope.optionSets);        
+        $scope.formEmpty = result.formEmpty;
         
-        if(!$scope.valueExists){
+        if($scope.formEmpty){
             //registration form is empty
             return false;
         }

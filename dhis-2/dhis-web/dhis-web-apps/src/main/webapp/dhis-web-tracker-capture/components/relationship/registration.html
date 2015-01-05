@@ -56,17 +56,17 @@
                                        name="foo"
                                        class="form-control"
                                        ng-model="attribute.value"                                                 
-                                       typeahead="option.name as option.name for option in optionSets.optionSets[attribute.optionSet.id].options | filter:$viewValue | limitTo:20" 
+                                       typeahead="option.name as option.name for option in optionSets[attribute.optionSet.id].options | filter:$viewValue | limitTo:20" 
                                        typeahead-open-on-focus
                                        ng-required="attribute.mandatory"/>
                                 </div>
                                 <div ng-if="selectedProgramForRelative">
-                                    <div ng-if="!selectedProgramForRelative.dataEntryMethod || optionSets.optionSets[attribute.optionSet.id].options.length >= 7">
+                                    <div ng-if="!selectedProgramForRelative.dataEntryMethod || optionSets[attribute.optionSet.id].options.length >= 7">
                                         <input type="text" 
                                            name="foo"
                                            class="form-control"
                                            ng-model="attribute.value"                                                 
-                                           typeahead="option.name as option.name for option in optionSets.optionSets[attribute.optionSet.id].options | filter:$viewValue | limitTo:20" 
+                                           typeahead="option.name as option.name for option in optionSets[attribute.optionSet.id].options | filter:$viewValue | limitTo:20" 
                                            typeahead-open-on-focus
                                            typeahead-editable=false
                                            ng-required="attribute.mandatory"/>
@@ -79,7 +79,7 @@
                                                 ng-model="attribute.value"
                                                 value=""> {{'no_value' | translate}}<br>                                       
                                         </label><br>
-                                        <span ng-repeat="option in optionSets.optionSets[attribute.optionSet.id].options">
+                                        <span ng-repeat="option in optionSets[attribute.optionSet.id].options">
                                             <label>
                                                 <input type="radio"
                                                     name={{attribute.id}}
