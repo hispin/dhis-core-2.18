@@ -119,10 +119,12 @@ var d2Directives = angular.module('d2Directives', [])
             var numberType = attrs.numberType;
             
             ctrl.$parsers.unshift(function(value) {
-                var isValid = checkValidity(numberType, value);
-                ctrl.$setValidity(fieldName, isValid);
-                return isValid ? value : undefined;
-            });            
+            	if(value){
+                    var isValid = checkValidity(numberType, value);
+                	ctrl.$setValidity(fieldName, isValid);
+                	return isValid ? value : undefined;
+                }
+            });
            
             ctrl.$formatters.unshift(function(value) {
                 if(value){
