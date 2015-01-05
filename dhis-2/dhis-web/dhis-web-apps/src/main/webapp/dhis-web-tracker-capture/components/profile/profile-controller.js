@@ -24,7 +24,7 @@ trackerCapture.controller('ProfileController',
 
         $scope.trackedEntity = selections.te;
         $scope.selectedProgram = selections.pr;   
-        $scope.selectedEnrollment = selections.enrollment;
+        $scope.selectedEnrollment = selections.selectedEnrollment;
         $scope.optionSets = selections.optionSets;
 
         //display only those attributes that belong to the selected program

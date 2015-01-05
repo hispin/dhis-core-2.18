@@ -27,7 +27,7 @@ trackerCapture.controller('RelationshipController',
         $scope.optionSets = $scope.selections.optionSets;
         $scope.selectedTei = angular.copy($scope.selections.tei);        
         $scope.trackedEntity = $scope.selections.te;
-        $scope.selectedEnrollment = $scope.selections.enrollment;
+        $scope.selectedEnrollment = $scope.selections.selectedEnrollment;
         $scope.selectedProgram = $scope.selections.pr;
         $scope.programs = $scope.selections.pr;
         

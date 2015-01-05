@@ -62,7 +62,7 @@ trackerCapture.controller('DashboardController',
 
                         var selectedEnrollment = null;
                         if(response.enrollments.length === 1 && response.enrollments[0].status === 'ACTIVE'){
-                            selectedEnrollment = response.enrollments[0];                            
+                            selectedEnrollment = response.enrollments[0];
                         }
                         
                         ProgramFactory.getAll().then(function(programs){
@@ -81,7 +81,7 @@ trackerCapture.controller('DashboardController',
                             }); 
 
                             //broadcast selected items for dashboard controllers
-                            CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, prs: $scope.programs, pr: $scope.selectedProgram, enrollment: selectedEnrollment, optionSets: $scope.optionSets});
+                            CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, prs: $scope.programs, pr: $scope.selectedProgram, enrollments: response.enrollments, selectedEnrollment: selectedEnrollment, optionSets: $scope.optionSets});
                             $scope.broadCastSelections();                        
                         });
                     });
@@ -109,8 +109,8 @@ trackerCapture.controller('DashboardController',
         $scope.selectedTei = selections.tei;
         $scope.trackedEntity = selections.te;
         $scope.optionSets = selections.optionSets;
-        
-        CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, prs: $scope.programs, pr: $scope.selectedProgram, enrollment: null, optionSets: $scope.optionSets});
+      
+        CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, prs: $scope.programs, pr: $scope.selectedProgram, enrollments: selections.enrollments, selectedEnrollment: null, optionSets: $scope.optionSets});
         $timeout(function() { 
             $rootScope.$broadcast('selectedItems', {programExists: $scope.programs.length > 0});            
         }, 100); 

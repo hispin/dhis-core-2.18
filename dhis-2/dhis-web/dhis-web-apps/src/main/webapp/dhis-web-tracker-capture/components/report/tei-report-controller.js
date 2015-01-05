@@ -32,7 +32,7 @@ trackerCapture.controller('TeiReportController',
         $scope.selectedTei = selections.tei;  
         $scope.selectedEntity = selections.te;
         $scope.selectedProgram = selections.pr;        
-        $scope.selectedEnrollment = selections.enrollment;
+        $scope.selectedEnrollment = selections.selectedEnrollment;
         $scope.optionSets = selections.optionSets;
     
         if($scope.selectedTei && $scope.selectedOrgUnit){            
