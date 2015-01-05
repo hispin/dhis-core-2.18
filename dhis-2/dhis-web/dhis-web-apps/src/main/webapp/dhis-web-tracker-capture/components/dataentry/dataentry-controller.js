@@ -56,10 +56,10 @@ trackerCapture.controller('DataEntryController',
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');
         $scope.selectedEntity = selections.tei;      
         $scope.selectedProgram = selections.pr;        
-        $scope.selectedEnrollment = selections.enrollment;   
+        $scope.selectedEnrollment = selections.selectedEnrollment;   
         $scope.optionSets = selections.optionSets;
-        $scope.selectedProgramWithStage = [];
         
+        $scope.selectedProgramWithStage = [];        
         if($scope.selectedOrgUnit && $scope.selectedProgram && $scope.selectedEntity && $scope.selectedEnrollment){
             
             ProgramStageFactory.getByProgram($scope.selectedProgram).then(function(stages){
@@ -79,7 +79,7 @@ trackerCapture.controller('DataEntryController',
     
     $scope.getEvents = function(){        
         $scope.dhis2Events = '';
-        DHIS2EventFactory.getEventsByStatus($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id, 'ACTIVE').then(function(data){
+        DHIS2EventFactory.getEventsByProgram($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id).then(function(data){
             $scope.dhis2Events = data;
             if(angular.isObject($scope.dhis2Events)){
                 angular.forEach($scope.dhis2Events, function(dhis2Event){                    
@@ -300,9 +300,9 @@ trackerCapture.controller('DataEntryController',
         
         $scope.currentStage = $scope.selectedProgramWithStage[$scope.currentEvent.programStage];
 
-        $scope.programStageDataElements = [];                  
+        $scope.prStDes = [];                  
         angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
-            $scope.programStageDataElements[prStDe.dataElement.id] = prStDe; 
+            $scope.prStDes[prStDe.dataElement.id] = prStDe; 
         }); 
 
         $scope.customForm = CustomFormService.getForProgramStage($scope.currentStage);
@@ -337,13 +337,13 @@ trackerCapture.controller('DataEntryController',
     };
     
     $scope.saveDatavalue = function(prStDe){
-        
+
         //check for input validity
         $scope.dataEntryOuterForm.submitted = true;        
         if( $scope.dataEntryOuterForm.$invalid ){            
             return false;
         }
-         
+
         //input is valid        
         var value = $scope.currentEvent[prStDe.dataElement.id];
         

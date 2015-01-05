@@ -222,6 +222,8 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                                             ' d2-number-validation ' +
                                             ' number-type="' + programStageDataElements[deId].dataElement.numberType + '" ' +
                                             ' ng-model="currentEvent.' + deId + '"' +
+                                            ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +
+                                            ' ng-blur="saveDatavalue(prStDes.'+ deId + ')"' + 
                                             ' ng-required="prStDes.' + deId + '.compulsory"> ' + 
                                             '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'value_must_be\'| translate}} - {{ "' + programStageDataElements[deId].dataElement.numberType + '" | translate}}</span>';                                     
                         }
@@ -239,6 +241,8 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                                             ' d2-typeahead-validation ' +
                                             ' class="typeahead" ' +
                                             ' placeholder="&#xf0d7;&nbsp;&nbsp;" ' +
+                                            ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +                                            
+                                            ' ng-blur="saveDatavalue(prStDes.'+ deId + ')"' +
                                             ' typeahead-open-on-focus ng-required="prStDes.'+deId+'.compulsory"> ' +
                                             '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'option_required\'| translate}}</span>';
                         	}
@@ -248,6 +252,8 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                                             ' d2-validation ' +
                                             ' ng-model="currentEvent.' + deId + '" ' +
                                             ' ng-disabled="currentEvent[uid] == \'uid\'" ' +
+                                            ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +
+                                            ' ng-blur="saveDatavalue(prStDes.'+ deId + ')"' +
                                             ' ng-required="prStDes.' + deId + '.compulsory"> ' +
                                             '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'string_required\'| translate}}</span>';                                     
                         	}
@@ -257,6 +263,8 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                                             this.getAttributesAsString(attributes) +
                                             ' d2-validation ' +
                                             ' ng-model="currentEvent.' + deId + '" ' +
+                                            ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +
+                                            ' ng-change="saveDatavalue(prStDes.'+ deId + ')"' + 
                                             ' ng-required="prStDes.' + deId + '.compulsory">' + 
                                             '<option value="">{{\'please_select\'| translate}}</option>' +
                                             '<option value="false">{{\'no\'| translate}}</option>' + 
@@ -271,6 +279,8 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                                             ' ng-model="currentEvent.' + deId + '"' +
                                             ' d2-date ' +
                                             ' max-date="' + maxDate + '"' + '\'' +
+                                            ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +
+                                            ' blur-or-change="saveDatavalue(prStDes.'+ deId + ')"' + 
                                             ' ng-required="prStDes.' + deId + '.compulsory"> ' +
                                             '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'date_required\'| translate}}</span>'; 
                         }
@@ -279,6 +289,8 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                                             this.getAttributesAsString(attributes) +
                                             ' d2-validation ' +
                                             ' ng-model="currentEvent.' + deId + '"' +
+                                            ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +
+                                            ' ng-change="saveDatavalue(prStDes.'+ deId + ')"' +
                                             ' ng-required="prStDes.' + deId + '.compulsory"> ' +
                                             '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'required\'| translate}}</span>';
                         }

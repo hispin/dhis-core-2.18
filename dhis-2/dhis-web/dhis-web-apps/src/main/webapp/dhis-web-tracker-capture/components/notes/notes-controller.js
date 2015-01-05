@@ -24,8 +24,8 @@ trackerCapture.controller('NotesController',
         $scope.selectedProgram = selections.pr;
         
         var selections = CurrentSelection.get();
-        if(selections.enrollment){
-            EnrollmentService.get(selections.enrollment.enrollment).then(function(data){    
+        if(selections.selectedEnrollment){
+            EnrollmentService.get(selections.selectedEnrollment.enrollment).then(function(data){    
                 $scope.selectedEnrollment = data;   
                 if(!angular.isUndefined( $scope.selectedEnrollment.notes)){
                     $scope.selectedEnrollment.notes = orderByFilter($scope.selectedEnrollment.notes, '-storedDate');            

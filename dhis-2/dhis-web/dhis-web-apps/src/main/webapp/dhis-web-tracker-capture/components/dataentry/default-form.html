@@ -25,6 +25,7 @@
                                    ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
                                    ng-model="currentEvent[prStDe.dataElement.id]" 
                                    ng-required={{prStDe.compulsory}}
+                                   ng-disabled="currentEvent.enrollmentStatus === 'COMPLETED'" 
                                    ng-blur="saveDatavalue(prStDe)" 
                                    name="foo"/>
                             <span ng-show="dataEntryOuterForm.submitted && dataEntryInnerForm.foo.$invalid" class="error">{{'number_required'| translate}}</span>
@@ -36,6 +37,7 @@
                                         ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
                                         ng-model="currentEvent[prStDe.dataElement.id]" 
                                         ng-required={{prStDe.compulsory}} 
+                                        ng-disabled="currentEvent.enrollmentStatus === 'COMPLETED'" 
                                         typeahead="option.name as option.name for option in optionSets[prStDe.dataElement.optionSet.id].options | filter:$viewValue | limitTo:20" 
                                         typeahead-open-on-focus 
                                         typeahead-editable="false"
@@ -49,6 +51,7 @@
                                             ng-class='getInputNotifcationClass(prStDe.dataElement.id,true)'
                                             name={{currentEvent[prStDe.dataElement.id]}}
                                             ng-required={{prStDe.compulsory}} 
+                                            ng-disabled="currentEvent.enrollmentStatus === 'COMPLETED'" 
                                             ng-model="currentEvent[prStDe.dataElement.id]"
                                             ng-change="saveDatavalue(prStDe)" 
                                             value=""> {{'no_value' | translate}}<br>                                       
@@ -59,6 +62,7 @@
                                                 ng-class='getInputNotifcationClass(prStDe.dataElement.id,true)'
                                                 name={{currentEvent[prStDe.dataElement.id]}}
                                                 ng-required={{prStDe.compulsory}} 
+                                                ng-disabled="currentEvent.enrollmentStatus === 'COMPLETED'" 
                                                 ng-model="currentEvent[prStDe.dataElement.id]"
                                                 ng-change="saveDatavalue(prStDe)" 
                                                 value={{option.name}}> {{option.name}}
@@ -70,7 +74,8 @@
                                 <input type="text"
                                     ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
                                     ng-model="currentEvent[prStDe.dataElement.id]" 
-                                    ng-required={{prStDe.compulsory}}
+                                    ng-required={{prStDe.compulsory}} 
+                                    ng-disabled="currentEvent.enrollmentStatus === 'COMPLETED'" 
                                     ng-blur="saveDatavalue(prStDe)" 
                                     name="foo"/>
                             </div>
@@ -79,6 +84,7 @@
                             <select ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
                                     ng-model="currentEvent[prStDe.dataElement.id]" 
                                     ng-required={{prStDe.compulsory}} 
+                                    ng-disabled="currentEvent.enrollmentStatus === 'COMPLETED'" 
                                     ng-change="saveDatavalue(prStDe)" 
                                     name="foo">
                                 <option value="">{{'please_select'| translate}}</option>                        
@@ -95,6 +101,7 @@
                                    ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
                                    ng-model="currentEvent[prStDe.dataElement.id]"
                                    ng-required={{prStDe.compulsory}}  
+                                   ng-disabled="currentEvent.enrollmentStatus === 'COMPLETED'" 
                                    blur-or-change="saveDatavalue(prStDe)"
                                    name="foo"/>
                         </div>
@@ -102,7 +109,8 @@
                             <input type="checkbox"                         
                                    ng-class='getInputNotifcationClass(prStDe.dataElement.id,false)'
                                    ng-model="currentEvent[prStDe.dataElement.id]"                                                               
-                                   ng-required={{prStDe.compulsory}}
+                                   ng-required={{prStDe.compulsory}} 
+                                   ng-disabled="currentEvent.enrollmentStatus === 'COMPLETED'" 
                                    ng-change="saveDatavalue(prStDe)" 
                                    name="foo"/>
                         </div>
