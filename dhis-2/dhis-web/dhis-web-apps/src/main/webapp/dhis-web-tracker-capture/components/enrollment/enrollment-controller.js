@@ -78,10 +78,11 @@ trackerCapture.controller('EnrollmentController',
                 $scope.loadEnrollmentDetails(selectedEnrollment);
             }
             else{
-                $scope.selectedEnrollment = null;
-                $scope.broadCastSelections('dashboardWidgets');
+                $scope.selectedEnrollment = null;                
             }
         }
+        
+        $scope.broadCastSelections('dashboardWidgets');
     });
     
     $scope.loadEnrollmentDetails = function(enrollment) {        
