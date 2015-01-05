@@ -297,7 +297,11 @@ trackerCapture.controller('DataEntryController',
         $scope.currentEvent.providedElsewhere = [];
         
         $scope.currentStage = $scope.selectedProgramWithStage[$scope.currentEvent.programStage];
-
+        
+        angular.forEach($scope.currentStage.programStageSections, function(section){
+            section.open = true;
+        });
+        
         $scope.prStDes = [];                  
         angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
             $scope.prStDes[prStDe.dataElement.id] = prStDe; 
