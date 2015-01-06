@@ -29,6 +29,7 @@ package org.hisp.dhis.analytics.table;
  */
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +44,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.util.UniqueArrayList;
+import org.joda.time.DateTime;
 
 /**
  * @author Lars Helge Overland
@@ -52,22 +54,26 @@ public class PartitionUtils
     private static final YearlyPeriodType PERIODTYPE = new YearlyPeriodType();
 
     private static final String SEP = "_";
-
-    public static List<Period> getPeriods( Date earliest, Date latest )
+        
+    public static Period getPeriod( Integer year )
     {
-        List<Period> periods = new ArrayList<>();
-
-        Period period = PERIODTYPE.createPeriod( earliest );
-
-        while ( period != null && period.getStartDate().before( latest ) )
-        {
-            periods.add( period );
-            period = PERIODTYPE.getNextPeriod( period );
-        }
-
-        return periods;
+        DateTime time = new DateTime( year, 1, 1, 0, 0 );
+        
+        return PERIODTYPE.createPeriod( time.toDate() );
     }
 
+    public static Date getEarliestDate( Integer lastYears )
+    {
+        Date earliest = null;
+        
+        if ( lastYears != null )
+        {
+            earliest = new Cal().now().subtract( Calendar.YEAR, ( lastYears - 1 ) ).set( 1, 1 ).time();
+        }
+        
+        return earliest;
+    }
+    
     //TODO optimize by including required filter periods only
 
     public static Partitions getPartitions( Period period, String tablePrefix, String tableSuffix, Set<String> validPartitions )

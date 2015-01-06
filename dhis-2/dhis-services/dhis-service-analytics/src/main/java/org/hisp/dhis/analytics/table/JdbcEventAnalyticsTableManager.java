@@ -33,6 +33,7 @@ import static org.hisp.dhis.system.util.TextUtils.removeLast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -68,27 +69,32 @@ public class JdbcEventAnalyticsTableManager
 
     @Override
     @Transactional
-    public List<AnalyticsTable> getTables( Date earliest, Date latest )
+    public List<AnalyticsTable> getTables( Date earliest )
     {
-        log.info( "Get tables using earliest: " + earliest + ", latest: " + latest );
+        log.info( "Get tables using earliest: " + earliest );
 
         List<AnalyticsTable> tables = new ArrayList<>();
 
-        if ( earliest != null && latest != null )
+        List<Integer> dataYears = getDataYears( earliest );
+        
+        Collections.sort( dataYears );
+        
+        String baseName = getTableName();
+
+        for ( Integer year : dataYears )
         {
-            String baseName = getTableName();
-
-            List<Period> periods = PartitionUtils.getPeriods( earliest, latest );
-
-            for ( Period period : periods )
+            Period period = PartitionUtils.getPeriod( year );
+            
+            List<Integer> programs = getDataPrograms( period );
+            
+            for ( Integer id : programs )
             {
-                for ( Program program : programService.getAllPrograms() )
-                {
-                    AnalyticsTable table = new AnalyticsTable( baseName, null, period, program );
-                    List<String[]> dimensionColumns = getDimensionColumns( table );
-                    table.setDimensionColumns( dimensionColumns );
-                    tables.add( table );
-                }
+                Program program = programService.getProgram( id );
+                
+                AnalyticsTable table = new AnalyticsTable( baseName, null, period, program );
+                List<String[]> dimensionColumns = getDimensionColumns( table );
+                table.setDimensionColumns( dimensionColumns );
+                tables.add( table );
             }
         }
 
@@ -286,23 +292,38 @@ public class JdbcEventAnalyticsTableManager
     }
 
     @Override
-    public Date getEarliestData()
+    public List<Integer> getDataYears( Date earliest )
     {
-        final String sql = "select min(psi.executiondate) from programstageinstance psi "
-            + "where psi.executiondate is not null";
+        String sql = 
+            "select distinct(extract(year from psi.executiondate)) " +
+            "from programstageinstance psi " +
+            "where psi.executiondate is not null";
 
-        return jdbcTemplate.queryForObject( sql, Date.class );
+        if ( earliest != null )
+        {
+            sql += "and psi.executiondate >= '" + DateUtils.getMediumDateString( earliest ) + "'";
+        }
+        
+        return jdbcTemplate.queryForList( sql, Integer.class );
     }
-
-    @Override
-    public Date getLatestData()
+    
+    private List<Integer> getDataPrograms( Period period )
     {
-        final String sql = "select max(psi.executiondate) from programstageinstance psi "
-            + "where psi.executiondate is not null";
-
-        return jdbcTemplate.queryForObject( sql, Date.class );
+        final String start = DateUtils.getMediumDateString( period.getStartDate() );
+        final String end = DateUtils.getMediumDateString( period.getEndDate() );
+        
+        final String sql = 
+            "select distinct pi.programid " +
+            "from programstageinstance psi " +
+            "inner join programinstance pi on psi.programinstanceid = pi.programinstanceid " +
+            "where psi.executiondate >= '" + start + "' " + 
+            "and psi.executiondate <= '" + end + "' " +
+            "and psi.organisationunitid is not null " +
+            "and psi.executiondate is not null";
+        
+        return jdbcTemplate.queryForList( sql, Integer.class );
     }
-
+    
     @Override
     @Async
     public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<AnalyticsTable> tables,

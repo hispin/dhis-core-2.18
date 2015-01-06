@@ -47,21 +47,12 @@ public interface AnalyticsTableManager
     public static final String EVENT_ANALYTICS_TABLE_NAME = "analytics_event";
     
     /**
-     * Returns analytics tables which yearly partitions. Yearly partitions will
-     * be generated starting from the earliest existing data value until the
-     * latest existing data value.
-     * 
-     * @param lastYears the number of last years of data to include, null if all years.
-     */
-    List<AnalyticsTable> getTables( Integer lastYears );
-    
-    /**
      * Returns analytics tables which yearly partitions.
      * 
      * @param earliest the start date for the first year to generate table partitions.
      * @param latest the end date for the last year to generate table partitions.
      */
-    List<AnalyticsTable> getTables( Date earliest, Date latest );
+    List<AnalyticsTable> getTables( Date earliest );
     
     /**
      * Checks if the database content is in valid state for analytics table generation.
@@ -111,22 +102,11 @@ public interface AnalyticsTableManager
     Future<?> populateTableAsync( ConcurrentLinkedQueue<AnalyticsTable> tables );    
 
     /**
-     * Retrieves the start date of the period of the earliest data value row.
-     */
-    Date getEarliestData();
-    
-    /**
-     * Retrieves the end date of the period of the latest data value row.
-     */
-    Date getLatestData();
-    
-    /**
-     * Checks whether the given table has no rows, if so drops the table. Returns
-     * true if the table was empty and pruned, if not false.
+     * Returns all years for which it exists data values.
      * 
-     * @param table the analytics table.
+     * @param earliest the earliest date to include as data year, null if no restriction.
      */
-    boolean pruneTable( AnalyticsTable table );
+    List<Integer> getDataYears( Date earliest );
     
     /**
      * Drops the given table.

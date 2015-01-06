@@ -192,25 +192,22 @@ public class JdbcCompletenessTableManager
     }
 
     @Override
-    public Date getEarliestData()
+    public List<Integer> getDataYears( Date earliest )
     {
-        final String sql = "select min(pe.startdate) from completedatasetregistration cdr " +
-            "join period pe on cdr.periodid=pe.periodid " +
+        String sql = 
+            "select distinct(extract(year from pe.startdate)) " +
+            "from completedatasetregistration cdr " +
+            "inner join period pe on cdr.periodid=pe.periodid " +
             "where pe.startdate is not null";
-        
-        return jdbcTemplate.queryForObject( sql, Date.class );
-    }
 
-    @Override
-    public Date getLatestData()
-    {
-        final String sql = "select max(pe.enddate) from completedatasetregistration cdr " +
-            "join period pe on cdr.periodid=pe.periodid " +
-            "where pe.enddate is not null";
+        if ( earliest != null )
+        {
+            sql += "and pe.startdate >= '" + DateUtils.getMediumDateString( earliest ) + "'";
+        }
         
-        return jdbcTemplate.queryForObject( sql, Date.class );
+        return jdbcTemplate.queryForList( sql, Integer.class );
     }
-
+    
     @Override
     @Async
     public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<AnalyticsTable> tables, Collection<String> dataElements, int aggregationLevel )

@@ -49,7 +49,7 @@ public class JdbcCompletenessTargetTableManager
 {
     @Override
     @Transactional
-    public List<AnalyticsTable> getTables( Integer lastYears )
+    public List<AnalyticsTable> getTables( Date earliest )
     {
         List<AnalyticsTable> tables = new ArrayList<>();
         tables.add( new AnalyticsTable( getTableName(), getDimensionColumns( null ) ) );
@@ -173,17 +173,11 @@ public class JdbcCompletenessTargetTableManager
     }
 
     @Override
-    public Date getEarliestData()
+    public List<Integer> getDataYears( Date earliest )
     {
         return null; // Not relevant
     }
-
-    @Override
-    public Date getLatestData()
-    {
-        return null; // Not relevant
-    }
-
+    
     @Override
     @Async
     public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<AnalyticsTable> tables, Collection<String> dataElements, int aggregationLevel )

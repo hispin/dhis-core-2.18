@@ -341,23 +341,20 @@ public class JdbcAnalyticsTableManager
     }
     
     @Override
-    public Date getEarliestData()
+    public List<Integer> getDataYears( Date earliest )
     {
-        final String sql = "select min(pe.startdate) from datavalue dv " +
-            "join period pe on dv.periodid=pe.periodid " +
-            "where pe.startdate is not null";
+        String sql = 
+            "select distinct(extract(year from pe.startdate)) " +
+            "from datavalue dv " +
+            "inner join period pe on dv.periodid=pe.periodid " +
+            "where pe.startdate is not null ";
         
-        return jdbcTemplate.queryForObject( sql, Date.class );
-    }
-
-    @Override
-    public Date getLatestData()
-    {
-        final String sql = "select max(pe.enddate) from datavalue dv " +
-            "join period pe on dv.periodid=pe.periodid " + 
-            "where pe.enddate is not null ";
+        if ( earliest != null )
+        {
+            sql += "and pe.startdate >= '" + DateUtils.getMediumDateString( earliest ) + "'";
+        }
         
-        return jdbcTemplate.queryForObject( sql, Date.class );
+        return jdbcTemplate.queryForList( sql, Integer.class );
     }
     
     @Override

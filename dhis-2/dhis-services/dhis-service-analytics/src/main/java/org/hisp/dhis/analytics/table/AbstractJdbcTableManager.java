@@ -29,7 +29,7 @@ package org.hisp.dhis.analytics.table;
  */
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -49,13 +49,11 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.timer.SystemTimer;
 import org.hisp.dhis.system.timer.Timer;
 import org.hisp.dhis.system.util.ListUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -73,9 +71,6 @@ public abstract class AbstractJdbcTableManager
     public static final String PREFIX_ORGUNITGROUPSET = "ougs_";
     public static final String PREFIX_ORGUNITLEVEL = "uidlevel";
     public static final String PREFIX_INDEX = "in_";
-    
-    private static Date MIN_EARLIEST_DATE = new DateTime( 1800, 1, 1, 0, 0 ).toDate();
-    private static Date MAX_LATEST_DATE = new DateTime( 2100, 1, 1, 0, 0 ).toDate();
     
     @Autowired
     protected OrganisationUnitService organisationUnitService;
@@ -124,45 +119,23 @@ public abstract class AbstractJdbcTableManager
 
     @Override
     @Transactional
-    public List<AnalyticsTable> getTables( Integer lastYears )
+    public List<AnalyticsTable> getTables( Date earliest )
     {
-        Date earliest;
-        
-        if ( lastYears != null )
-        {
-            earliest = new Cal().now().subtract( Calendar.YEAR, ( lastYears - 1 ) ).set( 1, 1 ).time();
-        }
-        else
-        {
-            earliest = getEarliestData();
-        }
-        
-        Date latest = getLatestData();
-        
-        earliest = earliest != null && earliest.before( MIN_EARLIEST_DATE ) ? MIN_EARLIEST_DATE : earliest;
-        latest = latest != null && latest.after( MAX_LATEST_DATE ) ? MAX_LATEST_DATE : latest;
-        
-        return getTables( earliest, latest );
-    }
-
-    @Override
-    @Transactional
-    public List<AnalyticsTable> getTables( Date earliest, Date latest )
-    {
-        log.info( "Get tables using earliest: " + earliest + ", latest: " + latest );
+        log.info( "Get tables using earliest: " + earliest );
 
         List<AnalyticsTable> tables = new ArrayList<>();
         
-        if ( earliest != null && latest != null )
-        {        
-            String baseName = getTableName();
+        List<Integer> dataYears = getDataYears( earliest );
+
+        Collections.sort( dataYears );
+        
+        String baseName = getTableName();
+        
+        for ( Integer year : dataYears )
+        {
+            Period period = PartitionUtils.getPeriod( year );
             
-            List<Period> periods = PartitionUtils.getPeriods( earliest, latest );
-    
-            for ( Period period : periods )
-            {
-                tables.add( new AnalyticsTable( baseName, getDimensionColumns( null ), period ) );
-            }
+            tables.add( new AnalyticsTable( baseName, getDimensionColumns( null ), period ) );
         }
         
         return tables;
@@ -214,25 +187,6 @@ public abstract class AbstractJdbcTableManager
         final String sqlAlter = "alter table " + tempTable + " rename to " + realTable;
         
         executeSilently( sqlAlter );
-    }
-
-    @Override
-    public boolean pruneTable( AnalyticsTable table )
-    {
-        String tableName = table.getTempTableName();
-        
-        if ( !hasRows( tableName ) )
-        {
-            final String sqlDrop = "drop table " + tableName;
-            
-            executeSilently( sqlDrop );
-            
-            log.info( "Drop SQL: " + sqlDrop );
-            
-            return true;
-        }
-        
-        return false;
     }
 
     @Override
@@ -345,7 +299,7 @@ public abstract class AbstractJdbcTableManager
      */
     protected void populateAndLog( String sql, String tableName )
     {
-        log.info( "Populate SQL for " + tableName + ": " + sql );
+        log.info( "Populating " + tableName );
 
         Timer t = new SystemTimer().start();
         

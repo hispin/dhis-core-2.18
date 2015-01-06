@@ -30,7 +30,7 @@ package org.hisp.dhis.analytics.table;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
@@ -111,7 +111,9 @@ public class DefaultAnalyticsTableService
             return;
         }
         
-        final List<AnalyticsTable> tables = tableManager.getTables( lastYears );
+        Date earliest = PartitionUtils.getEarliestDate( lastYears );
+        
+        final List<AnalyticsTable> tables = tableManager.getTables( earliest );
         
         clock.logTime( "Partition tables: " + tables + ", last years: " + lastYears );        
         notifier.notify( taskId, "Creating analytics tables, processes: " + processNo + ", org unit levels: " + orgUnitLevelNo );
@@ -124,11 +126,6 @@ public class DefaultAnalyticsTableService
         populateTables( tables );
         
         clock.logTime( "Populated analytics tables" );
-        notifier.notify( taskId, "Pruned analytics tables" );
-        
-        pruneTables( tables );
-        
-        clock.logTime( "Pruned analytics tables" );
         notifier.notify( taskId, "Applying aggregation levels" );
         
         applyAggregationLevels( tables );
@@ -216,20 +213,7 @@ public class DefaultAnalyticsTableService
         
         ConcurrentUtils.waitForCompletion( futures );
     }
-    
-    private void pruneTables( List<AnalyticsTable> tables )
-    {
-        Iterator<AnalyticsTable> iterator = tables.iterator();
         
-        while ( iterator.hasNext() )
-        {
-            if ( tableManager.pruneTable( iterator.next() ) )
-            {
-                iterator.remove();
-            }
-        }
-    }
-    
     private void applyAggregationLevels( List<AnalyticsTable> tables )
     {
         int maxLevels = organisationUnitService.getMaxOfOrganisationUnitLevels();
