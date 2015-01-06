@@ -381,7 +381,7 @@
     <action name="updateFilterExportForm" class="org.hisp.dhis.importexport.action.dxf2.ShowUpdateFilterExportFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
-      <param name="page">/dhis-web-importexport/updateFilterExportForm.vm</param>
+      <param name="page">/dhis-web-importexport/filterExportForm.vm</param>
       <param name="javascripts">javascript/filteredMetaDataExport.js,javascript/utils.js</param>
       <param name="requiredAuthorities">F_METADATA_EXPORT</param>
     </action>
