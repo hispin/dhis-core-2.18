@@ -114,8 +114,8 @@
     #if ($command == "addNew" || $command == "addAdHoc")
         <input type="hidden" id="uid" name="uid" value=""/>
     #end
-
-    #if ($command == "addNew" || $filter )
+	
+    #if ($command == "addNew" || ( $command != "addAdHoc" && $filter ) )
 		 <input type="hidden" id="jsonFilter" name="jsonFilter" value='$!filter.jsonFilter'/>
 		<input type="hidden" id="uid" name="uid" value="$!filter.uid"/>
 	
