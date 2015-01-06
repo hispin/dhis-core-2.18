@@ -71,10 +71,12 @@
 				#end
 			#end
 			
+			#if($programStage.program.type!=3)
 			<tr>
 				<td><label for="autoGenerateEvent">$i18n.getString( "auto_generate_event" )</label></td>
 				<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' onchange='autoGenerateEventOnChange("$openAfterEnrollment")' #if( $programStage.autoGenerateEvent && $programStage.autoGenerateEvent=='true' ) checked #end /></td>
 			</tr>
+			#end
 			
 			#if($programStage.program.type!=3)
 				#if($openAfterEnrollment!='' ) 
