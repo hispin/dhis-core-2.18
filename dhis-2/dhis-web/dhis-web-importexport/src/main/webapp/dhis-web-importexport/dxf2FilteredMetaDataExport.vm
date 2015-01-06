@@ -16,7 +16,7 @@
 </div>
 
 <!-- FILTER EXPORT FORM -->
-<div id="mainDivFilter" style="width: 70%;">
+<div id="mainDivFilter">
     <table class="mainPageTable">
         <tr>
             <td style="vertical-align:top">
