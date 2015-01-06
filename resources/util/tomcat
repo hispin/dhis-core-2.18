@@ -3,6 +3,11 @@
 TOMCAT_LOCAL=~/dev/lib/tomcat
 DHIS2_SOURCE_HOME=~/dev/src/dhis2
 
+if [ $# -eq 0 ]
+  then
+    echo "Usage: tomcat [option] [version]"
+fi
+
 case $1 in
 start) 
   ${TOMCAT_LOCAL}/bin/startup.sh
@@ -29,12 +34,24 @@ load)
 clear)
   sudo rm -rf ${TOMCAT_LOCAL}/webapps/dhis
   sudo rm ${TOMCAT_LOCAL}/webapps/dhis.war
+  echo Tomcat WAR cleared
   ;;
 update)
   sudo rm -rf ${TOMCAT_LOCAL}/webapps/dhis
   sudo rm ${TOMCAT_LOCAL}/webapps/dhis.war
   sudo cp ${DHIS2_SOURCE_HOME}/dhis-2/dhis-web/dhis-web-portal/target/dhis.war ${TOMCAT_LOCAL}/webapps/
   echo Tomcat updated with latest WAR from src code
+  ;;
+get)
+  if [ $# -eq 1 ]
+  then
+    echo "Usage: tomcat get [version]"
+  fi
+  
+  sudo rm -rf ${TOMCAT_LOCAL}/webapps/dhis
+  sudo rm ${TOMCAT_LOCAL}/webapps/dhis.war
+  wget -O ${TOMCAT_LOCAL}/webapps/dhis.war http://stable.dhis2.org/${2}
+  echo Tomcat updated with WAR version ${2} from stable.dhis2.org
   ;;
 esac
 exit 0
