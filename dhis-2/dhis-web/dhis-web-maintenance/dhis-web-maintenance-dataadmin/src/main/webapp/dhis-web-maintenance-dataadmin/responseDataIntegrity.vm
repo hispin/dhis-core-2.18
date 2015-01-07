@@ -43,6 +43,7 @@
     #violationWithMapList( "dataElementsViolatingExclusiveGroupSets" $dataElementsViolatingExclusiveGroupSets ),
     #violationWithMapList( "dataElementsInDataSetNotInForm" $dataElementsInDataSetNotInForm ),
     #violationWithMapList( "dataElementsAssignedToDataSetsWithDifferentPeriodTypes" $dataElementsAssignedToDataSetsWithDifferentPeriodTypes ),
+    #violationWithMapList( "categoryOptionCombosNotInDataElementCategoryCombo" $categoryOptionCombosNotInDataElementCategoryCombo ),
     #violation( "dataSetsNotAssignedToOrganisationUnits" $dataSetsNotAssignedToOrganisationUnits ),
     #violation( "sectionsWithInvalidCategoryCombinations" $sectionsWithInvalidCategoryCombinations ),
     #violationWithCollection( "indicatorsWithIdenticalFormulas" $indicatorsWithIdenticalFormulas ),

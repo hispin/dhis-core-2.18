@@ -32,8 +32,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.SortedMap;
 
+import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.indicator.Indicator;
@@ -90,6 +92,12 @@ public interface DataIntegrityService
     // Section
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns all operands in data entry forms where the category option combo
+     * is not part of the category combo of the data element.
+     */
+    SetMap<DataSet, DataElementOperand> getCategoryOptionCombosNotInDataElementCategoryCombo();
+    
     /**
      * Gets all section with invalid category combinations. Invalid means that
      * the data elements in the sections don't have the same category combination.
