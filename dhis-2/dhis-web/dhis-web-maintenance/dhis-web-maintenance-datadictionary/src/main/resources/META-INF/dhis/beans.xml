@@ -3,6 +3,8 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
 
+  <bean id="org.hisp.dhis.dd.action.NoAction" class="org.hisp.dhis.dd.action.NoAction" />
+
   <!-- Data Element -->
 
   <bean id="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction" class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction"
@@ -69,7 +71,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Data Element Group -->
 
-  <bean id="org.hisp.dhis.dd.action.dataelementgroup.ShowAddDataElementGroupForm" class="org.hisp.dhis.dd.action.dataelementgroup.ShowAddDataElementGroupForm">
+  <bean id="org.hisp.dhis.dd.action.dataelementgroup.ShowAddDataElementGroupForm" class="org.hisp.dhis.dd.action.dataelementgroup.ShowAddDataElementGroupForm"
+  	scope="prototype">
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
@@ -290,7 +293,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Indicator -->
 
-  <bean id="org.hisp.dhis.dd.action.indicator.ShowAddIndicatorForm" class="org.hisp.dhis.dd.action.indicator.ShowAddIndicatorForm">
+  <bean id="org.hisp.dhis.dd.action.indicator.ShowAddIndicatorForm" class="org.hisp.dhis.dd.action.indicator.ShowAddIndicatorForm"
+  	scope="prototype">
 	<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
@@ -396,6 +400,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
   
+  <bean id="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction"
+    scope="prototype">
+    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+  
   <!-- CategoryCombo -->
 
   <bean id="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryListAction" class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryListAction"
@@ -432,17 +441,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
-
-  <!-- Validate CategoryOption -->
-
-  <bean id="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction"
-    scope="prototype">
-    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-  </bean>
-
-  <!-- Other -->
-
-  <bean id="org.hisp.dhis.dd.action.NoAction" class="org.hisp.dhis.dd.action.NoAction" />
 
   <!-- CategoryOptionGroup  -->
   
