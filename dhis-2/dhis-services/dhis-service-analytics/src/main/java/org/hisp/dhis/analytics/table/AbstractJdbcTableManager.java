@@ -164,11 +164,11 @@ public abstract class AbstractJdbcTableManager
             
             final String sql = "create index " + indexName + " on " + inx.getTable() + " (" + inx.getColumn() + ")";
             
-            log.debug( "Create index SQL: " + sql );
+            log.debug( "Create index: " + indexName + " SQL: " + sql );
             
             jdbcTemplate.execute( sql );
             
-            log.info( "Created index: " + indexName );
+            log.debug( "Created index: " + indexName );
         }
         
         return null;
@@ -299,7 +299,7 @@ public abstract class AbstractJdbcTableManager
      */
     protected void populateAndLog( String sql, String tableName )
     {
-        log.info( "Populating " + tableName );
+        log.debug( "Populate table: " + tableName + " SQL: " + sql );
 
         Timer t = new SystemTimer().start();
         
