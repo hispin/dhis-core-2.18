@@ -89,13 +89,13 @@ public class DataValueSetController
             String ds = dataSet.iterator().next();
             String ou = orgUnit.iterator().next();
 
-            log.info( "Get XML data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
+            log.debug( "Get XML data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
 
             dataValueSetService.writeDataValueSetXml( ds, period, ou, response.getOutputStream(), exportOptions );
         }
         else
         {
-            log.info( "Get XML bulk data value set for start date: " + startDate + ", end date: " + endDate );
+            log.debug( "Get XML bulk data value set for start date: " + startDate + ", end date: " + endDate );
 
             dataValueSetService.writeDataValueSetXml( dataSet, startDate, endDate, orgUnit, children, response.getOutputStream(), exportOptions );
         }
@@ -121,13 +121,13 @@ public class DataValueSetController
             String ds = dataSet.iterator().next();
             String ou = orgUnit.iterator().next();
 
-            log.info( "Get JSON data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
+            log.debug( "Get JSON data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
 
             dataValueSetService.writeDataValueSetJson( ds, period, ou, response.getOutputStream(), exportOptions );
         }
         else
         {
-            log.info( "Get JSON bulk data value set for start date: " + startDate + ", end date: " + endDate );
+            log.debug( "Get JSON bulk data value set for start date: " + startDate + ", end date: " + endDate );
 
             dataValueSetService.writeDataValueSetJson( dataSet, startDate, endDate, orgUnit, children, response.getOutputStream(), exportOptions );
         }
@@ -153,13 +153,13 @@ public class DataValueSetController
             String ds = dataSet.iterator().next();
             String ou = orgUnit.iterator().next();
 
-            log.info( "Get CSV data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
+            log.debug( "Get CSV data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
 
             dataValueSetService.writeDataValueSetCsv( ds, period, ou, response.getWriter(), exportOptions );
         }
         else
         {
-            log.info( "Get CSV bulk data value set for start date: " + startDate + ", end date: " + endDate );
+            log.debug( "Get CSV bulk data value set for start date: " + startDate + ", end date: " + endDate );
 
             dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, orgUnit, children, response.getWriter(), exportOptions );
         }
@@ -176,7 +176,7 @@ public class DataValueSetController
     {
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, importOptions );
 
-        log.info( "Data values set saved" );
+        log.debug( "Data values set saved" );
 
         response.setContentType( CONTENT_TYPE_XML );
         JacksonUtils.toXml( response.getOutputStream(), summary );
@@ -189,7 +189,7 @@ public class DataValueSetController
     {
         ImportSummary summary = dataValueSetService.saveDataValueSetJson( in, importOptions );
 
-        log.info( "Data values set saved" );
+        log.debug( "Data values set saved" );
 
         response.setContentType( CONTENT_TYPE_JSON );
         JacksonUtils.toJson( response.getOutputStream(), summary );
@@ -202,7 +202,7 @@ public class DataValueSetController
     {
         ImportSummary summary = dataValueSetService.saveDataValueSetCsv( in, importOptions );
 
-        log.info( "Data values set saved" );
+        log.debug( "Data values set saved" );
 
         response.setContentType( CONTENT_TYPE_XML );
         JacksonUtils.toXml( response.getOutputStream(), summary );
