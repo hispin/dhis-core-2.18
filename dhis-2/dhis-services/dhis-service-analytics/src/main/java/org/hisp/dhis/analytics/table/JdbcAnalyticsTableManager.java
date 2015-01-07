@@ -386,7 +386,7 @@ public class JdbcAnalyticsTableManager
             sql.append( " where level > " + aggregationLevel );
             sql.append( " and de in (" + getQuotedCommaDelimitedString( dataElements ) + ")" );
             
-            log.info( "Aggregation level SQL: " + sql.toString() );
+            log.debug( "Aggregation level SQL: " + sql.toString() );
             
             jdbcTemplate.execute( sql.toString() );
         }
@@ -409,7 +409,7 @@ public class JdbcAnalyticsTableManager
             
             final String sql = statementBuilder.getVacuum( table.getTempTableName() );
             
-            log.info( "Vacuum SQL: " + sql );
+            log.debug( "Vacuum SQL: " + sql );
             
             jdbcTemplate.execute( sql );
         }
