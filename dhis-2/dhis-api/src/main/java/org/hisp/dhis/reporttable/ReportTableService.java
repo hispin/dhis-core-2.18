@@ -29,6 +29,7 @@ package org.hisp.dhis.reporttable;
  */
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -156,4 +157,6 @@ public interface ReportTableService
     int countDataElementReportTables( DataElement dataElement );
     
     int countOrganisationUnitReportTables( OrganisationUnit organisationUnit );
+    
+    int countCategoryOptionGroups( CategoryOptionGroup categoryOptionGroup );
 }

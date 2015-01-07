@@ -28,6 +28,7 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
@@ -83,5 +84,11 @@ public class ReportTableDeletionHandler
     public String allowDeleteOrganisationUnit( OrganisationUnit organisationUnit )
     {
         return reportTableService.countOrganisationUnitReportTables( organisationUnit ) == 0 ? null : ERROR;
+    }
+    
+    @Override
+    public String allowDeleteCategoryOptionGroup( CategoryOptionGroup categoryOptionGroup )
+    {
+        return reportTableService.countCategoryOptionGroups( categoryOptionGroup ) == 0 ? null : ERROR;
     }
 }

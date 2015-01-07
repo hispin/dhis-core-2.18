@@ -37,6 +37,7 @@ import java.util.Map;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.common.AnalyticalObjectStore;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -263,5 +264,11 @@ public class DefaultReportTableService
     public int countOrganisationUnitReportTables( OrganisationUnit organisationUnit )
     {
         return reportTableStore.countOrganisationUnitAnalyticalObject( organisationUnit );
+    }
+    
+    @Override
+    public int countCategoryOptionGroups( CategoryOptionGroup categoryOptionGroup )
+    {
+        return reportTableStore.countCategoryOptionGroupAnalyticalObject( categoryOptionGroup );
     }
 }
