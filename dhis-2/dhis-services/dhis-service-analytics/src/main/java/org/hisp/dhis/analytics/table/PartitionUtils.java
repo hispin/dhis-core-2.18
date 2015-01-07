@@ -28,15 +28,9 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.Partitions;
+import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Cal;
@@ -46,6 +40,13 @@ import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.util.UniqueArrayList;
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Lars Helge Overland
  */
@@ -54,26 +55,32 @@ public class PartitionUtils
     private static final YearlyPeriodType PERIODTYPE = new YearlyPeriodType();
 
     private static final String SEP = "_";
-        
+
     public static Period getPeriod( Integer year )
     {
         DateTime time = new DateTime( year, 1, 1, 0, 0 );
-        
+
         return PERIODTYPE.createPeriod( time.toDate() );
     }
 
     public static Date getEarliestDate( Integer lastYears )
     {
         Date earliest = null;
-        
+
         if ( lastYears != null )
         {
-            earliest = new Cal().now().subtract( Calendar.YEAR, ( lastYears - 1 ) ).set( 1, 1 ).time();
+            org.hisp.dhis.calendar.Calendar calendar = PeriodType.getCalendar();
+            DateTimeUnit dateTimeUnit = calendar.today();
+            dateTimeUnit = calendar.minusYears( dateTimeUnit, lastYears - 1 );
+            dateTimeUnit.setMonth( 1 );
+            dateTimeUnit.setDay( 1 );
+
+            earliest = dateTimeUnit.toJdkDate();
         }
-        
+
         return earliest;
     }
-    
+
     //TODO optimize by including required filter periods only
 
     public static Partitions getPartitions( Period period, String tablePrefix, String tableSuffix, Set<String> validPartitions )
