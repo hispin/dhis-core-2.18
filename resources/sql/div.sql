@@ -211,6 +211,15 @@ inner join organisationunit ou on (dv.sourceid=ou.organisationunitid)
 inner join categoryoptioncombo coc on (dv.categoryoptioncomboid=coc.categoryoptioncomboid)
 inner join categoryoptioncombo aoc on (dv.attributeoptioncomboid=aoc.categoryoptioncomboid)
 limit 10000;
+
+-- Display validation rules which includes the given data element uid
+
+select distinct vr.uid, vr.name
+from validationrule vr
+inner join expression le on vr.leftexpressionid=le.expressionid
+inner join expression re on vr.rightexpressionid=re.expressionid
+where le.expression ~ 'OuudMtJsh2z'
+or re.expression  ~ 'OuudMtJsh2z'
   
 -- (Write) Delete all data values for category combo
 
