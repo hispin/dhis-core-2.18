@@ -41,13 +41,18 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
@@ -81,6 +86,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataIntegrityService
     implements DataIntegrityService
 {
+    private static final Log log = LogFactory.getLog( DefaultDataIntegrityService.class );
+    
     private static final String FORMULA_SEPARATOR = "#";
     
     // -------------------------------------------------------------------------
@@ -250,7 +257,7 @@ public class DefaultDataIntegrityService
 
         return targets;
     }
-    
+
     @Override
     public SortedMap<DataSet, Collection<DataElement>> getDataElementsInDataSetNotInForm()
     {
@@ -291,6 +298,45 @@ public class DefaultDataIntegrityService
     // DataSet
     // -------------------------------------------------------------------------
 
+    public SetMap<DataSet, DataElementOperand> getCategoryOptionCombosNotInDataElementCategoryCombo()
+    {
+        SetMap<DataSet, DataElementOperand> map = new SetMap<>();
+
+        Collection<DataSet> dataSets = dataSetService.getAllDataSets();
+        
+        dataSetLoop: for ( DataSet dataSet : dataSets )
+        {
+            if ( dataSet.hasDataEntryForm() )
+            {
+                Set<DataElementOperand> operands = dataEntryFormService.getOperandsInDataEntryForm( dataSet );
+                
+                if ( operands != null )
+                {
+                    if ( operands.size() > 2000 )
+                    {
+                        log.warn( "Skipped integrity check for data set: " + dataSet.getName() + ", too many operands: " + operands.size() );
+                        continue dataSetLoop;
+                    }
+                    
+                    for ( DataElementOperand operand : operands )
+                    {
+                        DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
+                        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( operand.getOptionComboId() );
+                        Set<DataElementCategoryOptionCombo> optionCombos = dataElement.getCategoryCombo() != null ? dataElement.getCategoryCombo().getOptionCombos() : null;
+                        
+                        if ( optionCombos == null || !optionCombos.contains( optionCombo ) )
+                        {
+                            DataElementOperand persistedOperand = new DataElementOperand( dataElement, optionCombo );
+                            map.putValue( dataSet, persistedOperand );
+                        }
+                    }
+                }
+            }
+        }
+        
+        return map;
+    }
+    
     @Override
     public Collection<DataSet> getDataSetsNotAssignedToOrganisationUnits()
     {

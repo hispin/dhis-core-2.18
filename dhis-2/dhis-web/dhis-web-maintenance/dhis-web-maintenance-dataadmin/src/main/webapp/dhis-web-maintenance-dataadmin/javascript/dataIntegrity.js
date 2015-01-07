@@ -12,16 +12,17 @@ function populateIntegrityItems( json )
 	
     displayViolationList( json.dataElementsWithoutDataSet, "dataElementsWithoutDataSet", false );
     displayViolationList( json.dataElementsWithoutGroups, "dataElementsWithoutGroups", false );
-	displayViolationList( json.dataElementsViolatingExclusiveGroupSets, "dataElementsViolatingExclusiveGroupSets", true );
-	displayViolationList( json.dataElementsInDataSetNotInForm, "dataElementsInDataSetNotInForm", true );
+    displayViolationList( json.dataElementsViolatingExclusiveGroupSets, "dataElementsViolatingExclusiveGroupSets", true );
+    displayViolationList( json.dataElementsInDataSetNotInForm, "dataElementsInDataSetNotInForm", true );
     displayViolationList( json.dataElementsAssignedToDataSetsWithDifferentPeriodTypes, "dataElementsAssignedToDataSetsWithDifferentPeriodTypes", true );
+    displayViolationList( json.categoryOptionCombosNotInDataElementCategoryCombo, "categoryOptionCombosNotInDataElementCategoryCombo", true );
     displayViolationList( json.dataSetsNotAssignedToOrganisationUnits, "dataSetsNotAssignedToOrganisationUnits", false );
     displayViolationList( json.sectionsWithInvalidCategoryCombinations, "sectionsWithInvalidCategoryCombinations", false );
     displayViolationList( json.indicatorsWithIdenticalFormulas, "indicatorsWithIdenticalFormulas", false );
     displayViolationList( json.indicatorsWithoutGroups, "indicatorsWithoutGroups", false );
     displayViolationList( json.invalidIndicatorNumerators, "invalidIndicatorNumerators", true );
     displayViolationList( json.invalidIndicatorDenominators, "invalidIndicatorDenominators", true );
-	displayViolationList( json.indicatorsViolatingExclusiveGroupSets, "indicatorsViolatingExclusiveGroupSets", true );
+    displayViolationList( json.indicatorsViolatingExclusiveGroupSets, "indicatorsViolatingExclusiveGroupSets", true );
     displayViolationList( json.organisationUnitsWithCyclicReferences, "organisationUnitsWithCyclicReferences", false );
     displayViolationList( json.orphanedOrganisationUnits, "orphanedOrganisationUnits", false );
     displayViolationList( json.organisationUnitsWithoutGroups, "organisationUnitsWithoutGroups", false );

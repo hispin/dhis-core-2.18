@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 
 import org.apache.commons.logging.Log;
@@ -40,6 +41,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataintegrity.DataIntegrityService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
@@ -109,6 +111,13 @@ public class GetDataIntegrityAction
     public SortedMap<DataSet, Collection<DataElement>> getDataElementsInDataSetNotInForm()
     {
         return dataElementsInDataSetNotInForm;
+    }
+
+    private Map<DataSet, Set<DataElementOperand>> categoryOptionCombosNotInDataElementCategoryCombo;
+    
+    public Map<DataSet, Set<DataElementOperand>> getCategoryOptionCombosNotInDataElementCategoryCombo()
+    {
+        return categoryOptionCombosNotInDataElementCategoryCombo;
     }
 
     private List<DataSet> dataSetsNotAssignedToOrganisationUnits;
@@ -237,6 +246,10 @@ public class GetDataIntegrityAction
         dataElementsInDataSetNotInForm = dataIntegrityService.getDataElementsInDataSetNotInForm();
 
         log.info( "Checked data elements" );
+        
+        categoryOptionCombosNotInDataElementCategoryCombo = dataIntegrityService.getCategoryOptionCombosNotInDataElementCategoryCombo();
+        
+        log.info( "Checked operands" );
         
         dataSetsNotAssignedToOrganisationUnits = new ArrayList<>( dataIntegrityService.getDataSetsNotAssignedToOrganisationUnits() );
         sectionsWithInvalidCategoryCombinations = new ArrayList<>( dataIntegrityService.getSectionsWithInvalidCategoryCombinations() );
