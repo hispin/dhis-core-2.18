@@ -28,13 +28,12 @@ package org.hisp.dhis.dxf2.parser;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dxf2.fieldfilter.FieldMap;
 import org.hisp.dhis.dxf2.objectfilter.Filters;
 
-import com.google.common.collect.Lists;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -57,7 +56,8 @@ public class DefaultParserService implements ParserService
 
             if ( split.length >= 3 )
             {
-                parsed.addFilter( split[0], split[1], split[2] );
+                int index = split[0].length() + ":".length() + split[1].length() + ":".length();
+                parsed.addFilter( split[0], split[1], filter.substring( index ) );
             }
             else
             {
