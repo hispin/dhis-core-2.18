@@ -61,6 +61,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -433,7 +434,7 @@ public class CompleteDataSetRegistrationController
         registrationService.saveCompleteDataSetRegistrations( registrations, true );
     }
 
-    @RequestMapping( method = RequestMethod.DELETE, produces = "text/plain" )
+    @RequestMapping( method = RequestMethod.DELETE )
     public void deleteCompleteDataSetRegistration(
         @RequestParam Set<String> ds,
         @RequestParam String pe,
@@ -488,8 +489,7 @@ public class CompleteDataSetRegistrationController
 
         if ( lockedDataSets.size() != 0 )
         {
-            ContextUtils
-                .conflictResponse( response, "Locked Data set(s) : " + StringUtils.join( lockedDataSets, ", " ) );
+            ContextUtils.conflictResponse( response, "Locked Data set(s) : " + StringUtils.join( lockedDataSets, ", " ) );
             return;
         }
 
@@ -499,13 +499,13 @@ public class CompleteDataSetRegistrationController
 
         Set<OrganisationUnit> orgUnits = new HashSet<>();
         orgUnits.add( organisationUnit );
+
         if ( multiOu )
         {
             orgUnits.addAll( organisationUnit.getChildren() );
         }
 
         unRegisterCompleteDataSet( dataSets, period, orgUnits, attributeOptionCombo );
-
     }
 
     // -------------------------------------------------------------------------
