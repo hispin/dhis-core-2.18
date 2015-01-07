@@ -28,24 +28,23 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.Partitions;
+import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.util.UniqueArrayList;
 import org.joda.time.DateTime;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -69,7 +68,7 @@ public class PartitionUtils
 
         if ( lastYears != null )
         {
-            org.hisp.dhis.calendar.Calendar calendar = PeriodType.getCalendar();
+            Calendar calendar = PeriodType.getCalendar();
             DateTimeUnit dateTimeUnit = calendar.today();
             dateTimeUnit = calendar.minusYears( dateTimeUnit, lastYears - 1 );
             dateTimeUnit.setMonth( 1 );
@@ -142,21 +141,5 @@ public class PartitionUtils
         }
 
         return map;
-    }
-
-    /**
-     * Returns the year of the given date.
-     */
-    public static int year( Date date )
-    {
-        return new Cal( date ).getYear();
-    }
-
-    /**
-     * Returns the max date within the year of the given date.
-     */
-    public static Date maxOfYear( Date date )
-    {
-        return new Cal( year( date ), 12, 31, true ).time();
     }
 }
