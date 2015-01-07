@@ -105,6 +105,20 @@ create index aggregateddatavalue_index on aggregateddatavalue (dataelementid, pe
 create index aggregatedindicatorvalue_index on aggregatedindicatorvalue (indicatorid, periodid, organisationunitid, value);
 create index aggregateddatasetcompleteness_index on aggregateddatasetcompleteness  (datasetid, periodid, organisationunitid, value);
 
+-- Get category option combos from data values which are not part of the category combo of the data element
+
+select distinct de.name as data_element, dv.dataelementid, de_cc.name as data_element_category_combo, oc_cc.name as option_combo_category_combo, con.categoryoptioncomboname, dv.categoryoptioncomboid
+from datavalue dv
+left join dataelement de on dv.dataelementid=de.dataelementid
+left join categorycombo de_cc on de.categorycomboid=de_cc.categorycomboid
+inner join categorycombos_optioncombos cc_oc on dv.categoryoptioncomboid=cc_oc.categoryoptioncomboid
+left join categorycombo oc_cc on cc_oc.categorycomboid=oc_cc.categorycomboid
+left join _categoryoptioncomboname con on dv.categoryoptioncomboid=con.categoryoptioncomboid
+where not exists (
+  select 1 from _dataelementcategoryoptioncombo dc
+  where dc.dataelementid=dv.dataelementid
+  and dc.categoryoptioncomboid=dv.categoryoptioncomboid);
+
 -- Get category option combos without category options
 
 select * from categoryoptioncombo where categoryoptioncomboid not in (select distinct categoryoptioncomboid from categoryoptioncombos_categoryoptions);
