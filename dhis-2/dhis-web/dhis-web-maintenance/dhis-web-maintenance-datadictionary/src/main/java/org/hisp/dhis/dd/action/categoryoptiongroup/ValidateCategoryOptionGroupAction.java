@@ -106,7 +106,6 @@ public class ValidateCategoryOptionGroupAction
     {
         if ( name != null )
         {
-
             CategoryOptionGroup match = dataElementCategoryService.getCategoryOptionGroupByName( name );
 
             if ( match != null && (id == null || match.getId() != id.intValue()) )
