@@ -143,12 +143,12 @@ function getUserGroupAccesses() {
 }
 
 function setCreatedBy( user ) {
-	if ( user && user.name ) {
-		$('#sharingUser').text(user.name);
-	}
-	else {
-		$('#sharingUser').text("[None]");
-	}
+  if( user && user.name ) {
+    $('#sharingUser').text(user.name);
+  }
+  else {
+    $('#sharingUser').text("[None]");
+  }
 }
 
 function showSharingDialogWithContext( context ) {
@@ -159,7 +159,7 @@ function showSharingDialogWithContext( context ) {
 
 function showSharingDialog( type, uid ) {
   loadSharingSettings(type, uid).done(function( data ) {
-	setCreatedBy(data.object.user);
+    setCreatedBy(data.object.user);
     setPublicAccess(data.object.publicAccess);
     setExternalAccess(data.object.externalAccess);
     setUserGroupAccesses(data.object.userGroupAccesses);
@@ -185,7 +185,7 @@ function showSharingDialog( type, uid ) {
       height: 500,
       buttons: {
         'Cancel': function() {
-          $(this).dialog('close');
+          $(this).dialog('destroy');
         },
         'Save': function() {
           var me = $(this);
@@ -195,7 +195,7 @@ function showSharingDialog( type, uid ) {
           data.object.userGroupAccesses = getUserGroupAccesses();
 
           saveSharingSettings(type, uid, data).done(function() {
-            me.dialog('close');
+            me.dialog('destroy');
           });
         }
       }
