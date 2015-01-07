@@ -84,7 +84,8 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
     var targetFn = $target.data('target-fn');
     var fn = config.functionResolver(targetFn);
 
-    dhis2.contextmenu.disable();
+    dhis2.contextmenu.disable(false);
+    $menu.attr('fn-active', true);
     fn(context);
 
     return false;
@@ -144,24 +145,45 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
   });
 
   $(document).on('click.context', function() {
-    dhis2.contextmenu.disable();
-    $menu.removeData('id');
+    if( !dhis2.contextmenu.visibleUiDialog() ) {
+      dhis2.contextmenu.disable();
+      $menu.removeData('id');
+    }
   });
 
   $(document).keyup(function( e ) {
     if( e.keyCode == 27 ) {
-      dhis2.contextmenu.disable();
+      if( !dhis2.contextmenu.visibleUiDialog() ) {
+        dhis2.contextmenu.disable();
+      }
     }
   });
 };
 
-dhis2.contextmenu.disable = function() {
+dhis2.contextmenu.visibleUiDialog = function() {
+  if( $('.ui-dialog').is(':visible') ) {
+    return true;
+  }
+
+  if( Boolean($menu.attr('fn-active')) ) {
+    $menu.removeAttr('fn-active');
+    return true;
+  }
+
+  return false;
+};
+
+dhis2.contextmenu.disable = function( clearHighlight ) {
+  clearHighlight = $.type(clearHighlight) === 'boolean' ? clearHighlight : true;
+
   var config = dhis2.contextmenu.config;
   var $list = $('#' + config.listId);
   var $menu = $('#' + config.menuId);
 
-  $list.find('tr').removeClass(config.menuItemActiveClass);
-  $list.find('td').removeClass(config.menuItemActiveClass);
+  if( clearHighlight ) {
+    $list.find('tr').removeClass(config.menuItemActiveClass);
+    $list.find('td').removeClass(config.menuItemActiveClass);
+  }
 
   if( $menu.is(":visible") ) {
     $menu.hide();
