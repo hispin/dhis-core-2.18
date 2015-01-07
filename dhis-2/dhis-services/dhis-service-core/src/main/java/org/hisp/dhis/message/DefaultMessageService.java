@@ -327,9 +327,20 @@ public class DefaultMessageService
     }
 
     @Override
-    public Collection<MessageConversation> getMessageConversations( String[] messageConversationUids )
+    public Collection<MessageConversation> getMessageConversations( User user, String[] messageConversationUids )
     {
-        return messageConversationStore.getMessageConversations( messageConversationUids );
+        Collection<MessageConversation> conversations = messageConversationStore.getMessageConversations( messageConversationUids );
+
+        // Set transient properties
+        // TODO See getMessageConversation(String)
+
+        for ( MessageConversation mc : conversations )
+        {
+            mc.setFollowUp( mc.isFollowUp( user ) );
+            mc.setRead( mc.isRead( user ) );
+        }
+
+        return conversations;
     }
 
     @Override

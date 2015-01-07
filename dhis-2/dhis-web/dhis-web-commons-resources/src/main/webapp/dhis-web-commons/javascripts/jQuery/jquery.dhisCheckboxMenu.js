@@ -68,6 +68,16 @@
         return checked;
     }
 
+    function executeNamedFn(fnName, ctx ) {
+        var args = [].slice.call(arguments).splice(2);
+        var namespaces = fnName.split(".");
+        var func = namespaces.pop();
+        for( var i = 0; i < namespaces.length; i++ ) {
+            ctx = ctx[ namespaces[ i ] ];
+        }
+        return ctx[func].apply( this, args );
+    }
+
     var multiCheckboxMenu = $.fn.multiCheckboxMenu;
 
     $.fn.multiCheckboxMenu = function( $checkboxContainer, options ) {
@@ -130,7 +140,7 @@
             }
 
             el.click( function() {
-                return window[ el.action ]( getCheckedValues( $checkboxContainer ) );
+                return executeNamedFn( el.action, window, getCheckedValues( $checkboxContainer ) );
             });
         });
 

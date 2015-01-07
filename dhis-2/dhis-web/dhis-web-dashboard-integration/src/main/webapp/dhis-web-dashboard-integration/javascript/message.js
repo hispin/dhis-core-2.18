@@ -8,101 +8,6 @@ function removeMessage( id )
     removeItem( id, "", i18n_confirm_delete_message, "removeMessage.action" );
 }
 
-function removeMessages( messages )
-{
-    if( typeof messages === "undefined" || messages.length < 1 )
-    {
-        return;
-    }
-
-    var confirmed = window.confirm( i18n_confirm_delete_all_selected_messages );
-
-    if( confirmed )
-    {
-        setHeaderWaitMessage( i18n_deleting );
-
-        $.ajax(
-            {
-                url: "../api/messageConversations?" + $.param( { mc: messages }, true ),
-                contentType: "application/json",
-                dataType: "json",
-                type: "DELETE",
-                success: function( response )
-                {
-                    for( var i = 0; i < response.removed.length; i++ )
-                    {
-                        $( "#messages" ).find( "[name='" + response.removed[i] + "']" ).remove();
-                    }
-                    setHeaderDelayMessage( i18n_messages_were_deleted );
-                },
-                error: function( response )
-                {
-                    showErrorMessage( response.message, 3 );
-                }
-        } );
-    }
-}
-
-function markMessagesRead( messages )
-{
-    if( messages.length < 1 )
-    {
-        return;
-    }
-
-    $.ajax(
-        {
-            url: "../api/messageConversations/read",
-            type: "POST",
-            data: JSON.stringify( messages ),
-            contentType: "application/json",
-            dataType: "json",
-            success: function( response )
-            {
-                toggleMessagesRead( response.markedRead );
-            },
-            error: function( response )
-            {
-                showErrorMessage( response.message, 3 );
-            }
-        } );
-}
-
-function markMessagesUnread( messages )
-{
-    if( messages.length < 1 )
-    {
-        return;
-    }
-
-    $.ajax(
-        {
-            url: "../api/messageConversations/unread",
-            type: "POST",
-            data: JSON.stringify( messages ),
-            contentType: "application/json",
-            dataType: "json",
-            success: function( response )
-            {
-                toggleMessagesRead( response.markedUnread );
-            },
-            error: function( response )
-            {
-                showErrorMessage( response.message, 3 );
-            }
-        } );
-}
-
-function toggleMessagesRead( messageUids )
-{
-    var messages = $( "#messages" );
-
-    for( var i = 0; i < messageUids.length; i++ )
-    {
-        messages.find( "[name='" + messageUids[i] + "']" ).toggleClass( "unread bold" );
-    }
-}
-
 function toggleRowSelected( element )
 {
     $( element ).closest( "tr" ).toggleClass( "list-row-selected", element.checked );
@@ -197,3 +102,119 @@ function formatItem( item )
         return item.text;
     }
 }
+
+var messageOperations = ( function() {
+
+    //
+    // Private
+    //
+
+    var removeMessages = function( messages ) {
+        if( typeof messages === "undefined" || messages.length < 1 ) {
+            return;
+        }
+
+        var confirmed = window.confirm( i18n_confirm_delete_all_selected_messages );
+
+        if( confirmed ) {
+            setHeaderWaitMessage( i18n_deleting );
+
+            $.ajax( {
+                    url: "../api/messageConversations?" + $.param( { mc: messages }, true ),
+                    contentType: "application/json",
+                    dataType: "json",
+                    type: "DELETE",
+                    success: function( response ) {
+                        for( var i = 0; i < response.removed.length; i++ ) {
+                            $( "#messages" ).find( "[name='" + response.removed[i] + "']" ).remove();
+                        }
+                        setHeaderDelayMessage( i18n_messages_were_deleted );
+                    },
+                    error: function( response ) {
+                        showErrorMessage( response.message, 3 );
+                    }
+            } );
+        }
+    };
+
+    var propertyRegExp = new RegExp( "[read|unread|followup|unfollowup]" );
+
+    /**
+     * Workhorse function to mark/unmark messages read, unread, followup or unfollowup.
+     *
+     * @param messages {array} UID of messages to mark
+     * @param property {string} property to mark. String values are read|unread|followup|unfollowup
+     */
+    var markMessages = function( messages, property ) {
+        if( typeof messages === "undefined" || messages.length < 1 ) {
+            return;
+        }
+
+        if( !_.isString( property ) || !propertyRegExp.test( property ) ) {
+            throw "Property string must be set.";
+        }
+
+        $.ajax( {
+            url: "../api/messageConversations/" + property,
+            type: "POST",
+            data: JSON.stringify( messages ),
+            contentType: "application/json",
+            dataType: "json",
+            success: function( response ) {
+                switch( property ) {
+                    case "read":
+                        toggleMessagesRead( response.markedRead );
+                        break;
+                    case "unread":
+                        toggleMessagesRead( response.markedUnread );
+                        break;
+                    case "followup":
+                        setFollowupIndicator( response.markedFollowup, true);
+                        break;
+                    case "unfollowup":
+                        setFollowupIndicator( response.unmarkedFollowup, false );
+                        break;
+                }
+            },
+            error: function( response ) {
+                showErrorMessage( response.message, 3);
+            }
+        } );
+    };
+
+    var setFollowupIndicator = function( messageUids, marked ) {
+        var messages = $( "#messages" );
+        var imgSrc = marked ? "../images/marked.png" : "../images/unmarked.png";
+
+        for( var i = 0; i < messageUids.length; i++ ) {
+            messages.find( "[name='" + messageUids[i] + "'] .followup-icon img" ).attr( "src", imgSrc );
+        }
+    };
+
+    var toggleMessagesRead = function( messageUids ) {
+        var messages = $( "#messages" );
+
+        for( var i = 0; i < messageUids.length; i++ ) {
+            messages.find( "[name='" + messageUids[i] + "']" ).toggleClass( "unread bold" );
+        }
+    };
+
+    //
+    // Public
+    //
+    return {
+        unmarkMessagesFollowup: function( messages ) {
+            return markMessages( messages, "unfollowup" );
+        },
+        markMessagesFollowup: function( messages) {
+            return markMessages( messages, "followup" );
+        },
+        markMessagesRead: function( messages ) {
+            return markMessages( messages, "read" );
+        },
+        markMessagesUnread: function( messages ) {
+            return markMessages( messages, "unread" );
+        },
+        removeMessages: removeMessages
+    };
+})( window );
