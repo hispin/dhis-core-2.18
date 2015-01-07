@@ -229,7 +229,7 @@ public class MessageServiceTest
 
         String[] uids = { uidA, uidB };
 
-        Collection<MessageConversation> conversations = messageService.getMessageConversations( uids );
+        Collection<MessageConversation> conversations = messageService.getMessageConversations( sender, uids );
 
         assertTrue( conversations.contains( conversationA ) );
         assertTrue( conversations.contains( conversationB ) );

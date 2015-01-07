@@ -102,7 +102,7 @@ public interface MessageService
 
     List<MessageConversation> getMessageConversations( boolean followUpOnly, boolean unreadOnly, int first, int max );
 
-    Collection<MessageConversation> getMessageConversations( String[] messageConversationUids );
+    Collection<MessageConversation> getMessageConversations( User user, String[] messageConversationUids );
 
     int getMessageConversationCount();
 

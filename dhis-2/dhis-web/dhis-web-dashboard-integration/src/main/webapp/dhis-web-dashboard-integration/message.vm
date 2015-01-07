@@ -12,9 +12,11 @@
             <div id="checkboxDropdown">
                 <div></div>
                 <ul>
-                    <li data-action="removeMessages">Delete</li>
-                    <li data-action="markMessagesRead">Mark read</li>
-                    <li data-action="markMessagesUnread">Mark unread</li>
+                    <li data-action="messageOperations.removeMessages">$i18n.getString( "delete" )</li>
+                    <li data-action="messageOperations.markMessagesRead">$i18n.getString( "mark_read")</li>
+                    <li data-action="messageOperations.markMessagesUnread">$i18n.getString( "mark_unread" )</li>
+                    <li data-action="messageOperations.markMessagesFollowup">$i18n.getString( "mark_followup")</li>
+                    <li data-action="messageOperations.unmarkMessagesFollowup">$i18n.getString( "clear_followup" )</li>
                 </ul>
             </div>
         </li>
@@ -43,7 +45,7 @@
                     <td style="width:20px;padding-left:5px;">
                         <input type="checkbox" value="${conversation.uid}" onchange="toggleRowSelected( this )"/>
                     </td>
-                    <td style="width:40px;padding-left:5px;" onclick="toggleFollowUp( '${conversation.id}' )">
+                    <td style="width:40px;padding-left:5px;" onclick="toggleFollowUp( '${conversation.id}' )" class="followup-icon">
                         <img id="followUp${conversation.id}" #if( $conversation.followUp ) src="../images/marked.png"#else src="../images/unmarked.png"#end></td>
                     <td style="width:200px" onclick="read( '${conversation.uid}' )">
                         #if( $conversation.lastSenderName )$!encoder.htmlEncode( $conversation.lastSenderName )#else $i18n.getString( "system_notification" )#end
