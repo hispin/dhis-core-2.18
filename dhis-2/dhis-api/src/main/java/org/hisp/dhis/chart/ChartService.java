@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -118,4 +119,6 @@ public interface ChartService
     int countDataElementCharts( DataElement dataElement );
     
     int countOrganisationUnitCharts( OrganisationUnit organisationUnit );
+    
+    int countCategoryOptionGroups( CategoryOptionGroup categoryOptionGroup );
 }

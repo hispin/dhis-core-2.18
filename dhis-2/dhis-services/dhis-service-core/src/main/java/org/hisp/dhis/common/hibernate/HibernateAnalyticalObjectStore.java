@@ -31,6 +31,7 @@ package org.hisp.dhis.common.hibernate;
 import org.hibernate.Query;
 import org.hisp.dhis.common.AnalyticalObjectStore;
 import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
@@ -74,6 +75,15 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     {
         Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where :organisationUnit in elements(c.organisationUnits)" );
         query.setEntity( "organisationUnit", organisationUnit );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Override
+    public int countCategoryOptionGroupAnalyticalObject( CategoryOptionGroup categoryOptionGroup )
+    {
+        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where :categoryOptionGroup in elements(c.categoryOptionGroups)" );
+        query.setEntity( "categoryOptionGroup", categoryOptionGroup );
 
         return ((Long) query.uniqueResult()).intValue();
     }

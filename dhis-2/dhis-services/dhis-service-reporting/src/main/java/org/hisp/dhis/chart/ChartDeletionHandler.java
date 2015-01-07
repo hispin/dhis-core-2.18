@@ -28,6 +28,7 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
@@ -84,5 +85,11 @@ public class ChartDeletionHandler
     public String allowDeleteOrganisationUnit( OrganisationUnit organisationUnit )
     {
         return chartService.countOrganisationUnitCharts( organisationUnit ) == 0 ? null : ERROR;
+    }
+    
+    @Override
+    public String allowDeleteCategoryOptionGroup( CategoryOptionGroup categoryOptionGroup )
+    {
+        return chartService.countCategoryOptionGroups( categoryOptionGroup ) == 0 ? null : ERROR;
     }
 }

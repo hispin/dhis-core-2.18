@@ -69,6 +69,7 @@ import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.NumericSortWrapper;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -1028,5 +1029,11 @@ public class DefaultChartService
     public int countOrganisationUnitCharts( OrganisationUnit organisationUnit )
     {
         return chartStore.countOrganisationUnitAnalyticalObject( organisationUnit );
+    }
+
+    @Override
+    public int countCategoryOptionGroups( CategoryOptionGroup categoryOptionGroup )
+    {
+        return chartStore.countCategoryOptionGroupAnalyticalObject( categoryOptionGroup );
     }
 }
