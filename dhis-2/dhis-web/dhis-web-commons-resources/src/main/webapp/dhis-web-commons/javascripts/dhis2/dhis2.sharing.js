@@ -182,7 +182,7 @@ function showSharingDialog( type, uid ) {
       modal: true,
       resizable: false,
       width: 485,
-      height: 500,
+      height: 555,
       buttons: {
         'Cancel': function() {
           $(this).dialog('destroy');
@@ -207,7 +207,8 @@ function showSharingDialog( type, uid ) {
           url: '../api/sharing/search',
           dataType: 'json',
           data: {
-            key: request.term
+            key: request.term,
+            pageSize: 20
           }
         }).success(function( data ) {
           var v = [];

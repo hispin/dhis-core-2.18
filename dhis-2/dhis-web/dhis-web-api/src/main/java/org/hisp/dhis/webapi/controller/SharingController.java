@@ -31,6 +31,7 @@ package org.hisp.dhis.webapi.controller;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -257,11 +258,21 @@ public class SharingController
     }
 
     @RequestMapping( value = "/search", method = RequestMethod.GET, produces = { "application/json" } )
-    public void searchUserGroups( @RequestParam String key, HttpServletResponse response ) throws IOException
+    public void searchUserGroups( @RequestParam String key, @RequestParam Integer pageSize, HttpServletResponse response ) throws IOException
     {
+        if ( key == null )
+        {
+            ContextUtils.conflictResponse( response, "Search key not specified" );
+            return;
+        }
+        
+        int max = pageSize != null ? pageSize : Integer.MAX_VALUE;
+        
         SharingUserGroups sharingUserGroups = new SharingUserGroups();
 
-        for ( UserGroup userGroup : userGroupService.getUserGroupsBetweenByName( key, 0, Integer.MAX_VALUE ) )
+        List<UserGroup> userGroups = userGroupService.getUserGroupsBetweenByName( key, 0, max );
+        
+        for (  UserGroup userGroup : userGroups )
         {
             SharingUserGroupAccess sharingUserGroupAccess = new SharingUserGroupAccess();
 
