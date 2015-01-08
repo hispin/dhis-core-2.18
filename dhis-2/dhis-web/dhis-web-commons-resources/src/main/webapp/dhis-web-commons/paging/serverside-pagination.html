@@ -5,10 +5,10 @@
                 {{'total_number_of_pages'| translate}}: {{pager.pageCount}}
             </td>
             <td>
-                <span>{{'rows_per_page'| translate}}:</span> <input type="text" style="width:50px;" ng-model="pager.pageSize" ng-blur="resetPageSize()"> 
+                <span>{{'rows_per_page'| translate}}:</span> <input type="text" min="1" style="width:50px;" ng-model="pager.pageSize" ng-blur="resetPageSize()"> 
             </td>
             <td>
-                <span>{{'jump_to_page'| translate}}:</span> <input type="text" style="width:50px;" ng-model="pager.page" ng-blur="jumpToPage()"> 
+                <span>{{'jump_to_page'| translate}}:</span> <input type="text" min="1" style="width:50px;" ng-model="pager.page" ng-blur="jumpToPage()"> 
             </td>
         </tr>
         <tr>

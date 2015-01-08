@@ -468,6 +468,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             if(paging){
                 var pgSize = pager ? pager.pageSize : 50;
                 var pg = pager ? pager.page : 1;
+                pgSize = pgSize > 1 ? pgSize  : 1;
+                pg = pg > 1 ? pg : 1;
                 url = url + '&pageSize=' + pgSize + '&page=' + pg;
             }
             else{
@@ -795,6 +797,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         getEventReport: function(orgUnit, ouMode, program, startDate, endDate, programStatus, eventStatus, pager){ 
             var pgSize = pager ? pager.pageSize : 50;
         	var pg = pager ? pager.page : 1;
+            pgSize = pgSize > 1 ? pgSize  : 1;
+            pg = pg > 1 ? pg : 1; 
             var url = '../api/events/eventRows.json?' + 'orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&programStatus=' + programStatus + '&eventStatus='+ eventStatus + '&pageSize=' + pgSize + '&page=' + pg;
             if(startDate && endDate){
                 url = url + '&startDate=' + startDate + '&endDate=' + endDate ;
