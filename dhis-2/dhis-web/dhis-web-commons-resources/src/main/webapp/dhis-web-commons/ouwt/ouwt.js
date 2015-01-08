@@ -382,6 +382,8 @@ function Selection()
                     selection.setVersion( data.version );
                     selection.setUsername( data.username );
 
+                    selection.clearSelected();
+
                     selection.clearOrganisationUnits().always(function() {
                       selection.setOrganisationUnits( data.organisationUnits ).done(function() {
                           sync_and_reload();
