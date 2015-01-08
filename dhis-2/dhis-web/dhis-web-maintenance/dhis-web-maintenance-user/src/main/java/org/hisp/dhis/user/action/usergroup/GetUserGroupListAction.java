@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.CurrentUserService;
@@ -133,12 +134,17 @@ public class GetUserGroupListAction
     private Map<UserGroup, Boolean> populateMemberShipMap( List<UserGroup> userGroups )
     {
         User currentUser = currentUserService.getCurrentUser();
-
+        
         Map<UserGroup, Boolean> map = new HashMap<>();
-
-        for( UserGroup ug : userGroups )
+        
+        if ( currentUser != null && currentUser.getGroups() != null )
         {
-            map.put( ug, ug.getMembers().contains( currentUser ) );
+            Set<UserGroup> members = currentUser.getGroups();
+            
+            for ( UserGroup ug : userGroups )
+            {
+                map.put( ug, members.contains( ug ) );
+            }
         }
 
         return map;
