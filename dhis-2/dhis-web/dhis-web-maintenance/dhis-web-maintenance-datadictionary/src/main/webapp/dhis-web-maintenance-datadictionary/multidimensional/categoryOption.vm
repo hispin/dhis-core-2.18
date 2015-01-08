@@ -68,6 +68,7 @@
           <p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
           <p><label>$i18n.getString( "short_name" ):</label><br/><span id="shortNameField"></span></p>
           <p><label>$i18n.getString( "code" ):</label><br/><span id="codeField"></span></p>
+          <p><label>$i18n.getString( "categories" ):</label><br/><span id="categoriesField"></span></p>
           <p><label>$i18n.getString( "start_date" ):</label><br/><span id="startDateField"></span></p>
           <p><label>$i18n.getString( "end_date" ):</label><br/><span id="endDateField"></span></p>
 		  <p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>

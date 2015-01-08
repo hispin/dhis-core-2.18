@@ -71,6 +71,15 @@ function showDataElementCategoryOptionDetails( context ) {
 		setInnerHTML( 'startDateField', json.dataElementCategoryOption.startDate );
 		setInnerHTML( 'endDateField', json.dataElementCategoryOption.endDate );
 		setInnerHTML( 'idField', json.dataElementCategoryOption.uid );
+		
+		var categories = "";
+		for( var i in json.dataElementCategoryOption.categories )
+		{
+			categories += json.dataElementCategoryOption.categories[i].name + "; ";
+		}
+		categories = categories.substr( 0, categories.length - 2 );
+		setInnerHTML( 'categoriesField', categories );
+		
         showDetails();
 	});
 }
