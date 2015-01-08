@@ -2194,7 +2194,8 @@ function updateExistingLocalForms()
 
         $.safeEach( formIds, function( idx, item )
         {
-            var remoteVersion = dhis2.de.dataSets[item] == null ? null : dhis2.de.dataSets[item].version;
+            var ds = dhis2.de.dataSets[item];
+            var remoteVersion = ds ? ds.version : null;
             var localVersion = formVersions[item];
 
             if ( remoteVersion == null || localVersion == null || remoteVersion != localVersion )
