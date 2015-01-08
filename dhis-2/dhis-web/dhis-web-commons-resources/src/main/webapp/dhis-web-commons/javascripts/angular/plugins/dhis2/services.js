@@ -165,7 +165,7 @@ var d2Services = angular.module('d2Services', ['ngResource'])
             }            
             var calendarSetting = CalendarService.getSetting();
             dateValue = moment(dateValue, 'YYYY-MM-DD')._d;
-            return $filter('date')(this.getDate(dateValue), calendarSetting.keyDateFormat); 
+            return $filter('date')(dateValue, calendarSetting.keyDateFormat); 
         }
     };
 })
