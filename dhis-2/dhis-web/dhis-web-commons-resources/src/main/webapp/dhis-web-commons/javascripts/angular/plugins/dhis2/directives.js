@@ -471,9 +471,7 @@ var d2Directives = angular.module('d2Directives', [])
                 showAnim: "",
                 renderer: $.calendars.picker.themeRollerRenderer,
                 onSelect: function(date) {
-                    ctrl.$setViewValue(date);
-                    $(this).change();                    
-                    scope.$apply();
+                    $this.change();
                 }
             })
             .change(function() {
@@ -483,8 +481,14 @@ var d2Directives = angular.module('d2Directives', [])
                 var isValid = rawDate == convertedDate;                
                 var fieldName = element.attr('name');
                 
+                if(isValid && maxDate === 0){                    
+                    isValid = !moment(convertedDate, calendarSetting.momentFormat).isAfter(DateUtils.getToday());
+                }
+                
                 ctrl.$setViewValue(isValid ? this.value : undefined);                                   
-                ctrl.$setValidity(fieldName, isValid);	            
+                ctrl.$setValidity(fieldName, isValid);
+                
+                this.focus();	            
 	            scope.$apply();
             });    
         }      
