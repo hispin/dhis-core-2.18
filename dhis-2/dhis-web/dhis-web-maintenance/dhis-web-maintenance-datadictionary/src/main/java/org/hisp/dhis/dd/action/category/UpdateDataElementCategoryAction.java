@@ -28,13 +28,13 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew
@@ -97,14 +97,12 @@ public class UpdateDataElementCategoryAction
         dataElementCategory.setName( name );
         dataElementCategory.setDataDimension( dataDimension );
 
-        List<DataElementCategoryOption> options = new ArrayList<>();
-
+        dataElementCategory.getCategoryOptions().clear();
+        
         for ( String id : coSelected )
         {
-            options.add( dataElementCategoryService.getDataElementCategoryOption( id ) );
+            dataElementCategory.addDataElementCategoryOption( dataElementCategoryService.getDataElementCategoryOption( id ) );
         }
-
-        dataElementCategory.setCategoryOptions( options );
 
         dataElementCategoryService.updateDataElementCategory( dataElementCategory );
 
