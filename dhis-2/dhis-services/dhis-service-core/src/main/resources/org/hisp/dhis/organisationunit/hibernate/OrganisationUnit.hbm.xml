@@ -32,7 +32,7 @@
 
     <property name="description" type="text" />
 
-    <property name="openingDate" column="openingdate" type="date" />
+    <property name="openingDate" column="openingdate" type="date" not-null="true" />
 
     <property name="closedDate" column="closeddate" type="date" />
 

@@ -127,6 +127,7 @@ public abstract class AbstractPropertyIntrospectorService
         return (LocalSessionFactoryBean) context.getBean( "&sessionFactory" );
     }
 
+    @SuppressWarnings("unused")
     protected Map<String, Property> getPropertiesFromHibernate( Class<?> klass )
     {
         ClassMetadata classMetadata = sessionFactory.getClassMetadata( klass );

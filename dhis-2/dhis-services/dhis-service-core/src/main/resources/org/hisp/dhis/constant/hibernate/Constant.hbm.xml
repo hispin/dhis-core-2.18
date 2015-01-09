@@ -17,7 +17,7 @@
 
     <property name="name" column="name" not-null="true" unique="true" length="230" />
 
-    <property name="value" />
+    <property name="value" not-null="true" />
 
   </class>
 </hibernate-mapping>
