@@ -65,7 +65,6 @@ public class OrganisationUnitConverter
     private static final String FIELD_CODE = "code";
     private static final String FIELD_OPENING_DATE = "openingDate";
     private static final String FIELD_CLOSED_DATE = "closedDate";
-    private static final String FIELD_ACTIVE = "active";
     private static final String FIELD_COMMENT = "comment";
     private static final String FIELD_COORDINATES_TUPLE = "coordinatesTuple";
     private static final String FIELD_COORDINATES = "coord";
@@ -127,7 +126,6 @@ public class OrganisationUnitConverter
                 writer.writeElement( FIELD_CODE, unit.getCode() );
                 writer.writeElement( FIELD_OPENING_DATE, DateUtils.getMediumDateString( unit.getOpeningDate() ) );
                 writer.writeElement( FIELD_CLOSED_DATE, DateUtils.getMediumDateString( unit.getClosedDate() ) );
-                writer.writeElement( FIELD_ACTIVE, String.valueOf( unit.isActive() ) );
                 writer.writeElement( FIELD_COMMENT, unit.getComment() );
 
                 writer.openElement( FIELD_FEATURE, ATTRIBUTE_TYPE, unit.getFeatureType() );
@@ -192,10 +190,7 @@ public class OrganisationUnitConverter
 
             reader.moveToStartElement( FIELD_CLOSED_DATE );
             unit.setClosedDate( DateUtils.getMediumDate( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_ACTIVE );
-            unit.setActive( Boolean.parseBoolean( reader.getElementValue() ) );
-            
+                        
             reader.moveToStartElement( FIELD_COMMENT );
             unit.setComment( reader.getElementValue() );
             

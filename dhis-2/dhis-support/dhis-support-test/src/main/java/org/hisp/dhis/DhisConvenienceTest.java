@@ -698,7 +698,6 @@ public abstract class DhisConvenienceTest
         unit.setCode( "OrganisationUnitCode" + uniqueCharacter );
         unit.setOpeningDate( date );
         unit.setClosedDate( date );
-        unit.setActive( true );
         unit.setComment( "Comment" + uniqueCharacter );
 
         return unit;

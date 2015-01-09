@@ -298,7 +298,6 @@ public class DefaultCsvImportService
                 object.setUuid( getSafe( values, 6, null, 36 ) );
                 object.setOpeningDate( getMediumDate( getSafe( values, 7, "1970-01-01", null ) ) );
                 object.setClosedDate( getMediumDate( getSafe( values, 8, "1970-01-01", null ) ) );
-                object.setActive( true );
                 object.setComment( getSafe( values, 9, null, null ) );
                 object.setFeatureType( getSafe( values, 10, null, 50 ) );
                 object.setCoordinates( getSafe( values, 11, null, null ) );

@@ -36,8 +36,6 @@
 
     <property name="closedDate" column="closeddate" type="date" />
 
-    <property name="active" not-null="true" />
-
     <property name="comment" type="text" />
 
     <property name="featureType" length="50" />

@@ -145,13 +145,6 @@ public class AddOrganisationUnitAction
         this.openingDate = openingDate;
     }
 
-    private boolean active;
-
-    public void setActive( boolean active )
-    {
-        this.active = active;
-    }
-
     private String comment;
 
     public void setComment( String comment )
@@ -277,7 +270,7 @@ public class AddOrganisationUnitAction
 
         DateTimeUnit isoOpeningDate = calendarService.getSystemCalendar().toIso( openingDate );
 
-        OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, code, isoOpeningDate.toJdkCalendar().getTime(), null, active, comment );
+        OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, code, isoOpeningDate.toJdkCalendar().getTime(), null, comment );
 
         organisationUnit.setDescription( description );
         organisationUnit.setUrl( url );

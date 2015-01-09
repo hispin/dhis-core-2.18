@@ -148,13 +148,6 @@ public class UpdateOrganisationUnitAction
         this.code = code;
     }
 
-    private boolean active;
-
-    public void setActive( boolean active )
-    {
-        this.active = active;
-    }
-
     private String openingDate;
 
     public void setOpeningDate( String openingDate )
@@ -299,7 +292,6 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setShortName( shortName );
         organisationUnit.setDescription( description );
         organisationUnit.setCode( code );
-        organisationUnit.setActive( active );
         organisationUnit.setOpeningDate( oDate );
         organisationUnit.setClosedDate( cDate );
         organisationUnit.setComment( comment );

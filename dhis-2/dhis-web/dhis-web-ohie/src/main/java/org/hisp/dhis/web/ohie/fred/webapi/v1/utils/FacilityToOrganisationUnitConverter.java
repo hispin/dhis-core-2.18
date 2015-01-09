@@ -72,8 +72,6 @@ public class FacilityToOrganisationUnitConverter implements Converter<Facility, 
             organisationUnit.setShortName( facility.getName() );
         }
 
-        organisationUnit.setActive( facility.getActive() );
-
         if ( facility.getIdentifiers() != null )
         {
             for ( Identifier identifier : facility.getIdentifiers() )

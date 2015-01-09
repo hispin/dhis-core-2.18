@@ -28,6 +28,9 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.Map;
+
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.importexport.ExportParams;
@@ -39,12 +42,6 @@ import org.hisp.dhis.importexport.dhis14.util.Dhis14DateUtil;
 import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-
-import java.util.Collection;
-import java.util.Map;
-
-import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanFromDhis14;
-import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanToDhis14;
 
 /**
  * @author Lars Helge Overland
@@ -72,8 +69,6 @@ public class OrganisationUnitConverter
     private static final String FIELD_VALID_FROM = "ValidFrom";
 
     private static final String FIELD_VALID_TO = "ValidTo";
-
-    private static final String FIELD_ACTIVE = "Active";
 
     private static final String FIELD_COMMENT = "Comment";
 
@@ -171,7 +166,6 @@ public class OrganisationUnitConverter
                 writer.writeElement( FIELD_SHORT_NAME, unit.getShortName() );
                 writer.writeElement( FIELD_VALID_FROM, String.valueOf( VALID_FROM ) );
                 writer.writeElement( FIELD_VALID_TO, String.valueOf( VALID_TO ) );
-                writer.writeElement( FIELD_ACTIVE, convertBooleanToDhis14( unit.isActive() ) );
                 writer.writeElement( FIELD_COMMENT, unit.getComment() );
                 writer.writeElement( FIELD_LATITUDE, String.valueOf( 0 ) );
                 writer.writeElement( FIELD_LONGITUDE, String.valueOf( 0 ) );
@@ -210,7 +204,6 @@ public class OrganisationUnitConverter
         unit.setShortName( values.get( FIELD_SHORT_NAME ) );
         unit.setOpeningDate( Dhis14DateUtil.getDate( Integer.parseInt( values.get( FIELD_VALID_FROM ) ) ) );
         unit.setClosedDate( Dhis14DateUtil.getDate( Integer.parseInt( values.get( FIELD_VALID_TO ) ) ) );
-        unit.setActive( convertBooleanFromDhis14( values.get( FIELD_ACTIVE ) ) );
         unit.setComment( values.get( FIELD_COMMENT ) );
         unit.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
         importObject( unit, params );

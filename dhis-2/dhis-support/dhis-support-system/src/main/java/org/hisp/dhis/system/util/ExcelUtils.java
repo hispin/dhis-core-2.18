@@ -151,7 +151,6 @@ public class ExcelUtils
         sheet.addCell( new Label( column++, row, unit.getCode(), FORMAT_TEXT ) );
         sheet.addCell( new Label( column++, row, unit.getOpeningDate() != null ? i18nFormat.formatDate( unit.getOpeningDate() ) : "", FORMAT_TEXT ) );
         sheet.addCell( new Label( column++, row, unit.getClosedDate() != null ? i18nFormat.formatDate( unit.getClosedDate() ) : "", FORMAT_TEXT ) );
-        sheet.addCell( new Label( column++, row, i18n.getString( getBoolean().get( unit.isActive() ) ), FORMAT_TEXT ) );
         sheet.addCell( new Label( column++, row, unit.getComment(), FORMAT_TEXT ) );
     }
 
