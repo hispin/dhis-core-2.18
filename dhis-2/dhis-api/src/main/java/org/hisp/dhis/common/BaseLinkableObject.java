@@ -31,11 +31,13 @@ package org.hisp.dhis.common;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.schema.PropertyType;
+import org.hisp.dhis.schema.annotation.Property;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "linkableObject", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "linkableObject", namespace = DxfNamespaces.DXF_2_0 )
 public class BaseLinkableObject
     implements LinkableObject
 {
@@ -48,6 +50,7 @@ public class BaseLinkableObject
     @Override
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
+    @Property( PropertyType.URL )
     public String getHref()
     {
         return href;
