@@ -29,10 +29,8 @@ package org.hisp.dhis.user;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 
 /**
@@ -74,8 +72,12 @@ public class UserGroupAccess
     }
 
     @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String userGroupUid()
+    {
+        return userGroup != null ? userGroup.getUid() : null;
+    }
+
     public UserGroup getUserGroup()
     {
         return userGroup;
