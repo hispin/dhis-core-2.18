@@ -260,9 +260,6 @@ var validationRules = {
             "required" : true,
             "rangelength" : [ 2, 160 ]
         },
-        "conceptId" : {
-            "required" : true
-        },
         "memberValidator" : {
             "required" : true
         }
@@ -290,10 +287,6 @@ var validationRules = {
         "name" : {
             "required" : true,
             "rangelength" : [ 2, 160 ]
-        },
-        "description" : {
-            "required" : true,
-            "rangelength" : [ 2, 255 ]
         }
     },
     "indicator" : {
@@ -339,10 +332,6 @@ var validationRules = {
         "name" : {
             "required" : true,
             "rangelength" : [ 2, 160 ]
-        },
-        "description" : {
-            "required" : true,
-            "rangelength" : [ 2, 255 ]
         }
     },
     "indicatorType" : {
@@ -439,11 +428,6 @@ var validationRules = {
             "required" : true,
             "rangelength" : [ 2, 230 ],
             "alphanumericwithbasicpuncspaces" : true
-        }
-    },
-    "dataMart" : {
-        "name" : {
-            "required": true
         }
     },
     "trackedEntityAttribute" : {
