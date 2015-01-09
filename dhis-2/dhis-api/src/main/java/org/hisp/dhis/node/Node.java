@@ -28,6 +28,7 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import org.hisp.dhis.schema.Property;
 import org.springframework.core.Ordered;
 
 import java.util.List;
@@ -107,6 +108,11 @@ public interface Node extends Ordered
      * @see org.hisp.dhis.node.NodeSerializer
      */
     String getComment();
+
+    /**
+     * The associated property for this node (if any).
+     */
+    Property getProperty();
 
     /**
      * Adds a child to this node.
