@@ -139,35 +139,35 @@ public class ExcelNodeSerializer extends AbstractNodeSerializer
 
         int rowIdx = 1;
 
-        for ( Node child : rootNode.getChildren() )
+        for ( Node collectionNode : rootNode.getChildren() )
         {
-            if ( child.isCollection() )
+            if ( collectionNode.isCollection() )
             {
-                for ( Node node : child.getChildren() )
+                for ( Node complexNode : collectionNode.getChildren() )
                 {
                     XSSFRow row = sheet.createRow( rowIdx++ );
                     int cellIdx = 0;
 
-                    for ( Node property : node.getChildren() )
+                    for ( Node node : complexNode.getChildren() )
                     {
-                        if ( property.isSimple() )
+                        if ( node.isSimple() )
                         {
                             XSSFCell cell = row.createCell( cellIdx++ );
-                            cell.setCellValue( getValue( (SimpleNode) property ) );
+                            cell.setCellValue( getValue( (SimpleNode) node ) );
 
-                            if ( property.haveProperty() && PropertyType.URL.equals( property.getProperty().getPropertyType() ) )
+                            if ( node.haveProperty() && PropertyType.URL.equals( node.getProperty().getPropertyType() ) )
                             {
                                 XSSFHyperlink hyperlink = creationHelper.createHyperlink( Hyperlink.LINK_URL );
-                                hyperlink.setAddress( getValue( (SimpleNode) property ) );
-                                hyperlink.setLabel( getValue( (SimpleNode) property ) );
+                                hyperlink.setAddress( getValue( (SimpleNode) node ) );
+                                hyperlink.setLabel( getValue( (SimpleNode) node ) );
 
                                 cell.setHyperlink( hyperlink );
                             }
-                            else if ( property.haveProperty() && PropertyType.EMAIL.equals( property.getProperty().getPropertyType() ) )
+                            else if ( node.haveProperty() && PropertyType.EMAIL.equals( node.getProperty().getPropertyType() ) )
                             {
                                 XSSFHyperlink hyperlink = creationHelper.createHyperlink( Hyperlink.LINK_EMAIL );
-                                hyperlink.setAddress( getValue( (SimpleNode) property ) );
-                                hyperlink.setLabel( getValue( (SimpleNode) property ) );
+                                hyperlink.setAddress( getValue( (SimpleNode) node ) );
+                                hyperlink.setLabel( getValue( (SimpleNode) node ) );
 
                                 cell.setHyperlink( hyperlink );
                             }
