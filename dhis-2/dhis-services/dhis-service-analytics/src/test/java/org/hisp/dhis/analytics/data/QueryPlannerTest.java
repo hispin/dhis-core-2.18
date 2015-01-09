@@ -68,6 +68,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -107,6 +108,7 @@ public class QueryPlannerTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    private IndicatorType itA;
     private Indicator inA;
     
     private DataElement deA;
@@ -136,7 +138,11 @@ public class QueryPlannerTest
     {
         PeriodType pt = new MonthlyPeriodType();
         
-        inA = createIndicator( 'A', null );
+        itA = createIndicatorType( 'A' );
+        
+        indicatorService.addIndicatorType( itA );
+        
+        inA = createIndicator( 'A', itA );
         
         indicatorService.addIndicator( inA );
         

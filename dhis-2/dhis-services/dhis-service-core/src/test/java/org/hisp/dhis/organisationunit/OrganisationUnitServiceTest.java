@@ -67,22 +67,15 @@ public class OrganisationUnitServiceTest
     public void testBasicOrganisationUnitCoarseGrained()
         throws Exception
     {
-        // Single OrganisationUnit
-        String organisationUnitName1 = "organisationUnitName1";
-        OrganisationUnit organisationUnit1 = new OrganisationUnit( organisationUnitName1, "shortName1",
-            "organisationUnitCode1", new Date(), new Date(), "comment" );
+        OrganisationUnit organisationUnit1 = createOrganisationUnit( 'A' );
 
         int id1 = organisationUnitService.addOrganisationUnit( organisationUnit1 );
 
-        // assert getOrganisationUnit
         assertNotNull( organisationUnitService.getOrganisationUnit( id1 ) );
 
         assertNull( organisationUnitService.getOrganisationUnit( -1 ) );
 
-        // OrganisationUnit with parent
-        String organisationUnitName2 = "organisationUnitName2";
-        OrganisationUnit organisationUnit2 = new OrganisationUnit( organisationUnitName2, organisationUnit1,
-            "shortName2", "organisationUnitCode2", new Date(), new Date(), "comment" );
+        OrganisationUnit organisationUnit2 = createOrganisationUnit( 'B', organisationUnit1 );
 
         int id2 = organisationUnitService.addOrganisationUnit( organisationUnit2 );
 
@@ -98,13 +91,10 @@ public class OrganisationUnitServiceTest
     public void testUpdateOrganisationUnit()
         throws Exception
     {
-        String name = "name";
-        String shortName = "shortName";
         String updatedName = "updatedName";
         String updatedShortName = "updatedShortName";
 
-        OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, "organisationUnitCode", new Date(),
-            new Date(), "comment" );
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
 
         int id = organisationUnitService.addOrganisationUnit( organisationUnit );
 
@@ -237,10 +227,10 @@ public class OrganisationUnitServiceTest
         String oU2Code = "OU2Code";
         String oU3Code = "OU3Code";
 
-        OrganisationUnit organisationUnit1 = new OrganisationUnit( oU1Name, null, oU1ShortName, oU1Code, null, null, null );
-        OrganisationUnit organisationUnit2 = new OrganisationUnit( oU2Name, null, oU2ShortName, oU2Code, null, null, null );
-        OrganisationUnit organisationUnit3 = new OrganisationUnit( oU3Name, null, oU3ShortName, oU3Code, null, null, null );
-
+        OrganisationUnit organisationUnit1 = new OrganisationUnit( oU1Name, null, oU1ShortName, oU1Code, new Date(), null, null );
+        OrganisationUnit organisationUnit2 = new OrganisationUnit( oU2Name, null, oU2ShortName, oU2Code, new Date(), null, null );
+        OrganisationUnit organisationUnit3 = new OrganisationUnit( oU3Name, null, oU3ShortName, oU3Code, new Date(), null, null );
+        
         organisationUnitService.addOrganisationUnit( organisationUnit1 );
         organisationUnitService.addOrganisationUnit( organisationUnit2 );
         organisationUnitService.addOrganisationUnit( organisationUnit3 );
@@ -262,12 +252,9 @@ public class OrganisationUnitServiceTest
     public void testGetOrganisationUnitGraph()
         throws Exception
     {
-        OrganisationUnit organisationUnit1 = new OrganisationUnit( "Foo", "shortName1", "organisationUnitCode1",
-            new Date(), new Date(), "comment" );
-        OrganisationUnit organisationUnit2 = new OrganisationUnit( "Bar", organisationUnit1, "shortName2",
-            "organisationUnitCode2", new Date(), new Date(), "comment" );
-        OrganisationUnit organisationUnit3 = new OrganisationUnit( "Foobar", organisationUnit2, "shortName3",
-            "organisationUnitCode3", new Date(), new Date(), "comment" );
+        OrganisationUnit organisationUnit1 = createOrganisationUnit( 'A' );
+        OrganisationUnit organisationUnit2 = createOrganisationUnit( 'B', organisationUnit1 );
+        OrganisationUnit organisationUnit3 = createOrganisationUnit( 'C', organisationUnit2 );
 
         int orgId1 = organisationUnitService.addOrganisationUnit( organisationUnit1 );
         int orgId2 = organisationUnitService.addOrganisationUnit( organisationUnit2 );
@@ -290,11 +277,11 @@ public class OrganisationUnitServiceTest
     {
         // creating a tree with two roots ( id1 and id4 )
 
-        OrganisationUnit unit1 = new OrganisationUnit( "OU1name", "OU1sname", "OU1code", null, null, null );
-        OrganisationUnit unit2 = new OrganisationUnit( "OU2name", unit1, "OU2sname", "OU2code", null, null, null );
-        OrganisationUnit unit3 = new OrganisationUnit( "OU3name", unit1, "OU3sname", "OU3code", null, null, null );
-        OrganisationUnit unit4 = new OrganisationUnit( "OU4name", "OU4sname", "OU4code", null, null, null );
-        OrganisationUnit unit5 = new OrganisationUnit( "OU5name", unit4, "OU5sname", "OU5code", null, null, null );
+        OrganisationUnit unit1 = createOrganisationUnit( 'A' );
+        OrganisationUnit unit2 = createOrganisationUnit( 'B', unit1 );
+        OrganisationUnit unit3 = createOrganisationUnit( 'C', unit1 );
+        OrganisationUnit unit4 = createOrganisationUnit( 'D' );
+        OrganisationUnit unit5 = createOrganisationUnit( 'E', unit4 );
 
         organisationUnitService.addOrganisationUnit( unit1 );
         organisationUnitService.addOrganisationUnit( unit2 );

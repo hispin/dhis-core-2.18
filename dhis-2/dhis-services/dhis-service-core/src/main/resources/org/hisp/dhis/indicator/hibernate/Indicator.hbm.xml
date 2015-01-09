@@ -26,7 +26,7 @@
     <property name="decimals" />
 
     <many-to-one name="indicatorType" class="org.hisp.dhis.indicator.IndicatorType" column="indicatortypeid"
-      foreign-key="fk_indicator_indicatortypeid" />
+      foreign-key="fk_indicator_indicatortypeid" not-null="true" />
 
     <property name="numerator" column="numerator" type="text" />
 

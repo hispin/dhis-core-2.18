@@ -148,7 +148,7 @@ public abstract class DhisConvenienceTest
 
     static
     {
-        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0);
+        DateTime dateTime = new DateTime( 1970, 1, 1, 0, 0 );
         date = dateTime.toDate();
     }
 
