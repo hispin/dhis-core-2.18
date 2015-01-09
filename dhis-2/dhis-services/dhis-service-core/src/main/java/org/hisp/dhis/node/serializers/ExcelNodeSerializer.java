@@ -155,24 +155,21 @@ public class ExcelNodeSerializer extends AbstractNodeSerializer
                             XSSFCell cell = row.createCell( cellIdx++ );
                             cell.setCellValue( getValue( (SimpleNode) property ) );
 
-                            if ( property.getProperty() != null )
+                            if ( property.haveProperty() && PropertyType.URL.equals( property.getProperty().getPropertyType() ) )
                             {
-                                if ( PropertyType.URL.equals( property.getProperty().getPropertyType() ) )
-                                {
-                                    XSSFHyperlink hyperlink = creationHelper.createHyperlink( Hyperlink.LINK_URL );
-                                    hyperlink.setAddress( getValue( (SimpleNode) property ) );
-                                    hyperlink.setLabel( getValue( (SimpleNode) property ) );
+                                XSSFHyperlink hyperlink = creationHelper.createHyperlink( Hyperlink.LINK_URL );
+                                hyperlink.setAddress( getValue( (SimpleNode) property ) );
+                                hyperlink.setLabel( getValue( (SimpleNode) property ) );
 
-                                    cell.setHyperlink( hyperlink );
-                                }
-                                else if ( PropertyType.EMAIL.equals( property.getProperty().getPropertyType() ) )
-                                {
-                                    XSSFHyperlink hyperlink = creationHelper.createHyperlink( Hyperlink.LINK_EMAIL );
-                                    hyperlink.setAddress( getValue( (SimpleNode) property ) );
-                                    hyperlink.setLabel( getValue( (SimpleNode) property ) );
+                                cell.setHyperlink( hyperlink );
+                            }
+                            else if ( property.haveProperty() && PropertyType.EMAIL.equals( property.getProperty().getPropertyType() ) )
+                            {
+                                XSSFHyperlink hyperlink = creationHelper.createHyperlink( Hyperlink.LINK_EMAIL );
+                                hyperlink.setAddress( getValue( (SimpleNode) property ) );
+                                hyperlink.setLabel( getValue( (SimpleNode) property ) );
 
-                                    cell.setHyperlink( hyperlink );
-                                }
+                                cell.setHyperlink( hyperlink );
                             }
                         }
                     }

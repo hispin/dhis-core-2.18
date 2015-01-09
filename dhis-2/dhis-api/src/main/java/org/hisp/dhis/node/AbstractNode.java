@@ -158,6 +158,7 @@ public abstract class AbstractNode implements Node
         this.property = property;
     }
 
+    @Override
     public boolean haveProperty()
     {
         return property != null;
