@@ -44,6 +44,7 @@ import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.node.types.SimpleNode;
+import org.hisp.dhis.schema.PropertyType;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -154,13 +155,24 @@ public class ExcelNodeSerializer extends AbstractNodeSerializer
                             XSSFCell cell = row.createCell( cellIdx++ );
                             cell.setCellValue( getValue( (SimpleNode) property ) );
 
-                            if ( "href".equals( property.getName() ) )
+                            if ( property.getProperty() != null )
                             {
-                                XSSFHyperlink hyperlink = creationHelper.createHyperlink( Hyperlink.LINK_URL );
-                                hyperlink.setAddress( getValue( (SimpleNode) property ) );
-                                hyperlink.setLabel( getValue( (SimpleNode) property ) );
+                                if ( PropertyType.URL.equals( property.getProperty().getPropertyType() ) )
+                                {
+                                    XSSFHyperlink hyperlink = creationHelper.createHyperlink( Hyperlink.LINK_URL );
+                                    hyperlink.setAddress( getValue( (SimpleNode) property ) );
+                                    hyperlink.setLabel( getValue( (SimpleNode) property ) );
 
-                                cell.setHyperlink( hyperlink );
+                                    cell.setHyperlink( hyperlink );
+                                }
+                                else if ( PropertyType.EMAIL.equals( property.getProperty().getPropertyType() ) )
+                                {
+                                    XSSFHyperlink hyperlink = creationHelper.createHyperlink( Hyperlink.LINK_EMAIL );
+                                    hyperlink.setAddress( getValue( (SimpleNode) property ) );
+                                    hyperlink.setLabel( getValue( (SimpleNode) property ) );
+
+                                    cell.setHyperlink( hyperlink );
+                                }
                             }
                         }
                     }
