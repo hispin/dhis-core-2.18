@@ -28,18 +28,17 @@ package org.hisp.dhis.dxf2.events.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -99,20 +98,21 @@ public class JacksonTrackedEntityInstanceService extends AbstractTrackedEntityIn
         ImportSummaries importSummaries = new ImportSummaries();
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
 
+        TrackedEntityInstances trackedEntityInstances = new TrackedEntityInstances();
+
         try
         {
-            TrackedEntityInstances trackedEntityInstances = fromXml( input, TrackedEntityInstances.class );
-
-            for ( TrackedEntityInstance trackedEntityInstance : trackedEntityInstances.getTrackedEntityInstances() )
-            {
-                trackedEntityInstance.setTrackedEntityInstance( null );
-                importSummaries.addImportSummary( addTrackedEntityInstance( trackedEntityInstance ) );
-            }
+            TrackedEntityInstances fromXml = fromXml( input, TrackedEntityInstances.class );
+            trackedEntityInstances.getTrackedEntityInstances().addAll( fromXml.getTrackedEntityInstances() );
         }
         catch ( Exception ex )
         {
-            TrackedEntityInstance trackedEntityInstance = fromXml( input, TrackedEntityInstance.class );
-            trackedEntityInstance.setTrackedEntityInstance( null );
+            TrackedEntityInstance fromXml = fromXml( input, TrackedEntityInstance.class );
+            trackedEntityInstances.getTrackedEntityInstances().add( fromXml );
+        }
+
+        for ( TrackedEntityInstance trackedEntityInstance : trackedEntityInstances.getTrackedEntityInstances() )
+        {
             importSummaries.addImportSummary( addTrackedEntityInstance( trackedEntityInstance ) );
         }
 
@@ -125,18 +125,21 @@ public class JacksonTrackedEntityInstanceService extends AbstractTrackedEntityIn
         ImportSummaries importSummaries = new ImportSummaries();
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
 
+        TrackedEntityInstances trackedEntityInstances = new TrackedEntityInstances();
+
         try
         {
-            TrackedEntityInstances trackedEntityInstances = fromJson( input, TrackedEntityInstances.class );
-
-            for ( TrackedEntityInstance trackedEntityInstance : trackedEntityInstances.getTrackedEntityInstances() )
-            {
-                importSummaries.addImportSummary( addTrackedEntityInstance( trackedEntityInstance ) );
-            }
+            TrackedEntityInstances fromJson = fromJson( input, TrackedEntityInstances.class );
+            trackedEntityInstances.getTrackedEntityInstances().addAll( fromJson.getTrackedEntityInstances() );
         }
         catch ( Exception ex )
         {
-            TrackedEntityInstance trackedEntityInstance = fromJson( input, TrackedEntityInstance.class );
+            TrackedEntityInstance fromJson = fromJson( input, TrackedEntityInstance.class );
+            trackedEntityInstances.getTrackedEntityInstances().add( fromJson );
+        }
+
+        for ( TrackedEntityInstance trackedEntityInstance : trackedEntityInstances.getTrackedEntityInstances() )
+        {
             importSummaries.addImportSummary( addTrackedEntityInstance( trackedEntityInstance ) );
         }
 
