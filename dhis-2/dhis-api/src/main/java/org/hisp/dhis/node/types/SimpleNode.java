@@ -32,7 +32,6 @@ import org.hisp.dhis.node.AbstractNode;
 import org.hisp.dhis.node.Node;
 import org.hisp.dhis.node.NodeType;
 import org.hisp.dhis.node.exception.InvalidTypeException;
-import org.hisp.dhis.schema.Property;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>

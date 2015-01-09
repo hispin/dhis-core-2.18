@@ -115,6 +115,11 @@ public interface Node extends Ordered
     Property getProperty();
 
     /**
+     * Is there a property associated with this Node.
+     */
+    boolean haveProperty();
+
+    /**
      * Adds a child to this node.
      *
      * @param child Child node to add
