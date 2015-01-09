@@ -28,18 +28,18 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
-import org.hisp.dhis.node.exception.InvalidTypeException;
-import org.hisp.dhis.node.types.SimpleNode;
-import org.springframework.core.OrderComparator;
-import org.springframework.core.Ordered;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import org.hisp.dhis.node.exception.InvalidTypeException;
+import org.hisp.dhis.node.types.SimpleNode;
+import org.hisp.dhis.schema.Property;
+import org.springframework.core.OrderComparator;
+import org.springframework.core.Ordered;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -58,10 +58,19 @@ public abstract class AbstractNode implements Node
 
     protected List<Node> children = Lists.newArrayList();
 
+    protected Property property;
+
     protected AbstractNode( String name, NodeType nodeType )
     {
         this.name = name;
         this.nodeType = nodeType;
+    }
+
+    protected AbstractNode( String name, NodeType nodeType, Property property )
+    {
+        this.name = name;
+        this.nodeType = nodeType;
+        this.property = property;
     }
 
     @Override
@@ -136,6 +145,22 @@ public abstract class AbstractNode implements Node
     public void setComment( String comment )
     {
         this.comment = comment;
+    }
+
+    @Override
+    public Property getProperty()
+    {
+        return property;
+    }
+
+    public void setProperty( Property property )
+    {
+        this.property = property;
+    }
+
+    public boolean haveProperty()
+    {
+        return property != null;
     }
 
     @Override

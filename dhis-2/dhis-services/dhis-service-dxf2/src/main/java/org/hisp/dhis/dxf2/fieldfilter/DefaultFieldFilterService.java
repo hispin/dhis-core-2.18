@@ -241,7 +241,8 @@ public class DefaultFieldFilterService implements FieldFilterService
                     {
                         for ( Object collectionObject : collection )
                         {
-                            child.addChild( new SimpleNode( property.getName(), collectionObject ) );
+                            SimpleNode simpleNode = child.addChild( new SimpleNode( property.getName(), collectionObject ) );
+                            simpleNode.setProperty( property );
                         }
                     }
                 }
@@ -291,6 +292,7 @@ public class DefaultFieldFilterService implements FieldFilterService
             if ( child != null )
             {
                 child.setName( fieldKey );
+                child.setProperty( property );
 
                 // TODO fix ugly hack, will be replaced by custom field serializer/deserializer
                 if ( child.isSimple() && PeriodType.class.isInstance( (((SimpleNode) child).getValue()) ) )
@@ -449,6 +451,7 @@ public class DefaultFieldFilterService implements FieldFilterService
 
         ComplexNode complexNode = new ComplexNode( currentProperty.getName() );
         complexNode.setNamespace( currentProperty.getNamespace() );
+        complexNode.setProperty( currentProperty );
 
         Schema schema;
 
@@ -476,6 +479,7 @@ public class DefaultFieldFilterService implements FieldFilterService
             SimpleNode simpleNode = new SimpleNode( field, returnValue );
             simpleNode.setAttribute( property.isAttribute() );
             simpleNode.setNamespace( property.getNamespace() );
+            simpleNode.setProperty( property );
 
             complexNode.addChild( simpleNode );
         }

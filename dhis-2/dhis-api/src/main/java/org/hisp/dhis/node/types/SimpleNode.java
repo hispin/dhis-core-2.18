@@ -32,8 +32,7 @@ import org.hisp.dhis.node.AbstractNode;
 import org.hisp.dhis.node.Node;
 import org.hisp.dhis.node.NodeType;
 import org.hisp.dhis.node.exception.InvalidTypeException;
-
-import java.util.Objects;
+import org.hisp.dhis.schema.Property;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -79,7 +78,7 @@ public class SimpleNode extends AbstractNode
     }
 
     @Override
-    public <T extends Node> T addChild( T child ) throws InvalidTypeException
+    public <T extends Node> T addChild( T child )
     {
         throw new InvalidTypeException();
     }
@@ -88,32 +87,5 @@ public class SimpleNode extends AbstractNode
     public <T extends Node> void addChildren( Iterable<T> children )
     {
         throw new InvalidTypeException();
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return 31 * super.hashCode() + Objects.hash( value, attribute );
-    }
-
-    @Override
-    public boolean equals( Object obj )
-    {
-        if ( this == obj )
-        {
-            return true;
-        }
-        if ( obj == null || getClass() != obj.getClass() )
-        {
-            return false;
-        }
-        if ( !super.equals( obj ) )
-        {
-            return false;
-        }
-
-        final SimpleNode other = (SimpleNode) obj;
-
-        return Objects.equals( this.value, other.value ) && Objects.equals( this.attribute, other.attribute );
     }
 }
