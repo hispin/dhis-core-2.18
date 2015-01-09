@@ -77,7 +77,6 @@ public class OrganisationUnitToSimpleFeature implements Converter<OrganisationUn
 
             featureBuilder.add( organisationUnit.getUid() );
             featureBuilder.add( organisationUnit.getName() );
-            featureBuilder.add( organisationUnit.isActive() );
 
             return featureBuilder.buildFeature( null );
         }

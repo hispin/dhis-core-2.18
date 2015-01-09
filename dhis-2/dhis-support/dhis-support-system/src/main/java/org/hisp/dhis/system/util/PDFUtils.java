@@ -530,7 +530,6 @@ public class PDFUtils
         }
 
         table.addCell( getItalicCell( i18n.getString( "active" ) ) );
-        table.addCell( getTextCell( i18n.getString( getBoolean().get( unit.isActive() ) ) ) );
 
         if ( nullIfEmpty( unit.getComment() ) != null )
         {

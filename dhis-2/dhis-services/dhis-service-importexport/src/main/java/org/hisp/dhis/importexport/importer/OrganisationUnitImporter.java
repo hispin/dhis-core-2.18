@@ -28,6 +28,10 @@ package org.hisp.dhis.importexport.importer;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
+
+import java.util.List;
+
 import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportParams;
@@ -35,10 +39,6 @@ import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-
-import java.util.List;
-
-import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
 
 /**
  * @author Lars Helge Overland
@@ -81,7 +81,6 @@ public class OrganisationUnitImporter
         match.setCode( defaultIfEmpty( object.getCode(), match.getCode() ) );
         match.setOpeningDate( object.getOpeningDate() );
         match.setClosedDate( object.getClosedDate() );
-        match.setActive( object.isActive() );
         match.setComment( defaultIfEmpty( object.getComment(), match.getComment() ) );
         match.setFeatureType( defaultIfEmpty( object.getFeatureType(), match.getFeatureType() ) );
         match.setCoordinates( defaultIfEmpty( object.getCoordinates(), match.getCoordinates() ) );
@@ -124,10 +123,6 @@ public class OrganisationUnitImporter
             return false;
         }
         if ( !isSimiliar( object.getClosedDate(), existing.getClosedDate() ) || (isNotNull( object.getClosedDate(), existing.getClosedDate() ) && !object.getClosedDate().equals( existing.getClosedDate() )) )
-        {
-            return false;
-        }
-        if ( object.isActive() != existing.isActive() )
         {
             return false;
         }

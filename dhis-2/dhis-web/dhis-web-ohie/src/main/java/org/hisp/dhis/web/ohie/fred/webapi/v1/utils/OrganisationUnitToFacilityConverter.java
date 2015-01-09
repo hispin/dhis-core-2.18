@@ -61,7 +61,6 @@ public class OrganisationUnitToFacilityConverter implements Converter<Organisati
         Facility facility = new Facility();
         facility.setUuid( organisationUnit.getUuid() );
         facility.setName( organisationUnit.getDisplayName() );
-        facility.setActive( organisationUnit.isActive() );
         facility.setCreatedAt( organisationUnit.getCreated() );
         facility.setUpdatedAt( organisationUnit.getLastUpdated() );
 

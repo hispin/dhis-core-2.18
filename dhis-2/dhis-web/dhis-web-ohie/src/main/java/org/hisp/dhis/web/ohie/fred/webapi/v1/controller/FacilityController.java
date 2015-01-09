@@ -281,7 +281,6 @@ public class FacilityController
             allOrganisationUnits = new ArrayList<>( organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastUpdated ) );
         }
 
-        filterByActiveList( activeList, allOrganisationUnits );
         filterByNameList( nameList, allOrganisationUnits );
         filterByUuidList( uuidList, allOrganisationUnits );
         filterByPropertiesParent( parentList, allOrganisationUnits );
@@ -461,38 +460,6 @@ public class FacilityController
             for ( String name : nameList )
             {
                 if ( organisationUnit.getName().contains( name ) )
-                {
-                    shouldRemove = false;
-                    break;
-                }
-            }
-
-            if ( shouldRemove )
-            {
-                organisationUnitIterator.remove();
-            }
-        }
-    }
-
-    private void filterByActiveList( List<Boolean> activeList, List<OrganisationUnit> allOrganisationUnits )
-    {
-        if ( activeList == null || activeList.isEmpty() )
-        {
-            return;
-        }
-
-        Iterator<OrganisationUnit> organisationUnitIterator = allOrganisationUnits.iterator();
-
-        while ( organisationUnitIterator.hasNext() )
-        {
-            OrganisationUnit organisationUnit = organisationUnitIterator.next();
-
-            boolean shouldRemove = true;
-
-            // see if it matches at least one
-            for ( Boolean active : activeList )
-            {
-                if ( organisationUnit.isActive() == active )
                 {
                     shouldRemove = false;
                     break;
@@ -737,7 +704,6 @@ public class FacilityController
             organisationUnit.setFeatureType( organisationUnitUpdate.getFeatureType() );
             organisationUnit.setCoordinates( organisationUnitUpdate.getCoordinates() );
             organisationUnit.setParent( organisationUnitUpdate.getParent() );
-            organisationUnit.setActive( organisationUnitUpdate.isActive() );
 
             organisationUnit.removeAllDataSets();
             organisationUnitService.updateOrganisationUnit( organisationUnit );

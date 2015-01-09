@@ -107,8 +107,6 @@ public class OrganisationUnit
 
     private Date closedDate;
 
-    private boolean active;
-
     private String comment;
 
     private String featureType;
@@ -178,14 +176,13 @@ public class OrganisationUnit
      * @param comment
      */
     public OrganisationUnit( String name, String shortName, String code, Date openingDate, Date closedDate,
-        boolean active, String comment )
+        String comment )
     {
         this( name );
         this.shortName = shortName;
         this.code = code;
         this.openingDate = openingDate;
         this.closedDate = closedDate;
-        this.active = active;
         this.comment = comment;
     }
 
@@ -199,7 +196,7 @@ public class OrganisationUnit
      * @param comment
      */
     public OrganisationUnit( String name, OrganisationUnit parent, String shortName, String code, Date openingDate,
-        Date closedDate, boolean active, String comment )
+        Date closedDate, String comment )
     {
         this( name );
         this.parent = parent;
@@ -207,7 +204,6 @@ public class OrganisationUnit
         this.code = code;
         this.openingDate = openingDate;
         this.closedDate = closedDate;
-        this.active = active;
         this.comment = comment;
     }
 
@@ -876,19 +872,6 @@ public class OrganisationUnit
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isActive()
-    {
-        return active;
-    }
-
-    public void setActive( boolean active )
-    {
-        this.active = active;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     @PropertyRange( min = 2 )
     public String getComment()
     {
@@ -1122,7 +1105,6 @@ public class OrganisationUnit
 
             openingDate = organisationUnit.getOpeningDate() == null ? openingDate : organisationUnit.getOpeningDate();
             closedDate = organisationUnit.getClosedDate() == null ? closedDate : organisationUnit.getClosedDate();
-            active = organisationUnit.isActive();
             comment = organisationUnit.getComment() == null ? comment : organisationUnit.getComment();
             featureType = organisationUnit.getFeatureType() == null ? featureType : organisationUnit.getFeatureType();
             coordinates = organisationUnit.getCoordinates() == null ? coordinates : organisationUnit.getCoordinates();

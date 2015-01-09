@@ -70,7 +70,7 @@ public class OrganisationUnitServiceTest
         // Single OrganisationUnit
         String organisationUnitName1 = "organisationUnitName1";
         OrganisationUnit organisationUnit1 = new OrganisationUnit( organisationUnitName1, "shortName1",
-            "organisationUnitCode1", new Date(), new Date(), true, "comment" );
+            "organisationUnitCode1", new Date(), new Date(), "comment" );
 
         int id1 = organisationUnitService.addOrganisationUnit( organisationUnit1 );
 
@@ -82,7 +82,7 @@ public class OrganisationUnitServiceTest
         // OrganisationUnit with parent
         String organisationUnitName2 = "organisationUnitName2";
         OrganisationUnit organisationUnit2 = new OrganisationUnit( organisationUnitName2, organisationUnit1,
-            "shortName2", "organisationUnitCode2", new Date(), new Date(), true, "comment" );
+            "shortName2", "organisationUnitCode2", new Date(), new Date(), "comment" );
 
         int id2 = organisationUnitService.addOrganisationUnit( organisationUnit2 );
 
@@ -104,7 +104,7 @@ public class OrganisationUnitServiceTest
         String updatedShortName = "updatedShortName";
 
         OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, "organisationUnitCode", new Date(),
-            new Date(), true, "comment" );
+            new Date(), "comment" );
 
         int id = organisationUnitService.addOrganisationUnit( organisationUnit );
 
@@ -237,12 +237,9 @@ public class OrganisationUnitServiceTest
         String oU2Code = "OU2Code";
         String oU3Code = "OU3Code";
 
-        OrganisationUnit organisationUnit1 = new OrganisationUnit( oU1Name, null, oU1ShortName, oU1Code, null, null,
-            true, null );
-        OrganisationUnit organisationUnit2 = new OrganisationUnit( oU2Name, null, oU2ShortName, oU2Code, null, null,
-            true, null );
-        OrganisationUnit organisationUnit3 = new OrganisationUnit( oU3Name, null, oU3ShortName, oU3Code, null, null,
-            false, null );
+        OrganisationUnit organisationUnit1 = new OrganisationUnit( oU1Name, null, oU1ShortName, oU1Code, null, null, null );
+        OrganisationUnit organisationUnit2 = new OrganisationUnit( oU2Name, null, oU2ShortName, oU2Code, null, null, null );
+        OrganisationUnit organisationUnit3 = new OrganisationUnit( oU3Name, null, oU3ShortName, oU3Code, null, null, null );
 
         organisationUnitService.addOrganisationUnit( organisationUnit1 );
         organisationUnitService.addOrganisationUnit( organisationUnit2 );
@@ -266,11 +263,11 @@ public class OrganisationUnitServiceTest
         throws Exception
     {
         OrganisationUnit organisationUnit1 = new OrganisationUnit( "Foo", "shortName1", "organisationUnitCode1",
-            new Date(), new Date(), true, "comment" );
+            new Date(), new Date(), "comment" );
         OrganisationUnit organisationUnit2 = new OrganisationUnit( "Bar", organisationUnit1, "shortName2",
-            "organisationUnitCode2", new Date(), new Date(), true, "comment" );
+            "organisationUnitCode2", new Date(), new Date(), "comment" );
         OrganisationUnit organisationUnit3 = new OrganisationUnit( "Foobar", organisationUnit2, "shortName3",
-            "organisationUnitCode3", new Date(), new Date(), true, "comment" );
+            "organisationUnitCode3", new Date(), new Date(), "comment" );
 
         int orgId1 = organisationUnitService.addOrganisationUnit( organisationUnit1 );
         int orgId2 = organisationUnitService.addOrganisationUnit( organisationUnit2 );
@@ -293,11 +290,11 @@ public class OrganisationUnitServiceTest
     {
         // creating a tree with two roots ( id1 and id4 )
 
-        OrganisationUnit unit1 = new OrganisationUnit( "OU1name", "OU1sname", "OU1code", null, null, true, null );
-        OrganisationUnit unit2 = new OrganisationUnit( "OU2name", unit1, "OU2sname", "OU2code", null, null, true, null );
-        OrganisationUnit unit3 = new OrganisationUnit( "OU3name", unit1, "OU3sname", "OU3code", null, null, true, null );
-        OrganisationUnit unit4 = new OrganisationUnit( "OU4name", "OU4sname", "OU4code", null, null, true, null );
-        OrganisationUnit unit5 = new OrganisationUnit( "OU5name", unit4, "OU5sname", "OU5code", null, null, true, null );
+        OrganisationUnit unit1 = new OrganisationUnit( "OU1name", "OU1sname", "OU1code", null, null, null );
+        OrganisationUnit unit2 = new OrganisationUnit( "OU2name", unit1, "OU2sname", "OU2code", null, null, null );
+        OrganisationUnit unit3 = new OrganisationUnit( "OU3name", unit1, "OU3sname", "OU3code", null, null, null );
+        OrganisationUnit unit4 = new OrganisationUnit( "OU4name", "OU4sname", "OU4code", null, null, null );
+        OrganisationUnit unit5 = new OrganisationUnit( "OU5name", unit4, "OU5sname", "OU5code", null, null, null );
 
         organisationUnitService.addOrganisationUnit( unit1 );
         organisationUnitService.addOrganisationUnit( unit2 );
@@ -633,10 +630,8 @@ public class OrganisationUnitServiceTest
     {
         OrganisationUnitGroup organisationUnitGroup = new OrganisationUnitGroup( "OUGname" );
 
-        OrganisationUnit organisationUnit1 = new OrganisationUnit( "OU1name", null, "OU1sname", "OU1code", null, null,
-            true, null );
-        OrganisationUnit organisationUnit2 = new OrganisationUnit( "OU2name", null, "OU2sname", "OU2code", null, null,
-            true, null );
+        OrganisationUnit organisationUnit1 = new OrganisationUnit( "OU1name", null, "OU1sname", "OU1code", null, null, null );
+        OrganisationUnit organisationUnit2 = new OrganisationUnit( "OU2name", null, "OU2sname", "OU2code", null, null, null );
 
         organisationUnitGroup.getMembers().add( organisationUnit1 );
         organisationUnitGroup.getMembers().add( organisationUnit2 );
@@ -723,17 +718,17 @@ public class OrganisationUnitServiceTest
     {
         // creates a tree
         OrganisationUnit unit1 = new OrganisationUnit( "orgUnitName1", "shortName1", "organisationUnitCode1",
-            new Date(), new Date(), true, "comment" );
+            new Date(), new Date(), "comment" );
         OrganisationUnit unit2 = new OrganisationUnit( "orgUnitName2", unit1, "shortName2", "organisationUnitCode2",
-            new Date(), new Date(), true, "comment" );
+            new Date(), new Date(), "comment" );
         OrganisationUnit unit3 = new OrganisationUnit( "orgUnitName3", unit1, "shortName3", "organisationUnitCode3",
-            new Date(), new Date(), true, "comment" );
+            new Date(), new Date(), "comment" );
         OrganisationUnit unit4 = new OrganisationUnit( "orgUnitName4", unit2, "shortName4", "organisationUnitCode4",
-            new Date(), new Date(), true, "comment" );
+            new Date(), new Date(), "comment" );
         OrganisationUnit unit5 = new OrganisationUnit( "orgUnitName5", unit2, "shortName5", "organisationUnitCode5",
-            new Date(), new Date(), true, "comment" );
+            new Date(), new Date(), "comment" );
         OrganisationUnit unit6 = new OrganisationUnit( "orgUnitName6", unit5, "shortName6", "organisationUnitCode6",
-            new Date(), new Date(), true, "comment" );
+            new Date(), new Date(), "comment" );
 
         organisationUnitService.addOrganisationUnit( unit1 );
         int id2 = organisationUnitService.addOrganisationUnit( unit2 );
