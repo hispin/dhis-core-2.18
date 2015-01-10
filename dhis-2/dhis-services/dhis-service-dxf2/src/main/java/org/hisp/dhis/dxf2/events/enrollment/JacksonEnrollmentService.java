@@ -36,6 +36,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -142,9 +143,30 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
         Enrollments create = new Enrollments();
         Enrollments update = new Enrollments();
 
-        for ( Enrollment enrollment : enrollments )
+        if ( strategy.isCreate() )
         {
-            importSummaries.addImportSummary( addEnrollment( enrollment ) );
+            create.getEnrollments().addAll( enrollments );
+        }
+        else if ( strategy.isCreateAndUpdate() )
+        {
+            for ( Enrollment enrollment : enrollments )
+            {
+                if ( StringUtils.isEmpty( enrollment.getEnrollment() ) )
+                {
+                    create.getEnrollments().add( enrollment );
+                }
+                else
+                {
+                    if ( programInstanceService.getProgramInstance( enrollment.getEnrollment() ) == null )
+                    {
+                        create.getEnrollments().add( enrollment );
+                    }
+                    else
+                    {
+                        update.getEnrollments().add( enrollment );
+                    }
+                }
+            }
         }
 
         for ( Enrollment enrollment : create.getEnrollments() )
@@ -154,7 +176,7 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
 
         for ( Enrollment enrollment : update.getEnrollments() )
         {
-            importSummaries.addImportSummary( addEnrollment( enrollment ) );
+            importSummaries.addImportSummary( updateEnrollment( enrollment ) );
         }
 
         return importSummaries;

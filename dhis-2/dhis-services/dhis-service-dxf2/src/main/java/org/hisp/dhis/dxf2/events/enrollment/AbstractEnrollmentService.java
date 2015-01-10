@@ -78,37 +78,37 @@ public abstract class AbstractEnrollmentService
     implements EnrollmentService
 {
     @Autowired
-    private ProgramInstanceService programInstanceService;
+    protected ProgramInstanceService programInstanceService;
 
     @Autowired
-    private ProgramService programService;
+    protected ProgramService programService;
 
     @Autowired
-    private TrackedEntityInstanceService trackedEntityInstanceService;
+    protected TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Autowired
-    private org.hisp.dhis.trackedentity.TrackedEntityInstanceService teiService;
+    protected org.hisp.dhis.trackedentity.TrackedEntityInstanceService teiService;
 
     @Autowired
-    private TrackedEntityAttributeService trackedEntityAttributeService;
+    protected TrackedEntityAttributeService trackedEntityAttributeService;
 
     @Autowired
-    private TrackedEntityAttributeValueService trackedEntityAttributeValueService;
+    protected TrackedEntityAttributeValueService trackedEntityAttributeValueService;
 
     @Autowired
     protected CurrentUserService currentUserService;
 
     @Autowired
-    private TrackedEntityCommentService commentService;
+    protected TrackedEntityCommentService commentService;
 
     @Autowired
-    private IdentifiableObjectManager manager;
+    protected IdentifiableObjectManager manager;
 
     @Autowired
-    private I18nManager i18nManager;
+    protected I18nManager i18nManager;
 
     @Autowired
-    private UserService userService;
+    protected UserService userService;
 
     // -------------------------------------------------------------------------
     // READ
@@ -431,8 +431,7 @@ public abstract class AbstractEnrollmentService
             return importSummary;
         }
 
-        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment
-            .getTrackedEntityInstance() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getTrackedEntityInstance() );
         Program program = getProgram( enrollment.getProgram() );
 
         programInstance.setProgram( program );
@@ -467,7 +466,7 @@ public abstract class AbstractEnrollmentService
         saveTrackedEntityComment( programInstance, enrollment );
 
         importSummary.setReference( enrollment.getEnrollment() );
-        importSummary.getImportCount().incrementImported();
+        importSummary.getImportCount().incrementUpdated();
 
         return importSummary;
     }
