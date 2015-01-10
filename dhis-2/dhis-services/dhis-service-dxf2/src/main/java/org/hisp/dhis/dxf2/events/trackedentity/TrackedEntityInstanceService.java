@@ -30,6 +30,7 @@ package org.hisp.dhis.dxf2.events.trackedentity;
 
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.importexport.ImportStrategy;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,11 +52,13 @@ public interface TrackedEntityInstanceService
     // CREATE
     // -------------------------------------------------------------------------
 
-    ImportSummaries addTrackedEntityInstanceXml( InputStream inputStream )
-        throws IOException;
+    ImportSummaries addTrackedEntityInstanceXml( InputStream inputStream, ImportStrategy strategy ) throws IOException;
 
-    ImportSummaries addTrackedEntityInstanceJson( InputStream inputStream )
-        throws IOException;
+    ImportSummaries addTrackedEntityInstanceXml( InputStream inputStream ) throws IOException;
+
+    ImportSummaries addTrackedEntityInstanceJson( InputStream inputStream ) throws IOException;
+
+    ImportSummaries addTrackedEntityInstanceJson( InputStream inputStream, ImportStrategy strategy ) throws IOException;
 
     ImportSummary addTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance );
 
@@ -63,11 +66,9 @@ public interface TrackedEntityInstanceService
     // UPDATE
     // -------------------------------------------------------------------------
 
-    ImportSummary updateTrackedEntityInstanceXml( String id, InputStream inputStream )
-        throws IOException;
+    ImportSummary updateTrackedEntityInstanceXml( String id, InputStream inputStream ) throws IOException;
 
-    ImportSummary updateTrackedEntityInstanceJson( String id, InputStream inputStream )
-        throws IOException;
+    ImportSummary updateTrackedEntityInstanceJson( String id, InputStream inputStream ) throws IOException;
 
     ImportSummary updateTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance );
 
