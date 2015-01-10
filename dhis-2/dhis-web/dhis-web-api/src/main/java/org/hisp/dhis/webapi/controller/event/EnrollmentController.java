@@ -181,7 +181,7 @@ public class EnrollmentController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PROGRAM_ENROLLMENT')" )
     public void postEnrollmentXml( @RequestParam( defaultValue = "CREATE" ) ImportStrategy strategy, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        ImportSummaries importSummaries = enrollmentService.addEnrollmentsXml( request.getInputStream() );
+        ImportSummaries importSummaries = enrollmentService.addEnrollmentsXml( request.getInputStream(), strategy );
         response.setContentType( MediaType.APPLICATION_XML_VALUE );
 
         if ( importSummaries.getImportSummaries().size() > 1 )
@@ -207,7 +207,7 @@ public class EnrollmentController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PROGRAM_ENROLLMENT')" )
     public void postEnrollmentJson( @RequestParam( defaultValue = "CREATE" ) ImportStrategy strategy, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        ImportSummaries importSummaries = enrollmentService.addEnrollmentsJson( request.getInputStream() );
+        ImportSummaries importSummaries = enrollmentService.addEnrollmentsJson( request.getInputStream(), strategy );
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
 
         if ( importSummaries.getImportSummaries().size() > 1 )

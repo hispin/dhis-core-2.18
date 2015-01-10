@@ -31,6 +31,7 @@ package org.hisp.dhis.dxf2.events.enrollment;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -94,21 +95,21 @@ public interface EnrollmentService
     // CREATE
     // -------------------------------------------------------------------------
 
+    ImportSummaries addEnrollmentsJson( InputStream inputStream, ImportStrategy strategy ) throws IOException;
+
+    ImportSummaries addEnrollmentsXml( InputStream inputStream, ImportStrategy strategy ) throws IOException;
+
     ImportSummary addEnrollment( Enrollment enrollment );
-
-    ImportSummaries addEnrollmentsJson( InputStream inputStream ) throws IOException;
-
-    ImportSummaries addEnrollmentsXml( InputStream inputStream ) throws IOException;
 
     // -------------------------------------------------------------------------
     // UPDATE
     // -------------------------------------------------------------------------
 
-    ImportSummary updateEnrollment( Enrollment enrollment );
-
     ImportSummary updateEnrollmentJson( String id, InputStream inputStream ) throws IOException;
 
     ImportSummary updateEnrollmentXml( String id, InputStream inputStream ) throws IOException;
+
+    ImportSummary updateEnrollment( Enrollment enrollment );
 
     // -------------------------------------------------------------------------
     // DELETE

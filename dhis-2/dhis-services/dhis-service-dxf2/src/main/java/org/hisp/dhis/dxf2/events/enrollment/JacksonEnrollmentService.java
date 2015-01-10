@@ -33,12 +33,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.importexport.ImportStrategy;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -93,50 +96,63 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
     // -------------------------------------------------------------------------
 
     @Override
-    public ImportSummaries addEnrollmentsJson( InputStream inputStream ) throws IOException
+    public ImportSummaries addEnrollmentsJson( InputStream inputStream, ImportStrategy strategy ) throws IOException
     {
-        ImportSummaries importSummaries = new ImportSummaries();
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
-        Enrollments enrollments = new Enrollments();
+        List<Enrollment> enrollments = new ArrayList<>();
 
         try
         {
             Enrollments fromJson = fromJson( input, Enrollments.class );
-            enrollments.getEnrollments().addAll( fromJson.getEnrollments() );
+            enrollments.addAll( fromJson.getEnrollments() );
         }
         catch ( Exception ex )
         {
-            Enrollment enrollment = fromJson( input, Enrollment.class );
-            enrollments.getEnrollments().add( enrollment );
+            Enrollment fromJson = fromJson( input, Enrollment.class );
+            enrollments.add( fromJson );
         }
 
-        for ( Enrollment enrollment : enrollments.getEnrollments() )
+        return addEnrollments( enrollments, strategy );
+    }
+
+    @Override
+    public ImportSummaries addEnrollmentsXml( InputStream inputStream, ImportStrategy strategy ) throws IOException
+    {
+        String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
+        List<Enrollment> enrollments = new ArrayList<>();
+
+        try
+        {
+            Enrollments fromXml = fromXml( input, Enrollments.class );
+            enrollments.addAll( fromXml.getEnrollments() );
+        }
+        catch ( Exception ex )
+        {
+            Enrollment fromXml = fromXml( input, Enrollment.class );
+            enrollments.add( fromXml );
+        }
+
+        return addEnrollments( enrollments, strategy );
+    }
+
+    private ImportSummaries addEnrollments( List<Enrollment> enrollments, ImportStrategy strategy )
+    {
+        ImportSummaries importSummaries = new ImportSummaries();
+
+        Enrollments create = new Enrollments();
+        Enrollments update = new Enrollments();
+
+        for ( Enrollment enrollment : enrollments )
         {
             importSummaries.addImportSummary( addEnrollment( enrollment ) );
         }
 
-        return importSummaries;
-    }
-
-    @Override
-    public ImportSummaries addEnrollmentsXml( InputStream inputStream ) throws IOException
-    {
-        ImportSummaries importSummaries = new ImportSummaries();
-        String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
-        Enrollments enrollments = new Enrollments();
-
-        try
+        for ( Enrollment enrollment : create.getEnrollments() )
         {
-            Enrollments fromJson = fromXml( input, Enrollments.class );
-            enrollments.getEnrollments().addAll( fromJson.getEnrollments() );
-        }
-        catch ( Exception ex )
-        {
-            Enrollment enrollment = fromXml( input, Enrollment.class );
-            enrollments.getEnrollments().add( enrollment );
+            importSummaries.addImportSummary( addEnrollment( enrollment ) );
         }
 
-        for ( Enrollment enrollment : enrollments.getEnrollments() )
+        for ( Enrollment enrollment : update.getEnrollments() )
         {
             importSummaries.addImportSummary( addEnrollment( enrollment ) );
         }
