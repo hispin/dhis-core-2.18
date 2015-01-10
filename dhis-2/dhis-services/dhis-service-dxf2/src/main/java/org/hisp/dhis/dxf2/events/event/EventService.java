@@ -75,21 +75,9 @@ public interface EventService
 
     ImportSummaries addEvents( List<Event> events, ImportOptions importOptions, TaskId taskId );
 
-    ImportSummary addEventXml( InputStream inputStream ) throws IOException;
-
-    ImportSummary addEventXml( InputStream inputStream, ImportOptions importOptions ) throws IOException;
-
-    ImportSummaries addEventsXml( InputStream inputStream ) throws IOException;
-
     ImportSummaries addEventsXml( InputStream inputStream, ImportOptions importOptions ) throws IOException;
 
     ImportSummaries addEventsXml( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException;
-
-    ImportSummary addEventJson( InputStream inputStream ) throws IOException;
-
-    ImportSummary addEventJson( InputStream inputStream, ImportOptions importOptions ) throws IOException;
-
-    ImportSummaries addEventsJson( InputStream inputStream ) throws IOException;
 
     ImportSummaries addEventsJson( InputStream inputStream, ImportOptions importOptions ) throws IOException;
 
@@ -100,6 +88,8 @@ public interface EventService
     // -------------------------------------------------------------------------
 
     void updateEvent( Event event, boolean singleValue );
+
+    void updateEvents( List<Event> events, boolean singleValue );
 
     void updateEvent( Event event, boolean singleValue, ImportOptions importOptions );
 

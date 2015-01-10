@@ -28,19 +28,8 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
@@ -83,8 +72,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -180,12 +179,12 @@ public abstract class AbstractEventService
         try
         {
             ImportSummaries importSummaries = addEvents( events, importOptions );
-    
+
             if ( taskId != null )
             {
                 notifier.notify( taskId, NotificationLevel.INFO, "Import done", true ).addTaskSummary( taskId, importSummaries );
             }
-            
+
             return importSummaries;
         }
         catch ( RuntimeException ex )
@@ -194,7 +193,7 @@ public abstract class AbstractEventService
             notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
             return new ImportSummaries().addImportSummary( new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() ) );
         }
-        
+
     }
 
     @Override
@@ -403,6 +402,15 @@ public abstract class AbstractEventService
     // -------------------------------------------------------------------------
     // UPDATE
     // -------------------------------------------------------------------------
+
+    @Override
+    public void updateEvents( List<Event> events, boolean singleValue )
+    {
+        for ( Event event : events )
+        {
+            updateEvent( event, singleValue );
+        }
+    }
 
     @Override
     public void updateEvent( Event event, boolean singleValue )
