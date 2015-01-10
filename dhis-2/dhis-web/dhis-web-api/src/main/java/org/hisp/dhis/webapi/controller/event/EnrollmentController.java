@@ -40,6 +40,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
@@ -178,7 +179,7 @@ public class EnrollmentController
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PROGRAM_ENROLLMENT')" )
-    public void postEnrollmentXml( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    public void postEnrollmentXml( @RequestParam( defaultValue = "CREATE" ) ImportStrategy strategy, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummaries importSummaries = enrollmentService.addEnrollmentsXml( request.getInputStream() );
         response.setContentType( MediaType.APPLICATION_XML_VALUE );
@@ -204,7 +205,7 @@ public class EnrollmentController
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PROGRAM_ENROLLMENT')" )
-    public void postEnrollmentJson( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    public void postEnrollmentJson( @RequestParam( defaultValue = "CREATE" ) ImportStrategy strategy, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummaries importSummaries = enrollmentService.addEnrollmentsJson( request.getInputStream() );
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
