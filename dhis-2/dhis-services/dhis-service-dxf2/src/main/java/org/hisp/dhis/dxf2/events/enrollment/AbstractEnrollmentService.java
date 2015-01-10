@@ -245,7 +245,7 @@ public abstract class AbstractEnrollmentService
         return getEnrollments(
             programInstanceService.getProgramInstances( program, IdentifiableObjectUtils.getIdentifiers( organisationUnits ), startDate, endDate, 0, Integer.MAX_VALUE ) );
     }
-    
+
     @Override
     public Enrollments getEnrollments( Program program, TrackedEntityInstance trackedEntityInstance )
     {

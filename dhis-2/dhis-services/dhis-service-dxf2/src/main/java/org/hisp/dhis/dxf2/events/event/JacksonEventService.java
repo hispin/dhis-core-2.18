@@ -34,7 +34,6 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
@@ -42,10 +41,13 @@ import org.hisp.dhis.system.timer.SystemTimer;
 import org.hisp.dhis.system.timer.Timer;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation of EventService that uses Jackson for serialization and deserialization.
@@ -100,12 +102,6 @@ public class JacksonEventService extends AbstractEventService
     }
 
     @Override
-    public ImportSummaries addEventsXml( InputStream inputStream ) throws IOException
-    {
-        return addEventsXml( inputStream, null, null );
-    }
-
-    @Override
     public ImportSummaries addEventsXml( InputStream inputStream, ImportOptions importOptions ) throws IOException
     {
         return addEventsXml( inputStream, null, importOptions );
@@ -114,60 +110,21 @@ public class JacksonEventService extends AbstractEventService
     @Override
     public ImportSummaries addEventsXml( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException
     {
-        ImportSummaries importSummaries = new ImportSummaries();
-
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
-
-        notifier.clear( taskId ).notify( taskId, "Importing events" );
-
-        Timer timer = new SystemTimer().start();
-        Events events = new Events();
+        List<Event> events = new ArrayList<>();
 
         try
         {
             Events fromXml = fromXml( input, Events.class );
-            events.getEvents().addAll( fromXml.getEvents() );
+            events.addAll( fromXml.getEvents() );
         }
         catch ( Exception ex )
         {
-            Event event = fromXml( input, Event.class );
-            events.getEvents().add( event );
+            Event fromXml = fromXml( input, Event.class );
+            events.add( fromXml );
         }
 
-        importSummaries = addEvents( events.getEvents(), importOptions );
-
-        timer.stop();
-
-        if ( taskId != null )
-        {
-            notifier.notify( taskId, NotificationLevel.INFO, "Import done. Completed in " + timer.toString() + ".", true ).
-                addTaskSummary( taskId, importSummaries );
-        }
-        else
-        {
-            log.info( "Import done. Completed in " + timer.toString() + "." );
-        }
-
-        return importSummaries;
-    }
-
-    @Override
-    public ImportSummary addEventXml( InputStream inputStream ) throws IOException
-    {
-        return addEventXml( inputStream, null );
-    }
-
-    @Override
-    public ImportSummary addEventXml( InputStream inputStream, ImportOptions importOptions ) throws IOException
-    {
-        Event event = fromXml( inputStream, Event.class );
-        return addEvent( event, importOptions );
-    }
-
-    @Override
-    public ImportSummaries addEventsJson( InputStream inputStream ) throws IOException
-    {
-        return addEventsJson( inputStream, null, null );
+        return addEvents( events, taskId, importOptions );
     }
 
     @Override
@@ -179,29 +136,61 @@ public class JacksonEventService extends AbstractEventService
     @Override
     public ImportSummaries addEventsJson( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException
     {
-        ImportSummaries importSummaries = new ImportSummaries();
-
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
-
-        notifier.clear( taskId ).notify( taskId, "Importing events" );
-
-        Timer timer = new SystemTimer().start();
-        Events events = new Events();
+        List<Event> events = new ArrayList<>();
 
         try
         {
             Events fromJson = fromJson( input, Events.class );
-            events.getEvents().addAll( fromJson.getEvents() );
+            events.addAll( fromJson.getEvents() );
         }
         catch ( Exception ex )
         {
-            Event event = fromJson( input, Event.class );
-            events.getEvents().add( event );
+            Event fromJson = fromJson( input, Event.class );
+            events.add( fromJson );
         }
 
-        importSummaries = addEvents( events.getEvents(), importOptions );
+        return addEvents( events, taskId, importOptions );
+    }
 
-        timer.stop();
+    private ImportSummaries addEvents( List<Event> events, TaskId taskId, ImportOptions importOptions )
+    {
+        ImportSummaries importSummaries;
+
+        notifier.clear( taskId ).notify( taskId, "Importing events" );
+        Timer timer = new SystemTimer().start();
+
+        List<Event> create = new ArrayList<>();
+        List<Event> update = new ArrayList<>();
+
+        if ( importOptions.getImportStrategy().isCreate() )
+        {
+            create.addAll( events );
+        }
+        else if ( importOptions.getImportStrategy().isCreateAndUpdate() )
+        {
+            for ( Event event : events )
+            {
+                if ( StringUtils.isEmpty( event.getEvent() ) )
+                {
+                    create.add( event );
+                }
+                else
+                {
+                    if ( programStageInstanceService.getProgramStageInstance( event.getEvent() ) == null )
+                    {
+                        create.add( event );
+                    }
+                    else
+                    {
+                        update.add( event );
+                    }
+                }
+            }
+        }
+
+        importSummaries = addEvents( create, importOptions );
+        updateEvents( update, false );
 
         if ( taskId != null )
         {
@@ -214,18 +203,5 @@ public class JacksonEventService extends AbstractEventService
         }
 
         return importSummaries;
-    }
-
-    @Override
-    public ImportSummary addEventJson( InputStream inputStream ) throws IOException
-    {
-        return addEventJson( inputStream, null );
-    }
-
-    @Override
-    public ImportSummary addEventJson( InputStream inputStream, ImportOptions importOptions ) throws IOException
-    {
-        Event event = fromJson( inputStream, Event.class );
-        return addEvent( event, importOptions );
     }
 }
