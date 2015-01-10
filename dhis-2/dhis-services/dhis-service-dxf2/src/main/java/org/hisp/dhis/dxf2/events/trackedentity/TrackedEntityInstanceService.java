@@ -54,10 +54,6 @@ public interface TrackedEntityInstanceService
 
     ImportSummaries addTrackedEntityInstanceXml( InputStream inputStream, ImportStrategy strategy ) throws IOException;
 
-    ImportSummaries addTrackedEntityInstanceXml( InputStream inputStream ) throws IOException;
-
-    ImportSummaries addTrackedEntityInstanceJson( InputStream inputStream ) throws IOException;
-
     ImportSummaries addTrackedEntityInstanceJson( InputStream inputStream, ImportStrategy strategy ) throws IOException;
 
     ImportSummary addTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance );
