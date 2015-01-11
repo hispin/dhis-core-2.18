@@ -16,7 +16,6 @@
       <param name="page">/dhis-web-dashboard-integration/dashboard.vm</param>
       <param name="hideMenu">true</param>
       <param name="stylesheets">style/dashboard.css</param>
-      <param name="javascripts">javascript/dashboard.js</param>
     </action>
 
     <!-- Message -->

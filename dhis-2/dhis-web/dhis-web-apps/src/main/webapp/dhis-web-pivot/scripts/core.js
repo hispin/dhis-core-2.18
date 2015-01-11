@@ -182,14 +182,18 @@ Ext.onReady( function() {
 					'space': ' '
 				},
 				displayDensity: {
-					'compact': '3px',
+                    'xcompact': '2px',
+					'compact': '4px',
 					'normal': '6px',
-					'comfortable': '10px',
+					'comfortable': '8px',
+                    'xcomfortable': '10px'
 				},
 				fontSize: {
+					'xsmall': '9px',
 					'small': '10px',
 					'normal': '11px',
-					'large': '13px'
+					'large': '12px',
+					'xlarge': '14px'
 				}
 			};
 
@@ -299,7 +303,7 @@ Ext.onReady( function() {
 				}();
 			};
 
-			api.layout.Layout = function(config) {
+			api.layout.Layout = function(config, applyConfig) {
 				var layout = {},
 					getValidatedDimensionArray,
 					validateSpecialCases;
@@ -515,7 +519,7 @@ Ext.onReady( function() {
 						return;
 					}
 
-					return layout;
+                    return Ext.apply(layout, applyConfig);
 				}();
 			};
 

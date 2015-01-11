@@ -723,24 +723,35 @@ mapfish.GeoStat.createThematic = function(name) {
 		},
 
 		updateLegend: function() {
-			var	element = document.createElement("div"),
+			var	view = this.view,
+                response = this.gis.response,
+                isPlugin = this.gis.plugin,
+                element = document.createElement("div"),
+                style = {},
 				child,
                 id,
                 name;
 
+                style.dataLineHeight = isPlugin ? '12px' : '14px';
+                style.dataPaddingBottom = isPlugin ? '1px' : '3px';
+                style.colorWidth = isPlugin ? '15px' : '30px';
+                style.colorHeight = isPlugin ? '13px' : '15px';
+                style.colorMarginRight = isPlugin ? '5px' : '8px';
+                style.fontSize = isPlugin ? '10px' : '11px';
+
 			// data
-            id = this.view.columns[0].items[0].id;
-            name = this.view.columns[0].items[0].name;
+            id = view.columns[0].items[0].id;
+            name = view.columns[0].items[0].name;
 			child = document.createElement("div");
-            child.style.lineHeight = "14px";
-            child.style.paddingBottom = "3px";
-            child.innerHTML += this.gis.response.metaData.names[id] || name || id;
+            child.style.lineHeight = style.dataLineHeight;
+            child.style.paddingBottom = style.dataPaddingBottom;
+            child.innerHTML += response.metaData.names[id] || name || id;
             child.innerHTML += "<br/>";
 
 			// period
-            id = this.view.filters[0].items[0].id;
-            name = this.view.filters[0].items[0].name;
-            child.innerHTML += this.gis.response.metaData.names[id] || name || id;
+            id = view.filters[0].items[0].id;
+            name = view.filters[0].items[0].name;
+            child.innerHTML += response.metaData.names[id] || name || id;
 			element.appendChild(child);
 
 			child = document.createElement("div");
@@ -748,19 +759,19 @@ mapfish.GeoStat.createThematic = function(name) {
 			element.appendChild(child);
 
 			// legends
-			if (this.view.legendSet) {
+			if (view.legendSet) {
 				for (var i = 0; i < this.classification.bins.length; i++) {
 					child = document.createElement("div");
 					child.style.backgroundColor = this.colorInterpolation[i].toHexString();
-					child.style.width = "30px";
-					child.style.height = this.view.legendSet.names[i] ? "25px" : "20px";
-					child.style.cssFloat = "left";
-					child.style.marginRight = "8px";
+					child.style.width = style.colorWidth;
+					child.style.height = view.legendSet.names[i] ? '25px' : style.colorHeight;
+					child.style.cssFloat = 'left';
+					child.style.marginRight = style.colorMarginRight;
 					element.appendChild(child);
 
 					child = document.createElement("div");
-					child.style.lineHeight = this.view.legendSet.names[i] ? "12px" : "7px";
-					child.innerHTML = '<b style="color:#222; font-size:10px !important">' + (this.view.legendSet.names[i] || '') + '</b><br/>' + this.classification.bins[i].label;
+					child.style.lineHeight = view.legendSet.names[i] ? "12px" : "7px";
+					child.innerHTML = '<b style="color:#222; font-size:10px !important">' + (view.legendSet.names[i] || '') + '</b><br/>' + this.classification.bins[i].label;
 					element.appendChild(child);
 
 					child = document.createElement("div");
@@ -772,10 +783,10 @@ mapfish.GeoStat.createThematic = function(name) {
 				for (var i = 0; i < this.classification.bins.length; i++) {
 					child = document.createElement("div");
 					child.style.backgroundColor = this.colorInterpolation[i].toHexString();
-					child.style.width = "30px";
-					child.style.height = "15px";
-					child.style.cssFloat = "left";
-					child.style.marginRight = "8px";
+					child.style.width = style.colorWidth;
+					child.style.height = style.colorHeight;
+					child.style.cssFloat = 'left';
+					child.style.marginRight = style.colorMarginRight;
 					element.appendChild(child);
 
 					child = document.createElement("div");
