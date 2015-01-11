@@ -452,7 +452,7 @@ dhis2.db.renderDashboard = function( id )
 			}
 		    });
 		}
-		if ( "eventChart" == dashboardItem.type )
+		else if ( "eventChart" == dashboardItem.type )
 		{
 		    $d.append( $.tmpl( dhis2.db.tmpl.eventChartItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventChart.id, "name": dashboardItem.eventChart.name,
 			"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share_interpretation, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) );
