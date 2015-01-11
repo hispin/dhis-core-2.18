@@ -859,7 +859,7 @@ gis-combo .x-form-item-label {
 	opacity: 0.92;
 	filter: alpha(opacity=92);
 	-ms-filter: "alpha(opacity=92)";
-	padding: 5px 8px 5px 8px;
+	padding: 5px 8px 4px 8px;
 	border-bottom-left-radius: 2px;
 	border-bottom-right-radius: 2px;
 	color: #fff;

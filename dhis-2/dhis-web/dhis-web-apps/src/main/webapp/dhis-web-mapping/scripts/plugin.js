@@ -685,6 +685,7 @@ Ext.onReady( function() {
 			showInfo = function() {
 				Ext.Ajax.request({
 					url: gis.init.contextPath + '/api/organisationUnits/' + att.id + '.json?links=false',
+                    disableCaching: false,
 					success: function(r) {
 						var ou = Ext.decode(r.responseText);
 
@@ -813,6 +814,7 @@ Ext.onReady( function() {
 
 													Ext.Ajax.request({
 														url: url,
+                                                        disableCaching: false,
 														success: function(r) {
 															var response = Ext.decode(r.responseText),
 																data = [];
@@ -971,6 +973,7 @@ Ext.onReady( function() {
                         if (Ext.isNumber(geo.x) && Ext.isNumber(geo.y) && gis.init.user.isAdmin) {
                             Ext.Ajax.request({
                                 url: gis.init.contextPath + '/api/organisationUnits/' + id + '.json?links=false',
+                                disableCaching: false,
                                 success: function(r) {
                                     var orgUnit = Ext.decode(r.responseText);
 
@@ -1228,18 +1231,18 @@ Ext.onReady( function() {
 			loader;
 
 		getMap = function() {
-            var isPlugin = GIS.plugin && !GIS.app,
-                type = isPlugin ? 'jsonp' : 'json',
-                url = gis.init.contextPath + '/api/maps/' + gis.map.id + '.' + type + '?fields=' + gis.conf.url.mapFields.join(','),
+            var type = gis.plugin && gis.crossDomain ? 'jsonp' : 'json',
                 success,
-                failure;
+                failure,
+                config = {};
 
             success = function(r) {
+                var response = r.responseText ? Ext.decode(r.responseText) : r;
 
                 // operand
-                if (Ext.isArray(r.mapViews)) {
-                    for (var i = 0, view; i < r.mapViews.length; i++) {
-                        view = r.mapViews[i];
+                if (Ext.isArray(response.mapViews)) {
+                    for (var i = 0, view; i < response.mapViews.length; i++) {
+                        view = response.mapViews[i];
 
                         if (view) {
                             if (Ext.isArray(view.columns) && view.columns.length) {
@@ -1259,7 +1262,7 @@ Ext.onReady( function() {
                     }
                 }
 
-                gis.map = r;
+                gis.map = response;
                 setMap();
             };
 
@@ -1274,21 +1277,16 @@ Ext.onReady( function() {
                 }
             };
 
-            if (isPlugin) {
-                Ext.data.JsonP.request({
-                    url: url,
-                    success: function(r) {
-                        success(r);
-                    }
-                });
+            config.url = gis.init.contextPath + '/api/maps/' + gis.map.id + '.' + type + '?fields=' + gis.conf.url.mapFields.join(',');
+            config.disableCaching = false;
+            config.success = success;
+            config.failure = failure;
+
+            if (type === 'jsonp') {
+                Ext.data.JsonP.request(config);
             }
             else {
-                Ext.Ajax.request({
-                    url: url,
-                    success: function(r) {
-                        success(Ext.decode(r.responseText));
-                    }
-                });
+                Ext.Ajax.request(config);
             }
 		};
 
@@ -1700,7 +1698,7 @@ Ext.onReady( function() {
 
 		loadOrganisationUnits = function(view) {
             var items = view.rows[0].items,
-                isPlugin = GIS.plugin && !GIS.app,
+                isJsonp = gis.plugin && gis.crossDomain,
                 url = function() {
                     var params = '?ou=ou:';
 
@@ -1711,7 +1709,7 @@ Ext.onReady( function() {
 
                     params += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
 
-                    return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params + '&viewClass=detailed';
+                    return gis.init.contextPath + '/api/geoFeatures.' + (isJsonp ? 'jsonp' : 'json') + params + '&viewClass=detailed';
                 }(),
                 success,
                 failure;
@@ -1778,8 +1776,8 @@ Ext.onReady( function() {
 		};
 
 		loadLegend = function(view) {
-            var isPlugin = GIS.plugin && !GIS.app,
-                type = isPlugin ? 'jsonp' : 'json',
+                isJsonp = gis.plugin && gis.crossDomain,
+                type = isJsonp ? 'jsonp' : 'json',
                 url = gis.init.contextPath + '/api/organisationUnitGroupSets/' + view.organisationUnitGroupSet.id + '.' + type + '?fields=organisationUnitGroups[id,name,symbol]',
                 success;
 
@@ -1812,9 +1810,10 @@ Ext.onReady( function() {
                 afterLoad(view);
             };
 
-            if (isPlugin) {
+            if (isJsonp) {
                 Ext.data.JsonP.request({
                     url: url,
+                    disableCaching: false,
                     success: function(r) {
                         success(r);
                     }
@@ -1823,6 +1822,7 @@ Ext.onReady( function() {
             else {
                 Ext.Ajax.request({
                     url: url,
+                    disableCaching: false,
                     success: function(r) {
                         success(Ext.decode(r.responseText));
                     }
@@ -1972,7 +1972,7 @@ Ext.onReady( function() {
 
 		loadOrganisationUnits = function(view) {
 			var items = view.rows[0].items,
-                isPlugin = GIS.plugin && !GIS.app,
+                isJsonp = gis.plugin && gis.crossDomain,
                 url = function() {
                     var params = '?ou=ou:';
 
@@ -1983,7 +1983,7 @@ Ext.onReady( function() {
 
                     params += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
 
-                    return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params;
+                    return gis.init.contextPath + '/api/geoFeatures.' + (isJsonp ? 'jsonp' : 'json') + params;
                 }(),
                 success,
                 failure;
@@ -2047,7 +2047,7 @@ Ext.onReady( function() {
                 alert(GIS.i18n.coordinates_could_not_be_loaded);
             };
 
-            if (isPlugin) {
+            if (isJsonp) {
                 Ext.data.JsonP.request({
                     url: url,
                     disableCaching: false,
@@ -2182,7 +2182,8 @@ Ext.onReady( function() {
 			loadLegend,
 			afterLoad,
 			loader,
-			dimConf = gis.conf.finals.dimension;
+			dimConf = gis.conf.finals.dimension,
+            type = gis.plugin && gis.crossDomain ? 'jsonp' : 'json';
 
 		compareView = function(view, doExecute) {
 			var src = layer.core.view,
@@ -2320,7 +2321,7 @@ Ext.onReady( function() {
 
 		loadOrganisationUnits = function(view) {
 			var items = view.rows[0].items,
-                isPlugin = GIS.plugin && !GIS.app,
+                isJsonp = gis.plugin && gis.crossDomain,
                 url = function() {
                     var params = '?ou=ou:';
 
@@ -2331,7 +2332,7 @@ Ext.onReady( function() {
 
                     params += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
 
-                    return gis.init.contextPath + '/api/geoFeatures.' + (isPlugin ? 'jsonp' : 'json') + params;
+                    return gis.init.contextPath + '/api/geoFeatures.' + (isJsonp ? 'jsonp' : 'json') + params;
                 }(),
                 success,
                 failure;
@@ -2363,7 +2364,7 @@ Ext.onReady( function() {
                 alert(GIS.i18n.coordinates_could_not_be_loaded);
             };
 
-            if (isPlugin) {
+            if (isJsonp) {
                 Ext.data.JsonP.request({
                     url: url,
                     disableCaching: false,
@@ -2489,7 +2490,17 @@ Ext.onReady( function() {
 				loadLegend(view);
 			};
 
-			if (Ext.isObject(GIS.app)) {
+			if (gis.plugin && gis.crossDomain) {
+				Ext.data.JsonP.request({
+					url: gis.init.contextPath + '/api/analytics.jsonp' + paramString,
+					disableCaching: false,
+					scope: this,
+					success: function(r) {
+						success(r);
+					}
+				});
+			}
+			else {
 				Ext.Ajax.request({
 					url: gis.init.contextPath + '/api/analytics.json' + paramString,
 					disableCaching: false,
@@ -2498,16 +2509,6 @@ Ext.onReady( function() {
 					},
 					success: function(r) {
 						success(Ext.decode(r.responseText));
-					}
-				});
-			}
-			else if (Ext.isObject(GIS.plugin)) {
-				Ext.data.JsonP.request({
-					url: gis.init.contextPath + '/api/analytics.jsonp' + paramString,
-					disableCaching: false,
-					scope: this,
-					success: function(r) {
-						success(r);
 					}
 				});
 			}
@@ -2576,46 +2577,61 @@ Ext.onReady( function() {
 				afterLoad(view);
 			};
 
-			if (view.legendSet) {
+			if (!view.legendSet) {
+                fn();
+            }
+            else {
 				var bounds = [],
 					colors = [],
 					names = [],
-					legends = [];
+					legends = [],
+                    success,
+                    failure,
+                    config = {};
 
-				Ext.Ajax.request({
-					url: gis.init.contextPath + '/api/mapLegendSets/' + view.legendSet.id + '.json?fields=' + gis.conf.url.mapLegendSetFields.join(','),
-					scope: this,
-					success: function(r) {
-						legends = Ext.decode(r.responseText).mapLegends;
+                success = function(r) {
+                    legends = r.responseText ? Ext.decode(r.responseText).mapLegends : r.mapLegends;
 
-						Ext.Array.sort(legends, function (a, b) {
-							return a.startValue - b.startValue;
-						});
+                    Ext.Array.sort(legends, function (a, b) {
+                        return a.startValue - b.startValue;
+                    });
 
-						for (var i = 0; i < legends.length; i++) {
-							if (bounds[bounds.length - 1] !== legends[i].startValue) {
-								if (bounds.length !== 0) {
-									colors.push(new mapfish.ColorRgb(240,240,240));
-									names.push('');
-								}
-								bounds.push(legends[i].startValue);
-							}
-							colors.push(new mapfish.ColorRgb());
-							colors[colors.length - 1].setFromHex(legends[i].color);
-							names.push(legends[i].name);
-							bounds.push(legends[i].endValue);
-						}
+                    for (var i = 0; i < legends.length; i++) {
+                        if (bounds[bounds.length - 1] !== legends[i].startValue) {
+                            if (bounds.length !== 0) {
+                                colors.push(new mapfish.ColorRgb(240,240,240));
+                                names.push('');
+                            }
+                            bounds.push(legends[i].startValue);
+                        }
+                        colors.push(new mapfish.ColorRgb());
+                        colors[colors.length - 1].setFromHex(legends[i].color);
+                        names.push(legends[i].name);
+                        bounds.push(legends[i].endValue);
+                    }
 
-						view.legendSet.names = names;
-						view.legendSet.bounds = bounds;
-						view.legendSet.colors = colors;
+                    view.legendSet.names = names;
+                    view.legendSet.bounds = bounds;
+                    view.legendSet.colors = colors;
+                };
 
-						fn();
-					}
-				});
-			}
-			else {
-				fn();
+                failure = function(r) {
+                    console.log(r);
+                };
+
+                config.url = gis.init.contextPath + '/api/mapLegendSets/' + view.legendSet.id + '.' + type + '?fields=' + gis.conf.url.mapLegendSetFields.join(',');
+                config.disableCaching = false;
+                config.scope = this;
+                config.success = success;
+                config.failure = failure;
+                config.callback = fn;
+
+                if (type === 'jsonp') {
+                    Ext.data.JsonP.request(config);
+                }
+                else {
+                    Ext.Ajax.request(config);
+                }
 			}
 		};
 
@@ -3319,7 +3335,7 @@ Ext.onReady( function() {
 				}();
 			};
 
-			api.layout.Layout = function(config) {
+			api.layout.Layout = function(config, applyConfig) {
 				var config = Ext.clone(config),
 					layout = {},
 					getValidatedDimensionArray,
@@ -3519,7 +3535,7 @@ Ext.onReady( function() {
 
 					layout.organisationUnitGroupSet = config.organisationUnitGroupSet;
 
-					return layout;
+					return Ext.apply(layout, applyConfig);
 				}();
 			};
 
@@ -5053,54 +5069,59 @@ mapfish.GeoStat.createThematic = function(name) {
 		},
 
 		updateLegend: function() {
-			var	element = document.createElement("div"),
+			var	view = this.view,
+                response = this.gis.response,
+                isPlugin = this.gis.plugin,
+                element = document.createElement("div"),
+                style = {},
 				child,
-				legendNames;
+                id,
+                name;
+
+                style.dataLineHeight = isPlugin ? '12px' : '14px';
+                style.dataPaddingBottom = isPlugin ? '2px' : '3px';
+                style.colorWidth = isPlugin ? '15px' : '30px';
+                style.colorHeight = isPlugin ? '13px' : '15px';
+                style.colorMarginRight = isPlugin ? '5px' : '8px';
+                style.fontSize = isPlugin ? '10px' : '11px';
 
 			// data
+            id = view.columns[0].items[0].id;
+            name = view.columns[0].items[0].name;
 			child = document.createElement("div");
-			child.style.height = "14px";
-			child.style.overflow = "hidden";
-			child.title = this.view.columns[0].items[0].name;
-			child.innerHTML = this.view.columns[0].items[0].name;
-			element.appendChild(child);
-
-			child = document.createElement("div");
-			child.style.clear = "left";
-			element.appendChild(child);
+            child.style.fontSize = style.fontSize;
+            child.style.lineHeight = style.dataLineHeight;
+            child.style.paddingBottom = style.dataPaddingBottom;
+            child.innerHTML += response.metaData.names[id] || name || id;
+            child.innerHTML += "<br/>";
 
 			// period
-			child = document.createElement("div");
-			child.style.height = "14px";
-			child.style.overflow = "hidden";
-			child.title = this.view.filters[0].items[0].name;
-			child.innerHTML = this.view.filters[0].items[0].name;
+            id = view.filters[0].items[0].id;
+            name = view.filters[0].items[0].name;
+            child.innerHTML += response.metaData.names[id] || name || id;
 			element.appendChild(child);
 
 			child = document.createElement("div");
 			child.style.clear = "left";
-			element.appendChild(child);
-
-			// separator
-			child = document.createElement("div");
-			child.style.width = "1px";
-			child.style.height = "5px";
 			element.appendChild(child);
 
 			// legends
-			if (this.view.legendSet) {
+			if (view.legendSet) {
 				for (var i = 0; i < this.classification.bins.length; i++) {
 					child = document.createElement("div");
+                    child.style.fontSize = style.fontSize;
 					child.style.backgroundColor = this.colorInterpolation[i].toHexString();
-					child.style.width = "30px";
-					child.style.height = this.view.legendSet.names[i] ? "25px" : "20px";
-					child.style.cssFloat = "left";
-					child.style.marginRight = "8px";
+					child.style.width = style.colorWidth;
+					child.style.height = view.legendSet.names[i] ? '25px' : style.colorHeight;
+					child.style.cssFloat = 'left';
+					child.style.marginRight = style.colorMarginRight;
 					element.appendChild(child);
 
 					child = document.createElement("div");
-					child.style.lineHeight = this.view.legendSet.names[i] ? "12px" : "7px";
-					child.innerHTML = '<b style="color:#222; font-size:10px !important">' + (this.view.legendSet.names[i] || '') + '</b><br/>' + this.classification.bins[i].label;
+					child.style.height = view.legendSet.names[i] ? '25px' : style.colorHeight;
+                    child.style.fontSize = style.fontSize;
+					child.style.lineHeight = view.legendSet.names[i] ? "12px" : "7px";
+					child.innerHTML = '<b style="color:#222; font-size:10px !important">' + (view.legendSet.names[i] || '') + '</b><br/>' + this.classification.bins[i].label;
 					element.appendChild(child);
 
 					child = document.createElement("div");
@@ -5112,13 +5133,15 @@ mapfish.GeoStat.createThematic = function(name) {
 				for (var i = 0; i < this.classification.bins.length; i++) {
 					child = document.createElement("div");
 					child.style.backgroundColor = this.colorInterpolation[i].toHexString();
-					child.style.width = "30px";
-					child.style.height = "15px";
-					child.style.cssFloat = "left";
-					child.style.marginRight = "8px";
+					child.style.width = style.colorWidth;
+					child.style.height = style.colorHeight;
+					child.style.cssFloat = 'left';
+					child.style.marginRight = style.colorMarginRight;
 					element.appendChild(child);
 
 					child = document.createElement("div");
+					child.style.height = style.colorHeight;
+                    child.style.fontSize = style.fontSize;
 					child.innerHTML = this.classification.bins[i].label;
 					element.appendChild(child);
 
@@ -5156,23 +5179,24 @@ mapfish.GeoStat.createThematic('Thematic4');
 		execute;
 
 	GIS.i18n = {
-		facility_layer_legend: 'Facility layer legend',
-		thematic_layer_1_legend: 'Thematic layer 1 legend',
-		thematic_layer_2_legend: 'Thematic layer 2 legend',
-		thematic_layer_3_legend: 'Thematic layer 3 legend',
-		thematic_layer_4_legend: 'Thematic layer 4 legend',
+		facility_layer_legend: 'Facility layer',
+		thematic_layer_1_legend: 'Thematic layer 1',
+		thematic_layer_2_legend: 'Thematic layer 2',
+		thematic_layer_3_legend: 'Thematic layer 3',
+		thematic_layer_4_legend: 'Thematic layer 4',
 		measure_distance: 'Measure distance'
 	};
 
 	GIS.plugin = {};
 
-	getInit = function(contextPath) {
+	getInit = function(config) {
 		var isInit = false,
 			requests = [],
 			callbacks = 0,
+            type = config.plugin && config.crossDomain ? 'jsonp' : 'json',
 			fn;
 
-        init.contextPath = contextPath;
+        init.contextPath = config.url;
 
 		fn = function() {
 			if (++callbacks === requests.length) {
@@ -5188,24 +5212,31 @@ mapfish.GeoStat.createThematic('Thematic4');
 
         // dhis2
         requests.push({
-            url: contextPath + '/api/systemSettings.jsonp?key=keyCalendar&key=keyDateFormat',
+            url: init.contextPath + '/api/systemSettings.' + type + '?key=keyCalendar&key=keyDateFormat',
+            disableCaching: false,
             success: function(r) {
-                var systemSettings = r;
+                var systemSettings = r.responseText ? Ext.decode(r.responseText) : r,
+                    userAccountConfig;
+
                 init.systemInfo.dateFormat = Ext.isString(systemSettings.keyDateFormat) ? systemSettings.keyDateFormat.toLowerCase() : 'yyyy-mm-dd';
                 init.systemInfo.calendar = systemSettings.keyCalendar;
 
-                // user-account
-                Ext.data.JsonP.request({
-                    url: contextPath + '/api/me/user-account.jsonp',
-                    success: function(r) {
-                        init.userAccount = r;
+                // optionSetsConfig
 
-                        Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/jQuery/jquery.min.js', function() {
-                            Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.util.js', function() {
-                                Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.js', function() {
-                                    Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js', function() {
-                                        Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js', function() {
-                                            Ext.Loader.injectScriptElement(contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js', function() {
+
+                // user-account
+                userAccountConfig = {
+                    url: init.contextPath + '/api/me/user-account.' + type,
+                    disableCaching: false,
+                    success: function(r) {
+                        init.userAccount = r.responseText ? Ext.decode(r.responseText) : r;
+
+                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/jQuery/jquery.min.js', function() {
+                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.util.js', function() {
+                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.js', function() {
+                                    Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js', function() {
+                                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js', function() {
+                                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js', function() {
 
                                                 // init
                                                 var defaultKeyUiLocale = 'en',
@@ -5213,7 +5244,8 @@ mapfish.GeoStat.createThematic('Thematic4');
                                                     namePropertyUrl,
                                                     contextPath,
                                                     keyUiLocale,
-                                                    dateFormat;
+                                                    dateFormat,
+                                                    optionSetVersionConfig;
 
                                                 init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
                                                 init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
@@ -5236,17 +5268,28 @@ mapfish.GeoStat.createThematic('Thematic4');
                                                     objectStores: ['optionSets']
                                                 });
 
-                                                // option sets
-                                                Ext.data.JsonP.request({
-                                                    url: contextPath + '/api/optionSets.jsonp?fields=id,version&paging=false',
+                                                optionSetVersionConfig = {
+                                                    url: contextPath + '/api/optionSets.' + type + '?fields=id,version&paging=false',
+                                                    disableCaching: false,
                                                     success: function(r) {
-                                                        var optionSets = r.optionSets || [],
+                                                        var optionSets = (r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets) || [],
                                                             store = dhis2.gis.store,
                                                             ids = [],
                                                             url = '',
                                                             callbacks = 0,
                                                             checkOptionSet,
-                                                            updateStore;
+                                                            updateStore,
+                                                            optionSetConfig;
+
+                                                        optionSetConfig = {
+                                                            url: contextPath + '/api/optionSets.' + type + '?fields=id,name,version,options[code,name]&paging=false' + url,
+                                                            disableCaching: false,
+                                                            success: function(r) {
+                                                                var sets = r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets;
+
+                                                                store.setAll('optionSets', sets).done(fn);
+                                                            }
+                                                        };
 
                                                         updateStore = function() {
                                                             if (++callbacks === optionSets.length) {
@@ -5259,14 +5302,12 @@ mapfish.GeoStat.createThematic('Thematic4');
                                                                     url += '&filter=id:eq:' + ids[i];
                                                                 }
 
-                                                                Ext.data.JsonP.request({
-                                                                    url: contextPath + '/api/optionSets.jsonp?fields=id,name,version,options[code,name]&paging=false' + url,
-                                                                    success: function(r) {
-                                                                        var sets = r.optionSets;
-
-                                                                        store.setAll('optionSets', sets).done(fn);
-                                                                    }
-                                                                });
+                                                                if (type === 'jsonp') {
+                                                                    Ext.data.JsonP.request(optionSetConfig);
+                                                                }
+                                                                else {
+                                                                    Ext.Ajax.request(optionSetConfig);
+                                                                }
                                                             }
                                                         };
 
@@ -5286,7 +5327,15 @@ mapfish.GeoStat.createThematic('Thematic4');
                                                             }
                                                         });
                                                     }
-                                                });
+                                                };
+
+                                                // option sets
+                                                if (type === 'jsonp') {
+                                                    Ext.data.JsonP.request(optionSetVersionConfig);
+                                                }
+                                                else {
+                                                    Ext.Ajax.request(optionSetVersionConfig);
+                                                }
                                             });
                                         });
                                     });
@@ -5294,14 +5343,23 @@ mapfish.GeoStat.createThematic('Thematic4');
                             });
                         });
                     }
-                });
+                };
+
+                if (type === 'jsonp') {
+                    Ext.data.JsonP.request(userAccountConfig);
+                }
+                else {
+                    Ext.Ajax.request(userAccountConfig);
+                }
             }
         });
 
+        // user orgunit
 		requests.push({
-			url: contextPath + '/api/organisationUnits.jsonp?userOnly=true&fields=id,name,children[id,name]&paging=false',
+			url: init.contextPath + '/api/organisationUnits.' + type + '?userOnly=true&fields=id,name,children[id,name]&paging=false',
+            disableCaching: false,
 			success: function(r) {
-				var organisationUnits = r.organisationUnits || [],
+				var organisationUnits = (r.responseText ? Ext.decode(r.responseText).organisationUnits : r) || [],
                     ou = [],
                     ouc = [];
 
@@ -5328,24 +5386,150 @@ mapfish.GeoStat.createThematic('Thematic4');
 			}
 		});
 
+        // dimensions
 		requests.push({
-			url: contextPath + '/api/dimensions.jsonp?links=false&paging=false',
+			url: init.contextPath + '/api/dimensions.' + type + '?fields=id,name&paging=false',
+            disableCaching: false,
 			success: function(r) {
-				init.dimensions = r.dimensions;
+				init.dimensions = r.responseText ? Ext.decode(r.responseText).dimensions : r.dimensions;
 				fn();
 			}
 		});
 
 		for (var i = 0; i < requests.length; i++) {
-			Ext.data.JsonP.request(requests[i]);
+            if (type === 'jsonp') {
+                Ext.data.JsonP.request(requests[i]);
+            }
+            else {
+                Ext.Ajax.request(requests[i]);
+            }
 		}
 	};
 
 	applyCss = function() {
 		var css = '.gis-plugin, .gis-plugin * { font-family: arial, sans-serif, liberation sans, consolas; } \n';
-		css += '.x-panel-body, .x-window-body * { font-size: 11px; } \n';
+
+        // ext gray
+        //css += 'html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0} \n';
+        css += 'table{border-collapse:collapse;border-spacing:0} \n';
+        css += 'fieldset,img{border:0} \n';
+        //css += 'h1,h2,h3,h4,h5,h6{font-size:100%} \n';
+        css += '*:focus{outline:none}';
+        css += '.x-border-box,.x-border-box *{box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-webkit-box-sizing:border-box} \n';
+        css += '.x-body{color:black;font-size:12px;font-family:tahoma, arial, verdana, sans-serif} \n';
+        css += '.x-clear{overflow:hidden;clear:both;height:0;width:0;font-size:0;line-height:0} \n';
+        css += '.x-layer{position:absolute;overflow:hidden;zoom:1} \n';
+        css += '.x-css-shadow{position:absolute;-moz-border-radius:5px 5px;-webkit-border-radius:5px 5px;-o-border-radius:5px 5px;-ms-border-radius:5px 5px;-khtml-border-radius:5px 5px;border-radius:5px 5px} \n';
+        css += '.x-frame-shadow *{overflow:hidden} \n';
+        css += '.x-frame-shadow *{padding:0;border:0;margin:0;clear:none;zoom:1} \n';
+        css += '.x-mask{z-index:100;position:absolute;top:0;left:0;filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);opacity:0.5;width:100%;height:100%;zoom:1;background:#cccccc} \n';
+        css += '.x-mask-msg{z-index:20001;position:absolute;top:0;left:0;padding:2px;border:1px solid;border-color:#d0d0d0;background-image:none;background-color:#e0e0e0} \n';
+        css += '.x-mask-msg div{padding:5px 10px 5px 25px;background-image:url("images/loading.gif");background-repeat:no-repeat;background-position:5px center;cursor:wait;border:1px solid #b3b3b3;background-color:#eeeeee;color:#222222;font:normal 11px tahoma, arial, verdana, sans-serif} \n';
+        css += '.x-btn *{cursor:pointer;cursor:hand} \n';
+        css += '.x-btn em a{text-decoration:none;display:inline-block;color:inherit} \n';
+        css += '.x-btn-disabled span{filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);opacity:0.5} \n';
+        css += '.x-ie6 .x-btn-disabled span,.x-ie7 .x-btn-disabled span{filter:none} \n';
+        css += '.x-btn button,.x-btn a{position:relative} \n';
+        css += '.x-item-disabled,.x-item-disabled *{cursor:default} \n';
+        css += '.x-datepicker a{-moz-outline:0 none;outline:0 none;color:#523a39;text-decoration:none;border-width:0} \n';
+        css += '.x-datepicker-prev a,.x-datepicker-next a{display:block;width:16px;height:16px;background-position:top;background-repeat:no-repeat;cursor:pointer;text-decoration:none !important;filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=70);opacity:0.7} \n';
+        css += '.x-datepicker-prev a:hover,.x-datepicker-next a:hover{filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=100);opacity:1} \n';
+        css += '.x-datepicker-next a{background-image:url("images/right-btn.gif")} \n';
+        css += '.x-datepicker-prev a{background-image:url("images/left-btn.gif")} \n';
+        css += '.x-item-disabled .x-datepicker-prev a:hover,.x-item-disabled .x-datepicker-next a:hover{filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=60);opacity:0.6} \n';
+        css += '.x-datepicker-month span{color:#fff !important} \n';
+        css += 'table.x-datepicker-inner th span{display:block;padding-right:7px} \n';
+        css += 'table.x-datepicker-inner a{padding-right:4px;display:block;zoom:1;font:normal 11px tahoma, arial, verdana, sans-serif;color:black;text-decoration:none;text-align:right} \n';
+        css += 'table.x-datepicker-inner .x-datepicker-selected a{background:repeat-x left top;background-color:#d8d8d8;border:1px solid #b2aaa9} \n';
+        css += 'table.x-datepicker-inner .x-datepicker-selected span{font-weight:bold} \n';
+        css += 'table.x-datepicker-inner .x-datepicker-today a{border:1px solid;border-color:darkred} \n';
+        css += 'table.x-datepicker-inner .x-datepicker-prevday a,table.x-datepicker-inner .x-datepicker-nextday a{text-decoration:none !important;color:#aaa} \n';
+        css += 'table.x-datepicker-inner a:hover,table.x-datepicker-inner .x-datepicker-disabled a:hover{text-decoration:none !important;color:#000;background-color:transparent} \n';
+        css += 'table.x-datepicker-inner .x-datepicker-disabled a{cursor:default;background-color:#eee;color:#bbb} \n';
+        css += '.x-item-disabled .x-datepicker-inner a:hover{background:none} \n';
+        css += '.x-monthpicker-item a{display:block;margin:0 5px 0 5px;text-decoration:none;color:#523a39;border:1px solid white;line-height:17px} \n';
+        css += '.x-monthpicker-item a:hover{background-color:transparent} \n';
+        css += '.x-color-picker a{border:1px solid #fff;float:left;padding:2px;text-decoration:none;-moz-outline:0 none;outline:0 none;cursor:pointer} \n';
+        css += '.x-color-picker a:hover,.x-color-picker a.x-color-picker-selected{border-color:#8bb8f3;background-color:#deecfd} \n';
+        css += '.x-color-picker em span{cursor:pointer;display:block;height:10px;width:10px;line-height:10px} \n';
+        css += '.x-menu-body{user-select:none;-o-user-select:none;-ms-user-select:none;-moz-user-select:-moz-none;-webkit-user-select:none;cursor:default;background:#f0f0f0 !important;padding:2px} \n';
+        css += '.x-menu-focus{display:block;position:absolute;top:-10px;left:-10px;width:0px;height:0px} \n';
+        css += '.x-menu-item{white-space:nowrap;overflow:hidden;z-index:1} \n';
+        css += '.x-menu-item-link{display:block;margin:1px;padding:6px 2px 3px 32px;text-decoration:none !important;line-height:16px;cursor:default} \n';
+        css += '.x-opera .x-menu-item-link{position:relative} \n';
+        css += '.x-menu-item-icon{width:16px;height:16px;position:absolute;top:5px;left:4px;background:no-repeat center center} \n';
+        css += '.x-menu-item-text{font-size:11px;color:#222222} \n';
+        css += '.x-menu-item-active .x-menu-item-link{background-image:none;background-color:#e6e6e6;background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eeeeee), color-stop(100%, #dcdcdc));background-image:-webkit-linear-gradient(top, #eeeeee,#dcdcdc);background-image:-moz-linear-gradient(top, #eeeeee,#dcdcdc);background-image:-o-linear-gradient(top, #eeeeee,#dcdcdc);background-image:-ms-linear-gradient(top, #eeeeee,#dcdcdc);background-image:linear-gradient(top, #eeeeee,#dcdcdc);margin:0px;border:1px solid #9d9d9d;cursor:pointer;-moz-border-radius:3px;-webkit-border-radius:3px;-o-border-radius:3px;-ms-border-radius:3px;-khtml-border-radius:3px;border-radius:3px} \n';
+        css += '.x-menu-item-disabled{filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);opacity:0.5} \n';
+        css += '.x-ie6 .x-menu-item-link,.x-ie7 .x-menu-item-link,.x-quirks .x-ie8 .x-menu-item-link{padding-bottom:2px} \n';
+        css += '.x-nlg .x-menu-item-active .x-menu-item-link{background:#e6e6e6 repeat-x left top;background-image:url("images/menu-item-active-bg.gif")} \n';
+        css += '.x-unselectable{user-select:none;-o-user-select:none;-ms-user-select:none;-moz-user-select:-moz-none;-webkit-user-select:none;cursor:default} \n';
+        css += '.x-grid-row-editor .x-panel-body{background-color:#ebe6e6;border-top:1px solid #d0d0d0 !important;border-bottom:1px solid #d0d0d0 !important} \n';
+        css += '.x-webkit *:focus{outline:none !important} \n';
+        css += '.x-ie .x-fieldset-noborder legend span{position:absolute;left:16px} \n';
+        css += '.x-panel,.x-plain{overflow:hidden;position:relative} \n';
+        css += '.x-panel-header{padding:5px 4px 4px 5px} \n';
+        css += '.x-panel-header-horizontal .x-panel-header-body,.x-panel-header-horizontal .x-window-header-body,.x-panel-header-horizontal .x-btn-group-header-body,.x-window-header-horizontal .x-panel-header-body,.x-window-header-horizontal .x-window-header-body,.x-window-header-horizontal .x-btn-group-header-body,.x-btn-group-header-horizontal .x-panel-header-body,.x-btn-group-header-horizontal .x-window-header-body,.x-btn-group-header-horizontal .x-btn-group-header-body{width:100%} \n';
+        css += '.x-panel-header-text-container{overflow:hidden;-o-text-overflow:ellipsis;text-overflow:ellipsis} \n';
+        css += '.x-panel-header-text{user-select:none;-o-user-select:none;-ms-user-select:none;-moz-user-select:-moz-none;-webkit-user-select:none;cursor:default;white-space:nowrap} \n';
+        css += '.x-panel-body{overflow:hidden;position:relative;font-size:12px} \n';
+        css += '.x-panel-collapsed .x-panel-header-collapsed-border-top{border-bottom-width:1px !important} \n';
+        css += '.x-panel-default{border-color:#d0d0d0} \n';
+        css += '.x-panel-header-default{font-size:11px;line-height:15px;border-color:#d0d0d0;border-width:1px;border-style:solid;background-image:none;background-color:#d7d2d2;background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f0f0f0), color-stop(100%, #d7d7d7));background-image:-webkit-linear-gradient(top, #f0f0f0,#d7d7d7);background-image:-moz-linear-gradient(top, #f0f0f0,#d7d7d7);background-image:-o-linear-gradient(top, #f0f0f0,#d7d7d7);background-image:-ms-linear-gradient(top, #f0f0f0,#d7d7d7);background-image:linear-gradient(top, #f0f0f0,#d7d7d7);-moz-box-shadow:#efeded 0 1px 0px 0 inset;-webkit-box-shadow:#efeded 0 1px 0px 0 inset;-o-box-shadow:#efeded 0 1px 0px 0 inset;box-shadow:#efeded 0 1px 0px 0 inset} \n';
+        css += '.x-panel-header-text-default{color:#333333;font-size:11px;font-weight:bold;font-family:tahoma, arial, verdana, sans-serif} \n';
+        css += '.x-panel-body-default{background:white;border-color:#d0d0d0;color:black;border-width:1px;border-style:solid} \n';
+        css += '.x-panel-collapsed .x-window-header-default,.x-panel-collapsed .x-panel-header-default{border-color:#d0d0d0} \n';
+        css += '.x-panel-collapsed .x-panel-header-default-top{-moz-border-radius-bottomleft:null;-webkit-border-bottom-left-radius:null;-o-border-bottom-left-radius:null;-ms-border-bottom-left-radius:null;-khtml-border-bottom-left-radius:null;border-bottom-left-radius:null;-moz-border-radius-bottomright:null;-webkit-border-bottom-right-radius:null;-o-border-bottom-right-radius:null;-ms-border-bottom-right-radius:null;-khtml-border-bottom-right-radius:null;border-bottom-right-radius:null} \n';
+        css += '.x-panel-header-default-top{-moz-box-shadow:#efeded 0 1px 0px 0 inset;-webkit-box-shadow:#efeded 0 1px 0px 0 inset;-o-box-shadow:#efeded 0 1px 0px 0 inset;box-shadow:#efeded 0 1px 0px 0 inset} \n';
+        css += '.x-tip-header a,.x-tip-body a,.x-form-invalid-tip-body a{color:#2a2a2a} \n';
+        css += '.x-toolbar-footer .x-box-inner{border-width:0} \n';
+        css += '.x-window{outline:none} \n';
+        css += '.x-window .x-window-wrap .x-window-body{overflow:hidden} \n';
+        css += '.x-window-body{position:relative;border-style:solid} \n';
+        css += '.x-window-default{border-color:#a9a9a9;-moz-border-radius:5px 5px;-webkit-border-radius:5px 5px;-o-border-radius:5px 5px;-ms-border-radius:5px 5px;-khtml-border-radius:5px 5px;border-radius:5px 5px;-moz-box-shadow:#ebe7e7 0 1px 0px 0 inset, #ebe7e7 0 -1px 0px 0 inset, #ebe7e7 -1px 0 0px 0 inset, #ebe7e7 1px 0 0px 0 inset;-webkit-box-shadow:#ebe7e7 0 1px 0px 0 inset, #ebe7e7 0 -1px 0px 0 inset, #ebe7e7 -1px 0 0px 0 inset, #ebe7e7 1px 0 0px 0 inset;-o-box-shadow:#ebe7e7 0 1px 0px 0 inset, #ebe7e7 0 -1px 0px 0 inset, #ebe7e7 -1px 0 0px 0 inset, #ebe7e7 1px 0 0px 0 inset;box-shadow:#ebe7e7 0 1px 0px 0 inset, #ebe7e7 0 -1px 0px 0 inset, #ebe7e7 -1px 0 0px 0 inset, #ebe7e7 1px 0 0px 0 inset} \n';
+        css += '.x-window-default{-moz-border-radius-topleft:5px;-webkit-border-top-left-radius:5px;-o-border-top-left-radius:5px;-ms-border-top-left-radius:5px;-khtml-border-top-left-radius:5px;border-top-left-radius:5px;-moz-border-radius-topright:5px;-webkit-border-top-right-radius:5px;-o-border-top-right-radius:5px;-ms-border-top-right-radius:5px;-khtml-border-top-right-radius:5px;border-top-right-radius:5px;-moz-border-radius-bottomright:5px;-webkit-border-bottom-right-radius:5px;-o-border-bottom-right-radius:5px;-ms-border-bottom-right-radius:5px;-khtml-border-bottom-right-radius:5px;border-bottom-right-radius:5px;-moz-border-radius-bottomleft:5px;-webkit-border-bottom-left-radius:5px;-o-border-bottom-left-radius:5px;-ms-border-bottom-left-radius:5px;-khtml-border-bottom-left-radius:5px;border-bottom-left-radius:5px;padding:4px 4px 4px 4px;border-width:1px;border-style:solid;background-color:#e8e8e8} \n';
+        css += '.x-window-body-default{border-color:#bcb1b0;border-width:1px;background:#e0e0e0;color:black} \n';
+        css += '.x-message-box .x-window-body{background-color:#e8e8e8;border:none} \n';
+        css += '.x-tab-bar-bottom .x-tab-bar-body .x-box-inner{position:relative;top:-1px} \n';
+        css += '.x-tab-bar-bottom .x-tab-bar-body-default-plain .x-box-inner{position:relative;top:-1px} \n';
+        css += '.x-tab *{cursor:pointer;cursor:hand} \n';
+        css += '.x-tab-default-disabled *{cursor:default} \n';
+        css += '.x-tab button,.x-tab a{position:relative} \n';
+        css += '.x-grid-tree-loading span{font-style:italic;color:#444444} \n';
+        css += '.x-proxy-el{position:absolute;background:#b4b4b4;filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);opacity:0.8} \n';
+        css += '.x-docked{position:absolute;z-index:1} \n';
+        css += '.x-docked-top{border-bottom-width:0 !important} \n';
+        css += '.x-box-inner{overflow:hidden;zoom:1;position:relative;left:0;top:0} \n';
+        css += '.x-box-item{position:absolute !important;left:0;top:0} \n';
+        css += '.x-box-layout-ct,.x-border-layout-ct{overflow:hidden;zoom:1} \n';
+        css += '.x-inline-children > *{display:inline-block !important} \n';
+        css += '.x-tool{height:15px} \n';
+        css += '.x-tool img{overflow:hidden;width:15px;height:15px;cursor:pointer;background-color:transparent;background-repeat:no-repeat;background-image:url("images/tool-sprites.gif");margin:0} \n';
+        css += '.x-panel-header-horizontal .x-tool,.x-window-header-horizontal .x-tool{margin-left:2px} \n';
+        css += '.x-tool-expand-bottom,.x-tool-collapse-bottom{background-position:0 -195px} \n';
+        css += '.x-tool-expand-top,.x-tool-collapse-top{background-position:0 -210px} \n';
+        css += '.x-html html,.x-html address,.x-html blockquote,.x-html body,.x-html dd,.x-html div,.x-html dl,.x-html dt,.x-html fieldset,.x-html form,.x-html frame,.x-html frameset,.x-html h1,.x-html h2,.x-html h3,.x-html h4,.x-html h5,.x-html h6,.x-html noframes,.x-html ol,.x-html p,.x-html ul,.x-html center,.x-html dir,.x-html hr,.x-html menu,.x-html pre{display:block} \n';
+        css += '.x-html :before,.x-html :after{white-space:pre-line} \n';
+        css += '.x-html :link,.x-html :visited{text-decoration:underline} \n';
+
+        // gis
+        css += '.x-box-inner { zoom: 1; } \n';
+        css += '.x-border-box, .x-border-box * { -webkit-box-sizing: border-box; } \n';
+        css += '.x-panel-default { border-color: #d0d0d0; } \n';
+        css += '.x-panel { overflow: hidden; } \n';
+        css += '.x-panel-body { overflow: hidden; position: relative; } \n';
+        css += '.x-panel-body-default { background: white; border-color: #d0d0d0; color: black; border-width: 1px; border-style: solid; } \n';
+        css += '.x-panel-body, .x-window-body * { font-size: 11px; } \n';
+        css += '.x-panel-header-default { line-height: 15px; border-color: #d0d0d0; border-width: 1px; border-style: solid; } \n';
 		css += '.x-panel-header { height: 30px; padding: 7px 4px 4px 7px; border: 0 none; } \n';
-		css += '.gis-container-default .x-window-body { padding: 5px; background: #fff; } \n';
+        css += '.x-panel-header-text-default { color: #333333; font-weight: bold; } \n';
+        css += '.x-panel-header-text { -webkit-user-select: none; cursor: default; white-space: nowrap; } \n';
+        css += '.x-box-item { position: absolute !important; } \n';
+        css += '.x-unselectable { -webkit-user-select: none; cursor: default; } \n';
+        css += '.x-docked { position: absolute; z-index: 1; } \n';
+        css += '.x-docked-top { border-bottom-width: 0 !important; } \n';
+
+        css += '.gis-container-default .x-window-body { padding: 5px; background: #fff; } \n';
 		css += '.olControlPanel { position: absolute; top: 0; right: 0; border: 0 none; } \n';
 		css += '.olControlButtonItemActive { background: #556; color: #fff; width: 24px; height: 24px; opacity: 0.75; filter: alpha(opacity=75); -ms-filter: "alpha(opacity=75)"; cursor: pointer; cursor: hand; text-align: center; font-size: 21px !important; text-shadow: 0 0 1px #ddd; } \n';
 		css += '.olControlPanel.zoomIn { right: 72px; } \n';
@@ -5357,7 +5541,7 @@ mapfish.GeoStat.createThematic('Thematic4');
 		css += '.olControlMousePosition * { font-size: 10px !important; } \n';
 		css += '.text-mouseposition-lonlat { color: #555; } \n';
 		css += '.olLayerGoogleCopyright, .olLayerGoogleV3.olLayerGooglePoweredBy { display: none; } \n';
-		css += '#google-logo { background: url("' + init.contextPath + '/dhis-web-mapping/images/google-logo.png") no-repeat; width: 40px; height: 13px; margin-left: 6px; display: inline-block; vertical-align: bottom; cursor: pointer; cursor: hand; } \n';
+		css += '#google-logo { background: url("images/google-logo.png") no-repeat; width: 40px; height: 13px; margin-left: 6px; display: inline-block; vertical-align: bottom; cursor: pointer; cursor: hand; } \n';
 		css += '.olControlScaleLine { left: 5px !important; bottom: 5px !important; } \n';
 		css += '.olControlScaleLineBottom { display: none; } \n';
 		css += '.olControlScaleLineTop { font-weight: bold; } \n';
@@ -5367,10 +5551,10 @@ mapfish.GeoStat.createThematic('Thematic4');
 		css += '.gis-window-widget-feature { padding: 0; border: 0 none; border-radius: 0; background: transparent; box-shadow: none; } \n';
 		css += '.gis-window-widget-feature .x-window-body-default { border: 0 none; background: transparent; } \n';
 		css += '.gis-window-widget-feature .x-window-body-default .x-panel-body-default { border: 0 none; background: #556; opacity: 0.92; filter: alpha(opacity=92); -ms-filter: "alpha(opacity=92)"; padding: 5px 8px 5px 8px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; color: #fff; font-weight: bold; letter-spacing: 1px; } \n';
-		css += '.x-menu-body { border:1px solid #bbb; border-radius: 2px; padding: 0; background-color: #fff !important; } \n';
-		css += '.x-menu-item-active .x-menu-item-link {	border-radius: 0; border-color: #e1e1e1; background-color: #e1e1e1; background-image: none; } \n';
-		css += '.x-menu-item-link { padding: 4px 5px 4px 26px; } \n';
-		css += '.x-menu-item-text { color: #111; } \n';
+		//css += '.x-menu-body { border:1px solid #bbb; border-radius: 2px; padding: 0; background-color: #fff !important; } \n';
+		//css += '.x-menu-item-active .x-menu-item-link {	border-radius: 0; border-color: #e1e1e1; background-color: #e1e1e1; background-image: none; } \n';
+		//css += '.x-menu-item-link { padding: 4px 5px 4px 26px; } \n';
+		//css += '.x-menu-item-text { color: #111; } \n';
 		css += '.disabled { opacity: 0.4; cursor: default !important; } \n';
 		css += '.el-opacity-1 { opacity: 1 !important; } \n';
 		css += '.el-border-0, .el-border-0 .x-panel-body { border: 0 none !important; } \n';
@@ -5382,10 +5566,12 @@ mapfish.GeoStat.createThematic('Thematic4');
 		css += '.gis-menu-item-icon-drill, .gis-menu-item-icon-float { left: 6px; } \n';
 		css += '.gis-menu-item-first.x-menu-item-active .x-menu-item-link {	border-radius: 0; border-top-left-radius: 2px; border-top-right-radius: 2px; } \n';
 		css += '.gis-menu-item-last.x-menu-item-active .x-menu-item-link { border-radius: 0; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; } \n';
-		css += '.gis-menu-item-icon-drill { \n background: url("' + init.contextPath + '/dhis-web-mapping/images/drill_16.png") no-repeat; } \n';
-		css += '.gis-menu-item-icon-float { background: url("' + init.contextPath + '/dhis-web-mapping/images/float_16.png") no-repeat; } \n';
-		css += '.x-color-picker a { padding: 0; } \n';
-		css += '.x-color-picker em span { width: 14px; height: 14px; } \n';
+		css += '.gis-menu-item-icon-drill { \n background: url("images/drill_16.png") no-repeat; } \n';
+		css += '.gis-menu-item-icon-float { background: url("images/float_16.png") no-repeat; } \n';
+		//css += '.x-color-picker a { padding: 0; } \n';
+		//css += '.x-color-picker em span { width: 14px; height: 14px; } \n';
+        css += '.gis-panel-legend .x-panel-header { height: 23px; background: #eaeaea; padding: 4px 4px 0 5px} \n';
+        css += '.gis-panel-legend .x-panel-header .x-panel-header-text { font-size: 10px; } \n';
 
 		Ext.util.CSS.createStyleSheet(css);
 	};
@@ -5426,7 +5612,8 @@ mapfish.GeoStat.createThematic('Thematic4');
 			var viewport,
 				eastRegion,
 				centerRegion,
-				el = Ext.get(gis.el);
+				el = Ext.get(gis.el),
+                eastWidth = gis.map.hideLegend ? 0 : (gis.plugin ? 120: 200);
 
 			viewport = Ext.create('Ext.panel.Panel', {
 				renderTo: el,
@@ -5442,7 +5629,7 @@ mapfish.GeoStat.createThematic('Thematic4');
 						xtype: 'gx_mappanel',
 						map: gis.olmap,
 						bodyStyle: 'border:0 none',
-						width: el.getWidth() - (gis.map.hideLegend ? 0 : 200),
+						width: el.getWidth() - eastWidth,
 						height: el.getHeight(),
 						listeners: {
 							added: function() {
@@ -5454,7 +5641,7 @@ mapfish.GeoStat.createThematic('Thematic4');
 						xtype: 'panel',
 						layout: 'anchor',
 						bodyStyle: 'border-top:0 none; border-bottom:0 none',
-						width: gis.map.hideLegend ? 0 : 200,
+						width: eastWidth,
 						preventHeader: true,
 						defaults: {
 							bodyStyle: 'padding: 6px; border: 0 none',
@@ -5465,6 +5652,7 @@ mapfish.GeoStat.createThematic('Thematic4');
 						items: [
 							{
 								title: GIS.i18n.thematic_layer_1_legend,
+                                cls: 'gis-panel-legend',
 								bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
 								listeners: {
 									added: function() {
@@ -5474,6 +5662,7 @@ mapfish.GeoStat.createThematic('Thematic4');
 							},
 							{
 								title: GIS.i18n.thematic_layer_2_legend,
+                                cls: 'gis-panel-legend',
 								bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
 								listeners: {
 									added: function() {
@@ -5483,6 +5672,7 @@ mapfish.GeoStat.createThematic('Thematic4');
 							},
 							{
 								title: GIS.i18n.thematic_layer_3_legend,
+                                cls: 'gis-panel-legend',
 								bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
 								listeners: {
 									added: function() {
@@ -5492,6 +5682,7 @@ mapfish.GeoStat.createThematic('Thematic4');
 							},
 							{
 								title: GIS.i18n.thematic_layer_4_legend,
+                                cls: 'gis-panel-legend',
 								bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
 								listeners: {
 									added: function() {
@@ -5501,6 +5692,7 @@ mapfish.GeoStat.createThematic('Thematic4');
 							},
 							{
 								title: GIS.i18n.facility_layer_legend,
+                                cls: 'gis-panel-legend',
 								bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
 								listeners: {
 									added: function() {
@@ -5533,10 +5725,10 @@ mapfish.GeoStat.createThematic('Thematic4');
 			var len = Ext.query('.zoomInButton').length;
 
 			for (var i = 0; i < len; i++) {
-				Ext.query('.zoomInButton')[i].innerHTML = '<img src="' + gis.init.contextPath + '/dhis-web-mapping/images/zoomin_24.png" />';
-				Ext.query('.zoomOutButton')[i].innerHTML = '<img src="' + gis.init.contextPath + '/dhis-web-mapping/images/zoomout_24.png" />';
-				Ext.query('.zoomVisibleButton')[i].innerHTML = '<img src="' + gis.init.contextPath + '/dhis-web-mapping/images/zoomvisible_24.png" />';
-				Ext.query('.measureButton')[i].innerHTML = '<img src="' + gis.init.contextPath + '/dhis-web-mapping/images/measure_24.png" />';
+				Ext.query('.zoomInButton')[i].innerHTML = '<img src="images/zoomin_24.png" />';
+				Ext.query('.zoomOutButton')[i].innerHTML = '<img src="images/zoomout_24.png" />';
+				Ext.query('.zoomVisibleButton')[i].innerHTML = '<img src="images/zoomvisible_24.png" />';
+				Ext.query('.measureButton')[i].innerHTML = '<img src="images/measure_24.png" />';
 			}
 
 			// base layer
@@ -5562,8 +5754,20 @@ mapfish.GeoStat.createThematic('Thematic4');
 
 			applyCss();
 
+            init.plugin = true;
+            init.dashboard = Ext.isBoolean(config.dashboard) ? config.dashboard : false;
+            init.crossDomain = Ext.isBoolean(config.crossDomain) ? config.crossDomain : true;
+            init.skipMask = Ext.isBoolean(config.skipMask) ? config.skipMask : false;
+            init.skipFade = Ext.isBoolean(config.skipFade) ? config.skipFade : false;
+
 			gis = GIS.core.getInstance(init);
+
 			gis.el = config.el;
+            gis.plugin = init.plugin;
+            gis.dashboard = init.dashboard;
+            gis.crossDomain = init.crossDomain;
+            gis.skipMask = init.skipMask;
+            gis.skipFade = init.skipFade;
 
 			GIS.core.createSelectHandlers(gis, gis.layer.boundary);
 			GIS.core.createSelectHandlers(gis, gis.layer.thematic1);
@@ -5597,7 +5801,7 @@ mapfish.GeoStat.createThematic('Thematic4');
 
 			if (!isInitStarted) {
 				isInitStarted = true;
-				getInit(config.url);
+				getInit(config);
 			}
 		}
 	};

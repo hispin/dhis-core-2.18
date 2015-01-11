@@ -183,14 +183,18 @@ Ext.onReady( function() {
 					'space': ' '
 				},
 				displayDensity: {
-					'compact': '3px',
+                    'xcompact': '2px',
+					'compact': '4px',
 					'normal': '6px',
-					'comfortable': '10px',
+					'comfortable': '8px',
+                    'xcomfortable': '10px'
 				},
 				fontSize: {
+					'xsmall': '9px',
 					'small': '10px',
 					'normal': '11px',
-					'large': '13px'
+					'large': '12px',
+					'xlarge': '14px'
 				}
 			};
 
@@ -300,7 +304,7 @@ Ext.onReady( function() {
 				}();
 			};
 
-			api.layout.Layout = function(config) {
+			api.layout.Layout = function(config, applyConfig) {
 				var layout = {},
 					getValidatedDimensionArray,
 					validateSpecialCases;
@@ -516,7 +520,7 @@ Ext.onReady( function() {
 						return;
 					}
 
-					return layout;
+                    return Ext.apply(layout, applyConfig);
 				}();
 			};
 
@@ -2903,47 +2907,6 @@ Ext.onReady( function() {
 
 	// PLUGIN
 
-		// css
-	css = 'table.pivot { \n font-family: arial,sans-serif,ubuntu,consolas; \n } \n';
-	css += '.td-nobreak { \n white-space: nowrap; \n } \n';
-	css += '.td-hidden { \n display: none; \n } \n';
-	css += '.td-collapsed { \n display: none; \n } \n';
-	css += 'table.pivot { \n border-collapse: collapse; \n border-spacing: 0px; \n border: 0 none; \n } \n';
-	css += '.pivot td { \n padding: 5px; \n border: \n 1px solid #b2b2b2; \n } \n';
-	css += '.pivot-dim { \n background-color: #dae6f8; \n text-align: center; \n } \n';
-	css += '.pivot-dim.highlighted { \n	background-color: #c5d8f6; \n } \n';
-	css += '.pivot-dim-subtotal { \n background-color: #cad6e8; \n text-align: center; \n } \n';
-	css += '.pivot-dim-total { \n background-color: #bac6d8; \n text-align: center; \n } \n';
-	css += '.pivot-dim-total.highlighted { \n background-color: #adb8c9; \n } \n';
-	css += '.pivot-dim-empty { \n background-color: #dae6f8; \n text-align: center; \n } \n';
-	css += '.pivot-value { \n background-color: #fff; \n white-space: nowrap; \n text-align: right; \n } \n';
-	css += '.pivot-value-subtotal { \n background-color: #f4f4f4; \n white-space: nowrap; \n text-align: right; \n } \n';
-	css += '.pivot-value-subtotal-total { \n background-color: #e7e7e7; \n white-space: nowrap; \n text-align: right; \n } \n';
-	css += '.pivot-value-total { \n background-color: #e4e4e4; \n white-space: nowrap; \n text-align: right; \n } \n';
-	css += '.pivot-value-total-subgrandtotal { \n background-color: #d8d8d8; \n white-space: nowrap; \n text-align: right; \n } \n';
-	css += '.pivot-value-grandtotal { \n background-color: #c8c8c8; \n white-space: nowrap; \n text-align: right; \n } \n';
-    css += '.pivot-dim-label { \n background-color: #cddaed; \n white-space: nowrap; \n text-align: center; \n } \n';
-    css += '.pivot-empty { \n background-color: #cddaed; \n } \n';
-    css += '.pivot-transparent-column { \n background-color: #fff; \n border-top-color: #fff !important; \n border-right-color: #fff !important; \n } \n';
-    css += '.pivot-transparent-row { \n background-color: #fff; \n border-bottom-color: #fff !important; \n border-left-color: #fff !important; \n } \n';
-
-    css += '.x-mask-msg { \n padding: 0; \n	border: 0 none; \n background-image: none; \n background-color: transparent; \n } \n';
-	css += '.x-mask-msg div { \n background-position: 11px center; \n } \n';
-	css += '.x-mask-msg .x-mask-loading { \n border: 0 none; \n	background-color: #000; \n color: #fff; \n border-radius: 2px; \n padding: 12px 14px 12px 30px; \n opacity: 0.65; \n } \n';
-    css += '.x-mask { opacity: 0 } \n';
-
-	css += '.pivot td.legend { \n padding: 0; \n } \n';
-	css += '.pivot div.legendCt { \n display: table; \n float: right; \n width: 100%; \n } \n';
-	css += '.pivot div.arrowCt { \n display: table-cell; \n vertical-align: top; \n width: 8px; \n } \n';
-	css += '.pivot div.arrow { \n width: 0; \n height: 0; \n } \n';
-	css += '.pivot div.number { \n display: table-cell; \n } \n',
-	css += '.pivot div.legendColor { \n display: table-cell; \n width: 2px; \n } \n';
-
-	css += '.pointer { \n cursor: pointer; \n } \n';
-	css += '.td-sortable { \n background-image: url("http://dhis2-cdn.org/v214/plugin/images/arrowupdown.png"); \n background-repeat: no-repeat; \n background-position: right center; \n padding-right: 15px !important; \n } \n';
-
-	Ext.util.CSS.createStyleSheet(css);
-
 	PT.plugin = {};
 
 	var init = {
@@ -2953,15 +2916,17 @@ Ext.onReady( function() {
 		isInitStarted = false,
 		isInitComplete = false,
 		getInit,
+        applyCss,
 		execute;
 
-	getInit = function(url) {
+	getInit = function(config) {
 		var isInit = false,
 			requests = [],
 			callbacks = 0,
+            type = config.plugin && config.crossDomain ? 'jsonp' : 'json',
 			fn;
 
-        init.contextPath = url;
+        init.contextPath = config.url;
 
 		fn = function() {
 			if (++callbacks === requests.length) {
@@ -2977,9 +2942,10 @@ Ext.onReady( function() {
 
         // user-account
         requests.push({
-            url: init.contextPath + '/api/me/user-account.jsonp',
+            url: init.contextPath + '/api/me/user-account.' + type,
+            disableCaching: false,
             success: function(r) {
-                init.userAccount = r;
+                init.userAccount = r.responseText ? Ext.decode(r.responseText) : r;
 
                 // init
                 var defaultKeyUiLocale = 'en',
@@ -3003,10 +2969,12 @@ Ext.onReady( function() {
             }
         });
 
+        // user orgunit
 		requests.push({
-			url: url + '/api/organisationUnits.jsonp?userOnly=true&fields=id,name,children[id,name]&paging=false',
+			url: init.contextPath + '/api/organisationUnits.' + type + '?userOnly=true&fields=id,name,children[id,name]&paging=false',
+            disableCaching: false,
 			success: function(r) {
-				var organisationUnits = r.organisationUnits || [],
+				var organisationUnits = (r.responseText ? Ext.decode(r.responseText).organisationUnits : r) || [],
                     ou = [],
                     ouc = [];
 
@@ -3033,20 +3001,68 @@ Ext.onReady( function() {
 			}
 		});
 
-        init.legendSets = [];
-
 		requests.push({
-			url: url + '/api/dimensions.jsonp?links=false&paging=false',
+			url: init.contextPath + '/api/dimensions.' + type + '?fields=id,name&paging=false',
+            disableCaching: false,
 			success: function(r) {
-				init.dimensions = r.dimensions;
+				init.dimensions = r.responseText ? Ext.decode(r.responseText).dimensions : r.dimensions;
 				fn();
 			}
 		});
 
+        init.legendSets = [];
+
 		for (var i = 0; i < requests.length; i++) {
-			Ext.data.JsonP.request(requests[i]);
+            if (type === 'jsonp') {
+                Ext.data.JsonP.request(requests[i]);
+            }
+            else {
+                Ext.Ajax.request(requests[i]);
+            }
 		}
 	};
+
+    applyCss = function() {
+        css = 'table.pivot { font-family: arial,sans-serif,ubuntu,consolas; } \n';
+        css += '.td-nobreak { white-space: nowrap; } \n';
+        css += '.td-hidden { display: none; } \n';
+        css += '.td-collapsed { display: none; } \n';
+        css += 'table.pivot { border-collapse: collapse; border-spacing: 0px; border: 0 none; } \n';
+        css += '.pivot td { font-family: arial, sans-serif, helvetica neue, helvetica !important; padding: 5px; border: 1px solid #b2b2b2; } \n';
+        css += '.pivot-dim { background-color: #dae6f8; text-align: center; } \n';
+        css += '.pivot-dim.highlighted { \n	background-color: #c5d8f6; } \n';
+        css += '.pivot-dim-subtotal { background-color: #cad6e8; text-align: center; } \n';
+        css += '.pivot-dim-total { background-color: #bac6d8; text-align: center; } \n';
+        css += '.pivot-dim-total.highlighted { background-color: #adb8c9; } \n';
+        css += '.pivot-dim-empty { background-color: #dae6f8; text-align: center; } \n';
+        css += '.pivot-value { background-color: #fff; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-subtotal { background-color: #f4f4f4; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-subtotal-total { background-color: #e7e7e7; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-total { background-color: #e4e4e4; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-total-subgrandtotal { background-color: #d8d8d8; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-grandtotal { background-color: #c8c8c8; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-dim-label { background-color: #cddaed; white-space: nowrap; text-align: center; } \n';
+        css += '.pivot-empty { background-color: #cddaed; } \n';
+        css += '.pivot-transparent-column { background-color: #fff; border-top-color: #fff !important; border-right-color: #fff !important; } \n';
+        css += '.pivot-transparent-row { background-color: #fff; border-bottom-color: #fff !important; border-left-color: #fff !important; } \n';
+
+        css += '.x-mask-msg { padding: 0; \n	border: 0 none; background-image: none; background-color: transparent; } \n';
+        css += '.x-mask-msg div { background-position: 11px center; } \n';
+        css += '.x-mask-msg .x-mask-loading { border: 0 none; \n	background-color: #000; color: #fff; border-radius: 2px; padding: 12px 14px 12px 30px; opacity: 0.65; } \n';
+        css += '.x-mask { opacity: 0 } \n';
+
+        css += '.pivot td.legend { padding: 0; } \n';
+        css += '.pivot div.legendCt { display: table; float: right; width: 100%; } \n';
+        css += '.pivot div.arrowCt { display: table-cell; vertical-align: top; width: 8px; } \n';
+        css += '.pivot div.arrow { width: 0; height: 0; } \n';
+        css += '.pivot div.number { display: table-cell; } \n',
+        css += '.pivot div.legendColor { display: table-cell; width: 2px; } \n';
+
+        css += '.pointer { cursor: pointer; } \n';
+        css += '.td-sortable { background-image: url("http://dhis2-cdn.org/v214/plugin/images/arrowupdown.png"); background-repeat: no-repeat; background-position: right center; padding-right: 15px !important; } \n';
+
+        Ext.util.CSS.createStyleSheet(css);
+    };
 
 	execute = function(config) {
 		var validateConfig,
@@ -3077,9 +3093,31 @@ Ext.onReady( function() {
         extendInstance = function(pt) {
             var init = ns.core.init,
 				api = ns.core.api,
+                conf = ns.core.conf,
 				support = ns.core.support,
 				service = ns.core.service,
-				web = ns.core.web;
+				web = ns.core.web,
+                type = ns.plugin && ns.crossDomain ? 'jsonp' : 'json',
+                headerMap = {
+                    json: 'application/json',
+                    jsonp: 'application/javascript'
+                },
+                headers = {
+                    'Content-Type': headerMap[type],
+                    'Accepts': headerMap[type]
+                };
+
+            ns.plugin = init.plugin;
+            ns.dashboard = init.dashboard;
+            ns.crossDomain = init.crossDomain;
+            ns.skipMask = init.skipMask;
+            ns.skipFade = init.skipFade;
+
+			init.el = config.el;
+
+            if (!ns.skipFade) {
+                Ext.get(init.el).setStyle('opacity', 0);
+            }
 
 			// mouse events
 			web.events = web.events || {};
@@ -3135,30 +3173,48 @@ Ext.onReady( function() {
 			// pivot
 			web.pivot = web.pivot || {};
 
-            web.pivot.loadTable = function(id) {
-				if (!Ext.isString(id)) {
-					alert('Invalid report table id');
-					return;
-				}
+            web.pivot.loadTable = function(obj) {
+                var success,
+                    failure,
+                    config = {};
 
-				Ext.data.JsonP.request({
-					url: init.contextPath + '/api/reportTables/' + id + '.jsonp?fields=' + ns.core.conf.url.analysisFields.join(','),
-					failure: function(r) {
-						window.open(init.contextPath + '/api/reportTables/' + id + '.json?fields=' + ns.core.conf.url.analysisFields.join(','), '_blank');
-					},
-					success: function(r) {
-						var layout = api.layout.Layout(r);
+                if (!(obj && obj.id)) {
+                    console.log('Error, no report table id');
+                    return;
+                }
 
-						if (layout) {
-							web.pivot.getData(layout, true);
-						}
-					}
-				});
+                success = function(r) {
+                    var layout = api.layout.Layout((r.responseText ? Ext.decode(r.responseText) : r), obj);
+
+                    if (layout) {
+                        web.pivot.getData(layout, true);
+                    }
+                };
+
+                failure = function(r) {
+                    console.log(obj.id, (r.responseText ? Ext.decode(r.responseText) : r));
+                };
+
+                config.url = init.contextPath + '/api/reportTables/' + obj.id + '.' + type + '?fields=' + ns.core.conf.url.analysisFields.join(',');
+                config.disableCaching = false;
+                config.headers = headers;
+                config.success = success;
+                config.failure = failure;
+
+                if (type === 'jsonp') {
+                    Ext.data.JsonP.request(config);
+                }
+                else {
+                    Ext.Ajax.request(config);
+                }
 			};
 
 			web.pivot.getData = function(layout, isUpdateGui) {
 				var xLayout,
-					paramString;
+					paramString,
+                    success,
+                    failure,
+                    config = {};
 
 				if (!layout) {
 					return;
@@ -3167,43 +3223,51 @@ Ext.onReady( function() {
 				xLayout = service.layout.getExtendedLayout(layout);
 				paramString = web.analytics.getParamString(xLayout, true);
 
-				// show mask
-				web.mask.show(ns.app.centerRegion);
+				// mask
+                if (!ns.skipMask) {
+                    web.mask.show(ns.app.centerRegion);
+                }
 
-				Ext.data.JsonP.request({
-					url: init.contextPath + '/api/analytics.jsonp' + paramString,
-					timeout: 60000,
-					headers: {
-						'Content-Type': 'application/json',
-						'Accepts': 'application/json'
-					},
-					disableCaching: false,
-					failure: function(r) {
-						web.mask.hide(ns.app.centerRegion);
+                success = function(r) {
+                    var response = api.response.Response((r.responseText ? Ext.decode(r.responseText) : r));
 
-						window.open(init.contextPath + '/api/analytics.json' + paramString, '_blank');
-					},
-					success: function(r) {
-						var response = api.response.Response(r);
+                    if (!response) {
+                        web.mask.hide(ns.app.centerRegion);
+                        return;
+                    }
 
-						if (!response) {
-							web.mask.hide(ns.app.centerRegion);
-							return;
-						}
+                    // sync xLayout with response
+                    //xLayout = service.layout.getSyncronizedXLayout(xLayout, response);
 
-						// sync xLayout with response
-						//xLayout = service.layout.getSyncronizedXLayout(xLayout, response);
+                    //if (!xLayout) {
+                        //web.mask.hide(ns.app.centerRegion);
+                        //return;
+                    //}
 
-						//if (!xLayout) {
-							//web.mask.hide(ns.app.centerRegion);
-							//return;
-						//}
+                    ns.app.paramString = paramString;
 
-						ns.app.paramString = paramString;
+                    web.pivot.createTable(layout, response, null, isUpdateGui);
+                };
 
-						web.pivot.createTable(layout, response, null, isUpdateGui);
-					}
-				});
+                failure = function(r) {
+                    if (!ns.skipMask) {
+                        web.mask.hide(ns.app.centerRegion);
+                    }
+                };
+
+                config.url = init.contextPath + '/api/analytics.' + type + paramString;
+                config.disableCaching = false;
+                config.timeout = 60000;
+                config.headers = headers;
+                config.success = success;
+                config.failure = failure;
+
+                if (type === 'jsonp') {
+                    Ext.data.JsonP.request(config);
+                }
+                else {
+                    Ext.Ajax.request(config);
+                }
 			};
 
 			web.pivot.createTable = function(layout, response, xResponse, isUpdateGui) {
@@ -3249,11 +3313,14 @@ Ext.onReady( function() {
 				//ns.app.centerRegion.removeAll(true);
 				ns.app.centerRegion.update(table.html);
 
-                Ext.defer( function() {
-                    Ext.get(ns.core.init.el).fadeIn({
-                        duration: 400
-                    });
-                }, 300 );
+                // fade
+                if (!ns.skipFade) {
+                    Ext.defer( function() {
+                        Ext.get(ns.core.init.el).fadeIn({
+                            duration: 400
+                        });
+                    }, 300 );
+                }
 
 				// after render
 				ns.app.layout = layout;
@@ -3324,16 +3391,22 @@ Ext.onReady( function() {
 				return;
 			}
 
+            applyCss();
+
+            init.plugin = true;
+            init.dashboard = Ext.isBoolean(config.dashboard) ? config.dashboard : false;
+            init.crossDomain = Ext.isBoolean(config.crossDomain) ? config.crossDomain : true;
+            init.skipMask = Ext.isBoolean(config.skipMask) ? config.skipMask : false;
+            init.skipFade = Ext.isBoolean(config.skipFade) ? config.skipFade : false;
+
 			ns.core = PT.getCore(Ext.clone(init));
-            ns.core.init.el = config.el;
-            Ext.get(ns.core.init.el).setStyle('opacity', 0);
 			extendInstance(ns);
 
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
 
-			if (config.id) {
-				ns.core.web.pivot.loadTable(config.id);
+			if (config && config.id) {
+				ns.core.web.pivot.loadTable(config);
 			}
 			else {
 				layout = ns.core.api.layout.Layout(config);
@@ -3360,7 +3433,7 @@ Ext.onReady( function() {
 
 			if (!isInitStarted) {
 				isInitStarted = true;
-				getInit(config.url);
+				getInit(config);
 			}
 		}
 	};

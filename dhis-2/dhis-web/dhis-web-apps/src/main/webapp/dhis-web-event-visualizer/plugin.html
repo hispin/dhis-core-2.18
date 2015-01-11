@@ -28,20 +28,11 @@
 			DHIS.getEventChart({
 				url: url,
 				el: 'report1',
-				uid: 'gxvpzklfRyd'
+				id: 'gxvpzklfRyd',
+                domainAxisStyle: {
+                    fontSize: '20px'
+                }
 			});
-
-			//DHIS.getTable({
-				//url: url,
-				//el: 'report2',
-				//columns: [
-					//{dimension: 'pe', items: [{id: 'LAST_3_MONTHS'}]}
-				//],
-				//rows: [
-					//{dimension: 'ou', items: [{id: 'LEVEL-4'}, {id:'C9uduqDZr9d'}]}
-				//],
-				//hideEmptyRows: true
-			//});
 		});
 	</script>
 </body>

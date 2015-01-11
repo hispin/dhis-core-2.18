@@ -885,3 +885,17 @@ body,
 	-webkit-text-stroke: 0;
 }
 
+.legend3Lines .x-legend .x-legend-items {    
+     display:inline-block !important;    
+}
+
+.legend3Lines .x-legend .x-legend-item {
+     float: left !important;
+     width:205px !important;    
+     overflow: hidden;
+}
+
+.legend3Lines .x-legend {    
+     height:110px !important;    
+     width:400px !important;    
+}  

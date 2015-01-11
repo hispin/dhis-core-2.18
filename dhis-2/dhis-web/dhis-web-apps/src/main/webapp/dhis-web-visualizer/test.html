@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="http://dhis2-cdn.org/v215/ext/resources/css/ext-plugin-gray.css" />
+  <script src="http://dhis2-cdn.org/v215/ext/ext-all.js"></script>
+  <script src="http://dhis2-cdn.org/v215/plugin/chart.js"></script>
+
+  <script>
+    var base = "https://apps.dhis2.org/demo/";
+
+    // Login - if OK, call the setLinks function
+    
+    Ext.onReady( function() {
+      Ext.Ajax.request({
+        url: base + "dhis-web-commons/security/login.action",
+        method: "POST",
+        params: { j_username: "admin", j_password: "district" },
+        success: setLinks
+      });
+    });
+
+    function setLinks() {
+return;
+      // Referring to an existing chart through the id parameter, render to "chart1" div
+      
+      DHIS.getChart({ url: base, el: "chart1", id: "R0DVGvXDUNP" });
+
+      // Full chart configuration, render to "chart2" div
+      
+      //DHIS.getChart({
+        //url: base,
+        //el: "chart2",
+        //type: "stackedBar",
+        //columns: [ // Chart series
+          //{dimension: "de", items: [{id: "YtbsuPPo010"}, {id: "l6byfWFUGaP"}]}
+        //],
+        //rows: [ // Chart categories
+          //{dimension: "pe", items: [{id: "LAST_12_MONTHS"}]}
+        //],
+        //filters: [
+          //{dimension: "ou", items: [{id: "USER_ORGUNIT"}]}
+        //],
+        //// All following options are optional
+        //showData: false,
+        //targetLineValue: 70,
+        //baseLineValue: 20,
+        //showTrendLine: true,
+        //hideLegend: true,
+        //title: "My chart title",
+        //domainAxisTitle: "Periods",
+        //rangeAxisTitle: "Percent"
+      //});
+    }
+  </script>
+</head>
+
+<body>
+  <div id="chart1"></div>
+  <div id="chart2"></div>
+</body>
+</html>
