@@ -638,6 +638,9 @@ public class User
 
             organisationUnits.clear();
             organisationUnits.addAll( user.getOrganisationUnits() );
+            
+            dataViewOrganisationUnits.clear();
+            dataViewOrganisationUnits.addAll( user.getDataViewOrganisationUnits() );
         }
     }
 
