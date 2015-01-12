@@ -93,6 +93,13 @@ public class EqOp extends Op
 
             return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
+        else if ( Enum.class.isInstance( object ) )
+        {
+            String s1 = getValue();
+            String s2 = String.valueOf( object );
+
+            return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+        }
 
         return OpStatus.IGNORE;
     }
