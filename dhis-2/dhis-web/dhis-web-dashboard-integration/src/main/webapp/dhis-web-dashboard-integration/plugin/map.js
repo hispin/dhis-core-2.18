@@ -1475,10 +1475,12 @@ Ext.onReady(function () {
         logg: []
     };
 
-    GIS.core.getOLMap = function (gis) {
+    GIS.core.getOLMap = function(gis) {
         var olmap,
             addControl,
-            logoName = gis.dashboard ? 'google-logo-small' : 'google-logo';
+            logoName = gis.dashboard ? 'google-logo-small' : 'google-logo',
+            legendControl,
+            isAddLegendListener = true;
 
         addControl = function(name, fn) {
             var button,
@@ -1531,8 +1533,72 @@ Ext.onReady(function () {
 
         // Map events
         olmap.events.register('mousemove', null, function (e) {
+
+            // track mouse
             gis.olmap.mouseMove.x = e.clientX;
             gis.olmap.mouseMove.y = e.clientY;
+
+            // legend listener
+            if (isAddLegendListener && gis.dashboard) {
+                isAddLegendListener = false;
+
+                var el = Ext.get(legendControl.div),
+                    img = el.first().first(),
+                    window;
+
+                img.on('mousemove', function() {
+                    if (window && !window.isVisible()) {
+                        window.show();
+                    }
+                    else {
+                        var layers = gis.util.map.getRenderedVectorLayers().reverse(),
+                            xy = Ext.get(olmap.buttonControls[0].div).getAnchorXY(),
+                            html = '<div id="legendWrapper">';
+
+                        for (var i = 0, layer; i < layers.length; i++) {
+                            layer = layers[i];
+
+                            html += '<div style="font-size:10px; font-weight:bold">' + layer.name + '</div>' + layer.core.updateLegend().innerHTML + (i < layers.length - 1 ? '<div style="padding:5px"></div>' : '');
+                        }
+
+                        html += '</div>';
+
+                        if (window) {
+                            window.show();
+                        }
+                        else {
+                            window = Ext.create('Ext.window.Window', {
+                                title: 'Legend',
+                                cls: 'gis-plugin',
+                                bodyStyle: 'background-color: #fff; padding: 3px',
+                                width: 100,
+                                height: 100,
+                                html: html,
+                                preventHeader: true,
+                                shadow: false,
+                                listeners: {
+                                    show: function() {
+                                        var el = this.getEl(),
+                                            legendEl = el.first().first();
+
+                                        el.setStyle('opacity', 0.92);
+
+                                        this.setHeight(legendEl.getHeight() + 8);
+
+                                        this.setPosition(xy[0] - this.getWidth(), xy[1]);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+
+                img.on('mouseleave', function() {
+                    if (window && window.hide) {
+                        window.hide();
+                    }
+                });
+            }
         });
 
         olmap.zoomToVisibleExtent = function () {
@@ -1554,67 +1620,12 @@ Ext.onReady(function () {
         olmap.buttonControls.push(addControl('zoomIn' + (gis.dashboard ? '-vertical' : ''), olmap.zoomIn));
         olmap.buttonControls.push(addControl('zoomOut' + (gis.dashboard ? '-vertical' : ''), olmap.zoomOut));
         olmap.buttonControls.push(addControl('zoomVisible' + (gis.dashboard ? '-vertical' : ''), olmap.zoomToVisibleExtent));
-        olmap.buttonControls.push(addControl('measure' + (gis.dashboard ? '-vertical' : ''), function () {
-            GIS.core.MeasureWindow(gis).show();
-        }));
+        //olmap.buttonControls.push(addControl('measure' + (gis.dashboard ? '-vertical' : ''), function () {
+            //GIS.core.MeasureWindow(gis).show();
+        //}));
 
-        if (gis.dashboard) {
-            var control = addControl('legend-vertical', function() {}),
-                el = Ext.get(control.div),
-                window;
-
-            olmap.buttonControls.push(control);
-
-            el.addListener('mouseover', function(e) {
-                var layers = gis.util.map.getRenderedVectorLayers().reverse(),
-                    xy = Ext.get(olmap.buttonControls[0].div).getAnchorXY(),
-                    html = '';
-
-                for (var i = 0, layer; i < layers.length; i++) {
-                    layer = layers[i];
-
-                    html += '<div style="font-size:10px; font-weight:bold">' + layer.name + '</div>' + layer.core.updateLegend().innerHTML + (i < layers.length - 1 ? '<div style="padding:5px"></div>' : '');
-                }
-
-                if (window && window.destroy) {
-                    window.destroy();
-                }
-
-                window = Ext.create('Ext.window.Window', {
-                    title: 'Legend',
-                    cls: 'gis-plugin',
-                    bodyStyle: 'background-color: #fff; padding: 3px',
-                    html: html,
-                    shadow: false,
-                    listeners: {
-                        render: function() {
-                            this.getEl().setStyle('opacity', 0);
-
-                            this.getEl().on('blur', function() {
-                                window.destroy();
-                            });
-                        },
-                        show: function() {
-                            this.setWidth(this.getWidth());
-                        },
-                        destroy: function() {
-                            window = null;
-                        }
-                    }
-                });
-
-                window.showAt(xy[0], xy[1], Ext.create('Ext.fx.Anim', {
-                    target: window,
-                    duration: 200,
-                    from: {
-                        opacity: 0
-                    },
-                    to: {
-                        opacity: 1
-                    }
-                }));
-            });
-        }
+        legendControl = addControl('legend' + (gis.dashboard ? '-vertical' : ''), function() {});
+        olmap.buttonControls.push(legendControl);
 
         olmap.addButtonControl = addControl;
 
@@ -2411,12 +2422,12 @@ Ext.onReady(function () {
         });
 
         window = Ext.create('Ext.window.Window', {
-            title: GIS.i18n.measure_distance,
+            title: '<span style="font-weight:bold; color:#333">' + GIS.i18n.measure_distance + '</span>',
             layout: 'fit',
             cls: 'gis-container-default gis-plugin',
             bodyStyle: 'text-align: center',
-            width: 130,
-            minWidth: 130,
+            width: 150,
+            height: 70,
             resizable: false,
             items: label,
             listeners: {
@@ -2424,6 +2435,7 @@ Ext.onReady(function () {
                     var x = gis.viewport.eastRegion.getPosition()[0] - this.getWidth() - 3,
                         y = gis.viewport.centerRegion.getPosition()[1] + 26;
                     this.setPosition(x, y);
+                    this.setHeight(40);
                 },
                 destroy: function () {
                     control.deactivate();
@@ -6781,6 +6793,8 @@ Ext.onReady(function () {
         css += '.x-toolbar-footer .x-box-inner{border-width:0} \n';
         css += '.x-window-default{-moz-border-radius-topleft:5px; -webkit-border-top-left-radius:5px; -o-border-top-left-radius:5px; -ms-border-top-left-radius:5px; -khtml-border-top-left-radius:5px; border-top-left-radius:5px; -moz-border-radius-topright:5px; -webkit-border-top-right-radius:5px; -o-border-top-right-radius:5px; -ms-border-top-right-radius:5px; -khtml-border-top-right-radius:5px; border-top-right-radius:5px; -moz-border-radius-bottomright:5px; -webkit-border-bottom-right-radius:5px; -o-border-bottom-right-radius:5px; -ms-border-bottom-right-radius:5px; -khtml-border-bottom-right-radius:5px; border-bottom-right-radius:5px; -moz-border-radius-bottomleft:5px; -webkit-border-bottom-left-radius:5px; -o-border-bottom-left-radius:5px; -ms-border-bottom-left-radius:5px; -khtml-border-bottom-left-radius:5px; border-bottom-left-radius:5px; -moz-box-shadow:#ebe7e7 0 1px 0px 0 inset, #ebe7e7 0 -1px 0px 0 inset, #ebe7e7 -1px 0 0px 0 inset, #ebe7e7 1px 0 0px 0 inset; -webkit-box-shadow:#ebe7e7 0 1px 0px 0 inset, #ebe7e7 0 -1px 0px 0 inset, #ebe7e7 -1px 0 0px 0 inset, #ebe7e7 1px 0 0px 0 inset; -o-box-shadow:#ebe7e7 0 1px 0px 0 inset, #ebe7e7 0 -1px 0px 0 inset, #ebe7e7 -1px 0 0px 0 inset, #ebe7e7 1px 0 0px 0 inset; box-shadow:#ebe7e7 0 1px 0px 0 inset, #ebe7e7 0 -1px 0px 0 inset, #ebe7e7 -1px 0 0px 0 inset, #ebe7e7 1px 0 0px 0 inset; padding:4px 4px 4px 4px; border-color:#a9a9a9; border-width:1px; border-style:solid; background-color:#e8e8e8; } \n';
         css += '.x-window{outline:none} \n';
+        css += '.x-window-header-default { border-color: #a9a9a9; zoom: 1; } \n';
+        css += '.x-window-header-default-top { box-shadow: #ebe7e7 0 1px 0px 0 inset, #ebe7e7 -1px 0 0px 0 inset, #ebe7e7 1px 0 0px 0 inset; border-bottom-left-radius: 0; padding: 5px 5px 0 5px; border-width: 1px; border-style: solid; background-color: #e8e8e8; } \n';
         css += '.x-window .x-window-wrap .x-window-body{overflow:hidden} \n';
         css += '.x-window-body-default{border-color:#bcb1b0;border-width:1px;background:#e0e0e0;color:black} \n';
         css += '.x-window-body{position:relative;border-style:solid} \n';
@@ -6806,8 +6820,13 @@ Ext.onReady(function () {
         css += '.x-html html,.x-html address,.x-html blockquote,.x-html body,.x-html dd,.x-html div,.x-html dl,.x-html dt,.x-html fieldset,.x-html form,.x-html frame,.x-html frameset,.x-html h1,.x-html h2,.x-html h3,.x-html h4,.x-html h5,.x-html h6,.x-html noframes,.x-html ol,.x-html p,.x-html ul,.x-html center,.x-html dir,.x-html hr,.x-html menu,.x-html pre{display:block} \n';
         css += '.x-html :before,.x-html :after{white-space:pre-line} \n';
         css += '.x-html :link,.x-html :visited{text-decoration:underline} \n';
+        css += '.x-panel-header-draggable,.x-panel-header-draggable .x-panel-header-text,.x-window-header-draggable,.x-window-header-draggable .x-window-header-text,.x-tip-header-draggable .x-tip-header-text { cursor:move; } \n';
+        css += '.x-panel-header-vertical,.x-panel-header-vertical .x-panel-header-body,.x-btn-group-header-vertical,.x-btn-group-header-vertical .x-btn-group-header-body,.x-window-header-vertical,.x-window-header-vertical .x-window-header-body,.x-html button,.x-html textarea,.x-html input,.x-html select { display:inline-block; } \n';
+        css += '.x-window-header-text { user-select:none; -o-user-select:none; -ms-user-select:none; -moz-user-select:0; -webkit-user-select:none; cursor:default; white-space:nowrap; display:block; } \n';
 
-	// needs parent class to avoid conflict
+
+
+        // needs parent class to avoid conflict
         css += '.x-border-box .gis-plugin *{box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-webkit-box-sizing:border-box} \n';
 
         // gis
@@ -6836,8 +6855,8 @@ Ext.onReady(function () {
         css += '.olControlPanel.zoomIn-vertical { right: 1px; } \n';
         css += '.olControlPanel.zoomOut-vertical { top: 24px; right: 1px; } \n';
         css += '.olControlPanel.zoomVisible-vertical { top: 48px; right: 1px; } \n';
-        css += '.olControlPanel.measure-vertical { top: 72px; right: 1px; } \n';
-        css += '.olControlPanel.legend-vertical { top: 96px; right: 1px; } \n';
+        //css += '.olControlPanel.measure-vertical { top: 72px; right: 1px; } \n';
+        css += '.olControlPanel.legend-vertical { top: 72px; right: 1px; } \n';
         css += '.olControlPanel.legend-vertical .olControlButtonItemActive { border-bottom-left-radius: 2px; } \n';
         css += '.olControlPermalink { display: none !important; } \n';
         css += '.olControlMousePosition { background: #fff !important; opacity: 0.8 !important; filter: alpha(opacity=80) !important; -ms-filter: "alpha(opacity=80)" !important; right: 0 !important; bottom: 0 !important; border-top-left-radius: 2px !important; padding: 2px 2px 1px 5px !important; color: #000 !important; -webkit-text-stroke-width: 0.2px; -webkit-text-stroke-color: #555; } \n';
@@ -7027,28 +7046,28 @@ Ext.onReady(function () {
 
         afterRender = function (vp) {
 
-	    // map buttons
-	    var clsArray = ['zoomIn-verticalButton', 'zoomOut-verticalButton', 'zoomVisible-verticalButton', 'measure-verticalButton', 'legend-verticalButton'],
-		map = {
-		    'zoomIn-verticalButton': 'zoomin_24.png',
-		    'zoomOut-verticalButton': 'zoomout_24.png',
-		    'zoomVisible-verticalButton': 'zoomvisible_24.png',
-		    'measure-verticalButton': 'measure_24.png',
-		    'legend-verticalButton': 'legend_24.png'
-		};
+            // map buttons
+            var clsArray = ['zoomIn-verticalButton', 'zoomOut-verticalButton', 'zoomVisible-verticalButton', 'measure-verticalButton', 'legend-verticalButton'],
+                map = {
+                    'zoomIn-verticalButton': 'zoomin_24.png',
+                    'zoomOut-verticalButton': 'zoomout_24.png',
+                    'zoomVisible-verticalButton': 'zoomvisible_24.png',
+                    'measure-verticalButton': 'measure_24.png',
+                    'legend-verticalButton': 'legend_24.png'
+                };
 
-	    for (var i = 0, cls, elArray; i < clsArray.length; i++) {
-		cls = clsArray[i];
-		elArray = Ext.query('.' + cls);
+            for (var i = 0, cls, elArray; i < clsArray.length; i++) {
+                cls = clsArray[i];
+                elArray = Ext.query('.' + cls);
 
-		for (var j = 0, el; j < elArray.length; j++) {
-		    el = elArray[j];
+                for (var j = 0, el; j < elArray.length; j++) {
+                    el = elArray[j];
 
-		    if (el) {
-			el.innerHTML = '<img src="images/' + map[cls] + '" />';
-		    }
-		}
-	    }
+                    if (el) {
+                        el.innerHTML = '<img src="images/' + map[cls] + '" />';
+                    }
+                }
+            }
 
             // base layer
             if (Ext.isDefined(gis.map.baseLayer)) {
