@@ -138,7 +138,7 @@ select * from categoryoptioncombo where categoryoptioncomboid not in (select dis
 
 select * from categoryoptioncombo where categoryoptioncomboid not in (select distinct categoryoptioncomboid from categorycombos_optioncombos);
 
--- Get category options without category option combos
+-- Get category options without category option combos (be careful when deleting from categories_categoryoptions to avoid missing indexes)
 
 select * from dataelementcategoryoption where categoryoptionid not in (select distinct categoryoptionid from categoryoptioncombos_categoryoptions);
 
