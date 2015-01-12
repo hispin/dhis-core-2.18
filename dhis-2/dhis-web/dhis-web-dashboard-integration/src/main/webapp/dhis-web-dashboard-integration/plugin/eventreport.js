@@ -3135,116 +3135,124 @@ Ext.onReady( function() {
                     success: function(r) {
                         init.userAccount = r.responseText ? Ext.decode(r.responseText) : r;
 
-                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/jQuery/jquery.min.js', function() {
-                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.util.js', function() {
-                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.js', function() {
-                                    Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js', function() {
-                                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js', function() {
-                                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js', function() {
+                        var onScriptReady = function() {
+                            var defaultKeyUiLocale = 'en',
+                                defaultKeyAnalysisDisplayProperty = 'name',
+                                namePropertyUrl,
+                                contextPath,
+                                keyUiLocale,
+                                dateFormat,
+                                optionSetVersionConfig;
 
-                                                // init
-                                                var defaultKeyUiLocale = 'en',
-                                                    defaultKeyAnalysisDisplayProperty = 'name',
-                                                    namePropertyUrl,
-                                                    contextPath,
-                                                    keyUiLocale,
-                                                    dateFormat,
-                                                    optionSetVersionConfig;
+                            init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
+                            init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
 
-                                                init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
-                                                init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
+                            // local vars
+                            contextPath = init.contextPath;
+                            keyUiLocale = init.userAccount.settings.keyUiLocale;
+                            keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
+                            namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
+                            dateFormat = init.systemInfo.dateFormat;
 
-                                                // local vars
-                                                contextPath = init.contextPath;
-                                                keyUiLocale = init.userAccount.settings.keyUiLocale;
-                                                keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
-                                                namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
-                                                dateFormat = init.systemInfo.dateFormat;
+                            init.namePropertyUrl = namePropertyUrl;
 
-                                                init.namePropertyUrl = namePropertyUrl;
+                            // dhis2
+                            dhis2.util.namespace('dhis2.ev');
 
-                                                // dhis2
-                                                dhis2.util.namespace('dhis2.ev');
+                            dhis2.ev.store = dhis2.ev.store || new dhis2.storage.Store({
+                                name: 'dhis2',
+                                adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+                                objectStores: ['optionSets']
+                            });
 
-                                                dhis2.ev.store = dhis2.ev.store || new dhis2.storage.Store({
-                                                    name: 'dhis2',
-                                                    adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-                                                    objectStores: ['optionSets']
+                            optionSetVersionConfig = {
+                                url: contextPath + '/api/optionSets.' + type + '?fields=id,version&paging=false',
+                                disableCashing: false,
+                                success: function(r) {
+                                    var optionSets = (r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets) || [],
+                                        store = dhis2.ev.store,
+                                        ids = [],
+                                        url = '',
+                                        callbacks = 0,
+                                        checkOptionSet,
+                                        updateStore,
+                                        optionSetConfig;
+
+                                    optionSetConfig = {
+                                        url: contextPath + '/api/optionSets.' + type + '?fields=id,name,version,options[code,name]&paging=false' + url,
+                                        disableCashing: false,
+                                        success: function(r) {
+                                            var sets = r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets;
+                                            store.setAll('optionSets', sets).done(fn);
+                                        }
+                                    };
+
+                                    updateStore = function() {
+                                        if (++callbacks === optionSets.length) {
+                                            if (!ids.length) {
+                                                fn();
+                                                return;
+                                            }
+
+                                            for (var i = 0; i < ids.length; i++) {
+                                                url += '&filter=id:eq:' + ids[i];
+                                            }
+
+                                            if (type === 'jsonp') {
+                                                Ext.data.JsonP.request(optionSetConfig);
+                                            }
+                                            else {
+                                                Ext.Ajax.request(optionSetConfig);
+                                            }
+                                        }
+                                    };
+
+                                    registerOptionSet = function(optionSet) {
+                                        store.get('optionSets', optionSet.id).done( function(obj) {
+                                            if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
+                                                ids.push(optionSet.id);
+                                            }
+
+                                            updateStore();
+                                        });
+                                    };
+
+                                    store.open().done( function() {
+                                        for (var i = 0; i < optionSets.length; i++) {
+                                            registerOptionSet(optionSets[i]);
+                                        }
+                                    });
+                                }
+                            };
+
+                            // option sets
+                            if (type === 'jsonp') {
+                                Ext.data.JsonP.request(optionSetVersionConfig);
+                            }
+                            else {
+                                Ext.Ajax.request(optionSetVersionConfig);
+                            }
+                        };
+
+                        // init
+                        if (config.dashboard) {
+                            onScriptReady();
+                        }
+                        else {
+                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/jQuery/jquery.min.js', function () {
+                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.util.js', function () {
+                                    Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.js', function () {
+                                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js', function () {
+                                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js', function () {
+                                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js', function () {
+                                                    onScriptReady();
                                                 });
-
-                                                optionSetVersionConfig = {
-                                                    url: contextPath + '/api/optionSets.' + type + '?fields=id,version&paging=false',
-                                                    disableCashing: false,
-                                                    success: function(r) {
-                                                        var optionSets = (r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets) || [],
-                                                            store = dhis2.ev.store,
-                                                            ids = [],
-                                                            url = '',
-                                                            callbacks = 0,
-                                                            checkOptionSet,
-                                                            updateStore,
-                                                            optionSetConfig;
-
-                                                        optionSetConfig = {
-                                                            url: contextPath + '/api/optionSets.' + type + '?fields=id,name,version,options[code,name]&paging=false' + url,
-                                                            disableCashing: false,
-                                                            success: function(r) {
-                                                                var sets = r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets;
-                                                                store.setAll('optionSets', sets).done(fn);
-                                                            }
-                                                        };
-
-                                                        updateStore = function() {
-                                                            if (++callbacks === optionSets.length) {
-                                                                if (!ids.length) {
-                                                                    fn();
-                                                                    return;
-                                                                }
-
-                                                                for (var i = 0; i < ids.length; i++) {
-                                                                    url += '&filter=id:eq:' + ids[i];
-                                                                }
-
-                                                                if (type === 'jsonp') {
-                                                                    Ext.data.JsonP.request(optionSetConfig);
-                                                                }
-                                                                else {
-                                                                    Ext.Ajax.request(optionSetConfig);
-                                                                }
-                                                            }
-                                                        };
-
-                                                        registerOptionSet = function(optionSet) {
-                                                            store.get('optionSets', optionSet.id).done( function(obj) {
-                                                                if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
-                                                                    ids.push(optionSet.id);
-                                                                }
-
-                                                                updateStore();
-                                                            });
-                                                        };
-
-                                                        store.open().done( function() {
-                                                            for (var i = 0; i < optionSets.length; i++) {
-                                                                registerOptionSet(optionSets[i]);
-                                                            }
-                                                        });
-                                                    }
-                                                };
-
-                                                // option sets
-                                                if (type === 'jsonp') {
-                                                    Ext.data.JsonP.request(optionSetVersionConfig);
-                                                }
-                                                else {
-                                                    Ext.Ajax.request(optionSetVersionConfig);
-                                                }
                                             });
                                         });
                                     });
                                 });
                             });
-                        });
+                        }
                     }
                 };
 
