@@ -155,8 +155,6 @@ function validateInvite() {
 	return def.promise();
 }
 
-
-
 // -----------------------------------------------------------------------------
 // Remove user
 // -----------------------------------------------------------------------------
@@ -197,4 +195,47 @@ function showUserOptions()
 {
 	$( "#showMoreOptions" ).toggle();
 	$( "#moreOptions" ).toggle();
+}
+
+// -----------------------------------------------------------------------------
+// Replicate user
+// -----------------------------------------------------------------------------
+
+function showReplicateUserDialog( context ) {
+	$( "#replicaId" ).val( context.uid );
+	
+	$( "#replicateUserForm" ).dialog( {
+		modal: true,
+		width: 415,
+		height: 170,
+		resizable: false,
+		title: "Replicate user"
+	});
+}
+
+function replicateUser() {
+	var replica = {
+		"username": $( "#replicaUsername" ).val(),
+		"password": $( "#replicaPassword" ).val()
+	};
+	
+	var id = $( "#replicaId" ).val();
+	
+	$.ajax({
+		url: "../api/users/" + id + "/replica", 
+		data: JSON.stringify( replica ),
+		type: "post",
+		contentType: "application/json; charset=utf-8",
+		success: function() {
+			$( "#replicateUserForm" ).dialog( "destroy" );
+			window.location.href = "alluser.action";
+		},
+		error: function( xhr, status, error ) {
+			setHeaderDelayMessage( xhr.responseText );
+		}
+	});
+}
+
+function cancelReplicateUser() {
+	$( "#replicateUserForm" ).dialog( "destroy" );
 }

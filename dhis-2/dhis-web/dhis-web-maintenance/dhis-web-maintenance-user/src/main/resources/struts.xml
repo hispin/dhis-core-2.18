@@ -15,7 +15,7 @@
       <param name="page">/dhis-web-maintenance-user/index.vm</param>
       <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
     </action>
-
+    
     <action name="user" class="org.hisp.dhis.user.action.GetOrgunitUserListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/user.vm</param>
