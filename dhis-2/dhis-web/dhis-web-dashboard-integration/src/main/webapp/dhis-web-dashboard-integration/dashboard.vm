@@ -28,7 +28,7 @@ Ext.onReady( function() {
 	Ext.Loader.injectScriptElement('plugin/chart.js', function() {
 	    Ext.Loader.injectScriptElement('plugin/map.js', function() {
 		Ext.Loader.injectScriptElement('plugin/eventreport.js', function() {
-		    Ext.Loader.injectScriptElement('plugin/eventreport.js', function() {
+		    Ext.Loader.injectScriptElement('plugin/eventchart.js', function() {
 			Ext.Loader.injectScriptElement('javascript/dashboard.js', function() {} );
 		    });
 		});
