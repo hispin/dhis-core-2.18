@@ -28,8 +28,17 @@ package org.hisp.dhis.webapi.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
@@ -55,16 +64,14 @@ import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -75,8 +82,10 @@ public class UserController
     extends AbstractCrudController<User>
 {
     public static final String INVITE_PATH = "/invite";
-
     public static final String BULK_INVITE_PATH = "/invites";
+    
+    private static final String KEY_USERNAME = "username";
+    private static final String KEY_PASSWORD = "password";
 
     @Autowired
     private UserService userService;
@@ -250,6 +259,63 @@ public class UserController
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @PreAuthorize( "hasRole('ALL')" )
+    @RequestMapping( value = "/{uid}/replica", method = RequestMethod.POST )
+    public void replicateUser( @PathVariable String uid, 
+        HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        User existingUser = userService.getUser( uid );
+        
+        if ( existingUser == null || existingUser.getUserCredentials() == null )
+        {
+            ContextUtils.conflictResponse( response, "User not found: " + uid );
+            return;
+        }
+        
+        if ( !validateCreateUser( existingUser, response ) )
+        {
+            return;
+        }
+        
+        Map<String, String> auth = renderService.fromJson( request.getInputStream(),Map.class );
+        
+        if ( auth == null || !auth.containsKey( KEY_USERNAME ) || !auth.containsKey( KEY_PASSWORD ) )
+        {
+            ContextUtils.conflictResponse( response, "Username and password must be specified" );
+            return;
+        }
+        
+        String username = auth.get( KEY_USERNAME );
+        String password = auth.get( KEY_PASSWORD );
+        
+        if ( userService.getUserCredentialsByUsername( username ) != null )
+        {
+            ContextUtils.conflictResponse( response, "Username already taken: " + username );
+            return;
+        }
+        
+        User userReplica = new User();
+        userReplica.mergeWith( existingUser );
+        userReplica.setUid( CodeGenerator.generateCode() );
+        userReplica.setCreated( new Date() );
+        
+        UserCredentials credentialsReplica = new UserCredentials();
+        credentialsReplica.mergeWith( existingUser.getUserCredentials() );
+        
+        credentialsReplica.setUsername( username );
+        credentialsReplica.setPassword( password );
+        
+        userReplica.setUserCredentials( credentialsReplica );
+        credentialsReplica.setUser( userReplica );
+        
+        userService.addUser( userReplica );
+        userService.addUserCredentials( credentialsReplica );
+        userGroupService.addUserToGroups( userReplica, IdentifiableObjectUtils.getUids( existingUser.getGroups() ) );
+        
+        ContextUtils.createdResponse( response, "User replica created", UserSchemaDescriptor.API_ENDPOINT + "/" + userReplica.getUid() );
+    }
+    
     // -------------------------------------------------------------------------
     // PUT
     // -------------------------------------------------------------------------

@@ -72,7 +72,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
- * @author Lars Helge Overland
  */
 @Controller
 @RequestMapping( value = ChartSchemaDescriptor.API_ENDPOINT )
