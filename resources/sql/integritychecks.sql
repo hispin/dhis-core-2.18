@@ -105,6 +105,17 @@ create index aggregateddatavalue_index on aggregateddatavalue (dataelementid, pe
 create index aggregatedindicatorvalue_index on aggregatedindicatorvalue (indicatorid, periodid, organisationunitid, value);
 create index aggregateddatasetcompleteness_index on aggregateddatasetcompleteness  (datasetid, periodid, organisationunitid, value);
 
+-- Get missing items in a list / missing options in a category by looking at the sort_order and the max sort_order value
+
+select * from (
+select generate_series
+from generate_series(1,1634)
+) s
+left join categories_categoryoptions cco on (
+  s.generate_series=cco.sort_order
+  and cco.categoryid=492298)
+where cco.sort_order is null;
+
 -- Get category option combos from data values which are not part of the category combo of the data element
 
 select distinct de.name as data_element, dv.dataelementid, de_cc.name as data_element_category_combo, oc_cc.name as option_combo_category_combo, con.categoryoptioncomboname, dv.categoryoptioncomboid
