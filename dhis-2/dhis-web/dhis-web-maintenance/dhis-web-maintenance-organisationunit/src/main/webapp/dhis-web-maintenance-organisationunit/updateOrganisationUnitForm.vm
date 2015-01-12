@@ -61,15 +61,6 @@
 		<td><input type="text" id="closedDate" name="closedDate" value="$!closedDate"></td>
 	</tr>
 	<tr>
-		<td><label for="active">$i18n.getString( "registers_data" )</label></td>
-		<td>
-			<select id="active" name="active">
-				<option value="true" #if( $organisationUnit.active ) selected="selected" #end>$i18n.getString( "yes" )</option>
-				<option value="false" #if( !$organisationUnit.active ) selected="selected" #end>$i18n.getString( "no" )</option>
-			</select>
-		</td>
-	</tr>
-	<tr>
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>
 		<td><textarea id="comment" name="comment">$!encoder.htmlEncode( $organisationUnit.comment )</textarea></td>
 	</tr>
