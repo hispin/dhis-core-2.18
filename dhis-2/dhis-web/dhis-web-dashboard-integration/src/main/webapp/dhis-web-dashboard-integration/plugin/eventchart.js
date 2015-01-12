@@ -646,15 +646,15 @@ Ext.onReady( function() {
                     if (Ext.isObject(config.domainAxisStyle)) {
                         layout.domainAxisStyle = config.domainAxisStyle;
                     }
-                    
+
                     if (Ext.isObject(config.rangeAxisStyle)) {
                         layout.rangeAxisStyle = config.rangeAxisStyle;
                     }
-                    
+
                     if (Ext.isObject(config.legendStyle)) {
                         layout.legendStyle = config.legendStyle;
                     }
-                    
+
                     if (Ext.isObject(config.seriesStyle)) {
                         layout.seriesStyle = config.seriesStyle;
                     }
@@ -2430,7 +2430,7 @@ Ext.onReady( function() {
                         labelRotation = 0,
                         titleFont = 'bold 12px ' + conf.chart.style.fontFamily,
                         titleColor = 'black',
-                        
+
                         typeConf = conf.finals.chart,
                         minimum = store.getMinimum(),
                         maximum,
@@ -2514,7 +2514,7 @@ Ext.onReady( function() {
 
                         // label
                         labelColor = style.labelColor || labelColor;
-                        
+
                         if (style.labelFont) {
                             labelFont = style.labelFont;
                         }
@@ -2531,7 +2531,7 @@ Ext.onReady( function() {
 
                         // title
                         titleColor = style.titleColor || titleColor;
-                        
+
                         if (style.titleFont) {
                             titleFont = style.titleFont;
                         }
@@ -2558,7 +2558,7 @@ Ext.onReady( function() {
                         labelRotation = 315,
                         titleFont = 'bold 12px ' + conf.chart.style.fontFamily,
                         titleColor = 'black',
-                    
+
                         axis = {
                             type: 'Category',
                             position: 'bottom',
@@ -2569,7 +2569,7 @@ Ext.onReady( function() {
                             },
                             labelTitle: {}
                         };
-                    
+
                     if (xLayout.domainAxisTitle) {
                         axis.title = xLayout.domainAxisTitle;
                     }
@@ -2580,7 +2580,7 @@ Ext.onReady( function() {
 
                         // label
                         labelColor = style.labelColor || labelColor;
-                        
+
                         if (style.labelFont) {
                             labelFont = style.labelFont;
                         }
@@ -2597,7 +2597,7 @@ Ext.onReady( function() {
 
                         // title
                         titleColor = style.titleColor || titleColor;
-                        
+
                         if (style.titleFont) {
                             titleFont = style.titleFont;
                         }
@@ -2631,7 +2631,7 @@ Ext.onReady( function() {
 
                             if (Ext.isString(name) && Ext.isObject(xLayout.legendStyle) && Ext.isNumber(xLayout.legendStyle.labelMaxLength)) {
                                 var mxl = parseInt(xLayout.legendStyle.labelMaxLength);
-                                
+
                                 name = name.length > mxl ? name.substr(0, mxl) + '..' : name;
                             }
 
@@ -2669,7 +2669,7 @@ Ext.onReady( function() {
 
                             // label
                             labelColor = style.labelColor || labelColor;
-                            
+
                             if (style.labelFont) {
                                 labelFont = style.labelFont;
                             }
@@ -2678,8 +2678,8 @@ Ext.onReady( function() {
                                 labelFont += style.labelFontSize ? parseFloat(style.labelFontSize) + 'px ' : '11px ';
                                 labelFont +=  style.labelFontFamily ? style.labelFontFamily : conf.chart.style.fontFamily;
                             }
-                        }                            
-                            
+                        }
+
                         main.label = {
                             display: 'outside',
                             'text-anchor': 'middle',
@@ -2745,7 +2745,7 @@ Ext.onReady( function() {
                             var title = (Ext.isString(xLayout.targetLineTitle) ? xLayout.targetLineTitle : EV.i18n.target) + ' (' + xLayout.targetLineValue + ')',
                                 ls = xLayout.legendStyle;
                             return ls && Ext.isNumber(ls.labelMaxLength) ? title.substr(0, ls.labelMaxLength) + '..' : title;
-                        }()                                
+                        }()
                     };
                 };
 
@@ -2766,7 +2766,7 @@ Ext.onReady( function() {
                             var title = (Ext.isString(xLayout.baseLineTitle) ? xLayout.baseLineTitle : EV.i18n.base) + ' (' + xLayout.baseLineValue + ')',
                                 ls = xLayout.legendStyle;
                             return ls && Ext.isNumber(ls.labelMaxLength) ? title.substr(0, ls.labelMaxLength) + '..' : title;
-                        }()                                
+                        }()
                     };
                 };
 
@@ -2832,7 +2832,7 @@ Ext.onReady( function() {
                     }
 
                     width = (numberOfItems * itemLength) + (numberOfChars * charLength);
-                    
+
                     if (width > ns.app.centerRegion.getWidth() - 10) {
                         isVertical = true;
                         position = 'right';
@@ -2841,7 +2841,7 @@ Ext.onReady( function() {
                     // style
                     if (Ext.isObject(xLayout.legendStyle)) {
                         var style = xLayout.legendStyle;
-                        
+
                         if (Ext.Array.contains(positions, style.position)) {
                             position = style.position;
                         }
@@ -3278,7 +3278,7 @@ Ext.onReady( function() {
 
                             // color
                             labelColor = style.labelColor || labelColor;
-                            
+
                             if (style.labelFont) {
                                 labelFont = style.labelFont;
                             }
@@ -3288,7 +3288,7 @@ Ext.onReady( function() {
                                 labelFont +=  style.labelFontFamily ? style.labelFontFamily : conf.chart.style.fontFamily;
                             }
                         }
-                        
+
                         label.display = 'middle';
                         label.contrast = !labelColor;
                         label.font = labelFont;
@@ -3595,7 +3595,7 @@ Ext.onReady( function() {
 
         // dhis2
         requests.push({
-            url: init.contextPath + '/api/systemSettings.' + type + '?key=keyCalendar&key=keyDateFormat',            
+            url: init.contextPath + '/api/systemSettings.' + type + '?key=keyCalendar&key=keyDateFormat',
             disableCaching: false,
             success: function(r) {
                 var systemSettings = r.responseText ? Ext.decode(r.responseText) : r,
@@ -3604,9 +3604,6 @@ Ext.onReady( function() {
                 init.systemInfo.dateFormat = Ext.isString(systemSettings.keyDateFormat) ? systemSettings.keyDateFormat.toLowerCase() : 'yyyy-mm-dd';
                 init.systemInfo.calendar = systemSettings.keyCalendar;
 
-                // optionSetsConfig
-
-
                 // user-account
                 userAccountConfig = {
                     url: init.contextPath + '/api/me/user-account.' + type,
@@ -3614,116 +3611,124 @@ Ext.onReady( function() {
                     success: function(r) {
                         init.userAccount = r.responseText ? Ext.decode(r.responseText) : r;
 
-                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/jQuery/jquery.min.js', function() {
-                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.util.js', function() {
-                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.js', function() {
-                                    Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js', function() {
-                                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js', function() {
-                                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js', function() {
+                        var onScriptReady = function() {
+                            var defaultKeyUiLocale = 'en',
+                                defaultKeyAnalysisDisplayProperty = 'name',
+                                namePropertyUrl,
+                                contextPath,
+                                keyUiLocale,
+                                dateFormat,
+                                optionSetVersionConfig;
 
-                                                // init
-                                                var defaultKeyUiLocale = 'en',
-                                                    defaultKeyAnalysisDisplayProperty = 'name',
-                                                    namePropertyUrl,
-                                                    contextPath,
-                                                    keyUiLocale,
-                                                    dateFormat,
-                                                    optionSetVersionConfig;
+                            init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
+                            init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
 
-                                                init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
-                                                init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
+                            // local vars
+                            contextPath = init.contextPath;
+                            keyUiLocale = init.userAccount.settings.keyUiLocale;
+                            keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
+                            namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
+                            dateFormat = init.systemInfo.dateFormat;
 
-                                                // local vars
-                                                contextPath = init.contextPath;
-                                                keyUiLocale = init.userAccount.settings.keyUiLocale;
-                                                keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
-                                                namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
-                                                dateFormat = init.systemInfo.dateFormat;
+                            init.namePropertyUrl = namePropertyUrl;
 
-                                                init.namePropertyUrl = namePropertyUrl;
+                            // dhis2
+                            dhis2.util.namespace('dhis2.ev');
 
-                                                // dhis2
-                                                dhis2.util.namespace('dhis2.ev');
+                            dhis2.ev.store = dhis2.ev.store || new dhis2.storage.Store({
+                                name: 'dhis2',
+                                adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+                                objectStores: ['optionSets']
+                            });
 
-                                                dhis2.ev.store = dhis2.ev.store || new dhis2.storage.Store({
-                                                    name: 'dhis2',
-                                                    adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-                                                    objectStores: ['optionSets']
+                            optionSetVersionConfig = {
+                                url: contextPath + '/api/optionSets.' + type + '?fields=id,version&paging=false',
+                                disableCashing: false,
+                                success: function(r) {
+                                    var optionSets = (r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets) || [],
+                                        store = dhis2.ev.store,
+                                        ids = [],
+                                        url = '',
+                                        callbacks = 0,
+                                        checkOptionSet,
+                                        updateStore,
+                                        optionSetConfig;
+
+                                    optionSetConfig = {
+                                        url: contextPath + '/api/optionSets.' + type + '?fields=id,name,version,options[code,name]&paging=false' + url,
+                                        disableCashing: false,
+                                        success: function(r) {
+                                            var sets = r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets;
+                                            store.setAll('optionSets', sets).done(fn);
+                                        }
+                                    };
+
+                                    updateStore = function() {
+                                        if (++callbacks === optionSets.length) {
+                                            if (!ids.length) {
+                                                fn();
+                                                return;
+                                            }
+
+                                            for (var i = 0; i < ids.length; i++) {
+                                                url += '&filter=id:eq:' + ids[i];
+                                            }
+
+                                            if (type === 'jsonp') {
+                                                Ext.data.JsonP.request(optionSetConfig);
+                                            }
+                                            else {
+                                                Ext.Ajax.request(optionSetConfig);
+                                            }
+                                        }
+                                    };
+
+                                    registerOptionSet = function(optionSet) {
+                                        store.get('optionSets', optionSet.id).done( function(obj) {
+                                            if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
+                                                ids.push(optionSet.id);
+                                            }
+
+                                            updateStore();
+                                        });
+                                    };
+
+                                    store.open().done( function() {
+                                        for (var i = 0; i < optionSets.length; i++) {
+                                            registerOptionSet(optionSets[i]);
+                                        }
+                                    });
+                                }
+                            };
+
+                            // option sets
+                            if (type === 'jsonp') {
+                                Ext.data.JsonP.request(optionSetVersionConfig);
+                            }
+                            else {
+                                Ext.Ajax.request(optionSetVersionConfig);
+                            }
+                        };
+
+                        // init
+                        if (config.dashboard) {
+                            onScriptReady();
+                        }
+                        else {
+                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/jQuery/jquery.min.js', function () {
+                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.util.js', function () {
+                                    Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.js', function () {
+                                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js', function () {
+                                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js', function () {
+                                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js', function () {
+                                                    onScriptReady();
                                                 });
-
-                                                optionSetVersionConfig = {
-                                                    url: contextPath + '/api/optionSets.' + type + '?fields=id,version&paging=false',
-                                                    disableCashing: false,
-                                                    success: function(r) {
-                                                        var optionSets = (r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets) || [],
-                                                            store = dhis2.ev.store,
-                                                            ids = [],
-                                                            url = '',
-                                                            callbacks = 0,
-                                                            checkOptionSet,
-                                                            updateStore,
-                                                            optionSetConfig;
-
-                                                        optionSetConfig = {
-                                                            url: contextPath + '/api/optionSets.' + type + '?fields=id,name,version,options[code,name]&paging=false' + url,
-                                                            disableCashing: false,
-                                                            success: function(r) {
-                                                                var sets = r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets;
-                                                                store.setAll('optionSets', sets).done(fn);
-                                                            }
-                                                        };
-
-                                                        updateStore = function() {
-                                                            if (++callbacks === optionSets.length) {
-                                                                if (!ids.length) {
-                                                                    fn();
-                                                                    return;
-                                                                }
-
-                                                                for (var i = 0; i < ids.length; i++) {
-                                                                    url += '&filter=id:eq:' + ids[i];
-                                                                }
-
-                                                                if (type === 'jsonp') {
-                                                                    Ext.data.JsonP.request(optionSetConfig);
-                                                                }
-                                                                else {
-                                                                    Ext.Ajax.request(optionSetConfig);
-                                                                }
-                                                            }
-                                                        };
-
-                                                        registerOptionSet = function(optionSet) {
-                                                            store.get('optionSets', optionSet.id).done( function(obj) {
-                                                                if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
-                                                                    ids.push(optionSet.id);
-                                                                }
-
-                                                                updateStore();
-                                                            });
-                                                        };
-
-                                                        store.open().done( function() {
-                                                            for (var i = 0; i < optionSets.length; i++) {
-                                                                registerOptionSet(optionSets[i]);
-                                                            }
-                                                        });
-                                                    }
-                                                };
-
-                                                // option sets
-                                                if (type === 'jsonp') {
-                                                    Ext.data.JsonP.request(optionSetVersionConfig);
-                                                }
-                                                else {
-                                                    Ext.Ajax.request(optionSetVersionConfig);
-                                                }
                                             });
                                         });
                                     });
                                 });
                             });
-                        });
+                        }
                     }
                 };
 
@@ -3867,7 +3872,7 @@ Ext.onReady( function() {
                 var success,
                     failure,
                     config = {};
-                    
+
                 if (!(obj && obj.id)) {
                     console.log('Error, no chart id');
                     return;
@@ -4024,7 +4029,7 @@ Ext.onReady( function() {
                         web.mask.hide(ns.app.centerRegion);
                         return;
                     }
-                    
+
                     ns.app.layout = layout;
                     ns.app.xLayout = xLayout;
                     ns.app.response = response;
@@ -4048,7 +4053,7 @@ Ext.onReady( function() {
 
                     // after render
                     ns.app.chart = chart;
-                    
+
                     if (!ns.skipMask) {
                         web.mask.hide(ns.app.centerRegion);
                     }
@@ -4112,7 +4117,7 @@ Ext.onReady( function() {
 			}
 
             applyCss();
-            
+
             init.plugin = true;
             init.dashboard = Ext.isBoolean(config.dashboard) ? config.dashboard : false;
             init.crossDomain = Ext.isBoolean(config.crossDomain) ? config.crossDomain : true;
