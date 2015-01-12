@@ -3152,6 +3152,9 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
       var inputFormatter = attrs.typeaheadInputFormatter ? $parse(attrs.typeaheadInputFormatter) : undefined;
 
       var appendToBody =  attrs.typeaheadAppendToBody ? $parse(attrs.typeaheadAppendToBody) : false;
+      
+      //this is to avoid unnecessarily validating not required inputs for empty value
+      var isRequired = attrs.ngRequired === 'true';
 
       //INTERNAL VARIABLES
 
@@ -3257,9 +3260,16 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
           return inputValue;
         } else {
           /*modelCtrl.$setValidity('editable', false);
-          return undefined;*/
+          return undefined;*/         
           if(inputValue){ //make sure empty values - though not part of the drop down - are accepted
-            modelCtrl.$setValidity('editable', false);
+          	
+          	if(isRequired){
+          		modelCtrl.$setValidity('editable', false);
+          	}
+          	else{
+          		modelCtrl.$setValidity('editable', true);
+          	}
+            //modelCtrl.$setValidity('editable', false);            
             return undefined;
           }
         }

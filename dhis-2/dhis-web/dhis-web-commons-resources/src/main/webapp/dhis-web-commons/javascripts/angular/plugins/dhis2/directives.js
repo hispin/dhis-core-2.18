@@ -4,6 +4,8 @@
 
 var d2Directives = angular.module('d2Directives', [])
 
+
+
 .directive('inputValidator', function() {
     
     return {
@@ -117,19 +119,26 @@ var d2Directives = angular.module('d2Directives', [])
             
             var fieldName = element.attr('name');
             var numberType = attrs.numberType;
+            var isRequired = attrs.ngRequired === 'true';
             
             ctrl.$parsers.unshift(function(value) {
             	if(value){
                     var isValid = checkValidity(numberType, value);
-                	ctrl.$setValidity(fieldName, isValid);
-                	return isValid ? value : undefined;
+                	ctrl.$setValidity(fieldName, isValid);                    
+                	//return isValid ? value : undefined;
+                    return value;
                 }
+                
+                if(value === '' && !isRequired){
+                    ctrl.$setValidity(fieldName, true);                    
+                    return undefined;
+                }                
             });
            
-            ctrl.$formatters.unshift(function(value) {
+            ctrl.$formatters.unshift(function(value) {                
                 if(value){
                     var isValid = checkValidity(numberType, value);
-                    ctrl.$setValidity(fieldName, isValid);
+                    ctrl.$setValidity(fieldName, isValid);                    
                     return value;
                 }
             });
@@ -450,6 +459,8 @@ var d2Directives = angular.module('d2Directives', [])
         require: 'ngModel',        
         link: function(scope, element, attrs, ctrl) {    
             
+            var fieldName = element.attr('name');
+            var isRequired = attrs.ngRequired === 'true';
             var calendarSetting = CalendarService.getSetting();            
             var dateFormat = 'yyyy-mm-dd';
             if(calendarSetting.keyDateFormat === 'dd-MM-yyyy'){
@@ -471,25 +482,32 @@ var d2Directives = angular.module('d2Directives', [])
                 showAnim: "",
                 renderer: $.calendars.picker.themeRollerRenderer,
                 onSelect: function(date) {
-                    $this.change();
+                    $(this).change();
                 }
             })
             .change(function() {
-            	var rawDate = this.value;
-                var convertedDate = DateUtils.format(this.value);
-                
-                var isValid = rawDate == convertedDate;                
-                var fieldName = element.attr('name');
-                
-                if(isValid && maxDate === 0){                    
-                    isValid = !moment(convertedDate, calendarSetting.momentFormat).isAfter(DateUtils.getToday());
+                if(this.value){
+                    var rawDate = this.value;
+                    var convertedDate = DateUtils.format(this.value);
+
+                    var isValid = rawDate == convertedDate;
+                    
+                    if(isValid && maxDate === 0){                    
+                        isValid = !moment(convertedDate, calendarSetting.momentFormat).isAfter(DateUtils.getToday());
+                    }
+                    
+                    ctrl.$setViewValue(this.value);
+                    ctrl.$setValidity(fieldName, isValid);
+                }
+                else{
+                    if(!isRequired){
+                        ctrl.$setViewValue(this.value);
+                        ctrl.$setValidity(fieldName, !isRequired);                        
+                    }
                 }
                 
-                ctrl.$setViewValue(isValid ? this.value : undefined);                                   
-                ctrl.$setValidity(fieldName, isValid);
-                
-                this.focus();	            
-	            scope.$apply();
+                this.focus();
+                scope.$apply();
             });    
         }      
     };   
