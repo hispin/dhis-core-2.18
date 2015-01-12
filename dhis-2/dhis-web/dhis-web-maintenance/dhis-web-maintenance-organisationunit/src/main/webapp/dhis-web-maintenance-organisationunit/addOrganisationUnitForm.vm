@@ -67,15 +67,6 @@
 		<td></td>
 	</tr>
 	<tr>
-		<td><label for="active">$i18n.getString( "registers_data" )</label></td>
-		<td>
-			<select id="active" name="active">
-				<option value="true" selected="selected">$i18n.getString( "yes" )</option>
-				<option value="false">$i18n.getString( "no" )</option>
-			</select>
-		</td>
-	</tr>
-	<tr>
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>
 		<td><textarea id="comment" name="comment"></textarea></td>
 	</tr>
