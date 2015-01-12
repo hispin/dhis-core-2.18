@@ -137,8 +137,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     $scope.eventGridColumns = [];
                     $scope.filterTypes = {};
 
-                    $scope.newDhis2Event = {dataValues: []};
-                    $scope.currentEvent = {dataValues: []};
+                    //$scope.newDhis2Event = {dataValues: []};
+                    //$scope.currentEvent = {dataValues: []};
+                    $scope.currentEvent = {};
+                    $scope.newDhis2Event = {};
 
                     $scope.eventGridColumns.push({name: 'form_id', id: 'uid', type: 'string', compulsory: false, showFilter: false, show: false});
                     $scope.filterTypes['uid'] = 'string';                
@@ -150,7 +152,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     angular.forEach($scope.selectedProgramStage.programStageDataElements, function(prStDe){
                         $scope.prStDes[prStDe.dataElement.id] = prStDe;                    
 
-                        $scope.newDhis2Event.dataValues.push({id: prStDe.dataElement.id, value: ''});   
+                        //$scope.newDhis2Event.dataValues.push({id: prStDe.dataElement.id, value: ''});   
+                        $scope.newDhis2Event[prStDe.dataElement.id] = '';
                         if($scope.selectedProgramStage.captureCoordinates){
                             $scope.newDhis2Event.coordinate = {};
                         }
@@ -361,7 +364,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.displayCustomForm = $scope.customForm ? true:false;        
         $scope.currentEvent = {};
         $scope.eventRegistration = !$scope.eventRegistration;          
-        $scope.currentEvent = angular.copy($scope.newDhis2Event);        
+        $scope.currentEvent = angular.copy($scope.newDhis2Event);
+        $scope.currentEventOrginialValue = angular.copy($scope.currentEvent);        
         $scope.outerForm.submitted = false;
         $scope.note = {};
         
@@ -373,7 +377,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     
     $scope.showEditEventInGrid = function(){
         $scope.currentEvent = ContextMenuSelectedItem.getSelectedItem();
-        $scope.currentEventOrginialValue = angular.copy($scope.currentEvent);        
+        $scope.currentEventOrginialValue = angular.copy($scope.currentEvent);
         $scope.editingEventInGrid = !$scope.editingEventInGrid;
         
         $scope.outerForm.$valid = true;
@@ -722,5 +726,17 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             }
         }, function () {
         });
+    };
+    
+    $scope.formIsChanged = function(){        
+        var isChanged = false;
+        for (var k in $scope.currentEvent) {
+            if ($scope.currentEvent.hasOwnProperty(k)) {
+                if($scope.currentEvent[k] && $scope.currentEventOrginialValue[k] !== $scope.currentEvent[k]){
+                    isChanged = true;
+                }
+            }
+        }
+        return isChanged;
     };
 });
