@@ -128,7 +128,7 @@ public class HibernateDataValueAuditStore
     public int deleteDataValueAuditByDataElement( DataElement dataElement )
     {
         Query query = sessionFactory.getCurrentSession()
-            .createQuery( "DELETE DataValueAudit WHERE dataElement = :dataElement" )
+            .createQuery( "delete DataValueAudit where dataElement = :dataElement" )
             .setEntity( "dataElement", dataElement );
 
         return query.executeUpdate();
@@ -140,7 +140,7 @@ public class HibernateDataValueAuditStore
         Period storedPeriod = periodStore.reloadPeriod( period );
 
         Query query = sessionFactory.getCurrentSession()
-            .createQuery( "DELETE DataValueAudit WHERE period = :period" )
+            .createQuery( "delete DataValueAudit where period = :period" )
             .setEntity( "period", storedPeriod );
 
         return query.executeUpdate();
@@ -150,7 +150,7 @@ public class HibernateDataValueAuditStore
     public int deleteDataValueAuditByOrganisationUnit( OrganisationUnit organisationUnit )
     {
         Query query = sessionFactory.getCurrentSession()
-            .createQuery( "DELETE DataValueAudit WHERE organisationUnit = :organisationUnit" )
+            .createQuery( "delete DataValueAudit where organisationUnit = :organisationUnit" )
             .setEntity( "organisationUnit", organisationUnit );
 
         return query.executeUpdate();
@@ -160,7 +160,7 @@ public class HibernateDataValueAuditStore
     public int deleteDataValueAuditByCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
     {
         Query query = sessionFactory.getCurrentSession()
-            .createQuery( "DELETE DataValueAudit WHERE categoryOptionCombo = :categoryOptionCombo" )
+            .createQuery( "delete DataValueAudit where categoryOptionCombo = :categoryOptionCombo or attributeOptionCombo = :categoryOptionCombo" )
             .setEntity( "categoryOptionCombo", categoryOptionCombo );
 
         return query.executeUpdate();

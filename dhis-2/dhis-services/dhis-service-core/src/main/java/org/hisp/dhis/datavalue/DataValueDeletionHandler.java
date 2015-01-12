@@ -88,9 +88,9 @@ public class DataValueDeletionHandler
     }
     
     @Override
-    public String allowDeleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo combo )
+    public String allowDeleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo optionCombo )
     {
-        String sql = "SELECT COUNT(*) FROM datavalue where categoryoptioncomboid=" + combo.getId();
+        String sql = "SELECT COUNT(*) FROM datavalue where categoryoptioncomboid=" + optionCombo.getId() + " or attributeoptioncomboid=" + optionCombo.getId();
         
         return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
     }
