@@ -13,6 +13,8 @@
 	var currentUserName = '$currentUsername';
 </script>
 
+#set( $hasAllAuth = $currentUser.getUserCredentials().isAuthorized( 'ALL' ) )
+
 <h3>$i18n.getString( "user_management" ) #openHelp( "user_management" )</h3>
 
 <div id="contextMenu" class="contextMenu">
@@ -20,8 +22,8 @@
     <li><a data-target-fn="showUserProfile"><i class="fa fa-user"></i>&nbsp;&nbsp;$i18n.getString( "profile" )</a></li>
     <li data-enabled="canUpdate"><a data-target-fn="showUpdateUserForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
     <li data-enabled="canDelete"><a data-target-fn="removeUser"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
+    <li data-enabled="canReplicate"><a data-target-fn="showReplicateUserDialog"><i class="fa fa-copy"></i>&nbsp;&nbsp;$i18n.getString( "replicate" )</a></li>
     <li><a data-target-fn="showUserDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
-
     <li data-enabled="userEnabled"><a data-target-fn="disableUser"><i class="fa fa-ban"></i>&nbsp;&nbsp;$i18n.getString( "disable")</a></li>
     <li data-enabled="userDisabled"><a data-target-fn="enableUser"><i class="fa fa-ban"></i>&nbsp;&nbsp;$i18n.getString( "enable" )</a></li>
   </ul>
@@ -75,6 +77,7 @@
 				    data-can-manage="$security.canManage( $user.userCredentials )"
 				    data-can-update="$security.canUpdate( $user.userCredentials )"
 				    data-can-delete="$security.canDelete( $user.userCredentials )"
+				    data-can-replicate="$hasAllAuth"
                     data-user-enabled="#if( !$user.userCredentials.disabled )true#{else}false#end"
                     data-user-disabled="$user.userCredentials.disabled">
 				    <td>$encoder.htmlEncode( $!user.surname ), $encoder.htmlEncode( $!user.firstName )</td>
@@ -90,9 +93,10 @@
 		</td>
 
 		<td id="detailsData">
-      <div id="detailsArea">
-        <div id="hideDetailsArea">
-          <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/></a>
+        
+        	<div id="detailsArea">
+        		<div id="hideDetailsArea">
+          			<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/></a>
 				</div>
 				<p><label>$i18n.getString( "username" ):</label><br><span id="usernameField"></span></p>
 				<p><label>$i18n.getString( "fullname" ):</label><br><span id="fullNameField"></span></p>
@@ -116,3 +120,23 @@
 		</td>
 	</tr>
 </table>
+
+<div id="replicateUserForm" class="inputForm" style="display:none">
+	<table>
+		<tr>
+	        <td><label>$i18n.getString( "username" )</label></td>
+			<td><input type="text" id="replicaUsername" autocomplete="off"></td>
+		</tr>
+		<tr>
+			<td><label>$i18n.getString( "password" )</label></td>
+			<td><input type="password" id="replicaPassword" autocomplete="off"></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="button" value="$i18n.getString( "replicate" )" onclick="replicateUser()" style="width:100px">
+				<input type="button" value="$i18n.getString( "cancel" )" onclick="cancelReplicateUser()" style="width:100px">
+				<input type="hidden" id="replicaId">
+		</tr>
+	</table>
+</div>

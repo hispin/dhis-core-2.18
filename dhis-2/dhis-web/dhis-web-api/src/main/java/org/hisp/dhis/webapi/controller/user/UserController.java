@@ -38,6 +38,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.Pager;
@@ -50,6 +51,7 @@ import org.hisp.dhis.schema.descriptors.UserSchemaDescriptor;
 import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -279,19 +281,31 @@ public class UserController
         }
         
         Map<String, String> auth = renderService.fromJson( request.getInputStream(),Map.class );
+
+        String username = StringUtils.trimToNull( auth != null ? auth.get( KEY_USERNAME ) : null );
+        String password = StringUtils.trimToNull( auth != null ? auth.get( KEY_PASSWORD ) : null );
         
-        if ( auth == null || !auth.containsKey( KEY_USERNAME ) || !auth.containsKey( KEY_PASSWORD ) )
+        if ( auth == null || username == null )
         {
-            ContextUtils.conflictResponse( response, "Username and password must be specified" );
+            ContextUtils.conflictResponse( response, "Username must be specified" );
             return;
         }
-        
-        String username = auth.get( KEY_USERNAME );
-        String password = auth.get( KEY_PASSWORD );
-        
+
         if ( userService.getUserCredentialsByUsername( username ) != null )
         {
             ContextUtils.conflictResponse( response, "Username already taken: " + username );
+            return;
+        }
+        
+        if ( password == null )
+        {
+            ContextUtils.conflictResponse( response, "Password must be specified" );
+            return;            
+        }
+        
+        if ( !ValidationUtils.passwordIsValid( password ) )
+        {
+            ContextUtils.conflictResponse( response, "Password must have at least 8 characters, one digit, one uppercase" );
             return;
         }
         
@@ -304,7 +318,7 @@ public class UserController
         credentialsReplica.mergeWith( existingUser.getUserCredentials() );
         
         credentialsReplica.setUsername( username );
-        credentialsReplica.setPassword( password );
+        userService.encodeAndSetPassword( credentialsReplica, password );
         
         userReplica.setUserCredentials( credentialsReplica );
         credentialsReplica.setUser( userReplica );
