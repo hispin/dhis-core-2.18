@@ -3309,8 +3309,8 @@ Ext.onReady(function() {
 	applyCss = function() {
 
         // chart tips css
-        var css = '.dv-chart-tips { border-radius: 2px; padding: 0px 3px 1px; border: 2px solid #000; background-color: #000; } \n';
-        css += '.dv-chart-tips .x-tip-body { background-color: #000; font-size: 13px; font-weight: normal; color: #fff; -webkit-text-stroke: 0; } \n';
+        var css = '.dv-chart-tips { border-radius: 2px; padding: 2px 3px 0; border: 0 none; background-color: #222; } \n';
+        css += '.dv-chart-tips .x-tip-body { background-color: #222; font-size: 13px; font-weight: normal; color: #fff; -webkit-text-stroke: 0; } \n';
         css += '.dv-chart-tips .x-tip-body div { font-family: arial,sans-serif,ubuntu,consolas !important; } \n';
 
         // load mask css

@@ -27,10 +27,10 @@
 
     <script type="text/javascript" src="../dhis-web-commons/javascripts/es5-shim.min.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/es5-sham.min.js?_rev=$!{buildRevision}"></script>
-    
+
     <script type="text/javascript" src="../dhis-web-commons/javascripts/ext/ext-all.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/openlayers/OpenLayers.js"></script>
-    <script src="//maps.google.com/maps/api/js?sensor=false"></script>
+    <script src="//maps.google.com/maps/api/js"></script>
 
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js?_rev=$!{buildRevision}"></script>
     <!--[if lte IE 8]><script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/placeholders.jquery.min.js?_rev=$!{buildRevision}"></script><![endif]-->
@@ -86,7 +86,7 @@
     <script type="text/javascript" src="../dhis-web-commons/i18nJavaScript.action?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../main.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../request.js?_rev=$!{buildRevision}"></script>
-    
+
     #foreach( $javascript in $javascripts )
     <script type="text/javascript" src="${javascript}?_rev=$!{buildRevision}"></script>
     #end
@@ -109,11 +109,11 @@
   #else
   #set( $logoBanner = "../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png" )
   #end
-  
+
   <body>
     #parse( "macros.vm" )
     <div id="header">
-      <img id="headerBanner" src="${logoBanner}" onclick="window.location.href='../${startModule}/index.action'" 
+      <img id="headerBanner" src="${logoBanner}" onclick="window.location.href='../${startModule}/index.action'"
       	style="cursor:pointer" title="$i18n.getString( 'view_home_page' )">
 
       <span id="headerText" onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer" title="$i18n.getString( 'view_home_page' )">
@@ -121,7 +121,7 @@
       </span>
 
       <div id="dhisDropDownMenu"></div>
-	  
+
       <span id="showLeftBar">
         <a href="javascript:dhis2.leftBar.showAnimated()" title="$i18n.getString( 'show_menu' )">
           <img src="../images/show_menu.png" width="16" height="16" alt="$i18n.getString( 'show_menu' )"/></a>
@@ -165,7 +165,7 @@
       dhis2.leftBar.extend();
     #end
     </script>
-    
+
     <div id="rightBar">
       <span id="hideRightBar"><a href="javascript:hideHelpContent()" title="$i18n.getString( 'close' )">
         <img id="hideRightBarImg" src="../images/hide.png" alt="$i18n.getString( 'close' )"/></a>
