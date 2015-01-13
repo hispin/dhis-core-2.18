@@ -4,8 +4,6 @@
 
 var d2Directives = angular.module('d2Directives', [])
 
-
-
 .directive('inputValidator', function() {
     
     return {
@@ -86,7 +84,7 @@ var d2Directives = angular.module('d2Directives', [])
     };
 })
 
-.directive('d2NumberValidation', function() {
+.directive('d2NumberValidation', function(ErrorMessageService, $translate) {
     
     return {
         require: 'ngModel',
@@ -117,28 +115,49 @@ var d2Directives = angular.module('d2Directives', [])
                 return isValid;
             }
             
-            var fieldName = element.attr('name');
+            var errorMessages = ErrorMessageService.getErrorMessages();
+            var fieldName = attrs.inputFieldId;
             var numberType = attrs.numberType;
             var isRequired = attrs.ngRequired === 'true';
             
             ctrl.$parsers.unshift(function(value) {
             	if(value){
-                    var isValid = checkValidity(numberType, value);
-                	ctrl.$setValidity(fieldName, isValid);                    
-                	//return isValid ? value : undefined;
+                    var isValid = checkValidity(numberType, value);                    
+                    if(!isValid){
+                        errorMessages[fieldName] = $translate('value_must_be_' + numberType);
+                    }
+                    else{
+                        if(isRequired){
+                            errorMessages[fieldName] = $translate('required');
+                        }
+                        else{
+                            errorMessages[fieldName] = "";
+                        }
+                    }
+                    
+                    ErrorMessageService.setErrorMessages(errorMessages);
+                	ctrl.$setValidity(fieldName, isValid);
                     return value;
                 }
                 
-                if(value === '' && !isRequired){
-                    ctrl.$setValidity(fieldName, true);                    
+                if(value === ''){
+                    if(isRequired){
+                        errorMessages[fieldName] = $translate('required');
+                    }
+                    else{
+                        ctrl.$setValidity(fieldName, true);
+                        errorMessages[fieldName] = "";
+                    }
+                    
+                    ErrorMessageService.setErrorMessages(errorMessages);
                     return undefined;
-                }                
+                }              
             });
            
             ctrl.$formatters.unshift(function(value) {                
                 if(value){
                     var isValid = checkValidity(numberType, value);
-                    ctrl.$setValidity(fieldName, isValid);                    
+                    ctrl.$setValidity(fieldName, isValid);
                     return value;
                 }
             });
@@ -152,8 +171,7 @@ var d2Directives = angular.module('d2Directives', [])
         require: ['typeahead', 'ngModel'],
         link: function (scope, element, attr, ctrls) {
             element.bind('focus', function () {
-                ctrls[0].getMatchesAsync(ctrls[1].$viewValue);
-                
+                ctrls[0].getMatchesAsync(ctrls[1].$viewValue);                
                 scope.$watch(attr.ngModel, function(value) {
                     if(value === '' || angular.isUndefined(value)){
                         ctrls[0].getMatchesAsync(ctrls[1].$viewValue);
@@ -453,13 +471,14 @@ var d2Directives = angular.module('d2Directives', [])
     };
 })
 
-.directive('d2Date', function(DateUtils, CalendarService, storage, $parse) {
+.directive('d2Date', function(DateUtils, CalendarService, ErrorMessageService, $translate, $parse) {
     return {
         restrict: 'A',
         require: 'ngModel',        
         link: function(scope, element, attrs, ctrl) {    
             
-            var fieldName = element.attr('name');
+            var errorMessages = ErrorMessageService.getErrorMessages();
+            var fieldName = attrs.inputFieldId;
             var isRequired = attrs.ngRequired === 'true';
             var calendarSetting = CalendarService.getSetting();            
             var dateFormat = 'yyyy-mm-dd';
@@ -485,27 +504,46 @@ var d2Directives = angular.module('d2Directives', [])
                     $(this).change();
                 }
             })
-            .change(function() {
-                if(this.value){
+            .change(function() {                
+                if(this.value){                    
                     var rawDate = this.value;
                     var convertedDate = DateUtils.format(this.value);
 
                     var isValid = rawDate == convertedDate;
                     
-                    if(isValid && maxDate === 0){                    
-                        isValid = !moment(convertedDate, calendarSetting.momentFormat).isAfter(DateUtils.getToday());
+                    if(!isValid){
+                        errorMessages[fieldName] = $translate('date_required');
                     }
                     
+                    if(isValid && maxDate === 0){                    
+                        isValid = !moment(convertedDate, calendarSetting.momentFormat).isAfter(DateUtils.getToday());
+                        if(!isValid){
+                            errorMessages[fieldName] = $translate('future_date_not_allowed');                            
+                        }
+                        else{                            
+                            if(isRequired){
+                                errorMessages[fieldName] = $translate('required');
+                            }
+                            else{
+                                errorMessages[fieldName] = "";
+                            }
+                        }
+                    }                    
                     ctrl.$setViewValue(this.value);
                     ctrl.$setValidity(fieldName, isValid);
                 }
                 else{
                     if(!isRequired){
                         ctrl.$setViewValue(this.value);
-                        ctrl.$setValidity(fieldName, !isRequired);                        
+                        ctrl.$setValidity(fieldName, !isRequired);
+                        errorMessages[fieldName] = "";
+                    }
+                    else{
+                        errorMessages[fieldName] = $translate('required');                        
                     }
                 }
                 
+                ErrorMessageService.setErrorMessages(errorMessages);
                 this.focus();
                 scope.$apply();
             });    
