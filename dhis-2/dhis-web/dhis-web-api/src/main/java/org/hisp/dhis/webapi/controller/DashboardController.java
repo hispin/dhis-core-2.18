@@ -92,13 +92,13 @@ public class DashboardController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
-    public void putJsonObject( @PathVariable( "uid" ) String pvUid, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    public void putJsonObject( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        Dashboard dashboard = dashboardService.getDashboard( pvUid );
+        Dashboard dashboard = dashboardService.getDashboard( uid );
 
         if ( dashboard == null )
         {
-            ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + pvUid );
+            ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + uid );
             return;
         }
 
@@ -111,14 +111,14 @@ public class DashboardController
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE )
-    public void deleteObject( @PathVariable( "uid" ) String pvUid, HttpServletRequest request, HttpServletResponse response )
+    public void deleteObject( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
-        List<Dashboard> objects = getEntity( pvUid );
+        List<Dashboard> objects = getEntity( uid );
 
         if ( objects.isEmpty() )
         {
-            ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + pvUid );
+            ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
             return;
         }
 

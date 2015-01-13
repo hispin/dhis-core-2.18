@@ -63,6 +63,10 @@ public interface DashboardService
 
     Dashboard getDashboard( String uid );
 
+    void updateDashboardItem( DashboardItem item );
+    
+    DashboardItem getDashboardItem( String uid );
+    
     int countMapDashboardItems( Map map );
 
     int countChartDashboardItems( Chart chart );

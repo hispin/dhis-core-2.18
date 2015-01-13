@@ -15,6 +15,7 @@ var i18n_drag_to_new_position = '$encoder.jsEscape( $i18n.getString( "drag_to_ne
 var i18n_manage = '$encoder.jsEscape( $i18n.getString( "manage" ), "'")';
 var i18n_share = '$encoder.jsEscape( $i18n.getString( "share" ), "'")';
 var i18n_explore = '$encoder.jsEscape( $i18n.getString( "explore" ), "'")';
+var i18n_resize = '$encoder.jsEscape( $i18n.getString( "resize" ), "'")';
 var i18n_share_interpretation = '$encoder.jsEscape( $i18n.getString( "share_interpretation" ), "'")';
 var i18n_see_more_hits = '$encoder.jsEscape( $i18n.getString( "see_more_hits" ), "'")';
 var i18n_see_fewer_hits = '$encoder.jsEscape( $i18n.getString( "see_fewer_hits" ), "'")';

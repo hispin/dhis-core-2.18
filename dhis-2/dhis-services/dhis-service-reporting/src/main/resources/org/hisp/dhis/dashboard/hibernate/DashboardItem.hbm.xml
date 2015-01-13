@@ -49,5 +49,7 @@
         
     <property name="messages" />
 
+    <property name="shape" />
+    
   </class>
 </hibernate-mapping>

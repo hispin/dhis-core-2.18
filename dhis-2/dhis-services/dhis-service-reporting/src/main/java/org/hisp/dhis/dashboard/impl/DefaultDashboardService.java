@@ -88,6 +88,10 @@ public class DefaultDashboardService
     // DashboardService implementation
     // -------------------------------------------------------------------------
 
+    // -------------------------------------------------------------------------
+    // Dashboard
+    // -------------------------------------------------------------------------
+
     @Override
     public DashboardSearchResult search( String query )
     {
@@ -280,6 +284,22 @@ public class DefaultDashboardService
         return dashboardStore.getByUid( uid );
     }
 
+    // -------------------------------------------------------------------------
+    // DashboardItem
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void updateDashboardItem( DashboardItem item )
+    {
+        dashboardItemStore.update( item );
+    }
+    
+    @Override
+    public DashboardItem getDashboardItem( String uid )
+    {
+        return dashboardItemStore.getByUid( uid );
+    }
+    
     @Override
     public int countMapDashboardItems( Map map )
     {
