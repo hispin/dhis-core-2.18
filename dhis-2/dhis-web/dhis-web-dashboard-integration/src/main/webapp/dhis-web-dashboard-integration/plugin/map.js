@@ -1510,7 +1510,7 @@ Ext.onReady(function () {
         olmap = new OpenLayers.Map({
             controls: [
                 new OpenLayers.Control.Navigation({
-                    zoomWheelEnabled: true,
+                    zoomWheelEnabled: gis.dashboard ? false : true,
                     documentDrag: true
                 }),
                 new OpenLayers.Control.MousePosition({

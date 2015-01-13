@@ -439,14 +439,19 @@ dhis2.db.renderDashboard = function( id )
                         skipMask: true,
                         domainAxisStyle: {
                             labelRotation: 45,
-                            labelFont: '10px arial,sans-serif'
+                            labelFont: '10px arial,sans-serif',
+                            labelColor: '#111'
                         },
                         rangeAxisStyle: {
                             labelFont: '9px arial,sans-serif'
                         },
                         legendStyle: {
                             labelMaxLength: 10,
-                            titleFont: '15px arial,sans-serif'
+                            labelFont: 'normal 10px arial,sans-serif',
+                            labelColor: '#222',
+                            labelMarkerSize: 10,
+                            titleFont: 'bold 12px arial,sans-serif',
+                            titleColor: '#333'
                         },
                         seriesStyle: {
                             labelFontSize: '9px arial,sans-serif'
@@ -463,10 +468,29 @@ dhis2.db.renderDashboard = function( id )
                         el: 'plugin-' + dashboardItem.id,
                         id: dashboardItem.eventChart.id,
                         width: contentWidth,
-                        height: 290,
+                        height: contentHeight,
                         dashboard: true,
                         crossDomain: false,
-                        skipMask: true
+                        skipMask: true,
+                        domainAxisStyle: {
+                            labelRotation: 45,
+                            labelFont: '10px arial,sans-serif',
+                            labelColor: '#111'
+                        },
+                        rangeAxisStyle: {
+                            labelFont: '9px arial,sans-serif'
+                        },
+                        legendStyle: {
+                            labelMaxLength: 10,
+                            labelFont: 'normal 10px arial,sans-serif',
+                            labelColor: '#222',
+                            labelMarkerSize: 10,
+                            titleFont: 'bold 12px arial,sans-serif',
+                            titleColor: '#333'
+                        },
+                        seriesStyle: {
+                            labelFontSize: '9px arial,sans-serif'
+                        }
 				    });
 				}
 				else if ( "map" == dashboardItem.type )
