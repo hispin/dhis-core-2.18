@@ -331,6 +331,23 @@ var d2Services = angular.module('d2Services', ['ngResource'])
     };
 })
 
+/* Error messages*/
+.service('ErrorMessageService', function(){
+    this.errorMessages = {};
+    
+    this.setErrorMessages = function(errorMessages){  
+        this.errorMessages = errorMessages;        
+    };
+    
+    this.getErrorMessages = function(){
+        return this.errorMessages;
+    };
+    
+    this.get = function(id){
+        return this.errorMessages[id];
+    };
+})
+
 /* Modal service for user interaction */
 .service('ModalService', ['$modal', function($modal) {
 

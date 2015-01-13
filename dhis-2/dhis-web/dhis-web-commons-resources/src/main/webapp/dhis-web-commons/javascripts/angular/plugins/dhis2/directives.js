@@ -514,21 +514,20 @@ var d2Directives = angular.module('d2Directives', [])
                     if(!isValid){
                         errorMessages[fieldName] = $translate('date_required');
                     }
-                    
-                    if(isValid && maxDate === 0){                    
-                        isValid = !moment(convertedDate, calendarSetting.momentFormat).isAfter(DateUtils.getToday());
-                        if(!isValid){
-                            errorMessages[fieldName] = $translate('future_date_not_allowed');                            
+                    else{
+                        if(isRequired){
+                            errorMessages[fieldName] = $translate('required');
                         }
-                        else{                            
-                            if(isRequired){
-                                errorMessages[fieldName] = $translate('required');
-                            }
-                            else{
-                                errorMessages[fieldName] = "";
-                            }
+                        else{
+                            errorMessages[fieldName] = "";
                         }
-                    }                    
+                        if(maxDate === 0){                    
+                            isValid = !moment(convertedDate, calendarSetting.momentFormat).isAfter(DateUtils.getToday());
+                            if(!isValid){
+                                errorMessages[fieldName] = $translate('future_date_not_allowed');                            
+                            }                           
+                        }
+                    }                                        
                     ctrl.$setViewValue(this.value);
                     ctrl.$setValidity(fieldName, isValid);
                 }
