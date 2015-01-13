@@ -48,4 +48,9 @@ public interface MaintenanceService
      * Deletes periods which do not have data values associated with them.
      */
     void prunePeriods();
+    
+    /**
+     * Deletes user accounts representing expired account invitations.
+     */
+    void removeExpiredInvitations();
 }

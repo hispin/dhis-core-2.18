@@ -133,7 +133,11 @@ public class HibernateUserStore
         
         if ( UserInvitationStatus.EXPIRED.equals( params.getInvitationStatus() ) )
         {
-            hql += hlp.whereAnd() + " uc.invitation = true and uc.restoreExpiry < current_timestamp() ";
+            hql += hlp.whereAnd() + " uc.invitation = true " +
+                "and uc.restoreToken is not null " +
+                "and uc.restoreCode is not null " +
+                "and uc.restoreExpiry is not null " +
+                "and uc.restoreExpiry < current_timestamp() ";
         }
                 
         if ( params.getOrganisationUnit() != null )

@@ -516,6 +516,12 @@ public class DefaultMappingService
     }
     
     @Override
+    public int countPeriodMapViews( Period period )
+    {
+        return mapViewStore.countPeriodAnalyticalObject( period );
+    }
+    
+    @Override
     public int countOrganisationUnitMapViews( OrganisationUnit organisationUnit )
     {
         return mapViewStore.countOrganisationUnitAnalyticalObject( organisationUnit );

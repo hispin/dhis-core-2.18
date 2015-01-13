@@ -118,6 +118,8 @@ public interface ChartService
 
     int countDataElementCharts( DataElement dataElement );
     
+    int countPeriodCharts( Period period );
+    
     int countOrganisationUnitCharts( OrganisationUnit organisationUnit );
     
     int countCategoryOptionGroups( CategoryOptionGroup categoryOptionGroup );

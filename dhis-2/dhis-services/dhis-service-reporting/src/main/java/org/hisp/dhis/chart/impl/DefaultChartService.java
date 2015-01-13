@@ -1024,6 +1024,12 @@ public class DefaultChartService
     {
         return chartStore.countDataElementAnalyticalObject( dataElement );
     }
+
+    @Override
+    public int countPeriodCharts( Period period )
+    {
+        return chartStore.countPeriodAnalyticalObject( period );
+    }
     
     @Override
     public int countOrganisationUnitCharts( OrganisationUnit organisationUnit )

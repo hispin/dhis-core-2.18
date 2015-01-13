@@ -90,6 +90,7 @@ public class UserQueryParams
         return MoreObjects.toStringHelper( this ).
             add( "query", query ).
             add( "phone number", phoneNumber ).
+            add( "user", user != null ? user.getUsername() : null ).
             add( "can manage", canManage ).
             add( "auth subset", authSubset ).
             add( "disjoint roles", disjointRoles ).
@@ -98,6 +99,7 @@ public class UserQueryParams
             add( "inactive months", inactiveMonths ).
             add( "self registered", selfRegistered ).
             add( "invitation status", invitationStatus ).
+            add( "organisation unit", organisationUnit != null ? organisationUnit.getUid() : null ).
             add( "first", first ).
             add( "max", max ).toString();
     }

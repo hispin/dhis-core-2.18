@@ -139,7 +139,14 @@ public class PageRange
         return toIndex;
     }
     
-
+    /**
+     * Returns the page size.
+     */
+    public int getPageSize()
+    {
+        return pageSize;
+    }
+    
     /**
      * Returns a list of all pages. Each item is an array where index 0 holds the
      * from index and index 1 holds the to index. Resets the page.

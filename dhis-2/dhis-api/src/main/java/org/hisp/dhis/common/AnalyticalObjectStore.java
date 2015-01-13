@@ -33,6 +33,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -45,6 +46,8 @@ public interface AnalyticalObjectStore<T extends BaseAnalyticalObject>
     int countIndicatorAnalyticalObject( Indicator indicator );
 
     int countDataElementAnalyticalObject( DataElement dataElement );
+    
+    int countPeriodAnalyticalObject( Period period );
     
     int countOrganisationUnitAnalyticalObject( OrganisationUnit organisationUnit );
     

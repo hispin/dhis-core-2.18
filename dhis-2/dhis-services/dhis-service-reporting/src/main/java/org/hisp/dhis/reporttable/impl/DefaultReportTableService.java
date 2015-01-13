@@ -44,6 +44,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
@@ -258,6 +259,12 @@ public class DefaultReportTableService
     public int countDataElementReportTables( DataElement dataElement )
     {
         return reportTableStore.countDataElementAnalyticalObject( dataElement );
+    }
+
+    @Override
+    public int countPeriodReportTables( Period period )
+    {
+        return reportTableStore.countPeriodAnalyticalObject( period );
     }
     
     @Override

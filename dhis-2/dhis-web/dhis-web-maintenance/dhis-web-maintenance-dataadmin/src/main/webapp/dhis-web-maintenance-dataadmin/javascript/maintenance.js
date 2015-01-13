@@ -1,15 +1,17 @@
 
 function performMaintenance()
 {
-    var clearAnalytics = document.getElementById( "clearAnalytics" ).checked;
-    var clearDataMart = document.getElementById( "clearDataMart" ).checked;
-    var dataMartIndex = document.getElementById( "dataMartIndex" ).checked;
-    var zeroValues = document.getElementById( "zeroValues" ).checked;
-    var dataSetCompleteness = document.getElementById( "dataSetCompleteness" ).checked;
-    var prunePeriods = document.getElementById( "prunePeriods" ).checked;
-    var updateCategoryOptionCombos = document.getElementById( "updateCategoryOptionCombos" ).checked;
+    var clearAnalytics = $( "#clearAnalytics" ).is( ":checked" );
+    var clearDataMart = $( "#clearDataMart" ).is( ":checked" );
+    var dataMartIndex = $( "#dataMartIndex" ).is( ":checked" );
+    var zeroValues = $( "#zeroValues" ).is( ":checked" );
+    var dataSetCompleteness = $( "#dataSetCompleteness" ).is( ":checked" );
+    var prunePeriods = $( "#prunePeriods" ).is( ":checked" );
+    var removeExpiredInvitations = $( "#removeExpiredInvitations" ).is( ":checked" );
+    var updateCategoryOptionCombos = $( "#updateCategoryOptionCombos" ).is( ":checked" );
     
-    if ( clearAnalytics || clearDataMart || dataMartIndex || zeroValues || dataSetCompleteness || prunePeriods || updateCategoryOptionCombos )
+    if ( clearAnalytics || clearDataMart || dataMartIndex || zeroValues || 
+    	dataSetCompleteness || prunePeriods || removeExpiredInvitations || updateCategoryOptionCombos )
     {
         setHeaderWaitMessage( i18n_performing_maintenance );
         
@@ -19,6 +21,7 @@ function performMaintenance()
             "&zeroValues=" + zeroValues +
             "&dataSetCompleteness=" + dataSetCompleteness +
             "&prunePeriods=" + prunePeriods +
+            "&removeExpiredInvitations=" + removeExpiredInvitations +
             "&updateCategoryOptionCombos=" + updateCategoryOptionCombos;
         
 		$.ajax({
