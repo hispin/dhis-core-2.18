@@ -1,10 +1,18 @@
 package org.hisp.dhis.maintenance;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.PageRange;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserInvitationStatus;
+import org.hisp.dhis.user.UserQueryParams;
+import org.hisp.dhis.user.UserService;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -36,13 +44,12 @@ import org.hisp.dhis.period.PeriodService;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class DefaultMaintenanceService
     implements MaintenanceService
 {
     private static final Log log = LogFactory.getLog( DefaultMaintenanceService.class );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -59,6 +66,13 @@ public class DefaultMaintenanceService
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -87,6 +101,42 @@ public class DefaultMaintenanceService
             catch ( DeleteNotAllowedException ex )
             {
                 log.debug( "Period has associated objects and could not be deleted: " + periodId );
+            }
+        }
+    }
+
+    @Override
+    public void removeExpiredInvitations()
+    {
+        UserQueryParams params = new UserQueryParams();
+        params.setInvitationStatus( UserInvitationStatus.EXPIRED );
+        
+        int count = userService.getUserCount( params );
+        
+        PageRange range = new PageRange( count ).setPageSize( 200 );
+        List<int[]> pages = range.getPages();
+        Collections.reverse( pages ); // Iterate from end since users are deleted
+        
+        log.info( "Pages: " + pages );
+        
+        for ( int[] page : pages )
+        {
+            params.setFirst( page[0] );
+            params.setMax( range.getPageSize() );
+            List<User> users = userService.getUsers( params );
+            
+            log.info( "Users: " + users.size() );
+            
+            for ( User user : users )
+            {
+                try
+                {
+                    userService.deleteUser( user );
+                }
+                catch ( DeleteNotAllowedException ex )
+                {
+                    log.info( "Could not delete user " + user.getUsername() );
+                }
             }
         }
     }

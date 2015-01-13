@@ -37,6 +37,11 @@
 </p>
 
 <p>
+	<input type="checkbox" id="removeExpiredInvitations"/>
+	<label for="removeExpiredInvitations">$i18n.getString( "remove_expired_invitations" )</label>
+</p>
+
+<p>
     <input type="checkbox" id="updateCategoryOptionCombos"/>
     <label for="updateCategoryOptionCombos">$i18n.getString( "update_category_option_combos" )</label>
 </p>

@@ -155,6 +155,13 @@ public class PerformMaintenanceAction
         this.prunePeriods = prunePeriods;
     }
     
+    private boolean removeExpiredInvitations;
+    
+    public void setRemoveExpiredInvitations( boolean removeExpiredInvitations )
+    {
+        this.removeExpiredInvitations = removeExpiredInvitations;
+    }
+
     private boolean updateCategoryOptionCombos;
 
     public void setUpdateCategoryOptionCombos( boolean updateCategoryOptionCombos )
@@ -225,6 +232,13 @@ public class PerformMaintenanceAction
             maintenanceService.prunePeriods();
             
             log.info( "'" + username + "': Pruned periods" );
+        }
+        
+        if ( removeExpiredInvitations )
+        {
+            maintenanceService.removeExpiredInvitations();
+            
+            log.info( "'" + username + "': Removed expired invitations" );
         }
         
         if ( updateCategoryOptionCombos )

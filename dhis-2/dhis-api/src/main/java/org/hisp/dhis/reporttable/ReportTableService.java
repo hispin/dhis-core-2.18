@@ -35,6 +35,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 
 import java.util.Collection;
 import java.util.Date;
@@ -155,6 +156,8 @@ public interface ReportTableService
     int countIndicatorReportTables( Indicator indicator );
     
     int countDataElementReportTables( DataElement dataElement );
+    
+    int countPeriodReportTables( Period period );
     
     int countOrganisationUnitReportTables( OrganisationUnit organisationUnit );
     
