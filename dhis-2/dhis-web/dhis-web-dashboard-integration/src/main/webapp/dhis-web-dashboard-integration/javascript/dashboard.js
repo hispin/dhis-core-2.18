@@ -77,41 +77,39 @@ dhis2.db.tmpl = {
 	chartItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
 	           "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
 	           "<a href='javascript:dhis2.db.viewImage( \"../api/charts/${id}/data?width=820&height=550\", \"${name}\" )'>${i18n_view}</a>" +
-	           "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"chart\", \"${name}\" )'>${i18n_share}</a></div>" +
-	           //"<img src='../api/charts/${id}/data?width=405&height=294' onclick='dhis2.db.exploreChart( \"${id}\" )' title='${i18n_click}'></div></li>",
-		   "<div id='plugin-${itemId}' style='font-family:sans-serif !important'></div>" +
-		   "</div></li>",
+	           "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"chart\", \"${name}\" )'>${i18n_share}</a>" +
+	           "<a href='javascript:dhis2.db.exploreChart( \"${id}\" )'>${i18n_explore}</a></div>" +
+	           "<div id='plugin-${itemId}' style='font-family:sans-serif !important'></div>" +
+	           "</div></li>",
 
    	eventChartItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
    	           "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
-   	           "<a href='javascript:dhis2.db.viewImage( \"../api/eventCharts/${id}/data?width=820&height=550\", \"${name}\" )'>${i18n_view}</a></div>" +
-   	           //"<img src='../api/eventCharts/${id}/data?width=405&height=294' onclick='dhis2.db.exploreEventChart( \"${id}\" )' title='${i18n_click}'></div></li>",
-		   "<div id='plugin-${itemId}'></div>" +
-		   "</div></li>",
+   	           "<a href='javascript:dhis2.db.viewImage( \"../api/eventCharts/${id}/data?width=820&height=550\", \"${name}\" )'>${i18n_view}</a>" +
+   	           "<a href='javascript:dhis2.db.exploreEventChart( \"${id}\" )'>${i18n_explore}</a></div>" +
+   	           "<div id='plugin-${itemId}'></div>" +
+   	           "</div></li>",
 
 	mapItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
 	         "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
 	         "<a href='javascript:dhis2.db.viewImage( \"../api/maps/${id}/data?width=820&height=550\", \"${name}\" )'>${i18n_view}</a>" +
-	         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"map\", \"${name}\" )'>${i18n_share}</a></div>" +
-		     //"<img src='../api/maps/${id}/data?width=405&height=294' onclick='dhis2.db.exploreMap( \"${id}\" )' title='${i18n_click}'></div></li>",
-		 "<div id='plugin-${itemId}' style='width:405px; height:304px'></div>" +
-		 "</div></li>",
+	         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"map\", \"${name}\" )'>${i18n_share}</a>" +
+	         "<a href='javascript:dhis2.db.exploreMap( \"${id}\" )'>${i18n_explore}</a></div>" +
+	         "<div id='plugin-${itemId}' style='width:405px; height:304px'></div>" +
+	         "</div></li>",
 
 	reportTableItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
                "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
                "<a href='javascript:dhis2.db.viewReportDialog( \"../api/reportTables/${id}/data.html\", \"${name}\" )'>${i18n_view}</a>" +
-               "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"reportTable\", \"${name}\" )'>${i18n_share}</a></div>" +
-               //"<div id='pivot-${itemId}' onclick='dhis2.db.exploreReportTable( \"${id}\" )' title='${i18n_click}'></div>" +
-               //"<script type='text/javascript'>dhis2.db.renderReportTable( '${id}', '${itemId}' );</script></div></li>"
+               "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"reportTable\", \"${name}\" )'>${i18n_share}</a>" +
+               "<a href='javascript:dhis2.db.exploreReportTable( \"${id}\" )'>${i18n_explore}</a></div>" +
                "<div id='plugin-${itemId}'></div>" +
                "</div></li>",
 
 	eventReportItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
                "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
                "<a href='javascript:dhis2.db.viewReportDialog( \"../api/reportTables/${id}/data.html\", \"${name}\" )'>${i18n_view}</a>" +
-               "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"reportTable\", \"${name}\" )'>${i18n_share}</a></div>" +
-               //"<div id='pivot-${itemId}' onclick='dhis2.db.exploreReportTable( \"${id}\" )' title='${i18n_click}'></div>" +
-               //"<script type='text/javascript'>dhis2.db.renderReportTable( '${id}', '${itemId}' );</script></div></li>"
+               "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"reportTable\", \"${name}\" )'>${i18n_share}</a>" +
+               "<a href='javascript:dhis2.db.exploreEventReport( \"${id}\" )'>${i18n_explore}</a></div>" +
                "<div id='plugin-${itemId}'></div>" +
                "</div></li>"
 };
@@ -460,8 +458,9 @@ dhis2.db.renderDashboard = function( id )
 				}
 				else if ( "eventChart" == dashboardItem.type )
 				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.eventChartItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventChart.id, "name": dashboardItem.eventChart.name,
-					"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share_interpretation, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) );
+				    $d.append( $.tmpl( dhis2.db.tmpl.eventChartItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventChart.id, 
+				    	"name": dashboardItem.eventChart.name, "i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, 
+				    	"i18n_share": i18n_share_interpretation, "i18n_click": i18n_click_to_explore_drag_to_new_position, "i18n_explore": i18n_explore } ) );
 
 				    DHIS.getEventChart({
                         url: '..',
@@ -733,6 +732,11 @@ dhis2.db.exploreMap = function( uid )
 dhis2.db.exploreReportTable = function( uid )
 {
 	window.location.href = "../dhis-web-pivot/index.html?id=" + uid;
+}
+
+dhis2.db.exploreEventReport = function( uid )
+{
+	window.location.href = "../dhis-web-event-reports/index.html?id=" + uid;
 }
 
 dhis2.db.renderReportTable = function( tableId, itemId )
