@@ -983,20 +983,20 @@ dhis2.db.showShareHelp = function()
 
 dhis2.db.viewImage = function( url, name )
 {
-  var width = 820,
-      height = 550,
-      title = i18n_viewing + " " + name;
+	var width = 820,
+		height = 550,
+		title = i18n_viewing + " " + name;
 
-  $( "#chartImage" ).attr( "src", url );
+	$( "#chartImage" ).attr( "src", url );
 
-  $( "#chartView" ).dialog( {
-      autoOpen : true,
-      modal : true,
-      height : height + 65,
-      width : width + 25,
-      resizable : false,
-      title : title
-  } );
+	$( "#chartView" ).dialog( {
+		autoOpen : true,
+		modal : true,
+		height : height + 65,
+		width : width + 25,
+		resizable : false,
+		title : title
+	} );
 }
 
 dhis2.db.viewReportDialog = function( url, name )
@@ -1009,12 +1009,12 @@ dhis2.db.viewReportDialog = function( url, name )
 		$( "#reportDialogView" ).html( data );
 	} );
 
-  $( "#reportDialogView" ).dialog( {
-      autoOpen : true,
-      modal : true,
-      height : height + 65,
-      width : width + 25,
-      resizable : false,
-      title : title
-  } );
+	$( "#reportDialogView" ).dialog( {
+		autoOpen : true,
+		modal : true,
+		height : height + 65,
+		width : width + 25,
+		resizable : false,
+		title : title
+	} );
 }
