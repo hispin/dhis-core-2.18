@@ -28,16 +28,28 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Lists;
-import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.dashboard.DashboardItem;
-import org.hisp.dhis.schema.descriptors.DashboardItemSchemaDescriptor;
-import org.hisp.dhis.webapi.webdomain.WebMetaData;
-import org.hisp.dhis.webapi.webdomain.WebOptions;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import static org.hisp.dhis.dashboard.DashboardItem.SHAPE_FULL_WIDTH;
+import static org.hisp.dhis.dashboard.DashboardItem.SHAPE_NORMAL;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.dashboard.DashboardItem;
+import org.hisp.dhis.dashboard.DashboardService;
+import org.hisp.dhis.schema.descriptors.DashboardItemSchemaDescriptor;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.webdomain.WebMetaData;
+import org.hisp.dhis.webapi.webdomain.WebOptions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -47,6 +59,9 @@ import java.util.List;
 public class DashboardItemController
     extends AbstractCrudController<DashboardItem>
 {
+    @Autowired
+    private DashboardService dashboardService;
+    
     @Override
     protected List<DashboardItem> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters )
     {
@@ -67,5 +82,24 @@ public class DashboardItemController
         }
 
         return entityList;
+    }
+    
+    @RequestMapping( value = "/{uid}/shape", method = RequestMethod.PUT )
+    public void putDashboardItemShape( @PathVariable String uid,
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        DashboardItem item = dashboardService.getDashboardItem( uid );
+
+        if ( item == null )
+        {
+            ContextUtils.notFoundResponse( response, "Dashboard item does not exist: " + uid );
+            return;
+        }
+        
+        String shape = item.getShape() == null || SHAPE_NORMAL.equals( item.getShape() ) ? SHAPE_FULL_WIDTH : SHAPE_NORMAL;
+        
+        item.setShape( shape );
+        
+        dashboardService.updateDashboardItem( item );
     }
 }

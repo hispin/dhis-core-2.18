@@ -74,6 +74,9 @@ public class DashboardItem
     public static final String TYPE_RESOURCES = "resources";
     public static final String TYPE_MESSAGES = "messages";
 
+    public static final String SHAPE_NORMAL = "normal";
+    public static final String SHAPE_FULL_WIDTH = "full_width";
+    
     private Chart chart;
 
     private EventChart eventChart;
@@ -81,7 +84,7 @@ public class DashboardItem
     private Map map;
 
     private ReportTable reportTable;
-
+    
     @Scanned
     private List<User> users = new ArrayList<>();
 
@@ -95,6 +98,8 @@ public class DashboardItem
     private List<Document> resources = new ArrayList<>();
 
     private Boolean messages;
+
+    private String shape;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -403,6 +408,19 @@ public class DashboardItem
         this.messages = messages;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getShape()
+    {
+        return shape;
+    }
+
+    public void setShape( String shape )
+    {
+        this.shape = shape;
+    }
+
     // -------------------------------------------------------------------------
     // Merge with
     // -------------------------------------------------------------------------
@@ -424,6 +442,7 @@ public class DashboardItem
             reports = item.getReports() == null ? reports : item.getReports();
             resources = item.getResources() == null ? resources : item.getResources();
             messages = item.getMessages() == null ? messages : item.getMessages();
+            shape = item.getShape() == null ? shape : item.getShape();
         }
     }
 }
