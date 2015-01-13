@@ -212,20 +212,18 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                             attributes['name'] = deId;
                         }
                         
-                        var maxDate = programStageDataElements[deId].allowFutureDate ? '' : 0;
-                        
                         //check data element type and generate corresponding angular input field
                         if(programStageDataElements[deId].dataElement.type == "int"){
-                            newInputField = '<input type="number" ' +
+                            newInputField = '<input type="text" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' d2-validation ' +
                                             ' d2-number-validation ' +
                                             ' number-type="' + programStageDataElements[deId].dataElement.numberType + '" ' +
                                             ' ng-model="currentEvent.' + deId + '"' +
+                                            ' input-field-id=" ' + deId + '"' +
                                             ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +
                                             ' ng-blur="saveDatavalue(prStDes.'+ deId + ')"' + 
-                                            ' ng-required="prStDes.' + deId + '.compulsory"> ' + 
-                                            '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'value_must_be\'| translate}} - {{ "' + programStageDataElements[deId].dataElement.numberType + '" | translate}}</span>';                                     
+                                            ' ng-required="prStDes.' + deId + '.compulsory"> ';                                     
                         }
                         if(programStageDataElements[deId].dataElement.type == "string"){
                             if(programStageDataElements[deId].dataElement.optionSet){
@@ -234,6 +232,7 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                                             this.getAttributesAsString(attributes) +
                                             ' d2-validation ' +
                                             ' ng-model="currentEvent.' + deId + '" ' +
+                                            ' input-field-id=" ' + deId + '"' +
                                             ' ng-disabled="currentEvent[uid] == \'uid\'" ' +
                                             ' ng-required="prStDes.' + deId + '.compulsory"' +
                                             ' typeahead="option.name as option.name for option in optionSets.'+optionSetId+'.options | filter:$viewValue | limitTo:20"' +
@@ -243,19 +242,18 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                                             ' placeholder="&#xf0d7;&nbsp;&nbsp;" ' +
                                             ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +                                            
                                             ' ng-blur="saveDatavalue(prStDes.'+ deId + ')"' +
-                                            ' typeahead-open-on-focus ng-required="prStDes.'+deId+'.compulsory"> ' +
-                                            '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'option_required\'| translate}}</span>';
+                                            ' typeahead-open-on-focus ng-required="prStDes.'+deId+'.compulsory"> ';
                         	}
                         	else{
                         		newInputField = '<input type="text" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' d2-validation ' +
                                             ' ng-model="currentEvent.' + deId + '" ' +
+                                            ' input-field-id=" ' + deId + '"' +
                                             ' ng-disabled="currentEvent[uid] == \'uid\'" ' +
                                             ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +
                                             ' ng-blur="saveDatavalue(prStDes.'+ deId + ')"' +
-                                            ' ng-required="prStDes.' + deId + '.compulsory"> ' +
-                                            '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'string_required\'| translate}}</span>';                                     
+                                            ' ng-required="prStDes.' + deId + '.compulsory"> ';                                     
                         	}
                         }
                         if(programStageDataElements[deId].dataElement.type == "bool"){
@@ -263,38 +261,41 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                                             this.getAttributesAsString(attributes) +
                                             ' d2-validation ' +
                                             ' ng-model="currentEvent.' + deId + '" ' +
+                                            ' input-field-id=" ' + deId + '"' +
                                             ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +
                                             ' ng-change="saveDatavalue(prStDes.'+ deId + ')"' + 
                                             ' ng-required="prStDes.' + deId + '.compulsory">' + 
                                             '<option value="">{{\'please_select\'| translate}}</option>' +
                                             '<option value="false">{{\'no\'| translate}}</option>' + 
                                             '<option value="true">{{\'yes\'| translate}}</option>' +
-                                            '</select> ' +
-                                            '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'bool_required\'| translate}}</span>';                                     
+                                            '</select> ';                                     
                         }
                         if(programStageDataElements[deId].dataElement.type == "date"){
+                        	var maxDate = programStageDataElements[deId].allowFutureDate ? '' : 0;
                             newInputField = '<input type="text" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' d2-validation ' +
                                             ' ng-model="currentEvent.' + deId + '"' +
+                                            ' input-field-id=" ' + deId + '"' +
                                             ' d2-date ' +
                                             ' max-date="' + maxDate + '"' + '\'' +
                                             ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +
                                             ' blur-or-change="saveDatavalue(prStDes.'+ deId + ')"' + 
-                                            ' ng-required="prStDes.' + deId + '.compulsory"> ' +
-                                            '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'date_required\'| translate}}</span>'; 
+                                            ' ng-required="prStDes.' + deId + '.compulsory"> '; 
                         }
                         if(programStageDataElements[deId].dataElement.type == "trueOnly"){
                             newInputField = '<input type="checkbox" ' +
                                             this.getAttributesAsString(attributes) +
                                             ' d2-validation ' +
                                             ' ng-model="currentEvent.' + deId + '"' +
+                                            ' input-field-id=" ' + deId + '"' +
                                             ' ng-class="getInputNotifcationClass(prStDes.' + deId + '.dataElement.id,true)"' +
                                             ' ng-change="saveDatavalue(prStDes.'+ deId + ')"' +
-                                            ' ng-required="prStDes.' + deId + '.compulsory"> ' +
-                                            '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'required\'| translate}}</span>';
+                                            ' ng-required="prStDes.' + deId + '.compulsory"> ';
                         }
-
+						
+						newInputField = newInputField + '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid || currentEvent.' + deId + ' && outerForm.'+ deId +'.$invalid" class="required">{{getErrorMessage(prStDes.' + deId + '.dataElement.id)}}</span>';                                        
+						
                         htmlCode = htmlCode.replace(inputField, newInputField);
                     }
                 }

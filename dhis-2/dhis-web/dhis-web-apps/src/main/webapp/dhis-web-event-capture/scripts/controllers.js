@@ -8,6 +8,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         function($scope,
                 $modal,
                 $timeout,
+                $translate,
                 storage,
                 Paginator,
                 OptionSetService,
@@ -19,11 +20,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 DateUtils,
                 CalendarService,
                 CustomFormService,
+                ErrorMessageService,
                 ModalService,
                 DialogService) {
     //selected org unit
     $scope.selectedOrgUnit = '';
-    $scope.treeLoaded = false;
+    $scope.treeLoaded = false;    
     
     $scope.calendarSetting = CalendarService.getSetting();
     
@@ -148,9 +150,16 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     $scope.eventGridColumns.push({name: $scope.selectedProgramStage.reportDateDescription ? $scope.selectedProgramStage.reportDateDescription : 'incident_date', id: 'event_date', type: 'date', compulsory: false, showFilter: false, show: true});
                     $scope.filterTypes['event_date'] = 'date';
                     $scope.filterText['event_date']= {};
-
+                    
+                    var errorMessages = {};
+                    errorMessages['eventDate'] = $translate('required');
                     angular.forEach($scope.selectedProgramStage.programStageDataElements, function(prStDe){
-                        $scope.prStDes[prStDe.dataElement.id] = prStDe;                    
+                        $scope.prStDes[prStDe.dataElement.id] = prStDe;
+                        
+                        errorMessages[prStDe.dataElement.id] = "";
+                        if(prStDe.compulsory){
+                            errorMessages[prStDe.dataElement.id] = $translate('required');
+                        }
 
                         //$scope.newDhis2Event.dataValues.push({id: prStDe.dataElement.id, value: ''});   
                         $scope.newDhis2Event[prStDe.dataElement.id] = '';
@@ -173,7 +182,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                         if(prStDe.dataElement.type === 'date' || prStDe.dataElement.type === 'int' ){
                             $scope.filterText[prStDe.dataElement.id]= {};
                         }
-                    });           
+                    });
+                    
+                    ErrorMessageService.setErrorMessages(errorMessages);
 
                     //Load events for the selected program stage and orgunit
                     DHIS2EventFactory.getByStage($scope.selectedOrgUnit.id, $scope.selectedProgramStage.id, $scope.pager ).then(function(data){
@@ -730,13 +741,41 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     
     $scope.formIsChanged = function(){        
         var isChanged = false;
-        for (var k in $scope.currentEvent) {
-            if ($scope.currentEvent.hasOwnProperty(k)) {
-                if($scope.currentEvent[k] && $scope.currentEventOrginialValue[k] !== $scope.currentEvent[k]){
-                    isChanged = true;
-                }
+        for(var i=0; i<$scope.selectedProgramStage.programStageDataElements.length && !isChanged; i++){
+            var deId = $scope.selectedProgramStage.programStageDataElements[i].dataElement.id;
+            if($scope.currentEvent[deId] && $scope.currentEventOrginialValue[deId] !== $scope.currentEvent[deId]){
+                isChanged = true;
+            }
+        }        
+        if(!isChanged){
+            if($scope.currentEvent.eventDate !== $scope.currentEventOrginialValue.eventDate){
+                isChanged = true;
             }
         }
+        
         return isChanged;
+    };
+    
+    $scope.isFormInvalid = function(){
+        if($scope.outerForm.submitted){
+            return $scope.outerForm.$invalid;
+        }
+        
+        var errorMessages = ErrorMessageService.getErrorMessages();
+        
+        for(var k in errorMessages){
+            if( errorMessages.hasOwnProperty(k) && 
+                errorMessages[k] !== "" && 
+                errorMessages[k] !== $translate('required') &&
+                $scope.currentEvent[k]){
+                return true;
+            }
+        }
+        
+        return false;
+    };
+    
+    $scope.getErrorMessage = function(deId){
+        return ErrorMessageService.get(deId);
     };
 });
