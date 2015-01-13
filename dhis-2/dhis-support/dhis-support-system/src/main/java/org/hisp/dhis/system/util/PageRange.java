@@ -1,5 +1,8 @@
 package org.hisp.dhis.system.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -134,5 +137,25 @@ public class PageRange
         }
         
         return toIndex;
+    }
+    
+
+    /**
+     * Returns a list of all pages. Each item is an array where index 0 holds the
+     * from index and index 1 holds the to index. Resets the page.
+     */
+    public List<int[]> getPages()
+    {
+        List<int[]> pages = new ArrayList<>();
+        
+        while ( nextPage() )
+        {
+            int[] range = { getFromIndex(), getToIndex() };
+            pages.add( range );
+        }
+        
+        reset();
+        
+        return pages;
     }
 }

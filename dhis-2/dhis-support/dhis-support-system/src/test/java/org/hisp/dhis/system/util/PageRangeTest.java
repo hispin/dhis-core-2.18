@@ -28,7 +28,10 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -74,5 +77,21 @@ public class PageRangeTest
         assertEquals( 11, range.getToIndex() );
         
         assertFalse( range.nextPage() );
+    }
+    
+    @Test
+    public void testGetPages()
+    {
+        PageRange range = new PageRange( 12 ).setPageSize( 5 );
+        
+        List<int[]> pages = range.getPages();
+        
+        assertEquals( 3, pages.size() );
+        assertEquals( 0, pages.get( 0 )[0] );
+        assertEquals( 5, pages.get( 0 )[1] );
+        assertEquals( 5, pages.get( 1 )[0] );
+        assertEquals( 10, pages.get( 1 )[1] );
+        assertEquals( 10, pages.get( 2 )[0] );
+        assertEquals( 12, pages.get( 2 )[1] );
     }
 }
