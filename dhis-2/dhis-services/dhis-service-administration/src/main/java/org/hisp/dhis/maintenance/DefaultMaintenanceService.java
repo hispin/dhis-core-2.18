@@ -117,15 +117,13 @@ public class DefaultMaintenanceService
         List<int[]> pages = range.getPages();
         Collections.reverse( pages ); // Iterate from end since users are deleted
         
-        log.info( "Pages: " + pages );
+        log.debug( "Pages: " + pages );
         
         for ( int[] page : pages )
         {
             params.setFirst( page[0] );
             params.setMax( range.getPageSize() );
             List<User> users = userService.getUsers( params );
-            
-            log.info( "Users: " + users.size() );
             
             for ( User user : users )
             {
@@ -135,7 +133,7 @@ public class DefaultMaintenanceService
                 }
                 catch ( DeleteNotAllowedException ex )
                 {
-                    log.info( "Could not delete user " + user.getUsername() );
+                    log.warn( "Could not delete user " + user.getUsername() );
                 }
             }
         }
