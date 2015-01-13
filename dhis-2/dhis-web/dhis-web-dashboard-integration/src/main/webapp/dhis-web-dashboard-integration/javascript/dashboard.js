@@ -26,6 +26,7 @@ dhis2.db.currentShareType;
 dhis2.db.currentShareId;
 dhis2.db.currentMaxType = [];
 dhis2.db.maxItems = 40;
+dhis2.db.shapeFullWidth = "full_width";
 
 // TODO support table as link and embedded
 // TODO double horizontal size
@@ -75,7 +76,7 @@ dhis2.db.tmpl = {
 	         "{{if canManage}}<a class='addLink' href='javascript:dhis2.db.addItemContent( \"${type}\", \"${id}\" )'>${i18n_add}</a>{{/if}}</li>",
 
 	chartItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
-	           "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
+	           "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}' style='${style}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
 	           "<a href='javascript:dhis2.db.viewImage( \"../api/charts/${id}/data?width=820&height=550\", \"${name}\" )'>${i18n_view}</a>" +
 	           "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"chart\", \"${name}\" )'>${i18n_share}</a>" +
 	           "<a href='javascript:dhis2.db.exploreChart( \"${id}\" )'>${i18n_explore}</a>" +
@@ -84,7 +85,7 @@ dhis2.db.tmpl = {
 	           "</div></li>",
 
    	eventChartItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
-   	           "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
+   	           "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}' style='${style}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
    	           "<a href='javascript:dhis2.db.viewImage( \"../api/eventCharts/${id}/data?width=820&height=550\", \"${name}\" )'>${i18n_view}</a>" +
    	           "<a href='javascript:dhis2.db.exploreEventChart( \"${id}\" )'>${i18n_explore}</a>" +
    	           "<a href='javascript:dhis2.db.resizeItem( \"${itemId}\" )'>${i18n_resize}</a></div>" +
@@ -92,7 +93,7 @@ dhis2.db.tmpl = {
    	           "</div></li>",
 
 	mapItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
-	         "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
+	         "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}' style='${style}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
 	         "<a href='javascript:dhis2.db.viewImage( \"../api/maps/${id}/data?width=820&height=550\", \"${name}\" )'>${i18n_view}</a>" +
 	         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"map\", \"${name}\" )'>${i18n_share}</a>" +
 	         "<a href='javascript:dhis2.db.exploreMap( \"${id}\" )'>${i18n_explore}</a>" +
@@ -101,7 +102,7 @@ dhis2.db.tmpl = {
 	         "</div></li>",
 
 	reportTableItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
-               "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
+               "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}' style='${style}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
                "<a href='javascript:dhis2.db.viewReportDialog( \"../api/reportTables/${id}/data.html\", \"${name}\" )'>${i18n_view}</a>" +
                "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"reportTable\", \"${name}\" )'>${i18n_share}</a>" +
                "<a href='javascript:dhis2.db.exploreReportTable( \"${id}\" )'>${i18n_explore}</a>" +
@@ -110,7 +111,7 @@ dhis2.db.tmpl = {
                "</div></li>",
 
 	eventReportItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
-               "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
+               "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}' style='${style}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
                "<a href='javascript:dhis2.db.viewReportDialog( \"../api/reportTables/${id}/data.html\", \"${name}\" )'>${i18n_view}</a>" +
                "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"reportTable\", \"${name}\" )'>${i18n_share}</a>" +
                "<a href='javascript:dhis2.db.exploreEventReport( \"${id}\" )'>${i18n_explore}</a>" +
@@ -392,9 +393,20 @@ dhis2.db.clearDashboard = function()
 	$d = $( "#contentList" ).empty();
 }
 
+dhis2.db.getFullWidth = function()
+{
+	var viewportVidth = $( window ).width(),
+		spacing = 33,
+		itemWidth = 408,
+		items = Math.floor( ( viewportVidth + spacing ) / ( itemWidth + spacing ) ),
+		fullWidth = ( items * itemWidth ) + ( ( items - 1 ) * spacing );
+	
+	return fullWidth;
+}
+
 dhis2.db.renderDashboard = function( id )
 {
-    var contentWidth = 405,
+    var contentWidth = 408,
         contentHeight = 304,
         isChrome = /\bchrome\b/.test(navigator.userAgent.toLowerCase()),
         scrollbarWidth = isChrome ? 8 : 17;
@@ -403,6 +415,8 @@ dhis2.db.renderDashboard = function( id )
     {
     	return;
     }
+    
+    var fullWidth = dhis2.db.getFullWidth();
 
     $( "#dashboard-" + dhis2.db.current() ).removeClass( "currentDashboard" );
 
@@ -424,18 +438,20 @@ dhis2.db.renderDashboard = function( id )
 				{
 				    return true;
 				}
-				console.log(dashboardItem);
-
+				
+				var width = ( dhis2.db.shapeFullWidth == dashboardItem.shape ) ? fullWidth : contentWidth;
+				var style = ( dhis2.db.shapeFullWidth == dashboardItem.shape ) ? "width:" + fullWidth + "px" : "";
+												
 				if ( "chart" == dashboardItem.type )
 				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": dashboardItem.id, "id": dashboardItem.chart.id, "name": dashboardItem.chart.name,
+				    $d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": dashboardItem.id, "id": dashboardItem.chart.id, "name": dashboardItem.chart.name, "style": style,
 					"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share_interpretation, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) );
 
 				    DHIS.getChart({
                         url: '..',
                         el: 'plugin-' + dashboardItem.id,
                         id: dashboardItem.chart.id,
-                        width: contentWidth,
+                        width: width,
                         height: contentHeight,
                         dashboard: true,
                         crossDomain: false,
@@ -464,14 +480,14 @@ dhis2.db.renderDashboard = function( id )
 				else if ( "eventChart" == dashboardItem.type )
 				{
 				    $d.append( $.tmpl( dhis2.db.tmpl.eventChartItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventChart.id, 
-				    	"name": dashboardItem.eventChart.name, "i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, 
+				    	"name": dashboardItem.eventChart.name, "style": style, "i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, 
 				    	"i18n_share": i18n_share_interpretation, "i18n_click": i18n_click_to_explore_drag_to_new_position, "i18n_explore": i18n_explore } ) );
 
 				    DHIS.getEventChart({
                         url: '..',
                         el: 'plugin-' + dashboardItem.id,
                         id: dashboardItem.eventChart.id,
-                        width: contentWidth,
+                        width: width,
                         height: contentHeight,
                         dashboard: true,
                         crossDomain: false,
@@ -499,14 +515,14 @@ dhis2.db.renderDashboard = function( id )
 				}
 				else if ( "map" == dashboardItem.type )
 				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": dashboardItem.id, "id": dashboardItem.map.id, "name": dashboardItem.map.name,
+				    $d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": dashboardItem.id, "id": dashboardItem.map.id, "name": dashboardItem.map.name, "style": style,
 					"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share_interpretation, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) );
 
 				    DHIS.getMap({
                         url: '..',
                         el: 'plugin-' + dashboardItem.id,
                         id: dashboardItem.map.id,
-                        width: contentWidth,
+                        width: width,
                         height: 290,
                         hideLegend: true,
                         dashboard: true,
@@ -516,14 +532,14 @@ dhis2.db.renderDashboard = function( id )
 				}
 				else if ( "reportTable" == dashboardItem.type )
 				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": dashboardItem.id, "id": dashboardItem.reportTable.id, "name": dashboardItem.reportTable.name,
+				    $d.append( $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": dashboardItem.id, "id": dashboardItem.reportTable.id, "name": dashboardItem.reportTable.name, "style": style,
 					"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share_interpretation, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) );
 
 				    DHIS.getTable({
                         url: '..',
                         el: 'plugin-' + dashboardItem.id,
                         id: dashboardItem.reportTable.id,
-                        width: contentWidth,
+                        width: width,
                         height: 290,
                         dashboard: true,
                         crossDomain: false,
@@ -534,14 +550,14 @@ dhis2.db.renderDashboard = function( id )
 				}
 				else if ( "eventReport" == dashboardItem.type )
 				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": dashboardItem.id, "id": dashboardItem.reportTable.id, "name": dashboardItem.reportTable.name,
+				    $d.append( $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": dashboardItem.id, "id": dashboardItem.reportTable.id, "name": dashboardItem.reportTable.name, "style": style,
 					"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share_interpretation, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) );
 
 				    DHIS.getEventReport({
                         url: '..',
                         el: 'plugin-' + dashboardItem.id,
                         id: dashboardItem.reportTable.id,
-                        width: contentWidth - scrollbarWidth,
+                        width: width - scrollbarWidth,
                         height: 290,
                         dashboard: true,
                         crossDomain: false,
