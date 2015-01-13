@@ -313,21 +313,4 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             return e;
         }        
     };
-})
-
-/* Error messages*/
-.service('ErrorMessageService', function(){
-    this.errorMessages = {};
-    
-    this.setErrorMessages = function(errorMessages){  
-        this.errorMessages = errorMessages;        
-    };
-    
-    this.getErrorMessages = function(){
-        return this.errorMessages;
-    };
-    
-    this.get = function(id){
-        return this.errorMessages[id];
-    };
 });

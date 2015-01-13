@@ -366,7 +366,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.editingEventInGrid = false;
         $scope.currentElement.updated = false;
         
-        $scope.outerForm.$valid = true;
+        //$scope.outerForm.$valid = true;
         
         $scope.currentEvent = {};
     };
@@ -593,14 +593,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         DHIS2EventFactory.update(updatedEvent).then(function(data){            
             
-            //update original value
-            var continueLoop = true;
-            for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
-                if($scope.dhis2Events[i].event === $scope.currentEvent.event ){
-                    $scope.dhis2Events[i] = $scope.currentEvent;
-                    continueLoop = false;
-                }
-            }
+            //reflect the change in the gird            
+            $scope.resetEventValue($scope.currentEvent);
                 
             $scope.currentEventOrginialValue = angular.copy($scope.currentEvent); 
             $scope.outerForm.submitted = false;            
@@ -617,20 +611,23 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.currentElement = {id: dataElement};
         
         //get new and old values
-        var newValue = currentEvent[dataElement];        
+        var newValue = $scope.currentEvent[dataElement];        
         var oldValue = $scope.currentEventOrginialValue[dataElement];
         
         //check for form validity
-        $scope.outerForm.submitted = true;
-        if( $scope.outerForm.$invalid ){
-            $scope.currentElement.updated = false;
-            currentEvent[dataElement] = oldValue;
-            return;
-        }   
+        if( $scope.isFormInvalid() ){
+            $scope.currentElement.updated = false;            
+            //reset value back to original
+            $scope.currentEvent[dataElement] = oldValue;            
+            $scope.resetEventValue($scope.currentEvent);
+            return;            
+        }
         
-        if( $scope.prStDes[dataElement].compulsory && !newValue ) {            
-            currentEvent[dataElement] = oldValue;
-            $scope.currentElement.updated = false;
+        if( $scope.prStDes[dataElement].compulsory && !newValue ) {
+            $scope.currentElement.updated = false;                        
+            //reset value back to original
+            $scope.currentEvent[dataElement] = oldValue;            
+            $scope.resetEventValue($scope.currentEvent);
             return;
         }        
                 
@@ -645,25 +642,30 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 newValue = DateUtils.formatFromUserToApi(newValue);
             }
             
-            var updatedSingleValueEvent = {event: currentEvent.event, dataValues: [{value: newValue, dataElement: dataElement}]};
-            var updatedFullValueEvent = DHIS2EventService.reconstructEvent(currentEvent, $scope.selectedProgramStage.programStageDataElements);
+            var updatedSingleValueEvent = {event: $scope.currentEvent.event, dataValues: [{value: newValue, dataElement: dataElement}]};
+            var updatedFullValueEvent = DHIS2EventService.reconstructEvent($scope.currentEvent, $scope.selectedProgramStage.programStageDataElements);
 
             DHIS2EventFactory.updateForSingleValue(updatedSingleValueEvent, updatedFullValueEvent).then(function(data){
                 
-                var continueLoop = true;
-                for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
-                    if($scope.dhis2Events[i].event === currentEvent.event ){
-                        $scope.dhis2Events[i] = currentEvent;
-                        continueLoop = false;
-                    }
-                }
+                //reflect the new value in the grid
+                $scope.resetEventValue($scope.currentEvent);
                 
                 //update original value
-                $scope.currentEventOrginialValue = angular.copy(currentEvent);      
+                $scope.currentEventOrginialValue = angular.copy($scope.currentEvent);      
                 
                 $scope.currentElement.updated = true;
                 $scope.updateSuccess = true;
             });
+        }
+    };
+    
+    $scope.resetEventValue = function(currentEvent){
+        var continueLoop = true;
+        for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
+            if($scope.dhis2Events[i].event === currentEvent.event ){
+                $scope.dhis2Events[i] = currentEvent;
+                continueLoop = false;
+            }
         }
     };
     
