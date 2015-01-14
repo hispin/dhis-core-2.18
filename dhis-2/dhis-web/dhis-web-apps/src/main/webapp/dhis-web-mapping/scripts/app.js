@@ -8762,6 +8762,7 @@ Ext.onReady( function() {
 			map: gis.olmap,
 			fullSize: true,
 			cmp: [defaultButton],
+            trash: [],
 			toggleCmp: function(show) {
 				for (var i = 0; i < this.cmp.length; i++) {
 					if (show) {

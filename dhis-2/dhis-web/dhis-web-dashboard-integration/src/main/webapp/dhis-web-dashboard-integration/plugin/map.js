@@ -1759,14 +1759,15 @@ Ext.onReady(function () {
             });
 
             defaultHoverWindow.show();
+            gis.viewport.centerRegion.trash.push(defaultHoverWindow);
 
             var eastX = gis.viewport.eastRegion.getPosition()[0],
                 centerX = gis.viewport.centerRegion.getPosition()[0],
                 centerRegionCenterX = centerX + ((eastX - centerX) / 2),
-                centerRegionY = gis.viewport.centerRegion.getPosition()[1] + (GIS.app ? 32 : 0),
+                centerRegionY = gis.viewport.centerRegion.getPosition()[1] + (gis.plugin ? 0 : 32),
 
-		x = centerRegionCenterX - (defaultHoverWindow.getWidth() / 2),
-		y = centerRegionY;
+                x = centerRegionCenterX - (defaultHoverWindow.getWidth() / 2),
+                y = centerRegionY;
 
             defaultHoverWindow.setPosition(x, y);
         };
@@ -6935,7 +6936,8 @@ Ext.onReady(function () {
                 eastRegion,
                 centerRegion,
                 el = Ext.get(gis.el),
-                eastWidth = gis.map.hideLegend ? 0 : (gis.plugin ? 120 : 200);
+                eastWidth = gis.map.hideLegend ? 0 : (gis.plugin ? 120 : 200),
+                trash = [];
 
             viewport = Ext.create('Ext.panel.Panel', {
                 renderTo: el,
@@ -7039,6 +7041,17 @@ Ext.onReady(function () {
 
             viewport.centerRegion = centerRegion;
             viewport.eastRegion = eastRegion;
+
+            viewport.centerRegion.trash = trash;
+            viewport.centerRegion.getEl().on('mouseleave', function() {
+                for (var i = 0, cmp; i < trash.length; i++) {
+                    cmp = viewport.centerRegion.trash[i];
+
+                    if (cmp && cmp.destroy) {
+                        cmp.destroy();
+                    }
+                }
+            });
 
             return viewport;
         };
