@@ -30,6 +30,12 @@ package org.hisp.dhis.settings.action.system;
 
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -37,6 +43,9 @@ import org.hisp.dhis.i18n.I18n;
 public class SetRemoteAccessSettingsAction
     implements Action
 {
+    @Autowired
+    private SystemSettingManager systemSettingManager;
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -55,6 +64,13 @@ public class SetRemoteAccessSettingsAction
         this.i18n = i18n;
     }
 
+    private List<String> whitelist = new ArrayList<>();
+
+    public void setWhitelist( List<String> whitelist )
+    {
+        this.whitelist = whitelist;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -63,6 +79,8 @@ public class SetRemoteAccessSettingsAction
     public String execute()
     {
         message = i18n.getString( "settings_updated" );
+
+        systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_CORS_WHITELIST, (Serializable) whitelist );
 
         return SUCCESS;
     }

@@ -1,5 +1,48 @@
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("input[type=button]").click(function() {
+      $('#whitelist').children().attr('selected', true);
+
+      $.ajax({
+        url: 'setSystemRemoteAccessSettings.action',
+        type: 'POST',
+        data: $('#whitelist').serialize()
+      }).done(function( res ) {
+        if( res.response == "success" ) {
+          setHeaderDelayMessage(res.message);
+        }
+      });
+    });
+
+    $('#add-domain').on('click', function( e ) {
+      var domainText = $('#domain').val();
+
+      if( domainText && domainText.length > 0 ) {
+        $('<option/>').attr('value', domainText).text(domainText).appendTo('#whitelist');
+      }
+    });
+
+    $('#del-domain').on('click', function( e ) {
+      $("#whitelist option:selected").remove();
+    });
+  });
+</script>
 
 <h3>$i18n.getString( "remote_access_settings" )</h3>
 
+<div class="settingLabel">$i18n.getString( "cors_whitelist" )</div>
+
+<div class="setting">
+  <input type="text" id="domain" name="domain">
+  <button id="add-domain"><span class="fa fa-plus"></button>
+  <button id="del-domain" style=""><span class="fa fa-minus"></button>
+
+  <br/>
+  <select id="whitelist" name="whitelist" multiple="multiple">
+    #foreach( $domain in $whitelist )
+      <option value="$domain">$domain</option>
+    #end
+  </select>
+</div>
 
 <div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>
