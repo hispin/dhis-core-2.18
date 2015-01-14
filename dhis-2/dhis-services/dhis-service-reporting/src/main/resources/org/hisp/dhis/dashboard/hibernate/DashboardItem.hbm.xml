@@ -23,6 +23,8 @@
     
     <many-to-one name="reportTable" class="org.hisp.dhis.reporttable.ReportTable" foreign-key="fk_dashboarditem_reporttableid" />
     
+    <many-to-one name="eventReport" class="org.hisp.dhis.eventreport.EventReport" foreign-key="fk_dashboarditem_eventreportid" />
+    
     <list name="users" table="dashboarditem_users">
       <key column="dashboarditemid" foreign-key="fk_dashboarditem_users_dashboardid" />
       <list-index column="sort_order" base="0" />
