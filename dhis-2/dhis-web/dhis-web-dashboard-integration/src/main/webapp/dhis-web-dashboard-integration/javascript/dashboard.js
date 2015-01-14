@@ -405,10 +405,10 @@ dhis2.db.clearDashboard = function()
 
 dhis2.db.getFullWidth = function()
 {
-	var viewportVidth = $( window ).width(),
+	var viewPortWidth = $( window ).width(),
 		spacing = 33,
 		itemWidth = 408,
-		items = Math.floor( ( viewportVidth + spacing ) / ( itemWidth + spacing ) ),
+		items = Math.floor( ( viewPortWidth + spacing ) / ( itemWidth + spacing ) ),
 		fullWidth = ( items * itemWidth ) + ( ( items - 1 ) * spacing );
 
 	return fullWidth;
