@@ -193,7 +193,7 @@
 #searchDiv
 {
   position: absolute;
-  left: 411px;
+  left: 330px;
   height: 22px;
   width: 486px;
   border: 1px solid #aaa;
@@ -206,7 +206,7 @@
 {
   position: absolute;
   margin-top: 6px;
-  left: 915px;
+  left: 834px;
 }
 
 #searchField
@@ -224,7 +224,7 @@
 {
   position: absolute;
   margin-top: 29px;
-  left: 411px;
+  left: 330px;
   width: 498px;
   max-height: 518px;
   overflow-y: auto;
