@@ -985,6 +985,17 @@ dhis2.db.renderSearch = function( data, $h )
 				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-pivot/index.html?id=" + o.id, "img": "table_small", "name": o.name, "type": "reportTable", "id": o.id, "i18n_add": i18n_add } ) );
 			}
 		}
+		
+		if ( data.eventReportCount > 0 )
+		{
+			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Event reports", "type": "eventReport", "i18n_see_more_hits": i18n_see_more_hits, "i18n_see_fewer_hits": i18n_see_fewer_hits } ) );
+
+			for ( var i in data.eventReports )
+			{
+				var o = data.eventReports[i];
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-event-reports/index.html?id=" + o.id, "img": "table_small", "name": o.name, "type": "eventReport", "id": o.id, "i18n_add": i18n_add } ) );
+			}
+		}
 
 		if ( data.reportCount > 0 )
 		{

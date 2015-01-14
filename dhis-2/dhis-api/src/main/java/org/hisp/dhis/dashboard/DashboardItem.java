@@ -68,6 +68,7 @@ public class DashboardItem
     public static final String TYPE_EVENT_CHART = "eventChart"; //TODO use enum
     public static final String TYPE_MAP = "map";
     public static final String TYPE_REPORT_TABLE = "reportTable";
+    public static final String TYPE_EVENT_REPORT = "eventReport";
     public static final String TYPE_USERS = "users";
     public static final String TYPE_REPORT_TABLES = "reportTables";
     public static final String TYPE_REPORTS = "reports";
@@ -88,9 +89,6 @@ public class DashboardItem
     
     @Scanned
     private List<User> users = new ArrayList<>();
-
-    @Scanned
-    private List<ReportTable> reportTables = new ArrayList<>();
 
     @Scanned
     private List<Report> reports = new ArrayList<>();
@@ -144,10 +142,6 @@ public class DashboardItem
         {
             return TYPE_USERS;
         }
-        else if ( !reportTables.isEmpty() )
-        {
-            return TYPE_REPORT_TABLES;
-        }
         else if ( !reports.isEmpty() )
         {
             return TYPE_REPORTS;
@@ -200,10 +194,6 @@ public class DashboardItem
         {
             return users;
         }
-        else if ( !reportTables.isEmpty() )
-        {
-            return reportTables;
-        }
         else if ( !reports.isEmpty() )
         {
             return reports;
@@ -226,7 +216,6 @@ public class DashboardItem
         count += map != null ? 1 : 0;
         count += reportTable != null ? 1 : 0;
         count += users.size();
-        count += reportTables.size();
         count += reports.size();
         count += resources.size();
         count += messages != null ? 1 : 0;
@@ -245,10 +234,6 @@ public class DashboardItem
         if ( !users.isEmpty() )
         {
             return removeContent( uid, users );
-        }
-        else if ( !reportTables.isEmpty() )
-        {
-            return removeContent( uid, reportTables );
         }
         else if ( !reports.isEmpty() )
         {
@@ -351,21 +336,6 @@ public class DashboardItem
         this.users = users;
     }
 
-    @JsonProperty( "reportTables" )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JacksonXmlElementWrapper( localName = "reportTables", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "reportTableItem", namespace = DxfNamespaces.DXF_2_0 )
-    public List<ReportTable> getReportTables()
-    {
-        return reportTables;
-    }
-
-    public void setReportTables( List<ReportTable> reportTables )
-    {
-        this.reportTables = reportTables;
-    }
-
     @JsonProperty( "reports" )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
@@ -439,7 +409,6 @@ public class DashboardItem
             map = item.getMap() == null ? map : item.getMap();
             reportTable = item.getReportTable() == null ? reportTable : item.getReportTable();
             users = item.getUsers() == null ? users : item.getUsers();
-            reportTables = item.getReportTables() == null ? reportTables : item.getReportTables();
             reports = item.getReports() == null ? reports : item.getReports();
             resources = item.getResources() == null ? resources : item.getResources();
             messages = item.getMessages() == null ? messages : item.getMessages();
