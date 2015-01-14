@@ -169,7 +169,11 @@ function insertDataElement( source, programStageUid )
 	var dataElementType = dataElement.type;
 	
 	var htmlCode = "";
-	var id = programStageUid + "-" + dataElementUid + "-val" ;	
+	var id = programStageUid + "-" + dataElementUid + "-val" ;
+	if( dataElementUid == "executionDate" )
+	{
+		id = dataElementUid;
+	}	
 	var titleValue = dataElementUid + " - " + dataElementName + " - " + dataElementType;
 	
 	if ( dataElementType == "bool" )
@@ -195,12 +199,12 @@ function insertDataElement( source, programStageUid )
 	
 	if( checkExisted( id ) )
 	{		
-		jQuery( source + " #message_").html( "<span class='bold'>" + i18n_dataelement_is_inserted + "</span>" );
+		jQuery( " #message_").html( "<span class='bold'>" + i18n_dataelement_is_inserted + "</span>" );
 		return;
 	}else{
 		var oEditor = jQuery("#designTextarea").ckeditor().editor;
 		oEditor.insertHtml( htmlCode );
-		jQuery( source + " #message_").html("");
+		jQuery(" #message_").html("");
 	}
 
 }

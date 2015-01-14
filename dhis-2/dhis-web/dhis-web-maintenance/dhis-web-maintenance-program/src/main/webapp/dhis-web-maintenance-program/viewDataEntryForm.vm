@@ -17,9 +17,9 @@
 		checkValueIsExist( "name", "validateDataEntryForm.action", { dataEntryFormId: '$!programStage.dataEntryForm.id' } );
 	});
 
-  var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
+    var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
 	var i18n_specify_dataelememt = '$encoder.jsEscape( $i18n.getString( "specify_dataelememt" ) , "'" )';
-  var i18n_choose_existing_dataentry ='$encoder.jsEscape( $i18n.getString( "choose_existing_dataentry" ) , "'" )';
+    var i18n_choose_existing_dataentry ='$encoder.jsEscape( $i18n.getString( "choose_existing_dataentry" ) , "'" )';
 	var i18n_dataelement = '$encoder.jsEscape( $i18n.getString( "dataelement" ) , "'" )';
 	var i18n_dataelement_of_orther_program_stage = "$i18n.getString( 'dataelement_of_orther_program_stage' )";
 	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';
@@ -140,14 +140,27 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan='2'>	
+			<td colspan='2'>
+			
 				<select id="dataElementIds" name="dataElementIds" style="height:200px; width:100%;"  multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.uid')">
+				
+					#if( $programStage.program.type=='3' )
+						#set($name = "$encoder.htmlEncode($programStage.reportDateDescription)")
+						#set($deJSON = '{"uid":"executionDate","name":"executionDate","executionDate":"executionDate","type":"date"}' )
+						<option value='$deJSON' decode="executionDate" dename="executionDate" title="$name">$encoder.htmlEncode($programStage.reportDateDescription)</option>
+					#end
+					
 					#foreach( $de in $dataElements)
 					#set($deJSON = '{' + '"uid"' + ':"' + "$de.uid" + '",' + '"name"' + ':"' + "$de.name" + '",' + '"shortName"' + ':"' + "$de.shortName" + '",' + '"type"' + ':"' + "$de.getDetailedTextType()"  + '"}' )
 					<option value='$deJSON' decode="$!de.code" dename="$encoder.htmlEncode($de.name)" title="$encoder.htmlEncode($de.name)">$encoder.htmlEncode( $de.name )</option>
 					#end
 				</select>
 				<select id="dataElementIdsStore" multiple="multiple" style="display:none">
+					#if( $programStage.program.type=='3' )
+						#set($name = "$encoder.htmlEncode($programStage.reportDateDescription)")#set($deJSON = '{"uid":"executionDate","name":"executionDate","executionDate":"executionDate","type":"date"}' )
+						<option value='$deJSON' decode="executionDate" dename="executionDate" title="$name">$encoder.htmlEncode($programStage.reportDateDescription)</option>
+					#end
+					
 					#foreach( $de in $dataElements)
 					#set($deJSON = '{' + '"uid"' + ':"' + "$de.uid" + '",' + '"name"' + ':"' + "$de.name" + '",' + '"shortName"' + ':"' + "$de.shortName" + '",' + '"type"' + ':"' + "$de.getDetailedTextType()"  + '"}' )
 					<option value='$deJSON' decode="$!de.code" dename="$encoder.htmlEncode($de.name)">$encoder.htmlEncode( $de.name )</option>
