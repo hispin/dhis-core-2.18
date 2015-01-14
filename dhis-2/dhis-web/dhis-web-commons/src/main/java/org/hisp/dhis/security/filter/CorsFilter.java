@@ -30,8 +30,11 @@ package org.hisp.dhis.security.filter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -42,6 +45,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -68,13 +72,12 @@ public class CorsFilter implements Filter
 
     public static final String CORS_ORIGIN = "Origin";
 
-    private static final String ALLOWED_METHODS = "GET, OPTIONS";
-
-    private static final String ALLOWED_HEADERS = "Accept, Content-Type, Authorization, X-Requested-With";
-
     private static final String EXPOSED_HEADERS = "ETag";
 
     private static final Integer MAX_AGE = 60 * 60; // 1hr max-age
+
+    @Autowired
+    private SystemSettingManager systemSettingManager;
 
     @Override
     public void doFilter( ServletRequest req, ServletResponse res, FilterChain filterChain ) throws IOException, ServletException
@@ -91,7 +94,7 @@ public class CorsFilter implements Filter
             return;
         }
 
-        if ( !isOriginWhitelisted( origin ) )
+        if ( !isOriginWhitelisted( request, origin ) )
         {
             LOG.warn( "CORS request with origin " + origin + " is not whitelisted." );
             filterChain.doFilter( request, response );
@@ -104,8 +107,11 @@ public class CorsFilter implements Filter
 
         if ( isPreflight( request ) )
         {
-            response.addHeader( CORS_ALLOW_METHODS, ALLOWED_METHODS );
-            response.addHeader( CORS_ALLOW_HEADERS, ALLOWED_HEADERS );
+            String requestHeaders = request.getHeader( CORS_REQUEST_HEADERS );
+            String requestMethod = request.getHeader( CORS_REQUEST_METHOD );
+
+            response.addHeader( CORS_ALLOW_METHODS, requestMethod );
+            response.addHeader( CORS_ALLOW_HEADERS, requestHeaders );
             response.addHeader( CORS_MAX_AGE, String.valueOf( MAX_AGE ) );
 
             response.setStatus( HttpServletResponse.SC_NO_CONTENT );
@@ -126,10 +132,23 @@ public class CorsFilter implements Filter
             && !StringUtils.isEmpty( request.getHeader( CORS_REQUEST_METHOD ) );
     }
 
-    private boolean isOriginWhitelisted( String origin )
+    private boolean isOriginWhitelisted( HttpServletRequest request, String origin )
     {
-        // TODO add proper list of whitelisted origins
-        return !StringUtils.isEmpty( origin ) && (origin.startsWith( "http://" ) || origin.startsWith( "https://" ));
+        String forwardedProto = request.getHeader( "X-Forwarded-Proto" );
+        String localUrl;
+
+        if ( StringUtils.isEmpty( forwardedProto ) )
+        {
+            localUrl = ServletUriComponentsBuilder.fromContextPath( request ).build().toUriString();
+        }
+        else
+        {
+            localUrl = ServletUriComponentsBuilder.fromContextPath( request )
+                .scheme( forwardedProto ).build().toUriString();
+        }
+
+        List<String> whitelist = systemSettingManager.getCorsWhitelist();
+        return !StringUtils.isEmpty( origin ) && (localUrl.equals( origin ) || whitelist.contains( origin ));
     }
 
     @Override
