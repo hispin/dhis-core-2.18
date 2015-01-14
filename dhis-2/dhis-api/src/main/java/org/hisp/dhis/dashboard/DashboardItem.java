@@ -75,6 +75,7 @@ public class DashboardItem
     public static final String TYPE_MESSAGES = "messages";
 
     public static final String SHAPE_NORMAL = "normal";
+    public static final String SHAPE_DOUBLE_WIDTH = "double_width";
     public static final String SHAPE_FULL_WIDTH = "full_width";
     
     private Chart chart;

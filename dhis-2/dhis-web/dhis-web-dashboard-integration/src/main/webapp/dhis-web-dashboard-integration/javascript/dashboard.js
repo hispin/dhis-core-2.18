@@ -27,8 +27,10 @@ dhis2.db.currentShareId;
 dhis2.db.currentMaxType = [];
 dhis2.db.maxItems = 40;
 dhis2.db.shapeNormal = "normal";
+dhis2.db.shapeDoubleWidth = "double_width";
 dhis2.db.shapeFullWidth = "full_width";
 dhis2.db.widthNormal = 408;
+dhis2.db.widthDouble = 849;
 
 // TODO support table as link and embedded
 // TODO double horizontal size
@@ -40,10 +42,10 @@ dhis2.db.widthNormal = 408;
 $( document ).ready( function()
 {
 	$( "#interpretationArea" ).autogrow();
-
+	
 	$( document ).click( dhis2.db.hideSearch );
 	
-	$( window ).resize( dhis2.db.drawFullWidthItems );
+	$( window ).resize( dhis2.db.drawWideItems );
 
 	$( "#searchField" ).focus( function() {
 		$( "#searchDiv" ).css( "border-color", "#999" );
@@ -412,46 +414,74 @@ dhis2.db.getFullWidth = function()
 	return fullWidth;
 }
 
+/**
+ * Toggles size of item. The order is 1) normal 2) double 3) full. 
+ */
 dhis2.db.resizeItem = function( id )
 {
 	$.getJSON( "../api/dashboardItems/" + id, function( item ) {
-				
-		if ( dhis2.db.shapeFullWidth == item.shape ) {
-			var newShape = dhis2.db.shapeNormal;
-			$( "#" + id ).css( "width", dhis2.db.widthNormal + "px" );
-			Ext.get( "plugin-" + id ).viewport.setWidth( dhis2.db.widthNormal );
-		}
-		else {
-			var newShape = dhis2.db.shapeFullWidth,
-				fullWidth = dhis2.db.getFullWidth();
-			$( "#" + id ).css( "width", fullWidth + "px" );
-			Ext.get( "plugin-" + id ).viewport.setWidth( fullWidth );
-		}
+
+		var newShape = dhis2.db.shapeNormal;
 		
-		$.ajax( {
-			url: "../api/dashboardItems/" + id + "/shape/" + newShape,
-			type: "put"
-		} );
+		if ( dhis2.db.shapeDoubleWidth == item.shape ) {
+			newShape = dhis2.db.shapeFullWidth;
+			dhis2.db.setFullItemWidth( id );
+		}	
+	    else if ( dhis2.db.shapeFullWidth == item.shape ) {
+			newShape = dhis2.db.shapeNormal;
+			dhis2.db.setNormalItemWidth( id );
+		}
+	    else {
+	    	newShape = dhis2.db.shapeDoubleWidth;
+	    	dhis2.db.setDoubleItemWidth( id );
+	    }
+		
+		if ( newShape ) {
+			$.ajax( {
+				url: "../api/dashboardItems/" + id + "/shape/" + newShape,
+				type: "put"
+			} );
+		}
 	} );
 }
 
-dhis2.db.drawFullWidthItems = function()
+dhis2.db.setNormalItemWidth = function( id ) {
+	$( "#" + id ).css( "width", dhis2.db.widthNormal + "px" );
+	Ext.get( "plugin-" + id ).viewport.setWidth( dhis2.db.widthNormal );
+}
+
+dhis2.db.setDoubleItemWidth = function( id ) {
+	$( "#" + id ).css( "width", dhis2.db.widthDouble + "px" );
+	Ext.get( "plugin-" + id ).viewport.setWidth( dhis2.db.widthDouble );
+}
+
+dhis2.db.setFullItemWidth = function( id ) {
+	var	fullWidth = dhis2.db.getFullWidth();
+	$( "#" + id ).css( "width", fullWidth + "px" );
+	Ext.get( "plugin-" + id ).viewport.setWidth( fullWidth );
+}
+
+dhis2.db.drawWideItems = function()
 {
 	if ( undefined !== dhis2.db.current() ) {
-		var url = "../api/dashboards/" + dhis2.db.current() + "?fields=dashboardItems[id,shape]";
+		var url = "../api/dashboards/" + dhis2.db.current() + "?fields=dashboardItems[id,shape]",
+			viewPortWidth = $( window ).width();
 		
 		$.getJSON( url, function( dashboard ) {
 			$.each( dashboard.dashboardItems, function( i, item ) {
 				if ( dhis2.db.shapeFullWidth == item.shape ) {
-					var fullWidth = dhis2.db.getFullWidth();
-					$( "#" + item.id ).css( "width", fullWidth + "px" );
-					Ext.get( "plugin-" + item.id ).viewport.setWidth( fullWidth );
+					dhis2.db.setFullItemWidth( item.id );
+				}
+				else if ( viewPortWidth <= dhis2.db.widthDouble && dhis2.db.shapeDoubleWidth == item.shape ) {
+					dhis2.db.setNormalItemWidth( item.id );
+				}
+				else if ( viewPortWidth > dhis2.db.widthDouble && dhis2.db.shapeDoubleWidth == item.shape ) {
+					dhis2.db.setDoubleItemWidth( item.id );			
 				}
 			} );
 		} );
 	}
 }
-
 
 dhis2.db.renderDashboard = function( id )
 {
@@ -487,7 +517,15 @@ dhis2.db.renderDashboard = function( id )
 				    return true;
 				}
 
-				var width = ( dhis2.db.shapeFullWidth == dashboardItem.shape ) ? fullWidth : dhis2.db.widthNormal;
+				var width = dhis2.db.widthNormal;
+				
+				if ( dhis2.db.shapeFullWidth == dashboardItem.shape ) {
+					width = fullWidth;
+				}
+				else if ( dhis2.db.shapeDoubleWidth == dashboardItem.shape ) {
+					width = dhis2.db.widthDouble;
+				}
+				
 				var style = "width:" + width + "px";
 				
 				if ( "chart" == dashboardItem.type )
