@@ -1,7 +1,17 @@
 
 #sharingDialog()
 
+<script type="text/javascript" src="//maps.google.com/maps/api/js"></script>
+<script type="text/javascript" src="../dhis-web-commons/javascripts/openlayers/OpenLayers.js"></script>
+<script type="text/javascript" src="plugin/table.js"></script>
+<script type="text/javascript" src="plugin/chart.js"></script>
+<script type="text/javascript" src="plugin/map.js"></script>
+<script type="text/javascript" src="plugin/eventreport.js"></script>
+<script type="text/javascript" src="plugin/eventchart.js"></script>
+<script type="text/javascript" src="javascript/dashboard.js"></script>
+
 <script type="text/javascript">
+
 var i18n_share_your_interpretation_of = '$encoder.jsEscape( $i18n.getString( "share_your_interpretation_of" ), "'")';
 var i18n_interpretation_was_shared = '$encoder.jsEscape( $i18n.getString( "interpretation_was_shared" ), "'")';
 var i18n_viewing = '$encoder.jsEscape( $i18n.getString( "viewing" ), "'")';
@@ -25,19 +35,6 @@ jQuery( document ).ready( function() {
   dhis2.leftBar.resetPosition(); ## Force left bar initial position when displaying dashboard
 });
 
-Ext.onReady( function() {
-    Ext.Loader.injectScriptElement('plugin/table.js', function() {
-	Ext.Loader.injectScriptElement('plugin/chart.js', function() {
-	    Ext.Loader.injectScriptElement('plugin/map.js', function() {
-		Ext.Loader.injectScriptElement('plugin/eventreport.js', function() {
-		    Ext.Loader.injectScriptElement('plugin/eventchart.js', function() {
-			Ext.Loader.injectScriptElement('javascript/dashboard.js', function() {} );
-		    });
-		});
-	    });
-	});
-    });
-});
 </script>
 
 <div id="dashboardHeader"><h3>
