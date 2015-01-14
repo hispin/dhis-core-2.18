@@ -784,6 +784,8 @@ public class TableAlteror
         // AttributeValue
         executeSql( "UPDATE attributevalue SET created=now() WHERE created IS NULL" );
         executeSql( "UPDATE attributevalue SET lastupdated=now() WHERE lastupdated IS NULL" );
+        
+        executeSql( "update dashboarditem set shape = 'normal' where shape is null" );
 
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeCompleteDataSetRegistrationsWithAttributeOptionCombo();
