@@ -136,7 +136,7 @@ public class UserCredentials
      * Indicates whether this user was originally self registered.
      */
     private boolean selfRegistered;
-    
+
     /**
      * Indicates whether this credentials is currently an invitation.
      */
@@ -260,9 +260,9 @@ public class UserCredentials
      * of this user credentials, or this user credentials must have the ALL
      * authority.
      *
-     * @param group the user authority group.
+     * @param group                          the user authority group.
      * @param canGrantOwnUserAuthorityGroups indicates whether this users can grant
-     *        its own authority groups to others.
+     *                                       its own authority groups to others.
      */
     public boolean canIssueUserRole( UserAuthorityGroup group, boolean canGrantOwnUserAuthorityGroups )
     {
@@ -290,9 +290,9 @@ public class UserCredentials
      * Indicates whether this user credentials can issue all of the user authority
      * groups in the given collection.
      *
-     * @param groups the collection of user authority groups.
+     * @param groups                         the collection of user authority groups.
      * @param canGrantOwnUserAuthorityGroups indicates whether this users can grant
-     *        its own authority groups to others.
+     *                                       its own authority groups to others.
      */
     public boolean canIssueUserRoles( Collection<UserAuthorityGroup> groups, boolean canGrantOwnUserAuthorityGroups )
     {
@@ -451,6 +451,16 @@ public class UserCredentials
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+
+    @Override
+    @JsonProperty
+    @JsonView( DetailedView.class )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public User getUser()
+    {
+        return super.getUser();
+    }
 
     public String getPassword()
     {
@@ -645,10 +655,10 @@ public class UserCredentials
             openId = userCredentials.getOpenId();
             password = StringUtils.isEmpty( userCredentials.getPassword() ) ? password : userCredentials.getPassword();
             passwordLastUpdated = userCredentials.getPasswordLastUpdated();
-            
+
             userAuthorityGroups.clear();
             userAuthorityGroups.addAll( userCredentials.getUserAuthorityGroups() );
-            
+
             catDimensionConstraints.clear();
             catDimensionConstraints.addAll( userCredentials.getCatDimensionConstraints() );
 
