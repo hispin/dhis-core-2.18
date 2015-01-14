@@ -3407,6 +3407,7 @@ Ext.onReady( function() {
 
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
+            Ext.get(config.el).viewport = ns.app.centerRegion;
 
 			if (config && config.id) {
 				ns.core.web.pivot.loadTable(config);

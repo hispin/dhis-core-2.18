@@ -7115,6 +7115,7 @@ Ext.onReady(function () {
             gis.map = config;
 
             gis.viewport = createViewport();
+            Ext.get(config.el).viewport = gis.viewport.centerRegion;
 
             gis.olmap.mask = Ext.create('Ext.LoadMask', gis.viewport.centerRegion.getEl(), {
                 msg: 'Loading'
