@@ -29,6 +29,11 @@ package org.hisp.dhis.settings.action.system;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -36,9 +41,19 @@ import com.opensymphony.xwork2.Action;
 public class GetRemoteAccessSettingsAction
     implements Action
 {
+    @Autowired
+    private SystemSettingManager systemSettingManager;
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
+
+    private List<String> whitelist = new ArrayList<>();
+
+    public List<String> getWhitelist()
+    {
+        return whitelist;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -47,6 +62,8 @@ public class GetRemoteAccessSettingsAction
     @Override
     public String execute()
     {
+        whitelist = systemSettingManager.getCorsWhitelist();
+
         return SUCCESS;
     }
 }
