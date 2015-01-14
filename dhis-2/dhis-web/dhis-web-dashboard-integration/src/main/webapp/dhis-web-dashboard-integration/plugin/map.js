@@ -1632,36 +1632,36 @@ Ext.onReady(function () {
             createSelectionHandlers,
             layerNumbers = ['1', '2', '3', '4'];
 
-        if (window.google) {
-            layers.googleStreets = new OpenLayers.Layer.Google('Google Streets', {
-                numZoomLevels: 20,
-                animationEnabled: true,
-                layerType: gis.conf.finals.layer.type_base,
-                layerOpacity: 1,
-                setLayerOpacity: function (number) {
-                    if (number) {
-                        this.layerOpacity = parseFloat(number);
-                    }
-                    this.setOpacity(this.layerOpacity);
-                }
-            });
-            layers.googleStreets.id = 'googleStreets';
+        //if (window.google) {
+            //layers.googleStreets = new OpenLayers.Layer.Google('Google Streets', {
+                //numZoomLevels: 20,
+                //animationEnabled: true,
+                //layerType: gis.conf.finals.layer.type_base,
+                //layerOpacity: 1,
+                //setLayerOpacity: function (number) {
+                    //if (number) {
+                        //this.layerOpacity = parseFloat(number);
+                    //}
+                    //this.setOpacity(this.layerOpacity);
+                //}
+            //});
+            //layers.googleStreets.id = 'googleStreets';
 
-            layers.googleHybrid = new OpenLayers.Layer.Google('Google Hybrid', {
-                type: google.maps.MapTypeId.HYBRID,
-                numZoomLevels: 20,
-                animationEnabled: true,
-                layerType: gis.conf.finals.layer.type_base,
-                layerOpacity: 1,
-                setLayerOpacity: function (number) {
-                    if (number) {
-                        this.layerOpacity = parseFloat(number);
-                    }
-                    this.setOpacity(this.layerOpacity);
-                }
-            });
-            layers.googleHybrid.id = 'googleHybrid';
-        }
+            //layers.googleHybrid = new OpenLayers.Layer.Google('Google Hybrid', {
+                //type: google.maps.MapTypeId.HYBRID,
+                //numZoomLevels: 20,
+                //animationEnabled: true,
+                //layerType: gis.conf.finals.layer.type_base,
+                //layerOpacity: 1,
+                //setLayerOpacity: function (number) {
+                    //if (number) {
+                        //this.layerOpacity = parseFloat(number);
+                    //}
+                    //this.setOpacity(this.layerOpacity);
+                //}
+            //});
+            //layers.googleHybrid.id = 'googleHybrid';
+        //}
 
         layers.openStreetMap = new OpenLayers.Layer.OSM.Mapnik('OpenStreetMap', {
             layerType: gis.conf.finals.layer.type_base,
@@ -4953,9 +4953,9 @@ Ext.onReady(function () {
         gis.layer = GIS.core.getLayers(gis);
         gis.thematicLayers = [gis.layer.thematic1, gis.layer.thematic2, gis.layer.thematic3, gis.layer.thematic4];
 
-        if (window.google) {
-            layers.push(gis.layer.googleStreets, gis.layer.googleHybrid);
-        }
+        //if (window.google) {
+            //layers.push(gis.layer.googleStreets, gis.layer.googleHybrid);
+        //}
 
         layers.push(
             gis.layer.openStreetMap,
@@ -7111,6 +7111,59 @@ Ext.onReady(function () {
 
             gis = GIS.core.getInstance(init);
 
+            // google maps
+            var gm_fn = function() {
+                var googleStreets = new OpenLayers.Layer.Google('Google Streets', {
+                    numZoomLevels: 20,
+                    animationEnabled: true,
+                    layerType: gis.conf.finals.layer.type_base,
+                    layerOpacity: 1,
+                    setLayerOpacity: function (number) {
+                        if (number) {
+                            this.layerOpacity = parseFloat(number);
+                        }
+                        this.setOpacity(this.layerOpacity);
+                    }
+                });
+                googleStreets.id = 'googleStreets';
+
+                var googleHybrid = new OpenLayers.Layer.Google('Google Hybrid', {
+                    type: google.maps.MapTypeId.HYBRID,
+                    numZoomLevels: 20,
+                    animationEnabled: true,
+                    layerType: gis.conf.finals.layer.type_base,
+                    layerOpacity: 1,
+                    setLayerOpacity: function (number) {
+                        if (number) {
+                            this.layerOpacity = parseFloat(number);
+                        }
+                        this.setOpacity(this.layerOpacity);
+                    }
+                });
+                googleHybrid.id = 'googleHybrid';
+
+                gis.olmap.addLayers([googleStreets, googleHybrid]);
+                gis.olmap.setBaseLayer(googleStreets);
+            };
+
+            if (GIS_GM.ready) {
+                console.log("(Item " + config.el + ") GM is ready -> skip queue, add layers, set as baselayer");
+                gm_fn();
+            }
+            else {
+                if (GIS_GM.offline) {
+                    console.log("Deactivate base layer");
+                    gis.olmap.baseLayer.setVisibility(false);
+                }
+                else {
+                    console.log("GM is not ready -> add to queue");
+                    GIS_GM.array.push({
+                        scope: this,
+                        fn: gm_fn
+                    });
+                }
+            }
+
             gis.el = config.el;
             gis.plugin = init.plugin;
             gis.dashboard = init.dashboard;
@@ -7142,18 +7195,52 @@ Ext.onReady(function () {
         }();
     };
 
-    GIS.plugin.getMap = function (config) {
+    GIS.plugin.getMap = function(config) {
         if (Ext.isString(config.url) && config.url.split('').pop() === '/') {
             config.url = config.url.substr(0, config.url.length - 1);
         }
 
         if (isInitComplete) {
             execute(config);
-        } else {
+        }
+        else {
             configs.push(config);
 
             if (!isInitStarted) {
                 isInitStarted = true;
+
+                // google maps
+                GIS_GM = {
+                    ready: false,
+                    array: [],
+                    offline: false
+                };
+
+                GIS_GM_fn = function() {
+                    console.log("GM called back, queue length: " + GIS_GM.array.length);
+                    GIS_GM.ready = true;
+
+                    for (var i = 0, obj; i < GIS_GM.array.length; i++) {
+                        obj = GIS_GM.array[i];
+
+                        if (obj) {
+                            console.log("Running queue obj " + (i + 1));
+                            obj.fn.call(obj.scope);
+                        }
+                    }
+                };
+
+                Ext.Loader.injectScriptElement('//maps.googleapis.com/maps/api/js?callback=GIS_GM_fn',
+                    function() {
+                        console.log("GM available (online)");
+                    },
+                    function() {
+                        console.log("GM not available (offline)");
+                        GIS_GM.offline = true;
+                    }
+                );
+
+                // plugin
                 getInit(config);
             }
         }

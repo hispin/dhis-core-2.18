@@ -9031,6 +9031,19 @@ Ext.onReady( function() {
 				}()
 			},
             listeners: {
+                render: function() {
+                    var me = this;
+
+                    me.getEl().on('mouseleave', function() {
+                        for (var i = 0, cmp; i < me.trash.length; i++) {
+                            cmp = me.trash[i];
+
+                            if (cmp && cmp.destroy) {
+                                cmp.destroy();
+                            }
+                        }
+                    });
+                },
                 resize: function() {
                     var width = this.getWidth();
 
