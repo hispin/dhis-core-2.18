@@ -47,7 +47,7 @@
                             name="programId" 
                             ng-model="selectedProgram" 
                             ng-options="program as program.name for program in programs | orderBy: 'name'" 
-                            ng-change="loadEvents()"
+                            ng-change="getPrograms()"
                             ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
                         <option value="">{{'please_select'| translate}}</option>
                     </select>      
