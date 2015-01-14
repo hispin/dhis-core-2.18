@@ -100,7 +100,7 @@ dhis2.db.tmpl = {
 	    "<a href='javascript:dhis2.db.exploreMap( \"${id}\" )'>${i18n_explore}</a>" +
 	    "<a href='javascript:dhis2.db.resizeItem( \"${itemId}\" )'>${i18n_resize}</a>" +
 	    "<i class=\"fa fa-arrows dragIcon\" title=\"${i18n_click_and_drag_to_new_position}\"></i></div>" +
-	    "<div id='plugin-${itemId}' style='width:405px; height:304px'></div>" +
+	    "<div id='plugin-${itemId}' style='width:100%; height:304px'></div>" +
 	    "</div></li>",
 
 	reportTableItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
@@ -404,7 +404,7 @@ dhis2.db.getFullWidth = function()
 		itemWidth = 408,
 		items = Math.floor( ( viewportVidth + spacing ) / ( itemWidth + spacing ) ),
 		fullWidth = ( items * itemWidth ) + ( ( items - 1 ) * spacing );
-	
+
 	return fullWidth;
 }
 
@@ -419,7 +419,7 @@ dhis2.db.renderDashboard = function( id )
     {
     	return;
     }
-    
+
     var fullWidth = dhis2.db.getFullWidth();
 
     $( "#dashboard-" + dhis2.db.current() ).removeClass( "currentDashboard" );
@@ -442,10 +442,10 @@ dhis2.db.renderDashboard = function( id )
 				{
 				    return true;
 				}
-				
+
 				var width = ( dhis2.db.shapeFullWidth == dashboardItem.shape ) ? fullWidth : contentWidth;
 				var style = ( dhis2.db.shapeFullWidth == dashboardItem.shape ) ? "width:" + fullWidth + "px" : "";
-												
+
 				if ( "chart" == dashboardItem.type )
 				{
 				    $d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": dashboardItem.id, "id": dashboardItem.chart.id, "name": dashboardItem.chart.name, "style": style,
@@ -483,8 +483,8 @@ dhis2.db.renderDashboard = function( id )
 				}
 				else if ( "eventChart" == dashboardItem.type )
 				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.eventChartItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventChart.id, 
-				    	"name": dashboardItem.eventChart.name, "style": style, "i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, 
+				    $d.append( $.tmpl( dhis2.db.tmpl.eventChartItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventChart.id,
+				    	"name": dashboardItem.eventChart.name, "style": style, "i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size,
 				    	"i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position, "i18n_explore": i18n_explore } ) );
 
 				    DHIS.getEventChart({

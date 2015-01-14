@@ -3023,7 +3023,10 @@ Ext.onReady( function() {
 	};
 
     applyCss = function() {
-        css = 'table.pivot { font-family: arial,sans-serif,ubuntu,consolas; } \n';
+        var css = '',
+            arrowUrl = init.dashboard ? '../dhis-web-commons/javascripts/plugin/images/arrowupdown.png' : '//dhis2-cdn.org/v217/plugin/images/arrowupdown.png';
+
+        css += 'table.pivot { font-family: arial,sans-serif,ubuntu,consolas; } \n';
         css += '.td-nobreak { white-space: nowrap; } \n';
         css += '.td-hidden { display: none; } \n';
         css += '.td-collapsed { display: none; } \n';
@@ -3059,7 +3062,7 @@ Ext.onReady( function() {
         css += '.pivot div.legendColor { display: table-cell; width: 2px; } \n';
 
         css += '.pointer { cursor: pointer; } \n';
-        css += '.td-sortable { background-image: url("http://dhis2-cdn.org/v214/plugin/images/arrowupdown.png"); background-repeat: no-repeat; background-position: right center; padding-right: 15px !important; } \n';
+        css += '.td-sortable { background-image: url("' + arrowUrl + '"); background-repeat: no-repeat; background-position: right center; padding-right: 15px !important; } \n';
 
         Ext.util.CSS.createStyleSheet(css);
     };
