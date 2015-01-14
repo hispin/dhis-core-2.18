@@ -132,9 +132,7 @@
                                                    name="foo" 
                                                    style="width:98%;"
                                                    ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
-                                                   ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"/>                                            
-                                            <!--<span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red"><em title="{{'required'| translate}}" class="required">*</em></span>
-                                            <span ng-if="innerFormGrid.foo.$dirty && innerFormGrid.foo.$invalid" class="error">{{'value_must_be'| translate}} - {{prStDes[eventGridColumn.id].dataElement.numberType | translate}}</span>-->
+                                                   ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"/>
                                         </div>
                                         <div ng-switch-when="string">                                        
                                             <div ng-if="eventGridColumn.id == 'uid'">
@@ -165,8 +163,6 @@
                                                            ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
                                                            ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"
                                                            />
-                                                        <!--<span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red"><em title="{{'required'| translate}}" class="required">*</em></span>
-                                                        <span ng-if="innerFormGrid.foo.$dirty && innerForm.foo.$invalid" class="required">{{'option_required'| translate}}</span>-->
                                                     </span>
                                                     <span ng-if="selectedProgram.dataEntryMethod && optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id].options.length < 7">                                    
                                                         <label>
@@ -190,8 +186,7 @@
                                                                    ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
                                                                    ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"
                                                                    value={{option.name}}> {{option.name}}<br>                                    
-                                                        </label>                                    
-                                                        <!--<span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>-->
+                                                        </label>
                                                     </span>                                                
                                                 </div>
                                                 <div ng-if="!optionSets[prStDes[eventGridColumn.id].dataElement.optionSet.id]">
@@ -207,8 +202,6 @@
                                                         ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
                                                         ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"
                                                         />
-                                                    <!--<span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red"><em title="{{'required'| translate}}" class="required">*</em></span>
-                                                    <span ng-if="innerFormGrid.foo.$dirty && innerForm.foo.$invalid" class="required">{{'string_required'| translate}}</span>-->
                                                 </div>
                                             </div>
                                         </div>                                        
@@ -226,8 +219,6 @@
                                                 <option value="false">{{'no'| translate}}</option>
                                                 <option value="true">{{'yes'| translate}}</option>
                                             </select>
-                                            <!--<span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red"><em title="{{'required'| translate}}" class="required">*</em></span>
-                                            <span ng-if="innerFormGrid.foo.$dirty && innerForm.foo.$invalid" class="required">{{'bool_required'| translate}}</span>-->
                                         </div>
                                         <div ng-switch-when="date">
                                             <input type="text" 
@@ -245,8 +236,6 @@
                                                    ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
                                                    ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"
                                                    />
-                                            <!--<span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red"><em title="{{'required'| translate}}" class="required">*</em></span>
-                                            <span ng-show="innerFormGrid.foo.$dirty && innerForm.foo.$invalid" class="required">{{'date_required'| translate}}</span>-->
                                         </div>
                                         <div ng-switch-when="trueOnly">
                                             <input type="checkbox"
@@ -259,7 +248,6 @@
                                                    ng-class="{true: 'update-success'} [currentElement.updated == true && currentElement.id == eventGridColumn.id]"
                                                    ng-class="{true: 'update-error'} [!currentElement.updated == true && currentElement.id == eventGridColumn.id]"
                                                    />
-                                            <!--<span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid"><em title="{{'required'| translate}}" class="required">*</em></span>-->
                                         </div>
                                     </div>
                                     <span ng-show="currentEvent[eventGridColumn.id] && innerFormGrid.foo.$invalid || outerForm.submitted && innerFormGrid.foo.$invalid" class="required">{{getErrorMessage(eventGridColumn.id)}}</span>
