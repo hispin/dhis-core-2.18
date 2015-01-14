@@ -104,7 +104,8 @@ public interface SystemSettingManager
     final String KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL = "keyAcceptanceRequiredForApproval";
     final String KEY_SYSTEM_NOTIFICATIONS_EMAIL = "keySystemNotificationsEmail";
     final String KEY_ANALYSIS_RELATIVE_PERIOD = "keyAnalysisRelativePeriod";
-    
+    final String KEY_CORS_WHITELIST = "keyCorsWhitelist";
+
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
@@ -190,6 +191,8 @@ public interface SystemSettingManager
     String googleAnalyticsUA();
 
     Integer credentialsExpires();
+
+    List<String> getCorsWhitelist();
 
     Map<String, Serializable> getSystemSettingsAsMap();
     

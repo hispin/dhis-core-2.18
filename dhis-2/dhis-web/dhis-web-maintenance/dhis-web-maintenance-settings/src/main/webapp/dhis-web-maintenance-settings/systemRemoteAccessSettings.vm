@@ -1,0 +1,5 @@
+
+<h3>$i18n.getString( "remote_access_settings" )</h3>
+
+
+<div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>
