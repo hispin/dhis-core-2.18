@@ -202,8 +202,6 @@ public class GeoToolsMapGenerationService
             inGroups.addAll( organisationUnitService.getOrganisationUnits( mapView.getItemOrganisationUnitGroups(), mapView.getOrganisationUnits() ) );
         }
 
-        date = date != null ? date : new Date();
-        
         mapView.init( user, date, null, atLevels, inGroups, null );
         
         List<OrganisationUnit> organisationUnits = mapView.getAllOrganisationUnits();
