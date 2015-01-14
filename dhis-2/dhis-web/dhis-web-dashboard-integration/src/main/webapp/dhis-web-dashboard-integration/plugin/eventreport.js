@@ -3816,7 +3816,10 @@ Ext.onReady( function() {
 
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
-            Ext.get(config.el).viewport = ns.app.centerRegion;
+
+            Ext.get(config.el).setViewportWidth = function(width) {
+                ns.app.centerRegion.setWidth(width);
+            };
 
 			if (config.id) {
 				ns.core.web.report.loadReport(config.id);
