@@ -42,6 +42,8 @@ $( document ).ready( function()
 	$( "#interpretationArea" ).autogrow();
 
 	$( document ).click( dhis2.db.hideSearch );
+	
+	$( window ).resize( dhis2.db.drawFullWidthItems );
 
 	$( "#searchField" ).focus( function() {
 		$( "#searchDiv" ).css( "border-color", "#999" );
@@ -413,17 +415,15 @@ dhis2.db.getFullWidth = function()
 dhis2.db.resizeItem = function( id )
 {
 	$.getJSON( "../api/dashboardItems/" + id, function( item ) {
-		
-		var newShape = dhis2.db.shapeFullWidth;			
-		
+				
 		if ( dhis2.db.shapeFullWidth == item.shape ) {
-			newShape = dhis2.db.shapeNormal;
+			var newShape = dhis2.db.shapeNormal;
 			$( "#" + id ).css( "width", dhis2.db.widthNormal + "px" );
 			Ext.get( "plugin-" + id ).viewport.setWidth( dhis2.db.widthNormal );
 		}
 		else {
-			newShape = dhis2.db.shapeFullWidth,
-			fullWidth = dhis2.db.getFullWidth();
+			var newShape = dhis2.db.shapeFullWidth,
+				fullWidth = dhis2.db.getFullWidth();
 			$( "#" + id ).css( "width", fullWidth + "px" );
 			Ext.get( "plugin-" + id ).viewport.setWidth( fullWidth );
 		}
@@ -434,6 +434,24 @@ dhis2.db.resizeItem = function( id )
 		} );
 	} );
 }
+
+dhis2.db.drawFullWidthItems = function()
+{
+	if ( undefined !== dhis2.db.current() ) {
+		var url = "../api/dashboards/" + dhis2.db.current() + "?fields=dashboardItems[id,shape]";
+		
+		$.getJSON( url, function( dashboard ) {
+			$.each( dashboard.dashboardItems, function( i, item ) {
+				if ( dhis2.db.shapeFullWidth == item.shape ) {
+					var fullWidth = dhis2.db.getFullWidth();
+					$( "#" + item.id ).css( "width", fullWidth + "px" );
+					Ext.get( "plugin-" + item.id ).viewport.setWidth( fullWidth );
+				}
+			} );
+		} );
+	}
+}
+
 
 dhis2.db.renderDashboard = function( id )
 {
@@ -454,7 +472,7 @@ dhis2.db.renderDashboard = function( id )
 
     $( "#dashboard-" + dhis2.db.current() ).addClass( "currentDashboard" );
 
-    $.getJSON( "../api/dashboards/" + id + "/?fields=:all,dashboardItems[:all]&" + dhis2.util.cacheBust(), function( data )
+    $.getJSON( "../api/dashboards/" + id + "?fields=:all,dashboardItems[:all]&" + dhis2.util.cacheBust(), function( data )
     {
 		$d = $( "#contentList" ).empty();
 
