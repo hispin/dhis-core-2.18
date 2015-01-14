@@ -169,6 +169,7 @@ public class ChartController
         @RequestParam( value = "ou", required = false ) String ou,
         @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
         @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
+        @RequestParam( value = "attachment", required = false ) boolean attachment,
         HttpServletResponse response ) throws IOException
     {
         Chart chart = chartService.getChartNoAcl( uid );
@@ -185,7 +186,7 @@ public class ChartController
 
         String filename = CodecUtils.filenameEncode( chart.getName() ) + ".png";
 
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, attachment );
 
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), jFreeChart, width, height );
     }
@@ -198,6 +199,7 @@ public class ChartController
         @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
         @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
         @RequestParam( value = "skipTitle", required = false ) boolean skipTitle,
+        @RequestParam( value = "attachment", required = false ) boolean attachment,
         HttpServletResponse response ) throws IOException
     {
         Indicator indicator = indicatorService.getIndicator( indicatorUid );
@@ -214,7 +216,7 @@ public class ChartController
             chart = chartService.getJFreeOrganisationUnitChart( indicator, unit, !skipTitle, i18nManager.getI18nFormat() );
         }
 
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "chart.png", false );
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "chart.png", attachment );
 
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
