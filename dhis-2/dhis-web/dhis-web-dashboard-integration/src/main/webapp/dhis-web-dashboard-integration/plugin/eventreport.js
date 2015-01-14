@@ -3125,9 +3125,6 @@ Ext.onReady( function() {
                 init.systemInfo.dateFormat = Ext.isString(systemSettings.keyDateFormat) ? systemSettings.keyDateFormat.toLowerCase() : 'yyyy-mm-dd';
                 init.systemInfo.calendar = systemSettings.keyCalendar;
 
-                // optionSetsConfig
-
-
                 // user-account
                 userAccountConfig = {
                     url: init.contextPath + '/api/me/user-account.' + type,
@@ -3320,43 +3317,46 @@ Ext.onReady( function() {
 	};
 
     applyCss = function() {
-        var css = 'table.pivot { \n font-family: arial,sans-serif,ubuntu,consolas; \n } \n';
-        css += '.td-nobreak { \n white-space: nowrap; \n } \n';
-        css += '.td-hidden { \n display: none; \n } \n';
-        css += '.td-collapsed { \n display: none; \n } \n';
-        css += 'table.pivot { \n border-collapse: collapse; \n border-spacing: 0px; \n border: 0 none; \n } \n';
-        css += '.pivot td { \n padding: 5px; \n border: \n 1px solid #b2b2b2; \n } \n';
-        css += '.pivot-dim { \n background-color: #dae6f8; \n text-align: center; \n } \n';
-        css += '.pivot-dim.highlighted { \n	background-color: #c5d8f6; \n } \n';
-        css += '.pivot-dim-subtotal { \n background-color: #cad6e8; \n text-align: center; \n } \n';
-        css += '.pivot-dim-total { \n background-color: #bac6d8; \n text-align: center; \n } \n';
-        css += '.pivot-dim-total.highlighted { \n background-color: #adb8c9; \n } \n';
-        css += '.pivot-dim-empty { \n background-color: #dae6f8; \n text-align: center; \n } \n';
-        css += '.pivot-value { \n background-color: #fff; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-value-subtotal { \n background-color: #f4f4f4; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-value-subtotal-total { \n background-color: #e7e7e7; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-value-total { \n background-color: #e4e4e4; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-value-total-subgrandtotal { \n background-color: #d8d8d8; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-value-grandtotal { \n background-color: #c8c8c8; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-dim-label { \n background-color: #cddaed; \n white-space: nowrap; \n text-align: center; \n } \n';
-        css += '.pivot-empty { \n background-color: #cddaed; \n } \n';
-        css += '.pivot-transparent-column { \n background-color: #fff; \n border-top-color: #fff !important; \n border-right-color: #fff !important; \n } \n';
-        css += '.pivot-transparent-row { \n background-color: #fff; \n border-bottom-color: #fff !important; \n border-left-color: #fff !important; \n } \n';
+        var css = '',
+            arrowUrl = init.dashboard ? '../dhis-web-commons/javascripts/plugin/images/arrowupdown.png' : '//dhis2-cdn.org/v217/plugin/images/arrowupdown.png';
 
-        css += '.x-mask-msg { \n padding: 0; \n	border: 0 none; \n background-image: none; \n background-color: transparent; \n } \n';
-        css += '.x-mask-msg div { \n background-position: 11px center; \n } \n';
-        css += '.x-mask-msg .x-mask-loading { \n border: 0 none; \n	background-color: #000; \n color: #fff; \n border-radius: 2px; \n padding: 12px 14px 12px 30px; \n opacity: 0.65; \n } \n';
+        css += 'table.pivot { font-family: arial,sans-serif,ubuntu,consolas; } \n';
+        css += '.td-nobreak { white-space: nowrap; } \n';
+        css += '.td-hidden { display: none; } \n';
+        css += '.td-collapsed { display: none; } \n';
+        css += 'table.pivot { border-collapse: collapse; border-spacing: 0px; border: 0 none; } \n';
+        css += '.pivot td { padding: 5px; border: \n 1px solid #b2b2b2; } \n';
+        css += '.pivot-dim { background-color: #dae6f8; text-align: center; } \n';
+        css += '.pivot-dim.highlighted {	background-color: #c5d8f6; } \n';
+        css += '.pivot-dim-subtotal { background-color: #cad6e8; text-align: center; } \n';
+        css += '.pivot-dim-total { background-color: #bac6d8; text-align: center; } \n';
+        css += '.pivot-dim-total.highlighted { background-color: #adb8c9; } \n';
+        css += '.pivot-dim-empty { background-color: #dae6f8; text-align: center; } \n';
+        css += '.pivot-value { background-color: #fff; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-subtotal { background-color: #f4f4f4; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-subtotal-total { background-color: #e7e7e7; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-total { background-color: #e4e4e4; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-total-subgrandtotal { background-color: #d8d8d8; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-grandtotal { background-color: #c8c8c8; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-dim-label { background-color: #cddaed; white-space: nowrap; text-align: center; } \n';
+        css += '.pivot-empty { background-color: #cddaed; } \n';
+        css += '.pivot-transparent-column { background-color: #fff; border-top-color: #fff !important; border-right-color: #fff !important; } \n';
+        css += '.pivot-transparent-row { background-color: #fff; border-bottom-color: #fff !important; border-left-color: #fff !important; } \n';
+
+        css += '.x-mask-msg { padding: 0;	border: 0 none; background-image: none; background-color: transparent; } \n';
+        css += '.x-mask-msg div { background-position: 11px center; } \n';
+        css += '.x-mask-msg .x-mask-loading { border: 0 none;	background-color: #000; color: #fff; border-radius: 2px; padding: 12px 14px 12px 30px; opacity: 0.65; } \n';
         css += '.x-mask { opacity: 0 } \n';
 
-        css += '.pivot td.legend { \n padding: 0; \n } \n';
-        css += '.pivot div.legendCt { \n display: table; \n float: right; \n width: 100%; \n } \n';
-        css += '.pivot div.arrowCt { \n display: table-cell; \n vertical-align: top; \n width: 8px; \n } \n';
-        css += '.pivot div.arrow { \n width: 0; \n height: 0; \n } \n';
-        css += '.pivot div.number { \n display: table-cell; \n } \n',
-        css += '.pivot div.legendColor { \n display: table-cell; \n width: 2px; \n } \n';
+        css += '.pivot td.legend { padding: 0; } \n';
+        css += '.pivot div.legendCt { display: table; float: right; width: 100%; } \n';
+        css += '.pivot div.arrowCt { display: table-cell; vertical-align: top; width: 8px; } \n';
+        css += '.pivot div.arrow { width: 0; height: 0; } \n';
+        css += '.pivot div.number { display: table-cell; } \n',
+        css += '.pivot div.legendColor { display: table-cell; width: 2px; } \n';
 
-        css += '.pointer { \n cursor: pointer; \n } \n';
-        css += '.td-sortable { \n background-image: url("http://dhis2-cdn.org/v217/plugin/images/arrowupdown.png"); \n background-repeat: no-repeat; \n background-position: right center; \n padding-right: 15px !important; \n } \n';
+        css += '.pointer { cursor: pointer; } \n';
+        css += '.td-sortable { background-image: url("' + arrowUrl + '"); background-repeat: no-repeat; background-position: right center; padding-right: 15px !important; } \n';
 
         Ext.util.CSS.createStyleSheet(css);
     };
