@@ -3244,10 +3244,9 @@ Ext.onReady( function() {
                     }
 
                     ids = Ext.Array.clean(ids.concat(filterIds || []));
-console.log("ids", ids, "xResponse.metaData.names", xResponse.metaData.names);
+
                     if (Ext.isArray(ids) && ids.length) {
                         for (var i = 0; i < ids.length; i++) {
-console.log(ids[i]);
                             text += xResponse.metaData.names[ids[i]];
                             text += i < ids.length - 1 ? ', ' : '';
                         }

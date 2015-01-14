@@ -1,7 +1,7 @@
 
 #sharingDialog()
 
-<script type="text/javascript" src="//maps.google.com/maps/api/js"></script>
+
 <script type="text/javascript" src="../dhis-web-commons/javascripts/openlayers/OpenLayers.js"></script>
 <script type="text/javascript" src="plugin/table.js"></script>
 <script type="text/javascript" src="plugin/chart.js"></script>
