@@ -508,4 +508,22 @@ var d2Services = angular.module('d2Services', ['ngResource'])
 
         return Math.max(low, 0);
     };
+})
+
+.service('GridColumnService', function(){
+    return {        
+        columnExists: function(cols, id) {
+            var colExists = false;
+            if(!angular.isObject(cols) || !id || angular.isObject(cols) && !cols.length){
+                return colExists;
+            }
+            
+            for(var i=0; i<cols.length && !colExists; i++){
+                if(cols[i].id === id){
+                    colExists = true;
+                }
+            }
+            return colExists;
+        }
+    };
 });
