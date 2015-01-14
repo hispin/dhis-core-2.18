@@ -147,7 +147,7 @@ public class UserGroup
     
     public void removeManagedGroup( UserGroup group )
     {
-        managedByGroups.remove( group );
+        managedGroups.remove( group );
         group.getManagedByGroups().remove( this );
     }
     
