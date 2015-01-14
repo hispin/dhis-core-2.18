@@ -38,6 +38,7 @@ import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.eventchart.EventChart;
+import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -108,6 +109,7 @@ public class DefaultDashboardService
         result.setEventCharts( objectManager.getBetweenLikeName( EventChart.class, query, 0, getMax( TYPE_EVENT_CHART, maxTypes ) ) );
         result.setMaps( objectManager.getBetweenLikeName( Map.class, query, 0, getMax( TYPE_MAP, maxTypes ) ) );
         result.setReportTables( objectManager.getBetweenLikeName( ReportTable.class, query, 0, getMax( TYPE_REPORT_TABLE, maxTypes ) ) );
+        result.setEventReports( objectManager.getBetweenLikeName( EventReport.class, query, 0, getMax( TYPE_EVENT_REPORT, maxTypes ) ) );
         result.setReports( objectManager.getBetweenLikeName( Report.class, query, 0, getMax( TYPE_REPORTS, maxTypes ) ) );
         result.setResources( objectManager.getBetweenLikeName( Document.class, query, 0, getMax( TYPE_RESOURCES, maxTypes ) ) );
 
@@ -163,10 +165,6 @@ public class DefaultDashboardService
             if ( TYPE_USERS.equals( type ) )
             {
                 item.getUsers().add( objectManager.get( User.class, contentUid ) );
-            }
-            else if ( TYPE_REPORT_TABLES.equals( type ) )
-            {
-                item.getReportTables().add( objectManager.get( ReportTable.class, contentUid ) );
             }
             else if ( TYPE_REPORTS.equals( type ) )
             {
@@ -231,11 +229,6 @@ public class DefaultDashboardService
         if ( item.getUsers() != null )
         {
             item.setUsers( objectManager.getByUid( User.class, getUids( item.getUsers() ) ) );
-        }
-
-        if ( item.getReportTables() != null )
-        {
-            item.setReportTables( objectManager.getByUid( ReportTable.class, getUids( item.getReportTables() ) ) );
         }
 
         if ( item.getReports() != null )

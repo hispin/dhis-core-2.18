@@ -29,12 +29,6 @@
       <many-to-many column="userid" class="org.hisp.dhis.user.User" foreign-key="fk_dashboarditem_users_userinfoid" />
     </list>
     
-    <list name="reportTables" table="dashboarditem_reporttables">
-      <key column="dashboarditemid" foreign-key="fk_dashboarditem_reporttables_dashboardid" />
-      <list-index column="sort_order" base="0" />
-      <many-to-many column="reporttableid" class="org.hisp.dhis.reporttable.ReportTable" foreign-key="fk_dashboarditem_reporttables_reporttableid" />
-    </list>
-    
     <list name="reports" table="dashboarditem_reports">
       <key column="dashboarditemid" foreign-key="fk_dashboarditem_reports_dashboardid" />
       <list-index column="sort_order" base="0" />
