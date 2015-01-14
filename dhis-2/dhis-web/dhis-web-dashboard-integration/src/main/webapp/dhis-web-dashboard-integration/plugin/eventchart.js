@@ -355,7 +355,7 @@ Ext.onReady( function() {
 
             for (i = 0; i < ln; i++) {
                 point = inflections[i];
-                text = me.label.renderer(labels[i]);
+                text = me.label.renderer(labels[i]) || '';
                 textLabel = me.getOrCreateLabel(i, text);
                 bbox = textLabel._bbox;
                 maxHeight = max(maxHeight, bbox.height + me.dashSize + me.label.padding);
