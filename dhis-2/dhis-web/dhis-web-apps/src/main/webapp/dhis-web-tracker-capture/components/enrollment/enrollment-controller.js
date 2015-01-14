@@ -27,6 +27,7 @@ trackerCapture.controller('EnrollmentController',
         $scope.showEnrollmentHistoryDiv = false;
         $scope.hasEnrollmentHistory = false;
         $scope.selectedEnrollment = null;
+        $scope.currentEnrollment = null;
         var selectedEnrollment = null;
         $scope.newEnrollment = {};
         
