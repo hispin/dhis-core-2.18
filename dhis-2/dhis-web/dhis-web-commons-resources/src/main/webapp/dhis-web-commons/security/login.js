@@ -10,7 +10,7 @@ $( document ).ready( function()
     {
         $( '#submit' ).attr( 'disabled', 'disabled' );
 
-        sessionStorage.removeItem( 'orgUnitSelected' );
+        sessionStorage.removeItem( 'ouSelected' );
     } );
     
     var locale = localStorage[login.localeKey];
