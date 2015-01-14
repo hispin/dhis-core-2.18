@@ -195,6 +195,7 @@ public class MapController
         @RequestParam( value = "ou", required = false ) String ou,
         @RequestParam( required = false ) Integer width,
         @RequestParam( required = false ) Integer height,
+        @RequestParam( value = "attachment", required = false ) boolean attachment,
         HttpServletResponse response ) throws Exception
     {
         Map map = mappingService.getMapNoAcl( uid );
@@ -219,7 +220,7 @@ public class MapController
 
         OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
 
-        renderMapViewPng( map, date, unit, width, height, response );
+        renderMapViewPng( map, date, unit, width, height, attachment, response );
     }
 
     //--------------------------------------------------------------------------
@@ -283,14 +284,14 @@ public class MapController
         }
     }
 
-    private void renderMapViewPng( Map map, Date date, OrganisationUnit unit, Integer width, Integer height, HttpServletResponse response )
+    private void renderMapViewPng( Map map, Date date, OrganisationUnit unit, Integer width, Integer height, boolean attachment, HttpServletResponse response )
         throws Exception
     {
         BufferedImage image = mapGenerationService.generateMapImage( map, date, unit, width, height );
 
         if ( image != null )
         {
-            contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "map.png", false );
+            contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "map.png", attachment );
 
             ImageIO.write( image, "PNG", response.getOutputStream() );
         }

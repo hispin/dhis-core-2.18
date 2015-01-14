@@ -31,9 +31,10 @@ var i18n_see_more_hits = '$encoder.jsEscape( $i18n.getString( "see_more_hits" ),
 var i18n_see_fewer_hits = '$encoder.jsEscape( $i18n.getString( "see_fewer_hits" ), "'")';
 var i18n_add = '$encoder.jsEscape( $i18n.getString( "add" ), "'")';
 var i18n_click_and_drag_to_new_position = '$encoder.jsEscape( $i18n.getString( "click_and_drag_to_new_position" ), "'")';
+var i18n_get_as_image = '$encoder.jsEscape( $i18n.getString( "get_as_image" ), "'")';
 
 jQuery( document ).ready( function() {
-  dhis2.leftBar.resetPosition(); ## Force left bar initial position when displaying dashboard
+  dhis2.leftBar.resetPosition();
 });
 
 </script>
@@ -81,7 +82,11 @@ jQuery( document ).ready( function() {
 </div>
 
 <div id="chartView" class="page">
-    <img id="chartImage" src="" style="padding: 10px;">
+	<div id="chartViewHeader">
+		<span><a id="chartImageDownload" href="javascript:dhis2.db.downloadImage()">$i18n.getString( "download" )</a></span>
+		<span>$i18n.getString( "api_link" ): <a id="chartImageUrl" target="_blank"></a></span>
+	</div>
+    <div><img id="chartImage" src="" style="padding: 10px;"></div>
 </div>
 
 <div id="reportDialogView" class="page"></div>
