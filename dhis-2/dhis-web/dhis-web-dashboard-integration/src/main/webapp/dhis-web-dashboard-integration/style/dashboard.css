@@ -261,6 +261,15 @@
   padding: 9px 3% 7px 3%;
 }
 
+.dragIcon
+{
+  color: #444;
+  margin: 3px 6px 0 6px;
+  float: right;
+  cursor: pointer;
+  font-size: 10px;
+}
+
 .hitHeader
 {
   padding: 5px 6px 5px 33px;
