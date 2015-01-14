@@ -639,13 +639,13 @@ dhis2.db.renderDashboard = function( id )
 				}
 				else if ( "eventReport" == dashboardItem.type )
 				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": dashboardItem.id, "id": dashboardItem.reportTable.id, "name": dashboardItem.reportTable.name, "style": style,
+				    $d.append( $.tmpl( dhis2.db.tmpl.eventReportItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventReport.id, "name": dashboardItem.eventReport.name, "style": style,
 					"i18n_remove": i18n_remove, "i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } ) );
 
 				    DHIS.getEventReport({
                         url: '..',
                         el: 'plugin-' + dashboardItem.id,
-                        id: dashboardItem.reportTable.id,
+                        id: dashboardItem.eventReport.id,
                         width: width - scrollbarWidth,
                         height: 290,
                         dashboard: true,

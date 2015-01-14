@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -43,6 +44,7 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.eventchart.EventChart;
+import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -86,6 +88,8 @@ public class DashboardItem
     private Map map;
 
     private ReportTable reportTable;
+    
+    private EventReport eventReport;
     
     @Scanned
     private List<User> users = new ArrayList<>();
@@ -138,6 +142,10 @@ public class DashboardItem
         {
             return TYPE_REPORT_TABLE;
         }
+        else if ( eventReport != null )
+        {
+            return TYPE_EVENT_REPORT;
+        }
         else if ( !users.isEmpty() )
         {
             return TYPE_USERS;
@@ -180,6 +188,10 @@ public class DashboardItem
         {
             return reportTable;
         }
+        else if ( eventReport != null )
+        {
+            return eventReport;
+        }
 
         return null;
     }
@@ -215,6 +227,7 @@ public class DashboardItem
         count += eventChart != null ? 1 : 0;
         count += map != null ? 1 : 0;
         count += reportTable != null ? 1 : 0;
+        count += eventReport != null ? 1 : 0;
         count += users.size();
         count += reports.size();
         count += resources.size();
@@ -319,6 +332,20 @@ public class DashboardItem
     public void setReportTable( ReportTable reportTable )
     {
         this.reportTable = reportTable;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public EventReport getEventReport()
+    {
+        return eventReport;
+    }
+
+    public void setEventReport( EventReport eventReport )
+    {
+        this.eventReport = eventReport;
     }
 
     @JsonProperty( "users" )

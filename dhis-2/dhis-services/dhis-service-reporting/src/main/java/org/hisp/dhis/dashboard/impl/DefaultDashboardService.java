@@ -150,6 +150,12 @@ public class DefaultDashboardService
             item.setReportTable( objectManager.get( ReportTable.class, contentUid ) );
             dashboard.getItems().add( 0, item );
         }
+        else if ( TYPE_EVENT_REPORT.equals( type ) )
+        {
+            DashboardItem item = new DashboardItem();
+            item.setEventReport( objectManager.get( EventReport.class, contentUid ) );
+            dashboard.getItems().add( 0, item );
+        }
         else if ( TYPE_MESSAGES.equals( type ) )
         {
             DashboardItem item = new DashboardItem();
@@ -224,6 +230,11 @@ public class DefaultDashboardService
         if ( item.getReportTable() != null )
         {
             item.setReportTable( objectManager.get( ReportTable.class, item.getReportTable().getUid() ) );
+        }
+        
+        if ( item.getEventReport() != null )
+        {
+            item.setEventReport( objectManager.get( EventReport.class, item.getEventReport().getUid() ) );
         }
 
         if ( item.getUsers() != null )
