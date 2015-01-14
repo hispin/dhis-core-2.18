@@ -28,9 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dashboard.DashboardItem.SHAPE_FULL_WIDTH;
-import static org.hisp.dhis.dashboard.DashboardItem.SHAPE_NORMAL;
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,8 +81,8 @@ public class DashboardItemController
         return entityList;
     }
     
-    @RequestMapping( value = "/{uid}/shape", method = RequestMethod.PUT )
-    public void putDashboardItemShape( @PathVariable String uid,
+    @RequestMapping( value = "/{uid}/shape/{shape}", method = RequestMethod.PUT )
+    public void putDashboardItemShape( @PathVariable String uid, @PathVariable String shape,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         DashboardItem item = dashboardService.getDashboardItem( uid );
@@ -95,8 +92,6 @@ public class DashboardItemController
             ContextUtils.notFoundResponse( response, "Dashboard item does not exist: " + uid );
             return;
         }
-        
-        String shape = item.getShape() == null || SHAPE_NORMAL.equals( item.getShape() ) ? SHAPE_FULL_WIDTH : SHAPE_NORMAL;
         
         item.setShape( shape );
         

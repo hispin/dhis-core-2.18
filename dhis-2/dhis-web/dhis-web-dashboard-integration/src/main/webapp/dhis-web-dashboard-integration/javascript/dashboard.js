@@ -26,7 +26,9 @@ dhis2.db.currentShareType;
 dhis2.db.currentShareId;
 dhis2.db.currentMaxType = [];
 dhis2.db.maxItems = 40;
+dhis2.db.shapeNormal = "normal";
 dhis2.db.shapeFullWidth = "full_width";
+dhis2.db.widthNormal = 408;
 
 // TODO support table as link and embedded
 // TODO double horizontal size
@@ -408,10 +410,34 @@ dhis2.db.getFullWidth = function()
 	return fullWidth;
 }
 
+dhis2.db.resizeItem = function( id )
+{
+	$.getJSON( "../api/dashboardItems/" + id, function( item ) {
+		
+		var newShape = dhis2.db.shapeFullWidth;			
+		
+		if ( dhis2.db.shapeFullWidth == item.shape ) {
+			newShape = dhis2.db.shapeNormal;
+			$( "#" + id ).css( "width", dhis2.db.widthNormal + "px" );
+			Ext.get( "plugin-" + id ).viewport.setWidth( dhis2.db.widthNormal );
+		}
+		else {
+			newShape = dhis2.db.shapeFullWidth,
+			fullWidth = dhis2.db.getFullWidth();
+			$( "#" + id ).css( "width", fullWidth + "px" );
+			Ext.get( "plugin-" + id ).viewport.setWidth( fullWidth );
+		}
+		
+		$.ajax( {
+			url: "../api/dashboardItems/" + id + "/shape/" + newShape,
+			type: "put"
+		} );
+	} );
+}
+
 dhis2.db.renderDashboard = function( id )
 {
-    var contentWidth = 408,
-        contentHeight = 304,
+    var contentHeight = 304,
         isChrome = /\bchrome\b/.test(navigator.userAgent.toLowerCase()),
         scrollbarWidth = isChrome ? 8 : 17;
 
@@ -443,9 +469,9 @@ dhis2.db.renderDashboard = function( id )
 				    return true;
 				}
 
-				var width = ( dhis2.db.shapeFullWidth == dashboardItem.shape ) ? fullWidth : contentWidth;
-				var style = ( dhis2.db.shapeFullWidth == dashboardItem.shape ) ? "width:" + fullWidth + "px" : "";
-
+				var width = ( dhis2.db.shapeFullWidth == dashboardItem.shape ) ? fullWidth : dhis2.db.widthNormal;
+				var style = "width:" + width + "px";
+				
 				if ( "chart" == dashboardItem.type )
 				{
 				    $d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": dashboardItem.id, "id": dashboardItem.chart.id, "name": dashboardItem.chart.name, "style": style,
@@ -762,14 +788,6 @@ dhis2.db.exploreReportTable = function( uid )
 dhis2.db.exploreEventReport = function( uid )
 {
 	window.location.href = "../dhis-web-event-reports/index.html?id=" + uid;
-}
-
-dhis2.db.resizeItem = function( uid )
-{
-	$.ajax( {
-		url: "../api/dashboardItems/" + uid + "/shape",
-		type: "put"
-	} );
 }
 
 dhis2.db.renderReportTable = function( tableId, itemId )
