@@ -55,38 +55,18 @@ trackerCapture.controller('ProfileController',
         $scope.formEmpty = true;
         var tei = angular.copy($scope.selectedTei);
         tei.attributes = [];
-        angular.forEach($scope.selectedTei.attributes, function(attribute){
-            if(attribute.type === 'trueOnly'){ 
-                if(!attribute.value){
-                    tei.attributes.push({attribute: attribute.attribute, value: ''});
-                    $scope.formEmpty = false;                    
-                }
-                else{
-                    tei.attributes.push({attribute: attribute.attribute, value: 'true'});
-                    $scope.formEmpty = false;
-                }
-            }            
-            else{
-                var val = attribute.value;
-                if(!angular.isUndefined(val) && val !== ''){
-                    if(attribute.type === 'date'){   
-                        val = DateUtils.formatFromUserToApi(val);
-                    }
-                    if(attribute.type === 'optionSet' && $scope.optionSets.optionCodesByName[  '"' + val + '"']){   
-                        val = $scope.optionSets.optionCodesByName[  '"' + val + '"'];
-                    }                    
-                    $scope.formEmpty = false;
-                }
-                tei.attributes.push({attribute: attribute.attribute, value: val});
-            }             
+        angular.forEach($scope.selectedTei.attributes, function(attribute){            
+            tei.attributes.push({attribute: attribute.attribute, value: attribute.value, type: attribute.type});
+            if(attribute.value && $scope.formEmpty){
+                $scope.formEmpty = false;
+            }           
         });
         
-        if($scope.formEmpty){
-            //form is empty            
+        if($scope.formEmpty){//form is empty  
             return false;
         }
-
-        TEIService.update(tei).then(function(updateResponse){
+        
+        TEIService.update(tei, $scope.optionSets).then(function(updateResponse){
             
             if(updateResponse.status !== 'SUCCESS'){//update has failed
                 var dialogOptions = {
