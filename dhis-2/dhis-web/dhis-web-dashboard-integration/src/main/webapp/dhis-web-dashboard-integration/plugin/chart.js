@@ -3013,7 +3013,7 @@ Ext.onReady(function() {
                         chart.setTitlePosition();
                     };
 
-                    chart.on('afterrender', function() {
+                    chart.on('resize', function() {
                         chart.setTitlePosition();
                     });
 
@@ -3954,7 +3954,10 @@ Ext.onReady(function() {
 
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
-            Ext.get(config.el).viewport = ns.app.centerRegion;
+
+            Ext.get(config.el).setViewportWidth = function(width) {
+                ns.app.centerRegion.setWidth(width);
+            };
 
 			if (config && config.id) {
 				ns.core.web.chart.loadChart(config);

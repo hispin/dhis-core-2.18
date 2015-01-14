@@ -3380,7 +3380,7 @@ console.log(ids[i]);
                         chart.setTitlePosition();
                     };
 
-                    chart.on('afterrender', function() {
+                    chart.on('resize', function() {
                         chart.setTitlePosition();
                     });
 
@@ -4505,7 +4505,10 @@ console.log(ids[i]);
 
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
-            Ext.get(config.el).viewport = ns.app.centerRegion;
+
+            Ext.get(config.el).setViewportWidth = function(width) {
+                ns.app.centerRegion.setWidth(width);
+            };
 
 			if (config && config.id) {
 				ns.core.web.report.loadReport(config);

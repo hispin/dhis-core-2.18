@@ -6958,7 +6958,7 @@ Ext.onReady(function () {
                                 centerRegion = this;
                             }
                         }
-			    },
+                    },
                     {
                         xtype: 'panel',
                         layout: 'anchor',
@@ -6981,7 +6981,7 @@ Ext.onReady(function () {
                                         gis.layer.thematic1.legendPanel = this;
                                     }
                                 }
-			    },
+                            },
                             {
                                 title: GIS.i18n.thematic_layer_2_legend,
                                 cls: 'gis-panel-legend',
@@ -6991,7 +6991,7 @@ Ext.onReady(function () {
                                         gis.layer.thematic2.legendPanel = this;
                                     }
                                 }
-			    },
+                            },
                             {
                                 title: GIS.i18n.thematic_layer_3_legend,
                                 cls: 'gis-panel-legend',
@@ -7001,7 +7001,7 @@ Ext.onReady(function () {
                                         gis.layer.thematic3.legendPanel = this;
                                     }
                                 }
-			    },
+                            },
                             {
                                 title: GIS.i18n.thematic_layer_4_legend,
                                 cls: 'gis-panel-legend',
@@ -7011,7 +7011,7 @@ Ext.onReady(function () {
                                         gis.layer.thematic4.legendPanel = this;
                                     }
                                 }
-			    },
+                            },
                             {
                                 title: GIS.i18n.facility_layer_legend,
                                 cls: 'gis-panel-legend',
@@ -7021,15 +7021,15 @@ Ext.onReady(function () {
                                         gis.layer.facility.legendPanel = this;
                                     }
                                 }
-			    }
-			],
+                            }
+                        ],
                         listeners: {
                             added: function () {
                                 eastRegion = this;
                             }
                         }
-		    }
-		],
+                    }
+                ],
                 listeners: {
                     afterrender: function () {
                         afterRender();
@@ -7115,7 +7115,11 @@ Ext.onReady(function () {
             gis.map = config;
 
             gis.viewport = createViewport();
-            Ext.get(config.el).viewport = gis.viewport.centerRegion;
+
+            Ext.get(config.el).setViewportWidth = function(width) {
+                gis.viewport.setWidth(width);
+                gis.viewport.centerRegion.setWidth(width);
+            };
 
             gis.olmap.mask = Ext.create('Ext.LoadMask', gis.viewport.centerRegion.getEl(), {
                 msg: 'Loading'
