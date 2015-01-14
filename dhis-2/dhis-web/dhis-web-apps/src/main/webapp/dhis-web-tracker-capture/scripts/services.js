@@ -380,21 +380,31 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                         attsById[att.id] = att;
                     });
 
-                    angular.forEach(tei.attributes, function(att){                        
-                        var val = att.value;
-                        if(val){
-                            if(att.type === 'date'){
-                                val = DateUtils.formatFromApiToUser(val);
+                    angular.forEach(tei.attributes, function(att){
+                        if(att.type === 'trueOnly'){
+                            if(att.value === 'true'){
+                                att.value = true;
                             }
-                            if(att.type === 'optionSet' && 
-                                    attsById[att.attribute] && 
-                                    attsById[att.attribute].optionSet && 
-                                    attsById[att.attribute].optionSet.id && 
-                                    optionSets[attsById[att.attribute].optionSet.id]){   
-                                val = OptionSetService.getName(optionSets[attsById[att.attribute].optionSet.id].options, val);                                
+                            else{
+                                att.value = '';
                             }
-                            att.value = val;
-                        }                        
+                        }
+                        else{
+                            var val = att.value;
+                            if(val){
+                                if(att.type === 'date'){
+                                    val = DateUtils.formatFromApiToUser(val);
+                                }
+                                if(att.type === 'optionSet' && 
+                                        attsById[att.attribute] && 
+                                        attsById[att.attribute].optionSet && 
+                                        attsById[att.attribute].optionSet.id && 
+                                        optionSets[attsById[att.attribute].optionSet.id]){   
+                                    val = OptionSetService.getName(optionSets[attsById[att.attribute].optionSet.id].options, val);                                
+                                }
+                                att.value = val;
+                            }
+                        }                                                
                     });                    
                 });    
                 return tei;
@@ -413,12 +423,12 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 
                 angular.forEach(tei.attributes, function(att){                        
                     
-                    if(att.type === 'trueOnly'){ 
-                        if(!att.value){
-                            att.value = '';
+                    if(att.type === 'trueOnly'){
+                        if(att.value){
+                            att.value = 'true';
                         }
                         else{
-                            att.value = true;
+                            att.value = '';
                         }
                     }            
                     else{

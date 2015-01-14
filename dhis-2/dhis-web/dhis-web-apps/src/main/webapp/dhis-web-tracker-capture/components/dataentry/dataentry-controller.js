@@ -321,12 +321,20 @@ trackerCapture.controller('DataEntryController',
         angular.forEach($scope.currentEvent.dataValues, function(dataValue){
             var val = dataValue.value;
             var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
-            if(val){                
-                if( de && de.type === 'int'){
+            if(de){                
+                if(val && de.type === 'int'){
                     val = parseInt(val);
                 }
-                if(de.type === 'date'){
+                if(val && de.type === 'date'){
                     val = DateUtils.formatFromApiToUser(val);
+                }
+                if(de.type === 'trueOnly'){
+                    if(val === 'true'){
+                        val = true;
+                    }
+                    else{
+                        val = '';
+                    }
                 }
             }    
             $scope.currentEvent[dataValue.dataElement] = val;
