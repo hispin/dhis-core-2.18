@@ -65,8 +65,16 @@
     class="org.hisp.dhis.settings.action.system.GetAccessSettingsAction"
     scope="prototype" />
 
+  <bean id="org.hisp.dhis.settings.action.system.GetRemoteAccessSettingsAction"
+    class="org.hisp.dhis.settings.action.system.GetRemoteAccessSettingsAction"
+    scope="prototype" />
+
   <bean id="org.hisp.dhis.settings.action.system.SetAccessSettingsAction"
     class="org.hisp.dhis.settings.action.system.SetAccessSettingsAction"
+    scope="prototype" />
+
+  <bean id="org.hisp.dhis.settings.action.system.SetRemoteAccessSettingsAction"
+    class="org.hisp.dhis.settings.action.system.SetRemoteAccessSettingsAction"
     scope="prototype" />
 
   <bean id="org.hisp.dhis.settings.action.system.GetApprovalSettingsAction"

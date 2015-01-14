@@ -72,7 +72,7 @@ public class DefaultSystemSettingManager
 
     @Override
     public void saveSystemSetting( String name, Serializable value )
-    {        
+    {
         SystemSetting setting = systemSettingStore.getByName( name );
 
         if ( setting == null )
@@ -167,13 +167,13 @@ public class DefaultSystemSettingManager
     {
         return (Boolean) getSystemSetting( KEY_EMAIL_TLS, true );
     }
-    
+
     @Override
     public String getEmailSender()
     {
         return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_SENDER ) );
     }
-    
+
     @Override
     public boolean accountRecoveryEnabled()
     {
@@ -202,7 +202,7 @@ public class DefaultSystemSettingManager
     public boolean systemNotificationEmailValid()
     {
         String address = (String) getSystemSetting( KEY_SYSTEM_NOTIFICATIONS_EMAIL );
-        
+
         return address != null && ValidationUtils.emailIsValid( address );
     }
 
@@ -216,6 +216,13 @@ public class DefaultSystemSettingManager
     public Integer credentialsExpires()
     {
         return (Integer) (getSystemSetting( KEY_CREDENTIALS_EXPIRES ) == null ? 0 : getSystemSetting( KEY_CREDENTIALS_EXPIRES ));
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public List<String> getCorsWhitelist()
+    {
+        return (List<String>) (getSystemSetting( KEY_CORS_WHITELIST ) == null ? Collections.emptyList() : getSystemSetting( KEY_CORS_WHITELIST ));
     }
 
     @Override
@@ -242,17 +249,17 @@ public class DefaultSystemSettingManager
     public Map<String, Serializable> getSystemSettings( Set<String> names )
     {
         Map<String, Serializable> map = new HashMap<>();
-        
+
         for ( String name : names )
         {
             Serializable setting = getSystemSetting( name, DEFAULT_SETTINGS_VALUES.get( name ) );
-            
+
             if ( setting != null )
             {
                 map.put( name, setting );
             }
         }
-        
+
         return map;
-    }    
+    }
 }
