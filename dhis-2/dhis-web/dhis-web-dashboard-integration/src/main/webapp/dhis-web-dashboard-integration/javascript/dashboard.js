@@ -130,7 +130,7 @@ dhis2.db.tmpl = {
         "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}' style='${style}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"reportTable\", \"${name}\" )'>${i18n_share}</a>" +
         "<a href='javascript:dhis2.db.exploreEventReport( \"${id}\" )'>${i18n_explore}</a>" +
-        "<a href='javascript:dhis2.db.resizeItem( \"${itemId}\" )'>${i18n_resize}</a>" +
+        "<a href='javascript:dhis2.db.resizeItem( \"${itemId}\", true )'>${i18n_resize}</a>" +
 	    "<i class=\"fa fa-arrows dragIcon\" title=\"${i18n_click_and_drag_to_new_position}\"></i></div>" +
         "<div id='plugin-${itemId}'></div>" +
         "</div></li>"
@@ -610,8 +610,6 @@ dhis2.db.renderDashboard = function( id )
                         url: '..',
                         el: 'plugin-' + dashboardItem.id,
                         id: dashboardItem.map.id,
-                        width: width,
-                        height: 290,
                         hideLegend: true,
                         dashboard: true,
                         crossDomain: false,
@@ -627,8 +625,6 @@ dhis2.db.renderDashboard = function( id )
                         url: '..',
                         el: 'plugin-' + dashboardItem.id,
                         id: dashboardItem.reportTable.id,
-                        width: width,
-                        height: 290,
                         dashboard: true,
                         crossDomain: false,
                         skipMask: true,
@@ -645,8 +641,6 @@ dhis2.db.renderDashboard = function( id )
                         url: '..',
                         el: 'plugin-' + dashboardItem.id,
                         id: dashboardItem.eventReport.id,
-                        width: width - scrollbarWidth,
-                        height: 290,
                         dashboard: true,
                         crossDomain: false,
                         skipMask: true,

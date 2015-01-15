@@ -4926,7 +4926,7 @@ Ext.onReady(function () {
                     }
 
                     if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
-                        alert('No values found', config);
+                        console.log('No values found');
                         return false;
                     }
 
@@ -6715,11 +6715,15 @@ Ext.onReady(function () {
     };
 
     applyCss = function () {
+        var css = '';
+        
+        // needs parent class to avoid conflict
+        css += '.x-border-box .gis-plugin * {box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-webkit-box-sizing:border-box} \n';
 
-        var css = '.gis-plugin, .gis-plugin * { font-family: arial, sans-serif, liberation sans, consolas; } \n';
+        // plugin
+        css += '.gis-plugin, .gis-plugin * { font-family: arial, sans-serif, liberation sans, consolas; } \n';
 
         // ext gray
-        //css += 'html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0} \n';
         css += 'table{border-collapse:collapse;border-spacing:0} \n';
         css += 'fieldset,img{border:0} \n';
         css += 'h1,h2,h3,h4,h5,h6{font-size:100%} \n';
@@ -6824,11 +6828,6 @@ Ext.onReady(function () {
         css += '.x-panel-header-vertical,.x-panel-header-vertical .x-panel-header-body,.x-btn-group-header-vertical,.x-btn-group-header-vertical .x-btn-group-header-body,.x-window-header-vertical,.x-window-header-vertical .x-window-header-body,.x-html button,.x-html textarea,.x-html input,.x-html select { display:inline-block; } \n';
         css += '.x-window-header-text { user-select:none; -o-user-select:none; -ms-user-select:none; -moz-user-select:0; -webkit-user-select:none; cursor:default; white-space:nowrap; display:block; } \n';
 
-
-
-        // needs parent class to avoid conflict
-        css += '.x-border-box .gis-plugin *{box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-webkit-box-sizing:border-box} \n';
-
         // gis
         css += '.x-box-inner { zoom: 1; } \n';
         css += '.x-panel-default { border-color: #d0d0d0; } \n';
@@ -6844,7 +6843,6 @@ Ext.onReady(function () {
         css += '.x-unselectable { -webkit-user-select: none; cursor: default; } \n';
         css += '.x-docked { position: absolute; z-index: 1; } \n';
         css += '.x-docked-top { border-bottom-width: 0 !important; } \n';
-
         css += '.gis-container-default .x-window-body { padding: 5px; background: #fff; } \n';
         css += '.olControlPanel { position: absolute; top: 0; right: 0; border: 0 none; } \n';
         css += '.olControlButtonItemActive { background: #556; color: #fff; width: 24px; height: 24px; opacity: 0.75; filter: alpha(opacity=75); -ms-filter: "alpha(opacity=75)"; cursor: pointer; cursor: hand; text-align: center; font-size: 21px !important; text-shadow: 0 0 1px #ddd; } \n';
@@ -6895,6 +6893,9 @@ Ext.onReady(function () {
         css += '.x-color-picker em span { width: 14px; height: 14px; } \n';
         css += '.gis-panel-legend .x-panel-header { height: 23px; background: #f1f1f1; padding: 4px 4px 0 5px} \n';
         css += '.gis-panel-legend .x-panel-header .x-panel-header-text { font-size: 10px; } \n';
+
+        // alert
+        css += '.ns-plugin-alert { width: 90%; padding: 5%; color: #777 } \n';
 
         Ext.util.CSS.createStyleSheet(css);
     };
@@ -7100,14 +7101,22 @@ Ext.onReady(function () {
                 return;
             }
 
+            // css
             applyCss();
 
+            // config
             init.plugin = true;
             init.el = config.el;
             init.dashboard = Ext.isBoolean(config.dashboard) ? config.dashboard : false;
             init.crossDomain = Ext.isBoolean(config.crossDomain) ? config.crossDomain : true;
             init.skipMask = Ext.isBoolean(config.skipMask) ? config.skipMask : false;
             init.skipFade = Ext.isBoolean(config.skipFade) ? config.skipFade : false;
+
+            // alert
+            //init.alert = function(text) {                
+                //Ext.get(config.el).setStyle('opacity', 1);
+                //Ext.get(config.el).update('<div class="ns-plugin-alert">' + text + '</div>');
+            //};
 
             gis = GIS.core.getInstance(init);
 
@@ -7164,6 +7173,7 @@ Ext.onReady(function () {
                 }
             }
 
+            // extend
             gis.el = config.el;
             gis.plugin = init.plugin;
             gis.dashboard = init.dashboard;
@@ -7179,9 +7189,9 @@ Ext.onReady(function () {
             GIS.core.createSelectHandlers(gis, gis.layer.facility);
 
             gis.map = config;
-
             gis.viewport = createViewport();
 
+            // dashboard element
             Ext.get(config.el).setViewportWidth = function(width) {
                 gis.viewport.setWidth(width);
                 gis.viewport.centerRegion.setWidth(width);
