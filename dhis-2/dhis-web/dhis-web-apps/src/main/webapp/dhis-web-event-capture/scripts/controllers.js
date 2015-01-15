@@ -57,17 +57,17 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     //watch for selection of org unit from tree
     $scope.$watch('selectedOrgUnit', function() {
         $scope.dhis2Events = [];
+        $scope.currentEvent = {};
+        
         if( angular.isObject($scope.selectedOrgUnit)){
-            
-            if(!$scope.optionSets){
+            if($scope.optionSets.length < 1){
                 $scope.optionSets = [];
                 OptionSetService.getAll().then(function(optionSets){
                     angular.forEach(optionSets, function(optionSet){                        
                         $scope.optionSets[optionSet.id] = optionSet;
                     });                    
                 });
-            }
-            
+            }            
             $scope.loadPrograms();
         }
     });
@@ -648,8 +648,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         if( newValue != oldValue ){
             
             if($scope.prStDes[dataElement].dataElement.type === 'string'){
-                if($scope.prStDes[dataElement].dataElement.optionSet){                    
-                    newValue = OptionSetService.getCode($scope.optionSets[$scope.prStDes[dataElement].dataElement.optionSet.id].options, newValue);//$scope.optionCodesByName[  '"' + newValue + '"'];
+                if($scope.prStDes[dataElement].dataElement.optionSet){
+                    newValue = OptionSetService.getCode($scope.optionSets[$scope.prStDes[dataElement].dataElement.optionSet.id].options, newValue);
                 }
             }            
             if($scope.prStDes[dataElement].dataElement.type === 'date'){
