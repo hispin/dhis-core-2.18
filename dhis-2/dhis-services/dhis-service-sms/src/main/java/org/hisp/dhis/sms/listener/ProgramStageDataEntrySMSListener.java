@@ -175,6 +175,7 @@ public class ProgramStageDataEntrySMSListener
             cal.setTime( date );
             int year = Calendar.getInstance().get( Calendar.YEAR );
             int month = Calendar.getInstance().get( Calendar.MONTH );
+            
             if ( cal.get( Calendar.MONTH ) < month )
             {
                 cal.set( Calendar.YEAR, year );
@@ -183,6 +184,7 @@ public class ProgramStageDataEntrySMSListener
             {
                 cal.set( Calendar.YEAR, year - 1 );
             }
+            
             date = cal.getTime();
         }
         catch ( Exception e )
@@ -197,6 +199,7 @@ public class ProgramStageDataEntrySMSListener
     {
         Collection<OrganisationUnit> orgUnits = new ArrayList<>();
         Collection<User> users = userService.getUsersByPhoneNumber( sender );
+        
         for ( User u : users )
         {
             if ( u.getOrganisationUnits() != null )
