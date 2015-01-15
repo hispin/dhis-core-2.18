@@ -64,7 +64,7 @@ $( document ).ready( function()
 		dhis2.db.currentKey = "dhis2.dashboard.current." + json.username;
 		dhis2.db.renderDashboardListLoadFirst();
 	} );
-	
+
 	$.getJSON( "../api/system/info.json", function( json ) {
 		dhis2.db.contextPath = json.contextPath;
 	} );
@@ -546,22 +546,23 @@ dhis2.db.renderDashboard = function( id )
                         skipMask: true,
                         domainAxisStyle: {
                             labelRotation: 45,
-                            labelFont: '10px arial,sans-serif',
+                            labelFont: '10px sans-serif',
                             labelColor: '#111'
                         },
                         rangeAxisStyle: {
-                            labelFont: '9px arial,sans-serif'
+                            labelFont: '9px sans-serif'
                         },
                         legendStyle: {
                             labelMaxLength: 10,
-                            labelFont: 'normal 10px arial,sans-serif',
+                            labelFont: 'normal 10px sans-serif',
                             labelColor: '#222',
                             labelMarkerSize: 10,
-                            titleFont: 'bold 12px arial,sans-serif',
+                            titleFont: 'bold 12px sans-serif',
                             titleColor: '#333'
                         },
                         seriesStyle: {
-                            labelFontSize: '9px arial,sans-serif'
+                            labelColor: '#333',
+                            labelFont: '9px sans-serif'
                         }
 				    });
 				}
@@ -582,22 +583,23 @@ dhis2.db.renderDashboard = function( id )
                         skipMask: true,
                         domainAxisStyle: {
                             labelRotation: 45,
-                            labelFont: '10px arial,sans-serif',
+                            labelFont: '10px sans-serif',
                             labelColor: '#111'
                         },
                         rangeAxisStyle: {
-                            labelFont: '9px arial,sans-serif'
+                            labelFont: '9px sans-serif'
                         },
                         legendStyle: {
                             labelMaxLength: 10,
-                            labelFont: 'normal 10px arial,sans-serif',
+                            labelFont: 'normal 10px sans-serif',
                             labelColor: '#222',
                             labelMarkerSize: 10,
-                            titleFont: 'bold 12px arial,sans-serif',
+                            titleFont: 'bold 12px sans-serif',
                             titleColor: '#333'
                         },
                         seriesStyle: {
-                            labelFontSize: '9px arial,sans-serif'
+                            labelColor: '#333',
+                            labelFont: '9px sans-serif'
                         }
 				    });
 				}
@@ -978,7 +980,7 @@ dhis2.db.renderSearch = function( data, $h )
 				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-pivot/index.html?id=" + o.id, "img": "table_small", "name": o.name, "type": "reportTable", "id": o.id, "i18n_add": i18n_add } ) );
 			}
 		}
-		
+
 		if ( data.eventReportCount > 0 )
 		{
 			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Event reports", "type": "eventReport", "i18n_see_more_hits": i18n_see_more_hits, "i18n_see_fewer_hits": i18n_see_fewer_hits } ) );
@@ -1091,10 +1093,10 @@ dhis2.db.viewImage = function( url, name )
 	$( "#chartImage" ).attr( "src", url );
 
 	var link = dhis2.db.contextPath + url.substring( 2 );
-	
+
 	$( "#chartImageUrl" ).html( link );
 	$( "#chartImageUrl" ).attr( "href", link );
-	
+
 	$( "#chartView" ).dialog( {
 		autoOpen : true,
 		modal : true,
@@ -1128,7 +1130,7 @@ dhis2.db.viewReportDialog = function( url, name )
 dhis2.db.downloadImage = function()
 {
 	var url = $( "#chartImage" ).attr( "src" );
-	
+
 	if ( url ) {
 		url = url + "&attachment=true";
 		window.location.href = url;
