@@ -3679,13 +3679,11 @@ Ext.onReady( function() {
 
                         // fade
                         if (!ns.skipFade) {
-                            chart.on('afterrender', function() {
-                                Ext.defer( function() {
-                                    Ext.get(init.el).fadeIn({
-                                        duration: 400
-                                    });
-                                }, 300 );
-                            });
+                            Ext.defer( function() {
+                                Ext.get(ns.core.init.el).fadeIn({
+                                    duration: 400
+                                });
+                            }, 300 );
                         }
 
                         // after render
