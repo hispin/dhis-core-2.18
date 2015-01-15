@@ -407,7 +407,6 @@ Ext.onReady( function() {
 	EV.isDebug = false;
 	EV.isSessionStorage = ('sessionStorage' in window && window['sessionStorage'] !== null);
 
-    // core
 	EV.getCore = function(init) {
         var conf = {},
             api = {},
@@ -1056,9 +1055,9 @@ Ext.onReady( function() {
 						console.log('Response: no valid headers');
 						return;
 					}
-
+                    
 					if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
-						alert('No values found');
+						init.alert('No values found');
 						return;
 					}
 
@@ -3932,7 +3931,12 @@ Ext.onReady( function() {
 
 	// PLUGIN
 
-	// chart tips css
+	// i18n
+	EV.i18n = {
+		target: 'Target',
+		base: 'Base',
+		trend: 'Trend'
+	};
 
 	EV.plugin = {};
 
@@ -3950,14 +3954,14 @@ Ext.onReady( function() {
 	getInit = function(config) {
 		var isInit = false,
 			requests = [],
-			callbacks = 0,
+			callbackCount = 0,
             type = config.plugin && config.crossDomain ? 'jsonp' : 'json',
 			fn;
 
         init.contextPath = config.url;
 
 		fn = function() {
-			if (++callbacks === requests.length) {
+			if (++callbackCount === requests.length) {
 				isInitComplete = true;
 
 				for (var i = 0; i < configs.length; i++) {
@@ -4180,6 +4184,9 @@ Ext.onReady( function() {
         css += '.x-mask-msg div { background-position: 11px center; } \n';
         css += '.x-mask-msg .x-mask-loading { border: 0 none; \n background-color: #000; color: #fff; border-radius: 2px; padding: 12px 14px 12px 30px; opacity: 0.65; } \n';
         css += '.x-mask { opacity: 0; } \n';
+
+        // alert
+        css += '.ns-plugin-alert { width: 90%; padding: 5%; color: #777 } \n';
 
         Ext.util.CSS.createStyleSheet(css);
     };
@@ -4491,14 +4498,23 @@ Ext.onReady( function() {
 				return;
 			}
 
+            // css
             applyCss();
 
+            // config
             init.plugin = true;
             init.dashboard = Ext.isBoolean(config.dashboard) ? config.dashboard : false;
             init.crossDomain = Ext.isBoolean(config.crossDomain) ? config.crossDomain : true;
             init.skipMask = Ext.isBoolean(config.skipMask) ? config.skipMask : false;
             init.skipFade = Ext.isBoolean(config.skipFade) ? config.skipFade : false;
 
+            // alert
+            init.alert = function(text) {
+                Ext.get(config.el).setStyle('opacity', 1);
+                Ext.get(config.el).update('<div class="ns-plugin-alert">' + text + '</div>');
+            };
+
+            // init
 			ns.core = EV.getCore(Ext.clone(init));
 			extendInstance(ns);
 
