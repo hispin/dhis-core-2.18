@@ -399,6 +399,136 @@ Ext.onReady(function() {
         }
     });
 
+    Ext.override(Ext.chart.axis.Radial, {
+        drawLabel: function() {
+            var chart = this.chart,
+                surface = chart.surface,
+                bbox = chart.chartBBox,
+                store = chart.store,
+                centerX = bbox.x + (bbox.width / 2),
+                centerY = bbox.y + (bbox.height / 2),
+                rho = Math.min(bbox.width, bbox.height) /2,
+                max = Math.max, round = Math.round,
+                labelArray = [], label,
+                fields = [], nfields,
+                categories = [], xField,
+                aggregate = !this.maximum,
+                maxValue = this.maximum || 0,
+                steps = this.steps, i = 0, j, dx, dy,
+                pi2 = Math.PI * 2,
+                cos = Math.cos, sin = Math.sin,
+                display = this.label.display,
+                draw = display !== 'none',
+                margin = 10,
+
+                labelColor = '#333',
+                labelFont = 'normal 9px sans-serif',
+                seriesStyle = chart.seriesStyle;
+
+            labelColor = seriesStyle ? seriesStyle.labelColor : labelColor;
+            labelFont = seriesStyle ? seriesStyle.labelFont : labelFont;
+
+            if (!draw) {
+                return;
+            }
+
+            //get all rendered fields
+            chart.series.each(function(series) {
+                fields.push(series.yField);
+                xField = series.xField;
+            });
+
+            //get maxValue to interpolate
+            store.each(function(record, i) {
+                if (aggregate) {
+                    for (i = 0, nfields = fields.length; i < nfields; i++) {
+                        maxValue = max(+record.get(fields[i]), maxValue);
+                    }
+                }
+                categories.push(record.get(xField));
+            });
+            if (!this.labelArray) {
+                if (display != 'categories') {
+                    //draw scale
+                    for (i = 1; i <= steps; i++) {
+                        label = surface.add({
+                            type: 'text',
+                            text: round(i / steps * maxValue),
+                            x: centerX,
+                            y: centerY - rho * i / steps,
+                            'text-anchor': 'middle',
+                            'stroke-width': 0.1,
+                            stroke: '#333',
+                            fill: labelColor,
+                            font: labelFont
+                        });
+                        label.setAttributes({
+                            hidden: false
+                        }, true);
+                        labelArray.push(label);
+                    }
+                }
+                if (display != 'scale') {
+                    //draw text
+                    for (j = 0, steps = categories.length; j < steps; j++) {
+                        dx = cos(j / steps * pi2) * (rho + margin);
+                        dy = sin(j / steps * pi2) * (rho + margin);
+                        label = surface.add({
+                            type: 'text',
+                            text: categories[j],
+                            x: centerX + dx,
+                            y: centerY + dy,
+                            'text-anchor': dx * dx <= 0.001? 'middle' : (dx < 0? 'end' : 'start'),
+                            fill: labelColor,
+                            font: labelFont
+                        });
+                        label.setAttributes({
+                            hidden: false
+                        }, true);
+                        labelArray.push(label);
+                    }
+                }
+            }
+            else {
+                labelArray = this.labelArray;
+                if (display != 'categories') {
+                    //draw values
+                    for (i = 0; i < steps; i++) {
+                        labelArray[i].setAttributes({
+                            text: round((i + 1) / steps * maxValue),
+                            x: centerX,
+                            y: centerY - rho * (i + 1) / steps,
+                            'text-anchor': 'middle',
+                            'stroke-width': 0.1,
+                            stroke: '#333',
+                            fill: labelColor,
+                            font: labelFont
+                        }, true);
+                    }
+                }
+                if (display != 'scale') {
+                    //draw text
+                    for (j = 0, steps = categories.length; j < steps; j++) {
+                        dx = cos(j / steps * pi2) * (rho + margin);
+                        dy = sin(j / steps * pi2) * (rho + margin);
+                        if (labelArray[i + j]) {
+                            labelArray[i + j].setAttributes({
+                                type: 'text',
+                                text: categories[j],
+                                x: centerX + dx,
+                                y: centerY + dy,
+                                'text-anchor': dx * dx <= 0.001? 'middle' : (dx < 0? 'end' : 'start'),
+                                fill: labelColor,
+                                font: labelFont
+                            }, true);
+                        }
+                    }
+                }
+            }
+            this.labelArray = labelArray;
+        }
+    });
+
 	// namespace
 	DV = {};
 
@@ -1089,7 +1219,7 @@ Ext.onReady(function() {
 						console.log('Response: no valid headers');
 						return;
 					}
-                    
+
 					if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
                         init.alert('No values found');
 						return;
@@ -3362,6 +3492,8 @@ Ext.onReady(function() {
                         axes = [],
                         series = [],
                         seriesTitles = getDefaultSeriesTitle(store),
+                        labelFont = 'normal 9px sans-serif',
+                        labelColor = '#333',
                         chart;
 
                     // axes
@@ -3397,28 +3529,40 @@ Ext.onReady(function() {
                         series.push(obj);
                     }
 
+                    // style
+                    if (Ext.isObject(xLayout.seriesStyle)) {
+                        var style = xLayout.seriesStyle;
+
+                        // label
+                        labelColor = style.labelColor || labelColor;
+
+                        if (style.labelFont) {
+                            labelFont = style.labelFont;
+                        }
+                        else {
+                            labelFont = style.labelFontWeight ? style.labelFontWeight + ' ' : 'normal ';
+                            labelFont += style.labelFontSize ? parseFloat(style.labelFontSize) + 'px ' : '9px ';
+                            labelFont +=  style.labelFontFamily ? style.labelFontFamily : conf.chart.style.fontFamily;
+                        }
+                    }
+
+                    // chart
                     chart = getDefaultChart({
                         store: store,
                         axes: axes,
                         series: series,
-                        theme: 'Category2'
+                        theme: 'Category2',
+                        insetPaddingObject: {
+                            top: 20,
+                            right: 2,
+                            bottom: 15,
+                            left: 7
+                        },
+                        seriesStyle: {
+                            labelColor: labelColor,
+                            labelFont: labelFont
+                        }
                     });
-
-                    chart.insetPadding = ns.dashboard ? 32 : 40;
-
-                    chart.height = ns.app.centerRegion.getHeight() - 80;
-
-                    chart.setChartSize = function() {
-                        var width = ns.app.centerRegion.getWidth(),
-                            height = ns.app.centerRegion.getHeight();
-
-                        return function() {
-                            this.animate = false;
-                            this.setWidth(ns.dashboard ? width : width);
-                            this.setHeight(ns.dashboard ? height : height - 80);
-                            this.animate = !ns.dashboard;
-                        };
-                    };
 
                     return chart;
                 };
@@ -3699,7 +3843,7 @@ Ext.onReady(function() {
 
         // alert
         css += '.ns-plugin-alert { width: 90%; padding: 5%; color: #777 } \n';
-        
+
         Ext.util.CSS.createStyleSheet(css);
     };
 
