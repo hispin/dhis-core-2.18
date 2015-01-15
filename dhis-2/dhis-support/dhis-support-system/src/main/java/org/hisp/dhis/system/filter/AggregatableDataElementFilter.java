@@ -49,6 +49,7 @@ public class AggregatableDataElementFilter
         types = new HashSet<>();
         types.add( DataElement.VALUE_TYPE_BOOL );
         types.add( DataElement.VALUE_TYPE_INT );
+        types.add( DataElement.VALUE_TYPE_STRING );
     }
 
     @Override
