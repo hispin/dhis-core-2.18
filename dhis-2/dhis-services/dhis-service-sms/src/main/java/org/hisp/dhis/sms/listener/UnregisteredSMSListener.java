@@ -75,6 +75,7 @@ public class UnregisteredSMSListener
         for ( int i = 0; i < message.length(); i++ )
         {
             String c = String.valueOf( message.charAt( i ) );
+            
             if ( c.matches( "\\W" ) )
             {
                 commandString = message.substring( 0, i );
@@ -165,7 +166,6 @@ public class UnregisteredSMSListener
                 // update the status of the sms after process
                 sms.setStatus( SmsMessageStatus.PROCESSED );
                 incomingSmsService.update( sms );
-
             }
         }
     }

@@ -116,6 +116,7 @@ public class TrackedEntityRegistrationSMSListener
 
         SMSCommand smsCommand = smsCommandService.getSMSCommand( commandString,
             ParserType.TRACKED_ENTITY_REGISTRATION_PARSER );
+        
         Map<String, String> parsedMessage = this.parse( message, smsCommand );
 
         Date date = lookForDate( message );
@@ -348,8 +349,4 @@ public class TrackedEntityRegistrationSMSListener
     {
         this.smsSender = smsSender;
     }
-
-
-    
-    
 }

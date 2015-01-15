@@ -68,6 +68,7 @@ import org.hisp.dhis.sms.incoming.IncomingSmsService;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.sms.parse.SMSParserException;
+import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.transaction.annotation.Transactional;
@@ -253,13 +254,16 @@ public class DataValueSMSListener
     {
         HashMap<String, String> output = new HashMap<>();
         Pattern pattern = Pattern.compile( defaultPattern );
+        
         if ( !StringUtils.isBlank( smsCommand.getSeparator() ) )
         {
             String x = "(\\w+)\\s*\\" + smsCommand.getSeparator().trim() + "\\s*([\\w ]+)\\s*(\\"
                 + smsCommand.getSeparator().trim() + "|$)*\\s*";
             pattern = Pattern.compile( x );
         }
+        
         Matcher m = pattern.matcher( sms );
+        
         while ( m.find() )
         {
             String key = m.group( 1 );
@@ -346,15 +350,18 @@ public class DataValueSMSListener
         if ( orgUnit == null && orgUnits.size() > 1 )
         {
             String messageListingOrgUnits = smsCommand.getMoreThanOneOrgUnitMessage();
+            
             for ( Iterator<OrganisationUnit> i = orgUnits.iterator(); i.hasNext(); )
             {
                 OrganisationUnit o = i.next();
-                messageListingOrgUnits += " " + o.getName() + ":" + o.getCode();
+                messageListingOrgUnits += TextUtils.SPACE + o.getName() + ":" + o.getCode();
+                
                 if ( i.hasNext() )
                 {
                     messageListingOrgUnits += ",";
                 }
             }
+            
             throw new SMSParserException( messageListingOrgUnits );
         }
 
@@ -472,8 +479,6 @@ public class DataValueSMSListener
         {
             try
             {
-
-                // +de
                 String formula = code.getFormula();
 
                 String targetDataElementId = formula.substring( 1, formula.length() );
@@ -491,8 +496,10 @@ public class DataValueSMSListener
 
                 DataValue targetDataValue = dataValueService.getDataValue( targetDataElement, period, orgunit,
                     dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+                
                 int targetValue = 0;
                 boolean newTargetDataValue = false;
+                
                 if ( targetDataValue == null )
                 {
                     targetDataValue = new DataValue();
@@ -522,6 +529,7 @@ public class DataValueSMSListener
                 targetDataValue.setValue( String.valueOf( targetValue ) );
                 targetDataValue.setLastUpdated( new java.util.Date() );
                 targetDataValue.setStoredBy( storedBy );
+                
                 if ( newTargetDataValue )
                 {
                     dataValueService.addDataValue( targetDataValue );

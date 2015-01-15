@@ -178,7 +178,6 @@ public class SimplisticHttpGetGateWay
     @Override
     public int getQueueSchedulingInterval()
     {
-        // FIXME: ?
         return 500;
     }
 }
