@@ -58,10 +58,13 @@ import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.dxf2.metadata.ObjectBridge;
 import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandler;
 import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandlerUtils;
+import org.hisp.dhis.dxf2.schema.SchemaValidator;
+import org.hisp.dhis.dxf2.schema.ValidationViolation;
 import org.hisp.dhis.eventchart.EventChart;
 import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -135,6 +138,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     @Autowired
     private SchemaService schemaService;
+
+    @Autowired
+    private SchemaValidator schemaValidator;
 
     @Autowired
     private UserService userService;
@@ -284,10 +290,17 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return false;
         }
 
+        List<ValidationViolation> validate = schemaValidator.validate( object );
+
+        if ( !validate.isEmpty() )
+        {
+            return false;
+        }
+
         // make sure that the internalId is 0, so that the system will generate a ID
         object.setId( 0 );
         // object.setUser( user );
-        object.setUser( null );
+        // object.setUser( null );
 
         NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects( user );
         nonIdentifiableObjects.extract( object );
@@ -383,6 +396,13 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             || EventReport.class.isAssignableFrom( persistedObject.getClass() )) && options.isDryRun() )
         {
             return true;
+        }
+
+        List<ValidationViolation> validate = schemaValidator.validate( object );
+
+        if ( !validate.isEmpty() )
+        {
+            return false;
         }
 
         NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects( user );
