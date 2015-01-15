@@ -36,6 +36,7 @@ import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,7 +90,8 @@ public class DefaultSchemaValidator implements SchemaValidator
     {
         List<ValidationViolation> validationViolations = new ArrayList<>();
 
-        if ( !String.class.isInstance( object ) )
+        // TODO How should empty strings be handled? they are not valid color, password, url, etc of course.
+        if ( !String.class.isInstance( object ) || StringUtils.isEmpty( object ) )
         {
             return validationViolations;
         }
@@ -99,27 +101,27 @@ public class DefaultSchemaValidator implements SchemaValidator
         if ( value.length() < property.getMin() || value.length() > property.getMax() )
         {
             validationViolations.add( new ValidationViolation( property.getName(), "Allowed range for length ["
-                + property.getMin() + ", " + property.getMax() + "], length is " + value.length() ) );
+                + property.getMin() + ", " + property.getMax() + "], length is " + value.length(), value ) );
         }
 
         if ( PropertyType.EMAIL == property.getPropertyType() && !GenericValidator.isEmail( value ) )
         {
-            validationViolations.add( new ValidationViolation( property.getName(), "Not a valid email." ) );
+            validationViolations.add( new ValidationViolation( property.getName(), "Not a valid email.", value ) );
         }
 
         if ( PropertyType.URL == property.getPropertyType() && !GenericValidator.isUrl( value ) )
         {
-            validationViolations.add( new ValidationViolation( property.getName(), "Not a valid URL." ) );
+            validationViolations.add( new ValidationViolation( property.getName(), "Not a valid URL.", value ) );
         }
 
         if ( PropertyType.PASSWORD == property.getPropertyType() && !ValidationUtils.passwordIsValid( value ) )
         {
-            validationViolations.add( new ValidationViolation( property.getName(), "Not a valid password." ) );
+            validationViolations.add( new ValidationViolation( property.getName(), "Not a valid password.", value ) );
         }
 
         if ( PropertyType.COLOR == property.getPropertyType() && !ValidationUtils.isValidHexColor( value ) )
         {
-            validationViolations.add( new ValidationViolation( property.getName(), "Not a valid color (in hex format)." ) );
+            validationViolations.add( new ValidationViolation( property.getName(), "Not a valid color (in hex format).", value ) );
         }
 
         /* TODO add proper validation for both Points and Polygons, ValidationUtils only supports points at this time
@@ -146,7 +148,7 @@ public class DefaultSchemaValidator implements SchemaValidator
         if ( value.size() < property.getMin() || value.size() > property.getMax() )
         {
             validationViolations.add( new ValidationViolation( property.getName(), "Invalid range for size ["
-                + property.getMin() + ", " + property.getMax() + "], size is " + value.size() ) );
+                + property.getMin() + ", " + property.getMax() + "], size is " + value.size(), value ) );
         }
 
         return validationViolations;
@@ -166,7 +168,7 @@ public class DefaultSchemaValidator implements SchemaValidator
         if ( !GenericValidator.isInRange( value, property.getMin(), property.getMax() ) )
         {
             validationViolations.add( new ValidationViolation( property.getName(), "Invalid range for value ["
-                + property.getMin() + ", " + property.getMax() + "], value is " + value ) );
+                + property.getMin() + ", " + property.getMax() + "], value is " + value, value ) );
         }
 
         return validationViolations;
@@ -186,7 +188,7 @@ public class DefaultSchemaValidator implements SchemaValidator
         if ( !GenericValidator.isInRange( value, property.getMin(), property.getMax() ) )
         {
             validationViolations.add( new ValidationViolation( property.getName(), "Invalid range for value ["
-                + property.getMin() + ", " + property.getMax() + "], value is " + value ) );
+                + property.getMin() + ", " + property.getMax() + "], value is " + value, value ) );
         }
 
         return validationViolations;
@@ -206,7 +208,7 @@ public class DefaultSchemaValidator implements SchemaValidator
         if ( !GenericValidator.isInRange( value, property.getMin(), property.getMax() ) )
         {
             validationViolations.add( new ValidationViolation( property.getName(), "Invalid range for value ["
-                + property.getMin() + ", " + property.getMax() + "], value is " + value ) );
+                + property.getMin() + ", " + property.getMax() + "], value is " + value, value ) );
         }
 
         return validationViolations;

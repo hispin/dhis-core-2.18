@@ -28,11 +28,9 @@ package org.hisp.dhis.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.hibernate.SessionFactory;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
@@ -55,9 +53,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -127,7 +126,7 @@ public abstract class AbstractPropertyIntrospectorService
         return (LocalSessionFactoryBean) context.getBean( "&sessionFactory" );
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings( "unused" )
     protected Map<String, Property> getPropertiesFromHibernate( Class<?> klass )
     {
         ClassMetadata classMetadata = sessionFactory.getClassMetadata( klass );
@@ -182,7 +181,8 @@ public abstract class AbstractPropertyIntrospectorService
             {
                 AnyType anyType = (AnyType) type;
             }
-            else
+
+            if ( hibernateProperty.getColumnSpan() > 0 )
             {
                 Column column = (Column) hibernateProperty.getColumnIterator().next();
 
@@ -191,9 +191,9 @@ public abstract class AbstractPropertyIntrospectorService
 
                 property.setMax( column.getLength() );
                 property.setMin( 0 );
-            }
 
-            properties.put( property.getName(), property );
+                properties.put( property.getName(), property );
+            }
         }
 
         return properties;

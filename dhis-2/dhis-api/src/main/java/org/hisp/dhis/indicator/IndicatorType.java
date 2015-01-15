@@ -79,7 +79,6 @@ public class IndicatorType
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    @PropertyRange( min = 1, max = 10 )
     public int getFactor()
     {
         return factor;

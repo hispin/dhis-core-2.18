@@ -47,10 +47,19 @@ public class ValidationViolation
 
     private String message;
 
+    private Object value;
+
     public ValidationViolation( String property, String message )
     {
         this.property = property;
         this.message = message;
+    }
+
+    public ValidationViolation( String property, String message, Object value )
+    {
+        this.property = property;
+        this.message = message;
+        this.value = value;
     }
 
     @JsonProperty
@@ -77,12 +86,24 @@ public class ValidationViolation
         this.message = message;
     }
 
-    @Override
-    public String toString()
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Object getValue()
+    {
+        return value;
+    }
+
+    public void setValue( Object value )
+    {
+        this.value = value;
+    }
+
+    @Override public String toString()
     {
         final StringBuilder sb = new StringBuilder( "ValidationViolation{" );
         sb.append( "property='" ).append( property ).append( '\'' );
         sb.append( ", message='" ).append( message ).append( '\'' );
+        sb.append( ", value=" ).append( value );
         sb.append( '}' );
         return sb.toString();
     }
