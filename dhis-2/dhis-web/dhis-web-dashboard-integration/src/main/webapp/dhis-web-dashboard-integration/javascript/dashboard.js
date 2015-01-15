@@ -33,6 +33,9 @@ dhis2.db.shapeFullWidth = "full_width";
 dhis2.db.widthNormal = 408;
 dhis2.db.widthDouble = 849;
 
+dhis2.db.itemContentHeight = 304;
+dhis2.db.itemScrollbarWidth = /\bchrome\b/.test(navigator.userAgent.toLowerCase()) ? 8 : 17;
+
 // TODO support table as link and embedded
 // TODO double horizontal size
 
@@ -118,7 +121,7 @@ dhis2.db.tmpl = {
         "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}' style='${style}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"reportTable\", \"${name}\" )'>${i18n_share}</a>" +
         "<a href='javascript:dhis2.db.exploreReportTable( \"${id}\" )'>${i18n_explore}</a>" +
-        "<a href='javascript:dhis2.db.resizeItem( \"${itemId}\" )'>${i18n_resize}</a>" +
+        "<a href='javascript:dhis2.db.resizeItem( \"${itemId}\", true )'>${i18n_resize}</a>" +
 	    "<i class=\"fa fa-arrows dragIcon\" title=\"${i18n_click_and_drag_to_new_position}\"></i></div>" +
         "<div id='plugin-${itemId}'></div>" +
         "</div></li>",
@@ -420,7 +423,7 @@ dhis2.db.getFullWidth = function()
 /**
  * Toggles size of item. The order is 1) normal 2) double 3) full.
  */
-dhis2.db.resizeItem = function( id )
+dhis2.db.resizeItem = function( id, isScrollbar )
 {
 	$.getJSON( "../api/dashboardItems/" + id, function( item ) {
 
@@ -428,15 +431,15 @@ dhis2.db.resizeItem = function( id )
 
 		if ( dhis2.db.shapeDoubleWidth == item.shape ) {
 			newShape = dhis2.db.shapeFullWidth;
-			dhis2.db.setFullItemWidth( id );
+			dhis2.db.setFullItemWidth( id, isScrollbar );
 		}
 	    else if ( dhis2.db.shapeFullWidth == item.shape ) {
 			newShape = dhis2.db.shapeNormal;
-			dhis2.db.setNormalItemWidth( id );
+			dhis2.db.setNormalItemWidth( id, isScrollbar );
 		}
 	    else {
 	    	newShape = dhis2.db.shapeDoubleWidth;
-	    	dhis2.db.setDoubleItemWidth( id );
+	    	dhis2.db.setDoubleItemWidth( id, isScrollbar );
 	    }
 
 		if ( newShape ) {
@@ -448,20 +451,20 @@ dhis2.db.resizeItem = function( id )
 	} );
 }
 
-dhis2.db.setNormalItemWidth = function( id ) {
+dhis2.db.setNormalItemWidth = function( id, isScrollbar ) {
 	$( "#" + id ).css( "width", dhis2.db.widthNormal + "px" );
-	Ext.get( "plugin-" + id ).setViewportWidth( dhis2.db.widthNormal );
+	Ext.get( "plugin-" + id ).setViewportWidth( dhis2.db.widthNormal - (isScrollbar ? dhis2.db.itemScrollbarWidth : 0));
 }
 
-dhis2.db.setDoubleItemWidth = function( id ) {
+dhis2.db.setDoubleItemWidth = function( id, isScrollbar ) {
 	$( "#" + id ).css( "width", dhis2.db.widthDouble + "px" );
-	Ext.get( "plugin-" + id ).setViewportWidth( dhis2.db.widthDouble );
+	Ext.get( "plugin-" + id ).setViewportWidth( dhis2.db.widthDouble - (isScrollbar ? dhis2.db.itemScrollbarWidth : 0));
 }
 
-dhis2.db.setFullItemWidth = function( id ) {
+dhis2.db.setFullItemWidth = function( id, isScrollbar ) {
 	var	fullWidth = dhis2.db.getFullWidth();
 	$( "#" + id ).css( "width", fullWidth + "px" );
-	Ext.get( "plugin-" + id ).setViewportWidth( fullWidth );
+	Ext.get( "plugin-" + id ).setViewportWidth( fullWidth - (isScrollbar ? dhis2.db.itemScrollbarWidth : 0));
 }
 
 dhis2.db.drawWideItems = function()
@@ -488,10 +491,6 @@ dhis2.db.drawWideItems = function()
 
 dhis2.db.renderDashboard = function( id )
 {
-    var contentHeight = 304,
-        isChrome = /\bchrome\b/.test(navigator.userAgent.toLowerCase()),
-        scrollbarWidth = isChrome ? 8 : 17;
-
     if ( !id )
     {
     	return;
@@ -541,7 +540,7 @@ dhis2.db.renderDashboard = function( id )
                         el: 'plugin-' + dashboardItem.id,
                         id: dashboardItem.chart.id,
                         width: width,
-                        height: contentHeight,
+                        height: dhis2.db.itemContentHeight,
                         dashboard: true,
                         crossDomain: false,
                         skipMask: true,
@@ -577,7 +576,7 @@ dhis2.db.renderDashboard = function( id )
                         el: 'plugin-' + dashboardItem.id,
                         id: dashboardItem.eventChart.id,
                         width: width,
-                        height: contentHeight,
+                        height: dhis2.db.itemContentHeight,
                         dashboard: true,
                         crossDomain: false,
                         skipMask: true,
