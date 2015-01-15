@@ -57,10 +57,10 @@ public class AggregatableDataElementFilterTest
         
         elementA.setType( DataElement.VALUE_TYPE_BOOL );
         elementB.setType( DataElement.VALUE_TYPE_INT );
-        elementC.setType( DataElement.VALUE_TYPE_STRING );
+        elementC.setType( DataElement.VALUE_TYPE_DATE );
         elementD.setType( DataElement.VALUE_TYPE_BOOL );
         elementE.setType( DataElement.VALUE_TYPE_INT );
-        elementF.setType( DataElement.VALUE_TYPE_STRING );        
+        elementF.setType( DataElement.VALUE_TYPE_DATE );        
         
         Set<DataElement> set = new HashSet<>();
         
