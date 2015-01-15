@@ -52,7 +52,7 @@ import java.util.List;
  */
 public class CorsFilter implements Filter
 {
-    private static final Log LOG = LogFactory.getLog( CorsFilter.class );
+    private static final Log log = LogFactory.getLog( CorsFilter.class );
 
     public static final String CORS_ALLOW_CREDENTIALS = "Access-Control-Allow-Credentials";
 
@@ -96,7 +96,7 @@ public class CorsFilter implements Filter
 
         if ( !isOriginWhitelisted( request, origin ) )
         {
-            LOG.warn( "CORS request with origin " + origin + " is not whitelisted." );
+            log.debug( "CORS request with origin " + origin + " is not whitelisted" );
             filterChain.doFilter( request, response );
             return;
         }
