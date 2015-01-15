@@ -363,6 +363,13 @@ public class UserController
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
 
+        if ( summary.isStatus( ImportStatus.SUCCESS ) && summary.getImportCount().getUpdated() == 1 )
+        {
+            User user = userService.getUser( pvUid );
+            
+            userGroupService.updateUserGroups( user, IdentifiableObjectUtils.getUids( parsed.getGroups() ));
+        }
+        
         renderService.toXml( response.getOutputStream(), summary );
     }
 
@@ -395,6 +402,13 @@ public class UserController
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
 
+        if ( summary.isStatus( ImportStatus.SUCCESS ) && summary.getImportCount().getUpdated() == 1 )
+        {
+            User user = userService.getUser( pvUid );
+            
+            userGroupService.updateUserGroups( user, IdentifiableObjectUtils.getUids( parsed.getGroups() ));
+        }
+        
         renderService.toJson( response.getOutputStream(), summary );
     }
 

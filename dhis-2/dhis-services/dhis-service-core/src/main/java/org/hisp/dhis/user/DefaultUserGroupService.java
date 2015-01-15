@@ -29,6 +29,7 @@ package org.hisp.dhis.user;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.acl.AclService;
@@ -133,8 +134,7 @@ public class DefaultUserGroupService
             if ( canAddOrRemoveMember( uid ) )
             {
                 UserGroup userGroup = getUserGroup( uid );
-                user.getGroups().add( userGroup );
-                userGroup.getMembers().add( user );
+                userGroup.addUser( user );
                 userGroupStore.updateNoAcl( userGroup );
             }
         }
@@ -148,13 +148,40 @@ public class DefaultUserGroupService
             if ( canAddOrRemoveMember( uid ) )
             {
                 UserGroup userGroup = getUserGroup( uid );
-                user.getGroups().remove( userGroup );
-                userGroup.getMembers().remove( user );
+                userGroup.removeUser( user );
                 userGroupStore.updateNoAcl( userGroup );
             }
         }        
     }
 
+    @Override
+    public void updateUserGroups( User user, Collection<String> uids )
+    {
+        Collection<UserGroup> updates = getUserGroupsByUid( uids );
+        
+        for ( UserGroup userGroup : new HashSet<>( user.getGroups() ) )
+        {
+            if ( !updates.contains( userGroup ) && canAddOrRemoveMember( userGroup.getUid() ) )
+            {
+                userGroup.removeUser( user );
+            }
+        }
+        
+        for ( UserGroup userGroup : updates )
+        {
+            if ( canAddOrRemoveMember( userGroup.getUid() ) )
+            {
+                userGroup.addUser( user );
+                userGroupStore.updateNoAcl( userGroup );
+            }
+        }
+    }
+
+    public Collection<UserGroup> getUserGroupsByUid( Collection<String> uids )
+    {
+        return userGroupStore.getByUid( uids );
+    }
+    
     @Override
     public List<UserGroup> getUserGroupByName( String name )
     {
