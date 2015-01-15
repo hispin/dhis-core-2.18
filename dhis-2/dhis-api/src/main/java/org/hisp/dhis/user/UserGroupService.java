@@ -59,6 +59,8 @@ public interface UserGroupService
     void addUserToGroups( User user, Collection<String> uids );
     
     void removeUserFromGroups( User user, Collection<String> uids );
+    
+    void updateUserGroups( User user, Collection<String> uids );
 
     Collection<UserGroup> getAllUserGroups();
 
