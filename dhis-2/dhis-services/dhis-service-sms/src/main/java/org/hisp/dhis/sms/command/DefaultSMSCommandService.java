@@ -1,4 +1,4 @@
-package org.hisp.dhis.smscommand;
+package org.hisp.dhis.sms.command;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -32,12 +32,14 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.sms.command.code.SMSCode;
+import org.hisp.dhis.sms.command.hibernate.SMSCommandStore;
 import org.hisp.dhis.sms.parse.ParserType;
-import org.hisp.dhis.smscommand.SMSCommandStore;
 
 public class DefaultSMSCommandService
     implements SMSCommandService
-{    private SMSCommandStore smsCommandStore;
+{
+    private SMSCommandStore smsCommandStore;
 
     @Override
     public void updateSMSCommand( SMSCommand cmd )
@@ -107,8 +109,7 @@ public class DefaultSMSCommandService
     @Override
     public void deleteCodeSet( Set<SMSCode> codes )
     {
-        smsCommandStore.deleteCodeSet( codes );
-        
+        smsCommandStore.deleteCodeSet( codes );        
     }
 
     @Override
@@ -120,7 +121,6 @@ public class DefaultSMSCommandService
     @Override
     public void deleteSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters )
     {
-        smsCommandStore.deleteSpecialCharacterSet( specialCharacters );
-        
+        smsCommandStore.deleteSpecialCharacterSet( specialCharacters );        
     }
 }

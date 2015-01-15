@@ -23,14 +23,6 @@
 
   <!-- Store definitions -->
 
-  <bean id="smsCommandService" class="org.hisp.dhis.smscommand.DefaultSMSCommandService">
-    <property name="smsCommandStore" ref="smsCommandStore" />
-  </bean>
-
-  <bean id="smsCommandStore" class="org.hisp.dhis.sms.hibernate.HibernateSMSCommandStore">
-    <property name="sessionFactory" ref="sessionFactory" />
-  </bean>
-
   <bean id="org.hisp.dhis.dataentryform.DataEntryFormStore" class="org.hisp.dhis.dataentryform.hibernate.HibernateDataEntryFormStore">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
@@ -865,42 +857,6 @@
     <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
   </bean>
 
-  <bean id="org.hisp.dhis.sms.DataValueSMSListener" class="org.hisp.dhis.sms.DataValueSMSListener">
-    <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
-    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="smsCommandService" ref="smsCommandService" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="incomingSmsService" ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.sms.J2MEDataValueSMSListener" class="org.hisp.dhis.sms.J2MEDataValueSMSListener">
-    <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
-    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="smsCommandService" ref="smsCommandService" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.sms.UnregisteredSMSListener" class="org.hisp.dhis.sms.UnregisteredSMSListener">
-    <property name="smsCommandService" ref="smsCommandService" />
-    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
-    <property name="smsMessageSender" ref="org.hisp.dhis.sms.SmsMessageSender" />
-    <property name="incomingSmsService" ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.sms.DHISMessageAlertListener" class="org.hisp.dhis.sms.DHISMessageAlertListener">
-    <property name="smsCommandService" ref="smsCommandService" />
-    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
-    <property name="smsMessageSender" ref="org.hisp.dhis.sms.SmsMessageSender" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="incomingSmsService" ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
-  </bean>
-
   <bean id="org.hisp.dhis.sms.SmsMessageSender" class="org.hisp.dhis.sms.SmsMessageSender"/>
 
   <bean id="org.hisp.dhis.sms.task.SendSmsTask" class="org.hisp.dhis.sms.task.SendSmsTask" />
@@ -1216,10 +1172,6 @@
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
-  <bean id="org.hisp.dhis.sms.SMSCommandDeletionHandler" class="org.hisp.dhis.sms.SMSCommandDeletionHandler" />
-
-  <bean id="org.hisp.dhis.sms.SMSCodesDeletionHandler" class="org.hisp.dhis.sms.SMSCodesDeletionHandler" />
-
   <bean id="org.hisp.dhis.dataelement.CategoryOptionGroupDeletionHandler"
     class="org.hisp.dhis.dataelement.CategoryOptionGroupDeletionHandler" />
 
@@ -1269,8 +1221,6 @@
           <ref bean="org.hisp.dhis.attribute.AttributeValueDeletionHandler" />
           <ref bean="org.hisp.dhis.mapping.MapLegendSetDeletionHandler" />
           <ref bean="org.hisp.dhis.mapping.MapViewDeletionHandler" />
-          <ref bean="org.hisp.dhis.sms.SMSCommandDeletionHandler" />
-          <ref bean="org.hisp.dhis.sms.SMSCodesDeletionHandler" />
         </list>
       </list>
     </property>

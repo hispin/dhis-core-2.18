@@ -198,7 +198,6 @@ public class EventController
         }
 
         Events events = eventService.getEvents( pr, prs, programStatus, followUp, organisationUnits, tei, startDate, endDate, status );
-
         if ( options.hasPaging() )
         {
             Pager pager = new Pager( options.getPage(), events.getEvents().size(), options.getPageSize() );
@@ -291,7 +290,7 @@ public class EventController
         }
 
         Events events = eventService.getEvents( pr, prs, programStatus, followUp, organisationUnits, tei, startDate, endDate, status );
-
+       
         if ( options.hasLinks() )
         {
             for ( Event event : events.getEvents() )

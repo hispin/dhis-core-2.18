@@ -1,4 +1,4 @@
-package org.hisp.dhis.sms.hibernate;
+package org.hisp.dhis.sms.command.hibernate;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -35,11 +35,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.sms.command.SMSCommand;
+import org.hisp.dhis.sms.command.SMSSpecialCharacter;
+import org.hisp.dhis.sms.command.code.SMSCode;
 import org.hisp.dhis.sms.parse.ParserType;
-import org.hisp.dhis.smscommand.SMSCode;
-import org.hisp.dhis.smscommand.SMSCommand;
-import org.hisp.dhis.smscommand.SMSCommandStore;
-import org.hisp.dhis.smscommand.SMSSpecialCharacter;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 

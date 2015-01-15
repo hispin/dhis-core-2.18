@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
     [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
     >
-<hibernate-mapping package="org.hisp.dhis.smscommand">
+<hibernate-mapping package="org.hisp.dhis.sms.command">
 	<class name="SMSSpecialCharacter" table="smsspecialcharacter">
 
 		<id name="id" column="specialcharacterid">

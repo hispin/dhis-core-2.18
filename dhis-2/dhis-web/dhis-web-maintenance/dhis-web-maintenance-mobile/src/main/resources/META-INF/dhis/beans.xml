@@ -106,7 +106,7 @@
 	<bean id="org.hisp.dhis.mobile.action.smscommand.SMSCommandAction"
 		class="org.hisp.dhis.mobile.action.smscommand.SMSCommandAction" 
 		scope="prototype">
-		<property name="smsCommandService" ref="smsCommandService" />
+		<property name="smsCommandService" ref="org.hisp.dhis.sms.command.SMSCommandService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
@@ -115,7 +115,7 @@
 	<bean id="org.hisp.dhis.mobile.action.smscommand.EditSMSCommandForm"
 		class="org.hisp.dhis.mobile.action.smscommand.EditSMSCommandForm"
 		scope="prototype">
-		<property name="smsCommandService" ref="smsCommandService" />
+		<property name="smsCommandService" ref="org.hisp.dhis.sms.command.SMSCommandService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
@@ -125,7 +125,7 @@
 	<bean id="org.hisp.dhis.mobile.action.smscommand.CreateSMSCommandForm"
 		class="org.hisp.dhis.mobile.action.smscommand.CreateSMSCommandForm"
 		scope="prototype">
-		<property name="smsCommandService" ref="smsCommandService" />
+		<property name="smsCommandService" ref="org.hisp.dhis.sms.command.SMSCommandService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
@@ -134,7 +134,7 @@
 	<bean id="org.hisp.dhis.mobile.action.smscommand.DeleteSMSCommandAction"
 		class="org.hisp.dhis.mobile.action.smscommand.DeleteSMSCommandAction"
 		scope="prototype">
-		<property name="smsCommandService" ref="smsCommandService" />
+		<property name="smsCommandService" ref="org.hisp.dhis.sms.command.SMSCommandService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.mobile.action.J2meClientUpdateAction"
@@ -149,7 +149,7 @@
 	<bean id="org.hisp.dhis.mobile.action.smscommand.ValidateSMSCommandAction"
 		class="org.hisp.dhis.mobile.action.smscommand.ValidateSMSCommandAction"
 		scope="prototype">
-		<property name="smsCommandService" ref="smsCommandService" />
+		<property name="smsCommandService" ref="org.hisp.dhis.sms.command.SMSCommandService" />
 	</bean>
 	
 </beans>

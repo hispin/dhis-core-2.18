@@ -66,7 +66,7 @@ import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.relationship.RelationshipTypeService;
-import org.hisp.dhis.smscommand.SMSCommandService;
+import org.hisp.dhis.sms.command.SMSCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -513,10 +513,10 @@ public class MobileOrganisationUnitController
         return localeStrings;
     }
 
-    private List<SMSCommand> getMobileSMSCommands( Collection<org.hisp.dhis.smscommand.SMSCommand> normalSMSCommands )
+    private List<SMSCommand> getMobileSMSCommands( Collection<org.hisp.dhis.sms.command.SMSCommand> normalSMSCommands )
     {
         List<SMSCommand> smsCommands = new ArrayList<>();
-        for ( org.hisp.dhis.smscommand.SMSCommand normalSMSCommand : normalSMSCommands )
+        for ( org.hisp.dhis.sms.command.SMSCommand normalSMSCommand : normalSMSCommands )
         {
             SMSCommand mobileSMSCommand = new SMSCommand();
             List<SMSCode> smsCodes = new ArrayList<>();
@@ -526,7 +526,7 @@ public class MobileOrganisationUnitController
             mobileSMSCommand.setDataSetId( normalSMSCommand.getDataset().getId() );
             mobileSMSCommand.setSeparator( normalSMSCommand.getSeparator() );
 
-            for ( org.hisp.dhis.smscommand.SMSCode normalSMSCode : normalSMSCommand.getCodes() )
+            for ( org.hisp.dhis.sms.command.code.SMSCode normalSMSCode : normalSMSCommand.getCodes() )
             {
                 SMSCode smsCode = new SMSCode();
 
