@@ -42,7 +42,7 @@
 		
 		var trackedEntityAttributeCodes = '{"trackedEntityAttributeCodes":[';
 		
-		for (var i=1; i<jQuery('.trackedEntityAttribute').length; i++)
+		for (var i=1; i<= jQuery('.trackedEntityAttribute').length; i++)
 		{ 
 			trackedEntityAttributeCodes += '{"trackedEntityAttributeId" :"'+document.getElementById("attId"+i).value+'",';
 			trackedEntityAttributeCodes += '"code" :"'+document.getElementById("attCode"+i).value+'"},';	
@@ -156,7 +156,7 @@
 			<td>#if($smsCommand.parserType) $i18n.getString( "$smsCommand.parserType" ) #end</td>
 		</tr>
 		
-		#if( $smsCommand.parserType == 'KEY_VALUE_PARSER' || $smsCommand.parserType == 'J2ME_PARSER' )
+		#if( $smsCommand.parserType == 'KEY_VALUE_PARSER' || $smsCommand.parserType == 'J2ME_PARSER' || $smsCommand.parserType == 'TRACKED_ENTITY_REGISTRATION_PARSER')
 		<tbody id="codes">
 		<tr>
 			<td><label for="dataset">$i18n.getString( "dataset" )</label></td>

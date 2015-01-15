@@ -1,4 +1,4 @@
-package org.hisp.dhis.smscommand;
+package org.hisp.dhis.sms.command;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -30,6 +30,8 @@ package org.hisp.dhis.smscommand;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.sms.command.code.SMSCode;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.user.UserGroup;
 
@@ -80,6 +82,10 @@ public class SMSCommand
     // Program
 
     private Program program;
+
+    // Program Stage
+
+    private ProgramStage programStage;
 
     private Set<SMSSpecialCharacter> specialCharacters;
 
@@ -394,5 +400,15 @@ public class SMSCommand
     public void setProgram( Program program )
     {
         this.program = program;
+    }
+
+    public ProgramStage getProgramStage()
+    {
+        return programStage;
+    }
+
+    public void setProgramStage( ProgramStage programStage )
+    {
+        this.programStage = programStage;
     }
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.sms;
+package org.hisp.dhis.sms.command;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,36 +28,27 @@ package org.hisp.dhis.sms;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.smscommand.SMSCode;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class SMSCodesDeletionHandler extends DeletionHandler
+public class SMSCommandDeletionHandler extends DeletionHandler
 {
-    private JdbcTemplate jdbcTemplate;
-
     @Autowired
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private SMSCommandService smsCommandService;
 
     @Override
     protected String getClassName()
     {
-        return SMSCode.class.getSimpleName();
+        return SMSCommand.class.getSimpleName();
     }
 
     @Override
-    public String allowDeleteDataElement( DataElement dataElement )
+    public String allowDeleteDataSet( DataSet dataSet )
     {
-        String sql = "SELECT COUNT(*) FROM smscodes where dataelementid=" + dataElement.getId();
-
-        return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
+        return smsCommandService.countDataSetSmsCommands( dataSet ) == 0 ? null : ERROR;
     }
 }

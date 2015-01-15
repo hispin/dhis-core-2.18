@@ -1,4 +1,4 @@
-package org.hisp.dhis.sms;
+package org.hisp.dhis.sms.listener;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -57,16 +57,17 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.sms.SmsSender;
+import org.hisp.dhis.sms.command.SMSCommand;
+import org.hisp.dhis.sms.command.SMSCommandService;
+import org.hisp.dhis.sms.command.SMSSpecialCharacter;
+import org.hisp.dhis.sms.command.code.SMSCode;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsListener;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.sms.parse.SMSParserException;
-import org.hisp.dhis.smscommand.SMSCode;
-import org.hisp.dhis.smscommand.SMSCommand;
-import org.hisp.dhis.smscommand.SMSCommandService;
-import org.hisp.dhis.smscommand.SMSSpecialCharacter;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,7 +75,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DataValueSMSListener
     implements IncomingSmsListener
 {
-
     private static final String defaultPattern = "([a-zA-Z]+)\\s*(\\d+)";
 
     private CompleteDataSetRegistrationService registrationService;
@@ -95,6 +95,51 @@ public class DataValueSMSListener
 
     private DataElementService dataElementService;
 
+    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
+    {
+        this.registrationService = registrationService;
+    }
+
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
+
+    public void setSmsCommandService( SMSCommandService smsCommandService )
+    {
+        this.smsCommandService = smsCommandService;
+    }
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
+    }
+
+    public void setSmsSender( SmsSender smsSender )
+    {
+        this.smsSender = smsSender;
+    }
+
+    public void setIncomingSmsService( IncomingSmsService incomingSmsService )
+    {
+        this.incomingSmsService = incomingSmsService;
+    }
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
     @Transactional
     @Override
     public boolean accept( IncomingSms sms )
@@ -502,7 +547,7 @@ public class DataValueSMSListener
         OrganisationUnit orgunit = null;
         User user = null;
 
-        // -------------------------> Need to be edit
+        // Need to be edited
         for ( User u : userService.getUsersByPhoneNumber( sender ) )
         {
             OrganisationUnit ou = u.getOrganisationUnit();
@@ -530,9 +575,10 @@ public class DataValueSMSListener
                     }
                 }
             }
+            
             user = u;
         }
-        // <-------------------------------------
+        
         if ( user == null )
         {
             throw new SMSParserException( "User is not associated with any orgunit. Please contact your supervisor." );
@@ -559,8 +605,6 @@ public class DataValueSMSListener
             if ( dv == null && !StringUtils.isEmpty( code.getCode() ) )
             {
                 numberOfEmptyValue++;
-                // emptyValue = true;
-                // return; // not marked as complete
             }
         }
 
@@ -652,6 +696,7 @@ public class DataValueSMSListener
         {
             notInReport += key + ",";
         }
+        
         notInReport = notInReport.substring( 0, notInReport.length() - 1 );
 
         if ( command.getSuccessMessage() != null && !StringUtils.isEmpty( command.getSuccessMessage() ) )
@@ -660,16 +705,8 @@ public class DataValueSMSListener
         }
         else
         {
-            // if ( codesWithoutDataValues.size() > 0 )
-            // {
-            // smsSender.sendMessage( reportBack + notInReport, sender );
-            // }
-            // else
-            // {
             smsSender.sendMessage( reportBack, sender );
-            // }
         }
-
     }
 
     private void registerCompleteDataSet( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
@@ -705,95 +742,4 @@ public class DataValueSMSListener
             registrationService.deleteCompleteDataSetRegistration( registration );
         }
     }
-
-    public CompleteDataSetRegistrationService getRegistrationService()
-    {
-        return registrationService;
-    }
-
-    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
-    {
-        this.registrationService = registrationService;
-    }
-
-    public DataValueService getDataValueService()
-    {
-        return dataValueService;
-    }
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
-    public SMSCommandService getSmsCommandService()
-    {
-        return smsCommandService;
-    }
-
-    public void setSmsCommandService( SMSCommandService smsCommandService )
-    {
-        this.smsCommandService = smsCommandService;
-    }
-
-    public UserService getUserService()
-    {
-        return userService;
-    }
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
-
-    public DataSetService getDataSetService()
-    {
-        return dataSetService;
-    }
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
-    public DataElementCategoryService getDataElementCategoryService()
-    {
-        return dataElementCategoryService;
-    }
-
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
-    }
-
-    public SmsSender getSmsSender()
-    {
-        return smsSender;
-    }
-
-    public void setSmsSender( SmsSender smsSender )
-    {
-        this.smsSender = smsSender;
-    }
-
-    public IncomingSmsService getIncomingSmsService()
-    {
-        return incomingSmsService;
-    }
-
-    public void setIncomingSmsService( IncomingSmsService incomingSmsService )
-    {
-        this.incomingSmsService = incomingSmsService;
-    }
-
-    public DataElementService getDataElementService()
-    {
-        return dataElementService;
-    }
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
 }

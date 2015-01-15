@@ -1,4 +1,4 @@
-package org.hisp.dhis.sms;
+package org.hisp.dhis.sms.listener;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -55,13 +56,14 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.sms.SmsSender;
+import org.hisp.dhis.sms.command.SMSCommand;
+import org.hisp.dhis.sms.command.SMSCommandService;
+import org.hisp.dhis.sms.command.code.SMSCode;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsListener;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.sms.parse.SMSParserException;
-import org.hisp.dhis.smscommand.SMSCode;
-import org.hisp.dhis.smscommand.SMSCommand;
-import org.hisp.dhis.smscommand.SMSCommandService;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;

@@ -28,8 +28,8 @@
 package org.hisp.dhis.mobile.action.smscommand;
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.smscommand.SMSCommand;
-import org.hisp.dhis.smscommand.SMSCommandService;
+import org.hisp.dhis.sms.command.SMSCommand;
+import org.hisp.dhis.sms.command.SMSCommandService;
 
 import com.opensymphony.xwork2.Action;
 

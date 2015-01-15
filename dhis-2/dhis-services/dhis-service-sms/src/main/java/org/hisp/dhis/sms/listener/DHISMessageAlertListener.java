@@ -1,4 +1,4 @@
-package org.hisp.dhis.sms;
+package org.hisp.dhis.sms.listener;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -35,21 +35,21 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.message.MessageService;
+import org.hisp.dhis.sms.SmsMessageSender;
+import org.hisp.dhis.sms.command.SMSCommand;
+import org.hisp.dhis.sms.command.SMSCommandService;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsListener;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.sms.parse.SMSParserException;
-import org.hisp.dhis.smscommand.SMSCommand;
-import org.hisp.dhis.smscommand.SMSCommandService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserService;
 import org.springframework.transaction.annotation.Transactional;
 
-public class UnregisteredSMSListener
+public class DHISMessageAlertListener
     implements IncomingSmsListener
 {
     private SMSCommandService smsCommandService;
@@ -62,7 +62,15 @@ public class UnregisteredSMSListener
 
     private IncomingSmsService incomingSmsService;
 
-    public static final String USER_NAME = "anonymous";
+    public SMSCommandService getSmsCommandService()
+    {
+        return smsCommandService;
+    }
+
+    public void setSmsCommandService( SMSCommandService smsCommandService )
+    {
+        this.smsCommandService = smsCommandService;
+    }
 
     @Transactional
     @Override
@@ -82,7 +90,7 @@ public class UnregisteredSMSListener
             }
         }
 
-        return smsCommandService.getSMSCommand( commandString, ParserType.UNREGISTERED_PARSER ) != null;
+        return smsCommandService.getSMSCommand( commandString, ParserType.ALERT_PARSER ) != null;
     }
 
     @Transactional
@@ -103,75 +111,69 @@ public class UnregisteredSMSListener
             }
         }
 
-        SMSCommand smsCommand = smsCommandService.getSMSCommand( commandString, ParserType.UNREGISTERED_PARSER );
-
+        SMSCommand smsCommand = smsCommandService.getSMSCommand( commandString, ParserType.ALERT_PARSER );
         UserGroup userGroup = smsCommand.getUserGroup();
-
         String senderPhoneNumber = StringUtils.replace( sms.getOriginator(), "+", "" );
 
         if ( userGroup != null )
         {
             Collection<User> users = userService.getUsersByPhoneNumber( senderPhoneNumber );
 
-            if ( users != null && users.size() >= 1 )
+            if ( users != null && users.size() > 1 )
             {
-                String messageError = "This number is already registered for user: ";
-                for ( Iterator<User> iterator = users.iterator(); iterator.hasNext(); )
+                String messageMoreThanOneUser = smsCommand.getMoreThanOneOrgUnitMessage();
+                if ( messageMoreThanOneUser.trim().equals( "" ) )
                 {
-                    User user = iterator.next();
-                    messageError += user.getName();
-                    if ( iterator.hasNext() )
+                    messageMoreThanOneUser = SMSCommand.MORE_THAN_ONE_ORGUNIT_MESSAGE;
+                }
+                for ( Iterator<User> i = users.iterator(); i.hasNext(); )
+                {
+                    User user = i.next();
+                    messageMoreThanOneUser += " " + user.getName();
+                    if ( i.hasNext() )
                     {
-                        messageError += ", ";
+                        messageMoreThanOneUser += ",";
                     }
                 }
-                throw new SMSParserException( messageError );
+                throw new SMSParserException( messageMoreThanOneUser );
             }
-            else
+            else if ( users != null && users.size() == 1 )
             {
+                User sender = users.iterator().next();
+
                 Set<User> receivers = new HashSet<>( userGroup.getMembers() );
 
-                UserCredentials anonymousUser = userService.getUserCredentialsByUsername( "anonymous" );
-
-                if ( anonymousUser == null )
-                {
-                    User user = new User();
-                    UserCredentials usercredential = new UserCredentials();
-                    usercredential.setUsername( USER_NAME );
-                    usercredential.setPassword( USER_NAME );
-                    usercredential.setUser( user );
-                    user.setSurname( USER_NAME );
-                    user.setFirstName( USER_NAME );
-                    user.setUserCredentials( usercredential );
-
-                    userService.addUserCredentials( usercredential );
-                    userService.addUser( user );
-                    anonymousUser = userService.getUserCredentialsByUsername( "anonymous" );
-                }
-
-                // forward to user group by SMS, E-mail, DHIS conversation
-                messageService.sendMessage( smsCommand.getName(), message, null, receivers, anonymousUser.getUser(),
-                    false, false );
+                // forward to user group by SMS,Dhis2 message, Email
+                messageService.sendMessage( smsCommand.getName(), message, null, receivers, sender, false, false );
 
                 // confirm SMS was received and forwarded completely
                 Set<User> feedbackList = new HashSet<>();
-                User sender = new User();
-                sender.setPhoneNumber( senderPhoneNumber );
                 feedbackList.add( sender );
-                smsMessageSender.sendMessage( smsCommand.getName(), smsCommand.getReceivedMessage(), null,
-                    feedbackList, true );
 
-                // update the status of the sms after process
+                String confirmMessage = smsCommand.getReceivedMessage();
+
+                if ( confirmMessage == null )
+                {
+                    confirmMessage = SMSCommand.ALERT_FEEDBACK;
+                }
+
+                smsMessageSender.sendMessage( smsCommand.getName(), confirmMessage, null, feedbackList, true );
+
+                sms.setParsed( true );
                 sms.setStatus( SmsMessageStatus.PROCESSED );
                 incomingSmsService.update( sms );
-
+            }
+            else if ( users == null || users.size() == 0 )
+            {
+                throw new SMSParserException(
+                    "No user associated with this phone number. Please contact your supervisor." );
             }
         }
     }
 
-    public void setSmsCommandService( SMSCommandService smsCommandService )
+    public UserService getUserService()
     {
-        this.smsCommandService = smsCommandService;
+        return userService;
     }
 
     public void setUserService( UserService userService )
@@ -179,9 +181,19 @@ public class UnregisteredSMSListener
         this.userService = userService;
     }
 
+    public MessageService getMessageService()
+    {
+        return messageService;
+    }
+
     public void setMessageService( MessageService messageService )
     {
         this.messageService = messageService;
+    }
+
+    public SmsMessageSender getSmsMessageSender()
+    {
+        return smsMessageSender;
     }
 
     public void setSmsMessageSender( SmsMessageSender smsMessageSender )
@@ -189,9 +201,13 @@ public class UnregisteredSMSListener
         this.smsMessageSender = smsMessageSender;
     }
 
+    public IncomingSmsService getIncomingSmsService()
+    {
+        return incomingSmsService;
+    }
+
     public void setIncomingSmsService( IncomingSmsService incomingSmsService )
     {
         this.incomingSmsService = incomingSmsService;
     }
-
 }

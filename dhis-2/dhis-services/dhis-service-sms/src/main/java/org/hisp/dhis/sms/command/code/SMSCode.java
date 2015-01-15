@@ -1,4 +1,4 @@
-package org.hisp.dhis.smscommand;
+package org.hisp.dhis.sms.command.code;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
