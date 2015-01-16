@@ -374,7 +374,7 @@ public class ValidationUtils
     }
 
     /**
-     * Checks to see if given parameter is a valid hex color string (#xxx and #xxxxxx).
+     * Checks to see if given parameter is a valid hex color string (#xxx and #xxxxxx, xxx, xxxxxx).
      *
      * @param value Value to check against
      * @return true if value is a hex color string, false otherwise
@@ -386,21 +386,19 @@ public class ValidationUtils
             return false;
         }
 
-        if ( !value.startsWith( "#" ) )
+        if ( value.startsWith( "#" ) )
+        {
+            value = value.substring( 1 );
+        }
+
+        if ( !(value.length() == 3 || value.length() == 6) )
         {
             return false;
         }
 
-        if ( !(value.length() == 4 || value.length() == 7) )
+        for ( char aChar : value.toCharArray() )
         {
-            return false;
-        }
-
-        char[] chars = value.toCharArray();
-
-        for ( int i = 1; i < chars.length; i++ )
-        {
-            if ( !Verifier.isHexDigit( chars[i] ) )
+            if ( !Verifier.isHexDigit( aChar ) )
             {
                 return false;
             }
