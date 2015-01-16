@@ -61,9 +61,6 @@ public class AppListAction
         return appList;
     }
 
-    //TODO create settings to set for external server like Apache2/nginx
-    //TODO Should be a per-app setting
-    
     private String appBaseUrl;
 
     public String getAppBaseUrl()
