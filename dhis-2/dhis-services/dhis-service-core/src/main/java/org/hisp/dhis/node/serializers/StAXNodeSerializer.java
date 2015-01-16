@@ -111,7 +111,7 @@ public class StAXNodeSerializer extends AbstractNodeSerializer
     {
         String value = String.format( "%s", simpleNode.getValue() );
 
-        if ( Date.class.isAssignableFrom( simpleNode.getValue().getClass() ) )
+        if ( simpleNode.getValue() != null && Date.class.isAssignableFrom( simpleNode.getValue().getClass() ) )
         {
             SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" );
             dateFormat.setTimeZone( TimeZone.getTimeZone("UTC") );
