@@ -426,6 +426,7 @@ public class TableAlteror
         executeSql( "update dataset set approvedata = false where approvedata is null" );
         executeSql( "update dataelement set zeroissignificant = false where zeroissignificant is null" );
         executeSql( "update organisationunit set haspatients = false where haspatients is null" );
+        executeSql( "update organisationunit set openingdate = '1970-01-01' where openingdate is null" );
         executeSql( "update dataset set expirydays = 0 where expirydays is null" );
         executeSql( "update eventchart set hidelegend = false where hidelegend is null" );
         executeSql( "update eventchart set regression = false where regression is null" );
