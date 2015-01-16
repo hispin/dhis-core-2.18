@@ -21,7 +21,7 @@
                    ng-required="true" 
                    input-field-id="eventDate"
                    name="eventDate"/>
-            <span ng-show="currentEvent.eventDate && outerForm.eventDate.$invalid || outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{getErrorMessage('eventDate')}}</span>
+            <span ng-show="outerForm.eventDate.$invalid && outerForm.eventDate.$dirty || currentEvent.eventDate && outerForm.eventDate.$invalid || outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{getErrorMessage('eventDate')}}</span>
         </td>
     </tr>
     <tr ng-if="selectedProgramStage.captureCoordinates">

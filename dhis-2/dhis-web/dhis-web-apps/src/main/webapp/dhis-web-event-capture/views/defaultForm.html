@@ -34,7 +34,8 @@
                            name="eventDate"
                            input-field-id="eventDate"
                            style="width:99%;"/>
-                    <span ng-show="currentEvent.eventDate && outerForm.eventDate.$invalid || outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{getErrorMessage('eventDate')}}</span>
+                    <span ng-show="outerForm.eventDate.$invalid && outerForm.eventDate.$dirty || currentEvent.eventDate && outerForm.eventDate.$invalid || outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{getErrorMessage('eventDate')}}</span>
+                    <!--<span ng-show="outerForm.eventDate.$invalid && outerForm.eventDate.$dirty" class="required">{{'required' | translate}}</span>-->
                 </td>
             </tr>
             <tr ng-if="selectedProgramStage.captureCoordinates">
@@ -161,7 +162,7 @@
                                        input-field-id={{eventGridColumn.id}} />
                             </div>
                         </div>
-                        <span ng-show="currentEvent[eventGridColumn.id] && innerForm.foo.$invalid || outerForm.submitted && innerForm.foo.$invalid" class="required">{{getErrorMessage(eventGridColumn.id)}}</span>
+                        <span ng-show="innerForm.foo.$invalid && innerForm.foo.$dirty || currentEvent[eventGridColumn.id] && innerForm.foo.$invalid || outerForm.submitted && innerForm.foo.$invalid" class="required">{{getErrorMessage(eventGridColumn.id)}}</span>                        
                     </ng-form>                    
                 </td>
             </tr>        
@@ -204,7 +205,7 @@
                            name="eventDate" 
                            input-field-id='eventDate' 
                            style="width:99%;">
-                    <span ng-show="currentEvent.eventDate && outerForm.eventDate.$invalid || outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{getErrorMessage('eventDate') | translate}}</span>
+                    <span ng-show="outerForm.eventDate.$invalid && outerForm.eventDate.$dirty || currentEvent.eventDate && outerForm.eventDate.$invalid || outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{getErrorMessage('eventDate') | translate}}</span>
                 </td>
             </tr>
             <tr ng-if="selectedProgramStage.captureCoordinates">
@@ -344,7 +345,7 @@
                                                input-field-id={{de.dataElement.id}}/>
                                     </div>
                                 </div>
-                                <span ng-show="currentEvent[de.dataElement.id] && innerForm.foo.$invalid || outerForm.submitted && innerForm.foo.$invalid" class="required">{{getErrorMessage(de.dataElement.id)}}</span>
+                                <span ng-show="innerForm.foo.$invalid && innerForm.foo.$dirty  || outerForm.submitted && innerForm.foo.$invalid || currentEvent[de.dataElement.id] && innerForm.foo.$invalid" class="required">{{getErrorMessage(de.dataElement.id)}}</span>                                
                             </ng-form>                            
                         </td>
                     </tr>
@@ -392,6 +393,6 @@
         <button ng-click="showEventList(null)" class="button not-printable">{{'go_back'| translate}}</button>        
     </span>
     <span ng-if="isFormInvalid()" class="horizontal-spacing red">{{'form_invalid' | translate}}</span>
-    
+        
 </div>
 <!-- buttons for event registration / update ends -->
