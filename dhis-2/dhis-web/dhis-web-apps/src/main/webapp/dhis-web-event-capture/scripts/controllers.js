@@ -773,7 +773,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     };
     
     $scope.isFormInvalid = function(){
-        
         if($scope.outerForm.submitted){
             return $scope.outerForm.$invalid;
         }
@@ -801,7 +800,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         return formIsInvalid;
     };
     
-    $scope.getErrorMessage = function(deId){
-        return ErrorMessageService.get(deId);
+    $scope.getErrorMessage = function(id){
+        return ErrorMessageService.get(id);
     };
 });
