@@ -67,9 +67,10 @@ public class AppSettingsAction
     {
         appFolderPath = appManager.getAppFolderPath();
 
-        if ( null == appFolderPath || appFolderPath.isEmpty() )
+        if ( appFolderPath == null || appFolderPath.isEmpty() )
         {
             String realPath = ServletActionContext.getServletContext().getRealPath( "/" );
+            
             if ( realPath.endsWith( "/" ) || realPath.endsWith( "\\" ) )
             {
                 appFolderPath = realPath + "apps";
@@ -97,7 +98,7 @@ public class AppSettingsAction
     {
         appBaseUrl = appManager.getAppBaseUrl();
 
-        if ( null == appBaseUrl || appBaseUrl.isEmpty() )
+        if ( appBaseUrl == null || appBaseUrl.isEmpty() )
         {
             HttpServletRequest request = ServletActionContext.getRequest();
             String realPath = ServletActionContext.getServletContext().getRealPath( "/" );
@@ -108,12 +109,12 @@ public class AppSettingsAction
             if ( !contextPath.isEmpty() )
             {
                 appBaseUrl = baseUrl.substring( 0, baseUrl.length() - 1 ) + request.getContextPath() + "/"
-                    + ((appsPath.replace( "//", "/" )).replace( realPath, "" )).replace( '\\', '/' );
+                    + ( ( appsPath.replace( "//", "/" ) ).replace( realPath, "" ) ).replace( '\\', '/' );
             }
             else
             {
                 appBaseUrl = baseUrl.substring( 0, baseUrl.length() - 1 )
-                    + ((appsPath.replace( "//", "/" )).replace( realPath, "" )).replace( '\\', '/' );
+                    + ( ( appsPath.replace( "//", "/" ) ).replace( realPath, "" ) ).replace( '\\', '/' );
             }
 
             appManager.setAppBaseUrl( appBaseUrl );
