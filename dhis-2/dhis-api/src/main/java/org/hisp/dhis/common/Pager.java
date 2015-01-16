@@ -74,7 +74,7 @@ public class Pager
     public Pager( int page, int total, int pageSize )
     {
         this.page = page;
-        this.total = total > 0 ? total : 1;
+        this.total = total >= 0 ? total : 0;
         this.pageSize = pageSize > 0 ? pageSize : 1;
 
         if ( this.page > getPageCount() )
