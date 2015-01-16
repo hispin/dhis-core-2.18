@@ -31,6 +31,7 @@ package org.hisp.dhis.common;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -139,6 +140,17 @@ public interface GenericIdentifiableObjectStore<T>
      */
     List<T> getAllLikeName( String name, int first, int max );
 
+    /**
+     * Retrieves a List of objects where the name matches the conjunction of the
+     * given set of words.
+     *
+     * @param words the set of words.
+     * @param first the first result object to return.
+     * @param max   the max number of result objects to return.
+     * @return a List of objects.
+     */
+    List<T> getAllLikeName( Set<String> words, int first, int max );
+    
     /**
      * Retrieves a List of objects where the shortName is like the given shortName.
      *

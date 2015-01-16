@@ -492,6 +492,20 @@ public class DefaultIdentifiableObjectManager
 
     @Override
     @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> List<T> getBetweenLikeName( Class<T> clazz, Set<String> words, int first, int max )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return new ArrayList<>();
+        }
+
+        return (List<T>) store.getAllLikeName( words, first, max );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getByLastUpdated( Class<T> clazz, Date lastUpdated )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );

@@ -32,10 +32,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -240,6 +242,25 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     {
         return getSharingCriteria()
             .add( Restrictions.like( "name", "%" + name + "%" ).ignoreCase() )
+            .addOrder( Order.asc( "name" ) )
+            .setFirstResult( first )
+            .setMaxResults( max )
+            .list();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<T> getAllLikeName( Set<String> nameWords, int first, int max )
+    {
+        Conjunction conjunction = Restrictions.conjunction();
+        
+        for ( String word : nameWords )
+        {
+            conjunction.add( Restrictions.like( "name", "%" + word + "%" ).ignoreCase() );
+        }
+        
+        return getSharingCriteria()
+            .add( conjunction )
             .addOrder( Order.asc( "name" ) )
             .setFirstResult( first )
             .setMaxResults( max )

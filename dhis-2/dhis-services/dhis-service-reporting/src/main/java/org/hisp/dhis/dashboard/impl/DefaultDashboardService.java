@@ -42,10 +42,13 @@ import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Sets;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -102,16 +105,18 @@ public class DefaultDashboardService
     @Override
     public DashboardSearchResult search( String query, Set<String> maxTypes )
     {
+        Set<String> words = Sets.newHashSet( query.split( TextUtils.SPACE ) );
+        
         DashboardSearchResult result = new DashboardSearchResult();
 
         result.setUsers( userService.getAllUsersBetweenByName( query, 0, getMax( TYPE_USERS, maxTypes ) ) );
-        result.setCharts( objectManager.getBetweenLikeName( Chart.class, query, 0, getMax( TYPE_CHART, maxTypes ) ) );
-        result.setEventCharts( objectManager.getBetweenLikeName( EventChart.class, query, 0, getMax( TYPE_EVENT_CHART, maxTypes ) ) );
-        result.setMaps( objectManager.getBetweenLikeName( Map.class, query, 0, getMax( TYPE_MAP, maxTypes ) ) );
-        result.setReportTables( objectManager.getBetweenLikeName( ReportTable.class, query, 0, getMax( TYPE_REPORT_TABLE, maxTypes ) ) );
-        result.setEventReports( objectManager.getBetweenLikeName( EventReport.class, query, 0, getMax( TYPE_EVENT_REPORT, maxTypes ) ) );
-        result.setReports( objectManager.getBetweenLikeName( Report.class, query, 0, getMax( TYPE_REPORTS, maxTypes ) ) );
-        result.setResources( objectManager.getBetweenLikeName( Document.class, query, 0, getMax( TYPE_RESOURCES, maxTypes ) ) );
+        result.setCharts( objectManager.getBetweenLikeName( Chart.class, words, 0, getMax( TYPE_CHART, maxTypes ) ) );
+        result.setEventCharts( objectManager.getBetweenLikeName( EventChart.class, words, 0, getMax( TYPE_EVENT_CHART, maxTypes ) ) );
+        result.setMaps( objectManager.getBetweenLikeName( Map.class, words, 0, getMax( TYPE_MAP, maxTypes ) ) );
+        result.setReportTables( objectManager.getBetweenLikeName( ReportTable.class, words, 0, getMax( TYPE_REPORT_TABLE, maxTypes ) ) );
+        result.setEventReports( objectManager.getBetweenLikeName( EventReport.class, words, 0, getMax( TYPE_EVENT_REPORT, maxTypes ) ) );
+        result.setReports( objectManager.getBetweenLikeName( Report.class, words, 0, getMax( TYPE_REPORTS, maxTypes ) ) );
+        result.setResources( objectManager.getBetweenLikeName( Document.class, words, 0, getMax( TYPE_RESOURCES, maxTypes ) ) );
 
         return result;
     }
