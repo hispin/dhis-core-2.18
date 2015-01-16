@@ -273,6 +273,18 @@ public class DefaultLocationManager
     }
 
     @Override
+    public String getExternalDirectoryPath()
+        throws LocationManagerException
+    {
+        if ( externalDir == null )
+        {
+            throw new LocationManagerException( "External directory not set" );
+        }
+        
+        return externalDir;
+    }
+
+    @Override
     public boolean externalDirectorySet()
     {
         return externalDir != null;

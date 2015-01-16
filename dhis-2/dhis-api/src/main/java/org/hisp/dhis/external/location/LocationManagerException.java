@@ -33,7 +33,7 @@ package org.hisp.dhis.external.location;
  * @version $Id$
  */
 public class LocationManagerException
-    extends Exception
+    extends RuntimeException
 {
     /**
      * Determines if a de-serialized file is compatible with this class.

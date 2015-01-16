@@ -158,6 +158,13 @@ public interface LocationManager
      */
     File getExternalDirectory()
         throws LocationManagerException;
+
+    /**
+     * Gets the external configuration directory. A LocationManagerException is 
+     * thrown if the external directory location is not set.
+     */
+    String getExternalDirectoryPath()
+        throws LocationManagerException;
     
     /**
      * Indicates whether the external configuration directory is set, valid,
