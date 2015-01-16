@@ -64,6 +64,7 @@ import org.hisp.dhis.eventchart.EventChart;
 import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -291,6 +292,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         List<ValidationViolation> validationViolations = schemaValidator.validate( object );
 
+        /*
         if ( !validationViolations.isEmpty() )
         {
             summaryType.getImportConflicts().add(
@@ -298,6 +300,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             return false;
         }
+        */
 
         // make sure that the internalId is 0, so that the system will generate a ID
         object.setId( 0 );
@@ -405,6 +408,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         List<ValidationViolation> validationViolations = schemaValidator.validate( object );
 
+        /*
         if ( !validationViolations.isEmpty() )
         {
             summaryType.getImportConflicts().add(
@@ -412,6 +416,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             return false;
         }
+        */
 
         NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects( user );
         nonIdentifiableObjects.extract( object );
@@ -464,7 +469,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             {
                 Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
 
-                if ( userCredentials != null && userCredentials.getPassword() != null )
+                if ( userCredentials.getPassword() != null )
                 {
                     userService.encodeAndSetPassword( userCredentials, userCredentials.getPassword() );
                 }
