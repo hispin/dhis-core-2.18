@@ -101,6 +101,19 @@ public class App
         return null;
     }
     
+    /**
+     * Alias for folder name.
+     */
+    @JsonProperty
+    public String getKey()
+    {
+        return folderName;
+    }
+
+    // -------------------------------------------------------------------------
+    // Get and set methods
+    // -------------------------------------------------------------------------
+    
     public String getVersion()
     {
         return version;

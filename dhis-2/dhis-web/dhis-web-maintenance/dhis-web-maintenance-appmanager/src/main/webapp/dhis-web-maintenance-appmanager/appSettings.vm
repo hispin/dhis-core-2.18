@@ -52,7 +52,7 @@
         </thead>
         <tbody id="list">
             #foreach( $app in $appList )
-            <tr id="tr${app.name.replace(' ','_')}" data-id="${app.name.replace(' ','_')}" data-name="$encoder.jsEncode( $app.name )">
+            <tr id="tr${app.key}" data-id="${app.key}" data-name="$encoder.jsEncode( $app.name )">
                 <td>$encoder.jsEncode( $app.name )</td>
                 <td>$app.version</td>
             </tr>
