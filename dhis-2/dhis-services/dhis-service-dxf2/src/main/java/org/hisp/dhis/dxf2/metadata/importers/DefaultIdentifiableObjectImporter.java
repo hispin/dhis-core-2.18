@@ -292,9 +292,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         List<ValidationViolation> validationViolations = schemaValidator.validate( object );
 
-        /*
+        /* disabled for 2.18 release
         if ( !validationViolations.isEmpty() )
         {
+            System.err.println( "violations: " + validationViolations );
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( object ), "Validation Violations: " + validationViolations ) );
 
@@ -408,9 +409,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         List<ValidationViolation> validationViolations = schemaValidator.validate( object );
 
-        /*
+        /* disabled for 2.18 release
         if ( !validationViolations.isEmpty() )
         {
+            System.err.println( "violations: " + validationViolations );
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( object ), "Validation Violations: " + validationViolations ) );
 

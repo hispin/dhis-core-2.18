@@ -64,7 +64,7 @@ public final class SchemaUtils
             {
                 PropertyRange propertyRange = property.getGetterMethod().getAnnotation( PropertyRange.class );
 
-                if ( propertyRange.max() >= 0 && propertyRange.max() <= property.getMax() )
+                if ( propertyRange.max() <= property.getMax() )
                 {
                     property.setMax( propertyRange.max() );
                 }

@@ -188,9 +188,7 @@ public abstract class AbstractPropertyIntrospectorService
 
                 property.setUnique( column.isUnique() );
                 property.setRequired( !column.isNullable() );
-
-                property.setMax( column.getLength() );
-                property.setMin( 0 );
+                property.setLength( column.getLength() );
 
                 properties.put( property.getName(), property );
             }
