@@ -29,6 +29,7 @@
   <sec:http pattern="/external-static/**" security="none" />
   <sec:http pattern="/favicon.ico" security="none" />
 
+  <!-- Disabled for now, we need to properly handle "Basic Auth" dialog box popping up on browsers
   <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2" pattern="/api/**">
     <sec:http-basic />
 
@@ -47,6 +48,7 @@
     <sec:intercept-url pattern="/api/account" access="permitAll()" />
     <sec:intercept-url pattern="/api/**" access="isAuthenticated()" />
   </sec:http>
+  -->
 
   <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2">
     <sec:openid-login user-service-ref="userDetailsService" default-target-url="/" always-use-default-target="false"
