@@ -36,6 +36,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.dxf2.render.RenderService;
@@ -59,6 +61,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.collect.Lists;
 
 /**
@@ -68,6 +71,8 @@ import com.google.common.collect.Lists;
 @RequestMapping( AppController.RESOURCE_PATH )
 public class AppController
 {
+    private static final Log log = LogFactory.getLog( AppController.class );
+    
     public static final String RESOURCE_PATH = "/apps";
 
     @Autowired
@@ -90,14 +95,27 @@ public class AppController
     @RequestMapping( method = RequestMethod.POST )
     @ResponseStatus( HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
-    public void installApp( @RequestParam( "file" ) MultipartFile file, HttpServletRequest request ) throws IOException
+    public void installApp( @RequestParam( "file" ) MultipartFile file, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         File tempFile = File.createTempFile( "IMPORT_", "_ZIP" );
         file.transferTo( tempFile );
         
         String contextPath = ContextUtils.getContextPath( request );
         
-        appManager.installApp( tempFile, file.getOriginalFilename(), contextPath );
+        try
+        {
+            appManager.installApp( tempFile, file.getOriginalFilename(), contextPath );
+        }
+        catch ( JsonParseException ex )
+        {
+            ContextUtils.conflictResponse( response, "Invalid JSON in app manifest file" );            
+            log.error( ex );
+        }
+        catch ( IOException ex )
+        {
+            ContextUtils.conflictResponse( response, "App could not not be installed on file system, check permissions" );            
+            log.error( ex );
+        }
     }
 
     @RequestMapping( method = RequestMethod.PUT )
