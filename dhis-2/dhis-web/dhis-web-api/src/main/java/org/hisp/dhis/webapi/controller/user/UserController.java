@@ -261,7 +261,7 @@ public class UserController
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     @PreAuthorize( "hasRole('ALL')" )
     @RequestMapping( value = "/{uid}/replica", method = RequestMethod.POST )
     public void replicateUser( @PathVariable String uid, 
@@ -280,7 +280,7 @@ public class UserController
             return;
         }
         
-        Map<String, String> auth = renderService.fromJson( request.getInputStream(),Map.class );
+        Map<String, String> auth = renderService.fromJson( request.getInputStream(), Map.class );
 
         String username = StringUtils.trimToNull( auth != null ? auth.get( KEY_USERNAME ) : null );
         String password = StringUtils.trimToNull( auth != null ? auth.get( KEY_PASSWORD ) : null );

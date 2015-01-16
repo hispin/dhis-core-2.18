@@ -28,19 +28,16 @@ package org.hisp.dhis.appmanager.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
-import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.http.HttpServletRequest;
-
-import java.io.File;
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Saptarshi Purkayastha
@@ -48,14 +45,15 @@ import java.util.List;
 public class AppSettingsAction
     implements Action
 {
-    boolean isSaved;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     @Autowired
     private AppManager appManager;
+    
+    @Autowired
+    private LocationManager locationManager;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -65,88 +63,23 @@ public class AppSettingsAction
 
     public String getAppFolderPath()
     {
-        appFolderPath = appManager.getAppFolderPath();
-
-        if ( appFolderPath == null || appFolderPath.isEmpty() )
-        {
-            String realPath = ServletActionContext.getServletContext().getRealPath( "/" );
-            
-            if ( realPath.endsWith( "/" ) || realPath.endsWith( "\\" ) )
-            {
-                appFolderPath = realPath + "apps";
-            }
-            else
-            {
-                appFolderPath = realPath + File.separatorChar + "apps";
-            }
-
-            appManager.setAppFolderPath( appFolderPath );
-        }
-
         return appFolderPath;
-    }
-
-    public void setAppFolderPath( String appFolderPath )
-    {
-        isSaved = true;
-        appManager.setAppFolderPath( appFolderPath );
     }
 
     private String appBaseUrl;
 
     public String getAppBaseUrl()
     {
-        appBaseUrl = appManager.getAppBaseUrl();
-
-        if ( appBaseUrl == null || appBaseUrl.isEmpty() )
-        {
-            HttpServletRequest request = ServletActionContext.getRequest();
-            String realPath = ServletActionContext.getServletContext().getRealPath( "/" );
-            String appsPath = appManager.getAppFolderPath();
-            String baseUrl = ContextUtils.getBaseUrl( request );
-            String contextPath = request.getContextPath();
-
-            if ( !contextPath.isEmpty() )
-            {
-                appBaseUrl = baseUrl.substring( 0, baseUrl.length() - 1 ) + request.getContextPath() + "/"
-                    + ( ( appsPath.replace( "//", "/" ) ).replace( realPath, "" ) ).replace( '\\', '/' );
-            }
-            else
-            {
-                appBaseUrl = baseUrl.substring( 0, baseUrl.length() - 1 )
-                    + ( ( appsPath.replace( "//", "/" ) ).replace( realPath, "" ) ).replace( '\\', '/' );
-            }
-
-            appManager.setAppBaseUrl( appBaseUrl );
-        }
-
         return appBaseUrl;
     }
 
-    public void setAppBaseUrl( String appBaseUrl )
-    {
-        appManager.setAppBaseUrl( appBaseUrl );
-    }
+    private List<App> appList;
 
     public List<App> getAppList()
     {
-        return appManager.getApps();
+        return appList;
     }
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -154,9 +87,27 @@ public class AppSettingsAction
     @Override
     public String execute()
     {
-        message = i18n.getString( "appmanager_saved_settings" );
+        appFolderPath = appManager.getAppFolderPath();
+
+        if ( appFolderPath == null || appFolderPath.isEmpty() )
+        {
+            appFolderPath = locationManager.getExternalDirectoryPath() + AppManager.APPS_DIR;            
+            appManager.setAppFolderPath( appFolderPath );
+        }
+        
+        appBaseUrl = appManager.getAppBaseUrl();
+
+        if ( appBaseUrl == null || appBaseUrl.isEmpty() )
+        {
+            String contextPath = ContextUtils.getContextPath( ServletActionContext.getRequest() );
+            appBaseUrl = contextPath + AppManager.APPS_API_PATH;
+            appManager.setAppBaseUrl( appBaseUrl );
+        }
+                
         appManager.reloadApps();
 
-        return isSaved ? SUCCESS : "getSuccess";
+        appList = appManager.getApps();
+        
+        return SUCCESS;
     }
 }

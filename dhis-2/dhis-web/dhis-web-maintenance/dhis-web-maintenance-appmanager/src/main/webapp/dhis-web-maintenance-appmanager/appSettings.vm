@@ -28,13 +28,11 @@
   </ul>
 </div>
 
-<form id="appSettingsForm" action="appSettings.action" method="post">
 <div class="settingLabel">$i18n.getString( "appmanager_installation_folder" ) <span class="tipText">($i18n.getString( "appmanager_absolute_server_path" ))</span></div>
 <div class="setting"><input type="text" id="appFolderPath" name="appFolderPath" style="width:40em" value="$!appFolderPath"/></div>
 <div class="settingLabel">$i18n.getString( "appmanager_baseurl" ) <span class="tipText">($i18n.getString( "appmanager_where_apps_can_be_found" ))</span></div>
 <div class="setting"><input type="text" id="appBaseUrl" name="appBaseUrl" style="width:40em" value="$!appBaseUrl"/></div>
-<div><input type="submit" value="Save" style="width:120px" /></div>
-</form>
+<div><input type="button" value="Save" style="width:120px" onclick="setAppConfig()" /></div>
 
 <h3>$i18n.getString( "appmanager_management" )</h3>
 

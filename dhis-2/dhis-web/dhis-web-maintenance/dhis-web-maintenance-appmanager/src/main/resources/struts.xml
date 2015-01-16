@@ -37,8 +37,7 @@
     </action>
     
     <action name="appSettings" class="org.hisp.dhis.appmanager.action.AppSettingsAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="getSuccess" type="velocity">/main.vm</result>
+      <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-appmanager/appSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-appmanager/menu.vm</param>
       <param name="onExceptionReturn">plainTextError</param>
