@@ -189,7 +189,7 @@ var d2Directives = angular.module('d2Directives', [])
         restrict: 'A',
         link: function (scope, element, attrs, ctrl) {
             element.bind('blur', function () {                
-                if(ctrl.$viewValue && !ctrl.$modelValue){
+                if(ctrl.$viewValue && !ctrl.$modelValue){                    
                     ctrl.$setViewValue();
                     ctrl.$render();
                 }                
@@ -412,7 +412,7 @@ var d2Directives = angular.module('d2Directives', [])
         restrict: 'E',
         link: function(scope, elm, attrs){            
              scope.$watch('customForm', function(){
-                 elm.html(scope.customForm);
+                 elm.html(scope.customForm.htmlCode);
                  $compile(elm.contents())(scope);
              });
         }

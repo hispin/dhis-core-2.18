@@ -7,7 +7,7 @@
             <input type="text" ng-disabled="true" ng-model="currentEvent['uid']" style="width:99%;">
         </td>
     </tr>
-    <tr>
+    <tr ng-if="!customForm.hasEventDate">
         <td>
             {{selectedProgramStage.reportDateDescription ? selectedProgramStage.reportDateDescription : 'incident_date'| translate }}
         </td>

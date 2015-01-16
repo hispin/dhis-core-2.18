@@ -34,8 +34,7 @@
                            name="eventDate"
                            input-field-id="eventDate"
                            style="width:99%;"/>
-                    <span ng-show="outerForm.eventDate.$invalid && outerForm.eventDate.$dirty || currentEvent.eventDate && outerForm.eventDate.$invalid || outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{getErrorMessage('eventDate')}}</span>
-                    <!--<span ng-show="outerForm.eventDate.$invalid && outerForm.eventDate.$dirty" class="required">{{'required' | translate}}</span>-->
+                    <span ng-show="outerForm.eventDate.$invalid && outerForm.eventDate.$dirty || currentEvent.eventDate && outerForm.eventDate.$invalid || outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{getErrorMessage('eventDate')}}</span>                    
                 </td>
             </tr>
             <tr ng-if="selectedProgramStage.captureCoordinates">
