@@ -437,7 +437,17 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         reattachFields( object, fields, user );
 
-        persistedObject.mergeWith( object );
+        if ( !options.isSharing() )
+        {
+            User persistedObjectUser = persistedObject.getUser();
+            persistedObject.mergeWith( object );
+            persistedObject.setUser( persistedObjectUser );
+        }
+        else
+        {
+            persistedObject.mergeWith( object );
+            persistedObject.mergeSharingWith( object );
+        }
 
         updatePeriodTypes( persistedObject );
 
