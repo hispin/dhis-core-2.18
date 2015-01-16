@@ -44,6 +44,7 @@ import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.dxf2.render.RenderService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.hibernate.exception.ReadAccessDeniedException;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.webapi.utils.ContextUtils;
@@ -82,6 +83,9 @@ public class AppController
     
     @Autowired
     private RenderService renderService;
+    
+    @Autowired
+    private LocationManager locationManager;
 
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
 
@@ -237,7 +241,20 @@ public class AppController
         {
             appManager.setAppStoreUrl( appStoreUrl );
         }
-    }    
+    }
+    
+    @RequestMapping( value = "/config", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
+    public void resetConfig( HttpServletRequest request )
+    {
+        String contextPath = ContextUtils.getContextPath( request );
+        
+        String appFolderPath = locationManager.getExternalDirectoryPath() + AppManager.APPS_DIR;
+        String appBaseUrl = contextPath + AppManager.APPS_API_PATH;
+        
+        appManager.setAppFolderPath( appFolderPath );
+        appManager.setAppBaseUrl( appBaseUrl );
+    }
 
     //--------------------------------------------------------------------------
     // Helpers
