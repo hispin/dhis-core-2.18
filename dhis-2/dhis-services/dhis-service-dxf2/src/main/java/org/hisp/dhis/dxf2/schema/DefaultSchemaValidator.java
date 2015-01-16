@@ -121,7 +121,7 @@ public class DefaultSchemaValidator implements SchemaValidator
 
         if ( PropertyType.COLOR == property.getPropertyType() && !ValidationUtils.isValidHexColor( value ) )
         {
-            validationViolations.add( new ValidationViolation( property.getName(), "Not a valid color (in hex format).", value ) );
+            validationViolations.add( new ValidationViolation( property.getName(), "Not a valid hex color.", value ) );
         }
 
         /* TODO add proper validation for both Points and Polygons, ValidationUtils only supports points at this time
