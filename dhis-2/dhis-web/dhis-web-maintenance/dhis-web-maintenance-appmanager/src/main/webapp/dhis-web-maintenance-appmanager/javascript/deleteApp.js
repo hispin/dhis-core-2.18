@@ -21,3 +21,13 @@ function setAppConfig() {
 		setHeaderDelayMessage( xhr.responseText );
 	} );	
 }
+
+function resetAppConfig() {
+	
+	$.ajax( {
+		url: "../api/apps/config",
+		type: "delete"
+	} ).done( function() {
+		window.location.href = "appSettings.action";
+	} );
+}
