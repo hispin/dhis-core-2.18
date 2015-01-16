@@ -8,4 +8,8 @@
   
   <bean id="org.hisp.dhis.appmanager.action.AppSettingsAction" class="org.hisp.dhis.appmanager.action.AppSettingsAction" scope="prototype" />
   
+  <bean id="org.hisp.dhis.appmanager.action.AppListAction" class="org.hisp.dhis.appmanager.action.AppListAction" scope="prototype" />
+  
+  <bean id="org.hisp.dhis.appmanager.action.DeleteAppAction" class="org.hisp.dhis.appmanager.action.DeleteAppAction" scope="prototype" />
+  
 </beans>
