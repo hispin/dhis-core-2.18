@@ -94,8 +94,10 @@ public class AppController
     {
         File tempFile = File.createTempFile( "IMPORT_", "_ZIP" );
         file.transferTo( tempFile );
-
-        appManager.installApp( tempFile, file.getOriginalFilename(), getBaseUrl( request ) );
+        
+        String contextPath = ContextUtils.getContextPath( request );
+        
+        appManager.installApp( tempFile, file.getOriginalFilename(), contextPath );
     }
 
     @RequestMapping( method = RequestMethod.PUT )
@@ -136,7 +138,9 @@ public class AppController
         {
             if ( "*".equals( application.getActivities().getDhis().getHref() ) )
             {
-                application.getActivities().getDhis().setHref( getBaseUrl( request ) );
+                String contextPath = ContextUtils.getContextPath( request );
+                
+                application.getActivities().getDhis().setHref( contextPath );
                 JacksonUtils.getJsonMapper().writeValue( response.getOutputStream(), application );
                 return;
             }
@@ -212,11 +216,5 @@ public class AppController
         }
 
         return path;
-    }
-
-    private String getBaseUrl( HttpServletRequest request )
-    {
-        String baseUrl = ContextUtils.getBaseUrl( request );
-        return baseUrl.substring( 0, baseUrl.length() - 1 );
     }
 }
