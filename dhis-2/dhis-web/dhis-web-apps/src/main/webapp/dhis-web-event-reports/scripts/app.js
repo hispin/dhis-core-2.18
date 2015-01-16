@@ -2371,7 +2371,7 @@ Ext.onReady( function() {
 
 					if (id && name) {
 						Ext.Ajax.request({
-                            url: init.contextPath + '/api/eventReports/' + id + '.json?fields=' + conf.url.analysisFields.join(','),
+                            url: ns.core.init.contextPath + '/api/eventReports/' + id + '.json?fields=' + ns.core.conf.url.analysisFields.join(','),
 							method: 'GET',
 							failure: function(r) {
 								ns.core.web.mask.show();
