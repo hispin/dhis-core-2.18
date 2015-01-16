@@ -64,7 +64,6 @@ import org.hisp.dhis.eventchart.EventChart;
 import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -290,17 +289,23 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return false;
         }
 
-        List<ValidationViolation> validate = schemaValidator.validate( object );
+        List<ValidationViolation> validationViolations = schemaValidator.validate( object );
 
-        if ( !validate.isEmpty() )
+        if ( !validationViolations.isEmpty() )
         {
+            summaryType.getImportConflicts().add(
+                new ImportConflict( ImportUtils.getDisplayName( object ), "Validation Violations: " + validationViolations ) );
+
             return false;
         }
 
         // make sure that the internalId is 0, so that the system will generate a ID
         object.setId( 0 );
-        // object.setUser( user );
-        // object.setUser( null );
+
+        if ( !options.isSharing() )
+        {
+            object.clearSharing( true );
+        }
 
         NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects( user );
         nonIdentifiableObjects.extract( object );
@@ -398,10 +403,13 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return true;
         }
 
-        List<ValidationViolation> validate = schemaValidator.validate( object );
+        List<ValidationViolation> validationViolations = schemaValidator.validate( object );
 
-        if ( !validate.isEmpty() )
+        if ( !validationViolations.isEmpty() )
         {
+            summaryType.getImportConflicts().add(
+                new ImportConflict( ImportUtils.getDisplayName( object ), "Validation Violations: " + validationViolations ) );
+
             return false;
         }
 
