@@ -119,7 +119,7 @@ public class StAXNodeSerializer extends AbstractNodeSerializer
         }
         else
         {
-            value = (String) simpleNode.getValue();
+            value = String.valueOf( simpleNode.getValue() );
         }
 
         if ( simpleNode.isAttribute() )
