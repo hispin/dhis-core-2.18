@@ -32,10 +32,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.appmanager.App;
@@ -204,6 +206,38 @@ public class AppController
             ContextUtils.conflictResponse( response, "There was an error deleting app: " + app );
         }
     }
+
+    @SuppressWarnings( "unchecked" )
+    @RequestMapping( value = "/config", method = RequestMethod.POST, consumes = ContextUtils.CONTENT_TYPE_JSON )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
+    public void setConfig( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        Map<String, String> config = renderService.fromJson( request.getInputStream(), Map.class );
+        
+        if ( config == null )
+        {
+            ContextUtils.conflictResponse( response, "No config specified" );
+        }
+        
+        String appBaseUrl = StringUtils.trimToNull( config.get( AppManager.KEY_APP_BASE_URL ) );
+        String appFolderPath = StringUtils.trimToNull( config.get( AppManager.KEY_APP_FOLDER_PATH ) );
+        String appStoreUrl = StringUtils.trimToNull( config.get( AppManager.KEY_APP_STORE_URL ) );
+        
+        if ( appBaseUrl != null )
+        {
+            appManager.setAppBaseUrl( appBaseUrl );
+        }
+        
+        if ( appFolderPath != null )
+        {
+            appManager.setAppFolderPath( appFolderPath );
+        }
+        
+        if ( appStoreUrl != null )
+        {
+            appManager.setAppStoreUrl( appStoreUrl );
+        }
+    }    
 
     //--------------------------------------------------------------------------
     // Helpers

@@ -2,3 +2,22 @@
 function deleteApp( appId, appName ) {
   removeItem(appId, appName, i18n_confirm_delete, "deleteApp.action?appName=" + appName);
 }
+
+function setAppConfig() {
+	
+	var config = {
+		appFolderPath: $( "#appFolderPath" ).val(),
+		appBaseUrl: $( "#appBaseUrl" ).val()
+	};
+	
+	$.ajax( {
+		url: "../api/apps/config",
+		type: "post",
+		contentType: "application/json",
+		data: JSON.stringify( config )
+	} ).done( function() {
+		setHeaderDelayMessage( "Settings updated" );
+	} ).fail( function( xhr, text, error ) {
+		setHeaderDelayMessage( xhr.responseText );
+	} );	
+}
