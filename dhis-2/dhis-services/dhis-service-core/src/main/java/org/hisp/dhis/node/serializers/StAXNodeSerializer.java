@@ -53,7 +53,7 @@ import java.util.TimeZone;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-@Scope(value = "prototype", proxyMode = ScopedProxyMode.INTERFACES)
+@Scope( value = "prototype", proxyMode = ScopedProxyMode.INTERFACES )
 public class StAXNodeSerializer extends AbstractNodeSerializer
 {
     public static final String CONTENT_TYPE = "application/xml";
@@ -109,17 +109,26 @@ public class StAXNodeSerializer extends AbstractNodeSerializer
     @Override
     protected void startWriteSimpleNode( SimpleNode simpleNode ) throws Exception
     {
-        String value = String.format( "%s", simpleNode.getValue() );
+        String value;
 
         if ( simpleNode.getValue() != null && Date.class.isAssignableFrom( simpleNode.getValue().getClass() ) )
         {
             SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" );
-            dateFormat.setTimeZone( TimeZone.getTimeZone("UTC") );
+            dateFormat.setTimeZone( TimeZone.getTimeZone( "UTC" ) );
             value = dateFormat.format( (Date) simpleNode.getValue() );
+        }
+        else
+        {
+            value = (String) simpleNode.getValue();
         }
 
         if ( simpleNode.isAttribute() )
         {
+            if ( value == null )
+            {
+                return;
+            }
+
             if ( !StringUtils.isEmpty( simpleNode.getNamespace() ) )
             {
                 writer.writeAttribute( simpleNode.getNamespace(), simpleNode.getName(), value );
@@ -132,7 +141,11 @@ public class StAXNodeSerializer extends AbstractNodeSerializer
         else
         {
             writeStartElement( simpleNode );
-            writer.writeCharacters( value );
+
+            if ( value != null )
+            {
+                writer.writeCharacters( value );
+            }
         }
     }
 

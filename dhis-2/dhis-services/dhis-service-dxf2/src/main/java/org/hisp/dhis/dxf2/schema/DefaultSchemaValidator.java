@@ -98,6 +98,15 @@ public class DefaultSchemaValidator implements SchemaValidator
 
         String value = (String) object;
 
+        // check column max length
+        if ( value.length() > property.getLength() )
+        {
+            validationViolations.add( new ValidationViolation( property.getName(), "Maximum length for property is "
+                + property.getLength() + ", length is " + value.length(), value ) );
+
+            return validationViolations;
+        }
+
         if ( value.length() < property.getMin() || value.length() > property.getMax() )
         {
             validationViolations.add( new ValidationViolation( property.getName(), "Allowed range for length ["
