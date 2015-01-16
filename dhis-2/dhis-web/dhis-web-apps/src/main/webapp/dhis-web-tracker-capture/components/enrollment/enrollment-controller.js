@@ -108,7 +108,7 @@ trackerCapture.controller('EnrollmentController',
                     if(!exists){
                         $scope.attributesForEnrollment.push(atts[i]);
                     }
-                }                
+                }
             });                
         }
         
@@ -122,10 +122,14 @@ trackerCapture.controller('EnrollmentController',
        
         $scope.showEnrollmentDiv = !$scope.showEnrollmentDiv;
         
-        if($scope.showEnrollmentDiv){
-            
+        if($scope.showEnrollmentDiv){            
             $scope.showEnrollmentHistoryDiv = false;
-            $scope.selectedEnrollment = null;                        
+            
+            //load new enrollment details
+            $scope.selectedEnrollment = null;            
+            $scope.loadEnrollmentDetails($scope.selectedEnrollment);
+            
+            //check custom form for enrollment
             $scope.selectedProgram.hasCustomForm = false;
             $scope.registrationForm = '';
             TEFormService.getByProgram($scope.selectedProgram.id).then(function(teForm){

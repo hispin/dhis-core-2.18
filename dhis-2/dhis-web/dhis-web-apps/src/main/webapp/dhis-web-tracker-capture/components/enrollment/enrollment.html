@@ -9,7 +9,7 @@
             | <a href ng-click="showNewEnrollment()" title="{{'new'| translate}}"><span ng-class="{'light-blue': !showEnrollmentDiv}">{{'new'| translate}}</span></a>
         </span>
         <span class="nav-pills" ng-show="terminatedEnrollments.length > 0 || completedEnrollments.length > 0">
-            | <a href ng-click="showEnrollmentHistory()" title="{{'history'| translate}}"><span ng-class="{'light-blue': !showEnrollmentHistoryDiv}">{{'history'| translate}}</span></a>
+            | <a href ng-click="showEnrollmentHistory()" title="{{'history'| translate}}"><span ng-class="{'light-blue': currentEnrollment === selectedEnrollment}">{{'history'| translate}}</span></a>
         </span>       
 
         <span class="pull-right">

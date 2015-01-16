@@ -429,7 +429,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     };
     
     $scope.addEvent = function(addingAnotherEvent){                
-
+        
         //check for form validity
         $scope.outerForm.submitted = true;        
         if( $scope.outerForm.$invalid ){
@@ -773,22 +773,32 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     };
     
     $scope.isFormInvalid = function(){
+        
         if($scope.outerForm.submitted){
             return $scope.outerForm.$invalid;
         }
         
-        var errorMessages = ErrorMessageService.getErrorMessages();
+        if(!$scope.outerForm.$dirty){
+            return false;
+        }
         
-        for(var k in errorMessages){
-            if( errorMessages.hasOwnProperty(k) && 
-                errorMessages[k] !== "" && 
-                errorMessages[k] !== $translate('required') &&
-                $scope.currentEvent[k]){
-                return true;
+        var formIsInvalid = false;
+        for(var k in $scope.outerForm.$error){            
+            if(angular.isObject($scope.outerForm.$error[k])){
+                
+                for(var i=0; i<$scope.outerForm.$error[k].length && !formIsInvalid; i++){
+                    if($scope.outerForm.$error[k][i].$dirty && $scope.outerForm.$error[k][i].$invalid){
+                        formIsInvalid = true;
+                    }
+                }
+            }
+            
+            if(formIsInvalid){
+                break;
             }
         }
         
-        return false;
+        return formIsInvalid;
     };
     
     $scope.getErrorMessage = function(deId){
