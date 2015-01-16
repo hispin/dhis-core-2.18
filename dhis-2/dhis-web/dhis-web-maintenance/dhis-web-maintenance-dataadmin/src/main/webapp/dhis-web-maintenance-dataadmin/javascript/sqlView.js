@@ -36,6 +36,7 @@ function showSqlViewDetails( context ) {
   jQuery.postJSON('getSqlView.action', { id: context.id }, function( json ) {
 
     setInnerHTML('nameField', json.sqlView.name);
+    setInnerHTML('viewNameField', json.sqlView.viewName);
 
     var description = json.sqlView.description;
     setInnerHTML('descriptionField', description ? description : '[' + i18n_none + ']');
