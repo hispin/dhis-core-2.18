@@ -453,17 +453,20 @@ dhis2.db.resizeItem = function( id, isScrollbar )
 
 dhis2.db.setNormalItemWidth = function( id, isScrollbar ) {
 	$( "#" + id ).css( "width", dhis2.db.widthNormal + "px" );
+	$( "#drop-" + id ).css( "width", dhis2.db.widthNormal + "px" );
 	Ext.get( "plugin-" + id ).setViewportWidth( dhis2.db.widthNormal - (isScrollbar ? dhis2.db.itemScrollbarWidth : 0));
 }
 
 dhis2.db.setDoubleItemWidth = function( id, isScrollbar ) {
 	$( "#" + id ).css( "width", dhis2.db.widthDouble + "px" );
+	$( "#drop-" + id ).css( "width", dhis2.db.widthDouble + "px" );
 	Ext.get( "plugin-" + id ).setViewportWidth( dhis2.db.widthDouble - (isScrollbar ? dhis2.db.itemScrollbarWidth : 0));
 }
 
 dhis2.db.setFullItemWidth = function( id, isScrollbar ) {
 	var	fullWidth = dhis2.db.getFullWidth();
 	$( "#" + id ).css( "width", fullWidth + "px" );
+	$( "#drop-" + id ).css( "width", fullWidth + "px" );
 	Ext.get( "plugin-" + id ).setViewportWidth( fullWidth - (isScrollbar ? dhis2.db.itemScrollbarWidth : 0));
 }
 
