@@ -27,6 +27,7 @@ package org.hisp.dhis.constant;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
