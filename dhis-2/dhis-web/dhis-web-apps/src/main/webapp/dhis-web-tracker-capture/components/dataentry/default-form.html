@@ -121,7 +121,8 @@
             <td class="col-md-2" ng-if="allowProvidedElsewhereExists">                
                 <div class="align-center" ng-show="prStDe.allowProvidedElsewhere">
                     <input type="checkbox" 
-                           ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]"
+                           ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]" 
+                           ng-disabled="currentEvent.enrollmentStatus !== 'ACTIVE'" 
                            ng-change="saveDatavalueLocation(prStDe)"/>                
                 </div>
             </td>
@@ -255,6 +256,7 @@
                                 <div class="align-center" ng-show="prStDes[de.dataElement.id].allowProvidedElsewhere">
                                     <input type="checkbox" 
                                            ng-model="currentEvent.providedElsewhere[prStDes[de.dataElement.id].dataElement.id]"
+                                           ng-disabled="currentEvent.enrollmentStatus !== 'ACTIVE'" 
                                            ng-change="saveDatavalueLocation(prStDes[de.dataElement.id])"/>                
                                 </div>
                             </td>

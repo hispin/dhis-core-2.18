@@ -295,7 +295,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });
             return promise;
         },
-        update: function( enrollment){
+        update: function( enrollment ){
+            console.log('the enrollment I got is:  ', enrollment);
             var promise = $http.put( '../api/enrollments/' + enrollment.enrollment , enrollment).then(function(response){
                 return response.data;
             });
@@ -312,7 +313,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 return response.data;               
             });
             return promise;           
-        }        
+        }
     };   
 })
 

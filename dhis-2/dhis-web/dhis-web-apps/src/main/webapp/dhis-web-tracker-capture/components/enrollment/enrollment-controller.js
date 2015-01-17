@@ -253,7 +253,7 @@ trackerCapture.controller('EnrollmentController',
         ModalService.showModal({}, modalOptions).then(function(result){            
             EnrollmentService.cancel($scope.selectedEnrollment).then(function(data){                
                 $scope.selectedEnrollment.status = 'CANCELLED';
-                $scope.loadEnrollmentDetails();                
+                $scope.loadEnrollmentDetails($scope.selectedEnrollment.status);                
             });
         });
     };
@@ -270,11 +270,11 @@ trackerCapture.controller('EnrollmentController',
         ModalService.showModal({}, modalOptions).then(function(result){            
             EnrollmentService.complete($scope.selectedEnrollment).then(function(data){                
                 $scope.selectedEnrollment.status = 'COMPLETED';
-                $scope.loadEnrollmentDetails();                
+                $scope.loadEnrollmentDetails($scope.selectedEnrollment);                
             });
         });
     };
-        
+            
     $scope.autoGenerateEvents = function(){
         if($scope.selectedTei && $scope.selectedProgram && $scope.selectedOrgUnit && $scope.selectedEnrollment){            
             var dhis2Events = {events: []};
