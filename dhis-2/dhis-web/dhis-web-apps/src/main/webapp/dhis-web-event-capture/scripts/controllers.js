@@ -527,17 +527,18 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 
                 $scope.eventLength++;
                 
-                //decide whether to stay in the current screen or not.
-                if(!addingAnotherEvent){
-                    $scope.eventRegistration = false;
-                    $scope.editingEventInFull = false;
-                    $scope.editingEventInGrid = false;  
-                }
-
-                //reset form                
+                $scope.eventRegistration = false;
+                $scope.editingEventInFull = false;
+                $scope.editingEventInGrid = false;  
+                    
+                //reset form              
+                $scope.currentEvent = {};
                 $scope.currentEvent = angular.copy($scope.newDhis2Event); 
+                               
                 $scope.note = {};
                 $scope.outerForm.submitted = false;
+                $scope.outerForm.$setPristine();
+                $scope.outerForm.$setValidity();
                 $scope.disableSaveAndAddNew = false;
                 
                 //this is to hide typeAheadPopUps - shouldn't be an issue in 
@@ -545,6 +546,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 $timeout(function() {
                     angular.element('#hideTypeAheadPopUp').trigger('click');
                 }, 10);
+                
+                //decide whether to stay in the current screen or not.
+                if(addingAnotherEvent){
+                    $scope.showEventRegistration();
+                }
             }
         });
     }; 
