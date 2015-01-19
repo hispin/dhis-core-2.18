@@ -6975,7 +6975,7 @@ Ext.onReady(function () {
                     region: 'north',
                     width: el.getWidth(),
                     height: 19,
-                    bodyStyle: 'background-color: #fff; border: 0 none; font: bold 12px LiberationSans, arial, sans-serif; color: #333; text-align: center; line-height: 14px;',
+                    bodyStyle: 'background-color: #fff; border: 0 none; font: bold 12px LiberationSans, arial, sans-serif; color: #333; text-align: center; line-height: 14px; letter-spacing: -0.3px',
                     html: ''
                 }));
             }
@@ -7235,6 +7235,10 @@ Ext.onReady(function () {
             Ext.get(config.el).setViewportWidth = function(width) {
                 gis.viewport.setWidth(width);
                 gis.viewport.centerRegion.setWidth(width);
+
+                if (gis.viewport.northRegion) {
+                    gis.viewport.northRegion.setWidth(width);
+                }
             };
 
             gis.olmap.mask = Ext.create('Ext.LoadMask', gis.viewport.centerRegion.getEl(), {
