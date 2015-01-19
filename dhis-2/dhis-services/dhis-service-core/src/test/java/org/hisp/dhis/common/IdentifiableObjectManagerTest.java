@@ -37,6 +37,7 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
+import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
@@ -360,6 +361,22 @@ public class IdentifiableObjectManagerTest
         dataElement.setPublicAccess( AccessStringHelper.DEFAULT );
 
         identifiableObjectManager.save( dataElement, false );
+    }
+
+    // TODO this should actually throw a UpdateAccessDeniedException, but the problem is that we only have access to the updated object
+    @Test( /* expected = UpdateAccessDeniedException.class */ )
+    public void updateForPrivateUserDeniedAfterChangePublicAccessRW()
+    {
+        createUserAndInjectSecurityContext( false, "F_DATAELEMENT_PRIVATE_ADD" );
+
+        DataElement dataElement = createDataElement( 'A' );
+        dataElement.setPublicAccess( AccessStringHelper.DEFAULT );
+
+        identifiableObjectManager.save( dataElement, false );
+
+        dataElement.setPublicAccess( AccessStringHelper.READ_WRITE );
+
+        identifiableObjectManager.update( dataElement );
     }
 
     @Test( expected = CreateAccessDeniedException.class )
