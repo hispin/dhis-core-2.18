@@ -8,7 +8,7 @@
         <span class="nav-pills" ng-show="selectedProgram && !currentEnrollment">
             | <a href ng-click="showNewEnrollment()" title="{{'new'| translate}}"><span ng-class="{'light-blue': !showEnrollmentDiv}">{{'new'| translate}}</span></a>
         </span>
-        <span class="nav-pills" ng-show="terminatedEnrollments.length > 0 || completedEnrollments.length > 0">
+        <span class="nav-pills" ng-show="hasEnrollmentHistory">
             | <a href ng-click="showEnrollmentHistory()" title="{{'history'| translate}}"><span ng-class="{'light-blue': currentEnrollment === selectedEnrollment}">{{'history'| translate}}</span></a>
         </span>       
 
@@ -220,15 +220,15 @@
                         <th>
                             {{selectedProgram.dateOfEnrollmentDescription}}
                         </th>
-                        <th>
+                        <th ng-if="selectedProgram.displayIncidentDate">
                             {{selectedProgram.dateOfIncidentDescription}}
                         </th>
                     </tr>
-                    <tr ng-click="loadEnrollmentDetails(en)" ng-repeat="en in completedEnrollments" title="{{'details'| translate}}">
+                    <tr ng-click="loadEnrollmentDetails(en)" ng-repeat="en in historicalEnrollments" title="{{'details'| translate}}">
                         <td>
                             {{en.dateOfEnrollment}}
                         </td>
-                        <td>
+                        <td ng-if="selectedProgram.displayIncidentDate">
                             {{en.dateOfIncident}}
                         </td>
                     </tr>

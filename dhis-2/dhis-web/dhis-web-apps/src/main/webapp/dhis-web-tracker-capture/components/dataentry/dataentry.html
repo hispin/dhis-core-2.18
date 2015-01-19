@@ -93,7 +93,7 @@
                                ng-class="{'input-success': eventDateSaved}"
                                d2-date 
                                ng-model="currentEvent.eventDate"
-                               ng-disabled="currentEvent.status === 'SKIPPED' || currentEvent.enrollmentStatus === 'COMPLETED'"    
+                               ng-disabled="currentEvent.status === 'SKIPPED' || currentEvent.enrollmentStatus !== 'ACTIVE'"    
                                ng-required="true"
                                blur-or-change="saveEventDate()"/>
                         <span ng-if="invalidDate" class="error">{{'date_required'| translate}}</span>
@@ -112,7 +112,7 @@
                                d2-date 
                                ng-model="currentEvent.dueDate"
                                blur-or-change="saveDueDate()" 
-                               ng-disabled="currentEvent.eventDate || !schedulingEnabled || currentEvent.enrollmentStatus === 'COMPLETED'"/>
+                               ng-disabled="currentEvent.eventDate || !schedulingEnabled || currentEvent.enrollmentStatus !== 'ACTIVE'"/>
                         <span ng-if="invalidDate" class="error">{{'date_required'| translate}}</span>
                     </div>                        
                 </div>
@@ -130,6 +130,7 @@
                                min="-90"
                                max="90"
                                ng-blur="saveCoordinate('LAT')"
+                               ng-disabled="currentEvent.enrollmentStatus !== 'ACTIVE'"    
                                ng-required="false"/>
                         <span ng-show="outerForm.latitude.$invalid" class="required">{{'value_must_be_between'| translate}} [-90 ... 90]</span>
                     </div>
@@ -143,6 +144,7 @@
                                min="-180"
                                max="180"
                                ng-blur="saveCoordinate('LNG')"
+                               ng-disabled="currentEvent.enrollmentStatus !== 'ACTIVE'" 
                                ng-required="false"/>
                         <span ng-show="outerForm.longitude.$invalid" class="required">{{'value_must_be_between'| translate}}[-180 ... 180]</span>
                     </div>                        

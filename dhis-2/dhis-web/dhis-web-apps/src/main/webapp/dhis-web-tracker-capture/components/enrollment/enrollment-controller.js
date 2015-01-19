@@ -21,8 +21,7 @@ trackerCapture.controller('EnrollmentController',
     //listen for the selected items
     $scope.$on('selectedItems', function(event, args) {   
         $scope.enrollments = [];
-        $scope.cancelledEnrollments = [];
-        $scope.completedEnrollments = [];
+        $scope.historicalEnrollments = [];
         $scope.showEnrollmentDiv = false;
         $scope.showEnrollmentHistoryDiv = false;
         $scope.hasEnrollmentHistory = false;
@@ -64,12 +63,8 @@ trackerCapture.controller('EnrollmentController',
                         selectedEnrollment = enrollment;
                         $scope.currentEnrollment = enrollment;
                     }
-                    if(enrollment.status === 'CANCELLED'){//check for cancelled ones
-                        $scope.cancelledEnrollments.push(enrollment);
-                        $scope.hasEnrollmentHistory = true;
-                    }
-                    if(enrollment.status === 'COMPLETED'){//check for completed ones
-                        $scope.completedEnrollments.push(enrollment);
+                    if(enrollment.status === 'CANCELLED' || enrollment.status === 'COMPLETED'){
+                        $scope.historicalEnrollments.push(enrollment);
                         $scope.hasEnrollmentHistory = true;
                     }
                 }
