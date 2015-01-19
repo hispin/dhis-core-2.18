@@ -49,6 +49,7 @@ import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.user.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
@@ -167,7 +168,6 @@ public abstract class AbstractPropertyIntrospectorService
 
                 Collection collection = sessionFactoryBean.getConfiguration().getCollectionMapping( collectionType.getRole() );
                 property.setOwner( !collection.isInverse() );
-
             }
             else if ( type.isEntityType() )
             {
@@ -189,9 +189,9 @@ public abstract class AbstractPropertyIntrospectorService
                 property.setUnique( column.isUnique() );
                 property.setRequired( !column.isNullable() );
                 property.setLength( column.getLength() );
-
-                properties.put( property.getName(), property );
             }
+
+            properties.put( property.getName(), property );
         }
 
         return properties;
