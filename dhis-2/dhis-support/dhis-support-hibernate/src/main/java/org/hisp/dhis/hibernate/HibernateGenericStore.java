@@ -297,13 +297,23 @@ public class HibernateGenericStore<T>
     @Override
     public int save( T object )
     {
+        return save( object, true );
+    }
+
+    @Override
+    public int save( T object, boolean clearSharing )
+    {
         User currentUser = currentUserService.getCurrentUser();
 
         if ( IdentifiableObject.class.isAssignableFrom( object.getClass() ) )
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
-            identifiableObject.setPublicAccess( AccessStringHelper.DEFAULT );
-            identifiableObject.getUserGroupAccesses().clear();
+
+            if ( clearSharing )
+            {
+                identifiableObject.setPublicAccess( AccessStringHelper.DEFAULT );
+                identifiableObject.getUserGroupAccesses().clear();
+            }
 
             if ( identifiableObject.getUser() == null )
             {
@@ -315,18 +325,22 @@ public class HibernateGenericStore<T>
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
 
-            if ( aclService.canCreatePublic( currentUser, identifiableObject.getClass() ) )
+            if ( clearSharing )
             {
-                if ( aclService.defaultPublic( identifiableObject.getClass() ) )
+                if ( aclService.canCreatePublic( currentUser, identifiableObject.getClass() ) )
                 {
-                    identifiableObject.setPublicAccess( AccessStringHelper.READ_WRITE );
+                    if ( aclService.defaultPublic( identifiableObject.getClass() ) )
+                    {
+                        identifiableObject.setPublicAccess( AccessStringHelper.READ_WRITE );
+                    }
+                }
+                else if ( aclService.canCreatePrivate( currentUser, identifiableObject.getClass() ) )
+                {
+                    identifiableObject.setPublicAccess( AccessStringHelper.newInstance().build() );
                 }
             }
-            else if ( aclService.canCreatePrivate( currentUser, identifiableObject.getClass() ) )
-            {
-                identifiableObject.setPublicAccess( AccessStringHelper.newInstance().build() );
-            }
-            else
+
+            if ( !checkPublicAccess( currentUser, identifiableObject ) )
             {
                 AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_CREATE_DENIED );
                 throw new CreateAccessDeniedException( object.toString() );
@@ -335,6 +349,14 @@ public class HibernateGenericStore<T>
 
         AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_CREATE );
         return (Integer) sessionFactory.getCurrentSession().save( object );
+    }
+
+    private boolean checkPublicAccess( User user, IdentifiableObject identifiableObject )
+    {
+        return aclService.canCreatePublic( user, identifiableObject.getClass() ) ||
+            (aclService.canCreatePrivate( user, identifiableObject.getClass() ) &&
+                !AccessStringHelper.canReadOrWrite( identifiableObject.getPublicAccess() ));
+
     }
 
     @Override
