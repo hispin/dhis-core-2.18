@@ -31,6 +31,7 @@ package org.hisp.dhis.webapi.controller.user;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.acl.AclService;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.dashboard.DashboardItem;
@@ -39,6 +40,7 @@ import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dxf2.fieldfilter.FieldFilterService;
 import org.hisp.dhis.dxf2.render.RenderService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nService;
@@ -46,6 +48,8 @@ import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
+import org.hisp.dhis.node.types.CollectionNode;
+import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
@@ -58,6 +62,7 @@ import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSettingService;
 import org.hisp.dhis.webapi.controller.exception.FilterTooShortException;
 import org.hisp.dhis.webapi.controller.exception.NotAuthenticatedException;
+import org.hisp.dhis.webapi.service.ContextService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.webapi.utils.FormUtils;
@@ -76,12 +81,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -148,9 +155,17 @@ public class CurrentUserController
     @Autowired
     private RenderService renderService;
 
-    @RequestMapping( produces = { "application/json", "text/*" } )
-    public void getCurrentUser( HttpServletResponse response ) throws Exception
+    @Autowired
+    protected ContextService contextService;
+
+    @Autowired
+    protected FieldFilterService fieldFilterService;
+
+    @RequestMapping
+    public @ResponseBody RootNode getCurrentUser( HttpServletResponse response ) throws Exception
     {
+        List<String> fields = Lists.newArrayList( contextService.getParameterValues( "fields" ) );
+
         User currentUser = currentUserService.getCurrentUser();
 
         if ( currentUser == null )
@@ -158,8 +173,18 @@ public class CurrentUserController
             throw new NotAuthenticatedException();
         }
 
-        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        renderService.toJson( response.getOutputStream(), currentUser, DetailedView.class );
+        if ( fields.isEmpty() )
+        {
+            fields.add( ":all" );
+        }
+
+        CollectionNode collectionNode = fieldFilterService.filter( User.class, Arrays.asList( currentUser ), fields );
+
+        RootNode rootNode = new RootNode( collectionNode.getChildren().get( 0 ) );
+        rootNode.setDefaultNamespace( DxfNamespaces.DXF_2_0 );
+        rootNode.setNamespace( DxfNamespaces.DXF_2_0 );
+
+        return rootNode;
     }
 
     @RequestMapping( value = "/dashboards", produces = { "application/json", "text/*" } )
