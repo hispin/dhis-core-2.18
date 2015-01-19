@@ -64,6 +64,8 @@ public interface SqlViewService
     SqlView getSqlView( String viewName );
 
     Collection<SqlView> getAllSqlViews();
+    
+    Collection<SqlView> getAllSqlViewsNoAcl();
 
     String makeUpForQueryStatement( String query );
 

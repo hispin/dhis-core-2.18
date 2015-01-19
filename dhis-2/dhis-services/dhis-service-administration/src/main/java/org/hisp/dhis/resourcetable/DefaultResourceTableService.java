@@ -520,7 +520,7 @@ public class DefaultResourceTableService
     @Override
     public void createAllSqlViews()
     {
-        List<SqlView> sqlViews = new ArrayList<>( sqlViewService.getAllSqlViews() );
+        List<SqlView> sqlViews = new ArrayList<>( sqlViewService.getAllSqlViewsNoAcl() );
         Collections.sort( sqlViews, IdentifiableObjectNameComparator.INSTANCE );
 
         for ( SqlView sqlView : sqlViews )
@@ -533,7 +533,7 @@ public class DefaultResourceTableService
     @Override
     public void dropAllSqlViews()
     {
-        List<SqlView> views = new ArrayList<>( sqlViewService.getAllSqlViews() );
+        List<SqlView> views = new ArrayList<>( sqlViewService.getAllSqlViewsNoAcl() );
         Collections.sort( views, IdentifiableObjectNameComparator.INSTANCE );
         Collections.reverse( views );
 
