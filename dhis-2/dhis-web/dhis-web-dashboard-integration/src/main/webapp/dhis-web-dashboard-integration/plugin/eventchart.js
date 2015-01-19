@@ -3091,7 +3091,7 @@ Ext.onReady( function() {
                     else {
                         for (var i = 0, id, name, mxl, ids; i < store.rangeFields.length; i++) {
                             id = failSafeColumnIdMap[store.rangeFields[i]];
-                            name = xResponse.metaData.names[id];
+                            name = xResponse.metaData.optionNames[id] || xResponse.metaData.names[id];
 
                             if (Ext.isString(name) && Ext.isObject(xLayout.legendStyle) && Ext.isNumber(xLayout.legendStyle.labelMaxLength)) {
                                 var mxl = parseInt(xLayout.legendStyle.labelMaxLength);
@@ -3113,11 +3113,9 @@ Ext.onReady( function() {
                         return xLayout.legendStyle.labelNames;
                     }
                     else {
-                        var id = store.domainFields[0],
-                            name;
-
-                        store.each( function(r) {
-                            name = r.data[id];
+                        for (var i = 0, id, name; i < rowIds.length; i++) {
+                            id = rowIds[i];
+                            name = xResponse.metaData.optionNames[id] || xResponse.metaData.names[id];
 
                             if (Ext.isString(name) && Ext.isObject(xLayout.legendStyle) && Ext.isNumber(xLayout.legendStyle.labelMaxLength)) {
                                 var mxl = parseInt(xLayout.legendStyle.labelMaxLength);
@@ -3126,7 +3124,7 @@ Ext.onReady( function() {
                             }
 
                             a.push(name);
-                        });
+                        }
                     }
 
                     return a;
