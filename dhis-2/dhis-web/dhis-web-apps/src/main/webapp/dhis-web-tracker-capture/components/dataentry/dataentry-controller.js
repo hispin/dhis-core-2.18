@@ -316,7 +316,12 @@ trackerCapture.controller('DataEntryController',
             if(prStDe.allowProvidedElsewhere){
                 $scope.allowProvidedElsewhereExists = true;                
             }
-        });
+        });        
+        
+        if($scope.currentStage.captureCoordinates){
+            $scope.currentEvent.coordinate = {latitude: $scope.currentEvent.coordinate.latitude ? $scope.currentEvent.coordinate.latitude : '',
+                                     longitude: $scope.currentEvent.coordinate.longitude ? $scope.currentEvent.coordinate.longitude : ''};
+        }
         
         angular.forEach($scope.currentEvent.dataValues, function(dataValue){
             var val = dataValue.value;
@@ -389,6 +394,7 @@ trackerCapture.controller('DataEntryController',
                          };
                 DHIS2EventFactory.updateForSingleValue(ev).then(function(response){
                     $scope.currentElement.saved = true;
+                    $scope.currentEventOriginal = angular.copy($scope.currentEvent);
                 });
             }
         }
@@ -493,6 +499,39 @@ trackerCapture.controller('DataEntryController',
                       
     };
     
+    $scope.saveCoordinate = function(type){
+        
+        if(type === 'LAT'){
+            $scope.latitudeSaved = false;
+        }
+        else{
+            $scope.longitudeSaved = false;
+        }
+        
+        if( type === 'LAT' && $scope.outerForm.latitude.$invalid  || 
+            type === 'LNG' && $scope.outerForm.longitude.$invalid ){//invalid coordinate            
+            return;            
+        }
+        
+        if( type === 'LAT' && $scope.currentEvent.coordinate.latitude === $scope.currentEventOriginal.coordinate.latitude  || 
+            type === 'LNG' && $scope.currentEvent.coordinate.longitude === $scope.currentEventOriginal.coordinate.longitude){//no change            
+            return;            
+        }
+        
+        //valid coordinate(s), proceed with the saving
+        var dhis2Event = EventUtils.reconstruct($scope.currentEvent, $scope.currentStage, $scope.optionSets);
+        
+        DHIS2EventFactory.update(dhis2Event).then(function(response){            
+            $scope.currentEventOriginal = angular.copy($scope.currentEvent);
+            if(type === 'LAT'){
+                $scope.latitudeSaved = true;
+            }
+            else{
+                $scope.longitudeSaved = true;
+            }
+        });
+    };
+    
     $scope.addNote = function(){
         if(!angular.isUndefined($scope.note) && $scope.note !== ""){
             var newNote = {value: $scope.note};
@@ -550,7 +589,7 @@ trackerCapture.controller('DataEntryController',
     
     $scope.completeIncompleteEvent = function(){
         var modalOptions;
-        var dhis2Event = EventUtils.reconstruct($scope.currentEvent, $scope.currentStage);        
+        var dhis2Event = EventUtils.reconstruct($scope.currentEvent, $scope.currentStage, $scope.optionSets);        
         if($scope.currentEvent.status === 'COMPLETED'){//activiate event
             modalOptions = {
                 closeButtonText: 'cancel',
@@ -594,7 +633,7 @@ trackerCapture.controller('DataEntryController',
     
     $scope.skipUnskipEvent = function(){
         var modalOptions;
-        var dhis2Event = EventUtils.reconstruct($scope.currentEvent, $scope.currentStage);   
+        var dhis2Event = EventUtils.reconstruct($scope.currentEvent, $scope.currentStage, $scope.optionSets);   
 
         if($scope.currentEvent.status === 'SKIPPED'){//unskip event
             modalOptions = {
