@@ -3370,7 +3370,7 @@ Ext.onReady( function() {
 
         // alert
         css += '.ns-plugin-alert { width: 90%; padding: 5%; color: #777 } \n';
-        
+
         Ext.util.CSS.createStyleSheet(css);
     };
 
@@ -3840,12 +3840,12 @@ Ext.onReady( function() {
             init.alert = function(text) {
                 Ext.get(config.el).setStyle('opacity', 1);
                 Ext.get(config.el).update('<div class="ns-plugin-alert">' + text + '</div>');
-            };            
+            };
 
             // init
 			ns.core = ER.getCore(Ext.clone(init));
 			extendInstance(ns);
-            
+
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
 
