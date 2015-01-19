@@ -53,6 +53,7 @@ import org.hisp.dhis.api.mobile.model.DataSetList;
 import org.hisp.dhis.api.mobile.model.DataSetValue;
 import org.hisp.dhis.api.mobile.model.DataSetValueList;
 import org.hisp.dhis.api.mobile.model.DataValue;
+import org.hisp.dhis.api.mobile.model.Model;
 import org.hisp.dhis.api.mobile.model.Section;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -290,10 +291,26 @@ public class FacilityReportingServiceImpl
 
                 for ( int i = 0; i < dataElementList.size(); i++ )
                 {
-                    if ( isGreyField( sec, dataElementList.get( i ).getId() ) )
+                	List<Model> categoryOptionCombos = dataElementList.get( i ).getCategoryOptionCombos().getModels();
+                    List<Model> newCategoryOptionCombos = new ArrayList<Model>();
+
+                    for ( int j = 0; j < categoryOptionCombos.size(); j++ )
+                    {
+                        if ( !isGreyField( sec, dataElementList.get( i ).getId(), categoryOptionCombos.get( j ).getId() ) )
+                        {
+                            newCategoryOptionCombos.add( categoryOptionCombos.get( j ) );
+                        }
+                    }
+
+                    if ( newCategoryOptionCombos.isEmpty() )
                     {
                         dataElementListFinal.remove( i - tempI );
                         tempI++;
+                    }
+                    else
+                    {
+                        dataElementListFinal.get( i - tempI ).getCategoryOptionCombos()
+                            .setModels( newCategoryOptionCombos );
                     }
                 }
 
@@ -374,7 +391,7 @@ public class FacilityReportingServiceImpl
         }
 
         DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        
+
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
             unit, optionCombo );
 
@@ -416,7 +433,7 @@ public class FacilityReportingServiceImpl
                 for ( int i = 0; i < periods.size(); i++ )
                 {
                     Period period = getPeriod( periods.elementAt( i ), apiDataSet.getPeriodType() );
-                    
+
                     if ( period != null )
                     {
                         Collection<org.hisp.dhis.dataelement.DataElement> dataElements = apiDataSet.getDataElements();
@@ -436,10 +453,10 @@ public class FacilityReportingServiceImpl
                                 DataValue dv = new DataValue();
                                 dv.setCategoryOptComboID( dataValue.getCategoryOptionCombo().getId() );
                                 dv.setClientVersion( dataSet.getClientVersion() );
-                                dv.setId( dataValue.getDataElement().getId() ); 
+                                dv.setId( dataValue.getDataElement().getId() );
                                 dv.setValue( dataValue.getValue() );
                                 dataSetValue.getDataValues().add( dv );
-                                
+
                             }
                             dataSetValueList.getDataSetValues().add( dataSetValue );
                         }
@@ -520,11 +537,12 @@ public class FacilityReportingServiceImpl
         return persistedPeriod;
     }
 
-    private boolean isGreyField( org.hisp.dhis.dataset.Section section, int id )
+    private boolean isGreyField( org.hisp.dhis.dataset.Section section, int id, int categoryOptionComboId )
     {
         for ( DataElementOperand operand : section.getGreyedFields() )
         {
-            if ( id == operand.getDataElement().getId() )
+            if ( id == operand.getDataElement().getId()
+                && categoryOptionComboId == operand.getCategoryOptionCombo().getId() )
             {
                 return true;
             }
