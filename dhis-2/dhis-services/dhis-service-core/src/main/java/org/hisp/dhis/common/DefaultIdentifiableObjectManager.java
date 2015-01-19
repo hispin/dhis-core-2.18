@@ -76,11 +76,17 @@ public class DefaultIdentifiableObjectManager
     @Override
     public void save( IdentifiableObject object )
     {
+        save( object, true );
+    }
+
+    @Override
+    public void save( IdentifiableObject object, boolean clearSharing )
+    {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( object.getClass() );
 
         if ( store != null )
         {
-            store.save( object );
+            store.save( object, clearSharing );
         }
     }
 

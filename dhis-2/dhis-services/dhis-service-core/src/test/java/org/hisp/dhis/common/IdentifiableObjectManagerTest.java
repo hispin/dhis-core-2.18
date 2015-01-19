@@ -28,16 +28,7 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-
+import com.google.common.collect.Sets;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.acl.AccessStringHelper;
@@ -54,7 +45,11 @@ import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -67,13 +62,13 @@ public class IdentifiableObjectManagerTest
 
     @Autowired
     private DataElementService dataElementService;
-    
-    @Autowired 
+
+    @Autowired
     private IdentifiableObjectManager _identifiableObjectManager;
-    
+
     @Autowired
     private UserService _userService;
-    
+
     @Override
     protected void setUpTest() throws Exception
     {
@@ -318,6 +313,64 @@ public class IdentifiableObjectManagerTest
     {
         createUserAndInjectSecurityContext( false );
         identifiableObjectManager.save( createDataElement( 'A' ) );
+    }
+
+    @Test
+    public void publicUserModifiedPublicAccessDEFAULT()
+    {
+        createUserAndInjectSecurityContext( false, "F_DATAELEMENT_PUBLIC_ADD" );
+
+        DataElement dataElement = createDataElement( 'A' );
+        dataElement.setPublicAccess( AccessStringHelper.DEFAULT );
+
+        identifiableObjectManager.save( dataElement, false );
+
+        assertFalse( AccessStringHelper.canRead( dataElement.getPublicAccess() ) );
+        assertFalse( AccessStringHelper.canWrite( dataElement.getPublicAccess() ) );
+    }
+
+    @Test
+    public void publicUserModifiedPublicAccessRW()
+    {
+        createUserAndInjectSecurityContext( false, "F_DATAELEMENT_PUBLIC_ADD" );
+
+        DataElement dataElement = createDataElement( 'A' );
+        dataElement.setPublicAccess( AccessStringHelper.READ_WRITE );
+
+        identifiableObjectManager.save( dataElement, false );
+    }
+
+    @Test( expected = CreateAccessDeniedException.class )
+    public void privateUserModifiedPublicAccessRW()
+    {
+        createUserAndInjectSecurityContext( false, "F_DATAELEMENT_PRIVATE_ADD" );
+
+        DataElement dataElement = createDataElement( 'A' );
+        dataElement.setPublicAccess( AccessStringHelper.READ_WRITE );
+
+        identifiableObjectManager.save( dataElement, false );
+    }
+
+    @Test
+    public void privateUserModifiedPublicAccessDEFAULT()
+    {
+        createUserAndInjectSecurityContext( false, "F_DATAELEMENT_PRIVATE_ADD" );
+
+        DataElement dataElement = createDataElement( 'A' );
+        dataElement.setPublicAccess( AccessStringHelper.DEFAULT );
+
+        identifiableObjectManager.save( dataElement, false );
+    }
+
+    @Test( expected = CreateAccessDeniedException.class )
+    public void userDeniedForPublicAdd()
+    {
+        createUserAndInjectSecurityContext( false );
+
+        DataElement dataElement = createDataElement( 'A' );
+        dataElement.setPublicAccess( AccessStringHelper.READ_WRITE );
+
+        identifiableObjectManager.save( dataElement, false );
     }
 
     @Test( expected = DeleteAccessDeniedException.class )

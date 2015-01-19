@@ -135,6 +135,16 @@ public class AccessStringHelper
         return isEnabled( access, Permission.WRITE );
     }
 
+    public static boolean canReadAndWrite( String access )
+    {
+        return isEnabled( access, Permission.WRITE ) && isEnabled( access, Permission.READ );
+    }
+
+    public static boolean canReadOrWrite( String access )
+    {
+        return isEnabled( access, Permission.WRITE ) || isEnabled( access, Permission.READ );
+    }
+
     public static boolean isEnabled( String access, Permission permission )
     {
         return access != null && access.charAt( permission.getPosition() ) == permission.getValue();

@@ -41,12 +41,21 @@ public interface GenericStore<T>
     Class<T> getClazz();
 
     /**
-     * Saves the given object instance.
+     * Saves the given object instance, with clear sharing set to true.
      *
      * @param object the object instance.
      * @return the generated identifier.
      */
     int save( T object );
+
+    /**
+     * Saves the given object instance.
+     *
+     * @param object       the object instance.
+     * @param clearSharing Should we clear all sharing related properties?
+     * @return the generated identifier.
+     */
+    int save( T object, boolean clearSharing );
 
     /**
      * Updates the given object instance.
