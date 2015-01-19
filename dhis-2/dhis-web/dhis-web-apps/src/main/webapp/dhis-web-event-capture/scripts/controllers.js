@@ -256,7 +256,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                             val = DateUtils.formatFromApiToUser(val);                                               
                                         }
                                         if( $scope.prStDes[dataValue.dataElement].dataElement.type === 'trueOnly'){
-                                            if(val == 'true'){
+                                            if(val === 'true'){
                                                 val = true;
                                             }
                                             else{
@@ -279,6 +279,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
                     if($scope.noteExists && !GridColumnService.columnExists($scope.eventGridColumns, 'comment')){
                         $scope.eventGridColumns.push({name: 'comment', id: 'comment', type: 'string', compulsory: false, showFilter: false, show: true});
+                    }
+                    
+                    if(!$scope.sortHeader.id){
+                        $scope.sortEventGrid({name: $scope.selectedProgramStage.reportDateDescription ? $scope.selectedProgramStage.reportDateDescription : 'incident_date', id: 'event_date', type: 'date', compulsory: false, showFilter: false, show: true});
                     }
                 }                
                 $scope.eventFetched = true;
