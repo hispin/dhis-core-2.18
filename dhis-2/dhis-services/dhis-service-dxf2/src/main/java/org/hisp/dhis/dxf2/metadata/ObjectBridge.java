@@ -51,6 +51,13 @@ public interface ObjectBridge
     void saveObject( Object object );
 
     /**
+     * Save object. Will save to persistence layer if {@code writeEnabled} is {@code true}.
+     *
+     * @param object Object to write
+     */
+    void saveObject( Object object, boolean clearSharing );
+
+    /**
      * Update object. Will save to persistence layer if {@code writeEnabled} is {@code true}.
      *
      * @param object Object to update

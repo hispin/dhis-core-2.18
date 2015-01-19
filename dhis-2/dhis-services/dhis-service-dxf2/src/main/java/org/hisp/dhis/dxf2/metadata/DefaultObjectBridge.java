@@ -288,11 +288,17 @@ public class DefaultObjectBridge
     @Override
     public void saveObject( Object object )
     {
+        saveObject( object, true );
+    }
+
+    @Override
+    public void saveObject( Object object, boolean clearSharing )
+    {
         if ( _typeSupported( object.getClass() ) && IdentifiableObject.class.isInstance( object ) )
         {
             if ( writeEnabled )
             {
-                manager.save( (IdentifiableObject) object );
+                manager.save( (IdentifiableObject) object, clearSharing );
             }
 
             _updateInternalMaps( object, false );
