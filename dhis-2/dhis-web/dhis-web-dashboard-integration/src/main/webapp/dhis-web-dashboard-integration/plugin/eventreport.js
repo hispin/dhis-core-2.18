@@ -3647,7 +3647,10 @@ Ext.onReady( function() {
 						table,
 						getSXLayout,
 						getXResponse,
-                        getReport;
+                        getReport,
+                        getTitleHtml = function(title) {
+                            return ns.dashboard && title ? '<div style="height: 19px; line-height: 14px; width: 100%; font: bold 12px LiberationSans; color: #333; text-align: center; letter-spacing: -0.1px">' + title + '</div>' : '';
+                        };
 
                     getReport = function() {
                         var getHtml = function(xLayout, xResponse) {
@@ -3675,7 +3678,7 @@ Ext.onReady( function() {
                         }
 
                         //ns.app.centerRegion.removeAll(true);
-                        ns.app.centerRegion.update(table.html);
+                        ns.app.centerRegion.update(getTitleHtml(layout.name) + table.html);
 
                         // fade
                         if (!ns.skipFade) {
@@ -3736,7 +3739,10 @@ Ext.onReady( function() {
 
 				map['individual_cases'] = function() {
 					var xResponse,
-                        getReport;
+                        getReport,
+                        getTitleHtml = function(title) {
+                            return ns.dashboard && title ? '<div style="height: 19px; line-height: 14px; width: 100%; font: bold 12px LiberationSans; color: #333; text-align: center; letter-spacing: -0.1px">' + title + '</div>' : '';
+                        };
 
                     getReport = function() {
                         table = web.report.query.getHtml(layout, xResponse);
@@ -3749,7 +3755,7 @@ Ext.onReady( function() {
                         if (ns.app.centerRegion.removeAll) {
                             ns.app.centerRegion.removeAll(true);
                         }
-                        ns.app.centerRegion.update(table.html);
+                        ns.app.centerRegion.update(getTitleHtml(layout.name) + table.html);
 
                         Ext.defer( function() {
                             Ext.get(ns.core.init.el).fadeIn({

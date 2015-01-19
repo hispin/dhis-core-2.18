@@ -6975,7 +6975,7 @@ Ext.onReady(function () {
                     region: 'north',
                     width: el.getWidth(),
                     height: 19,
-                    bodyStyle: 'background-color: #fff; border: 0 none; font: bold 12px LiberationSans, arial, sans-serif; color: #333; text-align: center; line-height: 14px; letter-spacing: -0.3px',
+                    bodyStyle: 'background-color: #fff; border: 0 none; font: bold 12px LiberationSans, arial, sans-serif; color: #333; text-align: center; line-height: 14px; letter-spacing: -0.1px',
                     html: ''
                 }));
             }
