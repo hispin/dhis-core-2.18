@@ -1627,7 +1627,7 @@ Ext.onReady(function () {
         return olmap;
     };
 
-    GIS.core.getLayers = function (gis) {
+    GIS.core.getLayers = function(gis) {
         var layers = {},
             createSelectionHandlers,
             layerNumbers = ['1', '2', '3', '4'];
@@ -1715,7 +1715,7 @@ Ext.onReady(function () {
         return layers;
     };
 
-    GIS.core.createSelectHandlers = function (gis, layer) {
+    GIS.core.createSelectHandlers = function(gis, layer) {
         var isRelocate = !!GIS.app ? !!gis.init.user.isAdmin : false,
             options = {},
             infrastructuralPeriod,
@@ -1761,10 +1761,11 @@ Ext.onReady(function () {
             defaultHoverWindow.show();
             gis.viewport.centerRegion.trash.push(defaultHoverWindow);
 
-            var eastX = gis.viewport.eastRegion.getPosition()[0],
-                centerX = gis.viewport.centerRegion.getPosition()[0],
-                centerRegionCenterX = centerX + ((eastX - centerX) / 2),
-                centerRegionY = gis.viewport.centerRegion.getPosition()[1] + (gis.plugin ? 0 : 32),
+            //var eastX = gis.viewport.eastRegion.getPosition()[0],
+            var cr = gis.viewport.centerRegion,
+                centerX = cr.getPosition()[0],
+                centerRegionCenterX = centerX + (cr.getWidth() / 2),
+                centerRegionY = cr.getPosition()[1] + (gis.plugin ? 0 : 32),
 
                 x = centerRegionCenterX - (defaultHoverWindow.getWidth() / 2),
                 y = centerRegionY;
@@ -1783,7 +1784,8 @@ Ext.onReady(function () {
                 menu,
                 selectHandlers,
                 isPoint = feature.geometry.CLASS_NAME === gis.conf.finals.openLayers.point_classname,
-                att = feature.attributes;
+                att = feature.attributes,
+                body = Ext.get(document.body);
 
             // Relocate
             showRelocate = function () {
@@ -1804,7 +1806,7 @@ Ext.onReady(function () {
                         cls: 'gis-container-inner'
                     },
                     bbar: [
-      '->',
+                        '->',
                         {
                             xtype: 'button',
                             hideLabel: true,
@@ -1814,8 +1816,8 @@ Ext.onReady(function () {
                                 gis.olmap.relocate.window.destroy();
                                 gis.olmap.getViewport().style.cursor = 'auto';
                             }
-      }
-     ],
+                        }
+                    ],
                     listeners: {
                         close: function () {
                             gis.olmap.relocate.active = false;
@@ -2122,8 +2124,8 @@ Ext.onReady(function () {
                         {
                             id: 'LEVEL-' + level
                         }
-     ]
-    }];
+                    ]
+                }];
 
                 if (view) {
                     loader = layer.core.getLoader();
@@ -2247,7 +2249,7 @@ Ext.onReady(function () {
                 items: menuItems
             });
 
-            menu.showAt([gis.olmap.mouseMove.x, gis.olmap.mouseMove.y]);
+            menu.showAt([gis.olmap.mouseMove.x + (body.dom.scrollLeft || 0), gis.olmap.mouseMove.y + (body.dom.scrollTop || 0)]);
         };
 
         options = {
@@ -2315,7 +2317,7 @@ Ext.onReady(function () {
         selectHandlers.activate();
     };
 
-    GIS.core.StyleMap = function (labelConfig) {
+    GIS.core.StyleMap = function(labelConfig) {
         var defaults = {
                 fillOpacity: 1,
                 strokeColor: '#fff',
@@ -2349,7 +2351,7 @@ Ext.onReady(function () {
         });
     };
 
-    GIS.core.VectorLayer = function (gis, id, name, config) {
+    GIS.core.VectorLayer = function(gis, id, name, config) {
         var layer = new OpenLayers.Layer.Vector(name, {
             strategies: [
     new OpenLayers.Strategy.Refresh({
@@ -2375,7 +2377,7 @@ Ext.onReady(function () {
         return layer;
     };
 
-    GIS.core.MeasureWindow = function (gis) {
+    GIS.core.MeasureWindow = function(gis) {
         var window,
             label,
             handleMeasurements,
@@ -2443,7 +2445,7 @@ Ext.onReady(function () {
         return window;
     };
 
-    GIS.core.MapLoader = function (gis) {
+    GIS.core.MapLoader = function(gis) {
         var getMap,
             setMap,
             afterLoad,
@@ -2451,7 +2453,7 @@ Ext.onReady(function () {
             register = [],
             loader;
 
-        getMap = function () {
+        getMap = function() {
             var type = gis.plugin && gis.crossDomain ? 'jsonp' : 'json',
                 success,
                 failure,
@@ -2494,7 +2496,8 @@ Ext.onReady(function () {
 
                 if (Ext.Array.contains([403], r.status)) {
                     alert(GIS.i18n.you_do_not_have_access_to_all_items_in_this_favorite);
-                } else {
+                }
+                else {
                     alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
                 }
             };
@@ -2511,7 +2514,7 @@ Ext.onReady(function () {
             }
         };
 
-        setMap = function () {
+        setMap = function() {
             var views = gis.map.mapViews,
                 loader;
 
@@ -2560,12 +2563,20 @@ Ext.onReady(function () {
         afterLoad = function () {
             register = [];
 
+            // title
+            if (gis.viewport.northRegion && gis.map && gis.map.name) {
+                gis.viewport.northRegion.update(gis.map.name);
+            }
+
+            // zoom
             if (gis.el) {
                 gis.olmap.zoomToVisibleExtent();
-            } else {
+            }
+            else {
                 if (gis.map.longitude && gis.map.latitude && gis.map.zoom) {
                     gis.olmap.setCenter(new OpenLayers.LonLat(gis.map.longitude, gis.map.latitude), gis.map.zoom);
-                } else {
+                }
+                else {
                     gis.olmap.zoomToVisibleExtent();
                 }
             }
@@ -3077,7 +3088,10 @@ Ext.onReady(function () {
 
             // Legend
             gis.viewport.eastRegion.doLayout();
-            layer.legendPanel.expand();
+
+            if (layer.legendPanel) {
+                layer.legendPanel.expand();
+            }
 
             // Layer
             if (layer.item) {
@@ -3872,46 +3886,51 @@ Ext.onReady(function () {
             }
         };
 
-        afterLoad = function (view) {
+        afterLoad = function(view) {
 
-            // Legend
+            // legend
             gis.viewport.eastRegion.doLayout();
-            layer.legendPanel.expand();
 
-            // Layer
+            if (layer.legendPanel) {
+                layer.legendPanel.expand();
+            }
+
+            // layer
             layer.setLayerOpacity(view.opacity);
 
             if (layer.item) {
                 layer.item.setValue(true);
             }
 
-            // Filter
+            // filter
             if (layer.filterWindow && layer.filterWindow.isVisible()) {
                 layer.filterWindow.filter();
             }
 
-            // Gui
+            // gui
             if (loader.updateGui && Ext.isObject(layer.widget)) {
                 layer.widget.setGui(view);
             }
 
-            // Zoom
+            // zoom
             if (loader.zoomToVisibleExtent) {
                 olmap.zoomToVisibleExtent();
             }
 
-            // Mask
+            // mask
             if (loader.hideMask) {
                 if (gis.olmap.mask && !gis.skipMask) {
                     gis.olmap.mask.hide();
                 }
             }
 
-            // Map callback
+            // map callback
             if (loader.callBack) {
                 loader.callBack(layer);
-            } else {
+            }
+            else {
                 gis.map = null;
+
                 if (gis.viewport.shareButton) {
                     gis.viewport.shareButton.enable();
                 }
@@ -5733,9 +5752,11 @@ Ext.onReady(function () {
             reset: function () {
                 this.layer.destroyFeatures();
 
-                // Legend
-                this.layer.legendPanel.update('');
-                this.layer.legendPanel.collapse();
+                // legend
+                if (this.layer.legendPanel) {
+                    this.layer.legendPanel.update('');
+                    this.layer.legendPanel.collapse();
+                }
 
                 if (this.layer.widget) {
                     this.layer.widget.reset();
@@ -5810,7 +5831,9 @@ Ext.onReady(function () {
                     element.appendChild(child);
                 }
 
-                this.layer.legendPanel.update(element.outerHTML);
+                if (this.layer.legendPanel) {
+                    this.layer.legendPanel.update(element.outerHTML);
+                }
             },
 
             CLASS_NAME: "mapfish.GeoStat.Facility"
@@ -6232,11 +6255,13 @@ Ext.onReady(function () {
                     this.layer.destroyFeatures();
                     this.featureStore.loadFeatures(this.layer.features.slice(0));
 
-                    // Legend
-                    this.layer.legendPanel.update('');
-                    this.layer.legendPanel.collapse();
+                    // legend
+                    if (this.layer.legendPanel) {
+                        this.layer.legendPanel.update('');
+                        this.layer.legendPanel.collapse();
+                    }
 
-                    // Widget
+                    // widget
                     if (this.layer.widget) {
                         this.layer.widget.reset();
                     }
@@ -6458,9 +6483,11 @@ Ext.onReady(function () {
                         }
                     }
 
-                    this.layer.legendPanel.update(element.outerHTML);
+                    if (this.layer.legendPanel) {
+                        this.layer.legendPanel.update(element.outerHTML);
+                    }
 
-		    return element;
+                    return element;
                 },
 
                 CLASS_NAME: "mapfish.GeoStat." + name
@@ -6716,7 +6743,7 @@ Ext.onReady(function () {
 
     applyCss = function () {
         var css = '';
-        
+
         // needs parent class to avoid conflict
         css += '.x-border-box .gis-plugin * {box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-webkit-box-sizing:border-box} \n';
 
@@ -6850,11 +6877,11 @@ Ext.onReady(function () {
         css += '.olControlPanel.zoomIn .olControlButtonItemActive { border-bottom-left-radius: 2px; } \n';
         css += '.olControlPanel.zoomOut { right: 48px; } \n';
         css += '.olControlPanel.zoomVisible { right: 24px; } \n';
-        css += '.olControlPanel.zoomIn-vertical { right: 1px; } \n';
-        css += '.olControlPanel.zoomOut-vertical { top: 24px; right: 1px; } \n';
-        css += '.olControlPanel.zoomVisible-vertical { top: 48px; right: 1px; } \n';
+        css += '.olControlPanel.zoomIn-vertical { } \n';
+        css += '.olControlPanel.zoomOut-vertical { top: 24px; } \n';
+        css += '.olControlPanel.zoomVisible-vertical { top: 48px; } \n';
         //css += '.olControlPanel.measure-vertical { top: 72px; right: 1px; } \n';
-        css += '.olControlPanel.legend-vertical { top: 72px; right: 1px; } \n';
+        css += '.olControlPanel.legend-vertical { top: 72px; } \n';
         css += '.olControlPanel.legend-vertical .olControlButtonItemActive { border-bottom-left-radius: 2px; } \n';
         css += '.olControlPermalink { display: none !important; } \n';
         css += '.olControlMousePosition { background: #fff !important; opacity: 0.8 !important; filter: alpha(opacity=80) !important; -ms-filter: "alpha(opacity=80)" !important; right: 0 !important; bottom: 0 !important; border-top-left-radius: 2px !important; padding: 2px 2px 1px 5px !important; color: #000 !important; -webkit-text-stroke-width: 0.2px; -webkit-text-stroke-color: #555; } \n';
@@ -6934,105 +6961,117 @@ Ext.onReady(function () {
 
         createViewport = function () {
             var viewport,
-                eastRegion,
+                items = [],
+                northRegion,
                 centerRegion,
+                eastRegion,
                 el = Ext.get(gis.el),
                 eastWidth = gis.map.hideLegend ? 0 : (gis.plugin ? 120 : 200),
                 trash = [];
+
+            // north
+            if (gis.dashboard) {
+                items.push(northRegion = Ext.create('Ext.panel.Panel', {
+                    region: 'north',
+                    width: el.getWidth(),
+                    height: 19,
+                    bodyStyle: 'background-color: #fff; border: 0 none; font: bold 12px LiberationSans, arial, sans-serif; color: #333; text-align: center; line-height: 14px;',
+                    html: ''
+                }));
+            }
+
+            // center
+            items.push(centerRegion = new GeoExt.MapPanel({
+                region: 'center',
+                map: gis.olmap,
+                bodyStyle: 'border: 1px solid #d0d0d0',
+                width: el.getWidth() - eastWidth,
+                height: el.getHeight()
+            }));
+
+            // east
+            if (gis.dashboard) {
+                items.push(eastRegion = Ext.create('Ext.panel.Panel', {
+                    width: 0,
+                    height: 0
+                }));
+            }
+            else {
+                items.push(eastRegion = Ext.create('Ext.panel.Panel', {
+                    region: 'east',
+                    layout: 'anchor',
+                    bodyStyle: 'border-top:0 none; border-bottom:0 none',
+                    width: eastWidth,
+                    preventHeader: true,
+                    defaults: {
+                        bodyStyle: 'padding: 6px; border: 0 none',
+                        collapsible: true,
+                        collapsed: true,
+                        animCollapse: false
+                    },
+                    items: [
+                        {
+                            title: GIS.i18n.thematic_layer_1_legend,
+                            cls: 'gis-panel-legend',
+                            bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
+                            listeners: {
+                                added: function () {
+                                    gis.layer.thematic1.legendPanel = this;
+                                }
+                            }
+                        },
+                        {
+                            title: GIS.i18n.thematic_layer_2_legend,
+                            cls: 'gis-panel-legend',
+                            bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
+                            listeners: {
+                                added: function () {
+                                    gis.layer.thematic2.legendPanel = this;
+                                }
+                            }
+                        },
+                        {
+                            title: GIS.i18n.thematic_layer_3_legend,
+                            cls: 'gis-panel-legend',
+                            bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
+                            listeners: {
+                                added: function () {
+                                    gis.layer.thematic3.legendPanel = this;
+                                }
+                            }
+                        },
+                        {
+                            title: GIS.i18n.thematic_layer_4_legend,
+                            cls: 'gis-panel-legend',
+                            bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
+                            listeners: {
+                                added: function () {
+                                    gis.layer.thematic4.legendPanel = this;
+                                }
+                            }
+                        },
+                        {
+                            title: GIS.i18n.facility_layer_legend,
+                            cls: 'gis-panel-legend',
+                            bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
+                            listeners: {
+                                added: function () {
+                                    gis.layer.facility.legendPanel = this;
+                                }
+                            }
+                        }
+                    ]
+                }));
+            }
 
             viewport = Ext.create('Ext.panel.Panel', {
                 renderTo: el,
                 width: el.getWidth(),
                 height: el.getHeight(),
                 cls: 'gis-plugin',
-                layout: {
-                    type: 'hbox',
-                    align: 'stretch'
-                },
-                items: [
-                    {
-                        xtype: 'gx_mappanel',
-                        map: gis.olmap,
-                        bodyStyle: 'border:0 none',
-                        width: el.getWidth() - eastWidth,
-                        height: el.getHeight(),
-                        listeners: {
-                            added: function () {
-                                centerRegion = this;
-                            }
-                        }
-                    },
-                    {
-                        xtype: 'panel',
-                        layout: 'anchor',
-                        bodyStyle: 'border-top:0 none; border-bottom:0 none',
-                        width: eastWidth,
-                        preventHeader: true,
-                        defaults: {
-                            bodyStyle: 'padding: 6px; border: 0 none',
-                            collapsible: true,
-                            collapsed: true,
-                            animCollapse: false
-                        },
-                        items: [
-                            {
-                                title: GIS.i18n.thematic_layer_1_legend,
-                                cls: 'gis-panel-legend',
-                                bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
-                                listeners: {
-                                    added: function () {
-                                        gis.layer.thematic1.legendPanel = this;
-                                    }
-                                }
-                            },
-                            {
-                                title: GIS.i18n.thematic_layer_2_legend,
-                                cls: 'gis-panel-legend',
-                                bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
-                                listeners: {
-                                    added: function () {
-                                        gis.layer.thematic2.legendPanel = this;
-                                    }
-                                }
-                            },
-                            {
-                                title: GIS.i18n.thematic_layer_3_legend,
-                                cls: 'gis-panel-legend',
-                                bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
-                                listeners: {
-                                    added: function () {
-                                        gis.layer.thematic3.legendPanel = this;
-                                    }
-                                }
-                            },
-                            {
-                                title: GIS.i18n.thematic_layer_4_legend,
-                                cls: 'gis-panel-legend',
-                                bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
-                                listeners: {
-                                    added: function () {
-                                        gis.layer.thematic4.legendPanel = this;
-                                    }
-                                }
-                            },
-                            {
-                                title: GIS.i18n.facility_layer_legend,
-                                cls: 'gis-panel-legend',
-                                bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
-                                listeners: {
-                                    added: function () {
-                                        gis.layer.facility.legendPanel = this;
-                                    }
-                                }
-                            }
-                        ],
-                        listeners: {
-                            added: function () {
-                                eastRegion = this;
-                            }
-                        }
-                    }
-                ],
+                layout: 'border',
+                bodyStyle: 'border: 0 none',
+                items: items,
                 listeners: {
                     afterrender: function () {
                         afterRender();
@@ -7040,6 +7079,7 @@ Ext.onReady(function () {
                 }
             });
 
+            viewport.northRegion = northRegion;
             viewport.centerRegion = centerRegion;
             viewport.eastRegion = eastRegion;
 
@@ -7113,7 +7153,7 @@ Ext.onReady(function () {
             init.skipFade = Ext.isBoolean(config.skipFade) ? config.skipFade : false;
 
             // alert
-            //init.alert = function(text) {                
+            //init.alert = function(text) {
                 //Ext.get(config.el).setStyle('opacity', 1);
                 //Ext.get(config.el).update('<div class="ns-plugin-alert">' + text + '</div>');
             //};
