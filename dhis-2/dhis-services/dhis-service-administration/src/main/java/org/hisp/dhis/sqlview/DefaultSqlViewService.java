@@ -81,6 +81,12 @@ public class DefaultSqlViewService
     }
 
     @Override
+    public Collection<SqlView> getAllSqlViewsNoAcl()
+    {
+        return sqlViewStore.getAllNoAcl();
+    }
+
+    @Override
     public SqlView getSqlView( int viewId )
     {
         return sqlViewStore.get( viewId );
