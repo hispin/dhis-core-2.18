@@ -579,7 +579,7 @@ Ext.onReady( function() {
 						console.log('Response: no valid headers');
 						return;
 					}
-                    
+
 					if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
                         init.alert('No values found');
 						return;
@@ -3285,7 +3285,10 @@ Ext.onReady( function() {
 					getXLayout = service.layout.getExtendedLayout,
 					getSXLayout = service.layout.getSyncronizedXLayout,
 					getXResponse = service.response.getExtendedResponse,
-					getXAxis = service.layout.getExtendedAxis;
+					getXAxis = service.layout.getExtendedAxis,
+                    getTitleHtml = function(title) {
+                        return ns.dashboard && title ? '<div style="height: 19px; line-height: 14px; width: 100%; font: bold 12px LiberationSans; color: #333; text-align: center">' + title + '</div>' : '';
+                    };
 
 				getHtml = function(xLayout, xResponse) {
 					xColAxis = getXAxis(xLayout, 'col');
@@ -3317,7 +3320,7 @@ Ext.onReady( function() {
                 ns.app.dateRender = new Date();
 
 				//ns.app.centerRegion.removeAll(true);
-				ns.app.centerRegion.update(table.html);
+				ns.app.centerRegion.update(getTitleHtml(layout.name) + table.html);
 
                 // fade
                 if (!ns.skipFade) {
