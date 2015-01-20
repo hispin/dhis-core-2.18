@@ -80,7 +80,10 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.translate.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.menu.js?_rev=$!{buildRevision}"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js?_rev=$!{buildRevision}"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js?_rev=$!{buildRevision}"></script>    
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/d3/d3.min.js?_rev=$!{buildRevision}"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/nvd3/nv.d3.min.js?_rev=$!{buildRevision}"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/nvd3/nv.d3.css?_rev=$!{buildRevision}"></script>    
     <script type="text/javascript" src="../dhis-web-commons/i18nJavaScript.action?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../main.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../request.js?_rev=$!{buildRevision}"></script>
