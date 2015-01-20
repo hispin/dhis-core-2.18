@@ -6985,8 +6985,7 @@ Ext.onReady(function () {
                 region: 'center',
                 map: gis.olmap,
                 bodyStyle: 'border: 1px solid #d0d0d0',
-                width: el.getWidth() - eastWidth,
-                height: el.getHeight()
+                width: el.getWidth() - eastWidth
             }));
 
             // east

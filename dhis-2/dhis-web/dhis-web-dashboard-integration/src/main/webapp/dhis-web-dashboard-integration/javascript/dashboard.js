@@ -556,7 +556,7 @@ dhis2.db.renderDashboard = function( id )
                             labelFont: '9px sans-serif'
                         },
                         legendStyle: {
-                            labelMaxLength: 10,
+                            //labelMaxLength: 10,
                             labelFont: 'normal 10px sans-serif',
                             labelColor: '#222',
                             labelMarkerSize: 10,
