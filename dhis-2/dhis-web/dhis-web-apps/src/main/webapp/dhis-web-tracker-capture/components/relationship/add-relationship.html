@@ -51,7 +51,7 @@
                         <option value="">{{'please_select_source'| translate}}</option>
                     </select>
                     <div class="input-group vertical-spacing" ng-if="selectedRelationshipSource.value === 'search_from_existing'">
-                        <input type="text" placeholder="{{'type_here_for_simple_search'| translate}}" ng-model="searchText.value" d2-enter="search(searchMode.freeText)" class="form-control expanded" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="showHideSearch(true)">
+                        <input type="text" placeholder="{{'type_your_search_criteria_here'| translate}}" ng-model="searchText.value" d2-enter="search(searchMode.freeText)" class="form-control expanded" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="showHideSearch(true)">
                         <div class="input-group-btn">
                             <button class="btn btn-default without-border-radius trim" type="button" title="{{'advanced_search'| translate}}" ng-click="showHideSearch(false)"><i class="fa fa-caret-down"></i></button>
                             <button class="btn btn-primary trim" type="button" title="{{'search'| translate}}" ng-click="search(searchMode.freeText)"><i class="fa fa-search"></i></button>                            
