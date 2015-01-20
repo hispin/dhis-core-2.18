@@ -33,7 +33,7 @@ dhis2.db.shapeFullWidth = "full_width";
 dhis2.db.widthNormal = 408;
 dhis2.db.widthDouble = 849;
 
-dhis2.db.itemContentHeight = 304;
+dhis2.db.itemContentHeight = 308;
 dhis2.db.itemScrollbarWidth = /\bchrome\b/.test(navigator.userAgent.toLowerCase()) ? 8 : 17;
 
 // TODO support table as link and embedded
@@ -114,7 +114,7 @@ dhis2.db.tmpl = {
 	    "<a href='javascript:dhis2.db.exploreMap( \"${id}\" )'>${i18n_explore}</a>" +
 	    "<a href='javascript:dhis2.db.resizeItem( \"${itemId}\" )'>${i18n_resize}</a>" +
 	    "<i class=\"fa fa-arrows dragIcon\" title=\"${i18n_click_and_drag_to_new_position}\"></i></div>" +
-	    "<div id='plugin-${itemId}' style='width:100%; height:304px'></div>" +
+	    "<div id='plugin-${itemId}' style='width:100%; height:${height}px'></div>" +
 	    "</div></li>",
 
 	reportTableItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
@@ -608,7 +608,7 @@ dhis2.db.renderDashboard = function( id )
 				}
 				else if ( "map" == dashboardItem.type )
 				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": dashboardItem.id, "id": dashboardItem.map.id, "name": dashboardItem.map.name, "style": style,
+				    $d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": dashboardItem.id, "id": dashboardItem.map.id, "name": dashboardItem.map.name, "style": style, "height": dhis2.db.itemContentHeight,
 					"i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image, "i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } ) );
 
 				    DHIS.getMap({
