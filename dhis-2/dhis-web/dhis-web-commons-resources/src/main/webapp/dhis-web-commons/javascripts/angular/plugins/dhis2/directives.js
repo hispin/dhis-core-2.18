@@ -4,6 +4,36 @@
 
 var d2Directives = angular.module('d2Directives', [])
 
+
+.directive('d2OuSearch', function() {
+    
+    return {
+        restrict: 'E',
+        template: '<div style="margin-top:20px">\n\
+                    <img id="searchIcon" src="../images/search.png" style="cursor: pointer" title="{{ \'locate_organisation_unit_by_name\' | translate}}">\n\
+                    <span id="searchSpan" style="width:100%;display:none;">\n\
+                        <input type="text" id="searchField" name="key"/>\n\
+                        <input type="button" value="{{\'find\' | translate}}" onclick="selection.findByName()"/>\n\
+                    </span>\n\
+                  </div>',
+        link: function (scope, element, attrs) {
+            
+            $("#searchIcon").click(function() {
+                $("#searchSpan").toggle();
+                $("#searchField").focus();
+            });
+
+            $("#searchField").autocomplete({
+                source: "../dhis-web-commons/ouwt/getOrganisationUnitsByName.action",
+                select: function(event, ui) {
+                    $("#searchField").val(ui.item.value);
+                    selection.findByName();
+                }
+            });
+        }
+    };
+})
+
 .directive('inputValidator', function() {
     
     return {

@@ -120,8 +120,7 @@ scripts/services.js
 scripts/filters.js
 scripts/directives.js
 scripts/controllers.js        
-scripts/notes-controller.js        
-scripts/orgunitTreeSearch.js
+scripts/notes-controller.js 
 
 views/column-modal.html
 views/ec-custom-form.html
