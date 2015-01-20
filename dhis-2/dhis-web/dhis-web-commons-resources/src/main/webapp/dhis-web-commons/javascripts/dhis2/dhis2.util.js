@@ -170,8 +170,7 @@ dhis2.util.normalizeArguments = function( args ) {
  * registered inside a form it will be loaded every time the form is loaded,
  * hence the need to unregister and the register the function.
  */
-dhis2.util.on = function( event, fn )
-{
+dhis2.util.on = function( event, fn ) {
     $( document ).off( event ).on( event, fn );
 };
 
@@ -180,9 +179,15 @@ dhis2.util.on = function( event, fn )
  * in milliseconds is the value, intended to force fresh non-cached responses
  * from server.
  */
-dhis2.util.cacheBust = function()
-{
+dhis2.util.cacheBust = function() {
 	return "_=" + new Date().getTime();
+}
+
+/**
+ * Sorts the two given objects on the name property.
+ */
+dhis2.util.nameSort = function( a, b ) {
+    return a.name > b.name ? 1 : a.name < b.name ? -1 : 0;
 }
 
 /**

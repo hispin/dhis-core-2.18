@@ -103,7 +103,9 @@ dhis2.dsr.dataSetSelected = function()
 						html += '<div><label>' + dim.name + '</label></div>';
 						html += '<select class="dimension" data-uid="' + dim.id + '" style="width:330px">';
 						html += '<option value="-1">[ ' + i18n_select_option_view_all + ' ]</option>';
-											
+						
+						dim.items.sort( dhis2.util.nameSort );
+						
 						$.each( dim.items, function( idx, option ) {
 							html += '<option value="' + option.id + '">' + option.name + '</option>';
 						} );
