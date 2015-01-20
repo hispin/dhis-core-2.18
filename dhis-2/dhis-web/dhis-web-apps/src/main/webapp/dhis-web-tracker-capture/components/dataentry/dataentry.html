@@ -1,11 +1,11 @@
 <div class="panel panel-info" ng-controller="DataEntryController">
     <div class="panel-heading handle bold">
-        <a href ng-click="showEventCreation()"><span ng-class="{'light-blue': showEventCreationDiv}">{{dataentryWidget.title| translate}}</span></a>
+        {{dataentryWidget.title| translate}}
         <span class="nav-pills" ng-if="allowEventCreation">
-            | <a href ng-click="showEventCreation()"><span ng-class="{'light-blue': !showEventCreationDiv}">{{'create_new_event'| translate}}</span></a>
+            | <a href ng-click="showEventCreation()"><span ng-class="{true: 'widget-link-active', false: 'widget-link'} [showEventCreationDiv]">{{'create_new_event'| translate}}</span></a>
         </span>
         
-        <span class="pull-right">
+        <span class="pull-right widget-link">
             <a href ng-click="toggleLegend()" title="{{'event_color_legend'| translate}}"><i class="fa fa-info-circle vertical-center"></i></a>
             <a class="small-horizonal-spacing" href ng-click="expandCollapse(dataentryWidget)">
                 <span ng-show="dataentryWidget.expand"><i class="fa fa-chevron-up vertical-center" title="{{'collapse'| translate}}"></i></span>

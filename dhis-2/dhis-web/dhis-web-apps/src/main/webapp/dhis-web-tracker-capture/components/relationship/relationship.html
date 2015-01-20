@@ -1,11 +1,11 @@
 <div class="panel panel-info" ng-controller="RelationshipController">
     <div class="panel-heading handle bold">
-        <a href ng-click="showAddRelationship()"><span ng-class="{'light-blue': showAddRelationshipDiv}">{{relationshipWidget.title| translate}}</span></a>
+        {{relationshipWidget.title| translate}}
         <span class="nav-pills" ng-if="selectedTei">
-            | <a href ng-click="showAddRelationship()" title="{{'add_relationship'| translate}}"><span ng-class="{'light-blue': !showAddRelationshipDiv}">{{addRelationshipLabel}}</span></a>
+            | <a href ng-click="showAddRelationship()" title="{{'add_relationship'| translate}}"><span ng-class="{true: 'widget-link-active', false: 'widget-link'} [showAddRelationshipDiv]">{{addRelationshipLabel}}</span></a>
         </span>        
 
-        <span class="pull-right">
+        <span class="pull-right widget-link">
             <a class="small-horizonal-spacing" href ng-click="expandCollapse(relationshipWidget)">
                 <span ng-show="relationshipWidget.expand"><i class="fa fa-chevron-up" title="{{'collapse'| translate}}"></i></span>
                 <span ng-show="!relationshipWidget.expand"><i class="fa fa-chevron-down" title="{{'expand'| translate}}"></i></span>
@@ -22,33 +22,7 @@
                 <tr ng-click="showDashboard(rel.trackedEntityInstance, rel.relId)" ng-repeat="rel in relatedTeis" title="{{'go_to_dashboard'| translate}}">
                     <td>{{rel.relName}}</td> 
                 </tr>
-            </table>
-            <!--<table class="table table-striped dhis2-table-hover">
-                <tr ng-click="showDashboard(rel)" ng-repeat="rel in selectedTei.relationships" title="{{'go_to_dashboard'| translate}}">
-                     <td>                        
-                        <d2-pop-over content="relatedTeis[rel.trackedEntityInstanceB]" template="popover.html" details="{{'details'| translate}}" ng-if="selectedTei.trackedEntityInstance === rel.trackedEntityInstanceA">
-                            <div>{{relationships[rel.relationship].bIsToA}}</div>
-                        </d2-pop-over>
-                        
-                        <d2-pop-over content="relatedTeis[rel.trackedEntityInstanceA]" template="popover.html" details="{{'details'| translate}}" ng-if="selectedTei.trackedEntityInstance === rel.trackedEntityInstanceB">
-                            <div>{{relationships[rel.relationship].aIsToB}}</div>
-                        </d2-pop-over>                
-                        
-                        <script type="text/ng-template" id="popover.html">
-                            <table class="table table-striped table-bordered">
-                                <tr ng-repeat="att in content.attributes">
-                                    <td>
-                                        {{att.displayName}}
-                                    </td>
-                                    <td>
-                                        {{att.value}}
-                                    </td>                                    
-                                </tr>
-                            </table>
-                        </script>                        
-                    </td> 
-                </tr>
-            </table>-->
+            </table>            
         </div>
     </div>
 </div>

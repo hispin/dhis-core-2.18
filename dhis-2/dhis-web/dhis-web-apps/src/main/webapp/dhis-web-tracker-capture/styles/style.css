@@ -416,6 +416,14 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     overflow-y:auto;
 }
 
+.widget-link {
+    color: #104E8B;
+}
+
+.widget-link-active {
+    color: #551A8B;
+}
+
 .empty-dashboard-container{
     min-height: 100px;    
 }
