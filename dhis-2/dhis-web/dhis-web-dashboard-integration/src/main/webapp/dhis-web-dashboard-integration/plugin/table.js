@@ -3001,6 +3001,7 @@ Ext.onReady( function() {
 			}
 		});
 
+        // user orgunit
 		requests.push({
 			url: init.contextPath + '/api/dimensions.' + type + '?fields=id,name&paging=false',
             disableCaching: false,
@@ -3010,7 +3011,16 @@ Ext.onReady( function() {
 			}
 		});
 
-        init.legendSets = [];
+        // legend sets
+        requests.push({
+            url: init.contextPath + '/api/mapLegendSets.json?fields=id,name,mapLegends[id,name,startValue,endValue,color]&paging=false',
+            success: function(r) {
+                init.legendSets = Ext.decode(r.responseText).mapLegendSets || [];
+                fn();
+            }
+        });
+
+        //init.legendSets = [];
 
 		for (var i = 0; i < requests.length; i++) {
             if (type === 'jsonp') {
