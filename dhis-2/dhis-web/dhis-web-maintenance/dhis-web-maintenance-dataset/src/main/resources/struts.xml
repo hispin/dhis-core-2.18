@@ -19,6 +19,7 @@
     <action name="section" class="org.hisp.dhis.dataset.action.section.SectionListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/sectionList.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">javascript/section.js</param>
     </action>
 
