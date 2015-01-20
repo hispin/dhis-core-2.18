@@ -327,8 +327,8 @@ trackerCapture.controller('DataEntryController',
             var val = dataValue.value;
             var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
             if(de){                
-                if(val && de.type === 'int'){
-                    val = parseInt(val);
+                if(val && de.type === 'string' && de.optionSet && $scope.optionSets[de.optionSet.id].options  ){
+                    val = OptionSetService.getName($scope.optionSets[de.optionSet.id].options, val);
                 }
                 if(val && de.type === 'date'){
                     val = DateUtils.formatFromApiToUser(val);
