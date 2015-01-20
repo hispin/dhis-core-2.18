@@ -94,16 +94,18 @@ public class UserGroup
 
     public UserGroup()
     {
+        setAutoFields();
     }
 
     public UserGroup( String name )
     {
+        this();
         this.name = name;
     }
 
     public UserGroup( String name, Set<User> members )
     {
-        this.name = name;
+        this( name );
         this.members = members;
     }
 
@@ -144,13 +146,13 @@ public class UserGroup
         managedGroups.add( group );
         group.getManagedByGroups().add( this );
     }
-    
+
     public void removeManagedGroup( UserGroup group )
     {
         managedGroups.remove( group );
         group.getManagedByGroups().remove( this );
     }
-    
+
     public void updateManagedGroups( Set<UserGroup> updates )
     {
         for ( UserGroup group : new HashSet<>( managedGroups ) )
@@ -160,13 +162,13 @@ public class UserGroup
                 removeManagedGroup( group );
             }
         }
-        
+
         for ( UserGroup group : updates )
         {
             addManagedGroup( group );
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
