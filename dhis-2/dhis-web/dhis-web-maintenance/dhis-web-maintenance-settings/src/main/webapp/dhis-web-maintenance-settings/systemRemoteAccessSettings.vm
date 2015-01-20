@@ -34,8 +34,8 @@
 
 <div class="setting">
   <input type="text" id="domain" name="domain">
-  <button id="add-domain"><span class="fa fa-plus"></button>
-  <button id="del-domain" style=""><span class="fa fa-minus"></button>
+  <button id="add-domain" style="width:70px">$i18n.getString( "add" )</button>
+  <button id="del-domain" style="width:70px">$i18n.getString( "remove" )</button>
 
   <br/>
   <select id="whitelist" name="whitelist" multiple="multiple">
