@@ -31,7 +31,7 @@ package org.hisp.dhis.dxf2.objectfilter.ops;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class LikeOp extends Op
+public class EndsWithOp extends Op
 {
     @Override
     public OpStatus evaluate( Object object )
@@ -46,7 +46,7 @@ public class LikeOp extends Op
             String s1 = getValue( String.class );
             String s2 = (String) object;
 
-            return (s1 != null && s2.toLowerCase().contains( s1.toLowerCase() )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            return (s1 != null && s2.toLowerCase().endsWith( s1.toLowerCase() )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
 
         return OpStatus.IGNORE;
