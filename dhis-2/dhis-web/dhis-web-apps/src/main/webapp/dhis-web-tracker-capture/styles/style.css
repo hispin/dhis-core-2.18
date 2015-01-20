@@ -40,10 +40,6 @@ div#orgUnitTree {
 /* Form
 /*----------------------------------------------------------------------------*/
 
-input[type="button"], input[type="submit"] {
-    width: 130px;
-}
-
 .fixed-text-width {
     width: 260px;
 }

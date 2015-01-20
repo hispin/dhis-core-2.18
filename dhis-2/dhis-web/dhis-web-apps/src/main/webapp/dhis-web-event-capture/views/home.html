@@ -1,16 +1,7 @@
 <div id="leftBar"> 
 
-    <div style="margin-top:20px">
-
-
-        <img id="searchIcon" src="../images/search.png" style="cursor: pointer" title="{{ 'locate_organisation_unit_by_name' | translate}}">
-
-        <span id="searchSpan" style="width:100%;display:none;">
-            <input type="text" id="searchField" name="key" style="width:160px" />
-            <input type="button" value="Find" onclick="selection.findByName()" />
-        </span>
-    </div>
-
+    <d2-ou-search></d2-ou-search>
+    
     <div id="orgUnitTree">
         <ul>
         </ul>
