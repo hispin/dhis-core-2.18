@@ -3917,6 +3917,7 @@ Ext.onReady(function() {
             extendInstance,
 			createViewport,
 			initialize,
+            dimConf,
 			ns = {
 				core: {},
 				app: {}
@@ -4070,7 +4071,42 @@ Ext.onReady(function() {
 				var xResponse,
 					xColAxis,
 					xRowAxis,
-					config;
+					config,
+                    ind = ns.core.conf.finals.dimension.indicator.objectName,
+                    legendSet,
+                    fn;
+
+                fn = function() {
+
+                    // create chart
+                    ns.app.chart = ns.core.web.chart.createChart(ns, legendSet);
+
+                    // fade
+                    if (!ns.skipFade && ns.core.init.el && Ext.get(ns.core.init.el)) {
+                        ns.app.chart.on('afterrender', function() {
+                            Ext.defer( function() {
+                                Ext.get(ns.core.init.el).fadeIn({
+                                    duration: 400
+                                });
+                            }, 300 );
+                        });
+                    }
+
+                    // update viewport
+                    ns.app.centerRegion.removeAll();
+                    ns.app.centerRegion.add(ns.app.chart);
+
+                    if (!ns.skipMask) {
+                        web.mask.hide(ns.app.centerRegion);
+                    }
+
+                    if (DV.isDebug) {
+                        console.log('layout', ns.app.layout);
+                        console.log('xLayout', ns.app.xLayout);
+                        console.log('response', ns.app.response);
+                        console.log('xResponse', ns.app.xResponse);
+                    }
+                };
 
 				if (!xLayout) {
 					xLayout = service.layout.getExtendedLayout(layout);
@@ -4085,33 +4121,21 @@ Ext.onReady(function() {
 				ns.app.response = response;
 				ns.app.xResponse = xResponse;
 
-                if (DV.isDebug) {
-                    console.log('layout', ns.app.layout);
-                    console.log('xLayout', ns.app.xLayout);
-                    console.log('response', ns.app.response);
-                    console.log('xResponse', ns.app.xResponse);
-                }
-
-				// create chart
-				ns.app.chart = ns.core.web.chart.createChart(ns);
-
-                // fade
-                if (!ns.skipFade && ns.core.init.el && Ext.get(ns.core.init.el)) {
-                    ns.app.chart.on('afterrender', function() {
-                        Ext.defer( function() {
-                            Ext.get(ns.core.init.el).fadeIn({
-                                duration: 400
-                            });
-                        }, 300 );
+                // legend set
+                if (xLayout.type === 'gauge' && Ext.Array.contains(xLayout.axisObjectNames, ind) && xLayout.objectNameIdsMap[ind].length) {
+                    Ext.Ajax.request({
+                        url: ns.core.init.contextPath + '/api/indicators/' + xLayout.objectNameIdsMap[ind][0] + '.json?fields=legendSet[mapLegends[id,name,startValue,endValue,color]]',
+                        disableCaching: false,
+                        success: function(r) {
+                            legendSet = Ext.decode(r.responseText).legendSet;
+                        },
+                        callback: function() {
+                            fn();
+                        }
                     });
                 }
-
-				// update viewport
-				ns.app.centerRegion.removeAll();
-				ns.app.centerRegion.add(ns.app.chart);
-
-                if (!ns.skipMask) {
-                    web.mask.hide(ns.app.centerRegion);
+                else {
+                    fn();
                 }
 			};
 		};
