@@ -3287,7 +3287,7 @@ Ext.onReady( function() {
 					getXResponse = service.response.getExtendedResponse,
 					getXAxis = service.layout.getExtendedAxis,
                     getTitleHtml = function(title) {
-                        return ns.dashboard && title ? '<div style="height: 19px; line-height: 14px; width: 100%; font: bold 12px LiberationSans; color: #333; text-align: center">' + title + '</div>' : '';
+                        return ns.dashboard && title ? '<div style="height: 19px; line-height: 14px; width: 100%; font: bold 12px LiberationSans; color: #333; text-align: center; letter-spacing: -0.1px"">' + title + '</div>' : '';
                     };
 
 				getHtml = function(xLayout, xResponse) {

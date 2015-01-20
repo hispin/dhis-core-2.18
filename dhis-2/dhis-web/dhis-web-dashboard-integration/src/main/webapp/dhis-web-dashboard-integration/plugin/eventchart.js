@@ -1221,6 +1221,26 @@ Ext.onReady( function() {
 				return array.length;
 			};
 
+            support.prototype.array.getMaxLength = function(array, suppressWarning) {
+				if (!Ext.isArray(array)) {
+					if (!suppressWarning) {
+						console.log('support.prototype.array.getLength: not an array');
+					}
+
+					return null;
+				}
+
+                var maxLength = 0;
+
+                for (var i = 0; i < array.length; i++) {
+                    if (Ext.isString(array[i]) && array[i].length > maxLength) {
+                        maxLength = array[i].length;
+                    }
+                }
+
+                return maxLength;
+            };
+
 			support.prototype.array.sort = function(array, direction, key) {
 				// supports [number], [string], [{key: number}], [{key: string}], [[string]], [[number]]
 
@@ -2668,6 +2688,7 @@ Ext.onReady( function() {
                     getDefaultStore,
                     getDefaultNumericAxis,
                     getDefaultCategoryAxis,
+                    getFormatedSeriesTitle,
                     getDefaultSeriesTitle,
                     getPieSeriesTitle,
                     getDefaultSeries,
@@ -3082,6 +3103,53 @@ Ext.onReady( function() {
                     return axis;
                 };
 
+                getFormatedSeriesTitle = function(titles) {
+                    var itemLength = ns.dashboard ? 23 : 30,
+                        charLength = ns.dashboard ? 5 : 6,
+                        numberOfItems = titles.length,
+                        numberOfChars,
+                        totalItemLength = numberOfItems * itemLength,
+                        minLength = 5,
+                        maxLength = support.prototype.array.getMaxLength(titles),
+                        fallbackLength = 10,
+                        maxWidth = ns.app.centerRegion.getWidth(),
+                        width,
+                        validateTitles;
+
+                    getValidatedTitles = function(titles, len) {
+                        var numberOfItems = titles.length,
+                            newTitles,
+                            fallbackTitles;
+
+                        fallbackLength = len < fallbackLength ? len : fallbackLength;
+
+                        for (var i = len, width; i >= minLength; i--) {
+                            newTitles = [];
+
+                            for (var j = 0, title, numberOfChars, newTitle; j < titles.length; j++) {
+                                title = titles[j];
+
+                                newTitles.push(title.length > i ? (title.slice(0, i) + '..') : title);
+                            }
+
+                            numberOfChars = newTitles.join('').length;
+                            width = totalItemLength + (numberOfChars * charLength);
+
+                            if (i === fallbackLength) {
+                                fallbackTitles = Ext.clone(newTitles);
+                            }
+
+                            if (width < maxWidth) {
+                                return newTitles;
+                            }
+                        }
+
+                        return fallbackTitles;
+                    };
+
+                    return getValidatedTitles(titles, maxLength);
+                };
+
                 getDefaultSeriesTitle = function(store) {
                     var a = [];
 
@@ -3093,17 +3161,17 @@ Ext.onReady( function() {
                             id = failSafeColumnIdMap[store.rangeFields[i]];
                             name = xResponse.metaData.optionNames[id] || xResponse.metaData.names[id];
 
-                            if (Ext.isString(name) && Ext.isObject(xLayout.legendStyle) && Ext.isNumber(xLayout.legendStyle.labelMaxLength)) {
-                                var mxl = parseInt(xLayout.legendStyle.labelMaxLength);
+                            //if (Ext.isString(name) && Ext.isObject(xLayout.legendStyle) && Ext.isNumber(xLayout.legendStyle.labelMaxLength)) {
+                                //var mxl = parseInt(xLayout.legendStyle.labelMaxLength);
 
-                                name = name.length > mxl ? name.substr(0, mxl) + '..' : name;
-                            }
+                                //name = name.length > mxl ? name.substr(0, mxl) + '..' : name;
+                            //}
 
                             a.push(name);
                         }
                     }
 
-                    return a;
+                    return getFormatedSeriesTitle(a);
 				};
 
                 getPieSeriesTitle = function(store) {
@@ -3117,17 +3185,17 @@ Ext.onReady( function() {
                             id = rowIds[i];
                             name = xResponse.metaData.optionNames[id] || xResponse.metaData.names[id];
 
-                            if (Ext.isString(name) && Ext.isObject(xLayout.legendStyle) && Ext.isNumber(xLayout.legendStyle.labelMaxLength)) {
-                                var mxl = parseInt(xLayout.legendStyle.labelMaxLength);
+                            //if (Ext.isString(name) && Ext.isObject(xLayout.legendStyle) && Ext.isNumber(xLayout.legendStyle.labelMaxLength)) {
+                                //var mxl = parseInt(xLayout.legendStyle.labelMaxLength);
 
-                                name = name.length > mxl ? name.substr(0, mxl) + '..' : name;
-                            }
+                                //name = name.length > mxl ? name.substr(0, mxl) + '..' : name;
+                            //}
 
                             a.push(name);
                         }
                     }
 
-                    return a;
+                    return getFormatedSeriesTitle(a);
 				};
 
                 getDefaultSeries = function(store) {
