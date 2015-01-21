@@ -3462,9 +3462,6 @@ Ext.onReady( function() {
                             el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
                             el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
                         }
-                        else {
-                            console.log('No column header element, setColumnHeaderMouseHandlers, ' + init.el);
-                        }
 					}
 				}
 			};
