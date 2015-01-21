@@ -357,7 +357,6 @@ public class HibernateGenericStore<T>
         return aclService.canCreatePublic( user, identifiableObject.getClass() ) ||
             (aclService.canCreatePrivate( user, identifiableObject.getClass() ) &&
                 !AccessStringHelper.canReadOrWrite( identifiableObject.getPublicAccess() ));
-
     }
 
     @Override
