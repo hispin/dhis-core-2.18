@@ -30,13 +30,32 @@ package org.hisp.dhis.webapi.controller;
 
 import org.hisp.dhis.analytics.partition.PartitionManager;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dxf2.metadata.ExportService;
+import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.dxf2.metadata.Options;
+import org.hisp.dhis.dxf2.render.RenderService;
+import org.hisp.dhis.dxf2.schema.SchemaValidator;
+import org.hisp.dhis.dxf2.schema.ValidationViolation;
 import org.hisp.dhis.maintenance.MaintenanceService;
+import org.hisp.dhis.schema.Property;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -49,7 +68,7 @@ public class MaintenanceController
 
     @Autowired
     private MaintenanceService maintenanceService;
-    
+
     @Autowired
     private DataElementCategoryService categoryService;
 
@@ -57,8 +76,20 @@ public class MaintenanceController
     private HibernateCacheManager cacheManager;
 
     @Autowired
-    private PartitionManager partitionManager;    
-    
+    private PartitionManager partitionManager;
+
+    @Autowired
+    private SchemaValidator schemaValidator;
+
+    @Autowired
+    private SchemaService schemaService;
+
+    @Autowired
+    private ExportService exportService;
+
+    @Autowired
+    private RenderService renderService;
+
     @RequestMapping( value = "/periodPruning", method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void prunePeriods()
@@ -86,5 +117,48 @@ public class MaintenanceController
     {
         cacheManager.clearCache();
         partitionManager.clearCaches();
-    }    
+    }
+
+    @RequestMapping( value = "/validateMetadata", method = { RequestMethod.PUT, RequestMethod.POST } )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
+    public void runValidateMetadata( HttpServletResponse response ) throws InvocationTargetException, IllegalAccessException, IOException
+    {
+        Options options = new Options();
+        options.setAssumeTrue( true );
+
+        MetaData metaData = exportService.getMetaData( options );
+        Schema schema = schemaService.getDynamicSchema( MetaData.class );
+
+        Map<String, Map<String, List<ValidationViolation>>> output = new HashMap<>();
+
+        for ( Property property : schema.getProperties() )
+        {
+            if ( !property.isCollection() )
+            {
+                continue;
+            }
+
+            output.put( property.getName(), new HashMap<String, List<ValidationViolation>>() );
+
+            Collection<?> collection = (Collection<?>) property.getGetterMethod().invoke( metaData );
+
+            for ( Object object : collection )
+            {
+                if ( !IdentifiableObject.class.isInstance( object ) )
+                {
+                    continue;
+                }
+
+                List<ValidationViolation> validationViolations = schemaValidator.validate( object );
+
+                if ( !validationViolations.isEmpty() )
+                {
+                    output.get( property.getName() ).put( ((IdentifiableObject) object).getUid(), validationViolations );
+                }
+            }
+        }
+
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+        renderService.toJson( response.getOutputStream(), output );
+    }
 }
