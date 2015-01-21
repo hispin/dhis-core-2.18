@@ -122,48 +122,44 @@ public class DefaultDashboardService
     }
 
     @Override
-    public boolean addItemContent( String dashboardUid, String type, String contentUid )
+    public DashboardItem addItemContent( String dashboardUid, String type, String contentUid )
     {
         Dashboard dashboard = getDashboard( dashboardUid );
 
         if ( dashboard == null )
         {
-            return false;
+            return null;
         }
-
+        
+        DashboardItem item = new DashboardItem();
+        
         if ( TYPE_CHART.equals( type ) )
-        {
-            DashboardItem item = new DashboardItem();
+        {            
             item.setChart( objectManager.get( Chart.class, contentUid ) );
             dashboard.getItems().add( 0, item );
         }
         else if ( TYPE_EVENT_CHART.equals( type ) )
         {
-            DashboardItem item = new DashboardItem();
             item.setEventChart( objectManager.get( EventChart.class, contentUid ) );
             dashboard.getItems().add( 0, item );
         }
         else if ( TYPE_MAP.equals( type ) )
         {
-            DashboardItem item = new DashboardItem();
             item.setMap( objectManager.get( Map.class, contentUid ) );
             dashboard.getItems().add( 0, item );
         }
         else if ( TYPE_REPORT_TABLE.equals( type ) )
         {
-            DashboardItem item = new DashboardItem();
             item.setReportTable( objectManager.get( ReportTable.class, contentUid ) );
             dashboard.getItems().add( 0, item );
         }
         else if ( TYPE_EVENT_REPORT.equals( type ) )
         {
-            DashboardItem item = new DashboardItem();
             item.setEventReport( objectManager.get( EventReport.class, contentUid ) );
             dashboard.getItems().add( 0, item );
         }
         else if ( TYPE_MESSAGES.equals( type ) )
         {
-            DashboardItem item = new DashboardItem();
             item.setMessages( true );
             dashboard.getItems().add( 0, item );
         }
@@ -171,7 +167,7 @@ public class DefaultDashboardService
         {
             DashboardItem availableItem = dashboard.getAvailableItemByType( type );
 
-            DashboardItem item = availableItem == null ? new DashboardItem() : availableItem;
+            item = availableItem == null ? new DashboardItem() : availableItem;
 
             if ( TYPE_USERS.equals( type ) )
             {
@@ -194,12 +190,12 @@ public class DefaultDashboardService
 
         if ( dashboard.getItemCount() > Dashboard.MAX_ITEMS )
         {
-            return false;
+            return null;
         }
 
         updateDashboard( dashboard );
 
-        return true;
+        return item;
     }
 
     @Override
