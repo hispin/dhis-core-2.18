@@ -44,6 +44,7 @@ import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
+import org.hisp.dhis.schema.descriptors.DashboardItemSchemaDescriptor;
 import org.hisp.dhis.schema.descriptors.DashboardSchemaDescriptor;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
@@ -156,15 +157,15 @@ public class DashboardController
     public void postJsonItemContent( HttpServletResponse response, HttpServletRequest request,
         @PathVariable String dashboardUid, @RequestParam String type, @RequestParam( "id" ) String contentUid ) throws Exception
     {
-        boolean result = dashboardService.addItemContent( dashboardUid, type, contentUid );
+        DashboardItem item = dashboardService.addItemContent( dashboardUid, type, contentUid );
 
-        if ( !result )
+        if ( item == null )
         {
             ContextUtils.conflictResponse( response, "Max number of dashboard items reached: " + MAX_ITEMS );
         }
         else
         {
-            ContextUtils.okResponse( response, "Dashboard item added" );
+            ContextUtils.createdResponse( response, "Dashboard item added", DashboardItemSchemaDescriptor.API_ENDPOINT + "/" + item.getUid() );
         }
     }
 

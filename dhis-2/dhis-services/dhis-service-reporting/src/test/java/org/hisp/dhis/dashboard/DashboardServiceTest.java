@@ -58,11 +58,14 @@ public class DashboardServiceTest
     private DashboardItem diC;
     private DashboardItem diD;
     
+    private Chart chartA;
+    private Chart chartB;
+    
     @Override
     public void setUpTest()
     {
-        Chart chartA = new Chart( "A" );
-        Chart chartB = new Chart( "B" );
+        chartA = new Chart( "A" );
+        chartB = new Chart( "B" );
         
         chartService.addChart( chartA );
         chartService.addChart( chartB );
@@ -145,5 +148,17 @@ public class DashboardServiceTest
 
         assertNull( dashboardService.getDashboard( dAId ) );
         assertNull( dashboardService.getDashboard( dBId ) );        
+    }
+    
+    @Test
+    public void testAddItemContent()
+    {
+        dashboardService.saveDashboard( dA );
+        dashboardService.saveDashboard( dB );
+        
+        DashboardItem itemA = dashboardService.addItemContent( dA.getUid(), DashboardItem.TYPE_CHART, chartA.getUid() );
+        
+        assertNotNull( itemA );
+        assertNotNull( itemA.getUid() );
     }
 }
