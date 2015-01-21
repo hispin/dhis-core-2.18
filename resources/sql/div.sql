@@ -256,11 +256,19 @@ startdate = (startdate + interval '1 year')::date,
 enddate = (enddate + interval '1 year')::date
 where extract(year from startdate) = 2013;
 
--- (Write) Move programstageinstance to next year
+-- (Write) Move programstageinstance and programinstance to next year
 
 update programstageinstance set 
 duedate = (duedate + interval '1 year'),
 executiondate = (executiondate + interval '1 year'),
+completeddate = (completeddate + interval '1 year'),
+created = (created + interval '1 year'),
+lastupdated = (lastupdated + interval '1 year');
+
+update programinstance set
+dateofincident = (dateofincident + interval '1 year'),
+enrollmentdate = (enrollmentdate + interval '1 year'),
+enddate = (enddate + interval '1 year'),
 created = (created + interval '1 year'),
 lastupdated = (lastupdated + interval '1 year');
 
