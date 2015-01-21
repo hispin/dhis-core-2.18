@@ -3132,7 +3132,11 @@ Ext.onReady( function() {
 			init.el = config.el;
 
             if (!ns.skipFade) {
-                Ext.get(init.el).setStyle('opacity', 0);
+                var el = Ext.get(init.el);
+
+                if (el) {
+                    el.setStyle('opacity', 0);
+                }
             }
 
 			// mouse events
@@ -3144,7 +3148,7 @@ Ext.onReady( function() {
 						obj = xResponse.sortableIdObjects[i];
 						el = Ext.get(obj.uuid);
 
-                        if (el.dom) {
+                        if (el && el.dom) {
                             el.dom.layout = layout;
                             el.dom.xLayout = xLayout;
                             el.dom.response = response;
@@ -3181,11 +3185,19 @@ Ext.onReady( function() {
 			};
 
 			web.events.onColumnHeaderMouseOver = function(el) {
-				Ext.get(el).addCls('pointer highlighted');
+                var div = Ext.get(el);
+
+                if (div) {
+                    div.addCls('pointer highlighted');
+                }
 			};
 
 			web.events.onColumnHeaderMouseOut = function(el) {
-				Ext.get(el).removeCls('pointer highlighted');
+                var div = Ext.get(el);
+
+                if (div) {
+                    div.removeCls('pointer highlighted');
+                }
 			};
 
 			// pivot
@@ -3337,8 +3349,10 @@ Ext.onReady( function() {
                 // fade
                 if (!ns.skipFade) {
                     Ext.defer(function() {
-                        if (ns.core.init.el && Ext.get(ns.core.init.el)) {
-                            Ext.get(ns.core.init.el).fadeIn({
+                        var el = Ext.get(init.el);
+
+                        if (el) {
+                            el.fadeIn({
                                 duration: 400
                             });
                         }
@@ -3410,6 +3424,8 @@ Ext.onReady( function() {
 		};
 
 		initialize = function() {
+            var el = Ext.get(config.el);
+
 			if (!validateConfig(config)) {
 				return;
 			}
@@ -3426,8 +3442,12 @@ Ext.onReady( function() {
 
             // alert
             init.alert = function(text) {
-                Ext.get(config.el).setStyle('opacity', 1);
-                Ext.get(config.el).update('<div class="ns-plugin-alert">' + text + '</div>');
+                var div = Ext.get(config.el);
+
+                if (div) {
+                    div.setStyle('opacity', 1);
+                    div.update('<div class="ns-plugin-alert">' + text + '</div>');
+                }
             };
 
             // init
@@ -3437,9 +3457,11 @@ Ext.onReady( function() {
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
 
-            Ext.get(config.el).setViewportWidth = function(width) {
-                ns.app.centerRegion.setWidth(width);
-            };
+            if (el) {
+                el.setViewportWidth = function(width) {
+                    ns.app.centerRegion.setWidth(width);
+                };
+            }
 
 			if (config && config.id) {
 				ns.core.web.pivot.loadTable(config);

@@ -7172,6 +7172,8 @@ Ext.onReady(function () {
         };
 
         initialize = function () {
+            var el = Ext.get(config.el);
+
             if (!validateConfig()) {
                 return;
             }
@@ -7260,14 +7262,16 @@ Ext.onReady(function () {
             gis.viewport = createViewport();
 
             // dashboard element
-            Ext.get(config.el).setViewportWidth = function(width) {
-                gis.viewport.setWidth(width);
-                gis.viewport.centerRegion.setWidth(width);
+            if (el) {
+                el.setViewportWidth = function(width) {
+                    gis.viewport.setWidth(width);
+                    gis.viewport.centerRegion.setWidth(width);
 
-                if (gis.viewport.northRegion) {
-                    gis.viewport.northRegion.setWidth(width);
-                }
-            };
+                    if (gis.viewport.northRegion) {
+                        gis.viewport.northRegion.setWidth(width);
+                    }
+                };
+            }
 
             gis.olmap.mask = Ext.create('Ext.LoadMask', gis.viewport.centerRegion.getEl(), {
                 msg: 'Loading'
