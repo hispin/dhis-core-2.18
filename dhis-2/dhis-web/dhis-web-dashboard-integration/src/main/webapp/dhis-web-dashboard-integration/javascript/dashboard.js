@@ -530,149 +530,8 @@ dhis2.db.renderDashboard = function( id )
 				else if ( dhis2.db.shapeDoubleWidth == dashboardItem.shape ) {
 					width = dhis2.db.widthDouble;
 				}
-
-				var style = "width:" + width + "px";
-
-				if ( "chart" == dashboardItem.type )
-				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": dashboardItem.id, "id": dashboardItem.chart.id, "name": dashboardItem.chart.name, "style": style,
-					"i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image, "i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } ) );
-
-				    DHIS.getChart({
-                        url: '..',
-                        el: 'plugin-' + dashboardItem.id,
-                        id: dashboardItem.chart.id,
-                        width: width,
-                        height: dhis2.db.itemContentHeight,
-                        dashboard: true,
-                        crossDomain: false,
-                        skipMask: true,
-                        domainAxisStyle: {
-                            labelRotation: 45,
-                            labelFont: '10px sans-serif',
-                            labelColor: '#111'
-                        },
-                        rangeAxisStyle: {
-                            labelFont: '9px sans-serif'
-                        },
-                        legendStyle: {
-                            //labelMaxLength: 10,
-                            labelFont: 'normal 10px sans-serif',
-                            labelColor: '#222',
-                            labelMarkerSize: 10,
-                            titleFont: 'bold 12px sans-serif',
-                            titleColor: '#333'
-                        },
-                        seriesStyle: {
-                            labelColor: '#333',
-                            labelFont: '9px sans-serif'
-                        }
-				    });
-				}
-				else if ( "eventChart" == dashboardItem.type )
-				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.eventChartItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventChart.id,
-				    	"name": dashboardItem.eventChart.name, "style": style, "i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image,
-				    	"i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position, "i18n_explore": i18n_explore } ) );
-
-				    DHIS.getEventChart({
-                        url: '..',
-                        el: 'plugin-' + dashboardItem.id,
-                        id: dashboardItem.eventChart.id,
-                        width: width,
-                        height: dhis2.db.itemContentHeight,
-                        dashboard: true,
-                        crossDomain: false,
-                        skipMask: true,
-                        domainAxisStyle: {
-                            labelRotation: 45,
-                            labelFont: '10px sans-serif',
-                            labelColor: '#111'
-                        },
-                        rangeAxisStyle: {
-                            labelFont: '9px sans-serif'
-                        },
-                        legendStyle: {
-                            labelMaxLength: 10,
-                            labelFont: 'normal 10px sans-serif',
-                            labelColor: '#222',
-                            labelMarkerSize: 10,
-                            titleFont: 'bold 12px sans-serif',
-                            titleColor: '#333'
-                        },
-                        seriesStyle: {
-                            labelColor: '#333',
-                            labelFont: '9px sans-serif'
-                        }
-				    });
-				}
-				else if ( "map" == dashboardItem.type )
-				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": dashboardItem.id, "id": dashboardItem.map.id, "name": dashboardItem.map.name, "style": style, "height": dhis2.db.itemContentHeight,
-					"i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image, "i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } ) );
-
-				    DHIS.getMap({
-                        url: '..',
-                        el: 'plugin-' + dashboardItem.id,
-                        id: dashboardItem.map.id,
-                        hideLegend: true,
-                        dashboard: true,
-                        crossDomain: false,
-                        skipMask: true
-				    });
-				}
-				else if ( "reportTable" == dashboardItem.type )
-				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": dashboardItem.id, "id": dashboardItem.reportTable.id, "name": dashboardItem.reportTable.name, "style": style,
-					"i18n_remove": i18n_remove, "i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } ) );
-
-				    DHIS.getTable({
-                        url: '..',
-                        el: 'plugin-' + dashboardItem.id,
-                        id: dashboardItem.reportTable.id,
-                        dashboard: true,
-                        crossDomain: false,
-                        skipMask: true,
-                        displayDensity: 'compact',
-                        fontSize: 'small'
-				    });
-				}
-				else if ( "eventReport" == dashboardItem.type )
-				{
-				    $d.append( $.tmpl( dhis2.db.tmpl.eventReportItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventReport.id, "name": dashboardItem.eventReport.name, "style": style,
-					"i18n_remove": i18n_remove, "i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } ) );
-
-				    DHIS.getEventReport({
-                        url: '..',
-                        el: 'plugin-' + dashboardItem.id,
-                        id: dashboardItem.eventReport.id,
-                        dashboard: true,
-                        crossDomain: false,
-                        skipMask: true,
-                        displayDensity: 'compact',
-                        fontSize: 'small'
-				    });
-				}
-				else if ( "users" == dashboardItem.type )
-				{
-				    dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.users, "Users", "../dhis-web-dashboard-integration/profile.action?id=", "" );
-				}
-				else if ( "reportTables" == dashboardItem.type )
-				{
-				    dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.reportTables, "Pivot tables", "../dhis-web-pivot/index.html?id=", "" );
-				}
-				else if ( "reports" == dashboardItem.type )
-				{
-				    dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.reports, "Reports", "../dhis-web-reporting/getReportParams.action?mode=report&uid=", "" );
-				}
-				else if ( "resources" == dashboardItem.type )
-				{
-				    dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.resources, "Resources", "../api/documents/", "/data" );
-				}
-				else if ( "messages" == dashboardItem.type )
-				{
-				    dhis2.db.renderMessagesItem( $d, dashboardItem.id );
-				}
+				
+				dhis2.db.renderItems( $d, dashboardItem, width, false );
 		    } );
 
 		    dhis2.db.renderLastDropItem( $d );
@@ -694,6 +553,162 @@ dhis2.db.linkItemHeaderHtml = function( itemId, title )
 		"<ul id='ul-" + itemId + "' class='itemList'><li class='itemTitle' title='" + i18n_drag_to_new_position + "'>" + title + "</li>";
 
 	return html;
+}
+
+dhis2.db.renderItems = function( $d, dashboardItem, width, prepend )
+{
+	width = width || dhis2.db.widthNormal;
+	prepend = prepend || false;
+	
+	var style = "width:" + width + "px";
+
+	if ( "chart" == dashboardItem.type )
+	{
+	    var content = $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": dashboardItem.id, "id": dashboardItem.chart.id, "name": dashboardItem.chart.name, "style": style,
+	    	"i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image, "i18n_share": i18n_share_interpretation, 
+	    	"i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } );
+	    dhis2.db.preOrAppend( $d, content, prepend );
+		
+	    DHIS.getChart({
+            url: '..',
+            el: 'plugin-' + dashboardItem.id,
+            id: dashboardItem.chart.id,
+            width: width,
+            height: dhis2.db.itemContentHeight,
+            dashboard: true,
+            crossDomain: false,
+            skipMask: true,
+            domainAxisStyle: {
+                labelRotation: 45,
+                labelFont: '10px sans-serif',
+                labelColor: '#111'
+            },
+            rangeAxisStyle: {
+                labelFont: '9px sans-serif'
+            },
+            legendStyle: {
+                //labelMaxLength: 10,
+                labelFont: 'normal 10px sans-serif',
+                labelColor: '#222',
+                labelMarkerSize: 10,
+                titleFont: 'bold 12px sans-serif',
+                titleColor: '#333'
+            },
+            seriesStyle: {
+                labelColor: '#333',
+                labelFont: '9px sans-serif'
+            }
+	    });
+	}
+	else if ( "eventChart" == dashboardItem.type )
+	{
+		var content = $.tmpl( dhis2.db.tmpl.eventChartItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventChart.id,
+	    	"name": dashboardItem.eventChart.name, "style": style, "i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image,
+	    	"i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position, "i18n_explore": i18n_explore } );
+		dhis2.db.preOrAppend( $d, content, prepend );
+
+	    DHIS.getEventChart({
+            url: '..',
+            el: 'plugin-' + dashboardItem.id,
+            id: dashboardItem.eventChart.id,
+            width: width,
+            height: dhis2.db.itemContentHeight,
+            dashboard: true,
+            crossDomain: false,
+            skipMask: true,
+            domainAxisStyle: {
+                labelRotation: 45,
+                labelFont: '10px sans-serif',
+                labelColor: '#111'
+            },
+            rangeAxisStyle: {
+                labelFont: '9px sans-serif'
+            },
+            legendStyle: {
+                labelMaxLength: 10,
+                labelFont: 'normal 10px sans-serif',
+                labelColor: '#222',
+                labelMarkerSize: 10,
+                titleFont: 'bold 12px sans-serif',
+                titleColor: '#333'
+            },
+            seriesStyle: {
+                labelColor: '#333',
+                labelFont: '9px sans-serif'
+            }
+	    });
+	}
+	else if ( "map" == dashboardItem.type )
+	{
+		var content = $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": dashboardItem.id, "id": dashboardItem.map.id, "name": dashboardItem.map.name, 
+			"style": style, "height": dhis2.db.itemContentHeight, "i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image, 
+			"i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } );
+		dhis2.db.preOrAppend( $d, content, prepend );
+
+	    DHIS.getMap({
+            url: '..',
+            el: 'plugin-' + dashboardItem.id,
+            id: dashboardItem.map.id,
+            hideLegend: true,
+            dashboard: true,
+            crossDomain: false,
+            skipMask: true
+	    });
+	}
+	else if ( "reportTable" == dashboardItem.type )
+	{
+		var content = $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": dashboardItem.id, "id": dashboardItem.reportTable.id, "name": dashboardItem.reportTable.name, "style": style,
+			"i18n_remove": i18n_remove, "i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } );
+		dhis2.db.preOrAppend( $d, content, prepend );
+
+	    DHIS.getTable({
+            url: '..',
+            el: 'plugin-' + dashboardItem.id,
+            id: dashboardItem.reportTable.id,
+            dashboard: true,
+            crossDomain: false,
+            skipMask: true,
+            displayDensity: 'compact',
+            fontSize: 'small'
+	    });
+	}
+	else if ( "eventReport" == dashboardItem.type )
+	{
+		var content = $.tmpl( dhis2.db.tmpl.eventReportItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventReport.id, "name": dashboardItem.eventReport.name, "style": style,
+			"i18n_remove": i18n_remove, "i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } );
+		dhis2.db.preOrAppend( $d, content, prepend );
+
+	    DHIS.getEventReport({
+            url: '..',
+            el: 'plugin-' + dashboardItem.id,
+            id: dashboardItem.eventReport.id,
+            dashboard: true,
+            crossDomain: false,
+            skipMask: true,
+            displayDensity: 'compact',
+            fontSize: 'small'
+	    });
+	}
+	else if ( "users" == dashboardItem.type )
+	{
+	    dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.users, "Users", "../dhis-web-dashboard-integration/profile.action?id=", "" );
+	}
+	else if ( "reportTables" == dashboardItem.type )
+	{
+	    dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.reportTables, "Pivot tables", "../dhis-web-pivot/index.html?id=", "" );
+	}
+	else if ( "reports" == dashboardItem.type )
+	{
+	    dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.reports, "Reports", "../dhis-web-reporting/getReportParams.action?mode=report&uid=", "" );
+	}
+	else if ( "resources" == dashboardItem.type )
+	{
+	    dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.resources, "Resources", "../api/documents/", "/data" );
+	}
+	else if ( "messages" == dashboardItem.type )
+	{
+	    dhis2.db.renderMessagesItem( $d, dashboardItem.id );
+	}
 }
 
 dhis2.db.renderMessagesItem = function( $d, itemId )
@@ -852,6 +867,25 @@ dhis2.db.renderReportTable = function( tableId, itemId )
 	$.get( "../api/reportTables/" + tableId + "/data.html", function( data ) {
 		$( "#pivot-" + itemId ).html( data );
 	} );
+}
+
+/**
+ * Prepends or appends the given content to the given jQuery element.
+ * 
+ * @param $el the jQuery element.
+ * @param content the content.
+ * @param prepend indicates whether to prepend or append.
+ */
+dhis2.db.preOrAppend = function( $el, content, prepend )
+{
+	if ( prepend && prepend == true )
+	{
+		$el.prepend( content );
+	}
+	else
+	{
+		$el.append( content );
+	}
 }
 
 //------------------------------------------------------------------------------
