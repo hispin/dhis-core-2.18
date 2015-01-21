@@ -2984,7 +2984,7 @@ Ext.onReady(function () {
                 alert(GIS.i18n.coordinates_could_not_be_loaded);
             };
 
-            if (GIS.plugin && !GIS.app) {
+            if (isJsonp) {
                 Ext.data.JsonP.request({
                     url: url,
                     disableCaching: false,
@@ -3018,7 +3018,7 @@ Ext.onReady(function () {
         };
 
         loadLegend = function (view) {
-            isJsonp = gis.plugin && gis.crossDomain,
+            var isJsonp = gis.plugin && gis.crossDomain,
                 type = isJsonp ? 'jsonp' : 'json',
                 url = gis.init.contextPath + '/api/organisationUnitGroupSets/' + view.organisationUnitGroupSet.id + '.' + type + '?fields=organisationUnitGroups[id,name,symbol]',
                 success;
@@ -5834,6 +5834,8 @@ Ext.onReady(function () {
                 if (this.layer.legendPanel) {
                     this.layer.legendPanel.update(element.outerHTML);
                 }
+
+                return element;
             },
 
             CLASS_NAME: "mapfish.GeoStat.Facility"
@@ -6929,6 +6931,7 @@ Ext.onReady(function () {
 
     execute = function (config) {
         var validateConfig,
+            extendInstance,
             createViewport,
             afterRender,
             initialize,
@@ -6957,6 +6960,39 @@ Ext.onReady(function () {
             }
 
             return true;
+        };
+
+        extendInstance = function(gis) {
+            var init = gis.init,
+				api = gis.api,
+                conf = gis.conf,
+                store = gis.store,
+				support = gis.support,
+				service = gis.service,
+				web = gis.web,
+                type = gis.plugin && gis.crossDomain ? 'jsonp' : 'json',
+                headerMap = {
+                    json: 'application/json',
+                    jsonp: 'application/javascript'
+                },
+                headers = {
+                    'Content-Type': headerMap[type],
+                    'Accepts': headerMap[type]
+                };
+
+            init.el = config.el;
+
+            gis.el = config.el;
+            gis.plugin = init.plugin;
+            gis.dashboard = init.dashboard;
+            gis.crossDomain = init.crossDomain;
+            gis.skipMask = init.skipMask;
+            gis.skipFade = init.skipFade;
+
+            // store
+            store.groupsByGroupSet = Ext.create('Ext.data.Store', {
+				fields: ['id', 'name', 'symbol'],
+			});
         };
 
         createViewport = function () {
@@ -7158,6 +7194,7 @@ Ext.onReady(function () {
             //};
 
             gis = GIS.core.getInstance(init);
+            extendInstance(gis);
 
             // google maps
             var gm_fn = function() {
@@ -7211,14 +7248,6 @@ Ext.onReady(function () {
                     });
                 }
             }
-
-            // extend
-            gis.el = config.el;
-            gis.plugin = init.plugin;
-            gis.dashboard = init.dashboard;
-            gis.crossDomain = init.crossDomain;
-            gis.skipMask = init.skipMask;
-            gis.skipFade = init.skipFade;
 
             GIS.core.createSelectHandlers(gis, gis.layer.boundary);
             GIS.core.createSelectHandlers(gis, gis.layer.thematic1);

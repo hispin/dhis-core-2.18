@@ -3106,7 +3106,7 @@ Ext.onReady( function() {
 			return true;
 		};
 
-        extendInstance = function(pt) {
+        extendInstance = function(ns) {
             var init = ns.core.init,
 				api = ns.core.api,
                 conf = ns.core.conf,
