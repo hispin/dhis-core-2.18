@@ -554,7 +554,7 @@ dhis2.db.renderDashboard = function( id )
 				else if ( dhis2.db.shapeDoubleWidth == dashboardItem.shape ) {
 					width = dhis2.db.widthDouble;
 				}
-				
+
 				dhis2.db.renderItems( $d, dashboardItem, width, false );
 		    } );
 
@@ -583,16 +583,16 @@ dhis2.db.renderItems = function( $d, dashboardItem, width, prepend )
 {
 	width = width || dhis2.db.widthNormal;
 	prepend = prepend || false;
-	
+
 	var style = "width:" + width + "px";
 
 	if ( "chart" == dashboardItem.type )
 	{
 	    var content = $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": dashboardItem.id, "id": dashboardItem.chart.id, "name": dashboardItem.chart.name, "style": style,
-	    	"i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image, "i18n_share": i18n_share_interpretation, 
+	    	"i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image, "i18n_share": i18n_share_interpretation,
 	    	"i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } );
 	    dhis2.db.preOrAppend( $d, content, prepend );
-		
+
 	    DHIS.getChart({
             url: '..',
             el: 'plugin-' + dashboardItem.id,
@@ -664,8 +664,8 @@ dhis2.db.renderItems = function( $d, dashboardItem, width, prepend )
 	}
 	else if ( "map" == dashboardItem.type )
 	{
-		var content = $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": dashboardItem.id, "id": dashboardItem.map.id, "name": dashboardItem.map.name, 
-			"style": style, "height": dhis2.db.itemContentHeight, "i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image, 
+		var content = $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": dashboardItem.id, "id": dashboardItem.map.id, "name": dashboardItem.map.name,
+			"style": style, "height": dhis2.db.itemContentHeight, "i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image,
 			"i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } );
 		dhis2.db.preOrAppend( $d, content, prepend );
 
@@ -818,9 +818,9 @@ dhis2.db.addItemContent = function( type, id )
 	    		id: id
 	    	},
 	    	success: function( data, textStatus, xhr ) {
-	    		
+
 	    		var location = xhr.getResponseHeader( "Location" );
-	    		
+
 	    		if ( location ) {
 		    		$.getJSON( "../api" + location, function( item ) {
 		    			if ( item && $.inArray( item.type, dhis2.db.visualItemTypes ) != -1 ) {
@@ -913,7 +913,7 @@ dhis2.db.renderReportTable = function( tableId, itemId )
 
 /**
  * Prepends or appends the given content to the given jQuery element.
- * 
+ *
  * @param $el the jQuery element.
  * @param content the content.
  * @param prepend indicates whether to prepend or append.

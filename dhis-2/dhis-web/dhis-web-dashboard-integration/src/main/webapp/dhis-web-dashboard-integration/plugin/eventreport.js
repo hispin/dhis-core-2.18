@@ -3425,7 +3425,8 @@ Ext.onReady( function() {
                 headers = {
                     'Content-Type': headerMap[type],
                     'Accepts': headerMap[type]
-                };
+                },
+                el = Ext.get(init.el);
 
             ns.plugin = init.plugin;
             ns.dashboard = init.dashboard;
@@ -3435,10 +3436,8 @@ Ext.onReady( function() {
 
 			init.el = config.el;
 
-            if (!ns.skipFade) {
-                if (init.el && Ext.get(init.el)) {
-                    Ext.get(init.el).setStyle('opacity', 0);
-                }
+            if (!ns.skipFade && el) {
+                el.setStyle('opacity', 0);
             }
 
 			// mouse events
@@ -3450,7 +3449,7 @@ Ext.onReady( function() {
 						obj = xResponse.sortableIdObjects[i];
 						el = Ext.get(obj.uuid);
 
-                        if (el.dom) {
+                        if (el && el.dom) {
                             el.dom.layout = layout;
                             el.dom.response = response;
                             el.dom.xResponse = xResponse;
@@ -3464,7 +3463,7 @@ Ext.onReady( function() {
                             el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
                         }
                         else {
-                            console.log('No element.dom, setColumnHeaderMouseHandlers, ' + init.el);
+                            console.log('No column header element, setColumnHeaderMouseHandlers, ' + init.el);
                         }
 					}
 				}
@@ -3490,11 +3489,19 @@ Ext.onReady( function() {
 			};
 
 			web.events.onColumnHeaderMouseOver = function(el) {
-				Ext.get(el).addCls('pointer highlighted');
+                var div = Ext.get(el);
+
+                if (div) {
+                    div.addCls('pointer highlighted');
+                }
 			};
 
 			web.events.onColumnHeaderMouseOut = function(el) {
-				Ext.get(el).removeCls('pointer highlighted');
+                var div = Ext.get(el);
+
+                if (div) {
+                    div.removeCls('pointer highlighted');
+                }
 			};
 
 			// report
@@ -3699,8 +3706,10 @@ Ext.onReady( function() {
                         // fade
                         if (!ns.skipFade) {
                             Ext.defer( function() {
-                                if (init.el && Ext.get(init.el)) {
-                                    Ext.get(init.el).fadeIn({
+                                var el = Ext.get(init.el);
+
+                                if (el) {
+                                    el.fadeIn({
                                         duration: 400
                                     });
                                 }
@@ -3776,8 +3785,10 @@ Ext.onReady( function() {
                         ns.app.centerRegion.update(getTitleHtml(layout.name) + table.html);
 
                         Ext.defer( function() {
-                            if (init.el && Ext.get(init.el)) {
-                                Ext.get(init.el).fadeIn({
+                            var el = Ext.get(init.el);
+
+                            if (el) {
+                                el.fadeIn({
                                     duration: 400
                                 });
                             }
@@ -3848,6 +3859,8 @@ Ext.onReady( function() {
 		};
 
 		initialize = function() {
+            var el = Ext.get(config.el);
+
 			if (!validateConfig(config)) {
 				return;
 			}
@@ -3864,8 +3877,12 @@ Ext.onReady( function() {
 
             // alert
             init.alert = function(text) {
-                Ext.get(config.el).setStyle('opacity', 1);
-                Ext.get(config.el).update('<div class="ns-plugin-alert">' + text + '</div>');
+                var div = Ext.get(config.el);
+
+                if (div) {
+                    div.setStyle('opacity', 1);
+                    div.update('<div class="ns-plugin-alert">' + text + '</div>');
+                }
             };
 
             // init
@@ -3875,9 +3892,11 @@ Ext.onReady( function() {
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
 
-            Ext.get(config.el).setViewportWidth = function(width) {
-                ns.app.centerRegion.setWidth(width);
-            };
+            if (el) {
+                el.setViewportWidth = function(width) {
+                    ns.app.centerRegion.setWidth(width);
+                };
+            }
 
 			if (config && config.id) {
 				ns.core.web.report.loadReport(config);

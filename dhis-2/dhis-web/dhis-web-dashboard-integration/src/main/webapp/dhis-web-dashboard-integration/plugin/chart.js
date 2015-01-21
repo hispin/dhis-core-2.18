@@ -3954,7 +3954,8 @@ Ext.onReady(function() {
                 headers = {
                     'Content-Type': headerMap[type],
                     'Accepts': headerMap[type]
-                };
+                },
+                el = Ext.get(init.el);
 
             ns.plugin = init.plugin;
             ns.dashboard = init.dashboard;
@@ -3964,8 +3965,8 @@ Ext.onReady(function() {
 
 			init.el = config.el;
 
-            if (!ns.skipFade && init.el && Ext.get(init.el)) {
-                Ext.get(init.el).setStyle('opacity', 0);
+            if (!ns.skipFade && el) {
+                el.setStyle('opacity', 0);
             }
 
 			web.chart = web.chart || {};
@@ -4085,8 +4086,10 @@ Ext.onReady(function() {
                     if (!ns.skipFade) {
                         ns.app.chart.on('afterrender', function() {
                             Ext.defer( function() {
-                                if (ns.core.init.el && Ext.get(ns.core.init.el)) {
-                                    Ext.get(ns.core.init.el).fadeIn({
+                                var el = Ext.get(init.el);
+
+                                if (el) {
+                                    el.fadeIn({
                                         duration: 400
                                     });
                                 }
@@ -4149,7 +4152,7 @@ Ext.onReady(function() {
                 width,
                 height;
 
-            if (!ns.skipFade && el && Ext.get(el)) {
+            if (!ns.skipFade && el) {
 				var elBorderW = parseInt(el.getStyle('border-left-width')) + parseInt(el.getStyle('border-right-width')),
                     elBorderH = parseInt(el.getStyle('border-top-width')) + parseInt(el.getStyle('border-bottom-width')),
                     elPaddingW = parseInt(el.getStyle('padding-left')) + parseInt(el.getStyle('padding-right')),
@@ -4173,6 +4176,8 @@ Ext.onReady(function() {
 		};
 
 		initialize = function() {
+            var el = Ext.get(config.el);
+
 			if (!validateConfig(config)) {
 				return;
 			}
@@ -4189,8 +4194,12 @@ Ext.onReady(function() {
 
             // alert
             init.alert = function(text) {
-                Ext.get(config.el).setStyle('opacity', 1);
-                Ext.get(config.el).update('<div class="ns-plugin-alert">' + text + '</div>');
+                var div = Ext.get(config.el);
+
+                if (div) {
+                    div.setStyle('opacity', 1);
+                    div.update('<div class="ns-plugin-alert">' + text + '</div>');
+                }
             };
 
             // init
@@ -4200,9 +4209,11 @@ Ext.onReady(function() {
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
 
-            Ext.get(config.el).setViewportWidth = function(width) {
-                ns.app.centerRegion.setWidth(width);
-            };
+            if (el) {
+                el.setViewportWidth = function(width) {
+                    ns.app.centerRegion.setWidth(width);
+                };
+            }
 
 			if (config && config.id) {
 				ns.core.web.chart.loadChart(config);
