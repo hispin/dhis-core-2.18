@@ -2619,7 +2619,7 @@ Ext.onReady(function () {
         return loader;
     };
 
-    GIS.core.LayerLoaderEvent = function (gis, layer) {
+    GIS.core.LayerLoaderEvent = function(gis, layer) {
         var olmap = layer.map,
             compareView,
             loadOrganisationUnits,
@@ -2853,7 +2853,7 @@ Ext.onReady(function () {
         return loader;
     };
 
-    GIS.core.LayerLoaderFacility = function (gis, layer) {
+    GIS.core.LayerLoaderFacility = function(gis, layer) {
         var olmap = layer.map,
             compareView,
             loadOrganisationUnits,
@@ -2863,7 +2863,7 @@ Ext.onReady(function () {
             afterLoad,
             loader;
 
-        compareView = function (view, doExecute) {
+        compareView = function(view, doExecute) {
             var src = layer.core.view,
                 viewIds,
                 viewDim,
@@ -2933,7 +2933,7 @@ Ext.onReady(function () {
             //gis.olmap.mask.hide();
         };
 
-        loadOrganisationUnits = function (view) {
+        loadOrganisationUnits = function(view) {
             var items = view.rows[0].items,
                 isJsonp = gis.plugin && gis.crossDomain,
                 url = function () {
@@ -3003,7 +3003,7 @@ Ext.onReady(function () {
             }
         };
 
-        loadData = function (view, features) {
+        loadData = function(view, features) {
             view = view || layer.core.view;
             features = features || layer.core.featureStore.features;
 
@@ -3017,7 +3017,7 @@ Ext.onReady(function () {
             loadLegend(view);
         };
 
-        loadLegend = function (view) {
+        loadLegend = function(view) {
             var isJsonp = gis.plugin && gis.crossDomain,
                 type = isJsonp ? 'jsonp' : 'json',
                 url = gis.init.contextPath + '/api/organisationUnitGroupSets/' + view.organisationUnitGroupSet.id + '.' + type + '?fields=organisationUnitGroups[id,name,symbol]',
@@ -3071,7 +3071,7 @@ Ext.onReady(function () {
             }
         };
 
-        addCircles = function (view) {
+        addCircles = function(view) {
             var radius = view.areaRadius;
 
             if (layer.circleLayer) {
@@ -3079,12 +3079,12 @@ Ext.onReady(function () {
                 layer.circleLayer = null;
             }
             if (Ext.isDefined(radius) && radius) {
-                layer.circleLayer = GIS.app.CircleLayer(layer.features, radius);
+                layer.circleLayer = GIS.core.CircleLayer(gis, layer.features, radius);
                 nissa = layer.circleLayer;
             }
         };
 
-        afterLoad = function (view) {
+        afterLoad = function(view) {
 
             // Legend
             gis.viewport.eastRegion.doLayout();
@@ -3153,7 +3153,7 @@ Ext.onReady(function () {
         return loader;
     };
 
-    GIS.core.LayerLoaderBoundary = function (gis, layer) {
+    GIS.core.LayerLoaderBoundary = function(gis, layer) {
         var olmap = layer.map,
             compareView,
             loadOrganisationUnits,
@@ -3426,7 +3426,7 @@ Ext.onReady(function () {
         return loader;
     };
 
-    GIS.core.LayerLoaderThematic = function (gis, layer) {
+    GIS.core.LayerLoaderThematic = function(gis, layer) {
         var olmap = layer.map,
             compareView,
             loadOrganisationUnits,
@@ -3966,6 +3966,49 @@ Ext.onReady(function () {
         return loader;
     };
 
+	GIS.core.CircleLayer = function(gis, features, radius) {
+		var points = gis.util.map.getPointsByFeatures(features),
+			lonLats = gis.util.map.getLonLatsByPoints(points),
+			controls = [],
+			control,
+			layer = new OpenLayers.Layer.Vector(),
+			deactivateControls,
+			createCircles,
+			params = {};
+
+		radius = radius && Ext.isNumber(parseInt(radius)) ? parseInt(radius) : 5;
+
+		deactivateControls = function() {
+			for (var i = 0; i < controls.length; i++) {
+				controls[i].deactivate();
+			}
+		};
+
+		createCircles = function() {
+			if (lonLats.length) {
+				for (var i = 0; i < lonLats.length; i++) {
+					control = new OpenLayers.Control.Circle({
+						layer: layer
+					});
+					control.lonLat = lonLats[i];
+					controls.push(control);
+				}
+
+				gis.olmap.addControls(controls);
+
+				for (var i = 0; i < controls.length; i++) {
+					control = controls[i];
+					control.activate();
+					control.updateCircle(control.lonLat, radius);
+				}
+			}
+		}();
+
+		layer.deactivateControls = deactivateControls;
+
+		return layer;
+	};
+
     GIS.core.getInstance = function(init) {
         var conf = {},
             util = {},
@@ -4349,6 +4392,28 @@ Ext.onReady(function () {
                 }
                 return features;
             };
+
+			util.map.getPointsByFeatures = function(features) {
+				var a = [];
+				for (var i = 0; i < features.length; i++) {
+					if (features[i].geometry.CLASS_NAME === gis.conf.finals.openLayers.point_classname) {
+						a.push(features[i]);
+					}
+				}
+				return a;
+			};
+
+			util.map.getLonLatsByPoints = function(points) {
+				var lonLat,
+					point,
+					a = [];
+				for (var i = 0; i < points.length; i++) {
+					point = points[i];
+					lonLat = new OpenLayers.LonLat(point.geometry.x, point.geometry.y);
+					a.push(lonLat);
+				}
+				return a;
+			};
 
             util.geojson = {};
 

@@ -1683,7 +1683,7 @@ Ext.onReady( function() {
 				layer.circleLayer = null;
 			}
 			if (Ext.isDefined(radius) && radius) {
-				layer.circleLayer = GIS.app.CircleLayer(layer.features, radius);
+				layer.circleLayer = GIS.core.CircleLayer(gis, layer.features, radius);
 				nissa = layer.circleLayer;
 			}
 		};
@@ -2543,6 +2543,49 @@ Ext.onReady( function() {
 		return loader;
 	};
 
+	GIS.core.CircleLayer = function(gis, features, radius) {
+		var points = gis.util.map.getPointsByFeatures(features),
+			lonLats = gis.util.map.getLonLatsByPoints(points),
+			controls = [],
+			control,
+			layer = new OpenLayers.Layer.Vector(),
+			deactivateControls,
+			createCircles,
+			params = {};
+
+		radius = radius && Ext.isNumber(parseInt(radius)) ? parseInt(radius) : 5;
+
+		deactivateControls = function() {
+			for (var i = 0; i < controls.length; i++) {
+				controls[i].deactivate();
+			}
+		};
+
+		createCircles = function() {
+			if (lonLats.length) {
+				for (var i = 0; i < lonLats.length; i++) {
+					control = new OpenLayers.Control.Circle({
+						layer: layer
+					});
+					control.lonLat = lonLats[i];
+					controls.push(control);
+				}
+
+				gis.olmap.addControls(controls);
+
+				for (var i = 0; i < controls.length; i++) {
+					control = controls[i];
+					control.activate();
+					control.updateCircle(control.lonLat, radius);
+				}
+			}
+		}();
+
+		layer.deactivateControls = deactivateControls;
+
+		return layer;
+	};
+
 	GIS.core.getInstance = function(init) {
 		var conf = {},
 			util = {},
@@ -2834,6 +2877,28 @@ Ext.onReady( function() {
 					features[i].geometry.transform(sourceProjection, destinationProjection);
 				}
 				return features;
+			};
+
+			util.map.getPointsByFeatures = function(features) {
+				var a = [];
+				for (var i = 0; i < features.length; i++) {
+					if (features[i].geometry.CLASS_NAME === gis.conf.finals.openLayers.point_classname) {
+						a.push(features[i]);
+					}
+				}
+				return a;
+			};
+
+			util.map.getLonLatsByPoints = function(points) {
+				var lonLat,
+					point,
+					a = [];
+				for (var i = 0; i < points.length; i++) {
+					point = points[i];
+					lonLat = new OpenLayers.LonLat(point.geometry.x, point.geometry.y);
+					a.push(lonLat);
+				}
+				return a;
 			};
 
 			util.geojson = {};
