@@ -136,7 +136,7 @@ dhis2.db.tmpl = {
         "</div></li>"
 };
 
-dhis2.db.dashboardReady = function( id )
+dhis2.db.dashboardReady = function()
 {
 	$( ".item" ).draggable( {
 	    containment: "#contentDiv",
@@ -161,6 +161,28 @@ dhis2.db.dashboardReady = function( id )
 		accept: ".item",
 		over: dhis2.db.lastDropOver,
 		out: dhis2.db.lastDropOut
+	} );
+}
+
+dhis2.db.addDragDrop = function( id )
+{
+	$( "#" + id ).draggable( {
+	    containment: "#contentDiv",
+	    helper: "clone",
+	    stack: ".item",
+	    revert: "invalid",
+	    start: dhis2.db.dragStart,
+	    stop: dhis2.db.dragStop
+	} );
+
+	$( "#" + id ).droppable( {
+		accept: ".item",
+		over: dhis2.db.dropOver
+	} );
+
+	$( "#drop-" + id ).droppable( {
+		accept: ".item",
+		drop: dhis2.db.dropItem
 	} );
 }
 
@@ -543,7 +565,7 @@ dhis2.db.renderDashboard = function( id )
 		    $d.append( $.tmpl( dhis2.db.tmpl.dashboardIntro, { "i18n_add": i18n_add_stuff_by_searching, "i18n_arrange": i18n_arrange_dashboard_by_dragging_and_dropping } ) );
 		}
 
-		dhis2.db.dashboardReady( id );
+		dhis2.db.dashboardReady();
     } );
 }
 
@@ -804,6 +826,7 @@ dhis2.db.addItemContent = function( type, id )
 		    			if ( item && $.inArray( item.type, dhis2.db.visualItemTypes ) != -1 ) {
 		    				$d = $( "#contentList" );
 		    				dhis2.db.renderItems( $d, item, undefined, true );
+		    				dhis2.db.addDragDrop( item.id );
 		    			}
 		    			else {
 		    				dhis2.db.renderDashboard( dhis2.db.current() );
