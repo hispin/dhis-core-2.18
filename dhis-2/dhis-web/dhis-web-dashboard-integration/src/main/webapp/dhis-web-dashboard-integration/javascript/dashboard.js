@@ -32,6 +32,7 @@ dhis2.db.shapeDoubleWidth = "double_width";
 dhis2.db.shapeFullWidth = "full_width";
 dhis2.db.widthNormal = 408;
 dhis2.db.widthDouble = 849;
+dhis2.db.visualItemTypes = ["chart", "eventChart", "map", "reportTable", "eventReport"];
 
 dhis2.db.itemContentHeight = 308;
 dhis2.db.itemScrollbarWidth = /\bchrome\b/.test(navigator.userAgent.toLowerCase()) ? 8 : 17;
@@ -793,8 +794,24 @@ dhis2.db.addItemContent = function( type, id )
 	    		type: type,
 	    		id: id
 	    	},
-	    	success: function() {
-	    		dhis2.db.renderDashboard( dhis2.db.current() );
+	    	success: function( data, textStatus, xhr ) {
+	    		
+	    		var location = xhr.getResponseHeader( "Location" );
+	    		
+	    		if ( location ) {
+		    		$.getJSON( "../api" + location, function( item ) {
+		    			if ( item && $.inArray( item.type, dhis2.db.visualItemTypes ) != -1 ) {
+		    				$d = $( "#contentList" );
+		    				dhis2.db.renderItems( $d, item, undefined, true );
+		    			}
+		    			else {
+		    				dhis2.db.renderDashboard( dhis2.db.current() );
+		    			}
+		    		} );
+	    		}
+	    		else {
+	    			dhis2.db.renderDashboard( dhis2.db.current() );
+	    		}
 	    	},
 	    	error: function( xhr ) {
 	    		setHeaderDelayMessage( xhr.responseText );
