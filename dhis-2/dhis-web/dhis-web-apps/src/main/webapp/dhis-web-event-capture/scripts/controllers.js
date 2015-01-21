@@ -314,7 +314,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             return;
         }        
         $scope.sortHeader = gridHeader;
-        $scope.reverse = false;    
+        if($scope.sortHeader.type === 'date'){
+            $scope.reverse = true;
+        }
+        else{
+            $scope.reverse = false;    
+        }        
     };
     
     $scope.d2Sort = function(dhis2Event){        
