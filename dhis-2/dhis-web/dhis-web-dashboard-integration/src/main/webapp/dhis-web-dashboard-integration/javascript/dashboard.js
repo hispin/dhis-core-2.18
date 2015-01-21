@@ -31,9 +31,8 @@ dhis2.db.shapeNormal = "normal";
 dhis2.db.shapeDoubleWidth = "double_width";
 dhis2.db.shapeFullWidth = "full_width";
 dhis2.db.widthNormal = 408;
-dhis2.db.widthDouble = 849;
+dhis2.db.widthDouble = 847;
 dhis2.db.visualItemTypes = ["chart", "eventChart", "map", "reportTable", "eventReport"];
-
 dhis2.db.itemContentHeight = 308;
 dhis2.db.itemScrollbarWidth = /\bchrome\b/.test(navigator.userAgent.toLowerCase()) ? 8 : 17;
 
@@ -413,9 +412,9 @@ dhis2.db.clearDashboard = function()
 dhis2.db.getFullWidth = function()
 {
 	var viewPortWidth = $( window ).width(),
-		spacing = 33,
+		spacing = 31,
 		itemWidth = 408,
-		items = Math.floor( ( viewPortWidth + spacing ) / ( itemWidth + spacing ) ),
+		items = Math.floor( ( viewPortWidth - spacing ) / ( itemWidth + spacing ) ),
 		fullWidth = ( items * itemWidth ) + ( ( items - 1 ) * spacing );
 
 	return fullWidth;
@@ -475,17 +474,19 @@ dhis2.db.drawWideItems = function()
 {
 	if ( undefined !== dhis2.db.current() ) {
 		var url = "../api/dashboards/" + dhis2.db.current() + "?fields=dashboardItems[id,shape]",
-			viewPortWidth = $( window ).width();
+			viewPortWidth = $( window ).width(),
+			marginAndSpacing = 60,
+			realWidth = ( viewPortWidth - marginAndSpacing );
 
 		$.getJSON( url, function( dashboard ) {
 			$.each( dashboard.dashboardItems, function( i, item ) {
 				if ( dhis2.db.shapeFullWidth == item.shape ) {
 					dhis2.db.setFullItemWidth( item.id );
 				}
-				else if ( viewPortWidth <= dhis2.db.widthDouble && dhis2.db.shapeDoubleWidth == item.shape ) {
+				else if ( realWidth <= dhis2.db.widthDouble && dhis2.db.shapeDoubleWidth == item.shape ) {
 					dhis2.db.setNormalItemWidth( item.id );
 				}
-				else if ( viewPortWidth > dhis2.db.widthDouble && dhis2.db.shapeDoubleWidth == item.shape ) {
+				else if ( realWidth > dhis2.db.widthDouble && dhis2.db.shapeDoubleWidth == item.shape ) {
 					dhis2.db.setDoubleItemWidth( item.id );
 				}
 			} );
