@@ -487,6 +487,19 @@ Ext.onReady( function() {
 					this.valueCmp.setOptionValues(a[1].split(';'));
 				}
             },
+            getRecordsByCode: function(options, codeArray) {
+                var records = [];
+
+                for (var i = 0; i < options.length; i++) {
+                    for (var j = 0; j < codeArray.length; j++) {
+                        if (options[i].code === codeArray[j]) {
+                            records.push(options[i]);
+                        }
+                    }
+                }
+
+                return records;
+            },
             initComponent: function() {
                 var container = this,
                     idProperty = 'code',
@@ -636,7 +649,7 @@ Ext.onReady( function() {
                 });
 
                 this.valueStore = Ext.create('Ext.data.Store', {
-					fields: ['id', 'name'],
+					fields: [idProperty, nameProperty],
                     listeners: {
                         add: function() {
                             container.valueCmp.select(this.getRange());
@@ -662,20 +675,20 @@ Ext.onReady( function() {
                         minWidth: 266,
                         cls: 'optionselector'
                     },
-                    setOptionValues: function(optionArray) {
-                        var options = [];
+                    setOptionValues: function(codeArray) {
+                        var me = this,
+                            records = [];
 
-                        for (var i = 0; i < optionArray.length; i++) {
-                            options.push({
-                                code: optionArray[i],
-                                name: optionArray[i]
-                            });
-                        }
+                        dhis2.ev.store.get('optionSets', container.dataElement.optionSet.id).done( function(obj) {
+                            if (Ext.isObject(obj) && Ext.isArray(obj.options) && obj.options.length) {
+                                records = container.getRecordsByCode(obj.options, codeArray);
 
-                        container.valueStore.removeAll();
-                        container.valueStore.loadData(options);
+                                container.valueStore.removeAll();
+                                container.valueStore.loadData(records);
 
-                        this.setValue(options);
+                                me.setValue(records);
+                            }
+                        });
                     },
 					listeners: {
                         change: function(cmp, newVal, oldVal) {

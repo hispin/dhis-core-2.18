@@ -2966,7 +2966,7 @@ Ext.onReady(function() {
                         renderer: function(si, item) {
                             if (item.value) {
                                 var value = item.value[1] === '0.0' ? '-' : item.value[1];
-                                this.update('<div style="text-align:center"><div style="font-size:17px; font-weight:bold">' + value + '</div><div style="font-size:10px">' + si.data[conf.finals.data.domain] + '</div></div>');
+                                this.update('<div style="font-size:17px; font-weight:bold">' + value + '</div><div style="font-size:10px">' + si.data[conf.finals.data.domain] + '</div>');
                             }
                         }
                     };
@@ -3895,12 +3895,12 @@ Ext.onReady(function() {
 	applyCss = function() {
         var css = '';
 
-        // chart tips css
-        css += '.dv-chart-tips { border-radius: 2px; padding: 2px 3px 0; border: 0 none; background-color: #222; } \n';
-        css += '.dv-chart-tips .x-tip-body { background-color: #222; font-size: 13px; font-weight: normal; color: #fff; -webkit-text-stroke: 0; } \n';
-        css += '.dv-chart-tips .x-tip-body div { font-family: arial,sans-serif,ubuntu,consolas !important; } \n';
+        // tooltip
+        css += '.dv-chart-tips { border-radius: 2px; padding: 2px 3px 0; border: 0 none; background-color: #000; opacity: 0.9 } \n';
+        css += '.dv-chart-tips .x-tip-body { background-color: #000; font-size: 13px; font-weight: normal; color: #fff; } \n';
+        css += '.dv-chart-tips .x-tip-body div { text-align: center; font-family: arial,sans-serif,ubuntu,consolas !important; } \n';
 
-        // load mask css
+        // load mask
         css += '.x-mask-msg { padding: 0; border: 0 none; background-image: none; background-color: transparent; } \n';
         css += '.x-mask-msg div { background-position: 11px center; } \n';
         css += '.x-mask-msg .x-mask-loading { border: 0 none; \n background-color: #000; color: #fff; border-radius: 2px; padding: 12px 14px 12px 30px; opacity: 0.65; } \n';
