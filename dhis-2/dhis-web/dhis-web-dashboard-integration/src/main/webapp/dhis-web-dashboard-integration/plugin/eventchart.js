@@ -2635,7 +2635,8 @@ Ext.onReady( function() {
 			};
 
 			web.report.aggregate.createChart = function(ns, legendSet) {
-                var xLayout = ns.app.xLayout,
+                var layout = ns.app.layout,
+                    xLayout = ns.app.xLayout,
                     xResponse = ns.app.xResponse,
                     columnIds = xLayout.columnDimensionNames[0] ? xLayout.dimensionNameIdsMap[xLayout.columnDimensionNames[0]] : [],
                     failSafeColumnIds = [],
@@ -3424,31 +3425,102 @@ Ext.onReady( function() {
                 };
 
                 getDefaultChartTitle = function(store) {
-                    var ids = [],
+                    var a = [],
                         text = '',
                         titleFont,
                         titleColor,
-                        isPie = xLayout.type === conf.finals.chart.pie,
-                        isGauge = xLayout.type === conf.finals.chart.gauge;
+                        names = xResponse.metaData.names,
+                        operatorMap = {
+                            'EQ': '=',
+                            'GT': '>',
+                            'GE': '>=',
+                            'LT': '<',
+                            'LE': '<=',
+                            'NE': '!='
+                        };
 
-                    if (isPie) {
-                        ids.push(columnIds[0]);
-                    }
-                    else if (isGauge) {
-                        ids.push(columnIds[0], rowIds[0]);
-                    }
-
-                    ids = Ext.Array.clean(ids.concat(filterIds || []));
-
-                    if (Ext.isArray(ids) && ids.length) {
-                        for (var i = 0; i < ids.length; i++) {
-                            text += xResponse.metaData.names[ids[i]];
-                            text += i < ids.length - 1 ? ', ' : '';
-                        }
+                    if (xLayout.startDate && xLayout.endDate) {
+                        text = xLayout.startDate + ' - ' + xLayout.endDate;
                     }
 
                     if (xLayout.title) {
-                        text = xLayout.title;
+                        text += (text.length ? ', ' : '') + xLayout.title;
+                    }
+                    else if (xLayout.type === conf.finals.chart.pie) {
+                        var ids = Ext.Array.clean([].concat(columnIds || []));
+
+                        if (Ext.isArray(ids) && ids.length) {
+                            for (var i = 0; i < ids.length; i++) {
+                                text += xResponse.metaData.names[ids[i]];
+                                text += i < ids.length - 1 ? ', ' : '';
+                            }
+                        }
+                    }
+                    else {
+                        var meta = ['pe', 'ou'];
+
+                        if (layout.filters) {
+                            for (var i = 0, dim; i < layout.filters.length; i++) {
+                                dim = layout.filters[i];
+                                text += (text.length ? ', ' : '');
+
+                                if (Ext.Array.contains(meta, dim.dimension)) {
+                                    var ids = xResponse.metaData[dim.dimension],
+                                    tmpText = '';
+
+                                    for (var ii = 0; ii < ids.length; ii++) {
+                                        tmpText += (tmpText.length ? ', ' : '') + names[ids[ii]];
+                                    }
+
+                                    text += tmpText;
+                                }
+                                else {
+                                    if (dim.filter) {
+                                        var a = dim.filter.split(':');
+
+                                        if (a.length === 2) {
+                                            var operator = a[0],
+                                                valueArray = a[1].split(';'),
+                                                tmpText = '';
+
+                                            if (operator === 'IN') {
+                                                for (var ii = 0; ii < valueArray.length; ii++) {
+                                                    tmpText += (tmpText.length ? ', ' : '') + valueArray[ii];
+                                                }
+
+                                                text += tmpText;
+                                            }
+                                            else {
+                                                text += names[dim.dimension] + ' ' + operatorMap[operator] + ' ' + a[1];
+                                            }
+                                        }
+                                        else {
+                                            var operators = [],
+                                                values = [],
+                                                tmpText = '';
+
+                                            for (var ii = 0; ii < a.length; ii++) {
+                                                if (ii % 2) {
+                                                    values.push(a[ii]);
+                                                }
+                                                else {
+                                                    operators.push(a[ii]);
+                                                }
+                                            }
+
+                                            for (var ii = 0; ii < operators.length; ii++) {
+                                                tmpText += (tmpText.length ? ', ' : '') + names[dim.dimension] + ' ' + (operatorMap[operators[ii]] || '') + ' ' + values[ii];
+                                            }
+
+                                            text += tmpText;
+                                        }
+                                    }
+                                    else {
+                                        text += names[dim.dimension];
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     fontSize = (ns.app.centerRegion.getWidth() / text.length) < 11.6 ? 12 : 17;
