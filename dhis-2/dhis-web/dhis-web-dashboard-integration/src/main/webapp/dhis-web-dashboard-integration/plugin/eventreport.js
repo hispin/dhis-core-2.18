@@ -3436,7 +3436,9 @@ Ext.onReady( function() {
 			init.el = config.el;
 
             if (!ns.skipFade) {
-                Ext.get(init.el).setStyle('opacity', 0);
+                if (init.el && Ext.get(init.el)) {
+                    Ext.get(init.el).setStyle('opacity', 0);
+                }
             }
 
 			// mouse events
@@ -3448,17 +3450,22 @@ Ext.onReady( function() {
 						obj = xResponse.sortableIdObjects[i];
 						el = Ext.get(obj.uuid);
 
-						el.dom.layout = layout;
-						el.dom.response = response;
-						el.dom.xResponse = xResponse;
-						el.dom.metaDataId = obj.id;
-						el.dom.onColumnHeaderMouseClick = web.events.onColumnHeaderMouseClick;
-						el.dom.onColumnHeaderMouseOver = web.events.onColumnHeaderMouseOver;
-						el.dom.onColumnHeaderMouseOut = web.events.onColumnHeaderMouseOut;
+                        if (el.dom) {
+                            el.dom.layout = layout;
+                            el.dom.response = response;
+                            el.dom.xResponse = xResponse;
+                            el.dom.metaDataId = obj.id;
+                            el.dom.onColumnHeaderMouseClick = web.events.onColumnHeaderMouseClick;
+                            el.dom.onColumnHeaderMouseOver = web.events.onColumnHeaderMouseOver;
+                            el.dom.onColumnHeaderMouseOut = web.events.onColumnHeaderMouseOut;
 
-						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.layout, this.response, this.metaDataId)');
-						el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
-						el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
+                            el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.layout, this.response, this.metaDataId)');
+                            el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
+                            el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
+                        }
+                        else {
+                            console.log('No element.dom, setColumnHeaderMouseHandlers, ' + init.el);
+                        }
 					}
 				}
 			};
@@ -3692,9 +3699,11 @@ Ext.onReady( function() {
                         // fade
                         if (!ns.skipFade) {
                             Ext.defer( function() {
-                                Ext.get(ns.core.init.el).fadeIn({
-                                    duration: 400
-                                });
+                                if (init.el && Ext.get(init.el)) {
+                                    Ext.get(init.el).fadeIn({
+                                        duration: 400
+                                    });
+                                }
                             }, 300 );
                         }
 
@@ -3767,9 +3776,11 @@ Ext.onReady( function() {
                         ns.app.centerRegion.update(getTitleHtml(layout.name) + table.html);
 
                         Ext.defer( function() {
-                            Ext.get(ns.core.init.el).fadeIn({
-                                duration: 400
-                            });
+                            if (init.el && Ext.get(init.el)) {
+                                Ext.get(init.el).fadeIn({
+                                    duration: 400
+                                });
+                            }
                         }, 300 );
 
                         // after render

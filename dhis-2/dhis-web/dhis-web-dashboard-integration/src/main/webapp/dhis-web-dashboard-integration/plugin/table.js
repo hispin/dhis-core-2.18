@@ -3334,10 +3334,12 @@ Ext.onReady( function() {
 
                 // fade
                 if (!ns.skipFade) {
-                    Ext.defer( function() {
-                        Ext.get(ns.core.init.el).fadeIn({
-                            duration: 400
-                        });
+                    Ext.defer(function() {
+                        if (ns.core.init.el && Ext.get(ns.core.init.el)) {
+                            Ext.get(ns.core.init.el).fadeIn({
+                                duration: 400
+                            });
+                        }
                     }, 300 );
                 }
 

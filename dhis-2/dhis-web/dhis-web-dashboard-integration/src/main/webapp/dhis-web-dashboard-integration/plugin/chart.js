@@ -4082,12 +4082,14 @@ Ext.onReady(function() {
                     ns.app.chart = ns.core.web.chart.createChart(ns, legendSet);
 
                     // fade
-                    if (!ns.skipFade && ns.core.init.el && Ext.get(ns.core.init.el)) {
+                    if (!ns.skipFade) {
                         ns.app.chart.on('afterrender', function() {
                             Ext.defer( function() {
-                                Ext.get(ns.core.init.el).fadeIn({
-                                    duration: 400
-                                });
+                                if (ns.core.init.el && Ext.get(ns.core.init.el)) {
+                                    Ext.get(ns.core.init.el).fadeIn({
+                                        duration: 400
+                                    });
+                                }
                             }, 300 );
                         });
                     }
