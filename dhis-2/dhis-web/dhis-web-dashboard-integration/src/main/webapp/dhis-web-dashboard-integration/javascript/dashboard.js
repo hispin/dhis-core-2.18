@@ -827,7 +827,8 @@ dhis2.db.removeItem = function( id )
     	url: "../api/dashboards/" + dhis2.db.current() + "/items/" + id,
     	success: function() {
     		dhis2.db.currentItem = undefined;
-    		dhis2.db.renderDashboard( dhis2.db.current() );
+    		$( "#liDrop-" + id ).remove();
+    		$( "#li-" + id ).remove();
     	}
     } );
 }
