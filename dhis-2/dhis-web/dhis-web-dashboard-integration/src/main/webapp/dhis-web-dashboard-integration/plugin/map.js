@@ -1,4 +1,4 @@
-Ext.onReady(function () {
+Ext.onReady(function() {
 
     // CUSTOM
 
@@ -14,21 +14,21 @@ Ext.onReady(function () {
         height: 22,
         defaultValue: null,
         value: 'f1f1f1',
-        getValue: function () {
+        getValue: function() {
             return this.value;
         },
-        setValue: function (color) {
+        setValue: function(color) {
             this.value = color;
             if (Ext.isDefined(this.getEl())) {
                 this.getEl().dom.style.background = '#' + color;
             }
         },
-        reset: function () {
+        reset: function() {
             this.setValue(this.defaultValue);
         },
         menu: {},
-        menuHandler: function () {},
-        initComponent: function () {
+        menuHandler: function() {},
+        initComponent: function() {
             var that = this;
             this.defaultValue = this.value;
             this.menu = Ext.create('Ext.menu.Menu', {
@@ -37,7 +37,7 @@ Ext.onReady(function () {
                     xtype: 'colorpicker',
                     closeAction: 'hide',
                     listeners: {
-                        select: function (cp, color) {
+                        select: function(cp, color) {
                             that.setValue(color);
                             that.menu.hide();
                             that.menuHandler(cp, color);
@@ -48,7 +48,7 @@ Ext.onReady(function () {
             this.callParent();
         },
         listeners: {
-            render: function () {
+            render: function() {
                 this.setValue(this.value);
             }
         }
@@ -60,7 +60,7 @@ Ext.onReady(function () {
         alias: ["layout.multiselectfield"],
         type: "multiselectfield",
         defaultHeight: 200,
-        sizeBodyContents: function (a, b) {
+        sizeBodyContents: function(a, b) {
             var c = this;
             if (!Ext.isNumber(b)) {
                 b = c.defaultHeight
@@ -156,7 +156,7 @@ Ext.onReady(function () {
         componentLayout: 'multiselectfield',
         fieldBodyCls: Ext.baseCSSPrefix + 'form-multiselect-body',
         // private
-        initComponent: function () {
+        initComponent: function() {
             var me = this;
             me.bindStore(me.store, true);
             if (me.store.autoCreated) {
@@ -170,7 +170,7 @@ Ext.onReady(function () {
             }
             me.callParent();
         },
-        bindStore: function (store, initial) {
+        bindStore: function(store, initial) {
             var me = this,
                 oldStore = me.store,
                 boundList = me.boundList;
@@ -183,7 +183,7 @@ Ext.onReady(function () {
             }
         },
         // private
-        onRender: function (ct, position) {
+        onRender: function(ct, position) {
             var me = this,
                 panel, boundList, selModel;
             me.callParent(arguments);
@@ -211,11 +211,11 @@ Ext.onReady(function () {
             me.setRawValue(me.rawValue);
         },
         // No content generated via template, it's all added components
-        getSubTplMarkup: function () {
+        getSubTplMarkup: function() {
             return '';
         },
         // private
-        afterRender: function () {
+        afterRender: function() {
             var me = this;
             me.callParent();
             if (me.ddReorder && !me.dragGroup && !me.dropGroup) {
@@ -232,7 +232,7 @@ Ext.onReady(function () {
                 me.dropZone = Ext.create('Ext.view.DropZone', {
                     view: me.boundList,
                     ddGroup: me.dropGroup,
-                    handleNodeDrop: function (data, dropRecord, position) {
+                    handleNodeDrop: function(data, dropRecord, position) {
                         var view = this.view,
                             store = view.getStore(),
                             records = data.records,
@@ -249,13 +249,13 @@ Ext.onReady(function () {
                 });
             }
         },
-        onSelectionChange: function () {
+        onSelectionChange: function() {
             this.checkChange();
         },
         /**
          * Clears any values currently selected.
          */
-        clearValue: function () {
+        clearValue: function() {
             this.setValue([]);
         },
         /**
@@ -263,25 +263,25 @@ Ext.onReady(function () {
          * config: If it is set to a String value (like the default ',') then this will return the selected values
          * joined by the delimiter. If it is set to <tt>null</tt> then the values will be returned as an Array.
          */
-        getSubmitValue: function () {
+        getSubmitValue: function() {
             var me = this,
                 delimiter = me.delimiter,
                 val = me.getValue();
             return Ext.isString(delimiter) ? val.join(delimiter) : val;
         },
         // inherit docs
-        getRawValue: function () {
+        getRawValue: function() {
             var me = this,
                 boundList = me.boundList;
             if (boundList) {
-                me.rawValue = Ext.Array.map(boundList.getSelectionModel().getSelection(), function (model) {
+                me.rawValue = Ext.Array.map(boundList.getSelectionModel().getSelection(), function(model) {
                     return model.get(me.valueField);
                 });
             }
             return me.rawValue;
         },
         // inherit docs
-        setRawValue: function (value) {
+        setRawValue: function(value) {
             var me = this,
                 boundList = me.boundList,
                 models;
@@ -289,7 +289,7 @@ Ext.onReady(function () {
             me.rawValue = value;
             if (boundList) {
                 models = [];
-                Ext.Array.forEach(value, function (val) {
+                Ext.Array.forEach(value, function(val) {
                     var undef, model = me.store.findRecord(me.valueField, val, undef, undef, true, true);
                     if (model) {
                         models.push(model);
@@ -300,11 +300,11 @@ Ext.onReady(function () {
             return value;
         },
         // no conversion
-        valueToRaw: function (value) {
+        valueToRaw: function(value) {
             return value;
         },
         // compare array values
-        isEqual: function (v1, v2) {
+        isEqual: function(v1, v2) {
             var fromArray = Ext.Array.from,
                 i, len;
             v1 = fromArray(v1);
@@ -320,7 +320,7 @@ Ext.onReady(function () {
             }
             return true;
         },
-        getErrors: function (value) {
+        getErrors: function(value) {
             var me = this,
                 format = Ext.String.format,
                 errors = me.callParent(arguments),
@@ -338,24 +338,24 @@ Ext.onReady(function () {
             }
             return errors;
         },
-        onDisable: function () {
+        onDisable: function() {
             this.callParent();
             this.disabled = true;
             this.updateReadOnly();
         },
-        onEnable: function () {
+        onEnable: function() {
             this.callParent();
             this.disabled = false;
             this.updateReadOnly();
         },
-        setReadOnly: function (readOnly) {
+        setReadOnly: function(readOnly) {
             this.readOnly = readOnly;
             this.updateReadOnly();
         },
         /**
          * @private Lock or unlock the BoundList's selection model to match the current disabled/readonly state
          */
-        updateReadOnly: function () {
+        updateReadOnly: function() {
             var me = this,
                 boundList = me.boundList,
                 readOnly = me.readOnly || me.disabled;
@@ -363,7 +363,7 @@ Ext.onReady(function () {
                 boundList.getSelectionModel().setLocked(readOnly);
             }
         },
-        onDestroy: function () {
+        onDestroy: function() {
             Ext.destroyMembers(this, 'panel', 'boundList', 'dragZone', 'dropZone');
             this.callParent();
         }
@@ -377,7 +377,7 @@ Ext.onReady(function () {
     OpenLayers.Util.OSM = {};
     OpenLayers.Util.OSM.MISSING_TILE_URL = "http://www.openstreetmap.org/openlayers/img/404.png";
     OpenLayers.Util.OSM.originalOnImageLoadError = OpenLayers.Util.onImageLoadError;
-    OpenLayers.Util.onImageLoadError = function () {
+    OpenLayers.Util.onImageLoadError = function() {
         if (this.src.match(/^http:\/\/[abc]\.[a-z]+\.openstreetmap\.org\//)) {
             this.src = OpenLayers.Util.OSM.MISSING_TILE_URL
         } else {
@@ -387,7 +387,7 @@ Ext.onReady(function () {
         }
     };
     OpenLayers.Layer.OSM.Mapnik = OpenLayers.Class(OpenLayers.Layer.OSM, {
-        initialize: function (d, c) {
+        initialize: function(d, c) {
             var b = ["http://a.tile.openstreetmap.org/${z}/${x}/${y}.png", "http://b.tile.openstreetmap.org/${z}/${x}/${y}.png", "http://c.tile.openstreetmap.org/${z}/${x}/${y}.png"];
             c = OpenLayers.Util.extend({
                 numZoomLevels: 19,
@@ -400,7 +400,7 @@ Ext.onReady(function () {
         CLASS_NAME: "OpenLayers.Layer.OSM.Mapnik"
     });
     OpenLayers.Layer.OSM.Osmarender = OpenLayers.Class(OpenLayers.Layer.OSM, {
-        initialize: function (d, c) {
+        initialize: function(d, c) {
             var b = ["http://a.tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png", "http://b.tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png", "http://c.tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png"];
             c = OpenLayers.Util.extend({
                 numZoomLevels: 18,
@@ -413,7 +413,7 @@ Ext.onReady(function () {
         CLASS_NAME: "OpenLayers.Layer.OSM.Osmarender"
     });
     OpenLayers.Layer.OSM.CycleMap = OpenLayers.Class(OpenLayers.Layer.OSM, {
-        initialize: function (d, c) {
+        initialize: function(d, c) {
             var b = ["http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png", "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png", "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"];
             c = OpenLayers.Util.extend({
                 numZoomLevels: 19,
@@ -440,15 +440,15 @@ Ext.onReady(function () {
         angle: null,
         snapAngle: null,
         dragControl: null,
-        initialize: function (a) {
+        initialize: function(a) {
             OpenLayers.Control.prototype.initialize.apply(this, arguments)
         },
-        activate: function () {
+        activate: function() {
             var a = OpenLayers.Control.prototype.activate.call(this);
             if (a) {
                 var b = {
                     displayInLayerSwitcher: false,
-                    calculateInRange: function () {
+                    calculateInRange: function() {
                         return true
                     }
                 };
@@ -456,7 +456,7 @@ Ext.onReady(function () {
             }
             return a
         },
-        deactivate: function () {
+        deactivate: function() {
             var a = OpenLayers.Control.prototype.deactivate.call(this);
             if (a) {
                 if (this.layer.map != null) {
@@ -470,14 +470,14 @@ Ext.onReady(function () {
             }
             return a
         },
-        createGeometry: function () {
+        createGeometry: function() {
             this.angle = Math.PI * ((1 / this.sides) - (1 / 2));
             if (this.snapAngle) {
                 this.angle += this.snapAngle * (Math.PI / 180)
             }
             this.feature.geometry = OpenLayers.Geometry.Polygon.createRegularPolygon(this.origin, this.radius, this.sides, this.snapAngle)
         },
-        modifyGeometry: function () {
+        modifyGeometry: function() {
             var f, c, b, a;
             var d = this.feature.geometry.components[0];
             if (d.components.length != (this.sides + 1)) {
@@ -492,7 +492,7 @@ Ext.onReady(function () {
                 a.clearBounds()
             }
         },
-        updateCircle: function (b, a) {
+        updateCircle: function(b, a) {
             this.origin = new OpenLayers.Geometry.Point(b.lon, b.lat);
             this.radius = a * 1;
             if (!this.feature) {
@@ -521,19 +521,19 @@ Ext.onReady(function () {
         clickout: true,
         toggle: false,
         hover: false,
-        onSelect: function () {},
-        onUnselect: function () {},
-        onHoverSelect: function () {},
-        onHoverUnselect: function () {},
-        onClickSelect: function () {},
-        onClickUnselect: function () {},
+        onSelect: function() {},
+        onUnselect: function() {},
+        onHoverSelect: function() {},
+        onHoverUnselect: function() {},
+        onClickSelect: function() {},
+        onClickUnselect: function() {},
         geometryTypes: null,
         layer: null,
         callbacks: null,
         selectStyle: null,
         renderIntent: "select",
         handler: null,
-        initialize: function (layer, options) {
+        initialize: function(layer, options) {
             OpenLayers.Control.prototype.initialize.apply(this, [options]);
             this.layer = layer;
             this.callbacks = OpenLayers.Util.extend({
@@ -547,7 +547,7 @@ Ext.onReady(function () {
             };
             this.handler = new OpenLayers.Handler.Feature(this, layer, this.callbacks, handlerOptions);
         },
-        unselectAll: function (options) {
+        unselectAll: function(options) {
             var feature;
             for (var i = this.layer.selectedFeatures.length - 1; i >= 0; --i) {
                 feature = this.layer.selectedFeatures[i];
@@ -556,7 +556,7 @@ Ext.onReady(function () {
                 }
             }
         },
-        clickFeature: function (feature) {
+        clickFeature: function(feature) {
             if ((this.onSelect.name != "" || this.onClickSelect.name != "") && !this.hover) {
                 var selected = (OpenLayers.Util.indexOf(this.layer.selectedFeatures, feature) > -1);
                 if (selected) {
@@ -577,28 +577,28 @@ Ext.onReady(function () {
                 this.select(feature, "click");
             }
         },
-        multipleSelect: function () {
+        multipleSelect: function() {
             return this.multiple || this.handler.evt[this.multipleKey];
         },
-        toggleSelect: function () {
+        toggleSelect: function() {
             return this.toggle || this.handler.evt[this.toggleKey];
         },
-        clickoutFeature: function (feature) {
+        clickoutFeature: function(feature) {
             if (((this.onClickUnselect.name != "" || this.onHoverSelect.name == "") && !this.hover) && this.clickout) {
                 this.unselectAll();
             }
         },
-        overFeature: function (feature) {
+        overFeature: function(feature) {
             if ((this.onHoverSelect.name != "" || this.hover) && (OpenLayers.Util.indexOf(this.layer.selectedFeatures, feature) == -1)) {
                 this.select(feature, "hover");
             }
         },
-        outFeature: function (feature) {
+        outFeature: function(feature) {
             if (this.onHoverUnselect.name != "" || this.hover) {
                 this.unselect(feature, "hover");
             }
         },
-        select: function (feature, evt) {
+        select: function(feature, evt) {
             this.layer.selectedFeatures.push(feature);
             var selectStyle = this.selectStyle || this.renderIntent;
             this.layer.drawFeature(feature, selectStyle);
@@ -621,7 +621,7 @@ Ext.onReady(function () {
                 break;
             }
         },
-        unselect: function (feature, evt) {
+        unselect: function(feature, evt) {
             this.layer.drawFeature(feature, "default");
             OpenLayers.Util.removeItem(this.layer.selectedFeatures, feature);
             this.layer.events.triggerEvent("featureunselected", {
@@ -643,7 +643,7 @@ Ext.onReady(function () {
                 break;
             }
         },
-        setMap: function (map) {
+        setMap: function(map) {
             this.handler.setMap(map);
             OpenLayers.Control.prototype.setMap.apply(this, arguments);
         },
@@ -661,7 +661,7 @@ Ext.onReady(function () {
         requires: ["Ext.data.proxy.Memory", "Ext.data.reader.Json"],
         alias: "model.gx_layer",
         statics: {
-            createFromLayer: function (a) {
+            createFromLayer: function(a) {
                 return this.proxy.reader.readRecords([a]).records[0]
             }
         },
@@ -688,7 +688,7 @@ Ext.onReady(function () {
                 type: "json"
             }
         },
-        getLayer: function () {
+        getLayer: function() {
             return this.raw
         }
     });
@@ -701,7 +701,7 @@ Ext.onReady(function () {
             STORE_TO_MAP: 2
         },
         map: null,
-        constructor: function (b) {
+        constructor: function(b) {
             var c = this;
             b = Ext.apply({}, b);
             var d = (GeoExt.MapPanel && b.map instanceof GeoExt.MapPanel) ? b.map.map : b.map;
@@ -719,7 +719,7 @@ Ext.onReady(function () {
                 this.bind(d, a)
             }
         },
-        bind: function (e, a) {
+        bind: function(e, a) {
             var b = this;
             if (b.map) {
                 return
@@ -732,7 +732,7 @@ Ext.onReady(function () {
             }
             var d = e.layers.slice(0);
             if (c & GeoExt.data.LayerStore.STORE_TO_MAP) {
-                b.each(function (f) {
+                b.each(function(f) {
                     b.map.addLayer(f.getLayer())
                 }, b)
             }
@@ -759,7 +759,7 @@ Ext.onReady(function () {
             });
             b.fireEvent("bind", b, e)
         },
-        unbind: function () {
+        unbind: function() {
             var a = this;
             if (a.map) {
                 a.map.events.un({
@@ -776,9 +776,9 @@ Ext.onReady(function () {
                 a.map = null
             }
         },
-        onChangeLayer: function (b) {
+        onChangeLayer: function(b) {
             var e = b.layer;
-            var c = this.findBy(function (f, g) {
+            var c = this.findBy(function(f, g) {
                 return f.getLayer() === e
             });
             if (c > -1) {
@@ -804,7 +804,7 @@ Ext.onReady(function () {
                 }
             }
         },
-        onAddLayer: function (b) {
+        onAddLayer: function(b) {
             var c = this;
             if (!c._adding) {
                 c._adding = true;
@@ -813,7 +813,7 @@ Ext.onReady(function () {
                 delete c._adding
             }
         },
-        onRemoveLayer: function (a) {
+        onRemoveLayer: function(a) {
             if (this.map.unloadDestroy) {
                 if (!this._removing) {
                     var b = a.layer;
@@ -825,7 +825,7 @@ Ext.onReady(function () {
                 this.unbind()
             }
         },
-        onLoad: function (c, b, g) {
+        onLoad: function(c, b, g) {
             if (g) {
                 if (!Ext.isArray(b)) {
                     b = [b]
@@ -850,14 +850,14 @@ Ext.onReady(function () {
             }
             delete this._addRecords
         },
-        onClear: function (a) {
+        onClear: function(a) {
             this._removing = true;
             for (var b = this.map.layers.length - 1; b >= 0; b--) {
                 this.map.removeLayer(this.map.layers[b])
             }
             delete this._removing
         },
-        onAdd: function (b, a, c) {
+        onAdd: function(b, a, c) {
             if (!this._adding) {
                 this._adding = true;
                 var e;
@@ -871,7 +871,7 @@ Ext.onReady(function () {
                 delete this._adding
             }
         },
-        onRemove: function (b, a, c) {
+        onRemove: function(b, a, c) {
             if (!this._removing) {
                 var d = a.getLayer();
                 if (this.map.getLayer(d.id) != null) {
@@ -881,7 +881,7 @@ Ext.onReady(function () {
                 }
             }
         },
-        onUpdate: function (c, a, b) {
+        onUpdate: function(c, a, b) {
             if (b === Ext.data.Record.EDIT) {
                 if (a.modified && a.modified.title) {
                     var d = a.getLayer();
@@ -892,26 +892,26 @@ Ext.onReady(function () {
                 }
             }
         },
-        removeMapLayer: function (a) {
+        removeMapLayer: function(a) {
             this.map.removeLayer(a.getLayer())
         },
-        onReplace: function (c, a, b) {
+        onReplace: function(c, a, b) {
             this.removeMapLayer(a)
         },
-        getByLayer: function (b) {
-            var a = this.findBy(function (c) {
+        getByLayer: function(b) {
+            var a = this.findBy(function(c) {
                 return c.getLayer() === b
             });
             if (a > -1) {
                 return this.getAt(a)
             }
         },
-        destroy: function () {
+        destroy: function() {
             var a = this;
             a.unbind();
             a.callParent()
         },
-        loadRecords: function (a, b) {
+        loadRecords: function(a, b) {
             if (b && b.addRecords) {
                 this._addRecords = true
             }
@@ -924,7 +924,7 @@ Ext.onReady(function () {
         alias: "widget.gx_mappanel",
         alternateClassName: "GeoExt.MapPanel",
         statics: {
-            guess: function () {
+            guess: function() {
                 var a = Ext.ComponentQuery.query("gx_mappanel");
                 return ((a && a.length > 0) ? a[0] : null)
             }
@@ -936,7 +936,7 @@ Ext.onReady(function () {
         map: null,
         layers: null,
         stateEvents: ["aftermapmove", "afterlayervisibilitychange", "afterlayeropacitychange", "afterlayerorderchange", "afterlayernamechange", "afterlayeradd", "afterlayerremove"],
-        initComponent: function () {
+        initComponent: function() {
             if (!(this.map instanceof OpenLayers.Map)) {
                 this.map = new OpenLayers.Map(Ext.applyIf(this.map || {}, {
                     allOverlays: true
@@ -965,9 +965,9 @@ Ext.onReady(function () {
             }
             this.callParent(arguments);
             this.on("resize", this.onResize, this);
-            this.on("afterlayout", function () {
+            this.on("afterlayout", function() {
                 if (typeof this.map.getViewport === "function") {
-                    this.items.each(function (b) {
+                    this.items.each(function(b) {
                         if (typeof b.addToMapPanel === "function") {
                             b.getEl().appendTo(this.map.getViewport())
                         }
@@ -982,10 +982,10 @@ Ext.onReady(function () {
                 scope: this
             })
         },
-        onMoveend: function (a) {
+        onMoveend: function(a) {
             this.fireEvent("aftermapmove", this, this.map, a)
         },
-        onChangelayer: function (b) {
+        onChangelayer: function(b) {
             var a = this.map;
             if (b.property) {
                 if (b.property === "visibility") {
@@ -1005,13 +1005,13 @@ Ext.onReady(function () {
                 }
             }
         },
-        onAddlayer: function () {
+        onAddlayer: function() {
             this.fireEvent("afterlayeradd")
         },
-        onRemovelayer: function () {
+        onRemovelayer: function() {
             this.fireEvent("afterlayerremove")
         },
-        onResize: function () {
+        onResize: function() {
             var a = this.map;
             if (this.body.dom !== a.div) {
                 a.render(this.body.dom);
@@ -1027,7 +1027,7 @@ Ext.onReady(function () {
                 a.updateSize()
             }
         },
-        setInitialExtent: function () {
+        setInitialExtent: function() {
             var a = this.map;
             if (!a.getCenter()) {
                 if (this.center || this.zoom) {
@@ -1041,7 +1041,7 @@ Ext.onReady(function () {
                 }
             }
         },
-        getState: function () {
+        getState: function() {
             var c = this,
                 e = c.map,
                 d = c.callParent(arguments) || {},
@@ -1055,7 +1055,7 @@ Ext.onReady(function () {
                 y: a.lat,
                 zoom: e.getZoom()
             });
-            c.layers.each(function (f) {
+            c.layers.each(function(f) {
                 b = f.getLayer();
                 layerId = this.prettyStateKeys ? f.get("title") : f.get("id");
                 d = c.addPropertyToState(d, "visibility_" + layerId, b.getVisibility());
@@ -1063,7 +1063,7 @@ Ext.onReady(function () {
             }, c);
             return d
         },
-        applyState: function (a) {
+        applyState: function(a) {
             var j = this;
             map = j.map;
             j.center = new OpenLayers.LonLat(a.x, a.y);
@@ -1090,13 +1090,13 @@ Ext.onReady(function () {
                 }
             }
         },
-        onBeforeAdd: function (a) {
+        onBeforeAdd: function(a) {
             if (Ext.isFunction(a.addToMapPanel)) {
                 a.addToMapPanel(this)
             }
             this.callParent(arguments)
         },
-        beforeDestroy: function () {
+        beforeDestroy: function() {
             if (this.map && this.map.events) {
                 this.map.events.un({
                     moveend: this.onMoveend,
@@ -1116,11 +1116,11 @@ Ext.onReady(function () {
     Ext.define("GeoExt.tree.Column", {
         extend: "Ext.tree.Column",
         alias: "widget.gx_treecolumn",
-        initComponent: function () {
+        initComponent: function() {
             var b = this;
             b.callParent();
             var a = b.renderer;
-            this.renderer = function (i, e, d, h, j, f, c) {
+            this.renderer = function(i, e, d, h, j, f, c) {
                 var g = [a(i, e, d, h, j, f, c)];
                 if (d.get("checkedGroup")) {
                     g[0] = g[0].replace(/class="([^-]+)-tree-checkbox([^"]+)?"/, 'class="$1-tree-checkbox$2 gx-tree-radio"')
@@ -1130,21 +1130,21 @@ Ext.onReady(function () {
                 return g.join("")
             }
         },
-        defaultRenderer: function (a) {
+        defaultRenderer: function(a) {
             return a
         }
     });
     Ext.define("GeoExt.tree.View", {
         extend: "Ext.tree.View",
         alias: "widget.gx_treeview",
-        initComponent: function () {
+        initComponent: function() {
             var a = this;
             a.on("itemupdate", this.onItem, this);
             a.on("itemadd", this.onItem, this);
             a.on("createchild", this.createChild, this);
             return a.callParent(arguments)
         },
-        onItem: function (a, c, f, b) {
+        onItem: function(a, c, f, b) {
             var e = this;
             if (!(a instanceof Array)) {
                 a = [a]
@@ -1153,7 +1153,7 @@ Ext.onReady(function () {
                 this.onNodeRendered(a[d])
             }
         },
-        onNodeRendered: function (c) {
+        onNodeRendered: function(c) {
             var b = this;
             var a = Ext.get("tree-record-" + c.id);
             if (!a) {
@@ -1163,12 +1163,12 @@ Ext.onReady(function () {
                 b.fireEvent("createchild", a, c)
             }
             if (c.hasChildNodes()) {
-                c.eachChild(function (d) {
+                c.eachChild(function(d) {
                     b.onNodeRendered(d)
                 }, b)
             }
         },
-        createChild: function (b, c) {
+        createChild: function(b, c) {
             var a = c.get("component");
             if (a) {
                 cmpObj = Ext.ComponentManager.create(a);
@@ -1180,7 +1180,7 @@ Ext.onReady(function () {
     Ext.define("GeoExt.tree.LayerNode", {
         extend: "Ext.AbstractPlugin",
         alias: "plugin.gx_layer",
-        init: function (b) {
+        init: function(b) {
             this.target = b;
             var a = b.get("layer");
             b.set("checked", a.getVisibility());
@@ -1198,18 +1198,18 @@ Ext.onReady(function () {
                 scope: this
             })
         },
-        onAfterEdit: function (c, a) {
+        onAfterEdit: function(c, a) {
             var b = this;
             if (~Ext.Array.indexOf(a, "checked")) {
                 b.onCheckChange()
             }
         },
-        onLayerVisibilityChanged: function () {
+        onLayerVisibilityChanged: function() {
             if (!this._visibilityChanging) {
                 this.target.set("checked", this.target.get("layer").getVisibility())
             }
         },
-        onCheckChange: function () {
+        onCheckChange: function() {
             var c = this.target,
                 b = this.target.get("checked");
             if (b != c.get("layer").getVisibility()) {
@@ -1228,11 +1228,11 @@ Ext.onReady(function () {
         extend: "Ext.util.Observable",
         requires: ["GeoExt.tree.LayerNode"],
         store: null,
-        filter: function (a) {
+        filter: function(a) {
             return a.getLayer().displayInLayerSwitcher === true
         },
         baseAttrs: null,
-        load: function (a) {
+        load: function(a) {
             if (this.fireEvent("beforeload", this, a)) {
                 this.removeStoreHandlers();
                 while (a.firstChild) {
@@ -1241,14 +1241,14 @@ Ext.onReady(function () {
                 if (!this.store) {
                     this.store = GeoExt.MapPanel.guess().layers
                 }
-                this.store.each(function (b) {
+                this.store.each(function(b) {
                     this.addLayerNode(a, b)
                 }, this);
                 this.addStoreHandlers(a);
                 this.fireEvent("load", this, a)
             }
         },
-        onStoreAdd: function (b, a, c, f) {
+        onStoreAdd: function(b, a, c, f) {
             if (!this._reordering) {
                 var g = f.get("container").recordIndexToNodeIndex(c + a.length - 1, f);
                 for (var d = 0, e = a.length; d < e; ++d) {
@@ -1256,12 +1256,12 @@ Ext.onReady(function () {
                 }
             }
         },
-        onStoreRemove: function (a, b) {
+        onStoreRemove: function(a, b) {
             if (!this._reordering) {
                 this.removeLayerNode(b, a)
             }
         },
-        addLayerNode: function (d, a, b) {
+        addLayerNode: function(d, a, b) {
             b = b || 0;
             if (this.filter(a) === true) {
                 var c = a.getLayer();
@@ -1284,9 +1284,9 @@ Ext.onReady(function () {
                 d.getChildAt(b).on("move", this.onChildMove, this)
             }
         },
-        removeLayerNode: function (b, a) {
+        removeLayerNode: function(b, a) {
             if (this.filter(a) === true) {
-                var c = b.findChildBy(function (d) {
+                var c = b.findChildBy(function(d) {
                     return d.get("layer") == a.getLayer()
                 });
                 if (c) {
@@ -1295,7 +1295,7 @@ Ext.onReady(function () {
                 }
             }
         },
-        onChildMove: function (c, k, l, h) {
+        onChildMove: function(c, k, l, h) {
             var i = this,
                 g = i.store.getByLayer(c.get("layer")),
                 b = l.get("container"),
@@ -1307,7 +1307,7 @@ Ext.onReady(function () {
                 var a;
                 if (l.childNodes.length > 1) {
                     var j = (h === 0) ? h + 1 : h - 1;
-                    a = i.store.findBy(function (m) {
+                    a = i.store.findBy(function(m) {
                         return l.childNodes[j].get("layer") === m.getLayer()
                     });
                     if (h === 0) {
@@ -1320,7 +1320,7 @@ Ext.onReady(function () {
                             d = d.previousSibling
                         } while (d && !(d.get("container") instanceof b.self && d.lastChild));
                         if (d) {
-                            a = i.store.findBy(function (m) {
+                            a = i.store.findBy(function(m) {
                                 return d.lastChild.get("layer") === m.getLayer()
                             })
                         } else {
@@ -1329,7 +1329,7 @@ Ext.onReady(function () {
                                 e = e.nextSibling
                             } while (e && !(e.get("container") instanceof b.self && e.firstChild));
                             if (e) {
-                                a = i.store.findBy(function (m) {
+                                a = i.store.findBy(function(m) {
                                     return e.firstChild.get("layer") === m.getLayer()
                                 })
                             }
@@ -1346,13 +1346,13 @@ Ext.onReady(function () {
             }
             delete i._reordering
         },
-        addStoreHandlers: function (b) {
+        addStoreHandlers: function(b) {
             if (!this._storeHandlers) {
                 this._storeHandlers = {
-                    add: function (c, e, d) {
+                    add: function(c, e, d) {
                         this.onStoreAdd(c, e, d, b)
                     },
-                    remove: function (c, d) {
+                    remove: function(c, d) {
                         this.onStoreRemove(d, b)
                     }
                 };
@@ -1361,7 +1361,7 @@ Ext.onReady(function () {
                 }
             }
         },
-        removeStoreHandlers: function () {
+        removeStoreHandlers: function() {
             if (this._storeHandlers) {
                 for (var a in this._storeHandlers) {
                     this.store.un(a, this._storeHandlers[a], this)
@@ -1369,13 +1369,13 @@ Ext.onReady(function () {
                 delete this._storeHandlers
             }
         },
-        createNode: function (a) {
+        createNode: function(a) {
             if (this.baseAttrs) {
                 Ext.apply(a, this.baseAttrs)
             }
             return a
         },
-        destroy: function () {
+        destroy: function() {
             this.removeStoreHandlers()
         }
     });
@@ -1384,7 +1384,7 @@ Ext.onReady(function () {
         requires: ["GeoExt.tree.LayerLoader"],
         alias: "plugin.gx_layercontainer",
         defaultText: "Layers",
-        init: function (c) {
+        init: function(c) {
             var b = this;
             var a = b.loader;
             b.loader = (a && a instanceof GeoExt.tree.LayerLoader) ? a : new GeoExt.tree.LayerLoader(a);
@@ -1395,7 +1395,7 @@ Ext.onReady(function () {
             }
             b.loader.load(c)
         },
-        recordIndexToNodeIndex: function (c, g) {
+        recordIndexToNodeIndex: function(c, g) {
             var f = this;
             var b = f.loader.store;
             var e = b.getCount();
@@ -1416,7 +1416,7 @@ Ext.onReady(function () {
         extend: "GeoExt.tree.LayerContainer",
         alias: "plugin.gx_baselayercontainer",
         defaultText: "Base Layers",
-        init: function (c) {
+        init: function(c) {
             var b = this;
             var a = b.loader;
             b.loader = Ext.applyIf(a || {}, {
@@ -1424,7 +1424,7 @@ Ext.onReady(function () {
                     iconCls: "gx-tree-baselayer-icon",
                     checkedGroup: "baselayer"
                 }),
-                filter: function (d) {
+                filter: function(d) {
                     var e = d.getLayer();
                     return e.displayInLayerSwitcher === true && e.isBaseLayer === true
                 }
@@ -1437,7 +1437,7 @@ Ext.onReady(function () {
         alias: "widget.gx_treepanel",
         requires: ["GeoExt.tree.Column", "GeoExt.tree.View"],
         viewType: "gx_treeview",
-        initComponent: function () {
+        initComponent: function() {
             var a = this;
             if (!a.columns) {
                 if (a.initialConfig.hideHeaders === undefined) {
@@ -1460,7 +1460,7 @@ Ext.onReady(function () {
     // ext config
     Ext.Ajax.method = 'GET';
 
-    Ext.isIE = function () {
+    Ext.isIE = function() {
         return /trident/.test(Ext.userAgent);
     }();
 
@@ -1488,7 +1488,7 @@ Ext.onReady(function () {
 
             button = new OpenLayers.Control.Button({
                 displayClass: 'olControlButton',
-                trigger: function () {
+                trigger: function() {
                     fn.call(gis.olmap);
                 }
             });
@@ -1532,7 +1532,7 @@ Ext.onReady(function () {
         });
 
         // Map events
-        olmap.events.register('mousemove', null, function (e) {
+        olmap.events.register('mousemove', null, function(e) {
 
             // track mouse
             gis.olmap.mouseMove.x = e.clientX;
@@ -1596,7 +1596,7 @@ Ext.onReady(function () {
             }
         });
 
-        olmap.zoomToVisibleExtent = function () {
+        olmap.zoomToVisibleExtent = function() {
             gis.util.map.zoomToVisibleExtent(this);
         };
 
@@ -1615,7 +1615,7 @@ Ext.onReady(function () {
         olmap.buttonControls.push(addControl('zoomIn' + (gis.dashboard ? '-vertical' : ''), olmap.zoomIn));
         olmap.buttonControls.push(addControl('zoomOut' + (gis.dashboard ? '-vertical' : ''), olmap.zoomOut));
         olmap.buttonControls.push(addControl('zoomVisible' + (gis.dashboard ? '-vertical' : ''), olmap.zoomToVisibleExtent));
-        //olmap.buttonControls.push(addControl('measure' + (gis.dashboard ? '-vertical' : ''), function () {
+        //olmap.buttonControls.push(addControl('measure' + (gis.dashboard ? '-vertical' : ''), function() {
             //GIS.core.MeasureWindow(gis).show();
         //}));
 
@@ -1638,7 +1638,7 @@ Ext.onReady(function () {
                 //animationEnabled: true,
                 //layerType: gis.conf.finals.layer.type_base,
                 //layerOpacity: 1,
-                //setLayerOpacity: function (number) {
+                //setLayerOpacity: function(number) {
                     //if (number) {
                         //this.layerOpacity = parseFloat(number);
                     //}
@@ -1653,7 +1653,7 @@ Ext.onReady(function () {
                 //animationEnabled: true,
                 //layerType: gis.conf.finals.layer.type_base,
                 //layerOpacity: 1,
-                //setLayerOpacity: function (number) {
+                //setLayerOpacity: function(number) {
                     //if (number) {
                         //this.layerOpacity = parseFloat(number);
                     //}
@@ -1666,7 +1666,7 @@ Ext.onReady(function () {
         layers.openStreetMap = new OpenLayers.Layer.OSM.Mapnik('OpenStreetMap', {
             layerType: gis.conf.finals.layer.type_base,
             layerOpacity: 1,
-            setLayerOpacity: function (number) {
+            setLayerOpacity: function(number) {
                 if (number) {
                     this.layerOpacity = parseFloat(number);
                 }
@@ -1788,7 +1788,7 @@ Ext.onReady(function () {
                 body = Ext.get(document.body);
 
             // Relocate
-            showRelocate = function () {
+            showRelocate = function() {
                 if (gis.olmap.relocate.window) {
                     gis.olmap.relocate.window.destroy();
                 }
@@ -1798,7 +1798,7 @@ Ext.onReady(function () {
                     layout: 'fit',
                     iconCls: 'gis-window-title-icon-relocate',
                     cls: 'gis-container-default',
-                    setMinWidth: function (minWidth) {
+                    setMinWidth: function(minWidth) {
                         this.setWidth(this.getWidth() < minWidth ? minWidth : this.getWidth());
                     },
                     items: {
@@ -1811,7 +1811,7 @@ Ext.onReady(function () {
                             xtype: 'button',
                             hideLabel: true,
                             text: GIS.i18n.cancel,
-                            handler: function () {
+                            handler: function() {
                                 gis.olmap.relocate.active = false;
                                 gis.olmap.relocate.window.destroy();
                                 gis.olmap.getViewport().style.cursor = 'auto';
@@ -1819,7 +1819,7 @@ Ext.onReady(function () {
                         }
                     ],
                     listeners: {
-                        close: function () {
+                        close: function() {
                             gis.olmap.relocate.active = false;
                             gis.olmap.getViewport().style.cursor = 'auto';
                         }
@@ -1833,11 +1833,11 @@ Ext.onReady(function () {
             };
 
             // Infrastructural data
-            showInfo = function () {
+            showInfo = function() {
                 Ext.Ajax.request({
                     url: gis.init.contextPath + '/api/organisationUnits/' + att.id + '.json?links=false',
                     disableCaching: false,
-                    success: function (r) {
+                    success: function(r) {
                         var ou = Ext.decode(r.responseText);
 
                         if (layer.infrastructuralWindow) {
@@ -1857,7 +1857,7 @@ Ext.onReady(function () {
                                     cls: 'gis-container-inner',
                                     columnWidth: 0.4,
                                     bodyStyle: 'padding-right:4px',
-                                    items: function () {
+                                    items: function() {
                                         var a = [];
 
                                         if (att.name) {
@@ -1992,7 +1992,7 @@ Ext.onReady(function () {
                                             labelWidth: 70,
                                             store: {
                                                 fields: ['id', 'name'],
-                                                data: function () {
+                                                data: function() {
                                                     var periodType = gis.init.systemSettings.infrastructuralPeriodType.id,
                                                         generator = gis.init.periodGenerator,
                                                         periods = generator.filterFuturePeriodsExceptCurrent(generator.generateReversedPeriods(periodType, this.periodOffset)) || [];
@@ -2010,7 +2010,7 @@ Ext.onReady(function () {
                                             },
                                             lockPosition: false,
                                             listeners: {
-                                                select: function (cmp) {
+                                                select: function(cmp) {
                                                     var period = cmp.getValue(),
                                                         url = gis.init.contextPath + '/api/analytics.json?',
                                                         group = gis.init.systemSettings.infrastructuralDataElementGroup;
@@ -2030,7 +2030,7 @@ Ext.onReady(function () {
                                                     Ext.Ajax.request({
                                                         url: url,
                                                         disableCaching: false,
-                                                        success: function (r) {
+                                                        success: function(r) {
                                                             var response = Ext.decode(r.responseText),
                                                                 data = [];
 
@@ -2085,7 +2085,7 @@ Ext.onReady(function () {
         }
        ],
                             listeners: {
-                                show: function () {
+                                show: function() {
                                     if (infrastructuralPeriod) {
                                         this.down('combo').setValue(infrastructuralPeriod);
                                         infrastructuralDataElementValuesStore.load({
@@ -2106,7 +2106,7 @@ Ext.onReady(function () {
             };
 
             // Drill or float
-            drill = function (parentId, parentGraph, level) {
+            drill = function(parentId, parentGraph, level) {
                 var view = Ext.clone(layer.core.view),
                     loader;
 
@@ -2145,7 +2145,7 @@ Ext.onReady(function () {
                     iconCls: 'gis-menu-item-icon-float',
                     cls: 'gis-plugin',
                     disabled: !att.hasCoordinatesUp,
-                    handler: function () {
+                    handler: function() {
                         drill(att.grandParentId, att.grandParentParentGraph, parseInt(att.level) - 1);
                     }
                 }));
@@ -2155,7 +2155,7 @@ Ext.onReady(function () {
                     iconCls: 'gis-menu-item-icon-drill',
                     cls: 'gis-menu-item-first gis-plugin',
                     disabled: !att.hasCoordinatesDown,
-                    handler: function () {
+                    handler: function() {
                         drill(att.id, att.parentGraph, parseInt(att.level) + 1);
                     }
                 }));
@@ -2173,7 +2173,7 @@ Ext.onReady(function () {
                     text: GIS.i18n.relocate,
                     iconCls: 'gis-menu-item-icon-relocate',
                     disabled: !gis.init.user.isAdmin,
-                    handler: function (item) {
+                    handler: function(item) {
                         gis.olmap.relocate.active = true;
                         gis.olmap.relocate.feature = feature;
                         gis.olmap.getViewport().style.cursor = 'crosshair';
@@ -2185,7 +2185,7 @@ Ext.onReady(function () {
                     text: 'Swap lon/lat',
                     iconCls: 'gis-menu-item-icon-relocate',
                     disabled: !gis.init.user.isAdmin,
-                    handler: function (item) {
+                    handler: function(item) {
                         var id = feature.attributes.id,
                             geo = Ext.clone(feature.geometry).transform('EPSG:900913', 'EPSG:4326');
 
@@ -2193,7 +2193,7 @@ Ext.onReady(function () {
                             Ext.Ajax.request({
                                 url: gis.init.contextPath + '/api/organisationUnits/' + id + '.json?links=false',
                                 disableCaching: false,
-                                success: function (r) {
+                                success: function(r) {
                                     var orgUnit = Ext.decode(r.responseText);
 
                                     orgUnit.coordinates = '[' + geo.y.toFixed(5) + ',' + geo.x.toFixed(5) + ']';
@@ -2207,7 +2207,7 @@ Ext.onReady(function () {
                                         params: Ext.encode({
                                             organisationUnits: [orgUnit]
                                         }),
-                                        success: function (r) {
+                                        success: function(r) {
                                             var x = feature.geometry.x,
                                                 y = feature.geometry.y;
 
@@ -2229,7 +2229,7 @@ Ext.onReady(function () {
                 menuItems.push(Ext.create('Ext.menu.Item', {
                     text: GIS.i18n.show_information_sheet,
                     iconCls: 'gis-menu-item-icon-information',
-                    handler: function (item) {
+                    handler: function(item) {
                         showInfo();
                     }
                 }));
@@ -2296,14 +2296,14 @@ Ext.onReady(function () {
                     html: html,
                     autoShow: true,
                     listeners: {
-                        show: function (w) {
+                        show: function(w) {
                             if (windowPosition) {
                                 w.setPosition(windowPosition);
                             } else {
                                 gis.util.gui.window.setPositionTopRight(w);
                             }
                         },
-                        destroy: function () {
+                        destroy: function() {
                             eventWindow = null;
                         }
                     }
@@ -2363,7 +2363,7 @@ Ext.onReady(function () {
             displayInLayerSwitcher: false,
             layerType: gis.conf.finals.layer.type_vector,
             layerOpacity: config ? config.opacity || 1 : 1,
-            setLayerOpacity: function (number) {
+            setLayerOpacity: function(number) {
                 if (number) {
                     this.layerOpacity = parseFloat(number);
                 }
@@ -2398,7 +2398,7 @@ Ext.onReady(function () {
             }
         });
 
-        handleMeasurements = function (e) {
+        handleMeasurements = function(e) {
             if (e.measure) {
                 label.setText(e.measure.toFixed(2) + ' ' + e.units);
             }
@@ -2429,13 +2429,13 @@ Ext.onReady(function () {
             resizable: false,
             items: label,
             listeners: {
-                show: function () {
+                show: function() {
                     var x = gis.viewport.eastRegion.getPosition()[0] - this.getWidth() - 3,
                         y = gis.viewport.centerRegion.getPosition()[1] + 26;
                     this.setPosition(x, y);
                     this.setHeight(40);
                 },
-                destroy: function () {
+                destroy: function() {
                     control.deactivate();
                     gis.olmap.removeControl(control);
                 }
@@ -2459,7 +2459,7 @@ Ext.onReady(function () {
                 failure,
                 config = {};
 
-            success = function (r) {
+            success = function(r) {
                 var response = r.responseText ? Ext.decode(r.responseText) : r;
 
                 // operand
@@ -2489,7 +2489,7 @@ Ext.onReady(function () {
                 setMap();
             };
 
-            failure = function (r) {
+            failure = function(r) {
                 if (gis.olmap.mask && !gis.skipMask) {
                     gis.olmap.mask.hide();
                 }
@@ -2552,7 +2552,7 @@ Ext.onReady(function () {
             }
         };
 
-        callBack = function (layer) {
+        callBack = function(layer) {
             register.push(layer);
 
             if (register.length === gis.map.mapViews.length) {
@@ -2560,7 +2560,7 @@ Ext.onReady(function () {
             }
         };
 
-        afterLoad = function () {
+        afterLoad = function() {
             register = [];
 
             // title
@@ -2597,7 +2597,7 @@ Ext.onReady(function () {
         };
 
         loader = {
-            load: function (views) {
+            load: function(views) {
                 if (gis.olmap.mask && !gis.skipMask) {
                     gis.olmap.mask.show();
                 }
@@ -2629,11 +2629,11 @@ Ext.onReady(function () {
             loader,
             dimConf = gis.conf.finals.dimension;
 
-        loadOrganisationUnits = function (view) {
+        loadOrganisationUnits = function(view) {
             loadData(view);
         };
 
-        loadData = function (view) {
+        loadData = function(view) {
             var paramString = '?',
                 features = [],
                 success;
@@ -2672,7 +2672,7 @@ Ext.onReady(function () {
                 //}
             }
 
-            success = function (r) {
+            success = function(r) {
                 var events = [],
                     features = [],
                     rows = [],
@@ -2755,10 +2755,10 @@ Ext.onReady(function () {
                 Ext.Ajax.request({
                     url: gis.init.contextPath + '/api/analytics/events/query/' + view.program.id + '.json' + paramString,
                     disableCaching: false,
-                    failure: function (r) {
+                    failure: function(r) {
                         alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
                     },
-                    success: function (r) {
+                    success: function(r) {
                         success(Ext.decode(r.responseText));
                     }
                 });
@@ -2767,14 +2767,14 @@ Ext.onReady(function () {
                     url: gis.init.contextPath + '/api/analytics/events/query/' + view.program.id + '.jsonp' + paramString,
                     disableCaching: false,
                     scope: this,
-                    success: function (r) {
+                    success: function(r) {
                         success(r);
                     }
                 });
             }
         };
 
-        loadLegend = function (view) {
+        loadLegend = function(view) {
             view = view || layer.core.view;
 
             // classification optionsvar options = {
@@ -2794,7 +2794,7 @@ Ext.onReady(function () {
             afterLoad(view);
         };
 
-        afterLoad = function (view) {
+        afterLoad = function(view) {
 
             // Layer
             if (layer.item) {
@@ -2839,7 +2839,7 @@ Ext.onReady(function () {
             zoomToVisibleExtent: false,
             hideMask: false,
             callBack: null,
-            load: function (view) {
+            load: function(view) {
                 if (gis.olmap.mask && !gis.skipMask) {
                     gis.olmap.mask.show();
                 }
@@ -2936,7 +2936,7 @@ Ext.onReady(function () {
         loadOrganisationUnits = function(view) {
             var items = view.rows[0].items,
                 isJsonp = gis.plugin && gis.crossDomain,
-                url = function () {
+                url = function() {
                     var params = '?ou=ou:';
 
                     for (var i = 0; i < items.length; i++) {
@@ -2951,7 +2951,7 @@ Ext.onReady(function () {
                 success,
                 failure;
 
-            success = function (r) {
+            success = function(r) {
                 var geojson = layer.core.decode(r),
                     format = new OpenLayers.Format.GeoJSON(),
                     features = gis.util.map.getTransformedFeatureArray(format.read(geojson));
@@ -2977,7 +2977,7 @@ Ext.onReady(function () {
                 loadData(view, features);
             };
 
-            failure = function () {
+            failure = function() {
                 if (gis.olmap.mask && !gis.skipMask) {
                     gis.olmap.mask.hide();
                 }
@@ -2988,7 +2988,7 @@ Ext.onReady(function () {
                 Ext.data.JsonP.request({
                     url: url,
                     disableCaching: false,
-                    success: function (r) {
+                    success: function(r) {
                         success(r);
                     }
                 });
@@ -2996,7 +2996,7 @@ Ext.onReady(function () {
                 Ext.Ajax.request({
                     url: url,
                     disableCaching: false,
-                    success: function (r) {
+                    success: function(r) {
                         success(Ext.decode(r.responseText));
                     }
                 });
@@ -3033,7 +3033,7 @@ Ext.onReady(function () {
 
             layer.styleMap = GIS.core.StyleMap(view);
 
-            success = function (r) {
+            success = function(r) {
                 var data = r.organisationUnitGroups,
                     options = {
                         indicator: view.organisationUnitGroupSet.id
@@ -3056,7 +3056,7 @@ Ext.onReady(function () {
                 Ext.data.JsonP.request({
                     url: url,
                     disableCaching: false,
-                    success: function (r) {
+                    success: function(r) {
                         success(r);
                     }
                 });
@@ -3064,7 +3064,7 @@ Ext.onReady(function () {
                 Ext.Ajax.request({
                     url: url,
                     disableCaching: false,
-                    success: function (r) {
+                    success: function(r) {
                         success(Ext.decode(r.responseText));
                     }
                 });
@@ -3135,7 +3135,7 @@ Ext.onReady(function () {
             zoomToVisibleExtent: false,
             hideMask: false,
             callBack: null,
-            load: function (view) {
+            load: function(view) {
                 if (gis.olmap.mask && !gis.skipMask) {
                     gis.olmap.mask.show();
                 }
@@ -3162,7 +3162,7 @@ Ext.onReady(function () {
             afterLoad,
             loader;
 
-        compareView = function (view, doExecute) {
+        compareView = function(view, doExecute) {
             var src = layer.core.view,
                 viewIds,
                 viewDim,
@@ -3216,10 +3216,10 @@ Ext.onReady(function () {
             }
         };
 
-        loadOrganisationUnits = function (view) {
+        loadOrganisationUnits = function(view) {
             var items = view.rows[0].items,
                 isJsonp = gis.plugin && gis.crossDomain,
-                url = function () {
+                url = function() {
                     var params = '?ou=ou:';
 
                     for (var i = 0; i < items.length; i++) {
@@ -3234,7 +3234,7 @@ Ext.onReady(function () {
                 success,
                 failure;
 
-            success = function (r) {
+            success = function(r) {
                 var geojson = gis.util.geojson.decode(r, 'DESC'),
                     format = new OpenLayers.Format.GeoJSON(),
                     features = gis.util.map.getTransformedFeatureArray(format.read(geojson)),
@@ -3292,7 +3292,7 @@ Ext.onReady(function () {
                 loadData(view, features);
             };
 
-            failure = function () {
+            failure = function() {
                 if (gis.olmap.mask && !gis.skipMask) {
                     gis.olmap.mask.hide();
                 }
@@ -3303,7 +3303,7 @@ Ext.onReady(function () {
                 Ext.data.JsonP.request({
                     url: url,
                     disableCaching: false,
-                    success: function (r) {
+                    success: function(r) {
                         success(r);
                     }
                 });
@@ -3311,17 +3311,17 @@ Ext.onReady(function () {
                 Ext.Ajax.request({
                     url: url,
                     disableCaching: false,
-                    success: function (r) {
+                    success: function(r) {
                         success(Ext.decode(r.responseText));
                     },
-                    failure: function () {
+                    failure: function() {
                         failure();
                     }
                 });
             }
         };
 
-        loadData = function (view, features) {
+        loadData = function(view, features) {
             view = view || layer.core.view;
             features = features || layer.core.featureStore.features;
 
@@ -3336,7 +3336,7 @@ Ext.onReady(function () {
             loadLegend(view);
         };
 
-        loadLegend = function (view) {
+        loadLegend = function(view) {
             view = view || layer.core.view;
 
             // labels
@@ -3364,7 +3364,7 @@ Ext.onReady(function () {
             afterLoad(view);
         };
 
-        afterLoad = function (view) {
+        afterLoad = function(view) {
 
             // Layer
             if (layer.item) {
@@ -3408,7 +3408,7 @@ Ext.onReady(function () {
             zoomToVisibleExtent: false,
             hideMask: false,
             callBack: null,
-            load: function (view) {
+            load: function(view) {
                 if (gis.olmap.mask && !gis.skipMask) {
                     gis.olmap.mask.show();
                 }
@@ -3437,7 +3437,7 @@ Ext.onReady(function () {
             dimConf = gis.conf.finals.dimension,
             type = gis.plugin && gis.crossDomain ? 'jsonp' : 'json';
 
-        compareView = function (view, doExecute) {
+        compareView = function(view, doExecute) {
             var src = layer.core.view,
                 viewIds,
                 viewDim,
@@ -3568,10 +3568,10 @@ Ext.onReady(function () {
             //gis.olmap.mask.hide();
         };
 
-        loadOrganisationUnits = function (view) {
+        loadOrganisationUnits = function(view) {
             var items = view.rows[0].items,
                 isJsonp = gis.plugin && gis.crossDomain,
-                url = function () {
+                url = function() {
                     var params = '?ou=ou:';
 
                     for (var i = 0; i < items.length; i++) {
@@ -3586,7 +3586,7 @@ Ext.onReady(function () {
                 success,
                 failure;
 
-            success = function (r) {
+            success = function(r) {
                 var geojson = gis.util.geojson.decode(r),
                     format = new OpenLayers.Format.GeoJSON(),
                     features = gis.util.map.getTransformedFeatureArray(format.read(geojson));
@@ -3612,7 +3612,7 @@ Ext.onReady(function () {
                 loadData(view, features);
             };
 
-            failure = function () {
+            failure = function() {
                 if (gis.olmap.mask && !gis.skipMask) {
                     gis.olmap.mask.hide();
                 }
@@ -3623,7 +3623,7 @@ Ext.onReady(function () {
                 Ext.data.JsonP.request({
                     url: url,
                     disableCaching: false,
-                    success: function (r) {
+                    success: function(r) {
                         success(r);
                     }
                 });
@@ -3631,17 +3631,17 @@ Ext.onReady(function () {
                 Ext.Ajax.request({
                     url: url,
                     disableCaching: false,
-                    success: function (r) {
+                    success: function(r) {
                         success(Ext.decode(r.responseText));
                     },
-                    failure: function () {
+                    failure: function() {
                         failure();
                     }
                 });
             }
         };
 
-        loadData = function (view, features) {
+        loadData = function(view, features) {
             var success;
 
             view = view || layer.core.view;
@@ -3683,7 +3683,7 @@ Ext.onReady(function () {
             // display property
             paramString += '&displayProperty=' + gis.init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
 
-            success = function (json) {
+            success = function(json) {
                 var response = gis.api.response.Response(json),
                     featureMap = {},
                     valueMap = {},
@@ -3750,7 +3750,7 @@ Ext.onReady(function () {
                     url: gis.init.contextPath + '/api/analytics.jsonp' + paramString,
                     disableCaching: false,
                     scope: this,
-                    success: function (r) {
+                    success: function(r) {
                         success(r);
                     }
                 });
@@ -3758,17 +3758,17 @@ Ext.onReady(function () {
                 Ext.Ajax.request({
                     url: gis.init.contextPath + '/api/analytics.json' + paramString,
                     disableCaching: false,
-                    failure: function (r) {
+                    failure: function(r) {
                         alert(r.status + '\n' + r.statusText + '\n' + r.responseText);
                     },
-                    success: function (r) {
+                    success: function(r) {
                         success(Ext.decode(r.responseText));
                     }
                 });
             }
         };
 
-        loadLegend = function (view) {
+        loadLegend = function(view) {
             var bounds,
                 addNames,
                 fn;
@@ -3783,7 +3783,7 @@ Ext.onReady(function () {
 
             layer.styleMap = GIS.core.StyleMap(view);
 
-            addNames = function (response) {
+            addNames = function(response) {
 
                 // All dimensions
                 var dimensions = Ext.Array.clean([].concat(view.columns || [], view.rows || [], view.filters || [])),
@@ -3809,7 +3809,7 @@ Ext.onReady(function () {
                 view.filters[0].items[0].name = metaData.names[peIds[peIds.length - 1]];
             };
 
-            fn = function () {
+            fn = function() {
                 addNames(gis.response);
 
                 // Classification options
@@ -3841,10 +3841,10 @@ Ext.onReady(function () {
                     failure,
                     config = {};
 
-                success = function (r) {
+                success = function(r) {
                     legends = r.responseText ? Ext.decode(r.responseText).mapLegends : r.mapLegends;
 
-                    Ext.Array.sort(legends, function (a, b) {
+                    Ext.Array.sort(legends, function(a, b) {
                         return a.startValue - b.startValue;
                     });
 
@@ -3867,7 +3867,7 @@ Ext.onReady(function () {
                     view.legendSet.colors = colors;
                 };
 
-                failure = function (r) {
+                failure = function(r) {
                     console.log(r);
                 };
 
@@ -3948,7 +3948,7 @@ Ext.onReady(function () {
             zoomToVisibleExtent: false,
             hideMask: false,
             callBack: null,
-            load: function (view) {
+            load: function(view) {
                 if (gis.olmap.mask && !gis.skipMask) {
                     gis.olmap.mask.show();
                 }
@@ -4025,7 +4025,7 @@ Ext.onReady(function () {
         gis.skipFade = init.skipFade;
 
         // conf
-        (function () {
+        (function() {
             conf.finals = {
                 url: {
                     path_commons: '/dhis-web-commons-ajax-json/'
@@ -4337,10 +4337,10 @@ Ext.onReady(function () {
         }());
 
         // util
-        (function () {
+        (function() {
             util.map = {};
 
-            util.map.getVisibleVectorLayers = function () {
+            util.map.getVisibleVectorLayers = function() {
                 var layers = [];
 
                 for (var i = 0, layer; i < gis.olmap.layers.length; i++) {
@@ -4352,7 +4352,7 @@ Ext.onReady(function () {
                 return layers;
             };
 
-            util.map.getRenderedVectorLayers = function () {
+            util.map.getRenderedVectorLayers = function() {
                 var layers = [];
 
                 for (var i = 0, layer; i < gis.olmap.layers.length; i++) {
@@ -4364,7 +4364,7 @@ Ext.onReady(function () {
                 return layers;
             };
 
-            util.map.getExtendedBounds = function (layers) {
+            util.map.getExtendedBounds = function(layers) {
                 var bounds = null;
                 if (layers.length) {
                     bounds = layers[0].getDataExtent();
@@ -4377,14 +4377,14 @@ Ext.onReady(function () {
                 return bounds;
             };
 
-            util.map.zoomToVisibleExtent = function (olmap) {
+            util.map.zoomToVisibleExtent = function(olmap) {
                 var bounds = util.map.getExtendedBounds(util.map.getVisibleVectorLayers(olmap));
                 if (bounds) {
                     olmap.zoomToExtent(bounds);
                 }
             };
 
-            util.map.getTransformedFeatureArray = function (features) {
+            util.map.getTransformedFeatureArray = function(features) {
                 var sourceProjection = new OpenLayers.Projection("EPSG:4326"),
                     destinationProjection = new OpenLayers.Projection("EPSG:900913");
                 for (var i = 0; i < features.length; i++) {
@@ -4417,7 +4417,7 @@ Ext.onReady(function () {
 
             util.geojson = {};
 
-            util.geojson.decode = function (organisationUnits, levelOrder) {
+            util.geojson.decode = function(organisationUnits, levelOrder) {
                 var geojson = {
                     type: 'FeatureCollection',
                     crs: {
@@ -4479,7 +4479,7 @@ Ext.onReady(function () {
             util.gui = {};
             util.gui.combo = {};
 
-            util.gui.combo.setQueryMode = function (cmpArray, mode) {
+            util.gui.combo.setQueryMode = function(cmpArray, mode) {
                 for (var i = 0; i < cmpArray.length; i++) {
                     cmpArray[i].queryMode = mode;
                 }
@@ -4487,7 +4487,7 @@ Ext.onReady(function () {
 
             util.object = {};
 
-            util.object.getLength = function (object)  {
+            util.object.getLength = function(object)  {
                 var size = 0;
 
                 for (var key in object) {
@@ -4501,7 +4501,7 @@ Ext.onReady(function () {
 
             util.array = {};
 
-            util.array.sort = function (array, direction, key) {
+            util.array.sort = function(array, direction, key) {
                 // accepts [number], [string], [{prop: number}], [{prop: string}]
 
                 if (!util.object.getLength(array)) {
@@ -4510,7 +4510,7 @@ Ext.onReady(function () {
 
                 key = key || 'name';
 
-                array.sort(function (a, b) {
+                array.sort(function(a, b) {
 
                     // if object, get the property values
                     if (Ext.isObject(a) && Ext.isObject(b) && key) {
@@ -4543,7 +4543,7 @@ Ext.onReady(function () {
 
             util.layout = {};
 
-            util.layout.getAnalytical = function (map) {
+            util.layout.getAnalytical = function(map) {
                 var layout,
                     layer;
 
@@ -4580,7 +4580,7 @@ Ext.onReady(function () {
                 return;
             };
 
-            util.layout.getPluginConfig = function () {
+            util.layout.getPluginConfig = function() {
                 var layers = gis.util.map.getVisibleVectorLayers(),
                     map = {};
 
@@ -4603,7 +4603,7 @@ Ext.onReady(function () {
                 return map;
             };
 
-            util.layout.setSessionStorage = function (session, obj, url) {
+            util.layout.setSessionStorage = function(session, obj, url) {
                 if (GIS.isSessionStorage) {
                     var dhis2 = JSON.parse(sessionStorage.getItem('dhis2')) || {};
                     dhis2[session] = obj;
@@ -4615,7 +4615,7 @@ Ext.onReady(function () {
                 }
             };
 
-            util.layout.getDataDimensionsFromLayout = function (layout)  {
+            util.layout.getDataDimensionsFromLayout = function(layout)  {
                 var dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows ||  [], layout.filters || [])),
                     ignoreKeys = ['pe', 'ou'],
                     dataDimensions = [];
@@ -4631,7 +4631,7 @@ Ext.onReady(function () {
 
             util.layer = {};
 
-            util.layer.setFeatureLabelStyle = function (layer, isLabel, skipDraw, view) {
+            util.layer.setFeatureLabelStyle = function(layer, isLabel, skipDraw, view) {
                 for (var i = 0, feature, style, label; i < layer.features.length; i++) {
                     feature = layer.features[i];
                     style = feature.style;
@@ -4665,18 +4665,18 @@ Ext.onReady(function () {
         gis.util = util;
 
         // api
-        (function () {
+        (function() {
             var dimConf = gis.conf.finals.dimension;
 
             api.layout = {};
             api.response = {};
 
-            api.layout.Record = function (config) {
+            api.layout.Record = function(config) {
                 var record = {};
 
                 // id: string
 
-                return function () {
+                return function() {
                     if (!Ext.isObject(config)) {
                         console.log('Record config is not an object', config);
                         return;
@@ -4697,14 +4697,14 @@ Ext.onReady(function () {
                 }();
             };
 
-            api.layout.Dimension = function (config) {
+            api.layout.Dimension = function(config) {
                 var dimension = {};
 
                 // dimension: string
 
                 // items: [Record]
 
-                return function () {
+                return function() {
                     if (!Ext.isObject(config)) {
                         //console.log('Dimension config is not an object: ' + config);
                         return;
@@ -4746,7 +4746,7 @@ Ext.onReady(function () {
                 }();
             };
 
-            api.layout.Layout = function (config, applyConfig) {
+            api.layout.Layout = function(config, applyConfig) {
                 var config = Ext.clone(config),
                     layout = {},
                     getValidatedDimensionArray,
@@ -4780,7 +4780,7 @@ Ext.onReady(function () {
 
                 // hidden: boolean (false)
 
-                getValidatedDimensionArray = function (dimensionArray) {
+                getValidatedDimensionArray = function(dimensionArray) {
                     var dimensions = [];
 
                     if (!(dimensionArray && Ext.isArray(dimensionArray) && dimensionArray.length)) {
@@ -4800,7 +4800,7 @@ Ext.onReady(function () {
                     return dimensionArray.length ? dimensionArray : null;
                 };
 
-                validateSpecialCases = function (config) {
+                validateSpecialCases = function(config) {
                     var dimensions = Ext.Array.clean([].concat(config.columns || [], config.rows || [], config.filters || [])),
                         map = conf.period.integratedRelativePeriodsMap,
                         dxDim,
@@ -4843,7 +4843,7 @@ Ext.onReady(function () {
                     return config;
                 };
 
-                return function () {
+                return function() {
                     var a = [],
                         objectNames =   [],
                         dimConf = conf.finals.dimension,
@@ -4946,14 +4946,14 @@ Ext.onReady(function () {
                 }();
             };
 
-            api.response.Header = function (config) {
+            api.response.Header = function(config) {
                 var header = {};
 
                 // name: string
 
                 // meta: boolean
 
-                return function () {
+                return function() {
                     if (!Ext.isObject(config)) {
                         console.log('Header is not an object', config);
                         return;
@@ -4976,12 +4976,12 @@ Ext.onReady(function () {
                 }();
             };
 
-            api.response.Response = function (config) {
+            api.response.Response = function(config) {
                 var response = {};
 
                 // headers: [Header]
 
-                return function () {
+                return function() {
                     var headers = [];
 
                     if (!(config && Ext.isObject(config))) {
@@ -5062,7 +5062,7 @@ Ext.onReady(function () {
 
     // MAPFISH (mapfish.js)
 
-    (function () {
+    (function() {
         window.mapfish = {
 
             /**
@@ -5078,7 +5078,7 @@ Ext.onReady(function () {
              * Returns:
              * Path to this script
              */
-            _getScriptLocation: function () {
+            _getScriptLocation: function() {
                 // Workaround for Firefox bug:
                 // https://bugzilla.mozilla.org/show_bug.cgi?id=351282
                 if (window.gMfLocation) {
@@ -5110,7 +5110,7 @@ Ext.onReady(function () {
          * An abstract representation of color.
          */
         mapfish.Color = OpenLayers.Class({
-            getColorRgb: function () {}
+            getColorRgb: function() {}
         });
 
         /**
@@ -5130,7 +5130,7 @@ Ext.onReady(function () {
              * green - {Integer}
              * blue - {Integer}
              */
-            initialize: function (red, green, blue) {
+            initialize: function(red, green, blue) {
                 this.redLevel = red;
                 this.greenLevel = green;
                 this.blueLevel = blue;
@@ -5143,17 +5143,17 @@ Ext.onReady(function () {
              * Parameters:
              * {<mapfish.ColorRgb>} color
              */
-            equals: function (color) {
+            equals: function(color) {
                 return color.redLevel == this.redLevel &&
                     color.greenLevel == this.greenLevel &&
                     color.blueLevel == this.blueLevel;
             },
 
-            getColorRgb: function () {
+            getColorRgb: function() {
                 return this;
             },
 
-            getRgbArray: function () {
+            getRgbArray: function() {
                 return [
     this.redLevel,
     this.greenLevel,
@@ -5168,7 +5168,7 @@ Ext.onReady(function () {
              * Parameters:
              * rgbHexString - {String} Hex color string (format: #rrggbb)
              */
-            hex2rgbArray: function (rgbHexString) {
+            hex2rgbArray: function(rgbHexString) {
                 if (rgbHexString.charAt(0) == '#') {
                     rgbHexString = rgbHexString.substr(1);
                 }
@@ -5192,7 +5192,7 @@ Ext.onReady(function () {
              * Parameters:
              * rgbHexString - {String} Hex color string (format: #rrggbb)
              */
-            setFromHex: function (rgbHexString) {
+            setFromHex: function(rgbHexString) {
                 var rgbArray = this.hex2rgbArray(rgbHexString);
                 this.redLevel = rgbArray[0];
                 this.greenLevel = rgbArray[1];
@@ -5204,7 +5204,7 @@ Ext.onReady(function () {
              * Sets the color from a color rgb string
              *
              */
-            setFromRgb: function (rgbString) {
+            setFromRgb: function(rgbString) {
                 var color = dojo.colorFromString(rgbString);
                 this.redLevel = color.r;
                 this.greenLevel = color.g;
@@ -5216,7 +5216,7 @@ Ext.onReady(function () {
              * Converts the rgb color to hex string
              *
              */
-            toHexString: function () {
+            toHexString: function() {
                 var r = this.toHex(this.redLevel);
                 var g = this.toHex(this.greenLevel);
                 var b = this.toHex(this.blueLevel);
@@ -5230,7 +5230,7 @@ Ext.onReady(function () {
              * Parameters:
              * dec - {Integer} Decimal value to convert [0..255]
              */
-            toHex: function (dec) {
+            toHex: function(dec) {
                 // create list of hex characters
                 var hexCharacters = "0123456789ABCDEF";
                 // if number is out of range return limit
@@ -5261,7 +5261,7 @@ Ext.onReady(function () {
          * Returns
          * {Array({<mapfish.Color>})} The resulting array of colors.
          */
-        mapfish.ColorRgb.getColorsArrayByRgbInterpolation = function (firstColor, lastColor, nbColors) {
+        mapfish.ColorRgb.getColorsArrayByRgbInterpolation = function(firstColor, lastColor, nbColors) {
             var resultColors = [];
             var colorA = firstColor.getColorRgb();
             var colorB = lastColor.getColorRgb();
@@ -5297,7 +5297,7 @@ Ext.onReady(function () {
          * APIFunction: sum
          * Return the sum of the elements of an array.
          */
-        mapfish.Util.sum = function (array) {
+        mapfish.Util.sum = function(array) {
             for (var i = 0, sum = 0; i < array.length; sum += array[i++]);
             return sum;
         };
@@ -5306,7 +5306,7 @@ Ext.onReady(function () {
          * APIFunction: max
          * Return the max of the elements of an array.
          */
-        mapfish.Util.max = function (array) {
+        mapfish.Util.max = function(array) {
             return Math.max.apply({}, array);
         };
 
@@ -5314,7 +5314,7 @@ Ext.onReady(function () {
          * APIFunction: min
          * Return the min of the elements of an array.
          */
-        mapfish.Util.min = function (array) {
+        mapfish.Util.min = function(array) {
             return Math.min.apply({}, array);
         };
 
@@ -5333,7 +5333,7 @@ Ext.onReady(function () {
          * Returns:
          * {String} The URL at which the icon can be found.
          */
-        mapfish.Util.getIconUrl = function (wmsUrl, options) {
+        mapfish.Util.getIconUrl = function(wmsUrl, options) {
             if (!options.layer) {
                 OpenLayers.Console.warn(
                     'Missing required layer option in mapfish.Util.getIconUrl');
@@ -5379,7 +5379,7 @@ Ext.onReady(function () {
          * Returns:
          * {Boolean} True if both given arrays contents are the same (elements value and type).
          */
-        mapfish.Util.arrayEqual = function (a, b) {
+        mapfish.Util.arrayEqual = function(a, b) {
             if (a == null || b == null)
                 return false;
             if (typeof (a) != 'object' || typeof (b) != 'object')
@@ -5401,7 +5401,7 @@ Ext.onReady(function () {
          * Returns:
          * {Boolean} True if the browser is Internet Explorer V7
          */
-        mapfish.Util.isIE7 = function () {
+        mapfish.Util.isIE7 = function() {
             var ua = navigator.userAgent.toLowerCase();
             return ua.indexOf("msie 7") > -1;
         };
@@ -5415,7 +5415,7 @@ Ext.onReady(function () {
          * Returns:
          * {String} An absolute URL
          */
-        mapfish.Util.relativeToAbsoluteURL = function (source) {
+        mapfish.Util.relativeToAbsoluteURL = function(source) {
             if (/^\w+:/.test(source) || !source) {
                 return source;
             }
@@ -5441,7 +5441,7 @@ Ext.onReady(function () {
          * Returns:
          * {Array}
          */
-        mapfish.Util.fixArray = function (subs) {
+        mapfish.Util.fixArray = function(subs) {
             if (subs == '' || subs == null) {
                 return [];
             } else if (subs instanceof Array) {
@@ -5471,9 +5471,9 @@ Ext.onReady(function () {
 
             url: null,
 
-            requestSuccess: function (request) {},
+            requestSuccess: function(request) {},
 
-            requestFailure: function (request) {},
+            requestFailure: function(request) {},
 
             indicator: null,
 
@@ -5481,7 +5481,7 @@ Ext.onReady(function () {
 
             legendDiv: null,
 
-            initialize: function (map, options) {
+            initialize: function(map, options) {
                 this.map = map;
                 this.addOptions(options);
                 if (!this.layer) {
@@ -5497,7 +5497,7 @@ Ext.onReady(function () {
                 this.legendDiv = Ext.get(options.legendDiv);
             },
 
-            setUrl: function (url) {
+            setUrl: function(url) {
                 this.url = url;
                 if (this.url) {
                     OpenLayers.Request.GET({
@@ -5509,7 +5509,7 @@ Ext.onReady(function () {
                 }
             },
 
-            getColors: function (low, high) {
+            getColors: function(low, high) {
                 var startColor = new mapfish.ColorRgb(),
                     endColor = new mapfish.ColorRgb()
                 startColor.setFromHex(low);
@@ -5517,7 +5517,7 @@ Ext.onReady(function () {
                 return [startColor, endColor];
             },
 
-            addOptions: function (newOptions) {
+            addOptions: function(newOptions) {
                 if (newOptions) {
                     if (!this.options) {
                         this.options = {};
@@ -5529,7 +5529,7 @@ Ext.onReady(function () {
                 }
             },
 
-            extendStyle: function (rules, symbolizer, context) {
+            extendStyle: function(rules, symbolizer, context) {
                 var style = this.layer.styleMap.styles['default'];
                 if (rules) {
                     style.rules = rules;
@@ -5550,23 +5550,23 @@ Ext.onReady(function () {
                 }
             },
 
-            applyClassification: function (options) {
+            applyClassification: function(options) {
                 this.layer.renderer.clear();
                 this.layer.redraw();
                 this.updateLegend();
                 this.layer.setVisibility(true);
             },
 
-            showDetails: function (obj) {},
+            showDetails: function(obj) {},
 
-            hideDetails: function (obj) {},
+            hideDetails: function(obj) {},
 
             CLASS_NAME: "mapfish.GeoStat"
         });
 
         mapfish.GeoStat.Distribution = OpenLayers.Class({
 
-            labelGenerator: function (bin, binIndex, nbBins) {
+            labelGenerator: function(bin, binIndex, nbBins) {
                 var lower = parseFloat(bin.lowerBound).toFixed(1),
                     upper = parseFloat(bin.upperBound).toFixed(1);
                 return lower + ' - ' + upper + '&nbsp;&nbsp;' + '(' + bin.nbVal + ')';
@@ -5580,7 +5580,7 @@ Ext.onReady(function () {
 
             maxVal: null,
 
-            initialize: function (values, options) {
+            initialize: function(values, options) {
                 OpenLayers.Util.extend(this, options);
                 this.values = values;
                 this.nbVal = values.length;
@@ -5588,7 +5588,7 @@ Ext.onReady(function () {
                 this.maxVal = this.nbVal ? mapfish.Util.max(this.values) : 0;
             },
 
-            classifyWithBounds: function (bounds) {
+            classifyWithBounds: function(bounds) {
                 var bins = [];
                 var binCount = [];
                 var sortedValues = [];
@@ -5596,7 +5596,7 @@ Ext.onReady(function () {
                 for (var i = 0; i < this.values.length; i++) {
                     sortedValues.push(this.values[i]);
                 }
-                sortedValues.sort(function (a, b) {
+                sortedValues.sort(function(a, b) {
                     return a - b;
                 });
                 var nbBins = bounds.length - 1;
@@ -5625,7 +5625,7 @@ Ext.onReady(function () {
                 return new mapfish.GeoStat.Classification(bins);
             },
 
-            classifyByEqIntervals: function (nbBins) {
+            classifyByEqIntervals: function(nbBins) {
                 var bounds = [];
 
                 for (var i = 0; i <= nbBins; i++) {
@@ -5635,9 +5635,9 @@ Ext.onReady(function () {
                 return this.classifyWithBounds(bounds);
             },
 
-            classifyByQuantils: function (nbBins) {
+            classifyByQuantils: function(nbBins) {
                 var values = this.values;
-                values.sort(function (a, b) {
+                values.sort(function(a, b) {
                     return a - b;
                 });
                 var binSize = Math.round(this.values.length / nbBins);
@@ -5661,11 +5661,11 @@ Ext.onReady(function () {
                 return this.classifyWithBounds(bounds);
             },
 
-            sturgesRule: function () {
+            sturgesRule: function() {
                 return Math.floor(1 + 3.3 * Math.log(this.nbVal, 10));
             },
 
-            classify: function (method, nbBins, bounds) {
+            classify: function(method, nbBins, bounds) {
                 var classification = null;
                 if (!nbBins) {
                     nbBins = this.sturgesRule();
@@ -5703,7 +5703,7 @@ Ext.onReady(function () {
             upperBound: null,
             isLast: false,
 
-            initialize: function (nbVal, lowerBound, upperBound, isLast) {
+            initialize: function(nbVal, lowerBound, upperBound, isLast) {
                 this.nbVal = nbVal;
                 this.lowerBound = lowerBound;
                 this.upperBound = upperBound;
@@ -5716,11 +5716,11 @@ Ext.onReady(function () {
         mapfish.GeoStat.Classification = OpenLayers.Class({
             bins: [],
 
-            initialize: function (bins) {
+            initialize: function(bins) {
                 this.bins = bins;
             },
 
-            getBoundsArray: function () {
+            getBoundsArray: function() {
                 var bounds = [];
                 for (var i = 0; i < this.bins.length; i++) {
                     bounds.push(this.bins[i].lowerBound);
@@ -5750,7 +5750,7 @@ Ext.onReady(function () {
             featureStore: Ext.create('Ext.data.Store', {
                 fields: ['id', 'name'],
                 features: [],
-                loadFeatures: function (features) {
+                loadFeatures: function(features) {
                     if (features && features.length) {
                         var data = [];
                         for (var i = 0; i < features.length; i++) {
@@ -5764,20 +5764,20 @@ Ext.onReady(function () {
                         this.removeAll();
                     }
                 },
-                sortStore: function () {
+                sortStore: function() {
                     this.sort('name', 'ASC');
                 }
             }),
 
-            initialize: function (map, options) {
+            initialize: function(map, options) {
                 mapfish.GeoStat.prototype.initialize.apply(this, arguments);
             },
 
-            getLoader: function () {
+            getLoader: function() {
                 return GIS.core.LayerLoaderFacility(this.gis, this.layer);
             },
 
-            decode: function (organisationUnits) {
+            decode: function(organisationUnits) {
                 var feature,
                     group,
                     attr,
@@ -5814,7 +5814,7 @@ Ext.onReady(function () {
                 return geojson;
             },
 
-            reset: function () {
+            reset: function() {
                 this.layer.destroyFeatures();
 
                 // legend
@@ -5828,7 +5828,7 @@ Ext.onReady(function () {
                 }
             },
 
-            extendView: function (view, config) {
+            extendView: function(view, config) {
                 view = view || this.view;
 
                 view.organisationUnitGroupSet = config.organisationUnitGroupSet || view.organisationUnitGroupSet;
@@ -5841,11 +5841,11 @@ Ext.onReady(function () {
                 return view;
             },
 
-            updateOptions: function (newOptions) {
+            updateOptions: function(newOptions) {
                 this.addOptions(newOptions);
             },
 
-            applyClassification: function (options) {
+            applyClassification: function(options) {
                 this.updateOptions(options);
 
                 var items = this.gis.store.groupsByGroupSet.data.items;
@@ -5870,7 +5870,7 @@ Ext.onReady(function () {
                 mapfish.GeoStat.prototype.applyClassification.apply(this, arguments);
             },
 
-            updateLegend: function () {
+            updateLegend: function() {
                 var element = document.createElement("div"),
                     child = document.createElement("div"),
                     items = this.gis.store.groupsByGroupSet.data.items;
@@ -5926,7 +5926,7 @@ Ext.onReady(function () {
             featureStore: Ext.create('Ext.data.Store', {
                 fields: ['id', 'name'],
                 features: [],
-                loadFeatures: function (features) {
+                loadFeatures: function(features) {
                     if (features && features.length) {
                         var data = [];
                         for (var i = 0; i < features.length; i++) {
@@ -5940,20 +5940,20 @@ Ext.onReady(function () {
                         this.removeAll();
                     }
                 },
-                sortStore: function () {
+                sortStore: function() {
                     this.sort('name', 'ASC');
                 }
             }),
 
-            initialize: function (map, options) {
+            initialize: function(map, options) {
                 mapfish.GeoStat.prototype.initialize.apply(this, arguments);
             },
 
-            getLoader: function () {
+            getLoader: function() {
                 return GIS.core.LayerLoaderEvent(this.gis, this.layer);
             },
 
-            reset: function () {
+            reset: function() {
                 this.layer.destroyFeatures();
 
                 if (this.layer.widget) {
@@ -5961,7 +5961,7 @@ Ext.onReady(function () {
                 }
             },
 
-            extendView: function (view, config) {
+            extendView: function(view, config) {
                 view = view || this.view;
 
                 view.organisationUnitLevel = config.organisationUnitLevel || view.organisationUnitLevel;
@@ -5973,15 +5973,15 @@ Ext.onReady(function () {
                 return view;
             },
 
-            getLegendConfig: function () {
+            getLegendConfig: function() {
                 return;
             },
 
-            getImageLegendConfig: function () {
+            getImageLegendConfig: function() {
                 return;
             },
 
-            updateOptions: function (newOptions) {
+            updateOptions: function(newOptions) {
                 var oldOptions = OpenLayers.Util.extend({}, this.options);
                 this.addOptions(newOptions);
                 if (newOptions) {
@@ -5989,13 +5989,13 @@ Ext.onReady(function () {
                 }
             },
 
-            createColorInterpolation: function () {
+            createColorInterpolation: function() {
                 var numColors = this.classification.bins.length;
 
                 this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors);
             },
 
-            setClassification: function () {
+            setClassification: function() {
                 var values = [];
                 for (var i = 0; i < this.layer.features.length; i++) {
                     values.push(this.layer.features[i].attributes[this.indicator]);
@@ -6018,11 +6018,11 @@ Ext.onReady(function () {
                 this.createColorInterpolation();
             },
 
-            applyClassification: function (options) {
+            applyClassification: function(options) {
                 this.updateOptions(options);
 
                 var calculateRadius = OpenLayers.Function.bind(
-                    function (feature) {
+                    function(feature) {
                         var value = feature.attributes[this.indicator];
                         var size = (value - this.minVal) / (this.maxVal - this.minVal) *
                             (this.maxSize - this.minSize) + this.minSize;
@@ -6056,7 +6056,7 @@ Ext.onReady(function () {
                 mapfish.GeoStat.prototype.applyClassification.apply(this, arguments);
             },
 
-            updateLegend: function () {
+            updateLegend: function() {
 
             },
 
@@ -6083,7 +6083,7 @@ Ext.onReady(function () {
             featureStore: Ext.create('Ext.data.Store', {
                 fields: ['id', 'name'],
                 features: [],
-                loadFeatures: function (features) {
+                loadFeatures: function(features) {
                     if (features && features.length) {
                         var data = [];
                         for (var i = 0; i < features.length; i++) {
@@ -6097,20 +6097,20 @@ Ext.onReady(function () {
                         this.removeAll();
                     }
                 },
-                sortStore: function () {
+                sortStore: function() {
                     this.sort('name', 'ASC');
                 }
             }),
 
-            initialize: function (map, options) {
+            initialize: function(map, options) {
                 mapfish.GeoStat.prototype.initialize.apply(this, arguments);
             },
 
-            getLoader: function () {
+            getLoader: function() {
                 return GIS.core.LayerLoaderBoundary(this.gis, this.layer);
             },
 
-            reset: function () {
+            reset: function() {
                 this.layer.destroyFeatures();
 
                 if (this.layer.widget) {
@@ -6118,7 +6118,7 @@ Ext.onReady(function () {
                 }
             },
 
-            extendView: function (view, config) {
+            extendView: function(view, config) {
                 view = view || this.view;
 
                 view.organisationUnitLevel = config.organisationUnitLevel || view.organisationUnitLevel;
@@ -6130,15 +6130,15 @@ Ext.onReady(function () {
                 return view;
             },
 
-            getLegendConfig: function () {
+            getLegendConfig: function() {
                 return;
             },
 
-            getImageLegendConfig: function () {
+            getImageLegendConfig: function() {
                 return;
             },
 
-            getDefaultFeatureStyle: function () {
+            getDefaultFeatureStyle: function() {
                 return {
                     fillOpacity: 0,
                     fillColor: '#000',
@@ -6149,7 +6149,7 @@ Ext.onReady(function () {
                 };
             },
 
-            setFeatureStyle: function (style) {
+            setFeatureStyle: function(style) {
                 for (var i = 0; i < this.layer.features.length; i++) {
                     this.layer.features[i].style = style;
                 }
@@ -6157,7 +6157,7 @@ Ext.onReady(function () {
                 this.layer.redraw();
             },
 
-            setFeatureLabelStyle: function (isLabel, skipDraw, view) {
+            setFeatureLabelStyle: function(isLabel, skipDraw, view) {
                 for (var i = 0, feature, style, label; i < this.layer.features.length; i++) {
                     feature = this.layer.features[i];
                     style = feature.style;
@@ -6185,7 +6185,7 @@ Ext.onReady(function () {
                 }
             },
 
-            updateOptions: function (newOptions) {
+            updateOptions: function(newOptions) {
                 var oldOptions = OpenLayers.Util.extend({}, this.options);
                 this.addOptions(newOptions);
                 if (newOptions) {
@@ -6193,13 +6193,13 @@ Ext.onReady(function () {
                 }
             },
 
-            createColorInterpolation: function () {
+            createColorInterpolation: function() {
                 var numColors = this.classification.bins.length;
 
                 this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors);
             },
 
-            setClassification: function () {
+            setClassification: function() {
                 var values = [];
                 for (var i = 0; i < this.layer.features.length; i++) {
                     values.push(this.layer.features[i].attributes[this.indicator]);
@@ -6222,11 +6222,11 @@ Ext.onReady(function () {
                 this.createColorInterpolation();
             },
 
-            applyClassification: function (options) {
+            applyClassification: function(options) {
                 this.updateOptions(options);
 
                 var calculateRadius = OpenLayers.Function.bind(
-                    function (feature) {
+                    function(feature) {
                         var value = feature.attributes[this.indicator];
                         var size = (value - this.minVal) / (this.maxVal - this.minVal) *
                             (this.maxSize - this.minSize) + this.minSize;
@@ -6260,14 +6260,14 @@ Ext.onReady(function () {
                 mapfish.GeoStat.prototype.applyClassification.apply(this, arguments);
             },
 
-            updateLegend: function () {
+            updateLegend: function() {
 
             },
 
             CLASS_NAME: "mapfish.GeoStat.Boundary"
         });
 
-        mapfish.GeoStat.createThematic = function (name) {
+        mapfish.GeoStat.createThematic = function(name) {
 
             mapfish.GeoStat[name] = OpenLayers.Class(mapfish.GeoStat, {
                 colors: [new mapfish.ColorRgb(120, 120, 0), new mapfish.ColorRgb(255, 0, 0)],
@@ -6289,7 +6289,7 @@ Ext.onReady(function () {
                 featureStore: Ext.create('Ext.data.Store', {
                     fields: ['id', 'name'],
                     features: [],
-                    loadFeatures: function (features) {
+                    loadFeatures: function(features) {
                         if (features && features.length) {
                             var data = [];
 
@@ -6305,20 +6305,20 @@ Ext.onReady(function () {
                             this.removeAll();
                         }
                     },
-                    sortStore: function () {
+                    sortStore: function() {
                         this.sort('name', 'ASC');
                     }
                 }),
 
-                initialize: function (map, options) {
+                initialize: function(map, options) {
                     mapfish.GeoStat.prototype.initialize.apply(this, arguments);
                 },
 
-                getLoader: function () {
+                getLoader: function() {
                     return GIS.core.LayerLoaderThematic(this.gis, this.layer);
                 },
 
-                reset: function () {
+                reset: function() {
                     this.layer.destroyFeatures();
                     this.featureStore.loadFeatures(this.layer.features.slice(0));
 
@@ -6334,7 +6334,7 @@ Ext.onReady(function () {
                     }
                 },
 
-                extendView: function (view, config) {
+                extendView: function(view, config) {
                     view = view || this.view;
 
                     view.valueType = config.valueType || view.valueType;
@@ -6361,7 +6361,7 @@ Ext.onReady(function () {
                     return view;
                 },
 
-                getImageLegendConfig: function () {
+                getImageLegendConfig: function() {
                     var bins = this.classification.bins,
                         rgb = this.colorInterpolation,
                         config = [];
@@ -6376,7 +6376,7 @@ Ext.onReady(function () {
                     return config;
                 },
 
-                updateOptions: function (newOptions) {
+                updateOptions: function(newOptions) {
                     var oldOptions = OpenLayers.Util.extend({}, this.options);
                     this.addOptions(newOptions);
                     if (newOptions) {
@@ -6384,7 +6384,7 @@ Ext.onReady(function () {
                     }
                 },
 
-                createColorInterpolation: function () {
+                createColorInterpolation: function() {
                     var numColors = this.classification.bins.length;
 
                     if (!this.view.legendSet) {
@@ -6392,7 +6392,7 @@ Ext.onReady(function () {
                     }
                 },
 
-                setClassification: function () {
+                setClassification: function() {
                     var values = [];
                     for (var i = 0; i < this.layer.features.length; i++) {
                         values.push(this.layer.features[i].attributes[this.indicator]);
@@ -6429,11 +6429,11 @@ Ext.onReady(function () {
                     this.createColorInterpolation();
                 },
 
-                applyClassification: function (options, legend) {
+                applyClassification: function(options, legend) {
                     this.updateOptions(options, legend);
 
                     var calculateRadius = OpenLayers.Function.bind(
-                        function (feature) {
+                        function(feature) {
                             var value = feature.attributes[this.indicator];
                             var size = (value - this.minVal) / (this.maxVal - this.minVal) *
                                 (this.maxSize - this.minSize) + this.minSize;
@@ -6467,7 +6467,7 @@ Ext.onReady(function () {
                     mapfish.GeoStat.prototype.applyClassification.apply(this, arguments);
                 },
 
-                updateLegend: function () {
+                updateLegend: function() {
                     var view = this.view,
                         response = this.gis.response,
                         isPlugin = this.gis.plugin,
@@ -6591,7 +6591,7 @@ Ext.onReady(function () {
 
     GIS.plugin = {};
 
-    getInit = function (config) {
+    getInit = function(config) {
         var isInit = false,
             requests = [],
             callbacks = 0,
@@ -6600,7 +6600,7 @@ Ext.onReady(function () {
 
         init.contextPath = config.url;
 
-        fn = function () {
+        fn = function() {
             if (++callbacks === requests.length) {
                 isInitComplete = true;
 
@@ -6616,7 +6616,7 @@ Ext.onReady(function () {
         requests.push({
             url: init.contextPath + '/api/systemSettings.' + type + '?key=keyCalendar&key=keyDateFormat',
             disableCaching: false,
-            success: function (r) {
+            success: function(r) {
                 var systemSettings = r.responseText ? Ext.decode(r.responseText) : r,
                     userAccountConfig;
 
@@ -6627,7 +6627,7 @@ Ext.onReady(function () {
                 userAccountConfig = {
                     url: init.contextPath + '/api/me/user-account.' + type,
                     disableCaching: false,
-                    success: function (r) {
+                    success: function(r) {
                         init.userAccount = r.responseText ? Ext.decode(r.responseText) : r;
 
                         var onScriptReady = function() {
@@ -6663,27 +6663,27 @@ Ext.onReady(function () {
                             optionSetVersionConfig = {
                                 url: contextPath + '/api/optionSets.' + type + '?fields=id,version&paging=false',
                                 disableCaching: false,
-                                success: function (r) {
+                                success: function(r) {
                                     var optionSets = (r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets) || [],
                                         store = dhis2.gis.store,
                                         ids = [],
                                         url = '',
                                         callbacks = 0,
-                                        checkOptionSet,
+                                        registerOptionSet,
                                         updateStore,
                                         optionSetConfig;
 
                                     optionSetConfig = {
                                         url: contextPath + '/api/optionSets.' + type + '?fields=id,name,version,options[code,name]&paging=false' + url,
                                         disableCaching: false,
-                                        success: function (r) {
+                                        success: function(r) {
                                             var sets = r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets;
 
                                             store.setAll('optionSets', sets).done(fn);
                                         }
                                     };
 
-                                    updateStore = function () {
+                                    updateStore = function() {
                                         if (++callbacks === optionSets.length) {
                                             if (!ids.length) {
                                                 fn();
@@ -6702,8 +6702,8 @@ Ext.onReady(function () {
                                         }
                                     };
 
-                                    registerOptionSet = function (optionSet) {
-                                        store.get('optionSets', optionSet.id).done(function (obj) {
+                                    registerOptionSet = function(optionSet) {
+                                        store.get('optionSets', optionSet.id).done(function(obj) {
                                             if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
                                                 ids.push(optionSet.id);
                                             }
@@ -6712,7 +6712,7 @@ Ext.onReady(function () {
                                         });
                                     };
 
-                                    store.open().done(function () {
+                                    store.open().done(function() {
                                         for (var i = 0; i < optionSets.length; i++) {
                                             registerOptionSet(optionSets[i]);
                                         }
@@ -6733,12 +6733,12 @@ Ext.onReady(function () {
                             onScriptReady();
                         }
                         else {
-                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/jQuery/jquery.min.js', function () {
-                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.util.js', function () {
-                                    Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.js', function () {
-                                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js', function () {
-                                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js', function () {
-                                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js', function () {
+                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/jQuery/jquery.min.js', function() {
+                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.util.js', function() {
+                                    Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.js', function() {
+                                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js', function() {
+                                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js', function() {
+                                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js', function() {
                                                     onScriptReady();
                                                 });
                                             });
@@ -6762,7 +6762,7 @@ Ext.onReady(function () {
         requests.push({
             url: init.contextPath + '/api/organisationUnits.' + type + '?userOnly=true&fields=id,name,children[id,name]&paging=false',
             disableCaching: false,
-            success: function (r) {
+            success: function(r) {
                 var organisationUnits = (r.responseText ? Ext.decode(r.responseText).organisationUnits : r) || [],
                     ou = [],
                     ouc = [];
@@ -6793,7 +6793,7 @@ Ext.onReady(function () {
         requests.push({
             url: init.contextPath + '/api/dimensions.' + type + '?fields=id,name&paging=false',
             disableCaching: false,
-            success: function (r) {
+            success: function(r) {
                 init.dimensions = r.responseText ? Ext.decode(r.responseText).dimensions : r.dimensions;
                 fn();
             }
@@ -6808,7 +6808,7 @@ Ext.onReady(function () {
         }
     };
 
-    applyCss = function () {
+    applyCss = function() {
         var css = '';
 
         // needs parent class to avoid conflict
@@ -6994,7 +6994,7 @@ Ext.onReady(function () {
         Ext.util.CSS.createStyleSheet(css);
     };
 
-    execute = function (config) {
+    execute = function(config) {
         var validateConfig,
             extendInstance,
             createViewport,
@@ -7002,7 +7002,7 @@ Ext.onReady(function () {
             initialize,
             gis;
 
-        validateConfig = function () {
+        validateConfig = function() {
             if (!Ext.isString(config.url)) {
                 alert('Invalid url (' + config.el + ')');
                 return;
@@ -7060,7 +7060,7 @@ Ext.onReady(function () {
 			});
         };
 
-        createViewport = function () {
+        createViewport = function() {
             var viewport,
                 items = [],
                 northRegion,
@@ -7115,7 +7115,7 @@ Ext.onReady(function () {
                             cls: 'gis-panel-legend',
                             bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
                             listeners: {
-                                added: function () {
+                                added: function() {
                                     gis.layer.thematic1.legendPanel = this;
                                 }
                             }
@@ -7125,7 +7125,7 @@ Ext.onReady(function () {
                             cls: 'gis-panel-legend',
                             bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
                             listeners: {
-                                added: function () {
+                                added: function() {
                                     gis.layer.thematic2.legendPanel = this;
                                 }
                             }
@@ -7135,7 +7135,7 @@ Ext.onReady(function () {
                             cls: 'gis-panel-legend',
                             bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
                             listeners: {
-                                added: function () {
+                                added: function() {
                                     gis.layer.thematic3.legendPanel = this;
                                 }
                             }
@@ -7145,7 +7145,7 @@ Ext.onReady(function () {
                             cls: 'gis-panel-legend',
                             bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
                             listeners: {
-                                added: function () {
+                                added: function() {
                                     gis.layer.thematic4.legendPanel = this;
                                 }
                             }
@@ -7155,7 +7155,7 @@ Ext.onReady(function () {
                             cls: 'gis-panel-legend',
                             bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
                             listeners: {
-                                added: function () {
+                                added: function() {
                                     gis.layer.facility.legendPanel = this;
                                 }
                             }
@@ -7173,7 +7173,7 @@ Ext.onReady(function () {
                 bodyStyle: 'border: 0 none',
                 items: items,
                 listeners: {
-                    afterrender: function () {
+                    afterrender: function() {
                         afterRender();
                     }
                 }
@@ -7197,7 +7197,7 @@ Ext.onReady(function () {
             return viewport;
         };
 
-        afterRender = function (vp) {
+        afterRender = function(vp) {
 
             // map buttons
             var clsArray = ['zoomIn-verticalButton', 'zoomOut-verticalButton', 'zoomVisible-verticalButton', 'measure-verticalButton', 'legend-verticalButton'],
@@ -7236,7 +7236,7 @@ Ext.onReady(function () {
             }
         };
 
-        initialize = function () {
+        initialize = function() {
             var el = Ext.get(config.el);
 
             if (!validateConfig()) {
@@ -7270,7 +7270,7 @@ Ext.onReady(function () {
                     animationEnabled: true,
                     layerType: gis.conf.finals.layer.type_base,
                     layerOpacity: 1,
-                    setLayerOpacity: function (number) {
+                    setLayerOpacity: function(number) {
                         if (number) {
                             this.layerOpacity = parseFloat(number);
                         }
@@ -7285,7 +7285,7 @@ Ext.onReady(function () {
                     animationEnabled: true,
                     layerType: gis.conf.finals.layer.type_base,
                     layerOpacity: 1,
-                    setLayerOpacity: function (number) {
+                    setLayerOpacity: function(number) {
                         if (number) {
                             this.layerOpacity = parseFloat(number);
                         }
