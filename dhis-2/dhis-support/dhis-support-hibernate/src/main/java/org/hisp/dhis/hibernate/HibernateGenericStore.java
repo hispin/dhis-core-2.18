@@ -308,6 +308,7 @@ public class HibernateGenericStore<T>
         if ( IdentifiableObject.class.isAssignableFrom( object.getClass() ) )
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
+            identifiableObject.setAutoFields();
 
             if ( clearSharing )
             {
@@ -362,6 +363,11 @@ public class HibernateGenericStore<T>
     @Override
     public void update( T object )
     {
+        if ( IdentifiableObject.class.isInstance( object ) )
+        {
+            ((BaseIdentifiableObject) object).setAutoFields();
+        }
+
         if ( !Interpretation.class.isAssignableFrom( clazz ) && !isUpdateAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_UPDATE_DENIED );
