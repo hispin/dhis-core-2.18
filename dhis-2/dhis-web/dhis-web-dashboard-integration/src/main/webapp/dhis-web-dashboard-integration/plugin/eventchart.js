@@ -4642,9 +4642,11 @@ Ext.onReady( function() {
                     if (!ns.skipFade) {
                         chart.on('afterrender', function() {
                             Ext.defer( function() {
-                                Ext.get(init.el).fadeIn({
-                                    duration: 400
-                                });
+                                if (init.el && Ext.get(init.el)) {
+                                    Ext.get(init.el).fadeIn({
+                                        duration: 400
+                                    });
+                                }
                             }, 300 );
                         });
                     }
