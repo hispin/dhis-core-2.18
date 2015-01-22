@@ -28,12 +28,9 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -41,9 +38,12 @@ import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Lars Helge Overland
@@ -110,27 +110,6 @@ public class Dashboard
     }
 
     /**
-     * Removes the item with the given identifier from this dashboard.
-     *
-     * @param uid the item uid.
-     */
-    public boolean removeItem( String uid )
-    {
-        Iterator<DashboardItem> iter = items.iterator();
-
-        while ( iter.hasNext() )
-        {
-            if ( uid.equals( iter.next().getUid() ) )
-            {
-                iter.remove();
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Returns the item with the given uid, or null if no item with the given
      * uid is present for this dashboard.
      *
@@ -162,6 +141,14 @@ public class Dashboard
         }
 
         return null;
+    }
+    
+    /**
+     * Indicates whether this dashboard has at least one item.
+     */
+    public boolean hasItems()
+    {
+        return items != null && !items.isEmpty();
     }
 
     @JsonProperty

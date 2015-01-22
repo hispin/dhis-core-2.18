@@ -131,30 +131,6 @@ public class DashboardTest
     }
     
     @Test
-    public void testRemoveItem()
-    {
-        Dashboard dashboard = new Dashboard();
-        
-        DashboardItem diA = new DashboardItem();
-        DashboardItem diB = new DashboardItem();
-        DashboardItem diC = new DashboardItem();
-        
-        diA.setUid( "A" );
-        diB.setUid( "B" );
-        diC.setUid( "C" );
-
-        dashboard.getItems().add( diA );
-        dashboard.getItems().add( diB );
-        dashboard.getItems().add( diC );
-        
-        assertEquals( 3, dashboard.getItems().size() );
-        assertTrue( dashboard.removeItem( "B" ) );
-        assertEquals( 2, dashboard.getItems().size() );
-        assertFalse( dashboard.removeItem( "X" ) );
-        assertEquals( 2, dashboard.getItems().size() );
-    }
-    
-    @Test
     public void testGetItem()
     {
         Dashboard dashboard = new Dashboard();

@@ -304,6 +304,12 @@ public class DefaultDashboardService
     {
         return dashboardItemStore.getByUid( uid );
     }
+
+    @Override
+    public void deleteDashboardItem( DashboardItem item )
+    {
+        dashboardItemStore.delete( item );
+    }
     
     @Override
     public int countMapDashboardItems( Map map )
