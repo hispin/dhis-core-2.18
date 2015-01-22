@@ -28,6 +28,7 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -61,8 +62,16 @@ public class DataApprovalDeletionHandler
     @Override
     public String allowDeleteDataApprovalLevel( DataApprovalLevel dataApprovalLevel )
     {
-        String sql = "SELECT COUNT(*) FROM dataapproval where dataapprovallevelid=" + dataApprovalLevel.getId();
+        String sql = "select count(*) from dataapproval where dataapprovallevelid=" + dataApprovalLevel.getId();
 
+        return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo optionCombo )
+    {
+        String sql = "select count(*) from dataapproval where attributeoptioncomboid=" + optionCombo.getId();
+        
         return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
     }
 }
