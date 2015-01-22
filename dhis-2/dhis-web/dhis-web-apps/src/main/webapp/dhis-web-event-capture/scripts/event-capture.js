@@ -303,19 +303,22 @@ function getPrograms( programs )
     var build = builder.promise();
 
     _.each( _.values( programs ), function ( program ) {
-        build = build.then(function() {
-            var d = $.Deferred();
-            var p = d.promise();
-            dhis2.ec.store.get('programs', program.id).done(function(obj) {
-                if(!obj || obj.version !== program.version) {
-                    promise = promise.then( getProgram( program.id ) );
-                }
+        
+        if(program.programStages && program.programStages[0].programStageDataElements){
+            build = build.then(function() {
+                var d = $.Deferred();
+                var p = d.promise();
+                dhis2.ec.store.get('programs', program.id).done(function(obj) {
+                    if(!obj || obj.version !== program.version) {
+                        promise = promise.then( getProgram( program.id ) );
+                    }
 
-                d.resolve();
+                    d.resolve();
+                });
+
+                return p;
             });
-
-            return p;
-        });
+        }        
     });
 
     build.done(function() {
@@ -380,21 +383,22 @@ function getProgramStages( programs )
     var build = builder.promise();
 
     _.each( _.values( programs ), function ( program ) {
+        
+        if(program.programStages){
+            build = build.then(function() {
+                var d = $.Deferred();
+                var p = d.promise();
+                dhis2.ec.store.get('programStages', program.programStages[0].id).done(function(obj) {
+                    if(!obj || obj.version !== program.programStages[0].version) {
+                        promise = promise.then( getProgramStage( program.programStages[0].id ) );
+                    }
 
-        build = build.then(function() {
-            var d = $.Deferred();
-            var p = d.promise();
-            dhis2.ec.store.get('programStages', program.programStages[0].id).done(function(obj) {
-                if(!obj || obj.version !== program.programStages[0].version) {
-                    promise = promise.then( getProgramStage( program.programStages[0].id ) );
-                }
+                    d.resolve();
+                });
 
-                d.resolve();
+                return p;
             });
-
-            return p;
-        });
-              
+        }              
     });
 
     build.done(function() {
@@ -442,22 +446,25 @@ function getOptionSets( programs )
     var build = builder.promise();    
 
     _.each( _.values( programs ), function ( program ) {
-        _.each(_.values( program.programStages[0].programStageDataElements), function(prStDe){
-            if( prStDe.dataElement.optionSet && prStDe.dataElement.optionSet.id ){
-                build = build.then(function() {
-                    var d = $.Deferred();
-                    var p = d.promise();
-                    dhis2.ec.store.get('optionSets', prStDe.dataElement.optionSet.id).done(function(obj) {                    
-                        if(!obj || obj.version !== prStDe.dataElement.optionSet.version) {
-                            promise = promise.then( getOptionSet( prStDe.dataElement.optionSet.id ) );
-                        }
-                        d.resolve();
-                    });
+        
+        if(program.programStages && program.programStages[0].programStageDataElements){
+            _.each(_.values( program.programStages[0].programStageDataElements), function(prStDe){
+                if( prStDe.dataElement && prStDe.dataElement.optionSet && prStDe.dataElement.optionSet.id ){
+                    build = build.then(function() {
+                        var d = $.Deferred();
+                        var p = d.promise();
+                        dhis2.ec.store.get('optionSets', prStDe.dataElement.optionSet.id).done(function(obj) {                    
+                            if(!obj || obj.version !== prStDe.dataElement.optionSet.version) {
+                                promise = promise.then( getOptionSet( prStDe.dataElement.optionSet.id ) );
+                            }
+                            d.resolve();
+                        });
 
-                    return p;
-                });
-            }            
-        });                      
+                        return p;
+                    });
+                }            
+            }); 
+        }                             
     });
 
     build.done(function() {
