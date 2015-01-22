@@ -43,6 +43,10 @@ public interface DashboardService
 {
     final String ID = DashboardService.class.getName();
 
+    // -------------------------------------------------------------------------
+    // Dashboard
+    // -------------------------------------------------------------------------
+
     DashboardSearchResult search( String query );
 
     DashboardSearchResult search( String query, Set<String> maxTypes );
@@ -63,9 +67,15 @@ public interface DashboardService
 
     Dashboard getDashboard( String uid );
 
+    // -------------------------------------------------------------------------
+    // DashboardItem
+    // -------------------------------------------------------------------------
+
     void updateDashboardItem( DashboardItem item );
     
     DashboardItem getDashboardItem( String uid );
+    
+    void deleteDashboardItem( DashboardItem item );
     
     int countMapDashboardItems( Map map );
 

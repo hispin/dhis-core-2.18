@@ -201,8 +201,17 @@ public class DashboardController
             return;
         }
 
-        if ( dashboard.removeItem( itemUid ) )
+        DashboardItem item = dashboardService.getDashboardItem( itemUid );
+
+        if ( item == null )
         {
+            ContextUtils.notFoundResponse( response, "Dashboard item does not exist: " + itemUid );
+            return;
+        }
+
+        if ( dashboard.hasItems() && dashboard.getItems().remove( item ) )
+        {
+            dashboardService.deleteDashboardItem( item );
             dashboardService.updateDashboard( dashboard );
 
             ContextUtils.okResponse( response, "Dashboard item removed" );
@@ -231,9 +240,9 @@ public class DashboardController
 
         if ( item.removeItemContent( contentUid ) )
         {
-            if ( item.getContentCount() == 0 )
+            if ( item.getContentCount() == 0 && dashboard.getItems().remove( item ) )
             {
-                dashboard.removeItem( item.getUid() ); // Remove if empty
+                dashboardService.deleteDashboardItem( item ); // Delete if empty                
             }
 
             dashboardService.updateDashboard( dashboard );
