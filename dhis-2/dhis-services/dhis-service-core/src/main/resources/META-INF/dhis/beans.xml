@@ -1050,6 +1050,9 @@
     class="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler">
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
+  
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryDimensionDeletionHandler" 
+    class="org.hisp.dhis.dataelement.DataElementCategoryDimensionDeletionHandler" />
 
   <bean id="org.hisp.dhis.dataset.DataSetDeletionHandler" class="org.hisp.dhis.dataset.DataSetDeletionHandler">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -1192,6 +1195,7 @@
           <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler" />
           <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler" />
           <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler" />
+          <ref bean="org.hisp.dhis.dataelement.DataElementCategoryDimensionDeletionHandler" />
           <ref bean="org.hisp.dhis.dataset.DataSetDeletionHandler" />
           <ref bean="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler" />
           <ref bean="org.hisp.dhis.dataset.SectionDeletionHandler" />
