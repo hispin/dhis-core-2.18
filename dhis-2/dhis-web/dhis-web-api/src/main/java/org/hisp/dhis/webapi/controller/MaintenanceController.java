@@ -133,7 +133,7 @@ public class MaintenanceController
 
         for ( Property property : schema.getProperties() )
         {
-            if ( !property.isCollection() )
+            if ( !property.isCollection() || !property.isIdentifiableObject() )
             {
                 continue;
             }
@@ -144,11 +144,6 @@ public class MaintenanceController
 
             for ( Object object : collection )
             {
-                if ( !IdentifiableObject.class.isInstance( object ) )
-                {
-                    continue;
-                }
-
                 List<ValidationViolation> validationViolations = schemaValidator.validate( object );
 
                 if ( !validationViolations.isEmpty() )
