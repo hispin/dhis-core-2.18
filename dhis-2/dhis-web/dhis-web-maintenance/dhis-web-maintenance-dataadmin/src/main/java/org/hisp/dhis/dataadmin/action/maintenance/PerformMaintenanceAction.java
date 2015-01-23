@@ -38,6 +38,7 @@ import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datamart.DataMartManager;
 import org.hisp.dhis.maintenance.MaintenanceService;
+import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -63,10 +64,20 @@ public class PerformMaintenanceAction
     
     @Resource(name="org.hisp.dhis.analytics.CompletenessTargetTableService")
     private AnalyticsTableService completenessTargetTableService;
+
+    @Resource(name="org.hisp.dhis.analytics.OrgUnitTargetTableService")
+    private AnalyticsTableService orgUnitTargetTableService;
     
     @Resource(name="org.hisp.dhis.analytics.EventAnalyticsTableService")
     private AnalyticsTableService eventAnalyticsTableService;
     
+    private ResourceTableService resourceTableService;
+    
+    public void setResourceTableService( ResourceTableService resourceTableService )
+    {
+        this.resourceTableService = resourceTableService;
+    }
+
     private MaintenanceService maintenanceService;
 
     public void setMaintenanceService( MaintenanceService maintenanceService )
@@ -181,10 +192,14 @@ public class PerformMaintenanceAction
         
         if ( clearAnalytics )
         {
+            resourceTableService.dropAllSqlViews();
             analyticsTableService.dropTables();
             completenessTableService.dropTables();
             completenessTargetTableService.dropTables();
+            orgUnitTargetTableService.dropTables();
             eventAnalyticsTableService.dropTables();
+            
+            log.info( "'" + username + "': Cleared analytics tables" );
         }
         
         if ( clearDataMart )

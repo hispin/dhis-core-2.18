@@ -8,6 +8,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
     class="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
     scope="prototype">
+    <property name="resourceTableService" ref="org.hisp.dhis.resourcetable.ResourceTableService" />
     <property name="maintenanceService" ref="org.hisp.dhis.maintenance.MaintenanceService" />
     <property name="completenessService" ref="compulsoryDataCompletenessService" />
     <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />

@@ -47,12 +47,17 @@ public interface AnalyticsTableManager
     public static final String EVENT_ANALYTICS_TABLE_NAME = "analytics_event";
     
     /**
-     * Returns analytics tables which yearly partitions.
+     * Returns analytics tables which are yearly partitions.
      * 
      * @param earliest the start date for the first year to generate table partitions.
      * @param latest the end date for the last year to generate table partitions.
      */
     List<AnalyticsTable> getTables( Date earliest );
+    
+    /**
+     * Returns all potential analytics tables which are yearly partitions.
+     */
+    List<AnalyticsTable> getAllTables();
     
     /**
      * Checks if the database content is in valid state for analytics table generation.
