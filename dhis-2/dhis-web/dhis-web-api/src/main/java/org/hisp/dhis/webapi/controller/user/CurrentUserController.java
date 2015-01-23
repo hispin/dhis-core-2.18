@@ -190,9 +190,9 @@ public class CurrentUserController
     @RequestMapping( value = "/dashboards", produces = { "application/json", "text/*" } )
     public void getDashboards( HttpServletResponse response ) throws NotAuthenticatedException, IOException
     {
-        User currentUser = currentUserService.getCurrentUser();
+        User user = currentUserService.getCurrentUser();
 
-        if ( currentUser == null )
+        if ( user == null )
         {
             throw new NotAuthenticatedException();
         }
@@ -201,11 +201,11 @@ public class CurrentUserController
 
         for ( org.hisp.dhis.dashboard.Dashboard dashboard : dashboards )
         {
-            dashboard.setAccess( aclService.getAccess( dashboard ) );
+            dashboard.setAccess( aclService.getAccess( dashboard, user ) );
 
             for ( DashboardItem dashboardItem : dashboard.getItems() )
             {
-                dashboardItem.setAccess( aclService.getAccess( dashboardItem ) );
+                dashboardItem.setAccess( aclService.getAccess( dashboardItem, user ) );
             }
         }
 
