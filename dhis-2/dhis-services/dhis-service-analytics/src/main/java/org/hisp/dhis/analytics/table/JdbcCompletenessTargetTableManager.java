@@ -57,6 +57,12 @@ public class JdbcCompletenessTargetTableManager
     }
     
     @Override
+    public List<AnalyticsTable> getAllTables()
+    {
+        return getTables( null );
+    }
+    
+    @Override
     public String validState()
     {
         return null;

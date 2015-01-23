@@ -290,4 +290,24 @@ public class ListUtils
         
         return union;
     }
+    
+    /**
+     * Returns a contiguous list of Integers starting on and including a, ending
+     * on and excluding b.
+     * 
+     * @param a start, inclusive.
+     * @param b end, exclusive.
+     * @return a list of Integers.
+     */
+    public static List<Integer> getClosedOpenList( int a, int b )
+    {
+        List<Integer> list = new ArrayList<Integer>();
+        
+        for ( int i = a; i < b; i++ )
+        {
+            list.add( i );
+        }
+        
+        return list;
+    }
 }

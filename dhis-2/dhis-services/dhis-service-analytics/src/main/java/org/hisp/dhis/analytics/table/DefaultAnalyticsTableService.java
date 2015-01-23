@@ -157,7 +157,7 @@ public class DefaultAnalyticsTableService
     @Override
     public void dropTables()
     {
-        List<AnalyticsTable> tables = tableManager.getTables( null );
+        List<AnalyticsTable> tables = tableManager.getAllTables();
         
         for ( AnalyticsTable table : tables )   
         {

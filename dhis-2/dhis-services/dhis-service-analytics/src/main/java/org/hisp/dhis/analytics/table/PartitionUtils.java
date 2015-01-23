@@ -57,7 +57,7 @@ public class PartitionUtils
 
     public static Period getPeriod( Integer year )
     {
-        DateTime time = new DateTime( year, 1, 1, 0, 0 );
+        DateTime time = new DateTime( year, 1, 1, 1, 1 );
 
         return PERIODTYPE.createPeriod( time.toDate() );
     }

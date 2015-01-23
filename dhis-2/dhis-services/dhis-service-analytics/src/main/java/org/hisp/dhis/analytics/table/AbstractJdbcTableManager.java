@@ -123,10 +123,20 @@ public abstract class AbstractJdbcTableManager
     {
         log.info( "Get tables using earliest: " + earliest );
 
+        return getTables( getDataYears( earliest ) );
+    }
+
+    @Override
+    @Transactional
+    public List<AnalyticsTable> getAllTables()
+    {
+        return getTables( ListUtils.getClosedOpenList( 1500, 2100 ) );
+    }
+    
+    private List<AnalyticsTable> getTables( List<Integer> dataYears )
+    {
         List<AnalyticsTable> tables = new ArrayList<>();
         
-        List<Integer> dataYears = getDataYears( earliest );
-
         Collections.sort( dataYears );
         
         String baseName = getTableName();

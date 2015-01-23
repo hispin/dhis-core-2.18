@@ -48,6 +48,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,10 +74,20 @@ public class JdbcEventAnalyticsTableManager
     {
         log.info( "Get tables using earliest: " + earliest );
 
+        return getTables( getDataYears( earliest ) );
+    }
+
+    @Override
+    @Transactional
+    public List<AnalyticsTable> getAllTables()
+    {
+        return getTables( ListUtils.getClosedOpenList( 1500, 2100 ) );
+    }
+    
+    private List<AnalyticsTable> getTables( List<Integer> dataYears )
+    {
         List<AnalyticsTable> tables = new ArrayList<>();
 
-        List<Integer> dataYears = getDataYears( earliest );
-        
         Collections.sort( dataYears );
         
         String baseName = getTableName();
@@ -100,7 +111,7 @@ public class JdbcEventAnalyticsTableManager
 
         return tables;
     }
-
+    
     @Override
     public String validState()
     {
