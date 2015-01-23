@@ -165,7 +165,7 @@ public class BaseNameableObject
     @JsonProperty
     @JsonView( { ShortNameView.class, DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
-    @PropertyRange( min = 2 )
+    @PropertyRange( min = 1 )
     public String getShortName()
     {
         return shortName;
@@ -180,7 +180,7 @@ public class BaseNameableObject
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    @PropertyRange( min = 2 )
+    @PropertyRange( min = 1 )
     public String getDescription()
     {
         return description;
