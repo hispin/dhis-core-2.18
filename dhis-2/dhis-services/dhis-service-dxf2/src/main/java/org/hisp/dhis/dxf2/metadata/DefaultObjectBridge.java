@@ -257,6 +257,7 @@ public class DefaultObjectBridge
         {
             for ( PeriodType periodType : periodStore.getAllPeriodTypes() )
             {
+                periodType = periodStore.reloadPeriodType( periodType );
                 periodTypes.add( periodType );
                 periodTypeMap.put( periodType.getName(), periodType );
             }
