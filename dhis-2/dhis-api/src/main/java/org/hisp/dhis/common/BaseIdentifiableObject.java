@@ -220,7 +220,7 @@ public class BaseIdentifiableObject
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
     @Description( "The name of this Object. Required and unique." )
-    @PropertyRange( min = 2 )
+    @PropertyRange( min = 1 )
     public String getName()
     {
         return name;
