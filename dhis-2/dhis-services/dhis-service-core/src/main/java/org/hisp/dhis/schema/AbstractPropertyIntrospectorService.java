@@ -40,6 +40,8 @@ import org.hibernate.type.AnyType;
 import org.hibernate.type.AssociationType;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.EntityType;
+import org.hibernate.type.SingleColumnType;
+import org.hibernate.type.TextType;
 import org.hibernate.type.Type;
 import org.hisp.dhis.common.AnalyticalObject;
 import org.hisp.dhis.common.BaseAnalyticalObject;
@@ -49,7 +51,6 @@ import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.user.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
@@ -182,13 +183,18 @@ public abstract class AbstractPropertyIntrospectorService
                 AnyType anyType = (AnyType) type;
             }
 
-            if ( hibernateProperty.getColumnSpan() > 0 )
+            if ( SingleColumnType.class.isInstance( type ) )
             {
                 Column column = (Column) hibernateProperty.getColumnIterator().next();
 
                 property.setUnique( column.isUnique() );
                 property.setRequired( !column.isNullable() );
                 property.setLength( column.getLength() );
+
+                if ( TextType.class.isInstance( type ) )
+                {
+                    property.setLength( Integer.MAX_VALUE );
+                }
             }
 
             properties.put( property.getName(), property );
