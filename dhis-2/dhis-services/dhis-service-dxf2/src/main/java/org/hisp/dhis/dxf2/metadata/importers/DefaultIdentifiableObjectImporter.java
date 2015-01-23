@@ -337,9 +337,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         log.debug( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" +
             "" );
 
+        updatePeriodTypes( object );
         objectBridge.saveObject( object, !options.isSharing() );
 
-        updatePeriodTypes( object );
         reattachCollectionFields( object, collectionFields, user );
 
         objectBridge.updateObject( object );
