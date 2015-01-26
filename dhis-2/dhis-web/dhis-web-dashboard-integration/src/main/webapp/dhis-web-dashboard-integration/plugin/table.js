@@ -3034,7 +3034,7 @@ Ext.onReady( function() {
 
     applyCss = function(config) {
         var css = '',
-            arrowUrl = config.dashboard ? '../dhis-web-commons/javascripts/plugin/images/arrowupdown.png' : '//dhis2-cdn.org/v217/plugin/images/arrowupdown.png';
+            arrowUrl = config.dashboard ? init.contextPath + '/dhis-web-commons/javascripts/plugin/images/arrowupdown.png' : '//dhis2-cdn.org/v217/plugin/images/arrowupdown.png';
 
         css += 'table.pivot { font-family: arial,sans-serif,ubuntu,consolas; } \n';
         css += '.td-nobreak { white-space: nowrap; } \n';

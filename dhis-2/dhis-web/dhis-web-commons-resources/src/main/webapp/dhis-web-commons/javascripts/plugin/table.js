@@ -581,7 +581,7 @@ Ext.onReady( function() {
 					}
 
 					if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
-						alert('No values found');
+                        init.alert('No values found');
 						return;
 					}
 
@@ -1894,7 +1894,7 @@ Ext.onReady( function() {
 					return null;
 				}
 
-				if (component.mask) {
+				if (component.mask && component.mask.destroy) {
 					component.mask.destroy();
 					component.mask = null;
 				}
@@ -2922,14 +2922,14 @@ Ext.onReady( function() {
 	getInit = function(config) {
 		var isInit = false,
 			requests = [],
-			callbacks = 0,
+			callbackCount = 0,
             type = config.plugin && config.crossDomain ? 'jsonp' : 'json',
 			fn;
 
         init.contextPath = config.url;
 
 		fn = function() {
-			if (++callbacks === requests.length) {
+			if (++callbackCount === requests.length) {
 				isInitComplete = true;
 
 				for (var i = 0; i < configs.length; i++) {
@@ -3001,6 +3001,7 @@ Ext.onReady( function() {
 			}
 		});
 
+        // user orgunit
 		requests.push({
 			url: init.contextPath + '/api/dimensions.' + type + '?fields=id,name&paging=false',
             disableCaching: false,
@@ -3010,7 +3011,16 @@ Ext.onReady( function() {
 			}
 		});
 
-        init.legendSets = [];
+        // legend sets
+        requests.push({
+            url: init.contextPath + '/api/mapLegendSets.json?fields=id,name,mapLegends[id,name,startValue,endValue,color]&paging=false',
+            success: function(r) {
+                init.legendSets = Ext.decode(r.responseText).mapLegendSets || [];
+                fn();
+            }
+        });
+
+        //init.legendSets = [];
 
 		for (var i = 0; i < requests.length; i++) {
             if (type === 'jsonp') {
@@ -3022,15 +3032,18 @@ Ext.onReady( function() {
 		}
 	};
 
-    applyCss = function() {
-        css = 'table.pivot { font-family: arial,sans-serif,ubuntu,consolas; } \n';
+    applyCss = function(config) {
+        var css = '',
+            arrowUrl = config.dashboard ? init.contextPath + '/dhis-web-commons/javascripts/plugin/images/arrowupdown.png' : '//dhis2-cdn.org/v217/plugin/images/arrowupdown.png';
+
+        css += 'table.pivot { font-family: arial,sans-serif,ubuntu,consolas; } \n';
         css += '.td-nobreak { white-space: nowrap; } \n';
         css += '.td-hidden { display: none; } \n';
         css += '.td-collapsed { display: none; } \n';
         css += 'table.pivot { border-collapse: collapse; border-spacing: 0px; border: 0 none; } \n';
         css += '.pivot td { font-family: arial, sans-serif, helvetica neue, helvetica !important; padding: 5px; border: 1px solid #b2b2b2; } \n';
         css += '.pivot-dim { background-color: #dae6f8; text-align: center; } \n';
-        css += '.pivot-dim.highlighted { \n	background-color: #c5d8f6; } \n';
+        css += '.pivot-dim.highlighted { background-color: #c5d8f6; } \n';
         css += '.pivot-dim-subtotal { background-color: #cad6e8; text-align: center; } \n';
         css += '.pivot-dim-total { background-color: #bac6d8; text-align: center; } \n';
         css += '.pivot-dim-total.highlighted { background-color: #adb8c9; } \n';
@@ -3046,9 +3059,9 @@ Ext.onReady( function() {
         css += '.pivot-transparent-column { background-color: #fff; border-top-color: #fff !important; border-right-color: #fff !important; } \n';
         css += '.pivot-transparent-row { background-color: #fff; border-bottom-color: #fff !important; border-left-color: #fff !important; } \n';
 
-        css += '.x-mask-msg { padding: 0; \n	border: 0 none; background-image: none; background-color: transparent; } \n';
+        css += '.x-mask-msg { padding: 0; border: 0 none; background-image: none; background-color: transparent; } \n';
         css += '.x-mask-msg div { background-position: 11px center; } \n';
-        css += '.x-mask-msg .x-mask-loading { border: 0 none; \n	background-color: #000; color: #fff; border-radius: 2px; padding: 12px 14px 12px 30px; opacity: 0.65; } \n';
+        css += '.x-mask-msg .x-mask-loading { border: 0 none; background-color: #000; color: #fff; border-radius: 2px; padding: 12px 14px 12px 30px; opacity: 0.65; } \n';
         css += '.x-mask { opacity: 0 } \n';
 
         css += '.pivot td.legend { padding: 0; } \n';
@@ -3059,7 +3072,10 @@ Ext.onReady( function() {
         css += '.pivot div.legendColor { display: table-cell; width: 2px; } \n';
 
         css += '.pointer { cursor: pointer; } \n';
-        css += '.td-sortable { background-image: url("http://dhis2-cdn.org/v214/plugin/images/arrowupdown.png"); background-repeat: no-repeat; background-position: right center; padding-right: 15px !important; } \n';
+        css += '.td-sortable { background-image: url("' + arrowUrl + '"); background-repeat: no-repeat; background-position: right center; padding-right: 15px !important; } \n';
+
+        // alert
+        css += '.ns-plugin-alert { width: 90%; padding: 5%; color: #777 } \n';
 
         Ext.util.CSS.createStyleSheet(css);
     };
@@ -3090,7 +3106,7 @@ Ext.onReady( function() {
 			return true;
 		};
 
-        extendInstance = function(pt) {
+        extendInstance = function(ns) {
             var init = ns.core.init,
 				api = ns.core.api,
                 conf = ns.core.conf,
@@ -3116,7 +3132,11 @@ Ext.onReady( function() {
 			init.el = config.el;
 
             if (!ns.skipFade) {
-                Ext.get(init.el).setStyle('opacity', 0);
+                var el = Ext.get(init.el);
+
+                if (el) {
+                    el.setStyle('opacity', 0);
+                }
             }
 
 			// mouse events
@@ -3128,18 +3148,20 @@ Ext.onReady( function() {
 						obj = xResponse.sortableIdObjects[i];
 						el = Ext.get(obj.uuid);
 
-						el.dom.layout = layout;
-						el.dom.xLayout = xLayout;
-						el.dom.response = response;
-						el.dom.xResponse = xResponse;
-						el.dom.metaDataId = obj.id;
-						el.dom.onColumnHeaderMouseClick = web.events.onColumnHeaderMouseClick;
-						el.dom.onColumnHeaderMouseOver = web.events.onColumnHeaderMouseOver;
-						el.dom.onColumnHeaderMouseOut = web.events.onColumnHeaderMouseOut;
+                        if (el && el.dom) {
+                            el.dom.layout = layout;
+                            el.dom.xLayout = xLayout;
+                            el.dom.response = response;
+                            el.dom.xResponse = xResponse;
+                            el.dom.metaDataId = obj.id;
+                            el.dom.onColumnHeaderMouseClick = web.events.onColumnHeaderMouseClick;
+                            el.dom.onColumnHeaderMouseOver = web.events.onColumnHeaderMouseOver;
+                            el.dom.onColumnHeaderMouseOut = web.events.onColumnHeaderMouseOut;
 
-						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.layout, this.xLayout, this.response, this.xResponse, this.metaDataId)');
-						el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
-						el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
+                            el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.layout, this.xLayout, this.response, this.xResponse, this.metaDataId)');
+                            el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
+                            el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
+                        }
 					}
 				}
 			};
@@ -3163,11 +3185,19 @@ Ext.onReady( function() {
 			};
 
 			web.events.onColumnHeaderMouseOver = function(el) {
-				Ext.get(el).addCls('pointer highlighted');
+                var div = Ext.get(el);
+
+                if (div) {
+                    div.addCls('pointer highlighted');
+                }
 			};
 
 			web.events.onColumnHeaderMouseOut = function(el) {
-				Ext.get(el).removeCls('pointer highlighted');
+                var div = Ext.get(el);
+
+                if (div) {
+                    div.removeCls('pointer highlighted');
+                }
 			};
 
 			// pivot
@@ -3279,7 +3309,10 @@ Ext.onReady( function() {
 					getXLayout = service.layout.getExtendedLayout,
 					getSXLayout = service.layout.getSyncronizedXLayout,
 					getXResponse = service.response.getExtendedResponse,
-					getXAxis = service.layout.getExtendedAxis;
+					getXAxis = service.layout.getExtendedAxis,
+                    getTitleHtml = function(title) {
+                        return ns.dashboard && title ? '<div style="height: 19px; line-height: 14px; width: 100%; font: bold 12px LiberationSans; color: #333; text-align: center; letter-spacing: -0.1px"">' + title + '</div>' : '';
+                    };
 
 				getHtml = function(xLayout, xResponse) {
 					xColAxis = getXAxis(xLayout, 'col');
@@ -3311,14 +3344,18 @@ Ext.onReady( function() {
                 ns.app.dateRender = new Date();
 
 				//ns.app.centerRegion.removeAll(true);
-				ns.app.centerRegion.update(table.html);
+				ns.app.centerRegion.update(getTitleHtml(layout.name) + table.html);
 
                 // fade
                 if (!ns.skipFade) {
-                    Ext.defer( function() {
-                        Ext.get(ns.core.init.el).fadeIn({
-                            duration: 400
-                        });
+                    Ext.defer(function() {
+                        var el = Ext.get(init.el);
+
+                        if (el) {
+                            el.fadeIn({
+                                duration: 400
+                            });
+                        }
                     }, 300 );
                 }
 
@@ -3387,23 +3424,44 @@ Ext.onReady( function() {
 		};
 
 		initialize = function() {
+            var el = Ext.get(config.el);
+
 			if (!validateConfig(config)) {
 				return;
 			}
 
-            applyCss();
+            // css
+            applyCss(config);
 
+            // config
             init.plugin = true;
             init.dashboard = Ext.isBoolean(config.dashboard) ? config.dashboard : false;
             init.crossDomain = Ext.isBoolean(config.crossDomain) ? config.crossDomain : true;
             init.skipMask = Ext.isBoolean(config.skipMask) ? config.skipMask : false;
             init.skipFade = Ext.isBoolean(config.skipFade) ? config.skipFade : false;
 
+            // alert
+            init.alert = function(text) {
+                var div = Ext.get(config.el);
+
+                if (div) {
+                    div.setStyle('opacity', 1);
+                    div.update('<div class="ns-plugin-alert">' + text + '</div>');
+                }
+            };
+
+            // init
 			ns.core = PT.getCore(Ext.clone(init));
 			extendInstance(ns);
 
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
+
+            if (el) {
+                el.setViewportWidth = function(width) {
+                    ns.app.centerRegion.setWidth(width);
+                };
+            }
 
 			if (config && config.id) {
 				ns.core.web.pivot.loadTable(config);
