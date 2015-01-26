@@ -173,14 +173,18 @@ Ext.onReady( function() {
 					'space': ' '
 				},
 				displayDensity: {
-					'compact': '3px',
-					'normal': '5px',
-					'comfortable': '10px',
+                    'xcompact': '2px',
+					'compact': '4px',
+					'normal': '6px',
+					'comfortable': '8px',
+                    'xcomfortable': '10px'
 				},
 				fontSize: {
+					'xsmall': '9px',
 					'small': '10px',
 					'normal': '11px',
-					'large': '13px'
+					'large': '12px',
+					'xlarge': '14px'
 				}
 			};
 
@@ -290,7 +294,7 @@ Ext.onReady( function() {
 				}();
 			};
 
-			api.layout.Layout = function(config) {
+			api.layout.Layout = function(config, applyConfig) {
 				var config = Ext.clone(config),
 					layout = {},
 					getValidatedDimensionArray,
@@ -520,7 +524,7 @@ Ext.onReady( function() {
 						return;
 					}
 
-					return Ext.apply(layout, applyConfig);
+                    return Ext.apply(layout, applyConfig);
 				}();
 			};
 
@@ -581,7 +585,7 @@ Ext.onReady( function() {
 					}
 
 					if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
-						alert('No values found');
+						init.alert('No values found');
 						return;
 					}
 
@@ -2972,9 +2976,14 @@ Ext.onReady( function() {
 					rows = xResponse.rows,
                     names = xResponse.metaData.names,
                     optionNames = xResponse.metaData.optionNames,
-                    pager = xResponse.metaData.pager,
+                    pager = xResponse.metaData.pager || {
+                        page: 1,
+                        pageSize: 50
+                    },
                     count = pager.page * pager.pageSize - pager.pageSize
 					tableCls = 'pivot',
+                    fontSize = conf.report.fontSize[layout.fontSize],
+                    displayDensity = conf.report.displayDensity[layout.displayDensity],
 					html = '';
 
 				xResponse.sortableIdObjects = [];
@@ -2983,14 +2992,14 @@ Ext.onReady( function() {
 				tableCls += layout.fontSize ? ' ' + layout.fontSize : '';
 
 				html += '<table class="' + tableCls + '"><tr>';
-                html += '<td class="pivot-dim pivot-dim-subtotal">' + '#' + '</td>';
+                html += '<td class="pivot-dim pivot-dim-subtotal" style="font-size:' + fontSize + '; padding:' + displayDensity + '">' + '#' + '</td>';
 
 				// get header indexes
 				for (var i = 0, header, uuid; i < dimensionHeaders.length; i++) {
 					header = dimensionHeaders[i];
 					uuid = Ext.data.IdGenerator.get('uuid').generate();
 
-					html += '<td id="' + uuid + '" class="pivot-dim td-sortable">' + header.column + '</td>';
+					html += '<td id="' + uuid + '" class="pivot-dim td-sortable" style="font-size:' + fontSize + '; padding:' + displayDensity + '">' + header.column + '</td>';
 
 					xResponse.sortableIdObjects.push({
 						id: header.name,
@@ -3004,7 +3013,7 @@ Ext.onReady( function() {
 				for (var i = 0, row; i < rows.length; i++) {
 					row = rows[i];
 					html += '<tr>';
-                    html += '<td class="pivot-value align-right">' + (count + (i + 1)) + '</td>';
+                    html += '<td class="pivot-value align-right" style="font-size:' + fontSize + '; padding:' + displayDensity + '">' + (count + (i + 1)) + '</td>';
 
 					for (var j = 0, str, header, name; j < dimensionHeaders.length; j++) {
 						header = dimensionHeaders[j];
@@ -3024,7 +3033,7 @@ Ext.onReady( function() {
 							//}
 						//}
 
-						html += '<td class="pivot-value align-left">' + name + '</td>';
+						html += '<td class="pivot-value align-left" style="font-size:' + fontSize + '; padding:' + displayDensity + '">' + name + '</td>';
 					}
 
 					html += '</tr>';
@@ -3094,13 +3103,14 @@ Ext.onReady( function() {
         applyCss,
 		execute;
 
-	getInit = function(contextPath) {
+	getInit = function(config) {
 		var isInit = false,
 			requests = [],
 			callbackCount = 0,
+            type = config.plugin && config.crossDomain ? 'jsonp' : 'json',
 			fn;
 
-        init.contextPath = contextPath;
+        init.contextPath = config.url;
 
 		fn = function() {
 			if (++callbackCount === requests.length) {
@@ -3125,9 +3135,6 @@ Ext.onReady( function() {
                 init.systemInfo.dateFormat = Ext.isString(systemSettings.keyDateFormat) ? systemSettings.keyDateFormat.toLowerCase() : 'yyyy-mm-dd';
                 init.systemInfo.calendar = systemSettings.keyCalendar;
 
-                // optionSetsConfig
-
-
                 // user-account
                 userAccountConfig = {
                     url: init.contextPath + '/api/me/user-account.' + type,
@@ -3135,116 +3142,124 @@ Ext.onReady( function() {
                     success: function(r) {
                         init.userAccount = r.responseText ? Ext.decode(r.responseText) : r;
 
-                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/jQuery/jquery.min.js', function() {
-                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.util.js', function() {
-                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.js', function() {
-                                    Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js', function() {
-                                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js', function() {
-                                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js', function() {
+                        var onScriptReady = function() {
+                            var defaultKeyUiLocale = 'en',
+                                defaultKeyAnalysisDisplayProperty = 'name',
+                                namePropertyUrl,
+                                contextPath,
+                                keyUiLocale,
+                                dateFormat,
+                                optionSetVersionConfig;
 
-                                                // init
-                                                var defaultKeyUiLocale = 'en',
-                                                    defaultKeyAnalysisDisplayProperty = 'name',
-                                                    namePropertyUrl,
-                                                    contextPath,
-                                                    keyUiLocale,
-                                                    dateFormat,
-                                                    optionSetVersionConfig;
+                            init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
+                            init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
 
-                                                init.userAccount.settings.keyUiLocale = init.userAccount.settings.keyUiLocale || defaultKeyUiLocale;
-                                                init.userAccount.settings.keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty || defaultKeyAnalysisDisplayProperty;
+                            // local vars
+                            contextPath = init.contextPath;
+                            keyUiLocale = init.userAccount.settings.keyUiLocale;
+                            keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
+                            namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
+                            dateFormat = init.systemInfo.dateFormat;
 
-                                                // local vars
-                                                contextPath = init.contextPath;
-                                                keyUiLocale = init.userAccount.settings.keyUiLocale;
-                                                keyAnalysisDisplayProperty = init.userAccount.settings.keyAnalysisDisplayProperty;
-                                                namePropertyUrl = keyAnalysisDisplayProperty === defaultKeyAnalysisDisplayProperty ? keyAnalysisDisplayProperty : keyAnalysisDisplayProperty + '|rename(' + defaultKeyAnalysisDisplayProperty + ')';
-                                                dateFormat = init.systemInfo.dateFormat;
+                            init.namePropertyUrl = namePropertyUrl;
 
-                                                init.namePropertyUrl = namePropertyUrl;
+                            // dhis2
+                            dhis2.util.namespace('dhis2.er');
 
-                                                // dhis2
-                                                dhis2.util.namespace('dhis2.ev');
+                            dhis2.er.store = dhis2.er.store || new dhis2.storage.Store({
+                                name: 'dhis2',
+                                adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+                                objectStores: ['optionSets']
+                            });
 
-                                                dhis2.ev.store = dhis2.ev.store || new dhis2.storage.Store({
-                                                    name: 'dhis2',
-                                                    adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-                                                    objectStores: ['optionSets']
+                            optionSetVersionConfig = {
+                                url: contextPath + '/api/optionSets.' + type + '?fields=id,version&paging=false',
+                                disableCashing: false,
+                                success: function(r) {
+                                    var optionSets = (r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets) || [],
+                                        store = dhis2.er.store,
+                                        ids = [],
+                                        url = '',
+                                        callbacks = 0,
+                                        registerOptionSet,
+                                        updateStore,
+                                        optionSetConfig;
+
+                                    optionSetConfig = {
+                                        url: contextPath + '/api/optionSets.' + type + '?fields=id,name,version,options[code,name]&paging=false' + url,
+                                        disableCashing: false,
+                                        success: function(r) {
+                                            var sets = r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets;
+                                            store.setAll('optionSets', sets).done(fn);
+                                        }
+                                    };
+
+                                    updateStore = function() {
+                                        if (++callbacks === optionSets.length) {
+                                            if (!ids.length) {
+                                                fn();
+                                                return;
+                                            }
+
+                                            for (var i = 0; i < ids.length; i++) {
+                                                url += '&filter=id:eq:' + ids[i];
+                                            }
+
+                                            if (type === 'jsonp') {
+                                                Ext.data.JsonP.request(optionSetConfig);
+                                            }
+                                            else {
+                                                Ext.Ajax.request(optionSetConfig);
+                                            }
+                                        }
+                                    };
+
+                                    registerOptionSet = function(optionSet) {
+                                        store.get('optionSets', optionSet.id).done( function(obj) {
+                                            if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
+                                                ids.push(optionSet.id);
+                                            }
+
+                                            updateStore();
+                                        });
+                                    };
+
+                                    store.open().done( function() {
+                                        for (var i = 0; i < optionSets.length; i++) {
+                                            registerOptionSet(optionSets[i]);
+                                        }
+                                    });
+                                }
+                            };
+
+                            // option sets
+                            if (type === 'jsonp') {
+                                Ext.data.JsonP.request(optionSetVersionConfig);
+                            }
+                            else {
+                                Ext.Ajax.request(optionSetVersionConfig);
+                            }
+                        };
+
+                        // init
+                        if (config.dashboard) {
+                            onScriptReady();
+                        }
+                        else {
+                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/jQuery/jquery.min.js', function() {
+                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.util.js', function() {
+                                    Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.js', function() {
+                                        Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js', function() {
+                                            Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js', function() {
+                                                Ext.Loader.injectScriptElement(init.contextPath + '/dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js', function() {
+                                                    onScriptReady();
                                                 });
-
-                                                optionSetVersionConfig = {
-                                                    url: contextPath + '/api/optionSets.' + type + '?fields=id,version&paging=false',
-                                                    disableCashing: false,
-                                                    success: function(r) {
-                                                        var optionSets = (r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets) || [],
-                                                            store = dhis2.ev.store,
-                                                            ids = [],
-                                                            url = '',
-                                                            callbacks = 0,
-                                                            checkOptionSet,
-                                                            updateStore,
-                                                            optionSetConfig;
-
-                                                        optionSetConfig = {
-                                                            url: contextPath + '/api/optionSets.' + type + '?fields=id,name,version,options[code,name]&paging=false' + url,
-                                                            disableCashing: false,
-                                                            success: function(r) {
-                                                                var sets = r.responseText ? Ext.decode(r.responseText).optionSets : r.optionSets;
-                                                                store.setAll('optionSets', sets).done(fn);
-                                                            }
-                                                        };
-
-                                                        updateStore = function() {
-                                                            if (++callbacks === optionSets.length) {
-                                                                if (!ids.length) {
-                                                                    fn();
-                                                                    return;
-                                                                }
-
-                                                                for (var i = 0; i < ids.length; i++) {
-                                                                    url += '&filter=id:eq:' + ids[i];
-                                                                }
-
-                                                                if (type === 'jsonp') {
-                                                                    Ext.data.JsonP.request(optionSetConfig);
-                                                                }
-                                                                else {
-                                                                    Ext.Ajax.request(optionSetConfig);
-                                                                }
-                                                            }
-                                                        };
-
-                                                        registerOptionSet = function(optionSet) {
-                                                            store.get('optionSets', optionSet.id).done( function(obj) {
-                                                                if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
-                                                                    ids.push(optionSet.id);
-                                                                }
-
-                                                                updateStore();
-                                                            });
-                                                        };
-
-                                                        store.open().done( function() {
-                                                            for (var i = 0; i < optionSets.length; i++) {
-                                                                registerOptionSet(optionSets[i]);
-                                                            }
-                                                        });
-                                                    }
-                                                };
-
-                                                // option sets
-                                                if (type === 'jsonp') {
-                                                    Ext.data.JsonP.request(optionSetVersionConfig);
-                                                }
-                                                else {
-                                                    Ext.Ajax.request(optionSetVersionConfig);
-                                                }
                                             });
                                         });
                                     });
                                 });
                             });
-                        });
+                        }
                     }
                 };
 
@@ -3299,7 +3314,16 @@ Ext.onReady( function() {
 			}
 		});
 
-        init.legendSets = [];
+        // legend sets
+        requests.push({
+            url: init.contextPath + '/api/mapLegendSets.json?fields=id,name,mapLegends[id,name,startValue,endValue,color]&paging=false',
+            success: function(r) {
+                init.legendSets = Ext.decode(r.responseText).mapLegendSets || [];
+                fn();
+            }
+        });
+
+        //init.legendSets = [];
 
 		for (var i = 0; i < requests.length; i++) {
             if (type === 'jsonp') {
@@ -3311,44 +3335,50 @@ Ext.onReady( function() {
 		}
 	};
 
-    applyCss = function() {
-        var css = 'table.pivot { \n font-family: arial,sans-serif,ubuntu,consolas; \n } \n';
-        css += '.td-nobreak { \n white-space: nowrap; \n } \n';
-        css += '.td-hidden { \n display: none; \n } \n';
-        css += '.td-collapsed { \n display: none; \n } \n';
-        css += 'table.pivot { \n border-collapse: collapse; \n border-spacing: 0px; \n border: 0 none; \n } \n';
-        css += '.pivot td { \n padding: 5px; \n border: \n 1px solid #b2b2b2; \n } \n';
-        css += '.pivot-dim { \n background-color: #dae6f8; \n text-align: center; \n } \n';
-        css += '.pivot-dim.highlighted { \n	background-color: #c5d8f6; \n } \n';
-        css += '.pivot-dim-subtotal { \n background-color: #cad6e8; \n text-align: center; \n } \n';
-        css += '.pivot-dim-total { \n background-color: #bac6d8; \n text-align: center; \n } \n';
-        css += '.pivot-dim-total.highlighted { \n background-color: #adb8c9; \n } \n';
-        css += '.pivot-dim-empty { \n background-color: #dae6f8; \n text-align: center; \n } \n';
-        css += '.pivot-value { \n background-color: #fff; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-value-subtotal { \n background-color: #f4f4f4; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-value-subtotal-total { \n background-color: #e7e7e7; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-value-total { \n background-color: #e4e4e4; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-value-total-subgrandtotal { \n background-color: #d8d8d8; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-value-grandtotal { \n background-color: #c8c8c8; \n white-space: nowrap; \n text-align: right; \n } \n';
-        css += '.pivot-dim-label { \n background-color: #cddaed; \n white-space: nowrap; \n text-align: center; \n } \n';
-        css += '.pivot-empty { \n background-color: #cddaed; \n } \n';
-        css += '.pivot-transparent-column { \n background-color: #fff; \n border-top-color: #fff !important; \n border-right-color: #fff !important; \n } \n';
-        css += '.pivot-transparent-row { \n background-color: #fff; \n border-bottom-color: #fff !important; \n border-left-color: #fff !important; \n } \n';
+    applyCss = function(config) {
+        var css = '',
+            arrowUrl = config.dashboard ? '../dhis-web-commons/javascripts/plugin/images/arrowupdown.png' : '//dhis2-cdn.org/v217/plugin/images/arrowupdown.png';
 
-        css += '.x-mask-msg { \n padding: 0; \n	border: 0 none; \n background-image: none; \n background-color: transparent; \n } \n';
-        css += '.x-mask-msg div { \n background-position: 11px center; \n } \n';
-        css += '.x-mask-msg .x-mask-loading { \n border: 0 none; \n	background-color: #000; \n color: #fff; \n border-radius: 2px; \n padding: 12px 14px 12px 30px; \n opacity: 0.65; \n } \n';
+        css += 'table.pivot { font-family: arial,sans-serif,ubuntu,consolas; } \n';
+        css += '.td-nobreak { white-space: nowrap; } \n';
+        css += '.td-hidden { display: none; } \n';
+        css += '.td-collapsed { display: none; } \n';
+        css += 'table.pivot { border-collapse: collapse; border-spacing: 0px; border: 0 none; } \n';
+        css += '.pivot td { font-family: arial, sans-serif, helvetica neue, helvetica !important; padding: 5px; border: 1px solid #b2b2b2; } \n';
+        css += '.pivot-dim { background-color: #dae6f8; text-align: center; } \n';
+        css += '.pivot-dim.highlighted { background-color: #c5d8f6; } \n';
+        css += '.pivot-dim-subtotal { background-color: #cad6e8; text-align: center; } \n';
+        css += '.pivot-dim-total { background-color: #bac6d8; text-align: center; } \n';
+        css += '.pivot-dim-total.highlighted { background-color: #adb8c9; } \n';
+        css += '.pivot-dim-empty { background-color: #dae6f8; text-align: center; } \n';
+        css += '.pivot-value { background-color: #fff; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-subtotal { background-color: #f4f4f4; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-subtotal-total { background-color: #e7e7e7; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-total { background-color: #e4e4e4; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-total-subgrandtotal { background-color: #d8d8d8; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-value-grandtotal { background-color: #c8c8c8; white-space: nowrap; text-align: right; } \n';
+        css += '.pivot-dim-label { background-color: #cddaed; white-space: nowrap; text-align: center; } \n';
+        css += '.pivot-empty { background-color: #cddaed; } \n';
+        css += '.pivot-transparent-column { background-color: #fff; border-top-color: #fff !important; border-right-color: #fff !important; } \n';
+        css += '.pivot-transparent-row { background-color: #fff; border-bottom-color: #fff !important; border-left-color: #fff !important; } \n';
+
+        css += '.x-mask-msg { padding: 0; border: 0 none; background-image: none; background-color: transparent; } \n';
+        css += '.x-mask-msg div { background-position: 11px center; } \n';
+        css += '.x-mask-msg .x-mask-loading { border: 0 none; background-color: #000; color: #fff; border-radius: 2px; padding: 12px 14px 12px 30px; opacity: 0.65; } \n';
         css += '.x-mask { opacity: 0 } \n';
 
-        css += '.pivot td.legend { \n padding: 0; \n } \n';
-        css += '.pivot div.legendCt { \n display: table; \n float: right; \n width: 100%; \n } \n';
-        css += '.pivot div.arrowCt { \n display: table-cell; \n vertical-align: top; \n width: 8px; \n } \n';
-        css += '.pivot div.arrow { \n width: 0; \n height: 0; \n } \n';
-        css += '.pivot div.number { \n display: table-cell; \n } \n',
-        css += '.pivot div.legendColor { \n display: table-cell; \n width: 2px; \n } \n';
+        css += '.pivot td.legend { padding: 0; } \n';
+        css += '.pivot div.legendCt { display: table; float: right; width: 100%; } \n';
+        css += '.pivot div.arrowCt { display: table-cell; vertical-align: top; width: 8px; } \n';
+        css += '.pivot div.arrow { width: 0; height: 0; } \n';
+        css += '.pivot div.number { display: table-cell; } \n',
+        css += '.pivot div.legendColor { display: table-cell; width: 2px; } \n';
 
-        css += '.pointer { \n cursor: pointer; \n } \n';
-        css += '.td-sortable { \n background-image: url("http://dhis2-cdn.org/v217/plugin/images/arrowupdown.png"); \n background-repeat: no-repeat; \n background-position: right center; \n padding-right: 15px !important; \n } \n';
+        css += '.pointer { cursor: pointer; } \n';
+        css += '.td-sortable { background-image: url("' + arrowUrl + '"); background-repeat: no-repeat; background-position: right center; padding-right: 15px !important; } \n';
+
+        // alert
+        css += '.ns-plugin-alert { width: 90%; padding: 5%; color: #777 } \n';
 
         Ext.util.CSS.createStyleSheet(css);
     };
@@ -3395,7 +3425,8 @@ Ext.onReady( function() {
                 headers = {
                     'Content-Type': headerMap[type],
                     'Accepts': headerMap[type]
-                };
+                },
+                el = Ext.get(init.el);
 
             ns.plugin = init.plugin;
             ns.dashboard = init.dashboard;
@@ -3405,8 +3436,8 @@ Ext.onReady( function() {
 
 			init.el = config.el;
 
-            if (!ns.skipFade) {
-                Ext.get(init.el).setStyle('opacity', 0);
+            if (!ns.skipFade && el) {
+                el.setStyle('opacity', 0);
             }
 
 			// mouse events
@@ -3418,17 +3449,19 @@ Ext.onReady( function() {
 						obj = xResponse.sortableIdObjects[i];
 						el = Ext.get(obj.uuid);
 
-						el.dom.layout = layout;
-						el.dom.response = response;
-						el.dom.xResponse = xResponse;
-						el.dom.metaDataId = obj.id;
-						el.dom.onColumnHeaderMouseClick = web.events.onColumnHeaderMouseClick;
-						el.dom.onColumnHeaderMouseOver = web.events.onColumnHeaderMouseOver;
-						el.dom.onColumnHeaderMouseOut = web.events.onColumnHeaderMouseOut;
+                        if (el && el.dom) {
+                            el.dom.layout = layout;
+                            el.dom.response = response;
+                            el.dom.xResponse = xResponse;
+                            el.dom.metaDataId = obj.id;
+                            el.dom.onColumnHeaderMouseClick = web.events.onColumnHeaderMouseClick;
+                            el.dom.onColumnHeaderMouseOver = web.events.onColumnHeaderMouseOver;
+                            el.dom.onColumnHeaderMouseOut = web.events.onColumnHeaderMouseOut;
 
-						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.layout, this.response, this.metaDataId)');
-						el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
-						el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
+                            el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.layout, this.response, this.metaDataId)');
+                            el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
+                            el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
+                        }
 					}
 				}
 			};
@@ -3453,11 +3486,19 @@ Ext.onReady( function() {
 			};
 
 			web.events.onColumnHeaderMouseOver = function(el) {
-				Ext.get(el).addCls('pointer highlighted');
+                var div = Ext.get(el);
+
+                if (div) {
+                    div.addCls('pointer highlighted');
+                }
 			};
 
 			web.events.onColumnHeaderMouseOut = function(el) {
-				Ext.get(el).removeCls('pointer highlighted');
+                var div = Ext.get(el);
+
+                if (div) {
+                    div.removeCls('pointer highlighted');
+                }
 			};
 
 			// report
@@ -3475,6 +3516,12 @@ Ext.onReady( function() {
 
                 success = function(r) {
                     var layout = api.layout.Layout((r.responseText ? Ext.decode(r.responseText) : r), obj);
+
+                    // paging
+                    layout.paging = {
+                        page: 1,
+                        pageSize: 50
+                    };
 
                     if (layout) {
                         web.report.getData(layout, true);
@@ -3499,7 +3546,7 @@ Ext.onReady( function() {
                 }
 			};
 
-			web.report.getData = function(view, isUpdateGui) {
+			web.report.getData = function(layout, isUpdateGui) {
 				var xLayout,
 					paramString,
                     success,
@@ -3538,7 +3585,7 @@ Ext.onReady( function() {
 
                     ns.app.paramString = paramString;
 
-                    web.report.createReport(view, response, isUpdateGui);
+                    web.report.createReport(layout, response, isUpdateGui);
                 };
 
                 failure = function(r) {
@@ -3620,7 +3667,10 @@ Ext.onReady( function() {
 						table,
 						getSXLayout,
 						getXResponse,
-                        getReport;
+                        getReport,
+                        getTitleHtml = function(title) {
+                            return ns.dashboard && title ? '<div style="height: 19px; line-height: 14px; width: 100%; font: bold 12px LiberationSans; color: #333; text-align: center; letter-spacing: -0.1px">' + title + '</div>' : '';
+                        };
 
                     getReport = function() {
                         var getHtml = function(xLayout, xResponse) {
@@ -3648,17 +3698,19 @@ Ext.onReady( function() {
                         }
 
                         //ns.app.centerRegion.removeAll(true);
-                        ns.app.centerRegion.update(table.html);
+                        ns.app.centerRegion.update(getTitleHtml(layout.name) + table.html);
 
                         // fade
                         if (!ns.skipFade) {
-                            chart.on('afterrender', function() {
-                                Ext.defer( function() {
-                                    Ext.get(init.el).fadeIn({
+                            Ext.defer( function() {
+                                var el = Ext.get(init.el);
+
+                                if (el) {
+                                    el.fadeIn({
                                         duration: 400
                                     });
-                                }, 300 );
-                            });
+                                }
+                            }, 300 );
                         }
 
                         // after render
@@ -3711,7 +3763,10 @@ Ext.onReady( function() {
 
 				map['individual_cases'] = function() {
 					var xResponse,
-                        getReport;
+                        getReport,
+                        getTitleHtml = function(title) {
+                            return ns.dashboard && title ? '<div style="height: 19px; line-height: 14px; width: 100%; font: bold 12px LiberationSans; color: #333; text-align: center; letter-spacing: -0.1px">' + title + '</div>' : '';
+                        };
 
                     getReport = function() {
                         table = web.report.query.getHtml(layout, xResponse);
@@ -3721,13 +3776,19 @@ Ext.onReady( function() {
                             //table = web.report.query.getHtml(layout, xResponse);
                         //}
 
-                        ns.app.centerRegion.removeAll(true);
-                        ns.app.centerRegion.update(table.html);
+                        if (ns.app.centerRegion.removeAll) {
+                            ns.app.centerRegion.removeAll(true);
+                        }
+                        ns.app.centerRegion.update(getTitleHtml(layout.name) + table.html);
 
                         Ext.defer( function() {
-                            Ext.get(ns.core.init.el).fadeIn({
-                                duration: 400
-                            });
+                            var el = Ext.get(init.el);
+
+                            if (el) {
+                                el.fadeIn({
+                                    duration: 400
+                                });
+                            }
                         }, 300 );
 
                         // after render
@@ -3795,22 +3856,47 @@ Ext.onReady( function() {
 		};
 
 		initialize = function() {
+            var el = Ext.get(config.el);
+
 			if (!validateConfig(config)) {
 				return;
 			}
 
-            applyCss();
+            // css
+            applyCss(config);
 
+            // config
+            init.plugin = true;
+            init.dashboard = Ext.isBoolean(config.dashboard) ? config.dashboard : false;
+            init.crossDomain = Ext.isBoolean(config.crossDomain) ? config.crossDomain : true;
+            init.skipMask = Ext.isBoolean(config.skipMask) ? config.skipMask : false;
+            init.skipFade = Ext.isBoolean(config.skipFade) ? config.skipFade : false;
+
+            // alert
+            init.alert = function(text) {
+                var div = Ext.get(config.el);
+
+                if (div) {
+                    div.setStyle('opacity', 1);
+                    div.update('<div class="ns-plugin-alert">' + text + '</div>');
+                }
+            };
+
+            // init
 			ns.core = ER.getCore(Ext.clone(init));
-            ns.core.init.el = config.el;
-            Ext.get(ns.core.init.el).setStyle('opacity', 0);
 			extendInstance(ns);
 
 			ns.app.viewport = createViewport();
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
 
-			if (config.id) {
-				ns.core.web.report.loadReport(config.id);
+            if (el) {
+                el.setViewportWidth = function(width) {
+                    ns.app.centerRegion.setWidth(width);
+                };
+            }
+
+			if (config && config.id) {
+				ns.core.web.report.loadReport(config);
 			}
 			else {
 				layout = ns.core.api.layout.Layout(config);
@@ -3837,7 +3923,7 @@ Ext.onReady( function() {
 
 			if (!isInitStarted) {
 				isInitStarted = true;
-				getInit(config.url);
+				getInit(config);
 			}
 		}
 	};
