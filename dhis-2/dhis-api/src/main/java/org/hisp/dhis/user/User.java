@@ -261,6 +261,19 @@ public class User
         return managedGroups;
     }
     
+    public boolean hasManagedGroups()
+    {
+        for ( UserGroup group : groups )
+        {
+            if ( group != null && group.getManagedGroups() != null && !group.getManagedGroups().isEmpty() )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     /**
      * Indicates whether this user can manage the given user group.
      * 

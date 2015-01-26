@@ -55,6 +55,8 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
+
 /**
  * @author Chau Thu Tran
  */
@@ -217,6 +219,12 @@ public class DefaultUserService
     public List<User> getUsers( UserQueryParams params )
     {
         handleUserQueryParams( params );
+
+        if ( !validateUserQueryParams( params ) )
+        {
+            return Lists.newArrayList();
+        }
+        
         return userStore.getUsers( params );
     }
 
@@ -224,6 +232,12 @@ public class DefaultUserService
     public int getUserCount( UserQueryParams params )
     {
         handleUserQueryParams( params );
+
+        if ( !validateUserQueryParams( params ) )
+        {
+            return 0;
+        }
+        
         return userStore.getUserCount( params );
     }
     
@@ -250,6 +264,29 @@ public class DefaultUserService
             cal.add( Calendar.MONTH, ( params.getInactiveMonths() * -1 ) );
             params.setInactiveSince( cal.getTime() );
         }
+    }
+
+    public boolean validateUserQueryParams( UserQueryParams params )
+    {
+        if ( params.isCanManage() && ( params.getUser() == null || !params.getUser().hasManagedGroups() ) )
+        {
+            log.warn( "Cannot get managed users as user does not have any managed groups" );
+            return false;
+        }
+        
+        if ( params.isAuthSubset() && ( params.getUser() == null || !params.getUser().getUserCredentials().hasAuthorities() ) )
+        {
+            log.warn( "Cannot get users with authority subset as user does not have any authorities" );
+            return false;
+        }
+        
+        if ( params.isDisjointRoles() && ( params.getUser() == null || !params.getUser().getUserCredentials().hasUserAuthorityGroups() ) )
+        {
+            log.warn( "Cannot get users with disjoint roles as user does not have any user roles" );
+            return false;
+        }
+        
+        return true;
     }
     
     @Override

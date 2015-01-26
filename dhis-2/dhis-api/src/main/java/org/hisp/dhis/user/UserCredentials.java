@@ -188,6 +188,23 @@ public class UserCredentials
 
         return authorities;
     }
+    
+    /**
+     * Indicates whether this user credentials has at least one authority through
+     * its user authority groups.
+     */
+    public boolean hasAuthorities()
+    {
+        for ( UserAuthorityGroup group : userAuthorityGroups )
+        {
+            if ( group != null && group.getAuthorities() != null && !group.getAuthorities().isEmpty() )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     /**
      * Tests whether this user credentials has any of the authorities in the
@@ -401,7 +418,15 @@ public class UserCredentials
     }
 
     /**
-     * Indicates whether this user has dimension constraints.
+     * Indicates whether this user credentials has user authority groups.
+     */
+    public boolean hasUserAuthorityGroups()
+    {
+        return userAuthorityGroups != null && !userAuthorityGroups.isEmpty();
+    }
+    
+    /**
+     * Indicates whether this user credentials has dimension constraints.
      */
     public boolean hasDimensionConstraints()
     {

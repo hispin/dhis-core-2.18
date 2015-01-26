@@ -166,6 +166,10 @@ public class UserServiceTest
     @Test
     public void testManagedGroups()
     {
+        systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, true );
+        
+        // TODO find way to override in parameters
+        
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
         User userC = createUser( 'C' );
@@ -222,6 +226,8 @@ public class UserServiceTest
     @Test
     public void testGetByPhoneNumber()
     {
+        systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, true );
+        
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
         User userC = createUser( 'C' );
@@ -251,6 +257,8 @@ public class UserServiceTest
     @Test
     public void testGetManagedGroups()
     {
+        systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, true );
+        
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
         User userC = createUser( 'C' );
@@ -306,7 +314,6 @@ public class UserServiceTest
 
         UserQueryParams params = new UserQueryParams( userA );
         params.setCanManage( true );
-        params.setAuthSubset( true );
         params.setFirst( 0 );
         params.setMax( 1 );
 
@@ -340,6 +347,8 @@ public class UserServiceTest
     @Test
     public void testGetManagedGroupsLessAuthorities()
     {
+        systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, true );
+        
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
         User userC = createUser( 'C' );
@@ -509,6 +518,8 @@ public class UserServiceTest
     @Test
     public void testGetManagedGroupsSearch()
     {
+        systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, true );
+        
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
         User userC = createUser( 'C' );
@@ -551,6 +562,8 @@ public class UserServiceTest
     @Test
     public void testGetManagedGroupsSelfRegistered()
     {
+        systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, true );
+        
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
         User userC = createUser( 'C' );
@@ -589,6 +602,8 @@ public class UserServiceTest
     @Test
     public void testGetManagedGroupsOrganisationUnit()
     {
+        systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, true );
+        
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
         User userC = createUser( 'C' );
@@ -630,6 +645,8 @@ public class UserServiceTest
     @Test
     public void testGetInvitations()
     {
+        systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, true );
+        
         User userA = createUser( 'A' );
         User userB = createUser( 'B' );
         User userC = createUser( 'C' );
