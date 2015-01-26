@@ -125,7 +125,8 @@ trackerCapture.controller('DataEntryController',
         var dummyEvents = [];        
         if($scope.selectedEnrollment.status === 'ACTIVE'){
             if(!angular.isObject(availableEvents)){
-                angular.forEach($scope.selectedProgram.programStages, function(programStage){                                                        
+                angular.forEach($scope.selectedProgram.programStages, function(ps){                                                        
+                    var programStage = $scope.selectedProgramWithStage[ps.id];
                     var dummyEvent = EventUtils.createDummyEvent(availableEvents, programStage, $scope.selectedOrgUnit, $scope.selectedEnrollment);
                     dummyEvents.push(dummyEvent);                         
                 });
@@ -150,7 +151,8 @@ trackerCapture.controller('DataEntryController',
                     }                    
                 });
 
-                angular.forEach(program.programStages, function(stage){
+                angular.forEach(program.programStages, function(ps){
+                    var stage = $scope.selectedProgramWithStage[ps.id];
                     if(!eventsPerStage[stage.id]){
                         $scope.allowEventCreation = true;
                         var dummyEvent = EventUtils.createDummyEvent(availableEvents, stage, $scope.selectedOrgUnit, $scope.selectedEnrollment);
@@ -239,6 +241,13 @@ trackerCapture.controller('DataEntryController',
                 newEvent.reportDateDescription = $scope.currentDummyEvent.reportDateDescription;
                 newEvent.sortingDate = $scope.currentDummyEvent.dueDate,
                 newEvent.statusColor = $scope.currentDummyEvent.statusColor;
+                newEvent.eventDate = $scope.currentDummyEvent.eventDate;
+                newEvent.dueDate =  $scope.currentDummyEvent.dueDate;
+                newEvent.enrollmentStatus = $scope.currentDummyEvent.enrollmentStatus;
+                
+                if($scope.currentDummyEvent.coordinate){
+                    newEvent.coordinate = {};
+                }                
                 
                 $scope.dummyEvents = $scope.checkForEventCreation($scope.dhis2Events, $scope.selectedProgram);
                 
@@ -254,10 +263,8 @@ trackerCapture.controller('DataEntryController',
         });
     };   
     
-    $scope.showDataEntry = function(event, rightAfterEnrollment){        
+    $scope.showDataEntry = function(event, rightAfterEnrollment){  
         
-        //$scope.dueDateSaved = false;
-        //$scope.eventDateSaved = false;
         if(event){
 
             if($scope.currentEvent && !rightAfterEnrollment && $scope.currentEvent.event === event.event){
