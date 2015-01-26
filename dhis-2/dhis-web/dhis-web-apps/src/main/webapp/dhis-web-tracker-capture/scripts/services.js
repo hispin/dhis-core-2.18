@@ -1113,7 +1113,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 
 .service('EventUtils', function(DateUtils, CalendarService, OptionSetService, OrgUnitService, $filter, orderByFilter){
     return {
-        createDummyEvent: function(events, programStage, orgUnit, enrollment){            
+        createDummyEvent: function(events, programStage, orgUnit, enrollment){
             var today = DateUtils.getToday();    
             var dueDate = this.getEventDueDate(events, programStage, enrollment);
             var dummyEvent = {programStage: programStage.id, 
@@ -1123,6 +1123,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                               sortingDate: dueDate,
                               name: programStage.name,
                               reportDateDescription: programStage.reportDateDescription,
+                              enrollmentStatus: 'ACTIVE',
                               status: 'SCHEDULED'};
             
             if(programStage.captureCoordinates){
