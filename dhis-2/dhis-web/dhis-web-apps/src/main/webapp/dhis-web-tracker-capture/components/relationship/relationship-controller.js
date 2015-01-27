@@ -3,7 +3,6 @@ trackerCapture.controller('RelationshipController',
                 $rootScope,
                 $modal,                
                 $location,
-                $route,
                 $translate,
                 CurrentSelection,
                 TEIService,
@@ -85,7 +84,6 @@ trackerCapture.controller('RelationshipController',
         }        
     
         $location.path('/dashboard').search({tei: teiId, program: dashboardProgram}); 
-        $route.reload();                                 
     };
     
     var setRelationships = function(){
