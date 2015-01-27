@@ -149,7 +149,8 @@ var d2Directives = angular.module('d2Directives', [])
             var fieldName = attrs.inputFieldId;
             var numberType = attrs.numberType;
             var isRequired = attrs.ngRequired === 'true';
-            
+            var msg = $translate(numberType)+ ' ' + $translate('required');
+           
             ctrl.$parsers.unshift(function(value) {
             	if(value){
                     var isValid = checkValidity(numberType, value);                    
@@ -158,7 +159,7 @@ var d2Directives = angular.module('d2Directives', [])
                     }
                     else{
                         if(isRequired){
-                            errorMessages[fieldName] = $translate('required');
+                            errorMessages[fieldName] = msg;
                         }
                         else{
                             errorMessages[fieldName] = "";
@@ -172,7 +173,7 @@ var d2Directives = angular.module('d2Directives', [])
                 
                 if(value === ''){
                     if(isRequired){
-                        errorMessages[fieldName] = $translate('required');
+                        errorMessages[fieldName] = msg;
                     }
                     else{
                         ctrl.$setValidity(fieldName, true);

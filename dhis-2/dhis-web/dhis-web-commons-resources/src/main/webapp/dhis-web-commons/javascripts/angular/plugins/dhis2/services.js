@@ -223,6 +223,7 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                                                 ' input-field-id="' + fieldId + '"' +
                                                 ' d2-date ' +
                                                 ' max-date="' + 0 + '"' + 
+                                                ' placeholder="{{dhis2CalendarFormat.keyDateFormat}}" ' +
                                                 ' ng-class="getInputNotifcationClass(prStDes.' + fieldId + '.dataElement.id,true)"' +
                                                 ' blur-or-change="saveDatavalue(prStDes.'+ fieldId + ')"' + 
                                                 ' ng-required="{{true}}">';
@@ -302,7 +303,8 @@ var d2Services = angular.module('d2Services', ['ngResource'])
                                                 this.getAttributesAsString(attributes) +
                                                 ' d2-validation ' +
                                                 ' ng-model="currentEvent.' + fieldId + '"' +
-                                                ' input-field-id="' + fieldId + '"' +
+                                                ' input-field-id="' + fieldId + '"' +                                                
+                                                ' placeholder="{{dhis2CalendarFormat.keyDateFormat}}" ' +
                                                 ' d2-date ' +
                                                 ' max-date="' + maxDate + '"' +
                                                 ' ng-class="getInputNotifcationClass(prStDes.' + fieldId + '.dataElement.id,true)"' +
